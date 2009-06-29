@@ -160,7 +160,7 @@
 	</tr>
 	<tr>
 		<td>
-			<c:if test="${canDelete eq 'true' }">
+			<c:if test="${!empty user && user.curator && user.admin}">
 				<input style="display: none;" id="deleteExperimentConfig"
 					type="button" value="Delete"
 					onclick="javascript:deleteTheExperimentConfig()">
