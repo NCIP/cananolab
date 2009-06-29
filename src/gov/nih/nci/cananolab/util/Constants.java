@@ -161,7 +161,7 @@ public class Constants {
 			"STD", "SVG", "SXD", "WMF" };
 
 	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
-			"setupUpdate", "setupDeleteAll", "add", "remove" };
+			"setupNew", "setupUpdate", "summaryEdit", "add", "remove", "save" };
 
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
