@@ -19,7 +19,8 @@
 		<mkdir dir="${tmp.dir}/lib" />
 	</target>
 
-	<target name="compile-standalone" depends="clean, init-standalone">
+	<target name="compile-standalone"
+		depends="clean, init-standalone">
 		<echo
 			message="*****************************************************" />
 		<echo message="**   Compiling Java Classes ...          		  **" />
@@ -55,6 +56,7 @@
 			</fileset>
 			<fileset dir="${conf.dir}/standalone">
 				<include name="ApplicationSecurityConfig.xml" />
+				<include name="login.config" />
 				<include name="caNanoLab.csm.hibernate.cfg.xml" />
 				<include name="hibernate.cfg.xml" />
 				<include name="log4j.properties" />
@@ -75,7 +77,8 @@
 		</copy>
 	</target>
 
-	<target name="prepare-standalone-database-connection" depends="compile-standalone">
+	<target name="prepare-standalone-database-connection"
+		depends="compile-standalone">
 		<!-- replace database connection info -->
 		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
 			token="DATABASE_HOST" value="${database.host}" />
@@ -100,6 +103,15 @@
 			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
 			token="DATABASE_PASSWORD" value="${database.password}" />
 
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_PASSWORD" value="${database.password}" />
+
 		<!-- specify directory for CSM hibernate config file location -->
 		<replace file="${tmp.dir}/classes/ApplicationSecurityConfig.xml"
 			token="CONF_PATH" value="${tmp.dir}/classes" />
@@ -118,6 +130,8 @@
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
 		</java>
 		<antcall target="clean" />
 	</target>
@@ -138,6 +152,8 @@
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
 			<arg value="${endnote.xml.dir}" />
 		</java>
 	</target>
@@ -157,9 +173,10 @@
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
-			<arg value="org.hibernate.dialect.MySQLDialect"/>
-			<arg value="com.mysql.jdbc.Driver"/>
-			<arg value="jdbc:mysql://${database.host}:${database.port}/canano"/>
+			<arg value="org.hibernate.dialect.MySQLDialect" />
+			<arg value="com.mysql.jdbc.Driver" />
+			<arg
+				value="jdbc:mysql://${database.host}:${database.port}/canano" />
 			<arg value="${database.user}" />
 			<arg value="${database.password}" />
 		</java>
@@ -175,15 +192,37 @@
 			</fileset>
 			<pathelement path="${tmp.dir}/classes" />
 		</path>
-
 		<java
 			classname="gov.nih.nci.cananolab.service.security.LoginService"
 			fork="true">
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
 		</java>
+		<antcall target="clean" />
+	</target>
 
+	<target name="set-sample-associated-visibility"
+		depends="prepare-standalone-database-connection">
+		<path id="class.path">
+			<fileset dir="${tmp.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${tmp.dir}/classes" />
+		</path>
+		<java
+			classname="gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+			<arg value="${curator.login.name}" />
+			<arg value="${curator.password}" />
+		</java>
 		<antcall target="clean" />
 	</target>
 </project>
