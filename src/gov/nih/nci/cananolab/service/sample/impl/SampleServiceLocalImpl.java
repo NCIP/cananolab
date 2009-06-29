@@ -717,6 +717,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		List<SampleBean> allSamples = findSamplesBy(null, null, null, null,
 				null, null, null, null, null, null, user);
 		for (SampleBean sampleBean : allSamples) {
+			System.out.println("sample: "+sampleBean.getDomain().getName());
 			saveSample(sampleBean, user);
 		}
 	}
@@ -729,6 +730,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			UserBean user = loginService.login(userName, password);
 			SampleServiceLocalImpl service = new SampleServiceLocalImpl();
 			service.updateAssociatedVisibility(user);
+			System.exit(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
