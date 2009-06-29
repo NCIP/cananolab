@@ -373,6 +373,10 @@ function displayLogin() {
 }
 function showhide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
+	if (layerBlock == null) {
+		//alert(layer_ref + " is null (cannot show)");
+		return;
+	}
 	if (layerBlock.style.display == "none") {
 		layerBlock.style.display = "block";
 	} else {
@@ -382,7 +386,7 @@ function showhide(layer_ref) {
 function show(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock == null) {
-		alert(layer_ref + " is null (cannot show)");
+		//alert(layer_ref + " is null (cannot show)");
 		return;
 	}
 	if (layerBlock.style.display == "none") {
@@ -392,7 +396,7 @@ function show(layer_ref) {
 function hide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock == null) {
-		alert(layer_ref + " is null (cannot show)");
+		//alert(layer_ref + " is null (cannot show)");
 		return;
 	}
 	if (layerBlock.style.display == "block") {
