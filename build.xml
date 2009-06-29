@@ -20,7 +20,7 @@
 	</taskdef>
 
 	<target name="clean">
-		<delete dir="${build.dir}" quiet="true" />
+		<delete dir="${build.dir}" />
 	</target>
 
 	<target name="init-application">
