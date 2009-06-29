@@ -184,9 +184,11 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="button" value="Remove"
-				onclick="removeFunction('functionalizingEntity');clearFunction()"
-				id="deleteFunction" style="display: none;" />
+			<c:if test="${!empty user && user.curator && user.admin}">
+				<input type="button" value="Remove"
+					onclick="removeFunction('functionalizingEntity');clearFunction()"
+					id="deleteFunction" style="display: none;" />
+			</c:if>
 		</td>
 		<td colspan="3">
 			<div align="right">

@@ -51,7 +51,7 @@
 					property="nanomaterialEntity.theComposingElement.domain.pubChemDataSourceName"
 					onchange="javascript:callPrompt('PubChem DataSource', 'pubChemDataSource', 'pubChemDataSourcePrompt');">
 					<option value="" />
-					<html:options name="pubChemDataSources" />
+						<html:options name="pubChemDataSources" />
 				</html:select>
 			</div>
 		</td>
@@ -126,7 +126,8 @@
 			<div id="functionSection" style="position: relative;">
 				<a style="" id="addInherentFunction"
 					href="javascript:clearInherentFunction();show('newInherentFunction');">Add</a>
-				<br><br>
+				<br>
+				<br>
 				<table id="functionTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">
 					<tbody id="functionRows">
@@ -135,7 +136,9 @@
 								Function Type
 							</td>
 							<td width="25%" class="cellLabel">
-								<div id="modalityHeader" style="display:none">Imaging Modality</div>
+								<div id="modalityHeader" style="display: none">
+									Imaging Modality
+								</div>
 							</td>
 							<td class="cellLabel">
 								Description
@@ -148,7 +151,8 @@
 								<span id="functionTypeValue">Function Type</span>
 							</td>
 							<td>
-								<span id="functionModalityTypeValue" style="display:none">Imaging Modality</span>
+								<span id="functionModalityTypeValue" style="display: none">Imaging
+									Modality</span>
 							</td>
 							<td>
 								<span id="functionDescriptionValue">Description</span>
@@ -161,7 +165,8 @@
 						</tr>
 					</tbody>
 				</table>
-				<table id="newInherentFunction" style="display: none;" class="promptbox">
+				<table id="newInherentFunction" style="display: none;"
+					class="promptbox">
 					<tbody>
 						<tr>
 							<html:hidden
@@ -246,9 +251,11 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="button" value="Remove"
-				onclick="removeComposingElement('nanomaterialEntity');clearComposingElement()"
-				id="deleteComposingElement" style="display: none;" />
+			<c:if test="${!empty user && user.curator && user.admin}">
+				<input type="button" value="Remove"
+					onclick="removeComposingElement('nanomaterialEntity');clearComposingElement()"
+					id="deleteComposingElement" style="display: none;" />
+			</c:if>
 		</td>
 		<td colspan="3">
 			<div align="right">
