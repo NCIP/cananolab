@@ -24,10 +24,12 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		String dispatch = request.getParameter("dispatch");
 		// private dispatch in public actions
 		boolean privateDispatch = false;
-		for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
-			if (dispatch.startsWith(theDispatch)) {
-				privateDispatch = true;
-				break;
+		if (dispatch != null) {
+			for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
+				if (dispatch.startsWith(theDispatch)) {
+					privateDispatch = true;
+					break;
+				}
 			}
 		}
 		if (session.isNew() && (dispatch == null || privateDispatch)) {
