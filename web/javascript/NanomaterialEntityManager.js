@@ -37,8 +37,12 @@ function addInherentFunction() {
 	var theFunction = {id:funcId, type:dwr.util.getValue("functionType"), imagingFunction:imagingFunction, description:dwr.util.getValue("functionDescription")};
 	if (theFunction.type != "" || theFunction.description != "") {
 		NanomaterialEntityManager.addInherentFunction(theFunction, function (composingElement) {
-			currentComposingElement = composingElement;
-			window.setTimeout("populateInherentFunctions()", 200);
+			if (composingElement != null) {
+				currentComposingElement = composingElement;
+				window.setTimeout("populateInherentFunctions()", 200);
+			} else {
+				sessionTimeout();
+			}
 		});
 	} else {
 		alert("Please fill in values");
@@ -105,6 +109,8 @@ function populateComposingElement(element) {
 		}
 		inherentFunctionCache = {};
 		populateInherentFunctions();
+	} else {
+		sessionTimeout();
 	}
 }
 function editInherentFunction(eleid) {
@@ -130,7 +136,11 @@ function deleteTheInherentFunction() {
 		var func = inherentFunctionCache[eleid];
 		if (confirm("Are you sure you want to delete this function?")) {
 			NanomaterialEntityManager.deleteInherentFunction(func, function (composingElement) {
-				currentComposingElement = composingElement;
+				if (composingElement != null) {
+					currentComposingElement = composingElement;
+				} else {
+					sessionTimeout();
+				}
 			});
 			window.setTimeout("populateInherentFunctions()", 200);
 			hide("newInherentFunction");

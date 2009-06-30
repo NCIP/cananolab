@@ -62,6 +62,9 @@ public class DWRCharacterizationResultManager {
 	public FileBean getFileFromList(int index) {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
+		if (charForm == null) {
+			return null;
+		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		List<FileBean> files = charBean.getTheFinding().getFiles();
@@ -72,6 +75,9 @@ public class DWRCharacterizationResultManager {
 	public FileBean resetTheFile() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
+		if (charForm == null) {
+			return null;
+		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		FileBean fileBean = new FileBean();

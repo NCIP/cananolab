@@ -28,6 +28,9 @@ public class DWRNanomaterialEntityManager {
 	public ComposingElementBean addInherentFunction(FunctionBean function) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 				.get("nanomaterialEntity");
 		entity.getTheComposingElement().addFunction(function);
@@ -37,6 +40,9 @@ public class DWRNanomaterialEntityManager {
 	public ComposingElementBean deleteInherentFunction(FunctionBean function) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 				.get("nanomaterialEntity");
 		entity.getTheComposingElement().removeFunction(function);
@@ -47,6 +53,9 @@ public class DWRNanomaterialEntityManager {
 			throws Exception {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 				.get("nanomaterialEntity");
 		WebContext wctx = WebContextFactory.get();
@@ -70,6 +79,9 @@ public class DWRNanomaterialEntityManager {
 	public ComposingElementBean resetTheComposingElement() {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 				.get("nanomaterialEntity");
 		ComposingElementBean elementBean = new ComposingElementBean();

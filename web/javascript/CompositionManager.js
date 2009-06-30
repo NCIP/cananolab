@@ -24,10 +24,12 @@ function getAssociatedElementOptions(elementNumber) {
 			dwr.util.addOptions("entityId" + elementNumber, [""]);
 			//requires getters for domainId and displayName in BaseCompositionEntityBean
 			dwr.util.addOptions("entityId" + elementNumber, entities, "domainId", "displayName");
+		} else {
+			sessionTimeout();
 		}
 	});
 	show("entitySelect" + elementNumber);
-	hide("composingElementSelect"+elementNumber);
+	hide("composingElementSelect" + elementNumber);
 }
 function displayBondType() {
 	var type = document.getElementById("assoType").value;
@@ -60,12 +62,13 @@ function getComposingElementOptions(elementNumber) {
 				dwr.util.addOptions("composingElementId" + elementNumber, [""]);
 			//requires getters for domainId and displayName in ComposingElementBean
 				dwr.util.addOptions("composingElementId" + elementNumber, composingElements, "domainId", "displayName");
+			} else {
+				sessionTimeout();
 			}
 		});
 		show("composingElementSelect" + elementNumber);
-	}
-	else {
-	    hide("composingElementSelect"+elementNumber);
+	} else {
+		hide("composingElementSelect" + elementNumber);
 	}
 }
 /* end of set submit chemical association form */
@@ -84,6 +87,5 @@ function setTheFile(type, id) {
 	show("newFile");
 	show("deleteFile");
 }
-
 /* end of set submit file form */
 

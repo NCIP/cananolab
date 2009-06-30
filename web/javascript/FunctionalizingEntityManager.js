@@ -58,8 +58,12 @@ function addTarget() {
 	var target = {id:targetId, type:dwr.util.getValue("targetType"), name:dwr.util.getValue("targetName"), antigen:antigen, description:dwr.util.getValue("targetDescription")};
 	if (target.type != "" || target.name != "" || target.description != "") {
 		FunctionalizingEntityManager.addTarget(target, function (theFunction) {
-			currentFunction = theFunction;
-			window.setTimeout("populateTargets()", 200);
+			if (theFunction != null) {
+				currentFunction = theFunction;
+				window.setTimeout("populateTargets()", 200);
+			} else {
+				sessionTimeout();
+			}
 		});
 	} else {
 		alert("Please fill in values");
@@ -86,6 +90,8 @@ function populateFunction(func) {
 		populateTargets();
 		displayTargets();
 		displayImageModality();
+	} else {
+		sessionTimeout();
 	}
 }
 function populateTargets() {
@@ -148,7 +154,11 @@ function deleteTheTarget() {
 		var target = targetCache[eleid];
 		if (confirm("Are you sure you want to delete this target?")) {
 			FunctionalizingEntityManager.deleteTarget(target, function (theFunction) {
-				currentFunction = theFunction;
+				if (theFunction != null) {
+					currentFunction = theFunction;
+				} else {
+					sessionTimeout();
+				}
 			});
 			window.setTimeout("populateTargets()", 200);
 			hide("newTarget");

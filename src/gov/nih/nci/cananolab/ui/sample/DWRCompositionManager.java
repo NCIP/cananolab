@@ -53,6 +53,9 @@ public class DWRCompositionManager {
 	public FileBean getFileById(String type, String id) throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user==null) {
+			return null;
+		}
 		FileService service = new FileServiceLocalImpl();
 		FileBean fileBean = service.findFileById(id, user);
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
@@ -80,6 +83,9 @@ public class DWRCompositionManager {
 	public FileBean resetTheFile(String type) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		FileBean fileBean = new FileBean();
 		if (type.equals("nanomaterialEntity")) {
 			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
@@ -107,7 +113,9 @@ public class DWRCompositionManager {
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		List<BaseCompositionEntityBean> entities = null;
-
+		if (request.getSession().isNew()) {
+			return null;
+		}
 		if (compositionType.equals("Nanomaterial Entity")) {
 			entities = (List<BaseCompositionEntityBean>) request.getSession()
 					.getAttribute("sampleMaterialEntities");
@@ -127,6 +135,9 @@ public class DWRCompositionManager {
 		}
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user==null) {
+			return null;
+		}
 		CompositionService compService = new CompositionServiceLocalImpl();
 		NanomaterialEntityBean entityBean = compService
 				.findNanomaterialEntityById(id, user);

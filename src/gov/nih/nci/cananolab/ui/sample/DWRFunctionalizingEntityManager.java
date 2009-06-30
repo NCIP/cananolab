@@ -29,6 +29,9 @@ public class DWRFunctionalizingEntityManager {
 	public FunctionBean addTarget(TargetBean target) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 				.get("functionalizingEntity");
 		entity.getTheFunction().addTarget(target);
@@ -38,6 +41,9 @@ public class DWRFunctionalizingEntityManager {
 	public FunctionBean deleteTarget(TargetBean target) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 				.get("functionalizingEntity");
 		entity.getTheFunction().removeTarget(target);
@@ -49,6 +55,9 @@ public class DWRFunctionalizingEntityManager {
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (wctx
 				.getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 				.get("functionalizingEntity");
 		Function function = helper.findFunctionById(id, user);
@@ -67,6 +76,9 @@ public class DWRFunctionalizingEntityManager {
 	public FunctionBean resetTheFunction() {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
+		if (compositionForm==null) {
+			return null;
+		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 				.get("functionalizingEntity");
 		FunctionBean function = new FunctionBean();

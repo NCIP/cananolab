@@ -221,9 +221,8 @@ function clearMultibox(selection) {
 		selection.options[i].value = "";
 	}
 }
-
 function submitAction(form, actionName, dispatchName, page) {
-	form.action = actionName + ".do?dispatch=" + dispatchName + "&page="+page;
+	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=" + page;
 	form.submit();
 }
 function addComponent(form, actionName, dispatchName) {
@@ -234,7 +233,6 @@ function removeComponent(form, actionName, compInd, dispatchName) {
 	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd;
 	form.submit();
 }
-
 /* form has "." in the property names */
 function doubleDropdownWithNestedProperties(form, elementName1, elementName2, value1ToValue2) {
 	var select1, select2;
@@ -495,6 +493,8 @@ function populateFile(file) {
 			show("load");
 			hide("link");
 		}
+	} else {
+		sessionTimeout();
 	}
 }
 function displayFileRadioButton() {
@@ -516,8 +516,8 @@ function deleteData(type, form, actionName) {
 		form.submit();
 	}
 }
-
 function sessionTimeout() {
 	alert("Session has timed out.  Please log in again.");
-	location.href="login.jsp";
+	location.href = "login.jsp";
 }
+
