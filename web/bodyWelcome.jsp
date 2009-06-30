@@ -46,57 +46,55 @@
 				<%-- Create User Account --%>
 				<c:if test="${!empty user && user.admin }">
 					<area href="javascript:openHelpWindow('/upt')" shape="rect"
-						coords="80,73,208,121" alt="rectangle" />
+						coords="60,55,156,93" alt="rectangle" />
 				</c:if>
 
 				<%-- Login --%>
-				<area href="login.jsp" shape="rect" coords="80,140,208,190"
+				<area href="login.jsp" shape="rect" coords="60,105,156,143"
 					alt="rectangle" />
 
 				<%-- Site Preference --%>
 				<c:if test="${!empty user && user.admin }">
 					<area href="admin.do?dispatch=sitePreference" shape="rect"
-						coords="80,207,208,258" alt="rectangle" />
+						coords="60,156,156,195" alt="rectangle" />
 				</c:if>
 				
 				<%-- Search Protocols --%>
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
-					coords="80,343,208,394" alt="rectangle" />
+					coords="60,259,156,297" alt="rectangle" />
 					
 				<%-- Search Sample --%>
 				<area href="searchSample.do?dispatch=setup" shape="rect"
-					coords="80,411,208,482" alt="rectangle" />
+					coords="60,311,156,363" alt="rectangle" />
 					
 				<%-- Search Publication --%>
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
-					coords="80,498,208,550" alt="rectangle" />
+					coords="60,375,156,413" alt="rectangle" />
 					
 				<c:if test="${!empty user && user.curator}">
 					<%-- Submit Protocols --%>
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
-						coords="360,47,490,100" alt="rectangle" />
+						coords="272,36,368,74" alt="rectangle" />
 						
 					<%-- Submit Samples --%>
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="360,115,490,186" alt="rectangle" />
+						shape="rect" coords="272,88,368,141" alt="rectangle" />
 						
 					<%-- Submit Publication --%>
 					<area href="publication.do?dispatch=setupNew&page=0" shape="rect"
-						coords="440,546,570,597" alt="rectangle" />
+						coords="332,412,428,450" alt="rectangle" />
 						
 					<%-- Submit Samples (Others) --%>
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="440,201,570,253" alt="rectangle" />
+						shape="rect" coords="332,152,428,189" alt="rectangle" />
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="440,441,570,493" alt="rectangle" />
+						shape="rect" coords="332,333,428,371" alt="rectangle" />
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="440,546,570,597" alt="rectangle" />
+						shape="rect" coords="459,245,554,305" alt="rectangle" />
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="609,323,735,403" alt="rectangle" />
+						shape="rect" coords="459,368,554,409" alt="rectangle" />
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="609,487,735,540" alt="rectangle" />
-					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="609,597,735,650" alt="rectangle" />
+						shape="rect" coords="459,449,554,490" alt="rectangle" />
 				</c:if>
 			</map>
 			<img align="middle" src="images/Home_Page_Workflow.png"
