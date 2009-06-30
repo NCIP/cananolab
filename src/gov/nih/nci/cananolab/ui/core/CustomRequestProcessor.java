@@ -1,9 +1,5 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.util.Constants;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.tiles.TilesRequestProcessor;
