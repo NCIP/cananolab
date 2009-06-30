@@ -48,6 +48,8 @@ function populateExperimentConfig(experimentConfig) {
 		//clear the cache for each new experimentConfig
 		instrumentCache = {};
 		populateInstruments();
+	} else {
+		sessionTimeout();
 	}
 }
 function populateInstruments() {
@@ -105,6 +107,9 @@ function addInstrument() {
 	}
 	if (instrument.manufacturer != "" || instrument.modelName != "" || instrument.type != "") {
 		ExperimentConfigManager.addInstrument(instrument, function (experimentConfig) {
+			if (experimentConfig == null) {
+				sessionTimeout();
+			}
 			currentExperimentConfig = experimentConfig;
 		});
 		window.setTimeout("populateInstruments()", 200);
@@ -134,6 +139,9 @@ function deleteTheInstrument() {
 		var instrument = instrumentCache[eleid];
 		if (confirm("Are you sure you want to delete '" + instrument.manufacturer + " " + instrument.modelName + "'?")) {
 			ExperimentConfigManager.deleteInstrument(instrument, function (experimentConfig) {
+				if (experimentConfig == null) {
+					sessionTimeout();
+				}
 				currentExperimentConfig = experimentConfig;
 			});
 			window.setTimeout("populateInstruments()", 200);

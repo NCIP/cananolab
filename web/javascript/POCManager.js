@@ -23,6 +23,8 @@ function populatePointOfContact(poc) {
 			hide("primaryTitle");
 			show("secondaryTitle");
 		}
+	} else {
+		sessionTimeout();
 	}
 }
 function addPointOfContact(actionName) {
