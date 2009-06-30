@@ -517,3 +517,7 @@ function deleteData(type, form, actionName) {
 	}
 }
 
+function sessionTimeout() {
+	alert("Session has timed out.  Please log in again.");
+	location.href="login.jsp";
+}
