@@ -68,7 +68,6 @@ public class SampleBean {
 		if (domain != null) {
 			PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
 			primaryPOCBean = new PointOfContactBean(primaryPOC);
-			// TODO sort other pocs
 			for (PointOfContact poc : domain.getOtherPointOfContactCollection()) {
 				PointOfContactBean pocBean = new PointOfContactBean(poc);
 				pocBean.setPrimaryStatus(false);
@@ -76,6 +75,7 @@ public class SampleBean {
 			}
 			Collections.sort(otherPOCBeans,
 					new Comparators.PointOfContactBeanNameOrgComparator());
+			thePOC = primaryPOCBean;
 		}
 		if (sample.getSampleComposition() != null
 				&& sample.getSampleComposition().getId() != null) {
