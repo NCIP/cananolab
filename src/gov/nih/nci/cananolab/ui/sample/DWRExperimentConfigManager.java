@@ -29,6 +29,9 @@ public class DWRExperimentConfigManager {
 	public ExperimentConfigBean resetTheExperimentConfig() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
+		if (charForm==null) {
+			return null;
+		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		ExperimentConfigBean newExperimentConfigBean = new ExperimentConfigBean();
@@ -40,6 +43,9 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException, NoAccessException {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user==null) {
+			return null;
+		}
 		ExperimentConfig config = helper.findExperimentConfigById(id, user);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
@@ -100,6 +106,9 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
+		if (charForm==null) {
+			return null;
+		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		ExperimentConfigBean theExperimentConfig = charBean
@@ -112,6 +121,9 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
+		if (charForm==null) {
+			return null;
+		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		ExperimentConfigBean theExperimentConfig = charBean
