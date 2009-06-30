@@ -90,8 +90,7 @@
 			type="gov.nih.nci.cananolab.exception.CharacterizationResultException" />
 		<exception
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-			bundle="pointOfContact" key="error.pointOfContactException"
-			path="pointOfContact.message"
+			key="error.pointOfContact" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.PointOfContactException" />
 	</global-exceptions>
 	<global-forwards>

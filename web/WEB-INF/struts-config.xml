@@ -113,8 +113,6 @@
 		parameter="gov.nih.nci.cananolab.resources.application" null="false" />
 	<message-resources key="admin"
 		parameter="gov.nih.nci.cananolab.resources.admin" null="false" />
-	<message-resources key="pointOfContact"
-		parameter="gov.nih.nci.cananolab.resources.pointOfContact" null="false" />
 	<message-resources key="protocol"
 		parameter="gov.nih.nci.cananolab.resources.protocol" null="false" />
 	<message-resources key="particle"
