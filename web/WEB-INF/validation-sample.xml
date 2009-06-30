@@ -244,12 +244,12 @@
 		<form name="characterizationForm">
 			<field property="achar.characterizationType" page="2"
 				depends="required">
-				<arg position="0" key="characterizationType"
+				<arg position="0" key="achar.characterizationType"
 					bundle="particle" />
 			</field>
 			<field property="achar.characterizationName" page="2"
 				depends="required">
-				<arg position="0" key="characterizationName"
+				<arg position="0" key="achar.characterizationName"
 					bundle="particle" />
 			</field>
 			<!--
