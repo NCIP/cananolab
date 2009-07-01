@@ -24,52 +24,6 @@ public class DWRSampleManager {
 	public DWRSampleManager() {
 	}
 
-	/* remove organization associated with the POC from the visiblity group */
-	public String[] removeOrgVisibility(String pocId) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		try {
-			List<String> visibilityGroup = InitSecuritySetup.getInstance()
-					.getAllVisibilityGroups(request);
-			if (!pocId.equalsIgnoreCase("other")) {
-				String sampleOrg = service.findPointOfContactById(pocId, user)
-						.getDomain().getOrganization().getName();
-				visibilityGroup.remove(sampleOrg);
-			}
-			String[] eleArray = new String[visibilityGroup.size()];
-			return visibilityGroup.toArray(eleArray);
-
-		} catch (Exception e) {
-			System.out.println("removeOrgVisibility exception.");
-			e.printStackTrace();
-		}
-
-		return new String[] { "" };
-	}
-
-	/* remove organization name from the visiblity group */
-	public String[] removeOrgNameVisibility(String orgName) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		try {
-			List<String> visibilityGroup = InitSecuritySetup.getInstance()
-					.getAllVisibilityGroups(request);
-			if (!orgName.equalsIgnoreCase("other")) {
-				visibilityGroup.remove(orgName);
-			}
-			String[] eleArray = new String[visibilityGroup.size()];
-			return visibilityGroup.toArray(eleArray);
-
-		} catch (Exception e) {
-			System.out.println("removeOrgNameVisibility exception.");
-			e.printStackTrace();
-		}
-		return new String[] { "" };
-	}
-
 	public String[] getNanomaterialEntityTypes(String searchLocations) {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();

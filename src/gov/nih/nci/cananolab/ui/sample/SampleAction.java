@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SampleAction extends BaseAnnotationAction {
@@ -110,7 +112,8 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
-		setupLookups(request, null);
+		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
+				.getOrganization().getName());
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -143,6 +146,7 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
 				request, sampleOrg);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		InitSampleSetup.getInstance().setPOCDropdowns(request);
 	}
 
@@ -160,11 +164,12 @@ public class SampleAction extends BaseAnnotationAction {
 				"updateSample");
 		if (updateSample == null) {
 			forward = mapping.getInputForward();
+			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName());
 		} else {
-			// forward = summaryEdit(mapping, form, request, response);
-			forward = mapping.findForward("summaryEdit");
-			sample.setLocation(Constants.LOCAL_SITE);
-			request.setAttribute("theSample", sample);
+			request.setAttribute("sampleId", sample.getDomain().getId()
+					.toString());
+			forward = summaryEdit(mapping, form, request, response);
 		}
 		InitSampleSetup.getInstance().persistPOCDropdowns(request,
 				sample.getDomain());
@@ -177,15 +182,27 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		PointOfContactBean thePOC = sample.getThePOC();
-		sample.removePointOfContact(thePOC);
-		ActionForward forward = null;
-		if (sample.getDomain().getId() == null) {
-			forward = mapping.getInputForward();
-		} else {
-			forward = summaryEdit(mapping, form, request, response);
+		ActionMessages msgs = new ActionMessages();
+		if (thePOC.getPrimaryStatus()) {
+			ActionMessage msg = new ActionMessage("message.deletePrimaryPOC");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
 		}
+		sample.removePointOfContact(thePOC);
 		// save sample
 		saveSample(request, sample);
+		ActionForward forward = null;
+		String updateSample = (String) request.getSession().getAttribute(
+				"updateSample");
+		if (updateSample == null) {
+			forward = mapping.getInputForward();
+			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName());
+		} else {
+			request.setAttribute("sampleId", sample.getDomain().getId()
+					.toString());
+			forward = summaryEdit(mapping, form, request, response);
+		}
 		return forward;
 	}
 }

@@ -48,7 +48,7 @@ public class DWRPointOfContactManager {
 		SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
 		PointOfContactBean poc = new PointOfContactBean();
 		sample.setThePOC(poc);
-		// if primary POC already exists, the POC is secondar
+		// if primary POC already exists, the POC is secondary
 		if (sample.getPrimaryPOCBean().getDomain().getId() != null) {
 			poc.setPrimaryStatus(false);
 		}
@@ -76,49 +76,58 @@ public class DWRPointOfContactManager {
 		return org;
 	}
 
-	/* remove organization associated with the POC from the visiblity group */
-	public String[] removeOrgVisibility(String pocId) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		try {
-			List<String> visibilityGroup = InitSecuritySetup.getInstance()
-					.getAllVisibilityGroups(request);
-			if (!pocId.equalsIgnoreCase("other")) {
-				String sampleOrg = service.findPointOfContactById(pocId, user)
-						.getDomain().getOrganization().getName();
-				visibilityGroup.remove(sampleOrg);
-			}
-			String[] eleArray = new String[visibilityGroup.size()];
-			return visibilityGroup.toArray(eleArray);
-
-		} catch (Exception e) {
-			System.out.println("removeOrgVisibility exception.");
-			e.printStackTrace();
+	public String[] removeOrgFromVisibilityGroupsByPocId(String id,
+			Boolean primaryStatus) throws Exception {
+		PointOfContactBean pocBean = this.getPointOfContactById(id,
+				primaryStatus);
+		if (pocBean == null) {
+			return null;
 		}
-
-		return new String[] { "" };
+		String orgName = pocBean.getDomain().getOrganization().getName();
+		return removeOrgFromVisibilityGroupsByOrgName(orgName);
 	}
 
-	/* remove organization name from the visiblity group */
-	public String[] removeOrgNameVisibility(String orgName) {
+	public String[] removeOrgFromVisibilityGroupsByOrgName(String orgName)
+			throws Exception {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
-		try {
-			List<String> visibilityGroup = InitSecuritySetup.getInstance()
-					.getAllVisibilityGroups(request);
-			if (!orgName.equalsIgnoreCase("other")) {
+		List<String> visibilityGroup = InitSecuritySetup.getInstance()
+				.getAllVisibilityGroups(request);
+		visibilityGroup.remove(orgName);
+		return visibilityGroup.toArray(new String[0]);
+	}
+
+	public String[] resetVisibilityGroups() throws Exception {
+		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+		org.directwebremoting.WebContext webContext = dwcb.get();
+		HttpServletRequest request = webContext.getHttpServletRequest();
+		List<String> visibilityGroup = InitSecuritySetup.getInstance()
+				.getAllVisibilityGroups(request);
+		return visibilityGroup.toArray(new String[0]);
+	}
+
+	public String[] resetSampleVisibilityGroups() throws Exception {
+		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+		org.directwebremoting.WebContext webContext = dwcb.get();
+		HttpServletRequest request = webContext.getHttpServletRequest();
+		List<String> visibilityGroup = InitSecuritySetup.getInstance()
+				.getAllVisibilityGroups(request);
+		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("sampleForm"));
+		if (sampleForm == null) {
+			return null;
+		}
+		SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
+		String orgName = null;
+		if (sample.getPrimaryPOCBean() != null
+				&& sample.getPrimaryPOCBean().getDomain().getId() != null) {
+			orgName = sample.getPrimaryPOCBean().getDomain().getOrganization()
+					.getName();
+			if (orgName!=null) {
 				visibilityGroup.remove(orgName);
 			}
-			String[] eleArray = new String[visibilityGroup.size()];
-			return visibilityGroup.toArray(eleArray);
-
-		} catch (Exception e) {
-			System.out.println("removeOrgNameVisibility exception.");
-			e.printStackTrace();
 		}
-		return new String[] { "" };
+		return visibilityGroup.toArray(new String[0]);
 	}
 }
