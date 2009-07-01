@@ -75,6 +75,7 @@ public class SampleBean {
 			}
 			Collections.sort(otherPOCBeans,
 					new Comparators.PointOfContactBeanNameOrgComparator());
+			thePOC=primaryPOCBean;
 		}
 		if (sample.getSampleComposition() != null
 				&& sample.getSampleComposition().getId() != null) {
