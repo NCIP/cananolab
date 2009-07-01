@@ -13,8 +13,8 @@
 			<field property="sampleBean.thePOC.domain.organization.name" page="2"
 				depends="required">
 				<arg position="0"
-					key="submitPointOfContactForm.organizationName"
-					bundle="pointOfContact" />
+					key="sampleForm.organizationName"
+					bundle="particle" />
 			</field>
 		</form>
 		<form name="/chemicalAssociation">
