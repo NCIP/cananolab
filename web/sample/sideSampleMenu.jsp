@@ -64,7 +64,7 @@
 				</c:url>
 				<c:choose>
 					<c:when
-						test="${actionPath eq '/composition.do' || actionPath eq '/nanomaterialEntity.do' || actionPath eq 'functionalizingEntity.do' ||actionPath eq 'chemicalAssociation.do' ||actionPath eq 'compositionFile.do'}">
+						test="${actionPath eq '/composition.do' || actionPath eq '/nanomaterialEntity.do' || actionPath eq '/functionalizingEntity.do' ||actionPath eq '/chemicalAssociation.do' ||actionPath eq '/compositionFile.do'}">
 						<td class="subMenuSecondaryTitleSelected"
 							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
