@@ -25,6 +25,7 @@ import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -109,7 +110,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			throw new SampleException(err, e);
 		}
 
-		// assign CSM visibility and associated public visibility
+		// assign CSM visibility and associated visibility
 		// requires fully loaded sample if it's an existing sample)
 		try {
 			if (!newSample) {
@@ -117,6 +118,18 @@ public class SampleServiceLocalImpl implements SampleService {
 				SampleBean fullyLoadedSampleBean = findFullSampleById(
 						sampleBean.getDomain().getId().toString(), user);
 				fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
+				// retain POC visibilities in sampleBean
+				fullyLoadedSampleBean.getPrimaryPOCBean().setVisibilityGroups(
+						sampleBean.getPrimaryPOCBean().getVisibilityGroups());
+				int i = 0;
+				for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
+					if (pocBean != null) {
+						fullyLoadedSampleBean.getOtherPOCBeans().get(i)
+								.setVisibilityGroups(
+										pocBean.getVisibilityGroups());
+					}
+					i++;
+				}
 				assignVisibility(fullyLoadedSampleBean);
 			} else {
 				assignVisibility(sampleBean);
@@ -129,6 +142,9 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private void checkForExistingPointOfContact(PointOfContact poc,
 			UserBean user) throws Exception {
+		if (poc == null) {
+			return;
+		}
 		Organization org = poc.getOrganization();
 		if (poc.getId() != null) {
 			// check if POC already exists in the database
@@ -148,6 +164,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			org.setId(dbOrganization.getId());
 			org.setCreatedBy(dbOrganization.getCreatedBy());
 			org.setCreatedDate(dbOrganization.getCreatedDate());
+		} else {
+			org.setCreatedBy(user.getLoginName());
+			org.setCreatedDate(new Date());
 		}
 	}
 
@@ -441,7 +460,8 @@ public class SampleServiceLocalImpl implements SampleService {
 
 		// retrieve visibility for point of contact information
 		PointOfContactBean primaryPocBean = sampleBean.getPrimaryPOCBean();
-		if (primaryPocBean.getDomain().getId() != null) {
+		if (primaryPocBean.getDomain() != null
+				&& primaryPocBean.getDomain().getId() != null) {
 			// get assigned visible groups
 			List<String> pocAccessibleGroups = helper.getAuthService()
 					.getAccessibleGroups(
@@ -546,51 +566,6 @@ public class SampleServiceLocalImpl implements SampleService {
 					+ sampleId;
 			logger.error(err, e);
 			throw new SampleException(err, e);
-		}
-	}
-
-	public void savePointOfContact(PointOfContactBean pocBean, UserBean user)
-			throws PointOfContactException, DuplicateEntriesException,
-			NoAccessException {
-		if (user == null || !user.isCurator()) {
-			throw new NoAccessException();
-		}
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			PointOfContact domainPOC = pocBean.getDomain();
-			Organization domainOrg = domainPOC.getOrganization();
-			// check if POC already exists in the database
-			PointOfContact dbPointOfContact = helper
-					.findPointOfContactByNameAndOrg(domainPOC.getFirstName(),
-							domainPOC.getLastName(), domainPOC
-									.getOrganization().getName(), user);
-			if (dbPointOfContact != null
-					&& !dbPointOfContact.getId().equals(domainPOC.getId())) {
-				throw new DuplicateEntriesException();
-			}
-
-			// check if organization already exists in the database
-			Organization dbOrganization = helper.findOrganizationByName(
-					domainOrg.getName(), user);
-			if (dbOrganization != null) {
-				domainOrg.setId(dbOrganization.getId());
-			}
-			appService.saveOrUpdate(domainPOC);
-
-			// assign visibility
-			helper.getAuthService().assignVisibility(
-					domainPOC.getId().toString(),
-					pocBean.getVisibilityGroups(),
-					domainPOC.getOrganization().getName());
-		} catch (DuplicateEntriesException e) {
-			throw e;
-		} catch (Exception e) {
-			String err = "Error in saving the PointOfContact.";
-			logger.error(err, e);
-			throw new PointOfContactException(err, e);
 		}
 	}
 
@@ -716,9 +691,9 @@ public class SampleServiceLocalImpl implements SampleService {
 	public void updateAssociatedVisibility(UserBean user) throws Exception {
 		List<SampleBean> allSamples = findSamplesBy(null, null, null, null,
 				null, null, null, null, null, null, user);
-		System.out.println("Number of samples: "+allSamples.size());
+		System.out.println("Number of samples: " + allSamples.size());
 		for (SampleBean sampleBean : allSamples) {
-			System.out.println("sample: "+sampleBean.getDomain().getName());
+			System.out.println("sample: " + sampleBean.getDomain().getName());
 			saveSample(sampleBean, user);
 		}
 	}

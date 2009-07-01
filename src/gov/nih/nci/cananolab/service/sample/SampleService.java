@@ -72,10 +72,6 @@ public interface SampleService {
 			String sampleId, UserBean user) throws SampleException,
 			NoAccessException;
 
-	public void savePointOfContact(PointOfContactBean pointOfContactBean,
-			UserBean User) throws PointOfContactException,
-			DuplicateEntriesException, NoAccessException;
-
 	public PointOfContactBean findPointOfContactById(String pocId, UserBean user)
 			throws PointOfContactException, NoAccessException;
 
