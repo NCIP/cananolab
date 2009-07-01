@@ -45,13 +45,15 @@
 									<c:when
 										test="${name eq characterizationForm.map.achar.enzymeInduction.enzyme}">
 										<option value="${name}" selected>
+											${name}
+										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${name}">
+											${name}
+										</option>
 									</c:otherwise>
 								</c:choose>
-						${name}
-					</option>
 							</c:forEach>
 							<option value="other">
 								[Other]

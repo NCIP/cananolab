@@ -58,14 +58,12 @@
 								<c:choose>
 									<c:when
 										test="${type eq characterizationForm.map.achar.solubility.solvent}">
-										<option value="${type}" selected>
+										<option value="${type}" selected>${type}</option>
 									</c:when>
 									<c:otherwise>
-										<option value="${type}">
+										<option value="${type}"/>${type}</option>
 									</c:otherwise>
-								</c:choose>
-						${type}
-					</option>
+								</c:choose>						
 							</c:forEach>
 							<option value="other">
 								[Other]

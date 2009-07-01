@@ -5,8 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <c:choose>
-	<c:when
-		test="${param.summary eq 'true'}">
+	<c:when test="${param.summary eq 'true'}">
 		<c:choose>
 			<c:when test="${! empty charBean.physicalState.type}">
 				<table class="summaryViewLayer4" align="center" width="95%">
@@ -47,13 +46,15 @@
 									<c:when
 										test="${type eq characterizationForm.map.achar.physicalState.type}">
 										<option value="${type}" selected>
+											${type}
+										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${type}">
+											${type}
+										</option>
 									</c:otherwise>
 								</c:choose>
-						${type}
-					</option>
 							</c:forEach>
 							<option value="other">
 								[Other]

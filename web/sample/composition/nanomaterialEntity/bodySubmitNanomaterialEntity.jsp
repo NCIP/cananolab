@@ -79,7 +79,6 @@
 	</c:if>
 	<div id="entityInclude"></div>
 	<table width="100%" align="center" class="submissionView">
-		<tbody>
 			<tr>
 				<th>
 					Composing Elements
@@ -126,41 +125,40 @@
 	<c:set var="fileParent" value="nanomaterialEntity" />
 	<a name="file">
 		<table width="100%" align="center" class="submissionView">
-			<tbody>
-				<tr>
-					<th>
-						Nanomaterial Entity File
-					</th>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						File&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
-								align="top" src="images/btn_add.gif" border="0" /> </a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<c:if
-							test="${! empty compositionForm.map.nanomaterialEntity.files }">
-							<c:set var="files"
-								value="${compositionForm.map.nanomaterialEntity.files}" />
-							<c:set var="edit" value="true" />
-							<%@ include file="../bodyFileView.jsp"%>
-						</c:if>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div style="display: none" id="newFile">
-							<c:set var="fileForm" value="compositionForm" />
-							<c:set var="theFile"
-								value="${compositionForm.map.nanomaterialEntity.theFile}" />
-							<c:set var="actionName" value="nanomaterialEntity" />
-							<%@include file="../../bodySubmitFile.jsp"%>
-						</div>
-					</td>
-				</tr>
+			<tr>
+				<th>
+					Nanomaterial Entity File
+				</th>
+			</tr>
+			<tr>
+				<td class="cellLabel">
+					File&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
+							align="top" src="images/btn_add.gif" border="0" /> </a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<c:if
+						test="${! empty compositionForm.map.nanomaterialEntity.files }">
+						<c:set var="files"
+							value="${compositionForm.map.nanomaterialEntity.files}" />
+						<c:set var="edit" value="true" />
+						<%@ include file="../bodyFileView.jsp"%>
+					</c:if>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div style="display: none" id="newFile">
+						<c:set var="fileForm" value="compositionForm" />
+						<c:set var="theFile"
+							value="${compositionForm.map.nanomaterialEntity.theFile}" />
+						<c:set var="actionName" value="nanomaterialEntity" />
+						<%@include file="../../bodySubmitFile.jsp"%>
+					</div>
+				</td>
+			</tr>
 		</table> </a>
 	<br>
 	<jsp:include page="/sample/bodyAnnotationCopy.jsp" />
