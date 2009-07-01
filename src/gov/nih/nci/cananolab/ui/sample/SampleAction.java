@@ -33,9 +33,6 @@ public class SampleAction extends BaseAnnotationAction {
 	// logger
 	private static Logger logger = Logger.getLogger(SampleAction.class);
 
-	// SampleServiceHelper
-	// SampleServiceHelper helper = new SampleServiceHelper();
-
 	/**
 	 * Save or update POC data.
 	 *
@@ -51,10 +48,11 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		saveSample(request, sampleBean);
+		this.saveSample(request, sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		sampleBean.setLocation(Constants.LOCAL_SITE);
 		request.setAttribute("theSample", sampleBean);
+		
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -65,6 +63,18 @@ public class SampleAction extends BaseAnnotationAction {
 		// persist in the database
 		SampleService service = new SampleServiceLocalImpl();
 		service.saveSample(sampleBean, user);
+		
+		ActionMessages messages = new ActionMessages();
+		ActionMessage msg = null;
+		String updateSample = 
+			(String) request.getSession().getAttribute("updateSample");
+		if (StringUtils.isEmpty(updateSample)) {
+			msg = new ActionMessage("message.createSample");
+		} else {
+			msg = new ActionMessage("message.updateSample");
+		}
+		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, messages);
 	}
 
 	/**
@@ -158,10 +168,10 @@ public class SampleAction extends BaseAnnotationAction {
 		PointOfContactBean thePOC = sample.getThePOC();
 		sample.addPointOfContact(thePOC);
 		// save sample
-		saveSample(request, sample);
+		this.saveSample(request, sample);
 		ActionForward forward = null;
-		String updateSample = (String) request.getSession().getAttribute(
-				"updateSample");
+		String updateSample = 
+			(String) request.getSession().getAttribute("updateSample");
 		if (updateSample == null) {
 			forward = mapping.getInputForward();
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
