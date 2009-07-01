@@ -155,6 +155,9 @@ public class SampleServiceLocalImpl implements SampleService {
 				poc.setId(dbPointOfContact.getId());
 				poc.setCreatedBy(dbPointOfContact.getCreatedBy());
 				poc.setCreatedDate(dbPointOfContact.getCreatedDate());
+			} else {
+				poc.setCreatedBy(user.getLoginName());
+				poc.setCreatedDate(new Date());
 			}
 		}
 		// check if organization already exists in the database
@@ -164,9 +167,6 @@ public class SampleServiceLocalImpl implements SampleService {
 			org.setId(dbOrganization.getId());
 			org.setCreatedBy(dbOrganization.getCreatedBy());
 			org.setCreatedDate(dbOrganization.getCreatedDate());
-		} else {
-			org.setCreatedBy(user.getLoginName());
-			org.setCreatedDate(new Date());
 		}
 	}
 
