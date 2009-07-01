@@ -130,6 +130,9 @@ public class SampleBean {
 			primaryPOCBean.setupDomain(createdBy);
 			domain.setPrimaryPointOfContact(primaryPOCBean.getDomain());
 		}
+		else {
+			domain.setPrimaryPointOfContact(null);
+		}
 		if (domain.getOtherPointOfContactCollection() != null) {
 			domain.getOtherPointOfContactCollection().clear();
 		} else {
@@ -262,7 +265,10 @@ public class SampleBean {
 	}
 
 	public void removePointOfContact(PointOfContactBean poc) {
-		otherPOCBeans.remove(poc);
+		//ignore if it's primary POC, can't delete primary POC
+		if (!poc.getPrimaryStatus()) {
+			otherPOCBeans.remove(poc);
+		}
 	}
 
 }
