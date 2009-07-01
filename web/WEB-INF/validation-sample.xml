@@ -10,7 +10,7 @@
 				<arg position="0" key="sampleForm.sampleName"
 					bundle="particle" />
 			</field>
-			<field property="sampleBean.thePOC.domain.organization.name" page="1"
+			<field property="sampleBean.thePOC.domain.organization.name" page="2"
 				depends="required">
 				<arg position="0"
 					key="submitPointOfContactForm.organizationName"
