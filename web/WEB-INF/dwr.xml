@@ -69,8 +69,6 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRSampleManager" />
-			<include method="removeOrgVisibility" />
-			<include method="removeOrgNameVisibility" />
 			<include method="getNanomaterialEntityTypes" />
 			<include method="getFunctionalizingEntityTypes" />
 			<include method="getFunctionTypes" />
@@ -78,8 +76,10 @@
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRPointOfContactManager" />
-			<include method="removeOrgVisibility" />
-			<include method="removeOrgNameVisibility" />
+			<include method="removeOrgFromVisibilityGroupsByPocId" />
+			<include method="removeOrgFromVisibilityGroupsByOrgName" />
+			<include method="resetVisibilityGroups"/>
+			<include method="resetSampleVisibilityGroups"/>
 			<include method="getPointOfContactById" />
 			<include method="resetThePointOfContact" />
 			<include method="getOrganizationByName"/>
