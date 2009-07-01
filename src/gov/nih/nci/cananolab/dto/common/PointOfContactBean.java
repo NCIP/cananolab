@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * PointOfContact view bean
  *
- * @author tanq, cais
+ * @author tanq, cais, pansu
  *
  */
 
@@ -22,7 +22,6 @@ public class PointOfContactBean {
 	private PointOfContact domain = new PointOfContact();
 	private String displayName = "";
 	private String[] visibilityGroups = new String[0];
-	private String pocId;
 	private Boolean primaryStatus = true;
 
 	public PointOfContactBean() {
@@ -49,21 +48,6 @@ public class PointOfContactBean {
 	}
 
 	/**
-	 * @return the pocId
-	 */
-	public String getPocId() {
-		return pocId;
-	}
-
-	/**
-	 * @param pocId
-	 *            the pocId to set
-	 */
-	public void setPocId(String pocId) {
-		this.pocId = pocId;
-	}
-
-	/**
 	 * @return the visibilityGroups
 	 */
 	public String[] getVisibilityGroups() {
@@ -82,9 +66,12 @@ public class PointOfContactBean {
 	 * @return the displayName
 	 */
 	public String getDisplayName() {
+		if (domain == null) {
+			return "";
+		}
 		String orgName = "";
-		if (domain.getOrganization()!=null) {
-			orgName=domain.getOrganization().getName();
+		if (domain.getOrganization() != null) {
+			orgName = domain.getOrganization().getName();
 		}
 		List<String> nameStrs = new ArrayList<String>();
 		nameStrs.add(domain.getFirstName());
@@ -108,6 +95,9 @@ public class PointOfContactBean {
 	}
 
 	public void setupDomain(String createdBy) {
+		if (domain.getId() == 0) {
+			domain.setId(null);
+		}
 		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());
@@ -139,6 +129,9 @@ public class PointOfContactBean {
 	}
 
 	public String getPersonDisplayName() {
+		if (domain == null) {
+			return "";
+		}
 		List<String> nameStrs = new ArrayList<String>();
 		nameStrs.add(domain.getFirstName());
 		nameStrs.add(domain.getMiddleInitial());
@@ -152,6 +145,9 @@ public class PointOfContactBean {
 	}
 
 	public String getOrganizationDisplayName() {
+		if (domain == null) {
+			return "";
+		}
 		List<String> orgStrs = new ArrayList<String>();
 		if (domain.getOrganization() != null) {
 			orgStrs.add(domain.getOrganization().getName());
