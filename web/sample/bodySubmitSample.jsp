@@ -54,10 +54,10 @@
 			<td class="cellLabel">
 				Point of Contact *
 			</td>
-			<td
-				<a style="" id="addPointOfContact" href="#"
-					onclick="javascript:clearPointOfContact();show('newPointOfContact');"><img
-						align="top" src="images/btn_add.gif" border="0" /></a></td>
+			<td>
+				<a href="#" onclick="javascript:clearPointOfContact();show('newPointOfContact');" id="addPointOfContact">
+					<img align="top" src="images/btn_add.gif" border="0" /></a>
+			</td>
 		</tr>
 		<c:if
 			test="${!empty sampleForm.map.sampleBean.primaryPOCBean.domain.id || ! empty sampleForm.map.sampleBean.otherPOCBeans }">
@@ -71,13 +71,11 @@
 		<tr>
 			<td colspan="2">
 				<c:set var="newPOCStyle" value="display:none" />
-				<%--
-							<c:if
-								test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
-								<c:set var="newPOCStyle" value="display:block" />
-							</c:if>
-							--%>
-				<div style="display: none" id="newPointOfContact">
+				<c:if
+					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
+					<c:set var="newPOCStyle" value="display:block" />
+				</c:if>
+				<div style="${newPOCStyle}" id="newPointOfContact">
 					<a name="submitPointOfContact"><%@ include
 							file="bodySubmitPointOfContact.jsp"%></a>
 				</div>
