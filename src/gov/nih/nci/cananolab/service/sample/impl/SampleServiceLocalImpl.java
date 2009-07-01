@@ -105,7 +105,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in saving the sample.";
+			String err = "Error in saving the sample";
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
