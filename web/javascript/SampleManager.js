@@ -23,40 +23,6 @@ function populateParticleNames(sampleNames) {
 	dwr.util.addOptions("sampleName", updatedParticleNames);
 }
 
-function removeOrgVisibility(selectId) {
-	var pocField = document.getElementById(selectId);	
-	if (pocField==null){
-		return false;
-	}
-	var poc = pocField.value;
-	if(poc.charAt(0) == "[" &&
-			poc.charAt(otext.length - 1) == "]") 
-			return false;
-			
-	SampleManager.removeOrgVisibility(poc, function (data) {
-		dwr.util.removeAllOptions("visibilityGroup");
-		dwr.util.addOptions("visibilityGroup", data);
-	});
-	return false;
-}
-
-function removeOrgVisibilityByName(selectId, visibilityGroupName) {
-	var pocField = document.getElementById(selectId);	
-	if (pocField==null){
-		return false;
-	}
-	var poc = pocField.value;
-	if(poc.charAt(0) == "[" &&
-			poc.charAt(otext.length - 1) == "]") 
-			return false;
-	
-	SampleManager.removeOrgNameVisibility(poc, function (data) {
-		dwr.util.removeAllOptions(visibilityGroupName);
-		dwr.util.addOptions(visibilityGroupName, data);
-	});
-	return false;
-}
-
 function setSampleDropdowns() {
 	var searchLocations = getSelectedOptions(document.getElementById("searchLocations"));
 	SampleManager.getNanomaterialEntityTypes(searchLocations, function (data) {
@@ -67,7 +33,7 @@ function setSampleDropdowns() {
 			dwr.util.removeAllOptions("functionalizingEntityTypes");
 			dwr.util.addOptions("functionalizingEntityTypes", data);
 		});
-		
+
 	SampleManager.getFunctionTypes(searchLocations, function (data) {
 			dwr.util.removeAllOptions("functionTypes");
 			dwr.util.addOptions("functionTypes", data);

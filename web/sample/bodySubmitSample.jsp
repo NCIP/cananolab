@@ -3,10 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
-<script type='text/javascript' src='javascript/POCManager.js'></script>
 <script type='text/javascript' src='javascript/SampleManager.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/interface/POCManager.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/interface/SampleManager.js'></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/SampleManager.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
@@ -58,8 +57,7 @@
 			<td
 				<a style="" id="addPointOfContact" href="#"
 					onclick="javascript:clearPointOfContact();show('newPointOfContact');"><img
-						align="top" src="images/btn_add.gif" border="0" /></a>
-			</td>
+						align="top" src="images/btn_add.gif" border="0" /></a></td>
 		</tr>
 		<c:if
 			test="${!empty sampleForm.map.sampleBean.primaryPOCBean.domain.id || ! empty sampleForm.map.sampleBean.otherPOCBeans }">
@@ -100,12 +98,13 @@
 			</td>
 			<td>
 				<html:select property="sampleBean.visibilityGroups"
-					styleId="visibilityGroup" multiple="true" size="6">
+					styleId="sampleVisibilityGroups" multiple="true" size="6">
 					<html:options name="allVisibilityGroupsNoOrg" />
 				</html:select>
 				<br>
-				<i>(${applicationOwner}_Researcher and
-					${applicationOwner}_DataCurator are always selected by default.)</i>
+				<i>(${applicationOwner}_Researcher,
+					${applicationOwner}_DataCurator, and the organization name for the
+					primary point of contact are always selected by default.)</i>
 			</td>
 		</tr>
 	</table>

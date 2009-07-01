@@ -2,11 +2,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<script type="text/javascript" src="javascript/script.js"></script>
 <script type='text/javascript' src='javascript/POCManager.js'></script>
 <script type='text/javascript' src='javascript/SampleManager.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/interface/POCManager.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/interface/SampleManager.js'></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/POCManager.js'></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/SampleManager.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
@@ -30,7 +31,7 @@
 							<html:select
 								property="sampleBean.thePOC.domain.organization.name"
 								styleId="domain.organization.name"
-								onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo()">
+								onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();removeOrgFromVisibilityGroups('domain.organization.name'); removeOrgFromSampleVisibilityGroups('domain.organization.name');">
 								<option value="" />
 									<html:options name="allOrganizationNames" />
 								<option value="other">
@@ -200,8 +201,9 @@
 							<html:options name="allVisibilityGroups" />
 						</html:select>
 						<br>
-						<i>(${applicationOwner}_Researcher and
-							${applicationOwner}_DataCurator are always selected by default.)</i>
+						<i>(${applicationOwner}_Researcher,
+							${applicationOwner}_DataCurator, and the organization name are
+							always selected by default.)</i>
 					</td>
 				</tr>
 			</table>
@@ -224,6 +226,10 @@
 								onclick="addPointOfContact('sample')" />
 							<input type="button" value="Cancel"
 								onclick="clearPointOfContact();hide('newPointOfContact');" />
+							<html:hidden styleId="domain.id"
+								property="sampleBean.thePOC.domain.id" />
+							<html:hidden styleId="primaryStatus"
+								property="sampleBean.thePOC.primaryStatus" />
 						</div>
 					</td>
 				</tr>
