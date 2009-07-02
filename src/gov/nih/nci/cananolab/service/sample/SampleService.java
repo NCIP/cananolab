@@ -80,4 +80,8 @@ public interface SampleService {
 
 	public SortedSet<String> getAllOrganizationNames(UserBean user)
 			throws PointOfContactException;
+
+	public void savePointOfContact(PointOfContactBean pointOfContactBean,
+			UserBean User) throws PointOfContactException, NoAccessException;
+
 }
