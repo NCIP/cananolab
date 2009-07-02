@@ -46,7 +46,7 @@ input.promptbox {
 #newInstrument {
 	position: absolute;
 	left: -10px;
-	top: 15px;
+	top: 5px;
 	width: 350px;
 	z-index:5;
 }
@@ -54,14 +54,14 @@ input.promptbox {
 #newInherentFunction {
 	position: absolute;
 	left: -10px;
-	top: 15px;
+	top: 5px;
 	width: 450px;
 	z-index:5;
 }
 #newTarget {
 	position: absolute;
 	left: -10px;
-	top: 15px;
+	top: 5px;
 	width: 450px;
 	z-index:5;
 }
