@@ -302,8 +302,8 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void saveFinding(SampleBean sampleBean, FindingBean finding,
-			UserBean user) throws CharacterizationException, NoAccessException {
+	public void saveFinding(FindingBean finding, UserBean user)
+			throws CharacterizationException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
@@ -317,8 +317,7 @@ public class CharacterizationServiceLocalImpl implements
 				fileService.writeFile(fileBean, user);
 			}
 			appService.saveOrUpdate(finding);
-			// TODO assign visibility
-
+			//visibility assignment is handled by saving characterization
 		} catch (Exception e) {
 			String err = "Error saving characterization result finding. ";
 			logger.error(err, e);
@@ -341,9 +340,8 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void saveExperimentConfig(SampleBean sampleBean,
-			ExperimentConfigBean configBean, UserBean user)
-			throws ExperimentConfigException, NoAccessException {
+	public void saveExperimentConfig(ExperimentConfigBean configBean,
+			UserBean user) throws ExperimentConfigException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
@@ -393,8 +391,7 @@ public class CharacterizationServiceLocalImpl implements
 				}
 			}
 			appService.saveOrUpdate(config);
-
-			// TODO assign visibility
+			//visibility assignment is handled by saving characterization
 
 		} catch (Exception e) {
 			String err = "Error in saving the technique and associated instruments.";

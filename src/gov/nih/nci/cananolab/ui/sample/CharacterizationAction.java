@@ -570,7 +570,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
 		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveExperimentConfig(null, configBean, user);
+		service.saveExperimentConfig(configBean, user);
 		achar.addExperimentConfig(configBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
@@ -623,7 +623,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		findingBean.setupDomain(user.getLoginName());
 		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveFinding(null, findingBean, user);
+		service.saveFinding(findingBean, user);
 		achar.addFinding(findingBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);

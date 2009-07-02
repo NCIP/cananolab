@@ -336,7 +336,7 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void saveFinding(SampleBean sampleBean, FindingBean finding, UserBean user)
+	public void saveFinding(FindingBean finding, UserBean user)
 			throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
@@ -346,8 +346,8 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void saveExperimentConfig(SampleBean sampleBean,
-			ExperimentConfigBean configBean, UserBean user) throws ExperimentConfigException, NoAccessException {
+	public void saveExperimentConfig(ExperimentConfigBean configBean,
+			UserBean user) throws ExperimentConfigException, NoAccessException {
 		throw new ExperimentConfigException("Not implemented for grid service");
 	}
 
@@ -357,8 +357,9 @@ public class CharacterizationServiceRemoteImpl implements
 	}
 
 	public void copyAndSaveCharacterization(CharacterizationBean charBean,
-			SampleBean oldSampleBean, SampleBean[] newSampleBeans, boolean copyData,
-			UserBean user) throws CharacterizationException, NoAccessException {
+			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
+			boolean copyData, UserBean user) throws CharacterizationException,
+			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 }

@@ -31,10 +31,11 @@ public interface CharacterizationService {
 	public void deleteCharacterization(Characterization chara, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
-	public List<CharacterizationBean> findCharacterizationsBySampleId(String sampleId,
-			UserBean user) throws CharacterizationException, NoAccessException;
+	public List<CharacterizationBean> findCharacterizationsBySampleId(
+			String sampleId, UserBean user) throws CharacterizationException,
+			NoAccessException;
 
-	public void saveFinding(SampleBean sampleBean, FindingBean findingBean, UserBean user)
+	public void saveFinding(FindingBean findingBean, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
 	public FindingBean findFindingById(String findingId, UserBean user)
@@ -43,8 +44,8 @@ public interface CharacterizationService {
 	public void deleteFinding(Finding finding, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
-	public void saveExperimentConfig(SampleBean sampleBean,
-			ExperimentConfigBean experimentConfigBean, UserBean user) throws ExperimentConfigException, NoAccessException;
+	public void saveExperimentConfig(ExperimentConfigBean experimentConfigBean,
+			UserBean user) throws ExperimentConfigException, NoAccessException;
 
 	public void deleteExperimentConfig(ExperimentConfig experimentConfig,
 			UserBean user) throws ExperimentConfigException, NoAccessException;
@@ -61,6 +62,7 @@ public interface CharacterizationService {
 	 * @throws NoAccessException
 	 */
 	public void copyAndSaveCharacterization(CharacterizationBean charBean,
-			SampleBean oldSampleBean, SampleBean[] newSampleBeans, boolean copyData,
-			UserBean user) throws CharacterizationException, NoAccessException;
+			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
+			boolean copyData, UserBean user) throws CharacterizationException,
+			NoAccessException;
 }
