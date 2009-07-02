@@ -25,7 +25,6 @@ import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
