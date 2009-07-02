@@ -1,13 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
-import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -19,7 +14,6 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 public class DWRSampleManager {
 
 	private Logger logger = Logger.getLogger(DWRSampleManager.class);
-	private SampleService service = new SampleServiceLocalImpl();
 
 	public DWRSampleManager() {
 	}
