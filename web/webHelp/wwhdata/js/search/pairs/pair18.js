@@ -1,0 +1,27 @@
+function FileData_Pairs(x)
+{
+x.t("searching","existing");
+x.t("managing","samples");
+x.t("describes","manage");
+x.t("remote","sample");
+x.t("sample","searching");
+x.t("sample","search");
+x.t("includes","following");
+x.t("overview","submitting");
+x.t("cananolab","samples");
+x.t("function","section");
+x.t("samples","managing");
+x.t("samples","overview");
+x.t("samples","cananolab");
+x.t("samples","function");
+x.t("samples","section");
+x.t("samples","performing");
+x.t("section","describes");
+x.t("section","includes");
+x.t("submitting","sample");
+x.t("performing","remote");
+x.t("existing","samples");
+x.t("topics","samples");
+x.t("manage","samples");
+x.t("following","topics");
+}
