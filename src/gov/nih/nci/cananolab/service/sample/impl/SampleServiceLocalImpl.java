@@ -42,9 +42,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving samples
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -54,10 +54,10 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
+	 * 
 	 * @param sample
-	 * @throws SampleException,
-	 *             DuplicateEntriesException
+	 * @throws SampleException
+	 *             , DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean, UserBean user)
 			throws SampleException, DuplicateEntriesException,
@@ -107,11 +107,8 @@ public class SampleServiceLocalImpl implements SampleService {
 		// requires fully loaded sample if it's an existing sample)
 		try {
 			if (!newSample) {
-				String[] visibilityGroups = sampleBean.getVisibilityGroups();
-				SampleBean fullyLoadedSampleBean = findFullSampleById(
+				assignFullVisibility(sampleBean.getVisibilityGroups(),
 						sampleBean.getDomain().getId().toString(), user);
-				fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
-				assignVisibility(fullyLoadedSampleBean);
 			} else {
 				assignVisibility(sampleBean);
 			}
@@ -119,6 +116,14 @@ public class SampleServiceLocalImpl implements SampleService {
 			throw new SampleException(
 					"Error assigning visibility for the sample", e);
 		}
+	}
+
+	private void assignFullVisibility(String[] visibilityGroups,
+			String sampleName, UserBean user) throws Exception {
+		SampleBean fullyLoadedSampleBean = findFullSampleByName(sampleName,
+				user);
+		fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
+		assignVisibility(fullyLoadedSampleBean);
 	}
 
 	public void savePointOfContact(PointOfContactBean pocBean, UserBean user)
@@ -205,7 +210,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanoparticleTypes
@@ -313,14 +318,14 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public SampleBean findFullSampleById(String sampleId, UserBean user)
+	private SampleBean findFullSampleByName(String sampleName, UserBean user)
 			throws SampleException, NoAccessException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-					.add(Property.forName("id").eq(new Long(sampleId)));
+					.add(Property.forName("name").eq(sampleName));
 			// characterization
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection.findingCollection",
@@ -352,8 +357,6 @@ public class SampleServiceLocalImpl implements SampleService {
 					.setFetchMode(
 							"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
 							FetchMode.JOIN);
-			crit.setFetchMode("sampleComposition.fileCollection",
-					FetchMode.JOIN);
 			crit.setFetchMode(
 					"sampleComposition.chemicalAssociationCollection",
 					FetchMode.JOIN);
@@ -384,9 +387,6 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 			crit.setFetchMode("otherPointOfContactCollection.organization",
 					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
 			List result = appService.query(crit);
 			Sample sample = null;
 			SampleBean sampleBean = null;
@@ -406,7 +406,8 @@ public class SampleServiceLocalImpl implements SampleService {
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the full sample by id: " + sampleId;
+			String err = "Problem finding the full sample by name: "
+					+ sampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -674,12 +675,17 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	public void updateAssociatedVisibility(UserBean user) throws Exception {
-		List<SampleBean> allSamples = findSamplesBy(null, null, null, null,
-				null, null, null, null, null, null, user);
-		System.out.println("Number of samples: " + allSamples.size());
-		for (SampleBean sampleBean : allSamples) {
-			System.out.println("sample: " + sampleBean.getDomain().getName());
-			saveSample(sampleBean, user);
+		// load name only instead of whole sample to save memory
+		SortedSet<String> sampleNames = findAllSampleNames(user);
+		for (String sampleName : sampleNames) {
+			List<String> visibleGroups = helper.getAuthService()
+					.getAccessibleGroups(sampleName,
+							Constants.CSM_READ_PRIVILEGE);
+			System.out.println(sampleName);
+			// if (sampleName.equals("UM-IMajorosBM2006-06")) {
+			assignFullVisibility(visibleGroups.toArray(new String[0]),
+					sampleName, user);
+			// }
 		}
 	}
 
@@ -694,6 +700,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			System.exit(0);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 }

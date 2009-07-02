@@ -48,7 +48,7 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving characterizations
- *
+ * 
  * @author tanq, pansu
  */
 public class CharacterizationServiceHelper {
@@ -233,7 +233,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Export sample characterization summary report as Excel spread sheet.
-	 *
+	 * 
 	 * @param summaryBean
 	 * @param out
 	 * @throws IOException
@@ -253,7 +253,7 @@ public class CharacterizationServiceHelper {
 	/**
 	 * Output Sample Characterization Summary report (==>
 	 * bodyCharacterizationSummaryPrintViewTable.jsp)
-	 *
+	 * 
 	 * @param summaryBean
 	 * @param wb
 	 * @throws IOException
@@ -328,7 +328,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output header for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -353,7 +353,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output AssayType for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -383,7 +383,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output POC for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -403,7 +403,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Characterization Date for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -422,7 +422,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Protocol for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -442,7 +442,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Properties for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -486,7 +486,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Cytotoxicity Info, => bodyCytotoxicityInfo.jsp
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -507,7 +507,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output EnzymeInduction Info, => bodyEnzymeInductionInfo.jsp
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -528,7 +528,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output PhysicalState Info for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -549,7 +549,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Shape Info for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -585,7 +585,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Solubility Info for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -617,7 +617,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Surface Info for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -638,7 +638,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Design Description for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -661,7 +661,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Technique and Instruments for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -707,7 +707,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Characterization Results for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -741,7 +741,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Files Results for report (=> bodyFindingView.jsp).
-	 *
+	 * 
 	 * @param findingBean
 	 * @param request
 	 * @param wb
@@ -800,7 +800,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Datums in Characterization Results for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -840,7 +840,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Analysis and Conclusion for work sheet.
-	 *
+	 * 
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -929,22 +929,21 @@ public class CharacterizationServiceHelper {
 	public void removeVisibility(Characterization aChar) throws Exception {
 		// characterization
 		if (aChar != null) {
-			authService.removeExistingVisibleGroups(aChar.getId().toString(),
-					Constants.CSM_READ_ROLE);
+			authService.removeExistingVisibleGroups(aChar.getId().toString());
 			for (Finding finding : aChar.getFindingCollection()) {
 				if (finding != null) {
 					authService.removeExistingVisibleGroups(finding.getId()
-							.toString(), Constants.CSM_READ_ROLE);
+							.toString());
 				}
 				// datum
 				for (Datum datum : finding.getDatumCollection()) {
 					if (datum != null) {
 						authService.removeExistingVisibleGroups(datum.getId()
-								.toString(), Constants.CSM_READ_ROLE);
+								.toString());
 					}
 					for (Condition condition : datum.getConditionCollection()) {
 						authService.removeExistingVisibleGroups(condition
-								.getId().toString(), Constants.CSM_READ_ROLE);
+								.getId().toString());
 					}
 				}
 			}
@@ -953,24 +952,23 @@ public class CharacterizationServiceHelper {
 			for (ExperimentConfig config : aChar
 					.getExperimentConfigCollection()) {
 				authService.removeExistingVisibleGroups(config.getId()
-						.toString(), Constants.CSM_READ_ROLE);
+						.toString());
 			}
 		}
 	}
 
 	public void removeVisibility(Finding finding) throws Exception {
-		authService.removeExistingVisibleGroups(finding.getId().toString(),
-				Constants.CSM_READ_ROLE);
+		authService.removeExistingVisibleGroups(finding.getId().toString());
 
 		// datum
 		for (Datum datum : finding.getDatumCollection()) {
 			if (datum != null) {
 				authService.removeExistingVisibleGroups(datum.getId()
-						.toString(), Constants.CSM_READ_ROLE);
+						.toString());
 			}
 			for (Condition condition : datum.getConditionCollection()) {
 				authService.removeExistingVisibleGroups(condition.getId()
-						.toString(), Constants.CSM_READ_ROLE);
+						.toString());
 			}
 		}
 	}

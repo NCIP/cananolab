@@ -36,9 +36,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of CompositionService.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
@@ -299,6 +299,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				sample.getSampleComposition().setSample(sampleBean.getDomain());
 				sample.getSampleComposition().setFileCollection(
 						new HashSet<File>());
+			}
+			// need to load the composition file collection to save composition
+			// because of
+			// unidirectional relationship between composition and file
+			else {
+				List<File> fileList = helper.findFilesByCompositionInfoId(
+						sample.getSampleComposition().getId().toString(),
+						"SampleComposition", user);
+				sample.getSampleComposition().setFileCollection(
+						new HashSet<File>(fileList));
 			}
 			sample.getSampleComposition().getFileCollection().add(file);
 			if (file.getId() == null) { // because of unidirectional

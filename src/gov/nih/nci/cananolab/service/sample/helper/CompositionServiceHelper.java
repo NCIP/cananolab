@@ -59,9 +59,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving composition.
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class CompositionServiceHelper {
 
@@ -138,7 +138,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Get PubChem URL in format of
 	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 *
+	 * 
 	 * @param pubChemDS
 	 * @param pubChemId
 	 * @return PubChem URL
@@ -191,7 +191,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Export sample composition summary report as Excel spread sheet.
-	 *
+	 * 
 	 * @param compBean
 	 * @param out
 	 * @throws CompositionException
@@ -210,7 +210,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Output sample Composition Summary report =>
 	 * bodyCompositionSummaryView.jsp
-	 *
+	 * 
 	 * @param compBean
 	 * @param wb
 	 */
@@ -243,7 +243,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output NanomaterialEntities data => bodyNanomaterialEntitySummaryView.jsp
-	 *
+	 * 
 	 * @param compBean
 	 * @param wb
 	 * @param headerStyle
@@ -417,7 +417,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Output FunctionalEntities data =>
 	 * bodyFunctionalizingEntitySummaryView.jsp
-	 *
+	 * 
 	 * @param compBean
 	 * @param sheet
 	 * @param headerStyle
@@ -612,7 +612,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Outputting ChemicalEntities data =>
 	 * bodyChemicalAssociationSummaryView.jsp
-	 *
+	 * 
 	 * @param compBean
 	 * @param sheet
 	 * @param headerStyle
@@ -736,7 +736,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Composition Files data => bodyCompositionFileSummaryView.jsp
-	 *
+	 * 
 	 * @param compBean
 	 * @param sheet
 	 * @param headerStyle
@@ -775,7 +775,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output header for work sheet.
-	 *
+	 * 
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
@@ -799,7 +799,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Biopolymer Info for NanomaterialEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -826,7 +826,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output CarbonNanotube Info for NanomaterialEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -866,7 +866,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Dendrimer Info for NanomaterialEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -892,7 +892,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Emulsion Info for NanomaterialEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -918,7 +918,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Fullerene Info for NanomaterialEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -946,7 +946,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Liposome Info for NanomaterialEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -972,7 +972,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Polymer Info for NanomaterialEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1001,7 +1001,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Antibody Info for FunctionalizingEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1028,7 +1028,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output SmallMolecule Info for FunctionalizingEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1048,7 +1048,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Biopolymer Info for FunctionalizingEntityBean.
-	 *
+	 * 
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1074,7 +1074,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Outputting Files info: => bodyFileView.jsp
-	 *
+	 * 
 	 * @param fileBeans
 	 * @param sheet
 	 * @param headerStyle
@@ -1151,7 +1151,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Composition File info => bodyCompositionFileSummaryView.jsp
-	 *
+	 * 
 	 * @param fileBeans
 	 * @param sheet
 	 * @param headerStyle
@@ -1340,18 +1340,16 @@ public class CompositionServiceHelper {
 			throws Exception {
 		if (chemicalAssociation != null) {
 			authService.removeExistingVisibleGroups(chemicalAssociation.getId()
-					.toString(), Constants.CSM_READ_ROLE);
+					.toString());
 			// chemicalAssociation.associatedElementA
 			if (chemicalAssociation.getAssociatedElementA() != null) {
 				authService.removeExistingVisibleGroups(chemicalAssociation
-						.getAssociatedElementA().getId().toString(),
-						Constants.CSM_READ_ROLE);
+						.getAssociatedElementA().getId().toString());
 			}
 			// chemicalAssociation.associatedElementB
 			if (chemicalAssociation.getAssociatedElementB() != null) {
 				authService.removeExistingVisibleGroups(chemicalAssociation
-						.getAssociatedElementB().getId().toString(),
-						Constants.CSM_READ_ROLE);
+						.getAssociatedElementB().getId().toString());
 			}
 		}
 	}
@@ -1360,7 +1358,7 @@ public class CompositionServiceHelper {
 			throws Exception {
 		if (functionalizingEntity != null) {
 			authService.removeExistingVisibleGroups(functionalizingEntity
-					.getId().toString(), Constants.CSM_READ_ROLE);
+					.getId().toString());
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
 					.getFunctionCollection();
@@ -1368,13 +1366,12 @@ public class CompositionServiceHelper {
 				for (Function function : functionCollection) {
 					if (function != null) {
 						authService.removeExistingVisibleGroups(function
-								.getId().toString(), Constants.CSM_READ_ROLE);
+								.getId().toString());
 						if (function instanceof TargetingFunction) {
 							for (Target target : ((TargetingFunction) function)
 									.getTargetCollection()) {
 								authService.removeExistingVisibleGroups(target
-										.getId().toString(),
-										Constants.CSM_READ_ROLE);
+										.getId().toString());
 							}
 						}
 					}
@@ -1385,8 +1382,7 @@ public class CompositionServiceHelper {
 
 	public void removeVisibility(NanomaterialEntity entity) throws Exception {
 		if (entity != null) {
-			authService.removeExistingVisibleGroups(entity.getId().toString(),
-					Constants.CSM_READ_ROLE);
+			authService.removeExistingVisibleGroups(entity.getId().toString());
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = entity
 					.getComposingElementCollection();
@@ -1394,8 +1390,7 @@ public class CompositionServiceHelper {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
 						authService.removeExistingVisibleGroups(
-								composingElement.getId().toString(),
-								Constants.CSM_READ_ROLE);
+								composingElement.getId().toString());
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -1404,8 +1399,7 @@ public class CompositionServiceHelper {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
 								authService.removeExistingVisibleGroups(
-										function.getId().toString(),
-										Constants.CSM_READ_ROLE);
+										function.getId().toString());
 							}
 						}
 					}

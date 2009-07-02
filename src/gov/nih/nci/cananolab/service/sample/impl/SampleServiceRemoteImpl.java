@@ -368,11 +368,6 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
-	public SampleBean findFullSampleById(String sampleId, UserBean user)
-			throws SampleException {
-		throw new SampleException("Not implemented for grid service");
-	}
-
 	public SampleBean findSampleByName(String sampleName, UserBean user)
 			throws SampleException {
 		try {
