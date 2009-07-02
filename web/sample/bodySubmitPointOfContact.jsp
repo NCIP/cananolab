@@ -213,7 +213,7 @@
 					<td>
 						<c:if test="${!empty user && user.curator && user.admin}">
 							<input type="button" value="Remove"
-								onclick="removePointOfContact('sample');clearPointOfContact()"
+								onclick="removePointOfContact('sample');clearPointOfContact();"
 								id="deletePointOfContact" style="display: none;" />
 						</c:if>
 					</td>
@@ -222,7 +222,7 @@
 							<input type="button" value="Add"
 								onclick="addPointOfContact('sample')" />
 							<input type="button" value="Cancel"
-								onclick="clearPointOfContact();hide('newPointOfContact');" />
+								onclick="clearPointOfContact();closePointOfContactForm();" />
 							<html:hidden styleId="domain.id"
 								property="sampleBean.thePOC.domain.id" />
 							<html:hidden styleId="primaryStatus"

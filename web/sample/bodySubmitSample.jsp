@@ -52,8 +52,15 @@
 				Point of Contact *
 			</td>
 			<td>
-				<a href="#" onclick="javascript:clearPointOfContact();show('newPointOfContact');" id="addPointOfContact">
-					<img align="top" src="images/btn_add.gif" border="0" /></a>
+				<c:set var="newAddPOCButtonStyle" value="display:block" />
+				<c:if
+					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
+					<c:set var="newAddPOCButtonStyle" value="display:none" />
+				</c:if>
+				<a href="#"
+					onclick="javascript:clearPointOfContact();openPointOfContactForm();"
+					id="addPointOfContact" style="${newAddPOCButtonStyle}"> <img align="top"
+						src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
 		<c:if
