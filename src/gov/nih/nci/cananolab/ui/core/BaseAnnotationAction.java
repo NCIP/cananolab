@@ -32,9 +32,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for all annotation actions
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
@@ -44,7 +44,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
 	 * of sample based on user's privilege. Finally, set the SampleBean in
 	 * request object.
-	 *
+	 * 
 	 * @param theForm
 	 * @param request
 	 * @param location
@@ -53,8 +53,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 *             if user is not allowed to access the sample
 	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
-			HttpServletRequest request, String location, Boolean fullSample)
-			throws Exception {
+			HttpServletRequest request, String location) throws Exception {
 		String sampleId = request.getParameter("sampleId");
 		if (sampleId != null) {
 			theForm.set("sampleId", sampleId);
@@ -77,12 +76,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		// TODO remove this
 		// service = new SampleServiceRemoteImpl(
 		// "http://localhost:8080/wsrf/services/cagrid/CaNanoLabService");
-		SampleBean sampleBean = null;
-		if (fullSample) {
-			sampleBean = service.findFullSampleById(sampleId, user);
-		} else {
-			sampleBean = service.findSampleById(sampleId, user);
-		}
+		SampleBean sampleBean = service.findSampleById(sampleId, user);
 		if (sampleBean != null) {
 			sampleBean.setLocation(location);
 		}
@@ -115,7 +109,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -276,7 +270,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	/**
 	 * Retrieve a value from request by name in the order of Parameter - Request
 	 * Attribute
-	 *
+	 * 
 	 * @param request
 	 * @param name
 	 * @return
