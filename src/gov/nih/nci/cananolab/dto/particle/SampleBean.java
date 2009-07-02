@@ -75,7 +75,7 @@ public class SampleBean {
 			}
 			Collections.sort(otherPOCBeans,
 					new Comparators.PointOfContactBeanNameOrgComparator());
-			thePOC=primaryPOCBean;
+			thePOC = primaryPOCBean;
 		}
 		if (sample.getSampleComposition() != null
 				&& sample.getSampleComposition().getId() != null) {
@@ -128,10 +128,8 @@ public class SampleBean {
 			}
 		}
 		if (primaryPOCBean != null) {
-			primaryPOCBean.setupDomain(createdBy);
 			domain.setPrimaryPointOfContact(primaryPOCBean.getDomain());
-		}
-		else {
+		} else {
 			domain.setPrimaryPointOfContact(null);
 		}
 		if (domain.getOtherPointOfContactCollection() != null) {
@@ -141,7 +139,6 @@ public class SampleBean {
 					.setOtherPointOfContactCollection(new HashSet<PointOfContact>());
 		}
 		for (PointOfContactBean pocBean : otherPOCBeans) {
-			pocBean.setupDomain(createdBy);
 			domain.getOtherPointOfContactCollection().add(pocBean.getDomain());
 		}
 	}
@@ -266,10 +263,9 @@ public class SampleBean {
 	}
 
 	public void removePointOfContact(PointOfContactBean poc) {
-		//ignore if it's primary POC, can't delete primary POC
+		// ignore if it's primary POC, can't delete primary POC
 		if (!poc.getPrimaryStatus()) {
 			otherPOCBeans.remove(poc);
 		}
 	}
-
 }
