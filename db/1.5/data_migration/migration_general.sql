@@ -6,6 +6,22 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 -- migration to csm 4.1
 source csm/migration_to_csm_4.1.sql
 
+-- remove adminstrator group, not needed anymore
+delete from csm_user_group 
+where group_id in
+(select group_id 
+from csm_group g
+where g.group_name like '%_Administrator');
+
+delete from csm_user_group_role_pg 
+where group_id in
+(select group_id 
+from csm_group g
+where g.group_name like '%_Administrator');
+
+delete from csm_group
+where group_name like '%_Administrator';
+
 -- drop obsolete tables
 DROP TABLE IF EXISTS sample_management;
 DROP TABLE IF EXISTS sample_container;
