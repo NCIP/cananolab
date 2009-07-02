@@ -1,11 +1,13 @@
 function FileData_Pairs(x)
 {
+x.t("searching","existing");
 x.t("protocols","protocols");
 x.t("protocols","description");
 x.t("protocols","overview");
 x.t("protocols","function");
 x.t("protocols","option");
 x.t("protocols","takes");
+x.t("protocols","information");
 x.t("provide","following");
 x.t("managing","protocols");
 x.t("clear","detailed");
@@ -14,6 +16,7 @@ x.t("description","protocol");
 x.t("home","page");
 x.t("launching","search");
 x.t("bar","manage");
+x.t("sample","click");
 x.t("form","launching");
 x.t("form","entering");
 x.t("new","protocol");
@@ -25,7 +28,7 @@ x.t("overview","protocols");
 x.t("overview","managing");
 x.t("creating","annotating");
 x.t("enables","create");
-x.t("annotating","nanoparticle");
+x.t("annotating","sample");
 x.t("cananolab","menu");
 x.t("provides","clear");
 x.t("search","existing");
@@ -49,16 +52,15 @@ x.t("page","appears");
 x.t("information","protocols");
 x.t("information","new");
 x.t("submit","submitting/updating");
+x.t("protocol","searching");
 x.t("protocol","home");
 x.t("protocol","want");
 x.t("protocol","provides");
 x.t("protocol","search");
 x.t("protocol","takes");
-x.t("protocol","information");
 x.t("protocol","protocol");
 x.t("protocol","links");
 x.t("manage","protocol");
 x.t("links","manage");
 x.t("following","options");
-x.t("nanoparticle","click");
 }

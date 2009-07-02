@@ -1,6 +1,6 @@
 function FileData_Pairs(x)
 {
-x.t("available","nanoparticle");
+x.t("available","sample");
 x.t("right","half");
 x.t("half","page");
 x.t("lists","recent");
@@ -9,6 +9,7 @@ x.t("apply","account");
 x.t("user","account");
 x.t("user","name");
 x.t("user","update");
+x.t("sample","information");
 x.t("public","information");
 x.t("what\u2019s","new");
 x.t("browser","accesses");
@@ -86,7 +87,6 @@ x.t("password","user");
 x.t("password","login");
 x.t("password","familiarize");
 x.t("password","information");
-x.t("nanoparticle","information");
 x.t("page-sensitive","help");
 x.t("log","existing");
 x.t("update","password");
