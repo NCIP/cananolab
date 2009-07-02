@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -36,6 +35,10 @@ public class DWRPointOfContactManager {
 		}
 		PointOfContactBean poc = service.findPointOfContactById(id, user);
 		poc.setPrimaryStatus(primaryStatus);
+		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("sampleForm"));
+		SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
+		sample.setThePOC(poc);
 		return poc;
 	}
 
@@ -53,18 +56,6 @@ public class DWRPointOfContactManager {
 			poc.setPrimaryStatus(false);
 		}
 		return poc;
-	}
-
-	public PointOfContactBean getPointOfContactByNameAndOrg(String firstName,
-			String lastName, String orgName) throws Exception {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		PointOfContact poc = helper.findPointOfContactByNameAndOrg(firstName,
-				lastName, orgName, user);
-		PointOfContactBean pocBean = new PointOfContactBean(poc);
-		return pocBean;
 	}
 
 	public Organization getOrganizationByName(String name) throws Exception {
