@@ -45,8 +45,8 @@
 		</td>
 		<td>
 			<div id="instrumentSection" style="position: relative;">
-				<a style="" id="addInstrument"
-					href="javascript:clearInstrument();show('newInstrument');">Add</a>
+				<a style="display:block" id="addInstrument"
+					href="javascript:clearInstrument();openSubmissionForm('Instrument');">Add</a>
 				<br>
 				<table id="instrumentTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">
@@ -77,7 +77,7 @@
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
 									value="Edit"
-									onclick="editInstrument(this.id);show('newInstrument');" />
+									onclick="editInstrument(this.id);openSubmissionForm('Instrument');" />
 							</td>
 						</tr>
 					</tbody>
@@ -137,9 +137,9 @@
 								<td>
 									<div align="right">
 										<input class="promptButton" type="button" value="Add"
-											onclick="addInstrument();show('instrumentTable');hide('newInstrument');" />
+											onclick="addInstrument();show('instrumentTable');closeSubmissionForm('Instrument');" />
 										<input class="promptButton" type="button" value="Cancel"
-											onclick="clearInstrument();hide('newInstrument');" />
+											onclick="clearInstrument();closeSubmissionForm('Instrument');" />
 									</div>
 								</td>
 							</tr>
@@ -169,7 +169,7 @@
 		<td align="right">
 			<div align="right">
 				<input type="reset" value="Cancel"
-					onclick="javascript:clearExperimentConfig();hide('newExperimentConfig')">
+					onclick="javascript:clearExperimentConfig();closeSubmissionForm('ExperimentConfig')">
 				<input type="button" value="Save"
 					onclick="javascript:validateSaveConfig('characterization');">
 			</div>

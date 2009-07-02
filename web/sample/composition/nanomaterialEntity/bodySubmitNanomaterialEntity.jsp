@@ -79,46 +79,53 @@
 	</c:if>
 	<div id="entityInclude"></div>
 	<table width="100%" align="center" class="submissionView">
-			<tr>
-				<th>
-					Composing Elements
-				</th>
-			</tr>
-			<tr>
-				<td class="cellLabel">
-					Composing Element&nbsp;&nbsp;&nbsp;&nbsp;
-					<a style="" id="addComposingElement" href="#submitComposingElement"
-						onclick="javascript:clearComposingElement(); show('newComposingElement');"><img
-							align="top" src="images/btn_add.gif" border="0" /> </a>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<c:if
-						test="${! empty compositionForm.map.nanomaterialEntity.composingElements}">
-						<c:set var="edit" value="true" />
-						<c:set var="entity"
-							value="${compositionForm.map.nanomaterialEntity}" />
-						<%@ include file="bodyComposingElementView.jsp"%>
-					</c:if>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<c:set var="newCEStyle" value="display:none" />
-					<c:if
-						test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
-						<c:set var="newCEStyle" value="display:block" />
-					</c:if>
-					<div style="${newCEStyle }" id="newComposingElement">
-						<c:set var="theComposingElement"
-							value="${compositionForm.map.nanomaterialEntity.theComposingElement}" />
-						<c:set var="actionName" value="nanomaterialEntity" />
-						<a name="submitComposingElement"><%@ include
-								file="bodySubmitComposingElement.jsp"%></a>
-					</div>
-				</td>
-			</tr>
+		<tr>
+			<th colspan="2">
+				Composing Elements
+			</th>
+		</tr>
+		<tr>
+			<td class="cellLabel" width="15%">
+				Composing Element
+			</td>
+			<td>
+				<c:set var="newAddCEButtonStyle" value="display:block" />
+				<c:if
+					test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
+					<c:set var="newAddCEButtonStyle" value="display:none" />
+				</c:if>
+				<a style="${newAddCEButtonStyle}" id="addComposingElement" href="#submitComposingElement"
+					onclick="javascript:clearComposingElement(); openSubmissionForm('ComposingElement');"><img
+						align="top" src="images/btn_add.gif" border="0" /> </a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<c:if
+					test="${! empty compositionForm.map.nanomaterialEntity.composingElements}">
+					<c:set var="edit" value="true" />
+					<c:set var="entity"
+						value="${compositionForm.map.nanomaterialEntity}" />
+					<%@ include file="bodyComposingElementView.jsp"%>
+				</c:if>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<c:set var="newCEStyle" value="display:none" />
+				<c:if
+					test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
+					<c:set var="newCEStyle" value="display:block" />
+				</c:if>
+				<div style="${newCEStyle }" id="newComposingElement">
+					<c:set var="theComposingElement"
+						value="${compositionForm.map.nanomaterialEntity.theComposingElement}" />
+					<c:set var="actionName" value="nanomaterialEntity" />
+					<a name="submitComposingElement"><%@ include
+							file="bodySubmitComposingElement.jsp"%></a>
+				</div>
+			</td>
+		</tr>
 	</table>
 	<br>
 	<%--Nanomaterial Entity File Information --%>
@@ -126,19 +133,22 @@
 	<a name="file">
 		<table width="100%" align="center" class="submissionView">
 			<tr>
-				<th>
+				<th colspan="2">
 					Nanomaterial Entity File
 				</th>
 			</tr>
 			<tr>
-				<td class="cellLabel">
-					File&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
+				<td class="cellLabel" width="15%">
+					File
+				</td>
+				<td>
+					<a style="display: block" id="addFile"
+						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<c:if
 						test="${! empty compositionForm.map.nanomaterialEntity.files }">
 						<c:set var="files"
@@ -149,7 +159,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<div style="display: none" id="newFile">
 						<c:set var="fileForm" value="compositionForm" />
 						<c:set var="theFile"

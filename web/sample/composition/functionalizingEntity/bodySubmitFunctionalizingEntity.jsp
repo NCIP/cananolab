@@ -184,20 +184,22 @@
 	<table width="100%" align="center" class="submissionView">
 		<tbody>
 			<tr>
-				<th>
+				<th colspan="2">
 					Function Information
 				</th>
 			</tr>
 			<tr>
-				<td class="cellLabel">
-					Function&nbsp;&nbsp;&nbsp;&nbsp;
-					<a style="" id="addFunction"
-						href="javascript:clearFunction();show('newFunction');"><img
+				<td class="cellLabel" width="15%">
+					Function
+				</td>
+				<td>
+					<a style="display: block" id="addFunction"
+						href="javascript:clearFunction();openSubmissionForm('Function');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<c:if
 						test="${! empty compositionForm.map.functionalizingEntity.functions}">
 						<c:set var="edit" value="true" />
@@ -208,7 +210,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<div id="newFunction" style="display: none;">
 						<%@ include file="bodySubmitFunction.jsp"%>
 					</div>
@@ -224,19 +226,22 @@
 		<table width="100%" align="center" class="submissionView">
 			<tbody>
 				<tr>
-					<th>
+					<th colspan="2">
 						Functionalizing Entity File
 					</th>
 				</tr>
 				<tr>
-					<td class="cellLabel">
-						File&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
+					<td class="cellLabel" width="15%">
+						File
+					</td>
+					<td>
+						<a style="display: block" id="addFile"
+							href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
 								align="top" src="images/btn_add.gif" border="0" /> </a>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td colspan="2">
 						<c:if
 							test="${! empty compositionForm.map.functionalizingEntity.files }">
 							<c:set var="files"
@@ -247,7 +252,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td colspan="2">
 						<div style="display: none" id="newFile">
 							<c:set var="fileForm" value="compositionForm" />
 							<c:set var="theFile"

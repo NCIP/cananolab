@@ -91,10 +91,10 @@
 				<c:set var="bondTypeStyle" value="display:block" />
 			</c:if>
 			<td class="cellLabel">
-				<span id="bondTypeLabel" style="">Bond Type*</span>
+				<span id="bondTypeLabel" style="${bondTypeStyle}">Bond Type*</span>
 			</td>
 			<td>
-				<div id="bondTypePrompt" style="">
+				<div id="bondTypePrompt" style="${bondTypeStyle}">
 					<html:select styleId="bondType"
 						property="assoc.attachment.bondType"
 						onchange="javascript:callPrompt('Bond Type', 'bondType', 'bondTypePrompt');">
@@ -182,9 +182,12 @@
 				</th>
 			</tr>
 			<tr>
-				<td class="cellLabel" colspan="2">
-					File&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
+				<td class="cellLabel" width="10%">
+					File
+				</td>
+				<td>
+					<a style="display: block" id="addFile"
+						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
 			</tr>

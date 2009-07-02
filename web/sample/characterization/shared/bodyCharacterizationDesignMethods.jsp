@@ -19,10 +19,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel" colspan="2">
-			Technique and Instrument&nbsp;&nbsp;&nbsp;&nbsp;
-			<a style="" id="addTechniqueInstrument"
-				href="javascript:clearExperimentConfig();show('newExperimentConfig');"><img
+		<td class="cellLabel" width="20%">
+			Technique and Instrument
+		</td>
+		<td>
+			<a style="display:block" id="addExperimentConfig"
+				href="javascript:clearExperimentConfig();openSubmissionForm('ExperimentConfig');"><img
 					align="top" src="images/btn_add.gif" border="0" /></a>
 		</td>
 	</tr>

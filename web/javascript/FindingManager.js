@@ -161,7 +161,7 @@ function clearFile() {
 function setTheFile(index) {
 	FindingManager.getFileFromList(index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
-	show("newFile");
+	openSubmissionForm("File");
 }
 /* end of set submit file form */
 

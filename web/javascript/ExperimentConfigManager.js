@@ -29,7 +29,7 @@ function setManufacturerOptions(manufacturerTypes) {
 function setTheExperimentConfig(configId) {
 	numberOfInstruments = 0;
 	ExperimentConfigManager.getExperimentConfigById(configId, populateExperimentConfig);
-	show("newExperimentConfig");
+	openSubmissionForm("ExperimentConfig");
 	hide("newInstrument");
 	show("deleteExperimentConfig");
 }

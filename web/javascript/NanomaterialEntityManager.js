@@ -88,7 +88,7 @@ function populateInherentFunctions() {
 function setTheComposingElement(id) {
 	numberOfFunctions = 0;
 	NanomaterialEntityManager.getComposingElementById(id, populateComposingElement);
-	show("newComposingElement");
+	openSubmissionForm("ComposingElement");
 	hide("newInherentFunction");
 	show("deleteComposingElement");
 }

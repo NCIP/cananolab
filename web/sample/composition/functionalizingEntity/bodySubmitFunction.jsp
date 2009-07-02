@@ -53,8 +53,8 @@
 		</td>
 		<td colspan="3">
 			<div id="targetSection" style="position: relative; display: none">
-				<a style="" id="addTarget"
-					href="javascript:clearTarget();show('newTarget');">Add</a>
+				<a style="display:block" id="addTarget"
+					href="javascript:clearTarget();openSubmissionForm('Target');">Add</a>
 				<br>
 				<br>
 				<table id="targetTable" class="summaryViewLayer4" width="85%"
@@ -91,7 +91,7 @@
 							</td>
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
-									value="Edit" onclick="editTarget(this.id); show('newTarget');" />
+									value="Edit" onclick="editTarget(this.id); openSubmissionForm('Target');" />
 							</td>
 						</tr>
 					</tbody>
@@ -161,9 +161,9 @@
 							<td colspan="3">
 								<div align="right">
 									<input class="promptButton" type="button" value="Add"
-										onclick="addTarget();show('targetTable');hide('newTarget');" />
+										onclick="addTarget();show('targetTable');closeSubmissionForm('Target');" />
 									<input class="promptButton" type="button" value="Cancel"
-										onclick="clearTarget();hide('newTarget');" />
+										onclick="clearTarget();closeSubmissionForm('Target');" />
 								</div>
 							</td>
 						</tr>
@@ -193,9 +193,9 @@
 		<td colspan="3">
 			<div align="right">
 				<input type="button" value="Add"
-					onclick="addFunction('functionalizingEntity');show('targetTable');hide('newFunction');" />
+					onclick="addFunction('functionalizingEntity');show('targetTable'); closeSubmissionForm('Function');" />
 				<input type="button" value="Cancel"
-					onclick="clearFunction();hide('newFunction');" />
+					onclick="clearFunction();closeSubmissionForm('Function');" />
 			</div>
 		</td>
 	</tr>

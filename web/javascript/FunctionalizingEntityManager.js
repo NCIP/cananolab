@@ -72,7 +72,7 @@ function addTarget() {
 function setTheFunction(funcId) {
 	numberOfTargets = 0;
 	FunctionalizingEntityManager.getFunctionById(funcId, populateFunction);
-	show("newFunction");
+	openSubmissionForm("Function");
 	hide("newTarget");
 	show("deleteFunction");
 }

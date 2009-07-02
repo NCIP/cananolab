@@ -44,7 +44,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<span id="load" style=""> <html:file
+				<span id="load" style="${loadStyle }"> <html:file
 						property="${fileParent}.theFile.uploadedFile" size="60"
 						styleId="uploadedFile" /> &nbsp;&nbsp;</span>
 				<c:set var="uploadedUriStyle" value="display:none" />
@@ -52,8 +52,8 @@
 					test="${! empty theFile.domainFile.uri && theFile.domainFile.uriExternal eq false}">
 					<c:set var="uploadedUriStyle" value="display:block" />
 				</c:if>
-				<span id="uploadedUri" style="">${theFile.domainFile.uri }</span>
-				<span id="link" style=""><html:text
+				<span id="uploadedUri" style="${uploadedUriStyle}">${theFile.domainFile.uri }</span>
+				<span id="link" style="${linkStyle }"><html:text
 						property="${fileParent}.theFile.externalUrl" size="60"
 						styleId="externalUrl" /> </span>&nbsp;
 			</td>
@@ -143,7 +143,7 @@
 						<input class="${buttonStyle}" type="button" value="Add"
 							onclick="addFile('${actionName}', ${fileForm});" />
 						<input class="${buttonStyle}" type="button" value="Cancel"
-							onclick="clearFile('${fileParent }');hide('newFile');" />
+							onclick="clearFile('${fileParent }');closeSubmissionForm('File');" />
 					</div>
 				</td>
 			</tr>

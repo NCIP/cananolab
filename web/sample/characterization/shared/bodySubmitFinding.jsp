@@ -11,9 +11,12 @@
 		</th>
 	</tr>
 	<tr>
-		<td colspan="2">
-			<span class="cellLabel">File</span> &nbsp;&nbsp;
-			<a href="javascript:clearFile();show('newFile');">Add</a>
+		<td class="cellLabel" width="15%">
+			File
+		</td>
+		<td>
+			<a style="display: block" id="addFile"
+				href="javascript:clearFile();openSubmissionForm('File');">Add</a>
 		</td>
 	</tr>
 	<tr>
@@ -36,14 +39,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:set var="newFileStyle" value="display:none" />
-			<%--
-			<c:if
-				test="${param.dispatch eq 'addFile' || fn:length(characterizationForm.map.achar.theFinding.files)>0}">
-				<c:set var="newFileStyle" value="display:none" />
-			</c:if>
-			--%>
-			<div style="${newFileStyle }" id="newFile">
+			<div style="display: none" id="newFile">
 				<c:set var="fileForm" value="characterizationForm" />
 				<c:set var="actionName" value="characterization" />
 				<c:set var="theFile"
@@ -74,7 +70,7 @@
 		<td>
 			<div align="right">
 				<input type="button" value="Cancel"
-					onclick="javascript:hide('newFinding');">
+					onclick="javascript:closeSubmissionForm('Finding');">
 				<input type="button" value="Save"
 					onclick="javascript:saveFinding(characterizationForm);">
 			</div>
