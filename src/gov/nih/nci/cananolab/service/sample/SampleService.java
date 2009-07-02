@@ -57,9 +57,6 @@ public interface SampleService {
 	public SampleBean findSampleById(String sampleId, UserBean user)
 			throws SampleException, NoAccessException;
 
-	public SampleBean findFullSampleById(String sampleId, UserBean user)
-			throws SampleException, NoAccessException;
-
 	public SampleBean findSampleByName(String sampleName, UserBean user)
 			throws SampleException, NoAccessException;
 
