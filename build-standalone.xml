@@ -9,7 +9,6 @@
 		<mkdir dir="${tmp.dir}" />
 		<mkdir dir="${tmp.dir}/classes" />
 	</target>
-
 	<target name="compile-standalone"
 		depends="clean, init-standalone">
 		<echo
@@ -191,6 +190,7 @@
 		<java
 			classname="gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl"
 			fork="true">
+			<jvmarg value="-Xmx1024m"/>
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
