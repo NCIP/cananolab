@@ -52,7 +52,7 @@ public class SampleAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("updateSample", "true");
 		sampleBean.setLocation(Constants.LOCAL_SITE);
 		request.setAttribute("theSample", sampleBean);
-		
+
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -63,11 +63,11 @@ public class SampleAction extends BaseAnnotationAction {
 		// persist in the database
 		SampleService service = new SampleServiceLocalImpl();
 		service.saveSample(sampleBean, user);
-		
+
 		ActionMessages messages = new ActionMessages();
 		ActionMessage msg = null;
-		String updateSample = 
-			(String) request.getSession().getAttribute("updateSample");
+		String updateSample = (String) request.getSession().getAttribute(
+				"updateSample");
 		if (StringUtils.isEmpty(updateSample)) {
 			msg = new ActionMessage("message.createSample");
 		} else {
@@ -164,14 +164,18 @@ public class SampleAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		PointOfContactBean thePOC = sample.getThePOC();
+		thePOC.setupDomain(user.getLoginName());
+		SampleService service = new SampleServiceLocalImpl();
+		service.savePointOfContact(thePOC, user);
 		sample.addPointOfContact(thePOC);
 		// save sample
-		this.saveSample(request, sample);
+		saveSample(request, sample);
 		ActionForward forward = null;
-		String updateSample = 
-			(String) request.getSession().getAttribute("updateSample");
+		String updateSample = (String) request.getSession().getAttribute(
+				"updateSample");
 		if (updateSample == null) {
 			forward = mapping.getInputForward();
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
