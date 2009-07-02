@@ -95,7 +95,7 @@ public class SampleAction extends BaseAnnotationAction {
 				Constants.LOCATION);
 
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request, location, false);
+		SampleBean sampleBean = setupSample(theForm, request, location);
 		theForm.set("sampleBean", sampleBean);
 		return mapping.findForward("summaryView");
 	}
@@ -119,7 +119,7 @@ public class SampleAction extends BaseAnnotationAction {
 			location = Constants.LOCAL_SITE;
 		}
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request, location, false);
+		SampleBean sampleBean = setupSample(theForm, request, location);
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
