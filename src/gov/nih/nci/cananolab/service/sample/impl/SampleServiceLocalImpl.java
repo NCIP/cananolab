@@ -79,12 +79,6 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
 				throw new DuplicateEntriesException();
 			}
-			checkForExistingPointOfContact(sample.getPrimaryPointOfContact(),
-					user);
-			for (PointOfContact poc : sample.getOtherPointOfContactCollection()) {
-				checkForExistingPointOfContact(poc, user);
-			}
-
 			if (sample.getKeywordCollection() != null) {
 				Collection<Keyword> keywords = new HashSet<Keyword>(sample
 						.getKeywordCollection());
@@ -118,18 +112,6 @@ public class SampleServiceLocalImpl implements SampleService {
 				SampleBean fullyLoadedSampleBean = findFullSampleById(
 						sampleBean.getDomain().getId().toString(), user);
 				fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
-				// retain POC visibilities in sampleBean
-				fullyLoadedSampleBean.getPrimaryPOCBean().setVisibilityGroups(
-						sampleBean.getPrimaryPOCBean().getVisibilityGroups());
-				int i = 0;
-				for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
-					if (pocBean != null) {
-						fullyLoadedSampleBean.getOtherPOCBeans().get(i)
-								.setVisibilityGroups(
-										pocBean.getVisibilityGroups());
-					}
-					i++;
-				}
 				assignVisibility(fullyLoadedSampleBean);
 			} else {
 				assignVisibility(sampleBean);
@@ -140,33 +122,43 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void checkForExistingPointOfContact(PointOfContact poc,
-			UserBean user) throws Exception {
-		if (poc == null) {
-			return;
+	public void savePointOfContact(PointOfContactBean pocBean, UserBean user)
+			throws PointOfContactException, NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
 		}
-		Organization org = poc.getOrganization();
-		if (poc.getId() != null) {
-			// check if POC already exists in the database
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			PointOfContact domainPOC = pocBean.getDomain();
+			Organization domainOrg = domainPOC.getOrganization();
+			// get created by and created date from database
 			PointOfContact dbPointOfContact = helper
-					.findPointOfContactByNameAndOrg(poc.getFirstName(), poc
-							.getLastName(), org.getName(), user);
+					.findPointOfContactByNameAndOrg(domainPOC.getFirstName(),
+							domainPOC.getLastName(), domainPOC
+									.getOrganization().getName(), user);
 			if (dbPointOfContact != null) {
-				poc.setId(dbPointOfContact.getId());
-				poc.setCreatedBy(dbPointOfContact.getCreatedBy());
-				poc.setCreatedDate(dbPointOfContact.getCreatedDate());
-			} else {
-				poc.setCreatedBy(user.getLoginName());
-				poc.setCreatedDate(new Date());
+				domainPOC.setId(dbPointOfContact.getId());
+				domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
+				domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
 			}
-		}
-		// check if organization already exists in the database
-		Organization dbOrganization = helper.findOrganizationByName(org
-				.getName(), user);
-		if (dbOrganization != null) {
-			org.setId(dbOrganization.getId());
-			org.setCreatedBy(dbOrganization.getCreatedBy());
-			org.setCreatedDate(dbOrganization.getCreatedDate());
+
+			// get created by and created date from database
+			Organization dbOrganization = helper.findOrganizationByName(
+					domainOrg.getName(), user);
+			if (dbOrganization != null) {
+				domainOrg.setId(dbOrganization.getId());
+				domainOrg.setCreatedBy(dbOrganization.getCreatedBy());
+				domainOrg.setCreatedDate(dbOrganization.getCreatedDate());
+			}
+			appService.saveOrUpdate(domainPOC);
+
+			// assign visibility
+			assignVisibility(pocBean);
+		} catch (Exception e) {
+			String err = "Error in saving the PointOfContact.";
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
 		}
 	}
 
@@ -175,17 +167,9 @@ public class SampleServiceLocalImpl implements SampleService {
 		String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
 				.getOrganization().getName();
 		// assign visibility for sample
+		// visibility for POC is handled by POC separately
 		helper.getAuthService().assignVisibility(
 				sampleBean.getDomain().getName(), visibleGroups, owningGroup);
-
-		// Primary POC
-		assignVisibility(sampleBean.getPrimaryPOCBean());
-
-		// other POC
-		for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
-			assignVisibility(pocBean);
-		}
-
 		// assign associated visibilities
 		Sample sample = sampleBean.getDomain();
 		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
@@ -459,30 +443,32 @@ public class SampleServiceLocalImpl implements SampleService {
 		sampleBean.setVisibilityGroups(visibilityGroups);
 
 		// retrieve visibility for point of contact information
-		PointOfContactBean primaryPocBean = sampleBean.getPrimaryPOCBean();
-		if (primaryPocBean.getDomain() != null
-				&& primaryPocBean.getDomain().getId() != null) {
-			// get assigned visible groups
-			List<String> pocAccessibleGroups = helper.getAuthService()
-					.getAccessibleGroups(
-							primaryPocBean.getDomain().getId().toString(),
-							Constants.CSM_READ_PRIVILEGE);
-			String[] pocVisibilityGroups = pocAccessibleGroups
-					.toArray(new String[0]);
-			primaryPocBean.setVisibilityGroups(pocVisibilityGroups);
-		}
-		for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
-			if (pocBean.getDomain().getId() != null) {
-				// get assigned visible groups
-				List<String> pocAccessibleGroups = helper.getAuthService()
-						.getAccessibleGroups(
-								pocBean.getDomain().getId().toString(),
-								Constants.CSM_READ_PRIVILEGE);
-				String[] pocVisibilityGroups = pocAccessibleGroups
-						.toArray(new String[0]);
-				pocBean.setVisibilityGroups(pocVisibilityGroups);
-			}
-		}
+		// don't need to because POC visibility info is not shown in the summary
+		// view
+		// PointOfContactBean primaryPocBean = sampleBean.getPrimaryPOCBean();
+		// if (primaryPocBean.getDomain() != null
+		// && primaryPocBean.getDomain().getId() != null) {
+		// // get assigned visible groups
+		// List<String> pocAccessibleGroups = helper.getAuthService()
+		// .getAccessibleGroups(
+		// primaryPocBean.getDomain().getId().toString(),
+		// Constants.CSM_READ_PRIVILEGE);
+		// String[] pocVisibilityGroups = pocAccessibleGroups
+		// .toArray(new String[0]);
+		// primaryPocBean.setVisibilityGroups(pocVisibilityGroups);
+		// }
+		// for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
+		// if (pocBean.getDomain().getId() != null) {
+		// // get assigned visible groups
+		// List<String> pocAccessibleGroups = helper.getAuthService()
+		// .getAccessibleGroups(
+		// pocBean.getDomain().getId().toString(),
+		// Constants.CSM_READ_PRIVILEGE);
+		// String[] pocVisibilityGroups = pocAccessibleGroups
+		// .toArray(new String[0]);
+		// pocBean.setVisibilityGroups(pocVisibilityGroups);
+		// }
+		// }
 	}
 
 	public SortedSet<String> findAllSampleNames(UserBean user)

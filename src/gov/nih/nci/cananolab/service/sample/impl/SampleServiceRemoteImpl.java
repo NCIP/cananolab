@@ -436,4 +436,9 @@ public class SampleServiceRemoteImpl implements SampleService {
 			throws PointOfContactException {
 		throw new PointOfContactException("Not implemented for grid service");
 	}
+
+	public void savePointOfContact(PointOfContactBean pointOfContactBean,
+			UserBean User) throws PointOfContactException, NoAccessException {
+		throw new PointOfContactException("Not implemented for grid service");
+	}
 }
