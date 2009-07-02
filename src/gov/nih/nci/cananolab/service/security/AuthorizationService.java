@@ -36,9 +36,9 @@ import org.hibernate.Hibernate;
 
 /**
  * This class takes care of authentication and authorization of a user and group
- *
+ * 
  * @author Pansu
- *
+ * 
  */
 public class AuthorizationService {
 	private Logger logger = Logger.getLogger(AuthorizationService.class);
@@ -73,7 +73,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user is the admin of the application.
-	 *
+	 * 
 	 * @param user
 	 * @return
 	 */
@@ -85,7 +85,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user belongs to the given group.
-	 *
+	 * 
 	 * @param user
 	 * @param groupName
 	 * @return
@@ -112,7 +112,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has the given privilege on the given
 	 * protection element
-	 *
+	 * 
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @param privilege
@@ -145,7 +145,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has execute privilege on the given
 	 * protection element
-	 *
+	 * 
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -160,7 +160,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has read privilege on the given protection
 	 * element
-	 *
+	 * 
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -211,7 +211,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has delete privilege on the given protection
 	 * element
-	 *
+	 * 
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -225,7 +225,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get all user groups in the application
-	 *
+	 * 
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -268,7 +268,7 @@ public class AuthorizationService {
 	/**
 	 * Get all user visiblity groups in the application (filtering out all
 	 * groups starting with APP_OWNER).
-	 *
+	 * 
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -312,7 +312,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Group object for the given groupName.
-	 *
+	 * 
 	 * @param groupName
 	 * @return
 	 */
@@ -331,7 +331,7 @@ public class AuthorizationService {
 
 	/**
 	 * Create a user group in the CSM database if it's not already created
-	 *
+	 * 
 	 * @param groupName
 	 * @throws SecurityException
 	 */
@@ -351,7 +351,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Role object for the given roleName.
-	 *
+	 * 
 	 * @param roleName
 	 * @return
 	 */
@@ -370,7 +370,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionElement object for the given objectId.
-	 *
+	 * 
 	 * @param objectId
 	 * @return
 	 * @throws SecurityException
@@ -402,7 +402,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionGroup object for the given protectionGroupName.
-	 *
+	 * 
 	 * @param protectionGroupName
 	 * @return
 	 * @throws SecurityException
@@ -433,7 +433,7 @@ public class AuthorizationService {
 
 	/**
 	 * Assign a ProtectionElement to a ProtectionGroup if not already assigned.
-	 *
+	 * 
 	 * @param pe
 	 * @param pg
 	 * @throws SecurityException
@@ -471,7 +471,7 @@ public class AuthorizationService {
 	/**
 	 * Direct CSM schema query to improve performance. Get the existing role IDs
 	 * from database
-	 *
+	 * 
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -506,7 +506,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get the existing role IDs from database
-	 *
+	 * 
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -543,7 +543,7 @@ public class AuthorizationService {
 	/**
 	 * Assign the given objectName to the given groupName with the given
 	 * roleName. Add to existing roles the object has for the group.
-	 *
+	 * 
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
@@ -608,18 +608,25 @@ public class AuthorizationService {
 		return groupNames;
 	}
 
-	public void removeExistingVisibleGroups(String objectName, String roleName)
+	public void removeExistingVisibleGroups(String objectName)
 			throws SecurityException {
 		try {
-			List<Group> groups = getGroups();
+			// List<Group> groups = getGroups();
+			List groups = authorizationManager.getAccessibleGroups(objectName,
+					Constants.CSM_READ_PRIVILEGE);
 			ProtectionGroup pg = getProtectionGroup(objectName);
-			Role role = getRole(roleName);
-			for (Group group : groups) {
-				userManager.removeGroupRoleFromProtectionGroup(pg
-						.getProtectionGroupId().toString(), group.getGroupId()
-						.toString(), new String[] { role.getId().toString() });
+			Role role = getRole(Constants.CSM_READ_ROLE);
+			if (groups != null) {
+				for (Object obj : groups) {
+					Group group = (Group) obj;
+					userManager.removeGroupRoleFromProtectionGroup(pg
+							.getProtectionGroupId().toString(), group
+							.getGroupId().toString(), new String[] { role
+							.getId().toString() });
+				}
 			}
 		} catch (Exception e) {
+			logger.error("Error in removing existing visibile groups", e);
 			throw new SecurityException();
 		}
 	}
@@ -627,8 +634,7 @@ public class AuthorizationService {
 	public void assignVisibility(String dataToProtect, String[] visibleGroups,
 			String owningGroup) throws SecurityException {
 		try {
-			removeExistingVisibleGroups(dataToProtect, Constants.CSM_READ_ROLE);
-
+			removeExistingVisibleGroups(dataToProtect);
 			if (Arrays.asList(visibleGroups).contains(
 					Constants.CSM_PUBLIC_GROUP)) {
 				// only need to assign public visibilities
@@ -647,7 +653,7 @@ public class AuthorizationService {
 					secureObject(dataToProtect, owningGroup,
 							Constants.CSM_READ_ROLE);
 				}
-			}
+			}			
 		} catch (Exception e) {
 			logger.error("Error in setting visibility", e);
 			throw new SecurityException();
@@ -700,7 +706,7 @@ public class AuthorizationService {
 
 	/**
 	 * Return only the public data
-	 *
+	 * 
 	 * @param rawObjects
 	 * @return
 	 * @throws Exception
