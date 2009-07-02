@@ -222,7 +222,7 @@
 							<input type="button" value="Add"
 								onclick="addPointOfContact('sample')" />
 							<input type="button" value="Cancel"
-								onclick="clearPointOfContact();closePointOfContactForm();" />
+								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');" />
 							<html:hidden styleId="domain.id"
 								property="sampleBean.thePOC.domain.id" />
 							<html:hidden styleId="primaryStatus"
