@@ -123,7 +123,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -408,7 +408,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"

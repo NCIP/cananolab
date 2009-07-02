@@ -300,7 +300,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		setupDomainChar(request, theForm, charBean);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
@@ -314,7 +314,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			charService.copyAndSaveCharacterization(charBean, sampleBean,
 					otherSampleBeans, copyData, user);
 		}
-		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId());
 		request.setAttribute(Constants.LOCATION, Constants.LOCAL_SITE);
 	}
@@ -448,7 +448,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
 		String location = theForm.getString(Constants.LOCATION);
-		setupSample(theForm, request, location, false);
+		setupSample(theForm, request, location);
 		CharacterizationService service = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
@@ -528,7 +528,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.prepareSummary(mapping, form, request, response);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = theForm.getString(Constants.LOCATION);
-		SampleBean sampleBean = setupSample(theForm, request, location, false);
+		SampleBean sampleBean = setupSample(theForm, request, location);
 		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) request
 				.getAttribute("characterizationSummaryView");
 		Map<String, SortedSet<CharacterizationBean>> charBeanMap = charSummaryBean
@@ -645,7 +645,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"

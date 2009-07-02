@@ -269,7 +269,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter(Constants.LOCATION);
 		String sampleId = request.getParameter("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, location, false);
+		SampleBean sampleBean = setupSample(theForm, request, location);
 		String fileName = 
 			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
 		ExportUtils.prepareReponseForExcell(response, fileName);

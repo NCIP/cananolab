@@ -189,7 +189,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
 		String location = theForm.getString(Constants.LOCATION);
-		setupSample(theForm, request, location, false);
+		setupSample(theForm, request, location);
 		HttpSession session = request.getSession();
 		CompositionService compService = null;
 		if (Constants.LOCAL_SITE.equals(location)) {

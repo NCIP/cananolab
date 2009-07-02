@@ -25,7 +25,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class allows users to submit composition files under sample composition.
- *
+ * 
  * @author pansu
  */
 public class CompositionFileAction extends BaseAnnotationAction {
@@ -36,9 +36,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
 		String location = theForm.getString(Constants.LOCATION);
-		// need to load the full sample to save composition because of
-		// unidirectional relationship between composition and file
-		SampleBean sampleBean = setupSample(theForm, request, location, true);
+		SampleBean sampleBean = setupSample(theForm, request, location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -73,7 +71,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		setupSample(theForm, request, Constants.LOCAL_SITE);
 		return mapping.getInputForward();
 	}
 
@@ -88,7 +86,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionBean compBean = (CompositionBean) theForm.get("comp");
 		compBean.setTheFile(fileBean);
 		setLookups(request);
-		setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		setupSample(theForm, request, Constants.LOCAL_SITE);
 		ActionForward forward = mapping.getInputForward();
 		return forward;
 	}
@@ -100,7 +98,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		FileBean fileBean = (FileBean) theForm.get("compFile");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteCompositionFile(sampleBean.getDomain(), fileBean
 				.getDomainFile(), user);

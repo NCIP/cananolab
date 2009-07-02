@@ -72,7 +72,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, NanomaterialEntityBean entityBean)
 			throws Exception {
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -303,7 +303,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.get("nanomaterialEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ '/'
@@ -317,7 +317,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.getLoginName(), internalUriPath);
 		compositionService.deleteNanomaterialEntity(entityBean
 				.getDomainEntity(), user);
-		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteNanomaterialEntity");

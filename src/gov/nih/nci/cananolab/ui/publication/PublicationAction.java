@@ -447,7 +447,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		// Get sample name for constructing file name.
 		PublicationForm theForm = (PublicationForm) form;
 		String location = request.getParameter(Constants.LOCATION);
-		SampleBean sampleBean = setupSample(theForm, request, location, false);
+		SampleBean sampleBean = setupSample(theForm, request, location);
 
 		String fileName = ExportUtils.getExportFileName(
 				sampleBean.getDomain().getName(), "PublicationSummaryView", type);
@@ -475,7 +475,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString(Constants.LOCATION);
-		setupSample(theForm, request, location, false);
+		setupSample(theForm, request, location);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);

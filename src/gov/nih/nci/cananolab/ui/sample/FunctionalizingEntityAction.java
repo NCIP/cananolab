@@ -110,7 +110,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		CompositionService compositionService = new CompositionServiceLocalImpl();
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -297,7 +297,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.get("functionalizingEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE, false);
+				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -312,7 +312,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
 				.getDomainEntity(), user);
-		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
 		ActionMessage msg = new ActionMessage(
 				"message.deleteFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
