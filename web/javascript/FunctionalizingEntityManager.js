@@ -73,7 +73,7 @@ function setTheFunction(funcId) {
 	numberOfTargets = 0;
 	FunctionalizingEntityManager.getFunctionById(funcId, populateFunction);
 	openSubmissionForm("Function");
-	hide("newTarget");
+	openSubmissionForm("Target");
 	show("deleteFunction");
 }
 function populateFunction(func) {
@@ -161,7 +161,7 @@ function deleteTheTarget() {
 				}
 			});
 			window.setTimeout("populateTargets()", 200);
-			hide("newTarget");
+			openSubmissionForm("Target");
 		}
 	}
 }

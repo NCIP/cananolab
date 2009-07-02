@@ -89,7 +89,7 @@ function setTheComposingElement(id) {
 	numberOfFunctions = 0;
 	NanomaterialEntityManager.getComposingElementById(id, populateComposingElement);
 	openSubmissionForm("ComposingElement");
-	hide("newInherentFunction");
+	closeSubmissionForm("InherentFunction");
 	show("deleteComposingElement");
 }
 function populateComposingElement(element) {
@@ -143,7 +143,7 @@ function deleteTheInherentFunction() {
 				}
 			});
 			window.setTimeout("populateInherentFunctions()", 200);
-			hide("newInherentFunction");
+			openSubmissionForm("InherentFunction");
 		}
 	}
 }

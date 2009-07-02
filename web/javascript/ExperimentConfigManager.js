@@ -30,7 +30,7 @@ function setTheExperimentConfig(configId) {
 	numberOfInstruments = 0;
 	ExperimentConfigManager.getExperimentConfigById(configId, populateExperimentConfig);
 	openSubmissionForm("ExperimentConfig");
-	hide("newInstrument");
+	openSubmissionForm(Instrument");
 	show("deleteExperimentConfig");
 }
 function populateExperimentConfig(experimentConfig) {
@@ -82,7 +82,7 @@ function clearExperimentConfig() {
 	//go to server and clean form bean
 	ExperimentConfigManager.resetTheExperimentConfig(populateExperimentConfig);
 	hide("deleteExperimentConfig");
-	hide("newInstrument");
+	openSubmissionForm("Instrument");
 	numberOfInstruments = 0;
 }
 function deleteTheExperimentConfig() {
@@ -145,7 +145,7 @@ function deleteTheInstrument() {
 				currentExperimentConfig = experimentConfig;
 			});
 			window.setTimeout("populateInstruments()", 200);
-			hide("newInstrument");
+			openSubmissionForm("Instrument");
 		}
 	}
 }
