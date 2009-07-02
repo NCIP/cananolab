@@ -27,8 +27,9 @@ function setThePointOfContact(id, isPrimary) {
 			dwr.util.addOptions("visibilityGroups", data);
 		}
 	});
-	show("newPointOfContact");
+	openSubmissionForm("PointOfContact");
 }
+
 function populatePointOfContact(poc) {
 	if (poc != null) {
 		dwr.util.setValues(poc);
