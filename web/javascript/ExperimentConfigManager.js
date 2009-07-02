@@ -30,7 +30,7 @@ function setTheExperimentConfig(configId) {
 	numberOfInstruments = 0;
 	ExperimentConfigManager.getExperimentConfigById(configId, populateExperimentConfig);
 	openSubmissionForm("ExperimentConfig");
-	openSubmissionForm(Instrument");
+	openSubmissionForm("Instrument");
 	show("deleteExperimentConfig");
 }
 function populateExperimentConfig(experimentConfig) {
