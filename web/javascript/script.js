@@ -521,3 +521,12 @@ function sessionTimeout() {
 	location.href = "login.jsp";
 }
 
+function openSubmissionForm(styleId) {
+	show("new"+styleId);
+	hide("add"+styleId);
+}
+
+function closeSubmissionForm(styleId) {
+	hide("new"+styleId);
+	show("add"+styleId);
+}
