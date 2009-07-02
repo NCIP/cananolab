@@ -14,7 +14,7 @@
 		</td>
 		<td align="right" width="35%">
 			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="publication_page_help" />
+				<jsp:param name="topic" value="publication_summary_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
 			<c:if test="${empty docSampleId}">

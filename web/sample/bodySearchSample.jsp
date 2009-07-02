@@ -22,7 +22,7 @@
 		<td align="right" width="30%">
 			<%--<a href="advancedSampleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="search_nano_help" />
+				<jsp:param name="topic" value="search_sample_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
 		</td>

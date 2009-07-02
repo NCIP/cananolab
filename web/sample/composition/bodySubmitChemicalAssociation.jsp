@@ -51,7 +51,7 @@
 		</td>
 		<td align="right" width="20%">
 			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="nano_entity_help" />
+				<jsp:param name="topic" value="chem_association_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
 		</td>

@@ -22,7 +22,7 @@
 		</td>
 		<td align="right" width="15%">
 			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="function_entity_help" />
+				<jsp:param name="topic" value="compo_file_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
 		</td>
