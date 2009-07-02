@@ -20,13 +20,19 @@ function clearPointOfContact() {
 	hide("deletePointOfContact");
 }
 function setThePointOfContact(id, isPrimary) {
-	POCManager.getPointOfContactById(id, isPrimary, populatePointOfContact);
+	//remove org from visibility group
 	POCManager.removeOrgFromVisibilityGroupsByPocId(id, isPrimary, function (data) {
 		if (data != null) {
 			dwr.util.removeAllOptions("visibilityGroups");
 			dwr.util.addOptions("visibilityGroups", data);
 		}
-	});
+	});	
+	//add a timeout to allow correct refresh order
+	window.setTimeout("fillPointOfContact("+id+", "+isPrimary+")", 100);
+}
+
+function fillPointOfContact(id, isPrimary) {	
+	POCManager.getPointOfContactById(id, isPrimary, populatePointOfContact);
 	openSubmissionForm("PointOfContact");
 }
 
