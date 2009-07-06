@@ -58,7 +58,7 @@
 													</td>
 												</tr>
 												<tr>
-													<td width="800" valign="top">
+													<td valign="top">
 														<%-- include caNanoLab main content --%>
 														<%--main content starts --%>
 														<tiles:insert attribute="cananoContent" />
