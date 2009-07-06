@@ -4,8 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:forEach var="type" items="${characterizationTypes}"
-	varStatus="ind">
+<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
 	<table id="summarySection${ind.count}" width="95%" align="center"
 		style="display: block" class="summaryViewLayer2">
 		<tr>
@@ -74,7 +73,7 @@
 								</tr>
 							</c:if>
 							<c:if test="${!empty charBean.protocolBean.displayName}">>
-										<tr>
+								<tr>
 									<td class="cellLabel">
 										Protocol
 									</td>
@@ -153,9 +152,9 @@
 							</c:if>
 						</table>
 					</div>
-					<br>
+					<br/>
 				</c:forEach>
-				<br>
+				<br/>
 			</td>
 		</tr>
 	</table>
