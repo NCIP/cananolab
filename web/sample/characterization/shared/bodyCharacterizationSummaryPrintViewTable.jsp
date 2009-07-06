@@ -48,6 +48,7 @@
 											</td>
 											<td colspan="2">
 												${charName}
+											</td>
 										</tr>
 									</c:if>
 								</c:otherwise>
@@ -59,6 +60,7 @@
 									</td>
 									<td colspan="2">
 										${charBean.pocBean.displayName}
+									</td>
 								</tr>
 							</c:if>
 							<c:if test="${!empty charBean.dateString}">
@@ -68,6 +70,7 @@
 									</td>
 									<td colspan="2">
 										${charBean.dateString}
+									</td>
 								</tr>
 							</c:if>
 							<c:if test="${!empty charBean.protocolBean.displayName}">>
@@ -87,9 +90,9 @@
 									</td>
 									<td>
 										<%
-													String detailPage=gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup.getInstance().getDetailPage(application, (String)pageContext.getAttribute("charName"));
-													pageContext.setAttribute("detailPage", detailPage);
-												%>
+											String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup.getInstance().getDetailPage(application, (String)pageContext.getAttribute("charName"));
+											pageContext.setAttribute("detailPage", detailPage);
+										%>
 										<c:set var="charBean" value="${charBean}" scope="session" />
 										<jsp:include page="${detailPage}">
 											<jsp:param name="summary" value="true" />
@@ -111,8 +114,9 @@
 													value="${fn:replace(charObj.designMethodsDescription, cr, '<br>')}"
 													escapeXml="false" />
 											</c:when>
-											<c:otherwise>N/A
-												</c:otherwise>
+											<c:otherwise>
+												N/A
+											</c:otherwise>
 										</c:choose>
 									</td>
 								</tr>
