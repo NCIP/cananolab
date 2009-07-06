@@ -29,8 +29,8 @@
 								<c:otherwise>
 									<c:choose>
 										<c:when test="${file.image eq 'true'}">
-						 				${file.domainFile.title}
-										<br>
+						 					${file.domainFile.title}
+											<br>
 											<a href="#"
 												onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id})"><img
 													src="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
@@ -49,7 +49,7 @@
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
-					N/A
+						N/A
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -75,11 +75,11 @@
 							</c:forEach>
 						</table>
 					</c:when>
-					<c:otherwise>N/A
-				</c:otherwise>
+					<c:otherwise>
+						N/A
+					</c:otherwise>
 				</c:choose>
 			</td>
-
 			<td align="right">
 				<c:if test="${edit eq 'true'}">
 					<a
