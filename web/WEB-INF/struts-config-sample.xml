@@ -46,7 +46,6 @@
 			<form-property name="location" type="java.lang.String"/>
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
-			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
@@ -60,7 +59,6 @@
 			<form-property name="location" type="java.lang.String"/>
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
-			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
