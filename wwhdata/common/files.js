@@ -14,7 +14,7 @@ P.fA("Welcome to caNanoLab Home Page","Getting%20Started.2.10.html");
 P.fA("Managing Protocols","Manage%20Protocols.3.1.html");
 P.fA("Protocols Overview","Manage%20Protocols.3.2.html");
 P.fA("Description of a Protocol","Manage%20Protocols.3.3.html");
-P.fA("Submitting/Updating a Protocol","Manage%20Protocols.3.4.html");
+P.fA("Submitting a Protocol","Manage%20Protocols.3.4.html");
 P.fA("Searching Existing Protocols","Manage%20Protocols.3.5.html");
 P.fA("Protocol Search Results","Manage%20Protocols.3.6.html");
 P.fA("Protocol Update Page","Manage%20Protocols.3.7.html");
