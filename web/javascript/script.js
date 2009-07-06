@@ -268,14 +268,18 @@ function updateOtherField(form, elementName, otherElementName) {
 	}
 }
 var imgWindow = null;
-var t = null;
+//var t = null;
 function popImage(event, imgSrc, imgId) {
+	if (imgWindow != null && imgWindow.open) {
+		imgWindow.close();
+		//t = null;
+	}
 	var popImg = new Image();
+	popImg.src = imgSrc;
 	var ratio = 1;
 	var maxHeight = 800;
-	popImg.src = imgSrc;
-	width = popImg.width + 20;
-	height = popImg.height + 20;
+	var width = popImg.width + 20;
+	var height = popImg.height + 20;
 	if (width > height) {
 		if (width > maxHeight) {
 			ratio = maxHeight / width;
@@ -289,23 +293,15 @@ function popImage(event, imgSrc, imgId) {
 			width = ratio * width / 100;
 		}
 	}
-//    leftPos=event.clientX-width-200;
-//    topPos=event.clientY-200;
-	leftPos = 50;
-	topPos = 50;
-	if (imgWindow && imgWindow.open) {
-		imgWindow.close();
-		t = null;
-	}
-	//myScript = "<html><head>n" + "<script>n" + "var t=null;n" + "function closeMe() {n" + "t=setTimeout("window.close();", 5000);n" + "}n" + "</script>n" + "<title>Characterization File</title></head>n";
-	myScript = "<html><head><title>Characterization File</title></head>\n";
+	var leftPos = 50;
+	var topPos = 50;
+	var myScript = "<html><head><title>Characterization File</title></head>\n";
 	imgWindow = window.open("", "charFileWindow", "width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
 	imgWindow.document.write(myScript);
-	//imgWindow.document.write("<body onLoad="closeMe();self.focus();" bgcolor="#FFFFFF">n");
 	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
 	imgWindow.document.write("<img width=" + (width - 10) + " styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
-	t = setTimeout("imgWindow.close();", 15000);
+//	t = setTimeout("imgWindow.close();", 15000);
 }
 function printPage0(url) {
 	var obj = document.all.tags("link");
