@@ -52,7 +52,7 @@
     <Document title="Managing Protocols" href="Manage%20Protocols.3.1.html" />
     <Document title="Protocols Overview" href="Manage%20Protocols.3.2.html" />
     <Document title="Description of a Protocol" href="Manage%20Protocols.3.3.html" />
-    <Document title="Submitting/Updating a Protocol" href="Manage%20Protocols.3.4.html" />
+    <Document title="Submitting a Protocol" href="Manage%20Protocols.3.4.html" />
     <Document title="Searching Existing Protocols" href="Manage%20Protocols.3.5.html" />
     <Document title="Protocol Search Results" href="Manage%20Protocols.3.6.html" />
     <Document title="Protocol Update Page" href="Manage%20Protocols.3.7.html" />
@@ -145,9 +145,9 @@
     <Topic name="search_protocol_help" href="Manage%20Protocols.3.5.html#1147811" />
     <Topic name="protocol_search_results_help" href="Manage%20Protocols.3.6.html#1149120" />
     <Topic name="manage_samples_help" href="Manage%20Samples.4.2.html#1175673" />
+    <Topic name="submit_sample_help" href="Manage%20Samples.4.4.html#1151789" />
     <Topic name="search_sample_help" href="Manage%20Samples.4.5.html#1153194" />
     <Topic name="sample_search_results_help" href="Manage%20Samples.4.6.html#1153267" />
-    <Topic name="submit_sample_help" href="Manage%20Samples.4.7.html#1153322" />
     <Topic name="composition_all_tab_help" href="Managing%20Composition.5.3.html#1555221" />
     <Topic name="nanomaterial_entity_help" href="Managing%20Composition.5.4.html#1551405" />
     <Topic name="function_entity_help" href="Managing%20Composition.5.17.html#1559578" />
@@ -158,10 +158,10 @@
     <Topic name="add_in_vitro_char_help" href="Managing%20Characterizations.6.12.html#1571690" />
     <Topic name="publications_all_tab_help" href="Managing%20Characterizations.6.33.html#1575209" />
     <Topic name="manage_publications_help" href="Manage%20Publications.7.2.html#1123962" />
+    <Topic name="submit_publication_help" href="Manage%20Publications.7.3.html#1131845" />
     <Topic name="search_publications_help" href="Manage%20Publications.7.4.html#1135396" />
     <Topic name="publications_search_results_help" href="Manage%20Publications.7.5.html#1104802" />
     <Topic name="publication_summary_help" href="Manage%20Publications.7.6.html#1142741" />
-    <Topic name="submit_publication_help" href="Manage%20Publications.7.8.html#1138948" />
     <Topic name="delete_doc_help" href="Manage%20Publications.7.10.html#1150515" />
     <Topic name="glossary_help" href="caNanoLab_Glossary.8.1.html#1065170" />
   </TopicMap>
