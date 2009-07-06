@@ -32,7 +32,7 @@
 						 				${file.domainFile.title}
 										<br>
 											<a href="#"
-												onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+												onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id})"><img
 													src="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
 													border="0" width="150"> </a>
 										</c:when>

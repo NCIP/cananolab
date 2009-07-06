@@ -329,7 +329,7 @@
 							<br>
 							<a href="#"
 								onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}',
-														${publicationForm.map.file.domainFile.id}, 100, 100)"><img
+														${publicationForm.map.file.domainFile.id})"><img
 									src="compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}"
 									border="0" width="150"> </a>
 						</c:when>
