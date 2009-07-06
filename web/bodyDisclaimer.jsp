@@ -1,13 +1,12 @@
-<TABLE cellSpacing=0 cellPadding=0 summary="" border=0>
+<TABLE>
 	<TBODY>
 		<TR>
-			<TD class=disclaimerTitle width=901 height=20>
+			<TD class="disclaimerTitle" height="20">
 				<STRONG>LEGAL RULES OF THE ROAD</STRONG>
 			</TD>
 		</TR>
 		<TR>
-			<TD class="disclaimerContent" vAlign=top>
-
+			<TD class="disclaimerContent" vAlign="top">
 				The cancer Nanotechnology Laboratory (caNanoLab) portal is provided
 				as a public service by the National Cancer Institute (NCI) to foster
 				the rapid dissemination of nanoparticle information to the
@@ -34,62 +33,37 @@
 				commercial use.
 		</TR>
 		<TR>
-			<TD class=disclaimerTitle width=901 height=20>
+			<TD class="disclaimerTitle" height="20">
 				<STRONG>PRIVACY ACT NOTIFICATION STATEMENT</STRONG>
 			</TD>
 		</TR>
 		<TR>
-			<TD vAlign=top>
-				<TABLE class=disclaimerContent cellSpacing=0 cellPadding=0 width="95%"
-					border=0>
-					<TBODY>
-						<TR>
-							<TD>
-
-								The caNanoLab web portal requires users to register before using
-								the web site. The primary use of this information is to allow
-								the National Cancer Institute to provide a repository as a
-								public service to foster the rapid dissemination of nanoparticle
-								characterizations to the scientific community and the public.
-								Collection of this information is authorized under Title IV of
-								the PHS Act, Section 410[285]. This information may be disclosed
-								to researchers for research purposes, contractors responsible
-								for the maintenance of the repository and to other registered
-								repository users for non-commercial, scientific and educational
-								purposes. Submission of this information is voluntary, however,
-								in order for us to register you as a user of this repository,
-								you should complete all fields. For additional information,
-								please refer to the Legal Rules noted above, and the link to our
-								Privacy Policy.
-							</TD>
-						</TR>
-					</TBODY>
-				</TABLE>
-			</TD>
+			<TD class="disclaimerContent" vAlign="top">
+				The caNanoLab web portal requires users to register before using the
+				web site. The primary use of this information is to allow the
+				National Cancer Institute to provide a repository as a public
+				service to foster the rapid dissemination of nanoparticle
+				characterizations to the scientific community and the public.
+				Collection of this information is authorized under Title IV of the
+				PHS Act, Section 410[285]. This information may be disclosed to
+				researchers for research purposes, contractors responsible for the
+				maintenance of the repository and to other registered repository
+				users for non-commercial, scientific and educational purposes.
+				Submission of this information is voluntary, however, in order for
+				us to register you as a user of this repository, you should complete
+				all fields. For additional information, please refer to the Legal
+				Rules noted above, and the link to our Privacy Policy.
 		</TR>
 		<TR>
-			<TD class=disclaimerTitle width=901 height=20>
+			<TD class="disclaimerTitle" height="20">
 				&nbsp;
 			</TD>
 		</TR>
 		<TR>
-			<TD vAlign=top>
-				<TABLE class=disclaimerContent cellSpacing=0 cellPadding=0 width="95%"
-					border=0>
-					<TBODY>
-						<TR>
-							<TD>
-
-								<STRONG>I HAVE READ AND UNDERSTOOD THE ABOVE
-									PROVISIONS, AND SIGNIFY MY AGREEMENT BY <a href="welcome.do">CLICKING
-										HERE</A>. </STRONG>
-								<BR>
-
-							</TD>
-						</TR>
-					</TBODY>
-				</TABLE>
-			</TD>
+			<TD class="disclaimerContent" vAlign="top">
+				<STRONG>I HAVE READ AND UNDERSTOOD THE ABOVE PROVISIONS,
+					AND SIGNIFY MY AGREEMENT BY <a href="welcome.do">CLICKING HERE</A>.
+				</STRONG>
 		</TR>
 	</TBODY>
 </TABLE>
