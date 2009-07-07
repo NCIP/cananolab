@@ -6,13 +6,11 @@ package gov.nih.nci.cananolab.ui.publication;
  * @author tanq
  */
 
-import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
@@ -44,7 +42,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
 
 public class PublicationAction extends BaseAnnotationAction {
 
@@ -53,7 +50,8 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		ActionForward forward = null;
 		PublicationForm theForm = (PublicationForm) form;
-		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
+		PublicationBean publicationBean = (PublicationBean) theForm
+				.get("publication");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION, user
 				.getLoginName(), 0);
@@ -122,180 +120,85 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session = request.getSession();
-		session.removeAttribute("publicationForm");
+		PublicationBean pubBean = new PublicationBean();
 		String sampleId = request.getParameter("sampleId");
+		PublicationForm theForm = (PublicationForm) form;
+		theForm.set("sampleId", sampleId);
+		String type = request.getParameter("type");
+		if (type != null) {
+			((Publication) pubBean.getDomainFile()).setCategory(type);
+		}
+		theForm.set("publication", pubBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitSampleSetup.getInstance().getAllSampleNames(request);
-		if (sampleId != null && sampleId.trim().length() > 0
-				&& session.getAttribute("otherSampleNames") == null) {
+		ActionForward forward = mapping.getInputForward();
+		if (sampleId != null && sampleId.trim().length() > 0) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
-		}
-		ActionForward forward = mapping.getInputForward();
-
-		if (sampleId != null && !sampleId.equals("null")
-				&& sampleId.trim().length() > 0) {
 			forward = mapping.findForward("sampleSubmitPublication");
-			session.setAttribute("docSampleId", sampleId);
 		} else {
-			session.removeAttribute("docSampleId");
+			InitSampleSetup.getInstance().getAllSampleNames(request, user);
 		}
+		request.getSession().setAttribute(
+				"onloadJavascript",
+				"updateFormBasedOnCategory()");
 		return forward;
 	}
-
-	public ActionForward setupReport(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		HttpSession session = request.getSession();
-
-		String sampleId = request.getParameter("sampleId");
-		ActionForward forward = null;
-
-		if (sampleId != null && !sampleId.equals("null")
-				&& sampleId.trim().length() > 0) {
-			// forward = mapping.findForward("sampleSubmitReport");
-			forward = mapping.findForward("sampleSubmitPublication");
-			session.setAttribute("docSampleId", sampleId);
-		} else {
-			session.removeAttribute("docSampleId");
-			forward = mapping.findForward("publicationSubmitPublication");
-			// forward = mapping.findForward("publicationSubmitReport");
-		}
-
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		// PublicationBean publicationBean = ((PublicationBean)
-		// theForm.get("file"));
-		PublicationBean publicationBean = new PublicationBean();
-		Publication pub = (Publication) publicationBean.getDomainFile();
-		pub.setStatus("published");
-		pub.setCategory("report");
-		publicationBean.setDomainFile(pub);
-		theForm.set("file", publicationBean);
-		return forward;
-	}
-
-	public ActionForward setupPubmed(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
-		PublicationBean pbean = (PublicationBean) theForm.get("file");
-		pbean.setFoundPubMedArticle(false);
-
-		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
-		String pubmedID = request.getParameter("pubmedId");
-		String sampleId = request.getParameter("sampleId");
-		HttpSession session = request.getSession();
-		ActionForward forward = null;
-		if (sampleId != null && sampleId.trim().length() > 0) {
-			forward = mapping.findForward("sampleSubmitPublication");
-			session.setAttribute("docSampleId", sampleId);
-		} else {
-			forward = mapping.findForward("publicationSubmitPublication");
-			session.removeAttribute("docSampleId");
-		}
-
-		// clear publication data fields
-		Publication publication = (Publication) pbean.getDomainFile();
-		publication.setTitle("");
-		publication.setDigitalObjectId("");
-		publication.setJournalName("");
-		publication.setStartPage(null);
-		publication.setEndPage(null);
-		publication.setYear(null);
-		publication.setVolume("");
-		List<Author> authors = new ArrayList<Author>();
-		authors.add(new Author());
-		pbean.setAuthors(authors);
-
-		if (pubmedID != null && pubmedID.length() > 0 && !pubmedID.equals("0")) {
-			Long pubMedIDLong = 0L;
-			try {
-				pubMedIDLong = Long.valueOf(pubmedID);
-			} catch (Exception ex) {
-				ActionMessages msgs = new ActionMessages();
-				ActionMessage msg = new ActionMessage(
-						"message.submitPublication.invalidPubmedId");
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveErrors(request, msgs);
-				return forward;
-			}
-			phandler.parsePubMedXML(pubMedIDLong, pbean);
-			if (!pbean.isFoundPubMedArticle()) {
-				ActionMessages msgs = new ActionMessages();
-				ActionMessage msg = new ActionMessage(
-						"message.submitPublication.pubmedArticleNotFound",
-						pubmedID);
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveMessages(request, msgs);
-				return forward;
-			}
-			theForm.set("file", pbean);
-			if (sampleId != null && sampleId.length() > 0) {
-				forward = mapping.findForward("sampleSubmitPubmedPublication");
-			} else {
-				forward = mapping.findForward("publicationSubmitPublication");
-			}
-		} else {
-			publication.setPubMedId(null);
-			theForm.set("file", pbean);
-		}
-		return forward;
-	}
-
+	
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session = request.getSession();
 		PublicationForm theForm = (PublicationForm) form;
-		String sampleId = request.getParameter("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (StringUtils.isEmpty(sampleId)) {
-			session.removeAttribute("docSampleId");
-		} else {
-			session.setAttribute("docSampleId", sampleId);
-			// set up other particles with the same primary point of contact
-			InitSampleSetup.getInstance()
-					.getOtherSampleNames(request, sampleId);
-		}
-		
 		String publicationId = request.getParameter("publicationId");
 		PublicationService publicationService = new PublicationServiceLocalImpl();
-		PublicationBean publicationBean = 
-			publicationService.findPublicationById(publicationId, user);
-		theForm.set("file", publicationBean);
+		PublicationBean pubBean = publicationService.findPublicationById(
+				publicationId, user);
+		theForm.set("publication", pubBean);
+		String sampleId = request.getParameter("sampleId");
+		theForm.set("sampleId", sampleId);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		
-		return mapping.findForward("publicationSubmitPublication");
-	}		
-		// if sampleId is available direct to particle specific page
-//		Publication pub = (Publication) publicationBean.getDomainFile();
-//		Long pubMedId = pub.getPubMedId();
-//		ActionForward forward = this.getReturnForward(mapping, sampleId, pubMedId);
-//	}
+		request.getSession().setAttribute(
+				"onloadJavascript",
+				"updateFormBasedOnCategory()");
+		if (sampleId != null && sampleId.trim().length() > 0) {
+			InitSampleSetup.getInstance()
+					.getOtherSampleNames(request, sampleId);
+			return mapping.findForward("sampleSubmitPublication");
+		} else {
+			InitSampleSetup.getInstance().getAllSampleNames(request, user);
+			return mapping.findForward("publicationSubmitPublication");
+		}
+	}
 
-//	private ActionForward getReturnForward(ActionMapping mapping,
-//			String sampleId, Long pubMedId) {
-//		ActionForward forward = null;
-//		if (StringUtils.isEmpty(sampleId)) {
-//			if (pubMedId != null && pubMedId > 0) {
-//				forward = 
-//					mapping.findForward("publicationSubmitPubmedPublication");
-//			} else {
-//				forward = mapping.findForward("publicationSubmitPublication");
-//			}
-//			// request.removeAttribute("sampleId");
-//		} else {
-//			if (pubMedId != null && pubMedId > 0) {
-//				forward = mapping.findForward("sampleSubmitPubmedPublication");
-//			} else {
-//				forward = mapping.findForward("sampleSubmitPublication");
-//			}
-//			// request.setAttribute("sampleId", sampleId);
-//		}
-//		return forward;
-//	}
+	// if sampleId is available direct to particle specific page
+	// Publication pub = (Publication) publicationBean.getDomainFile();
+	// Long pubMedId = pub.getPubMedId();
+	// ActionForward forward = this.getReturnForward(mapping, sampleId,
+	// pubMedId);
+	// }
+
+	// private ActionForward getReturnForward(ActionMapping mapping,
+	// String sampleId, Long pubMedId) {
+	// ActionForward forward = null;
+	// if (StringUtils.isEmpty(sampleId)) {
+	// if (pubMedId != null && pubMedId > 0) {
+	// forward =
+	// mapping.findForward("publicationSubmitPubmedPublication");
+	// } else {
+	// forward = mapping.findForward("publicationSubmitPublication");
+	// }
+	// // request.removeAttribute("sampleId");
+	// } else {
+	// if (pubMedId != null && pubMedId > 0) {
+	// forward = mapping.findForward("sampleSubmitPubmedPublication");
+	// } else {
+	// forward = mapping.findForward("sampleSubmitPublication");
+	// }
+	// // request.setAttribute("sampleId", sampleId);
+	// }
+	// return forward;
+	// }
 
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -309,13 +212,13 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (Constants.LOCAL_SITE.equals(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		} else {
-			String serviceUrl =
-				InitSetup.getInstance().getGridServiceUrl(request, location);
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		PublicationBean publicationBean =
-			publicationService.findPublicationById(publicationId, user);
-		theForm.set("file", publicationBean);
+		PublicationBean publicationBean = publicationService
+				.findPublicationById(publicationId, user);
+		theForm.set("publication", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		// if sampleId is available direct to particle specific page
 		ActionForward forward = mapping.findForward("view");
@@ -328,7 +231,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -366,7 +269,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -388,7 +291,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -399,9 +302,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		//if session is expired or the url is clicked on directly
+		// if session is expired or the url is clicked on directly
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user==null) {
+		if (user == null) {
 			return summaryView(mapping, form, request, response);
 		}
 		this.prepareSummary(mapping, form, request, response);
@@ -414,7 +317,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -449,11 +352,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
 
-		String fileName = ExportUtils.getExportFileName(
-				sampleBean.getDomain().getName(), "PublicationSummaryView", type);
+		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
+				.getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		PublicationServiceHelper.exportSummary(summaryBean, 
-				response.getOutputStream());
+		PublicationServiceHelper.exportSummary(summaryBean, response
+				.getOutputStream());
 
 		return null;
 	}
@@ -461,7 +364,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -485,14 +388,14 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (Constants.LOCAL_SITE.equals(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		} else {
-			 String serviceUrl =
-				 InitSetup.getInstance().getGridServiceUrl(request, location);
-			 publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		List<PublicationBean> publications =
-			publicationService.findPublicationsBySampleId(sampleId, user);
-		PublicationSummaryViewBean summaryView =
-			new PublicationSummaryViewBean(publications);
+		List<PublicationBean> publications = publicationService
+				.findPublicationsBySampleId(sampleId, user);
+		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
+				publications);
 		request.setAttribute("publicationSummaryView", summaryView);
 
 		if (request.getParameter("clearTab") != null
@@ -519,7 +422,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, user);
 		PublicationForm theForm = (PublicationForm) form;
-		theForm.set("file", pubBean);
+		theForm.set("publication", pubBean);
 		return mapping.findForward("publicationDetailPrintView");
 	}
 
@@ -530,8 +433,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		PublicationForm theForm = (PublicationForm) form;
 
-		PublicationBean publicationBean = 
-			(PublicationBean) theForm.get("file");
+		PublicationBean publicationBean = (PublicationBean) theForm
+				.get("publication");
 		String selectedPublicationType = ((Publication) publicationBean
 				.getDomainFile()).getCategory();
 		if (selectedPublicationType != null) {
@@ -543,8 +446,8 @@ public class PublicationAction extends BaseAnnotationAction {
 						types);
 			}
 		}
-		String selectedPublicationStatus = 
-			((Publication) publicationBean.getDomainFile()).getStatus();
+		String selectedPublicationStatus = ((Publication) publicationBean
+				.getDomainFile()).getStatus();
 		if (selectedPublicationStatus != null) {
 			SortedSet<String> statuses = (SortedSet<String>) request
 					.getSession().getAttribute("publicationStatuses");
@@ -554,18 +457,19 @@ public class PublicationAction extends BaseAnnotationAction {
 						statuses);
 			}
 		}
-		theForm.set("file", publicationBean);
+		theForm.set("publication", publicationBean);
 
 		return mapping.findForward("publicationSubmitPublication");
-		
+
 		// if pubMedId is available, the related fields should be set to read
 		// only.
-//		HttpSession session = request.getSession();
-//		String sampleId = (String) session.getAttribute("docSampleId");
-//		Publication pub = (Publication) publicationBean.getDomainFile();
-//		Long pubMedId = pub.getPubMedId();
-//		ActionForward forward = getReturnForward(mapping, sampleId, pubMedId);
-//		return forward;
+		// HttpSession session = request.getSession();
+		// String sampleId = (String) session.getAttribute("docSampleId");
+		// Publication pub = (Publication) publicationBean.getDomainFile();
+		// Long pubMedId = pub.getPubMedId();
+		// ActionForward forward = getReturnForward(mapping, sampleId,
+		// pubMedId);
+		// return forward;
 	}
 
 	public ActionForward detailView(ActionMapping mapping, ActionForm form,
@@ -577,15 +481,15 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (Constants.LOCAL_SITE.equals(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		} else {
-			String serviceUrl = 
-				InitSetup.getInstance().getGridServiceUrl(request, location);
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, user);
 		PublicationForm theForm = (PublicationForm) form;
-		theForm.set("file", pubBean);
+		theForm.set("publication", pubBean);
 
 		ActionForward forward = null;
 		String sampleId = request.getParameter("sampleId");
@@ -609,7 +513,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
-		PublicationBean pbean = (PublicationBean) theForm.get("file");
+		PublicationBean pbean = (PublicationBean) theForm.get("publication");
 		pbean.addAuthor();
 
 		return mapping.getInputForward();
@@ -650,7 +554,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, user);
 		PublicationForm theForm = (PublicationForm) form;
-		theForm.set("file", pubBean);
+		theForm.set("publication", pubBean);
 		String title = pubBean.getDomainFile().getTitle();
 		if (title != null && title.length() > 10) {
 			title = title.substring(0, 10);

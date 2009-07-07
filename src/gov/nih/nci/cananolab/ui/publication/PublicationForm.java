@@ -23,11 +23,11 @@ public class PublicationForm extends DynaValidatorForm{
 			//if addAuthor and validator fail, do not reset
 			if (dispatch!=null && !dispatch.equalsIgnoreCase("addAuthor")
 					&& !dispatch.equalsIgnoreCase("create")) {
-				PublicationBean pubBean = (PublicationBean)form.get("file");
+				PublicationBean pubBean = (PublicationBean)form.get("publication");
 				pubBean.setResearchAreas(new String[0]);
 				pubBean.setVisibilityGroups(new String[0]);
 				pubBean.setSampleNames(new String[0]);
-				this.set("file", pubBean);
+				this.set("publication", pubBean);
 			}
 		}
 	}
