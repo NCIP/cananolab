@@ -274,6 +274,15 @@ function popImage(event, imgSrc, imgId) {
 		imgWindow.close();
 		//t = null;
 	}
+	var leftPos = 50;
+	var topPos = 50;
+	imgWindow = window.open("", "charFileWindow", "left=" + leftPos + ",top=" + topPos);
+	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");
+	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
+	imgWindow.document.write("<img styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
+	imgWindow.document.write("</body></html>");
+
+	/**
 	var popImg = new Image();
 	popImg.src = imgSrc;
 	var ratio = 1;
@@ -302,6 +311,7 @@ function popImage(event, imgSrc, imgId) {
 	imgWindow.document.write("<img width=" + (width - 10) + " styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
 //	t = setTimeout("imgWindow.close();", 15000);
+	*/
 }
 function printPage0(url) {
 	var obj = document.all.tags("link");
