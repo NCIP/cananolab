@@ -7,11 +7,12 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="file"
+			<form-property name="publication"
 				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
-			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="sampleId" type="java.lang.String" />
 			<form-property name="location" type="java.lang.String" />
+			<form-property name="otherSamples"
+				type="java.lang.String[]" />
 		</form-bean>
 
 		<form-bean name="searchPublicationForm"

@@ -5,17 +5,17 @@
 <form-validation>
 	<formset>
 		<form name="publicationForm">
-			<field property="file.domainFile.category" page="2"
+			<field property="publication.domainFile.category" page="2"
 				depends="required">
-				<arg position="0" key="submitPublicationForm.file.category"
+				<arg position="0" key="submitPublicationForm.publication.category"
 					bundle="publication" />
 			</field>
-			<field property="file.domainFile.status" page="2"
+			<field property="publication.domainFile.status" page="2"
 				depends="required">
-				<arg position="0" key="submitPublicationForm.file.status"
+				<arg position="0" key="submitPublicationForm.publication.status"
 					bundle="publication" />
 			</field>
-			<field property="file.domainFile.title" page="2"
+			<field property="publication.domainFile.title" page="2"
 				depends="required">
 				<arg position="0" key="publication.title" bundle="publication" />
 			</field>
