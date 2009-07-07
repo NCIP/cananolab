@@ -2,28 +2,35 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type="text/javascript" src="javascript/PublicationManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/PublicationManager.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
 
 <c:set var="action" value="Submit" scope="request" />
 <c:if test="${param.dispatch eq 'setupUpdate'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
-<c:choose>
-	<c:when
-		test="${publicationForm.map.file.domainFile.category eq 'report'}">
-		<c:set var="reportStyle" value="display:none" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="reportStyle" value="" />
-	</c:otherwise>
-</c:choose>
+
 <table width="100%" align="center">
 	<tr>
 		<td>
 			<h4>
-				${action} Publication
+				${fn:toUpperCase(param.location)} ${sampleName}
+				<c:choose>
+					<c:when
+						test="${!empty publicationForm.map.publication.domainFile.id}">
+						${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}						
+				</c:when>
+					<c:otherwise>
+				Publication
+				</c:otherwise>
+				</c:choose>
 			</h4>
 		</td>
 		<td align="right" width="20%">
@@ -34,11 +41,7 @@
 		</td>
 	</tr>
 </table>
-
 <html:form action="/publication" enctype="multipart/form-data">
-	<c:if test="${!empty publicationForm.map.file.domainFile.id}">
-		<html:hidden property="file.domainFile.id" />
-	</c:if>
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -47,10 +50,10 @@
 			</td>
 			<td>
 				<div id="categoryPrompt">
-					<html:select property="file.domainFile.category"
-						onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category', 'categoryPrompt');
-														setReportFields('file.domainFile.category', 'file.domainFile.status');"
-						styleId="file.domainFile.category">
+					<html:select property="publication.domainFile.category"
+						onchange="javascript:callPrompt('Publication Category', 'publication.domainFile.category', 'categoryPrompt');
+														updateFormBasedOnCategory();"
+						styleId="domainFile.category">
 						<option value=""></option>
 						<html:options name="publicationCategories" />
 						<option value="other">
@@ -62,11 +65,11 @@
 			<td class="cellLabel">
 				Publication Status*
 			</td>
-			<td>
+			<td colspan="3">
 				<div id="statusPrompt">
-					<html:select property="file.domainFile.status"
-						onchange="javascript:callPrompt('Publication status', 'file.domainFile.status', 'statusPrompt');"
-						styleId="file.domainFile.status">
+					<html:select property="publication.domainFile.status"
+						onchange="javascript:callPrompt('Publication status', 'publication.domainFile.status', 'statusPrompt');"
+						styleId="domainFile.status">
 						<option value=""></option>
 						<html:options name="publicationStatuses" />
 						<option value="other">
@@ -80,252 +83,249 @@
 			<td class="cellLabel">
 				Research Category
 			</td>
-			<td colspan="3">
+			<td colspan="5">
 				<c:forEach var="data" items="${publicationResearchAreas}">
-					<html:multibox property="file.researchAreas">
+					<html:multibox property="publication.researchAreas">
 												${data}
 											</html:multibox>${data}
 										</c:forEach>
 				&nbsp;
 			</td>
 		</tr>
-		<tr id="pubMedRow" style="">
+		<tr id="pubMedRow" style="display: none">
 			<td class="cellLabel">
 				PubMed ID
 			</td>
-			<td colspan="3">
+			<td colspan="5">
 				<a
-					href="http://www.ncbi.nlm.nih.gov/pubmed/${file.domainFile.pubMedId}"
+					href="http://www.ncbi.nlm.nih.gov/pubmed/${publicationForm.map.publication.domainFile.pubMedId}"
 					target="_pubmed"> Click to look up PubMed Identifier</a>
 				<br>
-				<html:text property="file.domainFile.pubMedId" size="50"
-					styleId="pubmedId"
-					onchange="javascript:addPubmed(publicationForm, '${docSampleId}'); return false;" />
+				<html:text property="publication.domainFile.pubMedId" size="50"
+					styleId="domainFile.pubMedId"
+					onchange="javascript:fillPubMedInfo()" />
 				<br>
 				<i> clicking outside of the text field after entering a valid
 					PubMed ID enables auto-population of PubMed related fields</i>
 			</td>
 		</tr>
-		<c:choose>
-			<c:when test="${empty publicationForm.map.file.bibliographyInfo}">
-				<tr id="doiRow" style="">
-					<td class="cellLabel">
-						Digital Object ID
-					</td>
-					<td colspan="3">
-						<html:text property="file.domainFile.digitalObjectId" size="30" />
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Title*
-					</td>
-					<td colspan="3">
-						<html:text property="file.domainFile.title" size="80" />
-					</td>
-				</tr>
-				<tr id="journalRow" style="">
-					<td class="cellLabel">
-						Journal&nbsp;
-					</td>
-					<td colspan="3">
-						<html:text property="file.domainFile.journalName" size="80" />
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Year of Publication
-					</td>
-					<td>
-						<html:text property="file.domainFile.year" size="5"
-							onkeydown="return filterInteger(event)" />
-					</td>
-					<td class="cellLabel">
-						Volume
-					</td>
-					<td>
-						<html:text property="file.domainFile.volume" size="8"
-							styleId="volumeValue" style="${reportStyle }" />
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Start Page
-					</td>
-					<td>
-						<html:text property="file.domainFile.startPage" size="8"
-							style="${reportStyle }" onkeydown="return filterInteger(event)"
-							styleId="spageValue" />
-						&nbsp;
-					</td>
-					<td class="cellLabel">
-						<strong id="epageTitle" style="">End Page&nbsp;
-					</td>
-					<td>
-						<html:text property="file.domainFile.endPage" size="8"
-							style="${reportStyle }" onkeydown="return filterInteger(event)"
-							styleId="epageValue" />
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Authors
-						<br>
-					</td>
-					<td colspan="3">
-						<table class="summaryViewLayer4" width="100%">
-							<tr>
-								<th>
+		<tr id="doiRow" style="display: none">
+			<td class="cellLabel">
+				Digital Object ID
+			</td>
+			<td colspan="5">
+				<html:text property="publication.domainFile.digitalObjectId"
+					styleId="domainFile.digitalObjectId" size="30" />
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Title*
+			</td>
+			<td colspan="5">
+				<html:text property="publication.domainFile.title"
+					styleId="domainFile.title" size="120" />
+			</td>
+		</tr>
+		<tr id="journalRow" style="display: none">
+			<td class="cellLabel">
+				Journal&nbsp;
+			</td>
+			<td colspan="5">
+				<html:text property="publication.domainFile.journalName"
+					styleId="domainFile.journalName" size="120" />
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Year of Publication
+			</td>
+			<td colspan="5">
+				<html:text property="publication.domainFile.year" size="5"
+					styleId="domainFile.year" onkeydown="return filterInteger(event)" />
+			</td>
+		</tr>
+		<tr id="volumePageRow" style="display: none">
+			<td class="cellLabel">
+				Volume
+			</td>
+			<td>
+				<html:text property="publication.domainFile.volume" size="8"
+					styleId="domainFile.volume" />
+				&nbsp;
+			</td>
+			<td class="cellLabel">
+				Start Page
+			</td>
+			<td>
+				<html:text property="publication.domainFile.startPage" size="8"
+					onkeydown="return filterInteger(event)"
+					styleId="domainFile.startPage" />
+				&nbsp;
+			</td>
+			<td class="cellLabel">
+				<strong id="epageTitle" style="">End Page&nbsp; </strong>
+			</td>
+			<td>
+				<html:text property="publication.domainFile.endPage" size="8"
+					onkeydown="return filterInteger(event)"
+					styleId="domainFile.endPage" />
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Authors
+			</td>
+			<td colspan="5">
+				<div id="authorSection" style="position: relative;">
+					<a style="display: block" id="addAuthor"
+						href="javascript:clearAuthor();openSubmissionForm('Author');">Add</a>
+					<br>
+					<table id="authorTable" class="summaryViewLayer4" width="85%"
+						style="display: none;">
+						<tbody id="authorRows">
+							<tr id="patternHeader">
+								<td class="cellLabel">
 									First Name
-								</th>
-								<th>
+								</td>
+								<td class="cellLabel">
 									Last Name
-								</th>
-								<th>
+								</td>
+								<td class="cellLabel">
 									Initials
-								</th>
-							<tr>
-								<logic:iterate name="publicationForm" property="file.authors"
-									id="author" indexId="authorInd">
-									<tr>
-										<td>
-											<html:text property="file.authors[${authorInd}].firstName"
-												size="17" />
-										</td>
-										<td>
-											<html:text property="file.authors[${authorInd}].lastName"
-												size="17" />
-										</td>
-										<td>
-											<html:text property="file.authors[${authorInd}].initial"
-												size="17" />
-										</td>
-									</tr>
-								</logic:iterate>
+								</td>
+								<td>
+								</td>
 							</tr>
-						</table>
-						&nbsp;
-						<i>To remove author, please clear first name, last name and
-							initials fields</i>
-					</td>
-					<td>
-						<a href="#"
-							onclick="javascript:addComponent(publicationForm, 'publication', 'addAuthor'); return false;">
-							<img align="top" src="images/btn_add.gif" border="0" /> </a>
-					</td>
-				</tr>
-			</c:when>
-			<c:otherwise>
-				<tr id="doiRow">
-					<td class="cellLabel" valign="top">
-						Digital Object ID
-					</td>
-					<td colspan="3">
-						${publicationForm.map.file.domainFile.digitalObjectId }&nbsp;
-						<%--										<html:text property="file.domainFile.digitalObjectId"--%>
-						<%--											size="30" />--%>
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Title*
-					</td>
-					<td colspan="3">
-						${publicationForm.map.file.domainFile.title }&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Journal
-					</td>
-					<td colspan="3">
-						${publicationForm.map.file.bibliographyInfo}&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Authors
-						<br>
-					</td>
-					<td colspan="3">
-						<c:if test="${!empty publicationForm.map.file.authors}">
-							<c:forEach var="author"
-								items="${publicationForm.map.file.authors}">
-									${author.lastName}, ${author.firstName} ${author.initial}<br>
-							</c:forEach>
-						</c:if>
-						&nbsp;
-					</td>
-				</tr>
-			</c:otherwise>
-		</c:choose>
+							<tr id="pattern" style="display: none;">
+								<td>
+									<span id="firstNameValue">First Name</span>
+								</td>
+								<td>
+									<span id="lastNameValue">Last Name</span>
+								</td>
+								<td>
+									<span id="initialsValue">Initials</span>
+								</td>
+								<td>
+									<input class="noBorderButton" id="edit" type="button"
+										value="Edit" style="display: block"
+										onclick="editAuthor(this.id); openSubmissionForm('Author');" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table id="newAuthor" style="display: none;" class="promptbox">
+						<tbody>
+							<tr>
+								<html:hidden property="publication.theAuthor.id" styleId="id" />
+								<td class="cellLabel">
+									First Name
+								</td>
+								<td>
+									<html:text property="publication.theAuthor.firstName"
+										styleId="firstName" />
+								</td>
+								<td class="cellLabel">
+									Last Name
+								</td>
+								<td>
+									<html:text property="publication.theAuthor.lastName"
+										styleId="lastName" />
+								</td>
+								<td class="cellLabel">
+									Initials
+								</td>
+								<td>
+									<html:text property="publication.theAuthor.initial"
+										styleId="initial" />
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input style="display: none;" class="promptButton"
+										id="deleteAuthor" type="button" value="Remove"
+										onclick="deleteTheAuthor()" />
+								</td>
+								<td colspan="5">
+									<div align="right">
+										<input class="promptButton" type="button" value="Add"
+											onclick="addAuthor();show('authorTable');closeSubmissionForm('Author');" />
+										<input class="promptButton" type="button" value="Cancel"
+											onclick="clearAuthor();closeSubmissionForm('Author');" />
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</td>
+		</tr>
 		<tr>
 			<td class="cellLabel">
 				Keywords
 				<br>
 				<i>(one keyword per line)</i>
 			</td>
-			<td colspan="7">
-				<html:textarea property="file.keywordsStr" rows="3" cols="70" />
+			<td colspan="5">
+				<html:textarea property="publication.keywordsStr" rows="3" cols="80" />
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
 				Description
 			</td>
-			<td colspan="7">
-				<html:textarea property="file.domainFile.description" rows="3"
-					cols="70" />
+			<td colspan="5">
+				<html:textarea property="publication.domainFile.description"
+					rows="3" cols="120" />
 			</td>
 		</tr>
 	</table>
-
 	<br>
 	<table width="100%" align="center" class="submissionView">
 		<c:choose>
 			<c:when
-				test="${publicationForm.map.file.domainFile.uriExternal eq 'true' }">
-				<c:set var="linkDisplay" value="display: inline" />
-				<c:set var="loadDisplay" value="display: none" />
+				test="${publicationForm.map.publication.domainFile.uriExternal eq 'true' }">
+				<c:set var="linkStyle" value="display: block" />
+				<c:set var="loadStyle" value="display: none" />
 			</c:when>
 			<c:otherwise>
-				<c:set var="linkDisplay" value="display: none" />
-				<c:set var="loadDisplay" value="display: inline" />
+				<c:set var="linkStyle" value="display: none" />
+				<c:set var="loadStyle" value="display: block" />
 			</c:otherwise>
 		</c:choose>
 		<tr>
 			<td class="cellLabel">
 				<html:radio styleId="external0"
-					property="file.domainFile.uriExternal" value="false"
+					property="publication.domainFile.uriExternal" value="false"
 					onclick="displayFileRadioButton()" />
 				Upload File
 				<br>
 				&nbsp;&nbsp;or
 				<br>
 				<html:radio styleId="external1"
-					property="file.domainFile.uriExternal" value="true"
+					property="publication.domainFile.uriExternal" value="true"
 					onclick="displayFileRadioButton()" />
 				Enter File URL
 			</td>
 			<td colspan="2">
-				<span id="load"> <html:file property="file.uploadedFile"
-						size="60" /> &nbsp;&nbsp; </span>
+				<span id="load"> <html:file
+						property="publication.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
 				<br>
 				<br>
 				<span id="link" style=""><html:text
-						property="file.externalUrl" size="60" /> </span>&nbsp;
+						property="publication.externalUrl" size="60" /> </span>&nbsp;
 			</td>
 		</tr>
-		<c:if test="${!empty publicationForm.map.file.domainFile.uri }">
+		<c:if test="${!empty publicationForm.map.publication.domainFile.uri }">
 			<tr>
 				<td class="completeLabel" colspan="3">
 					<c:choose>
-						<c:when test="${publicationForm.map.file.image eq 'true'}">
-						 				${publicationForm.map.file.domainFile.title}<br>
+						<c:when test="${publicationForm.map.publication.image eq 'true'}">
+						 				${publicationForm.map.publication.domainFile.title}<br>
 							<br>
 							<a href="#"
 								onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}',
@@ -336,9 +336,9 @@
 						<c:otherwise>
 											Submitted Publication &nbsp;&nbsp;
 										<a
-								href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}"
-								target="${publicationForm.map.file.urlTarget}">
-								${publicationForm.map.file.domainFile.uri}</a>
+								href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}"
+								target="${publicationForm.map.publication.urlTarget}">
+								${publicationForm.map.publication.domainFile.uri}</a>
 							<br>
 						</c:otherwise>
 					</c:choose>
@@ -349,14 +349,15 @@
 	</table>
 	<br>
 	<c:choose>
-		<c:when test="${empty docSampleId}">
+		<c:when test="${empty publicationForm.map.sampleId}">
 			<table width="100%" align="center" class="submissionView">
 				<tr>
 					<td class="cellLabel" width="20%">
 						Sample Name
 					</td>
 					<td>
-						<html:select property="file.sampleNames" multiple="true" size="5">
+						<html:select property="publication.sampleNames" multiple="true"
+							size="5">
 							<html:options name="allSampleNames" />
 						</html:select>
 					</td>
@@ -364,39 +365,8 @@
 			</table>
 		</c:when>
 		<c:otherwise>
-			<table width="100%" align="center" class="submissionView">
-				<tr>
-					<th colspan="8">
-						Copy
-					</th>
-				</tr>
-				<c:choose>
-					<c:when test="${!empty otherSampleNames}">
-						<tr>
-							<input type="hidden" name="file.sampleNames"
-								value="${sampleName}">
-							<td class="cellLabel" valign="top" width="20%">
-								Copy to other ${samplePointOfContact} nanoparticle
-							</td>
-							<td class="rightLabel">
-								<html:select property="file.sampleNames" multiple="true"
-									size="5">
-									<html:options collection="otherSampleNames" property="name"
-										labelProperty="name" />
-								</html:select>
-							</td>
-						</tr>
-					</c:when>
-					<c:otherwise>
-						<tr>
-							<td class="completeLabel" colspan="2">
-								There are no other samples from source ${samplePointOfContact}
-								to copy annotation to.
-							</td>
-						</tr>
-					</c:otherwise>
-				</c:choose>
-			</table>
+			<jsp:include
+				page="/sample/bodyAnnotationCopy.jsp?annotation=publication" />
 		</c:otherwise>
 	</c:choose>
 	<br>
@@ -406,7 +376,7 @@
 				Visibility
 			</td>
 			<td>
-				<html:select property="file.visibilityGroups" multiple="true"
+				<html:select property="publication.visibilityGroups" multiple="true"
 					size="6">
 					<html:options name="allVisibilityGroups" />
 				</html:select>
@@ -430,12 +400,12 @@
 							<div align="right">
 								<div align="right">
 									<c:set var="dataId"
-										value="${publicationForm.map.file.domainFile.id}" />
+										value="${publicationForm.map.publication.domainFile.id}" />
 									<c:set var="origUrl"
-										value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupNew&location=${applicationOwner }" />
+										value="publication.do?page=0&sampleId=${publicationForm.map.sampleId }&dispatch=setupNew&location=${applicationOwner }" />
 									<c:if test="${!empty dataId}">
 										<c:set var="origUrl"
-											value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupUpdate&location=${applicationOwner}&fileId=${dataId }" />
+											value="publication.do?page=0&sampleId=${publicationForm.map.sampleId }&dispatch=setupUpdate&location=${applicationOwner}&fileId=${dataId }" />
 									</c:if>
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
@@ -444,7 +414,8 @@
 									<input type="hidden" name="page" value="2">
 									<input type="hidden" name="location"
 										value="${applicationOwner}">
-									<input type="hidden" name="sampleId" value="${docSampleId}">
+									<input type="hidden" name="sampleId"
+										value="${publicationForm.map.sampleId}">
 									<html:submit />
 								</div>
 							</div>
