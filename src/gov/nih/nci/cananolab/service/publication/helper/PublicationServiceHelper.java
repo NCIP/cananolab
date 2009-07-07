@@ -52,7 +52,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of PublicationService and grid service *
- *
+ * 
  * @author tanq, pansu
  */
 public class PublicationServiceHelper {
@@ -60,11 +60,9 @@ public class PublicationServiceHelper {
 	 * Constants for generating Excel report for summary view.
 	 */
 	public static final String TITLE = "Title";
-	public static final String AUTHORS = "Author(s)";
 	public static final String BIBLIOBRAPHY_INFO = "Bibliography Info";
 	public static final String ABSTRACT = "Abstract/Download Link";
 	public static final String RESEARCH_CATEGORY = "Research Category";
-	public static final String CREATED_DATE = "Created Date";
 	public static final String PMID = "PMID: ";
 	private AuthorizationService authService;
 	private Logger logger = Logger.getLogger(PublicationServiceHelper.class);
@@ -243,7 +241,8 @@ public class PublicationServiceHelper {
 						+ obj.toString());
 			}
 		}
-		Collections.sort(publications, new Comparators.PublicationCategoryTitleComparator());
+		Collections.sort(publications,
+				new Comparators.PublicationCategoryTitleComparator());
 		return publications;
 	}
 
@@ -470,7 +469,7 @@ public class PublicationServiceHelper {
 
 	/**
 	 * Export sample publication summary report as Excel spread sheet.
-	 *
+	 * 
 	 * @param summaryBean
 	 *            CharacterizationSummaryViewBean
 	 * @param out
@@ -491,7 +490,7 @@ public class PublicationServiceHelper {
 
 	/**
 	 * Generate Excel report for sample publication summary report.
-	 *
+	 * 
 	 * @param summaryBean
 	 *            CharacterizationSummaryViewBean
 	 * @param wb
@@ -519,13 +518,11 @@ public class PublicationServiceHelper {
 
 			// Generate header of report
 			ExportUtils.createCell(row, cellIndex++, headerStyle, TITLE);
-			ExportUtils.createCell(row, cellIndex++, headerStyle, AUTHORS);
 			ExportUtils.createCell(row, cellIndex++, headerStyle,
 					BIBLIOBRAPHY_INFO);
 			ExportUtils.createCell(row, cellIndex++, headerStyle, ABSTRACT);
 			ExportUtils.createCell(row, cellIndex++, headerStyle,
 					RESEARCH_CATEGORY);
-			ExportUtils.createCell(row, cellIndex++, headerStyle, CREATED_DATE);
 
 			// Generate data of report
 			List<PublicationBean> pubBeans = pubs.get(category);
@@ -537,24 +534,9 @@ public class PublicationServiceHelper {
 				// Title: cell index = 0.
 				ExportUtils.createCell(row, cellIndex++, pub.getTitle());
 
-				// Author(s): cell index = 1, put all authors in one cell for
-				// sorting.
-				List<Author> authors = pubBean.getAuthors();
-				sb.setLength(0);
-				if (authors != null && !authors.isEmpty()) {
-					for (Author author : authors) {
-						sb.append(author.getLastName()).append(',').append(' ');
-						sb.append(author.getFirstName()).append(' ').append(
-								author.getInitial());
-						sb.append(';').append(' '); // use ; as delimiter.
-					}
-					sb.deleteCharAt(sb.length() - 1);
-				}
-				ExportUtils.createCell(row, cellIndex++, sb.toString());
-
 				// Bibliography Info: cell index = 2.
 				ExportUtils.createCell(row, cellIndex++, pubBean
-						.getBibliographyInfo());
+						.getDisplayName());
 
 				// Abstract/Download Link: cell index = 3.
 				sb.setLength(0);
@@ -572,16 +554,12 @@ public class PublicationServiceHelper {
 
 				// Research Category: cell index = 4.
 				ExportUtils.createCell(row, cellIndex++, pub.getResearchArea());
-
-				// Created Date: cell index = 5.
-				ExportUtils.createCell(row, cellIndex++, pubBean
-						.getCreatedDateStr());
 			}
 		}
 	}
 
-	public String[] findSampleNamesByPublicationId(
-			String publicationId, UserBean user) throws Exception {
+	public String[] findSampleNamesByPublicationId(String publicationId,
+			UserBean user) throws Exception {
 		// check if user have access to publication first
 		if (authService.checkReadPermission(user, publicationId)) {
 			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
@@ -643,7 +621,8 @@ public class PublicationServiceHelper {
 						+ pub.getId());
 			}
 		}
-		Collections.sort(publications, new Comparators.PublicationCategoryTitleComparator());
+		Collections.sort(publications,
+				new Comparators.PublicationCategoryTitleComparator());
 		return publications;
 	}
 
