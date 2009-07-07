@@ -81,14 +81,6 @@ public class InitSampleSetup {
 	public SortedSet<String> getAllSampleNames(HttpServletRequest request,
 			UserBean user) throws Exception {
 		SortedSet<String> sampleNames = sampleService.findAllSampleNames(user);
-		request.getSession().setAttribute("allUserSampleNames", sampleNames);
-		return sampleNames;
-	}
-
-	public SortedSet<String> getAllSampleNames(HttpServletRequest request)
-			throws Exception {
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		SortedSet<String> sampleNames = sampleService.findAllSampleNames(user);
 		request.getSession().setAttribute("allSampleNames", sampleNames);
 		return sampleNames;
 	}
