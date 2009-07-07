@@ -1,3 +1,9 @@
+// IE and firefox behaves differently for table row style
+if(navigator.appName.indexOf("Microsoft") > -1){
+var canSeeTableRow = 'block';
+} else {
+var canSeeTableRow = 'table-row';
+}
 
 function changeMenuStyle(obj, new_style) {
 	obj.className = new_style;
@@ -51,8 +57,9 @@ function openHelpWindow(pageURL) {
 	window.open(pageURL, "Help", "alwaysRaised,dependent,status,scrollbars,resizable,width=800,height=500");
 }
 /**
-moveItems is a function used in moving items in one multiple select to the other.
-*/
+ * moveItems is a function used in moving items in one multiple select to the
+ * other.
+ */
 function moveItems(fbox, tbox) {
 	var arrFbox = new Array();
 	var arrTbox = new Array();
@@ -74,8 +81,8 @@ function moveItems(fbox, tbox) {
 			fLength++;
 		}
 	}
-			//arrFbox.sort();
-			//arrTbox.sort();
+			// arrFbox.sort();
+			// arrTbox.sort();
 	fbox.length = 0;
 	tbox.length = 0;
 	var c;
@@ -102,7 +109,7 @@ function resetSelect(selectObj) {
 function removeSelectOptions(selectObj) {
 	selectObj.options.length = 0;
 }
-/* filter second drop-down by first drop-down selection*/
+/* filter second drop-down by first drop-down selection */
 function doubleDropdown(selection1, selection2, value1ToValue2) {
 	/* initialize selection2 options */
 	selection2.options.length = 0;
@@ -115,7 +122,7 @@ function doubleDropdown(selection1, selection2, value1ToValue2) {
 		}
 	}
 }
-/* filter second drop-down by first drop-down selection*/
+/* filter second drop-down by first drop-down selection */
 function doubleDropdownForTheEditable(selection1, selection2, value1ToValue2) {
 	/* initialize selection2 options */
 	selection2.options.length = 0;
@@ -141,7 +148,10 @@ function doubleDropdownForNameValuePairs(selection1, selection2, value1ToValue2I
 		}
 	}
 }
-/* filter second drop-down by first drop-down selection, add an extra option at the end*/
+/*
+ * filter second drop-down by first drop-down selection, add an extra option at
+ * the end
+ */
 function doubleDropdownWithExraOption(selection1, selection2, value1ToValue2, extraOptionName) {
 	/* initialize selection2 options */
 	selection2.options.length = 0;
@@ -157,7 +167,7 @@ function doubleDropdownWithExraOption(selection1, selection2, value1ToValue2, ex
 	}
 	selection2.options[last] = new Option(extraOptionName, extraOptionName);
 }
-/* filter a drop-down by a value*/
+/* filter a drop-down by a value */
 function dynamicDropdown(value, selection, value1ToValue2) {
 	/* initialize selection options */
 	selection.options.length = 0;
@@ -268,7 +278,7 @@ function updateOtherField(form, elementName, otherElementName) {
 	}
 }
 var imgWindow = null;
-//var t = null;
+// var t = null;
 function popImage(event, imgSrc, imgId) {
 	if (imgWindow != null && imgWindow.open) {
 		imgWindow.close();
@@ -352,7 +362,7 @@ function getSelectedOptions(selectEle) {
 	var options = selectEle.options;
 	var selectedValues = "";
 	for (var c = 0; c < options.length; c++) {
-		if (options[c].selected) { //true if selected.
+		if (options[c].selected) { // true if selected.
 			selectedValues += options[c].value + "~";
 		}
 	}
@@ -363,37 +373,46 @@ function displayLogin() {
 	showhide("loginBlock");
 	return false;
 }
-function showhide(layer_ref) {
+function showhide(layer_ref, isTableRow) {	
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock == null) {
-		//alert(layer_ref + " is null (cannot show)");
+		// alert(layer_ref + " is null (cannot show)");
 		return;
 	}
 	if (layerBlock.style.display == "none") {
-		layerBlock.style.display = "block";
+		if (isTableRow==true) {
+		    layerBlock.style.display =canSeeTableRow;
+		}
+		else {
+		   layerBlock.style.display = "block";
+		}
 	} else {
 		layerBlock.style.display = "none";
 	}
 }
-function show(layer_ref) {
+function show(layer_ref, isTableRow) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock == null) {
-		//alert(layer_ref + " is null (cannot show)");
+		// alert(layer_ref + " is null (cannot show)");
 		return;
 	}
 	if (layerBlock.style.display == "none") {
-		layerBlock.style.display = "block";
+		if (isTableRow==true) {
+		    layerBlock.style.display = canSeeTableRow;
+		}
+		else {
+		   layerBlock.style.display = "block";
+		}
 	}
 }
+
 function hide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock == null) {
-		//alert(layer_ref + " is null (cannot show)");
+		// alert(layer_ref + " is null (cannot show)");
 		return;
-	}
-	if (layerBlock.style.display == "block") {
-		layerBlock.style.display = "none";
-	}
+	}	
+	layerBlock.style.display = "none";	
 }
 function showSummary(layer_ref, totalLayers) {
 	var printLink = document.getElementById("printLink");
@@ -429,8 +448,9 @@ function showSummary(layer_ref, totalLayers) {
 	exportLink.href = exportUrl.href;
 }
 function addFile(actionName, form) {
-	//for characterization form, files are saved to the session per finding, not directly
-	//to the database
+	// for characterization form, files are saved to the session per finding,
+	// not directly
+	// to the database
 	if (actionName == "characterization") {
 		dispatch = "addFile";
 	} else {
