@@ -151,8 +151,8 @@ public class PublicationBean extends FileBean {
 	private String getPublishInfoDisplayName() {
 		Publication pub = (Publication) domainFile;
 		String publishInfo = "";
-		if (!StringUtils.isEmpty(pub.getYear().toString())) {
-			publishInfo += pub.getYear().toString() + " ";
+		if (pub.getYear()!=null) {
+			publishInfo += pub.getYear().toString() + "; ";
 		}
 		if (!StringUtils.isEmpty((pub.getVolume()))) {
 			publishInfo += pub.getVolume() + ":";
@@ -172,14 +172,14 @@ public class PublicationBean extends FileBean {
 		Publication pub = (Publication) domainFile;
 		List<String> strs = new ArrayList<String>();
 		strs.add(getAuthorsDisplayName());
-		//remove last . in the title
+		// remove last . in the title
 		if (pub.getTitle().endsWith(".")) {
-			pub.getTitle().substring(0, pub.getTitle().length()-2);
+			pub.getTitle().substring(0, pub.getTitle().length() - 2);
 		}
 		strs.add(pub.getTitle());
 		strs.add(pub.getJournalName());
 		strs.add(getPublishInfoDisplayName());
-		displayName = StringUtils.join(strs, ". ")+".";
+		displayName = StringUtils.join(strs, ". ") + ".";
 		return displayName;
 	}
 
