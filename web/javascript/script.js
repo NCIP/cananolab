@@ -274,44 +274,32 @@ function popImage(event, imgSrc, imgId) {
 		imgWindow.close();
 		//t = null;
 	}
-	var leftPos = 50;
-	var topPos = 50;
-	imgWindow = window.open("", "charFileWindow", "left=" + leftPos + ",top=" + topPos);
-	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");
-	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
-	imgWindow.document.write("<img styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
-	imgWindow.document.write("</body></html>");
-
-	/**
 	var popImg = new Image();
 	popImg.src = imgSrc;
-	var ratio = 1;
 	var maxHeight = 800;
 	var width = popImg.width + 20;
 	var height = popImg.height + 20;
 	if (width > height) {
 		if (width > maxHeight) {
-			ratio = maxHeight / width;
-			width = maxHeight + 2;
+			var ratio = maxHeight / width;
+			width = maxHeight;
 			height = ratio * height;
 		}
 	} else {
 		if (height > maxHeight) {
-			ratio = maxHeight / height * 100;
-			height = maxHeight + 2;
-			width = ratio * width / 100;
+			var ratio = maxHeight / height;
+			height = maxHeight;
+			width = ratio * width;
 		}
 	}
 	var leftPos = 50;
 	var topPos = 50;
-	var myScript = "<html><head><title>Characterization File</title></head>\n";
 	imgWindow = window.open("", "charFileWindow", "width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
-	imgWindow.document.write(myScript);
+	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");
 	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
-	imgWindow.document.write("<img width=" + (width - 10) + " styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
+	imgWindow.document.write("<img width=" + (width - 20) + " height=" + (height - 20) + " styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
 //	t = setTimeout("imgWindow.close();", 15000);
-	*/
 }
 function printPage0(url) {
 	var obj = document.all.tags("link");
