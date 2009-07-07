@@ -9,8 +9,8 @@
 		<tr>
 			<td>
 				<h4>
-					${fn:toUpperCase(location)} Sample
-					${theSample.domain.name} Publication
+					${fn:toUpperCase(location)} Sample ${theSample.domain.name}
+					Publication
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -132,13 +132,7 @@
 										<table class="summarytable" width="90%" border="0"
 											cellpadding="0" cellspacing="0" summary="">
 											<tr>
-												<th width="20%">
-													Title
-												</th>
-												<th width="20%">
-													Author(s)
-												</th>
-												<th width="20%">
+												<th width="70%">
 													Bibliography Info
 												</th>
 												<th width="15%">
@@ -146,9 +140,6 @@
 												</th>
 												<th>
 													Research Category
-												</th>
-												<th>
-													Created Date
 												</th>
 												<th width="5%">
 													&nbsp;
@@ -159,18 +150,7 @@
 												<c:set var="pubObj" value="${pubBean.domainFile}" />
 												<tr>
 													<td valign="top">
-														${pubObj.title}&nbsp;
-													</td>
-													<td valign="top">
-														<c:if test="${!empty pubBean.authors}">
-															<c:forEach var="author" items="${pubBean.authors}">
-												${author.lastName}, ${author.firstName} ${author.initial}<br>
-															</c:forEach>
-														</c:if>
-														&nbsp;
-													</td>
-													<td valign="top">
-														${pubBean.bibliographyInfo} &nbsp;
+														${pubBean.displayName}&nbsp;
 													</td>
 													<td valign="top">
 														<c:choose>
@@ -201,9 +181,6 @@
 															value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
 															escapeXml="false" />
 														&nbsp;
-													</td>
-													<td valign="top">
-														${pubBean.createdDateStr}&nbsp;
 													</td>
 													<td valign="top">
 														<c:url var="pubUrl" value="publication.do">

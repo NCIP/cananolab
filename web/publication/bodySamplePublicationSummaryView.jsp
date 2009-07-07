@@ -9,8 +9,8 @@
 		<tr>
 			<td>
 				<h4>
-					${fn:toUpperCase(location)} Sample
-					${theSample.domain.name} Publication
+					${fn:toUpperCase(location)} Sample ${theSample.domain.name}
+					Publication
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -29,7 +29,8 @@
 	<div class="animatedtabs" id="summaryTabALL">
 		<ul>
 			<li class="selected">
-				<a	href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
+				<a
+					href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
 					title="All"><span>All</span> </a>
 				<c:url var="printUrl" value="${actionName}">
 					<c:param name="dispatch" value="summaryPrint" />
@@ -41,15 +42,21 @@
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="location" value="${location}" />
 				</c:url>
-				<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
+				<a href="javascript:printPage('${printUrl}')" id="printUrlAll"
+					style="display: none;"></a>
 				<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 			</li>
 			<li>
-				<c:forEach var="type" items="${publicationCategories}" varStatus="ind">
-					<a	href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})"
-						title="${type}"><span>${type}</span></a>
-					<a href="javascript:printPage('${printUrl}&type=${type}')" id="printUrl${ind.count}" style="display: none;"></a>
-					<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}" style="display: none;"></a>
+				<c:forEach var="type" items="${publicationCategories}"
+					varStatus="ind">
+					<a
+						href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})"
+						title="${type}"><span>${type}</span>
+					</a>
+					<a href="javascript:printPage('${printUrl}&type=${type}')"
+						id="printUrl${ind.count}" style="display: none;"></a>
+					<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
+						style="display: none;"></a>
 				</c:forEach>
 			</li>
 		</ul>
@@ -94,7 +101,8 @@
 	</c:if>
 	<tr>
 		<td>
-			<c:forEach var="type" items="${publicationCategories}" varStatus="ind">
+			<c:forEach var="type" items="${publicationCategories}"
+				varStatus="ind">
 				<table id="summarySection${ind.count}" class="smalltable3"
 					cellpadding="0" cellspacing="0" border="0" width="100%">
 					<tr>
@@ -111,13 +119,7 @@
 										<table class="summarytable" width="100%" border="0"
 											cellpadding="0" cellspacing="0" summary="">
 											<tr>
-												<th width="20%">
-													Title
-												</th>
-												<th width="20%">
-													Author(s)
-												</th>
-												<th width="20%">
+												<th width="70%">
 													Bibliography Info
 												</th>
 												<th width="15%">
@@ -125,9 +127,6 @@
 												</th>
 												<th>
 													Research Category
-												</th>
-												<th>
-													Created Date
 												</th>
 												<th width="5%">
 													&nbsp;
@@ -138,35 +137,25 @@
 												<c:set var="pubObj" value="${pubBean.domainFile}" />
 												<tr>
 													<td valign="top">
-														${pubObj.title}&nbsp;
-													</td>
-													<td valign="top">
-														<c:if test="${!empty pubBean.authors}">
-															<c:forEach var="author" items="${pubBean.authors}">
-												${author.lastName}, ${author.firstName} ${author.initial}<br>
-															</c:forEach>
-														</c:if>
-														&nbsp;
-													</td>
-													<td valign="top">
-														${pubBean.bibliographyInfo} &nbsp;
+														${pubBean.displayName}&nbsp;
 													</td>
 													<td valign="top">
 														<c:choose>
 															<c:when test="${! empty pubObj.pubMedId}">
-																<a	target="_abstract"
+																<a target="_abstract"
 																	href="http://www.ncbi.nlm.nih.gov/pubmed/${pubObj.pubMedId}">PMID:
 																	${pubObj.pubMedId }</a>&nbsp;
 															</c:when>
 															<c:otherwise>
 																<c:choose>
 																	<c:when test="${! empty pubObj.digitalObjectId}">
-																		<a	target="_abstract"
+																		<a target="_abstract"
 																			href="http://dx.doi.org/${pubObj.digitalObjectId}">PMID:
 																			${pubObj.digitalObjectId }</a>&nbsp;
 																	</c:when>
 																	<c:otherwise>
-																		<a	href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
+																		<a
+																			href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
 																			target="${pubBean.urlTarget}"> ${pubOjb.uri}</a>&nbsp;
 																	</c:otherwise>
 																</c:choose>
@@ -176,9 +165,6 @@
 													</td>
 													<td valign="top">
 														${pubObj.researchArea}&nbsp;
-													</td>
-													<td valign="top">
-														${pubBean.createdDateStr}&nbsp;
 													</td>
 													<td valign="top">
 													</td>
