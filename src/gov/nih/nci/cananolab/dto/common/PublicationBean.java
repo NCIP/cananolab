@@ -16,26 +16,23 @@ import java.util.List;
 
 /**
  * Publication view bean
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
 
 	private String[] sampleNames;
 	private String[] researchAreas;
-	private List<Author> authors = new ArrayList<Author>(20);
+	private List<Author> authors = new ArrayList<Author>();
+	private Author theAuthor = new Author();
 
-	private boolean foundPubMedArticle = false;
-
-	private String bibliographyInfo = "";;
+	private String displayName = "";;
 
 	public PublicationBean() {
-		super();
 		domainFile = new Publication();
 		domainFile.setUriExternal(false);
-		authors.add(new Author());
 	}
 
 	public PublicationBean(Publication publication) {
@@ -138,32 +135,52 @@ public class PublicationBean extends FileBean {
 		authors.remove(ind);
 	}
 
-	public boolean isFoundPubMedArticle() {
-		return foundPubMedArticle;
+	private String getAuthorsDisplayName() {
+		List<String> strs = new ArrayList<String>();
+		for (Author author : authors) {
+			String authorDisplayName = "";
+			List<String> authorStrs = new ArrayList<String>();
+			authorStrs.add(author.getLastName());
+			authorStrs.add(author.getInitial());
+			authorDisplayName = StringUtils.join(authorStrs, ", ");
+			strs.add(authorDisplayName);
+		}
+		return StringUtils.join(strs, ", ");
 	}
 
-	public void setFoundPubMedArticle(boolean foundPubMedArticle) {
-		this.foundPubMedArticle = foundPubMedArticle;
-	}
-
-	public String getBibliographyInfo() {
+	private String getPublishInfoDisplayName() {
 		Publication pub = (Publication) domainFile;
+		String publishInfo = "";
+		if (!StringUtils.isEmpty(pub.getYear().toString())) {
+			publishInfo += pub.getYear().toString() + " ";
+		}
+		if (!StringUtils.isEmpty((pub.getVolume()))) {
+			publishInfo += pub.getVolume() + ":";
+		}
+		if (pub.getVolume() != null && pub.getStartPage() != null
+				&& pub.getEndPage() != null) {
+			publishInfo += pub.getStartPage() + "-" + pub.getEndPage();
+		}
+		return publishInfo;
+	}
 
-		if (pub.getJournalName() != null) {
-			bibliographyInfo = pub.getJournalName();
+	public String getDisplayName() {
+		// standard PubMed journal citation format
+		// e.g. Freedman SB, Adler M, Seshadri R, Powell EC. Oral ondansetron
+		// for gastroenteritis in a pediatric emergency department. N Engl J
+		// Med. 2006 Apr 20;354(16):1698-705. PubMed PMID: 12140307.
+		Publication pub = (Publication) domainFile;
+		List<String> strs = new ArrayList<String>();
+		strs.add(getAuthorsDisplayName());
+		//remove last . in the title
+		if (pub.getTitle().endsWith(".")) {
+			pub.getTitle().substring(0, pub.getTitle().length()-2);
 		}
-		if (pub.getYear() != null) {
-			bibliographyInfo += ", " + pub.getYear();
-		}
-		if (pub.getVolume() != null) {
-			bibliographyInfo += ". Volume " + pub.getVolume();
-		}
-		if (pub.getStartPage() != null && pub.getEndPage() != null) {
-			bibliographyInfo += ", pp." + pub.getStartPage() + "-"
-					+ pub.getEndPage();
-		}
-
-		return bibliographyInfo;
+		strs.add(pub.getTitle());
+		strs.add(pub.getJournalName());
+		strs.add(getPublishInfoDisplayName());
+		displayName = StringUtils.join(strs, ". ")+".";
+		return displayName;
 	}
 
 	public void setupDomain(String internalUriPath, String createdBy, int index)
@@ -196,5 +213,29 @@ public class PublicationBean extends FileBean {
 				author = null;
 			}
 		}
+	}
+
+	public Author getTheAuthor() {
+		return theAuthor;
+	}
+
+	public void setTheAuthor(Author theAuthor) {
+		this.theAuthor = theAuthor;
+	}
+
+	public void addAuthor(Author author) {
+		// if an old one exists, remove it first
+		int index = authors.indexOf(author);
+		if (index != -1) {
+			authors.remove(author);
+			// retain the original order
+			authors.add(index, author);
+		} else {
+			authors.add(author);
+		}
+	}
+
+	public void removeAuthor(Author author) {
+		authors.remove(author);
 	}
 }
