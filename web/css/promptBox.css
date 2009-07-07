@@ -65,3 +65,10 @@ input.promptbox {
 	width: 450px;
 	z-index:5;
 }
+#newAuthor {
+	position: absolute;
+	left: -10px;
+	top: 5px;
+	/*width: 550px;*/
+	z-index:5;
+}
