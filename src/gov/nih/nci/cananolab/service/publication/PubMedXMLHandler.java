@@ -73,7 +73,6 @@ public class PubMedXMLHandler {
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
 			foundPubmedArticle = true;
-			publicationBean.setFoundPubMedArticle(foundPubmedArticle);
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
