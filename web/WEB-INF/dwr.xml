@@ -96,6 +96,9 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
+			<include method="retrievePubMedInfo"/>
+			<include method="addAuthor"/>
+			<include method="deleteAuthor"/>
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />
 		</create>
@@ -159,6 +162,19 @@
 			match="gov.nih.nci.cananolab.domain.common.File">
 			<param name="include"
 				value="id, title, type, uriExternal, uri, description" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
+			<param name="include"
+				value="authors, domainFile, displayName" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Publication">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Author">
+			<param name="include"
+				value="id, firstName, lastName, initial" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
