@@ -151,8 +151,8 @@
 								</tr>
 							</c:if>
 						</table>
+						<br/>
 					</div>
-					<br/>
 				</c:forEach>
 				<br/>
 			</td>
