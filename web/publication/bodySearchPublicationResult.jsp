@@ -8,14 +8,14 @@
 	<tr>
 		<td>
 			<h3>
-				Nanoparticle Publication Search Results
+				Publication Search Results
 			</h3>
 		</td>
 		<td align="right" width="25%">
 			<jsp:include page="/helpGlossary.jsp">
 				<jsp:param name="topic" value="publications_search_results_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>				
+			</jsp:include>
 			<a href="searchPublication.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
@@ -27,11 +27,13 @@
 				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
 				<display:column title="Title" property="editPublicationURL"
 					sortable="true" />
-				<display:column title="Publication<br>Type" property="publicationType"
-					sortable="true" />		
-				<display:column title="Research<br>Category"
-					property="researchArea" sortable="true" />
-				<display:column title="Associated Particle<br>Sample Names"
+				<display:column title="Bibliography Info" property="displayName"
+					sortable="true" />
+				<display:column title="Publication<br>Type"
+					property="publicationType" sortable="true" />
+				<display:column title="Research<br>Category" property="researchArea"
+					sortable="true" />
+				<display:column title="Associated Sample Names"
 					property="sampleNames" sortable="true" />
 				<display:column title="Created<br>Date"
 					property="domainFile.createdDate" sortable="true"

@@ -81,7 +81,7 @@
 										<c:param name="dispatch" value="exportDetail" />
 										<c:param name="sampleId" value="${sampleId}" />
 										<c:param name="publicationId"
-											value="${publicationForm.map.file.domainFile.id}" />
+											value="${publicationForm.map.publication.domainFile.id}" />
 										<c:param name="submitType" value="${submitType}" />
 										<c:param name="location" value="${param.location}" />
 									</c:url>
@@ -99,15 +99,15 @@
 					</th>
 					<td class="rightLabel">
 						<c:choose>
-							<c:when test="${publicationForm.map.file.domainFile.pubMedId != null &&
-										publicationForm.map.file.domainFile.pubMedId != 0}">
-								PMID: ${publicationForm.map.file.domainFile.pubMedId }
+							<c:when test="${publicationForm.map.publication.domainFile.pubMedId != null &&
+										publicationForm.map.publication.domainFile.pubMedId != 0}">
+								PMID: ${publicationForm.map.publication.domainFile.pubMedId }
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${publicationForm.map.file.domainFile.digitalObjectId != null
-										&& publicationForm.map.file.domainFile.digitalObjectId ne ''}">
-										DOI: ${publicationForm.map.file.domainFile.digitalObjectId }
+									<c:when test="${publicationForm.map.publication.domainFile.digitalObjectId != null
+										&& publicationForm.map.publication.domainFile.digitalObjectId ne ''}">
+										DOI: ${publicationForm.map.publication.domainFile.digitalObjectId }
 									</c:when>
 									<c:otherwise>
 										&nbsp;
@@ -124,7 +124,7 @@
 					</th>
 					<td class="rightLabel">
 						<bean:write name="publicationForm"
-								property="file.domainFile.category" />
+								property="publication.domainFile.category" />
 							&nbsp;
 					</td>
 				</tr>
@@ -134,7 +134,7 @@
 					</th>
 					<td class="rightLabel">
 						<bean:write name="publicationForm"
-								property="file.domainFile.status" />
+								property="publication.domainFile.status" />
 							&nbsp;
 					</td>
 				</tr>
@@ -144,7 +144,7 @@
 					</th>
 					<td class="rightLabel">
 						<bean:write name="publicationForm"
-								property="file.domainFile.researchArea" />
+								property="publication.domainFile.researchArea" />
 						&nbsp;
 					</td>
 				</tr>
@@ -154,7 +154,7 @@
 					</th>
 					<td class="rightLabel">
 						<bean:write name="publicationForm"
-								property="file.domainFile.title" />
+								property="publication.domainFile.title" />
 							&nbsp;
 					</td>
 				</tr>
@@ -164,7 +164,7 @@
 					</th>
 					<td class="rightLabel">
 						<bean:write name="publicationForm"
-								property="file.domainFile.journalName" />
+								property="publication.domainFile.journalName" />
 						&nbsp;
 					</td>
 				</tr>
@@ -187,9 +187,9 @@
 						Year
 					</th>
 					<td class="rightLabel">
-						<c:if test="${publicationForm.map.file.domainFile.year!=0}">
+						<c:if test="${publicationForm.map.publication.domainFile.year!=0}">
 							<bean:write name="publicationForm"
-								property="file.domainFile.year" />
+								property="publication.domainFile.year" />
 						</c:if>
 						&nbsp;
 					</td>
@@ -200,7 +200,7 @@
 					</th>
 					<td class="rightLabel">
 						<bean:write name="publicationForm"
-								property="file.domainFile.volume" />
+								property="publication.domainFile.volume" />
 						&nbsp;
 					</td>
 				</tr>
@@ -209,10 +209,10 @@
 						Pages
 					</th>
 					<td class="rightLabel">
-						<c:if test="${publicationForm.map.file.domainFile.startPage != null}">
+						<c:if test="${publicationForm.map.publication.domainFile.startPage != null}">
 						<bean:write name="publicationForm"
-								property="file.domainFile.startPage" /> - <bean:write name="publicationForm"
-								property="file.domainFile.endPage" />
+								property="publication.domainFile.startPage" /> - <bean:write name="publicationForm"
+								property="publication.domainFile.endPage" />
 						</c:if>
 						&nbsp;
 					</td>
@@ -220,8 +220,8 @@
 
 				<c:choose>
 					<c:when
-						test="${publicationForm.map.file.domainFile.pubMedId != null &&
-										publicationForm.map.file.domainFile.pubMedId != 0}">
+						test="${publicationForm.map.publication.domainFile.pubMedId != null &&
+										publicationForm.map.publication.domainFile.pubMedId != 0}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								Abstract in
@@ -229,8 +229,8 @@
 								PubMed
 							</th>
 							<td class="rightLabel">
-								<a target="_pubmed" href="http://www.ncbi.nlm.nih.gov/pubmed/${publicationForm.map.file.domainFile.pubMedId}">PMID:
-									${publicationForm.map.file.domainFile.pubMedId }</a> &nbsp;
+								<a target="_pubmed" href="http://www.ncbi.nlm.nih.gov/pubmed/${publicationForm.map.publication.domainFile.pubMedId}">PMID:
+									${publicationForm.map.publication.domainFile.pubMedId }</a> &nbsp;
 								&nbsp;
 							</td>
 						</tr>
@@ -243,20 +243,20 @@
 					</th>
 					<td class="rightLabel">
 						<bean:write name="publicationForm"
-								property="file.domainFile.description" />
+								property="publication.domainFile.description" />
 							&nbsp;
 					</td>
 				</tr>
 
 				<c:choose>
 					<c:when
-						test="${publicationForm.map.file.domainFile.pubMedId == null ||
-										publicationForm.map.file.domainFile.pubMedId == 0}">
+						test="${publicationForm.map.publication.domainFile.pubMedId == null ||
+										publicationForm.map.publication.domainFile.pubMedId == 0}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								<c:choose>
 									<c:when
-										test="${submitReportForm.map.file.domainFile.uriExternal==true}">
+										test="${submitReportForm.map.publication.domainFile.uriExternal==true}">
 								Publication URL&nbsp;
 							</c:when>
 									<c:otherwise>
@@ -266,9 +266,9 @@
 							</th>
 							<td class="rightLabel">
 								<a
-									href="publication.do?dispatch=download&amp;publicationId=${publicationForm.map.file.domainFile.id}&amp;location=${param.location}"
+									href="publication.do?dispatch=download&amp;publicationId=${publicationForm.map.publication.domainFile.id}&amp;location=${param.location}"
 									target="${publicationForm.map.file.urlTarget}">
-									${publicationForm.map.file.domainFile.uri}</a>&nbsp;
+									${publicationForm.map.publication.domainFile.uri}</a>&nbsp;
 							</td>
 						</tr>
 					</c:when>
