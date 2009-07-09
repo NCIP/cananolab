@@ -114,8 +114,8 @@
 							<a
 								href="publication.do?dispatch=setupNew&sampleId=${sampleId}&type=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
-									border="0" /></a>&nbsp;&nbsp;
-							<%-- 
+									border="0" /> </a>&nbsp;&nbsp;
+							<%--
 							<c:if test="${! empty publicationSummaryView.category2Publications[type]}">
 								<a><img align="middle" src="images/btn_delete.gif"
 										border="0" /> </a>
@@ -136,7 +136,7 @@
 													Bibliography Info
 												</th>
 												<th width="15%">
-													Abstract/Download Link
+													Download Link
 												</th>
 												<th>
 													Research Category
@@ -153,27 +153,11 @@
 														${pubBean.displayName}&nbsp;
 													</td>
 													<td valign="top">
-														<c:choose>
-															<c:when test="${! empty pubObj.pubMedId}">
-																<a target="_abstract"
-																	href="http://www.ncbi.nlm.nih.gov/pubmed/${pubObj.pubMedId}">PMID:
-																	${pubObj.pubMedId }</a>&nbsp;
-															</c:when>
-															<c:otherwise>
-																<c:choose>
-																	<c:when test="${! empty pubObj.digitalObjectId}">
-																		<a target="_abstract"
-																			href="http://dx.doi.org/${pubObj.digitalObjectId}">PMID:
-																			${pubObj.digitalObjectId }</a>&nbsp;
-																	</c:when>
-																	<c:otherwise>
-																		<a
-																			href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
-																			target="${pubBean.urlTarget}">${pubOjb.uri}</a>&nbsp;
-																	</c:otherwise>
-																</c:choose>
-															</c:otherwise>
-														</c:choose>
+														<c:if test="${! empty pubObj.uri}">
+															<a
+																href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
+																target="${pubBean.urlTarget}">${pubOjb.uri}</a>&nbsp;
+															</c:if>
 														&nbsp;
 													</td>
 													<td valign="top">

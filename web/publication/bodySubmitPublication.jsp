@@ -25,7 +25,7 @@
 				<c:choose>
 					<c:when
 						test="${!empty publicationForm.map.publication.domainFile.id}">
-						${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}						
+						${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}
 				</c:when>
 					<c:otherwise>
 				Publication
@@ -46,12 +46,12 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel">
-				Publication Type*
+				Publication Type *
 			</td>
 			<td>
 				<div id="categoryPrompt">
 					<html:select property="publication.domainFile.category"
-						onchange="javascript:callPrompt('Publication Category', 'publication.domainFile.category', 'categoryPrompt');
+						onchange="javascript:callPrompt('Publication Type', 'domainFile.category', 'categoryPrompt');
 														updateFormBasedOnCategory();"
 						styleId="domainFile.category">
 						<option value=""></option>
@@ -68,7 +68,7 @@
 			<td colspan="3">
 				<div id="statusPrompt">
 					<html:select property="publication.domainFile.status"
-						onchange="javascript:callPrompt('Publication status', 'publication.domainFile.status', 'statusPrompt');"
+						onchange="javascript:callPrompt('Publication status', 'domainFile.status', 'statusPrompt');"
 						styleId="domainFile.status">
 						<option value=""></option>
 						<html:options name="publicationStatuses" />

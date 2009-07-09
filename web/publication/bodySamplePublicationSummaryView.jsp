@@ -51,8 +51,7 @@
 					varStatus="ind">
 					<a
 						href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})"
-						title="${type}"><span>${type}</span>
-					</a>
+						title="${type}"><span>${type}</span> </a>
 					<a href="javascript:printPage('${printUrl}&type=${type}')"
 						id="printUrl${ind.count}" style="display: none;"></a>
 					<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
@@ -119,11 +118,11 @@
 										<table class="summarytable" width="100%" border="0"
 											cellpadding="0" cellspacing="0" summary="">
 											<tr>
-												<th width="70%">
+												<th>
 													Bibliography Info
 												</th>
-												<th width="15%">
-													Abstract/Download Link
+												<th>
+													Download Link
 												</th>
 												<th>
 													Research Category
@@ -140,27 +139,11 @@
 														${pubBean.displayName}&nbsp;
 													</td>
 													<td valign="top">
-														<c:choose>
-															<c:when test="${! empty pubObj.pubMedId}">
-																<a target="_abstract"
-																	href="http://www.ncbi.nlm.nih.gov/pubmed/${pubObj.pubMedId}">PMID:
-																	${pubObj.pubMedId }</a>&nbsp;
-															</c:when>
-															<c:otherwise>
-																<c:choose>
-																	<c:when test="${! empty pubObj.digitalObjectId}">
-																		<a target="_abstract"
-																			href="http://dx.doi.org/${pubObj.digitalObjectId}">PMID:
-																			${pubObj.digitalObjectId }</a>&nbsp;
-																	</c:when>
-																	<c:otherwise>
-																		<a
-																			href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
-																			target="${pubBean.urlTarget}"> ${pubOjb.uri}</a>&nbsp;
-																	</c:otherwise>
-																</c:choose>
-															</c:otherwise>
-														</c:choose>
+														<c:if test="${! empty pubObj.uri}">
+															<a
+																href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
+																target="${pubBean.urlTarget}">${pubOjb.uri}</a>&nbsp;
+															</c:if>
 														&nbsp;
 													</td>
 													<td valign="top">
