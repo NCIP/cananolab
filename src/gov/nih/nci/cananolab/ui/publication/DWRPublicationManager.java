@@ -2,12 +2,13 @@ package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.SortedSet;
@@ -18,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 public class DWRPublicationManager {
 
@@ -48,9 +48,8 @@ public class DWRPublicationManager {
 	}
 
 	public String[] getPublicationCategories(String searchLocations) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
 		try {
 			boolean isLocal = false;
 			if (Constants.LOCAL_SITE.equals(searchLocations)) {
@@ -76,9 +75,8 @@ public class DWRPublicationManager {
 	}
 
 	public String[] getPublicationStatuses(String searchLocations) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
 		try {
 			boolean isLocal = false;
 			if (Constants.LOCAL_SITE.equals(searchLocations)) {
@@ -102,15 +100,29 @@ public class DWRPublicationManager {
 		return new String[] { "" };
 	}
 
-	public PublicationBean addAuthor(Author author)
-			throws PublicationException {
+	public String[] getAllSampleNames() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+		try {
+			SortedSet<String> allSampleNames = InitSampleSetup.getInstance()
+					.getAllSampleNames(wctx.getHttpServletRequest(), user);
+			return allSampleNames.toArray(new String[0]);
+		} catch (Exception e) {
+			logger.error("Problem getting all sample names for publication submission \n", e);
+			return new String[]{""};
+		}
+	}
+
+	public PublicationBean addAuthor(Author author) throws PublicationException {
 		DynaValidatorForm pubForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("publicationForm"));
 		if (pubForm == null) {
 			return null;
 		}
-		PublicationBean pubBean = (PublicationBean) (pubForm
-				.get("publication"));
+		PublicationBean pubBean = (PublicationBean) (pubForm.get("publication"));
 		pubBean.addAuthor(author);
 		return pubBean;
 	}
@@ -122,8 +134,7 @@ public class DWRPublicationManager {
 		if (pubForm == null) {
 			return null;
 		}
-		PublicationBean pubBean = (PublicationBean) (pubForm
-				.get("publication"));
+		PublicationBean pubBean = (PublicationBean) (pubForm.get("publication"));
 		pubBean.removeAuthor(author);
 		return pubBean;
 	}
