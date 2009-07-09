@@ -23,6 +23,18 @@ function updateFormBasedOnCategory() {
 	}
 }
 
+function showSampleNameDropdown() {
+	// display progress.gif while waiting for the response.
+	show("loaderImg");
+	hide("browseSampleNames");
+	PublicationManager.getAllSampleNames(function(data) {
+		dwr.util.removeAllOptions("allSampleNameSelect");
+		dwr.util.addOptions("allSampleNameSelect", data);
+		hide("loaderImg");		
+		show("allSampleNameSelect");	
+	});	
+}
+
 function setPublicationDropdowns() {
 	var searchLocations = getSelectedOptions(document.getElementById("searchLocations"));
 	PublicationManager.getPublicationCategories(searchLocations, function (data) {
