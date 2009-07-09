@@ -713,7 +713,7 @@ h3,.h3 { /* for title of page */
 
 h4,.h4 { /* for title of page */
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 1.1em;
+	font-size: 1.0em;
 	font-weight: bold;
 	color: #5c5c5c; /* constant: dark gray */
 }

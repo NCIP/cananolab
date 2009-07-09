@@ -7,9 +7,9 @@
 <table width="100%" align="center">
 	<tr>
 		<td>
-			<h3>
+			<h4>
 				Sample Search Results
-			</h3>
+			</h4>
 		</td>
 		<td align="right" width="25%">
 			<jsp:include page="/helpGlossary.jsp">

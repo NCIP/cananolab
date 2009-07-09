@@ -7,10 +7,10 @@
 <table width="100%" align="center">
 	<tr>
 		<td>
-			<h3>
+			<h4>
 				<br>
 				Protocol Search Results
-			</h3>
+			</h4>
 		</td>
 		<td align="right" width="20%">
 			<jsp:include page="/helpGlossary.jsp">
