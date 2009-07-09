@@ -339,17 +339,6 @@ function cancel(parameter) {
 		gotoPage(url);
 	}
 }
-function radLinkOrUpload() {
-	var linkEle = document.getElementById("link");
-	var loadEle = document.getElementById("load");
-	if (document.getElementById("external0").checked) {
-		loadEle.style.display = "inline";
-		linkEle.style.display = "none";
-	} else {
-		loadEle.style.display = "none";
-		linkEle.style.display = "inline";
-	}
-}
 function filterFloatNumber(evt) {
 	var keyCode = evt.which ? evt.which : evt.keyCode;
 	return (keyCode >= "0".charCodeAt() && keyCode <= "9".charCodeAt()) || (keyCode >= 96 && keyCode <= 105) || keyCode == 190 || keyCode == 110 || keyCode == 46 || keyCode == 8;
@@ -373,7 +362,7 @@ function displayLogin() {
 	showhide("loginBlock");
 	return false;
 }
-function showhide(layer_ref, isTableRow) {	
+function showhide(layer_ref, isTableRow) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock == null) {
 		// alert(layer_ref + " is null (cannot show)");
@@ -411,8 +400,8 @@ function hide(layer_ref) {
 	if (layerBlock == null) {
 		// alert(layer_ref + " is null (cannot show)");
 		return;
-	}	
-	layerBlock.style.display = "none";	
+	}
+	layerBlock.style.display = "none";
 }
 function showSummary(layer_ref, totalLayers) {
 	var printLink = document.getElementById("printLink");
