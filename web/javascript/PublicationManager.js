@@ -2,7 +2,7 @@ var authorCache = {};
 var currentPublication = null;
 var numberOfAuthors=0; //number of unique authors in the cache, used to generate author id
 
-function updateFormBasedOnCategory() {
+function updateSubmitFormBasedOnCategory() {
 	var category=dwr.util.getValue("domainFile.category");
 	if (category!="report" && category!="book chapter" && category!="") {
 		show("pubMedRow", true);
@@ -20,6 +20,27 @@ function updateFormBasedOnCategory() {
 	//if report, set publish status to published
 	if (category=="report") {
 		dwr.util.setValue("domainFile.status", "published");
+	}
+}
+
+function enableAutoFields() {
+	document.getElementById("domainFile.digitalObjectId").readOnly=false;
+	document.getElementById("domainFile.title").readOnly=false;
+	document.getElementById("domainFile.journalName").readOnly=false;
+	document.getElementById("domainFile.year").readOnly=false;
+	document.getElementById("domainFile.volume").readOnly=false;
+	document.getElementById("domainFile.startPage").readOnly=false;
+	document.getElementById("domainFile.endPage").readOnly=false;
+	show("addAuthor");
+}
+
+function updateSearchFormBasedOnCategory() {
+	var category=dwr.util.getValue("publicationCategory");
+	if (category!="report" && category!="book chapter" && category!="") {
+		show("pubMedRow", true);
+	}
+	else {
+		hide("pubMedRow");
 	}
 }
 
