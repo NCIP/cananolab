@@ -14,7 +14,7 @@ import org.displaytag.decorator.TableDecorator;
  * This decorator is used to for decorate different properties of a publication
  * to be shown properly in the view page using display tag lib.
  *
- * @author tanq
+ * @author tanq, pansu
  *
  */
 public class PublicationDecorator extends TableDecorator {
@@ -46,50 +46,41 @@ public class PublicationDecorator extends TableDecorator {
 
 	public SortableName getEditPublicationURL()
 			throws UnsupportedEncodingException {
-		PublicationBean file = (PublicationBean) getCurrentRowObject();
-		String fileId = file.getDomainFile().getId().toString();
+		PublicationBean publication = (PublicationBean) getCurrentRowObject();
+		String fileId = publication.getDomainFile().getId().toString();
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb
-				.append("publication.do?page=0&dispatch=detailView&publicationId=");
+		sb.append("publication.do?page=0&dispatch=setupUpdate&publicationId=");
 		sb.append(fileId);
-		sb.append("&location=");
-		sb.append(file.getLocation());
 		sb.append(">");
-		if (file.getDomainFile().getTitle().length() > 30) {
-			sb.append(file.getDomainFile().getTitle().substring(0, 30));
-		} else {
-			sb.append(file.getDomainFile().getTitle());
-		}
+		sb.append("Edit");
 		sb.append("</a>");
 		String link = sb.toString();
-		SortableName sortableLink = new SortableName(file.getDomainFile()
-				.getTitle(), link);
+		SortableName sortableLink = new SortableName(publication
+				.getDomainFile().getTitle(), link);
 		return sortableLink;
 	}
 
 	public SortableName getDownloadURL() throws UnsupportedEncodingException {
 		SortableName sortableLink = null;
 		String actionName = null;
-		FileBean file = null;
 		actionName = "searchPublication.do";
-		file = (PublicationBean) getCurrentRowObject();
-		;
+		PublicationBean publication = (PublicationBean) getCurrentRowObject();
 
-		if (file.getDomainFile().getName() != null) {
+		if (publication.getDomainFile().getName() != null) {
 			StringBuilder sb = new StringBuilder("<a href=");
 			sb.append(actionName);
 			sb.append("?dispatch=download&publicationId=");
-			sb.append(file.getDomainFile().getId());
+			sb.append(publication.getDomainFile().getId());
 			sb.append("&location=");
-			sb.append(file.getLocation());
+			sb.append(publication.getLocation());
 			sb.append(" target='");
-			sb.append(file.getUrlTarget());
+			sb.append(publication.getUrlTarget());
 			sb.append("'>");
-			sb.append(file.getDomainFile().getName());
+			sb.append(publication.getDomainFile().getName());
 			sb.append("</a>");
 			String link = sb.toString();
-			sortableLink = new SortableName(file.getDomainFile().getName(),
-					link);
+			sortableLink = new SortableName(publication.getDomainFile()
+					.getName(), link);
 		} else {
 			sortableLink = new SortableName("");
 		}
@@ -106,10 +97,30 @@ public class PublicationDecorator extends TableDecorator {
 	}
 
 	public SortableName getViewName() {
-		FileBean file = null;
-		file = (PublicationBean) getCurrentRowObject();
-		String title = file.getDomainFile().getTitle();
+		PublicationBean publication = (PublicationBean) getCurrentRowObject();
+		String title = publication.getDomainFile().getTitle();
 		SortableName sortableLink = new SortableName(title);
 		return sortableLink;
+	}
+
+	public String getDescriptionDetail() {
+		PublicationBean publication = (PublicationBean) getCurrentRowObject();
+		String description = publication.getDomainFile().getDescription();
+		if (StringUtils.isEmpty(description)) {
+			return null;
+		}
+		StringBuilder sb=new StringBuilder("<div id=\"descriptionSection"+getListIndex()+"\" style=\"position: relative;\">");
+		sb.append("<a style=\"display: block\" id=\"viewDetail\" href=\"#\" onmouseOver=");
+		sb.append("javascript:show('publicationDescription"+getListIndex()+"'); onmouseOut=");
+		sb.append("javascript:hide('publicationDescription"+getListIndex()+"');>");
+		sb.append("View Detail");
+		sb.append("</a>");
+		sb.append("<table id=\"publicationDescription"+getListIndex()+"\" style=\"display: none;position: absolute;left: -510px;top: -50px;width: 500px;z-index:5;font-size: 10px;background-color: #FFFFFF;\" class=\"promptbox\">");
+		sb.append("<tr><td>");
+		sb.append(description);
+		sb.append("</td></tr>");
+		sb.append("</table></div>");
+		System.out.println(getListIndex()+"--->"+sb.toString());
+		return sb.toString();
 	}
 }

@@ -16,9 +16,9 @@ import java.util.List;
 
 /**
  * Publication view bean
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
@@ -151,7 +151,7 @@ public class PublicationBean extends FileBean {
 	private String getPublishInfoDisplayName() {
 		Publication pub = (Publication) domainFile;
 		String publishInfo = "";
-		if (pub.getYear()!=null) {
+		if (pub.getYear() != null) {
 			publishInfo += pub.getYear().toString() + "; ";
 		}
 		if (!StringUtils.isEmpty((pub.getVolume()))) {
@@ -162,6 +162,38 @@ public class PublicationBean extends FileBean {
 			publishInfo += pub.getStartPage() + "-" + pub.getEndPage();
 		}
 		return publishInfo;
+	}
+
+	public String getPubMedDisplayName() {
+		Publication pub = (Publication) domainFile;
+		if (pub.getPubMedId() != null) {
+			StringBuilder sb = new StringBuilder("<a target='_abstract' href=");
+			sb.append("http://www.ncbi.nlm.nih.gov/pubmed/");
+			sb.append(pub.getPubMedId());
+			sb.append(">");
+			sb.append("PMID: " + pub.getPubMedId());
+			sb.append("</a>");
+			return sb.toString();
+		}
+		else {
+			return null;
+		}
+	}
+
+	public String getDOIDisplayName() {
+		Publication pub = (Publication) domainFile;
+		if (pub.getDigitalObjectId()!= null) {
+			StringBuilder sb = new StringBuilder("<a target='_abstract' href=");
+			sb.append("http://dx.doi.org/");
+			sb.append(pub.getDigitalObjectId());
+			sb.append(">");
+			sb.append("DOI: " + pub.getDigitalObjectId());
+			sb.append("</a>");
+			return sb.toString();
+		}
+		else {
+			return null;
+		}
 	}
 
 	public String getDisplayName() {
@@ -179,6 +211,8 @@ public class PublicationBean extends FileBean {
 		strs.add(pub.getTitle());
 		strs.add(pub.getJournalName());
 		strs.add(getPublishInfoDisplayName());
+		strs.add(getPubMedDisplayName());
+		strs.add(getDOIDisplayName());
 		displayName = StringUtils.join(strs, ". ") + ".";
 		return displayName;
 	}
