@@ -362,6 +362,15 @@
 							id="loaderImg" style="display: none">
 						<html:select property="publication.sampleNames" multiple="true"
 							size="5" styleId="allSampleNameSelect" style="display: none">
+							<c:if
+								test="${!empty publicationForm.map.publication.sampleNames}">
+								<c:forEach var="sampleName"
+									items="${publicationForm.map.publication.sampleNames}">
+									<option selected value="${sampleName}">
+										${sampleName}
+									</option>
+								</c:forEach>
+							</c:if>
 						</html:select>
 					</td>
 				</tr>
