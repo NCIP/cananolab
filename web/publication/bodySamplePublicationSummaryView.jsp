@@ -26,7 +26,7 @@
 <c:set var="publicationCategories"
 	value="${publicationSummaryView.publicationCategories}" />
 <c:if test="${empty printView}">
-	<div class="animatedtabs" id="summaryTabALL">
+	<div class="shadetabs" id="summaryTabALL">
 		<ul>
 			<li class="selected">
 				<a
@@ -61,7 +61,7 @@
 		</ul>
 	</div>
 	<c:forEach var="type" items="${publicationCategories}" varStatus="ind">
-		<div class="animatedtabs" id="summaryTab${ind.count}"
+		<div class="shadetabs" id="summaryTab${ind.count}"
 			style="display: none;">
 			<ul>
 				<li>

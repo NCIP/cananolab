@@ -23,7 +23,7 @@
 	</table>
 </c:if>
 <jsp:include page="/bodyMessage.jsp?bundle=particle" />
-<div class="animatedtabs" id="summaryTabALL">
+<div class="shadetabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
 			<a	href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
@@ -52,7 +52,7 @@
 	</ul>
 </div>
 <c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
-	<div class="animatedtabs" id="summaryTab${ind.count}"
+	<div class="shadetabs" id="summaryTab${ind.count}"
 		style="display: none;">
 		<ul>
 			<li>

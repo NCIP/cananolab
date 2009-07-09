@@ -25,7 +25,7 @@
 <c:set var="compositionSections"
 	value="${compositionForm.map.comp.compositionSections}" />
 <c:if test="${empty printView}">
-	<div class="animatedtabs" id="summaryTabALL">
+	<div class="shadetabs" id="summaryTabALL">
 		<ul>
 			<li class="selected">
 				<a	href="javascript:showSummary('ALL', ${fn:length(compositionSections)})"
@@ -54,7 +54,7 @@
 		</ul>
 	</div>
 	<c:forEach var='item' begin='1' end='4'>
-		<div class="animatedtabs" id="summaryTab${item}" style="display: none;">
+		<div class="shadetabs" id="summaryTab${item}" style="display: none;">
 			<ul>
 				<li>
 					<a	href="javascript:showSummary('ALL', ${fn:length(compositionSections)})"

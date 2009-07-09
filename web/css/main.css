@@ -1549,10 +1549,11 @@ input.noBorderText {
 
 
 .summaryViewLayer1 {
-	border-width: 1px;
+	border-collapse: collapse;
 	border-color: #cccccc;
 	border-style: solid;
-	border-collapse: collapse;
+	border-top: none;
+	border-width: 1px;
 	color: red;
 }
 
