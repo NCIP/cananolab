@@ -52,7 +52,7 @@
 				<div id="categoryPrompt">
 					<html:select property="publication.domainFile.category"
 						onchange="javascript:callPrompt('Publication Type', 'domainFile.category', 'categoryPrompt');
-														updateFormBasedOnCategory();"
+														updateSubmitFormBasedOnCategory();enableAutoFields();"
 						styleId="domainFile.category">
 						<option value=""></option>
 						<html:options name="publicationCategories" />

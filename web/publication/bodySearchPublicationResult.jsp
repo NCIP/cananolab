@@ -43,7 +43,7 @@
 					property="publicationType" sortable="true" />
 				<display:column title="Research<br>Category" property="researchArea"
 					sortable="true" />
-				<display:column title="Associated Sample Names"
+				<display:column title="Associated<br>Sample Names"
 					property="sampleNames" sortable="true" />
 				<display:column title="Description"
 					property="descriptionDetail" sortable="true" />

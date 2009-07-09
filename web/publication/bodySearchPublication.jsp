@@ -54,8 +54,8 @@
 				Publication Type
 			</td>
 			<td colspan="3">
-				<html:select property="category" styleId="publicationCategories"
-					onchange="javascript:setSearchReportFields();">
+				<html:select property="category" styleId="publicationCategory"
+					onchange="javascript:updateSearchFormBasedOnCategory();">
 					<option value="" />
 						<html:options name="publicationCategories" />
 				</html:select>
