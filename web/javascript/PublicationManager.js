@@ -27,9 +27,11 @@ function showSampleNameDropdown() {
 	// display progress.gif while waiting for the response.
 	show("loaderImg");
 	hide("browseSampleNames");
+	var selected=dwr.util.getValue("allSampleNameSelect");
 	PublicationManager.getAllSampleNames(function(data) {
 		dwr.util.removeAllOptions("allSampleNameSelect");
 		dwr.util.addOptions("allSampleNameSelect", data);
+		dwr.util.setValue("allSampleNameSelect", selected);
 		hide("loaderImg");		
 		show("allSampleNameSelect");	
 	});	
