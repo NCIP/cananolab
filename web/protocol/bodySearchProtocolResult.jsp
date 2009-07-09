@@ -23,18 +23,13 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-			<c:choose>
-				<c:when test="${!empty user && user.curator}">
-					<c:set var="link" value="editURL" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="link" value="viewName" />
-				</c:otherwise>
-			</c:choose>
 			<display:table name="sessionScope.protocols" id="protocol"
 				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
-				<display:column title="Protocol Name" property="${link}"
+				<c:if test="${!empty user && user.curator}">
+					<display:column title="" property="editURL"/>
+				</c:if>
+				<display:column title="Protocol Name" property="viewName"
 					sortable="true" />
 				<display:column title="Protocol Abbreviation"
 					property="domain.abbreviation" sortable="true" />
@@ -42,10 +37,7 @@
 					sortable="true" />
 				<display:column title="Version" property="domain.version"
 					sortable="true" />
-				<display:column title="File Title"
-					property="fileBean.domainFile.title" sortable="true" />
-				<display:column title="File Link" property="downloadURL"
-					sortable="true" />
+				<display:column title="File" property="downloadURL" sortable="true" />
 				<display:column title="Description"
 					property="fileBean.domainFile.description" sortable="false" />
 				<display:column title="Protocol Created Date"
