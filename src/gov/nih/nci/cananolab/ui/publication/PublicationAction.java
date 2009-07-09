@@ -144,7 +144,7 @@ public class PublicationAction extends BaseAnnotationAction {
 				"updateFormBasedOnCategory()");
 		return forward;
 	}
-	
+
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -160,7 +160,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.getSession().setAttribute(
 				"onloadJavascript",
-				"updateFormBasedOnCategory()");
+				"updateFormBasedOnCategory();fillPubMedInfo();");
 		if (sampleId != null && sampleId.trim().length() > 0) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
@@ -231,7 +231,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -269,7 +269,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -291,7 +291,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -317,7 +317,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -364,7 +364,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
