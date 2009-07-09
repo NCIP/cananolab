@@ -78,11 +78,11 @@
 				value="gov.nih.nci.cananolab.ui.sample.DWRPointOfContactManager" />
 			<include method="removeOrgFromVisibilityGroupsByPocId" />
 			<include method="removeOrgFromVisibilityGroupsByOrgName" />
-			<include method="resetVisibilityGroups"/>
-			<include method="resetSampleVisibilityGroups"/>
+			<include method="resetVisibilityGroups" />
+			<include method="resetSampleVisibilityGroups" />
 			<include method="getPointOfContactById" />
 			<include method="resetThePointOfContact" />
-			<include method="getOrganizationByName"/>
+			<include method="getOrganizationByName" />
 		</create>
 		<create creator="new" javascript="ProtocolManager"
 			scope="session">
@@ -96,9 +96,9 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
-			<include method="retrievePubMedInfo"/>
-			<include method="addAuthor"/>
-			<include method="deleteAuthor"/>
+			<include method="retrievePubMedInfo" />
+			<include method="addAuthor" />
+			<include method="deleteAuthor" />
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />
 		</create>
@@ -144,8 +144,7 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Organization">
-			<param name="exclude"
-				value="pointOfContactCollection" />
+			<param name="exclude" value="pointOfContactCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
@@ -160,8 +159,8 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.File">
-			<param name="include"
-				value="id, title, type, uriExternal, uri, description" />
+			<param name="exclude"
+				value="keywordCollection, findingCollection, datumCollection, protocol" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
@@ -170,6 +169,8 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Publication">
+			<param name="exclude"
+				value="keywordCollection, findingCollection, datumCollection, protocol" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Author">
