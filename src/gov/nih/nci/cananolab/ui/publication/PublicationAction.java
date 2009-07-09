@@ -136,9 +136,9 @@ public class PublicationAction extends BaseAnnotationAction {
 					.getOtherSampleNames(request, sampleId);
 			forward = mapping.findForward("sampleSubmitPublication");
 		}
-		request.getSession().setAttribute(
+		request.setAttribute(
 				"onloadJavascript",
-				"updateFormBasedOnCategory()");
+				"updateSubmitFormBasedOnCategory()");
 		return forward;
 	}
 
@@ -155,9 +155,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		theForm.set("sampleId", sampleId);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		request.getSession().setAttribute(
+		request.setAttribute(
 				"onloadJavascript",
-				"updateFormBasedOnCategory();fillPubMedInfo();");
+				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
 		if (sampleId != null && sampleId.trim().length() > 0) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
