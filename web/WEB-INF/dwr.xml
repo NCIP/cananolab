@@ -166,7 +166,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
 			<param name="include"
-				value="authors, domainFile, displayName" />
+				value="authors, domainFile" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Publication">
