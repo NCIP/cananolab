@@ -356,9 +356,12 @@
 						Sample Name
 					</td>
 					<td>
+						<a href="#" onclick="javascript:showSampleNameDropdown();"
+							id="browseSampleNames" style="display: block">Browse</a>
+						<img src="images/ajax-loader.gif" border="0" class="counts"
+							id="loaderImg" style="display: none">
 						<html:select property="publication.sampleNames" multiple="true"
-							size="5">
-							<html:options name="allSampleNames" />
+							size="5" styleId="allSampleNameSelect" style="display: none">
 						</html:select>
 					</td>
 				</tr>
