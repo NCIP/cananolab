@@ -8,7 +8,6 @@
 	<tr>
 		<td>
 			<h4>
-				<br>
 				Protocol Search Results
 			</h4>
 		</td>
