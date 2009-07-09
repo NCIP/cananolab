@@ -180,9 +180,9 @@ public class PublicationBean extends FileBean {
 		}
 	}
 
-	public String getDOIDisplayName() {
+	private String getDOIDisplayName() {
 		Publication pub = (Publication) domainFile;
-		if (pub.getDigitalObjectId()!= null) {
+		if (!StringUtils.isEmpty(pub.getDigitalObjectId())) {
 			StringBuilder sb = new StringBuilder("<a target='_abstract' href=");
 			sb.append("http://dx.doi.org/");
 			sb.append(pub.getDigitalObjectId());
@@ -196,6 +196,25 @@ public class PublicationBean extends FileBean {
 		}
 	}
 
+	private String getUriDisplayName() {
+		Publication pub = (Publication) domainFile;
+		if (!StringUtils.isEmpty(pub.getUri())) {
+			StringBuilder sb = new StringBuilder("<a href=");
+			sb.append("publication.do?dispatch=download&publicationId=");
+			sb.append(pub.getId());
+			sb.append("&location=");
+			sb.append(getLocation());
+			sb.append(" target='");
+			sb.append(getUrlTarget());
+			sb.append("'>");
+			sb.append(pub.getName());
+			sb.append("</a>");
+			return sb.toString();
+		}
+		else {
+			return null;
+		}
+	}
 	public String getDisplayName() {
 		// standard PubMed journal citation format
 		// e.g. Freedman SB, Adler M, Seshadri R, Powell EC. Oral ondansetron
@@ -213,6 +232,7 @@ public class PublicationBean extends FileBean {
 		strs.add(getPublishInfoDisplayName());
 		strs.add(getPubMedDisplayName());
 		strs.add(getDOIDisplayName());
+		strs.add(getUriDisplayName());
 		displayName = StringUtils.join(strs, ". ") + ".";
 		return displayName;
 	}
