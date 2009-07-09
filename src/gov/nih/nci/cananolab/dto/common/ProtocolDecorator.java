@@ -19,14 +19,14 @@ public class ProtocolDecorator extends TableDecorator {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		FileBean file = protocol.getFileBean();
 		if (!file.getLocation().equals(Constants.LOCAL_SITE)) {
-			return getViewName();
+			return null;
 		}
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("submitProtocol.do?dispatch=setupUpdate&protocolId=");
 		sb.append(protocol.getDomain().getId());
 		sb.append("&location=");
 		sb.append(file.getLocation()).append('>');
-		sb.append(protocol.getDomain().getName());
+		sb.append("Edit");
 		sb.append("</a>");
 		String link = sb.toString();
 		SortableName sortableLink = new SortableName(protocol.getDomain()
@@ -45,19 +45,14 @@ public class ProtocolDecorator extends TableDecorator {
 		SortableName sortableLink = null;
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		FileBean file=protocol.getFileBean();
-		if (file.getDomainFile().getName() != null) {
-			// String downloadURL = "searchProtocol.do?dispatch=download"
-			// + "&fileId=" + file.getDomainFile().getId() + "&location="
-			// + file.getLocation();
-			// String link = "<a href=" + downloadURL + ">"
-			// + file.getDomainFile().getName() + "</a>";
+		if (file.getDomainFile().getName() != null) {			
 			StringBuilder sb = new StringBuilder("<a href=");
 			sb.append("searchProtocol.do?dispatch=download&fileId=");
 			sb.append(file.getDomainFile().getId());
 			sb.append("&location=");
 			sb.append(file.getLocation());
 			sb.append(">");
-			sb.append(file.getDomainFile().getName());
+			sb.append(file.getDomainFile().getTitle());
 			sb.append("</a>");
 			String link = sb.toString();
 			sortableLink = new SortableName(file.getDomainFile().getName(),

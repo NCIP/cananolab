@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -47,6 +48,9 @@ public class PublicationDecorator extends TableDecorator {
 	public SortableName getEditPublicationURL()
 			throws UnsupportedEncodingException {
 		PublicationBean publication = (PublicationBean) getCurrentRowObject();
+		if (!publication.getLocation().equals(Constants.LOCAL_SITE)) {
+			return null;
+		}
 		String fileId = publication.getDomainFile().getId().toString();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("publication.do?page=0&dispatch=setupUpdate&publicationId=");
@@ -60,33 +64,6 @@ public class PublicationDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getDownloadURL() throws UnsupportedEncodingException {
-		SortableName sortableLink = null;
-		String actionName = null;
-		actionName = "searchPublication.do";
-		PublicationBean publication = (PublicationBean) getCurrentRowObject();
-
-		if (publication.getDomainFile().getName() != null) {
-			StringBuilder sb = new StringBuilder("<a href=");
-			sb.append(actionName);
-			sb.append("?dispatch=download&publicationId=");
-			sb.append(publication.getDomainFile().getId());
-			sb.append("&location=");
-			sb.append(publication.getLocation());
-			sb.append(" target='");
-			sb.append(publication.getUrlTarget());
-			sb.append("'>");
-			sb.append(publication.getDomainFile().getName());
-			sb.append("</a>");
-			String link = sb.toString();
-			sortableLink = new SortableName(publication.getDomainFile()
-					.getName(), link);
-		} else {
-			sortableLink = new SortableName("");
-		}
-		return sortableLink;
-	}
-
 	public String getSampleNames() {
 		String[] sampleNames = ((PublicationBean) getCurrentRowObject())
 				.getSampleNames();
@@ -94,13 +71,6 @@ public class PublicationDecorator extends TableDecorator {
 			return "";
 		}
 		return StringUtils.sortJoin(Arrays.asList(sampleNames), "<br>");
-	}
-
-	public SortableName getViewName() {
-		PublicationBean publication = (PublicationBean) getCurrentRowObject();
-		String title = publication.getDomainFile().getTitle();
-		SortableName sortableLink = new SortableName(title);
-		return sortableLink;
 	}
 
 	public String getDescriptionDetail() {
@@ -113,14 +83,13 @@ public class PublicationDecorator extends TableDecorator {
 		sb.append("<a style=\"display: block\" id=\"viewDetail\" href=\"#\" onmouseOver=");
 		sb.append("javascript:show('publicationDescription"+getListIndex()+"'); onmouseOut=");
 		sb.append("javascript:hide('publicationDescription"+getListIndex()+"');>");
-		sb.append("View Detail");
+		sb.append("View");
 		sb.append("</a>");
 		sb.append("<table id=\"publicationDescription"+getListIndex()+"\" style=\"display: none;position: absolute;left: -510px;top: -50px;width: 500px;z-index:5;font-size: 10px;background-color: #FFFFFF;\" class=\"promptbox\">");
 		sb.append("<tr><td>");
 		sb.append(description);
 		sb.append("</td></tr>");
-		sb.append("</table></div>");
-		System.out.println(getListIndex()+"--->"+sb.toString());
+		sb.append("</table></div>");		
 		return sb.toString();
 	}
 }
