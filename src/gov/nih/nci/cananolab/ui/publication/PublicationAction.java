@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.ui.publication;
 /**
  * This class submits publication and assigns visibility
  *
- * @author tanq
+ * @author tanq, pansu
  */
 
 import gov.nih.nci.cananolab.domain.common.Publication;
@@ -130,14 +130,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 		theForm.set("publication", pubBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ActionForward forward = mapping.getInputForward();
 		if (sampleId != null && sampleId.trim().length() > 0) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
 			forward = mapping.findForward("sampleSubmitPublication");
-		} else {
-			InitSampleSetup.getInstance().getAllSampleNames(request, user);
 		}
 		request.getSession().setAttribute(
 				"onloadJavascript",
@@ -165,68 +162,9 @@ public class PublicationAction extends BaseAnnotationAction {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
 			return mapping.findForward("sampleSubmitPublication");
-		} else {
-			InitSampleSetup.getInstance().getAllSampleNames(request, user);
+		} else {			
 			return mapping.findForward("publicationSubmitPublication");
 		}
-	}
-
-	// if sampleId is available direct to particle specific page
-	// Publication pub = (Publication) publicationBean.getDomainFile();
-	// Long pubMedId = pub.getPubMedId();
-	// ActionForward forward = this.getReturnForward(mapping, sampleId,
-	// pubMedId);
-	// }
-
-	// private ActionForward getReturnForward(ActionMapping mapping,
-	// String sampleId, Long pubMedId) {
-	// ActionForward forward = null;
-	// if (StringUtils.isEmpty(sampleId)) {
-	// if (pubMedId != null && pubMedId > 0) {
-	// forward =
-	// mapping.findForward("publicationSubmitPubmedPublication");
-	// } else {
-	// forward = mapping.findForward("publicationSubmitPublication");
-	// }
-	// // request.removeAttribute("sampleId");
-	// } else {
-	// if (pubMedId != null && pubMedId > 0) {
-	// forward = mapping.findForward("sampleSubmitPubmedPublication");
-	// } else {
-	// forward = mapping.findForward("sampleSubmitPublication");
-	// }
-	// // request.setAttribute("sampleId", sampleId);
-	// }
-	// return forward;
-	// }
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		String publicationId = request.getParameter("fileId");
-		String location = request.getParameter(Constants.LOCATION);
-		PublicationService publicationService = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
-			publicationService = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}
-		PublicationBean publicationBean = publicationService
-				.findPublicationById(publicationId, user);
-		theForm.set("publication", publicationBean);
-		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		// if sampleId is available direct to particle specific page
-		ActionForward forward = mapping.findForward("view");
-		String sampleId = request.getParameter("sampleId");
-		if (sampleId != null) {
-			forward = mapping.findForward("sampleViewPublication");
-		}
-		return forward;
 	}
 
 	/**
