@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -200,7 +201,7 @@ public class PublicationBean extends FileBean {
 		Publication pub = (Publication) domainFile;
 		if (!StringUtils.isEmpty(pub.getUri())) {
 			StringBuilder sb = new StringBuilder("<a href=");
-			sb.append("publication.do?dispatch=download&publicationId=");
+			sb.append("publication.do?dispatch=download&fileId=");
 			sb.append(pub.getId());
 			sb.append("&location=");
 			sb.append(getLocation());
@@ -252,6 +253,12 @@ public class PublicationBean extends FileBean {
 			domain.setResearchArea(researchAreasStr);
 		}
 
+		if (!domain.getAuthorCollection().isEmpty()) {
+			domain.getAuthorCollection().clear();
+		}
+		else {
+			domain.setAuthorCollection(new HashSet<Author>());
+		}
 		for (Author author : authors) {
 			if (!StringUtils.isEmpty(author.getFirstName())
 					|| !StringUtils.isEmpty(author.getLastName())
@@ -265,6 +272,9 @@ public class PublicationBean extends FileBean {
 				}
 			} else {
 				author = null;
+			}
+			if (author!=null) {
+				domain.getAuthorCollection().add(author);
 			}
 		}
 	}
