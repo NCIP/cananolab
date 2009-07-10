@@ -50,12 +50,11 @@
 			<property name="volume" type="string" column="volume"/>
 			<property name="year" type="integer" column="year"/>
 			<!-- Associations mapping for the Publication class -->
-			<set name="authorCollection" table="author_publication" lazy="true" inverse="true">
+			<set name="authorCollection" table="author_publication" lazy="true" cascade="save-update">
 				<cache usage="read-write" />
 				<key column="publication_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.Author" column="author_pk_id" />
 			</set>
-
 		</joined-subclass>
 	</class>
 </hibernate-mapping>
