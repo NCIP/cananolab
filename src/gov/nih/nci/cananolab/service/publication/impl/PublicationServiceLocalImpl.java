@@ -29,9 +29,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of PublicationService
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -40,10 +40,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 *
-	 * @param publication,
-	 * @param sampleNames,
-	 * @param fileData,
+	 * 
+	 * @param publication
+	 *            ,
+	 * @param sampleNames
+	 *            ,
+	 * @param fileData
+	 *            ,
 	 * @param authors
 	 * @throws Exception
 	 */
@@ -57,24 +60,27 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					.getDomainFile();
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication, user);
-
-			// finding corresponding samples
-			SampleService sampleService = new SampleServiceLocalImpl();
-			Set<Sample> samples = new HashSet<Sample>();
-			String[] sampleNames = publicationBean.getSampleNames();
-			if (sampleNames != null && sampleNames.length > 0) {
-				for (String name : sampleNames) {
-					SampleBean sampleBean = sampleService.findSampleByName(
-							name, user);
-					samples.add(sampleBean.getDomain());
-				}
-			}
-
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			for (Sample sample : samples) {
-				sample.getPublicationCollection().add(publication);
-				appService.saveOrUpdate(sample);
+			// if has associated sample, save sample to update the relationship
+			// between sample and publication
+			if (publicationBean.getSampleNames() != null
+					&& publicationBean.getSampleNames().length > 0) {
+
+				SampleService sampleService = new SampleServiceLocalImpl();
+				Set<Sample> samples = new HashSet<Sample>();
+				String[] sampleNames = publicationBean.getSampleNames();
+				if (sampleNames != null && sampleNames.length > 0) {
+					for (String name : sampleNames) {
+						SampleBean sampleBean = sampleService.findSampleByName(
+								name, user);
+						samples.add(sampleBean.getDomain());
+					}
+				}
+				for (Sample sample : samples) {
+					sample.getPublicationCollection().add(publication);
+					appService.saveOrUpdate(sample);
+				}
 			}
 
 			appService.saveOrUpdate(publication);
@@ -251,10 +257,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			 * Collection<Sample> sampleCollection = publication
 			 * .getSampleCollection(); if (sampleCollection == null ||
 			 * sampleCollection.size() == 0) { // something wrong throw new
-			 * PublicationException(); } else if (sampleCollection.size() == 1) { //
-			 * delete authService.removePublicGroup(dataId.toString()); if
-			 * (publication.getAuthorCollection() != null) { for (Author author :
-			 * publication.getAuthorCollection()) {
+			 * PublicationException(); } else if (sampleCollection.size() == 1)
+			 * { // delete authService.removePublicGroup(dataId.toString()); if
+			 * (publication.getAuthorCollection() != null) { for (Author author
+			 * : publication.getAuthorCollection()) {
 			 * authService.removePublicGroup(author.getId() .toString()); } }
 			 * appService.delete(publication); } else {// size>1 // remove
 			 * sample association sampleCollection.remove(particle);
