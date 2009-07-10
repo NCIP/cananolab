@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
@@ -62,6 +63,25 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			fileService.prepareSaveFile(publication, user);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			// check if publication is already entered based on PubMedId or DOI
+			if (publication.getPubMedId() != null) {
+				Publication dbPublication = (Publication) appService.getObject(
+						Publication.class, "pubMedId", publication
+								.getPubMedId());
+				if (dbPublication != null
+						&& !dbPublication.getId().equals(publication.getId())) {
+					throw new DuplicateEntriesException("PubMed ID is already used");
+				}
+			}
+			if (publication.getDigitalObjectId() != null) {
+				Publication dbPublication = (Publication) appService.getObject(
+						Publication.class, "digitalObjectId", publication
+								.getDigitalObjectId());
+				if (dbPublication != null
+						&& !dbPublication.getId().equals(publication.getId())) {
+					throw new DuplicateEntriesException("Digital Object ID is already used");
+				}
+			}
 			// if has associated sample, save sample to update the relationship
 			// between sample and publication
 			if (publicationBean.getSampleNames() != null
