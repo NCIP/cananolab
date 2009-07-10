@@ -63,6 +63,10 @@
 			path="/publication"
 			type="gov.nih.nci.cananolab.ui.publication.PublicationAction"
 			input="input">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.duplicatePublication" path="publication.message"
+				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="success" path="publication.message" />
 			<forward name="sampleSuccess" path="sample.annotationMessage" />
 			<forward name="input"
