@@ -114,7 +114,7 @@
 							<a
 								href="publication.do?dispatch=setupNew&sampleId=${sampleId}&type=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
-									border="0" /> </a>&nbsp;&nbsp;
+									border="0" /></a>&nbsp;&nbsp;
 							<%--
 							<c:if test="${! empty publicationSummaryView.category2Publications[type]}">
 								<a><img align="middle" src="images/btn_delete.gif"
