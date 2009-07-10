@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * Publication view bean
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
@@ -175,8 +175,7 @@ public class PublicationBean extends FileBean {
 			sb.append("PMID: " + pub.getPubMedId());
 			sb.append("</a>");
 			return sb.toString();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -191,8 +190,7 @@ public class PublicationBean extends FileBean {
 			sb.append("DOI: " + pub.getDigitalObjectId());
 			sb.append("</a>");
 			return sb.toString();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -211,11 +209,11 @@ public class PublicationBean extends FileBean {
 			sb.append(pub.getName());
 			sb.append("</a>");
 			return sb.toString();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
+
 	public String getDisplayName() {
 		// standard PubMed journal citation format
 		// e.g. Freedman SB, Adler M, Seshadri R, Powell EC. Oral ondansetron
@@ -253,10 +251,10 @@ public class PublicationBean extends FileBean {
 			domain.setResearchArea(researchAreasStr);
 		}
 
-		if (!domain.getAuthorCollection().isEmpty()) {
+		if (domain.getAuthorCollection() != null
+				&& !domain.getAuthorCollection().isEmpty()) {
 			domain.getAuthorCollection().clear();
-		}
-		else {
+		} else {
 			domain.setAuthorCollection(new HashSet<Author>());
 		}
 		for (Author author : authors) {
@@ -270,10 +268,13 @@ public class PublicationBean extends FileBean {
 						|| author.getCreatedBy().trim().length() == 0) {
 					author.setCreatedBy(createdBy);
 				}
+				if (author.getId()<=0) {
+					author.setId(null);
+				}
 			} else {
 				author = null;
 			}
-			if (author!=null) {
+			if (author != null) {
 				domain.getAuthorCollection().add(author);
 			}
 		}
