@@ -65,7 +65,7 @@ function writeLink(protocol) {
 		fileId = protocol.fileBean.domainFile.id;
 	}
 	if (uri != null && fileId != null) {
-		document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=local&amp;fileId=" + fileId + "'>" + uri + "</a>";
+		document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=${applicationOwner}&amp;fileId=" + fileId + "'>" + uri + "</a>";
 	} else {
 		document.getElementById("protocolFileLink").innerHTML = "";
 	}
