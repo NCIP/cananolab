@@ -40,7 +40,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:if
-										test="${charBean.characterizationType eq 'Physico-Chemical Characterization'}">
+										test="${'Physico-Chemical Characterization' eq charBean.characterizationType}">
 										<tr>
 											<td class="cellLabel">
 												Assay Type
@@ -72,7 +72,7 @@
 									</td>
 								</tr>
 							</c:if>
-							<c:if test="${!empty charBean.protocolBean.displayName}">>
+							<c:if test="${!empty charBean.protocolBean.displayName}">
 								<tr>
 									<td class="cellLabel">
 										Protocol
@@ -151,10 +151,10 @@
 								</tr>
 							</c:if>
 						</table>
-						<br/>
+						<br>
 					</div>
 				</c:forEach>
-				<br/>
+				<br>
 			</td>
 		</tr>
 	</table>
