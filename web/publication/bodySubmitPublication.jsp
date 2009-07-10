@@ -51,9 +51,9 @@
 			<td>
 				<div id="categoryPrompt">
 					<html:select property="publication.domainFile.category"
-						onchange="javascript:callPrompt('Publication Type', 'domainFile.category', 'categoryPrompt');
-														updateSubmitFormBasedOnCategory();enableAutoFields();"
-						styleId="domainFile.category">
+						onchange="javascript:callPrompt('Publication Type', 'category', 'categoryPrompt');
+														clearPublication();updateSubmitFormBasedOnCategory();enableAutoFields();"
+						styleId="category">
 						<option value=""></option>
 						<html:options name="publicationCategories" />
 						<option value="other">
@@ -68,8 +68,8 @@
 			<td colspan="3">
 				<div id="statusPrompt">
 					<html:select property="publication.domainFile.status"
-						onchange="javascript:callPrompt('Publication status', 'domainFile.status', 'statusPrompt');"
-						styleId="domainFile.status">
+						onchange="javascript:callPrompt('Publication status', 'status', 'statusPrompt');"
+						styleId="status">
 						<option value=""></option>
 						<html:options name="publicationStatuses" />
 						<option value="other">
@@ -284,69 +284,72 @@
 			</td>
 		</tr>
 	</table>
-	<br>
-	<table width="100%" align="center" class="submissionView">
-		<c:choose>
-			<c:when
-				test="${publicationForm.map.publication.domainFile.uriExternal eq 'true' }">
-				<c:set var="linkStyle" value="display: block" />
-				<c:set var="loadStyle" value="display: none" />
-			</c:when>
-			<c:otherwise>
-				<c:set var="linkStyle" value="display: none" />
-				<c:set var="loadStyle" value="display: block" />
-			</c:otherwise>
-		</c:choose>
-		<tr>
-			<td class="cellLabel">
-				<html:radio styleId="external0"
-					property="publication.domainFile.uriExternal" value="false"
-					onclick="displayFileRadioButton()" />
-				Upload File
-				<br>
-				&nbsp;&nbsp;or
-				<br>
-				<html:radio styleId="external1"
-					property="publication.domainFile.uriExternal" value="true"
-					onclick="displayFileRadioButton()" />
-				Enter File URL
-			</td>
-			<td colspan="2">
-				<span id="load"> <html:file
-						property="publication.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
-				<br>
-				<br>
-				<span id="link" style=""><html:text
-						property="publication.externalUrl" size="60" /> </span>&nbsp;
-			</td>
-		</tr>
-		<c:if test="${!empty publicationForm.map.publication.domainFile.uri }">
+	<div id="fileSection" style="display: block">
+		<br>
+		<table width="100%" align="center" class="submissionView">
+			<c:choose>
+				<c:when
+					test="${publicationForm.map.publication.domainFile.uriExternal eq 'true' }">
+					<c:set var="linkStyle" value="display: block" />
+					<c:set var="loadStyle" value="display: none" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="linkStyle" value="display: none" />
+					<c:set var="loadStyle" value="display: block" />
+				</c:otherwise>
+			</c:choose>
 			<tr>
-				<td class="completeLabel" colspan="3">
-					<c:choose>
-						<c:when test="${publicationForm.map.publication.image eq 'true'}">
+				<td class="cellLabel">
+					<html:radio styleId="external0"
+						property="publication.domainFile.uriExternal" value="false"
+						onclick="displayFileRadioButton()" />
+					Upload File
+					<br>
+					&nbsp;&nbsp;or
+					<br>
+					<html:radio styleId="external1"
+						property="publication.domainFile.uriExternal" value="true"
+						onclick="displayFileRadioButton()" />
+					Enter File URL
+				</td>
+				<td colspan="2">
+					<span id="load"> <html:file
+							property="publication.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
+					<br>
+					<br>
+					<span id="link" style=""><html:text
+							property="publication.externalUrl" size="60" /> </span>&nbsp;
+				</td>
+			</tr>
+			<c:if
+				test="${!empty publicationForm.map.publication.domainFile.uri }">
+				<tr>
+					<td class="completeLabel" colspan="3">
+						<c:choose>
+							<c:when test="${publicationForm.map.publication.image eq 'true'}">
 						 				${publicationForm.map.publication.domainFile.title}<br>
-							<br>
-							<a href="#"
-								onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}',
+								<br>
+								<a href="#"
+									onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}',
 														${publicationForm.map.file.domainFile.id})"><img
-									src="compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}"
-									border="0" width="150"> </a>
-						</c:when>
-						<c:otherwise>
+										src="compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}"
+										border="0" width="150"> </a>
+							</c:when>
+							<c:otherwise>
 											Submitted Publication &nbsp;&nbsp;
 										<a
-								href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}"
-								target="${publicationForm.map.publication.urlTarget}">
-								${publicationForm.map.publication.domainFile.uri}</a>
-							<br>
-						</c:otherwise>
-					</c:choose>
-				</td>
+									href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}"
+									target="${publicationForm.map.publication.urlTarget}">
+									${publicationForm.map.publication.domainFile.uri}</a>
+								<br>
+							</c:otherwise>
+						</c:choose>
+					</td>
 
-			</tr>
-		</c:if>
-	</table>
+				</tr>
+			</c:if>
+		</table>
+	</div>
 	<br>
 	<c:choose>
 		<c:when test="${empty publicationForm.map.sampleId}">
@@ -417,17 +420,12 @@
 										value="publication.do?page=0&sampleId=${publicationForm.map.sampleId }&dispatch=setupNew&location=${applicationOwner }" />
 									<c:if test="${!empty dataId}">
 										<c:set var="origUrl"
-											value="publication.do?page=0&sampleId=${publicationForm.map.sampleId }&dispatch=setupUpdate&location=${applicationOwner}&fileId=${dataId }" />
+											value="publication.do?page=0&sampleId=${publicationForm.map.sampleId }&dispatch=setupUpdate&location=${applicationOwner}&fileId=${publicationForm.map.publication.domainFile.id}" />
 									</c:if>
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="submitType" value="publications">
 									<input type="hidden" name="page" value="2">
-									<input type="hidden" name="location"
-										value="${applicationOwner}">
-									<input type="hidden" name="sampleId"
-										value="${publicationForm.map.sampleId}">
 									<html:submit />
 								</div>
 							</div>
