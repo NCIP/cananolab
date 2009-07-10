@@ -52,7 +52,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean, UserBean user)
-			throws PublicationException, NoAccessException {
+			throws PublicationException, NoAccessException,
+			DuplicateEntriesException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
@@ -70,7 +71,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 								.getPubMedId());
 				if (dbPublication != null
 						&& !dbPublication.getId().equals(publication.getId())) {
-					throw new DuplicateEntriesException("PubMed ID is already used");
+					throw new DuplicateEntriesException(
+							"PubMed ID is already used");
 				}
 			}
 			if (publication.getDigitalObjectId() != null) {
@@ -79,7 +81,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 								.getDigitalObjectId());
 				if (dbPublication != null
 						&& !dbPublication.getId().equals(publication.getId())) {
-					throw new DuplicateEntriesException("Digital Object ID is already used");
+					throw new DuplicateEntriesException(
+							"Digital Object ID is already used");
 				}
 			}
 			// if has associated sample, save sample to update the relationship
@@ -122,6 +125,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				}
 			}
 
+		} catch (DuplicateEntriesException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Error in saving the publication.";
 			logger.error(err, e);

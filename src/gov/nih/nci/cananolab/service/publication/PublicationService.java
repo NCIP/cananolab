@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 
@@ -27,7 +28,7 @@ public interface PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean, UserBean user)
-			throws PublicationException, NoAccessException;
+			throws PublicationException, NoAccessException, DuplicateEntriesException;
 
 	public List<PublicationBean> findPublicationsBy(String publicationTitle,
 			String publicationCategory, String sampleName,

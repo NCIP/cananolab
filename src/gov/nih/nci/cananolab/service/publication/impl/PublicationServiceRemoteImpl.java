@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -27,9 +28,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Remote implementation of PublicationService
- *
+ * 
  * @author tanq
- *
+ * 
  */
 public class PublicationServiceRemoteImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -49,15 +50,19 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 *
-	 * @param publication,
-	 * @param sampleNames,
-	 * @param fileData,
+	 * 
+	 * @param publication
+	 *            ,
+	 * @param sampleNames
+	 *            ,
+	 * @param fileData
+	 *            ,
 	 * @param authors
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean, UserBean user)
-			throws PublicationException, NoAccessException {
+			throws PublicationException, NoAccessException,
+			DuplicateEntriesException {
 		throw new PublicationException("Not implemented for grid service");
 	}
 
