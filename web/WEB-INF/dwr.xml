@@ -99,6 +99,7 @@
 			<include method="retrievePubMedInfo" />
 			<include method="addAuthor" />
 			<include method="deleteAuthor" />
+			<include method="clearPublication"/>
 			<include method="getAllSampleNames"/>
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />

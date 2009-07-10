@@ -4,7 +4,14 @@ var numberOfAuthors = 0; // number of unique authors in the cache, used to
 // generate author id
 
 function updateSubmitFormBasedOnCategory() {
-	var category = dwr.util.getValue("domainFile.category");
+	var category = dwr.util.getValue("category");
+	// clear submission form first
+	PublicationManager.clearPublication( function(publication) {
+		dwr.util.setValues(publication);
+		currentPublication=publication;
+		//not sure if we need to clear status, description, samples, file, and visibility
+		populateAuthors(false);
+	});
 	if (category != "report" && category != "book chapter" && category != "") {
 		show("pubMedRow", true);
 		show("doiRow", true);
@@ -15,11 +22,10 @@ function updateSubmitFormBasedOnCategory() {
 		hide("doiRow");
 		hide("journalRow");
 		hide("volumePageRow");
-		dwr.util.setValue("domainFile.status", true);
 	}
 	// if report, set publish status to published
 	if (category == "report") {
-		dwr.util.setValue("domainFile.status", "published");
+		dwr.util.setValue("status", "published");
 	}
 }
 
@@ -32,6 +38,7 @@ function enableAutoFields() {
 	document.getElementById("domainFile.startPage").readOnly = false;
 	document.getElementById("domainFile.endPage").readOnly = false;
 	show("addAuthor");
+	show("fileSection");
 }
 
 function updateSearchFormBasedOnCategory() {
@@ -84,7 +91,7 @@ function setPublicationDropdowns() {
 
 function fillPubMedInfo() {
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
-	if (pubMedId != "") {		
+	if (pubMedId != "") {
 		PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
 	}
 }
@@ -102,6 +109,8 @@ function populatePubMedInfo(publication) {
 		currentPublication = publication;
 		populateAuthors(true);
 		hide("addAuthor");
+		//disable file upload
+		hide("fileSection");
 	} else {
 		sessionTimeout();
 	}

@@ -27,6 +27,15 @@ public class DWRPublicationManager {
 	public DWRPublicationManager() {
 	}
 
+	public PublicationBean clearPublication() {		
+		WebContext wctx = WebContextFactory.get();
+		PublicationForm form = (PublicationForm) wctx.getSession()
+				.getAttribute("publicationForm");
+		PublicationBean pbean = new PublicationBean();
+		form.set("publication", pbean);
+		return pbean;
+	}
+
 	public PublicationBean retrievePubMedInfo(String pubmedID) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		WebContext wctx = WebContextFactory.get();
@@ -111,8 +120,11 @@ public class DWRPublicationManager {
 					.getAllSampleNames(wctx.getHttpServletRequest(), user);
 			return allSampleNames.toArray(new String[0]);
 		} catch (Exception e) {
-			logger.error("Problem getting all sample names for publication submission \n", e);
-			return new String[]{""};
+			logger
+					.error(
+							"Problem getting all sample names for publication submission \n",
+							e);
+			return new String[] { "" };
 		}
 	}
 
