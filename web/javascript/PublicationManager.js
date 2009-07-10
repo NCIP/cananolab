@@ -3,15 +3,22 @@ var currentPublication = null;
 var numberOfAuthors = 0; // number of unique authors in the cache, used to
 // generate author id
 
-function updateSubmitFormBasedOnCategory() {
-	var category = dwr.util.getValue("category");
+function clearPublication() {
 	// clear submission form first
 	PublicationManager.clearPublication( function(publication) {
 		dwr.util.setValues(publication);
-		currentPublication=publication;
-		//not sure if we need to clear status, description, samples, file, and visibility
-		populateAuthors(false);
-	});
+		currentPublication = publication;
+		// not sure if we need to clear status, description, samples, file, and
+			// visibility
+			populateAuthors(false);
+		});
+}
+
+function showAuthors(publicationId) {
+
+}
+function updateSubmitFormBasedOnCategory() {
+	var category = dwr.util.getValue("category");
 	if (category != "report" && category != "book chapter" && category != "") {
 		show("pubMedRow", true);
 		show("doiRow", true);
@@ -91,26 +98,32 @@ function setPublicationDropdowns() {
 
 function fillPubMedInfo() {
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
-	if (pubMedId != "") {
-		PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
-	}
+	PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
 }
 
 function populatePubMedInfo(publication) {
 	if (publication != null) {
-		dwr.util.setValues(publication);
-		document.getElementById("domainFile.digitalObjectId").readOnly = true;
-		document.getElementById("domainFile.title").readOnly = true;
-		document.getElementById("domainFile.journalName").readOnly = true;
-		document.getElementById("domainFile.year").readOnly = true;
-		document.getElementById("domainFile.volume").readOnly = true;
-		document.getElementById("domainFile.startPage").readOnly = true;
-		document.getElementById("domainFile.endPage").readOnly = true;
-		currentPublication = publication;
-		populateAuthors(true);
-		hide("addAuthor");
-		//disable file upload
-		hide("fileSection");
+		var pubMedId = dwr.util.getValue("domainFile.pubMedId");
+		if (pubMedId != "") {
+			dwr.util.setValues(publication);
+			document.getElementById("domainFile.digitalObjectId").readOnly = true;
+			document.getElementById("domainFile.title").readOnly = true;
+			document.getElementById("domainFile.journalName").readOnly = true;
+			document.getElementById("domainFile.year").readOnly = true;
+			document.getElementById("domainFile.volume").readOnly = true;
+			document.getElementById("domainFile.startPage").readOnly = true;
+			document.getElementById("domainFile.endPage").readOnly = true;
+			currentPublication = publication;
+			populateAuthors(true);
+			hide("addAuthor");
+			// disable file upload
+			hide("fileSection");
+		} else {
+			currentPublication = publication;
+			populateAuthors(false);
+			show("addAuthor");
+			show("fileSection");
+		}
 	} else {
 		sessionTimeout();
 	}
