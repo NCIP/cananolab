@@ -15,9 +15,6 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
@@ -35,7 +32,6 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -48,8 +44,8 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
 		PublicationForm theForm = (PublicationForm) form;
+		String sampleId = (String) theForm.get("sampleId");
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -57,64 +53,32 @@ public class PublicationAction extends BaseAnnotationAction {
 				.getLoginName(), 0);
 		PublicationService service = new PublicationServiceLocalImpl();
 		service.savePublication(publicationBean, user);
-		// set visibility
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		authService.assignVisibility(publicationBean.getDomainFile().getId()
-				.toString(), publicationBean.getVisibilityGroups(), null);
 
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitPublication.file",
 				publicationBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		forward = mapping.findForward("success");
 
-		HttpSession session = request.getSession();
-		String sampleId = (String) session.getAttribute("docSampleId");
-		// String sampleId = request.getParameter("sampleId");
-		// if (sampleId != null) {
-		// session.setAttribute("docSampleId", sampleId);
-		// }else {
-		// //if it is not calling from particle, remove previous set attribute
-		// if applicable
-		// session.removeAttribute("docSampleId");
-		// }
-
-		// if (sampleId==null ||sampleId.length()==0) {
-		// Object sampleIdObj = session.getAttribute("sampleId");
-		// if (sampleIdObj!=null) {
-		// sampleId = sampleIdObj.toString();
-		// request.setAttribute("sampleId", sampleId);
-		// }else {
-		// request.removeAttribute("sampleId");
-		// }
-		// }
 		if (sampleId != null && sampleId.length() > 0) {
-			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService
-					.findSampleById(sampleId, user);
-			sampleBean.setLocation(Constants.LOCAL_SITE);
-			forward = mapping.findForward("sampleSuccess");
+			SortedSet<String> publicationCategories = InitSetup.getInstance()
+					.getDefaultAndOtherLookupTypes(request,
+							"publicationCategories", "Publication", "category",
+							"otherCategory", true);
+			List<String> allPublicationTypes = new ArrayList<String>(
+					publicationCategories);
+			int ind = allPublicationTypes
+					.indexOf(((Publication) publicationBean.getDomainFile())
+							.getCategory()) + 1;
+			request.setAttribute("onloadJavascript", "showSummary('" + ind
+					+ "', " + allPublicationTypes.size() + ")");
+			return summaryEdit(mapping, form, request, response);
+		} else {
+			return mapping.findForward("success");
 		}
-		// session.removeAttribute("sampleId");
-		// to preselect the same characterization type after returning to the
-		// summary page
-		SortedSet<String> publicationCategories = InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request,
-						"publicationCategories", "Publication", "category",
-						"otherCategory", true);
-		List<String> allPublicationTypes = new ArrayList<String>(
-				publicationCategories);
-		int ind = allPublicationTypes.indexOf(((Publication) publicationBean
-				.getDomainFile()).getCategory()) + 1;
-		request.getSession().setAttribute(
-				"onloadJavascript",
-				"showSummary('" + ind + "', " + allPublicationTypes.size()
-						+ ")");
-		return forward;
 	}
 
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
@@ -136,8 +100,7 @@ public class PublicationAction extends BaseAnnotationAction {
 					.getOtherSampleNames(request, sampleId);
 			forward = mapping.findForward("sampleSubmitPublication");
 		}
-		request.setAttribute(
-				"onloadJavascript",
+		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory()");
 		return forward;
 	}
@@ -155,21 +118,20 @@ public class PublicationAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		theForm.set("sampleId", sampleId);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		request.setAttribute(
-				"onloadJavascript",
+		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
 		if (sampleId != null && sampleId.trim().length() > 0) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
 			return mapping.findForward("sampleSubmitPublication");
-		} else {			
+		} else {
 			return mapping.findForward("publicationSubmitPublication");
 		}
 	}
 
 	/**
 	 * Handle summary report print request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -207,7 +169,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -229,7 +191,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -255,7 +217,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -302,7 +264,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
