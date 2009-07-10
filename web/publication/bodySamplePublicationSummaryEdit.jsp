@@ -132,38 +132,56 @@
 										<table class="summarytable" width="90%" border="0"
 											cellpadding="0" cellspacing="0" summary="">
 											<tr>
-												<th width="70%">
+												<th>
 													Bibliography Info
-												</th>
-												<th width="15%">
-													Download Link
 												</th>
 												<th>
 													Research Category
+												</th>
+												<th>
+													Description
+												</th>
+												<th>
+													Publication Status
 												</th>
 												<th width="5%">
 													&nbsp;
 												</th>
 											</tr>
 											<c:forEach var="pubBean"
-												items="${publicationSummaryView.category2Publications[type]}">
+												items="${publicationSummaryView.category2Publications[type]}"
+												varStatus="ind">
 												<c:set var="pubObj" value="${pubBean.domainFile}" />
 												<tr>
 													<td valign="top">
 														${pubBean.displayName}&nbsp;
 													</td>
 													<td valign="top">
-														<c:if test="${! empty pubObj.uri}">
-															<a
-																href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
-																target="${pubBean.urlTarget}">${pubOjb.uri}</a>&nbsp;
-															</c:if>
-														&nbsp;
-													</td>
-													<td valign="top">
 														<c:out
 															value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
 															escapeXml="false" />
+														&nbsp;
+													</td>
+													<td valign="top">
+														<c:if test="${!empty pubObj.description}">
+															<div id="descriptionSection" style="position: relative;">
+																<a style="display: block" id="viewDetail" href="#"
+																	onmouseOver="javascript: show('publicationDescription${ind.count}');"
+																	onmouseOut="javascript: hide('publicationDescription${ind.count}');">View</a>
+																<table id="publicationDescription${ind.count}"
+																	style="display: none; position: absolute; left: -510px; top: -50px; width: 500px; z-index: 5; border-width: 1px; border-color: #cccccc; border-style: solid; background-color: #FFFFFF;"
+																	class="promptbox">
+																	<tr>
+																		<td>
+																			${pubObj.description}
+																		</td>
+																	</tr>
+																</table>
+															</div>
+														</c:if>
+													</td>
+													<td valign="top">
+														<c:out value="${pubObj.status}" />
 														&nbsp;
 													</td>
 													<td valign="top">
