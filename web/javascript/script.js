@@ -280,36 +280,78 @@ function updateOtherField(form, elementName, otherElementName) {
 var imgWindow = null;
 // var t = null;
 function popImage(event, imgSrc, imgId) {
+	var popImg = new Image();
+	popImg.src = imgSrc;
 	if (imgWindow != null && imgWindow.open) {
 		imgWindow.close();
 		//t = null;
 	}
-	var popImg = new Image();
-	popImg.src = imgSrc;
+	var topPos = 50;
+	var leftPos = 50;
+	var maxWidth = 800;
 	var maxHeight = 800;
-	var width = popImg.width + 20;
-	var height = popImg.height + 20;
-	if (width > height) {
-		if (width > maxHeight) {
-			var ratio = maxHeight / width;
-			width = maxHeight;
-			height = ratio * height;
+	if (popImg.width > 0) {
+		var width = popImg.width + 20;
+		var height = popImg.height + 20;
+		if (width > height) {
+			if (width > maxWidth) {
+				var ratio = maxWidth / width;
+				width = maxWidth;
+				height = ratio * height;
+			}
+		} else {
+			if (height > maxHeight) {
+				var ratio = maxHeight / height;
+				height = maxHeight;
+				width = ratio * width;
+			}
 		}
+		imgWindow = window.open("", "charFileWindow", "width='" + width + "',height='" + height + "',left='" + leftPos + "',top='" + topPos + "'");
+		imgWindow.document.writeln("<html><head><title>Characterization File</title></head>");
+		imgWindow.document.writeln("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">");
+		imgWindow.document.writeln("<img width='" + (width - 20) + "' height='" + (height - 20) + "' styleId='" + imgId + "' src='" + imgSrc + "'/>");
+		imgWindow.document.writeln("</body></html>");
 	} else {
-		if (height > maxHeight) {
-			var ratio = maxHeight / height;
-			height = maxHeight;
-			width = ratio * width;
+		imgWindow = window.open("", "charFileWindow", "left='" + leftPos + "',top='" + topPos + "'");
+		imgWindow.document.writeln("<html><head><title>Characterization File</title></head>");
+		imgWindow.document.writeln("<body onLoad=\"resizePopup();\" bgcolor=\"#FFFFFF\">");
+		imgWindow.document.writeln("<img id='popImage' styleId='" + imgId + "' src='" + imgSrc + "'/>");
+		imgWindow.document.writeln("</body></html>");
+	}
+//	t = setTimeout("imgWindow.close();", 15000);
+}
+/**
+ * Try to resize the window After the image is loaded.
+ */
+function resizePopup() {
+	var popImage = document.getElementById("popImage");
+	if (popImage != null) {
+		var maxWidth = 800;
+		var maxHeight = 800;
+		var width = popImage.width + 20;
+		var height = popImage.height + 20;
+		if (popImage.width > 0) {
+			if (width > height) {
+				if (width > maxWidth) {
+					var ratio = maxWidth / width;
+					width = maxWidth;
+					height = ratio * height;
+				}
+			} else {
+				if (height > maxHeight) {
+					var ratio = maxHeight / height;
+					height = maxHeight;
+					width = ratio * width;
+				}
+			}
+			popImage.width = width - 20;
+			popImage.height = height - 20;
+			window.resizeTo(width, height);
+			self.focus();
+		} else {
+			imgWindow.close(); //close window as the image can't be shown.
 		}
 	}
-	var leftPos = 50;
-	var topPos = 50;
-	imgWindow = window.open("", "charFileWindow", "width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
-	imgWindow.document.write("<html><head><title>Characterization File</title></head>\n");
-	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
-	imgWindow.document.write("<img width=" + (width - 20) + " height=" + (height - 20) + " styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
-	imgWindow.document.write("</body></html>");
-//	t = setTimeout("imgWindow.close();", 15000);
 }
 function printPage0(url) {
 	var obj = document.all.tags("link");
