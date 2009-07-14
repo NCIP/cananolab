@@ -69,14 +69,14 @@
 			</td>
 			<td>
 				from
-				<html:text property="sizeZAverageLow.value" />
+				<html:text property="sizeZAverageLow.value" size="10"/>
 				&nbsp;
 				<html:select property="sizeZAverageLow.valueUnit">
 					<option></option>
 					<html:options name="zAverageUnits" />
 				</html:select>
 				&nbsp;to&nbsp;
-				<html:text property="sizeZAverageHigh.value" />
+				<html:text property="sizeZAverageHigh.value" size="10"/>
 				&nbsp;
 				<html:select property="sizeZAverageLow.valueUnit">
 					<option></option>
@@ -92,9 +92,9 @@
 			</td>
 			<td>
 				from
-				<html:text property="sizePdiLow.value" />
-				&nbsp; &nbsp;to&nbsp;
-				<html:text property="sizePdiHigh.value" />
+				<html:text property="sizePdiLow.value" size="10"/>
+				&nbsp;&nbsp;to&nbsp;
+				<html:text property="sizePdiHigh.value" size="10"/>
 				&nbsp;
 			</td>
 		</tr>
@@ -111,14 +111,14 @@
 			</td>
 			<td>
 				from
-				<html:text property="molecularWeightLow.value" />
+				<html:text property="molecularWeightLow.value" size="10"/>
 				&nbsp;
 				<html:select property="molecularWeightLow.valueUnit">
 					<option></option>
 					<html:options name="molecularWeightUnits" />
 				</html:select>
 				&nbsp;to&nbsp;
-				<html:text property="molecularWeightHigh.value" />
+				<html:text property="molecularWeightHigh.value" size="10"/>
 				&nbsp;
 				<html:select property="molecularWeightHigh.valueUnit">
 					<option></option>
@@ -139,14 +139,14 @@
 			</td>
 			<td>
 				from
-				<html:text property="surfaceZetaPotentialLow.value" />
+				<html:text property="surfaceZetaPotentialLow.value" size="10"/>
 				&nbsp;
 				<html:select property="surfaceZetaPotentialLow.valueUnit">
 					<option></option>
 					<html:options name="zetaPotentialUnits" />
 				</html:select>
 				&nbsp;to&nbsp;
-				<html:text property="surfaceZetaPotentialHigh.value" />
+				<html:text property="surfaceZetaPotentialHigh.value" size="10"/>
 				&nbsp;
 				<html:select property="surfaceZetaPotentialHigh.valueUnit">
 					<option></option>
@@ -175,14 +175,14 @@
 			</td>
 			<td>
 				from
-				<html:text property="cellViabilityLC50Low.value" />
+				<html:text property="cellViabilityLC50Low.value" size="10"/>
 				&nbsp;
 				<html:select property="cellViabilityLC50Low.valueUnit">
 					<option></option>
 					<html:options name="lc50Units" />
 				</html:select>
 				&nbsp;to&nbsp;
-				<html:text property="cellViabilityLC50High.value" />
+				<html:text property="cellViabilityLC50High.value" size="10"/>
 				&nbsp;
 				<html:select property="cellViabilityLC50Low.valueUnit">
 					<option></option>
