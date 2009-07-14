@@ -16,11 +16,12 @@
 	<tr>
 		<td>
 			<h4>
-				Search Samples
+				Search Samples  
 			</h4>
 		</td>
 		<td align="right" width="30%">
 			<%--<a href="advancedSampleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
+			<a class="helpText" href="rangeSearchSample.do?dispatch=setup">Range Search</a>&nbsp;
 			<jsp:include page="/helpGlossary.jsp">
 				<jsp:param name="topic" value="search_sample_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
