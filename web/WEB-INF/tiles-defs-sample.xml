@@ -4,8 +4,7 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<definition name="sample.message" extends="canano.home">
-		<put name="cananoContent"
-			value="/bodyMessage.jsp?bundle=particle" />
+		<put name="cananoContent" value="/bodyMessage.jsp?bundle=particle" />
 		<put name="menu" value="samples" />
 	</definition>
 
@@ -14,10 +13,8 @@
 		<put name="cananoContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="samples" />
 		<put name="item" value="Sample" />
-		<put name="itemDescription"
-			value="/sample/bodySampleDescription.jsp" />
-		<put name="createLink"
-			value="sample.do?dispatch=setupNew&amp;page=0" />
+		<put name="itemDescription" value="/sample/bodySampleDescription.jsp" />
+		<put name="createLink" value="sample.do?dispatch=setupNew&amp;page=0" />
 		<put name="searchLink" value="searchSample.do?dispatch=setup" />
 	</definition>
 
@@ -27,17 +24,13 @@
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.submitPointOfContact"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/bodySubmitPointOfContact.jsp" />
+	<definition name="sample.submitPointOfContact" extends="sample.annotationHome">
+		<put name="cananoContent" value="/sample/bodySubmitPointOfContact.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.pointOfContactDetailView"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/bodyPointOfContactDetailView.jsp" />
+	<definition name="sample.pointOfContactDetailView" extends="sample.annotationHome">
+		<put name="cananoContent" value="/sample/bodyPointOfContactDetailView.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
@@ -47,59 +40,44 @@
 	</definition>
 
 	<!-- definition for the particle page -->
-	<definition name="sample.summaryEdit"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/bodySubmitSample.jsp" />
+	<definition name="sample.summaryEdit" extends="sample.annotationHome">
+		<put name="cananoContent" value="/sample/bodySubmitSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.summaryView"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/bodySampleSummaryView.jsp" />
+	<definition name="sample.summaryView" extends="sample.annotationHome">
+		<put name="cananoContent" value="/sample/bodySampleSummaryView.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.publication.summaryView"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/publication/bodySamplePublicationSummaryView.jsp" />
+	<definition name="sample.publication.summaryView" extends="sample.annotationHome">
+		<put name="cananoContent" value="/publication/bodySamplePublicationSummaryView.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.publication.summaryEdit"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/publication/bodySamplePublicationSummaryEdit.jsp" />
+	<definition name="sample.publication.summaryEdit" extends="sample.annotationHome">
+		<put name="cananoContent" value="/publication/bodySamplePublicationSummaryEdit.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.submitCharacterization"
-		extends="sample.annotationHome">
+	<definition name="sample.submitCharacterization" extends="sample.annotationHome">
 		<put name="cananoContent"
 			value="/sample/characterization/bodySubmitCharacterization.jsp" />
 		<put name="detailPage" value="" />
 	</definition>
 
-	<definition name="sample.annotationMessage"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/bodyMessage.jsp?bundle=particle" />
+	<definition name="sample.annotationMessage" extends="sample.annotationHome">
+		<put name="cananoContent" value="/bodyMessage.jsp?bundle=particle" />
 	</definition>
 
 	<!-- definition for the sample composition page -->
-	<definition name="sample.composition.summaryView"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/composition/bodyCompositionSummaryView.jsp" />
+	<definition name="sample.composition.summaryView" extends="sample.annotationHome">
+		<put name="cananoContent" value="/sample/composition/bodyCompositionSummaryView.jsp" />
 		<put name="actionName" value="composition" />
 	</definition>
 
-	<definition name="sample.composition.summaryEdit"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/composition/bodyCompositionSummaryEdit.jsp" />
+	<definition name="sample.composition.summaryEdit" extends="sample.annotationHome">
+		<put name="cananoContent" value="/sample/composition/bodyCompositionSummaryEdit.jsp" />
 		<put name="actionName" value="composition" />
 	</definition>
 
@@ -111,7 +89,9 @@
 		<put name="actionName" value="nanomaterialEntity" />
 	</definition>
 
-	<!-- definition for the sample composition functionalizing entity page -->
+	<!--
+		definition for the sample composition functionalizing entity page
+	-->
 	<definition name="sample.composition.functionalizingEntity"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
@@ -122,16 +102,14 @@
 	<!-- definition for the sample composition chemical association page -->
 	<definition name="sample.composition.chemicalAssociation"
 		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/composition/bodySubmitChemicalAssociation.jsp" />
+		<put name="cananoContent" value="/sample/composition/bodySubmitChemicalAssociation.jsp" />
 		<put name="actionName" value="chemicalAssociation" />
 	</definition>
 
 	<!-- definition for the sample composition file page -->
 	<definition name="sample.composition.compositionFile"
 		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/composition/bodySubmitCompositionFile.jsp" />
+		<put name="cananoContent" value="/sample/composition/bodySubmitCompositionFile.jsp" />
 		<put name="actionName" value="compositionFile" />
 	</definition>
 
@@ -148,40 +126,28 @@
 	</definition>
 
 
-	<definition name="sample.annotationDeleteView"
-		extends="sample.annotationMessage">
-		<put name="cananoContent"
-			value="/sample/bodyDeleteAnnotations.jsp" />
+	<definition name="sample.annotationDeleteView" extends="sample.annotationMessage">
+		<put name="cananoContent" value="/sample/bodyDeleteAnnotations.jsp" />
 	</definition>
 
 	<!-- definition for the load characterization file page -->
-	<definition name="sample.loadCharacterizationFile"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/sample/bodyLoadCharacterizationFile.jsp" />
+	<definition name="sample.loadCharacterizationFile" extends="sample.annotationHome">
+		<put name="cananoContent" value="/sample/bodyLoadCharacterizationFile.jsp" />
 	</definition>
 
 	<!-- definition for the view publication page -->
-	<definition name="sample.submitPublication"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/publication/bodySubmitPublication.jsp" />
+	<definition name="sample.submitPublication" extends="sample.annotationHome">
+		<put name="cananoContent" value="/publication/bodySubmitPublication.jsp" />
 	</definition>
-	<definition name="sample.submitPublicationPubmed"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
+	<definition name="sample.submitPublicationPubmed" extends="sample.annotationHome">
+		<put name="cananoContent" value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
 	</definition>
 
-	<definition name="sample.detailViewPublication"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/publication/bodyPublicationDetailView.jsp" />
+	<definition name="sample.detailViewPublication" extends="sample.annotationHome">
+		<put name="cananoContent" value="/publication/bodyPublicationDetailView.jsp" />
 	</definition>
-	<definition name="sample.detailViewReport"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/publication/bodyReportDetailView.jsp" />
+	<definition name="sample.detailViewReport" extends="sample.annotationHome">
+		<put name="cananoContent" value="/publication/bodyReportDetailView.jsp" />
 	</definition>
 
 	<!-- definition for the search sample page -->
@@ -190,48 +156,43 @@
 		<put name="menu" value="samples" />
 	</definition>
 
+	<!-- definition for the range search sample page -->
+	<definition name="sample.rangeSearch" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodyRangeSearchSample.jsp" />
+		<put name="menu" value="samples" />
+	</definition>
+
 	<!-- definition for the search sample result page -->
-	<definition name="sample.searchSampleResult"
-		extends="canano.home">
-		<put name="cananoContent"
-			value="/sample/bodySearchSampleResult.jsp" />
+	<definition name="sample.searchSampleResult" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodySearchSampleResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the advanced search sample page -->
-	<definition name="sample.advancedSearchSample"
-		extends="canano.home">
-		<put name="cananoContent"
-			value="/sample/bodySearchSampleAdvanced.jsp" />
+	<definition name="sample.advancedSearchSample" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodySearchSampleAdvanced.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the advanced search sample result page -->
 	<definition name="sample.advancedSearchSampleResult"
 		extends="canano.home">
-		<put name="cananoContent"
-			value="/sample/bodySearchSampleAdvancedResult.jsp" />
+		<put name="cananoContent" value="/sample/bodySearchSampleAdvancedResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!--  definition for the point of contact pages -->
-	<definition name="pointOfContact.message"
-		extends="sample.annotationHome">
-		<put name="cananoContent"
-			value="/bodyMessage.jsp?bundle=sample" />
+	<definition name="pointOfContact.message" extends="sample.annotationHome">
+		<put name="cananoContent" value="/bodyMessage.jsp?bundle=sample" />
 	</definition>
 
-	<definition name="sample.pointOfContactDetailView"
-		extends="canano.home">
-		<put name="cananoContent"
-			value="/sample/bodyPointOfContactDetailView.jsp" />
+	<definition name="sample.pointOfContactDetailView" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodyPointOfContactDetailView.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.submitPointOfContact"
-		extends="canano.home">
-		<put name="cananoContent"
-			value="/sample/bodySubmitPointOfContact.jsp" />
+	<definition name="sample.submitPointOfContact" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodySubmitPointOfContact.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 </tiles-definitions>

@@ -10,25 +10,45 @@
 			<form-property name="sampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String"/>
+			<form-property name="location" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="searchSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="samplePointOfContact"
-				type="java.lang.String" />
-			<form-property name="nanomaterialEntityTypes"
-				type="java.lang.String[]" />
-			<form-property name="functionalizingEntityTypes"
-				type="java.lang.String[]" />
-			<form-property name="functionTypes"
-				type="java.lang.String[]" />
-			<form-property name="characterizationType"
-				type="java.lang.String" />
-			<form-property name="characterizations"
-				type="java.lang.String[]" />
+			<form-property name="samplePointOfContact" type="java.lang.String" />
+			<form-property name="nanomaterialEntityTypes" type="java.lang.String[]" />
+			<form-property name="functionalizingEntityTypes" type="java.lang.String[]" />
+			<form-property name="functionTypes" type="java.lang.String[]" />
+			<form-property name="characterizationType" type="java.lang.String" />
+			<form-property name="characterizations" type="java.lang.String[]" />
 			<form-property name="text" type="java.lang.String" />
-			<form-property name="searchLocations"
-				type="java.lang.String[]" />
+			<form-property name="searchLocations" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+		<form-bean name="rangeSearchSampleForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="nanomaterialEntityTypes" type="java.lang.String[]" />
+			<form-property name="sizeZAverageLow"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="sizeZAverageHigh"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="sizePdiLow"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="sizePdiHigh"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="molecularWeightLow"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="molecularWeightHigh"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="surfaceZetaPotentialLow"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="surfaceZetaPotentialHigh"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="cellViabilityLC50Low"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="cellViabilityLC50High"
+				type="gov.nih.nci.cananolab.domain.common.Datum" />
+			<form-property name="joinType" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
@@ -43,9 +63,8 @@
 			<form-property name="assoc"
 				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String"/>
-			<form-property name="otherSamples"
-				type="java.lang.String[]" />
+			<form-property name="location" type="java.lang.String" />
+			<form-property name="otherSamples" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
@@ -56,9 +75,8 @@
 			<form-property name="achar"
 				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String"/>
-			<form-property name="otherSamples"
-				type="java.lang.String[]" />
+			<form-property name="location" type="java.lang.String" />
+			<form-property name="otherSamples" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
@@ -66,28 +84,22 @@
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
-		<exception
-			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.composition" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.ParticleCompositionException" />
-		<exception
-			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.sample" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.ParticleException" />
-		<exception
-			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.characterization" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.ParticleCharacterizationException" />
-		<exception
-			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.characterization" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.ExperimentConfigException" />
-		<exception
-			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.characterization" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.CharacterizationResultException" />
-		<exception
-			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.pointOfContact" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.PointOfContactException" />
 	</global-exceptions>
@@ -99,101 +111,80 @@
 			path="/sample/characterization/bodyCharacterizationSummaryPrintView.jsp" />
 		<forward name="summaryPrintAllView"
 			path="/sample/characterization/bodyCharacterizationSummaryPrintAllView.jsp" />
-		<forward name="annotationDeleteView"
-			path="sample.annotationDeleteView" />
-		<forward name="pointOfContactMessage"
-			path="pointOfContact.message" />
-		<forward name="pointOfContactDetailPrintView"
-			path="/sample/bodyPointOfContactDetailPrintView.jsp" />
-		<forward name="pointOfContactSummaryPrintView"
-			path="/sample/bodyPointOfContactSummaryPrintView.jsp" />
+		<forward name="annotationDeleteView" path="sample.annotationDeleteView" />
+		<forward name="pointOfContactMessage" path="pointOfContact.message" />
+		<forward name="pointOfContactDetailPrintView" path="/sample/bodyPointOfContactDetailPrintView.jsp" />
+		<forward name="pointOfContactSummaryPrintView" path="/sample/bodyPointOfContactSummaryPrintView.jsp" />
 	</global-forwards>
 	<action-mappings>
-		<action path="/manageSample"
-			type="org.apache.struts.actions.ForwardAction"
+		<action path="/manageSample" type="org.apache.struts.actions.ForwardAction"
 			parameter="sample.manageSample" scope="request" />
 		<action name="sampleForm" parameter="dispatch" path="/sample"
 			type="gov.nih.nci.cananolab.ui.sample.SampleAction" input="input">
-			<exception
-				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateSample" path="sample.submitSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="summaryView" path="sample.summaryView" />
 			<forward name="summaryEdit" path="sample.summaryEdit" />
 			<forward name="input" path="sample.submitSample" />
 		</action>
-		<action input="input" name="searchSampleForm"
-			parameter="dispatch" path="/searchSample"
-			type="gov.nih.nci.cananolab.ui.sample.SearchSampleAction"
+		<action input="input" name="searchSampleForm" parameter="dispatch"
+			path="/searchSample" type="gov.nih.nci.cananolab.ui.sample.SearchSampleAction"
 			scope="request">
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
 		</action>
-		<action name="compositionForm" parameter="dispatch"
-			path="/composition"
-			type="gov.nih.nci.cananolab.ui.sample.CompositionAction"
-			input="input">
+		<action input="input" name="rangeSearchSampleForm" parameter="dispatch"
+			path="/rangeSearchSample" type="gov.nih.nci.cananolab.ui.sample.RangeSearchSampleAction"
+			scope="request">
+			<forward name="input" path="sample.rangeSearch" />
+			<forward name="success" path="sample.searchSampleResult" />
+		</action>
+		<action name="compositionForm" parameter="dispatch" path="/composition"
+			type="gov.nih.nci.cananolab.ui.sample.CompositionAction" input="input">
 			<forward name="input" path="sample.composition.summaryview" />
-			<forward name="summaryView"
-				path="sample.composition.summaryView" />
-			<forward name="summaryEdit"
-				path="sample.composition.summaryEdit" />
+			<forward name="summaryView" path="sample.composition.summaryView" />
+			<forward name="summaryEdit" path="sample.composition.summaryEdit" />
 			<forward name="summaryPrint"
 				path="/sample/composition/bodyCompositionSummaryPrintView.jsp" />
 		</action>
-		<action name="compositionForm" parameter="dispatch"
-			path="/nanomaterialEntity"
+		<action name="compositionForm" parameter="dispatch" path="/nanomaterialEntity"
 			type="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction"
 			input="input">
-			<forward name="input"
-				path="sample.composition.nanomaterialEntity" />
+			<forward name="input" path="sample.composition.nanomaterialEntity" />
 			<forward name="success"
-				path="/composition.do?dispatch=summaryEdit&amp;page=0"
-				redirect="true" />
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
-			path="/functionalizingEntity"
-			type="gov.nih.nci.cananolab.ui.sample.FunctionalizingEntityAction"
+			path="/functionalizingEntity" type="gov.nih.nci.cananolab.ui.sample.FunctionalizingEntityAction"
 			input="input">
-			<forward name="input"
-				path="sample.composition.functionalizingEntity" />
+			<forward name="input" path="sample.composition.functionalizingEntity" />
 			<forward name="success"
-				path="/composition.do?dispatch=summaryEdit&amp;page=0"
-				redirect="true" />
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
-		<action name="compositionForm" parameter="dispatch"
-			path="/chemicalAssociation"
+		<action name="compositionForm" parameter="dispatch" path="/chemicalAssociation"
 			type="gov.nih.nci.cananolab.ui.sample.ChemicalAssociationAction"
 			input="input">
 			<forward name="input"
 				path="/chemicalAssociation.do?dispatch=input&amp;page=0" />
-			<forward name="setup"
-				path="sample.composition.chemicalAssociation" />
+			<forward name="setup" path="sample.composition.chemicalAssociation" />
 			<forward name="success"
-				path="/composition.do?dispatch=summaryEdit&amp;page=0"
-				redirect="true" />
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
-		<action name="compositionForm" parameter="dispatch"
-			path="/compositionFile"
-			type="gov.nih.nci.cananolab.ui.sample.CompositionFileAction"
-			input="input">
-			<forward name="input"
-				path="sample.composition.compositionFile" />
+		<action name="compositionForm" parameter="dispatch" path="/compositionFile"
+			type="gov.nih.nci.cananolab.ui.sample.CompositionFileAction" input="input">
+			<forward name="input" path="sample.composition.compositionFile" />
 			<forward name="success"
-				path="/composition.do?dispatch=summaryEdit&amp;page=0"
-				redirect="true" />
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="characterizationForm" parameter="dispatch"
-			path="/characterization"
-			type="gov.nih.nci.cananolab.ui.sample.CharacterizationAction"
+			path="/characterization" type="gov.nih.nci.cananolab.ui.sample.CharacterizationAction"
 			input="input" validate="true">
 			<forward name="input" path="sample.submitCharacterization" />
 			<forward name="success"
 				path="/characterization.do?dispatch=summaryEdit&amp;page=0" />
-			<forward name="summaryView"
-				path="sample.characterization.summaryView" />
-			<forward name="summaryEdit"
-				path="sample.characterization.summaryEdit" />
+			<forward name="summaryView" path="sample.characterization.summaryView" />
+			<forward name="summaryEdit" path="sample.characterization.summaryEdit" />
 			<forward name="saveExperimentConfig"
 				path="/submitExperimentConfig.do?dispatch=create&amp;page=1" />
 		</action>
