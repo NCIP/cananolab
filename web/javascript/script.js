@@ -284,7 +284,7 @@ function popImage(event, imgSrc, imgId) {
 	popImg.src = imgSrc;
 	if (imgWindow != null && imgWindow.open) {
 		imgWindow.close();
-		//t = null;
+		// t = null;
 	}
 	var topPos = 50;
 	var leftPos = 50;
@@ -318,7 +318,7 @@ function popImage(event, imgSrc, imgId) {
 		imgWindow.document.writeln("<img id='popImage' styleId='" + imgId + "' src='" + imgSrc + "'/>");
 		imgWindow.document.writeln("</body></html>");
 	}
-//	t = setTimeout("imgWindow.close();", 15000);
+// t = setTimeout("imgWindow.close();", 15000);
 }
 /**
  * Try to resize the window After the image is loaded.
@@ -349,7 +349,7 @@ function resizePopup() {
 			window.resizeTo(width, height);
 			self.focus();
 		} else {
-			imgWindow.close(); //close window as the image can't be shown.
+			imgWindow.close(); // close window as the image can't be shown.
 		}
 	}
 }
@@ -574,4 +574,15 @@ function openSubmissionForm(styleId) {
 function closeSubmissionForm(styleId) {
 	hide("new"+styleId);
 	show("add"+styleId);
+}
+
+function validateSavingTheData(dataStyleId, dataName) {
+  var displayStatus=document.getElementById(dataStyleId).style.display;
+  if (displayStatus=='block' || displayStatus==canSeeTableRow) {
+	  alert("Please click on either the Add button or the Cancel button in the "+dataName+" form.");
+	  return false;
+  }
+  else {
+	  return true;
+  }
 }
