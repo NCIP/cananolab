@@ -79,6 +79,6 @@ public interface SampleService {
 			throws PointOfContactException;
 
 	public void savePointOfContact(PointOfContactBean pointOfContactBean,
-			UserBean User) throws PointOfContactException, NoAccessException;
+			UserBean user) throws PointOfContactException, NoAccessException;
 
 }
