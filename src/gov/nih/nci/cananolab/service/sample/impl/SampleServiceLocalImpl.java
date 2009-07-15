@@ -108,7 +108,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		try {
 			if (!newSample) {
 				assignFullVisibility(sampleBean.getVisibilityGroups(),
-						sampleBean.getDomain().getId().toString(), user);
+						sampleBean.getDomain().getName().toString(), user);
 			} else {
 				assignVisibility(sampleBean);
 			}
