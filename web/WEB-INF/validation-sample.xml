@@ -319,11 +319,6 @@
 			<!--				</var>-->
 			<!--			</field>-->
 		</form>
-		<form name="characterizationMultiDeletionForm">
-			<field property="charIds" depends="required" page="2">
-				<arg position="0" key="delete.charIds" bundle="particle" />
-			</field>
-		</form>
 		<form name="searchSampleForm">
 			<field property="text" page="1" depends="mask">
 				<arg position="0" key="text" bundle="particle" />
@@ -332,17 +327,6 @@
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
 				</var>
-			</field>
-		</form>
-		<form name="submitPointOfContactForm">
-			<field property="poc.organization.name" page="2" depends="required">
-				<arg position="0" key="submitPointOfContactForm.organizationName"
-					bundle="pointOfContact" />
-			</field>
-			<field property="organization.name" page="2" depends="required"
-				indexedListProperty="otherPoc.otherPointOfContacts">
-				<arg position="0" key="submitPointOfContactForm.organizationName"
-					bundle="pointOfContact" />
 			</field>
 		</form>
 	</formset>
