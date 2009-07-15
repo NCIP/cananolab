@@ -4,14 +4,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <table>
-	<tr>
-		<jsp:include page="/bodyMessage.jsp" />
-	</tr>
 	<jsp:include page="/bodyTitle.jsp">
 		<jsp:param name="pageTitle" value="WELCOME TO caNanoLab" />
 		<jsp:param name="topic" value="welcome_workflow" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 	</jsp:include>
+	<tr>
+		<jsp:include page="/bodyMessage.jsp" />
+	</tr>
 	<%-- 
 	<tr>
 		<td class="welcomeTitle" height="20">
