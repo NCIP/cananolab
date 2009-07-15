@@ -128,6 +128,7 @@ public class SampleBean {
 			}
 		}
 		if (primaryPOCBean != null) {
+			primaryPOCBean.setupDomain(createdBy);
 			domain.setPrimaryPointOfContact(primaryPOCBean.getDomain());
 		} else {
 			domain.setPrimaryPointOfContact(null);
@@ -139,6 +140,7 @@ public class SampleBean {
 					.setOtherPointOfContactCollection(new HashSet<PointOfContact>());
 		}
 		for (PointOfContactBean pocBean : otherPOCBeans) {
+			pocBean.setupDomain(createdBy);
 			domain.getOtherPointOfContactCollection().add(pocBean.getDomain());
 		}
 	}
