@@ -95,7 +95,7 @@ public class PointOfContactBean {
 	}
 
 	public void setupDomain(String createdBy) {
-		if (domain.getId() == 0) {
+		if (domain.getId()!=null && domain.getId() == 0) {
 			domain.setId(null);
 		}
 		if (domain.getId() == null) {
