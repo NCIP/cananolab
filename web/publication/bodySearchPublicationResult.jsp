@@ -6,20 +6,11 @@
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				Publication Search Results
-			</h4>
-		</td>
-		<td align="right" width="25%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="publications_search_results_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-			<a href="searchPublication.do?dispatch=setup" class="helpText">Back</a>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="Publication Search Results" />
+		<jsp:param name="topic" value="publications_search_results_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 	<tr>
 		<td colspan="2">
 			<c:choose>

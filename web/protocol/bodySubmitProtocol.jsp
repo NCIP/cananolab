@@ -17,19 +17,11 @@
 
 
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${action } Protocol
-			</h4>
-		</td>
-		<td align="right" width="20%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="submit_protocol_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="${action} Protocol" />
+		<jsp:param name="topic" value="submit_protocol_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <html:form action="/submitProtocol" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />

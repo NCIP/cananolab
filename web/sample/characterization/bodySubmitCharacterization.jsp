@@ -2,7 +2,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c_rt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
@@ -23,50 +22,43 @@
 	src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
+
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${fn:toUpperCase(param.location)} ${sampleName}
-				<c:choose>
-					<c:when
-						test="${!empty characterizationForm.map.achar.domainChar.id}">
-						${characterizationForm.map.achar.characterizationType} -
-						${characterizationForm.map.achar.characterizationName}
-				</c:when>
-					<c:otherwise>
-				Characterization
-				</c:otherwise>
-				</c:choose>
-			</h4>
-		</td>
-		<c_rt:set var='dispatch' value='<%=request.getParameter("dispatch")%>' />
-		<c:choose>
-			<c:when test="${'setup' eq param.dispatch }">
-				<c:remove var="dataId" scope="session" />
-			</c:when>
-			<c:when test="${'setupUpdate' eq param.dispatch }">
-				<c:set var="dataId" value="${param.dataId}" scope="session" />
-			</c:when>
-		</c:choose>
-		<c:set var="helpTopic" value="char_details_help" />
-		<c:choose>
-			<c:when
-				test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
-				<c:set var="helpTopic" value="add_physical_char_help" />
-			</c:when>
-			<c:when
-				test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
-				<c:set var="helpTopic" value="add_in_vitro_char_help" />
-			</c:when>
-		</c:choose>
-		<td align="right" width="20%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="submit_char_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<c:choose>
+		<c:when	test="${!empty characterizationForm.map.achar.domainChar.id}">
+			<c:set var="charTitle" 
+				value="${fn:toUpperCase(param.location)} ${sampleName} ${characterizationForm.map.achar.characterizationType} -
+				${characterizationForm.map.achar.characterizationName}"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="charTitle" 
+				value="${fn:toUpperCase(param.location)} ${sampleName} Characterization"/>
+		</c:otherwise>
+	</c:choose>
+	<c:choose>
+		<c:when test="${'setup' eq param.dispatch }">
+			<c:remove var="dataId" scope="session" />
+		</c:when>
+		<c:when test="${'setupUpdate' eq param.dispatch }">
+			<c:set var="dataId" value="${param.dataId}" scope="session" />
+		</c:when>
+	</c:choose>
+	<c:set var="helpTopic" value="char_details_help" />
+	<c:choose>
+		<c:when
+			test='${"Physical Characterization" eq pageTitle && ("setup" eq kk || empty dataId)}'>
+			<c:set var="helpTopic" value="add_physical_char_help" />
+		</c:when>
+		<c:when
+			test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
+			<c:set var="helpTopic" value="add_in_vitro_char_help" />
+		</c:when>
+	</c:choose>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="${charTitle}" />
+		<jsp:param name="topic" value="submit_char_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 
 <html:form action="/characterization" enctype="multipart/form-data">

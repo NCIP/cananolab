@@ -10,20 +10,11 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 <table align="center" width="100%">
-	<tr>
-		<td>
-			<h4>
-				Search Publications
-			</h4>
-		</td>
-		<td align="right" width="30%">
-			<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="search_publications_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="Search Publications" />
+		<jsp:param name="topic" value="search_publications_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <html:form action="searchPublication">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />

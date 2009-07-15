@@ -8,21 +8,12 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
-
 <table align="center" width="100%">
-	<tr>
-		<td>
-			<h4>
-				Search Protocols
-			</h4>
-		</td>
-		<td align="right" width="25%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="search_protocol_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="Search Protocols" />
+		<jsp:param name="topic" value="search_protocol_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <html:form action="searchProtocol">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />

@@ -38,24 +38,22 @@
 	</c:otherwise>
 </c:choose>
 
+<c:choose>
+	<c:when test="${!empty compositionForm.map.assoc.domainAssociation.id}">
+		<c:set var="chemTitle" 
+		value="${sampleName} Sample Composition - Chemical Association - ${compositionForm.map.assoc.type}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="chemTitle" 
+		value="${sampleName} Sample Composition - Chemical Association" />
+	</c:otherwise>
+</c:choose>
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${sampleName} Sample Composition - Chemical Association
-				<c:if
-					test="${!empty compositionForm.map.assoc.domainAssociation.id}">
-						- ${compositionForm.map.assoc.type}
-				</c:if>
-			</h4>
-		</td>
-		<td align="right" width="20%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="chem_association_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="${chemTitle}" />
+		<jsp:param name="topic" value="chem_association_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <html:form action="/chemicalAssociation" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />

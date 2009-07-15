@@ -14,19 +14,11 @@
 <c:set var="fileParent" value="comp" />
 <c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${sampleName} Sample Composition - Composition File
-			</h4>
-		</td>
-		<td align="right" width="15%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="compo_file_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="${sampleName} Sample Composition - Composition File" />
+		<jsp:param name="topic" value="compo_file_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <html:form action="/compositionFile" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />

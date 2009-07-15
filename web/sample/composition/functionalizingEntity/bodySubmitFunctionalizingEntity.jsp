@@ -15,24 +15,23 @@
 	src='/caNanoLab/dwr/interface/FunctionalizingEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
+
+<c:choose>
+	<c:when test="${!empty compositionForm.map.functionalizingEntity.domainEntity.id}">
+		<c:set var="funcTitle" 
+		value="${sampleName} Sample Composition - Functionalizing Entity - ${compositionForm.map.functionalizingEntity.type}"/>
+	</c:when>
+	<c:otherwise>
+		<c:set var="funcTitle" 
+		value="${sampleName} Sample Composition - Functionalizing Entity"/>
+	</c:otherwise>
+</c:choose>
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${sampleName} Sample Composition - Functionalizing Entity
-				<c:if
-					test="${!empty compositionForm.map.functionalizingEntity.domainEntity.id}">
-						- ${compositionForm.map.functionalizingEntity.type}
-						</c:if>
-			</h4>
-		</td>
-		<td align="right" width="15%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="function_entity_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="${funcTitle}" />
+		<jsp:param name="topic" value="function_entity_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <html:form action="/functionalizingEntity" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />

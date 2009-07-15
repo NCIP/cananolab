@@ -5,20 +5,13 @@
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				Sample Search Results
-			</h4>
-		</td>
-		<td align="right" width="25%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="sample_search_results_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-			<a href="searchSample.do?dispatch=setup" class="helpText">Back</a>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="Sample Search Results" />
+		<jsp:param name="topic" value="sample_search_results_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+		<jsp:param name="other" value="Back" />
+		<jsp:param name="otherLink" value="searchSample.do?dispatch=setup" />
+	</jsp:include>
 	<tr>
 		<td colspan="2">
 			<c:choose>

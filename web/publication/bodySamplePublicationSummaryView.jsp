@@ -6,20 +6,11 @@
 
 <c:if test="${not empty theSample}">
 	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					${fn:toUpperCase(location)} Sample ${theSample.domain.name}
-					Publication
-				</h4>
-			</td>
-			<td align="right" width="15%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="publications_all_tab_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Publication" />
+			<jsp:param name="topic" value="publications_all_tab_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+		</jsp:include>
 	</table>
 </c:if>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />

@@ -13,20 +13,11 @@
 	src="/caNanoLab/dwr/interface/CharacterizationManager.js"></script>
 
 <table align="center" width="100%">
-	<tr>
-		<td>
-			<h4>
-				Sample Range Search
-			</h4>
-		</td>
-		<td align="right" width="30%">
-			<%--<a href="advancedSampleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="search_sample_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="Sample Range Search" />
+		<jsp:param name="topic" value="search_sample_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 
 <html:form action="rangeSearchSample">

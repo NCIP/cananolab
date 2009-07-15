@@ -212,13 +212,9 @@ a:link,a:visited,a:active { /* default links */
 }
 
 a:link.helpText,a:visited.helpText,a:active.helpText { /* for help link text not affected by any cascading text styles */
-	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.9em;
-	font-weight: bold;
-	color: #6e81a6; /* constant: light blue */
+	font-weight: normal;
 	text-decoration: underline;
 }
-
 
 a:link.loginText,a:visited.loginText,a:active.loginText { /* for help link text not affected by any cascading text styles */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -753,6 +749,13 @@ p,.p { /* for paragraphs */
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 	text-align: justify;
+}
+
+.contentTitle { /* for titles of on top of the content area */
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: bold;
+	padding-left: 1em;
 }
 
 

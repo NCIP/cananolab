@@ -7,20 +7,24 @@
 	<tr>
 		<jsp:include page="/bodyMessage.jsp" />
 	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" value="WELCOME TO caNanoLab" />
+		<jsp:param name="topic" value="welcome_workflow" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
+	<%-- 
 	<tr>
 		<td class="welcomeTitle" height="20">
 			WELCOME TO caNanoLab
 		</td>
-	</tr>
-	<tr>
 		<td align="right">
 			<jsp:include page="/helpGlossary.jsp">
 				<jsp:param name="topic" value="welcome_workflow" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
-
 		</td>
 	</tr>
+	--%>
 	<tr>
 		<td class="welcomeContent" valign="top">
 			Welcome to the

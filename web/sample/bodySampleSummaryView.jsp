@@ -5,20 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${fn:toUpperCase(location)} Sample
-				${sampleForm.map.sampleBean.domain.name}
-			</h4>
-		</td>
-		<td align="right" width="15%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="submit_sample_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" 
+			value="${fn:toUpperCase(location)} Sample ${sampleForm.map.sampleBean.domain.name}" />
+		<jsp:param name="topic" value="submit_sample_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
 <table width="100%" align="center" class="summaryViewLayer3">

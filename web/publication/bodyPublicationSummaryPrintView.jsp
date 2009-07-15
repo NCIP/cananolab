@@ -5,32 +5,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="css/main.css">
-		<script type="text/javascript" src="javascript/script.js"></script>
-	</head>
-	<body onload="window.print();self.close()">
+<head>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script type="text/javascript" src="javascript/script.js"></script>
+</head>
+<body onload="window.print();self.close()">
 <table width="100%" align="center">
-	<tr>
-		<td colspan="2">
-			<h4>
-				<br>
-				Publications
-			</h4>
+	<tr height="25">
+		<td class="contentTitle" colspan="2">
+			<br>
+			Publications
 		</td>
-
 	</tr>
-
 	<tr>
 		<td colspan="2">
 			<table width="100%" border="0" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
-					<td class="formTitle"
-						colspan="4" align="center">
-
-							${fn:toUpperCase(location)} ${sampleName} - Publications
-
+					<td class="formTitle" colspan="4" align="center">
+						${fn:toUpperCase(location)} ${sampleName} - Publications
 					</td>
 				</tr>
 				<tr>

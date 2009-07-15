@@ -7,19 +7,11 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <html:form action="/admin" enctype="multipart/form-data">
 	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					Site Preference
-				</h4>
-			</td>
-			<td align="right" width="20%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="submit_protocol_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="Site Preference" />
+			<jsp:param name="topic" value="manage_nanoparticles_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+		</jsp:include>
 		<tr>
 			<td colspan="4">
 				<jsp:include page="/bodyMessage.jsp?bundle=admin" />

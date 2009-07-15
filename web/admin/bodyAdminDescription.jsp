@@ -1,16 +1,8 @@
-<tr>
-	<td>
-		<h4>
-			Administration
-		</h4>
-	</td>
-	<td align="right" width="20%">
-		<jsp:include page="/helpGlossary.jsp">
-			<jsp:param name="topic" value="manage_nanoparticles_help" />
-			<jsp:param name="glossaryTopic" value="glossary_help" />
-		</jsp:include>
-	</td>
-</tr>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Administration" />
+	<jsp:param name="topic" value="manage_nanoparticles_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <tr>
 	<td colspan="2" class="welcomeContent">
 		This is the Administration section which allows users to configure

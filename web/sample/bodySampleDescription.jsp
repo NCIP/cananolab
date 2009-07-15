@@ -1,16 +1,8 @@
-<tr>
-	<td>
-		<h4>
-			Manage Samples
-		</h4>
-	</td>
-	<td align="right" width="20%">
-		<jsp:include page="/helpGlossary.jsp">
-			<jsp:param name="topic" value="manage_samples_help" />
-			<jsp:param name="glossaryTopic" value="glossary_help" />
-		</jsp:include>
-	</td>
-</tr>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Manage Samples" />
+	<jsp:param name="topic" value="manage_samples_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <tr>
 	<td colspan="2" class="welcomeContent">
 		This is the manage samples section which allows users to enter general

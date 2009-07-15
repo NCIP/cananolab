@@ -5,23 +5,15 @@
 
 <html:form action="/${protocolActionName}" enctype="multipart/form-data">
 	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					<br>
-					Protocol File
-				</h4>
-			</td>
-			<td align="right" width="20%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="protocol_file_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-				<logic:equal name="protocolActionName" value="updateProtocol">
-				&nbsp;&nbsp;<a href="protocolResults.do" class="helpText">Back</a>
-				</logic:equal>
-			</td>
-		</tr>
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="Protocol File" />
+			<jsp:param name="topic" value="protocol_file_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+			<logic:equal name="protocolActionName" value="updateProtocol">
+				<jsp:param name="other" value="Back" />
+				<jsp:param name="otherLink" value="protocolResults.do" />
+			</logic:equal>
+		</jsp:include>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />

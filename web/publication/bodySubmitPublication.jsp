@@ -16,30 +16,22 @@
 <c:if test="${param.dispatch eq 'setupUpdate'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
-
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${fn:toUpperCase(param.location)} ${sampleName}
-				<c:choose>
-					<c:when
-						test="${!empty publicationForm.map.publication.domainFile.id}">
-						${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}
-				</c:when>
-					<c:otherwise>
-				Publication
-				</c:otherwise>
-				</c:choose>
-			</h4>
-		</td>
-		<td align="right" width="20%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="submit_publication_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
+	<c:choose>
+		<c:when	test="${!empty publicationForm.map.publication.domainFile.id}">
+			<c:set var="publicationTitle" 
+			value="${fn:toUpperCase(param.location)} ${sampleName} ${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="publicationTitle" 
+			value="${fn:toUpperCase(param.location)} ${sampleName} Publication"/>
+		</c:otherwise>
+	</c:choose>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle"	value="${publicationTitle}" />
+		<jsp:param name="topic" value="submit_publication_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </table>
 <html:form action="/publication" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
