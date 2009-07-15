@@ -35,7 +35,7 @@
 	</tr>
 </table>
 <html:form action="/nanomaterialEntity" enctype="multipart/form-data">
-	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<th colspan="2">

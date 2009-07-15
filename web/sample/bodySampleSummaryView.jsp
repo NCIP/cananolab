@@ -20,7 +20,7 @@
 		</td>
 	</tr>
 </table>
-<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 <table width="100%" align="center" class="summaryViewLayer3">
 	<tr>
 		<th valign="top" align="left" colspan="2" width="1000px">

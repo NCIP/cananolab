@@ -30,7 +30,7 @@
 </table>
 
 <html:form action="rangeSearchSample">
-	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<th colspan="2">
@@ -217,8 +217,8 @@
 					<tr>
 						<td>
 							<div align="right">
-								<input type="reset" value="Reset" onclick=javascript:
-									location.href='rangeSearchSample.do?dispatch=setup&page=0' ;/>
+								<input type="reset" value="Reset" onclick="javascript:
+									location.href='rangeSearchSample.do?dispatch=setup&page=0'" ;/>
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
 								<html:submit value="Search" />

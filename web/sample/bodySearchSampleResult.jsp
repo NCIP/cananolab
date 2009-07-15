@@ -29,7 +29,7 @@
 					<c:set var="sampleURL" value="viewSampleURL" />
 				</c:otherwise>
 			</c:choose>
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 			<display:table name="samples" id="sample"
 				requestURI="searchSample.do" pagesize="25"
 				class="displaytable"

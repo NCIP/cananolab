@@ -29,7 +29,7 @@
 	</tr>
 </table>
 <html:form action="/compositionFile" enctype="multipart/form-data">
-	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<c:set var="fileForm" value="compositionForm" />
 	<c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
 	<c:set var="actionName" value="compositionFile" />

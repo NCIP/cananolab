@@ -70,7 +70,7 @@
 </table>
 
 <html:form action="/characterization" enctype="multipart/form-data">
-	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<jsp:include
 		page="/sample/characterization/shared/bodyCharacterizationSummary.jsp" />
 	<c:if test="${!empty characterizationDetailPage}">

@@ -31,7 +31,7 @@
 	</table>
 </c:if>
 <c:set var="sectionTitles" value="" />
-<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 <div class="shadetabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">

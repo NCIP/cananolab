@@ -31,7 +31,7 @@
 </table>
 
 <html:form action="searchSample">
-	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">

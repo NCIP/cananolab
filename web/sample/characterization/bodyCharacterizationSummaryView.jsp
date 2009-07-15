@@ -22,7 +22,7 @@
 		</tr>
 	</table>
 </c:if>
-<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 <div class="shadetabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">

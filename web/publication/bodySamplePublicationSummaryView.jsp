@@ -22,7 +22,7 @@
 		</tr>
 	</table>
 </c:if>
-<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 <c:set var="publicationCategories"
 	value="${publicationSummaryView.publicationCategories}" />
 <c:if test="${empty printView}">
