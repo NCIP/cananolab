@@ -95,7 +95,7 @@
 				type="gov.nih.nci.cananolab.exception.ProtocolException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.particle.query" path="canano.login"
+				key="error.grid.sample.query" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.SampleException" />
 		</action>
 	</action-mappings>
