@@ -86,19 +86,16 @@
 	<global-exceptions>
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.composition" path="sample.annotationMessage"
-			type="gov.nih.nci.cananolab.exception.ParticleCompositionException" />
+			type="gov.nih.nci.cananolab.exception.CompositionException" />
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.sample" path="sample.annotationMessage"
-			type="gov.nih.nci.cananolab.exception.ParticleException" />
+			type="gov.nih.nci.cananolab.exception.SampleException" />
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.characterization" path="sample.annotationMessage"
-			type="gov.nih.nci.cananolab.exception.ParticleCharacterizationException" />
+			type="gov.nih.nci.cananolab.exception.CharacterizationException" />
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.characterization" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.ExperimentConfigException" />
-		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-			key="error.characterization" path="sample.annotationMessage"
-			type="gov.nih.nci.cananolab.exception.CharacterizationResultException" />
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.pointOfContact" path="sample.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.PointOfContactException" />

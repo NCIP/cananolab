@@ -84,15 +84,11 @@
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.grid.down" path="canano.login"
-				type="gov.nih.nci.cananolab.exception.GridDownException" />
-			<exception
-				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.report.query" path="canano.login"
-				type="gov.nih.nci.cananolab.exception.ReportException" />
+				type="gov.nih.nci.cananolab.exception.GridDownException" />			
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.grid.document.query" path="canano.login"
-				type="gov.nih.nci.cananolab.exception.DocumentException" />
+				type="gov.nih.nci.cananolab.exception.PublicationException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.grid.protocol.query" path="canano.login"
@@ -100,7 +96,7 @@
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.grid.particle.query" path="canano.login"
-				type="gov.nih.nci.cananolab.exception.ParticleException" />
+				type="gov.nih.nci.cananolab.exception.SampleException" />
 		</action>
 	</action-mappings>
 	<controller>
@@ -115,8 +111,6 @@
 		parameter="gov.nih.nci.cananolab.resources.admin" null="false" />
 	<message-resources key="protocol"
 		parameter="gov.nih.nci.cananolab.resources.protocol" null="false" />
-	<message-resources key="particle"
-		parameter="gov.nih.nci.cananolab.resources.particle" null="false" />
 	<message-resources key="publication"
 		parameter="gov.nih.nci.cananolab.resources.publication" null="false" />
 	<message-resources key="sample"
