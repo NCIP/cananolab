@@ -2,7 +2,7 @@
 	<td>
 		${param.pageTitle}
 	</td>
-	<td align="right" width="15%">
+	<td align="right" width="25%">
 		<jsp:include page="/helpGlossary.jsp">
 			<jsp:param name="topic" value="${param.topic}" />
 			<jsp:param name="glossaryTopic" value="${param.glossaryTopic}" />
