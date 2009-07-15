@@ -68,13 +68,11 @@ public class SampleAction extends BaseAnnotationAction {
 		ActionMessage msg = null;
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
-		if (StringUtils.isEmpty(updateSample)) {
-			msg = new ActionMessage("message.createSample");
-		} else {
+		if (!StringUtils.isEmpty(updateSample)) {			
 			msg = new ActionMessage("message.updateSample");
-		}
-		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, messages);
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		}		
 	}
 
 	/**
@@ -169,6 +167,7 @@ public class SampleAction extends BaseAnnotationAction {
 		PointOfContactBean thePOC = sample.getThePOC();
 		thePOC.setupDomain(user.getLoginName());
 		SampleService service = new SampleServiceLocalImpl();
+		//have to save POC separately because the same organizations can not be save in the same session
 		service.savePointOfContact(thePOC, user);
 		sample.addPointOfContact(thePOC);
 		// save sample
