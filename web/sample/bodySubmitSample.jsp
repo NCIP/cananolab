@@ -126,8 +126,8 @@
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="page" value="1">
-									<html:submit />
+									<input type="hidden" name="page" value="3">
+									<html:submit onclick="javascript:validateSavingTheData('newPointOfContact', 'point of contact');"/>
 								</div>
 							</div>
 						</td>
