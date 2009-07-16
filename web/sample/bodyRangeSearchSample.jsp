@@ -208,11 +208,11 @@
 					<tr>
 						<td>
 							<div align="right">
-								<input type="reset" value="Reset" onclick="javascript:
-									location.href='rangeSearchSample.do?dispatch=setup&page=0'" ;/>
+								<input type="button" value="Reset">
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
-								<html:submit value="Search" />
+								<%--<html:submit value="Search" />--%>
+								<input type="button" value="Submit">
 							</div>
 						</td>
 					</tr>
