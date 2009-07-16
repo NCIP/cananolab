@@ -35,7 +35,7 @@ public interface PublicationService {
 			String[] researchAreas, String[] keywords, String pubMedId,
 			String digitalObjectId, String[] authors,
 			String[] nanomaterialEntityClassNames,
-			String[] otherNanoparticleTypes,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
