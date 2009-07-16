@@ -6,11 +6,11 @@
 	<formset>
 		<form name="sampleForm">
 			<field property="sampleBean.domain.name" page="1" depends="required">
-				<arg position="0" key="sampleForm.sampleName" bundle="particle" />
+				<arg position="0" key="sampleForm.sampleName" bundle="sample"/>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.name"
 				page="2" depends="validwhen">
-				<arg position="0" key="sampleForm.organizationName" bundle="particle" />
+				<arg position="0" key="sampleForm.organizationName" bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -20,15 +20,15 @@
 			</field>
 			<field property="sampleBean.primaryPOCBean.domain.id" page="3"
 				depends="required">
-				<arg position="0" key="sampleForm.primaryPOC" bundle="particle" />
+				<arg position="0" key="sampleForm.primaryPOC" bundle="sample"/>
 			</field>
 		</form>
 		<form name="/chemicalAssociation">
 			<field property="assoc.type" page="2" depends="required">
-				<arg position="0" key="chemicalAssociationType" bundle="particle" />
+				<arg position="0" key="chemicalAssociationType" bundle="sample"/>
 			</field>
 			<field property="assoc.attachment.bondType" page="2" depends="validwhen">
-				<arg position="0" key="chemicalAssociationBondType" bundle="particle" />
+				<arg position="0" key="chemicalAssociationBondType" bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -38,16 +38,16 @@
 			</field>
 			<field property="assoc.associatedElementA.entityId" page="2"
 				depends="required">
-				<arg position="0" key="associatedElementA" bundle="particle" />
+				<arg position="0" key="associatedElementA" bundle="sample"/>
 			</field>
 			<field property="assoc.associatedElementB.entityId" page="2"
 				depends="required">
-				<arg position="0" key="associatedElementB" bundle="particle" />
+				<arg position="0" key="associatedElementB" bundle="sample"/>
 			</field>
 			<field property="assoc.associatedElementA.composingElement.id"
 				page="2" depends="validwhen">
 				<arg position="0" key="associatedElementAComposingElement"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -60,7 +60,7 @@
 			<field property="assoc.associatedElementB.composingElement.id"
 				page="2" depends="validwhen">
 				<arg position="0" key="associatedElementBComposingElement"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -73,27 +73,27 @@
 		</form>
 		<form name="/nanomaterialEntity">
 			<field property="nanomaterialEntity.type" page="2" depends="required">
-				<arg position="0" key="nanomaterialEntityType" bundle="particle" />
+				<arg position="0" key="nanomaterialEntityType" bundle="sample"/>
 			</field>
 			<field property="nanomaterialEntity.carbonNanotube.diameter"
 				page="2" depends="float">
 				<arg position="0" key="nanomaterialEntityForm.carbonNanotube.diameter"
-					bundle="particle" />
+					bundle="sample"/>
 			</field>
 			<field property="nanomaterialEntity.carbonNanotube.averageLength"
 				page="2" depends="float">
 				<arg position="0"
-					key="nanomaterialEntityForm.carbonNanotube.averageLength" bundle="particle" />
+					key="nanomaterialEntityForm.carbonNanotube.averageLength" bundle="sample"/>
 			</field>
 			<field property="nanomaterialEntity.fullerene.numberOfCarbon"
 				page="2" depends="integer">
 				<arg position="0" key="nanomaterialEntityForm.fullerene.numberOfCarbon"
-					bundle="particle" />
+					bundle="sample"/>
 			</field>
 			<field property="nanomaterialEntity.biopolymer.name" page="2"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.name"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -105,7 +105,7 @@
 			<field property="nanomaterialEntity.biopolymer.type" page="2"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.type"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -117,7 +117,7 @@
 			<field property="nanomaterialEntity.liposome.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.liposome.polymerName"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -130,7 +130,7 @@
 			<field property="nanomaterialEntity.emulsion.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.emulsion.polymerName"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -143,7 +143,7 @@
 			<field property="nanomaterialEntity.polymer.crossLinkDegree"
 				page="2" depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.polymer.crossLinkDegree"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -156,7 +156,7 @@
 			<field property="domain.type" page="2" depends="validwhen"
 				indexedListProperty="nanomaterialEntity.composingElements">
 				<arg position="0" key="nanomaterialEntityForm.elementType"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>(*this*!=null)</var-value>
@@ -165,7 +165,7 @@
 			<field property="domain.name" page="2" depends="validwhen"
 				indexedListProperty="nanomaterialEntity.composingElements">
 				<arg position="0" key="nanomaterialEntityForm.elementName"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>(*this*!=null)</var-value>
@@ -174,18 +174,18 @@
 		</form>
 		<form name="/functionalizingEntity">
 			<field property="functionalizingEntity.type" page="2" depends="required">
-				<arg position="0" key="functionalizingEntityType" bundle="particle" />
+				<arg position="0" key="functionalizingEntityType" bundle="sample"/>
 			</field>
 			<field property="functionalizingEntity.name" page="2" depends="required">
-				<arg position="0" key="functionalizingEntityName" bundle="particle" />
+				<arg position="0" key="functionalizingEntityName" bundle="sample"/>
 			</field>
 			<field property="functionalizingEntity.value" page="2" depends="float">
-				<arg position="0" key="functionalizingEntityForm.value" bundle="particle" />
+				<arg position="0" key="functionalizingEntityForm.value" bundle="sample"/>
 			</field>
 			<field property="type" page="2" depends="validwhen"
 				indexedListProperty="functionalizingEntity.functions">
 				<arg position="0" key="functionalizingEntity.functionType"
-					bundle="particle" />
+					bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>(*this*!=null)</var-value>
@@ -194,7 +194,7 @@
 		</form>
 		<form name="/compositionFile">
 			<field property="compFile.externalUrl" page="2" depends="validwhen">
-				<arg position="0" key="externalUrl" bundle="particle" />
+				<arg position="0" key="externalUrl" bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -205,7 +205,7 @@
 				</var>
 			</field>
 			<field property="compFile.uploadedFile" page="2" depends="validwhen">
-				<arg position="0" key="uploadedFile" bundle="particle" />
+				<arg position="0" key="uploadedFile" bundle="sample"/>
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -218,7 +218,7 @@
 			</field>
 			<field property="compFile.domainFile.title" page="2"
 				depends="required,mask">
-				<arg position="0" key="file.title" bundle="particle" />
+				<arg position="0" key="file.title" bundle="sample"/>
 				<msg name="mask" key="file.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
@@ -226,20 +226,20 @@
 				</var>
 			</field>
 			<field property="compFile.domainFile.type" page="2" depends="required">
-				<arg position="0" key="file.type" bundle="particle" />
+				<arg position="0" key="file.type" bundle="sample"/>
 			</field>
 		</form>
 		<form name="characterizationForm">
 			<field property="achar.characterizationType" page="2" depends="required">
-				<arg position="0" key="achar.characterizationType" bundle="particle" />
+				<arg position="0" key="achar.characterizationType" bundle="sample"/>
 			</field>
 			<field property="achar.characterizationName" page="2" depends="required">
-				<arg position="0" key="achar.characterizationName" bundle="particle" />
+				<arg position="0" key="achar.characterizationName" bundle="sample"/>
 			</field>
 			<!--
 				<field property="achar.theExperimentConfig.domain.technique.type"
 				page="2" depends="validwhen"> <arg position="0"
-				key="achar.technique.type" bundle="particle" /> <var>
+				key="achar.technique.type" bundle="sample"/> <var>
 				<var-name>test</var-name> <var-value>
 				((achar.theExperimentConfig.domain.id==null) or (*this*!=null))
 				</var-value> </var> </field>
@@ -247,16 +247,16 @@
 			<!--
 				TODO add type <field property="achar.shape.maxDimension" page="2"
 				depends="float"> <arg position="0" key="shape.maxDimension"
-				bundle="particle" /> </field> <field
+				bundle="sample"/> </field> <field
 				property="achar.shape.minDimension" page="2" depends="float"> <arg
-				position="0" key="shape.minDimension" bundle="particle" /> </field>
+				position="0" key="shape.minDimension" bundle="sample"/> </field>
 				<field property="achar.solubility.criticalConcentration" page="2"
 				depends="float"> <arg position="0"
-				key="solubility.criticalConcentrationValue" bundle="particle" />
+				key="solubility.criticalConcentrationValue" bundle="sample"/>
 				</field> <field
 				property="achar.solubility.criticalConcentrationUnit" page="2"
 				depends="validwhen"> <arg position="0"
-				key="solubility.criticalConcentrationUnit" bundle="particle" />
+				key="solubility.criticalConcentrationUnit" bundle="sample"/>
 				<var> <var-name>test</var-name> <var-value>
 				((achar.solubility.criticalConcentration==null) or (*this*!=null))
 				</var-value> </var> </field>
@@ -264,7 +264,7 @@
 			<!--			<field property="labFileBean.domainFile.title" page="2"-->
 			<!--				depends="required,mask"-->
 			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-			<!--				<arg position="0" key="file.title" bundle="particle" />-->
+			<!--				<arg position="0" key="file.title" bundle="sample"/>-->
 			<!--				<msg name="mask" key="file.title.invalid" />-->
 			<!--				<var>-->
 			<!--					<var-name>mask</var-name>-->
@@ -274,13 +274,13 @@
 			<!--			<field property="labFileBean.domainFile.type" page="2"-->
 			<!--				depends="required"-->
 			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-			<!--				<arg position="0" key="file.type" bundle="particle" />-->
+			<!--				<arg position="0" key="file.type" bundle="sample"/>-->
 			<!--			</field>-->
 			<!--			<field property="labFileBean.externalUrl" page="2"-->
 			<!--				depends="validwhen"-->
 			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
 			<!--				<arg position="0" key="externalUrl"-->
-			<!--					bundle="particle" />-->
+			<!--					bundle="sample"/>-->
 			<!--				<var>-->
 			<!--					<var-name>test</var-name>-->
 			<!--					<var-value>-->
@@ -299,7 +299,7 @@
 			<!--				depends="validwhen"-->
 			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
 			<!--				<arg position="0" key="uploadedFile"-->
-			<!--					bundle="particle" />-->
+			<!--					bundle="sample"/>-->
 			<!--				<var>-->
 			<!--					<var-name>test</var-name>-->
 			<!--					<var-value>-->
@@ -321,7 +321,7 @@
 		</form>
 		<form name="searchSampleForm">
 			<field property="text" page="1" depends="mask">
-				<arg position="0" key="text" bundle="particle" />
+				<arg position="0" key="text" bundle="sample"/>
 				<msg name="mask" key="text.invalid" />
 				<var>
 					<var-name>mask</var-name>
