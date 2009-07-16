@@ -68,7 +68,8 @@
 										</td>
 										<td>
 											<c:choose>
-												<c:when test="${!empty functionalizingEntity.domainEntity.pubChemId}">
+												<c:when test="${!empty functionalizingEntity.domainEntity.pubChemId &&
+																functionalizingEntity.domainEntity.pubChemId != 0}">
 													<c:set var="pubChemId" value="${functionalizingEntity.domainEntity.pubChemId}"/>
 													<c:set var="pubChemDS" value="${functionalizingEntity.domainEntity.pubChemDataSourceName}"/>
 													<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>' target="caNanoLab - View PubChem">${pubChemId}</a>

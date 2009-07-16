@@ -24,7 +24,8 @@
 			</c:choose>
 		</tr>
 		<c:choose>
-			<c:when test="${!empty composingElement.domain.pubChemId}">
+			<c:when test="${!empty composingElement.domain.pubChemId &&
+							composingElement.domain.pubChemId != 0}">
 				<tr>
 					<td>
 						<c:set var="pubChemId" value="${composingElement.domain.pubChemId}"/>

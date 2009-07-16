@@ -36,7 +36,8 @@
 									</td>
 								</tr>
 							</c:if>
-							<c:if test="${!empty functionalizingEntity.domainEntity.pubChemId}">
+							<c:if test="${!empty functionalizingEntity.domainEntity.pubChemId &&
+											functionalizingEntity.domainEntity.pubChemId != 0}">
 								<tr>
 									<td class="cellLabel">
 										PubChem ID
