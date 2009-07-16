@@ -72,6 +72,7 @@
 			<include method="getNanomaterialEntityTypes" />
 			<include method="getFunctionalizingEntityTypes" />
 			<include method="getFunctionTypes" />
+			<include method="getPublicCounts"/>
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
@@ -91,6 +92,7 @@
 			<include method="getProtocols" />
 			<include method="getProtocol" />
 			<include method="getProtocolTypes" />
+			<include method="getPublicCounts"/>
 		</create>
 		<create creator="new" javascript="PublicationManager"
 			scope="session">
@@ -103,6 +105,7 @@
 			<include method="getAllSampleNames"/>
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />
+			<include method="getPublicCounts"/>
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
