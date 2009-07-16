@@ -8,18 +8,18 @@
 		<table class="summaryViewLayer4" align="center" width="95%">
 			<tr>
 				<th>
-					Polymer Name
+					Is Polymerized
 				</th>
 				<th>
-					Is Polymerized
+					Polymer Name
 				</th>
 			</tr>
 			<tr>
 				<td>
-					${nanomaterialEntity.liposome.polymerName}
+					${nanomaterialEntity.liposome.polymerized}
 				</td>
 				<td>
-					${nanomaterialEntity.liposome.polymerized}
+					${nanomaterialEntity.liposome.polymerName}
 				</td>
 			</tr>
 		</table>
@@ -32,13 +32,6 @@
 				</th>
 			</tr>
 			<tr>
-				<td class="cellLabel">
-					Polymer Name*
-				</td>
-				<td class="cellLabel">
-					<input type="text" name="nanomaterialEntity.liposome.polymerName"
-						value="${compositionForm.map.nanomaterialEntity.liposome.polymerName}" />
-				</td>
 				<td class="cellLabel">
 					Is Polymerized
 				</td>
@@ -67,12 +60,19 @@
 								</option>
 							</c:when>
 							<c:otherwise>
-								<option value="">
+								<option value="0">
 									No
 								</option>
 							</c:otherwise>
 						</c:choose>
 					</select>
+				</td>
+				<td class="cellLabel">
+					Polymer Name
+				</td>
+				<td class="cellLabel">
+					<input type="text" name="nanomaterialEntity.liposome.polymerName"
+						value="${compositionForm.map.nanomaterialEntity.liposome.polymerName}" />
 				</td>
 			</tr>
 		</table>

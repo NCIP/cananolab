@@ -11,10 +11,10 @@
 					Initiator
 				</th>
 				<th>
-					Cross Link Degree
+					Is Cross Linked
 				</th>
 				<th>
-					Is Cross Linked
+					Cross Link Degree
 				</th>
 			</tr>
 			<tr>
@@ -22,10 +22,10 @@
 					${nanomaterialEntity.polymer.initiator}
 				</td>
 				<td>
-					${nanomaterialEntity.polymer.crossLinkDegree}
+					${nanomaterialEntity.polymer.crossLinked}
 				</td>
 				<td>
-					${nanomaterialEntity.polymer.crossLinked}
+					${nanomaterialEntity.polymer.crossLinkDegree}
 				</td>
 			</tr>
 		</table>
@@ -44,14 +44,6 @@
 				<td class="cellLabel">
 					<input type="text" name="nanomaterialEntity.polymer.initiator"
 						value="${compositionForm.map.nanomaterialEntity.polymer.initiator}" />
-				</td>
-				<td class="cellLabel">
-					Cross Link Degree
-				</td>
-				<td class="cellLabel">
-					<input type="text" name="nanomaterialEntity.polymer.crossLinkDegree"
-						onkeydown="return filterFloatNumber(event)"
-						value="${compositionForm.map.nanomaterialEntity.polymer.crossLinkDegree}" />
 				</td>
 				<td class="cellLabel">
 					Is Cross Linked
@@ -81,12 +73,21 @@
 								</option>
 							</c:when>
 							<c:otherwise>
-								<option value="">
+								<option value="0">
 									No
 								</option>
 							</c:otherwise>
 						</c:choose>
 					</select>
+				</td>
+				<td class="cellLabel">
+					Cross Link Degree
+				</td>
+				<td class="cellLabel">
+					<input type="text"
+						name="nanomaterialEntity.polymer.crossLinkDegree"
+						onkeydown="return filterFloatNumber(event)"
+						value="${compositionForm.map.nanomaterialEntity.polymer.crossLinkDegree}" />
 				</td>
 			</tr>
 		</table>

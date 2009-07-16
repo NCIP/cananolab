@@ -36,34 +36,31 @@
 					Is Polymerized
 				</td>
 				<td class="cellLabel">
+					<c:choose>
+						<c:when
+							test="${empty compositionForm.map.nanomaterialEntity.emulsion.polymerized}">
+							<c:set var="selectNoneStr" value="selected" />
+						</c:when>
+						<c:otherwise>
+							<c:choose>
+								<c:when
+									test="${compositionForm.map.nanomaterialEntity.emulsion.polymerized eq 'true'}">
+									<c:set var="selectYesStr" value="selected" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="selectNoStr" value="selected" />
+								</c:otherwise>
+							</c:choose>
+						</c:otherwise>
+					</c:choose>
 					<select name="nanomaterialEntity.emulsion.polymerized">
-						<option value=""></option>
-						<c:choose>
-							<c:when
-								test="${compositionForm.map.nanomaterialEntity.emulsion.polymerized eq 'true'}">
-								<option value="1" selected>
-									Yes
-								</option>
-							</c:when>
-							<c:otherwise>
-								<option value="1">
-									Yes
-								</option>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when
-								test="${compositionForm.map.nanomaterialEntity.emulsion.polymerized eq 'false'}">
-								<option value="0" selected>
-									No
-								</option>
-							</c:when>
-							<c:otherwise>
-								<option value="">
-									No
-								</option>
-							</c:otherwise>
-						</c:choose>
+						<option value="" ${selectNoneStr}></option>
+						<option value="1" ${selectYesStr}>
+							Yes
+						</option>
+						<option value="0" ${selectNoStr}>
+							No
+						</option>
 					</select>
 				</td>
 				<td class="cellLabel">
