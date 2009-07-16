@@ -59,11 +59,11 @@ public class PublicationServiceHelper {
 	/**
 	 * Constants for generating Excel report for summary view.
 	 */
-	public static final String TITLE = "Title";
 	public static final String BIBLIOBRAPHY_INFO = "Bibliography Info";
-	public static final String ABSTRACT = "Abstract/Download Link";
 	public static final String RESEARCH_CATEGORY = "Research Category";
-	public static final String PMID = "PMID: ";
+	public static final String DESCRIPTION = "Description";
+	public static final String PUB_STATUS = "Publication Status";
+
 	private AuthorizationService authService;
 	private Logger logger = Logger.getLogger(PublicationServiceHelper.class);
 
@@ -347,7 +347,7 @@ public class PublicationServiceHelper {
 		cellIndex = 0;
 		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Publication Status"));
+		cell.setCellValue(new HSSFRichTextString(PUB_STATUS));
 		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getStatus()));
 
@@ -387,7 +387,7 @@ public class PublicationServiceHelper {
 		cellIndex = 0;
 		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Research Category"));
+		cell.setCellValue(new HSSFRichTextString(RESEARCH_CATEGORY));
 		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getResearchArea()));
 
@@ -451,7 +451,7 @@ public class PublicationServiceHelper {
 		cellIndex = 0;
 		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Description"));
+		cell.setCellValue(new HSSFRichTextString(DESCRIPTION));
 		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getDescription()));
 
@@ -471,17 +471,14 @@ public class PublicationServiceHelper {
 	 * Export sample publication summary report as Excel spread sheet.
 	 * 
 	 * @param summaryBean
-	 *            CharacterizationSummaryViewBean
 	 * @param out
-	 *            OutputStream
 	 * @throws IOException
-	 *             if error occurred.
 	 */
 	public static void exportSummary(PublicationSummaryViewBean summaryBean,
 			OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			setSummarySheet(summaryBean, wb);
+			exportSummarySheet(summaryBean, wb);
 			wb.write(out);
 			out.flush();
 			out.close();
@@ -489,71 +486,54 @@ public class PublicationServiceHelper {
 	}
 
 	/**
-	 * Generate Excel report for sample publication summary report.
+	 * Output Excel report for sample publication summary report.
 	 * 
 	 * @param summaryBean
-	 *            CharacterizationSummaryViewBean
 	 * @param wb
-	 *            HSSFWorkbook
 	 */
-	private static void setSummarySheet(PublicationSummaryViewBean summaryBean,
+	private static void exportSummarySheet(PublicationSummaryViewBean summaryBean,
 			HSSFWorkbook wb) {
 		HSSFRow row = null;
-		// HSSFRow rowAuthor = null;
 		StringBuilder sb = new StringBuilder();
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
-		SortedMap<String, List<PublicationBean>> pubs = summaryBean
-				.getCategory2Publications();
+		SortedMap<String, List<PublicationBean>> pubs = 
+			summaryBean.getCategory2Publications();
 		for (String category : pubs.keySet()) {
 			int rowIndex = 0;
-			int cellIndex = 0;
 
 			// Create one work sheet for each category.
 			HSSFSheet sheet = wb.createSheet(category);
 			row = sheet.createRow(rowIndex++);
 
-			// Generate header of report
-			ExportUtils.createCell(row, cellIndex++, headerStyle, TITLE);
-			ExportUtils.createCell(row, cellIndex++, headerStyle,
-					BIBLIOBRAPHY_INFO);
-			ExportUtils.createCell(row, cellIndex++, headerStyle, ABSTRACT);
-			ExportUtils.createCell(row, cellIndex++, headerStyle,
-					RESEARCH_CATEGORY);
+			// Output header of report
+			ExportUtils.createCell(row, 0, headerStyle, BIBLIOBRAPHY_INFO);
+			ExportUtils.createCell(row, 1, headerStyle, RESEARCH_CATEGORY);
+			ExportUtils.createCell(row, 2, headerStyle, DESCRIPTION);
+			ExportUtils.createCell(row, 3, headerStyle, PUB_STATUS);
 
-			// Generate data of report
+			// Output data of report
 			List<PublicationBean> pubBeans = pubs.get(category);
 			for (PublicationBean pubBean : pubBeans) {
 				Publication pub = (Publication) pubBean.getDomainFile();
 				row = sheet.createRow(rowIndex++);
-				cellIndex = 0;
 
-				// Title: cell index = 0.
-				ExportUtils.createCell(row, cellIndex++, pub.getTitle());
+				// Bibliography Info: cell index = 0.
+				ExportUtils.createCell(row, 0, pubBean.getDisplayName());
 
-				// Bibliography Info: cell index = 2.
-				ExportUtils.createCell(row, cellIndex++, pubBean
-						.getDisplayName());
+				// Research Category: cell index = 1.
+				ExportUtils.createCell(row, 1, pub.getResearchArea());
 
-				// Abstract/Download Link: cell index = 3.
-				sb.setLength(0);
-				if (pub.getPubMedId() != null) {
-					sb.append(PMID).append(pub.getPubMedId());
-					ExportUtils.createCell(row, cellIndex++, sb.toString());
-				} else {
-					if (StringUtils.isEmpty(pub.getDigitalObjectId())) {
-						ExportUtils.createCell(row, cellIndex++, pub.getUri());
-					} else {
-						sb.append(PMID).append(pub.getDigitalObjectId());
-						ExportUtils.createCell(row, cellIndex++, sb.toString());
-					}
+				// Description: cell index = 2.
+				if (!StringUtils.isEmpty(pub.getDescription())) {
+					ExportUtils.createCell(row, 2, pub.getDescription());
 				}
-
-				// Research Category: cell index = 4.
-				ExportUtils.createCell(row, cellIndex++, pub.getResearchArea());
+				
+				// Publication Status: cell index = 3.
+				ExportUtils.createCell(row, 3, pub.getStatus());
 			}
 		}
 	}
