@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -9,7 +12,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.directwebremoting.impl.DefaultWebContextBuilder;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 
 public class DWRSampleManager {
 
@@ -19,9 +23,8 @@ public class DWRSampleManager {
 	}
 
 	public String[] getNanomaterialEntityTypes(String searchLocations) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
@@ -57,9 +60,8 @@ public class DWRSampleManager {
 	}
 
 	public String[] getFunctionalizingEntityTypes(String searchLocations) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
@@ -95,9 +97,8 @@ public class DWRSampleManager {
 	}
 
 	public String[] getFunctionTypes(String searchLocations) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
 		ServletContext appContext = request.getSession().getServletContext();
 
 		try {
@@ -130,5 +131,39 @@ public class DWRSampleManager {
 			e.printStackTrace();
 		}
 		return new String[] { "" };
+	}
+
+	public String getPublicCounts(String[] locations) {
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
+		if (locations.length==0){
+			return null;
+		}
+		Integer counts = 0;
+		SampleService service = null;
+		for (String location : locations) {
+			if (location.equals(Constants.LOCAL_SITE)) {
+				try {
+					service = new SampleServiceLocalImpl();
+					counts += service.getNumberOfPublicSamples();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public samples from local site.");
+				}
+			} else {
+				try {
+					String serviceUrl = InitSetup.getInstance()
+							.getGridServiceUrl(request, location);
+
+					service = new SampleServiceRemoteImpl(serviceUrl);
+					counts += service.getNumberOfPublicSamples();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public samples from "
+									+ location);
+				}
+			}
+		}
+		return counts.toString();
 	}
 }

@@ -7,6 +7,9 @@ import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -149,5 +152,39 @@ public class DWRPublicationManager {
 		PublicationBean pubBean = (PublicationBean) (pubForm.get("publication"));
 		pubBean.removeAuthor(author);
 		return pubBean;
+	}
+	
+	public String getPublicCounts(String[] locations) {
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
+		if (locations.length==0){
+			return null;
+		}
+		Integer counts = 0;
+		PublicationService service = null;
+		for (String location : locations) {
+			if (location.equals(Constants.LOCAL_SITE)) {
+				try {
+					service = new PublicationServiceLocalImpl();
+					counts += service.getNumberOfPublicPublications();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public publications from local site.");
+				}
+			} else {
+				try {
+					String serviceUrl = InitSetup.getInstance()
+							.getGridServiceUrl(request, location);
+
+					service = new PublicationServiceRemoteImpl(serviceUrl);
+					counts += service.getNumberOfPublicPublications();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public publications from "
+									+ location);
+				}
+			}
+		}
+		return counts.toString();
 	}
 }

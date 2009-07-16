@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -14,13 +15,15 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * This class loads protocol data for ajax
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class DWRProtocolManager {
 
@@ -93,5 +96,39 @@ public class DWRProtocolManager {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public String getPublicCounts(String[] locations) {
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
+		if (locations.length==0){
+			return null;
+		}
+		Integer counts = 0;
+		ProtocolService service = null;
+		for (String location : locations) {
+			if (location.equals(Constants.LOCAL_SITE)) {
+				try {
+					service = new ProtocolServiceLocalImpl();
+					counts += service.getNumberOfPublicProtocols();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public protocols from local site.");
+				}
+			} else {
+				try {
+					String serviceUrl = InitSetup.getInstance()
+							.getGridServiceUrl(request, location);
+
+					service = new ProtocolServiceRemoteImpl(serviceUrl);
+					counts += service.getNumberOfPublicProtocols();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public protocols from "
+									+ location);
+				}
+			}
+		}
+		return counts.toString();
 	}
 }
