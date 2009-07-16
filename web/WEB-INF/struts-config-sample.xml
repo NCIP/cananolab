@@ -53,7 +53,7 @@
 				initial="0" />
 		</form-bean>
 		<form-bean name="compositionForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
+			type="org.apache.struts.validator.DynaValidatorActionForm">
 			<form-property name="comp"
 				type="gov.nih.nci.cananolab.dto.particle.composition.CompositionBean" />
 			<form-property name="nanomaterialEntity"
