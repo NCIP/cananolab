@@ -312,7 +312,7 @@ function popImage(event, imgSrc, imgId) {
 		imgWindow.document.writeln("<img width='" + (width - 20) + "' height='" + (height - 20) + "' styleId='" + imgId + "' src='" + imgSrc + "'/>");
 		imgWindow.document.writeln("</body></html>");
 	} else {
-		imgWindow = window.open("", "charFileWindow", "left='" + leftPos + "',top='" + topPos + "'");
+		imgWindow = window.open("", "charFileWindow", "left=" + leftPos + ",top=" + topPos);
 		imgWindow.document.writeln("<html><head><title>Characterization File</title></head>");
 		imgWindow.document.writeln("<body onLoad=\"resizePopup();\" bgcolor=\"#FFFFFF\">");
 		imgWindow.document.writeln("<img id='popImage' styleId='" + imgId + "' src='" + imgSrc + "'/>");
