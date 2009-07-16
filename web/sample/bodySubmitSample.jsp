@@ -19,7 +19,7 @@
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 	</jsp:include>
 </table>
-<html:form action="/sample">
+<html:form action="/sample" onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -118,8 +118,8 @@
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="page" value="3">
-									<html:submit onclick="javascript:validateSavingTheData('newPointOfContact', 'point of contact');"/>
+									<input type="hidden" name="page" value="2">
+									<html:submit/>
 								</div>
 							</div>
 						</td>
