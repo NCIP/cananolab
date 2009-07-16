@@ -69,21 +69,14 @@
 			<field property="nanomaterialEntity.type" page="2" depends="required">
 				<arg position="0" key="nanomaterialEntityType" bundle="sample"/>
 			</field>
-			<field property="nanomaterialEntity.carbonNanotube.diameter"
-				page="2" depends="float">
-				<arg position="0" key="nanomaterialEntityForm.carbonNanotube.diameter"
-					bundle="sample"/>
+			<field property="nanomaterialEntity.theComposingElement.domain.type"
+				page="3" depends="required">
+				<arg position="0" key="composingElement.type" bundle="sample"/>
 			</field>
-			<field property="nanomaterialEntity.carbonNanotube.averageLength"
-				page="2" depends="float">
-				<arg position="0"
-					key="nanomaterialEntityForm.carbonNanotube.averageLength" bundle="sample"/>
-			</field>
-			<field property="nanomaterialEntity.fullerene.numberOfCarbon"
-				page="2" depends="integer">
-				<arg position="0" key="nanomaterialEntityForm.fullerene.numberOfCarbon"
-					bundle="sample"/>
-			</field>
+			<field property="nanomaterialEntity.theComposingElement.domain.name"
+				page="3" depends="required">
+				<arg position="0" key="composingElement.chemicalName" bundle="sample"/>
+			</field>			
 			<field property="nanomaterialEntity.biopolymer.name" page="2"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.name"
@@ -116,7 +109,7 @@
 					<var-name>test</var-name>
 					<var-value>
 						((nanomaterialEntity.type!='liposome') or
-						((nanomaterialEntityliposome.polymerized=='false') or
+						((nanomaterialEntity.liposome.polymerized==0) or
 						(*this*!=null)))
 					</var-value>
 				</var>
@@ -129,7 +122,7 @@
 					<var-name>test</var-name>
 					<var-value>
 						((nanomaterialEntity.type!='emulsion') or
-						((nanomaterialEntity.emulsion.polymerized=='false') or
+						((nanomaterialEntity.emulsion.polymerized==0) or
 						(*this*!=null)))
 					</var-value>
 				</var>
@@ -142,27 +135,9 @@
 					<var-name>test</var-name>
 					<var-value>
 						((nanomaterialEntity.type!='polymer') or
-						((nanomaterialEntity.polymer.crossLinkDegree=="No") or
+						((nanomaterialEntity.polymer.crossLinkDegree==0) or
 						(*this*!=null)))
 					</var-value>
-				</var>
-			</field>
-			<field property="domain.type" page="2" depends="validwhen"
-				indexedListProperty="nanomaterialEntity.composingElements">
-				<arg position="0" key="nanomaterialEntityForm.elementType"
-					bundle="sample"/>
-				<var>
-					<var-name>test</var-name>
-					<var-value>(*this*!=null)</var-value>
-				</var>
-			</field>
-			<field property="domain.name" page="2" depends="validwhen"
-				indexedListProperty="nanomaterialEntity.composingElements">
-				<arg position="0" key="nanomaterialEntityForm.elementName"
-					bundle="sample"/>
-				<var>
-					<var-name>test</var-name>
-					<var-value>(*this*!=null)</var-value>
 				</var>
 			</field>
 		</form>
