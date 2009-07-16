@@ -33,7 +33,7 @@
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 	</jsp:include>
 </table>
-<html:form action="/functionalizingEntity" enctype="multipart/form-data">
+<html:form action="/functionalizingEntity" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -222,8 +222,7 @@
 	<%--Functionalizing Entity File Information --%>
 	<c:set var="fileParent" value="functionalizingEntity" />
 	<a name="file">
-		<table width="100%" align="center" class="submissionView">
-			<tbody>
+		<table width="100%" align="center" class="submissionView">			
 				<tr>
 					<th colspan="2">
 						Functionalizing Entity File

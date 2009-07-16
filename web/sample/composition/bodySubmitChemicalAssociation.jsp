@@ -55,7 +55,7 @@
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 	</jsp:include>
 </table>
-<html:form action="/chemicalAssociation" enctype="multipart/form-data">
+<html:form action="/chemicalAssociation" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
