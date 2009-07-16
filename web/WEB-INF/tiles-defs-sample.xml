@@ -4,7 +4,7 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<definition name="sample.message" extends="canano.home">
-		<put name="cananoContent" value="/bodyMessage.jsp?bundle=particle" />
+		<put name="cananoContent" value="/bodyMessage.jsp?bundle=sample" />
 		<put name="menu" value="samples" />
 	</definition>
 
@@ -67,7 +67,7 @@
 	</definition>
 
 	<definition name="sample.annotationMessage" extends="sample.annotationHome">
-		<put name="cananoContent" value="/bodyMessage.jsp?bundle=particle" />
+		<put name="cananoContent" value="/bodyMessage.jsp?bundle=sample" />
 	</definition>
 
 	<!-- definition for the sample composition page -->
