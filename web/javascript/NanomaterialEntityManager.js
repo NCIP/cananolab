@@ -148,10 +148,10 @@ function deleteTheInherentFunction() {
 	}
 }
 function addComposingElement(actionName) {
-	submitAction(document.forms[0], actionName, "saveComposingElement", 0);
+	submitAction(document.forms[0], actionName, "saveComposingElement", 2);
 }
 function removeComposingElement(actionName) {
-	submitAction(document.forms[0], actionName, "removeComposingElement", 0);
+	submitAction(document.forms[0], actionName, "removeComposingElement", 2);
 }
 /* end of submit composing element form */
 
