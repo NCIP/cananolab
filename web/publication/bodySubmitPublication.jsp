@@ -33,7 +33,7 @@
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 	</jsp:include>
 </table>
-<html:form action="/publication" enctype="multipart/form-data">
+<html:form action="/publication" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newAuthor', 'Authors');">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
