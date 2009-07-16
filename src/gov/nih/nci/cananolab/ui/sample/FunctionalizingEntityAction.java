@@ -156,7 +156,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new nanomaterial entity
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -172,6 +172,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
+		request.getSession().setAttribute("onloadJavascript",
+				"setEntityInclude('feType', 'functionalizingEntity');");
 		return mapping.getInputForward();
 	}
 
@@ -278,10 +280,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		 * HttpSession session = request.getSession();
 		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
-		 *
+		 * 
 		 * PolymerBean polymer = (PolymerBean) theForm.get("polymer");
 		 * updatePolymerEditable(session, polymer);
-		 *
+		 * 
 		 * DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
 		 * updateDendrimerEditable(session, dendrimer);
 		 */
