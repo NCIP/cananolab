@@ -707,12 +707,6 @@ h3,.h3 { /* for title of page */
 	text-align: left;
 }
 
-h4,.h4 { /* for title of page */
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 1.0em;
-	font-weight: bold;
-	color: #5c5c5c; /* constant: dark gray */
-}
 
 p,.p { /* for paragraphs */
 	/* padding-left: 1em; */
@@ -751,7 +745,8 @@ p,.p { /* for paragraphs */
 	text-align: justify;
 }
 
-.contentTitle { /* for titles of on top of the content area */
+.contentTitle { /* for title on top of the content area */
+	background-color: #cccccc; /* constant: medium gray */
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.8em;
 	font-weight: bold;
