@@ -213,7 +213,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	 * 
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
-	 * @param otherNanoparticleTypes
+	 * @param otherNanomaterialEntityTypes
 	 * @param functionalizingEntityClassNames
 	 * @param otherFunctionalizingEntityTypes
 	 * @param functionClassNames
@@ -225,7 +225,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	 */
 	public List<SampleBean> findSamplesBy(String samplePointOfContact,
 			String[] nanomaterialEntityClassNames,
-			String[] otherNanoparticleTypes,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
@@ -239,7 +239,7 @@ public class SampleServiceLocalImpl implements SampleService {
 				filterPublic = true;
 			}
 			List<Sample> samples = helper.findSamplesBy(samplePointOfContact,
-					nanomaterialEntityClassNames, otherNanoparticleTypes,
+					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes, characterizationClassNames,

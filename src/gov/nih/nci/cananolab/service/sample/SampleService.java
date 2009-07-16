@@ -34,7 +34,7 @@ public interface SampleService {
 	 *
 	 * @param samplePointOfContact
 	 * @param nanomaterialEntityClassNames
-	 * @param otherNanoparticleTypes
+	 * @param otherNanomaterialEntityTypes
 	 * @param functionalizingEntityClassNames
 	 * @param otherFunctionalizingEntityTypes
 	 * @param functionClassNames

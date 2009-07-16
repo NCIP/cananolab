@@ -83,13 +83,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			// particleSample.getSampleComposition()
 			// .getNanomaterialEntityCollection().add(entity);
 
+			appService.saveOrUpdate(entity);
 			// save file data to file system and assign visibility
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
 				fileService.writeFile(fileBean, user);
-			}
-			appService.saveOrUpdate(entity);
+			}			
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
 			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
@@ -106,7 +106,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			throw new CompositionException(err, e);
 		}
 	}
-
+	
 	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
 			UserBean user) throws CompositionException, NoAccessException {
 		NanomaterialEntityBean entityBean = null;

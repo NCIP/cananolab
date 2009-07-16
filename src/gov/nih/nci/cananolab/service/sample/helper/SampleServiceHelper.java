@@ -680,7 +680,7 @@ public class SampleServiceHelper {
 			columns.add(primaryPOC.getDomain().getFirstName());
 			columns.add(primaryPOC.getDomain().getLastName());
 			columns.add(primaryPOC.getDomain().getOrganization().getName());
-			// nanoparticle entities and functionalizing entities are in one
+			// nanomaterial entities and functionalizing entities are in one
 			// column.
 			SortedSet<String> entities = new TreeSet<String>();
 			entities.addAll(getStoredNanomaterialEntityClassNames(sample));

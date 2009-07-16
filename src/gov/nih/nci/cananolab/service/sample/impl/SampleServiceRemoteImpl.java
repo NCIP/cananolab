@@ -71,7 +71,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 	 *
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
-	 * @param otherNanoparticleTypes
+	 * @param otherNanomaterialEntityTypes
 	 * @param functionalizingEntityClassNames
 	 * @param otherFunctionalizingEntityTypes
 	 * @param functionClassNames
@@ -83,7 +83,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 	 */
 	public List<SampleBean> findSamplesBy(String samplePointOfContact,
 			String[] nanomaterialEntityClassNames,
-			String[] otherNanoparticleTypes,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
@@ -123,7 +123,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 					sample.setPrimaryPointOfContact(primaryPOC);
 
 					SampleBean sampleBean = new SampleBean(sample);
-					// composition, set all compositions as NanoparticleEntity
+					// composition, set all compositions as Nanomaterial Entity
 					// for now
 					if (columns.length > 5 && columns[5] != null
 							&& columns[5].length() > 0) {
@@ -226,7 +226,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 	}
 
 	/**
-	 * load the source for an associated NanoparticleSample
+	 * load the source for an associated Sample
 	 *
 	 * @param particleId
 	 * @return
@@ -249,7 +249,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 	}
 
 	/**
-	 * load all keywords for an associated NanoparticleSample equal to
+	 * load all keywords for an associated Sample equal to
 	 * particleId
 	 *
 	 */
