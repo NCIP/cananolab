@@ -306,7 +306,7 @@ function popImage(event, imgSrc, imgId) {
 				width = ratio * width;
 			}
 		}
-		imgWindow = window.open("", "charFileWindow", "width='" + width + "',height='" + height + "',left='" + leftPos + "',top='" + topPos + "'");
+		imgWindow = window.open("", "charFileWindow", "width=" + width + ",height=" + height + ",left=" + leftPos + ",top=" + topPos);
 		imgWindow.document.writeln("<html><head><title>Characterization File</title></head>");
 		imgWindow.document.writeln("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">");
 		imgWindow.document.writeln("<img width='" + (width - 20) + "' height='" + (height - 20) + "' styleId='" + imgId + "' src='" + imgSrc + "'/>");
