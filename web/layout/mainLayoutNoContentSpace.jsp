@@ -16,10 +16,18 @@
 		<link rel="shortcut icon" href="images/favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
-		<script type="text/javascript" src="javascript/browseGrid.js"></script>
+		<script type='text/javascript' src='dwr/engine.js'></script>
+		<script type='text/javascript' src='dwr/util.js'></script>
+		<script type='text/javascript'
+			src='/caNanoLab/dwr/interface/PublicationManager.js'></script>
+		<script type='text/javascript'
+			src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
+		<script type='text/javascript'
+			src='/caNanoLab/dwr/interface/SampleManager.js'></script>
+		<script type='text/javascript' src='javascript/CountManager.js'></script>
 	</head>
 	<tiles:importAttribute scope="session" />
-	<body style="cursor:default" onload="getLocalCounts('location');">
+	<body style="cursor: default" onload="getPublicCounts();">
 		<table height="100%" cellspacing="0" cellpadding="0" width="100%"
 			summary="" border="0" align="center">
 			<!-- nci hdr begins -->
@@ -79,7 +87,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td>l<%-- include NCI footer --%>
+					<td>
+						l
+						<%-- include NCI footer --%>
 						<tiles:insert attribute="nciFooter" />
 					</td>
 				</tr>
