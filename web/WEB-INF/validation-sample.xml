@@ -9,16 +9,10 @@
 				<arg position="0" key="sampleForm.sampleName" bundle="sample"/>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.name"
-				page="2" depends="validwhen">
+				page="3" depends="required">
 				<arg position="0" key="sampleForm.organizationName" bundle="sample"/>
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((sampleBean.thePOC==null) or (*this*!=null))
-					</var-value>
-				</var>
 			</field>
-			<field property="sampleBean.primaryPOCBean.domain.id" page="3"
+			<field property="sampleBean.primaryPOCBean.domain.id" page="2"
 				depends="required">
 				<arg position="0" key="sampleForm.primaryPOC" bundle="sample"/>
 			</field>
