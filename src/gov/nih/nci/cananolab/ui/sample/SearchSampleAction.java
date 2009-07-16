@@ -170,7 +170,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		} else {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
-					"message.searchNanoparticle.noresult");
+					"message.searchSample.noresult");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 
