@@ -487,7 +487,7 @@ function addFile(actionName, form) {
 	} else {
 		dispatch = "saveFile";
 	}
-	form.action = actionName + ".do?dispatch=" + dispatch + "&page=0";
+	form.action = actionName + ".do?dispatch=" + dispatch + "&page=2";
 	form.submit();
 }
 function confirmDelete(type) {
@@ -497,7 +497,7 @@ function confirmDelete(type) {
 function removeFile(actionName, form, index) {
 	var answer = confirmDelete("file");
 	if (answer != 0) {
-		form.action = actionName + ".do?dispatch=removeFile&page=0";
+		form.action = actionName + ".do?dispatch=removeFile&page=2";
 		form.submit();
 	}
 }
