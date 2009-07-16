@@ -50,8 +50,8 @@
 									</tr>
 									<tr align="left">
 										<td rowspan="3">
-											<select name="searchLocations" id="location" multiple="true"
-												size="4" onchange="getAllGridCounts(this);">
+											<select name="searchLocations" id="sites" multiple="true"
+												size="4" onchange="getPublicCounts();">
 												<option value="${applicationOwner}" selected="selected">
 													${applicationOwner}
 												</option>
@@ -82,9 +82,8 @@
 												</tr>
 											</table>
 										</td>
-										<td class="counts">
-											<a href="#" onclick="gotoProtocols('search')" id="protocolCount"
-												class="countsLink"></a>
+										<td style="padding-left:22px">							
+											<span id="protocolCount"><img src="images/ajax-loader.gif"></span>
 										</td>
 									</tr>
 									<tr class="alt">
@@ -110,9 +109,8 @@
 												</tr>
 											</table>
 										</td>
-										<td class="counts">
-											<a href="#" onclick="gotoSamples('search');" id="sampleCount"
-												class="countsLink"></a>
+										<td style="padding-left:22px">							
+											<span id="sampleCount"><img src="images/ajax-loader.gif"></span>
 										</td>
 									</tr>
 									<tr>
@@ -137,9 +135,8 @@
 												</tr>
 											</table>
 										</td>
-										<td class="counts">
-											<a href="#" onclick="gotoPublications('search')" id="publicationCount"
-												class="countsLink"></a>
+										<td style="padding-left:22px">							
+											<span id="publicationCount"><img src="images/ajax-loader.gif"></span>
 										</td>
 									</tr>
 								</table>
