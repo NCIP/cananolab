@@ -138,7 +138,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			String category, String sampleName, String[] researchAreas,
 			String[] keywords, String pubMedId, String digitalObjectId,
 			String[] authors, String[] nanomaterialEntityClassNames,
-			String[] otherNanoparticleTypes,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
@@ -148,7 +148,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			List<Publication> publications = helper.findPublicationsBy(title,
 					category, sampleName, researchAreas, keywords, pubMedId,
 					digitalObjectId, authors, nanomaterialEntityClassNames,
-					otherNanoparticleTypes, functionalizingEntityClassNames,
+					otherNanomaterialEntityTypes, functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes, user);
 			if (publications != null) {

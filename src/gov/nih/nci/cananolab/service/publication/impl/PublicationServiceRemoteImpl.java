@@ -70,7 +70,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String category, String sampleName, String[] researchAreas,
 			String[] keywords, String pubMedId, String digitalObjectId,
 			String[] authors, String[] nanomaterialEntityClassNames,
-			String[] otherNanoparticleTypes,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
@@ -257,7 +257,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 	/**
 	 * if publication associates with multiple particle remove the entry from
-	 * nanoparticle_sample_publication otherwise, remove publicVisibility and
+	 * sample_publication otherwise, remove publicVisibility and
 	 * delete publication
 	 */
 	public void removePublicationFromSample(Sample particle, Long dataId)
