@@ -129,6 +129,13 @@ public class ComposingElementBean {
 			// seconds
 			domain.setCreatedDate(DateUtils.addSecondsToCurrentDate(index));
 		}
+		//update zero values defaulted from forms to null
+		if (domain.getPubChemId()!=null && domain.getPubChemId()==0) {
+			domain.setPubChemId(null);
+		}
+		if (domain.getValue()!=null && domain.getValue()==0) {
+			domain.setValue(null);
+		}
 		if (domain.getInherentFunctionCollection() != null) {
 			domain.getInherentFunctionCollection().clear();
 		} else {
