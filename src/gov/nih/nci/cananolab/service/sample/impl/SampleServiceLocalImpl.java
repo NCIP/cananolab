@@ -180,19 +180,16 @@ public class SampleServiceLocalImpl implements SampleService {
 		CompositionServiceHelper compHelper = new CompositionServiceHelper();
 		Collection<Characterization> characterizationCollection = sample
 				.getCharacterizationCollection();
-		if (Arrays.asList(visibleGroups).contains(Constants.CSM_PUBLIC_GROUP)) {
-			// characterizations
-			if (characterizationCollection != null) {
-				for (Characterization aChar : characterizationCollection) {
-					charHelper.assignVisibility(aChar, visibleGroups,
-							owningGroup);
-				}
+		// characterizations
+		if (characterizationCollection != null) {
+			for (Characterization aChar : characterizationCollection) {
+				charHelper.assignVisibility(aChar, visibleGroups, owningGroup);
 			}
-			// sampleComposition
-			if (sample.getSampleComposition() != null) {
-				compHelper.assignVisibility(sample.getSampleComposition(),
-						visibleGroups, owningGroup);
-			}
+		}
+		// sampleComposition
+		if (sample.getSampleComposition() != null) {
+			compHelper.assignVisibility(sample.getSampleComposition(),
+					visibleGroups, owningGroup);
 		}
 	}
 
