@@ -68,6 +68,30 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		return mapping.findForward("success");
 	}
 
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String detailPage = null;
+		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
+				.get("nanomaterialEntity");		
+		detailPage = InitCompositionSetup.getInstance().getDetailPage(
+				request.getSession().getServletContext(), entityBean.getType(),
+				"nanomaterialEntity");
+		request.setAttribute("entityDetailPage", detailPage);
+		// set pubChemId and value for composing element to be null if they were
+		// default to zero from the form
+		ComposingElementBean ce = entityBean.getTheComposingElement();
+		if (ce.getDomain().getPubChemId() != null
+				&& ce.getDomain().getPubChemId() == 0) {
+			ce.getDomain().setPubChemId(null);
+		}
+		if (ce.getDomain().getValue() != null && ce.getDomain().getValue() == 0) {
+			ce.getDomain().setValue(null);
+		}
+		return mapping.findForward("inputForm");
+	}
+
 	private void saveEntity(HttpServletRequest request,
 			DynaValidatorForm theForm, NanomaterialEntityBean entityBean)
 			throws Exception {
@@ -176,8 +200,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
-		request.getSession().setAttribute("onloadJavascript",
-				"setEntityInclude('peType', 'nanomaterialEntity');");
 		return mapping.getInputForward();
 	}
 
@@ -274,26 +296,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
 		return mapping.getInputForward();
-	}
-
-	public ActionForward input(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		/*
-		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
-		 * NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-		 * .get("nanomaterialEntity"); // update editable dropdowns HttpSession
-		 * session = request.getSession();
-		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
-		 * composition.getCharacterizationSource(), "characterizationSources");
-		 * 
-		 * PolymerBean polymer = (PolymerBean) theForm.get("polymer");
-		 * updatePolymerEditable(session, polymer);
-		 * 
-		 * DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
-		 * updateDendrimerEditable(session, dendrimer);
-		 */
-		return mapping.findForward("setup");
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
