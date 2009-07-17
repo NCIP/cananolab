@@ -8,18 +8,19 @@
 			<field property="sampleBean.domain.name" page="1" depends="required">
 				<arg position="0" key="sampleForm.sampleName" bundle="sample" />
 			</field>
-			<field property="sampleBean.primaryPOCBean.domain.id"
-				page="2" depends="validwhen">
+			<field property="sampleBean.primaryPOCBean.domain.id" page="1"
+				depends="validwhen">
 				<arg position="0" key="sampleForm.primaryPOC" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((sampleBean.thePOC.domain.organization.name!=null) or (*this*!=null))
+						((sampleBean.thePOC.domain.organization.name!=null) or
+						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.name"
-				page="3" depends="required">
+				page="2" depends="required">
 				<arg position="0" key="sampleForm.organizationName" bundle="sample" />
 			</field>
 		</form>
@@ -72,16 +73,8 @@
 			</field>
 		</form>
 		<form name="/nanomaterialEntity">
-			<field property="nanomaterialEntity.type" page="2" depends="required">
+			<field property="nanomaterialEntity.type" page="1" depends="required">
 				<arg position="0" key="nanomaterialEntityType" bundle="sample" />
-			</field>
-			<field property="nanomaterialEntity.theComposingElement.domain.type"
-				page="3" depends="required">
-				<arg position="0" key="composingElement.type" bundle="sample" />
-			</field>
-			<field property="nanomaterialEntity.theComposingElement.domain.name"
-				page="3" depends="required">
-				<arg position="0" key="composingElement.chemicalName" bundle="sample" />
 			</field>
 			<field property="nanomaterialEntity.biopolymer.name" page="2"
 				depends="validwhen">
@@ -95,7 +88,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="nanomaterialEntity.biopolymer.type" page="2"
+			<field property="nanomaterialEntity.biopolymer.type" page="1"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.type"
 					bundle="sample" />
@@ -107,7 +100,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="nanomaterialEntity.liposome.polymerName" page="2"
+			<field property="nanomaterialEntity.liposome.polymerName" page="1"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.liposome.polymerName"
 					bundle="sample" />
@@ -120,7 +113,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="nanomaterialEntity.emulsion.polymerName" page="2"
+			<field property="nanomaterialEntity.emulsion.polymerName" page="1"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.emulsion.polymerName"
 					bundle="sample" />
@@ -134,7 +127,7 @@
 				</var>
 			</field>
 			<field property="nanomaterialEntity.polymer.crossLinkDegree"
-				page="2" depends="validwhen">
+				page="1" depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.polymer.crossLinkDegree"
 					bundle="sample" />
 				<var>
@@ -145,6 +138,38 @@
 						(*this*!=null)))
 					</var-value>
 				</var>
+			</field>
+			<field property="nanomaterialEntity.theComposingElement.domain.type"
+				page="2" depends="validwhen">
+				<arg position="0" key="composingElement.type" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((dispatch!='saveComposingElement') and
+						(dispatch!='removeComposingElement')) or
+						(*this*!=null))
+					</var-value>
+				</var>				
+			</field>
+			<field property="nanomaterialEntity.theComposingElement.domain.name"
+				page="2" depends="validwhen">
+				<arg position="0" key="composingElement.chemicalName" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((dispatch!='saveComposingElement') and
+						(dispatch!='removeComposingElement')) or
+						(*this*!=null))
+					</var-value>
+				</var>					
+			</field>
+			<field property="nanomaterialEntity.theFile.domain.type"
+				page="3" depends="required">
+				<arg position="0" key="file.type" bundle="sample" />
+			</field>
+			<field property="nanomaterialEntity.theFile.domain.title"
+				page="3" depends="required">
+				<arg position="0" key="file.title" bundle="sample" />
 			</field>
 		</form>
 		<form name="/functionalizingEntity">
