@@ -5,12 +5,12 @@
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Publication Search Results" />
+	<jsp:param name="topic" value="publications_search_results_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <table width="100%" align="center">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="Publication Search Results" />
-		<jsp:param name="topic" value="publications_search_results_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
 	<tr>
 		<td colspan="2">
 			<c:choose>

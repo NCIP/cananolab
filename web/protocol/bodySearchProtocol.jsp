@@ -8,13 +8,11 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
-<table align="center" width="100%">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="Search Protocols" />
-		<jsp:param name="topic" value="search_protocol_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
-</table>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Search Protocols" />
+	<jsp:param name="topic" value="search_protocol_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="searchProtocol">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView">

@@ -1,8 +1,12 @@
-<jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Manage Publications" />
-	<jsp:param name="topic" value="manage_publications_help" />
-	<jsp:param name="glossaryTopic" value="glossary_help" />
-</jsp:include>
+<tr>
+	<td colspan="2">
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="Manage Publications" />
+			<jsp:param name="topic" value="manage_publications_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+		</jsp:include>
+	</td>
+</tr>
 <tr>
 	<td colspan="2" class="welcomeContent">
 		This is the manage publications section which allows users to submit publications and

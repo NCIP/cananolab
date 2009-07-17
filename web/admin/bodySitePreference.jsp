@@ -3,15 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="gov.nih.nci.cananolab.util.Constants"%>
-
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Site Preference" />
+	<jsp:param name="topic" value="manage_nanoparticles_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="/admin" enctype="multipart/form-data">
 	<table width="100%" align="center">
-		<jsp:include page="/bodyTitle.jsp">
-			<jsp:param name="pageTitle" value="Site Preference" />
-			<jsp:param name="topic" value="manage_nanoparticles_help" />
-			<jsp:param name="glossaryTopic" value="glossary_help" />
-		</jsp:include>
 		<tr>
 			<td colspan="4">
 				<jsp:include page="/bodyMessage.jsp?bundle=admin" />

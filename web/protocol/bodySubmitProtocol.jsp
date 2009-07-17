@@ -15,14 +15,11 @@
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
 
-
-<table width="100%" align="center">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="${action} Protocol" />
-		<jsp:param name="topic" value="submit_protocol_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
-</table>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="${action} Protocol" />
+	<jsp:param name="topic" value="submit_protocol_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="/submitProtocol" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView">

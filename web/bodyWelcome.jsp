@@ -3,28 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="WELCOME TO caNanoLab" />
+	<jsp:param name="topic" value="welcome_workflow" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <table>
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="WELCOME TO caNanoLab" />
-		<jsp:param name="topic" value="welcome_workflow" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
 	<tr>
 		<jsp:include page="/bodyMessage.jsp" />
 	</tr>
-	<%-- 
-	<tr>
-		<td class="welcomeTitle" height="20">
-			WELCOME TO caNanoLab
-		</td>
-		<td align="right">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="welcome_workflow" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
-	--%>
 	<tr>
 		<td class="welcomeContent" valign="top">
 			Welcome to the

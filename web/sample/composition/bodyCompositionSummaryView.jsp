@@ -5,14 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:if test="${not empty theSample}">
-	<table width="100%" align="center">
-		<jsp:include page="/bodyTitle.jsp">
-			<jsp:param name="pageTitle" 
-				value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Composition" />
-			<jsp:param name="topic" value="composition_all_tab_help" />
-			<jsp:param name="glossaryTopic" value="glossary_help" />
-		</jsp:include>
-	</table>
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle" 
+			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Composition" />
+		<jsp:param name="topic" value="composition_all_tab_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+	</jsp:include>
 </c:if>
 <c:set var="compositionSections"
 	value="${compositionForm.map.comp.compositionSections}" />

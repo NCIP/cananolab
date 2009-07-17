@@ -48,13 +48,11 @@
 		value="${sampleName} Sample Composition - Chemical Association" />
 	</c:otherwise>
 </c:choose>
-<table width="100%" align="center">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="${chemTitle}" />
-		<jsp:param name="topic" value="chem_association_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
-</table>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="${chemTitle}" />
+	<jsp:param name="topic" value="chem_association_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="/chemicalAssociation" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">

@@ -3,17 +3,17 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Protocol File" />
+	<jsp:param name="topic" value="protocol_file_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+	<logic:equal name="protocolActionName" value="updateProtocol">
+		<jsp:param name="other" value="Back" />
+		<jsp:param name="otherLink" value="protocolResults.do" />
+	</logic:equal>
+</jsp:include>
 <html:form action="/${protocolActionName}" enctype="multipart/form-data">
 	<table width="100%" align="center">
-		<jsp:include page="/bodyTitle.jsp">
-			<jsp:param name="pageTitle" value="Protocol File" />
-			<jsp:param name="topic" value="protocol_file_help" />
-			<jsp:param name="glossaryTopic" value="glossary_help" />
-			<logic:equal name="protocolActionName" value="updateProtocol">
-				<jsp:param name="other" value="Back" />
-				<jsp:param name="otherLink" value="protocolResults.do" />
-			</logic:equal>
-		</jsp:include>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />

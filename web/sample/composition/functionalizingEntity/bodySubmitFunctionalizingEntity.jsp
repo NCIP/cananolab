@@ -26,13 +26,11 @@
 		value="${sampleName} Sample Composition - Functionalizing Entity"/>
 	</c:otherwise>
 </c:choose>
-<table width="100%" align="center">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="${funcTitle}" />
-		<jsp:param name="topic" value="function_entity_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
-</table>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="${funcTitle}" />
+	<jsp:param name="topic" value="function_entity_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="/functionalizingEntity" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">

@@ -4,14 +4,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Protocol Search Results" />
+	<jsp:param name="topic" value="protocol_search_results_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+	<jsp:param name="other" value="Back" />
+	<jsp:param name="otherLink" value="searchProtocol.do?dispatch=setup" />
+</jsp:include>
 <table width="100%" align="center">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="Protocol Search Results" />
-		<jsp:param name="topic" value="protocol_search_results_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-		<jsp:param name="other" value="Back" />
-		<jsp:param name="otherLink" value="searchProtocol.do?dispatch=setup" />
-	</jsp:include>
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=protocol" />

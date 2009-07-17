@@ -9,13 +9,11 @@
 	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-<table align="center" width="100%">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="Search Publications" />
-		<jsp:param name="topic" value="search_publications_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
-</table>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Search Publications" />
+	<jsp:param name="topic" value="search_publications_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="searchPublication">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 	<table width="100%" align="center" class="submissionView">

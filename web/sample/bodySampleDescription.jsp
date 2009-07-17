@@ -1,8 +1,12 @@
-<jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Manage Samples" />
-	<jsp:param name="topic" value="manage_samples_help" />
-	<jsp:param name="glossaryTopic" value="glossary_help" />
-</jsp:include>
+<tr>
+	<td colspan="2">
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="Manage Samples" />
+			<jsp:param name="topic" value="manage_samples_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+		</jsp:include>
+	</td>
+</tr>
 <tr>
 	<td colspan="2" class="welcomeContent">
 		This is the manage samples section which allows users to enter general
@@ -15,7 +19,6 @@
 		analysis. In this section, depending on your authorization level, you
 		may submit new sample information or search for an existing sample for
 		editing, viewing, printing, or exporting.
-		<br>
 		<br>
 	</td>
 </tr>

@@ -13,13 +13,11 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 <c:set var="fileParent" value="comp" />
 <c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
-<table width="100%" align="center">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="${sampleName} Sample Composition - Composition File" />
-		<jsp:param name="topic" value="compo_file_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
-</table>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="${sampleName} Sample Composition - Composition File" />
+	<jsp:param name="topic" value="compo_file_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="/compositionFile" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<c:set var="fileForm" value="compositionForm" />

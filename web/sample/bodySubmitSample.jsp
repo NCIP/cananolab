@@ -12,13 +12,11 @@
 	<c:set var="title" value="Update" />
 </c:if>
 
-<table width="100%" align="center">
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" value="${title} Sample" />
-		<jsp:param name="topic" value="submit_sample_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-	</jsp:include>
-</table>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="${title} Sample" />
+	<jsp:param name="topic" value="submit_sample_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="/sample" onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
