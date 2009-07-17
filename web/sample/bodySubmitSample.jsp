@@ -116,7 +116,7 @@
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="page" value="2">
+									<input type="hidden" name="page" value="1">
 									<html:submit/>
 								</div>
 							</div>
