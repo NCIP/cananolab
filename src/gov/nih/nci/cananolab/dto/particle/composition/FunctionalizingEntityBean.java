@@ -26,9 +26,9 @@ import java.util.Map;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private String molecularFormula;
@@ -267,11 +267,18 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		domainEntity.setMolecularFormula(molecularFormula);
 		domainEntity.setMolecularFormulaType(molecularFormulaType);
 		domainEntity.setName(name);
-		domainEntity.setValue(value);
+		if (value != null && value == 0) {
+			domainEntity.setValue(null);
+		} else {
+			domainEntity.setValue(value);
+		}
 		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setPubChemDataSourceName(pubChemDataSourceName);
 		if (pubChemId.length() > 0) {
 			domainEntity.setPubChemId(new Long(pubChemId));
+		}
+		else {
+			domainEntity.setPubChemId(null);
 		}
 		if (activationMethod != null
 				&& ((activationMethod.getActivationEffect() != null && activationMethod
