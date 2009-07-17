@@ -32,7 +32,7 @@
 								<input type="reset" value="Reset"
 									onclick="javascript:window.location.href='${origUrl}'">
 								<input type="hidden" name="dispatch" value="create">
-								<input type="hidden" name="page" value="2">
+								<input type="hidden" name="page" value="1">
 								<html:hidden property="sampleId" value="${sampleId}" />
 								<html:hidden property="location" value="${location}" />
 								<html:submit />
