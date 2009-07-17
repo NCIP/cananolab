@@ -69,6 +69,7 @@
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
+			<form-property name="dispatch" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="characterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -81,6 +82,7 @@
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
+			<form-property name="dispatch" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
@@ -148,7 +150,9 @@
 		<action name="compositionForm" parameter="dispatch" path="/nanomaterialEntity"
 			type="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction"
 			input="input">
-			<forward name="input" path="sample.composition.nanomaterialEntity" />
+			<forward name="input"
+				path="/nanomaterialEntity.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="sample.composition.nanomaterialEntity" />
 			<forward name="success"
 				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
