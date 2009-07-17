@@ -1288,6 +1288,8 @@ public class CompositionServiceHelper {
 
 	public void assignVisibility(SampleComposition comp,
 			String[] visibleGroups, String owningGroup) throws Exception {
+		authService.assignVisibility(comp.getId().toString(),
+				visibleGroups, owningGroup);
 		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
 			assignVisibility(entity, visibleGroups, owningGroup);
 		}
