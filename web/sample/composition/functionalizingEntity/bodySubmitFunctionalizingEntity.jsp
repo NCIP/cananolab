@@ -17,13 +17,14 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 
 <c:choose>
-	<c:when test="${!empty compositionForm.map.functionalizingEntity.domainEntity.id}">
-		<c:set var="funcTitle" 
-		value="${sampleName} Sample Composition - Functionalizing Entity - ${compositionForm.map.functionalizingEntity.type}"/>
+	<c:when
+		test="${!empty compositionForm.map.functionalizingEntity.domainEntity.id}">
+		<c:set var="funcTitle"
+			value="${sampleName} Sample Composition - Functionalizing Entity - ${compositionForm.map.functionalizingEntity.type}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="funcTitle" 
-		value="${sampleName} Sample Composition - Functionalizing Entity"/>
+		<c:set var="funcTitle"
+			value="${sampleName} Sample Composition - Functionalizing Entity" />
 	</c:otherwise>
 </c:choose>
 <jsp:include page="/bodyTitle.jsp">
@@ -31,7 +32,8 @@
 	<jsp:param name="topic" value="function_entity_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/functionalizingEntity" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
+<html:form action="/functionalizingEntity" enctype="multipart/form-data"
+	onsubmit="return validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -208,7 +210,12 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<div id="newFunction" style="display: none;">
+					<c:set var="newFuncStyle" value="display:none" />
+					<c:if
+						test="${empty compositionForm.map.functionalizingEntity.functions}">
+						<c:set var="newFuncStyle" value="display:block" />
+					</c:if>
+					<div id="newFunction" style="${newFuncStyle}">
 						<%@ include file="bodySubmitFunction.jsp"%>
 					</div>
 					&nbsp;
@@ -220,45 +227,45 @@
 	<%--Functionalizing Entity File Information --%>
 	<c:set var="fileParent" value="functionalizingEntity" />
 	<a name="file">
-		<table width="100%" align="center" class="submissionView">			
-				<tr>
-					<th colspan="2">
-						Functionalizing Entity File
-					</th>
-				</tr>
-				<tr>
-					<td class="cellLabel" width="15%">
-						File
-					</td>
-					<td>
-						<a style="display: block" id="addFile"
-							href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
-								align="top" src="images/btn_add.gif" border="0" /> </a>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<c:if
-							test="${! empty compositionForm.map.functionalizingEntity.files }">
-							<c:set var="files"
-								value="${compositionForm.map.functionalizingEntity.files}" />
-							<c:set var="edit" value="true" />
-							<%@ include file="../bodyFileView.jsp"%>
-						</c:if>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<div style="display: none" id="newFile">
-							<c:set var="fileForm" value="compositionForm" />
-							<c:set var="theFile"
-								value="${compositionForm.map.functionalizingEntity.theFile}" />
-							<c:set var="actionName" value="functionalizingEntity" />
-							<%@include file="../../bodySubmitFile.jsp"%>
-							&nbsp;
-						</div>
-					</td>
-				</tr>
+		<table width="100%" align="center" class="submissionView">
+			<tr>
+				<th colspan="2">
+					Functionalizing Entity File
+				</th>
+			</tr>
+			<tr>
+				<td class="cellLabel" width="15%">
+					File
+				</td>
+				<td>
+					<a style="display: block" id="addFile"
+						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
+							align="top" src="images/btn_add.gif" border="0" /> </a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<c:if
+						test="${! empty compositionForm.map.functionalizingEntity.files }">
+						<c:set var="files"
+							value="${compositionForm.map.functionalizingEntity.files}" />
+						<c:set var="edit" value="true" />
+						<%@ include file="../bodyFileView.jsp"%>
+					</c:if>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div style="display: none" id="newFile">
+						<c:set var="fileForm" value="compositionForm" />
+						<c:set var="theFile"
+							value="${compositionForm.map.functionalizingEntity.theFile}" />
+						<c:set var="actionName" value="functionalizingEntity" />
+						<%@include file="../../bodySubmitFile.jsp"%>
+						&nbsp;
+					</div>
+				</td>
+			</tr>
 		</table> </a>
 	<br>
 	<jsp:include page="/sample/bodyAnnotationCopy.jsp" />
