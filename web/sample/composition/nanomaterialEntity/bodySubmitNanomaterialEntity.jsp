@@ -162,6 +162,8 @@
 						<c:set var="theFile"
 							value="${compositionForm.map.nanomaterialEntity.theFile}" />
 						<c:set var="actionName" value="nanomaterialEntity" />
+						<c:set var="theDataStyleId" value="ComposingElement"/>
+						<c:set var="theDataName" value="Composing Element"/>
 						<%@include file="../../bodySubmitFile.jsp"%>
 					</div>
 				</td>
