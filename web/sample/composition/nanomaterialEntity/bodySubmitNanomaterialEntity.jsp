@@ -111,7 +111,7 @@
 			<td colspan="2">
 				<c:set var="newCEStyle" value="display:none" />
 				<c:if
-					test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
+					test="${empty compositionForm.map.nanomaterialEntity.composingElements}">
 					<c:set var="newCEStyle" value="display:block" />
 				</c:if>
 				<div style="${newCEStyle }" id="newComposingElement">
