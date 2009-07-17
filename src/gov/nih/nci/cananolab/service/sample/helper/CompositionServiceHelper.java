@@ -1325,6 +1325,7 @@ public class CompositionServiceHelper {
 	}
 
 	public void removeVisibility(SampleComposition comp) throws Exception {
+		authService.removeExistingVisibleGroups(comp.getId().toString());
 		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
 			removeVisibility(entity);
 		}
