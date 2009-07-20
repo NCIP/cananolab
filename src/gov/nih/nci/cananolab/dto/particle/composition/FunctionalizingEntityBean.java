@@ -73,7 +73,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		name = functionalizingEntity.getName();
 		molecularFormula = functionalizingEntity.getMolecularFormula();
 		molecularFormulaType = functionalizingEntity.getMolecularFormulaType();
-		value = functionalizingEntity.getValue().toString();
+		if (functionalizingEntity.getValue() != null) {
+			value = functionalizingEntity.getValue().toString();
+		}
 		valueUnit = functionalizingEntity.getValueUnit();
 		pubChemDataSourceName = functionalizingEntity
 				.getPubChemDataSourceName();
