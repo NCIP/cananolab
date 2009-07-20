@@ -37,7 +37,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	private String name;
 
-	private Float value;
+	private String value;
 
 	private String valueUnit;
 
@@ -73,7 +73,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		name = functionalizingEntity.getName();
 		molecularFormula = functionalizingEntity.getMolecularFormula();
 		molecularFormulaType = functionalizingEntity.getMolecularFormulaType();
-		value = functionalizingEntity.getValue();
+		value = functionalizingEntity.getValue().toString();
 		valueUnit = functionalizingEntity.getValueUnit();
 		pubChemDataSourceName = functionalizingEntity
 				.getPubChemDataSourceName();
@@ -222,11 +222,11 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		this.name = name;
 	}
 
-	public Float getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(Float value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 
@@ -267,17 +267,16 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		domainEntity.setMolecularFormula(molecularFormula);
 		domainEntity.setMolecularFormulaType(molecularFormulaType);
 		domainEntity.setName(name);
-		if (value != null && value == 0) {
-			domainEntity.setValue(null);
+		if (value != null && value.trim().length() > 0) {
+			domainEntity.setValue(new Float(value));
 		} else {
-			domainEntity.setValue(value);
+			domainEntity.setValue(null);
 		}
 		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setPubChemDataSourceName(pubChemDataSourceName);
-		if (pubChemId.length() > 0) {
+		if (pubChemId != null && pubChemId.trim().length() > 0) {
 			domainEntity.setPubChemId(new Long(pubChemId));
-		}
-		else {
+		} else {
 			domainEntity.setPubChemId(null);
 		}
 		if (activationMethod != null
