@@ -83,13 +83,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			// particleSample.getSampleComposition()
 			// .getNanomaterialEntityCollection().add(entity);
 
-			appService.saveOrUpdate(entity);
-			// save file data to file system and assign visibility
+			// save file and keyword
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+			}
+			appService.saveOrUpdate(entity);
+			// save file to the file system and assign visibility
+			for (FileBean fileBean : entityBean.getFiles()) {
 				fileService.writeFile(fileBean, user);
-			}			
+			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
 			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
@@ -106,7 +109,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			throw new CompositionException(err, e);
 		}
 	}
-	
+
 	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
 			UserBean user) throws CompositionException, NoAccessException {
 		NanomaterialEntityBean entityBean = null;
@@ -201,13 +204,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			// particleSample.getSampleComposition()
 			// .getFunctionalizingEntityCollection().add(entity);
 
-			// save file data to file system and assign visibility
+			// save file and keyword
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
-				fileService.writeFile(fileBean, user);
 			}
 			appService.saveOrUpdate(entity);
+			// save file to the file system and assign visibility
+			for (FileBean fileBean : entityBean.getFiles()) {
+				fileService.writeFile(fileBean, user);
+			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
 			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
@@ -257,13 +263,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			}
 			// composition.getChemicalAssociationCollection().add(assoc);
 			assoc.setSampleComposition(sample.getSampleComposition());
-			// save file data to file system and set visibility
+			// save file and keyword
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : assocBean.getFiles()) {
 				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
-				fileService.writeFile(fileBean, user);
 			}
 			appService.saveOrUpdate(assoc);
+			// save file to the file system and assign visibility
+			for (FileBean fileBean : assocBean.getFiles()) {
+				fileService.writeFile(fileBean, user);
+			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
 			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
