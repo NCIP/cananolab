@@ -163,33 +163,41 @@
 					</var-value>
 				</var>					
 			</field>
-			<field property="nanomaterialEntity.theFile.domain.type"
+			<field property="nanomaterialEntity.theFile.domainFile.type"
 				page="3" depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
-			<field property="nanomaterialEntity.theFile.domain.title"
+			<field property="nanomaterialEntity.theFile.domainFile.title"
 				page="3" depends="required">
 				<arg position="0" key="file.title" bundle="sample" />
 			</field>
 		</form>
 		<form name="/functionalizingEntity">
-			<field property="functionalizingEntity.type" page="2" depends="required">
-				<arg position="0" key="functionalizingEntityType" bundle="sample" />
+			<field property="functionalizingEntity.type" page="1" depends="required">
+				<arg position="0" key="functionalizingEntity.type" bundle="sample" />
 			</field>
-			<field property="functionalizingEntity.name" page="2" depends="required">
-				<arg position="0" key="functionalizingEntityName" bundle="sample" />
+			<field property="functionalizingEntity.name" page="1" depends="required">
+				<arg position="0" key="functionalizingEntity.name" bundle="sample" />
 			</field>
-			<field property="functionalizingEntity.value" page="2" depends="float">
-				<arg position="0" key="functionalizingEntityForm.value" bundle="sample" />
-			</field>
-			<field property="type" page="2" depends="validwhen"
-				indexedListProperty="functionalizingEntity.functions">
-				<arg position="0" key="functionalizingEntity.functionType"
-					bundle="sample" />
+			<field property="functionalizingEntity.theFunction.type"
+				page="2" depends="validwhen">
+				<arg position="0" key="function.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
-					<var-value>(*this*!=null)</var-value>
-				</var>
+					<var-value>
+						(((dispatch!='saveFunction') and
+						(dispatch!='removeFunction')) or
+						(*this*!=null))
+					</var-value>
+				</var>				
+			</field>
+			<field property="functionalizingEntity.theFile.domainFile.type"
+				page="3" depends="required">
+				<arg position="0" key="file.type" bundle="sample" />
+			</field>
+			<field property="functionalizingEntity.theFile.domainFile.title"
+				page="3" depends="required">
+				<arg position="0" key="file.title" bundle="sample" />
 			</field>
 		</form>
 		<form name="/compositionFile">
