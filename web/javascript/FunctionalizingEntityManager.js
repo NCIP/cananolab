@@ -166,10 +166,10 @@ function deleteTheTarget() {
 	}
 }
 function addFunction(actionName) {
-	submitAction(document.forms[0], actionName, "saveFunction", 3);
+	submitAction(document.forms[0], actionName, "saveFunction", 2);
 }
 function removeFunction(actionName) {
-	submitAction(document.forms[0], actionName, "removeFunction", 3);
+	submitAction(document.forms[0], actionName, "removeFunction", 2);
 }
 /* end of submit composing element form */
 
