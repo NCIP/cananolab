@@ -199,4 +199,5 @@ public class Constants {
 	// LOCATION
 	public static final String LOCATION = "location";
 
+	public static final int DISPLAY_TAG_TABLE_SIZE=25;
 }
