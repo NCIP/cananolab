@@ -169,6 +169,18 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
+	public List<String> findSampleNamesBy(String samplePointOfContact,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			String[] characterizationClassNames,
+			String[] otherCharacterizationTypes, String[] wordList,
+			UserBean user) throws SampleException {
+		throw new SampleException("Not implemented for grid service");		
+	}
+	
 	public SampleBean findSampleById(String sampleId, UserBean user)
 			throws SampleException {
 		try {
