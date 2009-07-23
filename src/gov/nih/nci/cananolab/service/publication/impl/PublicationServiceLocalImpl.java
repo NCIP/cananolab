@@ -134,6 +134,30 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
+	public List<String> findPublicationIdsBy(String title, String category,
+			String sampleName, String[] researchAreas, String[] keywords,
+			String pubMedId, String digitalObjectId, String[] authors,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			UserBean user) throws PublicationException {
+		try {
+			return helper.findPublicationIdsBy(title, category, sampleName,
+					researchAreas, keywords, pubMedId, digitalObjectId,
+					authors, nanomaterialEntityClassNames,
+					otherNanomaterialEntityTypes,
+					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes, functionClassNames,
+					otherFunctionTypes, user);
+		} catch (Exception e) {
+			String err = "Problem finding publication info.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+	}
+
 	public List<PublicationBean> findPublicationsBy(String title,
 			String category, String sampleName, String[] researchAreas,
 			String[] keywords, String pubMedId, String digitalObjectId,
@@ -148,7 +172,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			List<Publication> publications = helper.findPublicationsBy(title,
 					category, sampleName, researchAreas, keywords, pubMedId,
 					digitalObjectId, authors, nanomaterialEntityClassNames,
-					otherNanomaterialEntityTypes, functionalizingEntityClassNames,
+					otherNanomaterialEntityTypes,
+					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes, user);
 			if (publications != null) {

@@ -51,4 +51,13 @@ public interface PublicationService {
 
 	public void removePublicationFromSample(Sample particle, Long dataId)
 			throws PublicationException, NoAccessException;
+	public List<String> findPublicationIdsBy(String title, String category,
+			String sampleName, String[] researchAreas, String[] keywords,
+			String pubMedId, String digitalObjectId, String[] authors,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			UserBean user) throws PublicationException;
 }

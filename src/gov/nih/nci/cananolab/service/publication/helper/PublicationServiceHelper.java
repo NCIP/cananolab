@@ -246,6 +246,175 @@ public class PublicationServiceHelper {
 		return publications;
 	}
 
+	public List<String> findPublicationIdsBy(String title, String category,
+			String sampleName, String[] researchArea, String[] keywords,
+			String pubMedId, String digitalObjectId, String[] authors,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			UserBean user) throws Exception {
+
+		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
+
+		Set<String> samplePublicationIds = new HashSet<String>();
+		Set<String> compositionPublicationIds = new HashSet<String>();
+		Set<String> otherPublicationIds = new HashSet<String>();
+		Set<String> allPublicationIds = new HashSet<String>();
+
+		// check if sample is accessible
+		if (sampleName != null) {
+			Sample sample = sampleServiceHelper.findSampleByName(sampleName,
+					user);
+			if (sample != null) {
+				for (Publication publication : sample
+						.getPublicationCollection()) {
+					samplePublicationIds.add(publication.getId().toString());
+				}
+				allPublicationIds.addAll(samplePublicationIds);
+			}
+		}
+
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
+				|| functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0) {
+			List<Sample> samples = sampleServiceHelper.findSamplesBy(null,
+					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
+					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes, functionClassNames,
+					otherFunctionTypes, null, null, null, user);
+			for (Sample sample : samples) {
+				for (Publication publication : sample
+						.getPublicationCollection()) {
+					compositionPublicationIds.add(publication.getId()
+							.toString());
+				}
+			}
+			allPublicationIds.addAll(compositionPublicationIds);
+		}
+
+		// can't query for the entire Publication object due to limitations in
+		// pagination in SDK
+		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
+				.setProjection(Projections.distinct(Property.forName("id")));
+
+		if (title != null && title.length() > 0) {
+			TextMatchMode titleMatchMode = new TextMatchMode(title);
+			crit.add(Restrictions.ilike("title", titleMatchMode
+					.getUpdatedText(), titleMatchMode.getMatchMode()));
+		}
+		if (category != null && category.length() > 0) {
+			TextMatchMode categoryMatchMode = new TextMatchMode(category);
+			crit.add(Restrictions.ilike("category", categoryMatchMode
+					.getUpdatedText(), categoryMatchMode.getMatchMode()));
+		}
+
+		// pubMedId
+		if (pubMedId != null && pubMedId.length() > 0) {
+			TextMatchMode pubMedIdMatchMode = new TextMatchMode(pubMedId);
+			Long pubMedIdLong = null;
+			try {
+				pubMedIdLong = new Long(pubMedIdMatchMode.getUpdatedText());
+			} catch (Exception ex) {
+				// ignore
+				pubMedIdLong = new Long(0);
+			}
+			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
+		}
+		if (digitalObjectId != null && digitalObjectId.length() > 0) {
+			TextMatchMode digitalObjectIdMatchMode = new TextMatchMode(
+					digitalObjectId);
+			crit.add(Restrictions.ilike("digitalObjectId",
+					digitalObjectIdMatchMode.getUpdatedText(),
+					digitalObjectIdMatchMode.getMatchMode()));
+		}
+
+		// researchArea
+		if (researchArea != null && researchArea.length > 0) {
+
+			Disjunction disjunction = Restrictions.disjunction();
+			for (String research : researchArea) {
+				Criterion crit1 = Restrictions.like("researchArea", research,
+						MatchMode.ANYWHERE);
+				disjunction.add(crit1);
+			}
+			crit.add(disjunction);
+		}
+
+		// keywords
+		if (keywords != null && keywords.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createCriteria("keywordCollection", "keyword");
+			for (String keyword : keywords) {
+				Criterion keywordCrit1 = Restrictions.ilike("keyword.name",
+						keyword, MatchMode.ANYWHERE);
+				disjunction.add(keywordCrit1);
+			}
+			crit.add(disjunction);
+		}
+
+		// authors
+		if (authors != null && authors.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias("authorCollection", "author");
+			for (String author : authors) {
+				Criterion crit1 = Restrictions.ilike("author.lastName", author,
+						MatchMode.ANYWHERE);
+				disjunction.add(crit1);
+				Criterion crit2 = Restrictions.ilike("author.firstName",
+						author, MatchMode.ANYWHERE);
+				disjunction.add(crit2);
+				Criterion crit3 = Restrictions.ilike("author.initial", author,
+						MatchMode.ANYWHERE);
+				disjunction.add(crit3);
+			}
+			crit.add(disjunction);
+		}
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			otherPublicationIds.add(obj.toString());
+		}
+		allPublicationIds.addAll(otherPublicationIds);
+
+		// find the union of all publication Ids
+		if (!samplePublicationIds.isEmpty()) {
+			allPublicationIds.retainAll(samplePublicationIds);
+		}
+		if (!compositionPublicationIds.isEmpty()) {
+			allPublicationIds.retainAll(compositionPublicationIds);
+		}
+		if (!otherPublicationIds.isEmpty()) {
+			allPublicationIds.retainAll(otherPublicationIds);
+		}
+
+		List filteredResults = new ArrayList(allPublicationIds);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(new ArrayList(
+					allPublicationIds));
+		}
+		List<String> publicationIds = new ArrayList<String>();
+		for (Object obj : filteredResults) {
+			String publicationId = obj.toString();
+			if (user == null
+					|| authService.checkReadPermission(user, publicationId)) {
+				publicationIds.add(publicationId);
+			} else {
+				// ignore no access exception
+				logger.debug("User doesn't have access to publication with id "
+						+ obj.toString());
+			}
+		}		
+		return publicationIds;
+	}
+
 	public Publication findPublicationById(String publicationId, UserBean user)
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -491,8 +660,8 @@ public class PublicationServiceHelper {
 	 * @param summaryBean
 	 * @param wb
 	 */
-	private static void exportSummarySheet(PublicationSummaryViewBean summaryBean,
-			HSSFWorkbook wb) {
+	private static void exportSummarySheet(
+			PublicationSummaryViewBean summaryBean, HSSFWorkbook wb) {
 		HSSFRow row = null;
 		StringBuilder sb = new StringBuilder();
 		HSSFFont headerFont = wb.createFont();
@@ -500,8 +669,8 @@ public class PublicationServiceHelper {
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
-		SortedMap<String, List<PublicationBean>> pubs = 
-			summaryBean.getCategory2Publications();
+		SortedMap<String, List<PublicationBean>> pubs = summaryBean
+				.getCategory2Publications();
 		for (String category : pubs.keySet()) {
 			int rowIndex = 0;
 
@@ -531,7 +700,7 @@ public class PublicationServiceHelper {
 				if (!StringUtils.isEmpty(pub.getDescription())) {
 					ExportUtils.createCell(row, 2, pub.getDescription());
 				}
-				
+
 				// Publication Status: cell index = 3.
 				ExportUtils.createCell(row, 3, pub.getStatus());
 			}
