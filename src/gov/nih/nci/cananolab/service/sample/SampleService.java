@@ -54,6 +54,16 @@ public interface SampleService {
 			String[] otherCharacterizationTypes, String[] wordList,
 			UserBean user) throws SampleException;
 
+	public List<String> findSampleNamesBy(String samplePointOfContact,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			String[] characterizationClassNames,
+			String[] otherCharacterizationTypes, String[] wordList,
+			UserBean user) throws SampleException;
+	
 	public SampleBean findSampleById(String sampleId, UserBean user)
 			throws SampleException, NoAccessException;
 
