@@ -15,7 +15,7 @@
 	<tr>
 		<td colspan="2">
 			<c:choose>
-					<c:when test="${!empty user && user.curator}">
+				<c:when test="${!empty user && user.curator}">
 					<c:set var="sampleURL" value="editSampleURL" />
 				</c:when>
 				<c:otherwise>
@@ -24,18 +24,16 @@
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 			<display:table name="samples" id="sample"
-				requestURI="searchSample.do" pagesize="25"
-				class="displaytable"
+				requestURI="searchSample.do" pagesize="25" class="displaytable"
+				partialList="true" size="resultSize"
 				decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-				<display:column title="Sample Name"
-					property="${sampleURL}" sortable="true" />
-				<display:column title="Primary<br>Point Of Contact"
-					property="pointOfContactName"
+				<display:column title="Sample Name" property="${sampleURL}"
 					sortable="true" />
-				<display:column title="Composition"
-					property="compositionStr" sortable="true" />
-				<display:column title="Functions"
-					property="functionStr" />
+				<display:column title="Primary<br>Point Of Contact"
+					property="pointOfContactName" sortable="true" />
+				<display:column title="Composition" property="compositionStr"
+					sortable="true" />
+				<display:column title="Functions" property="functionStr" />
 				<display:column title="Characterizations"
 					property="characterizationStr" />
 				<display:column title="Site" property="location" sortable="true" />
