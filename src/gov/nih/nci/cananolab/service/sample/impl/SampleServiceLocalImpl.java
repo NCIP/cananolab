@@ -269,6 +269,43 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
+	/**
+	 * 
+	 * @param samplePointOfContacts
+	 * @param nanomaterialEntityClassNames
+	 * @param otherNanomaterialEntityTypes
+	 * @param functionalizingEntityClassNames
+	 * @param otherFunctionalizingEntityTypes
+	 * @param functionClassNames
+	 * @param otherFunctionTypes
+	 * @param characterizationClassNames
+	 * @param wordList
+	 * @return
+	 * @throws SampleException
+	 */
+	public List<String> findSampleNamesBy(String samplePointOfContact,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			String[] characterizationClassNames,
+			String[] otherCharacterizationTypes, String[] wordList,
+			UserBean user) throws SampleException {
+		try {
+			return helper.findSampleNamesBy(samplePointOfContact,
+					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
+					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes, functionClassNames,
+					otherFunctionTypes, characterizationClassNames,
+					otherCharacterizationTypes, wordList, user);
+		} catch (Exception e) {
+			String err = "Problem finding particles with the given search parameters.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
 	public SampleBean findSampleById(String sampleId, UserBean user)
 			throws SampleException, NoAccessException {
 		try {
