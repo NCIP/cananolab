@@ -6,6 +6,8 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.util.Constants;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -58,11 +60,31 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 
 	/**
 	 * Check whether the current user can execute the action
-	 *
+	 * 
 	 * @param user
 	 * @return
 	 * @throws SecurityException
 	 */
 	public abstract boolean canUserExecute(UserBean user)
 			throws SecurityException;
+
+	/**
+	 * Get the page number used in display tag library pagination
+	 * @param request
+	 * @return
+	 */
+	public int getDisplayPage(HttpServletRequest request) {
+		int page = 0;
+		Enumeration paramNames = request.getParameterNames();
+		while (paramNames.hasMoreElements()) {
+			String name = (String) paramNames.nextElement();
+			if (name != null && name.startsWith("d-") && name.endsWith("-p")) {
+				String pageValue = request.getParameter(name);
+				if (pageValue != null) {
+					page = Integer.parseInt(pageValue) - 1;
+				}
+			}
+		}
+		return page;
+	}
 }
