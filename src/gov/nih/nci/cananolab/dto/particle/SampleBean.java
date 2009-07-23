@@ -18,9 +18,9 @@ import java.util.TreeSet;
 /**
  * This class represents shared properties of samples to be shown in the view
  * pages.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleBean {
 	private String keywordsStr;
@@ -54,6 +54,11 @@ public class SampleBean {
 	private PointOfContactBean thePOC = new PointOfContactBean();
 
 	public SampleBean() {
+	}
+
+	public SampleBean(String sampleName, String location) {
+		domain.setName(sampleName);
+		this.location = location;
 	}
 
 	public SampleBean(Sample sample) {
