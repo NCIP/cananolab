@@ -136,6 +136,7 @@ public class DWRSampleManager {
 	public String getPublicCounts(String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
+		request.getSession().removeAttribute("sampleSearchResults");
 		if (locations.length==0){
 			return null;
 		}
