@@ -290,7 +290,6 @@
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
-			<!-- 
 			<field property="achar.shape.maxDimension" page="2" depends="float">
 				<arg position="0" key="shape.maxDimension" bundle="sample" />
 			</field>
@@ -314,64 +313,6 @@
 						</var-value>
 				</var>
 			</field>
-			 -->
-			<!--			<field property="labFileBean.domainFile.title" page="2"-->
-			<!--				depends="required,mask"-->
-			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-			<!--				<arg position="0" key="file.title" bundle="sample"/>-->
-			<!--				<msg name="mask" key="file.title.invalid" />-->
-			<!--				<var>-->
-			<!--					<var-name>mask</var-name>-->
-			<!--					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>-->
-			<!--				</var>-->
-			<!--			</field>-->
-			<!--			<field property="labFileBean.domainFile.type" page="2"-->
-			<!--				depends="required"-->
-			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-			<!--				<arg position="0" key="file.type" bundle="sample"/>-->
-			<!--			</field>-->
-			<!--			<field property="labFileBean.externalUrl" page="2"-->
-			<!--				depends="validwhen"-->
-			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-			<!--				<arg position="0" key="externalUrl"-->
-			<!--					bundle="sample"/>-->
-			<!--				<var>-->
-			<!--					<var-name>test</var-name>-->
-			<!--					<var-value>-->
-			<!--						(((*this*!=null) and-->
-			<!--
-				(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true"))
-				or
-			-->
-			<!--
-				(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))
-			-->
-			<!--					</var-value>-->
-			<!--				</var>-->
-			<!--			</field>-->
-			<!--			<field property="labFileBean.uploadedFile" page="2"-->
-			<!--				depends="validwhen"-->
-			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-			<!--				<arg position="0" key="uploadedFile"-->
-			<!--					bundle="sample"/>-->
-			<!--				<var>-->
-			<!--					<var-name>test</var-name>-->
-			<!--					<var-value>-->
-			<!--
-				(((achar.derivedBioAssayDataList[].labFileBean.domainFile.uri!=null)
-				or
-			-->
-			<!--						 ((*this*!=null) and-->
-			<!--
-				(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false")))
-				or
-			-->
-			<!--
-				(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true"))
-			-->
-			<!--					</var-value>-->
-			<!--				</var>-->
-			<!--			</field>-->
 		</form>
 		<form name="searchSampleForm">
 			<field property="text" page="1" depends="mask">
