@@ -71,12 +71,38 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="assoc.theFile.domainFile.type"
-				page="2" depends="required">
+			<field property="assoc.theFile.uploadedFile" page="2" depends="validwhen">
+				<arg position="0" key="uploadedFile" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((assoc.theFile.domainFile.uri!=null)
+						or
+						((*this*!=null)
+						and
+						(assoc.theFile.domainFile.uriExternal=="false")))
+						or
+						(assoc.theFile.domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
+			<field property="assoc.theFile.externalUrl" page="2" depends="validwhen">
+				<arg position="0" key="externalUrl" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						(assoc.theFile.domainFile.uriExternal=="true")) or
+						(assoc.theFile.domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
+			<field property="assoc.theFile.domainFile.type" page="2"
+				depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
-			<field property="assoc.theFile.domainFile.title"
-				page="2" depends="required, mask">					
+			<field property="assoc.theFile.domainFile.title" page="2"
+				depends="required, mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
 				<var>
@@ -162,7 +188,7 @@
 						(dispatch!='removeComposingElement')) or
 						(*this*!=null))
 					</var-value>
-				</var>				
+				</var>
 			</field>
 			<field property="nanomaterialEntity.theComposingElement.domain.name"
 				page="2" depends="validwhen">
@@ -174,14 +200,41 @@
 						(dispatch!='removeComposingElement')) or
 						(*this*!=null))
 					</var-value>
-				</var>					
+				</var>
+			</field>
+			<field property="nanomaterialEntity.theFile.uploadedFile" page="3"
+				depends="validwhen">
+				<arg position="0" key="uploadedFile" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((nanomaterialEntity.theFile.domainFile.uri!=null)
+						or
+						((*this*!=null) and
+						(nanomaterialEntity.theFile.domainFile.uriExternal=="false")))
+						or
+						(nanomaterialEntity.theFile.domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
+			<field property="nanomaterialEntity.theFile.externalUrl" page="3"
+				depends="validwhen">
+				<arg position="0" key="externalUrl" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						(nanomaterialEntity.theFile.domainFile.uriExternal=="true")) or
+						(nanomaterialEntity.theFile.domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.theFile.domainFile.type"
 				page="3" depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
 			<field property="nanomaterialEntity.theFile.domainFile.title"
-				page="3" depends="required, mask">					
+				page="3" depends="required, mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
 				<var>
@@ -197,8 +250,8 @@
 			<field property="functionalizingEntity.name" page="1" depends="required">
 				<arg position="0" key="functionalizingEntity.name" bundle="sample" />
 			</field>
-			<field property="functionalizingEntity.theFunction.type"
-				page="2" depends="validwhen">
+			<field property="functionalizingEntity.theFunction.type" page="2"
+				depends="validwhen">
 				<arg position="0" key="function.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -207,14 +260,41 @@
 						(dispatch!='removeFunction')) or
 						(*this*!=null))
 					</var-value>
-				</var>				
+				</var>
+			</field>
+			<field property="functionalizingEntity.theFile.uploadedFile"
+				page="3" depends="validwhen">
+				<arg position="0" key="uploadedFile" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((functionalizingEntity.theFile.domainFile.uri!=null)
+						or
+						((*this*!=null) and
+						(functionalizingEntity.theFile.domainFile.uriExternal=="false")))
+						or
+						(functionalizingEntity.theFile.domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
+			<field property="functionalizingEntity.theFile.externalUrl"
+				page="3" depends="validwhen">
+				<arg position="0" key="externalUrl" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						(functionalizingEntity.theFile.domainFile.uriExternal=="true")) or
+						(functionalizingEntity.theFile.domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
 			</field>
 			<field property="functionalizingEntity.theFile.domainFile.type"
 				page="3" depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
 			<field property="functionalizingEntity.theFile.domainFile.title"
-				page="3" depends="required, mask">					
+				page="3" depends="required, mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
 				<var>
@@ -224,30 +304,31 @@
 			</field>
 		</form>
 		<form name="/compositionFile">
-			<field property="compFile.externalUrl" page="1" depends="validwhen">
+			<field property="comp.theFile.uploadedFile" page="1" depends="validwhen">
+				<arg position="0" key="uploadedFile" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((comp.theFile.domainFile.uri!=null) or
+						((*this*!=null)
+						and
+						(comp.theFile.domainFile.uriExternal=="false"))) or
+						(comp.theFile.domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
+			<field property="comp.theFile.externalUrl" page="1" depends="validwhen">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
 						(((*this*!=null) and
-						(compFile.domainFile.uriExternal=="true")) or
-						(compFile.domainFile.uriExternal=="false"))
+						(comp.theFile.domainFile.uriExternal=="true")) or
+						(comp.theFile.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
 			</field>
-			<field property="compFile.uploadedFile" page="1" depends="validwhen">
-				<arg position="0" key="uploadedFile" bundle="sample" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((compFile.domainFile.uri!=null) or
-						((*this*!=null) and
-						(compFile.domainFile.uriExternal=="false"))) or
-						(compFile.domainFile.uriExternal=="true"))
-					</var-value>
-				</var>
-			</field>
-			<field property="compFile.domainFile.title" page="1"
+			<field property="comp.theFile.domainFile.title" page="1"
 				depends="required,mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
@@ -256,7 +337,8 @@
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
-			<field property="compFile.domainFile.type" page="1" depends="required">
+			<field property="comp.theFile.domainFile.type" page="1"
+				depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
 		</form>
@@ -278,7 +360,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.theFile.externalUrl" page="2" depends="validwhen">
+			<field property="achar.theFinding.theFile.externalUrl" page="2"
+				depends="validwhen">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -289,7 +372,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.theFile.uploadedFile" page="2" depends="validwhen">
+			<field property="achar.theFinding.theFile.uploadedFile" page="2"
+				depends="validwhen">
 				<arg position="0" key="uploadedFile" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -301,11 +385,12 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.theFile.domainFile.type" page="2" depends="required">
+			<field property="achar.theFinding.theFile.domainFile.type"
+				page="2" depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
-			<field property="achar.theFinding.theFile.domainFile.title" page="2"
-				depends="required,mask">
+			<field property="achar.theFinding.theFile.domainFile.title"
+				page="2" depends="required,mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
 				<var>
