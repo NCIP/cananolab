@@ -35,6 +35,9 @@ ALTER TABLE protocol
     ADD COLUMN protocol_version VARCHAR(200),
 	ADD COLUMN file_pk_id BIGINT
 ;
+ALTER TABLE protocol ADD CONSTRAINT FK_protocol_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
 
 -- update protocol_abbreviation to be the same as protocol name
 update protocol
