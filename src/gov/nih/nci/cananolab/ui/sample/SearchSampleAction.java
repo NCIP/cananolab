@@ -40,17 +40,14 @@ public class SearchSampleAction extends AbstractDispatchAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
 		// retrieve from session if it's not null
 		if (session.getAttribute("sampleSearchResults") != null) {
 			sampleBeans = new ArrayList<SampleBean>((List) session
 					.getAttribute("sampleSearchResults"));
 		} else {
-			sampleBeans = querySamples(theForm, request);
+			sampleBeans = querySamples(form, request);
 			if (sampleBeans != null && !sampleBeans.isEmpty()) {
 				session.setAttribute("sampleSearchResults", sampleBeans);
 			} else {
@@ -78,13 +75,13 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		return mapping.findForward("success");
 	}
 
-	private List<SampleBean> querySamples(DynaValidatorForm theForm,
+	private List<SampleBean> querySamples(ActionForm form,
 			HttpServletRequest request) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
 		HttpSession session = request.getSession();
 		String samplePointOfContact = (String) theForm
 				.get("samplePointOfContact");
-
 		String[] nanomaterialEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
@@ -224,7 +221,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				}
 				String sampleName = sampleBeans.get(i).getDomain().getName();
 				SampleBean sampleBean = service.findSampleByName(sampleName,
-						user);				
+						user);
 				Sample sample = sampleBean.getDomain();
 				// load summary information
 				sampleBean.setCharacterizationClassNames(helper
