@@ -158,48 +158,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	public List<PublicationBean> findPublicationsBy(String title,
-			String category, String sampleName, String[] researchAreas,
-			String[] keywords, String pubMedId, String digitalObjectId,
-			String[] authors, String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			UserBean user) throws PublicationException {
-		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
-		try {
-			List<Publication> publications = helper.findPublicationsBy(title,
-					category, sampleName, researchAreas, keywords, pubMedId,
-					digitalObjectId, authors, nanomaterialEntityClassNames,
-					otherNanomaterialEntityTypes,
-					functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, user);
-			if (publications != null) {
-				SampleService sampleService = new SampleServiceLocalImpl();
-				for (Publication publication : publications) {
-					// retrieve sampleNames
-					String[] sampleNames = helper
-							.findSampleNamesByPublicationId(publication.getId()
-									.toString(), user);
-					PublicationBean pubBean = new PublicationBean(publication,
-							sampleNames);
-					// retrieve visibility
-					if (user != null)
-						retrieveVisibility(pubBean, user);
-					publicationBeans.add(pubBean);
-				}
-			}
-			return publicationBeans;
-
-		} catch (Exception e) {
-			String err = "Problem finding publication info.";
-			logger.error(err, e);
-			throw new PublicationException(err, e);
-		}
-	}
-
 	// retrieve publication visibility
 	private void retrieveVisibility(PublicationBean publicationBean,
 			UserBean user) throws FileException {
