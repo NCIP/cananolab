@@ -244,31 +244,77 @@
 			<field property="achar.characterizationName" page="2" depends="required">
 				<arg position="0" key="achar.characterizationName" bundle="sample" />
 			</field>
-			<!--
-				<field property="achar.theExperimentConfig.domain.technique.type"
-				page="2" depends="validwhen"> <arg position="0"
-				key="achar.technique.type" bundle="sample"/> <var>
-				<var-name>test</var-name> <var-value>
-				((achar.theExperimentConfig.domain.id==null) or (*this*!=null))
-				</var-value> </var> </field>
-			-->
-			<!--
-				TODO add type <field property="achar.shape.maxDimension" page="2"
-				depends="float"> <arg position="0" key="shape.maxDimension"
-				bundle="sample"/> </field> <field
-				property="achar.shape.minDimension" page="2" depends="float"> <arg
-				position="0" key="shape.minDimension" bundle="sample"/> </field>
-				<field property="achar.solubility.criticalConcentration" page="2"
-				depends="float"> <arg position="0"
-				key="solubility.criticalConcentrationValue" bundle="sample"/>
-				</field> <field
-				property="achar.solubility.criticalConcentrationUnit" page="2"
-				depends="validwhen"> <arg position="0"
-				key="solubility.criticalConcentrationUnit" bundle="sample"/> <var>
-				<var-name>test</var-name> <var-value>
-				((achar.solubility.criticalConcentration==null) or (*this*!=null))
-				</var-value> </var> </field>
-			-->
+			<field property="achar.theExperimentConfig.domain.technique.type"
+				page="2" depends="validwhen">
+				<arg position="0" key="achar.technique.type" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((achar.theExperimentConfig.domain.id==null) or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field property="achar.theFinding.theFile.externalUrl" page="2" depends="validwhen">
+				<arg position="0" key="externalUrl" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="true")) or
+						(achar.theFinding.theFile.domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
+			<field property="achar.theFinding.theFile.uploadedFile" page="2" depends="validwhen">
+				<arg position="0" key="uploadedFile" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((achar.theFinding.theFile.domainFile.uri!=null) or
+						((*this*!=null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="false"))) or
+						(achar.theFinding.theFile.domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
+			<field property="achar.theFinding.theFile.domainFile.type" page="2" depends="required">
+				<arg position="0" key="file.type" bundle="sample" />
+			</field>
+			<field property="achar.theFinding.theFile.domainFile.title" page="2"
+				depends="required,mask">
+				<arg position="0" key="file.title" bundle="sample" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+			<!-- 
+			<field property="achar.shape.maxDimension" page="2" depends="float">
+				<arg position="0" key="shape.maxDimension" bundle="sample" />
+			</field>
+			<field property="achar.shape.minDimension" page="2" depends="float">
+				<arg position="0" key="shape.minDimension" bundle="sample" />
+			</field>
+			<field property="achar.solubility.criticalConcentration" page="2"
+				depends="float">
+				<arg position="0" key="solubility.criticalConcentrationValue"
+					bundle="sample" />
+			</field>
+			<field property="achar.solubility.criticalConcentrationUnit"
+				page="2" depends="validwhen">
+				<arg position="0" key="solubility.criticalConcentrationUnit"
+					bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((achar.solubility.criticalConcentration==null) or
+						(*this*!=null))
+						</var-value>
+				</var>
+			</field>
+			 -->
 			<!--			<field property="labFileBean.domainFile.title" page="2"-->
 			<!--				depends="required,mask"-->
 			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
