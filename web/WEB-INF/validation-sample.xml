@@ -25,10 +25,10 @@
 			</field>
 		</form>
 		<form name="/chemicalAssociation">
-			<field property="assoc.type" page="2" depends="required">
+			<field property="assoc.type" page="1" depends="required">
 				<arg position="0" key="chemicalAssociationType" bundle="sample" />
 			</field>
-			<field property="assoc.attachment.bondType" page="2" depends="validwhen">
+			<field property="assoc.attachment.bondType" page="1" depends="validwhen">
 				<arg position="0" key="chemicalAssociationBondType" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -37,16 +37,16 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="assoc.associatedElementA.entityId" page="2"
+			<field property="assoc.associatedElementA.entityId" page="1"
 				depends="required">
 				<arg position="0" key="associatedElementA" bundle="sample" />
 			</field>
-			<field property="assoc.associatedElementB.entityId" page="2"
+			<field property="assoc.associatedElementB.entityId" page="1"
 				depends="required">
 				<arg position="0" key="associatedElementB" bundle="sample" />
 			</field>
 			<field property="assoc.associatedElementA.composingElement.id"
-				page="2" depends="validwhen">
+				page="1" depends="validwhen">
 				<arg position="0" key="associatedElementAComposingElement"
 					bundle="sample" />
 				<var>
@@ -59,7 +59,7 @@
 				</var>
 			</field>
 			<field property="assoc.associatedElementB.composingElement.id"
-				page="2" depends="validwhen">
+				page="1" depends="validwhen">
 				<arg position="0" key="associatedElementBComposingElement"
 					bundle="sample" />
 				<var>
@@ -69,6 +69,19 @@
 						Entity')
 						or (*this*!=0))
 					</var-value>
+				</var>
+			</field>
+			<field property="assoc.theFile.domainFile.type"
+				page="2" depends="required">
+				<arg position="0" key="file.type" bundle="sample" />
+			</field>
+			<field property="assoc.theFile.domainFile.title"
+				page="2" depends="required, mask">					
+				<arg position="0" key="file.title" bundle="sample" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
 		</form>
@@ -168,8 +181,13 @@
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
 			<field property="nanomaterialEntity.theFile.domainFile.title"
-				page="3" depends="required">
+				page="3" depends="required, mask">					
 				<arg position="0" key="file.title" bundle="sample" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="/functionalizingEntity">
@@ -196,12 +214,17 @@
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
 			<field property="functionalizingEntity.theFile.domainFile.title"
-				page="3" depends="required">
+				page="3" depends="required, mask">					
 				<arg position="0" key="file.title" bundle="sample" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="/compositionFile">
-			<field property="compFile.externalUrl" page="2" depends="validwhen">
+			<field property="compFile.externalUrl" page="1" depends="validwhen">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -212,7 +235,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="compFile.uploadedFile" page="2" depends="validwhen">
+			<field property="compFile.uploadedFile" page="1" depends="validwhen">
 				<arg position="0" key="uploadedFile" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -224,7 +247,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="compFile.domainFile.title" page="2"
+			<field property="compFile.domainFile.title" page="1"
 				depends="required,mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
@@ -233,7 +256,7 @@
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
-			<field property="compFile.domainFile.type" page="2" depends="required">
+			<field property="compFile.domainFile.type" page="1" depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
 		</form>
