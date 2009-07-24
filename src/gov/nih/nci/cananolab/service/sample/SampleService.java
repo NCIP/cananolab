@@ -30,30 +30,6 @@ public interface SampleService {
 			throws SampleException, DuplicateEntriesException,
 			NoAccessException;
 
-	/**
-	 *
-	 * @param samplePointOfContact
-	 * @param nanomaterialEntityClassNames
-	 * @param otherNanomaterialEntityTypes
-	 * @param functionalizingEntityClassNames
-	 * @param otherFunctionalizingEntityTypes
-	 * @param functionClassNames
-	 * @param otherFunctionTypes
-	 * @param characterizationClassNames
-	 * @param wordList
-	 * @return
-	 * @throws SampleException
-	 */
-	public List<SampleBean> findSamplesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList,
-			UserBean user) throws SampleException;
-
 	public List<String> findSampleNamesBy(String samplePointOfContact,
 			String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,

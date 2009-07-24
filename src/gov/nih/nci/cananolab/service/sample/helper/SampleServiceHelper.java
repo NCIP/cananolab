@@ -947,6 +947,31 @@ public class SampleServiceHelper {
 		return sampleStrings.toArray(new String[0]);
 	}
 
+	public String[] getSampleViewStrs(Sample sample) {
+		List<String> columns = new ArrayList<String>(7);
+		columns.clear();
+		columns.add(sample.getId().toString());
+		columns.add(sample.getName());
+		PointOfContactBean primaryPOC = new PointOfContactBean(sample
+				.getPrimaryPointOfContact());
+		columns.add(primaryPOC.getDomain().getFirstName());
+		columns.add(primaryPOC.getDomain().getLastName());
+		columns.add(primaryPOC.getDomain().getOrganization().getName());
+		// nanomaterial entities and functionalizing entities are in one
+		// column.
+		SortedSet<String> entities = new TreeSet<String>();
+		entities.addAll(getStoredNanomaterialEntityClassNames(sample));
+		entities.addAll(getStoredFunctionalizingEntityClassNames(sample));
+		columns.add(StringUtils.join(entities,
+				Constants.VIEW_CLASSNAME_DELIMITER));
+		columns.add(StringUtils.join(getStoredFunctionClassNames(sample),
+				Constants.VIEW_CLASSNAME_DELIMITER));
+		columns.add(StringUtils.join(
+				getStoredCharacterizationClassNames(sample),
+				Constants.VIEW_CLASSNAME_DELIMITER));
+		return columns.toArray(new String[0]);
+	}
+
 	public AuthorizationService getAuthService() {
 		return authService;
 	}

@@ -37,9 +37,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Service methods involving samples
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleServiceRemoteImpl implements SampleService {
 	private static Logger logger = Logger
@@ -57,116 +57,14 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
+	 * 
 	 * @param sample
-	 * @throws SampleException,
-	 *             DuplicateEntriesException
+	 * @throws SampleException
+	 *             , DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sample, UserBean user)
 			throws SampleException, DuplicateEntriesException {
 		throw new SampleException("Not implemented for grid service");
-	}
-
-	/**
-	 *
-	 * @param samplePointOfContacts
-	 * @param nanomaterialEntityClassNames
-	 * @param otherNanomaterialEntityTypes
-	 * @param functionalizingEntityClassNames
-	 * @param otherFunctionalizingEntityTypes
-	 * @param functionClassNames
-	 * @param otherFunctionTypes
-	 * @param characterizationClassNames
-	 * @param wordList
-	 * @return
-	 * @throws SampleException
-	 */
-	public List<SampleBean> findSamplesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList,
-			UserBean user) throws SampleException {
-		try {
-			String[] sampleViewStrs = gridClient.getSampleViewStrs(
-					samplePointOfContact, nanomaterialEntityClassNames,
-					functionalizingEntityClassNames, functionClassNames,
-					characterizationClassNames, wordList);
-			// String[] sampleViewStrs = {
-			// "35444457~~~NCICB-6~~~DNT~~~Carbon nanotube!!!small
-			// molecule~~~therapeutic~~~Enzyme Induction:Molecular
-			// Weight:Oxidative Stress",
-			// "35445457~~~NCICB-60~~~DNT~~~Carbon nanotube!!!small
-			// molecule~~~therapeutic~~~Enzyme Induction:Molecular
-			// Weight:Oxidative Stress",
-			// };
-			List<SampleBean> samples = new ArrayList<SampleBean>();
-			if (sampleViewStrs != null && sampleViewStrs.length > 0) {
-				String[] columns = null;
-				for (String sampleStr : sampleViewStrs) {
-					columns = sampleStr.split(Constants.VIEW_COL_DELIMITER);
-					Sample sample = new Sample();
-					// id
-					sample.setId(new Long(columns[0]));
-					// sample name
-					sample.setName(columns[1]);
-					// source
-					PointOfContact primaryPOC = new PointOfContact();
-					Organization org = new Organization();
-					primaryPOC.setFirstName(columns[2]);
-					primaryPOC.setLastName(columns[3]);
-					org.setName(columns[4]);
-					primaryPOC.setOrganization(org);
-					sample.setPrimaryPointOfContact(primaryPOC);
-
-					SampleBean sampleBean = new SampleBean(sample);
-					// composition, set all compositions as Nanomaterial Entity
-					// for now
-					if (columns.length > 5 && columns[5] != null
-							&& columns[5].length() > 0) {
-						String[] compositionsClazzNames = columns[5]
-								.split(Constants.VIEW_CLASSNAME_DELIMITER);
-						if (compositionsClazzNames != null) {
-							sampleBean
-									.setNanomaterialEntityClassNames(compositionsClazzNames);
-						}
-					}
-					// functionClassNames
-					if (columns.length > 6 && columns[6] != null
-							&& columns[6].length() > 0) {
-						String[] functionClazzNames = columns[6]
-								.split(Constants.VIEW_CLASSNAME_DELIMITER);
-						if (functionClazzNames != null) {
-							sampleBean
-									.setFunctionClassNames(functionClazzNames);
-						}
-					}
-
-					// characterizationClassNames
-					if (columns.length > 7 && columns[7] != null
-							&& columns[7].length() > 0) {
-						String[] characterizationClazzNames = columns[7]
-								.split(Constants.VIEW_CLASSNAME_DELIMITER);
-						if (characterizationClazzNames != null) {
-							sampleBean
-									.setCharacterizationClassNames(characterizationClazzNames);
-						}
-					}
-					samples.add(sampleBean);
-				}
-			}
-			return samples;
-		} catch (RemoteException e) {
-			logger.error(Constants.NODE_UNAVAILABLE, e);
-			throw new SampleException(Constants.NODE_UNAVAILABLE, e);
-		} catch (Exception e) {
-			String err = "Problem finding samples with the given search parameters.";
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
 	}
 
 	public List<String> findSampleNamesBy(String samplePointOfContact,
@@ -178,9 +76,9 @@ public class SampleServiceRemoteImpl implements SampleService {
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList,
 			UserBean user) throws SampleException {
-		throw new SampleException("Not implemented for grid service");		
+		throw new SampleException("Not implemented for grid service");
 	}
-	
+
 	public SampleBean findSampleById(String sampleId, UserBean user)
 			throws SampleException {
 		try {
@@ -226,7 +124,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * Get all the associated data of a sample
-	 *
+	 * 
 	 * @param particleSample
 	 * @throws Exception
 	 */
@@ -239,11 +137,11 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * load the source for an associated Sample
-	 *
+	 * 
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
-	 *
+	 * 
 	 */
 	private void loadPointOfContactsForSample(Sample sample) throws Exception {
 		PointOfContact primaryPOC = gridClient
@@ -261,9 +159,8 @@ public class SampleServiceRemoteImpl implements SampleService {
 	}
 
 	/**
-	 * load all keywords for an associated Sample equal to
-	 * particleId
-	 *
+	 * load all keywords for an associated Sample equal to particleId
+	 * 
 	 */
 	private void loadKeywordsForSample(Sample sample) throws Exception {
 		Keyword[] keywords = gridClient.getKeywordsBySampleId(sample.getId()
@@ -380,32 +277,105 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
+	// this method is too slow
+	// public SampleBean findSampleByName(String sampleName, UserBean user)
+	// throws SampleException {
+	// try {
+	// CQLQuery query = new CQLQuery();
+	// gov.nih.nci.cagrid.cqlquery.Object target = new
+	// gov.nih.nci.cagrid.cqlquery.Object();
+	// target.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+	// Attribute attribute = new Attribute();
+	// attribute.setName("id");
+	// attribute.setPredicate(Predicate.EQUAL_TO);
+	// attribute.setValue(sampleName);
+	// target.setAttribute(attribute);
+	// query.setTarget(target);
+	// CQLQueryResults results = gridClient.query(query);
+	// results
+	// .setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
+	// CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+	// Sample sample = null;
+	// while (iter.hasNext()) {
+	// java.lang.Object obj = iter.next();
+	// sample = (Sample) obj;
+	// loadSamplesAssociations(sample);
+	// }
+	// SampleBean sampleBean = new SampleBean(sample);
+	// return sampleBean;
+	// } catch (RemoteException e) {
+	// logger.error(Constants.NODE_UNAVAILABLE, e);
+	// throw new SampleException(Constants.NODE_UNAVAILABLE, e);
+	// } catch (Exception e) {
+	// String err = "Problem finding the remote sample by name: "
+	// + sampleName;
+	// logger.error(err, e);
+	// throw new SampleException(err, e);
+	// }
+	// }
+
 	public SampleBean findSampleByName(String sampleName, UserBean user)
 			throws SampleException {
 		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName("gov.nih.nci.cananolab.domain.particle.Sample");
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(sampleName);
-			target.setAttribute(attribute);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			Sample sample = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				sample = (Sample) obj;
-				loadSamplesAssociations(sample);
+			String[] columns = gridClient.getSampleViewStrs(sampleName);
+			// String[] sampleViewStrs = {
+			// "35444457~~~NCICB-6~~~DNT~~~Carbon nanotube!!!small
+			// molecule~~~therapeutic~~~Enzyme Induction:Molecular
+			// Weight:Oxidative Stress"
+
+			if (columns != null && columns.length > 0) {
+				Sample sample = new Sample();
+				// id
+				sample.setId(new Long(columns[0]));
+				// sample name
+				sample.setName(columns[1]);
+				// source
+				PointOfContact primaryPOC = new PointOfContact();
+				Organization org = new Organization();
+				primaryPOC.setFirstName(columns[2]);
+				primaryPOC.setLastName(columns[3]);
+				org.setName(columns[4]);
+				primaryPOC.setOrganization(org);
+				sample.setPrimaryPointOfContact(primaryPOC);
+
+				SampleBean sampleBean = new SampleBean(sample);
+				// composition, set all compositions as Nanomaterial Entity
+				// for now
+				if (columns.length > 5 && columns[5] != null
+						&& columns[5].length() > 0) {
+					String[] compositionsClazzNames = columns[5]
+							.split(Constants.VIEW_CLASSNAME_DELIMITER);
+					if (compositionsClazzNames != null) {
+						sampleBean
+								.setNanomaterialEntityClassNames(compositionsClazzNames);
+					}
+				}
+				// functionClassNames
+				if (columns.length > 6 && columns[6] != null
+						&& columns[6].length() > 0) {
+					String[] functionClazzNames = columns[6]
+							.split(Constants.VIEW_CLASSNAME_DELIMITER);
+					if (functionClazzNames != null) {
+						sampleBean.setFunctionClassNames(functionClazzNames);
+					}
+				}
+
+				// characterizationClassNames
+				if (columns.length > 7 && columns[7] != null
+						&& columns[7].length() > 0) {
+					String[] characterizationClazzNames = columns[7]
+							.split(Constants.VIEW_CLASSNAME_DELIMITER);
+					if (characterizationClazzNames != null) {
+						sampleBean
+								.setCharacterizationClassNames(characterizationClazzNames);
+					}
+				}
+				return sampleBean;
+			} else {
+				return null;
 			}
-			SampleBean sampleBean = new SampleBean(sample);
-			return sampleBean;
 		} catch (RemoteException e) {
-			logger.error(Constants.NODE_UNAVAILABLE, e);
+			 logger.error(Constants.NODE_UNAVAILABLE, e);
 			throw new SampleException(Constants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding the remote sample by name: "

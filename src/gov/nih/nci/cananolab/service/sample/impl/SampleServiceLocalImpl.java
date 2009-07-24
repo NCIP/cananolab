@@ -220,69 +220,6 @@ public class SampleServiceLocalImpl implements SampleService {
 	 * @return
 	 * @throws SampleException
 	 */
-	public List<SampleBean> findSamplesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList,
-			UserBean user) throws SampleException {
-		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
-		try {
-			Boolean filterPublic = false;
-			if (user == null) {
-				filterPublic = true;
-			}
-			List<Sample> samples = helper.findSamplesBy(samplePointOfContact,
-					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
-					functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, characterizationClassNames,
-					otherCharacterizationTypes, wordList, user);
-			for (Sample sample : samples) {
-				SampleBean sampleBean = new SampleBean(sample);
-				if (user != null) {
-					retrieveVisibility(sampleBean, user);
-				}
-				// load summary information
-				sampleBean.setCharacterizationClassNames(helper
-						.getStoredCharacterizationClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionalizingEntityClassNames(helper
-						.getStoredFunctionalizingEntityClassNames(sample)
-						.toArray(new String[0]));
-				sampleBean.setNanomaterialEntityClassNames(helper
-						.getStoredNanomaterialEntityClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionClassNames(helper
-						.getStoredFunctionClassNames(sample).toArray(
-								new String[0]));
-				sampleBeans.add(sampleBean);
-			}
-			return sampleBeans;
-		} catch (Exception e) {
-			String err = "Problem finding particles with the given search parameters.";
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
-
-	/**
-	 * 
-	 * @param samplePointOfContacts
-	 * @param nanomaterialEntityClassNames
-	 * @param otherNanomaterialEntityTypes
-	 * @param functionalizingEntityClassNames
-	 * @param otherFunctionalizingEntityTypes
-	 * @param functionClassNames
-	 * @param otherFunctionTypes
-	 * @param characterizationClassNames
-	 * @param wordList
-	 * @return
-	 * @throws SampleException
-	 */
 	public List<String> findSampleNamesBy(String samplePointOfContact,
 			String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
