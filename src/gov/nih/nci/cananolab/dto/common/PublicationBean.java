@@ -35,6 +35,11 @@ public class PublicationBean extends FileBean {
 		domainFile = new Publication();
 		domainFile.setUriExternal(false);
 	}
+	
+	public PublicationBean(String id, String location) {
+		domainFile.setId(new Long(id));
+		setLocation(location);
+	}
 
 	public PublicationBean(Publication publication) {
 		super(publication);
