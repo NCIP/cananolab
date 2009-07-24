@@ -411,7 +411,7 @@ public class PublicationServiceHelper {
 				logger.debug("User doesn't have access to publication with id "
 						+ obj.toString());
 			}
-		}		
+		}
 		return publicationIds;
 	}
 
@@ -711,20 +711,20 @@ public class PublicationServiceHelper {
 			UserBean user) throws Exception {
 		// check if user have access to publication first
 		if (authService.checkReadPermission(user, publicationId)) {
-			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
-			crit.createAlias("publicationCollection", "pub").add(
-					Property.forName("pub.id").eq(new Long(publicationId)));
+			String query = "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
+					+ publicationId + "'";
+			HQLCriteria crit=new HQLCriteria(query);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+					.getApplicationService();			
 			List results = appService.query(crit);
 			SortedSet<String> names = new TreeSet<String>();
 			for (Object obj : results) {
-				Sample sample = (Sample) obj;
-				if (authService.checkReadPermission(user, sample.getName())) {
-					names.add(sample.getName());
+				String sampleName=obj.toString();
+				if (authService.checkReadPermission(user, sampleName)) {
+					names.add(sampleName);
 				} else {
 					logger.debug("User doesn't have access to sample "
-							+ sample.getName());
+							+ sampleName);
 				}
 			}
 			return names.toArray(new String[0]);
