@@ -157,6 +157,7 @@ public class DWRPublicationManager {
 	public String getPublicCounts(String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
+		request.getSession().removeAttribute("publicationSearchResults");
 		if (locations.length==0){
 			return null;
 		}
