@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,35 +67,36 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		throw new PublicationException("Not implemented for grid service");
 	}
 
-//	public List<PublicationBean> findPublicationsBy(String title,
-//			String category, String sampleName, String[] researchAreas,
-//			String[] keywords, String pubMedId, String digitalObjectId,
-//			String[] authors, String[] nanomaterialEntityClassNames,
-//			String[] otherNanomaterialEntityTypes,
-//			String[] functionalizingEntityClassNames,
-//			String[] otherFunctionalizingEntityTypes,
-//			String[] functionClassNames, String[] otherFunctionTypes,
-//			UserBean user) throws PublicationException {
-//		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
-//		try {
-//			Publication[] publications = gridClient.getPublicationsBy(title,
-//					category, sampleName, researchAreas, keywords, pubMedId,
-//					digitalObjectId, authors, nanomaterialEntityClassNames,
-//					functionalizingEntityClassNames, functionClassNames);
-//			if (publications.length > 0) {
-//				for (Publication publication : publications) {
-//					loadPublicationAssociations(publication);
-//					publicationBeans.add(getPublicationBean(publication));
-//				}
-//			}
-//			return publicationBeans;
-//
-//		} catch (Exception e) {
-//			String err = "Problem finding publication info.";
-//			logger.error(err, e);
-//			throw new PublicationException(err, e);
-//		}
-//	}
+	// public List<PublicationBean> findPublicationsBy(String title,
+	// String category, String sampleName, String[] researchAreas,
+	// String[] keywords, String pubMedId, String digitalObjectId,
+	// String[] authors, String[] nanomaterialEntityClassNames,
+	// String[] otherNanomaterialEntityTypes,
+	// String[] functionalizingEntityClassNames,
+	// String[] otherFunctionalizingEntityTypes,
+	// String[] functionClassNames, String[] otherFunctionTypes,
+	// UserBean user) throws PublicationException {
+	// List<PublicationBean> publicationBeans = new
+	// ArrayList<PublicationBean>();
+	// try {
+	// Publication[] publications = gridClient.getPublicationsBy(title,
+	// category, sampleName, researchAreas, keywords, pubMedId,
+	// digitalObjectId, authors, nanomaterialEntityClassNames,
+	// functionalizingEntityClassNames, functionClassNames);
+	// if (publications.length > 0) {
+	// for (Publication publication : publications) {
+	// loadPublicationAssociations(publication);
+	// publicationBeans.add(getPublicationBean(publication));
+	// }
+	// }
+	// return publicationBeans;
+	//
+	// } catch (Exception e) {
+	// String err = "Problem finding publication info.";
+	// logger.error(err, e);
+	// throw new PublicationException(err, e);
+	// }
+	// }
 
 	private PublicationBean getPublicationBean(Publication publication)
 			throws Exception {
@@ -257,14 +259,14 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 	/**
 	 * if publication associates with multiple particle remove the entry from
-	 * sample_publication otherwise, remove publicVisibility and
-	 * delete publication
+	 * sample_publication otherwise, remove publicVisibility and delete
+	 * publication
 	 */
 	public void removePublicationFromSample(Sample particle, Long dataId)
 			throws PublicationException, NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}
-	
+
 	public List<String> findPublicationIdsBy(String title, String category,
 			String sampleName, String[] researchAreas, String[] keywords,
 			String pubMedId, String digitalObjectId, String[] authors,
@@ -274,6 +276,22 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			UserBean user) throws PublicationException {
-		throw new PublicationException("Not implemented for grid service");
+		try {
+			String[] publicationIds = gridClient.getPublicationIdsBy(
+					title, category, sampleName,
+					researchAreas, keywords, pubMedId, digitalObjectId,
+					authors, nanomaterialEntityClassNames,
+					functionalizingEntityClassNames, functionClassNames);
+			if (publicationIds!=null) {
+				return Arrays.asList(publicationIds);
+			}
+			else {
+				return null;
+			}
+		} catch (Exception e) {
+			String err = "Error finding remote public publications.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
 	}
 }

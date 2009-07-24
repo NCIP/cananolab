@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
+import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -76,7 +77,21 @@ public class SampleServiceRemoteImpl implements SampleService {
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList,
 			UserBean user) throws SampleException {
-		throw new SampleException("Not implemented for grid service");
+		try {
+			String[] sampleNames = gridClient.getSampleNames(
+					samplePointOfContact, nanomaterialEntityClassNames,
+					functionalizingEntityClassNames, functionClassNames,
+					characterizationClassNames, wordList);
+			if (sampleNames != null) {
+				return Arrays.asList(sampleNames);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			String err = "Error finding remote public samples.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
 	}
 
 	public SampleBean findSampleById(String sampleId, UserBean user)
@@ -375,7 +390,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 				return null;
 			}
 		} catch (RemoteException e) {
-			 logger.error(Constants.NODE_UNAVAILABLE, e);
+			logger.error(Constants.NODE_UNAVAILABLE, e);
 			throw new SampleException(Constants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding the remote sample by name: "
