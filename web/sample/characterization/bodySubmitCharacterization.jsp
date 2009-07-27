@@ -45,7 +45,7 @@
 <c:set var="helpTopic" value="char_details_help" />
 <c:choose>
 	<c:when
-		test='${"Physical Characterization" eq pageTitle && ("setup" eq kk || empty dataId)}'>
+		test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
 		<c:set var="helpTopic" value="add_physical_char_help" />
 	</c:when>
 	<c:when
