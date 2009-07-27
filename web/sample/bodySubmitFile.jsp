@@ -140,7 +140,7 @@
 				</td>
 				<td>
 					<div align="right">
-						<input class="${buttonStyle}" type="button" value="Add"
+						<input class="${buttonStyle}" type="button" value="Save"
 							onclick="addFile('${actionName}', ${fileForm}); return validateSavingTheData('new${theDataStyleId}', '${theDataName}');" />
 						<input class="${buttonStyle}" type="button" value="Cancel"
 							onclick="clearFile('${fileParent }');closeSubmissionForm('File');" />

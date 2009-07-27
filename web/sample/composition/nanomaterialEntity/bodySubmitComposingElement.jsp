@@ -227,7 +227,7 @@
 							</td>
 							<td colspan="3">
 								<div align="right">
-									<input class="promptButton" type="button" value="Add"
+									<input class="promptButton" type="button" value="Save"
 										onclick="addInherentFunction();show('functionTable');closeSubmissionForm('InherentFunction');" />
 									<input class="promptButton" type="button" value="Cancel"
 										onclick="clearInherentFunction();closeSubmissionForm('InherentFunction');" />
@@ -259,7 +259,7 @@
 		</td>
 		<td colspan="3">
 			<div align="right">
-				<input type="button" value="Add"
+				<input type="button" value="Save"
 					onclick="addComposingElement('nanomaterialEntity')" />
 				<input type="button" value="Cancel"
 					onclick="clearComposingElement();closeSubmissionForm('ComposingElement');" />

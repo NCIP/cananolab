@@ -26,10 +26,12 @@
 				onclick="updateMatrix(characterizationForm)" />
 		</td>
 	</tr>
+	<%--
 	<tr>
 		<td colspan="5"><jsp:include
 				page="/bodyMessage.jsp?bundle=sample" /></td>
 	</tr>
+	 --%>
 </table>
 <table class="promptbox" width="85%" align="center" id="matrix"
 	border="1">

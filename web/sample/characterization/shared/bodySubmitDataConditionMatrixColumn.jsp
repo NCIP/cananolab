@@ -112,7 +112,7 @@
 		</td>
 		<td>
 			<div align="right">
-				<input class="promptButton" type="button" value="Add"
+				<input class="promptButton" type="button" value="Save"
 					onclick="addColumnHeader(${param.cInd});" />
 				<input class="promptButton" type="button" value="Cancel"
 					onclick="cancelColumn(${param.cInd})" />

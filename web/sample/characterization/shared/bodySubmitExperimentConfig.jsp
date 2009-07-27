@@ -136,7 +136,7 @@
 								</td>
 								<td>
 									<div align="right">
-										<input class="promptButton" type="button" value="Add"
+										<input class="promptButton" type="button" value="Save"
 											onclick="addInstrument();show('instrumentTable');closeSubmissionForm('Instrument');" />
 										<input class="promptButton" type="button" value="Cancel"
 											onclick="clearInstrument();closeSubmissionForm('Instrument');" />
@@ -168,10 +168,10 @@
 		</td>
 		<td align="right">
 			<div align="right">
-				<input type="reset" value="Cancel"
-					onclick="javascript:clearExperimentConfig();closeSubmissionForm('ExperimentConfig')">
 				<input type="button" value="Save"
 					onclick="javascript:validateSaveConfig('characterization');">
+				<input type="reset" value="Cancel"
+					onclick="javascript:clearExperimentConfig();closeSubmissionForm('ExperimentConfig')">
 			</div>
 		</td>
 	</tr>

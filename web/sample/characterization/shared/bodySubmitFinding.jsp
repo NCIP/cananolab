@@ -64,15 +64,20 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="button" value="Delete" id="deleteFinding"
-				onclick="javascript:deleteTheFinding(characterizationForm);">
+			<c:if test="${not empty characterizationForm.map.achar.theFinding.domain.id}">
+				<input type="button" value="Delete" id="deleteFinding"
+					onclick="javascript:deleteTheFinding(characterizationForm);">
+			</c:if>
 		</td>
 		<td>
 			<div align="right">
-				<input type="button" value="Cancel"
-					onclick="javascript:closeSubmissionForm('Finding');">
+				<c:if test="${not empty characterizationForm.map.achar.theFinding.domain.id}">
+					<input type="hidden" value="${characterizationForm.map.achar.theFinding.domain.id}" />
+				</c:if>
 				<input type="button" value="Save"
 					onclick="javascript:saveFinding(characterizationForm);">
+				<input type="button" value="Cancel"
+					onclick="javascript:closeSubmissionForm('Finding');">
 			</div>
 		</td>
 	</tr>

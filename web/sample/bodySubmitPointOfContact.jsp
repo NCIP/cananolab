@@ -219,7 +219,7 @@
 					</td>
 					<td>
 						<div align="right">
-							<input type="button" value="Add"
+							<input type="button" value="Save"
 								onclick="addPointOfContact('sample')" />
 							<input type="button" value="Cancel"
 								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');" />

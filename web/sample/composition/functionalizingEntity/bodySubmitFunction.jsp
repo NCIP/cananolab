@@ -160,7 +160,7 @@
 							</td>
 							<td colspan="3">
 								<div align="right">
-									<input class="promptButton" type="button" value="Add"
+									<input class="promptButton" type="button" value="Save"
 										onclick="addTarget();show('targetTable');closeSubmissionForm('Target');" />
 									<input class="promptButton" type="button" value="Cancel"
 										onclick="clearTarget();closeSubmissionForm('Target');" />
@@ -192,7 +192,7 @@
 		</td>
 		<td colspan="3">
 			<div align="right">
-				<input type="button" value="Add"
+				<input type="button" value="Save"
 					onclick="addFunction('functionalizingEntity');show('targetTable'); closeSubmissionForm('Function');" />
 				<input type="button" value="Cancel"
 					onclick="clearFunction();closeSubmissionForm('Function');" />

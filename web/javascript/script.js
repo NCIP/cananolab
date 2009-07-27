@@ -579,7 +579,7 @@ function closeSubmissionForm(styleId) {
 function validateSavingTheData(dataStyleId, dataName) {
   var displayStatus=document.getElementById(dataStyleId).style.display;
   if (displayStatus=='block' || displayStatus==canSeeTableRow) {
-	  alert("Please click on either the Add button or the Cancel button in the "+dataName+" form.");
+	  alert("Please click on either the Save button or the Cancel button in the "+dataName+" form.");
 	  return false;
   }
   else {
