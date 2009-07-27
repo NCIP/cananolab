@@ -251,6 +251,9 @@ public class PublicationBean extends FileBean {
 		if (domain.getYear() != null && domain.getYear() == 0) {
 			domain.setYear(null);
 		}
+		if (domain.getDigitalObjectId()!=null && domain.getDigitalObjectId().trim().length()==0) {
+			domain.setDigitalObjectId(null);
+		}
 		if (researchAreas != null && researchAreas.length > 0) {
 			String researchAreasStr = StringUtils.join(researchAreas, ";");
 			domain.setResearchArea(researchAreasStr);
