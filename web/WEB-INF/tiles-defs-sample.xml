@@ -156,9 +156,9 @@
 		<put name="menu" value="samples" />
 	</definition>
 
-	<!-- definition for the range search sample page -->
-	<definition name="sample.rangeSearch" extends="canano.home">
-		<put name="cananoContent" value="/sample/bodyRangeSearchSample.jsp" />
+	<!-- definition for the advanced search sample page -->
+	<definition name="sample.advancedSearch" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodyAdvancedSampleSearch.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
@@ -168,16 +168,10 @@
 		<put name="menu" value="samples" />
 	</definition>
 
-	<!-- definition for the advanced search sample page -->
-	<definition name="sample.advancedSearchSample" extends="canano.home">
-		<put name="cananoContent" value="/sample/bodySearchSampleAdvanced.jsp" />
-		<put name="menu" value="samples" />
-	</definition>
-
 	<!-- definition for the advanced search sample result page -->
-	<definition name="sample.advancedSearchSampleResult"
+	<definition name="sample.advancedSampleSearchResult"
 		extends="canano.home">
-		<put name="cananoContent" value="/sample/bodySearchSampleAdvancedResult.jsp" />
+		<put name="cananoContent" value="/sample/bodyAdvancedSampleSearchResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 

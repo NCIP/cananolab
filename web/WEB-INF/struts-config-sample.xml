@@ -25,30 +25,10 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-		<form-bean name="rangeSearchSampleForm"
+		<form-bean name="advancedSampleSearchForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="nanomaterialEntityTypes" type="java.lang.String[]" />
-			<form-property name="sizeZAverageLow"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="sizeZAverageHigh"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="sizePdiLow"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="sizePdiHigh"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="molecularWeightLow"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="molecularWeightHigh"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="surfaceZetaPotentialLow"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="surfaceZetaPotentialHigh"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="cellViabilityLC50Low"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="cellViabilityLC50High"
-				type="gov.nih.nci.cananolab.domain.common.Datum" />
-			<form-property name="joinType" type="java.lang.String" />
+			<form-property name="searchBean" type="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean" />
+			<form-property name="dispatch" type="java.lang.String"/>
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
@@ -133,11 +113,11 @@
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
 		</action>
-		<action input="input" name="rangeSearchSampleForm" parameter="dispatch"
-			path="/rangeSearchSample" type="gov.nih.nci.cananolab.ui.sample.RangeSearchSampleAction"
+		<action input="input" name="advancedSampleSearchForm" parameter="dispatch"
+			path="/advancedSampleSearch" type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction"
 			scope="request">
-			<forward name="input" path="sample.rangeSearch" />
-			<forward name="success" path="sample.searchSampleResult" />
+			<forward name="input" path="sample.advancedSearch" />
+			<forward name="success" path="sample.advancedSampleSearchResult" />
 		</action>
 		<action name="compositionForm" parameter="dispatch" path="/composition"
 			type="gov.nih.nci.cananolab.ui.sample.CompositionAction" input="input">
