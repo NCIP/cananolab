@@ -362,7 +362,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
-	 *             if error occurred.
 	 */
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -615,9 +614,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		String theFindingId = (String) theForm.get("theFindingId");
-		if (theFindingId != null && !theFindingId.equals("null")
-				&& theFindingId.trim().length() > 0) {
+		String theFindingId = (String) request.getAttribute("theFindingId");
+		if (!StringUtils.isEmpty(theFindingId)) {
 			findingBean.getDomain().setId(new Long(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
