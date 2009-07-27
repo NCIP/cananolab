@@ -76,6 +76,7 @@
 		page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
 	<c:set var="type" value="characterization" />
 	<c:set var="actionName" value="characterization" />
+	<c:set var="formName" value="characterizationForm" />
 	<c:set var="dataId"
 		value="${characterizationForm.map.achar.domainChar.id}" />
 	<%@include file="../bodySubmitButtons.jsp"%>
