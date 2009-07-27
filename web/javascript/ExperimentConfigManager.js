@@ -88,16 +88,17 @@ function clearExperimentConfig() {
 function deleteTheExperimentConfig() {
 	var answer = confirmDelete("experiment config");
 	if (answer != 0) {
-		submitAction(document.forms[0], "characterization", "deleteExperimentConfig", 0);
+		submitAction(document.forms[0], "characterization", "deleteExperimentConfig", 2);
 	}
 }
 function validateSaveConfig(actionName) {
+	/**
 	var techniqueType = document.getElementById("techniqueType");
 	if (techniqueType.value == "") {
 		alert("Please select a technique");
 		return false;
-	}
-	submitAction(document.forms[0], actionName, "saveExperimentConfig", 0);
+	}*/
+	submitAction(document.forms[0], actionName, "saveExperimentConfig", 2);
 }
 function addInstrument() {
 	var instrument = {id:null, manufacturer:null, modelName:null, type:null};
@@ -113,8 +114,12 @@ function addInstrument() {
 			currentExperimentConfig = experimentConfig;
 		});
 		window.setTimeout("populateInstruments()", 200);
+		show('instrumentTable');
+		closeSubmissionForm('Instrument');
+		return true;
 	} else {
 		alert("Please fill in values");
+		return false;
 	}
 }
 function clearInstrument() {
@@ -123,6 +128,7 @@ function clearInstrument() {
 	document.getElementById("modelName").value = "";
 	document.getElementById("type").value = "";
 	hide("deleteInstrument");
+	closeSubmissionForm('Instrument');
 }
 function editInstrument(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
