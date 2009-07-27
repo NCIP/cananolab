@@ -343,10 +343,10 @@
 			</field>
 		</form>
 		<form name="characterizationForm">
-			<field property="achar.characterizationType" page="2" depends="required">
+			<field property="achar.characterizationType" page="1" depends="required">
 				<arg position="0" key="achar.characterizationType" bundle="sample" />
 			</field>
-			<field property="achar.characterizationName" page="2" depends="required">
+			<field property="achar.characterizationName" page="1" depends="required">
 				<arg position="0" key="achar.characterizationName" bundle="sample" />
 			</field>
 			<field property="achar.theExperimentConfig.domain.technique.type"
