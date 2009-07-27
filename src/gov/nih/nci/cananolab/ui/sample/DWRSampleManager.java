@@ -28,7 +28,9 @@ public class DWRSampleManager {
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
-			if (Constants.LOCAL_SITE.equals(searchLocations)) {
+			if (searchLocations == null) {
+				isLocal = true;
+			} else if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
 			}
 			SortedSet<String> types = null;
@@ -65,9 +67,12 @@ public class DWRSampleManager {
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
-			if (Constants.LOCAL_SITE.equals(searchLocations)) {
+			if (searchLocations == null) {
+				isLocal = true;
+			} else if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
 			}
+
 			SortedSet<String> types = null;
 			if (isLocal) {
 				types = InitSetup
@@ -137,7 +142,7 @@ public class DWRSampleManager {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		request.getSession().removeAttribute("sampleSearchResults");
-		if (locations.length==0){
+		if (locations.length == 0) {
 			return null;
 		}
 		Integer counts = 0;
