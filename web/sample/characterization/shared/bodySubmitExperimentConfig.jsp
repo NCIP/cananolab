@@ -136,7 +136,7 @@
 								</td>
 								<td>
 									<div align="right">
-										<input class="promptButton" type="button" value="Save"
+										<input class="promptButton" type="button" value="Add"
 											onclick="addInstrument();show('instrumentTable');closeSubmissionForm('Instrument');" />
 										<input class="promptButton" type="button" value="Cancel"
 											onclick="clearInstrument();closeSubmissionForm('Instrument');" />

@@ -242,7 +242,7 @@
 								</td>
 								<td colspan="5">
 									<div align="right">
-										<input class="promptButton" type="button" value="Save"
+										<input class="promptButton" type="button" value="Add"
 											onclick="addAuthor();show('authorTable');closeSubmissionForm('Author');" />
 										<input class="promptButton" type="button" value="Cancel"
 											onclick="clearAuthor();closeSubmissionForm('Author');" />

@@ -227,7 +227,7 @@
 							</td>
 							<td colspan="3">
 								<div align="right">
-									<input class="promptButton" type="button" value="Save"
+									<input class="promptButton" type="button" value="Add"
 										onclick="addInherentFunction();show('functionTable');closeSubmissionForm('InherentFunction');" />
 									<input class="promptButton" type="button" value="Cancel"
 										onclick="clearInherentFunction();closeSubmissionForm('InherentFunction');" />
