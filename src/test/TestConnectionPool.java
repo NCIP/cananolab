@@ -22,13 +22,12 @@ public class TestConnectionPool {
 	public void testPublicationService(String publicationType) {
 		try {
 			PublicationService service = new PublicationServiceLocalImpl();
-			List<PublicationBean> publications = service.findPublicationsBy(
-					null, publicationType, null, null, null, null, null, null,
-					null, null, null, null, null, null, null);
-			for (PublicationBean publication : publications) {
-				System.out.println("Publication: "
-						+ publication.getDisplayName());
-				logger.info("Publication: " + publication.getDisplayName());
+			List<String> publicationIds = service.findPublicationIdsBy(null,
+					publicationType, null, null, null, null, null, null, null,
+					null, null, null, null, null, null);
+			for (String id : publicationIds) {
+				System.out.println("Publication: " + id);
+				logger.info("Publication: " + id);
 			}
 		} catch (Exception e) {
 			logger.error(e);
@@ -40,36 +39,38 @@ public class TestConnectionPool {
 		try {
 			p = new PrintStream("C:\\temp\\publication\\urlLog.txt");
 			PublicationService service = new PublicationServiceLocalImpl();
-			List<PublicationBean> publications = service.findPublicationsBy(
-					null, publicationType, null, null, null, null, null, null,
-					null, null, null, null, null, null, null);
-			for (PublicationBean publication : publications) {
-				//System.out.println("Publication: "
-				//		+ publication.getDisplayName());
-				//logger.info("Publication: " + publication.getDisplayName());
-				if (publication.getDomainFile().getUri()!=null &&
-						publication.getDomainFile().getUri().trim().length()>0) {
+			List<String> publicationIds = service.findPublicationIdsBy(null,
+					publicationType, null, null, null, null, null, null, null,
+					null, null, null, null, null, null);
+			for (String id : publicationIds) {
+				// System.out.println("Publication: "
+				// + publication.getDisplayName());
+				// logger.info("Publication: " + publication.getDisplayName());
+				PublicationBean publication = service.findPublicationById(id,
+						null);
+				if (publication.getDomainFile().getUri() != null
+						&& publication.getDomainFile().getUri().trim().length() > 0) {
 					p.println(publication.getDomainFile().getUri());
 					URL yahoo = new URL(publication.getDomainFile().getUri());
-			        URLConnection yc = yahoo.openConnection();
-			        BufferedReader in = new BufferedReader(
-			                                new InputStreamReader(
-			                                yc.getInputStream()));
-			        String inputLine;
-			        while ((inputLine = in.readLine()) != null) {
-			           if (inputLine.indexOf("Page Not Found")!=-1) {
-			        	   p.println("ERROR NOT FOUND:"+publication.getDomainFile().getUri());
-			           }
-			        }
-			        in.close();
+					URLConnection yc = yahoo.openConnection();
+					BufferedReader in = new BufferedReader(
+							new InputStreamReader(yc.getInputStream()));
+					String inputLine;
+					while ((inputLine = in.readLine()) != null) {
+						if (inputLine.indexOf("Page Not Found") != -1) {
+							p.println("ERROR NOT FOUND:"
+									+ publication.getDomainFile().getUri());
+						}
+					}
+					in.close();
 				}
 			}
 
 		} catch (Exception e) {
 			logger.error(e);
 			p.println("EXCEPTION ERROR NOT FOUND:");
-		}finally {
-			if (p!=null) {
+		} finally {
+			if (p != null) {
 				p.close();
 			}
 		}
@@ -77,11 +78,10 @@ public class TestConnectionPool {
 
 	public void testCSM() {
 		try {
-			LoginService service = new LoginService(
-					Constants.CSM_APP_NAME);
+			LoginService service = new LoginService(Constants.CSM_APP_NAME);
 			List<UserBean> users = service.getAllUsers();
-			for (UserBean user:users) {
-				System.out.println("USer: "+user.getFullName());
+			for (UserBean user : users) {
+				System.out.println("USer: " + user.getFullName());
 			}
 		} catch (Exception e) {
 			logger.error(e);
@@ -91,8 +91,8 @@ public class TestConnectionPool {
 	public static void main(String[] args) {
 		TestConnectionPool test = new TestConnectionPool();
 		test.testPublicationService("peer review article");
-		//test.testCSM();
-		//test.testPublicationURLService("peer review article");
+		// test.testCSM();
+		// test.testPublicationURLService("peer review article");
 		System.out.println("COMPLETED");
 
 		System.exit(0);
