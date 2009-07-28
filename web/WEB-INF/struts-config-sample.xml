@@ -27,8 +27,9 @@
 		</form-bean>
 		<form-bean name="advancedSampleSearchForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="searchBean" type="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean" />
-			<form-property name="dispatch" type="java.lang.String"/>
+			<form-property name="searchBean"
+				type="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean" />
+			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
@@ -113,9 +114,9 @@
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
 		</action>
-		<action input="input" name="advancedSampleSearchForm" parameter="dispatch"
-			path="/advancedSampleSearch" type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction"
-			scope="request">
+		<action input="input" name="advancedSampleSearchForm"
+			parameter="dispatch" path="/advancedSampleSearch"
+			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">
 			<forward name="input" path="sample.advancedSearch" />
 			<forward name="success" path="sample.advancedSampleSearchResult" />
 		</action>
