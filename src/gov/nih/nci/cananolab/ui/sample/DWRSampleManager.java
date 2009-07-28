@@ -1,5 +1,9 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.BaseQueryBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
+import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
@@ -12,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
@@ -171,5 +176,54 @@ public class DWRSampleManager {
 			}
 		}
 		return counts.toString();
+	}
+
+	public AdvancedSampleSearchBean addCompositionQuery(CompositionQueryBean theQuery) {
+		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("advancedSampleSearchForm"));
+		if (searchForm == null) {
+			return null;
+		}
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
+				.get("searchBean");
+		searchBean.addQuery(theQuery);
+		return searchBean;
+	}
+
+	public AdvancedSampleSearchBean addCharacterizationQuery(CharacterizationQueryBean theQuery) {
+		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("advancedSampleSearchForm"));
+		if (searchForm == null) {
+			return null;
+		}
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
+				.get("searchBean");
+		searchBean.addQuery(theQuery);
+		return searchBean;
+	}
+
+	public AdvancedSampleSearchBean deleteCompositionQuery(CompositionQueryBean theQuery) {
+		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("advancedSampleSearchForm"));
+		if (searchForm == null) {
+			return null;
+		}
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
+				.get("searchBean");
+		searchBean.removeQuery(theQuery);
+		return searchBean;
+	}
+
+	public AdvancedSampleSearchBean deleteCharacterizationQuery(
+			CharacterizationQueryBean theQuery) {
+		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("advancedSampleSearchForm"));
+		if (searchForm == null) {
+			return null;
+		}
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
+				.get("searchBean");
+		searchBean.removeQuery(theQuery);
+		return searchBean;
 	}
 }
