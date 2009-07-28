@@ -66,14 +66,17 @@ function setTheFinding(form, actionName, findingId) {
 	form.action = actionName + ".do?dispatch=getFinding&findingId=" + findingId + "&page=0";
 	form.submit();
 }
-function saveFinding(form) {
-	form.action = "characterization.do?dispatch=saveFinding&page=0";
+function saveFinding(actionName) {
+	/**
+	form.action = "characterization.do?dispatch=saveFinding&page=3";
 	form.submit();
+	*/
+	submitAction(document.forms[0], actionName, "saveFinding", 3);
 }
 function deleteTheFinding(form) {
 	var answer = confirmDelete("finding");
 	if (answer != 0) {
-		form.action = "characterization.do?dispatch=deleteFinding&page=0";
+		form.action = "characterization.do?dispatch=deleteFinding&page=2";
 		form.submit();
 	}
 }

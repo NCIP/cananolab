@@ -3,7 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<c:set var="fileParent" value="achar.theFinding" />
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
 		<th colspan="2">
@@ -41,6 +40,7 @@
 		<td colspan="2">
 			<div style="display: none" id="newFile">
 				<c:set var="fileForm" value="characterizationForm" />
+				<c:set var="fileParent" value="achar.theFinding" />
 				<c:set var="actionName" value="characterization" />
 				<c:set var="theFile"
 					value="${characterizationForm.map.achar.theFinding.theFile}" />
@@ -75,7 +75,7 @@
 					<input type="hidden" value="${characterizationForm.map.achar.theFinding.domain.id}" />
 				</c:if>
 				<input type="button" value="Save"
-					onclick="javascript:saveFinding(characterizationForm);">
+					onclick="javascript:saveFinding('characterization');">
 				<input type="button" value="Cancel"
 					onclick="javascript:closeSubmissionForm('Finding');">
 			</div>
