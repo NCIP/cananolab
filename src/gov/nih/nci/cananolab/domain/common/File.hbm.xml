@@ -33,9 +33,7 @@
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.Datum" />
 		</set>
 		<!--
-			<one-to-one name="protocol"
-			class="gov.nih.nci.cananolab.domain.common.Protocol"
-			outer-join="false" constrained="true"/>
+		<one-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol" property-ref="file"/>
 		-->
 		<set name="findingCollection" table="finding_file" lazy="true"
 			inverse="false">
