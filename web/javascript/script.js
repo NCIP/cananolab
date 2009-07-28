@@ -4,7 +4,6 @@ var canSeeTableRow = 'block';
 } else {
 var canSeeTableRow = 'table-row';
 }
-
 function changeMenuStyle(obj, new_style) {
 	obj.className = new_style;
 }
@@ -109,128 +108,7 @@ function resetSelect(selectObj) {
 function removeSelectOptions(selectObj) {
 	selectObj.options.length = 0;
 }
-/* filter second drop-down by first drop-down selection */
-function doubleDropdown(selection1, selection2, value1ToValue2) {
-	/* initialize selection2 options */
-	selection2.options.length = 0;
-	selection2.options[0] = new Option("", "");
-	var value1 = selection1.options[selection1.selectedIndex].value;
-	var value2Arr = value1ToValue2[value1];
-	if (value2Arr != null) {
-		for (i = 0; i < value2Arr.length; i++) {
-			selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
-		}
-	}
-}
-/* filter second drop-down by first drop-down selection */
-function doubleDropdownForTheEditable(selection1, selection2, value1ToValue2) {
-	/* initialize selection2 options */
-	selection2.options.length = 0;
-	selection2.options[0] = new Option("--?--", "");
-	var value1 = selection1.options[selection1.selectedIndex].value;
-	var value2Arr = value1ToValue2[value1];
-	if (value2Arr != null) {
-		for (i = 0; i < value2Arr.length; i++) {
-			selection2.options[i + 1] = new Option(value2Arr[i], value2Arr[i]);
-		}
-	}
-}
-function doubleDropdownForNameValuePairs(selection1, selection2, value1ToValue2I, value1ToValue2II) {
-	/* initialize selection2 options */
-	selection2.options.length = 0;
-	selection2.options[0] = new Option("--?--", "");
-	var value1 = selection1.options[selection1.selectedIndex].value;
-	var value2Arr1 = value1ToValue2I[value1];
-	var value2Arr2 = value1ToValue2II[value1];
-	if (value2Arr1 != null) {
-		for (i = 0; i < value2Arr1.length; i++) {
-			selection2.options[i + 1] = new Option(value2Arr1[i], value2Arr2[i]);
-		}
-	}
-}
-/*
- * filter second drop-down by first drop-down selection, add an extra option at
- * the end
- */
-function doubleDropdownWithExraOption(selection1, selection2, value1ToValue2, extraOptionName) {
-	/* initialize selection2 options */
-	selection2.options.length = 0;
-	selection2.options[0] = new Option("", "");
-	var value1 = selection1.options[selection1.selectedIndex].value;
-	var value2Arr = value1ToValue2[value1];
-	var last = 1;
-	if (value2Arr != null) {
-		for (i = 0; i < value2Arr.length; i++) {
-			selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
-			last = i + 1;
-		}
-	}
-	selection2.options[last] = new Option(extraOptionName, extraOptionName);
-}
-/* filter a drop-down by a value */
-function dynamicDropdown(value, selection, value1ToValue2) {
-	/* initialize selection options */
-	selection.options.length = 0;
-	selection.options[0] = new Option("", "");
-	var value2Arr = value1ToValue2[value];
-	if (value2Arr != null) {
-		for (i = 0; i < value2Arr.length; i++) {
-			selection.options[i] = new Option(value2Arr[i], value2Arr[i]);
-		}
-	}
-}
-/* filter second multi-box by first multi-box selections */
-function doubleMultibox(selection1, selection2, value1ToValue2) {
-	selection2.options.length = 0;
-	selection2.options[0] = new Option("", "");
-	var value1Arr = new Array();
-	for (var i = 0; i < selection1.options.length; i++) {
-		if (selection1.options[i].selected) {
-			value1Arr.push(selection1[i].value);
-		}
-	}
-	var value2Arr = new Array();
-	for (var i = 0; i < value1Arr.length; i++) {
-		var value2s = value1ToValue2[value1Arr[i]];
-		if (value2s != null) {
-			for (var j = 0; j < value2s.length; j++) {
-				value2Arr.push(value2s[j]);
-			}
-		}
-	}
-	for (var i = 0; i < value2Arr.length; i++) {
-		selection2.options[i] = new Option(value2Arr[i], value2Arr[i]);
-	}
-}
-/* filter second drop-down by first multi-box selections */
-function multiboxToDropDownWithEditableOption(selection1, selection2, value1ToValue2) {
-	selection2.options.length = 0;
-	selection2.options[0] = new Option("--?--", "");
-	var value1Arr = new Array();
-	for (var i = 0; i < selection1.options.length; i++) {
-		if (selection1.options[i].selected) {
-			value1Arr.push(selection1[i].value);
-		}
-	}
-	var value2Arr = new Array();
-	for (var i = 0; i < value1Arr.length; i++) {
-		var value2s = value1ToValue2[value1Arr[i]];
-		if (value2s != null) {
-			for (var j = 0; j < value2s.length; j++) {
-				value2Arr.push(value2s[j]);
-			}
-		}
-	}
-	for (var i = 0; i < value2Arr.length; i++) {
-		selection2.options[i + 1] = new Option(value2Arr[i], value2Arr[i]);
-	}
-}
-function clearMultibox(selection) {
-	for (var i = 0; i < selection.options.length; i++) {
-		selection.options[i].text = "";
-		selection.options[i].value = "";
-	}
-}
+
 function submitAction(form, actionName, dispatchName, page) {
 	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=" + page;
 	form.submit();
@@ -243,13 +121,7 @@ function removeComponent(form, actionName, compInd, dispatchName) {
 	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd;
 	form.submit();
 }
-/* form has "." in the property names */
-function doubleDropdownWithNestedProperties(form, elementName1, elementName2, value1ToValue2) {
-	var select1, select2;
-	select1 = getElement(form, elementName1);
-	select2 = getElement(form, elementName2);
-	doubleDropdown(select1, select2, value1ToValue2);
-}
+
 function getElement(form, elementName) {
 	var element;
 	for (var i = 0; i < form.elements.length; ) {
