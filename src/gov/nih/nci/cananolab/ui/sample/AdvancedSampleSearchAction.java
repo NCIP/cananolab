@@ -74,15 +74,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-//		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-//				"zAverageUnits", "Z-average", "unit", "otherUnit", true);
-//		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-//				"molecularWeightUnits", "molecular weight", "unit", "otherUnit", true);
-//		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-//				"zetaPotentialUnits", "zeta potential", "unit", "otherUnit", true);
-//		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-//				"lc50Units", "LC50", "unit", "otherUnit", true);
-//		InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
+		request.getSession().removeAttribute("advancedSampleSearchForm");
 		return mapping.getInputForward();
 	}
 
