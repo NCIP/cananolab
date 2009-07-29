@@ -56,11 +56,6 @@
 <html:form action="/chemicalAssociation" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th colspan="4">
-				Summary
-			</th>
-		</tr>
 		<c:if test="${empty compositionForm.map.assoc.domainAssociation.id}">
 			<tr>
 				<td class="cellLabel">
@@ -115,11 +110,6 @@
 	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<th colspan="3">
-				Associated Elements Information
-			</th>
-		</tr>
-		<tr>
 			<td>
 				<c:set var="elementNumber" value="A" />
 				<c:set var="entitySelectStyle" value="display:none" />
@@ -172,11 +162,6 @@
 	<c:set var="fileParent" value="assoc" />
 	<a name="file">
 		<table width="100%" align="center" class="submissionView">
-			<tr>
-				<th colspan="2">
-					Chemical Association File
-				</th>
-			</tr>
 			<tr>
 				<td class="cellLabel" width="10%">
 					File
