@@ -388,8 +388,8 @@
 						or 
 						(((achar.theFinding.theFile.domainFile.uri!=null) or
 						((*this*!=null) and
-						(achar.theFinding.theFile.uriExternal=="false"))) or
-						(achar.theFinding.theFile.uriExternal=="true")))
+						(achar.theFinding.theFile.domainFile.uriExternal=="false"))) or
+						(achar.theFinding.theFile.domainFile.uriExternal=="true")))
 					</var-value>
 				</var>
 			</field>
@@ -403,8 +403,8 @@
 						(achar.theFinding.numberOfRows > 0)) 
 						or 
 						(((*this*!=null) and
-						(achar.theFinding.theFile.uriExternal=="true")) or
-						(achar.theFinding.theFile.uriExternal=="false")))
+						(achar.theFinding.theFile.domainFile.uriExternal=="true")) or
+						(achar.theFinding.theFile.domainFile.uriExternal=="false")))
 					</var-value>
 				</var>
 			</field>
