@@ -343,12 +343,27 @@
 			</field>
 		</form>
 		<form name="characterizationForm">
+			<!-- Mandatory properties: Char Type and Char Name -->
 			<field property="achar.characterizationType" page="1" depends="required">
 				<arg position="0" key="achar.characterizationType" bundle="sample" />
 			</field>
 			<field property="achar.characterizationName" page="1" depends="required">
 				<arg position="0" key="achar.characterizationName" bundle="sample" />
 			</field>
+			
+			<!-- Mandatory properties: Shape Type required if Char Name is Shape -->
+			<field property="achar.shape.type" page="1" depends="validwhen">
+				<arg position="0" key="shape.type" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) or 
+						(achar.characterizationName!='Shape'))
+					</var-value>
+				</var>
+			</field>
+			
+			<!-- Optional properties 1: Technique Type -->
 			<field property="achar.theExperimentConfig.domain.technique.type"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.technique.type" bundle="sample" />
@@ -360,42 +375,112 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.theFile.domainFile.externalUrl" page="3"
-				depends="validwhen">
-				<arg position="0" key="externalUrl" bundle="sample" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((*this*!=null) and
-						(achar.theFinding.theFile.domainFile.uriExternal=="true")) or
-						(achar.theFinding.theFile.domainFile.uriExternal=="false"))
-					</var-value>
-				</var>
-			</field>
-			<field property="achar.theFinding.theFile.domainFile.uploadedFile" page="3"
+			
+			<!-- Optional properties 2a: Finding File, not required if Matrix entered -->
+			<field property="achar.theFinding.theFile.uploadedFile" page="3"
 				depends="validwhen">
 				<arg position="0" key="uploadedFile" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
+						(((achar.theFinding.numberOfColumns > 0) and 
+						(achar.theFinding.numberOfRows > 0)) 
+						or 
 						(((achar.theFinding.theFile.domainFile.uri!=null) or
 						((*this*!=null) and
-						(achar.theFinding.theFile.domainFile.uriExternal=="false"))) or
-						(achar.theFinding.theFile.domainFile.uriExternal=="true"))
+						(achar.theFinding.theFile.uriExternal=="false"))) or
+						(achar.theFinding.theFile.uriExternal=="true")))
+					</var-value>
+				</var>
+			</field>
+			<field property="achar.theFinding.theFile.externalUrl" page="3"
+				depends="validwhen">
+				<arg position="0" key="externalUrl" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((achar.theFinding.numberOfColumns > 0) and 
+						(achar.theFinding.numberOfRows > 0)) 
+						or 
+						(((*this*!=null) and
+						(achar.theFinding.theFile.uriExternal=="true")) or
+						(achar.theFinding.theFile.uriExternal=="false")))
 					</var-value>
 				</var>
 			</field>
 			<field property="achar.theFinding.theFile.domainFile.type"
-				page="3" depends="required">
+				page="3" depends="validwhen">
 				<arg position="0" key="file.type" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) 
+						or
+						((achar.theFinding.numberOfColumns > 0) and 
+						(achar.theFinding.numberOfRows > 0)))
+					</var-value>
+				</var>
 			</field>
 			<field property="achar.theFinding.theFile.domainFile.title"
-				page="3" depends="required,mask">
+				page="3" depends="validwhen, mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
 				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) 
+						or
+						((achar.theFinding.numberOfColumns > 0) and 
+						(achar.theFinding.numberOfRows > 0)))
+					</var-value>
+				</var>
+				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+			
+			<!-- Optional properties 2b: Finding Matrix, not required if File uploaded -->
+			<field property="achar.theFinding.numberOfColumns"
+				page="3" depends="validwhen">
+				<arg position="0" key="achar.theFinding.numberOfColumns" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* > 0) 
+						or
+						((achar.theFinding.theFile.domainFile.uri!=null) or 
+						(achar.theFinding.theFile.externalUrl!=null)))
+					</var-value>
+				</var>
+			</field>
+			<field property="achar.theFinding.numberOfRows"
+				page="3" depends="validwhen">
+				<arg position="0" key="achar.theFinding.numberOfRows" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* > 0) 
+						or
+						((achar.theFinding.theFile.domainFile.uri!=null) or 
+						(achar.theFinding.theFile.externalUrl!=null)))
+					</var-value>
+				</var>
+			</field>
+			<field property="columnType" indexedListProperty="achar.theFinding.columnHeaders"
+				depends="validwhen">
+				<arg position="0" key="achar.theFinding.columnHeaders.columnType" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and 
+						(achar.theFinding.columnHeaders[].columnName!=null))
+						or
+						(achar.theFinding.numberOfColumns == 0) 
+						or
+						((achar.theFinding.theFile.domainFile.uri!=null) or 
+						(achar.theFinding.theFile.externalUrl!=null)))
+					</var-value>
 				</var>
 			</field>
 		</form>
