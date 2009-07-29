@@ -75,6 +75,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("advancedSampleSearchForm");
+		InitCharacterizationSetup.getInstance().getCharacterizationTypes(request);
 		return mapping.getInputForward();
 	}
 
