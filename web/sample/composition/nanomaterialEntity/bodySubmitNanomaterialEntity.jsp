@@ -33,12 +33,7 @@
 </jsp:include>
 <html:form action="/nanomaterialEntity" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newComposingElement', 'composing element') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th colspan="2">
-				Summary
-			</th>
-		</tr>
+	<table width="100%" align="center" class="submissionView">		
 		<c:if
 			test="${empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
 			<tr>
@@ -75,12 +70,7 @@
 		<jsp:include page="${entityDetailPage}" />
 	</c:if>
 	<div id="entityInclude"></div>
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th colspan="2">
-				Composing Elements
-			</th>
-		</tr>
+	<table width="100%" align="center" class="submissionView">		
 		<tr>
 			<td class="cellLabel" width="15%">
 				Composing Element
@@ -128,12 +118,7 @@
 	<%--Nanomaterial Entity File Information --%>
 	<c:set var="fileParent" value="nanomaterialEntity" />
 	<a name="file">
-		<table width="100%" align="center" class="submissionView">
-			<tr>
-				<th colspan="2">
-					Nanomaterial Entity File
-				</th>
-			</tr>
+		<table width="100%" align="center" class="submissionView">			
 			<tr>
 				<td class="cellLabel" width="15%">
 					File

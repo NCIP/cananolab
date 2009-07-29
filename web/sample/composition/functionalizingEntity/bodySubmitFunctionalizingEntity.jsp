@@ -35,12 +35,7 @@
 <html:form action="/functionalizingEntity" enctype="multipart/form-data"
 	onsubmit="return validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th colspan="4">
-				Summary
-			</th>
-		</tr>
+	<table width="100%" align="center" class="submissionView">		
 		<c:if
 			test="${empty compositionForm.map.functionalizingEntity.domainEntity.id}">
 			<tr>
@@ -181,58 +176,46 @@
 	</c:if>
 	<div id="entityInclude"></div>
 	<table width="100%" align="center" class="submissionView">
-		<tbody>
-			<tr>
-				<th colspan="2">
-					Function Information
-				</th>
-			</tr>
-			<tr>
-				<td class="cellLabel" width="15%">
-					Function
-				</td>
-				<td>
-					<a style="display: block" id="addFunction"
-						href="javascript:clearFunction();openSubmissionForm('Function');"><img
-							align="top" src="images/btn_add.gif" border="0" /> </a>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<c:if
-						test="${! empty compositionForm.map.functionalizingEntity.functions}">
-						<c:set var="edit" value="true" />
-						<c:set var="entity"
-							value="${compositionForm.map.functionalizingEntity}" />
-						<%@ include file="bodyFunctionView.jsp"%>
-					</c:if>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<c:set var="newFuncStyle" value="display:none" />
-					<c:if
-						test="${empty compositionForm.map.functionalizingEntity.functions}">
-						<c:set var="newFuncStyle" value="display:block" />
-					</c:if>
-					<div id="newFunction" style="${newFuncStyle}">
-						<%@ include file="bodySubmitFunction.jsp"%>
-					</div>
-					&nbsp;
-				</td>
-			</tr>
-		</tbody>
+		<tr>
+			<td class="cellLabel" width="15%">
+				Function
+			</td>
+			<td>
+				<a style="display: block" id="addFunction"
+					href="javascript:clearFunction();openSubmissionForm('Function');"><img
+						align="top" src="images/btn_add.gif" border="0" /> </a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<c:if
+					test="${! empty compositionForm.map.functionalizingEntity.functions}">
+					<c:set var="edit" value="true" />
+					<c:set var="entity"
+						value="${compositionForm.map.functionalizingEntity}" />
+					<%@ include file="bodyFunctionView.jsp"%>
+				</c:if>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<c:set var="newFuncStyle" value="display:none" />
+				<c:if
+					test="${empty compositionForm.map.functionalizingEntity.functions}">
+					<c:set var="newFuncStyle" value="display:block" />
+				</c:if>
+				<div id="newFunction" style="${newFuncStyle}">
+					<%@ include file="bodySubmitFunction.jsp"%>
+				</div>
+				&nbsp;
+			</td>
+		</tr>
 	</table>
 	<br>
 	<%--Functionalizing Entity File Information --%>
 	<c:set var="fileParent" value="functionalizingEntity" />
 	<a name="file">
-		<table width="100%" align="center" class="submissionView">
-			<tr>
-				<th colspan="2">
-					Functionalizing Entity File
-				</th>
-			</tr>
+		<table width="100%" align="center" class="submissionView">			
 			<tr>
 				<td class="cellLabel" width="15%">
 					File
