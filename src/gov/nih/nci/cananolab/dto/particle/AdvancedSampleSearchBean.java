@@ -19,6 +19,7 @@ public class AdvancedSampleSearchBean {
 	private CharacterizationQueryBean theCharacterizationQuery = new CharacterizationQueryBean();
 	private String compositionLogicalOperator;
 	private String characterizationLogicalOperator;
+	private String logicalOperator;
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -101,5 +102,13 @@ public class AdvancedSampleSearchBean {
 		} else if (query instanceof CharacterizationQueryBean) {
 			characterizationQueries.remove((CharacterizationQueryBean) query);
 		}
+	}
+
+	public String getLogicalOperator() {
+		return logicalOperator;
+	}
+
+	public void setLogicalOperator(String logicalOperator) {
+		this.logicalOperator = logicalOperator;
 	}
 }
