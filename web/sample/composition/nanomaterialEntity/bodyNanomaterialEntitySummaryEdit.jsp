@@ -23,50 +23,50 @@
 			--%>
 		</th>
 	</tr>
-	<c:choose>
-		<c:when test="${!empty compositionForm.map.comp.nanomaterialEntities}">
-			<logic:iterate name="compositionForm"
-				property="comp.nanomaterialEntities" id="nanomaterialEntity"
-				indexId="ind">
-				<c:set var="entityType" value="${nanomaterialEntity.type}" />
-				<c:if test="${!empty entityType}">
-					<tr>
-						<td>
-							<div class="indented4">
-								<table class="summaryViewLayer3" width="95%" align="center">
+	<tr>
+		<td>
+			<c:choose>
+				<c:when
+					test="${!empty compositionForm.map.comp.nanomaterialEntities}">
+					<logic:iterate name="compositionForm"
+						property="comp.nanomaterialEntities" id="nanomaterialEntity"
+						indexId="ind">
+						<c:set var="entityType" value="${nanomaterialEntity.type}" />
+						<c:if test="${!empty entityType}">
+							<table class="summaryViewLayer3" width="95%" align="center">
+								<tr>
+									<th valign="top" align="left" width="1000px">
+										${entityType}
+									</th>
+									<th valign="top" align="right">
+										<a
+											href="nanomaterialEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${nanomaterialEntity.domainEntity.id}">Edit</a>
+									</th>
+								</tr>
+								<tr>
+									<td class="cellLabel" width="20%">
+										Description
+									</td>
+									<td>
+										<c:choose>
+											<c:when
+												test="${!empty fn:trim(nanomaterialEntity.description)}">
+												<c:out
+													value="${fn:replace(nanomaterialEntity.description, cr, '<br>')}"
+													escapeXml="false" />
+											</c:when>
+											<c:otherwise>N/A
+												</c:otherwise>
+										</c:choose>
+									</td>
+								</tr>
+								<c:if test="${nanomaterialEntity.withProperties }">
 									<tr>
-										<th valign="top" align="left" width="1000px">
-											${entityType}
-										</th>
-										<th valign="top" align="right">
-											<a
-												href="nanomaterialEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${nanomaterialEntity.domainEntity.id}">Edit</a>
-										</th>
-									</tr>
-									<tr>
-										<td class="cellLabel" width="20%">
-											Description
+										<td class="cellLabel">
+											Properties
 										</td>
 										<td>
-											<c:choose>
-												<c:when
-													test="${!empty fn:trim(nanomaterialEntity.description)}">
-													<c:out
-														value="${fn:replace(nanomaterialEntity.description, cr, '<br>')}"
-														escapeXml="false" />
-												</c:when>
-												<c:otherwise>N/A
-												</c:otherwise>
-											</c:choose>
-										</td>
-									</tr>
-									<c:if test="${nanomaterialEntity.withProperties }">
-										<tr>
-											<td class="cellLabel">
-												Properties
-											</td>
-											<td>
-												<%
+											<%
 													String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 																						.getInstance()
 																						.getDetailPage(
@@ -77,57 +77,53 @@
 																				pageContext.setAttribute("detailPage",
 																						detailPage);
 												%>
-												<c:set var="nanomaterialEntity"
-													value="${nanomaterialEntity}" scope="session" />
-												<jsp:include page="${detailPage}">
-													<jsp:param name="summary" value="true" />
-												</jsp:include>
-											</td>
-										</tr>
-									</c:if>
-									<tr>
-										<td class="cellLabel">
-											Composing Elements
-										</td>
-										<td>
-											<c:set var="entity" value="${nanomaterialEntity}" />
-											<%@include file="bodyComposingElementView.jsp"%>
+											<c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
+												scope="session" />
+											<jsp:include page="${detailPage}">
+												<jsp:param name="summary" value="true" />
+											</jsp:include>
 										</td>
 									</tr>
-									<tr>
-										<td class="cellLabel">
-											Files
-										</td>
-										<td>
-											<c:choose>
-												<c:when test="${! empty nanomaterialEntity.files}">
-													<c:set var="files" value="${nanomaterialEntity.files }" />
-													<c:set var="entityType" value="nanomaterial entity" />
-													<%@include file="../bodyFileView.jsp"%>
-												</c:when>
-												<c:otherwise>
+								</c:if>
+								<tr>
+									<td class="cellLabel">
+										Composing Elements
+									</td>
+									<td>
+										<c:set var="entity" value="${nanomaterialEntity}" />
+										<%@include file="bodyComposingElementView.jsp"%>
+									</td>
+								</tr>
+								<tr>
+									<td class="cellLabel">
+										Files
+									</td>
+									<td>
+										<c:choose>
+											<c:when test="${! empty nanomaterialEntity.files}">
+												<c:set var="files" value="${nanomaterialEntity.files }" />
+												<c:set var="entityType" value="nanomaterial entity" />
+												<%@include file="../bodyFileView.jsp"%>
+											</c:when>
+											<c:otherwise>
 					N/A
 					</c:otherwise>
-											</c:choose>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</td>
-					</tr>
-				</c:if>
-			</logic:iterate>
-		</c:when>
-		<c:otherwise>
-			<tr>
-				<td>
+										</c:choose>
+									</td>
+								</tr>
+							</table>
+
+						</c:if>
+					</logic:iterate>
+				</c:when>
+				<c:otherwise>
 					<div class="indented4">
 						N/A
 					</div>
-				</td>
-			</tr>
-		</c:otherwise>
-	</c:choose>
+				</c:otherwise>
+			</c:choose>
+		</td>
+	</tr>
 </table>
 <div id="summarySeparator1">
 	<br>
