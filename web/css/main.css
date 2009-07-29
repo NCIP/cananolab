@@ -862,67 +862,6 @@ tr.gridTableHeader {
 	vertical-align: middle;
 }
 
-.smalltable {
-	width: 400px;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: solid;
-	border-collapse: collapse;
-}
-
-.smalltable th {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 5px 30px 10px 30px;
-	border-style: none;
-	border-width: 1px;
-	border-color: #cccccc;
-}
-
-.smalltable td {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
-	padding: 5px 0 5px 5px;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: none;
-	vertical-align: middle;
-}
-
-tr.smallTableHeader {
-	height: 20px;
-	font-size: 0.85em;
-	font-weight: normal;
-}
-
-
-.smalltableNoBorder {
-	width: 400px;
-	border-width: 0px;
-	border-color: #cccccc;
-	border-style: solid;
-	border-collapse: collapse;
-}
-
-.smalltableNoBorder th {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 5px 30px 10px 30px;
-	border-style: none;
-	border-width: 1px;
-	border-color: #cccccc;
-}
-
-.smalltableNoBorder td {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 2px 0px 2px 2px;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: none;
-	vertical-align: middle;
-}
-
 #publicLinks, ul { /* for the public links below the welcome content of the home page */
 
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -1450,102 +1389,6 @@ input.noBorderText {
 	background-color: #f4f4f5;
 }
 
-.smalltable3 {
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: solid;
-	border-collapse: collapse;
-	color: #5C5C5C;
-}
-
-.smalltable3 th {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 5px 30px 10px 30px;
-	border-style: none;
-	border-width: 1px;
-	border-color: #cccccc;
-	color: #5C5C5C;
-}
-
-.smalltable3 td {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
-	padding: 5px 0 5px 5px;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: none;
-	vertical-align: middle;
-	color: #5C5C5C;
-}
-
-
-
-.smalltable2 {
-	width: 600px;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: solid;
-	border-collapse: collapse;
-	color: #5C5C5C;
-}
-
-.smalltable2 th {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 5px 30px 10px 30px;
-	border-style: none;
-	border-width: 1px;
-	border-color: #cccccc;
-	color: #5C5C5C;
-}
-
-.smalltable2 td {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
-	padding: 5px 0 5px 5px;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: none;
-	vertical-align: middle;
-	color: #5C5C5C;
-}
-
-
-
-.summarytable {
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: solid;
-	border-collapse: collapse;
-	color: #5C5C5C;
-}
-
-.summarytable th {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 5px 10px 10px 5px;
-	border-style: none;
-	border-width: 1px;
-	border-color: #cccccc;
-	color: #5C5C5C;
-	background-color:#CCCCCC;
-	text-align:left;
-}
-
-.summarytable td {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 5px 0 5px 5px;
-	border-width: 1px;
-	border-color: #cccccc;
-	border-style: none;
-	vertical-align: top;
-	text-align:left;
-	color: #5C5C5C;
-}
-
-
 .summaryViewLayer1 {
 	border-collapse: collapse;
 	border-color: #cccccc;
@@ -1660,8 +1503,8 @@ input.noBorderText {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.75em;
 	padding: 3px 3px 3px 3px;
-	color: #FFFFFF;
-	background-color: #5c5c5c;
+	color: #5C5C5C;
+	background-color: #5C5C5C;
 	text-align: left;
 }
 
