@@ -1552,7 +1552,7 @@ input.noBorderText {
 	border-style: solid;
 	border-top: none;
 	border-width: 1px;
-	color: red;
+	color: #5C5C5C;
 }
 
 .summaryViewLayer1 th {
