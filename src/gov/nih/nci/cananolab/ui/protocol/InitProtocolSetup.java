@@ -17,9 +17,9 @@ import org.apache.log4j.Logger;
 /**
  * This class sets up session level or servlet context level variables to be
  * used in various actions during the setup of query forms.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class InitProtocolSetup {
 	Logger logger = Logger.getLogger(InitProtocolSetup.class);
@@ -41,7 +41,7 @@ public class InitProtocolSetup {
 	public List<ProtocolBean> getProtocolsByChar(HttpServletRequest request,
 			String characterizationType) throws Exception {
 		String protocolType = null;
-		if (characterizationType.equals("Physico-Chemical Characterization")) {
+		if (characterizationType.equals(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
 			protocolType = Constants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
 		} else if (characterizationType.equals("In Vitro Characterization")) {
 			protocolType = Constants.INVITRO_ASSAY_PROTOCOL;
