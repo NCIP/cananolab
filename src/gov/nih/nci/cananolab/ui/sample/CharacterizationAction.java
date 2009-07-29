@@ -36,7 +36,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
- *
+ * 
  * @author pansu
  */
 public class CharacterizationAction extends BaseAnnotationAction {
@@ -46,7 +46,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -91,7 +91,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new characterization
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -120,7 +120,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up drop-downs need for the input form
-	 *
+	 * 
 	 * @param request
 	 * @param theForm
 	 * @throws Exception
@@ -149,7 +149,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for editing existing characterization
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -179,7 +179,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance().getAssayTypesByCharName(
 				request, charBean.getCharacterizationName());
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
-				request, charBean.getCharacterizationName());
+				request, charBean.getCharacterizationType(),
+				charBean.getCharacterizationName());
 
 		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
@@ -355,7 +356,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -377,7 +378,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryView() handles View request for Characterization Summary report.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -401,7 +402,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -431,7 +432,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
 	 * Prepare CharacterizationBean based on SampleId.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -481,7 +482,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * Shared function for summaryView() and summaryPrint(). Keep submitted
 	 * characterization types in the correct display order. Should be called
 	 * after calling prepareSummary().
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -512,7 +513,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Export Characterization Summary report.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request

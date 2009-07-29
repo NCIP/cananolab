@@ -18,9 +18,9 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class DWRCharacterizationResultManager {
 	public String[] getConditionOptions() throws Exception {
@@ -38,12 +38,12 @@ public class DWRCharacterizationResultManager {
 		return properties.toArray(new String[properties.size()]);
 	}
 
-	public String[] getDatumNameOptions(String characterizationName)
-			throws Exception {
+	public String[] getDatumNameOptions(String characterizationType,
+			String characterizationName) throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> names = InitCharacterizationSetup.getInstance()
 				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
-						characterizationName);
+						characterizationType, characterizationName);
 		return names.toArray(new String[names.size()]);
 	}
 
