@@ -6,13 +6,8 @@
 
 <table width="100%" align="center" class="submissionView">
 	<tr>
-		<th colspan="2">
-			Design and Methods
-		</th>
-	</tr>
-	<tr>
 		<td class="cellLabel">
-			Description
+			Design and Methods Description
 		</td>
 		<td>
 			<html:textarea property="achar.description" cols="120" rows="5" />

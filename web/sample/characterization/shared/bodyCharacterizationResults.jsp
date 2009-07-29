@@ -5,19 +5,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <table width="100%" align="center" class="submissionView">
 	<tr>
-		<th colspan="2">
-			Results
-		</th>
-	</tr>
-	<tr>
 		<td class="cellLabel" width="20%">
 			Finding
 		</td>
 		<td>
 			<a style="display: block" id="addFinding"
 				href="javascript:resetTheFinding(characterizationForm);openSubmissionForm('Finding');"><img
-					align="top" src="images/btn_add.gif" border="0" />
-			</a>
+					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
 	<tr>

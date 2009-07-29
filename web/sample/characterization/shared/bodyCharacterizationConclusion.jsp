@@ -5,11 +5,9 @@
 
 <table width="100%" align="center" class="submissionView">
 	<tr>
-		<th>
+		<td class="cellLabel">
 			Analysis and Conclusion
-		</th>
-	</tr>
-	<tr>
+		</td>
 		<td>
 			<html:textarea property="achar.conclusion" cols="120" rows="5" />
 			&nbsp;

@@ -4,11 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 <table width="100%" align="center" class="submissionView">
-	<tr>
-		<th colspan="4">
-			Summary
-		</th>
-	</tr>
 	<%-- can't change characterization type and name in edit mode --%>
 	<c:if test="${empty characterizationForm.map.achar.domainChar.id}">
 		<tr>
