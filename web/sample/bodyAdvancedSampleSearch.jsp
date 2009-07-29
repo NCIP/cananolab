@@ -12,6 +12,9 @@
 	src="javascript/CharacterizationManager.js"></script>
 <script type="text/javascript"
 	src="/caNanoLab/dwr/interface/CharacterizationManager.js"></script>
+<script type="text/javascript" src="javascript/FindingManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/FindingManager.js'></script>
 
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Advanced Sample Search" />
@@ -30,35 +33,31 @@
 			<td>
 				<table id="compositionQueryTable" class="summaryViewLayer4"
 					width="85%" style="display: none;">
-					<tbody id="compositionQueryRows">
-						<tr id="patternHeader">
-							<td width="25%" class="cellLabel">
-								Nanomaterial or Functionalizing Entity
-							</td>
-							<td width="25%" class="cellLabel">
-								Entity Type
-							</td>
-							<td class="cellLabel">
-								Chemical Name
-							</td>
-						</tr>
-						<tr id="pattern" style="display: none;">
-							<td>
+					<tbody id="characterizationQueryRows">
+						<tr id="compPattern" style="display: none;">
+							<td width="25%">
 								<span id="compTypeValue">Composition Type</span>
 							</td>
-							<td>
+							<td width="20%">
 								<span id="entityTypeValue">Entity Type</span>
 							</td>
-							<td>
+							<td width="20%">
+								<span id="compOperandValue">Operand</span>
+							</td>
+							<td width="20%">
 								<span id="chemicalNameValue">Chemical Name</span>
 							</td>
 							<td>
-								<input class="noBorderButton" id="edit" type="button"
-									value="Edit" />
+								<input class="noBorderButton" id="compEdit" type="button"
+									value="Edit" onclick="editCompositionQuery(this.id);" />
 							</td>
 						</tr>
 					</tbody>
 				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<table id="newCompositionQuery" style="display: block;"
 					class="promptbox">
 					<tr>
@@ -67,7 +66,8 @@
 								styleId="compQueryId" />
 							<html:select
 								property="searchBean.theCompositionQuery.compositionType"
-								styleId="compType" onchange="javascript:updateCompositionEntityDropdowns();">
+								styleId="compType"
+								onchange="javascript:setCompositionEntityOptions();">
 								<option value="">
 									-- Please Select --
 								</option>
@@ -88,22 +88,16 @@
 							</html:select>
 						</td>
 						<td class="cellLabel">
-							Chemical Name
+							with chemical name
 						</td>
 						<td>
 							<html:select property="searchBean.theCompositionQuery.operand"
-								styleId="operand">
-								<option value="equalsTo" />
+								styleId="compOperand">
+								<option value="equals to" />
 									equals to
 								</option>
 								<option value="contains" />
 									contains
-								</option>
-								<option value="startsWith" />
-									starts with
-								</option>
-								<option value="endsWith" />
-									ends with
 								</option>
 							</html:select>
 						</td>
@@ -116,11 +110,11 @@
 								<tr>
 									<td>
 										<input class="promptButton" type="button" value="Add"
-											onclick="addCompositionQuery();show('compositionQueryTable');closeSubmissionForm('CompositionQuery');" />
+											onclick="addCompositionQuery();show('characterizationQueryTable');" />
 									</td>
 									<td>
-										<input class="promptButton" type="button" value="Cancel"
-											onclick="clearCompositionQuery();closeSubmissionForm('CompositionQuery');" />
+										<input class="promptButton" type="button" value="Reset"
+											onclick="clearCompositionQuery();" />
 									</td>
 									<td>
 										<input style="display: none;" class="promptButton"
@@ -136,13 +130,175 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="compositionLogicalOperator" style="display: none"
+				<div id="compositionLogicalOperator" style="display: none">
 					<html:radio property="searchBean.compositionLogicalOperator"
-					value="and" />
-				&nbsp; AND
+						value="and" />
+					&nbsp; AND
 					<html:radio property="searchBean.compositionLogicalOperator"
-					value="or" />
-					OR</div>
+						value="or" />
+					OR
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br />
+	<table width="100%" align="center" class="submissionView">
+		<tr>
+			<td>
+				<div id="logicalOperator" style="display: block">
+					<html:radio property="searchBean.logicalOperator" value="and" />
+					&nbsp; AND
+					<html:radio property="searchBean.logicalOperator" value="or" />
+					OR
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br />
+	<table width="100%" align="center" class="submissionView">
+		<tr>
+			<th>
+				Characterization Criteria
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<table id="characterizationQueryTable" class="summaryViewLayer4"
+					width="85%" style="display: none;">
+					<tbody id="characterizationQueryRows">
+						<tr id="charPattern" style="display: none;">
+							<td width="15%">
+								<span id="charTypeValue">Characterization Type</span>
+							</td>
+							<td width="15%">
+								<span id="charNameValue">Characterization Name</span>
+							</td>
+							<td width="15%">
+								<span id="datumNameValue">Datum Name</span>
+							</td>
+							<td width="10%">
+								<span id="charOperandValue">Operand</span>
+							</td>
+							<td width="15%">
+								<span id="datumValueValue">Datum Value</span>
+							</td>
+							<td>
+								<span id="datumValueUnitValue">Datum Unit</span>
+							</td>
+							<td>
+								<input class="noBorderButton" id="charEdit" type="button"
+									value="Edit" onclick="editCharacterizationQuery(this.id);" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newCharacterizationQuery" style="display: block;"
+					class="promptbox">
+					<tr>
+						<td>
+							<html:hidden property="searchBean.theCharacterizationQuery.id"
+								styleId="charQueryId" />
+							<html:select
+								property="searchBean.theCharacterizationQuery.characterizationType"
+								styleId="charType"
+								onchange="javascript:setCharacterizationOptions();">
+								<option value="">
+									-- Please Select --
+								</option>
+								<html:options name="characterizationTypes" />
+							</html:select>
+						</td>
+						<td>
+							<html:select
+								property="searchBean.theCharacterizationQuery.characterizationName"
+								styleId="charName"
+								onchange="javascript:setDatumNameOptionsByCharName();">
+								<option value="">
+									-- Please Select --
+								</option>
+							</html:select>
+						</td>
+						<td>
+							<html:select
+								property="searchBean.theCharacterizationQuery.datumName"
+								styleId="datumName"
+								onchange="javascript:setDatumValueUnitOptions()">
+								<option value="">
+									-- Please Select --
+								</option>
+							</html:select>
+						</td>
+						<td>
+							<html:select
+								property="searchBean.theCharacterizationQuery.operand"
+								styleId="charOperand">
+								<option value="equals to" />
+									equals to
+								</option>
+								<option value="greater than" />
+									greater than
+								</option>
+								<option value="greater than and equal to" />
+									greater than
+								</option>
+								<option value="less than" />
+									less than
+								</option>
+								<option value="less than and equal to" />
+									less than
+								</option>
+							</html:select>
+						</td>
+						<td>
+							<html:text
+								property="searchBean.theCharacterizationQuery.datumValue"
+								styleId="datumValue" size="10" />
+						</td>
+						<td>
+							<html:select
+								property="searchBean.theCharacterizationQuery.datumValueUnit"
+								styleId="datumValueUnit">
+								<option value="">
+								</option>
+							</html:select>
+						</td>
+						<td>
+							<table cellspacing="0">
+								<tr>
+									<td>
+										<input class="promptButton" type="button" value="Add"
+											onclick="addCharacterizationQuery();show('characterizationQueryTable');" />
+									</td>
+									<td>
+										<input class="promptButton" type="button" value="Reset"
+											onclick="clearCharacterizationQuery();" />
+									</td>
+									<td>
+										<input style="display: none;" class="promptButton"
+											id="deleteCharacterizationQuery" type="button" value="Remove"
+											onclick="deleteTheCharacterizationQuery()" />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="characterizationLogicalOperator" style="display: none">
+					<html:radio property="searchBean.characterizationLogicalOperator"
+						value="and" />
+					&nbsp; AND
+					<html:radio property="searchBean.characterizationLogicalOperator"
+						value="or" />
+					OR
+				</div>
 			</td>
 		</tr>
 	</table>
