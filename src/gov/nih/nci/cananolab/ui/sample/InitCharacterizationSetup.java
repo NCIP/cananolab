@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class sets up information required for characterization forms.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class InitCharacterizationSetup {
 	private CharacterizationService charService = new CharacterizationServiceLocalImpl();
@@ -154,7 +155,7 @@ public class InitCharacterizationSetup {
 
 	/**
 	 * Set characterization type of an existing characterization bean
-	 *
+	 * 
 	 * @param request
 	 * @param charBean
 	 * @throws Exception
@@ -176,7 +177,7 @@ public class InitCharacterizationSetup {
 
 	/**
 	 * Set the display name for an existing characterization bean
-	 *
+	 * 
 	 * @param request
 	 * @param charBean
 	 * @throws Exception
@@ -233,13 +234,34 @@ public class InitCharacterizationSetup {
 	}
 
 	public SortedSet<String> getDatumNamesByCharName(
-			HttpServletRequest request, String charName) throws Exception {
+			HttpServletRequest request, String charType, String charName)
+			throws Exception {
 		String charClassName = InitSetup.getInstance().getClassName(charName,
 				request.getSession().getServletContext());
-		SortedSet<String> names = LookupService.getDefaultAndOtherLookupTypes(
-				charClassName, "datumName", "otherDatumName");
-		request.getSession().setAttribute("charNameDatumNames", names);
-		return names;
+		SortedSet<String> allDatumNames = new TreeSet<String>();
+		// physico-chemical characterizions don't have assay types
+		if (charType
+				.equalsIgnoreCase(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
+			allDatumNames = LookupService.getDefaultAndOtherLookupTypes(
+					charClassName, "datumName", "otherDatumName");
+		} else {
+			SortedSet<String> assayTypes = LookupService
+					.getDefaultAndOtherLookupTypes(charClassName, "assayType",
+							"otherAssayType");
+
+			if (assayTypes != null && !assayTypes.isEmpty()) {
+				for (String type : assayTypes) {
+					SortedSet<String> names = LookupService
+							.getDefaultAndOtherLookupTypes(type, "datumName",
+									"otherDatumName");
+					for (String name : names) {
+						allDatumNames.add(type + ":" + name);
+					}
+				}
+			}
+		}
+		request.getSession().setAttribute("charNameDatumNames", allDatumNames);
+		return allDatumNames;
 	}
 
 	public SortedSet<String> getConditions(HttpServletRequest request)
