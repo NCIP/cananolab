@@ -6,8 +6,8 @@
 
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" 
-						value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Publication" />
+		<jsp:param name="pageTitle"
+			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Publication" />
 		<jsp:param name="topic" value="publications_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 	</jsp:include>
@@ -96,8 +96,8 @@
 		<td>
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
-				<table id="summarySection${ind.count}" class="smalltable3"
-					cellpadding="0" cellspacing="0" border="0" width="100%">
+				<table id="summarySection${ind.count}" class="summaryViewLayer2"
+					width="95%" align="center">
 					<tr>
 						<th align="left">
 							<a name="${type}" id="${type}">${type}</a> &nbsp;&nbsp;&nbsp;
@@ -118,87 +118,76 @@
 							<c:choose>
 								<c:when
 									test="${! empty publicationSummaryView.category2Publications[type]}">
-									<div class="indented4">
-										<table class="summarytable" width="90%" border="0"
-											cellpadding="0" cellspacing="0" summary="">
+									<table class="summaryViewLayer3" width="95%" align="center">
+										<tr>
+											<th>
+												Bibliography Info
+											</th>
+											<th>
+												Research Category
+											</th>
+											<th>
+												Description
+											</th>
+											<th>
+												Publication Status
+											</th>
+											<th width="5%">
+												&nbsp;
+											</th>
+										</tr>
+										<c:forEach var="pubBean"
+											items="${publicationSummaryView.category2Publications[type]}"
+											varStatus="ind">
+											<c:set var="pubObj" value="${pubBean.domainFile}" />
 											<tr>
-												<th>
-													Bibliography Info
-												</th>
-												<th>
-													Research Category
-												</th>
-												<th>
-													Description
-												</th>
-												<th>
-													Publication Status
-												</th>
-												<th width="5%">
+												<td valign="top">
+													${pubBean.displayName}&nbsp;
+												</td>
+												<td valign="top">
+													<c:out
+														value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
+														escapeXml="false" />
 													&nbsp;
-												</th>
+												</td>
+												<td valign="top">
+													<c:if test="${!empty pubObj.description}">
+														<div id="descriptionSection" style="position: relative;">
+															<a style="display: block" id="viewDetail" href="#"
+																onmouseOver="javascript: show('publicationDescription${ind.count}');"
+																onmouseOut="javascript: hide('publicationDescription${ind.count}');">View</a>
+															<table id="publicationDescription${ind.count}"
+																style="display: none; position: absolute; left: -510px; top: -50px; width: 500px; z-index: 5; border-width: 1px; border-color: #cccccc; border-style: solid; background-color: #FFFFFF;"
+																class="promptbox">
+																<tr>
+																	<td>
+																		${pubObj.description}
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</c:if>
+												</td>
+												<td valign="top">
+													<c:out value="${pubObj.status}" />
+													&nbsp;
+												</td>
+												<td valign="top">
+													<c:url var="pubUrl" value="publication.do">
+														<c:param name="sampleId" value="${sampleId}" />
+														<c:param name="dispatch" value="setupUpdate" />
+														<c:param name="publicationId" value="${pubObj.id}" />
+														<c:param name="location" value="${location}" />
+													</c:url>
+													<a href="${pubUrl}">Edit</a>
+												</td>
 											</tr>
-											<c:forEach var="pubBean"
-												items="${publicationSummaryView.category2Publications[type]}"
-												varStatus="ind">
-												<c:set var="pubObj" value="${pubBean.domainFile}" />
-												<tr>
-													<td valign="top">
-														${pubBean.displayName}&nbsp;
-													</td>
-													<td valign="top">
-														<c:out
-															value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
-															escapeXml="false" />
-														&nbsp;
-													</td>
-													<td valign="top">
-														<c:if test="${!empty pubObj.description}">
-															<div id="descriptionSection" style="position: relative;">
-																<a style="display: block" id="viewDetail" href="#"
-																	onmouseOver="javascript: show('publicationDescription${ind.count}');"
-																	onmouseOut="javascript: hide('publicationDescription${ind.count}');">View</a>
-																<table id="publicationDescription${ind.count}"
-																	style="display: none; position: absolute; left: -510px; top: -50px; width: 500px; z-index: 5; border-width: 1px; border-color: #cccccc; border-style: solid; background-color: #FFFFFF;"
-																	class="promptbox">
-																	<tr>
-																		<td>
-																			${pubObj.description}
-																		</td>
-																	</tr>
-																</table>
-															</div>
-														</c:if>
-													</td>
-													<td valign="top">
-														<c:out value="${pubObj.status}" />
-														&nbsp;
-													</td>
-													<td valign="top">
-														<c:url var="pubUrl" value="publication.do">
-															<c:param name="sampleId" value="${sampleId}" />
-															<c:param name="dispatch" value="setupUpdate" />
-															<c:param name="publicationId" value="${pubObj.id}" />
-															<c:param name="location" value="${location}" />
-														</c:url>
-														<a href="${pubUrl}">Edit</a>
-													</td>
-												</tr>
-											</c:forEach>
-										</table>
-									</div>
+										</c:forEach>
+									</table>
 								</c:when>
 								<c:otherwise>
 									<div class="indented4">
-										<table class="summarytable" cellpadding="0" cellspacing="0"
-											border="0" width="100%">
-											<tr>
-												<td colspan="2" valign="top" align="left"
-													class="borderlessLabel">
-													N/A
-												</td>
-											</tr>
-										</table>
+										N/A
 									</div>
 								</c:otherwise>
 							</c:choose>
