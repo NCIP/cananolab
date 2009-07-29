@@ -67,7 +67,6 @@ public class Constants {
 
 	/*
 	 * The following Strings are nano specific
-	 *
 	 */
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
@@ -163,6 +162,7 @@ public class Constants {
 	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
 			"setupNew", "setupUpdate", "summaryEdit", "add", "remove", "save" };
 
+	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico-chemical characterization";
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
 
@@ -199,5 +199,5 @@ public class Constants {
 	// LOCATION
 	public static final String LOCATION = "location";
 
-	public static final int DISPLAY_TAG_TABLE_SIZE=25;
+	public static final int DISPLAY_TAG_TABLE_SIZE = 25;
 }
