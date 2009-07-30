@@ -17,12 +17,12 @@ VALUES (1,1,3,sysdate()),
 
 INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, attribute, protection_element_type, application_id, update_date)
 VALUES  (3, 'protocol', '', 'protocol', '', NULL, 2, sysdate()),
-  (4, 'nanoparticle', '', 'nanoparticle', '', NULL, 2, sysdate()),
+  (4, 'sample', '', 'sample', '', NULL, 2, sysdate()),
   (5, 'publication', '', 'publication', '', NULL, 2, sysdate());
 
 INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id, large_element_count_flag, update_date, parent_protection_group_id)
 VALUES  (1, 'protocol', '', 2, 0, sysdate(), NULL),
-  (2, 'nanoparticle', '', 2, 0, sysdate(), NULL),
+  (2, 'sample', '', 2, 0, sysdate(), NULL),
   (3, 'publication', '', 2, 0, sysdate(), NULL);
 
 INSERT INTO csm_role(role_id, role_name, role_description, application_id, active_flag, update_date)
