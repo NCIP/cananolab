@@ -74,6 +74,7 @@
 			<include method="addCharacterizationQuery" />
 			<include method="deleteCompositionQuery" />
 			<include method="deleteCharacterizationQuery" />
+			<include method="getCharacterizationOperandOptions"/>
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
