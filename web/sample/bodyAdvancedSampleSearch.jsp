@@ -133,7 +133,7 @@
 				<div id="compositionLogicalOperator" style="display: none">
 					<html:radio property="searchBean.compositionLogicalOperator"
 						value="and" />
-					&nbsp; AND
+					AND
 					<html:radio property="searchBean.compositionLogicalOperator"
 						value="or" />
 					OR
@@ -147,7 +147,7 @@
 			<td>
 				<div id="logicalOperator" style="display: block">
 					<html:radio property="searchBean.logicalOperator" value="and" />
-					&nbsp; AND
+					AND
 					<html:radio property="searchBean.logicalOperator" value="or" />
 					OR
 				</div>
@@ -294,7 +294,7 @@
 				<div id="characterizationLogicalOperator" style="display: none">
 					<html:radio property="searchBean.characterizationLogicalOperator"
 						value="and" />
-					&nbsp; AND
+					AND
 					<html:radio property="searchBean.characterizationLogicalOperator"
 						value="or" />
 					OR
