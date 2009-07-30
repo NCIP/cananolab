@@ -25,12 +25,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.upload.FormFile;
+import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for all forms.
- *
+ * 
  * @author pansu, cais
- *
+ * 
  */
 public class InitSetup {
 
@@ -57,7 +58,7 @@ public class InitSetup {
 
 	/**
 	 * Returns a map between an object name and its display name
-	 *
+	 * 
 	 * @param appContext
 	 * @return
 	 * @throws BaseException
@@ -78,7 +79,7 @@ public class InitSetup {
 
 	/**
 	 * Returns a map between a display name and its corresponding object name
-	 *
+	 * 
 	 * @param appContext
 	 * @return
 	 * @throws BaseException
@@ -106,7 +107,7 @@ public class InitSetup {
 	/**
 	 * Returns a map between a display name and its corresponding full class
 	 * name
-	 *
+	 * 
 	 * @param appContext
 	 * @return
 	 * @throws BaseException
@@ -167,7 +168,7 @@ public class InitSetup {
 	/**
 	 * Retrieve lookup attribute for lookup name from the database and store in
 	 * the application context
-	 *
+	 * 
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -177,8 +178,7 @@ public class InitSetup {
 	 */
 	public SortedSet<String> getServletContextDefaultLookupTypes(
 			ServletContext appContext, String contextAttribute,
-			String lookupName, String lookupAttribute)
-			throws BaseException {
+			String lookupName, String lookupAttribute) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
 		SortedSet<String> types = defaultLookupTable.get(lookupName).get(
 				lookupAttribute);
@@ -189,7 +189,7 @@ public class InitSetup {
 	/**
 	 * Retrieve lookup attribute and other attribute for lookup name from the
 	 * database and store in the session
-	 *
+	 * 
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
@@ -244,7 +244,7 @@ public class InitSetup {
 	/**
 	 * Retrieve lookup attribute and other attribute for lookup name based on
 	 * reflection and store in the application context
-	 *
+	 * 
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -369,5 +369,28 @@ public class InitSetup {
 		request.getSession().getServletContext().setAttribute("allGridNodes",
 				remoteNodes);
 		return gridNodes;
+	}
+
+	public List<LabelValueBean> getLookupValuesAsOptions(String lookupName,
+			String lookupAttribute, String otherTypeAttribute) throws Exception {
+		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
+		SortedSet<String> defaultValues = LookupService.findLookupValues(
+				lookupName, lookupAttribute);
+		// annotate the label of the default ones with *s.
+		for (String name : defaultValues) {
+			LabelValueBean lv = new LabelValueBean();
+			lv.setLabel(name);
+			lv.setValue(name);
+			lvBeans.add(lv);
+		}
+		SortedSet<String> otherValues = LookupService.findLookupValues(
+				lookupName, otherTypeAttribute);
+		for (String name : otherValues) {
+			LabelValueBean lv = new LabelValueBean();
+			lv.setLabel("["+name+"]");
+			lv.setValue(name);
+			lvBeans.add(lv);
+		}
+		return lvBeans;
 	}
 }
