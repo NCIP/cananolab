@@ -37,15 +37,12 @@ public class DWRCharacterizationManager {
 			SortedSet<String> assayTypes = InitCharacterizationSetup
 					.getInstance().getAssayTypesByCharName(
 							wctx.getHttpServletRequest(), charName);
-			LabelValueBean labelValue = new LabelValueBean();
-			labelValue.setLabel(charName);
-			labelValue.setValue(charName);
+			LabelValueBean labelValue = new LabelValueBean(charName, charName);
 			charNamesWithAssayTypes.add(labelValue);
 			if (!assayTypes.isEmpty()) {
 				for (String assayType : assayTypes) {
-					LabelValueBean labelValueWithAssay = new LabelValueBean();
-					labelValueWithAssay.setLabel("--" + assayType);
-					labelValueWithAssay.setValue(assayType);
+					LabelValueBean labelValueWithAssay = new LabelValueBean(
+							"--" + assayType, assayType);
 					charNamesWithAssayTypes.add(labelValueWithAssay);
 				}
 			}

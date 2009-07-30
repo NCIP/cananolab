@@ -378,19 +378,39 @@ public class InitSetup {
 				lookupName, lookupAttribute);
 		// annotate the label of the default ones with *s.
 		for (String name : defaultValues) {
-			LabelValueBean lv = new LabelValueBean();
-			lv.setLabel(name);
-			lv.setValue(name);
+			LabelValueBean lv = new LabelValueBean(name, name);
 			lvBeans.add(lv);
 		}
 		SortedSet<String> otherValues = LookupService.findLookupValues(
 				lookupName, otherTypeAttribute);
 		for (String name : otherValues) {
-			LabelValueBean lv = new LabelValueBean();
-			lv.setLabel("["+name+"]");
-			lv.setValue(name);
+			LabelValueBean lv = new LabelValueBean("[" + name + "]", name);
 			lvBeans.add(lv);
 		}
 		return lvBeans;
+	}
+
+	public void setStaticOptions(ServletContext appContext) {
+		LabelValueBean[] booleanOptions = new LabelValueBean[] {
+				new LabelValueBean("true", "1"),
+				new LabelValueBean("false", "0") };
+		appContext.setAttribute("booleanOptions", booleanOptions);
+
+		LabelValueBean[] stringOperands = new LabelValueBean[] {
+				new LabelValueBean("equals to", "equals"),
+				new LabelValueBean("contains", "contains") };
+		appContext.setAttribute("stringOperands", stringOperands);
+		
+		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
+				"equals to", "=") };
+		appContext.setAttribute("booleanOperands", booleanOperands);
+
+		LabelValueBean[] numberOperands = new LabelValueBean[] {
+				new LabelValueBean("equals to", "="),
+				new LabelValueBean("greater than", ">"),
+				new LabelValueBean("greater than and equals to", ">="),
+				new LabelValueBean("less than", "<"),
+				new LabelValueBean("less than and equals to", "<=") };
+		appContext.setAttribute("numberOperands", numberOperands);
 	}
 }

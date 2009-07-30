@@ -64,6 +64,8 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup.getInstance().getServletContextDefaultLookupTypes(
 					appContext, "wallTypes", "CarbonNanotube", "wallType");
 
+			InitSetup.getInstance().setStaticOptions(appContext);
+			
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 
 			setupInitialGridNodes();

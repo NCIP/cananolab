@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.dto.BaseQueryBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
@@ -16,6 +15,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
@@ -225,5 +225,15 @@ public class DWRSampleManager {
 				.get("searchBean");
 		searchBean.removeQuery(theQuery);
 		return searchBean;
+	}
+	
+	public LabelValueBean[] getCharacterizationOperandOptions(String datumName) {
+		WebContext wctx = WebContextFactory.get();
+		if (datumName.startsWith("is ") && datumName.endsWith("?")) {
+			return (LabelValueBean[])wctx.getServletContext().getAttribute("booleanOperands");
+		}
+		else {
+			return (LabelValueBean[])wctx.getServletContext().getAttribute("numberOperands");
+		}
 	}
 }
