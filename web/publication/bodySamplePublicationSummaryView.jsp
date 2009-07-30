@@ -159,11 +159,6 @@
 										</c:forEach>
 									</table>
 								</c:when>
-								<c:otherwise>
-									<div class="indented4">
-										N/A
-									</div>
-								</c:otherwise>
 							</c:choose>
 						</td>
 					</tr>

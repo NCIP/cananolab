@@ -80,7 +80,7 @@
 				<td>
 					<html:text
 						property="achar.theFinding.rows[${rInd}].cells[${cInd}].value"
-						size="15" styleId="cellValue${rInd}:${cInd}" />
+						size="15" styleId="cellValue${rInd}:${cInd}" onkeydown="return filterFloatNumber(event)" />
 				</td>
 			</logic:iterate>
 			<td>

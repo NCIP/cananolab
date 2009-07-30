@@ -124,7 +124,6 @@
 										items="${characterizationSummaryView.type2Characterizations[type]}">
 										<c:set var="charObj" value="${charBean.domainChar}" />
 										<c:set var="charName" value="${charBean.characterizationName}" />
-										<div class="indented4">
 											<table class="summaryViewLayer3" width="95%" align="center">
 												<tr>
 													<th align="left" width="20%">
@@ -154,6 +153,7 @@
 																</c:choose>
 															</c:otherwise>
 														</c:choose>
+													</td>
 												</tr>
 												<tr>
 													<td class="cellLabel">
@@ -168,6 +168,7 @@
 															N/A
 															</c:otherwise>
 														</c:choose>
+													</td>
 												</tr>
 												<tr>
 													<td class="cellLabel">
@@ -182,6 +183,7 @@
 															N/A
 															</c:otherwise>
 														</c:choose>
+													</td>
 												</tr>
 												<tr>
 													<td class="cellLabel">
@@ -279,7 +281,6 @@
 													</td>
 												</tr>
 											</table>
-										</div>
 										<br>
 									</c:forEach>
 								</c:when>
