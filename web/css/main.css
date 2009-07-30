@@ -1503,8 +1503,9 @@ input.noBorderText {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.75em;
 	padding: 3px 3px 3px 3px;
-	color: #FFFFFF;
-	background-color: #5C5C5C;
+	color: #5C5C5C;
+	/*background-color: #5C5C5C;*/
+	background: white url(../images/shadeactive.gif) top left repeat-x;
 	text-align: left;
 }
 
@@ -1545,46 +1546,6 @@ input.noBorderText {
 }
 
 .subSubmissionView td {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.60em;
-	padding: 3px 3px 3px 3px;
-	border-width: 0px;
-	border-color: #cccccc;
-	border-style: solid;
-	vertical-align: top;
-	text-align: left;
-	color: #706C60;
-}
-
-
-.subSubmissionView2 {
-	border-width: 1px;
-	border-color: #cccccc;
-	padding: 3px 3px 3px 3px;
-	border-style: solid;
-	border-collapse: collapse;
-	color: #5C5C5C;
-	background-color: #D3E4DE;
-}
-
-.subSubmissionView2 caption {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	font-weight: bold;
-	color: #5C5C5C;
-}
-
-.subSubmissionView2 th {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.60em;
-	padding: 3px 3px 3px 3px;
-	color: #FFFFFF;
-	font-weight: bold;
-	background-color: #6a8989;
-	text-align: left;
-}
-
-.subSubmissionView2 td {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.60em;
 	padding: 3px 3px 3px 3px;
