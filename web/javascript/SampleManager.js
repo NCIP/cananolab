@@ -170,32 +170,43 @@ function deleteTheCompositionQuery() {
 	}
 }
 
-//characterization specific
+// characterization specific
 function setCharacterizationOptions() {
 	var charType = dwr.util.getValue("charType");
-	CharacterizationManager.getCharacterizationOptions(charType, function (data) {
-		dwr.util.removeAllOptions("charName");
-		dwr.util.addOptions("charName", emptyOption, "value", "label");
-		dwr.util.addOptions("charName", data);
-	});
+	CharacterizationManager.getDecoratedCharacterizationOptions(charType,
+			function(data) {
+				dwr.util.removeAllOptions("charName");
+				dwr.util.addOptions("charName", emptyOption, "value", "label");
+				dwr.util.addOptions("charName", data, "value", "label");
+			});
 }
 
 function setDatumNameOptionsByCharName() {
-	var charType=dwr.util.getValue("charType");
-	var charName=dwr.util.getValue("charName");	
-	FindingManager.getDatumNameOptions(charType, charName, function(data) {
-		dwr.util.removeAllOptions("datumName");
-		dwr.util.addOptions("datumName", emptyOption, "value", "label");		
-		dwr.util.addOptions("datumName", data);
-	});
+	var charType = dwr.util.getValue("charType");
+	var charName = dwr.util.getValue("charName");
+	if (charName.match("^--")) {
+		var assayType = charName.replace("--", "");
+	}
+	FindingManager
+			.getDecoratedDatumNameOptions(
+					charType,
+					charName,
+					assayType,
+					function(data) {
+						dwr.util.removeAllOptions("datumName");
+						dwr.util.addOptions("datumName", emptyOption, "value",
+								"label");
+						dwr.util
+								.addOptions("datumName", data, "value", "label");
+					});
 }
 
 function setDatumValueUnitOptions() {
-	var datumName=dwr.util.getValue("datumName");
+	var datumName = dwr.util.getValue("datumName");
 	FindingManager.getColumnValueUnitOptions(datumName, null, function(data) {
 		dwr.util.removeAllOptions("datumValueUnit");
-		dwr.util.addOptions("datumValueUnit", emptyOption, "value", "label");		
-		dwr.util.addOptions("datumValueUnit", data);		
+		dwr.util.addOptions("datumValueUnit", emptyOption, "value", "label");
+		dwr.util.addOptions("datumValueUnit", data);
 	});
 }
 
@@ -266,7 +277,7 @@ function populateCharacterizationQueries() {
 		id = theQuery.id;
 		dwr.util.cloneNode("charPattern", {
 			idSuffix : id
-		});		
+		});
 		dwr.util.setValue("charTypeValue" + id, theQuery.characterizationType);
 		dwr.util.setValue("charNameValue" + id, theQuery.characterizationName);
 		dwr.util.setValue("datumNameValue" + id, theQuery.datumName);
@@ -290,7 +301,7 @@ function editCharacterizationQuery(eleid) {
 	dwr.util.setValue("charName", query.characterizationName);
 	dwr.util.setValue("datumName", query.datumName);
 	dwr.util.setValue("charOperand", query.operand);
-	dwr.util.setValue("datumValue",  query.datumValue);
+	dwr.util.setValue("datumValue", query.datumValue);
 	dwr.util.setValue("datumValueUnit", query.datumValueUnit);
 	dwr.util.setValue("charQueryId", query.id);
 	show("deleteCharacterizationQuery");
@@ -301,7 +312,8 @@ function deleteTheCharacterizationQuery() {
 	if (eleid != "") {
 		var query = characterizationQueryCache[eleid];
 		if (confirm("Are you sure you want to delete this query?")) {
-			SampleManager.deleteCharacterizationQuery(query, function(searchBean) {
+			SampleManager.deleteCharacterizationQuery(query, function(
+					searchBean) {
 				if (searchBean != null) {
 					currentSearchBean = searchBean;
 					populateCharacterizationQueries();
