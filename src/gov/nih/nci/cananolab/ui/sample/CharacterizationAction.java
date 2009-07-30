@@ -180,7 +180,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				request, charBean.getCharacterizationName());
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
-				charBean.getCharacterizationName());
+				charBean.getCharacterizationName(), charBean.getAssayType());
 
 		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
