@@ -15,7 +15,6 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,8 @@ import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.axis.utils.StringUtils;
 
 /**
  * This class sets up information required for characterization forms.
@@ -234,31 +235,32 @@ public class InitCharacterizationSetup {
 	}
 
 	public SortedSet<String> getDatumNamesByCharName(
-			HttpServletRequest request, String charType, String charName)
-			throws Exception {
+			HttpServletRequest request, String charType, String charName,
+			String assayType) throws Exception {
 		String charClassName = InitSetup.getInstance().getClassName(charName,
 				request.getSession().getServletContext());
 		SortedSet<String> allDatumNames = new TreeSet<String>();
-		// physico-chemical characterizions don't have assay types
-		if (charType
-				.equalsIgnoreCase(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
+		// if assayType is empty, use charName to look up datums, as well as
+		// look up all assay types and use assay type to look up datum
+		if (StringUtils.isEmpty(assayType)) {
 			allDatumNames = LookupService.getDefaultAndOtherLookupTypes(
-					charClassName, "datumName", "otherDatumName");
-		} else {
+					charName, "datumName", "otherDatumName");
 			SortedSet<String> assayTypes = LookupService
 					.getDefaultAndOtherLookupTypes(charClassName, "assayType",
 							"otherAssayType");
-
 			if (assayTypes != null && !assayTypes.isEmpty()) {
 				for (String type : assayTypes) {
 					SortedSet<String> names = LookupService
 							.getDefaultAndOtherLookupTypes(type, "datumName",
 									"otherDatumName");
 					for (String name : names) {
-						allDatumNames.add(type + ":" + name);
+						allDatumNames.add(name);
 					}
 				}
 			}
+		} else {
+			allDatumNames = LookupService.getDefaultAndOtherLookupTypes(
+					assayType, "datumName", "otherDatumName");
 		}
 		request.getSession().setAttribute("charNameDatumNames", allDatumNames);
 		return allDatumNames;
