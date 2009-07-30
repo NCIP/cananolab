@@ -1,7 +1,7 @@
 function setNameOptionsByCharName(columnNumber) {
-	var charName = document.getElementById("charName").value;
-	var charType= document.getElementById("charType").value;
-	var columnType = document.getElementById("columnType" + columnNumber).value;
+	var charName = dwr.util.getValue("charName");
+	var charType = dwr.util.getValue("charType");
+	var columnType = dwr.util.getValue("columnType" + columnNumber);
 	if (columnType == "Datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
 		hide("conditionPropertyLabel" + columnNumber);
@@ -34,10 +34,9 @@ function setNameOptionsByCharName(columnNumber) {
 	}
 }
 function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
-	if (document.getElementById("columnType" + columnNumber).value == "Condition") {
+	if (dwr.util.getValue("columnType" + columnNumber) == "Condition") {
 		if (conditionName == null) {
-			conditionName = document
-					.getElementById("columnName" + columnNumber).value;
+			conditionName = dwr.util.getValue("columnName" + columnNumber);
 		}
 		FindingManager.getConditionPropertyOptions(conditionName,
 				function(data) {
@@ -54,10 +53,10 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 }
 function setColumnValueUnit(columnNumber) {
 	var name = null, property = null;
-	if (document.getElementById("columnType" + columnNumber).value == "Condition") {
-		property = document.getElementById("conditionProperty" + columnNumber).value;
+	if (dwr.util.getValue("columnType" + columnNumber) == "Condition") {
+		property = dwr.util.getValue("conditionProperty" + columnNumber);
 	}
-	name = document.getElementById("columnName" + columnNumber).value;
+	name = dwr.util.getValue("columnName" + columnNumber);
 	FindingManager.getColumnValueUnitOptions(name, property, function(data) {
 		dwr.util.removeAllOptions("valueUnit" + columnNumber);
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "" ]);
