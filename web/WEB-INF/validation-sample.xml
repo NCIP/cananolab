@@ -432,33 +432,36 @@
 			</field>
 			
 			<!-- 4.Optional properties: Finding - Data Matrix form -->
-			<field property="achar.theFinding.numberOfColumns"
-				page="4" depends="validwhen">
-				<arg position="0" key="achar.theFinding.numberOfColumns" bundle="sample" />
+			<field property="achar.theFinding.numberOfColumns" page="4"
+				depends="validwhenmatch">
+				<arg position="0" key="achar.theFinding.numberOfColumns" 
+ 					bundle="sample" /> 
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(*this* > 0) 
-					</var-value>
+						((*this* > 0) and (*this* == numberOfColumns)) 
+							</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.numberOfRows"
-				page="4" depends="validwhen">
-				<arg position="0" key="achar.theFinding.numberOfRows" bundle="sample" />
+			<field property="achar.theFinding.numberOfRows" page="4"
+				depends="validwhenmatch">
+				<arg position="0" key="achar.theFinding.numberOfRows" 
+					bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(*this* > 0) 
+						((*this* > 0) and (*this* == numberOfRows)) 
 					</var-value>
 				</var>
 			</field>
 			<field property="columnType" indexedListProperty="achar.theFinding.columnHeaders"
-				page="4" depends="validwhen">
-				<arg position="0" key="achar.theFinding.columnHeaders.columnType" bundle="sample" />
+				page="4" depends="validwhenmatch">
+				<arg position="0" key="achar.theFinding.columnHeaders.columnType" 
+					bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((*this*!=null) and 
+						((*this*!=null) and
 						(achar.theFinding.columnHeaders[].columnName!=null))
 					</var-value>
 				</var>

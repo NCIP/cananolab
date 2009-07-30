@@ -81,7 +81,6 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest" />
 
-
 		<validator name="minlength"
 			classname="org.apache.struts.validator.FieldChecks"
 			method="validateMinLength"
@@ -93,7 +92,6 @@
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.minlength"
 			jsFunction="org.apache.commons.validator.javascript.validateMinLength" />
-
 
 		<validator name="maxlength"
 			classname="org.apache.struts.validator.FieldChecks"
@@ -107,8 +105,6 @@
 			depends="" msg="errors.maxlength"
 			jsFunction="org.apache.commons.validator.javascript.validateMaxLength" />
 
-
-
 		<validator name="mask"
 			classname="org.apache.struts.validator.FieldChecks"
 			method="validateMask"
@@ -119,7 +115,6 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.invalid" />
-
 
 		<validator name="byte"
 			classname="org.apache.struts.validator.FieldChecks"
@@ -132,7 +127,6 @@
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.byte" jsFunctionName="ByteValidations" />
 
-
 		<validator name="short"
 			classname="org.apache.struts.validator.FieldChecks"
 			method="validateShort"
@@ -143,7 +137,6 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.short" jsFunctionName="ShortValidations" />
-
 
 		<validator name="integer"
 			classname="org.apache.struts.validator.FieldChecks"
@@ -156,8 +149,6 @@
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.integer" jsFunctionName="IntegerValidations" />
 
-
-
 		<validator name="long"
 			classname="org.apache.struts.validator.FieldChecks"
 			method="validateLong"
@@ -168,7 +159,6 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.long" />
-
 
 		<validator name="float"
 			classname="org.apache.struts.validator.FieldChecks"
@@ -192,7 +182,6 @@
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.double" />
 
-
 		<validator name="date"
 			classname="org.apache.struts.validator.FieldChecks"
 			method="validateDate"
@@ -204,7 +193,6 @@
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.date" jsFunctionName="DateValidations" />
 
-
 		<validator name="intRange"
 			classname="org.apache.struts.validator.FieldChecks"
 			method="validateIntRange"
@@ -215,7 +203,6 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
 			depends="integer" msg="errors.range" />
-
 
 		<validator name="floatRange"
 			classname="org.apache.struts.validator.FieldChecks"
@@ -239,7 +226,6 @@
                        javax.servlet.http.HttpServletRequest"
 			depends="double" msg="errors.range" />
 
-
 		<validator name="creditCard"
 			classname="org.apache.struts.validator.FieldChecks"
 			method="validateCreditCard"
@@ -250,7 +236,6 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.creditcard" />
-
 
 		<validator name="email"
 			classname="org.apache.struts.validator.FieldChecks"
@@ -273,6 +258,7 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
 			depends="" msg="errors.url" />
+			
 		<validator name="validwhenmatch"
 			classname="org.apache.struts.validator.validwhen.ValidWhen"
 			method="validateValidWhen"
@@ -282,7 +268,16 @@
                  org.apache.struts.action.ActionMessages,
                  org.apache.commons.validator.Validator,
                  javax.servlet.http.HttpServletRequest"
-			msg="errors.unmatchedValue" />
+			msg="errors.message" />
+
+		<!--
+		<validator name="matrixCellRequired"
+			classname="gov.nih.nci.cananolab.util.FindingMatrixValidator"
+			method="validateCellNotEmpty"
+			methodParams="gov.nih.nci.cananolab.dto.common.FindingBean"
+			msg="errors.message"/>
+		-->
+			
 		<!--
 			This simply allows struts to include the validateUtilities into a page, it should
 			not be used as a validation rule.
@@ -290,7 +285,6 @@
 		<validator name="includeJavaScriptUtilities" classname=""
 			method="" methodParams="" depends="" msg=""
 			jsFunction="org.apache.commons.validator.javascript.validateUtilities" />
-
 	</global>
 
 </form-validation>

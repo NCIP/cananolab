@@ -63,6 +63,10 @@
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
+			<form-property name="numberOfColumns" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="numberOfRows" type="java.lang.Integer"
+				initial="0" />
 			<form-property name="dispatch" type="java.lang.String" />
 		</form-bean>
 	</form-beans>

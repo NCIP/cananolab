@@ -81,7 +81,7 @@ function saveFinding(actionName) {
 	 * form.action = "characterization.do?dispatch=saveFinding&page=3";
 	 * form.submit();
 	 */
-	submitAction(document.forms[0], actionName, "saveFinding", 3);
+	submitAction(document.forms[0], actionName, "saveFinding", 4);
 }
 function deleteTheFinding(form) {
 	var answer = confirmDelete("finding");

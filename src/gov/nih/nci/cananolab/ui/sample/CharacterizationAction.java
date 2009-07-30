@@ -681,6 +681,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		request.setAttribute("anchor", "result");
 		FindingBean findingBean = achar.getTheFinding();
+		
+		/**
+		 * Set number of column/row in form for validation.
+		 */
+		theForm.set("numberOfColumns", 
+				Integer.valueOf(findingBean.getNumberOfColumns()));
+		theForm.set("numberOfRows", 
+				Integer.valueOf(findingBean.getNumberOfRows()));
+		
 		if (request.getParameter("removeColumn") != null) {
 			int columnToRemove = Integer.parseInt(request
 					.getParameter("removeColumn"));
