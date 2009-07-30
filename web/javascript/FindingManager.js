@@ -1,16 +1,19 @@
 function setNameOptionsByCharName(columnNumber) {
 	var charName = dwr.util.getValue("charName");
 	var charType = dwr.util.getValue("charType");
+	var assayType = dwr.util.getValue("assayType");
 	var columnType = dwr.util.getValue("columnType" + columnNumber);
 	if (columnType == "Datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
 		hide("conditionPropertyLabel" + columnNumber);
-		FindingManager.getDatumNameOptions(charType, charName, function(data) {
-			dwr.util.removeAllOptions("columnName" + columnNumber);
-			dwr.util.addOptions("columnName" + columnNumber, [ "" ]);
-			dwr.util.addOptions("columnName" + columnNumber, data);
-			dwr.util.addOptions("columnName" + columnNumber, [ "[Other]" ]);
-		});
+		FindingManager.getDatumNameOptions(charType, charName, assayType,
+				function(data) {
+					dwr.util.removeAllOptions("columnName" + columnNumber);
+					dwr.util.addOptions("columnName" + columnNumber, [ "" ]);
+					dwr.util.addOptions("columnName" + columnNumber, data);
+					dwr.util.addOptions("columnName" + columnNumber,
+							[ "[Other]" ]);
+				});
 	} else {
 		if (columnType == "Condition") {
 			show("conditionPropertyPrompt" + columnNumber);
