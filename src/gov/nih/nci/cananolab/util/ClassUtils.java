@@ -21,14 +21,14 @@ import java.util.jar.JarFile;
 
 /**
  * Utilility class to handle domain class manipulations
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ClassUtils {
 	/**
 	 * Get all caNanoLab domain classes
-	 *
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
@@ -64,7 +64,7 @@ public class ClassUtils {
 
 	/**
 	 * Get child classes of a parent class in caNanoLab
-	 *
+	 * 
 	 * @param parentClassName
 	 * @return
 	 * @throws Exception
@@ -83,7 +83,7 @@ public class ClassUtils {
 
 	/**
 	 * Get child class names of a parent class in caNanoLab
-	 *
+	 * 
 	 * @param parentClassName
 	 * @return
 	 * @throws Exception
@@ -100,7 +100,7 @@ public class ClassUtils {
 
 	/**
 	 * get the short class name without fully qualified path
-	 *
+	 * 
 	 * @param className
 	 * @return
 	 */
@@ -111,7 +111,7 @@ public class ClassUtils {
 
 	/**
 	 * check if a class has children classes
-	 *
+	 * 
 	 * @param parent
 	 *            class name
 	 * @return
@@ -153,7 +153,7 @@ public class ClassUtils {
 	 * serialized) an error is printed to System.err and null is returned.
 	 * Depending on your specific application, it might make more sense to have
 	 * copy(...) re-throw the exception.
-	 *
+	 * 
 	 * A later version of this class includes some minor optimizations.
 	 */
 	/**
@@ -189,19 +189,22 @@ public class ClassUtils {
 			for (String name : names) {
 				System.out.println(name);
 			}
+			
+			String displayName=ClassUtils.getDisplayName("SmallMolecule");
+			System.out.println(displayName);
 
-			//test, put this to the beginnging of ClassUtils.mapObjects
-//			Report report1 = new Report();
-//			report1.setCategory("myCategory");
-//			report1.setTitle("mytitle");
-//			inputObjects = new Object[1];
-//			inputObjects[0] = report1;
-//
-//			aTargetClazz = new Report().getClass();
-			//end of test
+			// test, put this to the beginnging of ClassUtils.mapObjects
+			// Report report1 = new Report();
+			// report1.setCategory("myCategory");
+			// report1.setTitle("mytitle");
+			// inputObjects = new Object[1];
+			// inputObjects[0] = report1;
+			//
+			// aTargetClazz = new Report().getClass();
+			// end of test
 
-//			List<Report> reportLists = ClassUtils.mapObjects(null, null);
-//			System.out.println("report ========="+reportLists.get(0).getCategory());
+			// List<Report> reportLists = ClassUtils.mapObjects(null, null);
+			// System.out.println("report ========="+reportLists.get(0).getCategory());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -211,7 +214,7 @@ public class ClassUtils {
 	 * Utility for making deep copies (vs. clone()'s shallow copies) of objects
 	 * in a memory efficient way. Objects are serialized in the calling thread
 	 * and de-serialized in another thread.
-	 *
+	 * 
 	 * Error checking is fairly minimal in this implementation. If an object is
 	 * encountered that cannot be serialized (or that references an object that
 	 * cannot be serialized) an error is printed to System.err and null is
@@ -263,58 +266,73 @@ public class ClassUtils {
 
 	/**
 	 * copy attributes of one object to another
-	 *
-	 * mapping attribute criteria:
-	 * - use setter and getter to copy value
-	 * - getter method have no parameter types, method.getParameterTypes().length==0
-	 * - setter method have one and only one parameter types, method.getParameterTypes().length==1
-	 * - setter method returns void type
-	 * - The return type of getter method matches the parameter type of the setter method
+	 * 
+	 * mapping attribute criteria: - use setter and getter to copy value -
+	 * getter method have no parameter types,
+	 * method.getParameterTypes().length==0 - setter method have one and only
+	 * one parameter types, method.getParameterTypes().length==1 - setter method
+	 * returns void type - The return type of getter method matches the
+	 * parameter type of the setter method
 	 */
 	public static List mapObjects(Class aTargetClazz, List inputObjects) {
 		List resultObjs = new ArrayList();
-		if (inputObjects!=null && inputObjects.size()>0){
-			//put to inputObjects map
+		if (inputObjects != null && inputObjects.size() > 0) {
+			// put to inputObjects map
 			Map<String, Method> setterMethodsMap = new HashMap<String, Method>();
-			Method[] inputObjectMethods = inputObjects.get(0).getClass().getMethods();
-			for (Method method: inputObjectMethods){
-				if (method.getName().startsWith("set") && method.getParameterTypes().length==1 &&
-						method.getReturnType().toString().equals("void")){
-					setterMethodsMap.put(method.getName().replaceFirst("set", ""), method);
+			Method[] inputObjectMethods = inputObjects.get(0).getClass()
+					.getMethods();
+			for (Method method : inputObjectMethods) {
+				if (method.getName().startsWith("set")
+						&& method.getParameterTypes().length == 1
+						&& method.getReturnType().toString().equals("void")) {
+					setterMethodsMap.put(method.getName().replaceFirst("set",
+							""), method);
 				}
 			}
 			Method setterMethod = null;
 			try {
-				//take the first object to get methods
+				// take the first object to get methods
 				Class objClazz = inputObjects.get(0).getClass();
 				Method[] allMethods = objClazz.getMethods();
 
-				//qualified getter methods
-				List<Method> methods = new ArrayList<Method>((int)(allMethods.length/2));
-				for (Method method: allMethods){
-					if (method.getName().startsWith("get") && !method.getName().equals("getClass")
-							&& method.getParameterTypes().length==0){
+				// qualified getter methods
+				List<Method> methods = new ArrayList<Method>(
+						(int) (allMethods.length / 2));
+				for (Method method : allMethods) {
+					if (method.getName().startsWith("get")
+							&& !method.getName().equals("getClass")
+							&& method.getParameterTypes().length == 0) {
 						methods.add(method);
 					}
 				}
 
 				Object getterResult = null;
 
-				for (int i=0; i<inputObjects.size(); i++){
+				for (int i = 0; i < inputObjects.size(); i++) {
 					resultObjs.add(aTargetClazz.newInstance());
-					for (Method method: methods){
-						System.out.println("method: "+method);
-						getterResult = method.invoke(inputObjects.get(0), (Object[])null);
-						setterMethod = setterMethodsMap.get(method.getName().replaceFirst("get", ""));
+					for (Method method : methods) {
+						System.out.println("method: " + method);
+						getterResult = method.invoke(inputObjects.get(0),
+								(Object[]) null);
+						setterMethod = setterMethodsMap.get(method.getName()
+								.replaceFirst("get", ""));
 
-						if (getterResult!=null &&
-								getterResult.getClass().getName().
-									equals(setterMethod.getParameterTypes()[0].getName())){
-							System.out.println(" getterResult.getClass().getName(): "+getterResult.getClass().getName());
-							System.out.println(" setterMethod.getParameterTypes()[0].getName(): "+setterMethod.getParameterTypes()[0].getName());
-							//invoke setter
-							System.out.println(" going to set: "+getterResult);
-							setterMethod.invoke(resultObjs.get(i), getterResult);
+						if (getterResult != null
+								&& getterResult.getClass().getName().equals(
+										setterMethod.getParameterTypes()[0]
+												.getName())) {
+							System.out
+									.println(" getterResult.getClass().getName(): "
+											+ getterResult.getClass().getName());
+							System.out
+									.println(" setterMethod.getParameterTypes()[0].getName(): "
+											+ setterMethod.getParameterTypes()[0]
+													.getName());
+							// invoke setter
+							System.out
+									.println(" going to set: " + getterResult);
+							setterMethod
+									.invoke(resultObjs.get(i), getterResult);
 						}
 					}
 				}
@@ -326,8 +344,6 @@ public class ClassUtils {
 		}
 		return resultObjs;
 	}
-
-
 
 	/**
 	 * Thread subclass that handles deserializing from a PipedInputStream.
@@ -416,5 +432,9 @@ public class ClassUtils {
 		} else {
 			return null;
 		}
+	}
+
+	public static String getDisplayName(String shortClassName) {
+		return shortClassName.replaceAll("([A-Z])", " $1").trim().toLowerCase();
 	}
 }
