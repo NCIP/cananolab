@@ -51,6 +51,7 @@
 			<include method="getConditionOptions" />
 			<include method="getConditionPropertyOptions" />
 			<include method="getDatumNameOptions" />
+			<include method="getDecoratedDatumNameOptions"/>
 			<include method="getColumnValueUnitOptions" />
 			<include method="resetTheFile" />
 		</create>
@@ -59,6 +60,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationManager" />
 			<include method="getCharacterizationOptions" />
+			<include method="getDecoratedCharacterizationOptions" />
 			<include method="getAssayTypeOptions" />
 			<include method="getCharacterizationDetailPage" />
 		</create>
@@ -210,5 +212,6 @@
 			match="gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean"></convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean"></convert>
+		<convert converter="bean" match="org.apache.struts.util.LabelValueBean"></convert>
 	</allow>
 </dwr>
