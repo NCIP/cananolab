@@ -19,12 +19,7 @@
 </jsp:include>
 <html:form action="/sample" onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th colspan="2">
-				Sample Information
-			</th>
-		</tr>
+	<table width="100%" align="center" class="submissionView">		
 		<tr>
 			<td class="cellLabel" width="20%">
 				Sample Name *
