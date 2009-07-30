@@ -177,7 +177,7 @@ function setCharacterizationOptions() {
 			function(data) {
 				dwr.util.removeAllOptions("charName");
 				dwr.util.addOptions("charName", emptyOption, "value", "label");
-				dwr.util.addOptions("charName", data, "value", "label");
+				dwr.util.addOptions("charName", data, "value", "label");				
 			});
 }
 
@@ -198,16 +198,50 @@ function setDatumNameOptionsByCharName() {
 								"label");
 						dwr.util
 								.addOptions("datumName", data, "value", "label");
+						//if there is only one in the option, preselect it						
+						if (data.length==1) {
+							dwr.util.setValue("datumName", data[0], "value", "label");
+						}
 					});
 }
 
 function setDatumValueUnitOptions() {
 	var datumName = dwr.util.getValue("datumName");
-	FindingManager.getColumnValueUnitOptions(datumName, null, function(data) {
-		dwr.util.removeAllOptions("datumValueUnit");
-		dwr.util.addOptions("datumValueUnit", emptyOption, "value", "label");
-		dwr.util.addOptions("datumValueUnit", data);
+	FindingManager.getColumnValueUnitOptions(datumName, null,
+			function(data) {
+				if (data != null && data.length > 0) {
+					show("datumValueUnitBlock");
+					dwr.util.removeAllOptions("datumValueUnit");
+					dwr.util.addOptions("datumValueUnit", emptyOption, "value",
+							"label");
+					dwr.util.addOptions("datumValueUnit", data);
+					//if there is only one in the option, preselect it
+					if (data.length==1) {
+						dwr.util.setValue("datumValueUnit", data[0]);
+					}
+				} else {					
+					hide("datumValueUnitBlock");
+				}
+			});
+}
+
+function setCharacterizationOperandOptions() {
+	var datumName = dwr.util.getValue("datumName");
+	SampleManager.getCharacterizationOperandOptions(datumName, function(data) {
+		dwr.util.removeAllOptions("charOperand");
+		dwr.util.addOptions("charOperand", data, "value", "label");
 	});
+}
+
+function setDatumValueOptions() {
+	var datumName = dwr.util.getValue("datumName");
+	if (datumName.match("^is ")) {
+		hide("datumValueTextBlock");
+		show("datumValueSelectBlock");
+	} else {
+		show("datumValueTextBlock");
+		hide("datumValueSelectBlock");
+	}
 }
 
 var characterizationQueryCache = {};

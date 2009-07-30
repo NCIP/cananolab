@@ -93,12 +93,8 @@
 						<td>
 							<html:select property="searchBean.theCompositionQuery.operand"
 								styleId="compOperand">
-								<option value="equals to" />
-									equals to
-								</option>
-								<option value="contains" />
-									contains
-								</option>
+								<html:options collection="stringOperands" property="value"
+									labelProperty="label" />
 							</html:select>
 						</td>
 						<td>
@@ -213,7 +209,7 @@
 							<html:select
 								property="searchBean.theCharacterizationQuery.datumName"
 								styleId="datumName"
-								onchange="javascript:setDatumValueUnitOptions()">
+								onchange="javascript:setDatumValueUnitOptions();setCharacterizationOperandOptions();setDatumValueOptions()">
 								<option value="">
 									-- Please Select --
 								</option>
@@ -223,35 +219,34 @@
 							<html:select
 								property="searchBean.theCharacterizationQuery.operand"
 								styleId="charOperand">
-								<option value="equals to" />
-									equals to
-								</option>
-								<option value="greater than" />
-									greater than
-								</option>
-								<option value="greater than and equal to" />
-									greater than
-								</option>
-								<option value="less than" />
-									less than
-								</option>
-								<option value="less than and equal to" />
-									less than
-								</option>
+								<html:options collection="numberOperands" labelProperty="label"
+									property="value" />
 							</html:select>
 						</td>
 						<td>
-							<html:text
-								property="searchBean.theCharacterizationQuery.datumValue"
-								styleId="datumValue" size="10" />
+							<div id="datumValueTextBlock" style="display: block">
+								<html:text
+									property="searchBean.theCharacterizationQuery.datumValue"
+									styleId="datumValue" size="10" />
+							</div>
+							<div id="datumValueSelectBlock" style="display: none">
+								<html:select
+									property="searchBean.theCharacterizationQuery.datumValue"
+									styleId="datumValueSelect">
+									<html:options collection="booleanOptions" property="value"
+										labelProperty="label" />
+								</html:select>
+							</div>
 						</td>
 						<td>
-							<html:select
-								property="searchBean.theCharacterizationQuery.datumValueUnit"
-								styleId="datumValueUnit">
-								<option value="">
-								</option>
-							</html:select>
+							<div id="datumValueUnitBlock" style="display: none">
+								<html:select
+									property="searchBean.theCharacterizationQuery.datumValueUnit"
+									styleId="datumValueUnit">
+									<option value="">
+									</option>
+								</html:select>
+							</div>
 						</td>
 						<td>
 							<table cellspacing="0">
@@ -290,7 +285,8 @@
 		</tr>
 	</table>
 	<br />
-	<table width="100%" align="center" class="submissionView" style="border:0">
+	<table width="100%" align="center" class="submissionView"
+		style="border: 0">
 		<tr>
 			<td>
 				<div id="logicalOperator" style="display: block">
