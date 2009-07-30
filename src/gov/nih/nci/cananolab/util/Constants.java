@@ -128,10 +128,6 @@ public class Constants {
 
 	public static final String CSM_PG_PUBLICATION = "publication";
 
-	public static final String PHYSICAL_CHARACTERIZATION_CLASS_NAME = "Physical Characterization";
-
-	public static final String IN_VITRO_CHARACTERIZATION_CLASS_NAME = "In Vitro Characterization";
-
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
 
 	// This is a hack to querying based on .class to work in case of multi-level
@@ -163,6 +159,8 @@ public class Constants {
 			"setupNew", "setupUpdate", "summaryEdit", "add", "remove", "save" };
 
 	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico-chemical characterization";
+	public static final String INVIVO_CHARACTERIZATION = "in vivo characterization";
+	public static final String INVITRO_CHARACTERIZATION = "in vitro characterization";
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
 
