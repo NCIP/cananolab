@@ -5,13 +5,17 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.ServletException;
 
+import org.apache.axis.utils.StringUtils;
+import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
@@ -39,12 +43,43 @@ public class DWRCharacterizationResultManager {
 	}
 
 	public String[] getDatumNameOptions(String characterizationType,
-			String characterizationName) throws Exception {
+			String characterizationName, String assayType) throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> names = InitCharacterizationSetup.getInstance()
 				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
-						characterizationType, characterizationName);
+						characterizationType, characterizationName, assayType);
 		return names.toArray(new String[names.size()]);
+	}
+
+	public List<LabelValueBean> getDecoratedDatumNameOptions(
+			String characterizationType, String characterizationName,
+			String assayType) throws Exception {
+		WebContext wctx = WebContextFactory.get();
+
+		String charClassName = InitSetup.getInstance().getClassName(
+				characterizationName, wctx.getServletContext());
+		List<LabelValueBean> allDatumNames = new ArrayList<LabelValueBean>();
+		// if assayType is empty, use charName to look up datums, as well as
+		// look up all assay types and use assay type to look up datum
+		if (StringUtils.isEmpty(assayType)) {
+			allDatumNames = InitSetup.getInstance().getLookupValuesAsOptions(
+					characterizationName, "datumName", "otherDatumName");
+			SortedSet<String> assayTypes = LookupService
+					.getDefaultAndOtherLookupTypes(charClassName, "assayType",
+							"otherAssayType");
+			if (assayTypes != null && !assayTypes.isEmpty()) {
+				for (String type : assayTypes) {
+					List<LabelValueBean> datumNamesByAssayTypes = InitSetup
+							.getInstance().getLookupValuesAsOptions(type,
+									"datumName", "otherDatumName");
+					allDatumNames.addAll(datumNamesByAssayTypes);
+				}
+			}
+		} else {
+			allDatumNames = InitSetup.getInstance().getLookupValuesAsOptions(
+					assayType, "datumName", "otherDatumName");
+		}
+		return allDatumNames;
 	}
 
 	public String[] getColumnValueUnitOptions(String name, String property)
