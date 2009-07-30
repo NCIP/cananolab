@@ -1,10 +1,11 @@
 function setNameOptionsByCharName(columnNumber) {
 	var charName = document.getElementById("charName").value;
+	var charType= document.getElementById("charType").value;
 	var columnType = document.getElementById("columnType" + columnNumber).value;
 	if (columnType == "Datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
 		hide("conditionPropertyLabel" + columnNumber);
-		FindingManager.getDatumNameOptions(charName, function(data) {
+		FindingManager.getDatumNameOptions(charType, charName, function(data) {
 			dwr.util.removeAllOptions("columnName" + columnNumber);
 			dwr.util.addOptions("columnName" + columnNumber, [ "" ]);
 			dwr.util.addOptions("columnName" + columnNumber, data);
