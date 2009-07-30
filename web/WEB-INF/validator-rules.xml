@@ -271,14 +271,6 @@
 			msg="errors.message" />
 
 		<!--
-		<validator name="matrixCellRequired"
-			classname="gov.nih.nci.cananolab.util.FindingMatrixValidator"
-			method="validateCellNotEmpty"
-			methodParams="gov.nih.nci.cananolab.dto.common.FindingBean"
-			msg="errors.message"/>
-		-->
-			
-		<!--
 			This simply allows struts to include the validateUtilities into a page, it should
 			not be used as a validation rule.
 		-->

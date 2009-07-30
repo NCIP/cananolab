@@ -440,7 +440,7 @@
 					<var-name>test</var-name>
 					<var-value>
 						((*this* > 0) and (*this* == numberOfColumns)) 
-							</var-value>
+					</var-value>
 				</var>
 			</field>
 			<field property="achar.theFinding.numberOfRows" page="4"
