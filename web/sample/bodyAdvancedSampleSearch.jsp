@@ -144,19 +144,6 @@
 	<br />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td>
-				<div id="logicalOperator" style="display: block">
-					<html:radio property="searchBean.logicalOperator" value="and" />
-					AND
-					<html:radio property="searchBean.logicalOperator" value="or" />
-					OR
-				</div>
-			</td>
-		</tr>
-	</table>
-	<br />
-	<table width="100%" align="center" class="submissionView">
-		<tr>
 			<th>
 				Characterization Criteria
 			</th>
@@ -302,7 +289,20 @@
 			</td>
 		</tr>
 	</table>
-	<br>
+	<br />
+	<table width="100%" align="center" class="submissionView" style="border:0">
+		<tr>
+			<td>
+				<div id="logicalOperator" style="display: block">
+					<html:radio property="searchBean.logicalOperator" value="and" />
+					AND
+					<html:radio property="searchBean.logicalOperator" value="or" />
+					OR
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br />
 	<table width="100%" border="0" align="center" cellpadding="3"
 		cellspacing="0">
 		<tr>
