@@ -115,7 +115,7 @@
 			<field property="nanomaterialEntity.type" page="1" depends="required">
 				<arg position="0" key="nanomaterialEntityType" bundle="sample" />
 			</field>
-			<field property="nanomaterialEntity.biopolymer.name" page="2"
+			<field property="nanomaterialEntity.biopolymer.name" page="1"
 				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.name"
 					bundle="sample" />
