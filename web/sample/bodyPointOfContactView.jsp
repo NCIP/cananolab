@@ -20,6 +20,7 @@
 		<th>
 			Role
 		</th>
+		<th></th>
 	</tr>
 	<c:if
 		test="${! empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
