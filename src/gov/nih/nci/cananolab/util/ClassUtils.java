@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utilility class to handle domain class manipulations
@@ -189,9 +191,13 @@ public class ClassUtils {
 			for (String name : names) {
 				System.out.println(name);
 			}
-			
-			String displayName=ClassUtils.getDisplayName("SmallMolecule");
+
+			String displayName = ClassUtils.getDisplayName("SmallMolecule");
 			System.out.println(displayName);
+
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName("other small molecule");
+			System.out.println(className);
 
 			// test, put this to the beginnging of ClassUtils.mapObjects
 			// Report report1 = new Report();
@@ -436,5 +442,18 @@ public class ClassUtils {
 
 	public static String getDisplayName(String shortClassName) {
 		return shortClassName.replaceAll("([A-Z])", " $1").trim().toLowerCase();
+	}
+
+	public static String getShortClassNameFromDisplayName(String displayName) {
+		String[] words = displayName.split(" ");
+		List<String> newWords = new ArrayList<String>();
+		for (String word : words) {
+			String newWord = Character.toString(word.charAt(0)).toUpperCase()
+					+ word.substring(1);
+			newWords.add(newWord);
+		}
+		String shortClassName = StringUtils.join(newWords, "");
+
+		return shortClassName;
 	}
 }
