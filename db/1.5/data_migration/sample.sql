@@ -48,6 +48,3 @@ INSERT INTO sample (sample_pk_id, sample_name, created_date, created_by, primary
 UPDATE sample
 set sample_name=rtrim(ltrim(sample_name));
 
-UPDATE nanomaterial_entity
-set discriminator='OtherNanomaterialEntity'
-where discriminator='OtherNanoparticleEntity';
