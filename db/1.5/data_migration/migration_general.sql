@@ -22,6 +22,27 @@ where g.group_name like '%_Administrator');
 delete from csm_group
 where group_name like '%_Administrator';
 
+--update protection element and group nanoparticle to be sample
+update csm_protection_element
+set protection_element_name='sample'
+where protection_element_name='nanoparticle';
+
+delete from csm_user_group_role_pg
+where protection_group_id in
+(select protection_group_id
+from csm_protection_group
+where protection_group_name='sample');
+
+delete from csm_protection_group
+where protection_group_name='sample';
+
+update csm_protection_group
+set protection_group_name='sample'
+where protection_group_name='nanoparticle';
+
+-- common_lookup
+source common_lookup_migration.sql;
+
 -- drop obsolete tables
 DROP TABLE IF EXISTS sample_management;
 DROP TABLE IF EXISTS sample_container;
@@ -65,11 +86,6 @@ update characterization a, protocol b
 set a.protocol_pk_id=b.protocol_pk_id
 where a.protocol_pk_id=b.file_pk_id
 ;
-
-update common_lookup
-set value='physico-chemical assay'
-where name='Protocol' and attribute='type'
-and value='physical assay';
 
 -- change lab_file to file
 ALTER TABLE lab_file DROP COLUMN version;
@@ -122,10 +138,6 @@ where particle_sample_pk_id not in
 update publication
 set category='proceeding'
 where category='in proceedings';
-
-update common_lookup
-set value='proceeding'
-where value='in proceedings';
 
 -- fix, some records exist in csm_protection_group not in csm_protection_element
 INSERT INTO csm_protection_element (
@@ -246,33 +258,9 @@ source datum_migration.sql
 -- characterization
 source characterization_migration.sql
 
-
-ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
-INSERT INTO common_lookup(name,attribute,value) values ('Entrapment','displayName','entrapment');
-INSERT INTO common_lookup(name,attribute,value) values('dimension', 'unit', ' nm');
-DELETE FROM common_lookup
-where name='SampleContainer';
-
-DELETE FROM common_lookup
-where name='Cytotoxicity'
-and attribute='cellLine';
-
-update common_lookup
-set name='File'
-where name='LabFile';
-
-update common_lookup
-set value='2D-rectangle'
-where value='2D-retangle';
-
-update common_lookup
-set name='NanomaterialEntity', value='Nanomaterial Entity'
-where name='NanoparticleEntity'
-and attribute='displayName';
-
-ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
+DROP TABLE derived_datum;
+DROP TABLE derived_bioassay_data;
+-- set datum drop down for assay endpoints
 
 DROP TABLE IF EXISTS composition_temp;
 
