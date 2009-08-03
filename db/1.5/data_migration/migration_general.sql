@@ -3,43 +3,6 @@ USE canano;
 -- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
--- migration to csm 4.1
-source csm/migration_to_csm_4.1.sql
-
--- remove adminstrator group, not needed anymore
-delete from csm_user_group 
-where group_id in
-(select group_id 
-from csm_group g
-where g.group_name like '%_Administrator');
-
-delete from csm_user_group_role_pg 
-where group_id in
-(select group_id 
-from csm_group g
-where g.group_name like '%_Administrator');
-
-delete from csm_group
-where group_name like '%_Administrator';
-
---update protection element and group nanoparticle to be sample
-update csm_protection_element
-set protection_element_name='sample'
-where protection_element_name='nanoparticle';
-
-delete from csm_user_group_role_pg
-where protection_group_id in
-(select protection_group_id
-from csm_protection_group
-where protection_group_name='sample');
-
-delete from csm_protection_group
-where protection_group_name='sample';
-
-update csm_protection_group
-set protection_group_name='sample'
-where protection_group_name='nanoparticle';
-
 -- common_lookup
 source common_lookup_migration.sql;
 
@@ -139,36 +102,6 @@ update publication
 set category='proceeding'
 where category='in proceedings';
 
--- fix, some records exist in csm_protection_group not in csm_protection_element
-INSERT INTO csm_protection_element (
-	protection_element_name,
-	object_id,
-	application_id,
-	update_date
-)SELECT
-	protection_group_name,
-	protection_group_name,
-	application_id,
-	sysdate()
-FROM csm_protection_group
-where protection_group_name not in (
-select protection_element_name from csm_protection_element
-)
-;
-INSERT INTO csm_pg_pe (
-	protection_group_id,
-	protection_element_id,
-	update_date
-)SELECT
-	g.protection_group_id,
-	e.protection_element_id,
-	sysdate()
-FROM csm_protection_group g, csm_protection_element e
-where  e.update_date = CURRENT_DATE()
-and g.protection_group_name = e.protection_element_name
-;
--- end of csm fix
-
 -- missing constraint between author and publication
 ALTER TABLE author RENAME author0;
 ALTER TABLE author_publication RENAME author_publication0;
@@ -257,6 +190,9 @@ source datum_migration.sql
 
 -- characterization
 source characterization_migration.sql
+
+-- csm migration
+source csm_migration.sql
 
 DROP TABLE derived_datum;
 DROP TABLE derived_bioassay_data;
