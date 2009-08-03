@@ -5,6 +5,9 @@ CREATE TABLE hibernate_unique_key (
 ) TYPE=InnoDB
 ;
 
+INSERT INTO hibernate_unique_key(next_hi)
+VALUES (1);
+
 CREATE TABLE target
 (
 	target_pk_id BIGINT NOT NULL,
