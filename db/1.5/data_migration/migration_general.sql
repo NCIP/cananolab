@@ -193,6 +193,23 @@ source characterization_migration.sql
 
 -- csm migration
 source csm_migration.sql
+ 
+--update affected values because changes in common_lookup
+update chemical_association
+set attachment_bond_type=lcase(attachment_bond_type);
+
+update datum
+set name='size', value_type='RMS'
+where name='RMS-size';
+
+update datum
+set name='size', value_type='Z-average'
+where name='Z-average';
+
+update datum
+set name=lcase(name)
+where name in ('Aspect Ratio', 'Diameter', 'Height', 'Length', 'Surface Area')
+or name like ('Width%');
 
 DROP TABLE derived_datum;
 DROP TABLE derived_bioassay_data;
