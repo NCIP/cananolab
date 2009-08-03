@@ -14,56 +14,6 @@ ALTER TABLE characterization ADD COLUMN other_char_assay_category VARCHAR(200);
 ALTER TABLE characterization ADD COLUMN other_char_name VARCHAR(200);
 ALTER TABLE characterization ADD COLUMN assay_type VARCHAR(200);
 
-delete from common_lookup where attribute='cellDeathMethod';
-
-ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
-
-insert into common_lookup(name,attribute,value) values ('PhysicoChemicalCharacterization','displayName','Physico-Chemical Characterization');
-insert into common_lookup(name,attribute,value) values ('InvivoCharacterization','displayName','In Vivo Characterization');
-insert into common_lookup(name,attribute,value) values ('Pharmacokinetics','displayName','Pharmacokinetics');
-insert into common_lookup(name,attribute,value) values ('Toxicology','displayName','Toxicology');
-insert into common_lookup(name,attribute,value) values ('Relaxivity','displayName','Relaxivity');
-insert into common_lookup(name,attribute,value) values ('Sterility','displayName','Sterility');
-insert into common_lookup(name,attribute,value) values ('Targeting','displayName','Targeting');
-insert into common_lookup(name,attribute,value) values ('MetabolicStability','displayName','Metabolic Stability');
-insert into common_lookup(name,attribute,value) values ('Entrapment','displayName','Entrapment');
-insert into common_lookup(name,attribute,value) values ('Transfection','displayName','Transfection');
-insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Endotoxin');
-insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Bacterial/Yeast/Mold');
-insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Mycoplasma');
-insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Plasma Protein Binding (2D PAGE)');
-insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Hemolysis');
-insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Platelet Aggregation');
-insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Coagulation');
-insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Complement Activation');
-insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'CFU-GM');
-insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Leukocyte Proliferation');
-insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Phagocytosis');
-insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Cytokine Induction');
-insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Chemotaxis');
-insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Oxidative Burst');
-insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Cytotoxic Activity of NK Cells');
-insert into common_lookup(name,attribute,value) values('OxidativeStress', 'assayType', 'GSH Homeostasis');
-insert into common_lookup(name,attribute,value) values('OxidativeStress', 'assayType', 'Lipid Peroxidation');
-insert into common_lookup(name,attribute,value) values('OxidativeStress', 'assayType', 'ROS Generation');
-insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Cell Viability');
-insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Caspase 3 Apoptosis');
-insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Proliferation');
-insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Mitochondrial Membrane Potential');
-insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Mitochondrial Function');
-insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Gene Expression');
-insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Cell Binding/Internalization');
-insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Gene Expression');
-
-
-delete from common_lookup
-where name in ('CFU_GM', 'Hemolysis', 'PlateletAggregation', 'CellViability', 'Toxicity', 'Caspase3Activation', 'Chemotaxis', 'Coagulation', 'ComplementActivation', 'CytokineInduction', 'Immunotoxicity', 'LeukocyteProliferation', 'NKCellCytotoxicActivity', 'OxidativeBurst', 'LabFile', 'Phagocytosis', 'PlasmaProteinBinding')
-and attribute='displayName';
-
-ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
-
 -- in vitro data migration
 update characterization
 set discriminator='Cytotoxicity',

@@ -92,16 +92,7 @@ AND o.name = c.source
 
 ALTER TABLE characterization DROP COLUMN source;
 
-ALTER TABLE common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
-
-insert into common_lookup(name,attribute,value) values ('PointOfContact','role','Manufacturer');
-insert into common_lookup(name,attribute,value) values ('PointOfContact','role','Investigator');
-
-ALTER TABLE common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
-
- DROP TABLE  nanoparticle_sample;
+DROP TABLE  nanoparticle_sample;
 
 --update POC  to be public
 INSERT into csm_protection_element (
