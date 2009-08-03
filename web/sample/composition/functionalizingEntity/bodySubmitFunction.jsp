@@ -128,7 +128,7 @@
 									property="functionalizingEntity.theFunction.theTarget.antigen.species"
 									styleId="antigenSpecies">
 									<option value=""></option>
-									<html:options name="antigenSpecies" />
+									<html:options name="speciesTypes" />
 								</html:select>
 							</td>
 						</tr>

@@ -70,7 +70,6 @@
 													String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 																						.getInstance()
 																						.getDetailPage(
-																								application,
 																								(String) pageContext
 																										.getAttribute("entityType"),
 																								"nanomaterialEntity");

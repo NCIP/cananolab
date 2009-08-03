@@ -21,7 +21,7 @@ function clearTarget() {
 }
 function displayImageModality() {
 	var functionType = dwr.util.getValue("functionType");
-	if (functionType == "imaging") {
+	if (functionType == "imaging function") {
 		show("modalityLabel");
 		show("imagingModalityPrompt");
 	} else {
@@ -31,7 +31,7 @@ function displayImageModality() {
 }
 function displayTargets() {
 	var functionType = dwr.util.getValue("functionType");
-	if (functionType == "targeting") {
+	if (functionType == "targeting function") {
 		show("targetLabel");
 		show("targetSection");
 	} else {

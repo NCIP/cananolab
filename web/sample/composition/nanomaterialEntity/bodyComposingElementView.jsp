@@ -8,9 +8,9 @@
 <c:forEach var="composingElement" items="${entity.composingElements}">
 	<table class="summaryViewLayer4" width="95%" align="center">
 		<tr>
-			<th>
+			<td class="cellLabel">
 				${composingElement.displayName}
-			</th>
+			</td>
 			<c:choose>
 				<c:when test="${edit eq 'true'}">
 					<td align="right" width="3%">

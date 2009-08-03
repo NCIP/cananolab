@@ -107,7 +107,7 @@
 							id="antibodySpecies"
 							onchange="javascript:callPrompt('Species', 'species', 'speciesPrompt');">
 							<option value="" />
-								<c:forEach var="species" items="${antibodySpecies}">
+								<c:forEach var="species" items="${speciesTypes}">
 									<c:choose>
 										<c:when
 											test="${species eq compositionForm.map.functionalizingEntity.antibody.species}">

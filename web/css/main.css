@@ -1539,9 +1539,9 @@ input.noBorderText {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.60em;
 	padding: 3px 3px 3px 3px;
-	color: #FFFFFF;
+/*	color: #FFFFFF;*/
 	font-weight: bold;
-	background-color: #6a8989;
+	/*background-color: #6a8989;*/
 	text-align: left;
 }
 

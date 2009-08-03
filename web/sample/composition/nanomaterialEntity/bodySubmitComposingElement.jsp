@@ -102,7 +102,7 @@
 					property="nanomaterialEntity.theComposingElement.domain.molecularFormulaType"
 					onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType', 'molFormulaTypePrompt');">
 					<option value="" />
-						<html:options name="ceMolecularFormulaTypes" />
+						<html:options name="molecularFormulaTypes" />
 					<option value="other">
 						[Other]
 					</option>

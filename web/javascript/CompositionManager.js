@@ -54,7 +54,7 @@ function setEntityDisplayName(entityTypeId, displayNameEleId) {
 }
 function getComposingElementOptions(elementNumber) {
 	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
-	if (compositionType == "Nanomaterial Entity") {
+	if (compositionType == "nanomaterial entity") {
 		var entityId = dwr.util.getValue("entityId" + elementNumber);
 		CompositionManager.getComposingElementsByNanomaterialEntityId(entityId, function (composingElements) {
 			if (composingElements != null) {

@@ -44,9 +44,10 @@ function setAssayTypeOptionsByCharName() {
 	}
 }
 function setCharacterizationDetail() {
-	var charName = document.getElementById("charName").value;
+	var charName = dwr.util.getValue("charName");
+	var charType = dwr.util.getValue("charType");
 	var inclueBlock = document.getElementById("characterizationDetail");
-	CharacterizationManager.getCharacterizationDetailPage(charName,
+	CharacterizationManager.getCharacterizationDetailPage(charType, charName,
 			populatePage);
 }
 function populatePage(pageData) {

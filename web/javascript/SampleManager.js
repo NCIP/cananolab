@@ -49,6 +49,7 @@ function setSampleDropdowns() {
 
 function setCompositionEntityOptions() {
 	var compositionType = dwr.util.getValue("compType");
+	dwr.util.setValue("")
 	if (compositionType == "nanomaterial entity") {
 		SampleManager.getNanomaterialEntityTypes(null, function(data) {
 			dwr.util.removeAllOptions("entityType");
@@ -175,17 +176,22 @@ function setCharacterizationOptions() {
 	var charType = dwr.util.getValue("charType");
 	CharacterizationManager.getDecoratedCharacterizationOptions(charType,
 			function(data) {
+				dwr.util.setValue("charName", "");
+				dwr.util.setValue("datumName", "");
+				dwr.util.setValue("charOperand", "");
+				dwr.util.setValue("datumValue", "");
+				dwr.util.setValue("datumValueUnit", "");
 				dwr.util.removeAllOptions("charName");
 				dwr.util.addOptions("charName", emptyOption, "value", "label");
-				dwr.util.addOptions("charName", data, "value", "label");				
+				dwr.util.addOptions("charName", data, "value", "label");
 			});
 }
 
 function setDatumNameOptionsByCharName() {
 	var charType = dwr.util.getValue("charType");
 	var charName = dwr.util.getValue("charName");
-	if (charName.match("^--")) {
-		var assayType = charName.replace("--", "");
+	if (charName.match("^ --")) {
+		var assayType = charName.replace(" --", "");
 	}
 	FindingManager
 			.getDecoratedDatumNameOptions(
@@ -198,9 +204,10 @@ function setDatumNameOptionsByCharName() {
 								"label");
 						dwr.util
 								.addOptions("datumName", data, "value", "label");
-						//if there is only one in the option, preselect it						
-						if (data.length==1) {
-							dwr.util.setValue("datumName", data[0], "value", "label");
+						// if there is only one in the option, preselect it
+						if (data.length == 1) {
+							dwr.util.setValue("datumName", data[0].value);
+							setDatumValueUnitOptions();
 						}
 					});
 }
@@ -215,14 +222,14 @@ function setDatumValueUnitOptions() {
 					dwr.util.addOptions("datumValueUnit", emptyOption, "value",
 							"label");
 					dwr.util.addOptions("datumValueUnit", data);
-					//if there is only one in the option, preselect it
-					if (data.length==1) {
-						dwr.util.setValue("datumValueUnit", data[0]);
-					}
-				} else {					
-					hide("datumValueUnitBlock");
-				}
-			});
+					// if there is only one in the option, preselect it
+			if (data.length == 1) {
+				dwr.util.setValue("datumValueUnit", data[0]);
+			}
+		} else {
+			hide("datumValueUnitBlock");
+		}
+	});
 }
 
 function setCharacterizationOperandOptions() {

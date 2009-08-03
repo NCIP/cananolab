@@ -20,7 +20,7 @@ function clearInherentFunction() {
 }
 function displayImageModality() {
 	var functionType = dwr.util.getValue("functionType");
-	if (functionType == "imaging") {
+	if (functionType == "imaging function") {
 		show("modalityLabel");
 		show("imagingModalityPrompt");
 	} else {
@@ -67,7 +67,7 @@ function populateInherentFunctions() {
 		id = theFunction.id;
 		dwr.util.cloneNode("pattern", {idSuffix:id});
 		dwr.util.setValue("functionTypeValue" + id, theFunction.type);
-		if (theFunction.type == "imaging") {
+		if (theFunction.type == "imaging function") {
 			dwr.util.setValue("functionModalityTypeValue" + id, theFunction.imagingFunction.modality);
 			show("modalityHeader");
 			show("functionModalityTypeValue" + id);
@@ -117,7 +117,7 @@ function editInherentFunction(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var func = inherentFunctionCache[eleid.substring(4)];
 	dwr.util.setValue("functionType", func.type);
-	if (func.type == "imaging") {
+	if (func.type == "imaging function") {
 		show("modalityLabel");
 		show("imagingModalityPrompt");
 		dwr.util.setValue("imagingModality", func.imagingFunction.modality);

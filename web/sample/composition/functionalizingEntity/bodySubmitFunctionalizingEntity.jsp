@@ -120,7 +120,7 @@
 					property="functionalizingEntity.molecularFormulaType"
 					onchange="javascript:callPrompt('Molecular Formula Type', 'mfType'); ">
 					<option value=""></option>
-					<html:options name="feMolecularFormulaTypes" />
+					<html:options name="molecularFormulaTypes" />
 					<option value="other">
 						[Other]
 					</option>
