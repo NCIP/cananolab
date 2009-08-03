@@ -552,6 +552,8 @@ public class AuthorizationService {
 	public void secureObject(String objectName, String groupName,
 			String roleName) throws SecurityException {
 		try {
+			//trim spaces in objectName
+			objectName=objectName.trim();
 			// create protection element
 			ProtectionElement pe = getProtectionElement(objectName);
 
