@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents the view bean for ComposingElement domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ComposingElementBean {
 	private ComposingElement domain = new ComposingElement();
@@ -111,14 +110,12 @@ public class ComposingElementBean {
 	public String getDomainId() {
 		if (getDomain().getId() != null) {
 			return getDomain().getId().toString();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
 
-	public void setupDomain(Map<String, String> typeToClass, String createdBy,
-			int index) throws Exception {
+	public void setupDomain(String createdBy, int index) throws Exception {
 		if (domain.getId() == null
 				|| domain.getCreatedBy() != null
 				&& domain.getCreatedBy().equals(
@@ -129,11 +126,11 @@ public class ComposingElementBean {
 			// seconds
 			domain.setCreatedDate(DateUtils.addSecondsToCurrentDate(index));
 		}
-		//update zero values defaulted from forms to null
-		if (domain.getPubChemId()!=null && domain.getPubChemId()==0) {
+		// update zero values defaulted from forms to null
+		if (domain.getPubChemId() != null && domain.getPubChemId() == 0) {
 			domain.setPubChemId(null);
 		}
-		if (domain.getValue()!=null && domain.getValue()==0) {
+		if (domain.getValue() != null && domain.getValue() == 0) {
 			domain.setValue(null);
 		}
 		if (domain.getInherentFunctionCollection() != null) {
@@ -143,7 +140,7 @@ public class ComposingElementBean {
 		}
 		int i = 0;
 		for (FunctionBean functionBean : inherentFunctions) {
-			functionBean.setupDomainFunction(typeToClass, createdBy, i);
+			functionBean.setupDomainFunction(createdBy, i);
 			domain.getInherentFunctionCollection().add(
 					functionBean.getDomainFunction());
 			i++;

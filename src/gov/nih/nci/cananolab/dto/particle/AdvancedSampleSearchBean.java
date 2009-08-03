@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 
 import java.util.ArrayList;
 import java.util.List;

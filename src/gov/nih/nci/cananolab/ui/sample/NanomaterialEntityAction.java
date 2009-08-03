@@ -17,7 +17,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -74,12 +73,14 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String detailPage = null;
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
-				.get("nanomaterialEntity");		
-		detailPage = InitCompositionSetup.getInstance().getDetailPage(
-				request.getSession().getServletContext(), entityBean.getType(),
-				"nanomaterialEntity");
-		request.setAttribute("entityDetailPage", detailPage);
-		// set pubChemId and value for composing element to be null if they were
+				.get("nanomaterialEntity");
+		if (!StringUtils.isEmpty(entityBean.getType())) {
+			detailPage = InitCompositionSetup.getInstance().getDetailPage(
+					entityBean.getType(), "nanomaterialEntity");
+			request.setAttribute("entityDetailPage", detailPage);		
+		}
+		// set pubChemId and value for composing element to be null if they
+		// were
 		// default to zero from the form
 		ComposingElementBean ce = entityBean.getTheComposingElement();
 		if (ce.getDomain().getPubChemId() != null
@@ -103,23 +104,19 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				+ '/'
 				+ sampleBean.getDomain().getName()
 				+ '/'
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
+				+ "nanomaterialEntity";
 		try {
-			entityBean.setupDomainEntity(InitSetup.getInstance()
-					.getDisplayNameToClassNameLookup(
-							request.getSession().getServletContext()), user
-					.getLoginName(), internalUriPath);
+			entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
 			if (ex.getMessage() != null && ex.getMessage().length() > 0
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
 				msg = new ActionMessage("errors.invalidOtherType", entityBean
-						.getType(), "Nanomaterial Entity");
+						.getType(), "nanomaterial entity");
 			} else {
 				msg = new ActionMessage("errors.invalidOtherType", entityBean
-						.getType(), "Nanomaterial Entity");
+						.getType(), "nanomaterial entity");
 				entityBean.setType(null);
 			}
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -200,7 +197,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
-		return mapping.getInputForward();
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
@@ -220,8 +217,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		CompositionService compService = new CompositionServiceLocalImpl();
 		NanomaterialEntityBean entityBean = compService
 				.findNanomaterialEntityById(entityId, user);
-		entityBean.updateType(InitSetup.getInstance()
-				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("nanomaterialEntity", entityBean);
 		this.setLookups(request);
 		theForm.set("otherSamples", new String[0]);
@@ -313,12 +308,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				+ '/'
 				+ sampleBean.getDomain().getName()
 				+ '/'
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
-		entityBean.setupDomainEntity(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName(), internalUriPath);
+				+ "nanomaterialEntity";
+		entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
 		compositionService.deleteNanomaterialEntity(entityBean
 				.getDomainEntity(), user);
 		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);

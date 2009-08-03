@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteIm
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -54,7 +55,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			publicationBeans = queryPublications(form, request);
 			if (publicationBeans != null && !publicationBeans.isEmpty()) {
 				session.setAttribute("publicationSearchResults",
-						publicationBeans);				
+						publicationBeans);
 			} else {
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage(
@@ -70,18 +71,21 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		int displayPage = getDisplayPage(request);
 
 		// pass in page and size
-		List<PublicationBean> pubBeansPerPage = getPublicationsPerPage(publicationBeans,
-				displayPage, Constants.DISPLAY_TAG_TABLE_SIZE, request);
+		List<PublicationBean> pubBeansPerPage = getPublicationsPerPage(
+				publicationBeans, displayPage,
+				Constants.DISPLAY_TAG_TABLE_SIZE, request);
 		request.setAttribute("publications", pubBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
-		request.setAttribute("resultSize", new Integer(publicationBeans.size()));
+		request
+				.setAttribute("resultSize",
+						new Integer(publicationBeans.size()));
 		return mapping.findForward("success");
 	}
 
-	private List<PublicationBean> getPublicationsPerPage(List<PublicationBean> publicationBeans,
-			int page, int pageSize, HttpServletRequest request)
-			throws Exception {
+	private List<PublicationBean> getPublicationsPerPage(
+			List<PublicationBean> publicationBeans, int page, int pageSize,
+			HttpServletRequest request) throws Exception {
 		List<PublicationBean> loadedPublicationBeans = new ArrayList<PublicationBean>();
 		PublicationService service = null;
 		HttpSession session = request.getSession();
@@ -96,9 +100,10 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 							.getGridServiceUrl(request, location);
 					service = new PublicationServiceRemoteImpl(serviceUrl);
 				}
-				String publicationId = publicationBeans.get(i).getDomainFile().getId().toString();
-				PublicationBean pubBean = service.findPublicationById(publicationId,
-						user);
+				String publicationId = publicationBeans.get(i).getDomainFile()
+						.getId().toString();
+				PublicationBean pubBean = service.findPublicationById(
+						publicationId, user);
 				pubBean.setLocation(location);
 				loadedPublicationBeans.add(pubBean);
 			}
@@ -163,8 +168,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		List<String> nanomaterialEntityClassNames = new ArrayList<String>();
 		List<String> otherNanomaterialEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanomaterialEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getClassName(
-					nanomaterialEntityTypes[i], session.getServletContext());
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName(nanomaterialEntityTypes[i]);
 			if (className.length() == 0) {
 				className = "OtherNanomaterialEntity";
 				otherNanomaterialEntityTypes.add(nanomaterialEntityTypes[i]);
@@ -175,8 +180,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getClassName(
-					functionalizingEntityTypes[i], session.getServletContext());
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName(functionalizingEntityTypes[i]);
 			if (className.length() == 0) {
 				className = "OtherFunctionalizingEntity";
 				otherFunctionalizingTypes.add(functionalizingEntityTypes[i]);
@@ -189,8 +194,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		if (functionTypes != null) {
 			for (int i = 0; i < functionTypes.length; i++) {
-				String className = InitSetup.getInstance().getClassName(
-						functionTypes[i], session.getServletContext());
+				String className = ClassUtils
+						.getShortClassNameFromDisplayName(functionTypes[i]);
 				if (className.length() == 0) {
 					className = "OtherFunction";
 					otherFunctionTypes.add(functionTypes[i]);

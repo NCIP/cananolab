@@ -17,7 +17,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -113,17 +112,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
+		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
+				+ sampleBean.getDomain().getName() + "/"
+				+ "functionalizingEntity";
 		try {
-			entityBean.setupDomainEntity(InitSetup.getInstance()
-					.getDisplayNameToClassNameLookup(
-							request.getSession().getServletContext()), user
-					.getLoginName(), internalUriPath);
+			entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
@@ -133,7 +126,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 						.getMessage(), "Function");
 			} else {
 				msg = new ActionMessage("errors.invalidOtherType", entityBean
-						.getType(), "Functionalizing Entity");
+						.getType(), "functionalizing entity");
 				entityBean.setType(null);
 			}
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -201,8 +194,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		CompositionService compService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId, user);
-		entityBean.updateType(InitSetup.getInstance()
-				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("functionalizingEntity", entityBean);
 		this.setLookups(request);
 		// clear copy to otherSamples
@@ -301,16 +292,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
-		entityBean.setupDomainEntity(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName(), internalUriPath);
+		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
+				+ sampleBean.getDomain().getName() + "/"
+				+ "functionalizingEntity";
+		entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
 				.getDomainEntity(), user);

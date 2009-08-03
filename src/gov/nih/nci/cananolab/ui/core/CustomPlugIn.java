@@ -17,9 +17,9 @@ import org.apache.struts.config.ModuleConfig;
 /**
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CustomPlugIn implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugIn.class);
@@ -32,7 +32,6 @@ public class CustomPlugIn implements PlugIn {
 			// set default lookup valules in the servlet context
 			ServletContext appContext = actionServlet.getServletContext();
 			InitSetup.getInstance().getDefaultLookupTable(appContext);
-			InitSetup.getInstance().getClassNameToDisplayNameLookup(appContext);
 			InitSetup
 					.getInstance()
 					.getServletContextDefaultTypesByReflection(appContext,
@@ -47,25 +46,25 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
 					appContext, "defaultTargetTypes",
 					"gov.nih.nci.cananolab.domain.function.Target");
-			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-					appContext, "defaultChemicalAssociationTypes",
-					"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+			InitSetup
+					.getInstance()
+					.getServletContextDefaultTypesByReflection(appContext,
+							"defaultChemicalAssociationTypes",
+							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
 			actionServlet.getServletContext().setAttribute("applicationOwner",
 					Constants.APP_OWNER);
 
 			InitSetup.getInstance().getServletContextDefaultLookupTypes(
-					appContext, "antigenSpecies", "Antigen", "species");
+					appContext, "speciesTypes", "species", "type");
 			InitSetup.getInstance().getServletContextDefaultLookupTypes(
-					appContext, "antibodySpecies", "Antibody", "species");
+					appContext, "molecularFormulaTypes", "molecular formula",
+					"type");
 			InitSetup.getInstance().getServletContextDefaultLookupTypes(
-					appContext, "molecularFormulaTypes", "ComposingElement",
-					"molecularFormulaType");
-			InitSetup.getInstance().getServletContextDefaultLookupTypes(
-					appContext, "wallTypes", "CarbonNanotube", "wallType");
+					appContext, "wallTypes", "carbon nanotube", "wallType");
 
 			InitSetup.getInstance().setStaticOptions(appContext);
-			
+
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 
 			setupInitialGridNodes();

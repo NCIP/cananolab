@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,8 +41,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 				+ "/"
 				+ sampleBean.getDomain().getName()
 				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Composition File");
+				+ "compositionFile";
 
 		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		CompositionService service = new CompositionServiceLocalImpl();

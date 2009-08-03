@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Utilility class to handle domain class manipulations
@@ -445,7 +443,7 @@ public class ClassUtils {
 	}
 
 	public static String getShortClassNameFromDisplayName(String displayName) {
-		String[] words = displayName.split(" ");
+		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
 			String newWord = Character.toString(word.charAt(0)).toUpperCase()
@@ -453,7 +451,6 @@ public class ClassUtils {
 			newWords.add(newWord);
 		}
 		String shortClassName = StringUtils.join(newWords, "");
-
 		return shortClassName;
 	}
 }

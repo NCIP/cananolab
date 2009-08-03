@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.struts.util.LabelValueBean;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
@@ -28,6 +28,9 @@ public class DWRCharacterizationManager {
 
 	public List<LabelValueBean> getDecoratedCharacterizationOptions(
 			String characterizationType) throws Exception {
+		if (StringUtils.isEmpty(characterizationType)) {
+			return null;
+		}
 		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
 				.getCharNamesByCharType(wctx.getHttpServletRequest(),
@@ -37,13 +40,25 @@ public class DWRCharacterizationManager {
 			SortedSet<String> assayTypes = InitCharacterizationSetup
 					.getInstance().getAssayTypesByCharName(
 							wctx.getHttpServletRequest(), charName);
-			LabelValueBean labelValue = new LabelValueBean(charName, charName);
-			charNamesWithAssayTypes.add(labelValue);
 			if (!assayTypes.isEmpty()) {
+				LabelValueBean labelValue = new LabelValueBean(charName,
+						charName);
+				charNamesWithAssayTypes.add(labelValue);
 				for (String assayType : assayTypes) {
 					LabelValueBean labelValueWithAssay = new LabelValueBean(
-							"--" + assayType, assayType);
+							" --" + assayType, assayType);
 					charNamesWithAssayTypes.add(labelValueWithAssay);
+				}
+			} else {
+				SortedSet<String> datumNames = InitCharacterizationSetup
+						.getInstance().getDatumNamesByCharName(
+								wctx.getHttpServletRequest(),
+								characterizationType, charName, null);
+				//do not include if char name doesn't have any predefined datum names
+				if (datumNames != null && !datumNames.isEmpty()) {
+					LabelValueBean labelValue = new LabelValueBean(charName,
+							charName);
+					charNamesWithAssayTypes.add(labelValue);
 				}
 			}
 		}
@@ -59,13 +74,12 @@ public class DWRCharacterizationManager {
 		return assayTypes.toArray(new String[assayTypes.size()]);
 	}
 
-	public String getCharacterizationDetailPage(String charName)
+	public String getCharacterizationDetailPage(String charType, String charName)
 			throws ServletException, IOException, BaseException {
 		try {
 			WebContext wctx = WebContextFactory.get();
-			ServletContext appContext = wctx.getServletContext();
 			String includePage = InitCharacterizationSetup.getInstance()
-					.getDetailPage(appContext, charName);
+					.getDetailPage(charType, charName);
 			if (includePage != null) {
 				String content = wctx.forwardToString(includePage);
 				return content;

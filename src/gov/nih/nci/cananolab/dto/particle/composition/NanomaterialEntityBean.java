@@ -24,13 +24,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents the view bean for the NanomaterialEntity domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private Polymer polymer = new Polymer();
@@ -97,6 +96,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			}
 		}
 		Collections.sort(files, new Comparators.FileBeanDateComparator());
+		updateType();
 	}
 
 	public NanomaterialEntity getDomainCopy() {
@@ -189,14 +189,14 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		return domainEntity;
 	}
 
-	public void setupDomainEntity(Map<String, String> typeToClass,
-			String createdBy, String internalUriPath) throws Exception {
-		className = typeToClass.get(type.toLowerCase());
+	public void setupDomainEntity(String createdBy, String internalUriPath)
+			throws Exception {
+		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = null;
 		if (className == null) {
 			clazz = OtherNanomaterialEntity.class;
 		} else {
-			clazz = ClassUtils.getFullClass("nanomaterial."+className);
+			clazz = ClassUtils.getFullClass("nanomaterial." + className);
 		}
 		if (domainEntity == null) {
 			domainEntity = (NanomaterialEntity) clazz.newInstance();
@@ -234,7 +234,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		}
 		int i = 0;
 		for (ComposingElementBean composingElementBean : composingElements) {
-			composingElementBean.setupDomain(typeToClass, createdBy, i);
+			composingElementBean.setupDomain(createdBy, i);
 			ComposingElement domain = composingElementBean.getDomain();
 			if (domain.getId() == null) {
 				domain.setCreatedBy(createdBy);
@@ -279,18 +279,11 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		return copiedEntity;
 	}
 
-	public void updateType(Map<String, String> classToType) {
+	private void updateType() {
 		if (domainEntity instanceof OtherNanomaterialEntity) {
 			type = ((OtherNanomaterialEntity) domainEntity).getType();
 		} else {
-			type = classToType.get(className);
-		}
-		// set composing element function type
-		for (ComposingElementBean compElementBean : getComposingElements()) {
-			for (FunctionBean functionBean : compElementBean
-					.getInherentFunctions()) {
-				functionBean.updateType(classToType);
-			}
+			type = ClassUtils.getDisplayName(className);
 		}
 	}
 
@@ -306,17 +299,16 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		this.theComposingElement = theComposingElement;
 	}
 
-	//used for DWR ajax in bodySubmitChemicalAssociation.jsp
+	// used for DWR ajax in bodySubmitChemicalAssociation.jsp
 	public String getDomainId() {
 		if (getDomainEntity().getId() != null) {
 			return getDomainEntity().getId().toString();
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
 
-	//used for DWR ajax
+	// used for DWR ajax
 	public String getDisplayName() {
 		return type;
 	}

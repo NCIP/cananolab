@@ -166,13 +166,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = charService.findCharacterizationById(
 				charId, user);
-
-		// setup correct display for characterization name and characterization
-		// type
-		InitCharacterizationSetup.getInstance().setCharacterizationName(
-				request, charBean);
-		InitCharacterizationSetup.getInstance().setCharacterizationType(
-				request, charBean);
 		// setup dropdown for existing characterization
 		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
 				charBean.getCharacterizationType());
@@ -216,9 +209,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (charBean.getClassName() == null
 				|| charBean.getClassName().length() == 0) {
-			String className = InitSetup.getInstance().getClassName(
-					charBean.getCharacterizationName(),
-					request.getSession().getServletContext());
+			String className = StringUtils
+					.getOneWordUpperCaseFirstLetter(charBean
+							.getCharacterizationName());
 			charBean.setClassName(className);
 		}
 		charBean.setupDomain(user.getLoginName());
@@ -459,14 +452,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId, user);
-
-		// set characterization types and retrieve visibility
-		for (CharacterizationBean charBean : charBeans) {
-			InitCharacterizationSetup.getInstance().setCharacterizationType(
-					request, charBean);
-			InitCharacterizationSetup.getInstance().setCharacterizationName(
-					request, charBean);
-		}
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
@@ -681,15 +666,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		request.setAttribute("anchor", "result");
 		FindingBean findingBean = achar.getTheFinding();
-		
+
 		/**
 		 * Set number of column/row in form for validation.
 		 */
-		theForm.set("numberOfColumns", 
-				Integer.valueOf(findingBean.getNumberOfColumns()));
-		theForm.set("numberOfRows", 
-				Integer.valueOf(findingBean.getNumberOfRows()));
-		
+		theForm.set("numberOfColumns", Integer.valueOf(findingBean
+				.getNumberOfColumns()));
+		theForm.set("numberOfRows", Integer.valueOf(findingBean
+				.getNumberOfRows()));
+
 		if (request.getParameter("removeColumn") != null) {
 			int columnToRemove = Integer.parseInt(request
 					.getParameter("removeColumn"));

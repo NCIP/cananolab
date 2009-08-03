@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
@@ -119,7 +118,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			}
 		}
 		Collections.sort(files, new Comparators.FileBeanDateComparator());
-
+		updateType();
 	}
 
 	public FunctionalizingEntity getDomainCopy() {
@@ -244,9 +243,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		return activationMethod;
 	}
 
-	public void setupDomainEntity(Map<String, String> typeToClass,
-			String createdBy, String internalUriPath) throws Exception {
-		className = typeToClass.get(type.toLowerCase());
+	public void setupDomainEntity(String createdBy, String internalUriPath)
+			throws Exception {
+		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = null;
 		if (className == null) {
 			clazz = OtherFunctionalizingEntity.class;
@@ -305,7 +304,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		}
 		int i = 0;
 		for (FunctionBean functionBean : functions) {
-			functionBean.setupDomainFunction(typeToClass, createdBy, i);
+			functionBean.setupDomainFunction(createdBy, i);
 			domainEntity.getFunctionCollection().add(
 					functionBean.getDomainFunction());
 			i++;
@@ -323,15 +322,11 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		}
 	}
 
-	public void updateType(Map<String, String> classToType) {
+	private void updateType() {
 		if (domainEntity instanceof OtherFunctionalizingEntity) {
 			type = ((OtherFunctionalizingEntity) domainEntity).getType();
 		} else {
-			type = classToType.get(className);
-		}
-		// set function type and target type
-		for (FunctionBean functionBean : getFunctions()) {
-			functionBean.updateType(classToType);
+			type = ClassUtils.getDisplayName(className);
 		}
 	}
 

@@ -1,9 +1,5 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
-import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
-import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -15,13 +11,13 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.axis.utils.StringUtils;
@@ -55,16 +51,11 @@ public class InitCharacterizationSetup {
 	public List<String> getDefaultCharacterizationTypes(
 			HttpServletRequest request) throws Exception {
 		// need to keep the types in the specified order; otherwise could have
-		// used
-		// reflection
-		ServletContext appContext = request.getSession().getServletContext();
+		// used reflection
 		List<String> types = new ArrayList<String>();
-		types.add(InitSetup.getInstance().getDisplayName(
-				"PhysicoChemicalCharacterization", appContext));
-		types.add(InitSetup.getInstance().getDisplayName(
-				"InvitroCharacterization", appContext));
-		types.add(InitSetup.getInstance().getDisplayName(
-				"InvivoCharacterization", appContext));
+		types.add(ClassUtils.getDisplayName("PhysicoChemicalCharacterization"));
+		types.add(ClassUtils.getDisplayName("InvitroCharacterization"));
+		types.add(ClassUtils.getDisplayName("InvivoCharacterization"));
 		return types;
 	}
 
@@ -154,63 +145,22 @@ public class InitCharacterizationSetup {
 		// charBean.getDomainChar().getId().toString());
 	}
 
-	/**
-	 * Set characterization type of an existing characterization bean
-	 * 
-	 * @param request
-	 * @param charBean
-	 * @throws Exception
-	 */
-	public void setCharacterizationType(HttpServletRequest request,
-			CharacterizationBean charBean) throws Exception {
-		Characterization domainChar = charBean.getDomainChar();
-		String charType = null;
-		if (domainChar instanceof OtherCharacterization) {
-			charType = ((OtherCharacterization) domainChar).getAssayCategory();
-		} else {
-			charType = InitSetup.getInstance().getDisplayName(
-					ClassUtils.getShortClassName(domainChar.getClass()
-							.getSuperclass().getName()),
-					request.getSession().getServletContext());
-		}
-		charBean.setCharacterizationType(charType);
-	}
-
-	/**
-	 * Set the display name for an existing characterization bean
-	 * 
-	 * @param request
-	 * @param charBean
-	 * @throws Exception
-	 */
-	public void setCharacterizationName(HttpServletRequest request,
-			CharacterizationBean charBean) throws Exception {
-		Characterization domainChar = charBean.getDomainChar();
-		String charName = null;
-		if (domainChar instanceof OtherCharacterization) {
-			charName = ((OtherCharacterization) domainChar).getName();
-		} else {
-			charName = InitSetup.getInstance().getDisplayName(
-					charBean.getClassName(),
-					request.getSession().getServletContext());
-		}
-		charBean.setCharacterizationName(charName);
-	}
-
 	public SortedSet<String> getCharNamesByCharType(HttpServletRequest request,
 			String charType) throws Exception {
+		if (StringUtils.isEmpty(charType)) {
+			return null;
+		}
 		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
-		ServletContext appContext = request.getSession().getServletContext();
-		String fullCharTypeClass = InitSetup.getInstance().getFullClassName(
-				charType, appContext);
+		String fullCharTypeClass = ClassUtils.getFullClass(
+				ClassUtils.getShortClassNameFromDisplayName(charType))
+				.getName();
 		SortedSet<String> charNames = new TreeSet<String>();
 		List<String> charClassNames = ClassUtils
 				.getChildClassNames(fullCharTypeClass);
 		for (String charClass : charClassNames) {
 			if (!charClass.startsWith("Other")) {
 				String shortClassName = ClassUtils.getShortClassName(charClass);
-				charNames.add(InitSetup.getInstance().getDisplayName(
-						shortClassName, appContext));
+				charNames.add(ClassUtils.getDisplayName(shortClassName));
 			}
 		}
 
@@ -225,10 +175,8 @@ public class InitCharacterizationSetup {
 
 	public SortedSet<String> getAssayTypesByCharName(
 			HttpServletRequest request, String charName) throws Exception {
-		String charClassName = InitSetup.getInstance().getClassName(charName,
-				request.getSession().getServletContext());
 		SortedSet<String> assayTypes = LookupService
-				.getDefaultAndOtherLookupTypes(charClassName, "assayType",
+				.getDefaultAndOtherLookupTypes(charName, "assayType",
 						"otherAssayType");
 		request.getSession().setAttribute("charNameAssays", assayTypes);
 		return assayTypes;
@@ -237,8 +185,6 @@ public class InitCharacterizationSetup {
 	public SortedSet<String> getDatumNamesByCharName(
 			HttpServletRequest request, String charType, String charName,
 			String assayType) throws Exception {
-		String charClassName = InitSetup.getInstance().getClassName(charName,
-				request.getSession().getServletContext());
 		SortedSet<String> allDatumNames = new TreeSet<String>();
 		// if assayType is empty, use charName to look up datums, as well as
 		// look up all assay types and use assay type to look up datum
@@ -246,7 +192,7 @@ public class InitCharacterizationSetup {
 			allDatumNames = LookupService.getDefaultAndOtherLookupTypes(
 					charName, "datumName", "otherDatumName");
 			SortedSet<String> assayTypes = LookupService
-					.getDefaultAndOtherLookupTypes(charClassName, "assayType",
+					.getDefaultAndOtherLookupTypes(charName, "assayType",
 							"otherAssayType");
 			if (assayTypes != null && !assayTypes.isEmpty()) {
 				for (String type : assayTypes) {
@@ -292,27 +238,17 @@ public class InitCharacterizationSetup {
 		return valueTypes;
 	}
 
-	public String getDetailPage(Characterization domain) {
+	public String getDetailPage(String charType, String charName) {
+		String charClassName = ClassUtils
+				.getShortClassNameFromDisplayName(charName);
 		String includePage = null;
-		String shortClassName = ClassUtils.getShortClassName(domain.getClass()
-				.getName());
-		if (domain instanceof PhysicoChemicalCharacterization) {
+		if (charType.equals(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
 			includePage = "/sample/characterization/physical/body"
-					+ shortClassName + "Info.jsp";
-		} else if (domain instanceof InvitroCharacterization) {
+					+ charClassName + "Info.jsp";
+		} else if (charType.equals(Constants.INVITRO_CHARACTERIZATION)) {
 			includePage = "/sample/characterization/invitro/body"
-					+ shortClassName + "Info.jsp";
+					+ charClassName + "Info.jsp";
 		}
-		return includePage;
-	}
-
-	public String getDetailPage(ServletContext appContext, String charName)
-			throws Exception {
-		String charClassName = InitSetup.getInstance().getClassName(charName,
-				appContext);
-		Class clazz = ClassUtils.getFullClass(charClassName);
-		Characterization domain = (Characterization) clazz.newInstance();
-		String includePage = getDetailPage(domain);
 		return includePage;
 	}
 }

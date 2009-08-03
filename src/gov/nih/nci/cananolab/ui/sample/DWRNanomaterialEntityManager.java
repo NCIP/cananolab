@@ -6,12 +6,10 @@ import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * Work with DWR to set up drop-downs required in the nanomaterial entity page
@@ -63,15 +61,6 @@ public class DWRNanomaterialEntityManager {
 		ComposingElement composingElement = helper.findComposingElementById(id, user);
 		ComposingElementBean composingElementBean = new ComposingElementBean(
 				composingElement);
-		// update function type based mapping stored in session
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		for (FunctionBean functionBean : composingElementBean
-				.getInherentFunctions()) {
-			functionBean.updateType(InitSetup.getInstance()
-					.getClassNameToDisplayNameLookup(
-							webContext.getServletContext()));
-		}
 		entity.setTheComposingElement(composingElementBean);
 		return composingElementBean;
 	}

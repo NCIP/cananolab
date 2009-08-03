@@ -55,9 +55,6 @@ public class DWRCharacterizationResultManager {
 			String characterizationType, String characterizationName,
 			String assayType) throws Exception {
 		WebContext wctx = WebContextFactory.get();
-
-		String charClassName = InitSetup.getInstance().getClassName(
-				characterizationName, wctx.getServletContext());
 		List<LabelValueBean> allDatumNames = new ArrayList<LabelValueBean>();
 		// if assayType is empty, use charName to look up datums, as well as
 		// look up all assay types and use assay type to look up datum
@@ -65,8 +62,8 @@ public class DWRCharacterizationResultManager {
 			allDatumNames = InitSetup.getInstance().getLookupValuesAsOptions(
 					characterizationName, "datumName", "otherDatumName");
 			SortedSet<String> assayTypes = LookupService
-					.getDefaultAndOtherLookupTypes(charClassName, "assayType",
-							"otherAssayType");
+					.getDefaultAndOtherLookupTypes(characterizationName,
+							"assayType", "otherAssayType");
 			if (assayTypes != null && !assayTypes.isEmpty()) {
 				for (String type : assayTypes) {
 					List<LabelValueBean> datumNamesByAssayTypes = InitSetup

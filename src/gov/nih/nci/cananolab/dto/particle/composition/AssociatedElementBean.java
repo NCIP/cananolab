@@ -7,8 +7,6 @@ import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
-import java.util.Map;
-
 public class AssociatedElementBean {
 	// eg. Nanomaterial Entity, Functionalizing Entity
 	private String compositionType;
@@ -38,6 +36,7 @@ public class AssociatedElementBean {
 		} else {
 			entityId = element.getId().toString();
 		}
+		updateType();
 	}
 
 	public String getCompositionType() {
@@ -56,21 +55,20 @@ public class AssociatedElementBean {
 		return domainElement;
 	}
 
-	public void setupDomainElement(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+	public void setupDomainElement(String createdBy) throws Exception {
 		// domain element is a functionalizing entity
-		if (compositionType.equals("Functionalizing Entity")) {
-			className = typeToClass.get(entityDisplayName.toLowerCase());
+		if (compositionType.equals("functionalizing entity")) {
+			className = ClassUtils
+					.getShortClassNameFromDisplayName(entityDisplayName);
 			Class clazz = null;
 			if (className == null) {
 				clazz = OtherFunctionalizingEntity.class;
 			} else {
-				clazz = ClassUtils.getFullClass("agentmaterial."
-						+ className);
+				clazz = ClassUtils.getFullClass("agentmaterial." + className);
 			}
 			try {
 				domainElement = (AssociatedElement) clazz.newInstance();
-			}catch (ClassCastException ex) {
+			} catch (ClassCastException ex) {
 				String tmpType = compositionType;
 				this.setCompositionType(null);
 				throw new ClassCastException(tmpType);
@@ -100,27 +98,28 @@ public class AssociatedElementBean {
 		this.entityId = entityId;
 	}
 
-	public void updateType(Map<String, String> classToType) {
+	private void updateType() {
 		if (composingElement.getId() != null) {
-			compositionType = classToType.get("NanomaterialEntity");
+			compositionType = ClassUtils.getDisplayName("NanomaterialEntity");
 			NanomaterialEntity entity = composingElement
 					.getNanomaterialEntity();
 			if (entity instanceof OtherNanomaterialEntity) {
 				entityDisplayName = ((OtherNanomaterialEntity) entity)
 						.getType();
 			} else {
-				String entityClassName = className = ClassUtils
+				String entityClassName = ClassUtils
 						.getShortClassName(composingElement
 								.getNanomaterialEntity().getClass().getName());
-				entityDisplayName = classToType.get(entityClassName);
+				entityDisplayName = ClassUtils.getDisplayName(entityClassName);
 			}
 		} else {
-			compositionType = classToType.get("FunctionalizingEntity");
+			compositionType = ClassUtils
+					.getDisplayName("FunctionalizingEntity");
 			if (domainElement instanceof OtherFunctionalizingEntity) {
 				entityDisplayName = ((OtherFunctionalizingEntity) domainElement)
 						.getType();
 			} else {
-				entityDisplayName = classToType.get(className);
+				entityDisplayName = ClassUtils.getDisplayName(className);
 			}
 		}
 	}

@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class sets up information required for composition forms.
- *
+ * 
  * @author pansu, cais
- *
+ * 
  */
 public class InitCompositionSetup {
 
-	//private CompositionService compService = new CompositionServiceLocalImpl();
+	// private CompositionService compService = new
+	// CompositionServiceLocalImpl();
 
 	public static InitCompositionSetup getInstance() {
 		return new InitCompositionSetup();
@@ -51,65 +53,65 @@ public class InitCompositionSetup {
 						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
 						true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
+				"biopolymerTypes", "biopolymer", "type", "otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"modalityTypes", "ImagingFunction", "modality",
+				"modalityTypes", "imaging function", "modality",
 				"otherModality", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"composingElementTypes", "ComposingElement", "type",
+				"composingElementTypes", "composing element", "type",
 				"otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"composingElementUnits", "ComposingElement", "valueUnit",
+				"composingElementUnits", "composing element", "valueUnit",
 				"otherValueUnit", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"ceMolecularFormulaTypes", "ComposingElement",
-				"molecularFormulaType", "otherMolecularFormulaType", true);
+				"molecularFormulaTypes", "molecular formula", "type",
+				"otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
-				"wallTypes", "CarbonNanotube", "wallType");
+				"wallTypes", "carbon nanotube", "wallType");
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistNanomaterialEntityDropdowns(HttpServletRequest request,
 			NanomaterialEntityBean entityBean) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
+		InitSetup.getInstance().persistLookup(request, "biopolymer", "type",
 				"otherType", entityBean.getBiopolymer().getType());
-		InitSetup.getInstance().persistLookup(request, "Fullerene",
+		InitSetup.getInstance().persistLookup(request, "fullerene",
 				"averageDiameterUnit", "otherAverageDiameterUnit",
 				entityBean.getFullerene().getAverageDiameterUnit());
-		InitSetup.getInstance().persistLookup(request, "CarbonNanotube",
+		InitSetup.getInstance().persistLookup(request, "carbon nanotube",
 				"diameterUnit", "otherDiameterUnit",
 				entityBean.getCarbonNanotube().getDiameterUnit());
-		InitSetup.getInstance().persistLookup(request, "CarbonNanotube",
+		InitSetup.getInstance().persistLookup(request, "carbon nanotube",
 				"averageLengthUnit", "otherAverageLengthUnit",
 				entityBean.getCarbonNanotube().getAverageLengthUnit());
 		for (ComposingElementBean elementBean : entityBean
 				.getComposingElements()) {
 			if (entityBean.getDomainEntity() instanceof Emulsion) {
-				InitSetup.getInstance().persistLookup(request, "Emulsion",
+				InitSetup.getInstance().persistLookup(request, "emulsion",
 						"composingElementType", "otherComposingElementType",
 						elementBean.getDomain().getType());
 			} else {
 				InitSetup.getInstance().persistLookup(request,
-						"ComposingElement", "type", "otherType",
+						"composing element", "type", "otherType",
 						elementBean.getDomain().getType());
 			}
-			InitSetup.getInstance().persistLookup(request, "ComposingElement",
+			InitSetup.getInstance().persistLookup(request, "composing element",
 					"valueUnit", "otherValueUnit",
 					elementBean.getDomain().getValueUnit());
-			InitSetup.getInstance().persistLookup(request, "ComposingElement",
-					"molecularFormulaType", "otherMolecularFormulaType",
+			InitSetup.getInstance().persistLookup(request, "molecular formula",
+					"type", "otherType",
 					elementBean.getDomain().getMolecularFormulaType());
 			for (FunctionBean functionBean : elementBean.getInherentFunctions()) {
 				InitSetup.getInstance().persistLookup(request,
-						"ImagingFunction", "modality", "otherModality",
+						"imaging function", "modality", "otherModality",
 						functionBean.getImagingFunction().getModality());
 			}
 		}
 		for (FileBean fileBean : entityBean.getFiles()) {
-			InitSetup.getInstance().persistLookup(request, "File", "type",
+			InitSetup.getInstance().persistLookup(request, "file", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
 
@@ -139,59 +141,53 @@ public class InitCompositionSetup {
 				"gov.nih.nci.cananolab.domain.function.OtherTarget", true);
 
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"antibodyTypes", "Antibody", "type", "otherType", true);
+				"antibodyTypes", "antibody", "type", "otherType", true);
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "antibodyIsotypes",
-						"Antibody", "isotype", "otherIsotype", true);
+						"antibody", "isotype", "otherIsotype", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"activationMethods", "ActivationMethod", "type", "otherType",
+				"activationMethods", "activation method", "type", "otherType",
 				true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"functionalizingEntityUnits", "FunctionalizingEntity",
+				"functionalizingEntityUnits", "functionalizing entity",
 				"valueUnit", "otherValueUnit", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"modalityTypes", "ImagingFunction", "modality",
+				"modalityTypes", "imaging function", "modality",
 				"otherModality", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"feMolecularFormulaTypes", "FunctionalizingEntity",
-				"molecularFormulaType", "otherMolecularFormulaType", true);
-
-		ServletContext appContext = request.getSession().getServletContext();
-		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
-				"antigenSpecies", "Antigen", "species");
-		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
-				"antibodySpecies", "Antibody", "species");
+				"molecularFormulaTypes", "molecular formula", "type",
+				"otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
+				"biopolymerTypes", "biopolymer", "type", "otherType", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistFunctionalizingEntityDropdowns(
 			HttpServletRequest request, FunctionalizingEntityBean entityBean)
 			throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Antibody", "type",
+		InitSetup.getInstance().persistLookup(request, "antibody", "type",
 				"otherType", entityBean.getAntibody().getType());
-		InitSetup.getInstance().persistLookup(request, "Antibody", "isotype",
+		InitSetup.getInstance().persistLookup(request, "antibody", "isotype",
 				"otherIsoType", entityBean.getAntibody().getIsotype());
-		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
+		InitSetup.getInstance().persistLookup(request, "biopolymer", "type",
 				"otherType", entityBean.getBiopolymer().getType());
-		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
-				"valueUnit", "otherValueUnit", entityBean.getValueUnit());
-		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
-				"molecularFormulaType", "otherMolecularFormulaType",
-				entityBean.getMolecularFormulaType());
+		InitSetup.getInstance().persistLookup(request,
+				"functionalizing entity", "valueUnit", "otherValueUnit",
+				entityBean.getValueUnit());
+		InitSetup.getInstance().persistLookup(request, "molecular formula",
+				"type", "otherType", entityBean.getMolecularFormulaType());
 		InitSetup
 				.getInstance()
-				.persistLookup(request, "ActivationMethod", "type",
+				.persistLookup(request, "activation method", "type",
 						"otherType", entityBean.getActivationMethod().getType());
 
 		for (FunctionBean functionBean : entityBean.getFunctions()) {
-			InitSetup.getInstance().persistLookup(request, "ImagingFunction",
+			InitSetup.getInstance().persistLookup(request, "imaging function",
 					"modality", "otherModality",
 					functionBean.getImagingFunction().getModality());
 		}
 		for (FileBean fileBean : entityBean.getFiles()) {
-			InitSetup.getInstance().persistLookup(request, "File", "type",
+			InitSetup.getInstance().persistLookup(request, "file", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
 		setFunctionalizingEntityDropdowns(request);
@@ -201,14 +197,14 @@ public class InitCompositionSetup {
 			boolean hasFunctionalizingEntity) throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
 		List<String> compositionTypes = new ArrayList<String>();
-		compositionTypes.add("Nanomaterial Entity");
+		compositionTypes.add("nanomaterial entity");
 		if (hasFunctionalizingEntity) {
-			compositionTypes.add("Functionalizing Entity");
+			compositionTypes.add("functionalizing entity");
 		}
 		appContext
 				.setAttribute("associationCompositionTypes", compositionTypes);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"bondTypes", "Attachment", "bondType", "otherBondType", true);
+				"bondTypes", "attachment", "bondType", "otherBondType", true);
 		InitSetup
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
@@ -225,12 +221,12 @@ public class InitCompositionSetup {
 	public void persistChemicalAssociationDropdowns(HttpServletRequest request,
 			ChemicalAssociationBean assocBean, Boolean hasFunctionalizingEntity)
 			throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Attachment",
+		InitSetup.getInstance().persistLookup(request, "attachment",
 				"bondType", "otherBondType",
 				assocBean.getAttachment().getBondType());
 		if (assocBean.getFiles() != null) {
 			for (FileBean fileBean : assocBean.getFiles()) {
-				InitSetup.getInstance().persistLookup(request, "File", "type",
+				InitSetup.getInstance().persistLookup(request, "file", "type",
 						"otherType", fileBean.getDomainFile().getType());
 			}
 		}
@@ -239,19 +235,19 @@ public class InitCompositionSetup {
 
 	public void persistCompositionFileDropdowns(HttpServletRequest request,
 			FileBean fileBean) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "File", "type",
+		InitSetup.getInstance().persistLookup(request, "file", "type",
 				"otherType", fileBean.getDomainFile().getType());
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"fileTypes", "File", "type", "otherType", true);
+				"fileTypes", "file", "type", "otherType", true);
 	}
 
 	public SortedSet<String> getEmulsionComposingElementTypes(
 			HttpServletRequest request) throws BaseException {
 		SortedSet<String> emulsionCETypes = LookupService
-				.getDefaultAndOtherLookupTypes("Emulsion",
+				.getDefaultAndOtherLookupTypes("emulsion",
 						"composingElementType", "otherComposingElementType");
 		SortedSet<String> ceTypes = LookupService
-				.getDefaultAndOtherLookupTypes("ComposingElement", "type",
+				.getDefaultAndOtherLookupTypes("composing element", "type",
 						"otherType");
 		emulsionCETypes.addAll(ceTypes);
 		request.getSession().setAttribute("emulsionComposingElementTypes",
@@ -259,18 +255,11 @@ public class InitCompositionSetup {
 		return emulsionCETypes;
 	}
 
-	public String getDetailPage(String entityClassName, String parentPath)
+	public String getDetailPage(String entityType, String parentPath)
 			throws Exception {
 		String page = "/sample/composition/" + parentPath + "/body"
-				+ entityClassName + "Info.jsp";
-		return page;
-	}
-
-	public String getDetailPage(ServletContext appContext, String entityType,
-			String parentPath) throws Exception {
-		String entityClassName = InitSetup.getInstance().getClassName(
-				entityType, appContext);
-		String page = getDetailPage(entityClassName, parentPath);
+				+ ClassUtils.getShortClassNameFromDisplayName(entityType)
+				+ "Info.jsp";
 		return page;
 	}
 }

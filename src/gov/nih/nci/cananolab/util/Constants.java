@@ -124,7 +124,7 @@ public class Constants {
 
 	public static final String CSM_PG_PROTOCOL = "protocol";
 
-	public static final String CSM_PG_PARTICLE = "nanoparticle";
+	public static final String CSM_PG_SAMPLE = "sample";
 
 	public static final String CSM_PG_PUBLICATION = "publication";
 
@@ -158,9 +158,9 @@ public class Constants {
 	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
 			"setupNew", "setupUpdate", "summaryEdit", "add", "remove", "save" };
 
-	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico-chemical characterization";
-	public static final String INVIVO_CHARACTERIZATION = "in vivo characterization";
-	public static final String INVITRO_CHARACTERIZATION = "in vitro characterization";
+	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico chemical characterization";
+	public static final String INVIVO_CHARACTERIZATION = "invivo characterization";
+	public static final String INVITRO_CHARACTERIZATION = "invitro characterization";
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
 

@@ -7,13 +7,11 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
-import java.util.Map;
-
 /**
  * Represents the view bean for the Target domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class TargetBean {
 	private String id;
@@ -34,7 +32,7 @@ public class TargetBean {
 	}
 
 	public TargetBean(Target target) {
-		id=target.getId().toString();
+		id = target.getId().toString();
 		domainTarget = target;
 		name = target.getName();
 		description = target.getDescription();
@@ -43,6 +41,7 @@ public class TargetBean {
 		if (target instanceof Antigen) {
 			antigen = (Antigen) target;
 		}
+		updateType();
 	}
 
 	public Antigen getAntigen() {
@@ -77,9 +76,8 @@ public class TargetBean {
 		return domainTarget;
 	}
 
-	public void setupDomainTarget(Map<String, String> typeToClass,
-			String createdBy, int index) throws Exception {
-		className = typeToClass.get(type.toLowerCase());
+	public void setupDomainTarget(String createdBy, int index) throws Exception {
+		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = null;
 		if (className != null) {
 			clazz = ClassUtils.getFullClass(className);
@@ -118,11 +116,11 @@ public class TargetBean {
 		}
 	}
 
-	public void updateType(Map<String, String> classToType) {
+	private void updateType() {
 		if (domainTarget instanceof OtherTarget) {
 			type = ((OtherTarget) domainTarget).getType();
 		} else {
-			type = classToType.get(className);
+			type = ClassUtils.getDisplayName(className);
 		}
 	}
 
@@ -138,8 +136,8 @@ public class TargetBean {
 		StringBuffer buffer = new StringBuffer();
 		if (type != null) {
 			buffer.append(type);
-			if (name!=null) {
-				buffer.append(" "+name);
+			if (name != null) {
+				buffer.append(" " + name);
 			}
 			if (description != null) {
 				buffer.append(": ");

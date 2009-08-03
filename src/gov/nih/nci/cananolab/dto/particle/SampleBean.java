@@ -113,7 +113,9 @@ public class SampleBean {
 	}
 
 	public void setupDomain(String createdBy) {
-		// always update createdBy and createdDate
+		// trim sample name
+		domain.setName(domain.getName().trim());
+		// update createdBy and createdDate if new
 		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());

@@ -17,7 +17,6 @@ import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,9 +27,9 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * Work with DWR to set up drop-downs required in the composition pages
- *
+ * 
  * @author pansu, cais
- *
+ * 
  */
 public class DWRCompositionManager {
 	public DWRCompositionManager() {
@@ -40,9 +39,8 @@ public class DWRCompositionManager {
 			throws ServletException, IOException, BaseException {
 		try {
 			WebContext wctx = WebContextFactory.get();
-			ServletContext appContext = wctx.getServletContext();
 			String includePage = InitCompositionSetup.getInstance()
-					.getDetailPage(appContext, entityType, parent);
+					.getDetailPage(entityType, parent);
 			String content = wctx.forwardToString(includePage);
 			return content;
 		} catch (Exception e) {
@@ -53,7 +51,7 @@ public class DWRCompositionManager {
 	public FileBean getFileById(String type, String id) throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user==null) {
+		if (user == null) {
 			return null;
 		}
 		FileService service = new FileServiceLocalImpl();
@@ -83,7 +81,7 @@ public class DWRCompositionManager {
 	public FileBean resetTheFile(String type) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		FileBean fileBean = new FileBean();
@@ -116,11 +114,11 @@ public class DWRCompositionManager {
 		if (request.getSession().isNew()) {
 			return null;
 		}
-		if (compositionType.equals("Nanomaterial Entity")) {
+		if (compositionType.equals("nanomaterial entity")) {
 			entities = (List<BaseCompositionEntityBean>) request.getSession()
 					.getAttribute("sampleMaterialEntities");
 
-		} else if (compositionType.equals("Functionalizing Entity")) {
+		} else if (compositionType.equals("functionalizing entity")) {
 			entities = (List<BaseCompositionEntityBean>) request.getSession()
 					.getAttribute("sampleFunctionalizingEntities");
 		}
@@ -135,7 +133,7 @@ public class DWRCompositionManager {
 		}
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user==null) {
+		if (user == null) {
 			return null;
 		}
 		CompositionService compService = new CompositionServiceLocalImpl();

@@ -601,7 +601,7 @@ public class AuthorizationService {
 			if (groups != null)
 				for (Object obj : groups) {
 					Group group = (Group) obj;
-					groupNames.add(group.getGroupName());
+					groupNames.add(group.getGroupName());					
 				}
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
@@ -761,7 +761,7 @@ public class AuthorizationService {
 					+ " and protection_group_name='" + dataId + "'";
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
-			List results = appService.directSQL(query, columns, columnTypes);
+			List results = appService.directSQL(query, columns, columnTypes);	
 			if (results.isEmpty()) {
 				return false;
 			} else {

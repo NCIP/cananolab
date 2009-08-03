@@ -34,9 +34,9 @@ import java.util.List;
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CharacterizationBean {
 	private PointOfContactBean pocBean = new PointOfContactBean();
@@ -145,6 +145,8 @@ public class CharacterizationBean {
 		} else {
 			withProperties = false;
 		}
+		updateType();
+		updateName();
 	}
 
 	public Characterization getDomainCopy(boolean copyDatum) {
@@ -483,5 +485,23 @@ public class CharacterizationBean {
 
 	public void setTransfection(Transfection transfection) {
 		this.transfection = transfection;
+	}
+
+	public void updateType() {
+		if (domainChar instanceof OtherCharacterization) {
+			characterizationType = ((OtherCharacterization) domainChar)
+					.getAssayCategory();
+		} else {
+			characterizationType = ClassUtils.getDisplayName(className);
+		}
+	}
+
+	public void updateName() {
+		if (domainChar instanceof OtherCharacterization) {
+			characterizationName = ((OtherCharacterization) domainChar)
+					.getName();
+		} else {
+			characterizationName = ClassUtils.getDisplayName(className);
+		}
 	}
 }

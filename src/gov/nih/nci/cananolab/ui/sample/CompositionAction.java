@@ -1,10 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -203,26 +200,6 @@ public class CompositionAction extends BaseAnnotationAction {
 				sampleId, user);
 		if (compBean != null) {
 			theForm.set("comp", compBean);
-			// set entity type and association type and retrieve visibility
-
-			for (NanomaterialEntityBean entityBean : compBean
-					.getNanomaterialEntities()) {
-				entityBean.updateType(InitSetup.getInstance()
-						.getClassNameToDisplayNameLookup(
-								session.getServletContext()));
-			}
-			for (FunctionalizingEntityBean entityBean : compBean
-					.getFunctionalizingEntities()) {
-				entityBean.updateType(InitSetup.getInstance()
-						.getClassNameToDisplayNameLookup(
-								session.getServletContext()));
-			}
-			for (ChemicalAssociationBean assocBean : compBean
-					.getChemicalAssociations()) {
-				assocBean.updateType(InitSetup.getInstance()
-						.getClassNameToDisplayNameLookup(
-								session.getServletContext()));
-			}
 		}
 		// retain action messages from send redirects
 		ActionMessages msgs = (ActionMessages) session

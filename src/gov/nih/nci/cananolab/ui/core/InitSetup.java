@@ -42,6 +42,13 @@ public class InitSetup {
 		return new InitSetup();
 	}
 
+	/**
+	 * Queries and common_lookup table and creates a map in application context
+	 * 
+	 * @param appContext
+	 * @return
+	 * @throws BaseException
+	 */
 	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(
 			ServletContext appContext) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = null;
@@ -54,115 +61,6 @@ public class InitSetup {
 							.getAttribute("defaultLookupTable"));
 		}
 		return defaultLookupTable;
-	}
-
-	/**
-	 * Returns a map between an object name and its display name
-	 * 
-	 * @param appContext
-	 * @return
-	 * @throws BaseException
-	 */
-	public Map<String, String> getClassNameToDisplayNameLookup(
-			ServletContext appContext) throws BaseException {
-		Map<String, String> lookup = null;
-		if (appContext.getAttribute("displayNameLookup") == null) {
-			lookup = LookupService.findSingleAttributeLookupMap("displayName");
-			appContext.setAttribute("displayNameLookup", lookup);
-		} else {
-			lookup = new HashMap<String, String>(
-					(Map<? extends String, String>) (appContext
-							.getAttribute("displayNameLookup")));
-		}
-		return lookup;
-	}
-
-	/**
-	 * Returns a map between a display name and its corresponding object name
-	 * 
-	 * @param appContext
-	 * @return
-	 * @throws BaseException
-	 */
-	public Map<String, String> getDisplayNameToClassNameLookup(
-			ServletContext appContext) throws Exception {
-		Map<String, String> lookup = null;
-		if (appContext.getAttribute("displayNameReverseLookup") == null) {
-			Map<String, String> displayLookup = LookupService
-					.findSingleAttributeLookupMap("displayName");
-			lookup = new HashMap<String, String>();
-			for (Map.Entry entry : displayLookup.entrySet()) {
-				lookup.put(entry.getValue().toString(), entry.getKey()
-						.toString());
-			}
-			appContext.setAttribute("displayNameReverseLookup", lookup);
-		} else {
-			lookup = new HashMap<String, String>(
-					(Map<? extends String, String>) (appContext
-							.getAttribute("displayNameReverseLookup")));
-		}
-		return lookup;
-	}
-
-	/**
-	 * Returns a map between a display name and its corresponding full class
-	 * name
-	 * 
-	 * @param appContext
-	 * @return
-	 * @throws BaseException
-	 */
-	public Map<String, String> getDisplayNameToFullClassNameLookup(
-			ServletContext appContext) throws Exception {
-		Map<String, String> lookup = null;
-		if (appContext.getAttribute("displayNameFullClassReverseLookup") == null) {
-			Map<String, String> displayLookup = LookupService
-					.findSingleAttributeLookupMap("displayName");
-			lookup = new HashMap<String, String>();
-			for (Map.Entry entry : displayLookup.entrySet()) {
-				String className = entry.getKey().toString();
-				String fullClassName = ClassUtils.getFullClass(className)
-						.getCanonicalName();
-				lookup.put(entry.getValue().toString(), fullClassName);
-			}
-			appContext
-					.setAttribute("displayNameFullClassReverseLookup", lookup);
-		} else {
-			lookup = new HashMap<String, String>(
-					(Map<? extends String, String>) (appContext
-							.getAttribute("displayNameFullClassReverseLookup")));
-		}
-		return lookup;
-	}
-
-	public String getDisplayName(String className, ServletContext appContext)
-			throws BaseException {
-		Map<String, String> lookup = getClassNameToDisplayNameLookup(appContext);
-		if (lookup.get(className) != null) {
-			return lookup.get(className);
-		} else {
-			return "";
-		}
-	}
-
-	public String getClassName(String displayName, ServletContext appContext)
-			throws Exception {
-		Map<String, String> lookup = getDisplayNameToClassNameLookup(appContext);
-		if (lookup.get(displayName) != null) {
-			return lookup.get(displayName);
-		} else {
-			return "";
-		}
-	}
-
-	public String getFullClassName(String displayName, ServletContext appContext)
-			throws Exception {
-		Map<String, String> lookup = getDisplayNameToFullClassNameLookup(appContext);
-		if (lookup.get(displayName) != null) {
-			return lookup.get(displayName);
-		} else {
-			return "";
-		}
 	}
 
 	/**
@@ -261,9 +159,9 @@ public class InitSetup {
 					.getChildClassNames(fullParentClassName);
 			for (String name : classNames) {
 				if (!name.contains("Other")) {
-					String displayName = InitSetup.getInstance()
-							.getDisplayName(ClassUtils.getShortClassName(name),
-									appContext);
+					String shortClassName = ClassUtils.getShortClassName(name);
+					String displayName = ClassUtils
+							.getDisplayName(shortClassName);
 					types.add(displayName);
 				}
 			}
@@ -400,7 +298,7 @@ public class InitSetup {
 				new LabelValueBean("equals to", "equals"),
 				new LabelValueBean("contains", "contains") };
 		appContext.setAttribute("stringOperands", stringOperands);
-		
+
 		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
 				"equals to", "=") };
 		appContext.setAttribute("booleanOperands", booleanOperands);

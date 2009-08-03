@@ -14,18 +14,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
- *
+ * 
  * Represents the view bean for Function domain object
- *
+ * 
  * @author pansu
- *
- *
+ * 
+ * 
  */
 public class FunctionBean {
-	private String id; //needed for use in DWR ordering functions in the session
+	private String id; // needed for use in DWR ordering functions in the
+	// session
 
 	private String type;
 
@@ -62,6 +62,7 @@ public class FunctionBean {
 		}
 		className = ClassUtils.getShortClassName(function.getClass()
 				.getCanonicalName());
+		updateType();
 	}
 
 	public String getDescription() {
@@ -92,9 +93,9 @@ public class FunctionBean {
 		this.description = description;
 	}
 
-	public void setupDomainFunction(Map<String, String> typeToClass,
-			String createdBy, int index) throws Exception {
-		className = typeToClass.get(type.toLowerCase());
+	public void setupDomainFunction(String createdBy, int index)
+			throws Exception {
+		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = null;
 		if (className != null) {
 			clazz = ClassUtils.getFullClass(className);
@@ -126,7 +127,7 @@ public class FunctionBean {
 			}
 			int i = 0;
 			for (TargetBean targetBean : targets) {
-				targetBean.setupDomainTarget(typeToClass, createdBy, i);
+				targetBean.setupDomainTarget(createdBy, i);
 				((TargetingFunction) domainFunction).getTargetCollection().add(
 						targetBean.getDomainTarget());
 				i++;
@@ -148,16 +149,11 @@ public class FunctionBean {
 		}
 	}
 
-	public void updateType(Map<String, String> classToType) {
+	private void updateType() {
 		if (domainFunction instanceof OtherFunction) {
 			type = ((OtherFunction) domainFunction).getType();
 		} else {
-			type = classToType.get(className);
-		}
-		if (domainFunction instanceof TargetingFunction) {
-			for (TargetBean targetBean : getTargets()) {
-				targetBean.updateType(classToType);
-			}
+			type = ClassUtils.getDisplayName(className);
 		}
 	}
 
@@ -178,11 +174,11 @@ public class FunctionBean {
 		}
 		if (targets != null && !targets.isEmpty()) {
 			buffer.append(" (targets: ");
-			int i=0;
+			int i = 0;
 			for (TargetBean target : targets) {
 				buffer.append(target.getDisplayName());
 				i++;
-				if (i<targets.size()) {
+				if (i < targets.size()) {
 					buffer.append(", ");
 				}
 			}

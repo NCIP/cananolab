@@ -93,7 +93,7 @@ public class InitSecuritySetup {
 			authorizationService.createAGroup(groupName);
 		}
 
-		// assign PI group to role CURD on protocol, nanopoarticle and
+		// assign PI group to role CURD on protocol, sample and
 		// publication
 		authorizationService.assignGroupToProtectionGroupWithRole(
 				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PROTOCOL,
@@ -102,7 +102,7 @@ public class InitSecuritySetup {
 				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PUBLICATION,
 				Constants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PARTICLE,
+				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_SAMPLE,
 				Constants.CSM_CURD_ROLE);
 	}
 }

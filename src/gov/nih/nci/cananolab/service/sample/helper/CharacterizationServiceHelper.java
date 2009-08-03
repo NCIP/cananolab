@@ -1,6 +1,12 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
+import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
+import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
+import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
+import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
@@ -56,7 +62,6 @@ public class CharacterizationServiceHelper {
 	 * Constants for generating Excel report for summary view.
 	 */
 	public static final String ASSAY_TYPE = "Assay Type";
-	public static final String PHY_CHM_CHAR = "Physico-Chemical Characterization";
 	public static final String POC = "Point of Contact";
 	public static final String CHAR_DATE = "Characterization Date";
 	public static final String PROTOCOL = "Protocol";
@@ -71,21 +76,15 @@ public class CharacterizationServiceHelper {
 	public static final String FILES = "File(s)";
 	public static final String PRIVATE_FILE = "Private File";
 	public static final String DATA_CONDITIONS = "Data and Conditions";
-	public static final String CYTOTOXICITY = "Cytotoxicity";
 	public static final String CELL_LINE = "Cell Line";
-	public static final String ENZYMEINDUCTION = "EnzymeInduction";
 	public static final String ENZYME_NAME = "Enzyme Name";
-	public static final String PHYSICALSTATE = "PhysicalState";
 	public static final String TYPE = "Type";
-	public static final String SHAPE = "Shape";
 	public static final String ASPECT_RATIO = "Aspect Ratio";
 	public static final String MINIMUM_DIMENSION = "Minimum Dimension";
 	public static final String MAXIMUM_DIMENSION = "Maximum Dimension";
-	public static final String SOLUBILITY = "Solubility";
 	public static final String SOLVENT = "Solvent";
 	public static final String IS_SOLUBLE = "Is Soluble?";
 	public static final String CONCENTRATION = "Critical Concentration";
-	public static final String SURFACE = "Surface";
 	public static final String IS_HYDROPHOBIC = "Is Hydrophobic?";
 
 	// FILE_ID for constructing file down load URL.
@@ -367,7 +366,8 @@ public class CharacterizationServiceHelper {
 		// 3. Output Assay Type (2, 0).
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.isEmpty(charactization.getAssayType())) {
-			if (PHY_CHM_CHAR.equals(charBean.getCharacterizationType())) {
+			if (Constants.PHYSICOCHEMICAL_CHARACTERIZATION.equals(charBean
+					.getCharacterizationType())) {
 				sb.append(charBean.getCharacterizationName());
 			}
 		} else {
@@ -455,30 +455,25 @@ public class CharacterizationServiceHelper {
 			rowIndex++; // Leave one empty line as separator.
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, PROPERTIES);
-
-			String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup
-					.getInstance().getDetailPage(charBean.getDomainChar());
-			if (!StringUtils.isEmpty(detailPage)) {
-				if (detailPage.indexOf(CYTOTOXICITY) != -1) {
-					rowIndex = outputCytotoxicity(charBean, sheet, headerStyle,
-							rowIndex);
-				} else if (detailPage.indexOf(ENZYMEINDUCTION) != -1) {
-					rowIndex = outputEnzymeInduction(charBean, sheet,
-							headerStyle, rowIndex);
-				} else if (detailPage.indexOf(PHYSICALSTATE) != -1) {
-					rowIndex = outputPhysicalState(charBean, sheet,
-							headerStyle, rowIndex);
-				} else if (detailPage.indexOf(SHAPE) != -1) {
-					rowIndex = outputShape(charBean, sheet, headerStyle,
-							rowIndex);
-				} else if (detailPage.indexOf(SOLUBILITY) != -1) {
-					rowIndex = outputSolubility(charBean, sheet, headerStyle,
-							rowIndex);
-				} else if (detailPage.indexOf(SURFACE) != -1) {
-					rowIndex = outputSurface(charBean, sheet, headerStyle,
-							rowIndex);
-				}
+			Characterization domainChar = charBean.getDomainChar();
+			if (domainChar instanceof Cytotoxicity) {
+				rowIndex = outputCytotoxicity(charBean, sheet, headerStyle,
+						rowIndex);
+			} else if (domainChar instanceof EnzymeInduction) {
+				rowIndex = outputEnzymeInduction(charBean, sheet, headerStyle,
+						rowIndex);
+			} else if (domainChar instanceof PhysicalState) {
+				rowIndex = outputPhysicalState(charBean, sheet, headerStyle,
+						rowIndex);
+			} else if (domainChar instanceof Shape) {
+				rowIndex = outputShape(charBean, sheet, headerStyle, rowIndex);
+			} else if (domainChar instanceof Solubility) {
+				rowIndex = outputSolubility(charBean, sheet, headerStyle,
+						rowIndex);
+			} else if (domainChar instanceof Surface) {
+				rowIndex = outputSurface(charBean, sheet, headerStyle, rowIndex);
 			}
+
 			rowIndex++; // Leave one empty line as separator.
 		}
 		return rowIndex;
@@ -497,7 +492,7 @@ public class CharacterizationServiceHelper {
 		// 7a. Output Cytotoxicity Info.
 		if (!StringUtils.isEmpty(charBean.getCytotoxicity().getCellLine())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle, CYTOTOXICITY);
+			ExportUtils.createCell(row, 0, headerStyle, CELL_LINE);
 			row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, charBean.getCytotoxicity()
 					.getCellLine());

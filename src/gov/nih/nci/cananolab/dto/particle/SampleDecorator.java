@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -14,9 +14,9 @@ import org.displaytag.decorator.TableDecorator;
 /**
  * This decorator is used to for decorate different properties of a nanoparticle
  * to be shown properly in the view page using display tag lib.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleDecorator extends TableDecorator {
 
@@ -25,10 +25,10 @@ public class SampleDecorator extends TableDecorator {
 		if (!Constants.LOCAL_SITE.equals(sample.getLocation())) {
 			return this.getViewSampleURL();
 		}
-		//TODO remove this
-//		if (sample.getLocation().equals("WUSTL")) {
-//			return this.getViewSampleURL();
-//		}
+		// TODO remove this
+		// if (sample.getLocation().equals("WUSTL")) {
+		// return this.getViewSampleURL();
+		// }
 		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
@@ -69,8 +69,7 @@ public class SampleDecorator extends TableDecorator {
 		SortedSet<String> compEntityNames = new TreeSet<String>();
 		if (sample.getFunctionalizingEntityClassNames() != null) {
 			for (String name : sample.getFunctionalizingEntityClassNames()) {
-				String displayName = InitSetup.getInstance().getDisplayName(
-						name, this.getPageContext().getServletContext());
+				String displayName = ClassUtils.getDisplayName(name);
 				if (displayName.length() == 0) {
 					compEntityNames.add(name);
 				} else {
@@ -80,8 +79,7 @@ public class SampleDecorator extends TableDecorator {
 		}
 		if (sample.getNanomaterialEntityClassNames() != null) {
 			for (String name : sample.getNanomaterialEntityClassNames()) {
-				String displayName = InitSetup.getInstance().getDisplayName(
-						name, this.getPageContext().getServletContext());
+				String displayName = ClassUtils.getDisplayName(name);
 				if (displayName.length() == 0) {
 					compEntityNames.add(name);
 				} else {
@@ -97,8 +95,7 @@ public class SampleDecorator extends TableDecorator {
 		SortedSet<String> functionNames = new TreeSet<String>();
 		if (sample.getFunctionClassNames() != null) {
 			for (String name : sample.getFunctionClassNames()) {
-				String displayName = InitSetup.getInstance().getDisplayName(
-						name, this.getPageContext().getServletContext());
+				String displayName = ClassUtils.getDisplayName(name);
 				if (displayName.length() == 0) {
 					functionNames.add(name);
 				} else {
@@ -114,8 +111,7 @@ public class SampleDecorator extends TableDecorator {
 		SortedSet<String> charNames = new TreeSet<String>();
 		if (sample.getCharacterizationClassNames() != null) {
 			for (String name : sample.getCharacterizationClassNames()) {
-				String displayName = InitSetup.getInstance().getDisplayName(
-						name, this.getPageContext().getServletContext());
+				String displayName = ClassUtils.getDisplayName(name);
 				charNames.add(displayName);
 			}
 		}

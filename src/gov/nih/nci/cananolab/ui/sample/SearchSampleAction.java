@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -106,8 +107,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		List<String> nanomaterialEntityClassNames = new ArrayList<String>();
 		List<String> otherNanomaterialEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanomaterialEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getClassName(
-					nanomaterialEntityTypes[i], session.getServletContext());
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName(nanomaterialEntityTypes[i]);
 			if (className.length() == 0) {
 				className = "OtherNanomaterialEntity";
 				otherNanomaterialEntityTypes.add(nanomaterialEntityTypes[i]);
@@ -122,8 +123,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getClassName(
-					functionalizingEntityTypes[i], session.getServletContext());
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName(functionalizingEntityTypes[i]);
 			if (className.length() == 0) {
 				className = "OtherFunctionalizingEntity";
 				otherFunctionalizingTypes.add(functionalizingEntityTypes[i]);
@@ -137,8 +138,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		List<String> functionClassNames = new ArrayList<String>();
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		for (int i = 0; i < functionTypes.length; i++) {
-			String className = InitSetup.getInstance().getClassName(
-					functionTypes[i], session.getServletContext());
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName(functionTypes[i]);
 			if (className.length() == 0) {
 				className = "OtherFunction";
 				otherFunctionTypes.add(functionTypes[i]);
@@ -152,8 +153,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		List<String> charaClassNames = new ArrayList<String>();
 		List<String> otherCharacterizationTypes = new ArrayList<String>();
 		for (int i = 0; i < characterizations.length; i++) {
-			String className = InitSetup.getInstance().getClassName(
-					characterizations[i], session.getServletContext());
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName(characterizations[i]);
 			if (className.length() == 0) {
 				className = "OtherCharacterization";
 				otherCharacterizationTypes.add(characterizations[i]);

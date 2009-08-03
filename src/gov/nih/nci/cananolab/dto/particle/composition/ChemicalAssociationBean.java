@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.util.Comparators;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 
 public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 	private ChemicalAssociation domainAssociation;
@@ -43,15 +42,16 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 				.getAssociatedElementA());
 		associatedElementB = new AssociatedElementBean(chemicalAssociation
 				.getAssociatedElementB());
+		updateType();
 	}
 
 	public ChemicalAssociation getDomainAssociation() {
 		return domainAssociation;
 	}
 
-	public void setupDomainAssociation(Map<String, String> typeToClass,
-			String createdBy, String internalUriPath) throws Exception {
-		className = typeToClass.get(type.toLowerCase());
+	public void setupDomainAssociation(String createdBy, String internalUriPath)
+			throws Exception {
+		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = null;
 		if (className == null) {
 			clazz = OtherChemicalAssociation.class;
@@ -77,8 +77,8 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 			domainAssociation.setCreatedDate(new Date());
 		}
 		domainAssociation.setDescription(description);
-		associatedElementA.setupDomainElement(typeToClass, createdBy);
-		associatedElementB.setupDomainElement(typeToClass, createdBy);
+		associatedElementA.setupDomainElement(createdBy);
+		associatedElementB.setupDomainElement(createdBy);
 		domainAssociation.setAssociatedElementA(associatedElementA
 				.getDomainElement());
 		domainAssociation.setAssociatedElementB(associatedElementB
@@ -108,13 +108,11 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		return associatedElementB;
 	}
 
-	public void updateType(Map<String, String> classToType) {
+	private void updateType() {
 		if (domainAssociation instanceof OtherChemicalAssociation) {
 			type = ((OtherChemicalAssociation) domainAssociation).getType();
 		} else {
-			type = classToType.get(className);
+			type = ClassUtils.getDisplayName(className);
 		}
-		associatedElementA.updateType(classToType);
-		associatedElementB.updateType(classToType);
 	}
 }

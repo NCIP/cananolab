@@ -26,7 +26,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -623,8 +622,6 @@ public class SampleServiceLocalImpl implements SampleService {
 	public SortedSet<String> getAllOrganizationNames(UserBean user)
 			throws PointOfContactException {
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
 			SortedSet<String> names = new TreeSet<String>(
 					new Comparators.SortableNameComparator());
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -647,16 +644,33 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	public void updateAssociatedVisibility(UserBean user) throws Exception {
 		// load name only instead of whole sample to save memory
-		SortedSet<String> sampleNames = findAllSampleNames(user);
-		for (String sampleName : sampleNames) {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select sample.name from gov.nih.nci.cananolab.domain.particle.Sample sample");
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			String sampleName = ((String) obj).trim();
 			List<String> visibleGroups = helper.getAuthService()
 					.getAccessibleGroups(sampleName,
 							Constants.CSM_READ_PRIVILEGE);
 			System.out.println(sampleName);
-			// if (sampleName.equals("UM-IMajorosBM2006-06")) {
 			assignFullVisibility(visibleGroups.toArray(new String[0]),
 					sampleName, user);
-			// }
+		}
+	}
+
+	public void updateInitialPublicOrganization(UserBean user) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select org.id from gov.nih.nci.cananolab.domain.common.Organization org");
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			String id = obj.toString();
+			// assign Public visibility for organization
+			helper.getAuthService().assignVisibility(id,
+					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
 		}
 	}
 
@@ -666,9 +680,15 @@ public class SampleServiceLocalImpl implements SampleService {
 		try {
 			LoginService loginService = new LoginService(Constants.CSM_APP_NAME);
 			UserBean user = loginService.login(userName, password);
-			SampleServiceLocalImpl service = new SampleServiceLocalImpl();
-			service.updateAssociatedVisibility(user);
-			System.exit(0);
+			if (user.isCurator()) {
+				SampleServiceLocalImpl service = new SampleServiceLocalImpl();
+				service.updateAssociatedVisibility(user);
+				service.updateInitialPublicOrganization(user);
+				System.exit(0);
+			} else {
+				System.out
+						.println("You need to be the curator to be able to execute this function");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);

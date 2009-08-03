@@ -7,12 +7,10 @@ import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -33,7 +31,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 /**
  * This class allows users to submit chemical association data under sample
  * composition.
- *
+ * 
  * @author pansu
  */
 public class ChemicalAssociationAction extends BaseAnnotationAction {
@@ -129,13 +127,10 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				+ "/"
 				+ sampleBean.getDomain().getName()
 				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Chemical Association");
+				+ "chemicalAssociation";
 		try {
-			assocBean.setupDomainAssociation(InitSetup.getInstance()
-					.getDisplayNameToClassNameLookup(
-							request.getSession().getServletContext()), user
-					.getLoginName(), internalUriPath);
+			assocBean.setupDomainAssociation(user.getLoginName(),
+					internalUriPath);
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
@@ -162,7 +157,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new chemical association
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -192,6 +187,9 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	public boolean validateComposition(CompositionBean compositionBean,
 			HttpServletRequest request) throws Exception {
 		ActionMessages msgs = new ActionMessages();
+		// save action messages in the session so composition.do know about them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+
 		// if no composition return to summary view page
 		if (compositionBean == null) {
 			ActionMessage msg = new ActionMessage("message.nullComposition");
@@ -267,23 +265,6 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
 				request, hasFunctionalizingEntity);
-		// set entity type and association type
-		HttpSession session = request.getSession();
-		for (NanomaterialEntityBean entityBean : compositionBean
-				.getNanomaterialEntities()) {
-			entityBean.setType(InitSetup.getInstance().getDisplayName(
-					entityBean.getClassName(), session.getServletContext()));
-		}
-		for (FunctionalizingEntityBean entityBean : compositionBean
-				.getFunctionalizingEntities()) {
-			entityBean.setType(InitSetup.getInstance().getDisplayName(
-					entityBean.getClassName(), session.getServletContext()));
-		}
-		for (ChemicalAssociationBean assocBean : compositionBean
-				.getChemicalAssociations()) {
-			assocBean.setType(InitSetup.getInstance().getDisplayName(
-					assocBean.getClassName(), session.getServletContext()));
-		}
 		// use BaseCompositionEntityBean for DWR ajax
 		List<BaseCompositionEntityBean> materialEntities = new ArrayList<BaseCompositionEntityBean>();
 		for (NanomaterialEntityBean entityBean : compositionBean
@@ -309,7 +290,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		List<BaseCompositionEntityBean> entityListA = null;
 		List<ComposingElementBean> ceListA = new ArrayList<ComposingElementBean>();
 		if (assocBean.getAssociatedElementA().getCompositionType().equals(
-				"Nanomaterial Entity")) {
+				"nanomaterial entity")) {
 			entityListA = new ArrayList<BaseCompositionEntityBean>(
 					(List<BaseCompositionEntityBean>) session
 							.getAttribute("sampleMaterialEntities"));
@@ -329,7 +310,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		List<BaseCompositionEntityBean> entityListB = null;
 		List<ComposingElementBean> ceListB = new ArrayList<ComposingElementBean>();
 		if (assocBean.getAssociatedElementB().getCompositionType().equals(
-				"Nanomaterial Entity")) {
+				"nanomaterial entity")) {
 			entityListB = new ArrayList<BaseCompositionEntityBean>(
 					(List<BaseCompositionEntityBean>) session
 							.getAttribute("sampleMaterialEntities"));
@@ -362,8 +343,6 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		String assocId = request.getParameter("dataId");
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssociationById(assocId, user);
-		assocBean.updateType(InitSetup.getInstance()
-				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		prepareEntityLists(assocBean, request);
 		theForm.set("assoc", assocBean);
 
@@ -416,10 +395,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Chemical Association");
-		assocBean.setupDomainAssociation(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName(), internalUriPath);
+		assocBean.setupDomainAssociation(user.getLoginName(), internalUriPath);
 
 		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteChemicalAssociation(assocBean.getDomainAssociation(),
