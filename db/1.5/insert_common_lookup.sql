@@ -425,6 +425,7 @@ INSERT INTO common_lookup (name,attribute,value) VALUES ('datum and condition','
 INSERT INTO common_lookup (name,attribute,value) VALUES ('datum and condition','valueType','RMS');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('datum and condition','valueType','standard deviation');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('datum and condition','valueType','Z-score');
+INSERT INTO common_lookup (name,attribute,value) VALUES ('datum and condition','valueType','Z-average');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('composing element','valueUnit','%');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('composing element','valueUnit','%mole');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('composing element','valueUnit','%vol');
