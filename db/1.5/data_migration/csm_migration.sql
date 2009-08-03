@@ -64,3 +64,10 @@ where  e.update_date = CURRENT_DATE()
 and g.protection_group_name = e.protection_element_name
 ;
 
+--trim trailing and leading spaces in protection_element_name and protection_group_name
+UPDATE csm_protection_element
+set protection_element_name=rtrim(ltrim(protection_element_name));
+
+UPDATE csm_protection_group
+set protection_group_name=rtrim(ltrim(protection_group_name));
+
