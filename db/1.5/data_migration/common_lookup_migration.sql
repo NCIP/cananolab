@@ -26,6 +26,11 @@ FROM common_lookup_old
 where attribute like 'other%' and attribute!='otherCellLine';
 
 UPDATE common_lookup
+set attribute='datumName'
+where attribute='otherDatumName'
+and value='IC50';
+
+UPDATE common_lookup
 set name='imaging function'
 where name='imagingfunction';
 
@@ -61,6 +66,22 @@ and name in ('LC50', 'IC50');
 UPDATE common_lookup
 set name='Feret''s Diameter'
 where name='feret''s Diameter';
+
+UPDATE common_lookup
+set value=lcase(value)
+where name in ('size', 'molecular weight')
+and attribute='otherDatumName';
+
+UPDATE common_lookup
+set value='Feret''s Diameter'
+where value='feret''s Diameter';
+
+UPDATE common_lookup
+set value='bioluminescence'
+where value='Bioluminescence';
+
+delete from common_lookup
+where value='Bioluminiscence';
 
 UPDATE common_lookup
 set value='proceeding'
