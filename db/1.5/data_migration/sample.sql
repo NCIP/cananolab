@@ -46,5 +46,5 @@ INSERT INTO sample (sample_pk_id, sample_name, created_date, created_by, primary
 
 --trim trailing and leading spaces in sample_name
 UPDATE sample
-set sample_name=rtrim(ltrim(sample_name));
+set sample_name=trim(sample_name);
 
