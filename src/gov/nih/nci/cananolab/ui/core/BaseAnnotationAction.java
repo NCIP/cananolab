@@ -200,6 +200,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		for (String other : otherSamples) {
 			SampleBean sampleBean = sampleService.findSampleByName(other, user);
 			sampleBean.setVisibilityGroups(oldSampleBean.getVisibilityGroups());
+			sampleBeans[i] = sampleBean;
 			i++;
 		}
 		return sampleBeans;
