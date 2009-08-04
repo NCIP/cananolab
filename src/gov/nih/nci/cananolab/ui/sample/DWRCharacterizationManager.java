@@ -17,6 +17,9 @@ import org.directwebremoting.WebContextFactory;
 public class DWRCharacterizationManager {
 	public String[] getCharacterizationOptions(String characterizationType)
 			throws Exception {
+		if (characterizationType.length() == 0) {
+			return null;
+		}
 		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
 				.getCharNamesByCharType(wctx.getHttpServletRequest(),
@@ -54,7 +57,8 @@ public class DWRCharacterizationManager {
 						.getInstance().getDatumNamesByCharName(
 								wctx.getHttpServletRequest(),
 								characterizationType, charName, null);
-				//do not include if char name doesn't have any predefined datum names
+				// do not include if char name doesn't have any predefined datum
+				// names
 				if (datumNames != null && !datumNames.isEmpty()) {
 					LabelValueBean labelValue = new LabelValueBean(charName,
 							charName);
