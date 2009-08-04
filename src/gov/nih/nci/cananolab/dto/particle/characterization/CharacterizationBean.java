@@ -492,7 +492,11 @@ public class CharacterizationBean {
 			characterizationType = ((OtherCharacterization) domainChar)
 					.getAssayCategory();
 		} else {
-			characterizationType = ClassUtils.getDisplayName(className);
+			String superClassShortName = ClassUtils
+					.getShortClassName(domainChar.getClass().getSuperclass()
+							.getName());
+			characterizationType = ClassUtils
+					.getDisplayName(superClassShortName);
 		}
 	}
 
