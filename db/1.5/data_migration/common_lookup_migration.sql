@@ -46,8 +46,8 @@ set name='cell viability'
 where name='cellviability';
 
 UPDATE common_lookup
-set name='LC50'
-where name='lc50';
+set name=ucase(name)
+where name in ('lc50', 'ic50');
 
 UPDATE common_lookup
 set attribute='unit'
