@@ -31,6 +31,7 @@
 					<td colspan="3">
 						There are no other samples to copy annotation to.
 					</td>
+				</tr>
 			</c:otherwise>
 		</c:choose>
 	</tbody>
