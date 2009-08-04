@@ -78,6 +78,10 @@ UPDATE common_lookup
 set value='proceeding'
 where value='in proceedings';
 
+UPDATE common_lookup
+set value='MALDI-TOF mass spectrometer'
+where value='maldi-tof mass spectrometer';
+
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
