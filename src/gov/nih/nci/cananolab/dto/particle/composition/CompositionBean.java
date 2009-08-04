@@ -13,11 +13,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class CompositionBean {
-
-	public static final String NANOMATERIAL_SELECTION = "Nanomaterial Entity";
-	public static final String FUNCTIONALIZING_SELECTION = "Functionalizing Entity";
-	public static final String CHEMICAL_SELECTION = "Chemical Association";
-	public static final String FILE_SELECTION = "Composition File";
+	public static final String NANOMATERIAL_SELECTION = "nanomaterial entity";
+	public static final String FUNCTIONALIZING_SELECTION = "functionalizing entity";
+	public static final String CHEMICAL_SELECTION = "chemical association";
+	public static final String FILE_SELECTION = "composition file";
+	public static final String[] ALL_COMPOSITION_SECTIONS = new String[] {
+			NANOMATERIAL_SELECTION, FUNCTIONALIZING_SELECTION,
+			CHEMICAL_SELECTION, FILE_SELECTION };
 
 	private List<NanomaterialEntityBean> nanomaterialEntities = new ArrayList<NanomaterialEntityBean>();
 	private List<FunctionalizingEntityBean> functionalizingEntities = new ArrayList<FunctionalizingEntityBean>();
