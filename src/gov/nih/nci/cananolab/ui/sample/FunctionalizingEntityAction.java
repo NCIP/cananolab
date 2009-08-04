@@ -198,6 +198,12 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		this.setLookups(request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
+		String detailPage = null;
+		if (entityBean.isWithProperties()) {
+			detailPage = InitCompositionSetup.getInstance().getDetailPage(
+					entityBean.getClassName(), "functionalizingEntity");
+		}
+		request.setAttribute("entityDetailPage", detailPage);
 		return mapping.getInputForward();
 	}
 
