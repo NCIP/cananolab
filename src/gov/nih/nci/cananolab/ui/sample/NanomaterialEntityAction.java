@@ -127,7 +127,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		compositionService.saveNanomaterialEntity(sampleBean, entityBean, user);
 
 		// save to other samples
-		// save to other samples
 		SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
 				sampleBean);
 		if (otherSampleBeans != null) {
