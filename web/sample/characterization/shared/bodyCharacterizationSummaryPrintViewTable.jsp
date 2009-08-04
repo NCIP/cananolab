@@ -40,7 +40,7 @@
 							</c:when>
 							<c:otherwise>
 								<c:if
-									test="${'Physico-Chemical Characterization' eq charBean.characterizationType}">
+									test="${'physico chemical characterization' eq charBean.characterizationType}">
 									<tr>
 										<td class="cellLabel">
 											Assay Type

@@ -32,7 +32,7 @@
 								<option value="" />
 									<html:options name="allOrganizationNames" />
 								<option value="other">
-									[Other]
+									[other]
 								</option>
 							</html:select>
 						</div>
@@ -48,7 +48,7 @@
 								<option />
 									<html:options name="contactRoles" />
 								<option value="other">
-									[Other]
+									[other]
 								</option>
 							</html:select>
 						</div>

@@ -66,7 +66,7 @@
 								</c:choose>						
 							</c:forEach>
 							<option value="other">
-								[Other]
+								[other]
 							</option>
 						</select>
 					</div>
@@ -135,7 +135,7 @@
 							</c:choose>
 						</c:forEach>
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</select>
 				</td>

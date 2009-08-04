@@ -159,7 +159,7 @@ function cancelAddOption(selectId, promptParentId) {
 	document.getElementById(promptParentId).style.zIndex="";
 	var selected = document.getElementById(selectId).value;	
 	if (selected=='other') {
-		alert("Please make another selection than [Other].");		
+		alert("Please make another selection than [other].");		
 	}
 	return false;
 }
@@ -222,7 +222,7 @@ function mouseOutStyle(event) {
 function callPrompt(optionName, selectId, promptParentId) {
 	var selectEle = document.getElementById(selectId);
 	var otext = selectEle.options[selectEle.options.selectedIndex].text;
-	if(otext == "[Other]")
+	if(otext == "[other]")
 		addNewOption("New " + optionName + ":", selectId, promptParentId);
 	else if(otext.charAt(0) == "[" &&
 			otext.charAt(otext.length - 1) == "]") {

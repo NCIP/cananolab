@@ -47,7 +47,7 @@
 						<option value=""></option>
 						<html:options name="publicationCategories" />
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>
@@ -63,7 +63,7 @@
 						<option value=""></option>
 						<html:options name="publicationStatuses" />
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>

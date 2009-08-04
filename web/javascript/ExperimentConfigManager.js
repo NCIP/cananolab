@@ -17,14 +17,14 @@ function updateInstrumentDropDown(instrumentTypes) {
 	dwr.util.removeAllOptions(id);
 	dwr.util.addOptions(id, [""]);
 	dwr.util.addOptions(id, instrumentTypes);
-	dwr.util.addOptions(id, ["[Other]"]);
+	dwr.util.addOptions(id, ["[other]"]);
 	dwr.util.setValue(id, selectedValue);
 }
 function setManufacturerOptions(manufacturerTypes) {
 	dwr.util.removeAllOptions("instrumentManufacturer" + instrumentManufacturerIndex);
 	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex, [""]);
 	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex, manufacturerTypes);
-	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex, ["[Other]"]);
+	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex, ["[other]"]);
 }
 function setTheExperimentConfig(configId) {
 	numberOfInstruments = 0;

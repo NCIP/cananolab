@@ -12,7 +12,7 @@ function setNameOptionsByCharName(columnNumber) {
 					dwr.util.addOptions("columnName" + columnNumber, [ "" ]);
 					dwr.util.addOptions("columnName" + columnNumber, data);
 					dwr.util.addOptions("columnName" + columnNumber,
-							[ "[Other]" ]);
+							[ "[other]" ]);
 				});
 	} else {
 		if (columnType == "Condition") {
@@ -25,14 +25,14 @@ function setNameOptionsByCharName(columnNumber) {
 								.addOptions("columnName" + columnNumber, [ "" ]);
 						dwr.util.addOptions("columnName" + columnNumber, data);
 						dwr.util.addOptions("columnName" + columnNumber,
-								[ "[Other]" ]);
+								[ "[other]" ]);
 					});
 		} else {
 			hide("conditionPropertyPrompt" + columnNumber);
 			hide("conditionPropertyLabel" + columnNumber);
 			dwr.util.removeAllOptions("columnName" + columnNumber);
 			dwr.util.addOptions("columnName" + columnNumber, [ "" ]);
-			dwr.util.addOptions("columnName" + columnNumber, [ "[Other]" ]);
+			dwr.util.addOptions("columnName" + columnNumber, [ "[other]" ]);
 		}
 	}
 }
@@ -50,7 +50,7 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 					dwr.util.addOptions("conditionProperty" + columnNumber,
 							data);
 					dwr.util.addOptions("conditionProperty" + columnNumber,
-							[ "[Other]" ]);
+							[ "[other]" ]);
 				});
 	}
 }
@@ -64,7 +64,7 @@ function setColumnValueUnit(columnNumber) {
 		dwr.util.removeAllOptions("valueUnit" + columnNumber);
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "" ]);
 		dwr.util.addOptions("valueUnit" + columnNumber, data);
-		dwr.util.addOptions("valueUnit" + columnNumber, [ "[Other]" ]);
+		dwr.util.addOptions("valueUnit" + columnNumber, [ "[other]" ]);
 	});
 }
 function resetTheFinding(form) {

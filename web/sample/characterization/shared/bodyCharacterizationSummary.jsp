@@ -18,7 +18,7 @@
 						<option value=""></option>
 						<html:options name="characterizationTypes" />
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>
@@ -36,7 +36,7 @@
 							<html:options name="charTypeChars" />
 						</c:if>
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>
@@ -53,10 +53,9 @@
 					onchange="javascript:callPrompt('Assay Type', 'assayType', 'assayTypePrompt');">
 					<option value=""></option>
 					<c:if
-						test="${characterizationForm.map.achar.characterizationType eq 'Physico-Chemical Characterization'}">
+						test="${characterizationForm.map.achar.characterizationType eq 'physico chemical characterization'}">
 						<option
-							value="${characterizationForm.map.achar.characterizationName}"
-							selected>
+							value="${characterizationForm.map.achar.characterizationName}" selected>
 							${characterizationForm.map.achar.characterizationName}
 						</option>
 					</c:if>
@@ -64,7 +63,7 @@
 						<html:options name="charNameAssays" />
 					</c:if>
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 			</div>

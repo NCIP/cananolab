@@ -70,7 +70,7 @@
 						<option value="" />
 							<html:options name="fileTypes" />
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>

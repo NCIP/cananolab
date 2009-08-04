@@ -34,7 +34,7 @@
 						<option value="" />
 							<html:options name="protocolTypes" />
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>
@@ -54,7 +54,7 @@
 									property="domain.name" labelProperty="domain.name" />
 							</c:if>
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>
@@ -75,7 +75,7 @@
 									property="domain.version" labelProperty="domain.version" />
 							</c:if>
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>

@@ -21,12 +21,12 @@ function populateProtocols(protocols) {
 			protocolVersions[i] = protocols[i].domain.version;
 		}
 		dwr.util.addOptions("protocolName", protocolNames);
-		dwr.util.addOptions("protocolName", ["[Other]"]);
+		dwr.util.addOptions("protocolName", ["[other]"]);
 		dwr.util.addOptions("protocolVersion", protocolVersions);
-		dwr.util.addOptions("protocolVersion", ["[Other]"]);
+		dwr.util.addOptions("protocolVersion", ["[other]"]);
 	} else {
-		dwr.util.addOptions("protocolName", ["[Other]"]);
-		dwr.util.addOptions("protocolVersion", ["[Other]"]);
+		dwr.util.addOptions("protocolName", ["[other]"]);
+		dwr.util.addOptions("protocolVersion", ["[other]"]);
 	}
 }
 function retrieveProtocol() {

@@ -69,7 +69,7 @@
 							<option value=""></option>
 							<html:options name="chemicalAssociationTypes" />
 							<option value="other">
-								[Other]
+								[other]
 							</option>
 						</html:select>
 					</div>
@@ -92,7 +92,7 @@
 						<option value=""></option>
 						<html:options name="bondTypes" />
 						<option value="other">
-							[Other]
+							[other]
 						</option>
 					</html:select>
 				</div>

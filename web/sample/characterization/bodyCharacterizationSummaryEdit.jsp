@@ -147,7 +147,7 @@
 															<c:otherwise>
 																<c:choose>
 																	<c:when
-																		test="${charBean.characterizationType eq 'Physico-Chemical Characterization'}">
+																		test="${charBean.characterizationType eq 'physico chemical characterization'}">
 																	${charName}
 																</c:when>
 																	<c:otherwise>N/A</c:otherwise>

@@ -50,7 +50,7 @@
 							<option value=""></option>
 							<html:options name="functionalizingEntityTypes" />
 							<option value="other">
-								[Other]
+								[other]
 							</option>
 						</html:select>
 					</div>
@@ -106,7 +106,7 @@
 					<option value=""></option>
 					<html:options name="functionalizingEntityUnits" />
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 			</td>
@@ -122,7 +122,7 @@
 					<option value=""></option>
 					<html:options name="molecularFormulaTypes" />
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 				&nbsp;
@@ -147,7 +147,7 @@
 					<option value=""></option>
 					<html:options name="activationMethods" />
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 			</td>

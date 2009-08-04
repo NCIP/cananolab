@@ -34,8 +34,8 @@
 					id="columnName${param.cInd}"
 					onchange="javascript:callPrompt('Column Name', 'columnName${param.cInd}', 'columnNamePrompt${param.cInd}');setConditionPropertyOptionsByCharName(null, ${param.cInd});setColumnValueUnit(${param.cInd});">
 					<option value=""></option>
-					<option value="[Other]">
-						[Other]
+					<option value="[other]">
+						[other]
 					</option>
 				</select>
 			</div>
@@ -75,7 +75,7 @@
 						</option>
 					</logic:iterate>
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</select>
 			</div>

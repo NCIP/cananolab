@@ -27,7 +27,7 @@
 							</c:otherwise>
 						</c:choose>
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 			</div>
@@ -86,7 +86,7 @@
 					<option value="" />
 						<html:options name="composingElementUnits" />
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 			</div>
@@ -104,7 +104,7 @@
 					<option value="" />
 						<html:options name="molecularFormulaTypes" />
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 			</div>
@@ -184,7 +184,7 @@
 										<option value=""></option>
 										<html:options name="functionTypes" />
 										<option value="other">
-											[Other]
+											[other]
 										</option>
 									</html:select>
 								</div>
@@ -203,7 +203,7 @@
 										<option value="" />
 											<html:options name="modalityTypes" />
 										<option value="other">
-											[Other]
+											[other]
 										</option>
 									</html:select>
 								</div>

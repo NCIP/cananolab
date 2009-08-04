@@ -23,7 +23,7 @@
 					<option value=""></option>
 					<html:options name="techniqueTypes" />
 					<option value="other">
-						[Other]
+						[other]
 					</option>
 				</html:select>
 			</div>
@@ -97,7 +97,7 @@
 											<option value=""></option>
 											<html:options name="manufacturers" />
 											<option value="other">
-												[Other]
+												[other]
 											</option>
 										</html:select>
 									</div>
@@ -123,7 +123,7 @@
 											onchange="javascript:callPrompt('Instrment Type', 'type', 'instrumentTypePrompt');">
 											<option value=""></option>
 											<option value="other">
-												[Other]
+												[other]
 											</option>
 										</html:select>
 									</div>

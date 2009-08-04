@@ -7,7 +7,7 @@ function getUnit(fileInd, datumInd) {
 				dwr.util.addOptions("unit" + fileInd + "-" + datumInd, [ "" ]);
 				dwr.util.addOptions("unit" + fileInd + "-" + datumInd, data);
 				dwr.util.addOptions("unit" + fileInd + "-" + datumInd,
-						[ "[Other]" ]);
+						[ "[other]" ]);
 			});
 }
 function setCharacterizationOptionsByCharTypeWithOther() {
@@ -17,7 +17,7 @@ function setCharacterizationOptionsByCharTypeWithOther() {
 				dwr.util.removeAllOptions("charName");
 				dwr.util.addOptions("charName", [ "" ]);
 				dwr.util.addOptions("charName", data);
-				dwr.util.addOptions("charName", [ "[Other]" ]);
+				dwr.util.addOptions("charName", [ "[other]" ]);
 			});
 }
 function setCharacterizationOptionsByCharType() {
@@ -32,14 +32,15 @@ function setAssayTypeOptionsByCharName() {
 	var charName = document.getElementById("charName").value;
 	var charType = document.getElementById("charType").value;
 	dwr.util.removeAllOptions("assayType");
-	if (charType == "Physico-Chemical Characterization") {
+	if (charType == "physico chemical characterization") {
 		dwr.util.addOptions("assayType", [ charName ]);
-		dwr.util.addOptions("assayType", [ "[Other]" ]);
+		dwr.util.addOptions("assayType", [ "[other]" ]);
+		dwr.util.setValue("assayType", charName);
 	} else {
 		CharacterizationManager.getAssayTypeOptions(charName, function(data) {
 			dwr.util.addOptions("assayType", [ "" ]);
 			dwr.util.addOptions("assayType", data);
-			dwr.util.addOptions("assayType", [ "[Other]" ]);
+			dwr.util.addOptions("assayType", [ "[other]" ]);
 		});
 	}
 }

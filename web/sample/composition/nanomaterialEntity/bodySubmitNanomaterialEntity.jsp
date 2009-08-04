@@ -48,7 +48,7 @@
 							<option value=""></option>
 							<html:options name="nanomaterialEntityTypes" />
 							<option value="other">
-								[Other]
+								[other]
 							</option>
 						</html:select>
 					</div>
