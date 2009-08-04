@@ -143,8 +143,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 				function.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				function.setCreatedDate(new Date());
 				if (function instanceof TargetingFunction) {
-					if (((TargetingFunction) function).getTargetCollection()
-							.isEmpty()) {
+					if (((TargetingFunction) function).getTargetCollection() == null
+							|| ((TargetingFunction) function)
+									.getTargetCollection().isEmpty()) {
 						((TargetingFunction) function)
 								.setTargetCollection(null);
 					} else {

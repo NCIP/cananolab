@@ -156,7 +156,8 @@ public class CharacterizationBean {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(new Date());
-		if (copy.getExperimentConfigCollection().isEmpty()) {
+		if (copy.getExperimentConfigCollection() == null
+				|| copy.getExperimentConfigCollection().isEmpty()) {
 			copy.setExperimentConfigCollection(null);
 		} else {
 			// Collection<ExperimentConfig> configs = copy
@@ -170,7 +171,8 @@ public class CharacterizationBean {
 				config.setCreatedDate(new Date());
 			}
 		}
-		if (copy.getFindingCollection().isEmpty()) {
+		if (copy.getFindingCollection() == null
+				|| copy.getFindingCollection().isEmpty()) {
 			copy.setFindingCollection(null);
 		} else {
 			// Collection<Finding> findings = copy.getFindingCollection();
@@ -179,7 +181,7 @@ public class CharacterizationBean {
 			for (Finding finding : copy.getFindingCollection()) {
 				Collection<Datum> data = finding.getDatumCollection();
 				Collection<File> files = finding.getFileCollection();
-				if (data.isEmpty()) {
+				if (data == null || data.isEmpty()) {
 					finding.setDatumCollection(null);
 				} else {
 					for (Datum datum : finding.getDatumCollection()) {
@@ -189,7 +191,7 @@ public class CharacterizationBean {
 						datum.setCreatedDate(new Date());
 					}
 				}
-				if (files.isEmpty()) {
+				if (files == null || files.isEmpty()) {
 					finding.setFileCollection(null);
 				} else {
 					for (File file : finding.getFileCollection()) {
