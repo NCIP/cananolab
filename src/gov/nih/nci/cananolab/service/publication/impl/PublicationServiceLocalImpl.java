@@ -85,6 +85,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 							"Digital Object ID is already used");
 				}
 			}
+			appService.saveOrUpdate(publication);
+			fileService.writeFile(publicationBean, user);
+
 			// if has associated sample, save sample to update the relationship
 			// between sample and publication
 			if (publicationBean.getSampleNames() != null
@@ -105,9 +108,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					appService.saveOrUpdate(sample);
 				}
 			}
-
-			appService.saveOrUpdate(publication);
-			fileService.writeFile(publicationBean, user);
 
 			// set visibility
 			AuthorizationService authService = new AuthorizationService(
