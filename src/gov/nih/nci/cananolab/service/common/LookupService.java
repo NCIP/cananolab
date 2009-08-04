@@ -94,8 +94,8 @@ public class LookupService {
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
-			crit.add(Property.forName("name").eq(name));
-			crit.add(Property.forName("attribute").eq(attribute));
+			crit.add(Property.forName("name").eq(name).ignoreCase());
+			crit.add(Property.forName("attribute").eq(attribute).ignoreCase());
 			Collection results = appService.query(crit);
 			for (Object obj : results) {
 				lookupValues.add(((CommonLookup) obj).getValue());
