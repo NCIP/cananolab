@@ -1,4 +1,18 @@
 -- instrument and technique
+RENAME TABLE instrument to instrument_old;
+
+CREATE TABLE instrument
+(
+	instrument_pk_id BIGINT NOT NULL,
+	type VARCHAR(200),
+	manufacturer VARCHAR(2000),
+	model_name VARCHAR(200),
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	PRIMARY KEY (instrument_pk_id)
+) TYPE=InnoDB
+;
+
 CREATE TABLE technique
 (
 	technique_pk_id BIGINT NOT NULL,
@@ -20,7 +34,6 @@ CREATE TABLE experiment_config_instrument
 ) TYPE=InnoDB
 ;
 
-
 CREATE TABLE experiment_config
 (
 	experiment_config_pk_id BIGINT NOT NULL,
@@ -35,7 +48,29 @@ CREATE TABLE experiment_config
 ) TYPE=InnoDB
 ;
 
--- delete instruments that are not used
+
+ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
+	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_pk_id)
+;
+
+ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_instrument
+	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
+;
+
+ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
+	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
+;
+
+--copy from old table and convert type to lower cases
+insert into instrument (instrument_pk_id, type, manufacturer, created_by, created_date)
+select a.instrument_pk_id, lcase(type), manufacturer, 'DATA_MIGRATION', sysdate()
+from instrument_old a;
+
+--delete the ones that are not used by characterization
 DELETE FROM instrument
 WHERE NOT EXISTS
   ( SELECT b.instrument_pk_id
@@ -46,20 +81,30 @@ WHERE NOT EXISTS
 
 -- update to make sure no spelling differences
 update instrument
-set type='size exclusion chromatography with multi-Angle laser light scattering'
-where type='Size-Exclusion Chromatography and Multiangle Laser Light Scattering';
+set type='size exclusion chromatography with multi-angle laser light scattering'
+where type='size-exclusion chromatography and multiangle laser light scattering';
 
 update instrument
 set type='dynamic light scattering'
-where type='Zetasizer';
+where type='zetasizer';
 
 update instrument
 set type='zeta potential analyzer'
-where type='Phase Analysis Light Scattering';
+where type='phase analysis light scattering';
 
 update instrument
 set type='gas sorption detector'
-where type='Surface Area and Pore Size Analyzer';
+where type='surface area and pore size analyzer';
+
+-- update model_name with description in instrument_config
+UPDATE instrument a, instrument_config b
+set a.model_name=substr(b.description, 1, 200)
+where a.instrument_pk_id=b.instrument_pk_id;
+
+-- update manufacturer spelling
+update instrument
+set manufacturer='Diagnostica Stago'
+where manufacturer='Diagnostica';
 
 -- create a temp table to hold instruments that can't be migrated
 CREATE TABLE instrument_to_review
@@ -83,7 +128,6 @@ CREATE TABLE technique_to_review
 ) TYPE=InnoDB
 ;
 
-
 -- move instruments that map to mulitple techniques to the review table
 -- these need manual curation to insert into the 1.5 technique table
 insert into instrument_to_review
@@ -97,7 +141,7 @@ and cl.attribute='instrument'
 group by i.instrument_pk_id, i.type, ic.instrument_config_pk_id, ic.description, c.characterization_pk_id
 having count(distinct cl.name)>1;
 
--- move instruments that are techniques having more than one instruments to the review table
+-- move techniques that have more than one instruments to the review table
 -- these need manual curation to insert to the 1.5 instrument table
 insert into technique_to_review
 (instrument_pk_id, instrument_config_pk_id, characterization_pk_id, instrument_type, description)
@@ -138,22 +182,6 @@ and cl.name=t.type;
 ALTER TABLE technique
  CHANGE technique_pk_id technique_pk_id BIGINT NOT NULL;
 
-ALTER TABLE instrument
- ADD model_name VARCHAR(200) AFTER manufacturer,
- ADD created_date DATETIME NOT NULL,
- ADD created_by VARCHAR(200) NOT NULL,
- DROP abbreviation;
-
--- update model_name with description in instrument_config
-UPDATE instrument a, instrument_config b
-set a.model_name=substr(b.description, 1, 200)
-where a.instrument_pk_id=b.instrument_pk_id;
-
--- update manufacturer spelling
-update instrument
-set manufacturer='Diagnostica Stago'
-where manufacturer='Diagnostica';
-
 -- insert into experiment_config using matching from technique to instrument
 INSERT INTO experiment_config(experiment_config_pk_id,description,created_date, created_by,
 	characterization_pk_id,technique_pk_id)
@@ -187,12 +215,16 @@ and i.type=cl.name
 and i.type!=tr.instrument_type;
 
 -- delete the technique that needs to be reviewed
-delete from instrument
+DELETE FROM instrument
 where instrument_pk_id in
 (select instrument_pk_id
 from technique_to_review);
 
-delete from  instrument_config
+ALTER TABLE characterization
+ DROP FOREIGN KEY FK_characterization_instrument_config
+;
+ 
+DELETE FROM instrument_config
 where instrument_pk_id in
 (select instrument_pk_id
 from technique_to_review);
@@ -205,30 +237,7 @@ and ic.instrument_pk_id=i.instrument_pk_id
 ;
 
 ALTER TABLE characterization
- DROP FOREIGN KEY FK_characterization_instrument_config
-;
-ALTER TABLE characterization
  DROP instrument_config_pk_id;
 
 DROP TABLE instrument_config;
-
-update instrument
-set created_date=sysdate(),
-created_by='DATA_MIGRATION';
-
-ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
-	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_pk_id)
-;
-
-ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_instrument
-	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
-;
-
-ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
-	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
-;
-
+DROP TABLE instrument_old;
