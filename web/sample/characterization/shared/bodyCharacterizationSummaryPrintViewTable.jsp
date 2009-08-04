@@ -18,6 +18,7 @@
 					items="${characterizationSummaryView.type2Characterizations[type]}">
 					<c:set var="charObj" value="${charBean.domainChar}" />
 					<c:set var="charName" value="${charBean.characterizationName}" />
+					<c:set var="charName" value="${charBean.characterizationType}"/>
 					<table class="summaryViewLayer3" width="95%" align="center">
 						<tr>
 							<th align="left" width="20%">
@@ -88,7 +89,7 @@
 								</td>
 								<td>
 									<%
-											String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup.getInstance().getDetailPage(application, (String)pageContext.getAttribute("charName"));
+											String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup.getInstance().getDetailPage((String)pageContext.getAttribute("charType"), (String)pageContext.getAttribute("charName"));
 											pageContext.setAttribute("detailPage", detailPage);
 										%>
 									<c:set var="charBean" value="${charBean}" scope="session" />
