@@ -19,7 +19,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * The LoginAction authenticates a user into the system.
- *
+ * 
  * @author pansu
  */
 
@@ -27,8 +27,10 @@ public class LoginAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		// Invalidate the current session and create a new one
+		HttpSession session = request.getSession(false);
 		// if comes in from back and refresh
-		if (!isTokenValid(request)) {
+		if (!session.isNew() && !isTokenValid(request)) {
 			throw new InvalidSessionException(
 					"Session doesn't exist.  Please start again");
 		}
@@ -51,8 +53,6 @@ public class LoginAction extends Action {
 				saveMessages(request, msgs);
 				return mapping.findForward("changePassword");
 			}
-			// Invalidate the current session and create a new one
-			HttpSession session = request.getSession(false);
 			if (session != null) {
 				session.invalidate();
 			}
