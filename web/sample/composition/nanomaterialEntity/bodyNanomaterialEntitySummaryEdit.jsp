@@ -8,7 +8,7 @@
 	style="display: block" class="summaryViewLayer2">
 	<tr>
 		<th align="left">
-			Nanomaterial Entity &nbsp;&nbsp;&nbsp;
+			nanomaterial entity &nbsp;&nbsp;&nbsp;
 			<a
 				href="nanomaterialEntity.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"

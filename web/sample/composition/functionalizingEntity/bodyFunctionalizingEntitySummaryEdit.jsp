@@ -9,7 +9,7 @@
 	style="display: block" class="summaryViewLayer2">
 	<tr>
 		<th align="left">
-			Functionalizing Entity &nbsp;&nbsp;&nbsp;
+			functionalizing entity &nbsp;&nbsp;&nbsp;
 			<a
 				href="functionalizingEntity.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
