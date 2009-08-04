@@ -32,7 +32,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Edit request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -53,7 +53,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary View request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -76,7 +76,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Print request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -116,7 +116,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Export request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -171,7 +171,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView() and summaryPrint(). Prepare
 	 * CompositionBean for displaying based on SampleId and location.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -198,9 +198,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		}
 		CompositionBean compBean = compService.findCompositionBySampleId(
 				sampleId, user);
-		if (compBean != null) {
-			theForm.set("comp", compBean);
-		}
+		theForm.set("comp", compBean);
 		// retain action messages from send redirects
 		ActionMessages msgs = (ActionMessages) session
 				.getAttribute(ActionMessages.GLOBAL_MESSAGE);
