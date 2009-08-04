@@ -287,7 +287,7 @@
 											Role-based security supporting user authentication and authorization
 										</li>
 										<li>
-											Product upgrades to the caCORE SDK 4.0, caGrid 1.2, and MySQL 5.0.x Database
+											Product upgrades to the caCORE SDK 4.0, caGrid 1.3.0.1, and MySQL 5.0.x Database
 										</li>
 									</ul>
 									<br>
