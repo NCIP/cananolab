@@ -194,7 +194,7 @@ public class LookupService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
 			//skip saving other type if other type has not been entered.
-			if (otherAttributeValue.equalsIgnoreCase("[OTHER]")) {
+			if (otherAttributeValue.equalsIgnoreCase("Other")) {
 				return;
 			}
 			crit.add(Property.forName("name").eq(lookupName)).add(
