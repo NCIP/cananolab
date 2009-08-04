@@ -46,7 +46,7 @@
 			</c:forEach>
 		</li>
 		<li>
-			<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>Other</span>
+			<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>other</span>
 			</a>
 		</li>
 	</ul>
