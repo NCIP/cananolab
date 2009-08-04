@@ -379,8 +379,6 @@ INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','spe
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','transmission electron microscopy');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','X-ray photoelectron spectroscopy');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','zeta potential analysis');
-INSERT INTO common_lookup (name,attribute,value) VALUES ('IC50','unit','microM');
-INSERT INTO common_lookup (name,attribute,value) VALUES ('IC50','unit','nM');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('LC50','unit','mg/L');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('LC50','unit','nmol/L');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('bandwidth','unit','Hz');
