@@ -41,7 +41,7 @@
 				</c:if>
 
 				<%-- Login --%>
-				<area href="login.jsp" shape="rect" coords="60,105,156,143"
+				<area href="welcome.do" shape="rect" coords="60,105,156,143"
 					alt="rectangle" />
 
 				<%-- Site Preference --%>
