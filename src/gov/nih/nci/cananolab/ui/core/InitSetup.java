@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.GridDownException;
 import gov.nih.nci.cananolab.service.common.GridService;
@@ -310,5 +311,8 @@ public class InitSetup {
 				new LabelValueBean("less than", "<"),
 				new LabelValueBean("less than and equals to", "<=") };
 		appContext.setAttribute("numberOperands", numberOperands);
+
+		appContext.setAttribute("allCompositionSections",
+				CompositionBean.ALL_COMPOSITION_SECTIONS);
 	}
 }
