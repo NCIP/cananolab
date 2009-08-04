@@ -29,7 +29,7 @@
 			<c:otherwise>
 				<tr>
 					<td colspan="3">
-						There are no other particles to copy annotation to.
+						There are no other samples to copy annotation to.
 					</td>
 			</c:otherwise>
 		</c:choose>
