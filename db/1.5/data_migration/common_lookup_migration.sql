@@ -26,11 +26,6 @@ FROM common_lookup_old
 where attribute like 'other%' and attribute!='otherCellLine';
 
 UPDATE common_lookup
-set attribute='datumName'
-where attribute='otherDatumName'
-and value='IC50';
-
-UPDATE common_lookup
 set name='imaging function'
 where name='imagingfunction';
 
@@ -51,17 +46,13 @@ set name='cell viability'
 where name='cellviability';
 
 UPDATE common_lookup
-set name='IC50'
-where name='ic50';
-
-UPDATE common_lookup
 set name='LC50'
 where name='lc50';
 
 UPDATE common_lookup
 set attribute='unit'
 where attribute='otherUnit'
-and name in ('LC50', 'IC50');
+and name ='LC50';
 
 UPDATE common_lookup
 set name='Feret''s Diameter'
