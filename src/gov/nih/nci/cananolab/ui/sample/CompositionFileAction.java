@@ -37,11 +37,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ "compositionFile";
+		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
+				+ sampleBean.getDomain().getName() + "/" + "compositionFile";
 
 		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		CompositionService service = new CompositionServiceLocalImpl();
@@ -93,7 +90,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FileBean fileBean = (FileBean) theForm.get("compFile");
+		CompositionBean comp = (CompositionBean) theForm.get("comp");
+		FileBean fileBean = comp.getTheFile();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);

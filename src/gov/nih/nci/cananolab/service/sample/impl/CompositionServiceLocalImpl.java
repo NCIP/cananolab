@@ -506,17 +506,23 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		}
 	}
 
-	public void deleteCompositionFile(Sample particleSample, File file,
+	public void deleteCompositionFile(Sample sample, File file,
 			UserBean user) throws CompositionException, NoAccessException {
 		if (user == null || !user.isCurator() && !user.isAdmin()) {
 			throw new NoAccessException();
 		}
-		try {
+		try {			
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			particleSample.getSampleComposition().getFileCollection().remove(
+			//load files first
+			List<File> fileList = helper.findFilesByCompositionInfoId(
+					sample.getSampleComposition().getId().toString(),
+					"SampleComposition", user);
+			sample.getSampleComposition().setFileCollection(
+					new HashSet<File>(fileList));			
+			sample.getSampleComposition().getFileCollection().remove(
 					file);
-			appService.saveOrUpdate(particleSample.getSampleComposition());
+			appService.saveOrUpdate(sample.getSampleComposition());
 		} catch (Exception e) {
 			String err = "Error deleting composition file " + file.getUri();
 			logger.error(err, e);
