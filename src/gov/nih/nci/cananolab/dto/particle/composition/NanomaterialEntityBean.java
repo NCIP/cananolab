@@ -106,7 +106,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(new Date());
-		if (copy.getComposingElementCollection().isEmpty()) {
+		if (copy.getComposingElementCollection() == null
+				|| copy.getComposingElementCollection().isEmpty()) {
 			copy.setComposingElementCollection(null);
 		} else {
 			// have to create a new collection otherwise Hibernate complains
@@ -138,7 +139,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 				}
 			}
 		}
-		if (copy.getFileCollection().isEmpty()) {
+		if (copy.getFileCollection() == null
+				|| copy.getFileCollection().isEmpty()) {
 			copy.setFileCollection(null);
 		} else {
 			Collection<File> files = copy.getFileCollection();
@@ -244,7 +246,9 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			domainEntity.getComposingElementCollection().add(domain);
 			i++;
 		}
-		if (domainEntity.getFileCollection() != null) {
+		if (files.isEmpty()) {
+			domainEntity.setFileCollection(null);
+		} else if (domainEntity.getFileCollection() != null) {
 			domainEntity.getFileCollection().clear();
 		} else {
 			domainEntity.setFileCollection(new HashSet<File>());
