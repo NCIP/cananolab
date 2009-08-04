@@ -29,8 +29,6 @@ import org.apache.axis.utils.StringUtils;
  * 
  */
 public class InitCharacterizationSetup {
-	private CharacterizationService charService = new CharacterizationServiceLocalImpl();
-
 	public static InitCharacterizationSetup getInstance() {
 		return new InitCharacterizationSetup();
 	}
@@ -64,7 +62,7 @@ public class InitCharacterizationSetup {
 		getCharacterizationTypes(request);
 		getDatumConditionValueTypes(request);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"fileTypes", "File", "type", "otherType", true);
+				"fileTypes", "file", "type", "otherType", true);
 		// set point of contacts
 		SampleService service = new SampleServiceLocalImpl();
 		List<PointOfContactBean> pocs = service
@@ -80,42 +78,42 @@ public class InitCharacterizationSetup {
 
 		// solubility
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"solventTypes", "Solubility", "solvent", "otherSolvent", true);
+				"solventTypes", "solubility", "solvent", "otherSolvent", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"concentrationUnits", "Sample Concentration", "unit",
+				"concentrationUnits", "sample concentration", "unit",
 				"otherUnit", true);
 		// shape
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"shapeTypes", "Shape", "type", "otherType", true);
+				"shapeTypes", "shape", "type", "otherType", true);
 
 		// physical state
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"physicalStateTypes", "PhysicalState", "type", "otherType",
+				"physicalStateTypes", "physical  state", "type", "otherType",
 				true);
 
 		// enzyme induction
-		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "enzymeNames",
-						"EnzymeInduction", "enzyme", "otherEnzyme", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"enzymeNames", "enzyme induction", "enzyme", "otherEnzyme",
+				true);
 	}
 
 	// TODO::
 	public void persistCharacterizationDropdowns(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Shape", "type",
+		InitSetup.getInstance().persistLookup(request, "shape", "type",
 				"otherType", charBean.getShape().getType());
-		InitSetup.getInstance().persistLookup(request, "PhysicalState", "type",
-				"otherType", charBean.getPhysicalState().getType());
-		InitSetup.getInstance().persistLookup(request, "Solubility", "solvent",
+		InitSetup.getInstance().persistLookup(request, "physical state",
+				"type", "otherType", charBean.getPhysicalState().getType());
+		InitSetup.getInstance().persistLookup(request, "solubility", "solvent",
 				"otherSolvent", charBean.getSolubility().getSolvent());
-		InitSetup.getInstance().persistLookup(request, "Sample Concentration",
+		InitSetup.getInstance().persistLookup(request, "sample concentration",
 				"unit", "otherUnit",
 				charBean.getSolubility().getCriticalConcentrationUnit());
 		InitSetup.getInstance().persistLookup(request, "dimension", "unit",
 				"otherUnit", charBean.getShape().getMaxDimensionUnit());
 		InitSetup.getInstance().persistLookup(request, "dimension", "unit",
 				"otherUnit", charBean.getShape().getMinDimensionUnit());
-		InitSetup.getInstance().persistLookup(request, "EnzymeInduction",
+		InitSetup.getInstance().persistLookup(request, "enzyme induction",
 				"enzyme", "otherEnzyme",
 				charBean.getEnzymeInduction().getEnzyme());
 		setCharacterizationDropdowns(request);
@@ -215,7 +213,7 @@ public class InitCharacterizationSetup {
 	public SortedSet<String> getConditions(HttpServletRequest request)
 			throws Exception {
 		SortedSet<String> conditions = LookupService
-				.getDefaultAndOtherLookupTypes("Condition", "name", "otherName");
+				.getDefaultAndOtherLookupTypes("condition", "name", "otherName");
 		request.getSession().setAttribute("datumConditions", conditions);
 		return conditions;
 	}
@@ -231,8 +229,8 @@ public class InitCharacterizationSetup {
 	public SortedSet<String> getDatumConditionValueTypes(
 			HttpServletRequest request) throws Exception {
 		SortedSet<String> valueTypes = LookupService
-				.getDefaultAndOtherLookupTypes("DatumCondition", "valueType",
-						"otherValueType");
+				.getDefaultAndOtherLookupTypes("datum and condition",
+						"valueType", "otherValueType");
 		request.getSession().setAttribute("datumConditionValueTypes",
 				valueTypes);
 		return valueTypes;

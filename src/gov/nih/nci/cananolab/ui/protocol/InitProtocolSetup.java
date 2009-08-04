@@ -34,7 +34,7 @@ public class InitProtocolSetup {
 	public void setProtocolDropdowns(HttpServletRequest request)
 			throws Exception {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"protocolTypes", "Protocol", "type", "otherType", true);
+				"protocolTypes", "protocol", "type", "otherType", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
@@ -59,7 +59,7 @@ public class InitProtocolSetup {
 
 	public void persistProtocolDropdowns(HttpServletRequest request,
 			ProtocolBean protocol) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Protocol", "type",
+		InitSetup.getInstance().persistLookup(request, "protocol", "type",
 				"otherType", protocol.getDomain().getType());
 		setProtocolDropdowns(request);
 	}

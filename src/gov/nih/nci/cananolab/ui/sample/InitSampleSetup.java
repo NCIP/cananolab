@@ -109,7 +109,7 @@ public class InitSampleSetup {
 
 		appContext.setAttribute("booleanChoices", booleanBeans);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"fileTypes", "File", "type", "otherType", true);
+				"fileTypes", "file", "type", "otherType", true);
 
 		// For PubChem data sources drop-down list.
 		appContext.setAttribute("pubChemDataSources",
@@ -127,21 +127,21 @@ public class InitSampleSetup {
 
 	public void setPOCDropdowns(HttpServletRequest request) throws Exception {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"contactRoles", "PointOfContact", "role", "otherRole", true);
+				"contactRoles", "point of contact", "role", "otherRole", true);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getAllOrganizationNames(request, user);
 	}
 
 	public void persistPOCDropdowns(HttpServletRequest request, Sample sample)
 			throws Exception {
-		InitSetup.getInstance().persistLookup(request, "PointOfContact",
+		InitSetup.getInstance().persistLookup(request, "point of contact",
 				"role", "otherRole",
 				sample.getPrimaryPointOfContact().getRole());
 		if (sample.getOtherPointOfContactCollection() != null) {
 			for (PointOfContact otherPoc : sample
 					.getOtherPointOfContactCollection()) {
 				InitSetup.getInstance().persistLookup(request,
-						"PointOfContact", "role", "otherRole",
+						"point of contact", "role", "otherRole",
 						(otherPoc.getRole()));
 			}
 		}

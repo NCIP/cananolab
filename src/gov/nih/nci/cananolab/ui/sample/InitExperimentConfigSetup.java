@@ -32,22 +32,22 @@ public class InitExperimentConfigSetup {
 			throws Exception {
 		// instrument manufacturers and techniques
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"manufacturers", "Instrument", "manufacturer",
+				"manufacturers", "instrument", "manufacturer",
 				"otherManufacturer", true);
 
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"techniqueTypes", "Technique", "type", "otherType", true);
+				"techniqueTypes", "technique", "type", "otherType", true);
 	}
 
 	public void persistExperimentConfigDropdowns(HttpServletRequest request,
 			ExperimentConfigBean configBean) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Technique", "type",
+		InitSetup.getInstance().persistLookup(request, "technique", "type",
 				"otherType", configBean.getDomain().getTechnique().getType());
 		for (Instrument instrument : configBean.getInstruments()) {
 			InitSetup.getInstance().persistLookup(request,
 					configBean.getDomain().getTechnique().getType(),
 					"instrument", "otherInstrument", instrument.getType());
-			InitSetup.getInstance().persistLookup(request, "Instrument",
+			InitSetup.getInstance().persistLookup(request, "instrument",
 					"manufacturer", "otherManufacturer",
 					instrument.getManufacturer());
 		}

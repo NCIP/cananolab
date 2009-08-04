@@ -25,13 +25,13 @@ public class InitPublicationSetup {
 	public void setPublicationDropdowns(HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "publicationCategories",
-						"Publication", "category", "otherCategory", true);
+						"publication", "category", "otherCategory", true);
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
-						"Publication", "status", "otherStatus", true);
+						"publication", "status", "otherStatus", true);
 		InitSetup.getInstance()
 			.getDefaultAndOtherLookupTypes(request, "publicationResearchAreas",
-				"Publication", "researchArea", "otherResearchArea", true);
+				"publication", "researchArea", "otherResearchArea", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 	}
@@ -39,10 +39,10 @@ public class InitPublicationSetup {
 	public void persistPublicationDropdowns(HttpServletRequest request,
 			PublicationBean publication) throws Exception {
 
-		InitSetup.getInstance().persistLookup(request, "Publication", "category",
+		InitSetup.getInstance().persistLookup(request, "publication", "category",
 				"otherCategory",
 				((Publication) (publication.getDomainFile())).getCategory());
-		InitSetup.getInstance().persistLookup(request, "Publication", "status",
+		InitSetup.getInstance().persistLookup(request, "publication", "status",
 				"otherStatus",
 				((Publication) (publication.getDomainFile())).getStatus());
 		setPublicationDropdowns(request);
@@ -52,6 +52,6 @@ public class InitPublicationSetup {
 			HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
 			.getDefaultAndOtherLookupTypes(request, "publicationResearchAreas",
-			"Publication", "researchArea", "otherResearchArea", true);
+			"publication", "researchArea", "otherResearchArea", true);
 	}
 }
