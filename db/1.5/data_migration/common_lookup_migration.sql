@@ -82,6 +82,9 @@ UPDATE common_lookup
 set value='MALDI-TOF mass spectrometer'
 where value='maldi-tof mass spectrometer';
 
+DELETE FROM common_lookup
+where value='[OTHER]';
+
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
