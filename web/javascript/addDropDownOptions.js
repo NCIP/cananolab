@@ -56,10 +56,13 @@ function getValidatedProtocolVersion(newOption) {
 }
 
 function addOption(selectId, promptParentId) {
-	var opt = document.getElementById("promptbox").value;
+	var opt = document.getElementById("promptbox").value;	
+	if (opt==""||opt=="Other"||opt=="other") {
+		alert("Please enter a valid value.");
+		return false;
+	}
 	if (opt != null && opt != "") {
-		var selectEle = document.getElementById(selectId);
-		if(opt == "other") return false;
+		var selectEle = document.getElementById(selectId);		
 		if (selectId=='protocolFileId'){
 			opt = getValidatedProtocolVersion(opt);
 		}
@@ -78,7 +81,7 @@ function addOption(selectId, promptParentId) {
 		selectEle.options[0].value = opt;
 		selectEle.options.selectedIndex = 0;
 	}
-	//document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
+	// document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
 	document.getElementById(promptParentId).removeChild(document.getElementById(cssId));
 	return false;
 }
@@ -100,7 +103,7 @@ function changeOption(selectId, promptParentId) {
 		selectEle.options[selectEle.options.selectedIndex].text = "[" + opt + "]";
 		selectEle.options[selectEle.options.selectedIndex].value = opt;
 	}
-	//document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
+	// document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
 	document.getElementById(promptParentId).removeChild(document.getElementById(cssId));
 	return false;
 }
@@ -109,7 +112,7 @@ function removeOption(selectId, promptParentId) {
 	var selectEle = document.getElementById(selectId);
 	selectEle.options[selectEle.options.selectedIndex] = null;
 
-	//document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
+	// document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
 	document.getElementById(promptParentId).removeChild(document.getElementById(cssId));
 	return false;
 }
@@ -117,9 +120,10 @@ function removeOption(selectId, promptParentId) {
 function addNewOption(message, parentId, promptParentId) {
 	promptbox = document.createElement("div");
 	promptbox.setAttribute("id", cssId);
-	//document.getElementsByTagName("body")[0].appendChild(promptbox);
+	// document.getElementsByTagName("body")[0].appendChild(promptbox);
 	document.getElementById(promptParentId).style.position="relative";
-	document.getElementById(promptParentId).style.zIndex="10"; //needed for IE only.
+	document.getElementById(promptParentId).style.zIndex="10"; // needed for IE
+																// only.
 	document.getElementById(promptParentId).appendChild(promptbox);
 
 	document.getElementById(cssId).innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" +
@@ -127,7 +131,7 @@ function addNewOption(message, parentId, promptParentId) {
 		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox'></td></tr>" +
 		"<tr><td style='text-align: right'>" +
 		"<input type='button' class='promptButton' value='Add' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='addOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
-		"<input type='button' class='promptButton' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\""+promptParentId+"\");'>" +
+		"<input type='button' class='promptButton' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\"" + parentId + "\",\""+promptParentId+"\");'>" +
 		"</td></tr></table>";
 	document.getElementById("promptbox").focus();
 }
@@ -135,7 +139,7 @@ function addNewOption(message, parentId, promptParentId) {
 function modifyOption(message, parentId, selectedText, promptParentId) {
 	promptbox = document.createElement("div");
 	promptbox.setAttribute("id", cssId);
-	//document.getElementsByTagName("body")[0].appendChild(promptbox);
+	// document.getElementsByTagName("body")[0].appendChild(promptbox);
     document.getElementById(promptParentId).appendChild(promptbox);
 	document.getElementById(cssId).innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" +
 		"<tr><td class='cellLabel'>" + message + "</td></tr>" +
@@ -143,16 +147,20 @@ function modifyOption(message, parentId, selectedText, promptParentId) {
 		"<tr><td style='text-align: right'>" +
 		"<input type='button' class='promptButton' value='Save' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='changeOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
 		"<input type='button' class='promptButton' value='Remove' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='removeOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
-		"<input type='button' class='promptButton' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\""+promptParentId+"\");'>" +
+		"<input type='button' class='promptButton' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\"" + parentId + "\",\""+promptParentId+"\");'>" +
 		"</td></tr></table>";
 	document.getElementById("promptbox").focus();
 }
 
-function cancelAddOption(promptParentId) {
-	//document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
+function cancelAddOption(selectId, promptParentId) {
+	// document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
 	document.getElementById(promptParentId).removeChild(document.getElementById(cssId));
 	document.getElementById(promptParentId).style.position="";
 	document.getElementById(promptParentId).style.zIndex="";
+	var selected = document.getElementById(selectId).value;	
+	if (selected=='other') {
+		alert("Please make another selection than [Other].");		
+	}
 	return false;
 }
 
@@ -176,7 +184,7 @@ function mouseOverStyle(event) {
 	if (targetObj == null) {
 		return false;
 	}
-	//var inputObj = ascendDOM(targetObj, 'input');
+	// var inputObj = ascendDOM(targetObj, 'input');
 	targetObj.style.border = "1 outset #dddddd";
 }
 function getTargetElement(e) {
@@ -201,19 +209,15 @@ function mouseOutStyle(event) {
 }
 
 /*
-function callPrompt(optionName, selectId) {
-	var selectEle = document.getElementById(selectId);
-	var ovalue = selectEle.options[selectEle.options.selectedIndex].value;
-	if(ovalue == "other")
-		addNewOption("New " + optionName + ":", selectId);
-	else if(ovalue.charAt(0) == "[" &&
-			ovalue.charAt(ovalue.length - 1) == "]") {
-		var otext = selectEle.options[selectEle.options.selectedIndex].text;
-		modifyOption("Edit " + optionName + " option:", selectId, otext);
-	}
-	return false;
-}
-*/
+ * function callPrompt(optionName, selectId) { var selectEle =
+ * document.getElementById(selectId); var ovalue =
+ * selectEle.options[selectEle.options.selectedIndex].value; if(ovalue ==
+ * "other") addNewOption("New " + optionName + ":", selectId); else
+ * if(ovalue.charAt(0) == "[" && ovalue.charAt(ovalue.length - 1) == "]") { var
+ * otext = selectEle.options[selectEle.options.selectedIndex].text;
+ * modifyOption("Edit " + optionName + " option:", selectId, otext); } return
+ * false; }
+ */
 
 function callPrompt(optionName, selectId, promptParentId) {
 	var selectEle = document.getElementById(selectId);
