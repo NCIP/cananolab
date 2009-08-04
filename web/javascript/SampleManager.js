@@ -207,6 +207,7 @@ function setDatumNameOptionsByCharName() {
 						// if there is only one in the option, preselect it
 						if (data.length == 1) {
 							dwr.util.setValue("datumName", data[0].value);
+							setDatumValueOptions();
 							setDatumValueUnitOptions();
 						}
 					});
@@ -271,13 +272,19 @@ function addCharacterizationQuery() {
 	if (queryId == null || queryId == "") {
 		queryId = -10000 - numberOfCharQueries;
 	}
+	var datumName = dwr.util.getValue("datumName");
+	if (datumName.match("^is ")) {
+		var datumValue = dwr.util.getValue("datumValueSelect");
+	} else {
+		datumValue = dwr.util.getValue("datumValue");
+	}
 	var theQuery = {
 		id : queryId,
 		characterizationType : dwr.util.getValue("charType"),
 		characterizationName : dwr.util.getValue("charName"),
 		datumName : dwr.util.getValue("datumName"),
 		operand : dwr.util.getValue("charOperand"),
-		datumValue : dwr.util.getValue("datumValue"),
+		datumValue : datumValue,
 		datumValueUnit : dwr.util.getValue("datumValueUnit")
 	};
 	if (theQuery.datumName != "" && theQuery.operand != ""
