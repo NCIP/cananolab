@@ -131,7 +131,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		if (copy.getActivationMethod() != null) {
 			copy.getActivationMethod().setId(null);
 		}
-		if (copy.getFunctionCollection().isEmpty()) {
+		if (copy.getFunctionCollection() == null
+				|| copy.getFunctionCollection().isEmpty()) {
 			copy.setFunctionCollection(null);
 		} else {
 			Collection<Function> functions = copy.getFunctionCollection();
@@ -164,7 +165,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 				}
 			}
 		}
-		if (copy.getFileCollection().isEmpty()) {
+		if (copy.getFileCollection() == null
+				|| copy.getFileCollection().isEmpty()) {
 			copy.setFileCollection(null);
 		} else {
 			Collection<File> files = copy.getFileCollection();
