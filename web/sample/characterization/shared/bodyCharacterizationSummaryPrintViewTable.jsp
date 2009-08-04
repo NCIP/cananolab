@@ -18,7 +18,7 @@
 					items="${characterizationSummaryView.type2Characterizations[type]}">
 					<c:set var="charObj" value="${charBean.domainChar}" />
 					<c:set var="charName" value="${charBean.characterizationName}" />
-					<c:set var="charName" value="${charBean.characterizationType}"/>
+					<c:set var="charType" value="${charBean.characterizationType}"/>
 					<table class="summaryViewLayer3" width="95%" align="center">
 						<tr>
 							<th align="left" width="20%">
