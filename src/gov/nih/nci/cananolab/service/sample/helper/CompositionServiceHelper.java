@@ -31,6 +31,7 @@ import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -162,10 +163,10 @@ public class CompositionServiceHelper {
 	public List<File> findFilesByCompositionInfoId(String id, String className,
 			UserBean user) throws Exception {
 		List<File> fileCollection = new ArrayList<File>();
-
+		String fullClassName = ClassUtils.getFullClass(className).getName();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		String hql = "select anEntity.fileCollection from " + className
+		String hql = "select anEntity.fileCollection from " + fullClassName
 				+ " anEntity where anEntity.id = " + id;
 
 		HQLCriteria crit = new HQLCriteria(hql);
@@ -1288,8 +1289,8 @@ public class CompositionServiceHelper {
 
 	public void assignVisibility(SampleComposition comp,
 			String[] visibleGroups, String owningGroup) throws Exception {
-		authService.assignVisibility(comp.getId().toString(),
-				visibleGroups, owningGroup);
+		authService.assignVisibility(comp.getId().toString(), visibleGroups,
+				owningGroup);
 		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
 			assignVisibility(entity, visibleGroups, owningGroup);
 		}
@@ -1392,8 +1393,9 @@ public class CompositionServiceHelper {
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
-						authService.removeExistingVisibleGroups(
-								composingElement.getId().toString());
+						authService
+								.removeExistingVisibleGroups(composingElement
+										.getId().toString());
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -1401,8 +1403,9 @@ public class CompositionServiceHelper {
 					if (inherentFunctionCollection != null) {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
-								authService.removeExistingVisibleGroups(
-										function.getId().toString());
+								authService
+										.removeExistingVisibleGroups(function
+												.getId().toString());
 							}
 						}
 					}
