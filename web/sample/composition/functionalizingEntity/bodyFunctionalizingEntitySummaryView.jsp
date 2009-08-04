@@ -85,8 +85,7 @@
 									<%
 											String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 																		.getInstance()
-																		.getDetailPage(
-																				application,
+																		.getDetailPage(																				
 																				(String) pageContext
 																						.getAttribute("entityType"),
 																				"functionalizingEntity");
