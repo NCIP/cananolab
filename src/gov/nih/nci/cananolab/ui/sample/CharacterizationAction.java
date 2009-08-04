@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteIm
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
@@ -209,8 +210,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (charBean.getClassName() == null
 				|| charBean.getClassName().length() == 0) {
-			String className = StringUtils
-					.getOneWordUpperCaseFirstLetter(charBean
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName(charBean
 							.getCharacterizationName());
 			charBean.setClassName(className);
 		}
