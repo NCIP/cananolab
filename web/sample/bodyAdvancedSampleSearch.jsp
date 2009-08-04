@@ -33,7 +33,7 @@
 			<td>
 				<table id="compositionQueryTable" class="summaryViewLayer4"
 					width="85%" style="display: none;">
-					<tbody id="characterizationQueryRows">
+					<tbody id="compositionQueryRows">
 						<tr id="compPattern" style="display: none;">
 							<td width="25%">
 								<span id="compTypeValue">Composition Type</span>
@@ -227,7 +227,7 @@
 							<div id="datumValueTextBlock" style="display: block">
 								<html:text
 									property="searchBean.theCharacterizationQuery.datumValue"
-									styleId="datumValue" size="10" />
+									styleId="datumValue" size="10" onkeydown="return filterFloatNumber(event)"/>
 							</div>
 							<div id="datumValueSelectBlock" style="display: none">
 								<html:select
