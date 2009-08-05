@@ -142,7 +142,7 @@ public class ClassUtils {
 				return clazz;
 			}
 		}
-		return Object.class;
+		return null;
 	}
 
 	/**
