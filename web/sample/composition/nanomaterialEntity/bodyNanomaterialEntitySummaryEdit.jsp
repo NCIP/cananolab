@@ -111,8 +111,8 @@
 									</td>
 								</tr>
 							</table>
-
 						</c:if>
+						<br/>
 					</logic:iterate>
 				</c:when>
 				<c:otherwise>

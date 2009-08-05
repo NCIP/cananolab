@@ -8,7 +8,7 @@
 	style="display: block" class="summaryViewLayer2">
 	<tr>
 		<th align="left">
-			Nanomaterial Entity
+			nanomaterial entity
 		</th>
 	</tr>
 	<logic:iterate name="compositionForm"

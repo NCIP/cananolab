@@ -9,7 +9,7 @@
 	style="display: block" class="summaryViewLayer2">
 	<tr>
 		<th align="left">
-			Functionalizing Entity
+			functionalizing entity
 		</th>
 	</tr>
 	<logic:iterate name="compositionForm"

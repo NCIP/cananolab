@@ -136,6 +136,7 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 								</tr>
 							</table>
 						</c:if>
+						<br/>
 					</logic:iterate>
 				</c:when>
 				<c:otherwise>

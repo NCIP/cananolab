@@ -8,7 +8,7 @@
 	style="display: block" class="summaryViewLayer2">
 	<tr>
 		<th align="left">
-			Chemical Association
+			chemical association
 		</th>
 	</tr>
 	<logic:iterate name="compositionForm"
