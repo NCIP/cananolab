@@ -439,7 +439,7 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((*this* > 0) and (*this* == numberOfColumns)) 
+						(*this* > 0) 
 					</var-value>
 				</var>
 			</field>
@@ -450,7 +450,7 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((*this* > 0) and (*this* == numberOfRows)) 
+						(*this* > 0) 
 					</var-value>
 				</var>
 			</field>
