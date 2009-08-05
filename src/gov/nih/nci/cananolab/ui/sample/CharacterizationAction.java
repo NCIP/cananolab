@@ -588,10 +588,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FindingBean findingBean = new FindingBean();
+		FindingBean theFinding = new FindingBean();
+		theFinding.setNumberOfColumns(1);
+		theFinding.setNumberOfRows(1);
+		theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
+				.getNumberOfRows());
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		achar.setTheFinding(findingBean);
+		achar.setTheFinding(theFinding);
 		request.setAttribute("anchor", "submitFinding");
 		return mapping.getInputForward();
 	}
