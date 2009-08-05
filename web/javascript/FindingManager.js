@@ -193,7 +193,7 @@ function addColumnHeader(columnNumber) {
 	hide("newColumn" + columnNumber);
 }
 
-function filterFloatForColumn(columnTypeId) {
+function filterFloatForColumn(event, columnTypeId) {
 	var columnType=dwr.util.getValue(columnTypeId);
 	if (columnType=="datum") {
 		return filterFloatNumber(event);
