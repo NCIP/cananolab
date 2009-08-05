@@ -53,7 +53,7 @@
 					<html:text
 						property="achar.theFinding.rows[${rInd}].cells[${cInd}].value"
 						size="15" styleId="cellValue${rInd}:${cInd}"
-						onkeydown="return filterFloatForColumn('theColumnType${cInd}');" />
+						onkeydown="return filterFloatForColumn(event, 'theColumnType${cInd}');" />
 				</td>
 			</logic:iterate>
 			<td>
