@@ -3,6 +3,8 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -601,23 +603,58 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		String theFindingId = (String) request.getAttribute("theFindingId");
-		if (!StringUtils.isEmpty(theFindingId)) {
-			findingBean.getDomain().setId(new Long(theFindingId));
+		if (this.validateCellNotEmpty(findingBean)) {
+			String theFindingId = (String) request.getAttribute("theFindingId");
+			if (!StringUtils.isEmpty(theFindingId)) {
+				findingBean.getDomain().setId(new Long(theFindingId));
+			}
+			UserBean user = (UserBean) request.getSession().getAttribute("user");
+			findingBean.setupDomain(user.getLoginName());
+			CharacterizationService service = new CharacterizationServiceLocalImpl();
+			service.saveFinding(findingBean, user);
+			achar.addFinding(findingBean);
+			InitCharacterizationSetup.getInstance()
+					.persistCharacterizationDropdowns(request, achar);
+			
+			// also save characterization
+			saveCharacterization(request, theForm, achar);
+			request.setAttribute("anchor", "result");
+		} else {
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = new ActionMessage("achar.theFinding.emptyCell");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, messages);
 		}
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		findingBean.setupDomain(user.getLoginName());
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveFinding(findingBean, user);
-		achar.addFinding(findingBean);
-		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, achar);
-		// also save characterization
-		saveCharacterization(request, theForm, achar);
-		request.setAttribute("anchor", "result");
 		return mapping.getInputForward();
 	}
 
+	/**
+	 * Return true if every finding cell has value entered, false otherwise.
+	 * 
+	 * @param findingBean
+	 * @return true if every finding cell has value entered, false otherwise.
+	 */
+	private boolean validateCellNotEmpty(FindingBean findingBean) {
+		if (findingBean != null) {
+			int rowNum = findingBean.getNumberOfRows();
+			List<Row> rows = findingBean.getRows();
+			if (rows == null || rows.size() != rowNum) {
+				return false;
+			}
+			for (Row row : rows) {
+				List<TableCell> cells = row.getCells();
+				if (cells != null) {
+					for (TableCell cell : cells) {
+						if (StringUtils.isEmpty(cell.getValue())) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
