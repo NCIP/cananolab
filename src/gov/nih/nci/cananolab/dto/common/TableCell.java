@@ -20,14 +20,14 @@ public class TableCell {
 	}
 
 	public TableCell(Datum datum) {
-		this.datumOrCondition = "Datum";
+		this.datumOrCondition = FindingBean.DATUM_TYPE;
 		this.value = datum.getValue();
 		this.datum = datum;
 		this.condition = null;
 	}
 
 	public TableCell(Condition condition) {
-		this.datumOrCondition = "Condition";
+		this.datumOrCondition = "condition";
 		this.value = condition.getValue();
 		this.condition = condition;
 		this.datum = null;

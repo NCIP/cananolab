@@ -18,11 +18,13 @@ import java.util.Map;
 
 /**
  * View bean for Datum
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class FindingBean {
+	public static final String DATUM_TYPE = "datum";
+	public static final String CONDITION_TYPE = "condition";
 	private Finding domain = new Finding();
 	private List<Row> rows = new ArrayList<Row>();
 	private List<FileBean> files = new ArrayList<FileBean>();
@@ -256,14 +258,15 @@ public class FindingBean {
 			List<Datum> rowData = new ArrayList<Datum>();
 			for (TableCell cell : row.getCells()) {
 				ColumnHeader columnHeader = columnHeaders.get(cInd);
-				if (columnHeader.getColumnType().equals("Datum")) {
+				if (columnHeader.getColumnType().equals(FindingBean.DATUM_TYPE)) {
 					Datum datum = cell.getDatum();
 					datum.setValue(cell.getValue());
 					datum.setValueType(columnHeader.getValueType());
 					datum.setValueUnit(columnHeader.getValueUnit());
 					datum.setName(columnHeader.getColumnName());
 					rowData.add(datum);
-				} else if (columnHeader.getColumnType().equals("Condition")) {
+				} else if (columnHeader.getColumnType().equals(
+						FindingBean.CONDITION_TYPE)) {
 					Condition condition = cell.getCondition();
 					condition.setValue(cell.getValue());
 					condition.setValueType(columnHeader.getValueType());
@@ -313,7 +316,7 @@ public class FindingBean {
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
-	 *
+	 * 
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {
