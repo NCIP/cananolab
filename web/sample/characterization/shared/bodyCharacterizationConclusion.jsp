@@ -9,7 +9,7 @@
 			Analysis and Conclusion
 		</td>
 		<td>
-			<html:textarea property="achar.conclusion" cols="120" rows="5" />
+			<html:textarea property="achar.conclusion" cols="120" rows="3" />
 			&nbsp;
 		</td>
 	</tr>

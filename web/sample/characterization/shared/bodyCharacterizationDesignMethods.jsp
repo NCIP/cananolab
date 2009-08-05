@@ -10,7 +10,7 @@
 			Design and Methods Description
 		</td>
 		<td>
-			<html:textarea property="achar.description" cols="120" rows="5" />
+			<html:textarea property="achar.description" cols="120" rows="3" />
 		</td>
 	</tr>
 	<tr>
@@ -38,7 +38,6 @@
 			<div id="newExperimentConfig" style="display: none;">
 				<jsp:include page="bodySubmitExperimentConfig.jsp" />
 			</div>
-			&nbsp;
 		</td>
 	</tr>
 </table>

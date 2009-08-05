@@ -15,11 +15,11 @@
 				onchange="javascript:setNameOptionsByCharName(${param.cInd});">
 				<option value="">
 				</option>
-				<option value="Datum">
-					Datum
+				<option value="datum">
+					datum
 				</option>
-				<option value="Condition">
-					Condition
+				<option value="condition">
+					condition
 				</option>
 			</select>
 		</td>
