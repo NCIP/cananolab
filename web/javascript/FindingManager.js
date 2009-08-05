@@ -114,8 +114,7 @@ function openColumnForm(characterizationName, columnNumber) {
 						// timeout to populate drop down first
 						dwr.util.setValue("columnType" + columnNumber, dwr.util
 								.getValue("theColumnType" + columnNumber));
-						setNameOptionsByCharName(characterizationName,
-								columnNumber);
+						setNameOptionsByCharName(columnNumber);
 						window.setTimeout("delaySetColumnName(" + columnNumber
 								+ ")", 100);
 						dwr.util.setValue("valueType" + columnNumber, dwr.util
