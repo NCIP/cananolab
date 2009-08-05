@@ -78,7 +78,7 @@
 			<td>
 				<c:set var="newAddCEButtonStyle" value="display:block" />
 				<c:if
-					test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
+					test="${empty compositionForm.map.nanomaterialEntity.composingElements}">
 					<c:set var="newAddCEButtonStyle" value="display:none" />
 				</c:if>
 				<a style="${newAddCEButtonStyle}" id="addComposingElement" href="#submitComposingElement"

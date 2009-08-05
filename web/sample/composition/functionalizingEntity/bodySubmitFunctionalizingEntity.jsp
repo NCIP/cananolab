@@ -35,7 +35,7 @@
 <html:form action="/functionalizingEntity" enctype="multipart/form-data"
 	onsubmit="return validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">		
+	<table width="100%" align="center" class="submissionView">
 		<c:if
 			test="${empty compositionForm.map.functionalizingEntity.domainEntity.id}">
 			<tr>
@@ -181,7 +181,12 @@
 				Function
 			</td>
 			<td>
-				<a style="display: block" id="addFunction"
+				<c:set var="newaddFuncButtonStyle" value="display:block" />
+				<c:if
+					test="${empty compositionForm.map.functionalizingEntity.functions}">
+					<c:set var="newaddFuncButtonStyle" value="display:none" />
+				</c:if>
+				<a style="${newaddFuncButtonStyle}" id="addFunction"
 					href="javascript:clearFunction();openSubmissionForm('Function');"><img
 						align="top" src="images/btn_add.gif" border="0" /> </a>
 			</td>
@@ -215,7 +220,7 @@
 	<%--Functionalizing Entity File Information --%>
 	<c:set var="fileParent" value="functionalizingEntity" />
 	<a name="file">
-		<table width="100%" align="center" class="submissionView">			
+		<table width="100%" align="center" class="submissionView">
 			<tr>
 				<td class="cellLabel" width="15%">
 					File
