@@ -86,6 +86,11 @@ public class CharacterizationBean {
 	private Transfection transfection = new Transfection();
 
 	public CharacterizationBean() {
+		//initialize finding matrix
+		theFinding.setNumberOfColumns(1);
+		theFinding.setNumberOfRows(1);
+		theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
+				.getNumberOfRows());
 	}
 
 	public CharacterizationBean(Characterization chara) {
