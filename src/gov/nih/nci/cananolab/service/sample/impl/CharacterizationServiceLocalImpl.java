@@ -316,7 +316,7 @@ public class CharacterizationServiceLocalImpl implements
 				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
 				fileService.writeFile(fileBean, user);
 			}
-			appService.saveOrUpdate(finding);
+			appService.saveOrUpdate(finding.getDomain());
 			//visibility assignment is handled by saving characterization
 		} catch (Exception e) {
 			String err = "Error saving characterization result finding. ";
