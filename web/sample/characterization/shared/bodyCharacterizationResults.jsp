@@ -9,7 +9,12 @@
 			Finding
 		</td>
 		<td>
-			<a style="display: block" id="addFinding"
+			<c:set var="addFindingButtonStyle" value="display:block" />
+			<c:if
+				test="${param.dispatch eq 'addFile' || param.dispatch eq 'removeFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding' ||param.dispatch eq 'resetFinding'}">
+				<c:set var="addFindingButtonStyle" value="display:none" />
+			</c:if>
+			<a style="${addFindingButtonStyle}" id="addFinding"
 				href="javascript:resetTheFinding(characterizationForm);openSubmissionForm('Finding');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
@@ -25,12 +30,12 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:set var="findingInfoStyle" value="display:none" />
+			<c:set var="newFindingStyle" value="display:none" />
 			<c:if
 				test="${param.dispatch eq 'addFile' || param.dispatch eq 'removeFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding' ||param.dispatch eq 'resetFinding'}">
-				<c:set var="findingInfoStyle" value="display:block" />
+				<c:set var="newFindingStyle" value="display:block" />
 			</c:if>
-			<div id="newFinding" style="${ findingInfoStyle}">
+			<div id="newFinding" style="${newFindingStyle}">
 				<a name="submitFinding"><%@ include file="bodySubmitFinding.jsp"%></a>
 			</div>
 		</td>
