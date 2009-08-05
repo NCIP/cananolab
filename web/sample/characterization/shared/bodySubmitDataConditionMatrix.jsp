@@ -5,36 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<table class="promptbox" width="85%" align="center">
-	<tr>
-		<td class="cellLabel" width="20%">
-			Number of Columns
-		</td>
-		<td>
-			<html:text property="achar.theFinding.numberOfColumns" size="2"
-				styleId="colNum" onkeydown="return filterInteger(event)" />
-		</td>
-		<td class="cellLabel" width="20%">
-			Number of Rows
-		</td>
-		<td>
-			<html:text property="achar.theFinding.numberOfRows" size="2"
-				styleId="rowNum" onkeydown="return filterInteger(event)" />
-		</td>
-		<td>
-			<input class="promptButton" type="button" value="Update"
-				onclick="updateMatrix(characterizationForm)" />
-		</td>
-	</tr>
-	<%--
-	<tr>
-		<td colspan="5"><jsp:include
-				page="/bodyMessage.jsp?bundle=sample" /></td>
-	</tr>
-	 --%>
-</table>
-<table class="promptbox" width="85%" align="center" id="matrix"
-	border="1">
+<table class="promptbox" width="85%" align="center" id="matrix">
 	<tr>
 		<logic:iterate id="col" name="characterizationForm"
 			property="achar.theFinding.columnHeaders" indexId="cInd">
@@ -71,6 +42,7 @@
 				</div>
 			</td>
 		</logic:iterate>
+		<td></td>
 	</tr>
 	<logic:iterate id="row" name="characterizationForm"
 		property="achar.theFinding.rows" indexId="rInd">
@@ -80,7 +52,8 @@
 				<td>
 					<html:text
 						property="achar.theFinding.rows[${rInd}].cells[${cInd}].value"
-						size="15" styleId="cellValue${rInd}:${cInd}" onkeydown="return filterFloatNumber(event)" />
+						size="15" styleId="cellValue${rInd}:${cInd}"
+						onkeydown="return filterFloatForColumn('theColumnType${cInd}');" />
 				</td>
 			</logic:iterate>
 			<td>
