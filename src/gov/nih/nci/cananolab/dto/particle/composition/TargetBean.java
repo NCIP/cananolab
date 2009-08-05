@@ -78,10 +78,8 @@ public class TargetBean {
 
 	public void setupDomainTarget(String createdBy, int index) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
-		Class clazz = null;
-		if (className != null) {
-			clazz = ClassUtils.getFullClass(className);
-		} else {
+		Class clazz = ClassUtils.getFullClass(className);
+		if (clazz == null) {
 			clazz = OtherTarget.class;
 		}
 		if (domainTarget == null

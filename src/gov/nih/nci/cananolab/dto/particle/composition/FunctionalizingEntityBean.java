@@ -249,12 +249,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public void setupDomainEntity(String createdBy, String internalUriPath)
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
-		Class clazz = null;
-		if (className == null) {
+		Class clazz = ClassUtils.getFullClass("agentmaterial." + className);			
+		if (clazz == null) {
 			clazz = OtherFunctionalizingEntity.class;
-		} else {
-			clazz = ClassUtils.getFullClass("agentmaterial." + className);
-		}
+		} 
 		if (domainEntity == null) {
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
 		}

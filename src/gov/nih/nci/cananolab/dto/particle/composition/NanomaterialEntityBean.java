@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
@@ -194,12 +195,10 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public void setupDomainEntity(String createdBy, String internalUriPath)
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
-		Class clazz = null;
-		if (className == null) {
+		Class clazz = ClassUtils.getFullClass("nanomaterial." + className);			
+		if (clazz == null) {
 			clazz = OtherNanomaterialEntity.class;
-		} else {
-			clazz = ClassUtils.getFullClass("nanomaterial." + className);
-		}
+		} 
 		if (domainEntity == null) {
 			domainEntity = (NanomaterialEntity) clazz.newInstance();
 		}

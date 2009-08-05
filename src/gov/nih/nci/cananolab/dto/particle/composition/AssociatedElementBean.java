@@ -60,12 +60,10 @@ public class AssociatedElementBean {
 		if (compositionType.equals("functionalizing entity")) {
 			className = ClassUtils
 					.getShortClassNameFromDisplayName(entityDisplayName);
-			Class clazz = null;
-			if (className == null) {
+			Class clazz = ClassUtils.getFullClass("agentmaterial." + className);
+			if (clazz == null) {
 				clazz = OtherFunctionalizingEntity.class;
-			} else {
-				clazz = ClassUtils.getFullClass("agentmaterial." + className);
-			}
+			} 
 			try {
 				domainElement = (AssociatedElement) clazz.newInstance();
 			} catch (ClassCastException ex) {

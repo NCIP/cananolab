@@ -52,11 +52,9 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 	public void setupDomainAssociation(String createdBy, String internalUriPath)
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
-		Class clazz = null;
-		if (className == null) {
+		Class clazz = ClassUtils.getFullClass(className);
+		if (clazz == null) {
 			clazz = OtherChemicalAssociation.class;
-		} else {
-			clazz = ClassUtils.getFullClass(className);
 		}
 		if (domainAssociation == null) {
 			try {

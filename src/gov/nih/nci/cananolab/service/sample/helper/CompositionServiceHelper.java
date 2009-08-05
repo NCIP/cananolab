@@ -163,7 +163,12 @@ public class CompositionServiceHelper {
 	public List<File> findFilesByCompositionInfoId(String id, String className,
 			UserBean user) throws Exception {
 		List<File> fileCollection = new ArrayList<File>();
-		String fullClassName = ClassUtils.getFullClass(className).getName();
+		String fullClassName = null;
+		if (ClassUtils.getFullClass(className) != null) {
+			fullClassName = ClassUtils.getFullClass(className).getName();
+		} else {
+			return null;
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		String hql = "select anEntity.fileCollection from " + fullClassName

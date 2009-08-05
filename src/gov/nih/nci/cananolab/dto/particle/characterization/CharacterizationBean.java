@@ -86,7 +86,7 @@ public class CharacterizationBean {
 	private Transfection transfection = new Transfection();
 
 	public CharacterizationBean() {
-		//initialize finding matrix
+		// initialize finding matrix
 		theFinding.setNumberOfColumns(1);
 		theFinding.setNumberOfRows(1);
 		theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
@@ -154,7 +154,7 @@ public class CharacterizationBean {
 		updateName();
 	}
 
-	public Characterization getDomainCopy(boolean copyDatum) {
+	public Characterization getDomainCopy(boolean copyData) {
 		Characterization copy = (Characterization) ClassUtils
 				.deepCopy(domainChar);
 		// clear Ids, reset createdBy and createdDate, add prefix to
@@ -184,18 +184,20 @@ public class CharacterizationBean {
 			// copy.setFindingCollection(new HashSet<Finding>());
 			// copy.getFindingCollection().addAll(findings);
 			for (Finding finding : copy.getFindingCollection()) {
-				Collection<Datum> data = finding.getDatumCollection();
-				Collection<File> files = finding.getFileCollection();
-				if (data == null || data.isEmpty()) {
-					finding.setDatumCollection(null);
-				} else {
-					for (Datum datum : finding.getDatumCollection()) {
-						datum.setId(null);
-						datum
-								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						datum.setCreatedDate(new Date());
+				if (copyData) {
+					Collection<Datum> data = finding.getDatumCollection();
+					if (data == null || data.isEmpty()) {
+						finding.setDatumCollection(null);
+					} else {
+						for (Datum datum : finding.getDatumCollection()) {
+							datum.setId(null);
+							datum
+									.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+							datum.setCreatedDate(new Date());
+						}
 					}
 				}
+				Collection<File> files = finding.getFileCollection();
 				if (files == null || files.isEmpty()) {
 					finding.setFileCollection(null);
 				} else {
@@ -212,12 +214,10 @@ public class CharacterizationBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		Class clazz = null;
-		if (className == null || className == "") {
+		Class clazz = ClassUtils.getFullClass(className);
+		if (clazz==null) {
 			clazz = OtherCharacterization.class;
-		} else {
-			clazz = ClassUtils.getFullClass(className);
-		}
+		} 
 		if (domainChar == null) {
 			domainChar = (Characterization) clazz.newInstance();
 		}
