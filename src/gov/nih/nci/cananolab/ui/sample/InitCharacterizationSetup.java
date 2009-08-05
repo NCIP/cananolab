@@ -1,12 +1,11 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -148,25 +147,30 @@ public class InitCharacterizationSetup {
 		if (StringUtils.isEmpty(charType)) {
 			return null;
 		}
-		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
-		String fullCharTypeClass = ClassUtils.getFullClass(
-				ClassUtils.getShortClassNameFromDisplayName(charType))
-				.getName();
 		SortedSet<String> charNames = new TreeSet<String>();
-		List<String> charClassNames = ClassUtils
-				.getChildClassNames(fullCharTypeClass);
-		for (String charClass : charClassNames) {
-			if (!charClass.startsWith("Other")) {
-				String shortClassName = ClassUtils.getShortClassName(charClass);
-				charNames.add(ClassUtils.getDisplayName(shortClassName));
+		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
+		String shortClassNameForCharType = ClassUtils
+				.getShortClassNameFromDisplayName(charType);
+		Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
+		String fullCharTypeClass = null;
+		if (clazz != null) {
+			String fullCharTypeClassName = clazz.getName();
+			List<String> charClassNames = ClassUtils
+					.getChildClassNames(fullCharTypeClassName);
+			for (String charClass : charClassNames) {
+				if (!charClass.startsWith("Other")) {
+					String shortClassName = ClassUtils
+							.getShortClassName(charClass);
+					charNames.add(ClassUtils.getDisplayName(shortClassName));
+				}
 			}
 		}
-
 		List<String> otherCharNames = helper
 				.findOtherCharacterizationByAssayCategory(charType);
 		if (!otherCharNames.isEmpty()) {
 			charNames.addAll(otherCharNames);
 		}
+
 		request.getSession().setAttribute("charTypeChars", charNames);
 		return charNames;
 	}
