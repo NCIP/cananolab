@@ -3,7 +3,7 @@ function setNameOptionsByCharName(columnNumber) {
 	var charType = dwr.util.getValue("charType");
 	var assayType = dwr.util.getValue("assayType");
 	var columnType = dwr.util.getValue("columnType" + columnNumber);
-	if (columnType == "Datum") {
+	if (columnType == "datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
 		hide("conditionPropertyLabel" + columnNumber);
 		FindingManager.getDatumNameOptions(charType, charName, assayType,
@@ -15,7 +15,7 @@ function setNameOptionsByCharName(columnNumber) {
 							[ "[other]" ]);
 				});
 	} else {
-		if (columnType == "Condition") {
+		if (columnType == "condition") {
 			show("conditionPropertyPrompt" + columnNumber);
 			show("conditionPropertyLabel" + columnNumber);
 			FindingManager
@@ -37,7 +37,7 @@ function setNameOptionsByCharName(columnNumber) {
 	}
 }
 function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
-	if (dwr.util.getValue("columnType" + columnNumber) == "Condition") {
+	if (dwr.util.getValue("columnType" + columnNumber) == "condition") {
 		if (conditionName == null) {
 			conditionName = dwr.util.getValue("columnName" + columnNumber);
 		}
@@ -56,7 +56,7 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 }
 function setColumnValueUnit(columnNumber) {
 	var name = null, property = null;
-	if (dwr.util.getValue("columnType" + columnNumber) == "Condition") {
+	if (dwr.util.getValue("columnType" + columnNumber) == "condition") {
 		property = dwr.util.getValue("conditionProperty" + columnNumber);
 	}
 	name = dwr.util.getValue("columnName" + columnNumber);
@@ -77,11 +77,9 @@ function setTheFinding(form, actionName, findingId) {
 	form.submit();
 }
 function saveFinding(actionName) {
-	/**
-	 * form.action = "characterization.do?dispatch=saveFinding&page=3";
-	 * form.submit();
-	 */
-	submitAction(document.forms[0], actionName, "saveFinding", 4);
+//	if (validateDataMatrix()) {
+	    submitAction(document.forms[0], actionName, "saveFinding", 4);
+//	}
 }
 function deleteTheFinding(form) {
 	var answer = confirmDelete("finding");
@@ -194,6 +192,32 @@ function addColumnHeader(columnNumber) {
 		});
 	hide("newColumn" + columnNumber);
 }
+
+function filterFloatForColumn(columnTypeId) {
+	var columnType=dwr.util.getValue(columnTypeId);
+	if (columnType=="datum") {
+		return filterFloatNumber(event);
+	}
+	else {
+		return true;
+	}
+}
+
+function validateDataMatrix() {
+	var rowNum=dwr.util.getValue("rowNum");
+	var colNum=dwr.util.getValue("colNum");
+	for (i=0; i<rowNum; i++) {
+		for (j=0; j<colNum; j++) {
+			var cellValue=dwr.util.getValue("cellValue"+i+":"+j);			
+			if (cellValue=="") {
+				alert("Please fill in value(s) in the data and condition table");
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 /* set submit file form */
 function clearFile() {
 	// go to server and clean form bean
