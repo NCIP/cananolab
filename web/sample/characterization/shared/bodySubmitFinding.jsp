@@ -51,14 +51,15 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
+			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp; <html:text property="achar.theFinding.numberOfColumns" size="1"
+				styleId="colNum" onkeydown="return filterInteger(event)" /> columns <html:text property="achar.theFinding.numberOfRows" size="1"
+				styleId="rowNum" onkeydown="return filterInteger(event)" /> rows &nbsp;&nbsp;<a href="javascript:updateMatrix(characterizationForm)">Update</a>
 		</td>
 	</tr>
 	<tr>
 		<td valign="top" colspan="2">
 			<div id="newMatrix">
-				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
-				&nbsp;
+				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />				
 			</div>
 		</td>
 	</tr>
