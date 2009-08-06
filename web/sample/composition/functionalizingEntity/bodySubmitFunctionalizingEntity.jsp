@@ -183,7 +183,7 @@
 			<td>
 				<c:set var="newaddFuncButtonStyle" value="display:block" />
 				<c:if
-					test="${empty compositionForm.map.functionalizingEntity.functions}">
+					test="${openFunction eq 'true'}">
 					<c:set var="newaddFuncButtonStyle" value="display:none" />
 				</c:if>
 				<a style="${newaddFuncButtonStyle}" id="addFunction"
@@ -206,7 +206,7 @@
 			<td colspan="2">
 				<c:set var="newFuncStyle" value="display:none" />
 				<c:if
-					test="${empty compositionForm.map.functionalizingEntity.functions}">
+					test="${openFunction eq 'true'}">
 					<c:set var="newFuncStyle" value="display:block" />
 				</c:if>
 				<div id="newFunction" style="${newFuncStyle}">
@@ -226,7 +226,11 @@
 					File
 				</td>
 				<td>
-					<a style="display: block" id="addFile"
+					<c:set var="addFileButtonStyle" value="display:block"/>
+					<c:if test="${openFile eq 'true' }">
+						<c:set var="addFileButtonStyle" value="display:none"/>
+					</c:if>
+					<a style="${addFileButtonStyle }" id="addFile"
 						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
@@ -244,7 +248,11 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<div style="display: none" id="newFile">
+					<c:set var="newFileStyle" value="display:none"/>
+					<c:if test="${openFile eq 'true' }">
+						<c:set var="newFileStyle" value="display:block"/>
+					</c:if>
+					<div style="${newFileStyle}" id="newFile">
 						<c:set var="fileForm" value="compositionForm" />
 						<c:set var="theFile"
 							value="${compositionForm.map.functionalizingEntity.theFile}" />

@@ -78,7 +78,7 @@
 			<td>
 				<c:set var="newAddCEButtonStyle" value="display:block" />
 				<c:if
-					test="${empty compositionForm.map.nanomaterialEntity.composingElements}">
+					test="${openComposingElement eq 'true'}">
 					<c:set var="newAddCEButtonStyle" value="display:none" />
 				</c:if>
 				<a style="${newAddCEButtonStyle}" id="addComposingElement" href="#submitComposingElement"
@@ -101,7 +101,7 @@
 			<td colspan="2">
 				<c:set var="newCEStyle" value="display:none" />
 				<c:if
-					test="${empty compositionForm.map.nanomaterialEntity.composingElements}">
+					test="${openComposingElement eq 'true'}">
 					<c:set var="newCEStyle" value="display:block" />
 				</c:if>
 				<div style="${newCEStyle }" id="newComposingElement">
@@ -124,7 +124,11 @@
 					File
 				</td>
 				<td>
-					<a style="display: block" id="addFile"
+				    <c:set var="addFileButtonStyle" value="display:block"/>
+					<c:if test="${openFile eq 'true'}">
+					    <c:set var="addFileButtonStyle" value="display:none"/>
+					</c:if>
+					<a style="${addFileButtonStyle}" id="addFile"
 						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
@@ -142,13 +146,15 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<div style="display: none" id="newFile">
+					<c:set var="newFileStyle" value="display:none"/>
+					<c:if test="${openFile eq 'true'}">
+					    <c:set var="newFileStyle" value="display:block"/>
+					</c:if>
+					<div style="${newFileStyle}" id="newFile">
 						<c:set var="fileForm" value="compositionForm" />
 						<c:set var="theFile"
 							value="${compositionForm.map.nanomaterialEntity.theFile}" />
 						<c:set var="actionName" value="nanomaterialEntity" />
-						<c:set var="theDataStyleId" value="ComposingElement"/>
-						<c:set var="theDataName" value="Composing Element"/>
 						<%@include file="../../bodySubmitFile.jsp"%>
 					</div>
 				</td>
