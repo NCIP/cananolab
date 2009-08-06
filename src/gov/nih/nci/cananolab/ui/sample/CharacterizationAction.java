@@ -627,6 +627,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		findingBean.addFile(newFile, theFileIndex);
 		request.setAttribute("anchor", "submitFinding");
 		checkOpenForms(achar, request);
+		
+		/**
+		 * Set marker in form for skipping finding matrix validation .
+		 */
+		theForm.set("fileSupplied", Boolean.TRUE.toString());
+		
 		return mapping.findForward("inputForm");
 	}
 
