@@ -439,7 +439,16 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(*this* > 0) 
+						(((*this* > 0) and (*this* == numberOfColumns))
+						or
+						(((achar.theFinding.theFile.domainFile.type != null) and
+						(achar.theFinding.theFile.domainFile.title != null))
+						and
+						(((achar.theFinding.theFile.domainFile.uri != null) or
+						((achar.theFinding.theFile.uploadedFile != null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="false"))) or
+						((achar.theFinding.theFile.externalUrl != null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="true")))))
 					</var-value>
 				</var>
 			</field>
@@ -450,7 +459,16 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(*this* > 0) 
+						(((*this* > 0) and (*this* == numberOfRows))
+						or
+						(((achar.theFinding.theFile.domainFile.type != null) and
+						(achar.theFinding.theFile.domainFile.title != null))
+						and
+						(((achar.theFinding.theFile.domainFile.uri != null) or
+						((achar.theFinding.theFile.uploadedFile != null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="false"))) or
+						((achar.theFinding.theFile.externalUrl != null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="true")))))
 					</var-value>
 				</var>
 			</field>
@@ -461,8 +479,17 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((*this*!=null) and
+						(((*this*!=null) and
 						(achar.theFinding.columnHeaders[].columnName!=null))
+						or
+						(((achar.theFinding.theFile.domainFile.type != null) and
+						(achar.theFinding.theFile.domainFile.title != null))
+						and
+						(((achar.theFinding.theFile.domainFile.uri != null) or
+						((achar.theFinding.theFile.uploadedFile != null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="false"))) or
+						((achar.theFinding.theFile.externalUrl != null) and
+						(achar.theFinding.theFile.domainFile.uriExternal=="true")))))
 					</var-value>
 				</var>
 			</field>
