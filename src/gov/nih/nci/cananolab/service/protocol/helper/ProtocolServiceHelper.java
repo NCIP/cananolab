@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -24,9 +25,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * This class includes methods involved in searching protocols that can be used
  * in both local and remote searches
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger
@@ -50,23 +51,23 @@ public class ProtocolServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
-		if (protocolType != null && protocolType.length() > 0) {
+		if (!StringUtils.isEmpty(protocolType)) {
 			crit.add(Restrictions.eq("type", protocolType));
 		}
-		if (protocolName != null && protocolName.length() > 0) {
+		if (!StringUtils.isEmpty(protocolName)) {
 			TextMatchMode protocolNameMatchMode = new TextMatchMode(
 					protocolName);
 			crit.add(Restrictions.ilike("name", protocolNameMatchMode
 					.getUpdatedText(), protocolNameMatchMode.getMatchMode()));
 		}
-		if (protocolAbbreviation != null && protocolAbbreviation.length() > 0) {
+		if (!StringUtils.isEmpty(protocolAbbreviation)) {
 			TextMatchMode protocolAbbreviationMatchMode = new TextMatchMode(
 					protocolAbbreviation);
 			crit.add(Restrictions.ilike("abbreviation",
 					protocolAbbreviationMatchMode.getUpdatedText(),
 					protocolAbbreviationMatchMode.getMatchMode()));
 		}
-		if (fileTitle != null && fileTitle.length() > 0) {
+		if (!StringUtils.isEmpty(fileTitle)) {
 			TextMatchMode titleMatchMode = new TextMatchMode(fileTitle);
 			crit.add(Restrictions.ilike("file.title", titleMatchMode
 					.getUpdatedText(), titleMatchMode.getMatchMode()));

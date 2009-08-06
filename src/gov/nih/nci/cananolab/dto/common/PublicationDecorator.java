@@ -14,9 +14,9 @@ import org.displaytag.decorator.TableDecorator;
 /**
  * This decorator is used to for decorate different properties of a publication
  * to be shown properly in the view page using display tag lib.
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationDecorator extends TableDecorator {
 
@@ -26,7 +26,7 @@ public class PublicationDecorator extends TableDecorator {
 		PublicationBean publicationBean = (PublicationBean) getCurrentRowObject();
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		String category = publication.getCategory();
-		if (category != null) {
+		if (!StringUtils.isEmpty(category)) {
 			publicationType = publication.getCategory();
 		}
 		SortableName sortableLink = new SortableName(publicationType);
@@ -37,7 +37,7 @@ public class PublicationDecorator extends TableDecorator {
 		String researchArea = "";
 		File file = ((PublicationBean) getCurrentRowObject()).getDomainFile();
 		researchArea = ((Publication) file).getResearchArea();
-		if (researchArea != null) {
+		if (!StringUtils.isEmpty(researchArea)) {
 			researchArea = researchArea.replaceAll(";", "<br>");
 		}
 
@@ -79,17 +79,24 @@ public class PublicationDecorator extends TableDecorator {
 		if (StringUtils.isEmpty(description)) {
 			return null;
 		}
-		StringBuilder sb=new StringBuilder("<div id=\"descriptionSection"+getListIndex()+"\" style=\"position: relative;\">");
-		sb.append("<a style=\"display: block\" id=\"viewDetail\" href=\"#\" onmouseOver=");
-		sb.append("javascript:show('publicationDescription"+getListIndex()+"'); onmouseOut=");
-		sb.append("javascript:hide('publicationDescription"+getListIndex()+"');>");
+		StringBuilder sb = new StringBuilder("<div id=\"descriptionSection"
+				+ getListIndex() + "\" style=\"position: relative;\">");
+		sb
+				.append("<a style=\"display: block\" id=\"viewDetail\" href=\"#\" onmouseOver=");
+		sb.append("javascript:show('publicationDescription" + getListIndex()
+				+ "'); onmouseOut=");
+		sb.append("javascript:hide('publicationDescription" + getListIndex()
+				+ "');>");
 		sb.append("View");
 		sb.append("</a>");
-		sb.append("<table id=\"publicationDescription"+getListIndex()+"\" style=\"display: none;position: absolute;left: -510px;top: -50px;width: 500px;z-index:5;font-size: 10px;background-color: #FFFFFF;\" class=\"promptbox\">");
+		sb
+				.append("<table id=\"publicationDescription"
+						+ getListIndex()
+						+ "\" style=\"display: none;position: absolute;left: -510px;top: -50px;width: 500px;z-index:5;font-size: 10px;background-color: #FFFFFF;\" class=\"promptbox\">");
 		sb.append("<tr><td>");
 		sb.append(description);
 		sb.append("</td></tr>");
-		sb.append("</table></div>");		
+		sb.append("</table></div>");
 		return sb.toString();
 	}
 }

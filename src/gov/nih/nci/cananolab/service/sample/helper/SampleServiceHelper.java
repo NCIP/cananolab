@@ -327,7 +327,7 @@ public class SampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
 				.setProjection(Projections.distinct(Property.forName("name")));
 
-		if (samplePointOfContact != null && samplePointOfContact.length() > 0) {
+		if (!StringUtils.isEmpty(samplePointOfContact)) {
 			TextMatchMode pocMatchMode = new TextMatchMode(samplePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("primaryPointOfContact", "pointOfContact");
@@ -1017,11 +1017,11 @@ public class SampleServiceHelper {
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
 		crit.createAlias("organization", "organization");
-		if (lastName != null && lastName.length() > 0)
+		if (!StringUtils.isEmpty(lastName))
 			crit.add(Restrictions.eq("lastName", lastName));
-		if (firstName != null && firstName.length() > 0)
+		if (!StringUtils.isEmpty(firstName))
 			crit.add(Restrictions.eq("firstName", firstName));
-		if (orgName != null && orgName.length() > 0)
+		if (!StringUtils.isEmpty(orgName))
 			crit.add(Restrictions.eq("organization.name", orgName));
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 

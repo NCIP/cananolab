@@ -18,6 +18,7 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
@@ -46,7 +47,7 @@ public class DWRPublicationManager {
 				.getAttribute("publicationForm");
 		PublicationBean pbean = (PublicationBean) form.get("publication");
 
-		if (pubmedID != null && pubmedID.length() > 0 && !pubmedID.equals("0")) {
+		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
 			Long pubMedIDLong = 0L;
 			try {
 				pubMedIDLong = Long.valueOf(pubmedID);

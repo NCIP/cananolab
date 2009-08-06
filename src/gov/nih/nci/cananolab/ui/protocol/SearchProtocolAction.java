@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -25,9 +26,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Search protocol file and protocol
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -99,7 +100,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
-		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
+		if (!StringUtils.isEmpty(gridNodeHostStr)) {
 			selectedLocations = gridNodeHostStr.split("~");
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;

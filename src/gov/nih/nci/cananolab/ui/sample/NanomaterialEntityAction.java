@@ -77,7 +77,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		if (!StringUtils.isEmpty(entityBean.getType())) {
 			detailPage = InitCompositionSetup.getInstance().getDetailPage(
 					entityBean.getType(), "nanomaterialEntity");
-			request.setAttribute("entityDetailPage", detailPage);		
+			request.setAttribute("entityDetailPage", detailPage);
 		}
 		// set pubChemId and value for composing element to be null if they
 		// were
@@ -90,6 +90,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		if (ce.getDomain().getValue() != null && ce.getDomain().getValue() == 0) {
 			ce.getDomain().setValue(null);
 		}
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
+				request, entityBean);
+		checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -100,17 +103,14 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ '/'
-				+ sampleBean.getDomain().getName()
-				+ '/'
-				+ "nanomaterialEntity";
+		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
+				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
 		try {
 			entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
-			if (ex.getMessage() != null && ex.getMessage().length() > 0
+			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
 				msg = new ActionMessage("errors.invalidOtherType", entityBean
 						.getType(), "nanomaterial entity");
@@ -191,11 +191,15 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
+				.get("nanomaterialEntity");
 		request.getSession().removeAttribute("compositionForm");
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
+		checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -225,7 +229,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 					entityBean.getClassName(), "nanomaterialEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-		return mapping.getInputForward();
+		checkOpenForms(entityBean, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward saveComposingElement(ActionMapping mapping,
@@ -258,7 +263,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
-		return mapping.getInputForward();
+		checkOpenForms(entity, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward saveFile(ActionMapping mapping, ActionForm form,
@@ -289,7 +295,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// save nanomaterial entity
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
-		return mapping.getInputForward();
+		checkOpenForms(entity, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
@@ -303,11 +310,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ '/'
-				+ sampleBean.getDomain().getName()
-				+ '/'
-				+ "nanomaterialEntity";
+		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
+				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
 		entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
 		compositionService.deleteNanomaterialEntity(entityBean
 				.getDomainEntity(), user);
@@ -320,5 +324,28 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
+	}
+
+	private void checkOpenForms(NanomaterialEntityBean entity,
+			HttpServletRequest request) {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openFile = false, openComposingElement = false;
+		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
+			openFile = true;
+		}
+		session.setAttribute("openFile", openFile);
+		if (dispatch.equals("input")
+				&& browserDispatch.equals("saveComposingElement")
+				|| ((dispatch.equals("setupNew") || dispatch
+						.equals("setupUpdate")) && entity
+						.getComposingElements().isEmpty())
+				|| (!StringUtils.isEmpty(entity.getTheComposingElement()
+						.getDisplayName()) && !dispatch
+						.equals("saveComposingElement"))) {
+			openComposingElement = true;
+		}
+		session.setAttribute("openComposingElement", openComposingElement);
 	}
 }

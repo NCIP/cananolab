@@ -7,6 +7,8 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
  * Represents the view bean for the Target domain object
  * 
@@ -132,16 +134,16 @@ public class TargetBean {
 
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		if (type != null) {
+		if (!StringUtils.isEmpty(type)) {
 			buffer.append(type);
-			if (name != null) {
+			if (!StringUtils.isEmpty(name)) {
 				buffer.append(" " + name);
 			}
-			if (description != null) {
+			if (!StringUtils.isEmpty(description)) {
 				buffer.append(": ");
 				buffer.append(description);
 			}
-			if (antigen.getSpecies() != null) {
+			if (!StringUtils.isEmpty(antigen.getSpecies())) {
 				buffer.append(", species: ");
 				buffer.append(antigen.getSpecies());
 			}

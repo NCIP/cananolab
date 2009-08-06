@@ -3,12 +3,13 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
- * View bean representing a column header in a matrix
- * column
- *
+ * View bean representing a column header in a matrix column
+ * 
  * @author pansu
- *
+ * 
  */
 public class ColumnHeader {
 	private String columnName;
@@ -75,19 +76,18 @@ public class ColumnHeader {
 	 */
 	public String getDisplayName() {
 		displayName = columnName;
-		if (conditionProperty != null && conditionProperty.trim().length() > 0) {
+		if (!StringUtils.isEmpty(conditionProperty)) {
 			displayName += " " + conditionProperty;
 		}
-		if ((valueType != null && valueType.trim().length() > 0)
-				|| (valueUnit != null && valueUnit.trim().length() > 0)) {
+		if (!StringUtils.isEmpty(valueType) || !StringUtils.isEmpty(valueUnit)) {
 			displayName += "<br>(";
-			if (valueType != null && valueType.trim().length() > 0) {
+			if (!StringUtils.isEmpty(valueType)) {
 				displayName += valueType;
-				if (valueUnit != null && valueUnit.trim().length() > 0) {
+				if (!StringUtils.isEmpty(valueUnit)) {
 					displayName += ",";
 				}
 			}
-			if (valueUnit != null && valueUnit.trim().length() > 0) {
+			if (!StringUtils.isEmpty(valueUnit)) {
 				displayName += valueUnit;
 			}
 			displayName += ")";
@@ -106,7 +106,7 @@ public class ColumnHeader {
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
-	 *
+	 * 
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {

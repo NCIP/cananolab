@@ -23,19 +23,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
  * Local implementation of ProtocolService
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolServiceRemoteImpl implements ProtocolService {
 	private static Logger logger = Logger
 			.getLogger(ProtocolServiceRemoteImpl.class);
 	private CaNanoLabServiceClient gridClient;
-	public ProtocolServiceRemoteImpl(String serviceUrl) throws ProtocolException {
+
+	public ProtocolServiceRemoteImpl(String serviceUrl)
+			throws ProtocolException {
 		try {
 			gridClient = new CaNanoLabServiceClient(serviceUrl);
 		} catch (Exception e) {
@@ -139,7 +142,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 
 	/**
 	 * Persist a new protocol file or update an existing protocol file
-	 *
+	 * 
 	 * @param protocolBean
 	 * @throws Exception
 	 */
@@ -197,13 +200,13 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			UserBean user) throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		// replace * with %
-		if (protocolName != null) {
+		if (!StringUtils.isEmpty(protocolName)) {
 			protocolName.replace('*', '%');
 		}
-		if (protocolAbbreviation != null) {
+		if (!StringUtils.isEmpty(protocolAbbreviation)) {
 			protocolAbbreviation.replace('*', '%');
 		}
-		if (fileTitle != null) {
+		if (!StringUtils.isEmpty(fileTitle)) {
 			fileTitle.replace('*', '%');
 		}
 		try {
@@ -214,22 +217,21 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			group.setLogicRelation(LogicalOperator.AND);
 
 			List<Attribute> attributeList = new ArrayList<Attribute>();
-			if (protocolType != null && protocolType.length() > 0) {
+			if (!StringUtils.isEmpty(protocolType)) {
 				Attribute attr = new Attribute();
 				attr.setName("type");
 				attr.setPredicate(Predicate.EQUAL_TO);
 				attr.setValue(protocolType);
 				attributeList.add(attr);
 			}
-			if (protocolName != null && protocolName.length() > 0) {
+			if (!StringUtils.isEmpty(protocolName)) {
 				Attribute attr = new Attribute();
 				attr.setName("name");
 				attr.setPredicate(Predicate.LIKE);
 				attr.setValue(protocolName);
 				attributeList.add(attr);
 			}
-			if (protocolAbbreviation != null
-					&& protocolAbbreviation.length() > 0) {
+			if (!StringUtils.isEmpty(protocolAbbreviation)) {
 				Attribute attr = new Attribute();
 				attr.setName("abbreviation");
 				attr.setPredicate(Predicate.LIKE);
@@ -237,7 +239,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 				attributeList.add(attr);
 			}
 			group.setAttribute(attributeList.toArray(new Attribute[0]));
-			if (fileTitle != null && fileTitle.length() > 0) {
+			if (!StringUtils.isEmpty(fileTitle)) {
 				Association[] association = new Association[1];
 				association[0]
 						.setName("gov.nih.nci.cananolab.domain.common.File");

@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
  * 
@@ -249,10 +251,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public void setupDomainEntity(String createdBy, String internalUriPath)
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
-		Class clazz = ClassUtils.getFullClass("agentmaterial." + className);			
+		Class clazz = ClassUtils.getFullClass("agentmaterial." + className);
 		if (clazz == null) {
 			clazz = OtherFunctionalizingEntity.class;
-		} 
+		}
 		if (domainEntity == null) {
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
 		}
@@ -363,12 +365,14 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public String getActivationMethodDisplayName() {
 		StringBuffer buffer = new StringBuffer();
 		if (getDomainEntity().getActivationMethod() != null) {
-			if (getDomainEntity().getActivationMethod().getType() != null) {
+			if (!StringUtils.isEmpty(getDomainEntity().getActivationMethod()
+					.getType())) {
 				buffer
 						.append(getDomainEntity().getActivationMethod()
 								.getType());
 			}
-			if (getDomainEntity().getActivationMethod().getActivationEffect() != null) {
+			if (!StringUtils.isEmpty(getDomainEntity().getActivationMethod()
+					.getActivationEffect())) {
 				buffer.append(", ");
 				buffer.append(getDomainEntity().getActivationMethod()
 						.getActivationEffect());
@@ -381,13 +385,13 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(getType());
-		if (getDomainEntity().getName() != null) {
+		if (!StringUtils.isEmpty(getDomainEntity().getName())) {
 			buffer.append(" (name: ");
 			buffer.append(getDomainEntity().getName());
 			if (getDomainEntity().getValue() != null) {
 				buffer.append(", amount: ");
 				buffer.append(getDomainEntity().getValue());
-				if (getDomainEntity().getValueUnit() != null) {
+				if (!StringUtils.isEmpty(getDomainEntity().getValueUnit())) {
 					buffer.append(" ");
 					buffer.append(getDomainEntity().getValueUnit());
 				}

@@ -120,7 +120,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
-			if (ex.getMessage() != null && ex.getMessage().length() > 0
+			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
 				msg = new ActionMessage("errors.invalidOtherType", ex
 						.getMessage(), "Function");
@@ -160,6 +160,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
+				.get("functionalizingEntity");
 		request.getSession().removeAttribute("compositionForm");
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
@@ -167,7 +170,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		this.setLookups(request);
 		request.getSession().setAttribute("onloadJavascript",
 				"setEntityInclude('feType', 'functionalizingEntity');");
-		return mapping.getInputForward();
+		checkOpenForms(entityBean, request);
+		return mapping.findForward("inputForm");
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
@@ -204,7 +208,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 					entityBean.getClassName(), "functionalizingEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-		return mapping.getInputForward();
+		checkOpenForms(entityBean, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward saveFunction(ActionMapping mapping, ActionForm form,
@@ -235,8 +240,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
-
-		return mapping.getInputForward();
+		checkOpenForms(entity, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward saveFile(ActionMapping mapping, ActionForm form,
@@ -250,7 +255,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// save the functionalizing entity
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
-		return mapping.getInputForward();
+		checkOpenForms(entity, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
@@ -264,27 +270,21 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "file");
 		// save the functionalizing entity
 		saveEntity(request, theForm, entity);
-		return mapping.getInputForward();
+		checkOpenForms(entity, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		/*
-		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
-		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean)
-		 * theForm .get("functionalizingEntity"); // update editable dropdowns
-		 * HttpSession session = request.getSession();
-		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
-		 * composition.getCharacterizationSource(), "characterizationSources");
-		 * 
-		 * PolymerBean polymer = (PolymerBean) theForm.get("polymer");
-		 * updatePolymerEditable(session, polymer);
-		 * 
-		 * DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
-		 * updateDendrimerEditable(session, dendrimer);
-		 */
-		return mapping.findForward("setup");
+
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+				.get("functionalizingEntity");
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
+		checkOpenForms(entity, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
@@ -313,5 +313,27 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
+	}
+
+	private void checkOpenForms(FunctionalizingEntityBean entity,
+			HttpServletRequest request) {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openFile = false, openFunction = false;
+		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
+			openFile = true;
+		}
+		session.setAttribute("openFile", openFile);
+		if (dispatch.equals("input")
+				&& browserDispatch.equals("saveFunction")
+				|| ((dispatch.equals("setupNew") || dispatch
+						.equals("setupUpdate")) && entity.getFunctions()
+						.isEmpty())
+				|| (!StringUtils.isEmpty(entity.getTheFunction()
+						.getDisplayName()) && !dispatch.equals("saveFunction"))) {
+			openFunction = true;
+		}
+		session.setAttribute("openFunction", openFunction);
 	}
 }

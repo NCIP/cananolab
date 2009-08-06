@@ -251,7 +251,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
-		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
+		if (!StringUtils.isEmpty(gridNodeHostStr)) {
 			selectedLocations = gridNodeHostStr.split("~");
 		}
 

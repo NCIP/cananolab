@@ -10,6 +10,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
  * This class sets up information required for CSM.
  *
@@ -76,7 +78,7 @@ public class InitSecuritySetup {
 			HttpServletRequest request, String sampleOrg)
 			throws SecurityException {
 		List<String> groupNames = getAllVisibilityGroups(request);
-		if (sampleOrg != null)
+		if (!StringUtils.isEmpty(sampleOrg))
 			groupNames.remove(sampleOrg);
 		request.getSession().setAttribute("allVisibilityGroupsNoOrg",
 				groupNames);

@@ -5,14 +5,15 @@ import gov.nih.nci.cananolab.util.SortableName;
 
 import java.io.UnsupportedEncodingException;
 
+import org.apache.axis.utils.StringUtils;
 import org.displaytag.decorator.TableDecorator;
 
 /**
  * This decorator is used to for decorate different properties of a protocol
  * file to be shown properly in the view page using display tag lib.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolDecorator extends TableDecorator {
 	public SortableName getEditURL() {
@@ -44,8 +45,8 @@ public class ProtocolDecorator extends TableDecorator {
 	public SortableName getDownloadURL() throws UnsupportedEncodingException {
 		SortableName sortableLink = null;
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
-		FileBean file=protocol.getFileBean();
-		if (file.getDomainFile().getName() != null) {			
+		FileBean file = protocol.getFileBean();
+		if (!StringUtils.isEmpty(file.getDomainFile().getName())) {
 			StringBuilder sb = new StringBuilder("<a href=");
 			sb.append("searchProtocol.do?dispatch=download&fileId=");
 			sb.append(file.getDomainFile().getId());

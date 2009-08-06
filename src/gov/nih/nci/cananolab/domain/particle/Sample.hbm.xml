@@ -30,7 +30,7 @@
 		<one-to-one name="sampleComposition"
 			class="gov.nih.nci.cananolab.domain.particle.SampleComposition"
 			property-ref="sample" />
-		<set name="publicationCollection" table="sample_publication"
+		<set name="publicationCollection" table="sample_publication" inverse="true"
 			lazy="true">
 			<cache usage="read-write" />
 			<key column="sample_pk_id" />

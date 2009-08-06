@@ -176,10 +176,11 @@ public class InitSetup {
 
 	public String getFileUriFromFormFile(FormFile file, String folderType,
 			String sampleName, String submitType) {
-		if (file != null && file.getFileName().length() > 0) {
+		if (file != null && !StringUtils.isEmpty(file.getFileName())) {
 			String prefix = folderType;
 
-			if (sampleName != null && submitType != null
+			if (!StringUtils.isEmpty(sampleName)
+					&& !StringUtils.isEmpty(submitType)
 					&& folderType.equals(Constants.FOLDER_PARTICLE)) {
 				prefix += "/" + sampleName + "/";
 				prefix += StringUtils

@@ -120,7 +120,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean charBean = new CharacterizationBean();
 		theForm.set("achar", charBean);
 		String charType = request.getParameter("charType");
-		if (charType != null) {
+		if (!StringUtils.isEmpty(charType)) {
 			charBean.setCharacterizationType(charType);
 			SortedSet<String> charNames = InitCharacterizationSetup
 					.getInstance().getCharNamesByCharType(request,
@@ -147,7 +147,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				request, sampleId);
 		InitExperimentConfigSetup.getInstance().setExperimentConfigDropDowns(
 				request);
-		if (charType != null)
+		if (!StringUtils.isEmpty(charType))
 			InitProtocolSetup.getInstance().getProtocolsByChar(request,
 					charType);
 		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
@@ -175,8 +175,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String charId = request.getParameter("charId");
-		if (charId==null) {
-			charId=(String)request.getAttribute("charId");
+		if (charId == null) {
+			charId = (String) request.getAttribute("charId");
 		}
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -752,8 +752,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		session.setAttribute("openFile", openFile);
 		if (dispatch.equals("input")
 				&& browserDispatch.equals("saveExperimentConfig")
-				|| !StringUtils.isEmpty(achar.getTheExperimentConfig()
-						.getTechniqueDisplayName())) {
+				|| (!StringUtils.isEmpty(achar.getTheExperimentConfig()
+						.getTechniqueDisplayName()) && !dispatch
+						.equals("saveExperimentConfig"))) {
 			openExperimentConfig = true;
 		}
 		session.setAttribute("openExperimentConfig", openExperimentConfig);

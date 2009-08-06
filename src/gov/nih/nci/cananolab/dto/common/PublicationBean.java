@@ -35,7 +35,7 @@ public class PublicationBean extends FileBean {
 		domainFile = new Publication();
 		domainFile.setUriExternal(false);
 	}
-	
+
 	public PublicationBean(String id, String location) {
 		domainFile.setId(new Long(id));
 		setLocation(location);
@@ -46,7 +46,7 @@ public class PublicationBean extends FileBean {
 		this.domainFile = publication;
 
 		String researchAreasStr = publication.getResearchArea();
-		if (researchAreasStr != null && researchAreasStr.length() > 0) {
+		if (!StringUtils.isEmpty(researchAreasStr)) {
 			researchAreas = researchAreasStr.split(delimiter);
 		} else {
 			researchAreas = null;
@@ -163,8 +163,9 @@ public class PublicationBean extends FileBean {
 		if (!StringUtils.isEmpty((pub.getVolume()))) {
 			publishInfo += pub.getVolume() + ":";
 		}
-		if (pub.getVolume() != null && pub.getStartPage() != null
-				&& pub.getEndPage() != null) {
+		if (!StringUtils.isEmpty(pub.getVolume())
+				&& !StringUtils.isEmpty(pub.getStartPage())
+				&& !StringUtils.isEmpty(pub.getEndPage())) {
 			publishInfo += pub.getStartPage() + "-" + pub.getEndPage();
 		}
 		return publishInfo;
@@ -251,7 +252,8 @@ public class PublicationBean extends FileBean {
 		if (domain.getYear() != null && domain.getYear() == 0) {
 			domain.setYear(null);
 		}
-		if (domain.getDigitalObjectId()!=null && domain.getDigitalObjectId().trim().length()==0) {
+		if (domain.getDigitalObjectId() != null
+				&& domain.getDigitalObjectId().trim().length() == 0) {
 			domain.setDigitalObjectId(null);
 		}
 		if (researchAreas != null && researchAreas.length > 0) {
@@ -276,7 +278,7 @@ public class PublicationBean extends FileBean {
 						|| author.getCreatedBy().trim().length() == 0) {
 					author.setCreatedBy(createdBy);
 				}
-				if (author.getId()!=null && author.getId() <= 0) {
+				if (author.getId() != null && author.getId() <= 0) {
 					author.setId(null);
 				}
 			} else {

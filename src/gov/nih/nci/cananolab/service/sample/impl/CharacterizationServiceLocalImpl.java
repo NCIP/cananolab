@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -490,13 +491,13 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
-			if (type != null && type.length() > 0) {
+			if (!StringUtils.isEmpty(type)) {
 				crit.add(Restrictions.eq("type", type));
 			}
-			if (manufacturer != null && manufacturer.length() > 0) {
+			if (!StringUtils.isEmpty(manufacturer)) {
 				crit.add(Restrictions.eq("manufacturer", manufacturer));
 			}
-			if (modelName != null && modelName.length() > 0) {
+			if (!StringUtils.isEmpty(modelName)) {
 				crit.add(Restrictions.eq("modelName", modelName));
 			}
 			List results = appService.query(crit);

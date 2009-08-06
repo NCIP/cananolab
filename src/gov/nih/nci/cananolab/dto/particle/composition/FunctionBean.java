@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,7 +98,7 @@ public class FunctionBean {
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass(className);
-		if (clazz==null) {
+		if (clazz == null) {
 			clazz = OtherFunction.class;
 		}
 		if (domainFunction == null
@@ -162,10 +163,10 @@ public class FunctionBean {
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(type);
-		if (getDescription() != null) {
+		if (!StringUtils.isEmpty(getDescription())) {
 			buffer.append(": " + description);
 		}
-		if (imagingFunction.getModality() != null) {
+		if (!StringUtils.isEmpty(imagingFunction.getModality())) {
 			buffer.append(" (imaging modality: ");
 			buffer.append(imagingFunction.getModality());
 			buffer.append(")");

@@ -7,11 +7,13 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 
 import java.util.Date;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
  * Protocol view bean
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolBean {
 	private FileBean fileBean = new FileBean();
@@ -31,9 +33,9 @@ public class ProtocolBean {
 
 	public String getDisplayName() {
 		String displayName = "";
-		if (domain.getName() != null) {
+		if (!StringUtils.isEmpty(domain.getName())) {
 			displayName += domain.getName();
-			if (domain.getAbbreviation() != null) {
+			if (!StringUtils.isEmpty(domain.getAbbreviation())) {
 				displayName += " (" + domain.getAbbreviation() + ")";
 			}
 			displayName += ", version " + domain.getVersion();
@@ -60,7 +62,7 @@ public class ProtocolBean {
 			throws Exception {
 		domain.setFile(fileBean.getDomainFile());
 		fileBean.setupDomainFile(internalUriPath, createdBy, 0);
-		if (domain.getId()==0) {
+		if (domain.getId() == 0) {
 			domain.setId(null);
 		}
 		if (domain.getId() == null) {

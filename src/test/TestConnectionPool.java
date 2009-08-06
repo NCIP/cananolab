@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 
 public class TestConnectionPool {
@@ -48,8 +49,7 @@ public class TestConnectionPool {
 				// logger.info("Publication: " + publication.getDisplayName());
 				PublicationBean publication = service.findPublicationById(id,
 						null);
-				if (publication.getDomainFile().getUri() != null
-						&& publication.getDomainFile().getUri().trim().length() > 0) {
+				if (!StringUtils.isEmpty(publication.getDomainFile().getUri())) {
 					p.println(publication.getDomainFile().getUri());
 					URL yahoo = new URL(publication.getDomainFile().getUri());
 					URLConnection yc = yahoo.openConnection();

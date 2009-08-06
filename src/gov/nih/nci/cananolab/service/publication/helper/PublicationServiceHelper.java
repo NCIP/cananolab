@@ -93,7 +93,7 @@ public class PublicationServiceHelper {
 		Set<String> allPublicationIds = new HashSet<String>();
 
 		// check if sample is accessible
-		if (sampleName != null) {
+		if (!StringUtils.isEmpty(sampleName)) {
 			Sample sample = sampleServiceHelper.findSampleByName(sampleName,
 					user);
 			if (sample != null) {
@@ -303,19 +303,19 @@ public class PublicationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.setProjection(Projections.distinct(Property.forName("id")));
 
-		if (title != null && title.length() > 0) {
+		if (!StringUtils.isEmpty(title)) {
 			TextMatchMode titleMatchMode = new TextMatchMode(title);
 			crit.add(Restrictions.ilike("title", titleMatchMode
 					.getUpdatedText(), titleMatchMode.getMatchMode()));
 		}
-		if (category != null && category.length() > 0) {
+		if (!StringUtils.isEmpty(category)) {
 			TextMatchMode categoryMatchMode = new TextMatchMode(category);
 			crit.add(Restrictions.ilike("category", categoryMatchMode
 					.getUpdatedText(), categoryMatchMode.getMatchMode()));
 		}
 
 		// pubMedId
-		if (pubMedId != null && pubMedId.length() > 0) {
+		if (!StringUtils.isEmpty(pubMedId)) {
 			TextMatchMode pubMedIdMatchMode = new TextMatchMode(pubMedId);
 			Long pubMedIdLong = null;
 			try {
@@ -326,7 +326,7 @@ public class PublicationServiceHelper {
 			}
 			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
 		}
-		if (digitalObjectId != null && digitalObjectId.length() > 0) {
+		if (!StringUtils.isEmpty(digitalObjectId)) {
 			TextMatchMode digitalObjectIdMatchMode = new TextMatchMode(
 					digitalObjectId);
 			crit.add(Restrictions.ilike("digitalObjectId",
@@ -494,7 +494,7 @@ public class PublicationServiceHelper {
 					new HSSFRichTextString(pubMedId.toString()));
 		} else {
 			String oid = publication.getDigitalObjectId();
-			if (oid != null && oid.length() > 0) {
+			if (!StringUtils.isEmpty(oid)) {
 				row.createCell(cellIndex++).setCellValue(
 						new HSSFRichTextString(oid));
 			} else {
@@ -609,8 +609,8 @@ public class PublicationServiceHelper {
 		cell.setCellValue(new HSSFRichTextString("Pages"));
 		String startPage = publication.getStartPage();
 		String endPage = publication.getEndPage();
-		if ((startPage != null && startPage.trim().length() > 0)
-				|| (endPage != null && endPage.trim().length() > 0)) {
+		if ((!StringUtils.isEmpty(startPage))
+				|| (!StringUtils.isEmpty(endPage))) {
 			row.createCell(cellIndex++).setCellValue(
 					new HSSFRichTextString(publication.getJournalName()));
 		}
@@ -713,13 +713,13 @@ public class PublicationServiceHelper {
 		if (authService.checkReadPermission(user, publicationId)) {
 			String query = "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
 					+ publicationId + "'";
-			HQLCriteria crit=new HQLCriteria(query);
+			HQLCriteria crit = new HQLCriteria(query);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();			
+					.getApplicationService();
 			List results = appService.query(crit);
 			SortedSet<String> names = new TreeSet<String>();
 			for (Object obj : results) {
-				String sampleName=obj.toString();
+				String sampleName = obj.toString();
 				if (authService.checkReadPermission(user, sampleName)) {
 					names.add(sampleName);
 				} else {

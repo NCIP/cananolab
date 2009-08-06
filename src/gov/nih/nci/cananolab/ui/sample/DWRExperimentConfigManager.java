@@ -13,15 +13,16 @@ import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper
 
 import java.util.SortedSet;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class DWRExperimentConfigManager {
 	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
@@ -29,7 +30,7 @@ public class DWRExperimentConfigManager {
 	public ExperimentConfigBean resetTheExperimentConfig() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm==null) {
+		if (charForm == null) {
 			return null;
 		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
@@ -43,7 +44,7 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException, NoAccessException {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user==null) {
+		if (user == null) {
 			return null;
 		}
 		ExperimentConfig config = helper.findExperimentConfigById(id, user);
@@ -88,7 +89,7 @@ public class DWRExperimentConfigManager {
 		ExperimentConfigBean config = getExperimentConfigById(configId);
 
 		if (config != null && config.getDomain().getTechnique() != null
-				&& config.getDomain().getTechnique().getType() != null) {
+				&& !StringUtils.isEmpty(config.getDomain().getTechnique().getType())) {
 			techniqueType = config.getDomain().getTechnique().getType();
 			types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
 					"instrument", "otherInstrument");
@@ -106,7 +107,7 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm==null) {
+		if (charForm == null) {
 			return null;
 		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
@@ -121,7 +122,7 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm==null) {
+		if (charForm == null) {
 			return null;
 		}
 		CharacterizationBean charBean = (CharacterizationBean) (charForm

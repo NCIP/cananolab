@@ -63,7 +63,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 
-		if (sampleId != null && sampleId.length() > 0) {
+		if (!StringUtils.isEmpty(sampleId)) {
 			SortedSet<String> publicationCategories = InitSetup.getInstance()
 					.getDefaultAndOtherLookupTypes(request,
 							"publicationCategories", "Publication", "category",
@@ -89,13 +89,13 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("sampleId", sampleId);
 		String type = request.getParameter("type");
-		if (type != null) {
+		if (!StringUtils.isEmpty(type)) {
 			((Publication) pubBean.getDomainFile()).setCategory(type);
 		}
 		theForm.set("publication", pubBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		ActionForward forward = mapping.getInputForward();
-		if (sampleId != null && sampleId.trim().length() > 0) {
+		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
 			forward = mapping.findForward("sampleSubmitPublication");
@@ -456,7 +456,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("publication", pubBean);
 		String title = pubBean.getDomainFile().getTitle();
-		if (title != null && title.length() > 10) {
+		if (!StringUtils.isEmpty(title)) {
 			title = title.substring(0, 10);
 		}
 

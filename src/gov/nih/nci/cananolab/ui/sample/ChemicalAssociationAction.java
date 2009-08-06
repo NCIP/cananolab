@@ -123,10 +123,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
+		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
+				+ sampleBean.getDomain().getName() + "/"
 				+ "chemicalAssociation";
 		try {
 			assocBean.setupDomainAssociation(user.getLoginName(),
@@ -134,7 +132,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
-			if (ex.getMessage() != null && ex.getMessage().length() > 0
+			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
 				msg = new ActionMessage("errors.invalidOtherType", ex
 						.getMessage(), "Chemical Association");

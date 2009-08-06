@@ -12,11 +12,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
  * View bean for technique and associated instruments;
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class ExperimentConfigBean {
 	private ExperimentConfig domain = new ExperimentConfig();
@@ -104,12 +106,9 @@ public class ExperimentConfigBean {
 		}
 		int i = 0;
 		for (Instrument instrument : instruments) {
-			if (instrument.getType() != null
-					&& instrument.getType().length() > 0
-					|| instrument.getManufacturer() != null
-					&& instrument.getManufacturer().length() > 0
-					|| instrument.getModelName() != null
-					&& instrument.getModelName().length() > 0) {
+			if (!StringUtils.isEmpty(instrument.getType())
+					|| !StringUtils.isEmpty(instrument.getManufacturer())
+					|| !StringUtils.isEmpty(instrument.getModelName())) {
 				instrument.setCreatedBy(createdBy);
 				instrument.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 				domain.getInstrumentCollection().add(instrument);
