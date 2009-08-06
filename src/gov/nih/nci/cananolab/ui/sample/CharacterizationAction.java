@@ -175,6 +175,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String charId = request.getParameter("charId");
+		if (charId==null) {
+			charId=(String)request.getAttribute("charId");
+		}
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = charService.findCharacterizationById(
@@ -511,6 +514,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		achar.setTheFinding(findingBean);
 		request.setAttribute("anchor", "submitFinding");
+		checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -556,7 +560,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			saveCharacterization(request, theForm, achar);
 			request.setAttribute("anchor", "result");
 			checkOpenForms(achar, request);
-			return mapping.findForward("inputForm");
+			// return to setupUpdate to retrieve the data matrix in the correct
+			// form from database
+			// after saving to database.
+			request.setAttribute("charId", achar.getDomainChar().getId()
+					.toString());
+			return setupUpdate(mapping, form, request, response);
 		} else {
 			ActionMessages messages = new ActionMessages();
 			ActionMessage msg = new ActionMessage("achar.theFinding.emptyCell");
