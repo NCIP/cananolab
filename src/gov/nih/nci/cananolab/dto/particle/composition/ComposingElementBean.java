@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
  * Represents the view bean for ComposingElement domain object
  * 
@@ -65,13 +67,13 @@ public class ComposingElementBean {
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(getDomain().getType());
-		if (getDomain().getName() != null) {
+		if (!StringUtils.isEmpty(getDomain().getName())) {
 			buffer.append(" (name: ");
 			buffer.append(getDomain().getName());
 			if (getDomain().getValue() != null) {
 				buffer.append(", amount: ");
 				buffer.append(getDomain().getValue());
-				if (getDomain().getValueUnit() != null) {
+				if (!StringUtils.isEmpty(getDomain().getValueUnit())) {
 					buffer.append(" ");
 					buffer.append(getDomain().getValueUnit());
 				}
@@ -83,10 +85,9 @@ public class ComposingElementBean {
 
 	public String getMolecularFormulaDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		if (getDomain().getMolecularFormula() != null) {
+		if (!StringUtils.isEmpty(getDomain().getMolecularFormula())) {
 			buffer.append(getDomain().getMolecularFormula());
-			if (getDomain().getMolecularFormulaType() != null
-					&& getDomain().getMolecularFormulaType().length() > 0) {
+			if (!StringUtils.isEmpty(getDomain().getMolecularFormulaType())) {
 				buffer.append(" (");
 				buffer.append(getDomain().getMolecularFormulaType());
 				buffer.append(")");
