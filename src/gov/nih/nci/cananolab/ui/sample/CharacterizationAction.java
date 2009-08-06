@@ -29,6 +29,7 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -65,10 +66,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
-		// TODO::
-		// if (!validateDerivedDatum(request, charBean)) {
-		// return mapping.getInputForward();
-		// }
 
 		saveCharacterization(request, theForm, charBean);
 
@@ -90,6 +87,18 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				"showSummary('" + ind + "', " + allCharacterizationTypes.size()
 						+ ")");
 		return summaryEdit(mapping, form, request, response);
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
+		checkOpenForms(charBean, request);
+		return mapping.findForward("inputForm");
 	}
 
 	/**
@@ -118,7 +127,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 							charBean.getCharacterizationType());
 			request.getSession().setAttribute("charTypeChars", charNames);
 		}
-		return mapping.getInputForward();
+		checkOpenForms(charBean, request);
+		return mapping.findForward("inputForm");
 	}
 
 	/**
@@ -186,8 +196,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			detailPage = setupDetailPage(charBean);
 		}
 		request.setAttribute("characterizationDetailPage", detailPage);
-
-		return mapping.getInputForward();
+		checkOpenForms(charBean, request);
+		return mapping.findForward("inputForm");
 	}
 
 	private String setupDetailPage(CharacterizationBean charBean) {
@@ -219,78 +229,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		charBean.setupDomain(user.getLoginName());
 	}
-
-	// TODO for datum and condition
-	// protected boolean validateDerivedDatum(HttpServletRequest request,
-	// CharacterizationBean charBean) throws Exception {
-	//
-	// ActionMessages msgs = new ActionMessages();
-	// boolean noErrors = true;
-	// for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
-	// .getDerivedBioAssayDataList()) {
-	//
-	// List<DerivedDatumBean> datumList = derivedBioassayDataBean
-	// .getDatumList();
-	// FileBean lfBean = derivedBioassayDataBean.getFileBean();
-	//
-	// // error, if no data input from either the lab file or derived datum
-	// boolean noFileError = true;
-	// if (datumList == null || datumList.size() == 0) {
-	// noFileError = validateFileBean(request, msgs, lfBean);
-	// if (!noFileError) {
-	// ActionMessage msg = new ActionMessage("errors.required",
-	// "If no derived datum entered, the file data");
-	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	// this.saveErrors(request, msgs);
-	// noErrors = false;
-	// }
-	// }
-	//
-	// for (DerivedDatumBean datum : datumList) {
-	// // if value field is populated, so does the name field.
-	// if (datum.getDomainDerivedDatum().getName().length() == 0) {
-	// ActionMessage msg = new ActionMessage("errors.required",
-	// "Derived data name");
-	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	// this.saveErrors(request, msgs);
-	// noErrors = false;
-	// }
-	// try {
-	// Float value = new Float(datum.getValueStr());
-	// // for boolean type, the value must be 0/1
-	// if (datum.getDomainDerivedDatum().getValueType()
-	// .equalsIgnoreCase("boolean")
-	// && value != 0.0 && value != 1.0) {
-	// ActionMessage msg = new ActionMessage(
-	// "error.booleanValue", "Derived data value");
-	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	// saveErrors(request, msgs);
-	// noErrors = false;
-	// }
-	// } catch (NumberFormatException e) {
-	// // for boolean type, the value must be true/false
-	// if (datum.getDomainDerivedDatum().getValueType()
-	// .equalsIgnoreCase("boolean")
-	// && !datum.getValueStr().equalsIgnoreCase("true")
-	// && !datum.getValueStr().equalsIgnoreCase("false")) {
-	// ActionMessage msg = new ActionMessage(
-	// "error.booleanValue", "Derived data value");
-	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	// saveErrors(request, msgs);
-	// noErrors = false;
-	// } else if (!datum.getDomainDerivedDatum().getValueType()
-	// .equalsIgnoreCase("boolean")) {
-	// ActionMessage msg = new ActionMessage(
-	// "error.derivedDatumValue", "Derived data value");
-	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-	// saveErrors(request, msgs);
-	// noErrors = false;
-	// }
-	// }
-	// }
-	// }
-	// return noErrors;
-	// }
 
 	private void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
@@ -339,15 +277,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
 		return forward;
-	}
-
-	public void validateNumber(HttpServletRequest request,
-			CharacterizationBean charBean, ActionMessages msgs)
-			throws Exception {
-		if (charBean.getSolubility().getCriticalConcentration() == 0.0) {
-			ActionMessage msg = new ActionMessage("message.invalidNumber");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		}
 	}
 
 	/**
@@ -566,7 +495,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.persistExperimentConfigDropdowns(request, configBean);
 		// also save characterization
 		saveCharacterization(request, theForm, achar);
-		return mapping.getInputForward();
+		checkOpenForms(achar, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
@@ -581,7 +511,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		achar.setTheFinding(findingBean);
 		request.setAttribute("anchor", "submitFinding");
-		return mapping.getInputForward();
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward resetFinding(ActionMapping mapping, ActionForm form,
@@ -589,15 +519,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FindingBean theFinding = new FindingBean();
-		theFinding.setNumberOfColumns(1);
-		theFinding.setNumberOfRows(1);
-		theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
-				.getNumberOfRows());
+		// theFinding.setNumberOfColumns(1);
+		// theFinding.setNumberOfRows(1);
+		// theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
+		// .getNumberOfRows());
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.setTheFinding(theFinding);
 		request.setAttribute("anchor", "submitFinding");
-		return mapping.getInputForward();
+		checkOpenForms(achar, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward saveFinding(ActionMapping mapping, ActionForm form,
@@ -612,24 +543,27 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			if (!StringUtils.isEmpty(theFindingId)) {
 				findingBean.getDomain().setId(new Long(theFindingId));
 			}
-			UserBean user = (UserBean) request.getSession().getAttribute("user");
+			UserBean user = (UserBean) request.getSession()
+					.getAttribute("user");
 			findingBean.setupDomain(user.getLoginName());
 			CharacterizationService service = new CharacterizationServiceLocalImpl();
 			service.saveFinding(findingBean, user);
 			achar.addFinding(findingBean);
 			InitCharacterizationSetup.getInstance()
 					.persistCharacterizationDropdowns(request, achar);
-			
+
 			// also save characterization
 			saveCharacterization(request, theForm, achar);
 			request.setAttribute("anchor", "result");
+			checkOpenForms(achar, request);
+			return mapping.findForward("inputForm");
 		} else {
 			ActionMessages messages = new ActionMessages();
 			ActionMessage msg = new ActionMessage("achar.theFinding.emptyCell");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, messages);
+			return mapping.getInputForward();
 		}
-		return mapping.getInputForward();
 	}
 
 	/**
@@ -658,7 +592,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		return true;
 	}
-	
+
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -683,7 +617,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		findingBean.addFile(newFile, theFileIndex);
 		request.setAttribute("anchor", "submitFinding");
-		return mapping.getInputForward();
+		checkOpenForms(achar, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
@@ -697,7 +632,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		findingBean.removeFile(theFileIndex);
 		findingBean.setTheFile(new FileBean());
 		request.setAttribute("anchor", "submitFinding");
-		return mapping.getInputForward();
+		checkOpenForms(achar, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward drawMatrix(ActionMapping mapping, ActionForm form,
@@ -721,12 +657,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			int columnToRemove = Integer.parseInt(request
 					.getParameter("removeColumn"));
 			findingBean.removeColumn(columnToRemove);
-			return mapping.getInputForward();
+			return mapping.findForward("inputForm");
 		} else if (request.getParameter("removeRow") != null) {
 			int rowToRemove = Integer.parseInt(request
 					.getParameter("removeRow"));
 			findingBean.removeRow(rowToRemove);
-			return mapping.getInputForward();
+			checkOpenForms(achar, request);
+			return mapping.findForward("inputForm");
 		}
 		int existingNumberOfColumns = findingBean.getColumnHeaders().size();
 		int existingNumberOfRows = findingBean.getRows().size();
@@ -751,7 +688,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean
 				.getNumberOfRows());
 		request.setAttribute("anchor", "submitFinding");
-		return mapping.getInputForward();
+		checkOpenForms(achar, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
@@ -768,7 +706,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		request.setAttribute("anchor", "result");
-		return mapping.getInputForward();
+		checkOpenForms(achar, request);
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward deleteExperimentConfig(ActionMapping mapping,
@@ -788,6 +727,37 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.persistExperimentConfigDropdowns(request, configBean);
 		// also save characterization
 		saveCharacterization(request, theForm, achar);
-		return mapping.getInputForward();
+		checkOpenForms(achar, request);
+		return mapping.findForward("inputForm");
+	}
+
+	private void checkOpenForms(CharacterizationBean achar,
+			HttpServletRequest request) {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
+		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
+			openFile = true;
+		}
+		session.setAttribute("openFile", openFile);
+		if (dispatch.equals("input")
+				&& browserDispatch.equals("saveExperimentConfig")
+				|| !StringUtils.isEmpty(achar.getTheExperimentConfig()
+						.getTechniqueDisplayName())) {
+			openExperimentConfig = true;
+		}
+		session.setAttribute("openExperimentConfig", openExperimentConfig);
+		if (dispatch.equals("input")
+				&& (browserDispatch.equals("saveFinding") || browserDispatch
+						.equals("addFile")) || dispatch.equals("addFile")
+				|| dispatch.equals("removeFile")
+				|| dispatch.equals("drawMatrix")
+				|| dispatch.equals("getFinding")
+				|| dispatch.equals("resetFinding")
+				|| !achar.getTheFinding().getFiles().isEmpty()) {
+			openFinding = true;
+		}
+		session.setAttribute("openFinding", openFinding);
 	}
 }
