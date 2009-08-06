@@ -18,9 +18,13 @@
 			Technique and Instrument
 		</td>
 		<td>
-			<a style="display:block" id="addExperimentConfig"
+			<c:set var="addExpermentConfigButtonStyle" value="display:block" />
+			<c:if test="${openExperimentConfig eq 'true'}">
+				<c:set var="addExpermentConfigButtonStyle" value="display:none" />
+			</c:if>
+			<a style="${addExpermentConfigButtonStyle}" id="addExperimentConfig"
 				href="javascript:clearExperimentConfig();openSubmissionForm('ExperimentConfig');"><img
-					align="top" src="images/btn_add.gif" border="0" /></a>
+					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
 	<tr>
@@ -35,7 +39,11 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<div id="newExperimentConfig" style="display: none;">
+			<c:set var="newExperimentConfigStyle" value="display:none" />
+			<c:if test="${openExperimentConfig eq 'true'}">
+				<c:set var="newExperimentConfigStyle" value="display:block" />
+			</c:if>
+			<div id="newExperimentConfig" style="${newExperimentConfigStyle}">
 				<jsp:include page="bodySubmitExperimentConfig.jsp" />
 			</div>
 		</td>

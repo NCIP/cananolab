@@ -6,12 +6,12 @@
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel" width="20%">
-			Finding
+			Finding	 
 		</td>
 		<td>
 			<c:set var="addFindingButtonStyle" value="display:block" />
 			<c:if
-				test="${param.dispatch eq 'addFile' || param.dispatch eq 'removeFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding' ||param.dispatch eq 'resetFinding'}">
+				test="${openFinding eq 'true'}">
 				<c:set var="addFindingButtonStyle" value="display:none" />
 			</c:if>
 			<a style="${addFindingButtonStyle}" id="addFinding"
@@ -32,7 +32,7 @@
 		<td colspan="2">
 			<c:set var="newFindingStyle" value="display:none" />
 			<c:if
-				test="${param.dispatch eq 'addFile' || param.dispatch eq 'removeFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding' ||param.dispatch eq 'resetFinding'}">
+				test="${openFinding eq 'true'}">
 				<c:set var="newFindingStyle" value="display:block" />
 			</c:if>
 			<div id="newFinding" style="${newFindingStyle}">
