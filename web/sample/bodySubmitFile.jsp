@@ -141,7 +141,7 @@
 				<td>
 					<div align="right">
 						<input class="${buttonStyle}" type="button" value="Add"
-							onclick="addFile('${actionName}', ${fileForm}); return validateSavingTheData('new${theDataStyleId}', '${theDataName}');" />
+							onclick="addFile('${actionName}', ${fileForm});" />
 						<input class="${buttonStyle}" type="button" value="Cancel"
 							onclick="clearFile('${fileParent }');closeSubmissionForm('File');" />
 					</div>
