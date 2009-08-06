@@ -87,4 +87,22 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		}
 		return page;
 	}
+	
+	public String getBrowserDispatch(HttpServletRequest request) {
+		String dispatch = request.getParameter("dispatch");
+		// get the dispatch value from the URL in the browser address bar
+		// used in case of validation
+		if (dispatch != null
+				&& request
+						.getAttribute("javax.servlet.forward.query_string") != null) {
+			String browserQueryString = request.getAttribute(
+					"javax.servlet.forward.query_string").toString();
+			if (browserQueryString != null) {
+				String browserDispatch = browserQueryString.replaceAll(
+						"dispatch=(.+)&(.+)", "$1");
+				return browserDispatch;
+			}			
+		}
+		return null;
+	}
 }
