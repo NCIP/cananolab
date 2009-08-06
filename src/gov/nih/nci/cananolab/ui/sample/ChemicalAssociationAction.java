@@ -179,7 +179,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		}
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request, compositionBean);
-		return mapping.findForward("setup");
+		return mapping.findForward("inputForm");
 	}
 
 	public boolean validateComposition(CompositionBean compositionBean,
@@ -244,13 +244,17 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
+				.get("assoc");
 		String sampleId = theForm.getString("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CompositionService service = new CompositionServiceLocalImpl();
 		CompositionBean compositionBean = service.findCompositionBySampleId(
 				sampleId, user);
 		setLookups(request, compositionBean);
-		return mapping.findForward("setup");
+		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
+				request, assocBean, false);
+		return mapping.findForward("inputForm");
 	}
 
 	private void setLookups(HttpServletRequest request,
@@ -344,7 +348,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		prepareEntityLists(assocBean, request);
 		theForm.set("assoc", assocBean);
 
-		return mapping.getInputForward();
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward saveFile(ActionMapping mapping, ActionForm form,
@@ -358,7 +362,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// save the association
 		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");
-		return mapping.getInputForward();
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
@@ -373,7 +377,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "file");
 		// save the association
 		saveAssociation(request, theForm, assoc);
-		return mapping.getInputForward();
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
