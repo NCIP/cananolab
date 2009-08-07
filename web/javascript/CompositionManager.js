@@ -1,4 +1,3 @@
-
 /* set the entity properties section */
 function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
@@ -10,20 +9,32 @@ function populatePage(pageData) {
 	if (pageData == "") {
 		inclueBlock.style.display = "none";
 	} else {
-		dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
+		dwr.util.setValue("entityInclude", pageData, {
+			escapeHtml : false
+		});
 		inclueBlock.style.display = "inline";
 	}
 }
 /* end of set the entity properties section */
+
 /* set submit chemical association form */
 function getAssociatedElementOptions(elementNumber) {
 	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
-	CompositionManager.getAssociatedElementOptions(compositionType, function (entities) {
+	CompositionManager.getAssociatedElementOptions(compositionType, function(
+			entities) {
 		if (entities != null) {
 			dwr.util.removeAllOptions("entityId" + elementNumber);
-			dwr.util.addOptions("entityId" + elementNumber, [""]);
-			//requires getters for domainId and displayName in BaseCompositionEntityBean
-			dwr.util.addOptions("entityId" + elementNumber, entities, "domainId", "displayName");
+			dwr.util.addOptions("entityId" + elementNumber, [ "" ]);
+			// requires getters for domainId and displayName
+			// in
+			// BaseCompositionEntityBean
+			dwr.util.addOptions("entityId" + elementNumber, entities,
+					"domainId", "displayName");
+			// if there is only one in the option, preselect it
+			if (entities.length == 1) {
+				dwr.util.setValue("entityId", entities[0].domainId);
+				getComposingElementOptions(elementNumber);
+			}
 		} else {
 			sessionTimeout();
 		}
@@ -47,21 +58,29 @@ function setCompositionType(entityTypeId, displayNameEleId) {
 	document.getElementById(displayNameEleId).value = selectedName;
 	// alert(document.getElementById(displayNameEleId).value);
 }
-function setEntityDisplayName(entityTypeId, displayNameEleId) {
-	var selectedName = dwr.util.getText(entityTypeId);
-	dwr.util.setValue(displayNameEleId, selectedName);
-	//alert(selectedName);
+function setEntityDisplayName(entityId, elementNumber) {
+	var entityDisplayName = dwr.util.getText(entityId);
+	dwr.util.setValue("entityDisplay"+elementNumber, selectedName);
 }
 function getComposingElementOptions(elementNumber) {
 	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
 	if (compositionType == "nanomaterial entity") {
 		var entityId = dwr.util.getValue("entityId" + elementNumber);
-		CompositionManager.getComposingElementsByNanomaterialEntityId(entityId, function (composingElements) {
-			if (composingElements != null) {
-				dwr.util.removeAllOptions("composingElementId" + elementNumber);
-				dwr.util.addOptions("composingElementId" + elementNumber, [""]);
-			//requires getters for domainId and displayName in ComposingElementBean
-				dwr.util.addOptions("composingElementId" + elementNumber, composingElements, "domainId", "displayName");
+		CompositionManager.getComposingElementsByNanomaterialEntityId(entityId,
+				function(composingElements) {
+					if (composingElements != null) {
+						dwr.util.removeAllOptions("composingElementId"
+								+ elementNumber);
+						dwr.util.addOptions("composingElementId"
+								+ elementNumber, [ "" ]);
+						// requires getters for domainId and displayName in
+				// ComposingElementBean
+				dwr.util.addOptions("composingElementId" + elementNumber,
+						composingElements, "domainId", "displayName");
+				if (composingElements.length == 1) {
+					dwr.util.setValue("composingElementId",
+							composingElements[0].domainId);
+				}
 			} else {
 				sessionTimeout();
 			}
@@ -74,7 +93,7 @@ function getComposingElementOptions(elementNumber) {
 /* end of set submit chemical association form */
 /* set submit file form */
 function clearFile(type) {
-	//go to server and clean form bean
+	// go to server and clean form bean
 	CompositionManager.resetTheFile(type, populateFile);
 	hide("deleteFile");
 	show("load");
