@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -167,6 +168,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
+				.get("assoc");
 		String sampleId = theForm.getString("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CompositionService service = new CompositionServiceLocalImpl();
@@ -179,6 +182,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		}
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request, compositionBean);
+		checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -246,14 +250,16 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		String sampleId = theForm.getString("sampleId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		CompositionService service = new CompositionServiceLocalImpl();
-		CompositionBean compositionBean = service.findCompositionBySampleId(
-				sampleId, user);
-		setLookups(request, compositionBean);
+		HttpSession session=request.getSession();
+		UserBean user = (UserBean)session.getAttribute("user");
+		if (user == null) {
+			throw new InvalidSessionException();
+		}
+		Boolean hasFunctionalizingEntities = (Boolean) session
+				.getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
-				request, assocBean, false);
+				request, assocBean, hasFunctionalizingEntities);
+		checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -261,7 +267,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			CompositionBean compositionBean) throws Exception {
 		// check whether it has a functionalizing entity
 		boolean hasFunctionalizingEntity = false;
-		if (!compositionBean.getNanomaterialEntities().isEmpty()) {
+		if (!compositionBean.getFunctionalizingEntities().isEmpty()) {
 			hasFunctionalizingEntity = true;
 		}
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
@@ -347,7 +353,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.findChemicalAssociationById(assocId, user);
 		prepareEntityLists(assocBean, request);
 		theForm.set("assoc", assocBean);
-
+		checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -362,6 +368,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// save the association
 		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");
+		checkOpenForms(assoc, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -377,6 +384,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "file");
 		// save the association
 		saveAssociation(request, theForm, assoc);
+		checkOpenForms(assoc, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -409,5 +417,17 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
+	}
+
+	private void checkOpenForms(ChemicalAssociationBean assoc,
+			HttpServletRequest request) {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openFile = false;
+		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
+			openFile = true;
+		}
+		session.setAttribute("openFile", openFile);
 	}
 }
