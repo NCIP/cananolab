@@ -81,6 +81,14 @@ WHERE NOT EXISTS
 
 -- update to make sure no spelling differences
 update instrument
+set type='asymmetrical flow field-flow fractionation with multi-angle laser light scattering'
+where type='asymmetrical flow field-flow fractionation with multi-angle light scattering';
+
+update instrument
+set type='size exclusion chromatography with multi-angle laser light scattering'
+where type='size exclusion chromatography with multi-angle light scattering';
+
+update instrument
 set type='size exclusion chromatography with multi-angle laser light scattering'
 where type='size-exclusion chromatography and multiangle laser light scattering';
 
@@ -96,15 +104,37 @@ update instrument
 set type='gas sorption detector'
 where type='surface area and pore size analyzer';
 
--- update model_name with description in instrument_config
-UPDATE instrument a, instrument_config b
-set a.model_name=substr(b.description, 1, 200)
-where a.instrument_pk_id=b.instrument_pk_id;
+--insert into technique table the techniques entered as instruments in the instrument table
+INSERT INTO technique (technique_pk_id, type, created_date,created_by)
+select distinct ins.instrument_pk_id, ins.type, sysdate(), 'DATA_MIGRATION' 
+from instrument ins, common_lookup cl
+where ins.type=cl.name
+and cl.attribute='instrument';
 
--- update manufacturer spelling
-update instrument
-set manufacturer='Diagnostica Stago'
-where manufacturer='Diagnostica';
+--insert into experiment_config configs for the above techniques
+ALTER TABLE experiment_config
+ CHANGE experiment_config_pk_id experiment_config_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ 
+INSERT INTO experiment_config(description,created_date, created_by,
+	characterization_pk_id, technique_pk_id)
+SELECT distinct ic.description, ic.created_date, ic.created_by, c.characterization_pk_id, t.technique_pk_id 
+from instrument_config ic, technique t, characterization c
+where ic.instrument_pk_id=t.technique_pk_id
+and c.instrument_config_pk_id=ic.instrument_config_pk_id;
+
+--for the above techniques, insert the corresponding instrument(s) into the instrument table
+ALTER TABLE instrument
+ CHANGE instrument_pk_id instrument_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ 
+INSERT INTO instrument (type, created_by, created_date)
+select cl.value, 'DATA_MIGRATION', sysdate()
+from technique t, common_lookup cl
+where t.type=cl.name
+and cl.attribute='instrument';
+
+--remove the above techniques from the instrument table
+DELETE FROM instrument
+where type in (select type from technique);
 
 -- create a temp table to hold instruments that can't be migrated
 CREATE TABLE instrument_to_review
@@ -117,61 +147,63 @@ CREATE TABLE instrument_to_review
 ) TYPE=InnoDB
 ;
 
--- create a temp table to hold techniques that can't be migrated
-CREATE TABLE technique_to_review
-(
-	instrument_pk_id BIGINT NOT NULL,
-	instrument_config_pk_id BIGINT NOT NULL,
-	characterization_pk_id BIGINT NOT NULL,
-	instrument_type VARCHAR(200),
-	description TEXT
-) TYPE=InnoDB
-;
-
--- move instruments that map to mulitple techniques to the review table
+-- move instruments that map to multiple techniques to the review table
 -- these need manual curation to insert into the 1.5 technique table
 insert into instrument_to_review
 (instrument_pk_id, instrument_config_pk_id, characterization_pk_id, instrument_type, description)
-select i.instrument_pk_id,  ic.instrument_config_pk_id, c.characterization_pk_id,i.type, ic.description
+select i.instrument_pk_id, ic.instrument_config_pk_id, c.characterization_pk_id,i.type, ic.description
 from instrument i, common_lookup cl, instrument_config ic, characterization c
 where i.type=cl.value
+and cl.attribute='instrument'
 and i.instrument_pk_id=ic.instrument_pk_id
 and ic.instrument_config_pk_id=c.instrument_config_pk_id
-and cl.attribute='instrument'
 group by i.instrument_pk_id, i.type, ic.instrument_config_pk_id, ic.description, c.characterization_pk_id
 having count(distinct cl.name)>1;
 
--- move techniques that have more than one instruments to the review table
--- these need manual curation to insert to the 1.5 instrument table
-insert into technique_to_review
-(instrument_pk_id, instrument_config_pk_id, characterization_pk_id, instrument_type, description)
-select i.instrument_pk_id,  ic.instrument_config_pk_id, c.characterization_pk_id,i.type, ic.description
-from instrument i, common_lookup cl, instrument_config ic, characterization c
-where cl.attribute='instrument'
-and i.type=cl.name
-and i.instrument_pk_id=ic.instrument_pk_id
-and ic.instrument_config_pk_id=c.instrument_config_pk_id
-group by i.instrument_pk_id, i.type, ic.instrument_config_pk_id, ic.description, c.characterization_pk_id
-having count(distinct cl.value)>1;
+--delete the instrument to be review from instrument
+DELETE FROM instrument
+where instrument_pk_id in (select instrument_pk_id from instrument_to_review);
 
+--insert into technique table the instruments map to one technique
 ALTER TABLE technique
  CHANGE technique_pk_id technique_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 
--- insert into techniques based on technique to instrument mapping
-INSERT into technique (type,created_date,created_by)
-select distinct c.name, sysdate(), 'DATA_MIGRATION'
-from
-(select a.name
-from common_lookup a, instrument b, instrument_to_review c
-where a.attribute='instrument'
- and a.value=b.type
- and b.instrument_pk_id!=c.instrument_pk_id
- union
- select a.name
- from common_lookup a, instrument b
- where a.attribute='instrument'
- and a.name=b.type) c
- ;
+INSERT INTO technique (type, created_date,created_by)
+select distinct cl.name, ins.created_date, ins.created_by
+from instrument ins, common_lookup cl
+where ins.type=cl.value
+and cl.attribute='instrument';
+
+--insert into experiment config table the instruments map to one technique
+INSERT INTO experiment_config(description,created_date, created_by,
+	characterization_pk_id, technique_pk_id)
+SELECT distinct ic.description, ic.created_date, ic.created_by, c.characterization_pk_id, t.technique_pk_id 
+from instrument_config ic, instrument ins, technique t, common_lookup cl, characterization c
+where ic.instrument_pk_id=ins.instrument_pk_id
+and c.instrument_config_pk_id=ic.instrument_config_pk_id
+and ins.type=cl.value
+and cl.attribute='instrument'
+and t.type=cl.name;
+
+--insert into experiment_config_instrument
+INSERT INTO experiment_config_instrument(experiment_config_pk_id, instrument_pk_id)
+select distinct ec.experiment_config_pk_id, ins.instrument_pk_id
+from experiment_config ec, instrument_config ic, instrument ins, technique t, common_lookup cl
+where ins.type=cl.value
+and t.type=cl.name
+and cl.attribute='instrument'
+and ec.technique_pk_id=t.technique_pk_id
+and ic.instrument_pk_id=ins.instrument_pk_id;
+
+-- update instrument model_name with description in instrument_config
+UPDATE instrument a, instrument_config b
+set a.model_name=substr(b.description, 1, 200)
+where a.instrument_pk_id=b.instrument_pk_id;
+
+-- update manufacturer spelling
+update instrument
+set manufacturer='Diagnostica Stago'
+where manufacturer='Diagnostica';
 
 -- update technique abbreviation
 update technique t, common_lookup cl
@@ -179,64 +211,17 @@ set t.abbreviation=cl.value
 where cl.attribute='abbreviation'
 and cl.name=t.type;
 
+ALTER TABLE instrument 
+ CHANGE instrument_pk_id instrument_pk_id BIGINT NOT NULL;
+ 
 ALTER TABLE technique
  CHANGE technique_pk_id technique_pk_id BIGINT NOT NULL;
 
--- insert into experiment_config using matching from technique to instrument
-INSERT INTO experiment_config(experiment_config_pk_id,description,created_date, created_by,
-	characterization_pk_id,technique_pk_id)
-SELECT distinct ic.instrument_config_pk_id, ic.description, ic.created_date, ic.created_by,
-	c.characterization_pk_id,t.technique_pk_id
-FROM instrument_config ic, characterization c, instrument i, common_lookup cl, technique t, instrument_to_review ir
-WHERE c.instrument_config_pk_id = ic.instrument_config_pk_id
-and ic.instrument_pk_id=i.instrument_pk_id
-and cl.attribute='instrument'
-and cl.value=i.type
-and cl.name=t.type
-and i.instrument_pk_id !=ir.instrument_pk_id
-;
-
--- insert into experiment_config using matching of instrument type to technique type
-INSERT INTO experiment_config(experiment_config_pk_id,description,created_date, created_by,
-	characterization_pk_id,technique_pk_id)
-SELECT ic.instrument_config_pk_id, ic.description, ic.created_date, ic.created_by,
-	c.characterization_pk_id,t.technique_pk_id
-FROM instrument_config ic, characterization c, instrument i,  technique t
-WHERE c.instrument_config_pk_id = ic.instrument_config_pk_id
-and ic.instrument_pk_id=i.instrument_pk_id
-and i.type=t.type
-;
-
--- update instrument type with mapping from technique where there is a one to one mapping between technique and instrument
-update instrument i, common_lookup cl, technique_to_review tr
-set i.type=cl.value
-where cl.attribute='instrument'
-and i.type=cl.name
-and i.type!=tr.instrument_type;
-
--- delete the technique that needs to be reviewed
-DELETE FROM instrument
-where instrument_pk_id in
-(select instrument_pk_id
-from technique_to_review);
-
-ALTER TABLE characterization
- DROP FOREIGN KEY FK_characterization_instrument_config
-;
+ALTER TABLE experiment_config
+ CHANGE experiment_config_pk_id experiment_config_pk_id BIGINT NOT NULL;
  
-DELETE FROM instrument_config
-where instrument_pk_id in
-(select instrument_pk_id
-from technique_to_review);
-
-INSERT INTO experiment_config_instrument(experiment_config_pk_id, instrument_pk_id)
-SELECT ic.instrument_config_pk_id, ic.instrument_pk_id
-FROM instrument_config ic, characterization c, instrument i
-where c.instrument_config_pk_id=ic.instrument_config_pk_id
-and ic.instrument_pk_id=i.instrument_pk_id
-;
-
 ALTER TABLE characterization
+ DROP FOREIGN KEY FK_characterization_instrument_config,
  DROP instrument_config_pk_id;
 
 DROP TABLE instrument_config;
