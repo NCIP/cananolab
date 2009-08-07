@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.SampleConstants;
 
 import java.util.List;
 
@@ -63,6 +64,10 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup.getInstance().getServletContextDefaultLookupTypes(
 					appContext, "wallTypes", "carbon nanotube", "wallType");
 
+			// For PubChem data sources drop-down list.
+			appContext.setAttribute("pubChemDataSources",
+					SampleConstants.PUBCHEM_DS_LIST);
+			
 			InitSetup.getInstance().setStaticOptions(appContext);
 
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
