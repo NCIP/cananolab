@@ -17,7 +17,7 @@
 	src='/caNanoLab/dwr/interface/FindingManager.js'></script>
 
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Advanced Sample Search" />
+	<jsp:param name="pageTitle" value="${applicationOwner} Advanced Sample Search" />
 	<jsp:param name="topic" value="search_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
