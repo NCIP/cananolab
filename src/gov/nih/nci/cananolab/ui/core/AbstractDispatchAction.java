@@ -103,6 +103,6 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 				return browserDispatch;
 			}			
 		}
-		return null;
+		return "";
 	}
 }
