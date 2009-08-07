@@ -64,6 +64,11 @@ where name in ('size', 'molecular weight')
 and attribute='otherDatumName';
 
 UPDATE common_lookup
+set value=lcase(value)
+where name = ('attachment')
+and attribute='otherBondType';
+
+UPDATE common_lookup
 set value='Feret''s Diameter'
 where value='feret''s Diameter';
 
