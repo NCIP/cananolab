@@ -268,6 +268,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 
 		HttpSession session = request.getSession();
 		session.removeAttribute("docSampleId");
+		session.removeAttribute("publicationSearchResults");
 		return mapping.getInputForward();
 	}
 
