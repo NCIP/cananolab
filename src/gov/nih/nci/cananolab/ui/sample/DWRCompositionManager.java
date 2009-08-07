@@ -15,15 +15,16 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * Work with DWR to set up drop-downs required in the composition pages
@@ -107,11 +108,14 @@ public class DWRCompositionManager {
 
 	public List<BaseCompositionEntityBean> getAssociatedElementOptions(
 			String compositionType) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
+		if (StringUtils.isEmpty(compositionType)) {
+			return new ArrayList<BaseCompositionEntityBean>();
+		}
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
 		List<BaseCompositionEntityBean> entities = null;
-		if (request.getSession().isNew()) {
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
 			return null;
 		}
 		if (compositionType.equals("nanomaterial entity")) {
@@ -127,13 +131,13 @@ public class DWRCompositionManager {
 	}
 
 	public List<ComposingElementBean> getComposingElementsByNanomaterialEntityId(
-			String id) throws Exception {
-		if (id == null || id.length() == 0) {
-			return null;
-		}
+			String id) throws Exception {	
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		if (user == null) {
+			return null;
+		}
+		if (StringUtils.isEmpty(id)) {
 			return null;
 		}
 		CompositionService compService = new CompositionServiceLocalImpl();
