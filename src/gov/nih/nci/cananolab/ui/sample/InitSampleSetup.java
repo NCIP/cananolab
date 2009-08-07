@@ -95,25 +95,8 @@ public class InitSampleSetup {
 	}
 
 	public void setSharedDropdowns(HttpServletRequest request) throws Exception {
-		// set static boolean yes or no and characterization source choices
-		ServletContext appContext = request.getSession().getServletContext();
-		LabelValueBean trueBean = new LabelValueBean();
-		trueBean.setLabel(Constants.BOOLEAN_YES);
-		trueBean.setValue("true");
-		LabelValueBean falseBean = new LabelValueBean();
-		falseBean.setLabel(Constants.BOOLEAN_NO);
-		falseBean.setValue("false");
-		LabelValueBean[] booleanBeans = new LabelValueBean[2];
-		booleanBeans[0] = trueBean;
-		booleanBeans[1] = falseBean;
-
-		appContext.setAttribute("booleanChoices", booleanBeans);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"fileTypes", "file", "type", "otherType", true);
-
-		// For PubChem data sources drop-down list.
-		appContext.setAttribute("pubChemDataSources",
-				SampleConstants.PUBCHEM_DS_LIST);
 	}
 
 	public SortedSet<String> getAllOrganizationNames(
