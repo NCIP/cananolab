@@ -14,7 +14,7 @@
 
 <c:choose>
 	<c:when test="${compositionForm.map.assoc.type eq 'attachment'}">
-		<c:set var="style" value="display:inline" />
+		<c:set var="style" value="display:block" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="style" value="display:none" />
@@ -22,16 +22,15 @@
 </c:choose>
 <c:choose>
 	<c:when test="${! empty ceListA }">
-		<c:set var="ceStyleA" value="display:inline" />
+		<c:set var="ceStyleA" value="display:block" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="ceStyleA" value="display:none" />
-
 	</c:otherwise>
 </c:choose>
 <c:choose>
 	<c:when test="${! empty ceListB }">
-		<c:set var="ceStyleB" value="display:inline" />
+		<c:set var="ceStyleB" value="display:block" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="ceStyleB" value="display:none" />
@@ -125,7 +124,7 @@
 					<c:set var="entitySelectStyle" value="display:block" />
 				</c:if>
 				<c:if
-					test="${compositionForm.map.assoc.associatedElementA.compositionType eq 'Nanomaterial Entity'}">
+					test="${compositionForm.map.assoc.associatedElementA.compositionType eq 'nanomaterial entity'}">
 					<c:set var="composingElementSelectStyle" value="display:block" />
 				</c:if>
 				<%@include file="bodySubmitAssociatedElement.jsp"%>
@@ -150,7 +149,7 @@
 					<c:set var="entitySelectStyle" value="display:block" />
 				</c:if>
 				<c:if
-					test="${compositionForm.map.assoc.associatedElementB.compositionType eq 'Nanomaterial Entity'}">
+					test="${compositionForm.map.assoc.associatedElementB.compositionType eq 'nanomaterial entity'}">
 					<c:set var="composingElementSelectStyle" value="display:block" />
 				</c:if>
 				<%@include file="bodySubmitAssociatedElement.jsp"%>
@@ -167,13 +166,17 @@
 					File
 				</td>
 				<td>
-					<a style="display: block" id="addFile"
+					<c:set var="addFileButtonStyle" value="display:block"/>
+					<c:if test="${openFile eq 'true'}">
+					    <c:set var="addFileButtonStyle" value="display:none"/>
+					</c:if>
+					<a style="${addFileButtonStyle}" id="addFile"
 						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<c:if test="${! empty compositionForm.map.assoc.files }">
 						<c:set var="files" value="${compositionForm.map.assoc.files}" />
 						<c:set var="edit" value="true" />
@@ -182,9 +185,12 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					&nbsp;&nbsp;
-					<div style="display: none" id="newFile">
+				<td colspan="2">					
+					<c:set var="newFileStyle" value="display:none"/>
+					<c:if test="${openFile eq 'true'}">
+					    <c:set var="newFileStyle" value="display:block"/>
+					</c:if>
+					<div style="${newFileStyle}" id="newFile">
 						<c:set var="fileForm" value="compositionForm" />
 						<c:set var="theFile" value="${compositionForm.map.assoc.theFile}" />
 						<%@include file="../bodySubmitFile.jsp"%>
