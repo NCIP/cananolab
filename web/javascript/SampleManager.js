@@ -208,6 +208,7 @@ function setDatumNameOptionsByCharName() {
 						if (data.length == 1) {
 							dwr.util.setValue("datumName", data[0].value);
 							setDatumValueOptions();
+							setCharacterizationOperandOptions();
 							setDatumValueUnitOptions();
 						}
 					});
