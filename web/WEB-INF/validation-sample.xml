@@ -344,11 +344,23 @@
 		</form>
 		<form name="characterizationForm">
 			<!-- 1.Mandatory properties: Char Type and Char Name -->
-			<field property="achar.characterizationType" page="1" depends="required">
+			<field property="achar.characterizationType" page="1" depends="validwhen">
 				<arg position="0" key="achar.characterizationType" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* != null) or (dispatch == "addFile"))
+					</var-value>
+				</var>
 			</field>
-			<field property="achar.characterizationName" page="1" depends="required">
+			<field property="achar.characterizationName" page="1" depends="validwhen">
 				<arg position="0" key="achar.characterizationName" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* != null) or (dispatch == "addFile"))
+					</var-value>
+				</var>
 			</field>
 			
 			<!-- 1.Mandatory properties: Shape Type required if Char Name is Shape -->
@@ -357,8 +369,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((*this*!=null) or 
-						(achar.characterizationName!='Shape'))
+						(((*this*!=null) or (dispatch == "addFile"))
+						or
+						(achar.characterizationName != 'Shape'))
 					</var-value>
 				</var>
 			</field>
@@ -370,7 +383,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((*this*!=null) or ((dispatch!='saveExperimentConfig') and
+						((*this*!=null) 
+						or 
+						((dispatch!='saveExperimentConfig') and
 						(dispatch!='deleteExperimentConfig')))
 					</var-value>
 				</var>

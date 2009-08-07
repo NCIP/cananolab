@@ -77,9 +77,18 @@ function setTheFinding(form, actionName, findingId) {
 	form.submit();
 }
 function saveFinding(actionName) {
-//	if (validateDataMatrix()) {
-	    submitAction(document.forms[0], actionName, "saveFinding", 4);
-//	}
+	var fileDiv = document.getElementById('newFile');
+	if (fileDiv != null) {
+		var displayStatus = fileDiv.style.display;
+		if (displayStatus == 'block') {
+			alert("Please click on either the Add button or the Cancel button in the File form.");
+			return false;
+		}
+		else {
+		    submitAction(document.forms[0], actionName, "saveFinding", 4);
+			return true;
+		}
+	}
 }
 function deleteTheFinding(form) {
 	var answer = confirmDelete("finding");
