@@ -21,12 +21,12 @@
 		<property name="pubChemDataSourceName" type="string" column="pub_chem_datasource_name"/>
 		<property name="pubChemId" type="long" column="pub_chem_id"/>
 		<!-- Associations mapping for the AssociatedElement class -->
-		<set name="chemicalAssociationACollection" lazy="true">
+		<set name="chemicalAssociationACollection" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="associated_element_a_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation"/>
 		</set>
-		<set name="chemicalAssociationBCollection" lazy="true">
+		<set name="chemicalAssociationBCollection" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="associated_element_b_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation"/>
