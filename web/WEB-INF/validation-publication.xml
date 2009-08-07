@@ -26,18 +26,18 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((((((publication.uploadedFile!=null) and 
-						(publication.domainFile.uriExternal=="false")) 
-						or 
+						((((((*this*!=null) and (*this*!=0))
+						or
+						(publication.domainFile.digitalObjectId!=null))					
+						or
+						((publication.domainFile.category=="book chapter") or 
+						(publication.domainFile.category=="report")))
+						or
+						((publication.uploadedFile!=null) and 
+						(publication.domainFile.uriExternal=="false")))
+						or
 						((publication.externalUrl!=null) and 
 						(publication.domainFile.uriExternal=="true"))) 
-						or 
-						((publication.domainFile.category=="book chapter") or 
-						(publication.domainFile.category=="report"))) 
-						or 
-						(publication.domainFile.digitalObjectId!=null))
-						or 
-						((*this*!=null) and (*this*!=0)))
 					</var-value>
 				</var>
 			</field>
@@ -48,19 +48,19 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((((((publication.uploadedFile!=null) and 
-						(publication.domainFile.uriExternal=="false")) 
-						or 
-						((publication.externalUrl!=null) and 
-						(publication.domainFile.uriExternal=="true"))) 
-						or 
-						((publication.domainFile.category=="book chapter") or 
-						(publication.domainFile.category=="report"))) 
-						or 
-						(this!=null))
-						or 
+						(((((*this*!=null)
+						or
 						((publication.domainFile.pubMedId!=null) and 
 						(publication.domainFile.pubMedId!=0)))
+						or
+						((publication.domainFile.category=="book chapter") or 
+						(publication.domainFile.category=="report")))
+						or
+						((publication.uploadedFile!=null) and 
+						(publication.domainFile.uriExternal=="false")))
+						or
+						((publication.externalUrl!=null) and 
+						(publication.domainFile.uriExternal=="true")))
 					</var-value>
 				</var>
 			</field>
