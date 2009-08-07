@@ -36,7 +36,7 @@
 		<one-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol" property-ref="file"/>
 		-->
 		<set name="findingCollection" table="finding_file" lazy="true"
-			inverse="false">
+			inverse="true">
 			<cache usage="read-write" />
 			<key column="file_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Finding"
