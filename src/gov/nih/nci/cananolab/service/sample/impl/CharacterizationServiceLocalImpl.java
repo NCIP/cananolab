@@ -311,13 +311,16 @@ public class CharacterizationServiceLocalImpl implements
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			// save file data to file system and assign visibility
+
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : finding.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
-				fileService.writeFile(fileBean, user);
+				fileService.prepareSaveFile(fileBean.getDomainFile(), user);				
 			}
 			appService.saveOrUpdate(finding.getDomain());
+			// save file data to file system and assign visibility
+			for (FileBean fileBean : finding.getFiles()) {				
+				fileService.writeFile(fileBean, user);
+			}
 			//visibility assignment is handled by saving characterization
 		} catch (Exception e) {
 			String err = "Error saving characterization result finding. ";
