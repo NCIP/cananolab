@@ -19,6 +19,7 @@ import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * This class sets up information required for composition forms.
@@ -195,13 +196,13 @@ public class InitCompositionSetup {
 
 	public void setChemicalAssociationDropdowns(HttpServletRequest request,
 			boolean hasFunctionalizingEntity) throws Exception {
-		ServletContext appContext = request.getSession().getServletContext();
+		HttpSession session = request.getSession();
 		List<String> compositionTypes = new ArrayList<String>();
 		compositionTypes.add("nanomaterial entity");
 		if (hasFunctionalizingEntity) {
 			compositionTypes.add("functionalizing entity");
 		}
-		appContext
+		session
 				.setAttribute("associationCompositionTypes", compositionTypes);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"bondTypes", "attachment", "bondType", "otherBondType", true);
