@@ -60,7 +60,7 @@ function setCompositionType(entityTypeId, displayNameEleId) {
 }
 function setEntityDisplayName(entityId, elementNumber) {
 	var entityDisplayName = dwr.util.getText(entityId);
-	dwr.util.setValue("entityDisplay"+elementNumber, selectedName);
+	dwr.util.setValue("entityDisplay" + elementNumber, entityDisplayName);
 }
 function getComposingElementOptions(elementNumber) {
 	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
