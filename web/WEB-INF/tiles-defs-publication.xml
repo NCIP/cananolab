@@ -27,6 +27,7 @@
 		extends="canano.home">
 		<put name="cananoContent"
 			value="/publication/bodySubmitPublication.jsp" />
+		<put name="onloadJavascript" value="updateSubmitFormBasedOnCategory();fillPubMedInfo();" />
 		<put name="menu" value="publications" />
 	</definition>
 	<definition name="publication.submitPublicationPubmed"

@@ -138,6 +138,7 @@
 	<!-- definition for the view publication page -->
 	<definition name="sample.submitPublication" extends="sample.annotationHome">
 		<put name="cananoContent" value="/publication/bodySubmitPublication.jsp" />
+		<put name="onloadJavascript" value="updateSubmitFormBasedOnCategory();fillPubMedInfo();" />
 	</definition>
 	<definition name="sample.submitPublicationPubmed" extends="sample.annotationHome">
 		<put name="cananoContent" value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
