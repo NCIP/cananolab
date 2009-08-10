@@ -9,8 +9,13 @@ package gov.nih.nci.cananolab.ui.sample;
 /* CVS $Id: SearchSampleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,9 +35,13 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		ActionForward forward = null;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		//TODO to be implemented
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) theForm
+				.get("searchBean");
+		SampleService service = new SampleServiceLocalImpl();
+		List<String> sampleNames = service.findSampleNamesByAdvancedSearch(
+				searchBean, user);
+		// TODO to be implemented
 		return forward;
 	}
 
