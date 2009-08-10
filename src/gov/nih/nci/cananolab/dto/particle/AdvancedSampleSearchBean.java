@@ -19,6 +19,8 @@ public class AdvancedSampleSearchBean {
 	private String compositionLogicalOperator;
 	private String characterizationLogicalOperator;
 	private String logicalOperator;
+	private Boolean hasNanomaterial = false;
+	private Boolean hasAgentMaterial = false;
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -109,5 +111,25 @@ public class AdvancedSampleSearchBean {
 
 	public void setLogicalOperator(String logicalOperator) {
 		this.logicalOperator = logicalOperator;
+	}
+
+	public Boolean getHasNanomaterial() {
+		for (CompositionQueryBean query : compositionQueries) {
+			if (query.getCompositionType().equals("nanomaterial entity")) {
+				hasNanomaterial = true;
+				break;
+			}
+		}
+		return hasNanomaterial;
+	}
+
+	public Boolean getHasAgentMaterial() {
+		for (CompositionQueryBean query : compositionQueries) {
+			if (query.getCompositionType().equals("functionalizing entity")) {
+				hasAgentMaterial = true;
+				break;
+			}
+		}
+		return hasAgentMaterial;
 	}
 }
