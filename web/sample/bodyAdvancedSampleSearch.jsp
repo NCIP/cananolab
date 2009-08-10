@@ -17,7 +17,8 @@
 	src='/caNanoLab/dwr/interface/FindingManager.js'></script>
 
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="${applicationOwner} Advanced Sample Search" />
+	<jsp:param name="pageTitle"
+		value="${applicationOwner} Advanced Sample Search" />
 	<jsp:param name="topic" value="search_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -227,7 +228,8 @@
 							<div id="datumValueTextBlock" style="display: block">
 								<html:text
 									property="searchBean.theCharacterizationQuery.datumValue"
-									styleId="datumValue" size="10" onkeydown="return filterFloatNumber(event)"/>
+									styleId="datumValue" size="10"
+									onkeydown="return filterFloatNumber(event)" />
 							</div>
 							<div id="datumValueSelectBlock" style="display: none">
 								<html:select
@@ -292,7 +294,7 @@
 				<div id="logicalOperator" style="display: block">
 					<html:radio property="searchBean.logicalOperator" value="and" />
 					AND
-					<html:radio property="searchBean.logicalOperator" value="or" />
+					<html:radio property="searchBean.logicalOperator" value="or"/>
 					OR
 				</div>
 			</td>
@@ -309,8 +311,8 @@
 							<div align="right">
 								<input type="button" value="Reset">
 								<input type="hidden" name="dispatch" value="search">
-								<input type="hidden" name="page" value="1">
-								<input type="button" value="Search">
+								<input type="hidden" name="page" value="1">								
+								<html:submit value="Search" />
 							</div>
 						</td>
 					</tr>
