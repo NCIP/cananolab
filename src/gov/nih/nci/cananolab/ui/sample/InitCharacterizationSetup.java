@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -116,29 +119,29 @@ public class InitCharacterizationSetup {
 				charBean.getEnzymeInduction().getEnzyme());
 		setCharacterizationDropdowns(request);
 
-		// for (DerivedBioAssayDataBean bioassay : charBean
-		// .getDerivedBioAssayDataList()) {
-		// if (bioassay.getFileBean() != null) {
-		// InitSetup.getInstance().persistLookup(request, "File", "type",
-		// "otherType",
-		// bioassay.getFileBean().getDomainFile().getType());
-		// }
-		// for (DerivedDatumBean datum : bioassay.getDatumList()) {
-		// InitSetup.getInstance().persistLookup(request,
-		// datum.getDomainDerivedDatum().getName(), "unit",
-		// "otherUnit",
-		// datum.getDomainDerivedDatum().getValueUnit());
-		// InitSetup.getInstance().persistLookup(request, "DerivedDatum",
-		// "valueType", "otherValueType",
-		// datum.getDomainDerivedDatum().getValueType());
-		// InitSetup.getInstance().persistLookup(request,
-		// charBean.getClassName(), "derivedDatumName",
-		// "otherDerivedDatumName",
-		// datum.getDomainDerivedDatum().getName());
-		// }
-		// }
-		// setCharactierizationDropDowns(request,
-		// charBean.getDomainChar().getId().toString());
+		for (FindingBean findingBean : charBean.getFindings()) {
+			for (Datum datum : findingBean.getDomain().getDatumCollection()) {
+				InitSetup.getInstance().persistLookup(request,
+						charBean.getCharacterizationName(), "datumName",
+						"otherDatumName", datum.getName());
+				InitSetup.getInstance().persistLookup(request, datum.getName(),
+						"unit", "otherUnit", datum.getValueUnit());
+				InitSetup.getInstance().persistLookup(request,
+						"datum and condition", "valueType", "otherValueType",
+						datum.getValueType());
+				for (Condition condition : datum.getConditionCollection()) {
+					InitSetup.getInstance().persistLookup(request, "condition",
+							"name", "otherName", condition.getName());
+					InitSetup.getInstance().persistLookup(request,
+							condition.getName(), "unit", "otherUnit",
+							condition.getValueUnit());
+					InitSetup.getInstance().persistLookup(request,
+							"datum and condition", "valueType",
+							"otherValueType", condition.getValueType());
+				}
+			}
+
+		}
 	}
 
 	public SortedSet<String> getCharNamesByCharType(HttpServletRequest request,
