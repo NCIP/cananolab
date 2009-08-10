@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -236,7 +237,7 @@ public class SampleServiceLocalImpl implements SampleService {
 					otherFunctionTypes, characterizationClassNames,
 					otherCharacterizationTypes, wordList, user);
 		} catch (Exception e) {
-			String err = "Problem finding particles with the given search parameters.";
+			String err = "Problem finding samples with the given search parameters.";
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -362,15 +363,15 @@ public class SampleServiceLocalImpl implements SampleService {
 			SampleBean sampleBean = null;
 			if (!result.isEmpty()) {
 				sample = (Sample) result.get(0);
-				if (helper.getAuthService().checkReadPermission(user,
-						sample.getName())) {
-					sampleBean = new SampleBean(sample);
-					if (user != null) {
-						retrieveVisibility(sampleBean, user);
-					}
-				} else {
-					throw new NoAccessException();
+				// if (helper.getAuthService().checkReadPermission(user,
+				// sample.getName())) {
+				sampleBean = new SampleBean(sample);
+				if (user != null) {
+					retrieveVisibility(sampleBean, user);
 				}
+				// } else {
+				// throw new NoAccessException();
+				// }
 			}
 			return sampleBean;
 		} catch (NoAccessException e) {
@@ -671,6 +672,18 @@ public class SampleServiceLocalImpl implements SampleService {
 			// assign Public visibility for organization
 			helper.getAuthService().assignVisibility(id,
 					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+		}
+	}
+
+	public List<String> findSampleNamesByAdvancedSearch(
+			AdvancedSampleSearchBean searchBean, UserBean user)
+			throws SampleException {
+		try {
+			return helper.findSampleNamesByAdvancedSearch(searchBean, user);
+		} catch (Exception e) {
+			String err = "Problem finding samples with the given advanced search parameters.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
 		}
 	}
 
