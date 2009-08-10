@@ -118,6 +118,12 @@ public class DWRCharacterizationResultManager {
 	}
 
 	public String addColumnHeader(ColumnHeader header) {
+		// added other valueType to the dropdown list in the session
+		SortedSet<String> valueTypes = (SortedSet<String>) WebContextFactory
+				.get().getSession().getAttribute("datumConditionValueTypes");
+		if (!valueTypes.contains(header.getValueType())) {
+			valueTypes.add(header.getValueType());
+		}
 		return header.getDisplayName();
 	}
 
