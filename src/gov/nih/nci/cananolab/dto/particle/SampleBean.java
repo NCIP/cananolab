@@ -31,7 +31,7 @@ public class SampleBean {
 
 	private SortedSet<String> keywordSet = new TreeSet<String>();
 
-	private String location; // e.g. local, caNanoLab-WashU, etc
+	private String location; // e.g. NCICB, NCL, WUSTL, etc.
 
 	private String[] nanomaterialEntityClassNames = new String[0];
 
