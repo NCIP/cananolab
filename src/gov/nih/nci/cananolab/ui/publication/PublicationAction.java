@@ -100,12 +100,8 @@ public class PublicationAction extends BaseAnnotationAction {
 					.getOtherSampleNames(request, sampleId);
 			forward = mapping.findForward("sampleSubmitPublication");
 		}
-		/**
-		 * Moved to tiles-defs: when validation failed, action won't be executed. 
-		 * 
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory()");
-		*/
 		return forward;
 	}
 
@@ -122,12 +118,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		theForm.set("sampleId", sampleId);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		/**
-		 * Moved to tiles-defs: when validation failed, action won't be executed. 
-		 * 
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
-		 */
 		if (sampleId != null && sampleId.trim().length() > 0) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
@@ -366,7 +358,17 @@ public class PublicationAction extends BaseAnnotationAction {
 			}
 		}
 		theForm.set("publication", publicationBean);
-
+		
+		/**
+		 * Set PubMedId from default value 0 to null for better displaying result.
+		 */
+		Publication pub = (Publication) publicationBean.getDomainFile();
+		if (pub.getPubMedId() != null && pub.getPubMedId() == 0) {
+			pub.setPubMedId(null);
+		}
+		request.setAttribute("onloadJavascript",
+			"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
+		
 		return mapping.findForward("publicationSubmitPublication");
 
 		// if pubMedId is available, the related fields should be set to read
