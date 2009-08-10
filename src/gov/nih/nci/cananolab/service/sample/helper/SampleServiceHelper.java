@@ -14,6 +14,9 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
+import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -34,10 +37,13 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -1035,5 +1041,217 @@ public class SampleServiceHelper {
 			}
 		}
 		return poc;
+	}
+
+	private Junction getCompositionJunction(
+			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) {
+		Junction junction = null;
+		Disjunction compDisjunction = Restrictions.disjunction();
+		Conjunction compConjunction = Restrictions.conjunction();
+		// composition queries
+		if (!searchBean.getCompositionQueries().isEmpty()) {
+			crit.createAlias("sampleComposition", "comp",
+					CriteriaSpecification.LEFT_JOIN);
+			if (searchBean.getHasNanomaterial()) {
+				crit.createAlias("comp.nanomaterialEntityCollection",
+						"nanoEntity", CriteriaSpecification.LEFT_JOIN);
+				crit.createAlias("nanoEntity.composingElementCollection",
+						"compElement", CriteriaSpecification.LEFT_JOIN);
+			}
+			if (searchBean.getHasAgentMaterial()) {
+				crit.createAlias("comp.functionalizingEntityCollection",
+						"funcEntity", CriteriaSpecification.LEFT_JOIN);
+			}
+
+			for (CompositionQueryBean compQuery : searchBean
+					.getCompositionQueries()) {
+				TextMatchMode chemicalNameMatchMode = null;
+				if (compQuery.getOperand().equals("equals")) {
+					chemicalNameMatchMode = new TextMatchMode(compQuery
+							.getChemicalName());
+				} else if (compQuery.getOperand().equals("contains")) {
+					chemicalNameMatchMode = new TextMatchMode("*"
+							+ compQuery.getChemicalName() + "*");
+				}
+				// nanomaterial entity
+				if (compQuery.getCompositionType()
+						.equals("nanomaterial entity")) {
+					String nanoEntityClassName = ClassUtils
+							.getShortClassNameFromDisplayName(compQuery
+									.getEntityType());
+					Criterion nanoEntityCrit = null;
+					// other entity type
+					if (nanoEntityClassName == null) {
+						Criterion otherNanoCrit1 = Restrictions.eq(
+								"nanoEntity.class", "OtherNanomaterialEntity");
+						Criterion otherNanoCrit2 = Restrictions.eq(
+								"nanoEntity.type", compQuery.getEntityType());
+						nanoEntityCrit = Restrictions.and(otherNanoCrit1,
+								otherNanoCrit2);
+					} else {
+						nanoEntityCrit = Restrictions.eq("nanoEntity.class",
+								nanoEntityClassName);
+					}
+					Criterion chemicalNameCrit = Restrictions.ilike(
+							"compElement.name", chemicalNameMatchMode
+									.getUpdatedText(), chemicalNameMatchMode
+									.getMatchMode());
+
+					nanoEntityCrit = Restrictions.and(nanoEntityCrit,
+							chemicalNameCrit);
+					compConjunction.add(nanoEntityCrit);
+					compDisjunction.add(nanoEntityCrit);
+				}
+				// functionalizing entity
+				else if (compQuery.getCompositionType().equals(
+						"functionalizing entity")) {
+					String funcEntityClassName = ClassUtils
+							.getShortClassNameFromDisplayName(compQuery
+									.getEntityType());
+					Criterion funcEntityCrit = null;
+					// other entity type
+					if (funcEntityClassName == null) {
+						Criterion otherFuncCrit1 = Restrictions.eq(
+								"funcEntity.class",
+								"OtherFunctionalizingEntity");
+						Criterion otherFuncCrit2 = Restrictions.eq(
+								"funcEntity.type", compQuery.getEntityType());
+						funcEntityCrit = Restrictions.and(otherFuncCrit1,
+								otherFuncCrit2);
+					} else {
+						Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+								.get(funcEntityClassName);
+						funcEntityCrit = Restrictions.eq("funcEntity.class",
+								funcClassNameInteger);
+					}
+					Criterion chemicalNameCrit = Restrictions.ilike(
+							"funcEntity.name", chemicalNameMatchMode
+									.getUpdatedText(), chemicalNameMatchMode
+									.getMatchMode());
+					funcEntityCrit = Restrictions.and(funcEntityCrit,
+							chemicalNameCrit);
+					compConjunction.add(funcEntityCrit);
+					compDisjunction.add(funcEntityCrit);
+				}
+			}
+		}
+		if (searchBean.getCompositionLogicalOperator().equals("and")) {
+			junction = compConjunction;
+		} else if (searchBean.getCompositionLogicalOperator().equals("or")) {
+			junction = compDisjunction;
+		}
+		return junction;
+	}
+
+	private Junction getCharacterizationJunction(
+			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) {
+		Junction junction = null;
+		Disjunction charDisjunction = Restrictions.disjunction();
+		Conjunction charConjunction = Restrictions.conjunction();
+
+		if (!searchBean.getCharacterizationQueries().isEmpty()) {
+			// join characterization
+			crit.createAlias("characterizationCollection", "chara",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("chara.findingCollection", "finding",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("finding.datumCollection", "datum",
+					CriteriaSpecification.LEFT_JOIN);
+			for (CharacterizationQueryBean charQuery : searchBean
+					.getCharacterizationQueries()) {
+				String charClassName = ClassUtils
+						.getShortClassNameFromDisplayName(charQuery
+								.getCharacterizationName());
+				Criterion charCrit = null;
+				if (charClassName == null) {
+					Criterion otherCharCrit1 = Restrictions.eq("chara.class",
+							"OtherCharacterization");
+					Criterion otherCharCrit2 = Restrictions.eq("chara.name",
+							charQuery.getCharacterizationName());
+					charCrit = Restrictions.and(otherCharCrit1, otherCharCrit2);
+				} else {
+					charCrit = Restrictions.eq("chara.class", charClassName);
+				}
+				charCrit = Restrictions.and(charCrit, Restrictions.eq(
+						"datum.name", charQuery.getDatumName()));
+
+				Float datumValue = new Float(charQuery.getDatumValue());
+				charCrit = Restrictions.and(charCrit, Restrictions.eq(
+						"datum.valueUnit", datumValue));
+				if (charQuery.getOperand().equals("=")) {
+					charCrit = Restrictions.and(charCrit, Expression.eq(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals(">")) {
+					charCrit = Restrictions.and(charCrit, Expression.gt(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals(">=")) {
+					charCrit = Restrictions.and(charCrit, Expression.ge(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals("<")) {
+					charCrit = Restrictions.and(charCrit, Expression.lt(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals("<=")) {
+					charCrit = Restrictions.and(charCrit, Expression.le(
+							"datum.value", datumValue));
+				}
+				charConjunction.add(charCrit);
+				charDisjunction.add(charCrit);
+			}
+			if (searchBean.getCharacterizationLogicalOperator().equals("and")) {
+				junction = charConjunction;
+			} else if (searchBean.getCharacterizationLogicalOperator().equals(
+					"or")) {
+				junction = charDisjunction;
+			}
+		}
+		return junction;
+	}
+
+	public List<String> findSampleNamesByAdvancedSearch(
+			AdvancedSampleSearchBean searchBean, UserBean user)
+			throws Exception {
+		List<String> sampleNames = new ArrayList<String>();
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+				.setProjection(Projections.distinct(Property.forName("name")));
+		Disjunction disjunction = Restrictions.disjunction();
+		Conjunction conjunction = Restrictions.conjunction();
+		Junction compJunction = getCompositionJunction(searchBean, crit);
+		Junction charJunction = getCharacterizationJunction(searchBean, crit);
+
+		if (searchBean.getLogicalOperator().equals("and")) {
+			if (compJunction != null)
+				conjunction.add(compJunction);
+			if (charJunction != null)
+				conjunction.add(charJunction);
+			crit.add(conjunction);
+		} else if (searchBean.getLogicalOperator().equals("or")) {
+			if (compJunction != null)
+				disjunction.add(compJunction);
+			if (charJunction != null)
+				disjunction.add(charJunction);
+			crit.add(disjunction);
+		}
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List results = appService.query(crit);
+		List filteredResults = new ArrayList(results);
+
+		// get public data
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
+		}
+		for (Object obj : filteredResults) {
+			String sampleName = obj.toString();
+			if (user == null
+					|| authService.checkReadPermission(user, sampleName)) {
+				sampleNames.add(sampleName);
+			} else { // ignore no access exception
+				logger.debug("User doesn't have access to sample with name "
+						+ sampleName);
+			}
+		}
+		Collections.sort(sampleNames, new Comparators.SortableNameComparator());
+		return sampleNames;
 	}
 }
