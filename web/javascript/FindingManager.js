@@ -3,6 +3,8 @@ function setNameOptionsByCharName(columnNumber) {
 	var charType = dwr.util.getValue("charType");
 	var assayType = dwr.util.getValue("assayType");
 	var columnType = dwr.util.getValue("columnType" + columnNumber);
+	var currentColumnName=dwr.util.getValue("theColumnName"+columnNumber);
+	
 	if (columnType == "datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
 		hide("conditionPropertyLabel" + columnNumber);
@@ -10,9 +12,13 @@ function setNameOptionsByCharName(columnNumber) {
 				function(data) {
 					dwr.util.removeAllOptions("columnName" + columnNumber);
 					dwr.util.addOptions("columnName" + columnNumber, [ "" ]);
-					dwr.util.addOptions("columnName" + columnNumber, data);
+					dwr.util.addOptions("columnName" + columnNumber, data);				
 					dwr.util.addOptions("columnName" + columnNumber,
 							[ "[other]" ]);
+					// add the current value to the list if not in the list
+					if (currentColumnName!="" && data.indexOf(currentColumnName)==-1) {
+						dwr.util.addOptions("columnName"+columnNumber,[currentColumnName]);
+					}		
 				});
 	} else {
 		if (columnType == "condition") {
@@ -23,9 +29,13 @@ function setNameOptionsByCharName(columnNumber) {
 						dwr.util.removeAllOptions("columnName" + columnNumber);
 						dwr.util
 								.addOptions("columnName" + columnNumber, [ "" ]);
-						dwr.util.addOptions("columnName" + columnNumber, data);
+						dwr.util.addOptions("columnName" + columnNumber, data);											
 						dwr.util.addOptions("columnName" + columnNumber,
 								[ "[other]" ]);
+						// add the current value to the list if not in the list
+						if (currentColumnName!="" && data.indexOf(currentColumnName)==-1) {
+							dwr.util.addOptions("columnName"+columnNumber,[currentColumnName]);
+						}
 					});
 		} else {
 			hide("conditionPropertyPrompt" + columnNumber);
@@ -37,6 +47,7 @@ function setNameOptionsByCharName(columnNumber) {
 	}
 }
 function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
+	var currentConditionProperty=dwr.util.getValue("theConditionProperty"+columnNumber);
 	if (dwr.util.getValue("columnType" + columnNumber) == "condition") {
 		if (conditionName == null) {
 			conditionName = dwr.util.getValue("columnName" + columnNumber);
@@ -48,13 +59,19 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 					dwr.util.addOptions("conditionProperty" + columnNumber,
 							[ "" ]);
 					dwr.util.addOptions("conditionProperty" + columnNumber,
-							data);
+							data);					
 					dwr.util.addOptions("conditionProperty" + columnNumber,
 							[ "[other]" ]);
+					// add the current value to the list if not in the list
+					if (currentConditionProperty!="" && data.indexOf(currentConditionProperty)==-1) {
+						dwr.util.addOptions("conditionProperty"+columnNumber,[currentConditionProperty]);
+					}
 				});
 	}
 }
-function setColumnValueUnit(columnNumber) {
+function setColumnValueUnit(columnNumber) {	
+	var currentValueUnit=dwr.util.getValue("theValueUnit"+columnNumber);
+
 	var name = null, property = null;
 	if (dwr.util.getValue("columnType" + columnNumber) == "condition") {
 		property = dwr.util.getValue("conditionProperty" + columnNumber);
@@ -65,7 +82,11 @@ function setColumnValueUnit(columnNumber) {
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "" ]);
 		dwr.util.addOptions("valueUnit" + columnNumber, data);
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "[other]" ]);
-	});
+		// add the current value to the list if not in the list
+		if (currentValueUnit!="" && data.indexOf(currentValueUnit)==-1) {
+			dwr.util.addOptions("valueUnit"+columnNumber,[currentValueUnit]);
+		}		
+	});	
 }
 function resetTheFinding(form) {
 	form.action = "characterization.do?dispatch=resetFinding&page=0";
@@ -120,10 +141,10 @@ function openColumnForm(characterizationName, columnNumber) {
 					function(pageData) {
 						document.getElementById("newColumn" + columnNumber).innerHTML = pageData;
 						// populate column entry table from hidden values, use
-						// timeout to populate drop down first
+						// timeout to populate drop down first				
 						dwr.util.setValue("columnType" + columnNumber, dwr.util
 								.getValue("theColumnType" + columnNumber));
-						setNameOptionsByCharName(columnNumber);
+						setNameOptionsByCharName(columnNumber);						
 						window.setTimeout("delaySetColumnName(" + columnNumber
 								+ ")", 100);
 						dwr.util.setValue("valueType" + columnNumber, dwr.util
@@ -139,6 +160,10 @@ function openColumnForm(characterizationName, columnNumber) {
 	document.getElementById("newColumn" + columnNumber).style.left = "10px";
 	document.getElementById("newColumn" + columnNumber).style.width = "350px";
 	document.getElementById("newColumn" + columnNumber).style.zIndex = "5";
+}
+
+function updateValueType(columnNumber) {
+	
 }
 function delaySetColumnName(columnNumber) {
 	dwr.util.setValue("columnName" + columnNumber, dwr.util
