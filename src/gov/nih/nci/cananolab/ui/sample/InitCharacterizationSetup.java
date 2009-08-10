@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -140,7 +141,10 @@ public class InitCharacterizationSetup {
 							"otherValueType", condition.getValueType());
 				}
 			}
-
+			for (File file : findingBean.getDomain().getFileCollection()) {
+				InitSetup.getInstance().persistLookup(request, "file", "type",
+						"otherType", file.getType());
+			}
 		}
 	}
 
