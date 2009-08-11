@@ -27,6 +27,38 @@ public class DWRSampleManager {
 	public DWRSampleManager() {
 	}
 
+	public String[] getEntityTypes(String compType) {
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
+		String[] types = null;
+		try {
+			if (compType.equals("nanomaterial entity")) {
+				types = InitSetup
+						.getInstance()
+						.getReflectionDefaultAndOtherLookupTypes(
+								request,
+								"defaultNanomaterialEntityTypes",
+								"nanomaterialEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
+								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
+								true).toArray(new String[0]);
+			} else if (compType.equals("functionalizing entity")) {
+				types = InitSetup
+						.getInstance()
+						.getReflectionDefaultAndOtherLookupTypes(
+								request,
+								"defaultFunctionalizingEntityTypes",
+								"functionalizingEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
+								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+								true).toArray(new String[0]);
+			} 
+		} catch (Exception e) {
+			return null;
+		}
+		return types;
+	}
+
 	public String[] getNanomaterialEntityTypes(String searchLocations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
@@ -178,7 +210,8 @@ public class DWRSampleManager {
 		return counts.toString();
 	}
 
-	public AdvancedSampleSearchBean addCompositionQuery(CompositionQueryBean theQuery) {
+	public AdvancedSampleSearchBean addCompositionQuery(
+			CompositionQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("advancedSampleSearchForm"));
 		if (searchForm == null) {
@@ -186,11 +219,13 @@ public class DWRSampleManager {
 		}
 		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
 				.get("searchBean");
-		searchBean.addQuery(theQuery);
+		if (theQuery != null)
+			searchBean.addQuery(theQuery);
 		return searchBean;
 	}
 
-	public AdvancedSampleSearchBean addCharacterizationQuery(CharacterizationQueryBean theQuery) {
+	public AdvancedSampleSearchBean addCharacterizationQuery(
+			CharacterizationQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("advancedSampleSearchForm"));
 		if (searchForm == null) {
@@ -198,11 +233,13 @@ public class DWRSampleManager {
 		}
 		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
 				.get("searchBean");
-		searchBean.addQuery(theQuery);
+		if (theQuery != null)
+			searchBean.addQuery(theQuery);
 		return searchBean;
 	}
 
-	public AdvancedSampleSearchBean deleteCompositionQuery(CompositionQueryBean theQuery) {
+	public AdvancedSampleSearchBean deleteCompositionQuery(
+			CompositionQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("advancedSampleSearchForm"));
 		if (searchForm == null) {
@@ -226,14 +263,15 @@ public class DWRSampleManager {
 		searchBean.removeQuery(theQuery);
 		return searchBean;
 	}
-	
+
 	public LabelValueBean[] getCharacterizationOperandOptions(String datumName) {
 		WebContext wctx = WebContextFactory.get();
 		if (datumName.startsWith("is ") && datumName.endsWith("?")) {
-			return (LabelValueBean[])wctx.getServletContext().getAttribute("booleanOperands");
-		}
-		else {
-			return (LabelValueBean[])wctx.getServletContext().getAttribute("numberOperands");
+			return (LabelValueBean[]) wctx.getServletContext().getAttribute(
+					"booleanOperands");
+		} else {
+			return (LabelValueBean[]) wctx.getServletContext().getAttribute(
+					"numberOperands");
 		}
 	}
 }
