@@ -1,32 +1,7 @@
 var emptyOption = [ {
-	label : "",
+	label : " -- Please Select -- ",
 	value : ""
 } ];
-
-function retrieveParticleNames() {
-	var sampleType = document.getElementById("sampleType").value;
-	ParticleManager
-			.getNewParticleNamesByType(sampleType, populateParticleNames);
-}
-function resetParticleNames() {
-	dwr.util.removeAllOptions("sampleName");
-	dwr.util.addOptions("sampleName", emptyOption, "value", "label");
-}
-function populateParticleNames(sampleNames) {
-	// get previous selection
-	var selectedParticleName = dwr.util.getValue("sampleName");
-	// remove option that's the same as previous selection
-	var updatedParticleNames = new Array();
-	if (sampleNames != null) {
-		for (i = 0; i < sampleNames.length; i++) {
-			if (sampleNames[i] != selectedParticleName) {
-				updatedParticleNames.push(sampleNames[i]);
-			}
-		}
-	}
-	dwr.util.addOptions("sampleName", updatedParticleNames);
-}
-
 function setSampleDropdowns() {
 	var searchLocations = getSelectedOptions(document
 			.getElementById("searchLocations"));
@@ -47,22 +22,16 @@ function setSampleDropdowns() {
 	return false;
 }
 
-function setCompositionEntityOptions() {
+function setCompositionEntityOptions(selectedEntity) {
 	var compositionType = dwr.util.getValue("compType");
-	dwr.util.setValue("")
-	if (compositionType == "nanomaterial entity") {
-		SampleManager.getNanomaterialEntityTypes(null, function(data) {
-			dwr.util.removeAllOptions("entityType");
-			dwr.util.addOptions("entityType", emptyOption, "value", "label");
-			dwr.util.addOptions("entityType", data);
-		});
-	} else if (compositionType = "functionalizing entity") {
-		SampleManager.getFunctionalizingEntityTypes(null, function(data) {
-			dwr.util.removeAllOptions("entityType");
-			dwr.util.addOptions("entityType", emptyOption, "value", "label");
-			dwr.util.addOptions("entityType", data);
-		});
-	}
+	SampleManager.getEntityTypes(compositionType, function(data) {
+		dwr.util.removeAllOptions("entityType");
+		dwr.util.addOptions("entityType", emptyOption, "value", "label");
+		dwr.util.addOptions("entityType", data);
+		if (selectedEntity != null) {
+			dwr.util.setValue("entityType", selectedEntity);
+		}
+	});
 }
 
 var compositionQueryCache = {};
@@ -79,7 +48,7 @@ function clearCompositionQuery() {
 }
 
 function addCompositionQuery() {
-	var queryId = dwr.util.getValue("compQueryId");	
+	var queryId = dwr.util.getValue("compQueryId");
 	if (queryId == null || queryId == "") {
 		queryId = -1000 - numberOfCompQueries;
 	}
@@ -164,7 +133,7 @@ function editCompositionQuery(eleid) {
 	// we were an id of the form "edit{id}", eg "compEdit42". We lookup the "42"
 	var query = compositionQueryCache[eleid.substring(8)];
 	dwr.util.setValue("compType", query.compositionType);
-	dwr.util.setValue("entityType", query.entityType);
+	setCompositionEntityOptions(query.entityType);
 	dwr.util.setValue("compOperand", query.operand);
 	dwr.util.setValue("chemicalName", query.chemicalName);
 	dwr.util.setValue("compQueryId", query.id);
@@ -189,22 +158,25 @@ function deleteTheCompositionQuery() {
 }
 
 // characterization specific
-function setCharacterizationOptions() {
+function setCharacterizationOptions(selectedChar, selectedDatumName,
+		selectedOperand, selectedUnit) {
 	var charType = dwr.util.getValue("charType");
 	CharacterizationManager.getDecoratedCharacterizationOptions(charType,
 			function(data) {
-				dwr.util.setValue("charName", "");
-				dwr.util.setValue("datumName", "");
-				dwr.util.setValue("charOperand", "");
-				dwr.util.setValue("datumValue", "");
-				dwr.util.setValue("datumValueUnit", "");
 				dwr.util.removeAllOptions("charName");
 				dwr.util.addOptions("charName", emptyOption, "value", "label");
 				dwr.util.addOptions("charName", data, "value", "label");
+				dwr.util.setValue("charName", selectedChar);
+				setDatumNameOptionsByCharName(selectedDatumName,
+						selectedOperand, selectedUnit);
+				if (charType == "") {
+					dwr.util.setValue("datumValue", "");
+				}
 			});
 }
 
-function setDatumNameOptionsByCharName() {
+function setDatumNameOptionsByCharName(selectedName, selectedOperand,
+		selectedUnit) {
 	var charType = dwr.util.getValue("charType");
 	var charName = dwr.util.getValue("charName");
 	if (charName.match("^ --")) {
@@ -224,14 +196,16 @@ function setDatumNameOptionsByCharName() {
 						// if there is only one in the option, preselect it
 						if (data.length == 1) {
 							dwr.util.setValue("datumName", data[0].value);
-							setDatumValueOptions();
-							setCharacterizationOperandOptions();
-							setDatumValueUnitOptions();
+						} else {
+							dwr.util.setValue("datumName", selectedName);
 						}
+						setDatumValueOptions();
+						setCharacterizationOperandOptions(selectedOperand);
+						setDatumValueUnitOptions(selectedUnit);
 					});
 }
 
-function setDatumValueUnitOptions() {
+function setDatumValueUnitOptions(selectedUnit) {
 	var datumName = dwr.util.getValue("datumName");
 	FindingManager.getColumnValueUnitOptions(datumName, null,
 			function(data) {
@@ -244,6 +218,8 @@ function setDatumValueUnitOptions() {
 					// if there is only one in the option, preselect it
 			if (data.length == 1) {
 				dwr.util.setValue("datumValueUnit", data[0]);
+			} else {
+				dwr.util.setValue("datumValueUnit", selectedUnit);
 			}
 		} else {
 			hide("datumValueUnitBlock");
@@ -251,11 +227,17 @@ function setDatumValueUnitOptions() {
 	});
 }
 
-function setCharacterizationOperandOptions() {
+function setCharacterizationOperandOptions(selectedOperand) {
 	var datumName = dwr.util.getValue("datumName");
 	SampleManager.getCharacterizationOperandOptions(datumName, function(data) {
 		dwr.util.removeAllOptions("charOperand");
 		dwr.util.addOptions("charOperand", data, "value", "label");
+		dwr.util.addOptions("datumName", emptyOption, "value", "label");
+		if (data.length == 1) {
+			dwr.util.setValue("charOperand", data[0]);
+		} else {
+			dwr.util.setValue("charOperand", selectedOperand);
+		}
 	});
 }
 
@@ -380,11 +362,9 @@ function editCharacterizationQuery(eleid) {
 	// we were an id of the form "edit{id}", eg "charEdit42". We lookup the "42"
 	var query = characterizationQueryCache[eleid.substring(8)];
 	dwr.util.setValue("charType", query.characterizationType);
-	dwr.util.setValue("charName", query.characterizationName);
-	dwr.util.setValue("datumName", query.datumName);
-	dwr.util.setValue("charOperand", query.operand);
+	setCharacterizationOptions(query.characterizationName, query.datumName,
+			query.operand, query.unit);
 	dwr.util.setValue("datumValue", query.datumValue);
-	dwr.util.setValue("datumValueUnit", query.datumValueUnit);
 	dwr.util.setValue("charQueryId", query.id);
 	show("deleteCharacterizationQuery");
 }
