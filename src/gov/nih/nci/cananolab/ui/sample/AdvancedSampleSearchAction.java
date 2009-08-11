@@ -57,6 +57,8 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 					"message.advancedSampleSearch.noresult");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
+			request.setAttribute("onloadJavascript",
+					"displayCompositionQueries(); displayCharacterizationQueries()");
 			return mapping.getInputForward();
 		}
 		request.setAttribute("advancedSamples", sampleBeans);
