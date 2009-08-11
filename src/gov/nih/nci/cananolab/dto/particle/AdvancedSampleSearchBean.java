@@ -16,9 +16,9 @@ public class AdvancedSampleSearchBean {
 	private List<CharacterizationQueryBean> characterizationQueries = new ArrayList<CharacterizationQueryBean>();
 	private CompositionQueryBean theCompositionQuery = new CompositionQueryBean();
 	private CharacterizationQueryBean theCharacterizationQuery = new CharacterizationQueryBean();
-	private String compositionLogicalOperator;
-	private String characterizationLogicalOperator;
-	private String logicalOperator;
+	private String compositionLogicalOperator="and";
+	private String characterizationLogicalOperator="and";
+	private String logicalOperator="or";
 	private Boolean hasNanomaterial = false;
 	private Boolean hasAgentMaterial = false;
 
