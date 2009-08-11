@@ -13,7 +13,7 @@
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="name" type="string" column="name"/>
-		<property name="value" type="string" column="value"/>
+		<property name="value" type="float" column="value"/>
 		<property name="valueType" type="string" column="value_type"/>
 		<property name="valueUnit" type="string" column="value_unit"/>
 		<!-- Associations mapping for the Datum class -->
