@@ -96,7 +96,6 @@ function addCompositionQuery() {
 			if (searchBean != null) {
 				currentSearchBean = searchBean;
 				populateCompositionQueries();
-				show("compositionLogicalOperator");
 			} else {
 				sessionTimeout();
 			}
@@ -116,6 +115,13 @@ function populateCompositionQueries() {
 	var theQuery, id;
 	if (queries.length > 0) {
 		show("compositionQueryTable");
+		//show operator only when there are more than one queries
+		if (queries.length > 1) {
+			show("compositionLogicalOperator");
+		}
+		else {
+			hide("compositionLogicalOperator");
+		}
 	} else {
 		hide("compositionQueryTable");
 		hide("compositionLogicalOperator");
@@ -293,8 +299,7 @@ function addCharacterizationQuery() {
 		SampleManager.addCharacterizationQuery(theQuery, function(searchBean) {
 			if (searchBean != null) {
 				currentSearchBean = searchBean;
-				populateCharacterizationQueries();
-				show("characterizationLogicalOperator");
+				populateCharacterizationQueries();				
 			} else {
 				sessionTimeout();
 			}
@@ -314,6 +319,13 @@ function populateCharacterizationQueries() {
 	var theQuery, id;
 	if (queries.length > 0) {
 		show("characterizationQueryTable");
+		//show operator only when there are more than one query
+		if (queries.length>1) {
+			show("characterizationLogicalOperator");
+		}
+		else {
+			hide("characterizationLogicalOperator");
+		}
 	} else {
 		hide("characterizationQueryTable");
 		hide("characterizationLogicalOperator");
