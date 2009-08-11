@@ -135,30 +135,30 @@ public class CharacterizationServiceRemoteImpl implements
 
 	private void loadProtocolFileForProtocol(Protocol protocol)
 			throws Exception {
-		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
-		Association association = new Association();
-		association.setName("gov.nih.nci.cananolab.domain.common.Protocol");
-		association.setRoleName("protocol");
-		Attribute attribute = new Attribute();
-		attribute.setName("id");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue(protocol.getId().toString());
-		association.setAttribute(attribute);
-
-		target.setAssociation(association);
-		query.setTarget(target);
-		CQLQueryResults results = gridClient.query(query);
-		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.common.ProtocolFile");
-		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		File file = null;
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			file = (File) obj;
-		}
-		file.setProtocol(protocol);
+//		CQLQuery query = new CQLQuery();
+//		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+//		target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
+//		Association association = new Association();
+//		association.setName("gov.nih.nci.cananolab.domain.common.Protocol");
+//		association.setRoleName("protocol");
+//		Attribute attribute = new Attribute();
+//		attribute.setName("id");
+//		attribute.setPredicate(Predicate.EQUAL_TO);
+//		attribute.setValue(protocol.getId().toString());
+//		association.setAttribute(attribute);
+//
+//		target.setAssociation(association);
+//		query.setTarget(target);
+//		CQLQueryResults results = gridClient.query(query);
+//		results
+//				.setTargetClassname("gov.nih.nci.cananolab.domain.common.ProtocolFile");
+//		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+//		File file = null;
+//		while (iter.hasNext()) {
+//			java.lang.Object obj = iter.next();
+//			file = (File) obj;
+//		}
+//		file.setProtocol(protocol);
 	}
 
 	private void loadExperimentConfigsForCharacterization(Characterization achar)
