@@ -260,7 +260,7 @@ public class FindingBean {
 				ColumnHeader columnHeader = columnHeaders.get(cInd);
 				if (columnHeader.getColumnType().equals(FindingBean.DATUM_TYPE)) {
 					Datum datum = cell.getDatum();
-					datum.setValue(cell.getValue());
+					datum.setValue(new Float(cell.getValue()));
 					datum.setValueType(columnHeader.getValueType());
 					datum.setValueUnit(columnHeader.getValueUnit());
 					datum.setName(columnHeader.getColumnName());

@@ -21,7 +21,7 @@ public class TableCell {
 
 	public TableCell(Datum datum) {
 		this.datumOrCondition = FindingBean.DATUM_TYPE;
-		this.value = datum.getValue();
+		this.value = datum.getValue().toString();
 		this.datum = datum;
 		this.condition = null;
 	}
