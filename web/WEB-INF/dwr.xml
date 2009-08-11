@@ -68,6 +68,7 @@
 			<param name="class" value="gov.nih.nci.cananolab.ui.sample.DWRSampleManager" />
 			<include method="getNanomaterialEntityTypes" />
 			<include method="getFunctionalizingEntityTypes" />
+			<include method="getEntityTypes"/>
 			<include method="getFunctionTypes" />
 			<include method="getPublicCounts" />
 			<include method="addCompositionQuery" />
