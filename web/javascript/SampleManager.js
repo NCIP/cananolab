@@ -79,7 +79,7 @@ function clearCompositionQuery() {
 }
 
 function addCompositionQuery() {
-	var queryId = dwr.util.getValue("compQueryIdId");
+	var queryId = dwr.util.getValue("compQueryId");	
 	if (queryId == null || queryId == "") {
 		queryId = -1000 - numberOfCompQueries;
 	}
@@ -105,6 +105,18 @@ function addCompositionQuery() {
 	}
 }
 
+function displayCompositionQueries() {
+	SampleManager.addCompositionQuery(null, function(searchBean) {
+		if (searchBean != null) {
+			currentSearchBean = searchBean;
+			populateCompositionQueries();
+		} else {
+			sessionTimeout();
+		}
+	});
+
+}
+
 function populateCompositionQueries() {
 	var queries = currentSearchBean.compositionQueries;
 	dwr.util.removeAllRows("compositionQueryRows", {
@@ -115,11 +127,10 @@ function populateCompositionQueries() {
 	var theQuery, id;
 	if (queries.length > 0) {
 		show("compositionQueryTable");
-		//show operator only when there are more than one queries
+		// show operator only when there are more than one queries
 		if (queries.length > 1) {
 			show("compositionLogicalOperator");
-		}
-		else {
+		} else {
 			hide("compositionLogicalOperator");
 		}
 	} else {
@@ -299,7 +310,7 @@ function addCharacterizationQuery() {
 		SampleManager.addCharacterizationQuery(theQuery, function(searchBean) {
 			if (searchBean != null) {
 				currentSearchBean = searchBean;
-				populateCharacterizationQueries();				
+				populateCharacterizationQueries();
 			} else {
 				sessionTimeout();
 			}
@@ -307,6 +318,17 @@ function addCharacterizationQuery() {
 	} else {
 		alert("Please fill in values");
 	}
+}
+
+function displayCharacterizationQueries() {
+	SampleManager.addCharacterizationQuery(null, function(searchBean) {
+		if (searchBean != null) {
+			currentSearchBean = searchBean;
+			populateCharacterizationQueries();
+		} else {
+			sessionTimeout();
+		}
+	});
 }
 
 function populateCharacterizationQueries() {
@@ -319,11 +341,10 @@ function populateCharacterizationQueries() {
 	var theQuery, id;
 	if (queries.length > 0) {
 		show("characterizationQueryTable");
-		//show operator only when there are more than one query
-		if (queries.length>1) {
+		// show operator only when there are more than one query
+		if (queries.length > 1) {
 			show("characterizationLogicalOperator");
-		}
-		else {
+		} else {
 			hide("characterizationLogicalOperator");
 		}
 	} else {
