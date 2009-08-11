@@ -236,7 +236,7 @@ CREATE TABLE datum
 (
 	datum_pk_id BIGINT NOT NULL,
 	name VARCHAR(200) NOT NULL,
-	value VARCHAR(200) NOT NULL,
+	value DECIMAL(22,3) NOT NULL,
 	value_type VARCHAR(200),
 	value_unit VARCHAR(200),
 	created_by VARCHAR(200) NOT NULL,
