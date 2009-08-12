@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
+import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
@@ -209,6 +210,20 @@ public class DWRSampleManager {
 		return counts.toString();
 	}
 
+	public AdvancedSampleSearchBean addSampleQuery(
+			SampleQueryBean theQuery) {
+		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("advancedSampleSearchForm"));
+		if (searchForm == null) {
+			return null;
+		}
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
+				.get("searchBean");
+		if (theQuery != null)
+			searchBean.addQuery(theQuery);
+		return searchBean;
+	}
+	
 	public AdvancedSampleSearchBean addCompositionQuery(
 			CompositionQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
@@ -237,6 +252,19 @@ public class DWRSampleManager {
 		return searchBean;
 	}
 
+	public AdvancedSampleSearchBean deleteSampleQuery(
+			SampleQueryBean theQuery) {
+		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("advancedSampleSearchForm"));
+		if (searchForm == null) {
+			return null;
+		}
+		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
+				.get("searchBean");
+		searchBean.removeQuery(theQuery);
+		return searchBean;
+	}
+	
 	public AdvancedSampleSearchBean deleteCompositionQuery(
 			CompositionQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
