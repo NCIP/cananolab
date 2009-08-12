@@ -1044,7 +1044,7 @@ public class SampleServiceHelper {
 	}
 
 	private Junction getCompositionJunction(
-			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) {
+			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) throws Exception {
 		if (searchBean.getCompositionQueries().isEmpty()) {
 			return null;
 		}
@@ -1054,11 +1054,21 @@ public class SampleServiceHelper {
 		// composition queries
 		crit.createAlias("sampleComposition", "comp",
 				CriteriaSpecification.LEFT_JOIN);
+		Boolean hasChemicalName = false;
 		if (searchBean.getHasNanomaterial()) {
 			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity",
 					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("nanoEntity.composingElementCollection",
-					"compElement", CriteriaSpecification.LEFT_JOIN);
+			for (CompositionQueryBean query : searchBean
+					.getCompositionQueries()) {
+				if (!StringUtils.isEmpty(query.getChemicalName())) {
+					hasChemicalName = true;
+					break;
+				}
+			}
+			if (hasChemicalName) {
+				crit.createAlias("nanoEntity.composingElementCollection",
+						"compElement", CriteriaSpecification.LEFT_JOIN);
+			}
 		}
 		if (searchBean.getHasAgentMaterial()) {
 			crit.createAlias("comp.functionalizingEntityCollection",
@@ -1080,9 +1090,10 @@ public class SampleServiceHelper {
 				String nanoEntityClassName = ClassUtils
 						.getShortClassNameFromDisplayName(compQuery
 								.getEntityType());
+				Class clazz = ClassUtils.getFullClass("agentmaterial." + nanoEntityClassName);
 				Criterion nanoEntityCrit = null;
 				// other entity type
-				if (nanoEntityClassName == null) {
+				if (clazz == null) {
 					Criterion otherNanoCrit1 = Restrictions.eq(
 							"nanoEntity.class", "OtherNanomaterialEntity");
 					Criterion otherNanoCrit2 = Restrictions.eq(
@@ -1093,13 +1104,14 @@ public class SampleServiceHelper {
 					nanoEntityCrit = Restrictions.eq("nanoEntity.class",
 							nanoEntityClassName);
 				}
-				Criterion chemicalNameCrit = Restrictions.ilike(
-						"compElement.name", chemicalNameMatchMode
-								.getUpdatedText(), chemicalNameMatchMode
-								.getMatchMode());
-
-				nanoEntityCrit = Restrictions.and(nanoEntityCrit,
-						chemicalNameCrit);
+				if (hasChemicalName) {
+					Criterion chemicalNameCrit = Restrictions.ilike(
+							"compElement.name", chemicalNameMatchMode
+									.getUpdatedText(), chemicalNameMatchMode
+									.getMatchMode());
+					nanoEntityCrit = Restrictions.and(nanoEntityCrit,
+							chemicalNameCrit);
+				}
 				compConjunction.add(nanoEntityCrit);
 				compDisjunction.add(nanoEntityCrit);
 			}
@@ -1109,9 +1121,10 @@ public class SampleServiceHelper {
 				String funcEntityClassName = ClassUtils
 						.getShortClassNameFromDisplayName(compQuery
 								.getEntityType());
+				Class clazz = ClassUtils.getFullClass("agentmaterial." + funcEntityClassName);
 				Criterion funcEntityCrit = null;
 				// other entity type
-				if (funcEntityClassName == null) {
+				if (clazz == null) {
 					Criterion otherFuncCrit1 = Restrictions.eq(
 							"funcEntity.class", "OtherFunctionalizingEntity");
 					Criterion otherFuncCrit2 = Restrictions.eq(
