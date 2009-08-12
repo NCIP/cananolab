@@ -24,6 +24,106 @@
 </jsp:include>
 <html:form action="/advancedSampleSearch" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
+		<table width="100%" align="center" class="submissionView">
+		<tr>
+			<th>
+				Sample Criteria
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<table id="sampleQueryTable" class="summaryViewLayer4"
+					width="85%" style="display: none;">
+					<tbody id="sampleQueryRows">
+						<tr id="samplePattern" style="display: none;">
+							<td>
+								<span id="nameTypeValue">Sample POC Type</span>
+							</td>	
+							<td>
+								<span id="nameValue">Sample POC Value</span>
+							</td>							
+							<td>
+								<input class="noBorderButton" id="sampleEdit" type="button"
+									value="Edit" onclick="editSampleQuery(this.id);" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table id="newSampleQuery" style="display: block;"
+					class="promptbox">
+					<tr>
+						<td>
+							<html:hidden property="searchBean.theSampleQuery.id"
+								styleId="compQueryId" />
+							<html:select
+								property="searchBean.theSampleQuery.nameType"
+								styleId="nameType">
+								<option value="">
+									-- Please Select --
+								</option>
+								<option value="sample name">
+									sample name
+								</option>
+								<option value="poc">
+									point of contact name
+								</option>
+							</html:select>
+						</td>						
+						<td>
+							<html:select property="searchBean.theSampleQuery.operand"
+								styleId="sampleOperand">
+								<option value="">
+									-- Please Select --
+								</option>
+								<html:options collection="stringOperands" property="value"
+									labelProperty="label" />
+							</html:select>
+						</td>
+						<td>
+							<html:text property="searchBean.theSampleQuery.name"
+								styleId="nameValue" size="50" />
+						</td>
+						<td>
+							<table cellspacing="0">
+								<tr>
+									<td>
+										<input class="promptButton" type="button" value="Add"
+											onclick="addSampleQuery();show('sampleQueryTable');" />
+									</td>
+									<td>
+										<input class="promptButton" type="button" value="Reset"
+											onclick="clearSampleQuery();" />
+									</td>
+									<td>
+										<input style="display: none;" class="promptButton"
+											id="deleteSampleQuery" type="button" value="Remove"
+											onclick="deleteTheSampleQuery()" />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="sampleLogicalOperator" style="display: none">
+					<html:radio property="searchBean.sampleLogicalOperator"
+						value="and" />
+					AND
+					<html:radio property="searchBean.sampleLogicalOperator"
+						value="or" />
+					OR
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<th>
@@ -77,6 +177,9 @@
 								</option>
 								<option value="functionalizing entity">
 									functionalizing entity
+								</option>
+								<option value="function">
+									function
 								</option>
 							</html:select>
 						</td>
