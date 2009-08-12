@@ -12,13 +12,16 @@ import java.util.List;
  * 
  */
 public class AdvancedSampleSearchBean {
+	private List<SampleQueryBean> sampleQueries = new ArrayList<SampleQueryBean>();
 	private List<CompositionQueryBean> compositionQueries = new ArrayList<CompositionQueryBean>();
 	private List<CharacterizationQueryBean> characterizationQueries = new ArrayList<CharacterizationQueryBean>();
+	private SampleQueryBean theSampleQuery = new SampleQueryBean();
 	private CompositionQueryBean theCompositionQuery = new CompositionQueryBean();
 	private CharacterizationQueryBean theCharacterizationQuery = new CharacterizationQueryBean();
-	private String compositionLogicalOperator="and";
-	private String characterizationLogicalOperator="and";
-	private String logicalOperator="or";
+	private String sampleLogicalOperator = "and";
+	private String compositionLogicalOperator = "and";
+	private String characterizationLogicalOperator = "and";
+	private String logicalOperator = "or";
 	private Boolean hasNanomaterial = false;
 	private Boolean hasAgentMaterial = false;
 
@@ -75,7 +78,16 @@ public class AdvancedSampleSearchBean {
 	}
 
 	public void addQuery(BaseQueryBean query) {
-		if (query instanceof CompositionQueryBean) {
+		if (query instanceof SampleQueryBean) {
+			int index = compositionQueries.indexOf(query);
+			if (index != -1) {
+				sampleQueries.remove(query);
+				// retain the original order`
+				sampleQueries.add(index, (SampleQueryBean) query);
+			} else {
+				sampleQueries.add((SampleQueryBean) query);
+			}
+		} else if (query instanceof CompositionQueryBean) {
 			int index = compositionQueries.indexOf(query);
 			if (index != -1) {
 				compositionQueries.remove(query);
@@ -131,5 +143,29 @@ public class AdvancedSampleSearchBean {
 			}
 		}
 		return hasAgentMaterial;
+	}
+
+	public List<SampleQueryBean> getSampleQueries() {
+		return sampleQueries;
+	}
+
+	public void setSampleQueries(List<SampleQueryBean> sampleQueries) {
+		this.sampleQueries = sampleQueries;
+	}
+
+	public SampleQueryBean getTheSampleQuery() {
+		return theSampleQuery;
+	}
+
+	public void setTheSampleQuery(SampleQueryBean theSampleQuery) {
+		this.theSampleQuery = theSampleQuery;
+	}
+
+	public String getSampleLogicalOperator() {
+		return sampleLogicalOperator;
+	}
+
+	public void setSampleLogicalOperator(String sampleLogicalOperator) {
+		this.sampleLogicalOperator = sampleLogicalOperator;
 	}
 }
