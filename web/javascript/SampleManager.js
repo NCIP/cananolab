@@ -24,10 +24,10 @@ function setSampleDropdowns() {
 
 function setCompositionEntityOptions(selectedEntity) {
 	var compositionType = dwr.util.getValue("compType");
-	SampleManager.getEntityTypes(compositionType, function(data) {
+	SampleManager.getDecoratedEntityTypes(compositionType, function(data) {
 		dwr.util.removeAllOptions("entityType");
 		dwr.util.addOptions("entityType", emptyOption, "value", "label");
-		dwr.util.addOptions("entityType", data);
+		dwr.util.addOptions("entityType", data, "value", "label");		
 		if (selectedEntity != null) {
 			dwr.util.setValue("entityType", selectedEntity);
 		}
@@ -59,8 +59,7 @@ function addCompositionQuery() {
 		chemicalName : dwr.util.getValue("chemicalName"),
 		operand : dwr.util.getValue("compOperand")
 	};
-	if (theQuery.entityType != "" && theQuery.operand != ""
-			&& theQuery.chemicalName != "") {
+	if (theQuery.entityType != "") {
 		SampleManager.addCompositionQuery(theQuery, function(searchBean) {
 			if (searchBean != null) {
 				currentSearchBean = searchBean;
@@ -70,7 +69,7 @@ function addCompositionQuery() {
 			}
 		});
 	} else {
-		alert("Please fill in values");
+		alert("Please fill in at least the entity type");
 	}
 }
 
@@ -161,7 +160,7 @@ function deleteTheCompositionQuery() {
 function setCharacterizationOptions(selectedChar, selectedDatumName,
 		selectedOperand, selectedUnit) {
 	var charType = dwr.util.getValue("charType");
-	//turn null values into empty strings
+	// turn null values into empty strings
 	if (selectedChar == null) {
 		selectedChar = "";
 	}
@@ -179,7 +178,7 @@ function setCharacterizationOptions(selectedChar, selectedDatumName,
 				dwr.util.removeAllOptions("charName");
 				dwr.util.addOptions("charName", emptyOption, "value", "label");
 				dwr.util.addOptions("charName", data, "value", "label");
-				dwr.util.setValue("charName", selectedChar);				
+				dwr.util.setValue("charName", selectedChar);
 				setDatumNameOptionsByCharName(selectedDatumName,
 						selectedOperand, selectedUnit);
 			});
@@ -225,8 +224,8 @@ function setDatumNameOptionsByCharName(selectedName, selectedOperand,
 }
 
 function setDatumValueUnitOptions(selectedUnit) {
-	if (selectedUnit==null) {
-		selectedUnit="";
+	if (selectedUnit == null) {
+		selectedUnit = "";
 	}
 	var datumName = dwr.util.getValue("datumName");
 	FindingManager.getColumnValueUnitOptions(datumName, null,
