@@ -20,6 +20,11 @@
 						<option value="other">
 							[other]
 						</option>
+						<c:if test="${not empty currentCharType}">
+							<option selected="selected" value="${currentCharType}">
+								${currentCharType}
+							</option>
+						</c:if>
 					</html:select>
 				</div>
 			</td>
@@ -38,6 +43,11 @@
 						<option value="other">
 							[other]
 						</option>
+						<c:if test="${not empty currentCharName}">
+							<option selected="selected" value="${currentCharName}">
+								${currentCharName}
+							</option>
+						</c:if>
 					</html:select>
 				</div>
 			</td>
@@ -87,8 +97,8 @@
 					</span>
 				</c:when>
 				<c:otherwise>
-						    No protocols available.
-						</c:otherwise>
+				    No protocols available.
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>

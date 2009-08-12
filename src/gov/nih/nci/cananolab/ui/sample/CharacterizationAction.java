@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -97,7 +98,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
-		checkOpenForms(charBean, request);
+		this.checkOpenForms(charBean, request);
+		
 		return mapping.findForward("inputForm");
 	}
 
@@ -127,7 +129,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 							charBean.getCharacterizationType());
 			request.getSession().setAttribute("charTypeChars", charNames);
 		}
-		checkOpenForms(charBean, request);
+		this.checkOpenForms(charBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -199,7 +201,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			detailPage = setupDetailPage(charBean);
 		}
 		request.setAttribute("characterizationDetailPage", detailPage);
-		checkOpenForms(charBean, request);
+		this.checkOpenForms(charBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -498,7 +500,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.persistExperimentConfigDropdowns(request, configBean);
 		// also save characterization
 		saveCharacterization(request, theForm, achar);
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -514,7 +516,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		achar.setTheFinding(findingBean);
 		request.setAttribute("anchor", "submitFinding");
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -531,7 +533,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		achar.setTheFinding(theFinding);
 		request.setAttribute("anchor", "submitFinding");
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -559,7 +561,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			// also save characterization
 			saveCharacterization(request, theForm, achar);
 			request.setAttribute("anchor", "result");
-			checkOpenForms(achar, request);
+			this.checkOpenForms(achar, request);
 			// return to setupUpdate to retrieve the data matrix in the correct
 			// form from database
 			// after saving to database.
@@ -626,7 +628,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		findingBean.addFile(newFile, theFileIndex);
 		request.setAttribute("anchor", "submitFinding");
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		
 		/**
 		 * Set marker in form for skipping finding matrix validation .
@@ -647,7 +649,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		findingBean.removeFile(theFileIndex);
 		findingBean.setTheFile(new FileBean());
 		request.setAttribute("anchor", "submitFinding");
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -677,7 +679,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			int rowToRemove = Integer.parseInt(request
 					.getParameter("removeRow"));
 			findingBean.removeRow(rowToRemove);
-			checkOpenForms(achar, request);
+			this.checkOpenForms(achar, request);
 			return mapping.findForward("inputForm");
 		}
 		int existingNumberOfColumns = findingBean.getColumnHeaders().size();
@@ -703,7 +705,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean
 				.getNumberOfRows());
 		request.setAttribute("anchor", "submitFinding");
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -721,7 +723,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		request.setAttribute("anchor", "result");
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -742,7 +744,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.persistExperimentConfigDropdowns(request, configBean);
 		// also save characterization
 		saveCharacterization(request, theForm, achar);
-		checkOpenForms(achar, request);
+		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -775,5 +777,26 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			openFinding = true;
 		}
 		session.setAttribute("openFinding", openFinding);
+		
+		/**
+		 * If user entered customized Char Type/Name then failed validation,
+		 * we should show and select the entered value when redirected.
+		 */
+		String currentCharType = achar.getCharacterizationType();
+		if (!StringUtils.isEmpty(currentCharType)) {
+			Collection<String> charTypes = 
+				(Collection<String>) request.getSession().getAttribute("characterizationTypes");
+			if (charTypes != null && !charTypes.contains(currentCharType)) {
+				request.setAttribute("currentCharType", currentCharType);
+			}
+		}
+		String currentCharName = achar.getCharacterizationName();
+		if (!StringUtils.isEmpty(currentCharName)) {
+			Collection<String> charNames = 
+				(Collection<String>) request.getSession().getAttribute("charTypeChars");
+			if (charNames != null && !charNames.contains(currentCharName)) {
+				request.setAttribute("currentCharName", currentCharName);
+			}
+		}
 	}
 }
