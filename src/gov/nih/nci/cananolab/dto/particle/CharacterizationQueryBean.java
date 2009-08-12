@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.dto.BaseQueryBean;
 public class CharacterizationQueryBean extends BaseQueryBean {
 	private String characterizationType;
 	private String characterizationName;
+	private Boolean datumValueBoolean=false;
 	private String datumName;
 	private String datumValue;
 	private String datumValueUnit;
@@ -53,5 +54,13 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 
 	public void setDatumValueUnit(String datumValueUnit) {
 		this.datumValueUnit = datumValueUnit;
+	}
+
+	public Boolean getDatumValueBoolean() {
+		return datumValueBoolean;
+	}
+
+	public void setDatumValueBoolean(Boolean datumValueBoolean) {
+		this.datumValueBoolean = datumValueBoolean;
 	}
 }
