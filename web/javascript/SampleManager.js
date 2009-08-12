@@ -22,6 +22,124 @@ function setSampleDropdowns() {
 	return false;
 }
 
+var sampleQueryCache = {};
+var numberOfSampleQueries = null;
+var currentSearchBean = null;
+
+function clearSampleQuery() {
+	dwr.util.setValue("sampleQueryId", "");
+	dwr.util.setValue("nameType", "");
+	dwr.util.setValue("sampleOperand", "");
+	dwr.util.setValue("name", "");
+	hide("deleteSampleQuery");
+}
+
+function addSampleQuery() {
+	var queryId = dwr.util.getValue("sampleQueryId");
+	if (queryId == null || queryId == "") {
+		queryId = -1000 - numberOfSampleQueries;
+	}
+	var theQuery = {
+		id : queryId,
+		nameType : dwr.util.getValue("nameType"),		
+		name : dwr.util.getValue("name"),
+		operand : dwr.util.getValue("sampleOperand")
+	};
+	if (theQuery.entityType != "") {
+		SampleManager.addSampleQuery(theQuery, function(searchBean) {
+			if (searchBean != null) {
+				currentSearchBean = searchBean;
+				populateSampleQueries();
+			} else {
+				sessionTimeout();
+			}
+		});
+	} else {
+		alert("Please fill in the name.");
+	}
+}
+
+function displaySampleQueries() {
+	SampleManager.addSampleQuery(null, function(searchBean) {
+		if (searchBean != null) {
+			currentSearchBean = searchBean;
+			populateSampleQueries();
+		} else {
+			sessionTimeout();
+		}
+	});
+
+}
+
+function populateSampleQueries() {
+	var queries = currentSearchBean.sampleQueries;
+	dwr.util.removeAllRows("sampleQueryRows", {
+		filter : function(tr) {
+			return (tr.id != "samplePattern");
+		}
+	});
+	var theQuery, id;
+	if (queries.length > 0) {
+		show("sampleQueryTable");
+		// show operator only when there are more than one queries
+		if (queries.length > 1) {
+			show("sampleLogicalOperator");
+		} else {
+			hide("sampleLogicalOperator");
+		}
+	} else {
+		hide("sampleQueryTable");
+		hide("sampleLogicalOperator");
+	}
+	for ( var i = 0; i < queries.length; i++) {
+		theQuery = queries[i];
+		if (theQuery.id == null || theQuery.id == "") {
+			theQuery.id = -i - 1;
+		}
+		id = theQuery.id;
+		dwr.util.cloneNode("samplePattern", {
+			idSuffix : id
+		});
+		dwr.util.setValue("nameTypeValue" + id, theQuery.nameType);		
+		dwr.util.setValue("sampleOperandValue" + id, theQuery.operand);
+		dwr.util.setValue("nameValue" + id, theQuery.name);
+		dwr.util.setValue("sampleQueryId", id);
+		$("samplePattern" + id).style.display = "";
+		if (sampleQueryCache[id] == null) {
+			numberOfSampleQueries++;
+		}
+		sampleQueryCache[id] = theQuery;
+	}
+	clearSampleQuery();
+}
+
+function editSampleQuery(eleid) {
+	// we were an id of the form "edit{id}", eg "sampleEdit42". We lookup the "42"
+	var query = sampleQueryCache[eleid.substring(10)];
+	dwr.util.setValue("nameType", query.nameType);	
+	dwr.util.setValue("sampleOperand", query.operand);
+	dwr.util.setValue("nameValue", query.chemicalName);
+	dwr.util.setValue("sampleQueryId", query.id);
+	show("deleteSampleQuery");
+}
+
+function deleteTheSampleQuery() {
+	var eleid = document.getElementById("sampleQueryId").value;
+	if (eleid != "") {
+		var query = sampleQueryCache[eleid];
+		if (confirm("Are you sure you want to delete this query?")) {
+			SampleManager.deleteSampleQuery(query, function(searchBean) {
+				if (searchBean != null) {
+					currentSearchBean = searchBean;
+					populateSampleQueries();
+				} else {
+					sessionTimeout();
+				}
+			});
+		}
+	}
+}
+
 function setCompositionEntityOptions(selectedEntity) {
 	var compositionType = dwr.util.getValue("compType");
 	SampleManager.getDecoratedEntityTypes(compositionType, function(data) {
@@ -50,7 +168,7 @@ function clearCompositionQuery() {
 function addCompositionQuery() {
 	var queryId = dwr.util.getValue("compQueryId");
 	if (queryId == null || queryId == "") {
-		queryId = -1000 - numberOfCompQueries;
+		queryId = -10000 - numberOfCompQueries;
 	}
 	var theQuery = {
 		id : queryId,
@@ -294,7 +412,7 @@ function clearCharacterizationQuery() {
 function addCharacterizationQuery() {
 	var queryId = dwr.util.getValue("charQueryId");
 	if (queryId == null || queryId == "") {
-		queryId = -10000 - numberOfCharQueries;
+		queryId = -100000 - numberOfCharQueries;
 	}
 	var datumName = dwr.util.getValue("datumName");
 	if (datumName.match("^is ")) {
