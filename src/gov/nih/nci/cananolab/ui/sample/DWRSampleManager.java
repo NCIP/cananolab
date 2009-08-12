@@ -9,6 +9,8 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -27,32 +29,29 @@ public class DWRSampleManager {
 	public DWRSampleManager() {
 	}
 
-	public String[] getEntityTypes(String compType) {
+	public List<LabelValueBean> getDecoratedEntityTypes(String compType) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
-		String[] types = null;
+		ServletContext appContext = request.getSession().getServletContext();
+		List<LabelValueBean> types = new ArrayList<LabelValueBean>();
 		try {
 			if (compType.equals("nanomaterial entity")) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypes(
-								request,
+						.getReflectionDefaultAndOtherLookupTypesAsOptions(
+								appContext,
 								"defaultNanomaterialEntityTypes",
-								"nanomaterialEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
-								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
-								true).toArray(new String[0]);
+								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity");
 			} else if (compType.equals("functionalizing entity")) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypes(
-								request,
+						.getReflectionDefaultAndOtherLookupTypesAsOptions(
+								appContext,
 								"defaultFunctionalizingEntityTypes",
-								"functionalizingEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
-								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
-								true).toArray(new String[0]);
-			} 
+								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity");
+			}
 		} catch (Exception e) {
 			return null;
 		}
