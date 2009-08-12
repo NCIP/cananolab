@@ -302,7 +302,7 @@ public class InitSetup {
 		appContext.setAttribute("stringOperands", stringOperands);
 
 		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
-				"equals to", "=") };
+				"equals to", "is") };
 		appContext.setAttribute("booleanOperands", booleanOperands);
 
 		LabelValueBean[] numberOperands = new LabelValueBean[] {
