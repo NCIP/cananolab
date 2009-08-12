@@ -290,6 +290,29 @@ public class InitSetup {
 		return lvBeans;
 	}
 
+	public List<LabelValueBean> getReflectionDefaultAndOtherLookupTypesAsOptions(
+			ServletContext appContext, String contextAttributeForDefaults,
+			String fullParentClassName, String otherFullParentClassName)
+			throws Exception {
+		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
+		SortedSet<String> defaultTypes = getServletContextDefaultTypesByReflection(
+				appContext, contextAttributeForDefaults, fullParentClassName);
+		for (String type : defaultTypes) {
+			LabelValueBean lv = new LabelValueBean(type, type);
+			lvBeans.add(lv);
+		}
+
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes(otherFullParentClassName);
+		if (otherTypes != null) {
+			for (String type : otherTypes) {
+				LabelValueBean lv = new LabelValueBean("[" + type + "]", type);
+				lvBeans.add(lv);
+			}
+		}
+		return lvBeans;
+	}
+
 	public void setStaticOptions(ServletContext appContext) {
 		LabelValueBean[] booleanOptions = new LabelValueBean[] {
 				new LabelValueBean("true", "1"),
