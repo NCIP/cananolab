@@ -241,6 +241,7 @@
 								<html:select
 									property="searchBean.theCharacterizationQuery.datumValue"
 									styleId="datumValueSelect">
+									<option value=""> -- Please Select -- </option>
 									<html:options collection="booleanOptions" property="value"
 										labelProperty="label" />
 								</html:select>
