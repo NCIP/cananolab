@@ -407,7 +407,7 @@ INSERT INTO common_lookup (name,attribute,value) VALUES ('sample concentration',
 INSERT INTO common_lookup (name,attribute,value) VALUES ('sample concentration','unit','mg/mL');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('sample concentration','unit','ug/uL');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('surface area','unit','nm^2');
-INSERT INTO common_lookup (name,attribute,value) VALUES ('temperature','unit','Celcius');
+INSERT INTO common_lookup (name,attribute,value) VALUES ('temperature','unit','Celsius');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('temperature','unit','Fahrenheit');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('time','unit','day');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('time','unit','hour');
