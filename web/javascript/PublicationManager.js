@@ -98,7 +98,9 @@ function setPublicationDropdowns() {
 
 function fillPubMedInfo() {
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
-	PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
+	if (pubMedId != null && pubMedId != 0) {
+		PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
+	}
 }
 
 function populatePubMedInfo(publication) {
