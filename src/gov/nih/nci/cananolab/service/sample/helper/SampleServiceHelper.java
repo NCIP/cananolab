@@ -1090,7 +1090,7 @@ public class SampleServiceHelper {
 				String nanoEntityClassName = ClassUtils
 						.getShortClassNameFromDisplayName(compQuery
 								.getEntityType());
-				Class clazz = ClassUtils.getFullClass("agentmaterial." + nanoEntityClassName);
+				Class clazz = ClassUtils.getFullClass("nanomaterial." + nanoEntityClassName);
 				Criterion nanoEntityCrit = null;
 				// other entity type
 				if (clazz == null) {
