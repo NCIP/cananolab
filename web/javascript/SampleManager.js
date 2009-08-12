@@ -161,22 +161,41 @@ function deleteTheCompositionQuery() {
 function setCharacterizationOptions(selectedChar, selectedDatumName,
 		selectedOperand, selectedUnit) {
 	var charType = dwr.util.getValue("charType");
+	//turn null values into empty strings
+	if (selectedChar == null) {
+		selectedChar = "";
+	}
+	if (selectedDatumName == null) {
+		selectedDatumName = "";
+	}
+	if (selectedOperand == null) {
+		selectedOperand = "";
+	}
+	if (selectedUnit == null) {
+		selectedUnit = "";
+	}
 	CharacterizationManager.getDecoratedCharacterizationOptions(charType,
 			function(data) {
 				dwr.util.removeAllOptions("charName");
 				dwr.util.addOptions("charName", emptyOption, "value", "label");
 				dwr.util.addOptions("charName", data, "value", "label");
-				dwr.util.setValue("charName", selectedChar);
+				dwr.util.setValue("charName", selectedChar);				
 				setDatumNameOptionsByCharName(selectedDatumName,
 						selectedOperand, selectedUnit);
-				if (charType == "") {
-					dwr.util.setValue("datumValue", "");
-				}
 			});
 }
 
 function setDatumNameOptionsByCharName(selectedName, selectedOperand,
 		selectedUnit) {
+	if (selectedName == null) {
+		selectedName = "";
+	}
+	if (selectedOperand == null) {
+		selectedOperand = "";
+	}
+	if (selectedUnit == null) {
+		selectedUnit = "";
+	}
 	var charType = dwr.util.getValue("charType");
 	var charName = dwr.util.getValue("charName");
 	if (charName.match("^ --")) {
@@ -206,6 +225,9 @@ function setDatumNameOptionsByCharName(selectedName, selectedOperand,
 }
 
 function setDatumValueUnitOptions(selectedUnit) {
+	if (selectedUnit==null) {
+		selectedUnit="";
+	}
 	var datumName = dwr.util.getValue("datumName");
 	FindingManager.getColumnValueUnitOptions(datumName, null,
 			function(data) {
@@ -228,13 +250,16 @@ function setDatumValueUnitOptions(selectedUnit) {
 }
 
 function setCharacterizationOperandOptions(selectedOperand) {
+	if (selectedOperand == null) {
+		selectedOperand = "";
+	}
 	var datumName = dwr.util.getValue("datumName");
 	SampleManager.getCharacterizationOperandOptions(datumName, function(data) {
 		dwr.util.removeAllOptions("charOperand");
+		dwr.util.addOptions("charOperand", emptyOption, "value", "label");
 		dwr.util.addOptions("charOperand", data, "value", "label");
-		dwr.util.addOptions("datumName", emptyOption, "value", "label");
 		if (data.length == 1) {
-			dwr.util.setValue("charOperand", data[0]);
+			dwr.util.setValue("charOperand", data[0].value);
 		} else {
 			dwr.util.setValue("charOperand", selectedOperand);
 		}
@@ -275,8 +300,10 @@ function addCharacterizationQuery() {
 	var datumName = dwr.util.getValue("datumName");
 	if (datumName.match("^is ")) {
 		var datumValue = dwr.util.getValue("datumValueSelect");
+		var datumValueBoolean = true;
 	} else {
 		datumValue = dwr.util.getValue("datumValue");
+		datumValueBoolean = false;
 	}
 	var theQuery = {
 		id : queryId,
@@ -285,7 +312,8 @@ function addCharacterizationQuery() {
 		datumName : dwr.util.getValue("datumName"),
 		operand : dwr.util.getValue("charOperand"),
 		datumValue : datumValue,
-		datumValueUnit : dwr.util.getValue("datumValueUnit")
+		datumValueUnit : dwr.util.getValue("datumValueUnit"),
+		datumValueBoolean : datumValueBoolean
 	};
 	if (theQuery.datumName != "" && theQuery.operand != ""
 			&& theQuery.datumValue != "") {
@@ -346,7 +374,18 @@ function populateCharacterizationQueries() {
 		dwr.util.setValue("charNameValue" + id, theQuery.characterizationName);
 		dwr.util.setValue("datumNameValue" + id, theQuery.datumName);
 		dwr.util.setValue("charOperandValue" + id, theQuery.operand);
-		dwr.util.setValue("datumValueValue" + id, theQuery.datumValue);
+
+		// display the words true/false if boolean
+		if (theQuery.datumValueBoolean == true) {
+			if (theQuery.datumValue == 1) {
+				var datumValueString = "true";
+			} else {
+				datumValueString = "false";
+			}
+			dwr.util.setValue("datumValueValue" + id, datumValueString);
+		} else {
+			dwr.util.setValue("datumValueValue" + id, theQuery.datumValue);
+		}
 		dwr.util.setValue("datumValueUnitValue" + id, theQuery.datumValueUnit);
 		dwr.util.setValue("charQueryId", id);
 		$("charPattern" + id).style.display = "";
