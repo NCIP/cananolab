@@ -109,7 +109,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		for (int i = 0; i < nanomaterialEntityTypes.length; i++) {
 			String className = ClassUtils
 					.getShortClassNameFromDisplayName(nanomaterialEntityTypes[i]);
-			if (className.length() == 0) {
+			Class clazz = ClassUtils.getFullClass("nanomaterial." + className);
+			if (clazz == null) {
 				className = "OtherNanomaterialEntity";
 				otherNanomaterialEntityTypes.add(nanomaterialEntityTypes[i]);
 			} else {
@@ -125,7 +126,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
 			String className = ClassUtils
 					.getShortClassNameFromDisplayName(functionalizingEntityTypes[i]);
-			if (className.length() == 0) {
+			Class clazz = ClassUtils.getFullClass("agentmaterial." + className);
+			if (clazz == null) {
 				className = "OtherFunctionalizingEntity";
 				otherFunctionalizingTypes.add(functionalizingEntityTypes[i]);
 			} else {
