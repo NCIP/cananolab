@@ -1044,7 +1044,8 @@ public class SampleServiceHelper {
 	}
 
 	private Junction getCompositionJunction(
-			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) throws Exception {
+			AdvancedSampleSearchBean searchBean, DetachedCriteria crit)
+			throws Exception {
 		if (searchBean.getCompositionQueries().isEmpty()) {
 			return null;
 		}
@@ -1090,7 +1091,8 @@ public class SampleServiceHelper {
 				String nanoEntityClassName = ClassUtils
 						.getShortClassNameFromDisplayName(compQuery
 								.getEntityType());
-				Class clazz = ClassUtils.getFullClass("nanomaterial." + nanoEntityClassName);
+				Class clazz = ClassUtils.getFullClass("nanomaterial."
+						+ nanoEntityClassName);
 				Criterion nanoEntityCrit = null;
 				// other entity type
 				if (clazz == null) {
@@ -1121,7 +1123,8 @@ public class SampleServiceHelper {
 				String funcEntityClassName = ClassUtils
 						.getShortClassNameFromDisplayName(compQuery
 								.getEntityType());
-				Class clazz = ClassUtils.getFullClass("agentmaterial." + funcEntityClassName);
+				Class clazz = ClassUtils.getFullClass("agentmaterial."
+						+ funcEntityClassName);
 				Criterion funcEntityCrit = null;
 				// other entity type
 				if (clazz == null) {
@@ -1137,12 +1140,14 @@ public class SampleServiceHelper {
 					funcEntityCrit = Restrictions.eq("funcEntity.class",
 							funcClassNameInteger);
 				}
-				Criterion chemicalNameCrit = Restrictions.ilike(
-						"funcEntity.name", chemicalNameMatchMode
-								.getUpdatedText(), chemicalNameMatchMode
-								.getMatchMode());
-				funcEntityCrit = Restrictions.and(funcEntityCrit,
-						chemicalNameCrit);
+				if (hasChemicalName) {
+					Criterion chemicalNameCrit = Restrictions.ilike(
+							"funcEntity.name", chemicalNameMatchMode
+									.getUpdatedText(), chemicalNameMatchMode
+									.getMatchMode());
+					funcEntityCrit = Restrictions.and(funcEntityCrit,
+							chemicalNameCrit);
+				}
 				compConjunction.add(funcEntityCrit);
 				compDisjunction.add(funcEntityCrit);
 			}
