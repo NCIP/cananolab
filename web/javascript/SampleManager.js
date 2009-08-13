@@ -55,7 +55,7 @@ function addSampleQuery() {
 			}
 		});
 	} else {
-		alert("Please fill in the name.");
+		alert("Please fill in the text field.");
 	}
 }
 
@@ -197,7 +197,7 @@ function addCompositionQuery() {
 			}
 		});
 	} else {
-		alert("Please fill in at least the entity type");
+		alert("Please at least make a selection from the second drop-down list.");
 	}
 }
 
@@ -442,8 +442,7 @@ function addCharacterizationQuery() {
 		datumValueUnit : dwr.util.getValue("datumValueUnit"),
 		datumValueBoolean : datumValueBoolean
 	};
-	if (theQuery.datumName != "" && theQuery.operand != ""
-			&& theQuery.datumValue != "") {
+	if (theQuery.characterizationName!= "") {
 		SampleManager.addCharacterizationQuery(theQuery, function(searchBean) {
 			if (searchBean != null) {
 				currentSearchBean = searchBean;
@@ -453,7 +452,7 @@ function addCharacterizationQuery() {
 			}
 		});
 	} else {
-		alert("Please fill in values");
+		alert("Please at least make a selection from the second drop-down list.");
 	}
 }
 
