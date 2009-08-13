@@ -198,7 +198,7 @@ function addColumnHeader(columnNumber) {
 		"constantValue" : dwr.util.getValue("constantValue" + columnNumber)
 	};
 	var numberOfRows = dwr.util.getValue("rowNum");
-	if (columnHeader.constantValue != null) {
+	if (columnHeader.constantValue != null && columnHeader.constantValue != "") {
 		for (i = 0; i < numberOfRows; i++) {
 			dwr.util.setValue("cellValue" + i + ":" + columnNumber,
 					columnHeader.constantValue);
