@@ -24,6 +24,8 @@ public class AdvancedSampleSearchBean {
 	private String logicalOperator = "or";
 	private Boolean hasNanomaterial = false;
 	private Boolean hasAgentMaterial = false;
+	private Boolean hasPOC = false;
+	private Boolean hasFunction = false;
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -145,6 +147,26 @@ public class AdvancedSampleSearchBean {
 			}
 		}
 		return hasAgentMaterial;
+	}
+
+	public Boolean getHasFunction() {
+		for (CompositionQueryBean query : compositionQueries) {
+			if (query.getCompositionType().equals("function")) {
+				hasFunction = true;
+				break;
+			}
+		}
+		return hasFunction;
+	}
+
+	public Boolean getHasPOC() {
+		for (SampleQueryBean query : sampleQueries) {
+			if (query.getNameType().equals("point of contact name")) {
+				hasPOC = true;
+				break;
+			}
+		}
+		return hasPOC;
 	}
 
 	public List<SampleQueryBean> getSampleQueries() {
