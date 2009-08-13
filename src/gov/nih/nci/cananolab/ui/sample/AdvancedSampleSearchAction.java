@@ -57,13 +57,20 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 					"message.advancedSampleSearch.noresult");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			request.setAttribute("onloadJavascript",
-					"displayCompositionQueries(); displayCharacterizationQueries()");
 			return mapping.getInputForward();
 		}
 		request.setAttribute("advancedSamples", sampleBeans);
 		// TODO to be implemented
 		return mapping.findForward("success");
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request
+				.setAttribute("onloadJavascript",
+						"displaySampleQueries(); displayCompositionQueries(); displayCharacterizationQueries()");
+		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
