@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 <jsp:include page="/bodyTitle.jsp">
@@ -22,6 +24,26 @@
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
+
+			<table class="summaryViewLayer4" width="100%">
+				<tr>
+					<th style="text-align: center">
+						Selected Criteria
+					</th>
+					<td style="text-align: right">
+						<a href="advancedSampleSearch.do?dispatch=input">Edit</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<c:out
+							value="${advancedSampleSearchForm.map.searchBean.displayName}"
+							escapeXml="false" />
+					</td>
+					<td></td>
+				</tr>
+			</table>
+			<br />
 			<display:table name="advancedSamples" id="sample"
 				requestURI="searchSample.do" pagesize="25" class="displaytable">
 				<display:column title="Sample Name" property="sampleName"
