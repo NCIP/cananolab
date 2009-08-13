@@ -101,7 +101,7 @@ function populateSampleQueries() {
 			idSuffix : id
 		});
 		dwr.util.setValue("nameTypeValue" + id, theQuery.nameType);		
-		dwr.util.setValue("sampleOperandValue" + id, theQuery.operand);
+		dwr.util.setValue("sampleOperandValue" + id, theQuery.operand);		
 		dwr.util.setValue("nameValue" + id, theQuery.name);
 		dwr.util.setValue("sampleQueryId", id);
 		$("samplePattern" + id).style.display = "";
@@ -113,12 +113,12 @@ function populateSampleQueries() {
 	clearSampleQuery();
 }
 
-function editSampleQuery(eleid) {
+function editSampleQuery(eleid) {	
 	// we were an id of the form "edit{id}", eg "sampleEdit42". We lookup the "42"
 	var query = sampleQueryCache[eleid.substring(10)];
 	dwr.util.setValue("nameType", query.nameType);	
 	dwr.util.setValue("sampleOperand", query.operand);
-	dwr.util.setValue("nameValue", query.chemicalName);
+	dwr.util.setValue("name", query.name);
 	dwr.util.setValue("sampleQueryId", query.id);
 	show("deleteSampleQuery");
 }
