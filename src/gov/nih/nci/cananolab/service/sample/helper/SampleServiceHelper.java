@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
+import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -1043,6 +1044,65 @@ public class SampleServiceHelper {
 		return poc;
 	}
 
+	private Junction getSampleJunction(AdvancedSampleSearchBean searchBean,
+			DetachedCriteria crit) throws Exception {
+		if (searchBean.getSampleQueries().isEmpty()) {
+			return null;
+		}
+		Junction junction = null;
+		Disjunction sampleDisjunction = Restrictions.disjunction();
+		Conjunction sampleConjunction = Restrictions.conjunction();
+		// join POC
+		if (searchBean.getHasPOC()) {
+			crit.createAlias("primaryPointOfContact", "pointOfContact");
+			crit.createAlias("pointOfContact.organization", "organization");
+			crit.createAlias("otherPointOfContactCollection", "otherPoc",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("otherPoc.organization", "otherOrg",
+					CriteriaSpecification.LEFT_JOIN);
+		}
+		String pocCritStrs[] = { "pointOfContact.lastName",
+				"pointOfContact.firstName", "pointOfContact.role",
+				"organization.name", "otherPoc.lastName", "otherPoc.firstName",
+				"otherOrg.name" };
+		for (SampleQueryBean query : searchBean.getSampleQueries()) {
+			TextMatchMode nameMatchMode = null;
+			if (query.getOperand().equals("equals")) {
+				nameMatchMode = new TextMatchMode(query.getName());
+			} else if (query.getOperand().equals("contains")) {
+				nameMatchMode = new TextMatchMode("*" + query.getName() + "*");
+			}
+			Criterion sampleNameCrit = null;
+			Disjunction pocDisjunction = null;
+			if (query.getNameType().equals("sample name")) {
+				sampleNameCrit = Restrictions.ilike("name", nameMatchMode
+						.getUpdatedText(), nameMatchMode.getMatchMode());
+			} else if (query.getNameType().equals("point of contact name")) {
+				pocDisjunction = Restrictions.disjunction();
+				for (String critStr : pocCritStrs) {
+					Criterion pocCrit = Restrictions.ilike(critStr,
+							nameMatchMode.getUpdatedText(), nameMatchMode
+									.getMatchMode());
+					pocDisjunction.add(pocCrit);
+				}
+			}
+			if (sampleNameCrit != null) {
+				sampleDisjunction.add(sampleNameCrit);
+				sampleConjunction.add(sampleNameCrit);
+			}
+			if (pocDisjunction != null) {
+				sampleDisjunction.add(pocDisjunction);
+				sampleConjunction.add(pocDisjunction);
+			}
+		}
+		if (searchBean.getSampleLogicalOperator().equals("and")) {
+			junction = sampleConjunction;
+		} else if (searchBean.getSampleLogicalOperator().equals("or")) {
+			junction = sampleDisjunction;
+		}
+		return junction;
+	}
+
 	private Junction getCompositionJunction(
 			AdvancedSampleSearchBean searchBean, DetachedCriteria crit)
 			throws Exception {
@@ -1056,7 +1116,21 @@ public class SampleServiceHelper {
 		crit.createAlias("sampleComposition", "comp",
 				CriteriaSpecification.LEFT_JOIN);
 		Boolean hasChemicalName = false;
-		if (searchBean.getHasNanomaterial()) {
+		// join function
+		if (searchBean.getHasFunction()) {
+			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("nanoEntity.composingElementCollection",
+					"compElement", CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("compElement.inherentFunctionCollection",
+					"inherentFunction", CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("comp.functionalizingEntityCollection",
+					"funcEntity", CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("funcEntity.functionCollection", "function",
+					CriteriaSpecification.LEFT_JOIN);
+		}
+		// join nanomaterialEntity
+		if (searchBean.getHasNanomaterial() && !searchBean.getHasFunction()) {
 			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity",
 					CriteriaSpecification.LEFT_JOIN);
 			for (CompositionQueryBean query : searchBean
@@ -1071,7 +1145,8 @@ public class SampleServiceHelper {
 						"compElement", CriteriaSpecification.LEFT_JOIN);
 			}
 		}
-		if (searchBean.getHasAgentMaterial()) {
+		// join functionalizing entity
+		if (searchBean.getHasAgentMaterial() && !searchBean.getHasFunction()) {
 			crit.createAlias("comp.functionalizingEntityCollection",
 					"funcEntity", CriteriaSpecification.LEFT_JOIN);
 		}
@@ -1086,8 +1161,41 @@ public class SampleServiceHelper {
 				chemicalNameMatchMode = new TextMatchMode("*"
 						+ compQuery.getChemicalName() + "*");
 			}
+			// function
+			if (compQuery.getCompositionType().equals("function")) {
+				String funcClassName = ClassUtils
+						.getShortClassNameFromDisplayName(compQuery
+								.getEntityType());
+				Class clazz = ClassUtils.getFullClass(funcClassName);
+				Criterion funcCrit, funcCrit1, funcCrit2 = null;
+				// other function type
+				if (clazz == null) {
+					// inherent function
+					Criterion otherFuncCrit1 = Restrictions
+							.eq("inherentFunction.class",
+									"OtherNanomaterialEntity");
+					Criterion otherFuncCrit2 = Restrictions.eq(
+							"inherentFunction.type", compQuery.getEntityType());
+					funcCrit1 = Restrictions
+							.and(otherFuncCrit1, otherFuncCrit2);
+					// function
+					Criterion otherFuncCrit3 = Restrictions.eq(
+							"function.class", "OtherNanomaterialEntity");
+					Criterion otherFuncCrit4 = Restrictions.eq("function.type",
+							compQuery.getEntityType());
+					funcCrit2 = Restrictions
+							.and(otherFuncCrit3, otherFuncCrit4);
+				} else {
+					funcCrit1 = Restrictions.eq("inherentFunction.class",
+							funcClassName);
+					funcCrit2 = Restrictions
+							.eq("function.class", funcClassName);
+				}
+				funcCrit = Restrictions.or(funcCrit1, funcCrit2);
+			}
 			// nanomaterial entity
-			if (compQuery.getCompositionType().equals("nanomaterial entity")) {
+			else if (compQuery.getCompositionType().equals(
+					"nanomaterial entity")) {
 				String nanoEntityClassName = ClassUtils
 						.getShortClassNameFromDisplayName(compQuery
 								.getEntityType());
@@ -1114,8 +1222,10 @@ public class SampleServiceHelper {
 					nanoEntityCrit = Restrictions.and(nanoEntityCrit,
 							chemicalNameCrit);
 				}
-				compConjunction.add(nanoEntityCrit);
-				compDisjunction.add(nanoEntityCrit);
+				if (nanoEntityCrit != null) {
+					compConjunction.add(nanoEntityCrit);
+					compDisjunction.add(nanoEntityCrit);
+				}
 			}
 			// functionalizing entity
 			else if (compQuery.getCompositionType().equals(
@@ -1148,8 +1258,10 @@ public class SampleServiceHelper {
 					funcEntityCrit = Restrictions.and(funcEntityCrit,
 							chemicalNameCrit);
 				}
-				compConjunction.add(funcEntityCrit);
-				compDisjunction.add(funcEntityCrit);
+				if (funcEntityCrit != null) {
+					compConjunction.add(funcEntityCrit);
+					compDisjunction.add(funcEntityCrit);
+				}
 			}
 		}
 		if (searchBean.getCompositionLogicalOperator().equals("and")) {
@@ -1213,8 +1325,10 @@ public class SampleServiceHelper {
 				charCrit = Restrictions.and(charCrit, Expression.le(
 						"datum.value", datumValue));
 			}
-			charConjunction.add(charCrit);
-			charDisjunction.add(charCrit);
+			if (charCrit != null) {
+				charConjunction.add(charCrit);
+				charDisjunction.add(charCrit);
+			}
 
 			if (searchBean.getCharacterizationLogicalOperator().equals("and")) {
 				junction = charConjunction;
@@ -1234,16 +1348,21 @@ public class SampleServiceHelper {
 				.setProjection(Projections.distinct(Property.forName("name")));
 		Disjunction disjunction = Restrictions.disjunction();
 		Conjunction conjunction = Restrictions.conjunction();
+		Junction sampleJunction = getSampleJunction(searchBean, crit);
 		Junction compJunction = getCompositionJunction(searchBean, crit);
 		Junction charJunction = getCharacterizationJunction(searchBean, crit);
 
 		if (searchBean.getLogicalOperator().equals("and")) {
+			if (sampleJunction != null)
+				conjunction.add(sampleJunction);
 			if (compJunction != null)
 				conjunction.add(compJunction);
 			if (charJunction != null)
 				conjunction.add(charJunction);
 			crit.add(conjunction);
 		} else if (searchBean.getLogicalOperator().equals("or")) {
+			if (sampleJunction != null)
+				disjunction.add(sampleJunction);
 			if (compJunction != null)
 				disjunction.add(compJunction);
 			if (charJunction != null)
