@@ -2,6 +2,11 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import gov.nih.nci.cananolab.util.StringUtils;
+
 /**
  * Information for the characterization query form
  * 
@@ -11,7 +16,7 @@ import gov.nih.nci.cananolab.dto.BaseQueryBean;
 public class CharacterizationQueryBean extends BaseQueryBean {
 	private String characterizationType;
 	private String characterizationName;
-	private Boolean datumValueBoolean=false;
+	private Boolean datumValueBoolean = false;
 	private String datumName;
 	private String datumValue;
 	private String datumValueUnit;
@@ -62,5 +67,24 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 
 	public void setDatumValueBoolean(Boolean datumValueBoolean) {
 		this.datumValueBoolean = datumValueBoolean;
+	}
+
+	public String getDisplayName() {
+		List<String> strs = new ArrayList<String>();
+		strs.add(characterizationType);
+		strs.add(characterizationName);
+		strs.add(datumName);
+		strs.add(getOperand());
+		strs.add(datumValue);
+		strs.add(datumValueUnit);
+		return StringUtils.join(strs, " ");
+	}
+
+	public String getQueryAsColumnName() {
+		if (StringUtils.isEmpty(datumName)) {
+			return characterizationName;
+		} else {
+			return datumName;
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,7 @@ public class AdvancedSampleSearchBean {
 			int index = compositionQueries.indexOf(query);
 			if (index != -1) {
 				compositionQueries.remove(query);
-				// retain the original order`
+				// retain the original order
 				compositionQueries.add(index, (CompositionQueryBean) query);
 			} else {
 				compositionQueries.add((CompositionQueryBean) query);
@@ -191,5 +192,29 @@ public class AdvancedSampleSearchBean {
 
 	public void setSampleLogicalOperator(String sampleLogicalOperator) {
 		this.sampleLogicalOperator = sampleLogicalOperator;
+	}
+
+	private String getQueryDisplayName(
+			List<? extends BaseQueryBean> queryBeans, String operator) {
+		List<String> strs = new ArrayList<String>();
+		for (BaseQueryBean query : queryBeans) {
+			strs.add(query.getDisplayName());
+		}
+		String name = StringUtils.join(strs, "<br>"+operator + "<br>");
+		if (StringUtils.isEmpty(name)) {
+			return name;
+		} else {
+			return "(" + name + ")";
+		}
+	}
+
+	public String getDisplayName() {
+		List<String> strs = new ArrayList<String>();
+		strs.add(getQueryDisplayName(sampleQueries, sampleLogicalOperator));
+		strs.add(getQueryDisplayName(compositionQueries,
+				compositionLogicalOperator));
+		strs.add(getQueryDisplayName(characterizationQueries,
+				characterizationLogicalOperator));
+		return StringUtils.join(strs, "<br>"+logicalOperator+"<br>");
 	}
 }
