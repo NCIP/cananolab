@@ -83,7 +83,7 @@ public class DWRCharacterizationResultManager {
 			throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		String valueName = name;
-		if (property != null) {
+		if (!StringUtils.isEmpty(property)) {
 			valueName = property;
 		}
 		SortedSet<String> units = InitCharacterizationSetup.getInstance()
