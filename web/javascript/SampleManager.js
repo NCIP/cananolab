@@ -41,11 +41,12 @@ function addSampleQuery() {
 	}
 	var theQuery = {
 		id : queryId,
-		nameType : dwr.util.getValue("nameType"),		
+		nameType : dwr.util.getValue("nameType"),
 		name : dwr.util.getValue("name"),
 		operand : dwr.util.getValue("sampleOperand")
 	};
-	if (theQuery.entityType != "") {
+	if (theQuery.nameType != "" && theQuery.name != ""
+			&& theQuery.operand != "") {
 		SampleManager.addSampleQuery(theQuery, function(searchBean) {
 			if (searchBean != null) {
 				currentSearchBean = searchBean;
@@ -55,7 +56,7 @@ function addSampleQuery() {
 			}
 		});
 	} else {
-		alert("Please fill in the text field.");
+		alert("Please make selections in the first two drop-down lists and fill in the text field. ");
 	}
 }
 
@@ -100,8 +101,8 @@ function populateSampleQueries() {
 		dwr.util.cloneNode("samplePattern", {
 			idSuffix : id
 		});
-		dwr.util.setValue("nameTypeValue" + id, theQuery.nameType);		
-		dwr.util.setValue("sampleOperandValue" + id, theQuery.operand);		
+		dwr.util.setValue("nameTypeValue" + id, theQuery.nameType);
+		dwr.util.setValue("sampleOperandValue" + id, theQuery.operand);
 		dwr.util.setValue("nameValue" + id, theQuery.name);
 		dwr.util.setValue("sampleQueryId", id);
 		$("samplePattern" + id).style.display = "";
@@ -113,10 +114,11 @@ function populateSampleQueries() {
 	clearSampleQuery();
 }
 
-function editSampleQuery(eleid) {	
-	// we were an id of the form "edit{id}", eg "sampleEdit42". We lookup the "42"
+function editSampleQuery(eleid) {
+	// we were an id of the form "edit{id}", eg "sampleEdit42". We lookup the
+	// "42"
 	var query = sampleQueryCache[eleid.substring(10)];
-	dwr.util.setValue("nameType", query.nameType);	
+	dwr.util.setValue("nameType", query.nameType);
 	dwr.util.setValue("sampleOperand", query.operand);
 	dwr.util.setValue("name", query.name);
 	dwr.util.setValue("sampleQueryId", query.id);
@@ -145,16 +147,15 @@ function setCompositionEntityOptions(selectedEntity) {
 	SampleManager.getDecoratedEntityTypes(compositionType, function(data) {
 		dwr.util.removeAllOptions("entityType");
 		dwr.util.addOptions("entityType", emptyOption, "value", "label");
-		dwr.util.addOptions("entityType", data, "value", "label");		
+		dwr.util.addOptions("entityType", data, "value", "label");
 		if (selectedEntity != null) {
 			dwr.util.setValue("entityType", selectedEntity);
 		}
-		if (compositionType=="function") {
+		if (compositionType == "function") {
 			hide("compChemicalNameLabel");
 			hide("compOperand");
 			hide("chemicalName");
-		}
-		else {
+		} else {
 			show("compChemicalNameLabel");
 			show("compOperand");
 			show("chemicalName");
@@ -442,7 +443,7 @@ function addCharacterizationQuery() {
 		datumValueUnit : dwr.util.getValue("datumValueUnit"),
 		datumValueBoolean : datumValueBoolean
 	};
-	if (theQuery.characterizationName!= "") {
+	if (theQuery.characterizationName != "") {
 		SampleManager.addCharacterizationQuery(theQuery, function(searchBean) {
 			if (searchBean != null) {
 				currentSearchBean = searchBean;
