@@ -3,7 +3,7 @@ function setNameOptionsByCharName(columnNumber) {
 	var charType = dwr.util.getValue("charType");
 	var assayType = dwr.util.getValue("assayType");
 	var columnType = dwr.util.getValue("columnType" + columnNumber);
-	var currentColumnName=dwr.util.getValue("theColumnName"+columnNumber);
+	var currentColumnName = dwr.util.getValue("theColumnName"+columnNumber);
 	
 	if (columnType == "datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
@@ -16,9 +16,9 @@ function setNameOptionsByCharName(columnNumber) {
 					dwr.util.addOptions("columnName" + columnNumber,
 							[ "[other]" ]);
 					// add the current value to the list if not in the list
-					if (currentColumnName!="" && data.indexOf(currentColumnName)==-1) {
+					if (currentColumnName!="" && data.toString().indexOf(currentColumnName)==-1) {
 						dwr.util.addOptions("columnName"+columnNumber,[currentColumnName]);
-					}		
+					}
 				});
 	} else {
 		if (columnType == "condition") {
@@ -33,7 +33,7 @@ function setNameOptionsByCharName(columnNumber) {
 						dwr.util.addOptions("columnName" + columnNumber,
 								[ "[other]" ]);
 						// add the current value to the list if not in the list
-						if (currentColumnName!="" && data.indexOf(currentColumnName)==-1) {
+						if (currentColumnName!="" && data.toString().indexOf(currentColumnName)==-1) {
 							dwr.util.addOptions("columnName"+columnNumber,[currentColumnName]);
 						}
 					});
@@ -63,7 +63,7 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 					dwr.util.addOptions("conditionProperty" + columnNumber,
 							[ "[other]" ]);
 					// add the current value to the list if not in the list
-					if (currentConditionProperty!="" && data.indexOf(currentConditionProperty)==-1) {
+					if (currentConditionProperty!="" && data.toString().indexOf(currentConditionProperty)==-1) {
 						dwr.util.addOptions("conditionProperty"+columnNumber,[currentConditionProperty]);
 					}
 				});
@@ -83,7 +83,7 @@ function setColumnValueUnit(columnNumber) {
 		dwr.util.addOptions("valueUnit" + columnNumber, data);
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "[other]" ]);
 		// add the current value to the list if not in the list
-		if (currentValueUnit!="" && data.indexOf(currentValueUnit)==-1) {
+		if (currentValueUnit!="" && data.toString().indexOf(currentValueUnit)==-1) {
 			dwr.util.addOptions("valueUnit"+columnNumber,[currentValueUnit]);
 		}		
 	});	
@@ -197,6 +197,15 @@ function addColumnHeader(columnNumber) {
 		"valueUnit" : dwr.util.getValue("valueUnit" + columnNumber),
 		"constantValue" : dwr.util.getValue("constantValue" + columnNumber)
 	};
+	if ((columnHeader.columnName == null || columnHeader.columnName == "")) {
+		alert("Please specify Column Name when saving change(s).");
+		return false;
+	}
+	if (columnHeader.columnType == null || columnHeader.columnType == "") {
+		alert("Please specify Column Type when saving change(s).");
+		return false;
+	}
+	
 	var numberOfRows = dwr.util.getValue("rowNum");
 	if (columnHeader.constantValue != null && columnHeader.constantValue != "") {
 		for (i = 0; i < numberOfRows; i++) {
