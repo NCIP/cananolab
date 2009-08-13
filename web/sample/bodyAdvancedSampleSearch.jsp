@@ -193,9 +193,9 @@
 									-- Please Select --
 								</option>
 							</html:select>
-						</td>
+						</td>						
 						<td class="cellLabel">
-							with chemical name
+							<span id="compChemicalNameLabel">with chemical name</span>
 						</td>
 						<td>
 							<html:select property="searchBean.theCompositionQuery.operand"
