@@ -2,8 +2,9 @@ package gov.nih.nci.cananolab.dto;
 
 /**
  * Contains information about a basic query
+ * 
  * @author pansu
- *
+ * 
  */
 public class BaseQueryBean {
 	private String id;
@@ -35,5 +36,9 @@ public class BaseQueryBean {
 			}
 		}
 		return eq;
+	}
+
+	public String getDisplayName() {
+		return "";
 	}
 }
