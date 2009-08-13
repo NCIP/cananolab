@@ -1280,14 +1280,26 @@ public class SampleServiceHelper {
 		Junction junction = null;
 		Disjunction charDisjunction = Restrictions.disjunction();
 		Conjunction charConjunction = Restrictions.conjunction();
-
 		// join characterization
 		crit.createAlias("characterizationCollection", "chara",
 				CriteriaSpecification.LEFT_JOIN);
-		crit.createAlias("chara.findingCollection", "finding",
-				CriteriaSpecification.LEFT_JOIN);
-		crit.createAlias("finding.datumCollection", "datum",
-				CriteriaSpecification.LEFT_JOIN);
+
+		Boolean hasDatum = false;
+		for (CharacterizationQueryBean charQuery : searchBean
+				.getCharacterizationQueries()) {
+			if (!StringUtils.isEmpty(charQuery.getDatumName())
+					|| !StringUtils.isEmpty(charQuery.getDatumValue())) {
+				hasDatum = true;
+				break;
+			}
+		}
+		// join finding and datum
+		if (hasDatum == true) {
+			crit.createAlias("chara.findingCollection", "finding",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("finding.datumCollection", "datum",
+					CriteriaSpecification.LEFT_JOIN);
+		}
 		for (CharacterizationQueryBean charQuery : searchBean
 				.getCharacterizationQueries()) {
 			String charClassName = ClassUtils
@@ -1303,27 +1315,34 @@ public class SampleServiceHelper {
 			} else {
 				charCrit = Restrictions.eq("chara.class", charClassName);
 			}
-			charCrit = Restrictions.and(charCrit, Restrictions.eq("datum.name",
-					charQuery.getDatumName()));
-
-			Float datumValue = new Float(charQuery.getDatumValue());
-			charCrit = Restrictions.and(charCrit, Restrictions.eq(
-					"datum.valueUnit", charQuery.getDatumValueUnit()));
-			if (charQuery.getOperand().equals("=")) {
-				charCrit = Restrictions.and(charCrit, Expression.eq(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals(">")) {
-				charCrit = Restrictions.and(charCrit, Expression.gt(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals(">=")) {
-				charCrit = Restrictions.and(charCrit, Expression.ge(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals("<")) {
-				charCrit = Restrictions.and(charCrit, Expression.lt(
-						"datum.value", datumValue));
-			} else if (charQuery.getOperand().equals("<=")) {
-				charCrit = Restrictions.and(charCrit, Expression.le(
-						"datum.value", datumValue));
+			//datum name
+			if (hasDatum == true
+					&& !StringUtils.isEmpty(charQuery.getDatumName())) {
+				charCrit = Restrictions.and(charCrit, Restrictions.eq(
+						"datum.name", charQuery.getDatumName()));
+			}
+			//datum value
+			if (hasDatum == true
+					&& !StringUtils.isEmpty(charQuery.getDatumValue())) {
+				Float datumValue = new Float(charQuery.getDatumValue());
+				charCrit = Restrictions.and(charCrit, Restrictions.eq(
+						"datum.valueUnit", charQuery.getDatumValueUnit()));
+				if (charQuery.getOperand().equals("=")) {
+					charCrit = Restrictions.and(charCrit, Expression.eq(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals(">")) {
+					charCrit = Restrictions.and(charCrit, Expression.gt(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals(">=")) {
+					charCrit = Restrictions.and(charCrit, Expression.ge(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals("<")) {
+					charCrit = Restrictions.and(charCrit, Expression.lt(
+							"datum.value", datumValue));
+				} else if (charQuery.getOperand().equals("<=")) {
+					charCrit = Restrictions.and(charCrit, Expression.le(
+							"datum.value", datumValue));
+				}
 			}
 			if (charCrit != null) {
 				charConjunction.add(charCrit);
