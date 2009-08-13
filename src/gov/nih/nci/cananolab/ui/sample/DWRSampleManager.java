@@ -52,6 +52,14 @@ public class DWRSampleManager {
 								"defaultFunctionalizingEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
 								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity");
+			} else if (compType.equals("function")) {
+				types = InitSetup
+						.getInstance()
+						.getReflectionDefaultAndOtherLookupTypesAsOptions(
+								appContext,
+								"defaultFunctionTypes",
+								"gov.nih.nci.cananolab.domain.particle.Function",
+								"gov.nih.nci.cananolab.domain.function.OtherFunction");
 			}
 		} catch (Exception e) {
 			return null;
@@ -210,8 +218,7 @@ public class DWRSampleManager {
 		return counts.toString();
 	}
 
-	public AdvancedSampleSearchBean addSampleQuery(
-			SampleQueryBean theQuery) {
+	public AdvancedSampleSearchBean addSampleQuery(SampleQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("advancedSampleSearchForm"));
 		if (searchForm == null) {
@@ -223,7 +230,7 @@ public class DWRSampleManager {
 			searchBean.addQuery(theQuery);
 		return searchBean;
 	}
-	
+
 	public AdvancedSampleSearchBean addCompositionQuery(
 			CompositionQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
@@ -252,8 +259,7 @@ public class DWRSampleManager {
 		return searchBean;
 	}
 
-	public AdvancedSampleSearchBean deleteSampleQuery(
-			SampleQueryBean theQuery) {
+	public AdvancedSampleSearchBean deleteSampleQuery(SampleQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("advancedSampleSearchForm"));
 		if (searchForm == null) {
@@ -264,7 +270,7 @@ public class DWRSampleManager {
 		searchBean.removeQuery(theQuery);
 		return searchBean;
 	}
-	
+
 	public AdvancedSampleSearchBean deleteCompositionQuery(
 			CompositionQueryBean theQuery) {
 		DynaValidatorForm searchForm = (DynaValidatorForm) (WebContextFactory
