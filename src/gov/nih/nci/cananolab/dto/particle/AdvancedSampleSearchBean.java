@@ -110,7 +110,9 @@ public class AdvancedSampleSearchBean {
 	}
 
 	public void removeQuery(BaseQueryBean query) {
-		if (query instanceof CompositionQueryBean) {
+		if (query instanceof SampleQueryBean) {
+			sampleQueries.remove((SampleQueryBean) query);
+		} else if (query instanceof CompositionQueryBean) {
 			compositionQueries.remove((CompositionQueryBean) query);
 		} else if (query instanceof CharacterizationQueryBean) {
 			characterizationQueries.remove((CharacterizationQueryBean) query);
