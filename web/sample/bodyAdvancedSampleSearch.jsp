@@ -38,6 +38,9 @@
 						<tr id="samplePattern" style="display: none;">
 							<td>
 								<span id="nameTypeValue">Sample POC Type</span>
+							</td>
+							<td>
+								<span id="sampleOperandValue">Sample Operand</span>
 							</td>	
 							<td>
 								<span id="nameValue">Sample POC Value</span>
@@ -58,7 +61,7 @@
 					<tr>
 						<td>
 							<html:hidden property="searchBean.theSampleQuery.id"
-								styleId="compQueryId" />
+								styleId="sampleQueryId" />
 							<html:select
 								property="searchBean.theSampleQuery.nameType"
 								styleId="nameType">
@@ -68,7 +71,7 @@
 								<option value="sample name">
 									sample name
 								</option>
-								<option value="poc">
+								<option value="point of contact name">
 									point of contact name
 								</option>
 							</html:select>
@@ -85,7 +88,7 @@
 						</td>
 						<td>
 							<html:text property="searchBean.theSampleQuery.name"
-								styleId="nameValue" size="50" />
+								styleId="name" size="50" />
 						</td>
 						<td>
 							<table cellspacing="0">
