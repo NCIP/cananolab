@@ -120,8 +120,9 @@
 		</action>
 		<action input="input" name="advancedSampleSearchForm"
 			parameter="dispatch" path="/advancedSampleSearch"
-			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">
-			<forward name="input" path="sample.advancedSearch" />
+			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">			
+			<forward name="inputForm" path="sample.advancedSearch" />
+			<forward name="input" path="/advancedSampleSearch.do?dispatch=input" />
 			<forward name="success" path="sample.advancedSampleSearchResult" />
 		</action>
 		<action name="compositionForm" parameter="dispatch" path="/composition"
