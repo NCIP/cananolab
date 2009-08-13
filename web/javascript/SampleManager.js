@@ -149,6 +149,16 @@ function setCompositionEntityOptions(selectedEntity) {
 		if (selectedEntity != null) {
 			dwr.util.setValue("entityType", selectedEntity);
 		}
+		if (compositionType=="function") {
+			hide("compChemicalNameLabel");
+			hide("compOperand");
+			hide("chemicalName");
+		}
+		else {
+			show("compChemicalNameLabel");
+			show("compOperand");
+			show("chemicalName");
+		}
 	});
 }
 
