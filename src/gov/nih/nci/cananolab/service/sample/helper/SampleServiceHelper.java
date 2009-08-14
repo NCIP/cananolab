@@ -1163,35 +1163,12 @@ public class SampleServiceHelper {
 			}
 			// function
 			if (compQuery.getCompositionType().equals("function")) {
-				String funcClassName = ClassUtils
-						.getShortClassNameFromDisplayName(compQuery
-								.getEntityType());
-				Class clazz = ClassUtils.getFullClass(funcClassName);
-				Criterion funcCrit, funcCrit1, funcCrit2 = null;
-				// other function type
-				if (clazz == null) {
-					// inherent function
-					Criterion otherFuncCrit1 = Restrictions
-							.eq("inherentFunction.class",
-									"OtherNanomaterialEntity");
-					Criterion otherFuncCrit2 = Restrictions.eq(
-							"inherentFunction.type", compQuery.getEntityType());
-					funcCrit1 = Restrictions
-							.and(otherFuncCrit1, otherFuncCrit2);
-					// function
-					Criterion otherFuncCrit3 = Restrictions.eq(
-							"function.class", "OtherNanomaterialEntity");
-					Criterion otherFuncCrit4 = Restrictions.eq("function.type",
-							compQuery.getEntityType());
-					funcCrit2 = Restrictions
-							.and(otherFuncCrit3, otherFuncCrit4);
-				} else {
-					funcCrit1 = Restrictions.eq("inherentFunction.class",
-							funcClassName);
-					funcCrit2 = Restrictions
-							.eq("function.class", funcClassName);
+				Criterion funcCrit = this.getFunctionCriterion(compQuery
+						.getEntityType());
+				if (funcCrit != null) {
+					compConjunction.add(funcCrit);
+					compDisjunction.add(funcCrit);
 				}
-				funcCrit = Restrictions.or(funcCrit1, funcCrit2);
 			}
 			// nanomaterial entity
 			else if (compQuery.getCompositionType().equals(
@@ -1272,6 +1249,35 @@ public class SampleServiceHelper {
 		return junction;
 	}
 
+	private Criterion getFunctionCriterion(String functionName)
+			throws Exception {
+		String funcClassName = ClassUtils
+				.getShortClassNameFromDisplayName(functionName);
+		Class clazz = ClassUtils.getFullClass(funcClassName);
+		Criterion funcCrit, funcCrit1, funcCrit2 = null;
+		// other function type
+		if (clazz == null) {
+			// inherent function
+			Criterion otherFuncCrit1 = Restrictions.eq(
+					"inherentFunction.class", "OtherNanomaterialEntity");
+			Criterion otherFuncCrit2 = Restrictions.eq("inherentFunction.type",
+					functionName);
+			funcCrit1 = Restrictions.and(otherFuncCrit1, otherFuncCrit2);
+			// function
+			Criterion otherFuncCrit3 = Restrictions.eq("function.class",
+					"OtherNanomaterialEntity");
+			Criterion otherFuncCrit4 = Restrictions.eq("function.type",
+					functionName);
+			funcCrit2 = Restrictions.and(otherFuncCrit3, otherFuncCrit4);
+		} else {
+			funcCrit1 = Restrictions
+					.eq("inherentFunction.class", funcClassName);
+			funcCrit2 = Restrictions.eq("function.class", funcClassName);
+		}
+		funcCrit = Restrictions.or(funcCrit1, funcCrit2);
+		return funcCrit;
+	}
+
 	private Junction getCharacterizationJunction(
 			AdvancedSampleSearchBean searchBean, DetachedCriteria crit) {
 		if (searchBean.getCharacterizationQueries().isEmpty()) {
@@ -1315,13 +1321,13 @@ public class SampleServiceHelper {
 			} else {
 				charCrit = Restrictions.eq("chara.class", charClassName);
 			}
-			//datum name
+			// datum name
 			if (hasDatum == true
 					&& !StringUtils.isEmpty(charQuery.getDatumName())) {
 				charCrit = Restrictions.and(charCrit, Restrictions.eq(
 						"datum.name", charQuery.getDatumName()));
 			}
-			//datum value
+			// datum value
 			if (hasDatum == true
 					&& !StringUtils.isEmpty(charQuery.getDatumValue())) {
 				Float datumValue = new Float(charQuery.getDatumValue());
@@ -1410,5 +1416,99 @@ public class SampleServiceHelper {
 		}
 		Collections.sort(sampleNames, new Comparators.SortableNameComparator());
 		return sampleNames;
+	}
+
+	public Sample findSampleWithPointOfContactInfo(String sampleName,
+			AdvancedSampleSearchBean searchBean) throws Exception {
+		// if only sample name, don't need to further query
+		if (!searchBean.getHasPOC()) {
+			return null;
+		}
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
+		Junction junction = this.getSampleJunction(searchBean, crit);
+		crit.add(Restrictions.eq("name", sampleName));
+		crit.add(junction);
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List result = appService.query(crit);
+		Sample sample = null;
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		return sample;
+	}
+
+	public Sample findSampleWithFunctionInfo(String sampleName,
+			AdvancedSampleSearchBean searchBean) throws Exception {
+		if (!searchBean.getHasFunction()) {
+			return null;
+		}
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
+		crit.add(Restrictions.eq("name", sampleName));
+		crit.createAlias("sampleComposition", "comp",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("nanoEntity.composingElementCollection",
+				"compElement", CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("compElement.inherentFunctionCollection",
+				"inherentFunction", CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("comp.functionalizingEntityCollection", "funcEntity",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("funcEntity.functionCollection", "function",
+				CriteriaSpecification.LEFT_JOIN);
+		Disjunction functionDisjunction = Restrictions.disjunction();
+		Conjunction functionConjunction = Restrictions.conjunction();
+
+		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
+			Criterion funcCrit = this.getFunctionCriterion(query
+					.getEntityType());
+			if (funcCrit != null)
+				functionDisjunction.add(funcCrit);
+			if (funcCrit != null)
+				functionConjunction.add(funcCrit);
+		}
+		Junction functionJunction = (searchBean.getCompositionLogicalOperator()
+				.equals("and")) ? functionConjunction : functionDisjunction;
+		crit.add(functionJunction);
+		// sampleComposition
+		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection.targetCollection",
+						FetchMode.JOIN);
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List result = appService.query(crit);
+		Sample sample = null;
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		return sample;
 	}
 }
