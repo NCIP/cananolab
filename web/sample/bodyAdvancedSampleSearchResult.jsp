@@ -45,9 +45,14 @@
 			</table>
 			<br />
 			<display:table name="advancedSamples" id="sample"
-				requestURI="searchSample.do" pagesize="25" class="displaytable">
-				<display:column title="Sample Name" property="sampleName"
+				requestURI="advancedSampleSearch.do" pagesize="25" class="displaytable"
+				partialList="true" size="resultSize"
+				decorator="gov.nih.nci.cananolab.dto.particle.AdvancedSampleDecorator">
+				<display:column title="Sample Name" property="${sampleURL}"
 					sortable="true" />
+				<c:forEach var="entry" items="${sample.attributeMap}">
+					<display:column title="${entry.key}">${entry.value}</display:column>
+				</c:forEach>
 				<display:column title="Site" property="location" sortable="true" />
 			</display:table>
 		</td>
