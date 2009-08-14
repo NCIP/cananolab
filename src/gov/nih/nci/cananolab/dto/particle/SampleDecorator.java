@@ -12,8 +12,8 @@ import java.util.TreeSet;
 import org.displaytag.decorator.TableDecorator;
 
 /**
- * This decorator is used to for decorate different properties of a nanoparticle
- * to be shown properly in the view page using display tag lib.
+ * This decorator is used to for decorate different properties of a sample to be
+ * shown properly in the view page using display tag lib.
  * 
  * @author pansu
  * 
