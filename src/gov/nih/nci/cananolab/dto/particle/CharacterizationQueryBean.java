@@ -14,12 +14,12 @@ import gov.nih.nci.cananolab.util.StringUtils;
  * 
  */
 public class CharacterizationQueryBean extends BaseQueryBean {
-	private String characterizationType;
-	private String characterizationName;
+	private String characterizationType = "";
+	private String characterizationName = "";
 	private Boolean datumValueBoolean = false;
-	private String datumName;
-	private String datumValue;
-	private String datumValueUnit;
+	private String datumName = "";
+	private String datumValue = "";
+	private String datumValueUnit = "";
 
 	public String getCharacterizationType() {
 		return characterizationType;
@@ -81,10 +81,12 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 	}
 
 	public String getQueryAsColumnName() {
-		if (StringUtils.isEmpty(datumName)) {
+		if (StringUtils.isEmpty(datumName) && StringUtils.isEmpty(datumValue)) {
+			return characterizationType;
+		} else if (StringUtils.isEmpty(datumValue)) {
 			return characterizationName;
 		} else {
-			return datumName;
+			return characterizationName + "<br>" + datumName;
 		}
 	}
 }

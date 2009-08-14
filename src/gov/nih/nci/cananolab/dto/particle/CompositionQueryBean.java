@@ -3,6 +3,8 @@ package gov.nih.nci.cananolab.dto.particle;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.FetchMode;
+
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -13,9 +15,9 @@ import gov.nih.nci.cananolab.util.StringUtils;
  * 
  */
 public class CompositionQueryBean extends BaseQueryBean {
-	private String compositionType="";
-	private String entityType;
-	private String chemicalName;
+	private String compositionType = "";
+	private String entityType = "";
+	private String chemicalName = "";
 
 	public String getCompositionType() {
 		return compositionType;
@@ -40,7 +42,7 @@ public class CompositionQueryBean extends BaseQueryBean {
 	public void setChemicalName(String chemicalName) {
 		this.chemicalName = chemicalName;
 	}
-	
+
 	public String getDisplayName() {
 		List<String> strs = new ArrayList<String>();
 		strs.add(compositionType);
@@ -49,15 +51,15 @@ public class CompositionQueryBean extends BaseQueryBean {
 		strs.add(chemicalName);
 		return StringUtils.join(strs, " ");
 	}
-	
+
 	public String getQueryAsColumnName() {
 		if (compositionType.equals("function")) {
 			return compositionType;
 		}
 		if (StringUtils.isEmpty(chemicalName)) {
-			return entityType;
-		} else {
 			return compositionType;
+		} else {
+			return compositionType+"<br>"+entityType;
 		}
 	}
 }

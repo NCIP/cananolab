@@ -14,8 +14,8 @@ import gov.nih.nci.cananolab.util.StringUtils;
  * 
  */
 public class SampleQueryBean extends BaseQueryBean {
-	private String nameType;
-	private String name;
+	private String nameType="";
+	private String name="";
 
 	public String getNameType() {
 		return nameType;
@@ -42,6 +42,9 @@ public class SampleQueryBean extends BaseQueryBean {
 	}
 
 	public String getQueryAsColumnName() {
-		return name;
+		if (nameType.equals("sample name")) {
+			return null;
+		}
+		return nameType;
 	}
 }

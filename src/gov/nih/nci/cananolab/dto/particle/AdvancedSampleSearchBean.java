@@ -200,7 +200,7 @@ public class AdvancedSampleSearchBean {
 		for (BaseQueryBean query : queryBeans) {
 			strs.add(query.getDisplayName());
 		}
-		String name = StringUtils.join(strs, "<br>"+operator + "<br>");
+		String name = StringUtils.join(strs, "<br>" + operator + "<br>");
 		if (StringUtils.isEmpty(name)) {
 			return name;
 		} else {
@@ -215,6 +215,21 @@ public class AdvancedSampleSearchBean {
 				compositionLogicalOperator));
 		strs.add(getQueryDisplayName(characterizationQueries,
 				characterizationLogicalOperator));
-		return StringUtils.join(strs, "<br>"+logicalOperator+"<br>");
+		return StringUtils.join(strs, "<br>" + logicalOperator + "<br>");
+	}
+
+	public List<String> getQueryAsColumnNames() {
+		List<String> columnNames = new ArrayList<String>();
+		for (SampleQueryBean query : sampleQueries) {
+			if (query.getQueryAsColumnName() != null)
+				columnNames.add(query.getQueryAsColumnName());
+		}
+		for (CompositionQueryBean query : compositionQueries) {
+			columnNames.add(query.getQueryAsColumnName());
+		}
+		for (CharacterizationQueryBean query : characterizationQueries) {
+			columnNames.add(query.getQueryAsColumnName());
+		}
+		return columnNames;
 	}
 }
