@@ -155,7 +155,7 @@ public class Constants {
 			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
 			"STD", "SVG", "SXD", "WMF" };
 
-	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
+	public static final String[] PRIVATE_DISPATCHES = { "input", "create", "delete",
 			"setupNew", "setupUpdate", "summaryEdit", "add", "remove", "save" };
 
 	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico chemical characterization";
