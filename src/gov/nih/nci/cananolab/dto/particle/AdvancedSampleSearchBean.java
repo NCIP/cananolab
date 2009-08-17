@@ -27,6 +27,8 @@ public class AdvancedSampleSearchBean {
 	private Boolean hasAgentMaterial = false;
 	private Boolean hasPOC = false;
 	private Boolean hasFunction = false;
+	private Boolean hasDatum = false;
+	private Boolean hasChemicalName = false;
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -168,6 +170,27 @@ public class AdvancedSampleSearchBean {
 			}
 		}
 		return hasPOC;
+	}
+
+	public Boolean getHasDatum() {
+		for (CharacterizationQueryBean charQuery : characterizationQueries) {
+			if (!StringUtils.isEmpty(charQuery.getDatumName())
+					|| !StringUtils.isEmpty(charQuery.getDatumValue())) {
+				hasDatum = true;
+				break;
+			}
+		}
+		return hasDatum;
+	}
+
+	public Boolean getHasChemicalName() {
+		for (CompositionQueryBean query : getCompositionQueries()) {
+			if (!StringUtils.isEmpty(query.getChemicalName())) {
+				hasChemicalName = true;
+				break;
+			}
+		}
+		return hasChemicalName;
 	}
 
 	public List<SampleQueryBean> getSampleQueries() {
