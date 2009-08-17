@@ -113,13 +113,13 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 			HttpServletRequest request, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
-		SampleServiceHelper helper = new SampleServiceHelper();
 		SampleService service = null;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
+				String sampleName = sampleBeans.get(i).getSampleName();
 				if (location.equals(Constants.LOCAL_SITE)) {
 					service = new SampleServiceLocalImpl();
 				} else {
@@ -127,81 +127,11 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 							.getGridServiceUrl(request, location);
 					service = new SampleServiceRemoteImpl(serviceUrl);
 				}
-				String sampleName = sampleBeans.get(i).getSampleName();
-				List<String> columns = searchBean.getQueryAsColumnNames();
-				Map<String, String> attributeMap = new LinkedHashMap<String, String>();
-				Sample sample = null;
-				String sampleId = null;
-				for (String column : columns) {
-					if (column.contains("point of contact")) {
-						sample = helper.findSampleWithPointOfContactInfo(
-								sampleName, searchBean);
-						if (sample != null) {
-							StringBuffer pocBuf = new StringBuffer();
-							PointOfContactBean pocBean = new PointOfContactBean(
-									sample.getPrimaryPointOfContact());
-							pocBuf.append(pocBean.getDisplayName()).append(
-									"<br>");
-							for (PointOfContact poc : sample
-									.getOtherPointOfContactCollection()) {
-								PointOfContactBean otherPOCBean = new PointOfContactBean(
-										poc);
-								pocBuf.append(otherPOCBean.getDisplayName())
-										.append("<br>");
-							}
-							sampleId = sample.getId().toString();
-							attributeMap.put(column, pocBuf.toString());
-						} else {
-							attributeMap.put(column, null);
-						}
-					} else if (column.contains("function")) {
-						sample = helper.findSampleWithFunctionInfo(sampleName,
-								searchBean);
-						if (sample != null) {
-							StringBuffer funcBuf = new StringBuffer();
-							for (NanomaterialEntity entity : sample
-									.getSampleComposition()
-									.getNanomaterialEntityCollection()) {
-								for (ComposingElement ce : entity
-										.getComposingElementCollection()) {
-									for (Function func : ce
-											.getInherentFunctionCollection()) {
-										funcBuf
-												.append(
-														ClassUtils
-																.getDisplayName(ClassUtils
-																		.getShortClassName(func
-																				.getClass()
-																				.getName())))
-												.append("<br>");
-									}
-								}
-							}
-							for (FunctionalizingEntity entity : sample
-									.getSampleComposition()
-									.getFunctionalizingEntityCollection()) {
-								for (Function func : entity
-										.getFunctionCollection()) {
-									funcBuf
-											.append(
-													ClassUtils
-															.getDisplayName(ClassUtils
-																	.getShortClassName(func
-																			.getClass()
-																			.getName())))
-											.append("<br>");
-								}
-							}
-							attributeMap.put(column, funcBuf.toString());
-							sampleId = sample.getId().toString();
-						} else {
-							attributeMap.put(column, null);
-						}
-					}
-					AdvancedSampleBean sampleBean = new AdvancedSampleBean(
-							sampleName, sampleId, location, attributeMap);
-					loadedSampleBeans.add(sampleBean);
-				}
+				AdvancedSampleBean loadedAdvancedSample = service
+						.findAdvancedSampleByAdvancedSearch(sampleName,
+								searchBean, user);
+				loadedAdvancedSample.setLocation(location);
+				loadedSampleBeans.add(loadedAdvancedSample);
 			}
 		}
 		return loadedSampleBeans;
@@ -210,7 +140,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		//clear the search results and start over
+		// clear the search results and start over
 		request.getSession().removeAttribute("advancedSampleSearchResults");
 		request
 				.setAttribute(
