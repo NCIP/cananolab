@@ -344,6 +344,12 @@ public class PublicationAction extends BaseAnnotationAction {
 				.findPublicationsBySampleId(sampleId, user);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
+		/**
+		 * Set location for display name where location is needed for making URL.
+		 */
+		for (PublicationBean pubBean : publications) {
+			pubBean.setLocation(location);
+		}
 		request.setAttribute("publicationSummaryView", summaryView);
 
 		if (request.getParameter("clearTab") != null
