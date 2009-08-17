@@ -6,16 +6,12 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for canano forms.
