@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,11 +44,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * Persist a new publication or update an existing publication
 	 * 
 	 * @param publication
-	 *            ,
 	 * @param sampleNames
-	 *            ,
 	 * @param fileData
-	 *            ,
 	 * @param authors
 	 * @throws Exception
 	 */
@@ -58,12 +56,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new NoAccessException();
 		}
 		try {
-			Publication publication = (Publication) publicationBean
-					.getDomainFile();
+			Publication publication = (Publication) publicationBean.getDomainFile();
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication, user);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			CustomizedApplicationService appService = 
+				(CustomizedApplicationService) ApplicationServiceProvider.getApplicationService();
 			// check if publication is already entered based on PubMedId or DOI
 			if (publication.getPubMedId() != null) {
 				Publication dbPublication = (Publication) appService.getObject(
@@ -243,39 +240,40 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
+
 	/**
-	 * if publication associates with multiple particle remove the entry from
-	 * nanoparticle_sample_publication otherwise, remove publicVisibility and
-	 * delete publication
+	 * Remove sample-publication association for an existing publication.
+	 * 
+	 * @param publication
+	 * @param sampleNames
+	 * @param fileData
+	 * @param authors
+	 * @throws Exception
 	 */
-	public void removePublicationFromSample(Sample particle, Long dataId)
+	public void removePublicationFromSample(String sampleId, PublicationBean pubBean, UserBean user)
 			throws PublicationException, NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
 		try {
-			PublicationService publicationService = new PublicationServiceLocalImpl();
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			Object publicationObject = appService.getObject(Publication.class,
-					"id", dataId);
-			// TODO fix dependency on sample
-			/*
-			 * if (publicationObject != null) { Publication publication =
-			 * publicationService .findDomainPublicationById(dataId.toString());
-			 * Collection<Sample> sampleCollection = publication
-			 * .getSampleCollection(); if (sampleCollection == null ||
-			 * sampleCollection.size() == 0) { // something wrong throw new
-			 * PublicationException(); } else if (sampleCollection.size() == 1)
-			 * { // delete authService.removePublicGroup(dataId.toString()); if
-			 * (publication.getAuthorCollection() != null) { for (Author author
-			 * : publication.getAuthorCollection()) {
-			 * authService.removePublicGroup(author.getId() .toString()); } }
-			 * appService.delete(publication); } else {// size>1 // remove
-			 * sample association sampleCollection.remove(particle);
-			 * appService.saveOrUpdate(publication); } }
-			 */
+			CustomizedApplicationService appService = 
+				(CustomizedApplicationService) ApplicationServiceProvider.getApplicationService();
+
+			SampleService sampleService = new SampleServiceLocalImpl();
+			SampleBean sampleBean = sampleService.findSampleById(sampleId, user);
+			Sample sample = sampleBean.getDomain();
+			Collection<Publication> pubs = sample.getPublicationCollection();
+			if (pubs != null && pubs.size() > 0) {
+				for (Publication pub : pubs) {
+					if (pub.getId().equals(pubBean.getDomainFile().getId())) {
+						pubs.remove(pubBean.getDomainFile());
+						break;
+					}
+				}
+				appService.saveOrUpdate(sample);
+			}
 		} catch (Exception e) {
-			String err = "Error deleting publication by ID " + dataId;
+			String err = "Error in removing the sample publication association.";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}

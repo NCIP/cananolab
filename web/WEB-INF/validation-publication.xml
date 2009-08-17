@@ -5,21 +5,21 @@
 <form-validation>
 	<formset>
 		<form name="publicationForm">
-			<field property="publication.domainFile.category" page="2"
+			<field property="publication.domainFile.category" page="1"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.publication.category"
 					bundle="publication" />
 			</field>
-			<field property="publication.domainFile.status" page="2"
+			<field property="publication.domainFile.status" page="1"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.publication.status"
 					bundle="publication" />
 			</field>
-			<field property="publication.domainFile.title" page="2"
+			<field property="publication.domainFile.title" page="1"
 				depends="required">
 				<arg position="0" key="publication.title" bundle="publication" />
 			</field>
-			<field property="publication.domainFile.pubMedId" page="2"
+			<field property="publication.domainFile.pubMedId" page="1"
 				depends="validwhen">
 				<arg position="0" key="publication.domainFile.pubMedId" 
 					bundle="publication" />
@@ -41,7 +41,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="publication.domainFile.digitalObjectId" page="2"
+			<field property="publication.domainFile.digitalObjectId" page="1"
 				depends="validwhen">
 				<arg position="0" key="publication.domainFile.digitalObjectId" 
 					bundle="publication" />
@@ -64,7 +64,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="publication.uploadedFile" page="2"
+			<field property="publication.uploadedFile" page="1"
 				depends="validwhen">
 				<arg position="0" key="publication.uploadedFile" 
 					bundle="publication" />
@@ -82,7 +82,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="publication.externalUrl" page="2"
+			<field property="publication.externalUrl" page="1"
 				depends="validwhen">
 				<arg position="0" key="publication.externalUrl" 
 					bundle="publication" />

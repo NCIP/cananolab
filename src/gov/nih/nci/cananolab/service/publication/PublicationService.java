@@ -39,7 +39,7 @@ public interface PublicationService {
 
 	public int getNumberOfPublicPublications() throws PublicationException;
 
-	public void removePublicationFromSample(Sample particle, Long dataId)
+	public void removePublicationFromSample(String sampleId, PublicationBean pubBean, UserBean user)
 			throws PublicationException, NoAccessException;
 
 	public List<String> findPublicationIdsBy(String title, String category,
