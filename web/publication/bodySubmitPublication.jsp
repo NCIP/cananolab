@@ -320,9 +320,9 @@
 						 				${publicationForm.map.publication.domainFile.title}<br>
 								<br>
 								<a href="#"
-									onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}',
+									onclick="popImage(event, 'publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}',
 														${publicationForm.map.file.domainFile.id})"><img
-										src="compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}"
+										src="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}"
 										border="0" width="150"> </a>
 							</c:when>
 							<c:otherwise>
