@@ -244,11 +244,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	/**
 	 * Remove sample-publication association for an existing publication.
 	 * 
-	 * @param publication
-	 * @param sampleNames
-	 * @param fileData
-	 * @param authors
-	 * @throws Exception
+	 * @param sampleId
+	 * @param pubBean
+	 * @param user
+	 * @throws PublicationException, NoAccessException
 	 */
 	public void removePublicationFromSample(String sampleId, PublicationBean pubBean, UserBean user)
 			throws PublicationException, NoAccessException {
