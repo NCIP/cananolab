@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -246,9 +247,6 @@ public class SampleServiceLocalImpl implements SampleService {
 	public SampleBean findSampleById(String sampleId, UserBean user)
 			throws SampleException, NoAccessException {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
 			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
 					.add(Property.forName("id").eq(new Long(sampleId)));
 
@@ -262,6 +260,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List result = appService.query(crit);
@@ -682,6 +682,19 @@ public class SampleServiceLocalImpl implements SampleService {
 			return helper.findSampleNamesByAdvancedSearch(searchBean, user);
 		} catch (Exception e) {
 			String err = "Problem finding samples with the given advanced search parameters.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
+	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
+			String sampleName, AdvancedSampleSearchBean searchBean,
+			UserBean user) throws SampleException {
+		try {
+			return helper.findAdvancedSampleByAdvancedSearch(sampleName,
+					searchBean, user);
+		} catch (Exception e) {
+			String err = "Problem finding advanced sample details with the given advanced search parameters.";
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}

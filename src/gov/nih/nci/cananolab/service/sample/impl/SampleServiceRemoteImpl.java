@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -432,10 +433,16 @@ public class SampleServiceRemoteImpl implements SampleService {
 			UserBean User) throws PointOfContactException, NoAccessException {
 		throw new PointOfContactException("Not implemented for grid service");
 	}
-	
+
 	public List<String> findSampleNamesByAdvancedSearch(
 			AdvancedSampleSearchBean searchBean, UserBean user)
 			throws SampleException {
-		throw new SampleException("Not implemented for grid service");	
+		throw new SampleException("Not implemented for grid service");
+	}
+
+	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
+			String sampleName, AdvancedSampleSearchBean searchBean,
+			UserBean user) throws SampleException {
+		throw new SampleException("Not implemented for grid service");
 	}
 }

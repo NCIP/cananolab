@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -69,5 +70,10 @@ public interface SampleService {
 			UserBean user) throws PointOfContactException, NoAccessException;
 
 	public List<String> findSampleNamesByAdvancedSearch(
-			AdvancedSampleSearchBean searchBean, UserBean user) throws SampleException;
+			AdvancedSampleSearchBean searchBean, UserBean user)
+			throws SampleException;
+
+	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(String sampleName, 
+			AdvancedSampleSearchBean searchBean, UserBean user)
+			throws SampleException;
 }
