@@ -84,9 +84,10 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 		if (StringUtils.isEmpty(datumName) && StringUtils.isEmpty(datumValue)) {
 			return characterizationType;
 		} else if (StringUtils.isEmpty(datumValue)) {
-			return characterizationName;
+			return characterizationType + "<br>" + characterizationName;
 		} else {
-			return characterizationName + "<br>" + datumName;
+			return characterizationType + "<br>" + characterizationName
+					+ "<br>" + datumName;
 		}
 	}
 }
