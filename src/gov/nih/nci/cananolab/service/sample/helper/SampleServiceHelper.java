@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
@@ -1184,7 +1185,8 @@ public class SampleServiceHelper {
 					nanoEntityCrit = Restrictions.eq("nanoEntity.class",
 							nanoEntityClassName);
 				}
-				if (hasChemicalName) {
+				if (hasChemicalName
+						&& !StringUtils.isEmpty(compQuery.getOperand())) {
 					Criterion chemicalNameCrit = Restrictions.ilike(
 							"compElement.name", chemicalNameMatchMode
 									.getUpdatedText(), chemicalNameMatchMode
@@ -1220,7 +1222,8 @@ public class SampleServiceHelper {
 					funcEntityCrit = Restrictions.eq("funcEntity.class",
 							funcClassNameInteger);
 				}
-				if (hasChemicalName) {
+				if (hasChemicalName
+						&& !StringUtils.isEmpty(compQuery.getOperand())) {
 					Criterion chemicalNameCrit = Restrictions.ilike(
 							"funcEntity.name", chemicalNameMatchMode
 									.getUpdatedText(), chemicalNameMatchMode
@@ -1243,19 +1246,19 @@ public class SampleServiceHelper {
 			throws Exception {
 		String funcClassName = ClassUtils
 				.getShortClassNameFromDisplayName(functionName);
-		Class clazz = ClassUtils.getFullClass(funcClassName);
+		Class clazz = ClassUtils.getFullClass("function."+funcClassName);
 		Criterion funcCrit, funcCrit1, funcCrit2 = null;
 		// other function type
 		if (clazz == null) {
 			// inherent function
 			Criterion otherFuncCrit1 = Restrictions.eq(
-					"inherentFunction.class", "OtherNanomaterialEntity");
+					"inherentFunction.class", "OtherFunction");
 			Criterion otherFuncCrit2 = Restrictions.eq("inherentFunction.type",
 					functionName);
 			funcCrit1 = Restrictions.and(otherFuncCrit1, otherFuncCrit2);
 			// function
 			Criterion otherFuncCrit3 = Restrictions.eq("function.class",
-					"OtherFunctionalizingEntity");
+					"OtherFunction");
 			Criterion otherFuncCrit4 = Restrictions.eq("function.type",
 					functionName);
 			funcCrit2 = Restrictions.and(otherFuncCrit3, otherFuncCrit4);
@@ -1532,7 +1535,7 @@ public class SampleServiceHelper {
 					String functionName = query.getEntityType();
 					String funcClassName = ClassUtils
 							.getShortClassNameFromDisplayName(functionName);
-					Class clazz = ClassUtils.getFullClass(funcClassName);
+					Class clazz = ClassUtils.getFullClass("function."+funcClassName);
 					Criterion funcCrit, funcCrit1, funcCrit2 = null;
 					// other function type
 					if (clazz == null) {
@@ -1598,11 +1601,7 @@ public class SampleServiceHelper {
 					nanoEntityCrit = Restrictions.eq("class",
 							nanoEntityClassName);
 				}
-				if (nanoEntityCrit != null) {
-					entityDisjunction.add(nanoEntityCrit);
-					entityConjunction.add(nanoEntityCrit);
-				}
-				if (hasChemicalName) {
+				if (hasChemicalName && !StringUtils.isEmpty(query.getOperand())) {
 					TextMatchMode chemicalNameMatchMode = null;
 					if (query.getOperand().equals("equals")) {
 						chemicalNameMatchMode = new TextMatchMode(query
@@ -1617,6 +1616,10 @@ public class SampleServiceHelper {
 									.getMatchMode());
 					nanoEntityCrit = Restrictions.and(nanoEntityCrit,
 							chemicalNameCrit);
+				}
+				if (nanoEntityCrit != null) {
+					entityDisjunction.add(nanoEntityCrit);
+					entityConjunction.add(nanoEntityCrit);
 				}
 			}
 		}
@@ -1685,7 +1688,7 @@ public class SampleServiceHelper {
 					entityDisjunction.add(funcEntityCrit);
 					entityConjunction.add(funcEntityCrit);
 				}
-				if (hasChemicalName) {
+				if (hasChemicalName && !StringUtils.isEmpty(query.getOperand())) {
 					TextMatchMode chemicalNameMatchMode = null;
 					if (query.getOperand().equals("equals")) {
 						chemicalNameMatchMode = new TextMatchMode(query
@@ -1723,14 +1726,12 @@ public class SampleServiceHelper {
 	private List<Characterization> findCharacterizationsBy(String sampleName,
 			AdvancedSampleSearchBean searchBean) throws Exception {
 		List<Characterization> chars = new ArrayList<Characterization>();
-		// if hasDatum, directly query datum
-		if (searchBean.getCharacterizationQueries().isEmpty()
-				|| searchBean.getHasDatum()) {
+		if (searchBean.getCharacterizationQueries().isEmpty()) {
 			return chars;
 		}
 		DetachedCriteria crit = DetachedCriteria
-				.forClass(FunctionalizingEntity.class);
-		crit.createAlias("sample", "sample", CriteriaSpecification.LEFT_JOIN);
+				.forClass(Characterization.class);
+		crit.createAlias("sample", "sample");
 		crit.add(Restrictions.eq("sample.name", sampleName));
 
 		Disjunction charDisjunction = Restrictions.disjunction();
@@ -1738,26 +1739,28 @@ public class SampleServiceHelper {
 		for (CharacterizationQueryBean query : searchBean
 				.getCharacterizationQueries()) {
 			String charName = query.getCharacterizationName();
-			String className = ClassUtils
-					.getShortClassNameFromDisplayName(charName);
-			Class clazz = ClassUtils.getFullClass(className);
-			Criterion charCrit = null;
-			// other characterization type
-			if (clazz == null) {
-				charCrit = Restrictions.and(Restrictions.eq("class",
-						"OtherCharacterization"), Restrictions.eq("name",
-						className));
-			} else {
-				charCrit = Restrictions.eq("class", className);
-			}
-			if (charCrit != null) {
-				charDisjunction.add(charCrit);
-				charConjunction.add(charCrit);
+			if (StringUtils.isEmpty(query.getDatumName())
+					&& StringUtils.isEmpty(query.getDatumValue())) {
+				String className = ClassUtils
+						.getShortClassNameFromDisplayName(charName);
+				Class clazz = ClassUtils.getFullClass(className);
+				Criterion charCrit = null;
+				// other characterization type
+				if (clazz == null) {
+					charCrit = Restrictions.and(Restrictions.eq("class",
+							"OtherCharacterization"), Restrictions.eq("name",
+							className));
+				} else {
+					charCrit = Restrictions.eq("class", className);
+				}
+				if (charCrit != null) {
+					charDisjunction.add(charCrit);
+					charConjunction.add(charCrit);
+				}
 			}
 		}
 		Junction charJunction = (searchBean.getCompositionLogicalOperator()
 				.equals("and")) ? charConjunction : charDisjunction;
-
 		crit.add(charJunction);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -1777,37 +1780,42 @@ public class SampleServiceHelper {
 		if (!hasDatum) {
 			return data;
 		}
-		Criterion datumCrit = null;
+		List<Datum> sampleData = new ArrayList<Datum>();
+		for (Characterization achar : sample.getCharacterizationCollection()) {
+			for (Finding finding : achar.getFindingCollection()) {
+				sampleData.addAll(finding.getDatumCollection());
+			}
+		}
 		DetachedCriteria crit = DetachedCriteria.forClass(Datum.class);
 		Disjunction datumDisjunction = Restrictions.disjunction();
 		Conjunction datumConjunction = Restrictions.conjunction();
 		for (CharacterizationQueryBean charQuery : searchBean
 				.getCharacterizationQueries()) {
+			Criterion datumCrit = null;
 			// datum name
 			if (hasDatum && !StringUtils.isEmpty(charQuery.getDatumName())) {
-				datumCrit = Restrictions.and(datumCrit, Restrictions.eq(
-						"datum.name", charQuery.getDatumName()));
+				datumCrit = Restrictions.eq("name", charQuery.getDatumName());
 			}
 			// datum value
 			if (hasDatum && !StringUtils.isEmpty(charQuery.getDatumValue())) {
 				Float datumValue = new Float(charQuery.getDatumValue());
 				datumCrit = Restrictions.and(datumCrit, Restrictions.eq(
-						"datum.valueUnit", charQuery.getDatumValueUnit()));
+						"valueUnit", charQuery.getDatumValueUnit()));
 				if (charQuery.getOperand().equals("=")) {
 					datumCrit = Restrictions.and(datumCrit, Expression.eq(
-							"datum.value", datumValue));
+							"value", datumValue));
 				} else if (charQuery.getOperand().equals(">")) {
 					datumCrit = Restrictions.and(datumCrit, Expression.gt(
-							"datum.value", datumValue));
+							"value", datumValue));
 				} else if (charQuery.getOperand().equals(">=")) {
 					datumCrit = Restrictions.and(datumCrit, Expression.ge(
-							"datum.value", datumValue));
+							"value", datumValue));
 				} else if (charQuery.getOperand().equals("<")) {
 					datumCrit = Restrictions.and(datumCrit, Expression.lt(
-							"datum.value", datumValue));
+							"value", datumValue));
 				} else if (charQuery.getOperand().equals("<=")) {
 					datumCrit = Restrictions.and(datumCrit, Expression.le(
-							"datum.value", datumValue));
+							"value", datumValue));
 				}
 			}
 			if (datumCrit != null) {
@@ -1824,7 +1832,9 @@ public class SampleServiceHelper {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			Datum datum = (Datum) obj;
-			data.add(datum);
+			if (sampleData.contains(datum)) {
+				data.add(datum);
+			}
 		}
 		return data;
 	}
