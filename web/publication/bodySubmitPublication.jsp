@@ -31,8 +31,8 @@
 	<jsp:param name="topic" value="submit_publication_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
+<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 <html:form action="/publication" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newAuthor', 'Authors');">
-	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel">
