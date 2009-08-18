@@ -37,7 +37,7 @@
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
 				<a
-					href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})"
+					href="javascript:showSummary(${ind.count}, ${fn:length(publicationCategories)})"
 					title="${type}"><span>${type}</span> </a>
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
@@ -72,7 +72,7 @@
 				</c:choose>
 				<li class="${selectedClass}">
 					<a
-						href="javascript:showSummary('${ind2.count}', ${fn:length(publicationCategories)})"
+						href="javascript:showSummary(${ind2.count}, ${fn:length(publicationCategories)})"
 						title="${type}"><span>${type}</span> </a>
 				</li>
 			</c:forEach>
@@ -138,7 +138,7 @@
 										</tr>
 										<c:forEach var="pubBean"
 											items="${publicationSummaryView.category2Publications[type]}"
-											varStatus="ind">
+											varStatus="pubBeanInd">
 											<c:set var="pubObj" value="${pubBean.domainFile}" />
 											<tr>
 												<td valign="top">
@@ -154,9 +154,9 @@
 													<c:if test="${!empty pubObj.description}">
 														<div id="descriptionSection" style="position: relative;">
 															<a style="display: block" id="viewDetail" href="#"
-																onmouseOver="javascript: show('publicationDescription${ind.count}');"
-																onmouseOut="javascript: hide('publicationDescription${ind.count}');">View</a>
-															<table id="publicationDescription${ind.count}"
+																onmouseOver="javascript: show('publicationDescription${pubBeanInd.count}');"
+																onmouseOut="javascript: hide('publicationDescription${pubBeanInd.count}');">View</a>
+															<table id="publicationDescription${pubBeanInd.count}"
 																style="display: none; position: absolute; left: -510px; top: -50px; width: 500px; z-index: 5; border-width: 1px; border-color: #cccccc; border-style: solid; background-color: #FFFFFF;"
 																class="promptbox">
 																<tr>
