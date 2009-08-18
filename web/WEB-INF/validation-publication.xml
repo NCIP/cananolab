@@ -26,12 +26,14 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((((((*this*!=null) and (*this*!=0))
+						(((((((*this*!=null) and (*this*!=0))
 						or
 						(publication.domainFile.digitalObjectId!=null))					
 						or
 						((publication.domainFile.category=="book chapter") or 
 						(publication.domainFile.category=="report")))
+						or
+						(publication.domainFile.uri!=null))  
 						or
 						((publication.uploadedFile!=null) and 
 						(publication.domainFile.uriExternal=="false")))
@@ -48,13 +50,15 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((((*this*!=null)
+						((((((*this*!=null)
 						or
 						((publication.domainFile.pubMedId!=null) and 
 						(publication.domainFile.pubMedId!=0)))
 						or
 						((publication.domainFile.category=="book chapter") or 
 						(publication.domainFile.category=="report")))
+						or
+						(publication.domainFile.uri!=null))  
 						or
 						((publication.uploadedFile!=null) and 
 						(publication.domainFile.uriExternal=="false")))
@@ -71,7 +75,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((*this*!=null)
+						((((*this*!=null)
+						or
+						(publication.domainFile.uri!=null))  
 						or
 						(((publication.domainFile.pubMedId!=null) and 
 						(publication.domainFile.pubMedId!=0)) or
@@ -89,7 +95,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((*this*!=null)
+						((((*this*!=null)
+						or
+						(publication.domainFile.uri!=null))  
 						or
 						(((publication.domainFile.pubMedId!=null) and 
 						(publication.domainFile.pubMedId!=0)) or
