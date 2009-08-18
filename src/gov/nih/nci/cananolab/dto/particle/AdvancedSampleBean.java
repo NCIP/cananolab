@@ -102,12 +102,6 @@ public class AdvancedSampleBean {
 					PointOfContactBean pocBean = new PointOfContactBean(poc);
 					strs.add(pocBean.getDisplayName());
 				}
-			}
-			if (columnName.contains("function")) {
-				for (Function func : functions) {
-					FunctionBean funcBean = new FunctionBean(func);
-					strs.add(funcBean.getDisplayName());
-				}
 			} else if (columnName.contains("nanomaterial entity")) {
 				boolean hasName = false;
 				for (NanomaterialEntity entity : nanomaterialEntities) {
@@ -148,6 +142,11 @@ public class AdvancedSampleBean {
 								entity);
 						strs.add(entityBean.getDisplayName());
 					}
+				}
+			} else if (columnName.contains("function")) {
+				for (Function func : functions) {
+					FunctionBean funcBean = new FunctionBean(func);
+					strs.add(funcBean.getDisplayName());
 				}
 			} else if (columnName.contains("characterization")) {
 				boolean hasDatumValue = false, hasDatumName = false;
