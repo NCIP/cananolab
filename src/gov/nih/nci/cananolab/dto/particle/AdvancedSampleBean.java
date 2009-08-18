@@ -134,8 +134,10 @@ public class AdvancedSampleBean {
 				for (FunctionalizingEntity entity : functionalizingEntities) {
 					String entityName = ClassUtils.getDisplayName(ClassUtils
 							.getShortClassName(entity.getClass().getName()));
+					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
+							entity);
 					if (columnName.contains(entityName)) {
-						strs.add(entity.getName());
+						strs.add(entityBean.getDisplayName());
 						hasName = true;
 						break;
 					}
