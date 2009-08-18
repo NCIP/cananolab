@@ -23,12 +23,6 @@ public class AdvancedSampleSearchBean {
 	private String compositionLogicalOperator = "and";
 	private String characterizationLogicalOperator = "and";
 	private String logicalOperator = "or";
-	private Boolean hasNanomaterial = false;
-	private Boolean hasAgentMaterial = false;
-	private Boolean hasPOC = false;
-	private Boolean hasFunction = false;
-	private Boolean hasDatum = false;
-	private Boolean hasChemicalName = false;
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -135,62 +129,56 @@ public class AdvancedSampleSearchBean {
 	public Boolean getHasNanomaterial() {
 		for (CompositionQueryBean query : compositionQueries) {
 			if (query.getCompositionType().equals("nanomaterial entity")) {
-				hasNanomaterial = true;
-				break;
+				return true;
 			}
 		}
-		return hasNanomaterial;
+		return false;
 	}
 
 	public Boolean getHasAgentMaterial() {
 		for (CompositionQueryBean query : compositionQueries) {
 			if (query.getCompositionType().equals("functionalizing entity")) {
-				hasAgentMaterial = true;
-				break;
+				return true;
 			}
 		}
-		return hasAgentMaterial;
+		return false;
 	}
 
 	public Boolean getHasFunction() {
 		for (CompositionQueryBean query : compositionQueries) {
 			if (query.getCompositionType().equals("function")) {
-				hasFunction = true;
-				break;
+				return true;
 			}
 		}
-		return hasFunction;
+		return false;
 	}
 
 	public Boolean getHasPOC() {
 		for (SampleQueryBean query : sampleQueries) {
 			if (query.getNameType().equals("point of contact name")) {
-				hasPOC = true;
-				break;
+				return true;
 			}
 		}
-		return hasPOC;
+		return false;
 	}
 
 	public Boolean getHasDatum() {
 		for (CharacterizationQueryBean charQuery : characterizationQueries) {
 			if (!StringUtils.isEmpty(charQuery.getDatumName())
 					|| !StringUtils.isEmpty(charQuery.getDatumValue())) {
-				hasDatum = true;
-				break;
+				return true;
 			}
 		}
-		return hasDatum;
+		return false;
 	}
 
 	public Boolean getHasChemicalName() {
 		for (CompositionQueryBean query : getCompositionQueries()) {
 			if (!StringUtils.isEmpty(query.getChemicalName())) {
-				hasChemicalName = true;
-				break;
+				return true;
 			}
 		}
-		return hasChemicalName;
+		return false;
 	}
 
 	public List<SampleQueryBean> getSampleQueries() {
