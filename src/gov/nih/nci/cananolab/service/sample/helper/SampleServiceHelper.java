@@ -442,11 +442,11 @@ public class SampleServiceHelper {
 			if (otherFunctionalizingEntityTypes != null
 					&& otherFunctionalizingEntityTypes.length > 0) {
 				Integer classOrderNumber = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
-						.get("otherFunctionalizingEntity");
+						.get("OtherFunctionalizingEntity");
 				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
 						classOrderNumber);
 				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
-						otherNanomaterialEntityTypes);
+						otherFunctionalizingEntityTypes);
 				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
 						otherFuncCrit2);
 				disjunction.add(otherFuncCrit);
@@ -1682,7 +1682,7 @@ public class SampleServiceHelper {
 					Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
 							.get(funcEntityClassName);
 					funcEntityCrit = Restrictions.eq("class",
-							funcClassNameInteger);
+							0);
 				}
 				if (funcEntityCrit != null) {
 					entityDisjunction.add(funcEntityCrit);
@@ -1708,9 +1708,9 @@ public class SampleServiceHelper {
 		Junction funcEntityJunction = (searchBean
 				.getCompositionLogicalOperator().equals("and")) ? entityConjunction
 				: entityDisjunction;
-
-		crit.add(funcEntityJunction);
+		crit.add(funcEntityJunction);		
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionCollection.targetCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
