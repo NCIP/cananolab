@@ -8,30 +8,19 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SearchSampleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
