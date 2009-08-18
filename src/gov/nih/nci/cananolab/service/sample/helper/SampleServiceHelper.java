@@ -1246,7 +1246,7 @@ public class SampleServiceHelper {
 			throws Exception {
 		String funcClassName = ClassUtils
 				.getShortClassNameFromDisplayName(functionName);
-		Class clazz = ClassUtils.getFullClass("function."+funcClassName);
+		Class clazz = ClassUtils.getFullClass("function." + funcClassName);
 		Criterion funcCrit, funcCrit1, funcCrit2 = null;
 		// other function type
 		if (clazz == null) {
@@ -1535,7 +1535,8 @@ public class SampleServiceHelper {
 					String functionName = query.getEntityType();
 					String funcClassName = ClassUtils
 							.getShortClassNameFromDisplayName(functionName);
-					Class clazz = ClassUtils.getFullClass("function."+funcClassName);
+					Class clazz = ClassUtils.getFullClass("function."
+							+ funcClassName);
 					Criterion funcCrit, funcCrit1, funcCrit2 = null;
 					// other function type
 					if (clazz == null) {
@@ -1682,7 +1683,7 @@ public class SampleServiceHelper {
 					Integer funcClassNameInteger = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
 							.get(funcEntityClassName);
 					funcEntityCrit = Restrictions.eq("class",
-							0);
+							funcClassNameInteger);
 				}
 				if (funcEntityCrit != null) {
 					entityDisjunction.add(funcEntityCrit);
@@ -1708,9 +1709,11 @@ public class SampleServiceHelper {
 		Junction funcEntityJunction = (searchBean
 				.getCompositionLogicalOperator().equals("and")) ? entityConjunction
 				: entityDisjunction;
-		crit.add(funcEntityJunction);		
+		crit.add(funcEntityJunction);
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
-		crit.setFetchMode("functionCollection.targetCollection", FetchMode.JOIN);
+		crit
+				.setFetchMode("functionCollection.targetCollection",
+						FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
