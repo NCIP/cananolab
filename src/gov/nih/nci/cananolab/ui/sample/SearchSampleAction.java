@@ -142,7 +142,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		for (int i = 0; i < functionTypes.length; i++) {
 			String className = ClassUtils
 					.getShortClassNameFromDisplayName(functionTypes[i]);
-			if (className.length() == 0) {
+			Class clazz = ClassUtils.getFullClass("function." + className);
+			if (clazz==null) {
 				className = "OtherFunction";
 				otherFunctionTypes.add(functionTypes[i]);
 			} else {
