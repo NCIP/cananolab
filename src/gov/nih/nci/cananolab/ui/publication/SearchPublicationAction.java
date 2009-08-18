@@ -45,10 +45,14 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
+		// get the page number from request
+		int displayPage = getDisplayPage(request);
+
 		UserBean user = (UserBean) session.getAttribute("user");
 		List<PublicationBean> publicationBeans = null;
-		// retrieve from session if it's not null
-		if (session.getAttribute("publicationSearchResults") != null) {
+		// retrieve from session if it's not null and not the first page
+		if (session.getAttribute("publicationSearchResults") != null
+				&& displayPage > 0) {
 			publicationBeans = new ArrayList<PublicationBean>((List) session
 					.getAttribute("publicationSearchResults"));
 		} else {
@@ -66,10 +70,6 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			}
 		}
 		// load publicationBean details 25 at a time for displaying
-
-		// get the page number from request
-		int displayPage = getDisplayPage(request);
-
 		// pass in page and size
 		List<PublicationBean> pubBeansPerPage = getPublicationsPerPage(
 				publicationBeans, displayPage,

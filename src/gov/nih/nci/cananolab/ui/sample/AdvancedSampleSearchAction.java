@@ -38,6 +38,8 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		// get the page number from request
+		int displayPage = getDisplayPage(request);
 
 		HttpSession session = request.getSession();
 
@@ -46,7 +48,8 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 				.get("searchBean");
 		// retrieve from session if it's not null
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
-		if (session.getAttribute("advancedSampleSearchResults") != null) {
+		if (session.getAttribute("advancedSampleSearchResults") != null
+				&& displayPage > 0) {
 			sampleBeans = new ArrayList<AdvancedSampleBean>((List) session
 					.getAttribute("advancedSampleSearchResults"));
 		} else {
@@ -65,8 +68,6 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 			}
 		}
 		// load advancedSampleBean details 25 at a time for displaying
-		// get the page number from request
-		int displayPage = getDisplayPage(request);
 		// pass in page and size
 		List<AdvancedSampleBean> sampleBeansPerPage = getSamplesPerPage(
 				sampleBeans, displayPage, Constants.DISPLAY_TAG_TABLE_SIZE,

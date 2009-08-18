@@ -42,9 +42,13 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
+		// get the page number from request
+		int displayPage = getDisplayPage(request);
+
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
-		// retrieve from session if it's not null
-		if (session.getAttribute("sampleSearchResults") != null) {
+		// retrieve from session if it's not null and not first page
+		if (session.getAttribute("sampleSearchResults") != null
+				&& displayPage > 0) {
 			sampleBeans = new ArrayList<SampleBean>((List) session
 					.getAttribute("sampleSearchResults"));
 		} else {
@@ -62,10 +66,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 
 		// load sampleBean details 25 at a time for displaying
-
-		// get the page number from request
-		int displayPage = getDisplayPage(request);
-
 		// pass in page and size
 		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans,
 				displayPage, Constants.DISPLAY_TAG_TABLE_SIZE, request);
@@ -143,7 +143,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			String className = ClassUtils
 					.getShortClassNameFromDisplayName(functionTypes[i]);
 			Class clazz = ClassUtils.getFullClass("function." + className);
-			if (clazz==null) {
+			if (clazz == null) {
 				className = "OtherFunction";
 				otherFunctionTypes.add(functionTypes[i]);
 			} else {
