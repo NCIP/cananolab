@@ -133,17 +133,17 @@ public class Constants {
 	// This is a hack to querying based on .class to work in case of multi-level
 	// inheritance with joined-subclass
 	// TODO check the order generated in the hibernate mapping file for each
-	// release
+	// release, the parent class is 1.
 	public static final Map<String, Integer> FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP = new HashMap<String, Integer>();
 	static {
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
-				"OtherFunctionalizingEntity"), new Integer(0));
+				"OtherFunctionalizingEntity"), new Integer(2));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String("Biopolymer"),
-				new Integer(1));
+				new Integer(3));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String("Antibody"),
-				new Integer(2));
+				new Integer(4));
 		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
-				"SmallMolecule"), new Integer(3));
+				"SmallMolecule"), new Integer(5));
 	}
 
 	/* image file name extension */
@@ -155,8 +155,9 @@ public class Constants {
 			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
 			"STD", "SVG", "SXD", "WMF" };
 
-	public static final String[] PRIVATE_DISPATCHES = { "input", "create", "delete",
-			"setupNew", "setupUpdate", "summaryEdit", "add", "remove", "save" };
+	public static final String[] PRIVATE_DISPATCHES = { "input", "create",
+			"delete", "setupNew", "setupUpdate", "summaryEdit", "add",
+			"remove", "save" };
 
 	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico chemical characterization";
 	public static final String INVIVO_CHARACTERIZATION = "invivo characterization";
