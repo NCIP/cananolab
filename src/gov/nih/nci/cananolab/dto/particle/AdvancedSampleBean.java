@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
@@ -9,6 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
@@ -122,7 +122,11 @@ public class AdvancedSampleBean {
 					for (NanomaterialEntity entity : nanomaterialEntities) {
 						NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
 								entity);
-						strs.add(entityBean.getDisplayName());
+						strs.add(entityBean.getType());
+						for (ComposingElementBean ceBean : entityBean
+								.getComposingElements()) {
+							strs.add(ceBean.getDisplayName());
+						}
 					}
 				}
 			} else if (columnName.contains("functionalizing entity")) {
@@ -146,27 +150,18 @@ public class AdvancedSampleBean {
 			} else if (columnName.contains("function")) {
 				for (Function func : functions) {
 					FunctionBean funcBean = new FunctionBean(func);
-					strs.add(funcBean.getDisplayName());
+					strs.add(funcBean.getType());
 				}
 			} else if (columnName.contains("characterization")) {
-				boolean hasDatumValue = false, hasDatumName = false;
+				boolean hasDatum = false;
 				for (Datum datum : data) {
 					if (columnName.contains(datum.getName())) {
 						strs.add(datum.getValue() + " " + datum.getValueUnit());
-						hasDatumValue = true;
+						hasDatum = true;
 						break;
 					}
 				}
-				if (!hasDatumValue) {
-					for (Characterization chara : characterizations) {
-						for (Finding finding : chara.getFindingCollection()) {
-							for (Datum datum : finding.getDatumCollection()) {
-								strs.add(datum.getName());
-							}
-						}
-					}
-				}
-				if (!hasDatumName) {
+				if (!hasDatum) {
 					for (Characterization chara : characterizations) {
 						String charName = ClassUtils.getDisplayName(ClassUtils
 								.getShortClassName(chara.getClass().getName()));
