@@ -23,11 +23,13 @@ import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
+import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -52,25 +54,29 @@ public class PublicationAction extends BaseAnnotationAction {
 		String sampleId = (String) theForm.get("sampleId");
 		Boolean addToSample = (Boolean) theForm.get("addToSample");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		
 		/**
-		 * If new from sample page, need to update sample-publication relation.
+		 * If user chosen other samples, need to add this pub to those samples.
+		 */
+		List<String> newNames = null;
+		String[] otherSamples = (String[]) theForm.get("otherSamples");		
+		if (otherSamples == null || otherSamples.length == 0) {
+			newNames = new ArrayList<String>(1);
+		} else {
+			newNames = new ArrayList<String>(otherSamples.length + 1);
+			newNames.addAll(Arrays.asList(otherSamples));
+		}
+		/**
+		 * If new from sample page, need to add this pub to the sample.
 		 */
 		if (addToSample != null && addToSample.booleanValue()) {
 			SampleService sampleService = new SampleServiceLocalImpl();
 			SampleBean sampleBean = sampleService.findSampleById(sampleId, user);
-			String name = sampleBean.getDomain().getName();
-			String[] names = publicationBean.getSampleNames();
-			List<String> newNames = null;
-			if (names == null || names.length == 0) {
-				newNames = new ArrayList<String>(1);
-			} else {
-				newNames = new ArrayList<String>(names.length + 1);
-				newNames.addAll(Arrays.asList(names));
-			}
-			newNames.add(name);
+			newNames.add(sampleBean.getDomain().getName());
+		}
+		if (!newNames.isEmpty()) {
 			publicationBean.setSampleNames(newNames.toArray(new String[0]));
 		}
-		
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION, user
 				.getLoginName(), 0);
 		PublicationService service = new PublicationServiceLocalImpl();
@@ -159,18 +165,43 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String publicationId = request.getParameter("publicationId");
+		String sampleId = request.getParameter("sampleId");
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, user);
 		theForm.set("publication", pubBean);
-		String sampleId = request.getParameter("sampleId");
 		theForm.set("sampleId", sampleId);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
-		if (sampleId != null && sampleId.trim().length() > 0) {
+		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
+			/**
+			 * Highlight selected other sample name on publication edit page.
+			 */
+			SortedSet<SortableName> names = 
+				(SortedSet<SortableName>) request.getSession().getAttribute("otherSampleNames");
+			if (names != null && !names.isEmpty()) {
+				List<String> selectedNames = new ArrayList<String>();
+				SampleService sampleService = new SampleServiceLocalImpl();
+				for (SortableName name : names) {
+					SampleBean sampleBean = sampleService.findSampleByName(name.getName(), user);
+					Collection<Publication> pubs = 
+						sampleBean.getDomain().getPublicationCollection();
+					if (pubs != null && !pubs.isEmpty()) {
+						for (Publication pub : pubs) {
+							if (pub.getId().equals(pubBean.getDomainFile().getId())) {
+								selectedNames.add(name.getName());
+								break;
+							}
+						}
+					}
+				}
+				if (!selectedNames.isEmpty()) {
+					theForm.set("otherSamples", selectedNames.toArray(new String[0]));
+				}
+			}
 			return mapping.findForward("sampleSubmitPublication");
 		} else {
 			return mapping.findForward("publicationSubmitPublication");

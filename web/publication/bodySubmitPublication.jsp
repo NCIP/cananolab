@@ -353,7 +353,7 @@
 							id="browseSampleNames" style="display: block">Browse</a>
 						<img src="images/ajax-loader.gif" border="0" class="counts"
 							id="loaderImg" style="display: none">
-						<html:select property="publication.sampleNames" multiple="true"
+						<html:select property="otherSamples" multiple="true"
 							size="5" styleId="allSampleNameSelect" style="display: none">
 							<c:if
 								test="${!empty publicationForm.map.publication.sampleNames}">
