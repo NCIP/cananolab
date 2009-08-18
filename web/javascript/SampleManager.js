@@ -23,7 +23,7 @@ function setSampleDropdowns() {
 }
 
 var sampleQueryCache = {};
-var numberOfSampleQueries = null;
+var numberOfSampleQueries = 0;
 var currentSearchBean = null;
 
 function clearSampleQuery() {
@@ -69,7 +69,6 @@ function displaySampleQueries() {
 			sessionTimeout();
 		}
 	});
-
 }
 
 function populateSampleQueries() {
@@ -164,7 +163,7 @@ function setCompositionEntityOptions(selectedEntity) {
 }
 
 var compositionQueryCache = {};
-var numberOfCompQueries = null;
+var numberOfCompQueries = 0;
 var currentSearchBean = null;
 
 function clearCompositionQuery() {
@@ -406,7 +405,7 @@ function setDatumValueOptions() {
 }
 
 var characterizationQueryCache = {};
-var numberOfCharQueries = null;
+var numberOfCharQueries = 0;
 var currentSearchBean = null;
 
 function clearCharacterizationQuery() {
