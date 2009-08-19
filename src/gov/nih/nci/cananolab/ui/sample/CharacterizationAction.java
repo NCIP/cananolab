@@ -348,6 +348,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.prepareSummary(mapping, form, request, response);
 		this.prepareCharacterizationTypes(mapping, form, request, response);
 
+		// Marker that indicates page is for printing only (hide tabs, links, etc).
+		request.setAttribute("printView", Boolean.TRUE);
+
 		// Filter out un-selected types.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
