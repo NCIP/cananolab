@@ -9,6 +9,12 @@
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
 	<body onload="window.print();self.close()">
+		<c:if test="${not empty theSample}">
+			<jsp:include page="/bodyTitle.jsp">
+				<jsp:param name="pageTitle" 
+					value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Characterization" />
+			</jsp:include>
+		</c:if>
 		<jsp:include page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />
 	</body>
 </html>
