@@ -421,11 +421,11 @@
 									<c:choose>
 										<c:when test="${empty dataId}">
 											<c:set var="origUrl"
-												value="publication.do?page=0&sampleId=${publicationForm.map.sampleId}&dispatch=setupNew&location=${applicationOwner}" />
+												value="publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}&location=${applicationOwner}" />
 										</c:when>
 										<c:otherwise>
 											<c:set var="origUrl"
-												value="publication.do?page=0&sampleId=${publicationForm.map.sampleId}&dispatch=setupUpdate&location=${applicationOwner}&fileId=${publicationForm.map.publication.domainFile.id}" />
+												value="publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${dataId}&location=${applicationOwner}" />
 										</c:otherwise>
 									</c:choose>
 									<input type="reset" value="Reset"
