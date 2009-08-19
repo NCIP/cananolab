@@ -236,8 +236,8 @@ public class PublicationAction extends BaseAnnotationAction {
 			SortedMap<String, List<PublicationBean>> categories = summaryBean
 					.getCategory2Publications();
 			List<PublicationBean> pubs = categories.get(type);
+			categories.clear(); // clear all, then put back selected type only.
 			if (pubs != null) {
-				categories.clear();
 				categories.put(type, pubs);
 				summaryBean.setPublicationCategories(categories.keySet());
 			}
@@ -319,8 +319,8 @@ public class PublicationAction extends BaseAnnotationAction {
 			SortedMap<String, List<PublicationBean>> categories = summaryBean
 					.getCategory2Publications();
 			List<PublicationBean> pubs = categories.get(type);
+			categories.clear(); // clear all, then put back selected type only.
 			if (pubs != null) {
-				categories.clear();
 				categories.put(type, pubs);
 				summaryBean.setPublicationCategories(categories.keySet());
 			}
