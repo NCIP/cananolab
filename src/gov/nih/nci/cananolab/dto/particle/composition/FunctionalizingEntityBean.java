@@ -401,6 +401,17 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		return buffer.toString();
 	}
 
+	public String getAdvancedSearchDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getType());
+		if (!StringUtils.isEmpty(getDomainEntity().getName())) {
+			buffer.append(" (");
+			buffer.append(getDomainEntity().getName());
+			buffer.append(")");
+		}
+		return buffer.toString();
+	}
+
 	public boolean isWithImagingFunction() {
 		return withImagingFunction;
 	}
