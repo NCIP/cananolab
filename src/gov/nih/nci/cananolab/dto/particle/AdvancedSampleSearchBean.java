@@ -253,6 +253,7 @@ public class AdvancedSampleSearchBean {
 		nanoEntityCount = 0;
 		funcEntityCount = 0;
 		funcCount = 0;
+		datumTypeCount = 0;
 		// count how many each type of queries are
 		for (SampleQueryBean q : sampleQueries) {
 			if (q.getNameType().equals("point of contact name")) {
