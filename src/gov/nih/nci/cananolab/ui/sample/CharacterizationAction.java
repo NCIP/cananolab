@@ -184,11 +184,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = charService.findCharacterizationById(
 				charId, user);
-		// setup dropdown for existing characterization
+		// setup Characterization Name drop down.
 		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
 				charBean.getCharacterizationType());
+		
+		// setup Assay Type drop down.
 		InitCharacterizationSetup.getInstance().getAssayTypesByCharName(
 				request, charBean.getCharacterizationName());
+		
+		// TODO: Find out what this is for, "charNameDatumNames" not used on JSPs. 
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
 				charBean.getCharacterizationName(), charBean.getAssayType());
@@ -782,15 +786,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		session.setAttribute("openFinding", openFinding);
 		
 		/**
-		 * If user entered customized Char Type/Name then failed validation,
-		 * we should show and select the entered value when redirected.
+		 * If user entered customized Char Type/Name, Assay Type by selecting [other],
+		 * we should show and select the entered value on edit page.
 		 */
 		String currentCharType = achar.getCharacterizationType();
 		if (!StringUtils.isEmpty(currentCharType)) {
 			Collection<String> charTypes = 
 				(Collection<String>) request.getSession().getAttribute("characterizationTypes");
 			if (charTypes != null && !charTypes.contains(currentCharType)) {
-				request.setAttribute("currentCharType", currentCharType);
+				request.setAttribute("otherCharType", currentCharType);
 			}
 		}
 		String currentCharName = achar.getCharacterizationName();
@@ -798,7 +802,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			Collection<String> charNames = 
 				(Collection<String>) request.getSession().getAttribute("charTypeChars");
 			if (charNames != null && !charNames.contains(currentCharName)) {
-				request.setAttribute("currentCharName", currentCharName);
+				request.setAttribute("otherCharName", currentCharName);
+			}
+		}
+		String currentAssayType = achar.getAssayType();
+		if (!StringUtils.isEmpty(currentAssayType)) {
+			Collection<String> assayType = 
+				(Collection<String>) request.getSession().getAttribute("charNameAssays");
+			if (assayType != null && !assayType.contains(currentAssayType)) {
+				request.setAttribute("otherAssayType", currentAssayType);
 			}
 		}
 	}
