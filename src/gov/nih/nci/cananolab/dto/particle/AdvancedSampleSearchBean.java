@@ -4,7 +4,9 @@ import gov.nih.nci.cananolab.dto.BaseQueryBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * information needed for the advanced sample search form
@@ -23,6 +25,8 @@ public class AdvancedSampleSearchBean {
 	private String compositionLogicalOperator = "and";
 	private String characterizationLogicalOperator = "and";
 	private String logicalOperator = "or";
+	private int nanoEntityCount = 0, funcEntityCount = 0, funcCount = 0,
+			pocCount = 0, datumTypeCount = 0;
 
 	public List<CompositionQueryBean> getCompositionQueries() {
 		return compositionQueries;
@@ -242,5 +246,54 @@ public class AdvancedSampleSearchBean {
 			columnNames.add(query.getQueryAsColumnName());
 		}
 		return columnNames;
+	}
+
+	public void setQueryCounts() {
+		pocCount = 0;
+		nanoEntityCount = 0;
+		funcEntityCount = 0;
+		funcCount = 0;
+		// count how many each type of queries are
+		for (SampleQueryBean q : sampleQueries) {
+			if (q.getNameType().equals("point of contact name")) {
+				pocCount++;
+			}
+		}
+		for (CompositionQueryBean query : getCompositionQueries()) {
+			if (query.getCompositionType().equals("nanomaterial entity")) {
+				nanoEntityCount++;
+			} else if (query.getCompositionType().equals(
+					"functionalizing entity")) {
+				funcEntityCount++;
+			} else if (query.getCompositionType().equals("function")) {
+				funcCount++;
+			}
+		}
+		// how many types of datum
+		Set<String> datumNames = new HashSet<String>();
+		for (CharacterizationQueryBean query : getCharacterizationQueries()) {
+			datumNames.add(query.getDatumName());
+		}
+		datumTypeCount = datumNames.size();
+	}
+
+	public int getNanoEntityCount() {
+		return nanoEntityCount;
+	}
+
+	public int getFuncEntityCount() {
+		return funcEntityCount;
+	}
+
+	public int getFuncCount() {
+		return funcCount;
+	}
+
+	public int getPocCount() {
+		return pocCount;
+	}
+
+	public int getDatumTypeCount() {
+		return datumTypeCount;
 	}
 }
