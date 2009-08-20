@@ -46,6 +46,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) theForm
 				.get("searchBean");
+		searchBean.setQueryCounts();
 		// retrieve from session if it's not null
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
 		if (session.getAttribute("advancedSampleSearchResults") != null
