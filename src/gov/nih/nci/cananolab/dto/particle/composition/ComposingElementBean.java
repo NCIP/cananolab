@@ -83,6 +83,17 @@ public class ComposingElementBean {
 		return buffer.toString();
 	}
 
+	public String getAdvancedSearchDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getDomain().getType());
+		if (!StringUtils.isEmpty(getDomain().getName())) {
+			buffer.append(" (");
+			buffer.append(getDomain().getName());
+			buffer.append(")");
+		}
+		return buffer.toString();
+	}
+
 	public String getMolecularFormulaDisplayName() {
 		StringBuffer buffer = new StringBuffer();
 		if (!StringUtils.isEmpty(getDomain().getMolecularFormula())) {
