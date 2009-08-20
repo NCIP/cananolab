@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -52,6 +53,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			.getLogger(SampleServiceLocalImpl.class);
 
 	private SampleServiceHelper helper = new SampleServiceHelper();
+	private AdvancedSampleServiceHelper advancedHelper = new AdvancedSampleServiceHelper();
 
 	/**
 	 * Persist a new sample or update an existing canano sample
@@ -679,7 +681,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			AdvancedSampleSearchBean searchBean, UserBean user)
 			throws SampleException {
 		try {
-			return helper.findSampleNamesByAdvancedSearch(searchBean, user);
+			return advancedHelper.findSampleNamesByAdvancedSearch(searchBean,
+					user);
 		} catch (Exception e) {
 			String err = "Problem finding samples with the given advanced search parameters.";
 			logger.error(err, e);
@@ -691,8 +694,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			String sampleName, AdvancedSampleSearchBean searchBean,
 			UserBean user) throws SampleException {
 		try {
-			return helper.findAdvancedSampleByAdvancedSearch(sampleName,
-					searchBean, user);
+			return advancedHelper.findAdvancedSampleByAdvancedSearch(
+					sampleName, searchBean, user);
 		} catch (Exception e) {
 			String err = "Problem finding advanced sample details with the given advanced search parameters.";
 			logger.error(err, e);
