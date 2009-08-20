@@ -125,7 +125,7 @@ public class AdvancedSampleBean {
 						strs.add(entityBean.getType());
 						for (ComposingElementBean ceBean : entityBean
 								.getComposingElements()) {
-							strs.add(ceBean.getDisplayName());
+							strs.add(ceBean.getAdvancedSearchDisplayName());
 						}
 					}
 				}
@@ -137,7 +137,7 @@ public class AdvancedSampleBean {
 					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 							entity);
 					if (columnName.contains(entityName)) {
-						strs.add(entityBean.getDisplayName());
+						strs.add(entityBean.getAdvancedSearchDisplayName());
 						hasName = true;
 						break;
 					}
@@ -146,13 +146,13 @@ public class AdvancedSampleBean {
 					for (FunctionalizingEntity entity : functionalizingEntities) {
 						FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 								entity);
-						strs.add(entityBean.getDisplayName());
+						strs.add(entityBean.getAdvancedSearchDisplayName());
 					}
 				}
 			} else if (columnName.contains("function")) {
 				for (Function func : functions) {
 					FunctionBean funcBean = new FunctionBean(func);
-					strs.add(funcBean.getType());
+					strs.add(funcBean.getDisplayName());
 				}
 			} else if (columnName.contains("characterization")) {
 				boolean hasDatum = false;
@@ -163,7 +163,7 @@ public class AdvancedSampleBean {
 						break;
 					}
 				}
-				if (!hasDatum) {
+				if (!hasDatum && !columnName.contains("<br>")) {
 					for (Characterization chara : characterizations) {
 						String charName = ClassUtils.getDisplayName(ClassUtils
 								.getShortClassName(chara.getClass().getName()));
@@ -207,5 +207,4 @@ public class AdvancedSampleBean {
 	public List<Datum> getData() {
 		return data;
 	}
-
 }
