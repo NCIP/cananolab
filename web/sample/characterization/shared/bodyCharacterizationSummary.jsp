@@ -92,8 +92,8 @@
 			<c:choose>
 				<c:when test="${!empty characterizationProtocols}">
 					<html:select styleId="protocolId"
-						property="achar.protocolBean.domain.id"
-						onchange="retrieveProtocolFile()">
+						property="achar.protocolBean.domain.id">
+						<%-- onchange="retrieveProtocolFile()"> --%>
 						<option />
 							<html:options collection="characterizationProtocols"
 								property="domain.id" labelProperty="displayName" />
