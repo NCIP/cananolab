@@ -68,7 +68,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
 
-		saveCharacterization(request, theForm, charBean);
+		this.saveCharacterization(request, theForm, charBean);
 
 		ActionMessages msgs = new ActionMessages();
 		// validate number by javascript filterFloatingNumber
@@ -225,12 +225,19 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return includePage;
 	}
 
+	/**
+	 * Setup characterization bean for saving. 
+	 * 
+	 * @param request
+	 * @param theForm
+	 * @param charBean
+	 * @throws Exception
+	 */
 	private void setupDomainChar(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (charBean.getClassName() == null
-				|| charBean.getClassName().length() == 0) {
+		if (StringUtils.isEmpty(charBean.getClassName())) {
 			String className = ClassUtils
 					.getShortClassNameFromDisplayName(charBean
 							.getCharacterizationName());
@@ -239,6 +246,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		charBean.setupDomain(user.getLoginName());
 	}
 
+	/**
+	 * Setup, prepare and save characterization. 
+	 * 
+	 * @param request
+	 * @param theForm
+	 * @param charBean
+	 * @throws Exception
+	 */
 	private void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
@@ -246,7 +261,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		setupDomainChar(request, theForm, charBean);
+		this.setupDomainChar(request, theForm, charBean);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.saveCharacterization(sampleBean, charBean, user);
 
@@ -506,7 +521,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitExperimentConfigSetup.getInstance()
 				.persistExperimentConfigDropdowns(request, configBean);
 		// also save characterization
-		saveCharacterization(request, theForm, achar);
+		this.saveCharacterization(request, theForm, achar);
 		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
@@ -566,9 +581,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					.persistCharacterizationDropdowns(request, achar);
 
 			// also save characterization
-			saveCharacterization(request, theForm, achar);
-			request.setAttribute("anchor", "result");
+			this.saveCharacterization(request, theForm, achar);
 			this.checkOpenForms(achar, request);
+			request.setAttribute("anchor", "result");
 			// return to setupUpdate to retrieve the data matrix in the correct
 			// form from database
 			// after saving to database.
@@ -750,7 +765,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitExperimentConfigSetup.getInstance()
 				.persistExperimentConfigDropdowns(request, configBean);
 		// also save characterization
-		saveCharacterization(request, theForm, achar);
+		this.saveCharacterization(request, theForm, achar);
 		this.checkOpenForms(achar, request);
 		return mapping.findForward("inputForm");
 	}
@@ -787,7 +802,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		
 		/**
 		 * If user entered customized Char Type/Name, Assay Type by selecting [other],
-		 * we should show and select the entered value on edit page.
+		 * we should show and highlight the entered value on the edit page.
 		 */
 		String currentCharType = achar.getCharacterizationType();
 		if (!StringUtils.isEmpty(currentCharType)) {
