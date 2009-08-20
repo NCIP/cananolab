@@ -20,9 +20,9 @@
 						<option value="other">
 							[other]
 						</option>
-						<c:if test="${not empty currentCharType}">
-							<option selected="selected" value="${currentCharType}">
-								${currentCharType}
+						<c:if test="${not empty otherCharType}">
+							<option selected="selected" value="${otherCharType}">
+								${otherCharType}
 							</option>
 						</c:if>
 					</html:select>
@@ -43,9 +43,9 @@
 						<option value="other">
 							[other]
 						</option>
-						<c:if test="${not empty currentCharName}">
-							<option selected="selected" value="${currentCharName}">
-								${currentCharName}
+						<c:if test="${not empty otherCharName}">
+							<option selected="selected" value="${otherCharName}">
+								${otherCharName}
 							</option>
 						</c:if>
 					</html:select>
@@ -65,7 +65,7 @@
 					<c:if
 						test="${characterizationForm.map.achar.characterizationType eq 'physico chemical characterization'}">
 						<option
-							value="${characterizationForm.map.achar.characterizationName}" selected>
+							value="${characterizationForm.map.achar.characterizationName}" selected="selected">
 							${characterizationForm.map.achar.characterizationName}
 						</option>
 					</c:if>
@@ -75,6 +75,11 @@
 					<option value="other">
 						[other]
 					</option>
+					<c:if test="${not empty otherAssayType}">
+						<option selected="selected" value="${otherAssayType}">
+							${otherAssayType}
+						</option>
+					</c:if>
 				</html:select>
 			</div>
 		</td>
