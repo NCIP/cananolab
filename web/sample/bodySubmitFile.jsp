@@ -43,7 +43,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<span id="load" style="${loadStyle }"> <html:file
+			<span id="load" style="${loadStyle}"> <html:file
 					property="${fileParent}.theFile.uploadedFile" size="60"
 					styleId="uploadedFile" /> &nbsp;&nbsp;</span>
 			<c:set var="uploadedUriStyle" value="display:none" />
@@ -72,6 +72,11 @@
 					<option value="other">
 						[other]
 					</option>
+					<c:if test="${not empty otherFileType}">
+						<option selected="selected" value="${otherFileType}">
+							${otherFileType}
+						</option>
+					</c:if>
 				</html:select>
 			</div>
 		</td>

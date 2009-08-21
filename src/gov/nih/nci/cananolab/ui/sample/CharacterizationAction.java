@@ -805,28 +805,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		 * we should show and highlight the entered value on the edit page.
 		 */
 		String currentCharType = achar.getCharacterizationType();
-		if (!StringUtils.isEmpty(currentCharType)) {
-			Collection<String> charTypes = 
-				(Collection<String>) request.getSession().getAttribute("characterizationTypes");
-			if (charTypes != null && !charTypes.contains(currentCharType)) {
-				request.setAttribute("otherCharType", currentCharType);
-			}
-		}
+		setOtherValueOption(request, currentCharType, "characterizationTypes", "otherCharType");
+		
 		String currentCharName = achar.getCharacterizationName();
-		if (!StringUtils.isEmpty(currentCharName)) {
-			Collection<String> charNames = 
-				(Collection<String>) request.getSession().getAttribute("charTypeChars");
-			if (charNames != null && !charNames.contains(currentCharName)) {
-				request.setAttribute("otherCharName", currentCharName);
-			}
-		}
+		setOtherValueOption(request, currentCharName, "charTypeChars", "otherCharName");
+		
 		String currentAssayType = achar.getAssayType();
-		if (!StringUtils.isEmpty(currentAssayType)) {
-			Collection<String> assayType = 
-				(Collection<String>) request.getSession().getAttribute("charNameAssays");
-			if (assayType != null && !assayType.contains(currentAssayType)) {
-				request.setAttribute("otherAssayType", currentAssayType);
-			}
-		}
+		setOtherValueOption(request, currentAssayType, "charNameAssays", "otherAssayType");
 	}
 }

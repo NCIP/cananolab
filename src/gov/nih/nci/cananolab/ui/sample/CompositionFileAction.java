@@ -28,6 +28,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 public class CompositionFileAction extends BaseAnnotationAction {
+	
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -55,37 +56,6 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		return mapping.findForward("success");
 	}
 
-	private void setLookups(HttpServletRequest request) throws Exception {
-		InitSampleSetup.getInstance().setSharedDropdowns(request);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
-	}
-
-	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		request.getSession().removeAttribute("compositionForm");
-		setLookups(request);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupSample(theForm, request, Constants.LOCAL_SITE);
-		return mapping.getInputForward();
-	}
-
-	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String fileId = request.getParameter("dataId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService fileService = new FileServiceLocalImpl();
-		FileBean fileBean = fileService.findFileById(fileId, user);
-		CompositionBean compBean = (CompositionBean) theForm.get("comp");
-		compBean.setTheFile(fileBean);
-		setLookups(request);
-		setupSample(theForm, request, Constants.LOCAL_SITE);
-		ActionForward forward = mapping.getInputForward();
-		return forward;
-	}
-
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -101,8 +71,64 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		
 		return mapping.findForward("success");
+	}
+	
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.getSession().removeAttribute("compositionForm");
+		
+		return mapping.getInputForward();
+	}
+
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String fileId = request.getParameter("dataId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		FileService fileService = new FileServiceLocalImpl();
+		FileBean fileBean = fileService.findFileById(fileId, user);
+		CompositionBean compBean = (CompositionBean) theForm.get("comp");
+		compBean.setTheFile(fileBean);
+		ActionForward forward = mapping.getInputForward();
+		return forward;
+	}
+
+	/**
+	 * Handle input request, when validation failed this handler will be called too.
+	 *  
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupSample(theForm, request, Constants.LOCAL_SITE);
+		this.setLookups(request);
+		/**
+		 * If user entered customized Char Type/Name, Assay Type by selecting [other],
+		 * we should show and highlight the entered value on the edit page.
+		 */
+		CompositionBean comp = (CompositionBean) theForm.get("comp");
+		String currentCharType = comp.getTheFile().getDomainFile().getType();
+		setOtherValueOption(request, currentCharType, "characterizationTypes", "otherFileType");
+		
+		return mapping.findForward("inputForm");
+	}
+
+	private void setLookups(HttpServletRequest request) throws Exception {
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 }

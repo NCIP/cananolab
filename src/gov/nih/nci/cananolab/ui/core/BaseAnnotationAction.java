@@ -14,9 +14,11 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.FileInputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -269,8 +271,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Retrieve a value from request by name in the order of Parameter - Request
-	 * Attribute
+	 * Retrieve a value from request by name in the order of 
+	 * Parameter - Request Attribute
 	 * 
 	 * @param request
 	 * @param name
@@ -282,5 +284,25 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			value = request.getAttribute(name);
 		}
 		return value;
+	}
+
+	/**
+	 * Check if user entered customized value by selecting [other] option,
+	 * if so, set it request, so user can see it again and won't lost it. 
+	 * 
+	 * @param request
+	 * @param value
+	 * @param sessionName
+	 * @param attributeName
+	 */
+	protected void setOtherValueOption(HttpServletRequest request,
+			String value, String sessionName, String attributeName) {
+		if (!StringUtils.isEmpty(value)) {
+			Collection<String> charTypes = 
+				(Collection<String>) request.getSession().getAttribute(sessionName);
+			if (charTypes != null && !charTypes.contains(value)) {
+				request.setAttribute(attributeName, value);
+			}
+		}
 	}
 }
