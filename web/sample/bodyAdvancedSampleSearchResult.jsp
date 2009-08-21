@@ -51,7 +51,7 @@
 				<display:column title="Sample Name" property="${sampleURL}"
 					sortable="true" />
 				<c:forEach var="entry" items="${sample.attributeMap}">
-					<display:column title="${entry.key}">
+					<display:column title="${entry.key}" sortable="true">
 						<c:forEach var="value" items="${entry.value}">
 					${value}<br />
 						</c:forEach>
