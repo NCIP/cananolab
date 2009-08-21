@@ -93,6 +93,7 @@ function populateSampleQueries() {
 	}
 	for ( var i = 0; i < queries.length; i++) {
 		theQuery = queries[i];
+		// alert("sample "+theQuery.id);
 		if (theQuery.id == null || theQuery.id == "") {
 			theQuery.id = -i - 1;
 		}
@@ -111,6 +112,7 @@ function populateSampleQueries() {
 		sampleQueryCache[id] = theQuery;
 	}
 	clearSampleQuery();
+	// alert("sample :"+numberOfSampleQueries);
 }
 
 function editSampleQuery(eleid) {
@@ -235,6 +237,7 @@ function populateCompositionQueries() {
 	}
 	for ( var i = 0; i < queries.length; i++) {
 		theQuery = queries[i];
+		// alert("comp: "+theQuery.id);
 		if (theQuery.id == null || theQuery.id == "") {
 			theQuery.id = -i - 1;
 		}
@@ -254,6 +257,7 @@ function populateCompositionQueries() {
 		compositionQueryCache[id] = theQuery;
 	}
 	clearCompositionQuery();
+	// alert("comp: "+numberOfCompQueries);
 }
 
 function editCompositionQuery(eleid) {
@@ -496,8 +500,15 @@ function populateCharacterizationQueries() {
 		dwr.util.cloneNode("charPattern", {
 			idSuffix : id
 		});
-		dwr.util.setValue("charTypeValue" + id, theQuery.characterizationType);
+		dwr.util.setValue("charTypeValue" + id, theQuery.characterizationType);		
+		//combine assay type into characterization name
+		if (theQuery.assayType != "") {
+			theQuery.characterizationName = theQuery.characterizationName + ":"
+					+ theQuery.assayType;
+			theQuery.assayType="";
+		}
 		dwr.util.setValue("charNameValue" + id, theQuery.characterizationName);
+
 		dwr.util.setValue("datumNameValue" + id, theQuery.datumName);
 		dwr.util.setValue("charOperandValue" + id, theQuery.operand);
 
@@ -512,7 +523,12 @@ function populateCharacterizationQueries() {
 		} else {
 			dwr.util.setValue("datumValueValue" + id, theQuery.datumValue);
 		}
-		dwr.util.setValue("datumValueUnitValue" + id, theQuery.datumValueUnit);
+		if (theQuery.operand == "") {
+			dwr.util.setValue("datumValueUnitValue" + id, "");
+		} else {
+			dwr.util.setValue("datumValueUnitValue" + id,
+					theQuery.datumValueUnit);
+		}
 		dwr.util.setValue("charQueryId", id);
 		$("charPattern" + id).style.display = "";
 		if (characterizationQueryCache[id] == null) {
