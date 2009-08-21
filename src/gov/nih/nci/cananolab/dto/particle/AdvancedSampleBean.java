@@ -111,7 +111,8 @@ public class AdvancedSampleBean {
 					if (columnName.contains(entityName)) {
 						for (ComposingElement ce : entity
 								.getComposingElementCollection()) {
-							strs.add(ce.getName());
+							ComposingElementBean ceBean=new ComposingElementBean(ce);
+							strs.add(ceBean.getAdvancedSearchDisplayName());
 						}
 						hasName = true;
 						break;
