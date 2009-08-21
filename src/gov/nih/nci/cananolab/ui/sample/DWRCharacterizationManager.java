@@ -49,7 +49,7 @@ public class DWRCharacterizationManager {
 				charNamesWithAssayTypes.add(labelValue);
 				for (String assayType : assayTypes) {
 					LabelValueBean labelValueWithAssay = new LabelValueBean(
-							" --" + assayType, assayType);
+							" --" + assayType, charName+":"+assayType);
 					charNamesWithAssayTypes.add(labelValueWithAssay);
 				}
 			} else {

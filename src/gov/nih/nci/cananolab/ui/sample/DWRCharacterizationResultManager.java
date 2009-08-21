@@ -56,6 +56,11 @@ public class DWRCharacterizationResultManager {
 			String assayType) throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		List<LabelValueBean> allDatumNames = new ArrayList<LabelValueBean>();
+		//extract assayType from characterizationName
+		if (characterizationName.contains(":")) {
+			int ind=characterizationName.indexOf(":");
+			characterizationName=characterizationName.substring(ind+1);
+		}
 		// if assayType is empty, use charName to look up datums, as well as
 		// look up all assay types and use assay type to look up datum
 		if (StringUtils.isEmpty(assayType)) {
