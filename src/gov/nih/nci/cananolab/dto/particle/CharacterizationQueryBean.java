@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 public class CharacterizationQueryBean extends BaseQueryBean {
 	private String characterizationType = "";
 	private String characterizationName = "";
+	private String assayType = "";
 	private Boolean datumValueBoolean = false;
 	private String datumName = "";
 	private String datumValue = "";
@@ -35,6 +36,14 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 
 	public void setCharacterizationName(String characterizationName) {
 		this.characterizationName = characterizationName;
+	}
+
+	public String getAssayType() {
+		return assayType;
+	}
+
+	public void setAssayType(String assayType) {
+		this.assayType = assayType;
 	}
 
 	public String getDatumName() {
@@ -72,7 +81,11 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 	public String getDisplayName() {
 		List<String> strs = new ArrayList<String>();
 		strs.add(characterizationType);
-		strs.add(characterizationName);
+		if (!StringUtils.isEmpty(assayType)) {
+			strs.add(characterizationName + ":" + assayType);
+		} else {
+			strs.add(characterizationName);
+		}
 		strs.add(datumName);
 		strs.add(getOperand());
 		strs.add(datumValue);
