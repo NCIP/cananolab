@@ -248,7 +248,7 @@ public class AdvancedSampleSearchBean {
 		return columnNames;
 	}
 
-	public void setQueryCounts() {
+	public void updateQueries() {
 		pocCount = 0;
 		nanoEntityCount = 0;
 		funcEntityCount = 0;
@@ -270,9 +270,17 @@ public class AdvancedSampleSearchBean {
 				funcCount++;
 			}
 		}
-		// how many types of datum
+		// how many types of datum and set assay type if any
 		Set<String> datumNames = new HashSet<String>();
 		for (CharacterizationQueryBean query : getCharacterizationQueries()) {
+			// set assay type and characterization name
+			if (query.getCharacterizationName().contains(":")) {
+				int ind = query.getCharacterizationName().indexOf(":");
+				query.setAssayType(query.getCharacterizationName().substring(
+						ind + 1));
+				query.setCharacterizationName(query.getCharacterizationName()
+						.substring(0, ind));
+			}
 			datumNames.add(query.getDatumName());
 		}
 		datumTypeCount = datumNames.size();
