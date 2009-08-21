@@ -19,6 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.axis.utils.StringUtils;
+
 /**
  * This class represents shared properties of samples resulted from advanced
  * sample search.
@@ -111,7 +113,8 @@ public class AdvancedSampleBean {
 					if (columnName.contains(entityName)) {
 						for (ComposingElement ce : entity
 								.getComposingElementCollection()) {
-							ComposingElementBean ceBean=new ComposingElementBean(ce);
+							ComposingElementBean ceBean = new ComposingElementBean(
+									ce);
 							strs.add(ceBean.getAdvancedSearchDisplayName());
 						}
 						hasName = true;
@@ -166,9 +169,21 @@ public class AdvancedSampleBean {
 				}
 				if (!hasDatum && !columnName.contains("<br>")) {
 					for (Characterization chara : characterizations) {
-						String charName = ClassUtils.getDisplayName(ClassUtils
-								.getShortClassName(chara.getClass().getName()));
-						strs.add(charName);
+						String characterizationType = ClassUtils
+								.getDisplayName(ClassUtils
+										.getShortClassName(chara.getClass()
+												.getSuperclass().getName()));
+						if (columnName.contains(characterizationType)) {
+							String charName = ClassUtils
+									.getDisplayName(ClassUtils
+											.getShortClassName(chara.getClass()
+													.getName()));
+							if (!StringUtils.isEmpty(chara.getAssayType())) {
+								strs.add(charName + ":" + chara.getAssayType());
+							} else {
+								strs.add(charName);
+							}
+						}
 					}
 				}
 			}
