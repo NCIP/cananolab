@@ -356,7 +356,8 @@ public class AdvancedSampleServiceHelper {
 			// a time union the result in Java
 			for (CharacterizationQueryBean charQuery : searchBean
 					.getCharacterizationQueries()) {
-				//query for datum only when datum is specified as a search criterion
+				// query for datum only when datum is specified as a search
+				// criterion
 				if (!StringUtils.isEmpty(charQuery.getDatumName())) {
 					crit = DetachedCriteria.forClass(Datum.class, "rootCrit");
 					DetachedCriteria subCrit = getDatumSubquery(charQuery, "id");
@@ -664,6 +665,11 @@ public class AdvancedSampleServiceHelper {
 			charCrit = Restrictions.and(otherCharCrit1, otherCharCrit2);
 		} else {
 			charCrit = Restrictions.eq(charAlias + "class", charClassName);
+		}
+		// assay type
+		if (!StringUtils.isEmpty(charQuery.getAssayType())) {
+			charCrit = Restrictions.and(charCrit, Restrictions.eq(charAlias+"assayType",
+					charQuery.getAssayType()));
 		}
 		// datum name
 		if (!StringUtils.isEmpty(charQuery.getDatumName())) {
