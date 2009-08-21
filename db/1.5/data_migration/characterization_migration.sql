@@ -17,37 +17,37 @@ ALTER TABLE characterization ADD COLUMN assay_type VARCHAR(200);
 -- in vitro data migration
 update characterization
 set discriminator='Cytotoxicity',
-assay_type='Cell Viability'
+assay_type='cell viability'
 where discriminator ='CellViability';
 
 update characterization
 set discriminator='Cytotoxicity',
-assay_type='Caspase 3 Apoptosis'
+assay_type='caspase 3 apoptosis'
 where discriminator ='Caspase3Activation';
 
 update characterization
 set discriminator='BloodContact',
-assay_type='Plasma Protein Binding (2D PAGE)'
+assay_type='plasma protein binding (2D PAGE)'
 where discriminator ='PlasmaProteinBinding';
 
 update characterization
 set discriminator='BloodContact',
-assay_type='Hemolysis'
+assay_type='hemolysis'
 where discriminator ='Hemolysis';
 
 update characterization
 set discriminator='BloodContact',
-assay_type='Platelet Aggregation'
+assay_type='platelet aggregation'
 where discriminator ='PlateletAggregation';
 
 update characterization
 set discriminator='BloodContact',
-assay_type='Coagulation'
+assay_type='coagulation'
 where discriminator ='Coagulation';
 
 update characterization
 set discriminator='BloodContact',
-assay_type='Complement Activation'
+assay_type='complement activation'
 where discriminator ='ComplementActivation';
 
 update characterization
@@ -57,32 +57,32 @@ where discriminator ='CFU_GM';
 
 update characterization
 set discriminator='ImmuneCellFunction',
-assay_type='Leukocyte Proliferation'
+assay_type='leukocyte proliferation'
 where discriminator ='LeukocyteProliferation';
 
 update characterization
 set discriminator='ImmuneCellFunction',
-assay_type='Phagocytosis'
+assay_type='phagocytosis'
 where discriminator ='Phagocytosis';
 
 update characterization
 set discriminator='ImmuneCellFunction',
-assay_type='Cytokine Induction'
+assay_type='cytokine induction'
 where discriminator ='CytokineInduction';
 
 update characterization
 set discriminator='ImmuneCellFunction',
-assay_type='Chemotaxis'
+assay_type='chemotaxis'
 where discriminator ='Chemotaxis';
 
 update characterization
 set discriminator='ImmuneCellFunction',
-assay_type='Oxidative Burst'
+assay_type='oxidative burst'
 where discriminator ='OxidativeBurst';
 
 update characterization
 set discriminator='ImmuneCellFunction',
-assay_type='Cytotoxic Activity of NK Cells'
+assay_type='cytotoxic activity of NK cells'
 where discriminator ='NKCellCytotoxicActivity';
 
 DROP TABLE IF EXISTS surface_chemistry;
