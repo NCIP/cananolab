@@ -26,7 +26,9 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -78,24 +80,59 @@ public class AdvancedSampleServiceHelper {
 			AdvancedSampleSearchBean searchBean, UserBean user)
 			throws Exception {
 		List<String> sampleNames = new ArrayList<String>();
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
-				"rootCrit").setProjection(
-				Projections.distinct(Property.forName("name")));
-		setSampleCriteria(searchBean, crit);
-		setCompositionCriteria(searchBean, crit);
-		setCharacterizationCriteria(searchBean, crit);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		List results = appService.query(crit);
+		List results = new ArrayList();
+		// AND or all empty
+		if (searchBean.getLogicalOperator().equals("and")
+				|| searchBean.getSampleQueries().isEmpty()
+				&& searchBean.getCharacterizationQueries().isEmpty()
+				&& searchBean.getCompositionQueries().isEmpty()) {
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+					"rootCrit").setProjection(
+					Projections.distinct(Property.forName("name")));
+			setSampleCriteria(searchBean, crit);
+			setCompositionCriteria(searchBean, crit);
+			setCharacterizationCriteria(searchBean, crit);
+			results = appService.query(crit);
+		}
+		// OR union the results
+		else {
+			Set<String> sampleNameSet = new HashSet<String>();
+			// sample
+			if (!searchBean.getSampleQueries().isEmpty()) {
+				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+						"rootCrit").setProjection(
+						Projections.distinct(Property.forName("name")));
+				setSampleCriteria(searchBean, crit);
+				results = appService.query(crit);
+			}
+			// composition
+			if (!searchBean.getCompositionQueries().isEmpty()) {
+				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+						"rootCrit").setProjection(
+						Projections.distinct(Property.forName("name")));
+				setCompositionCriteria(searchBean, crit);
+				results.addAll(appService.query(crit));
+			}
+			if (!searchBean.getCharacterizationQueries().isEmpty()) {
+				// characterization
+				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+						"rootCrit").setProjection(
+						Projections.distinct(Property.forName("name")));
+				setCharacterizationCriteria(searchBean, crit);
+				results.addAll(appService.query(crit));
+			}
+		}
 		List filteredResults = new ArrayList(results);
-
 		// get public data
 		if (user == null) {
 			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			String sampleName = obj.toString();
-			if (user == null
+			// remove redundancy
+			if (!sampleNames.contains(sampleName) && user == null
 					|| authService.checkReadPermission(user, sampleName)) {
 				sampleNames.add(sampleName);
 			} else { // ignore no access exception
@@ -319,16 +356,19 @@ public class AdvancedSampleServiceHelper {
 			// a time union the result in Java
 			for (CharacterizationQueryBean charQuery : searchBean
 					.getCharacterizationQueries()) {
-				crit = DetachedCriteria.forClass(Datum.class, "rootCrit");
-				DetachedCriteria subCrit = getDatumSubquery(charQuery, "id");
-				crit.add(Subqueries.exists(subCrit));
-				crit
-						.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-				List results = appService.query(crit);
-				for (Object obj : results) {
-					Datum datum = (Datum) obj;
-					if (sampleData.contains(datum)) {
-						data.add(datum);
+				//query for datum only when datum is specified as a search criterion
+				if (!StringUtils.isEmpty(charQuery.getDatumName())) {
+					crit = DetachedCriteria.forClass(Datum.class, "rootCrit");
+					DetachedCriteria subCrit = getDatumSubquery(charQuery, "id");
+					crit.add(Subqueries.exists(subCrit));
+					crit
+							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+					List results = appService.query(crit);
+					for (Object obj : results) {
+						Datum datum = (Datum) obj;
+						if (sampleData.contains(datum)) {
+							data.add(datum);
+						}
 					}
 				}
 			}
