@@ -20,11 +20,6 @@
 						<option value="other">
 							[other]
 						</option>
-						<c:if test="${not empty otherCharType}">
-							<option selected="selected" value="${otherCharType}">
-								${otherCharType}
-							</option>
-						</c:if>
 					</html:select>
 				</div>
 			</td>
@@ -43,11 +38,6 @@
 						<option value="other">
 							[other]
 						</option>
-						<c:if test="${not empty otherCharName}">
-							<option selected="selected" value="${otherCharName}">
-								${otherCharName}
-							</option>
-						</c:if>
 					</html:select>
 				</div>
 			</td>
@@ -75,11 +65,6 @@
 					<option value="other">
 						[other]
 					</option>
-					<c:if test="${not empty otherAssayType}">
-						<option selected="selected" value="${otherAssayType}">
-							${otherAssayType}
-						</option>
-					</c:if>
 				</html:select>
 			</div>
 		</td>
