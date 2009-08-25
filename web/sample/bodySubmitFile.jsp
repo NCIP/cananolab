@@ -72,11 +72,6 @@
 					<option value="other">
 						[other]
 					</option>
-					<c:if test="${not empty otherFileType}">
-						<option selected="selected" value="${otherFileType}">
-							${otherFileType}
-						</option>
-					</c:if>
 				</html:select>
 			</div>
 		</td>
