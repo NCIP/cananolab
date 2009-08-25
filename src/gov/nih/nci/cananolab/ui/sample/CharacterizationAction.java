@@ -805,12 +805,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		 * we should show and highlight the entered value on the edit page.
 		 */
 		String currentCharType = achar.getCharacterizationType();
-		setOtherValueOption(request, currentCharType, "characterizationTypes", "otherCharType");
+		setOtherValueOption(request, currentCharType, "characterizationTypes");
 		
 		String currentCharName = achar.getCharacterizationName();
-		setOtherValueOption(request, currentCharName, "charTypeChars", "otherCharName");
+		setOtherValueOption(request, currentCharName, "charTypeChars");
 		
 		String currentAssayType = achar.getAssayType();
-		setOtherValueOption(request, currentAssayType, "charNameAssays", "otherAssayType");
+		setOtherValueOption(request, currentAssayType, "charNameAssays");
 	}
 }

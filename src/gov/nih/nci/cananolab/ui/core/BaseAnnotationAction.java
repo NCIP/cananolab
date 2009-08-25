@@ -296,12 +296,12 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * @param attributeName
 	 */
 	protected void setOtherValueOption(HttpServletRequest request,
-			String value, String sessionName, String attributeName) {
+			String value, String sessionName) {
 		if (!StringUtils.isEmpty(value)) {
 			Collection<String> charTypes = 
 				(Collection<String>) request.getSession().getAttribute(sessionName);
 			if (charTypes != null && !charTypes.contains(value)) {
-				request.setAttribute(attributeName, value);
+				charTypes.add(value);
 			}
 		}
 	}

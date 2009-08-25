@@ -92,7 +92,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		}
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
-		checkOpenForms(entityBean, request);
+		this.checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -199,7 +199,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
-		checkOpenForms(entityBean, request);
+		this.checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -229,7 +229,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 					entityBean.getClassName(), "nanomaterialEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-		checkOpenForms(entityBean, request);
+		this.checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -242,7 +242,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		ComposingElementBean composingElement = entity.getTheComposingElement();
 		entity.addComposingElement(composingElement);
 		// save nanomaterial entity
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 		// return to setupUpdate to retrieve the correct entity from database
@@ -260,10 +260,10 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.get("nanomaterialEntity");
 		ComposingElementBean element = entity.getTheComposingElement();
 		entity.removeComposingElement(element);
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
-		checkOpenForms(entity, request);
+		this.checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -276,7 +276,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		FileBean theFile = entity.getTheFile();
 		entity.addFile(theFile);
 		// save nanomaterial entity
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
@@ -293,9 +293,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		entity.removeFile(theFile);
 		entity.setTheFile(new FileBean());
 		// save nanomaterial entity
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
-		checkOpenForms(entity, request);
+		this.checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -347,5 +347,39 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			openComposingElement = true;
 		}
 		session.setAttribute("openComposingElement", openComposingElement);
+		
+		/**
+		 * If user entered customized value selecting [other] on previous page,
+		 * we should show and highlight the entered value on the edit page.
+		 */
+		// Nanomaterial Entity Type
+		String entityType = entity.getType();
+		setOtherValueOption(request, entityType, "nanomaterialEntityTypes");
+		
+		// Composing Element Type
+		ComposingElementBean compBean = entity.getTheComposingElement();
+		String compType = compBean.getDomain().getType();
+		setOtherValueOption(request, compType, "composingElementTypes");
+		setOtherValueOption(request, compType, "emulsionComposingElementTypes");
+		
+		// Composing Element Unit
+		String compUnit = compBean.getDomain().getValueUnit();
+		setOtherValueOption(request, compUnit, "composingElementUnits");
+		
+		// Composing Element Formula Type
+		String compFormula = compBean.getDomain().getMolecularFormulaType();
+		setOtherValueOption(request, compFormula, "molecularFormulaTypes");
+		
+		// Composing Element Function Type
+		String compFunction = compBean.getTheFunction().getType();
+		setOtherValueOption(request, compFunction, "functionTypes");
+		
+		// Composing Element Modality Type
+		String compModality = compBean.getTheFunction().getImagingFunction().getModality();
+		setOtherValueOption(request, compModality, "modalityTypes");
+		
+		// File Type
+		String fileType = entity.getTheFile().getDomainFile().getType();
+		setOtherValueOption(request, fileType, "fileTypes");
 	}
 }

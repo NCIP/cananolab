@@ -335,5 +335,33 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			openFunction = true;
 		}
 		session.setAttribute("openFunction", openFunction);
+		
+		/**
+		 * If user entered customized value selecting [other] on previous page,
+		 * we should show and highlight the entered value on the edit page.
+		 */
+		// Functional Entity Type
+		String entityType = entity.getType();
+		setOtherValueOption(request, entityType, "functionalizingEntityTypes");
+		
+		// Functional Entity Unit
+		String entityUnit = entity.getValueUnit();
+		setOtherValueOption(request, entityUnit, "functionalizingEntityUnits");
+		
+		// Functional Entity Formula Type
+		String entityFormula = entity.getMolecularFormulaType();
+		setOtherValueOption(request, entityFormula, "molecularFormulaTypes");
+		
+		// Functional Entity Activation Method Type
+		String activationType = entity.getActivationMethod().getType();
+		setOtherValueOption(request, activationType, "activationMethods");
+		
+		// Functional Entity Function Type
+		String functionType = entity.getTheFunction().getType();
+		setOtherValueOption(request, functionType, "functionTypes");
+		
+		// File Type
+		String fileType = entity.getTheFile().getDomainFile().getType();
+		setOtherValueOption(request, fileType, "fileTypes");
 	}
 }

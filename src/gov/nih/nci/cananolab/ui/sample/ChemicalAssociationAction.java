@@ -182,7 +182,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		}
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request, compositionBean);
-		checkOpenForms(assocBean, request);
+		this.checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -259,7 +259,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
 				request, assocBean, hasFunctionalizingEntities);
-		checkOpenForms(assocBean, request);
+		this.checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -353,7 +353,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.findChemicalAssociationById(assocId, user);
 		prepareEntityLists(assocBean, request);
 		theForm.set("assoc", assocBean);
-		checkOpenForms(assocBean, request);
+		this.checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -368,7 +368,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// save the association
 		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");
-		checkOpenForms(assoc, request);
+		this.checkOpenForms(assoc, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -384,7 +384,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "file");
 		// save the association
 		saveAssociation(request, theForm, assoc);
-		checkOpenForms(assoc, request);
+		this.checkOpenForms(assoc, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -429,5 +429,21 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			openFile = true;
 		}
 		session.setAttribute("openFile", openFile);
+		
+		/**
+		 * If user entered customized value selecting [other] on previous page,
+		 * we should show and highlight the entered value on the edit page.
+		 */
+		// Association Type
+		String assocType = assoc.getType();
+		setOtherValueOption(request, assocType, "chemicalAssociationTypes");
+		
+		// Bond Type
+		String bondType = assoc.getAttachment().getBondType();
+		setOtherValueOption(request, bondType, "bondTypes");
+		
+		// File Type
+		String fileType = assoc.getTheFile().getDomainFile().getType();
+		setOtherValueOption(request, fileType, "fileTypes");
 	}
 }
