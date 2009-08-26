@@ -37,60 +37,67 @@ public class FindingBean {
 	public FindingBean() {
 	}
 
+	/**
+	 * Constructor for CharBean copying & "findFindingById()".
+	 * @param finding
+	 */
 	public FindingBean(Finding finding) {
 		domain = finding;
-		List<Datum> data = new ArrayList<Datum>(finding.getDatumCollection());
-		Collections.sort(data, new Comparators.DatumDateComparator());
+		List<Datum> data = null;
+		if (finding.getDatumCollection() != null) {
+			data = new ArrayList<Datum>(finding.getDatumCollection());
+			Collections.sort(data, new Comparators.DatumDateComparator());
+		}
 
-		if (finding.getFileCollection() != null) {
+		if (finding.getFileCollection() != null && 
+			!finding.getFileCollection().isEmpty()) {
 			for (File file : finding.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
-		}
-		Collections.sort(files, new Comparators.FileBeanDateComparator());
-
-		// get data matrix column headers in order and generate a map based on
-		// headers
-		Map<ColumnHeader, List<Datum>> datumMap = new HashMap<ColumnHeader, List<Datum>>();
-		Map<ColumnHeader, List<Condition>> conditionMap = new HashMap<ColumnHeader, List<Condition>>();
-
-		List<Datum> datumList = new ArrayList<Datum>();
-		List<Condition> conditionList = new ArrayList<Condition>();
-		for (Datum datum : data) {
-			List<Condition> conditions = new ArrayList<Condition>(datum
-					.getConditionCollection());
-			Collections.sort(conditions,
-					new Comparators.ConditionDateComparator());
-			for (Condition condition : conditions) {
-				ColumnHeader conditionColumn = new ColumnHeader(condition);
-				if (!columnHeaders.contains(conditionColumn)) {
-					columnHeaders.add(conditionColumn);
-				}
-				if (conditionMap.get(conditionColumn) != null) {
-					conditionList = conditionMap.get(conditionColumn);
-				} else {
-					conditionList = new ArrayList<Condition>();
-					conditionMap.put(conditionColumn, conditionList);
-				}
-				if (!conditionList.contains(condition)) {
-					conditionList.add(condition);
-				}
-			}
-			ColumnHeader datumColumn = new ColumnHeader(datum);
-			if (!columnHeaders.contains(datumColumn)) {
-				columnHeaders.add(datumColumn);
-			}
-			if (datumMap.get(datumColumn) != null) {
-				datumList = datumMap.get(datumColumn);
-			} else {
-				datumList = new ArrayList<Datum>();
-				datumMap.put(datumColumn, datumList);
-			}
-			datumList.add(datum);
+			Collections.sort(files, new Comparators.FileBeanDateComparator());
 		}
 
 		// generate matrix
 		if (data != null && !data.isEmpty()) {
+			// get data matrix column headers in order and generate a map based on headers.
+			Map<ColumnHeader, List<Datum>> datumMap = new HashMap<ColumnHeader, List<Datum>>();
+			Map<ColumnHeader, List<Condition>> conditionMap = new HashMap<ColumnHeader, List<Condition>>();
+
+			List<Datum> datumList = new ArrayList<Datum>();
+			List<Condition> conditionList = new ArrayList<Condition>();
+			for (Datum datum : data) {
+				List<Condition> conditions = new ArrayList<Condition>(datum
+						.getConditionCollection());
+				Collections.sort(conditions,
+						new Comparators.ConditionDateComparator());
+				for (Condition condition : conditions) {
+					ColumnHeader conditionColumn = new ColumnHeader(condition);
+					if (!columnHeaders.contains(conditionColumn)) {
+						columnHeaders.add(conditionColumn);
+					}
+					if (conditionMap.get(conditionColumn) != null) {
+						conditionList = conditionMap.get(conditionColumn);
+					} else {
+						conditionList = new ArrayList<Condition>();
+						conditionMap.put(conditionColumn, conditionList);
+					}
+					if (!conditionList.contains(condition)) {
+						conditionList.add(condition);
+					}
+				}
+				ColumnHeader datumColumn = new ColumnHeader(datum);
+				if (!columnHeaders.contains(datumColumn)) {
+					columnHeaders.add(datumColumn);
+				}
+				if (datumMap.get(datumColumn) != null) {
+					datumList = datumMap.get(datumColumn);
+				} else {
+					datumList = new ArrayList<Datum>();
+					datumMap.put(datumColumn, datumList);
+				}
+				datumList.add(datum);
+			}
+
 			if (conditionMap.get(columnHeaders.get(0)) != null) {
 				numberOfRows = conditionMap.get(columnHeaders.get(0)).size();
 			} else {
