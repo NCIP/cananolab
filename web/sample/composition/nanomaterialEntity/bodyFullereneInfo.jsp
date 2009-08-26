@@ -45,29 +45,31 @@
 					Average Diameter Unit
 				</td>
 				<td class="cellLabel">
-					<select name="nanomaterialEntity.fullerene.averageDiameterUnit"
-						id="averageDiameterUnit"
-						onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit');">
-						<option value=""></option>
-						<c:forEach var="unit" items="${dimensionUnits}">
-							<c:choose>
-								<c:when
-									test="${unit eq compositionForm.map.nanomaterialEntity.fullerene.averageDiameterUnit}">
-									<option value="${unit}" selected>
-										${unit}
-									</option>
-								</c:when>
-								<c:otherwise>
-									<option value="${unit}">
-										${unit}
-									</option>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<option value="other">
-							[other]
-						</option>
-					</select>
+					<div id="averageDiameterUnitPrompt">
+						<select name="nanomaterialEntity.fullerene.averageDiameterUnit"
+							id="averageDiameterUnit"
+							onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit', 'averageDiameterUnitPrompt');">
+							<option value=""></option>
+							<c:forEach var="unit" items="${dimensionUnits}">
+								<c:choose>
+									<c:when
+										test="${unit eq compositionForm.map.nanomaterialEntity.fullerene.averageDiameterUnit}">
+										<option value="${unit}" selected="selected">
+											${unit}
+										</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${unit}">
+											${unit}
+										</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<option value="other">
+								[other]
+							</option>
+						</select>
+					</div>
 				</td>
 				<td class="cellLabel">
 					Number of Carbons

@@ -58,7 +58,7 @@
 								<c:choose>
 									<c:when
 										test="${type eq characterizationForm.map.achar.solubility.solvent}">
-										<option value="${type}" selected>${type}</option>
+										<option value="${type}" selected="selected">${type}</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${type}"/>${type}</option>
@@ -81,7 +81,7 @@
 						<c:choose>
 							<c:when
 								test="${characterizationForm.map.achar.solubility.isSoluble eq 'true'}">
-								<option value="1" selected>
+								<option value="1" selected="selected">
 									Yes
 								</option>
 							</c:when>
@@ -94,7 +94,7 @@
 						<c:choose>
 							<c:when
 								test="${characterizationForm.map.achar.solubility.isSoluble eq 'false'}">
-								<option value="0" selected>
+								<option value="0" selected="selected">
 									No
 								</option>
 							</c:when>
@@ -115,29 +115,31 @@
 					<input type="text" name="achar.solubility.criticalConcentration"
 						onkeydown="return filterFloatNumber(event)"
 						value="${characterizationForm.map.achar.solubility.criticalConcentration}" />
-					<select name="achar.solubility.criticalConcentrationUnit"
-						id="concentrationUnit"
-						onchange="callPrompt('Concentration Unit', 'concentrationUnit')">
-						<option value=""></option>
-						<c:forEach var="unit" items="${concentrationUnits}">
-							<c:choose>
-								<c:when
-									test="${unit eq characterizationForm.map.achar.solubility.criticalConcentrationUnit}">
-									<option value="${unit}" selected>
-										${unit}
-									</option>
-								</c:when>
-								<c:otherwise>
-									<option value="${unit}">
-										${unit}
-									</option>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<option value="other">
-							[other]
-						</option>
-					</select>
+					<div id="concentrationUnitPrompt">
+						<select name="achar.solubility.criticalConcentrationUnit"
+							id="concentrationUnit"
+							onchange="callPrompt('Concentration Unit', 'concentrationUnit', 'concentrationUnitPrompt')">
+							<option value=""></option>
+							<c:forEach var="unit" items="${concentrationUnits}">
+								<c:choose>
+									<c:when
+										test="${unit eq characterizationForm.map.achar.solubility.criticalConcentrationUnit}">
+										<option value="${unit}" selected="selected">
+											${unit}
+										</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${unit}">
+											${unit}
+										</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<option value="other">
+								[other]
+							</option>
+						</select>
+					</div>
 				</td>
 				<td colspan="2">
 					&nbsp;
