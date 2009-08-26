@@ -247,7 +247,9 @@ public class AdvancedSampleServiceHelper {
 				List results = appService.query(crit);
 				for (Object obj : results) {
 					Characterization achar = (Characterization) obj;
-					chars.add(achar);
+					if (!chars.contains(achar)) {
+						chars.add(achar);
+					}
 				}
 			}
 		}
@@ -432,7 +434,9 @@ public class AdvancedSampleServiceHelper {
 					List results = appService.query(crit);
 					for (Object obj : results) {
 						FunctionalizingEntity entity = (FunctionalizingEntity) obj;
-						entities.add(entity);
+						if (!entities.contains(entity)) {
+							entities.add(entity);
+						}
 					}
 				}
 			}
@@ -508,7 +512,9 @@ public class AdvancedSampleServiceHelper {
 					List results = appService.query(crit);
 					for (Object obj : results) {
 						Function function = (Function) obj;
-						functions.add(function);
+						if (!functions.contains(function)) {
+							functions.add(function);
+						}
 					}
 				}
 			}
@@ -590,7 +596,9 @@ public class AdvancedSampleServiceHelper {
 					List results = appService.query(crit);
 					for (Object obj : results) {
 						NanomaterialEntity entity = (NanomaterialEntity) obj;
-						entities.add(entity);
+						if (!entities.contains(entity)) {
+							entities.add(entity);
+						}
 					}
 				}
 			}
@@ -641,7 +649,7 @@ public class AdvancedSampleServiceHelper {
 					for (Object obj : results) {
 						PointOfContact poc = (PointOfContact) obj;
 						// check if in sample POCs
-						if (samplePOCs.contains(poc)) {
+						if (samplePOCs.contains(poc) && !pocs.contains(poc)) {
 							pocs.add(poc);
 						}
 					}
@@ -668,8 +676,8 @@ public class AdvancedSampleServiceHelper {
 		}
 		// assay type
 		if (!StringUtils.isEmpty(charQuery.getAssayType())) {
-			charCrit = Restrictions.and(charCrit, Restrictions.eq(charAlias+"assayType",
-					charQuery.getAssayType()));
+			charCrit = Restrictions.and(charCrit, Restrictions.eq(charAlias
+					+ "assayType", charQuery.getAssayType()));
 		}
 		// datum name
 		if (!StringUtils.isEmpty(charQuery.getDatumName())) {
