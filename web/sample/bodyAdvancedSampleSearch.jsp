@@ -24,7 +24,7 @@
 </jsp:include>
 <html:form action="/advancedSampleSearch" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-		<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<th>
 				Sample Criteria
@@ -32,8 +32,8 @@
 		</tr>
 		<tr>
 			<td>
-				<table id="sampleQueryTable" class="summaryViewLayer4"
-					width="85%" style="display: none;">
+				<table id="sampleQueryTable" class="summaryViewLayer4" width="85%"
+					style="display: none;">
 					<tbody id="sampleQueryRows">
 						<tr id="samplePattern" style="display: none;">
 							<td>
@@ -41,10 +41,10 @@
 							</td>
 							<td>
 								<span id="sampleOperandValue">Sample Operand</span>
-							</td>	
+							</td>
 							<td>
 								<span id="nameValue">Sample POC Value</span>
-							</td>							
+							</td>
 							<td>
 								<input class="noBorderButton" id="sampleEdit" type="button"
 									value="Edit" onclick="editSampleQuery(this.id);" />
@@ -56,14 +56,12 @@
 		</tr>
 		<tr>
 			<td>
-				<table id="newSampleQuery" style="display: block;"
-					class="promptbox">
+				<table id="newSampleQuery" style="display: block;" class="promptbox">
 					<tr>
 						<td>
 							<html:hidden property="searchBean.theSampleQuery.id"
 								styleId="sampleQueryId" />
-							<html:select
-								property="searchBean.theSampleQuery.nameType"
+							<html:select property="searchBean.theSampleQuery.nameType"
 								styleId="nameType">
 								<option value="">
 									-- Please Select --
@@ -75,7 +73,7 @@
 									point of contact name
 								</option>
 							</html:select>
-						</td>						
+						</td>
 						<td>
 							<html:select property="searchBean.theSampleQuery.operand"
 								styleId="sampleOperand">
@@ -90,8 +88,10 @@
 							<html:text property="searchBean.theSampleQuery.name"
 								styleId="name" size="50" />
 						</td>
-						<td>
-							<table cellspacing="0">
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table cellspacing="0" align="left">
 								<tr>
 									<td>
 										<input class="promptButton" type="button" value="Add"
@@ -116,11 +116,9 @@
 		<tr>
 			<td>
 				<div id="sampleLogicalOperator" style="display: none">
-					<html:radio property="searchBean.sampleLogicalOperator"
-						value="and" />
+					<html:radio property="searchBean.sampleLogicalOperator" value="and" />
 					AND
-					<html:radio property="searchBean.sampleLogicalOperator"
-						value="or" />
+					<html:radio property="searchBean.sampleLogicalOperator" value="or" />
 					OR
 				</div>
 			</td>
@@ -193,7 +191,7 @@
 									-- Please Select --
 								</option>
 							</html:select>
-						</td>						
+						</td>
 						<td class="cellLabel">
 							<span id="compChemicalNameLabel">with chemical name</span>
 						</td>
@@ -211,8 +209,10 @@
 							<html:text property="searchBean.theCompositionQuery.chemicalName"
 								styleId="chemicalName" size="50" />
 						</td>
-						<td>
-							<table cellspacing="0">
+					</tr>
+					<tr>
+						<td colspan="5">
+							<table cellspacing="0" align="left">
 								<tr>
 									<td>
 										<input class="promptButton" type="button" value="Add"
@@ -347,7 +347,9 @@
 								<html:select
 									property="searchBean.theCharacterizationQuery.datumValue"
 									styleId="datumValueSelect">
-									<option value=""> -- Please Select -- </option>
+									<option value="">
+										-- Please Select --
+									</option>
 									<html:options collection="booleanOptions" property="value"
 										labelProperty="label" />
 								</html:select>
@@ -363,9 +365,11 @@
 								</html:select>
 							</div>
 						</td>
-						<td>
-							<table cellspacing="0">
-								<tr>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<table cellspacing="0" align="left">
+								<tr>								
 									<td>
 										<input class="promptButton" type="button" value="Add"
 											onclick="addCharacterizationQuery();show('characterizationQueryTable');" />
