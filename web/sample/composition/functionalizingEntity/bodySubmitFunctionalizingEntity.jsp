@@ -100,15 +100,17 @@
 				Amount Unit
 			</td>
 			<td>
-				<html:select styleId="feUnit"
-					property="functionalizingEntity.valueUnit"
-					onchange="javascript:callPrompt('Amount Unit', 'feUnit');">
-					<option value=""></option>
-					<html:options name="functionalizingEntityUnits" />
-					<option value="other">
-						[other]
-					</option>
-				</html:select>
+				<div id="feUnitPrompt">
+					<html:select styleId="feUnit"
+						property="functionalizingEntity.valueUnit"
+						onchange="javascript:callPrompt('Amount Unit', 'feUnit', 'feUnitPrompt');">
+						<option value=""></option>
+						<html:options name="functionalizingEntityUnits" />
+						<option value="other">
+							[other]
+						</option>
+					</html:select>
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -116,15 +118,17 @@
 				Molecular Formula Type
 			</td>
 			<td>
-				<html:select styleId="mfType"
-					property="functionalizingEntity.molecularFormulaType"
-					onchange="javascript:callPrompt('Molecular Formula Type', 'mfType'); ">
-					<option value=""></option>
-					<html:options name="molecularFormulaTypes" />
-					<option value="other">
-						[other]
-					</option>
-				</html:select>
+				<div id="mfTypePrompt">
+					<html:select styleId="mfType"
+						property="functionalizingEntity.molecularFormulaType"
+						onchange="javascript:callPrompt('Molecular Formula Type', 'mfType', 'mfTypePrompt'); ">
+						<option value=""></option>
+						<html:options name="molecularFormulaTypes" />
+						<option value="other">
+							[other]
+						</option>
+					</html:select>
+				</div>
 				&nbsp;
 			</td>
 			<td class="cellLabel">
@@ -141,15 +145,17 @@
 				Activation Method
 			</td>
 			<td>
-				<html:select styleId="feaMethod"
-					property="functionalizingEntity.activationMethod.type"
-					onchange="javascript:callPrompt('Activation Method', 'feaMethod');">
-					<option value=""></option>
-					<html:options name="activationMethods" />
-					<option value="other">
-						[other]
-					</option>
-				</html:select>
+				<div id="feaMethodPrompt">
+					<html:select styleId="feaMethod"
+						property="functionalizingEntity.activationMethod.type"
+						onchange="javascript:callPrompt('Activation Method', 'feaMethod', 'feaMethodPrompt');">
+						<option value=""></option>
+						<html:options name="activationMethods" />
+						<option value="other">
+							[other]
+						</option>
+					</html:select>
+				</div>
 			</td>
 			<td class="cellLabel">
 				Activation Effect
