@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<table id="summarySection3" width="95%" align="center"
+<table id="summarySection${index}" width="95%" align="center"
 	style="display: block" class="summaryViewLayer2">
 	<tr>
 		<th align="left">
@@ -107,7 +107,7 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 		</c:if>
 	</logic:iterate>
 </table>
-<div id="summarySeparator3">
+<div id="summarySeparator${index}">
 	<br>
 </div>
 

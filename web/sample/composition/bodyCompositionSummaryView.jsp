@@ -43,7 +43,7 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<c:forEach var='item' begin='1' end='4'>
+	<c:forEach var='item' begin='1' end='${fn:length(compositionSections)}'>
 		<div class="shadetabs" id="summaryTab${item}" style="display: none;">
 			<ul>
 				<li>
@@ -77,12 +77,14 @@
 			</td>
 		</tr>
 	</c:if>
+	<c:set scope='request' var='index' value='1'/>
 	<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities}">
 		<tr>
 			<td>
 				<jsp:include
 					page="nanomaterialEntity/bodyNanomaterialEntitySummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
+					<jsp:param name="index" value="${index}" />
 				</jsp:include>
 			</td>
 		</tr>
@@ -90,9 +92,11 @@
 	<c:if test="${!empty compositionForm.map.comp.functionalizingEntities}">
 		<tr>
 			<td>
+				<c:set scope='request' var='index' value='${index + 1}'/>
 				<jsp:include
 					page="functionalizingEntity/bodyFunctionalizingEntitySummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
+					<jsp:param name="index" value="${index}" />
 				</jsp:include>
 			</td>
 		</tr>
@@ -100,8 +104,10 @@
 	<c:if test="${!empty compositionForm.map.comp.chemicalAssociations}">
 		<tr>
 			<td>
+				<c:set scope='request' var='index' value='${index + 1}'/>
 				<jsp:include page="bodyChemicalAssociationSummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
+					<jsp:param name="index" value="${index}" />
 				</jsp:include>
 			</td>
 		</tr>
@@ -109,8 +115,10 @@
 	<c:if test="${!empty compositionForm.map.comp.files}">
 		<tr>
 			<td>
+				<c:set scope='request' var='index' value='${index + 1}'/>
 				<jsp:include page="bodyCompositionFileSummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
+					<jsp:param name="index" value="${index}" />
 				</jsp:include>
 			</td>
 		</tr>
