@@ -210,6 +210,20 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="subMenuSecondaryTitle" height="20">
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onclick="openWindow('http://oregonstate.edu/nbi/nbi/nanomaterial.php', '', '800', '800')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			height="20">
+			<a class="subMenuSecondary">NBI</a>
+		</td>
+	</tr>
+	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 			onclick="openWindow('http://www2a.cdc.gov/niosh-nil/', '', '800', '800')"
@@ -248,7 +262,7 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www.safenano.org/MeetTheTeam.aspx', '', '800', '800')"
+			onclick="openWindow('http://www.safenano.org/AdvancedSearch.aspx', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">SAFENANO</a>
