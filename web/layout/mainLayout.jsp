@@ -27,15 +27,20 @@
 	</head>
 	<tiles:importAttribute scope="session" />
 	<%--<tiles:importAttribute name="onloadJavascript" />--%>
-	<c:choose>
-		<c:when test="${! empty onloadJavascript}">
-			<body style="cursor: default" onload="${onloadJavascript};location.href='#${anchor}'">
-		</c:when>
-		<c:otherwise>
-			<body style="cursor: default"
-				onload="location.href='#${anchor}'">
-		</c:otherwise>
-	</c:choose>
+	<c:if test="${! empty onloadJavascript && !empty anchor}">
+		<body style="cursor: default"
+			onload="${onloadJavascript};location.href='#${anchor}'">
+	</c:if>
+	<c:if test="${!empty onloadJavascript && empty anchor}">
+		<body style="cursor: default"
+			onload="${onloadJavascript};">
+	</c:if>
+	<c:if test="${empty onloadJavascript && !empty anchor}">
+		<body style="cursor: default" onload="location.href='#${anchor}'">
+	</c:if>
+	<c:if test="${empty onloadJavascript && empty anchor}">
+		<body style="cursor: default"">
+	</c:if>
 	<table height="100%" cellspacing="0" cellpadding="0" width="100%"
 		summary="" border="0" align="center">
 		<!-- nci hdr begins -->
