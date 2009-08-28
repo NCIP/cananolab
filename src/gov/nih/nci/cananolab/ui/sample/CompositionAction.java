@@ -204,10 +204,24 @@ public class CompositionAction extends BaseAnnotationAction {
 				.getAttribute(ActionMessages.GLOBAL_MESSAGE);
 		saveMessages(request, msgs);
 		session.removeAttribute(ActionMessages.GLOBAL_MESSAGE);
-		if (request.getParameter("clearTab") != null
-				&& request.getParameter("clearTab").equals("true")) {
+		// forward to appropriate tab
+		String tab = request.getParameter("tab");
+		// default tab to all;
+		if (tab == null) {
+			// get from attribute
+			tab = (String) request.getSession().getAttribute("tab");
+			if (tab == null) {
+				tab = "ALL";
+			}
+		}
+		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
+			request.getSession().removeAttribute("tab");
+		} else {
+			request.getSession().setAttribute(
+					"onloadJavascript",
+					"showSummary('" + tab + "', "
+							+ compBean.getCompositionSections().size() + ")");
 		}
 	}
-
 }

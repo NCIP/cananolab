@@ -62,8 +62,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect nanomaterial entity after returning to the summary page
-		request.getSession().setAttribute("onloadJavascript",
-				"showSummary('1', 4)");
+		request.getSession().setAttribute("tab", "1");
 		return mapping.findForward("success");
 	}
 
@@ -347,7 +346,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			openComposingElement = true;
 		}
 		session.setAttribute("openComposingElement", openComposingElement);
-		
+
 		/**
 		 * If user entered customized value selecting [other] on previous page,
 		 * we should show and highlight the entered value on the edit page.
@@ -355,29 +354,30 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// Nanomaterial Entity Type
 		String entityType = entity.getType();
 		setOtherValueOption(request, entityType, "nanomaterialEntityTypes");
-		
+
 		// Composing Element Type
 		ComposingElementBean compBean = entity.getTheComposingElement();
 		String compType = compBean.getDomain().getType();
 		setOtherValueOption(request, compType, "composingElementTypes");
 		setOtherValueOption(request, compType, "emulsionComposingElementTypes");
-		
+
 		// Composing Element Unit
 		String compUnit = compBean.getDomain().getValueUnit();
 		setOtherValueOption(request, compUnit, "composingElementUnits");
-		
+
 		// Composing Element Formula Type
 		String compFormula = compBean.getDomain().getMolecularFormulaType();
 		setOtherValueOption(request, compFormula, "molecularFormulaTypes");
-		
+
 		// Composing Element Function Type
 		String compFunction = compBean.getTheFunction().getType();
 		setOtherValueOption(request, compFunction, "functionTypes");
-		
+
 		// Composing Element Modality Type
-		String compModality = compBean.getTheFunction().getImagingFunction().getModality();
+		String compModality = compBean.getTheFunction().getImagingFunction()
+				.getModality();
 		setOtherValueOption(request, compModality, "modalityTypes");
-		
+
 		// File Type
 		String fileType = entity.getTheFile().getDomainFile().getType();
 		setOtherValueOption(request, fileType, "fileTypes");

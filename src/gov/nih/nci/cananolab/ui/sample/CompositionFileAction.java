@@ -28,7 +28,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 public class CompositionFileAction extends BaseAnnotationAction {
-	
+
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -51,8 +51,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect composition file after returning to the summary page
-		request.getSession().setAttribute("onloadJavascript",
-				"showSummary('4', 4)");
+		request.getSession().setAttribute("tab", "4");
 		return mapping.findForward("success");
 	}
 
@@ -71,18 +70,18 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		
+
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
-		
+
 		return mapping.findForward("success");
 	}
-	
+
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("compositionForm");
-		
+
 		return mapping.getInputForward();
 	}
 
@@ -101,8 +100,9 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Handle input request, when validation failed this handler will be called too.
-	 *  
+	 * Handle input request, when validation failed this handler will be called
+	 * too.
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -117,13 +117,14 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		setupSample(theForm, request, Constants.LOCAL_SITE);
 		this.setLookups(request);
 		/**
-		 * If user entered customized Char Type/Name, Assay Type by selecting [other],
-		 * we should show and highlight the entered value on the edit page.
+		 * If user entered customized Char Type/Name, Assay Type by selecting
+		 * [other], we should show and highlight the entered value on the edit
+		 * page.
 		 */
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		String currentCharType = comp.getTheFile().getDomainFile().getType();
 		setOtherValueOption(request, currentCharType, "characterizationTypes");
-		
+
 		return mapping.findForward("inputForm");
 	}
 
