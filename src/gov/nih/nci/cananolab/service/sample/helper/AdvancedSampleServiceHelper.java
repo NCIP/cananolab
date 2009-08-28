@@ -160,7 +160,7 @@ public class AdvancedSampleServiceHelper {
 		if (!getAuthService().checkReadPermission(user, sampleName)) {
 			throw new NoAccessException();
 		}
-		// load sample first with point of contact info and datum info
+		// load sample first with point of contact info and function info and datum info
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Restrictions.eq("name", sampleName));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
@@ -168,6 +168,23 @@ public class AdvancedSampleServiceHelper {
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection.organization",
 				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection",
+						FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection.findingCollection",
 				FetchMode.JOIN);
@@ -195,7 +212,7 @@ public class AdvancedSampleServiceHelper {
 		String sampleId = sample.getId().toString();
 		AdvancedSampleBean advancedSampleBean = new AdvancedSampleBean(
 				sampleName, sampleId, pocs, functions, nanoEntities,
-				funcEntities, charas, data, searchBean);
+				funcEntities, charas, data, searchBean, sample);
 		return advancedSampleBean;
 	}
 
