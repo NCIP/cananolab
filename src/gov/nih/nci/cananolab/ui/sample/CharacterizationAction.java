@@ -83,10 +83,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.getInstance().getCharacterizationTypes(request);
 		int ind = allCharacterizationTypes.indexOf(charBean
 				.getCharacterizationType()) + 1;
-		request.getSession().setAttribute(
-				"onloadJavascript",
-				"showSummary('" + ind + "', " + allCharacterizationTypes.size()
-						+ ")");
+		request.getSession().setAttribute("tab", ind+"");		
 		return summaryEdit(mapping, form, request, response);
 	}
 
@@ -99,7 +96,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
 		this.checkOpenForms(charBean, request);
-		
+
 		return mapping.findForward("inputForm");
 	}
 
@@ -187,12 +184,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// setup Characterization Name drop down.
 		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
 				charBean.getCharacterizationType());
-		
+
 		// setup Assay Type drop down.
 		InitCharacterizationSetup.getInstance().getAssayTypesByCharName(
 				request, charBean.getCharacterizationName());
-		
-		// TODO: Find out what this is for, "charNameDatumNames" not used on JSPs. 
+
+		// TODO: Find out what this is for, "charNameDatumNames" not used on
+		// JSPs.
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
 				charBean.getCharacterizationName(), charBean.getAssayType());
@@ -226,7 +224,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Setup characterization bean for saving. 
+	 * Setup characterization bean for saving.
 	 * 
 	 * @param request
 	 * @param theForm
@@ -247,7 +245,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Setup, prepare and save characterization. 
+	 * Setup, prepare and save characterization.
 	 * 
 	 * @param request
 	 * @param theForm
@@ -367,7 +365,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.prepareSummary(mapping, form, request, response);
 		this.prepareCharacterizationTypes(mapping, form, request, response);
 
-		// Marker that indicates page is for printing only (hide tabs, links, etc).
+		// Marker that indicates page is for printing only (hide tabs, links,
+		// etc).
 		request.setAttribute("printView", Boolean.TRUE);
 
 		// Filter out un-selected types.
@@ -416,9 +415,25 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("characterizationSummaryView", summaryView);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, sampleId);
-		if (request.getParameter("clearTab") != null
-				&& request.getParameter("clearTab").equals("true")) {
+		// forward to appropriate tab
+		String tab = request.getParameter("tab");
+		// default tab to all;
+		if (tab == null) {
+			// get from attribute
+			tab = (String) request.getSession().getAttribute("tab");
+			if (tab == null) {
+				tab = "ALL";
+			}
+		}
+		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
+			request.getSession().removeAttribute("tab");
+		} else {
+			request.getSession().setAttribute(
+					"onloadJavascript",
+					"showSummary('" + tab + "', "
+							+ summaryView.getCharacterizationTypes().size()
+							+ ")");
 		}
 	}
 
@@ -651,12 +666,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		findingBean.addFile(newFile, theFileIndex);
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, request);
-		
+
 		/**
 		 * Set marker in form for skipping finding matrix validation .
 		 */
 		theForm.set("fileSupplied", Boolean.TRUE.toString());
-		
+
 		return mapping.findForward("inputForm");
 	}
 
@@ -799,17 +814,18 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			openFinding = true;
 		}
 		session.setAttribute("openFinding", openFinding);
-		
+
 		/**
-		 * If user entered customized Char Type/Name, Assay Type by selecting [other],
-		 * we should show and highlight the entered value on the edit page.
+		 * If user entered customized Char Type/Name, Assay Type by selecting
+		 * [other], we should show and highlight the entered value on the edit
+		 * page.
 		 */
 		String currentCharType = achar.getCharacterizationType();
 		setOtherValueOption(request, currentCharType, "characterizationTypes");
-		
+
 		String currentCharName = achar.getCharacterizationName();
 		setOtherValueOption(request, currentCharName, "charTypeChars");
-		
+
 		String currentAssayType = achar.getAssayType();
 		setOtherValueOption(request, currentAssayType, "charNameAssays");
 	}
