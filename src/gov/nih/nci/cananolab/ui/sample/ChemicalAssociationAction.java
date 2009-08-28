@@ -63,8 +63,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect chemical association after returning to the summary page
-		request.getSession().setAttribute("onloadJavascript",
-				"showSummary('3', 4)");
+		request.getSession().setAttribute("tab", "3");
 		return mapping.findForward("success");
 	}
 
@@ -250,8 +249,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		HttpSession session=request.getSession();
-		UserBean user = (UserBean)session.getAttribute("user");
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
 		if (user == null) {
 			throw new InvalidSessionException();
 		}
@@ -429,7 +428,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			openFile = true;
 		}
 		session.setAttribute("openFile", openFile);
-		
+
 		/**
 		 * If user entered customized value selecting [other] on previous page,
 		 * we should show and highlight the entered value on the edit page.
@@ -437,11 +436,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// Association Type
 		String assocType = assoc.getType();
 		setOtherValueOption(request, assocType, "chemicalAssociationTypes");
-		
+
 		// Bond Type
 		String bondType = assoc.getAttachment().getBondType();
 		setOtherValueOption(request, bondType, "bondTypes");
-		
+
 		// File Type
 		String fileType = assoc.getTheFile().getDomainFile().getType();
 		setOtherValueOption(request, fileType, "fileTypes");
