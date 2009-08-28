@@ -77,10 +77,11 @@
 			</td>
 		</tr>
 	</c:if>
-	<c:set scope='request' var='index' value='1'/>
+	<c:set scope='request' var='index' value='0'/>
 	<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities}">
 		<tr>
 			<td>
+				<c:set scope='request' var='index' value='${index + 1}'/>
 				<jsp:include
 					page="nanomaterialEntity/bodyNanomaterialEntitySummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
