@@ -35,6 +35,7 @@
 						indexId="ind">
 						<c:set var="entityType" value="${functionalizingEntity.type}" />
 						<c:if test="${!empty entityType}">
+							<a name="${functionalizingEntity.domainEntity.id}">
 							<table class="summaryViewLayer3" width="95%" align="center">
 								<tr>
 									<th valign="top" align="left" width="1000px">
@@ -208,6 +209,7 @@
 									</td>
 								</tr>
 							</table>
+							</a>
 						</c:if>
 						<br/>
 					</logic:iterate>

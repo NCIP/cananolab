@@ -19,6 +19,7 @@
 		<c:if test="${!empty entityType}">
 			<tr>
 				<td>
+					<a name="${functionalizingEntity.domainEntity.id}">
 					<table class="summaryViewLayer3" width="95%" align="center">
 						<tr>
 							<th valign="top" align="left" colspan="2" width="1000px">
@@ -147,6 +148,7 @@
 							</tr>
 						</c:if>
 					</table>
+					</a>
 				</td>
 			</tr>
 		</c:if>
