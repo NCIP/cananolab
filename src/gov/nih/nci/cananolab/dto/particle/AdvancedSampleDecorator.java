@@ -1,13 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle;
 
-import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
-import gov.nih.nci.cananolab.util.StringUtils;
-
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.displaytag.decorator.TableDecorator;
 
