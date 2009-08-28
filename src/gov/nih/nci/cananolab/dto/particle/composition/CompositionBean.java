@@ -66,6 +66,19 @@ public class CompositionBean {
 			}
 		}
 		Collections.sort(files, new Comparators.FileBeanDateComparator());
+
+		if (!nanomaterialEntities.isEmpty()) {
+			compositionSections.add(NANOMATERIAL_SELECTION);
+		}
+		if (!functionalizingEntities.isEmpty()) {
+			compositionSections.add(FUNCTIONALIZING_SELECTION);
+		}
+		if (!chemicalAssociations.isEmpty()) {
+			compositionSections.add(CHEMICAL_SELECTION);
+		}
+		if (!files.isEmpty()) {
+			compositionSections.add(FILE_SELECTION);
+		}
 	}
 
 	public List<NanomaterialEntityBean> getNanomaterialEntities() {
@@ -108,18 +121,6 @@ public class CompositionBean {
 	}
 
 	public List<String> getCompositionSections() {
-		if (!nanomaterialEntities.isEmpty()) {
-			compositionSections.add(NANOMATERIAL_SELECTION);
-		}
-		if (!functionalizingEntities.isEmpty()) {
-			compositionSections.add(FUNCTIONALIZING_SELECTION);
-		}
-		if (!chemicalAssociations.isEmpty()) {
-			compositionSections.add(CHEMICAL_SELECTION);
-		}
-		if (!files.isEmpty()) {
-			compositionSections.add(FILE_SELECTION);
-		}
 		return compositionSections;
 	}
 
