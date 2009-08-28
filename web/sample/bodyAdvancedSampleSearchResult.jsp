@@ -50,10 +50,14 @@
 				decorator="gov.nih.nci.cananolab.dto.particle.AdvancedSampleDecorator">
 				<display:column title="Sample Name" property="${sampleURL}"
 					sortable="true" />
-				<c:forEach var="entry" items="${sample.attributeMap}">
+				<c:forEach var="entry" items="${sample.attributeMap}"
+					varStatus="ind1">
 					<display:column title="${entry.key}" sortable="true">
-						<c:forEach var="value" items="${entry.value}">
-					${value}<br />
+						<c:forEach var="item" items="${entry.value}" varStatus="ind2">
+								${item.displayName}&nbsp;
+								<a href="${item.action}" target="detailView">View Details</a>
+							<br />
+							<br />
 						</c:forEach>
 					</display:column>
 				</c:forEach>
