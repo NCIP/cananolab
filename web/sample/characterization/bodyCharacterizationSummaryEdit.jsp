@@ -125,6 +125,7 @@
 										<c:set var="charObj" value="${charBean.domainChar}" />
 										<c:set var="charName" value="${charBean.characterizationName}" />
 										<c:set var="charType" value="${charBean.characterizationType}" />
+											<a name="${charBean.domainChar.id}">
 											<table class="summaryViewLayer3" width="95%" align="center">
 												<tr>
 													<th align="left" width="20%">
@@ -282,6 +283,7 @@
 													</td>
 												</tr>
 											</table>
+											</a>
 										<br>
 									</c:forEach>
 								</c:when>
