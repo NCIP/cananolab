@@ -54,8 +54,8 @@
 					varStatus="ind1">
 					<display:column title="${entry.key}" sortable="true">
 						<c:forEach var="item" items="${entry.value}" varStatus="ind2">
-								${item.displayName}&nbsp;
-								<a href="${item.action}" target="detailView">View Details</a>
+								${item.displayName}&nbsp; &nbsp;
+								<a href="${item.action}">Details</a>
 							<br />
 							<br />
 						</c:forEach>
