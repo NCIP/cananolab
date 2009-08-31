@@ -32,10 +32,10 @@ import org.apache.axis.utils.StringUtils;
  * 
  */
 public class AdvancedSampleBean {
-	public static String SAMPLE_DETAIL_URL = "sample.do?page=0";
-	public static String NANOMATERIAL_DETAIL_URL = "composition.do?page=0&tab=1";
-	public static String AGENTMATERIAL_DETAIL_URL = "composition.do?page=0&tab=2";
-	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0";
+	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=bareSummaryView";
+	public static String NANOMATERIAL_DETAIL_URL = "nanomaterialEntity.do?page=0&dispatch=setupView";
+	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";
+	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
 	private Sample domainSample;
 	private String sampleName;
 	private String location; // e.g. NCICB, NCL, WUSTL, etc.
@@ -47,7 +47,6 @@ public class AdvancedSampleBean {
 	private List<Characterization> characterizations;
 	private List<Datum> data;
 	private AdvancedSampleSearchBean advancedSearchBean;
-	private Boolean editable;
 
 	public AdvancedSampleBean() {
 	}
@@ -106,9 +105,7 @@ public class AdvancedSampleBean {
 	}
 
 	public Map<String, List<LinkableItem>> getAttributeMap() {
-		String dispatch = (editable) ? "summaryEdit" : "summaryView";
-		String linkSuffix = "&sampleId=" + sampleId + "&dispatch=" + dispatch
-				+ "&location=" + location;
+		String linkSuffix = "&sampleId=" + sampleId + "&location=" + location;
 		Map<String, List<LinkableItem>> attributeMap = new LinkedHashMap<String, List<LinkableItem>>();
 		for (String columnName : advancedSearchBean.getQueryAsColumnNames()) {
 			List<LinkableItem> items = new ArrayList<LinkableItem>();
@@ -131,7 +128,7 @@ public class AdvancedSampleBean {
 					if (columnName.contains(entityName)) {
 						LinkableItem item = new LinkableItem();
 						item.setAction(NANOMATERIAL_DETAIL_URL + linkSuffix
-								+ "#" + entity.getId());
+								+ "&dataId=" + entity.getId());
 						item.getDisplayStrings().add(entityBean.getType());
 						for (ComposingElement ce : entity
 								.getComposingElementCollection()) {
@@ -151,7 +148,7 @@ public class AdvancedSampleBean {
 								entity);
 						LinkableItem item = new LinkableItem();
 						item.setAction(NANOMATERIAL_DETAIL_URL + linkSuffix
-								+ "#" + entity.getId());
+								+ "&dataId=" + entity.getId());
 						item.getDisplayStrings().add(entityBean.getType());
 						for (ComposingElementBean ceBean : entityBean
 								.getComposingElements()) {
@@ -171,7 +168,7 @@ public class AdvancedSampleBean {
 								entity);
 						LinkableItem item = new LinkableItem();
 						item.setAction(AGENTMATERIAL_DETAIL_URL + linkSuffix
-								+ "#" + entity.getId());
+								+ "&dataId=" + entity.getId());
 						item.getDisplayStrings().add(
 								entityBean.getAdvancedSearchDisplayName());
 						items.add(item);
@@ -183,7 +180,7 @@ public class AdvancedSampleBean {
 					for (FunctionalizingEntity entity : functionalizingEntities) {
 						LinkableItem item = new LinkableItem();
 						item.setAction(AGENTMATERIAL_DETAIL_URL + linkSuffix
-								+ "#" + entity.getId());
+								+ "&dataId=" + entity.getId());
 						FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 								entity);
 						item.getDisplayStrings().add(
@@ -206,7 +203,7 @@ public class AdvancedSampleBean {
 								if (func.equals(function)) {
 									item
 											.setAction(NANOMATERIAL_DETAIL_URL
-													+ linkSuffix + "#"
+													+ linkSuffix + "&dataId="
 													+ entity.getId());
 									break;
 								}
@@ -221,7 +218,7 @@ public class AdvancedSampleBean {
 						for (Function function : entity.getFunctionCollection()) {
 							if (func.equals(function)) {
 								item.setAction(AGENTMATERIAL_DETAIL_URL
-										+ linkSuffix + "#" + entity.getId());
+										+ linkSuffix + "&dataId=" + entity.getId());
 								break;
 							}
 						}
@@ -243,8 +240,7 @@ public class AdvancedSampleBean {
 									if (datum.equals(datum0)) {
 										item
 												.setAction(CHARACTERIZATION_DETAIL_URL
-														+ linkSuffix
-														+ "#"
+														+ linkSuffix+"&charId="
 														+ chara.getId());
 										break;
 									}
@@ -265,7 +261,7 @@ public class AdvancedSampleBean {
 												.getSuperclass().getName()));
 						LinkableItem item = new LinkableItem();
 						item.setAction(CHARACTERIZATION_DETAIL_URL + linkSuffix
-								+ "#" + chara.getId());
+								+ "&charId=" + chara.getId());
 						if (columnName.contains(characterizationType)) {
 							String charName = ClassUtils
 									.getDisplayName(ClassUtils
@@ -317,14 +313,6 @@ public class AdvancedSampleBean {
 
 	public List<Datum> getData() {
 		return data;
-	}
-
-	public Boolean getEditable() {
-		return editable;
-	}
-
-	public void setEditable(Boolean editable) {
-		this.editable = editable;
 	}
 
 	public Sample getDomainSample() {
