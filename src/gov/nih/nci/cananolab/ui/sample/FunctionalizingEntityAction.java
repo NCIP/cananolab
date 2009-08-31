@@ -13,10 +13,13 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -179,6 +182,37 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				request);
 	}
 
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+		String entityId = request.getParameter("dataId");
+		String location = theForm.getString(Constants.LOCATION);
+		if (entityId == null) {
+			entityId = (String) request.getAttribute("dataId");
+		}		
+		CompositionService compService = new CompositionServiceLocalImpl();		
+		if (Constants.LOCAL_SITE.equals(location)) {
+			compService = new CompositionServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			compService = new CompositionServiceRemoteImpl(serviceUrl);
+		}
+		FunctionalizingEntityBean entityBean = compService
+				.findFunctionalizingEntityById(entityId, user);
+		request.setAttribute("functionalizingEntity", entityBean);
+		String detailPage = null;
+		if (entityBean.isWithProperties()) {
+			detailPage = InitCompositionSetup.getInstance().getDetailPage(
+					entityBean.getClassName(), "FunctionalizingEntity");
+		}
+		request.setAttribute("entityDetailPage", detailPage);		
+		return mapping.findForward("singleSummaryView");
+	}
+	
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {

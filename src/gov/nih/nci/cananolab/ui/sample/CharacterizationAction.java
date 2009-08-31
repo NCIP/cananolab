@@ -346,6 +346,28 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		return mapping.findForward("summaryView");
 	}
+	
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");		
+		String location = theForm.getString(Constants.LOCATION);
+		String charId=theForm.getString("charId");
+		setupSample(theForm, request, location);
+		CharacterizationService service = null;
+		if (Constants.LOCAL_SITE.equals(location)) {
+			service = new CharacterizationServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new CharacterizationServiceRemoteImpl(serviceUrl);
+		}
+		CharacterizationBean charBean = service.findCharacterizationById(charId, user);		
+		request.setAttribute("charBean", charBean);
+		return mapping.findForward("singleSummaryView");
+	}
+
 
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.

@@ -12,12 +12,16 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -230,6 +234,37 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		request.setAttribute("entityDetailPage", detailPage);
 		this.checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
+	}
+
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+		String entityId = request.getParameter("dataId");
+		String location = theForm.getString(Constants.LOCATION);
+		if (entityId == null) {
+			entityId = (String) request.getAttribute("dataId");
+		}		
+		CompositionService compService = new CompositionServiceLocalImpl();		
+		if (Constants.LOCAL_SITE.equals(location)) {
+			compService = new CompositionServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			compService = new CompositionServiceRemoteImpl(serviceUrl);
+		}
+		NanomaterialEntityBean entityBean = compService
+				.findNanomaterialEntityById(entityId, user);
+		request.setAttribute("nanomaterialEntity", entityBean);
+		String detailPage = null;
+		if (entityBean.isWithProperties()) {
+			detailPage = InitCompositionSetup.getInstance().getDetailPage(
+					entityBean.getClassName(), "nanomaterialEntity");
+		}
+		request.setAttribute("entityDetailPage", detailPage);		
+		return mapping.findForward("singleSummaryView");
 	}
 
 	public ActionForward saveComposingElement(ActionMapping mapping,
