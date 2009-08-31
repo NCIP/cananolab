@@ -32,7 +32,7 @@ import org.apache.axis.utils.StringUtils;
  * 
  */
 public class AdvancedSampleBean {
-	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=bareSummaryView";
+	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=setupView";
 	public static String NANOMATERIAL_DETAIL_URL = "nanomaterialEntity.do?page=0&dispatch=setupView";
 	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";
 	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
