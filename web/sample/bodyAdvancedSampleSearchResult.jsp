@@ -3,9 +3,14 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
+<script type="text/javascript" src="javascript/SampleManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
+
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Advanced Sample Search Results" />
 	<jsp:param name="topic" value="sample_search_results_help" />
@@ -54,16 +59,31 @@
 					varStatus="ind1">
 					<display:column title="${entry.key}" sortable="true">
 						<c:forEach var="item" items="${entry.value}" varStatus="ind2">
-								${item.displayName}&nbsp; &nbsp;
-								<a href="${item.action}" target="viewDetail">Details</a>
+						    ${item.displayName}&nbsp; 						    
+						 	<div id="details${sample.sampleId}:${ind1.count}:${ind2.count}"
+								style="position: relative">
+								<%--<a href="${item.action}" target="detailView">View Details</a>--%>
+								<a id="detailLink${sample.sampleId}:${ind1.count}:${ind2.count}" href="#"
+									onclick="showDetailView('${sample.sampleId}:${ind1.count}:${ind2.count}', '${item.action}'); return false;">Details</a>
+								<table
+									id="detailView${sample.sampleId}:${ind1.count}:${ind2.count}"
+									style="display: none; position: absolute; left: -250px; top: 20px; z-index: 5; width:500px; font-size: 10px; background-color: #FFFFFF"
+									class="promptbox">
+									<tr>
+										<td>
+											<div
+												id="content${sample.sampleId}:${ind1.count}:${ind2.count}"></div>
+										</td>
+									</tr>
+								</table>
+							</div>
 							<br />
 							<br />
 						</c:forEach>
 					</display:column>
 				</c:forEach>
-				<display:column title="Site" property="location" sortable="true" />
+				<display:column title="Site" property="location" sortable="true" />				
 			</display:table>
 		</td>
 	</tr>
 </table>
-
