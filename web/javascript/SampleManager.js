@@ -500,12 +500,12 @@ function populateCharacterizationQueries() {
 		dwr.util.cloneNode("charPattern", {
 			idSuffix : id
 		});
-		dwr.util.setValue("charTypeValue" + id, theQuery.characterizationType);		
-		//combine assay type into characterization name
+		dwr.util.setValue("charTypeValue" + id, theQuery.characterizationType);
+		// combine assay type into characterization name
 		if (theQuery.assayType != "") {
 			theQuery.characterizationName = theQuery.characterizationName + ":"
 					+ theQuery.assayType;
-			theQuery.assayType="";
+			theQuery.assayType = "";
 		}
 		dwr.util.setValue("charNameValue" + id, theQuery.characterizationName);
 
@@ -564,6 +564,66 @@ function deleteTheCharacterizationQuery() {
 					sessionTimeout();
 				}
 			});
+		}
+	}
+}
+
+function showDetailView(styleId, url) {
+	url=url+"&advancedSearch="+styleId;
+	SampleManager.getAdvancedSearchDetailContent(url, function(pageData) {
+		var contentElement = document.getElementById("content" + styleId);
+		if (pageData == "") {
+			hide("detailView" + styleId);
+		} else {
+			dwr.util.setValue("content" + styleId, pageData, {
+				escapeHtml : false
+			});
+			hideOtherLinksAndViews(styleId);
+			show("detailView" + styleId);
+		}
+	});
+}
+
+function hideOtherLinksAndViews(styleId) {
+	// hide other detailViews
+	var all = document.body.all ? document.body.all : document.body
+			.getElementsByTagName('*');
+	var test = "";
+	for ( var i = 0; i < all.length; i++) {
+		var element = all[i];
+		if (element.id) {
+			if (element.id.match("detailView")
+					&& element.id != "detailView" + styleId) {
+				hide(element.id);
+			}
+			// hide other detail link when IE
+			if (navigator.appName.indexOf("Microsoft") > -1) {
+				if (element.id.match("detailLink")
+						&& element.id != "detailLink" + styleId) {
+					hide(element.id);
+				}
+			}
+		}
+	}
+}
+
+function hideDetailView(styleId) {
+	// show detail link when IE
+	if (navigator.appName.indexOf("Microsoft") > -1) {
+		showDetailLinks();
+	}
+	hide("detailView" + styleId);
+}
+
+function showDetailLinks() {
+	var all = document.body.all ? document.body.all : document.body
+			.getElementsByTagName('*');
+	for ( var i = 0; i < all.length; i++) {
+		var element = all[i];
+		if (element.id) {
+			if (element.id.match("detailLink")) {
+				show(element.id);
+			}
 		}
 	}
 }
