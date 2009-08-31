@@ -4,17 +4,20 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -305,6 +308,17 @@ public class DWRSampleManager {
 		} else {
 			return (LabelValueBean[]) wctx.getServletContext().getAttribute(
 					"numberOperands");
+		}
+	}
+
+	public String getAdvancedSearchDetailContent(String url)
+			throws ServletException, IOException, BaseException {
+		try {
+			WebContext wctx = WebContextFactory.get();			
+			String content = wctx.forwardToString("/"+url);
+			return content;
+		} catch (Exception e) {
+			return "";
 		}
 	}
 }
