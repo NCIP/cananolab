@@ -122,12 +122,6 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 						.findAdvancedSampleByAdvancedSearch(sampleName,
 								searchBean, user);
 				loadedAdvancedSample.setLocation(location);
-				if (user!=null && user.isCurator()) {
-					loadedAdvancedSample.setEditable(true);
-				}
-				else {
-					loadedAdvancedSample.setEditable(false);
-				}
 				loadedSampleBeans.add(loadedAdvancedSample);
 			}
 		}
