@@ -1487,10 +1487,10 @@ public class AdvancedSampleServiceHelper {
 		hlinkStyle.setFont(hlinkFont);
 
 		int rowIndex = 0;
-		HSSFSheet sheet = wb.createSheet("Advanced Sample Search Results");
+		HSSFSheet sheet = wb.createSheet("Advanced Sample Search Report");
 		
-		//1.Output Search Criteria.
-		rowIndex = outputCriteria(searchBean, sheet, headerStyle, rowIndex);
+		//1.Output Search Criteria. comment out as per Sharon.
+		//rowIndex = outputCriteria(searchBean, sheet, headerStyle, rowIndex);
 		
 		//2.Output table column headers.
 		rowIndex = outputHeader(sampleBeans.get(0), sheet, headerStyle, rowIndex);
@@ -1509,7 +1509,7 @@ public class AdvancedSampleServiceHelper {
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
-	 */
+	 *
 	private static int outputCriteria(AdvancedSampleSearchBean searchBean, 
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 1. Output "Selected Criteria" at (0, 0).
@@ -1522,7 +1522,7 @@ public class AdvancedSampleServiceHelper {
 		rowIndex++; // Create one empty line as separator.
 
 		return rowIndex;
-	}
+	}*/
 
 	/**
 	 * Output headers for work sheet.
@@ -1544,7 +1544,8 @@ public class AdvancedSampleServiceHelper {
 		Map<String, List<LinkableItem>> columns = sampleBean.getAttributeMap();
 		if (columns != null && !columns.isEmpty()) {
 			for (String header : columns.keySet()) {
-				ExportUtils.createCell(row, columnIndex++, headerStyle, header);
+				ExportUtils.createCell(row, columnIndex++, headerStyle, 
+						header.replaceAll("<br>", " "));
 			}
 		}
 
