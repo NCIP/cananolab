@@ -21,6 +21,8 @@
 		value="${applicationOwner} Advanced Sample Search" />
 	<jsp:param name="topic" value="search_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
+	<jsp:param name="other" value="Basic Search" />
+	<jsp:param name="otherLink" value="searchSample.do?dispatch=setup&searchLocations=${param.location}" />
 </jsp:include>
 <html:form action="/advancedSampleSearch" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />

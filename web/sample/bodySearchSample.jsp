@@ -13,11 +13,12 @@
 	src="/caNanoLab/dwr/interface/CharacterizationManager.js"></script>
 
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Search Samples" />
+	<jsp:param name="pageTitle"
+		value="${applicationOwner} Basic Sample Search" />
 	<jsp:param name="topic" value="search_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Advanced Search" />
-	<jsp:param name="otherLink" value="advancedSampleSearch.do?dispatch=setup" />
+	<jsp:param name="otherLink" value="advancedSampleSearch.do?dispatch=setup&searchLocations=${param.location}" />
 </jsp:include>
 <html:form action="searchSample">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
