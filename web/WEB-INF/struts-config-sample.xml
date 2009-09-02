@@ -125,6 +125,7 @@
 			<forward name="inputForm" path="sample.advancedSearch" />
 			<forward name="input" path="/advancedSampleSearch.do?dispatch=input" />
 			<forward name="success" path="sample.advancedSampleSearchResult" />
+			<forward name="print" path="/sample/bodyAdvancedSampleSearchResultPrintView.jsp" />
 		</action>
 		<action path="/advancedSampleResults" type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
 			parameter="sample.advancedSampleSearchResult" scope="request" />

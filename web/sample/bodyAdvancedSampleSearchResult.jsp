@@ -18,12 +18,16 @@
 	<jsp:param name="other" value="Back" />
 </jsp:include>
 <table width="100%" align="center">
-	<c:if test="${not empty advancedSamples}">
+	<c:if test="${not empty advancedSamples && empty printView}">
 		<tr style="font-family: verdana, arial, helvetica, sans-serif; font-size: 0.70em;">
 			<td>
+				<c:url var="printUrl" value="advancedSampleSearch.do">
+					<c:param name="dispatch" value="print" />
+				</c:url>
 				<c:url var="exportUrl" value="advancedSampleSearch.do">
 					<c:param name="dispatch" value="export" />
 				</c:url>
+				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
 				<a href="${exportUrl}" id="exportLink">Export</a>
 			</td>
 		</tr>
@@ -45,7 +49,9 @@
 						Selected Criteria
 					</th>
 					<td style="text-align: right">
-						<a href="advancedSampleSearch.do?dispatch=input">Edit</a>
+						<c:if test="${empty printView}">
+							<a href="advancedSampleSearch.do?dispatch=input">Edit</a>
+						</c:if>
 					</td>
 				</tr>
 				<tr>
