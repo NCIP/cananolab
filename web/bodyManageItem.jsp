@@ -46,23 +46,29 @@
 							</c:choose>
 							<tr>
 								<td class="sidebarContent">
-									<a href="${searchLink}">Search Existing <c:out
-											value="${item}" />s </a>
-									<br>
+									<c:choose>
+										<c:when test="${item eq 'Sample'}">
+											<tr>
+												<td class="sidebarContent">
+													<a href="advancedSampleSearch.do?dispatch=setup">Advanced
+														Sample Search</a>
+													<br>
+													Enter advanced search criteria to obtain meta information
+													on samples of interest.
+												</td>
+											</tr>
+										</c:when>
+										<c:otherwise>
+											<a href="${searchLink}">Search Existing <c:out
+													value="${item}" />s </a>
+											<br>
 									Enter search criteria to obtain information on
 									<c:out value="${fn:toLowerCase(item)}" />
-									s of interest. 
+									s of interest.
+								</c:otherwise>
+									</c:choose>
 								</td>
 							</tr>
-							<c:if test="${item eq 'Sample'}">
-								<tr>
-									<td class="sidebarContent">
-										<a href="advancedSampleSearch.do?dispatch=setup">Advanced Sample Search</a>
-										<br>
-										Enter advanced search criteria to obtain meta information on samples of interest.
-									</td>
-								</tr>
-							</c:if>
 						</table>
 					</td>
 				</tr>
