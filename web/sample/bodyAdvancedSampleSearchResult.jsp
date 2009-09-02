@@ -18,6 +18,16 @@
 	<jsp:param name="other" value="Back" />
 </jsp:include>
 <table width="100%" align="center">
+	<c:if test="${not empty advancedSamples}">
+		<tr style="font-family: verdana, arial, helvetica, sans-serif; font-size: 0.70em;">
+			<td>
+				<c:url var="exportUrl" value="advancedSampleSearch.do">
+					<c:param name="dispatch" value="export" />
+				</c:url>
+				<a href="${exportUrl}" id="exportLink">Export</a>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<td colspan="2">
 			<c:choose>
@@ -29,7 +39,6 @@
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-
 			<table class="summaryViewLayer4" width="100%">
 				<tr>
 					<th style="text-align: center">

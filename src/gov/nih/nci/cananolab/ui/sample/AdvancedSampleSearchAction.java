@@ -13,13 +13,17 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.ExportUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +39,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 
+	// Partial URL for viewing detailed sample info from Excel report file.
+	public static final String VIEW_SAMPLE_URL = "sample.do?dispatch=summaryView&page=0";
+	
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -76,10 +83,50 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		request.setAttribute("advancedSamples", sampleBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
-		request.setAttribute("resultSize", new Integer(sampleBeans.size()));
+		request.setAttribute("resultSize", Integer.valueOf((sampleBeans.size())));
+		
+		// save loaded result set in session for exporting.
+		session.setAttribute("samplesForExport", sampleBeansPerPage);
+		
 		return mapping.findForward("success");
 	}
 
+	/**
+	 * Export advance sample search result in excel report.
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward export(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();
+		List<AdvancedSampleBean> sampleBeans = 
+			(List<AdvancedSampleBean>) session.getAttribute("samplesForExport");
+		DynaValidatorForm searchForm = 
+			(DynaValidatorForm) session.getAttribute("advancedSampleSearchForm");
+		AdvancedSampleSearchBean searchBean = 
+			(AdvancedSampleSearchBean) searchForm.get("searchBean");
+		if (searchBean != null && sampleBeans != null) {
+			// Export advanced sample search report.
+			ExportUtils.prepareReponseForExcell(response, getExportFileName());
+			AdvancedSampleServiceHelper.exportSummary(
+				searchBean, sampleBeans, getViewSampleURL(request), response.getOutputStream());
+			return null;
+		} else {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"error.session.expired", "Session has timed out, please search again.");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
+	}
+	
 	private List<AdvancedSampleBean> querySamples(ActionForm form,
 			HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
@@ -133,6 +180,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 			throws Exception {
 		// clear the search results and start over
 		request.getSession().removeAttribute("advancedSampleSearchResults");
+		request.getSession().removeAttribute("samplesForExport");
 		request
 				.setAttribute(
 						"onloadJavascript",
@@ -147,6 +195,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
 				request);
 		request.getSession().removeAttribute("advancedSampleSearchResults");
+		request.getSession().removeAttribute("samplesForExport");
 		return mapping.getInputForward();
 	}
 
@@ -156,5 +205,36 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 
 	public boolean canUserExecute(UserBean user) throws SecurityException {
 		return true;
+	}
+
+	/**
+	 * Get file name for exporting report as an Excell file.
+	 *
+	 * @param sampleName
+	 * @param viewType
+	 * @param subType
+	 * @return
+	 */
+	private static String getExportFileName() {
+		StringBuilder sb = new StringBuilder("Advanced Sample Search Report ");
+		sb.append(
+			DateUtils.convertDateToString(Calendar.getInstance().getTime()));
+		return sb.toString();
+	}
+
+	/**
+	 * Get view sample URL.
+	 * 
+	 * @param sample
+	 * @return
+	 */
+	private static String getViewSampleURL(HttpServletRequest request) {
+		StringBuilder sb = new StringBuilder();
+		String requestUrl = request.getRequestURL().toString();
+		int index = requestUrl.lastIndexOf("/");
+		sb.append(requestUrl.substring(0, index + 1));
+		sb.append(VIEW_SAMPLE_URL);
+		
+		return sb.toString();
 	}
 }
