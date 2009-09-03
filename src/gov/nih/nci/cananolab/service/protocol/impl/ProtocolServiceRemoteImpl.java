@@ -12,6 +12,7 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -82,34 +83,9 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 
 	private void loadProtocolAssociations(Protocol protocol) throws Exception {
 		// load protocol file
-		loadFileForProtocol(protocol);
+		File file = gridClient.getFileByProtocolId(protocol.getId().toString());
 		// load protocol file keywords
 		loadKeywordsForFile(protocol.getFile());
-	}
-
-	private void loadFileForProtocol(Protocol protocol) throws Exception {
-		// load protocol file
-		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("gov.nih.nci.cananolab.domain.common.File");
-		Association association = new Association();
-		association.setName("gov.nih.nci.cananolab.domain.common.Protocol");
-		association.setRoleName("file");
-		Attribute attribute = new Attribute();
-		attribute.setName("id");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue(protocol.getId().toString());
-		association.setAttribute(attribute);
-		target.setAssociation(association);
-		query.setTarget(target);
-		CQLQueryResults results = gridClient.query(query);
-		results.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
-		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			File file = (File) obj;
-			protocol.setFile(file);
-		}
 	}
 
 	private void loadKeywordsForFile(File file) throws Exception {
