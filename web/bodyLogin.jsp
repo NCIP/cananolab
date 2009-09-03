@@ -107,7 +107,7 @@
 														Search for information on nanoparticle formulations including
 														the composition of the particle, results of nanoparticle
 														physico-chemical, in vitro, and other characterizations, and
-														associated publications using <a href="${advanceSearchUrl}" id="advanceSearch">Advanced Sample Search</a>.
+														associated publications. See also <a href="${advanceSearchUrl}" id="advanceSearch">Advanced Sample Search</a>.
 													</td>
 												</tr>
 											</table>
