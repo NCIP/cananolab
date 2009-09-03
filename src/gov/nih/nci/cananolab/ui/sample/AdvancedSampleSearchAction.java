@@ -284,7 +284,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Get file name for exporting report as an Excell file.
+	 * Get file name for exporting report as an Excel file.
 	 *
 	 * @param sampleName
 	 * @param viewType
@@ -292,7 +292,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	 * @return
 	 */
 	private static String getExportFileName() {
-		StringBuilder sb = new StringBuilder("Advanced Sample Search Report ");
+		StringBuilder sb = new StringBuilder("Advanced_Sample_Search_Report_");
 		sb.append(
 			DateUtils.convertDateToString(Calendar.getInstance().getTime()));
 		return sb.toString();
