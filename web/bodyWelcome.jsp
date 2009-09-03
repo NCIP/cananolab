@@ -55,7 +55,7 @@
 					coords="60,259,156,297" alt="rectangle" />
 					
 				<%-- Search Sample --%>
-				<area href="advancedSampleSearch.do?dispatch=setup&searchLocations=${param.location}" shape="rect"
+				<area href="searchSample.do?dispatch=setup&searchLocations=${param.location}" shape="rect"
 					coords="60,311,156,363" alt="rectangle" />
 					
 				<%-- Search Publication --%>

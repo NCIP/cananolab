@@ -63,7 +63,7 @@ function  updateCount(request, countType) {
 function gotoSamples(dispatch) {
 	var selectEle = document.getElementById("location");
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/advancedSampleSearch.do?dispatch="+dispatch+"&searchLocations=";
+	var url = "/caNanoLab/searchSample.do?dispatch="+dispatch+"&searchLocations=";
 	url += gridNodesStr;
 	gotoPage(url);
 	return false;

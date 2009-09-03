@@ -52,7 +52,7 @@ function getPublicationCounts() {
 function gotoSamples(dispatch) {
 	var selectEle = document.getElementById("sites");
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/advancedSampleSearch.do?dispatch=" + dispatch
+	var url = "/caNanoLab/searchSample.do?dispatch=" + dispatch
 			+ "&searchLocations=";
 	url += gridNodesStr;
 	gotoPage(url);
