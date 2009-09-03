@@ -100,11 +100,14 @@
 													</td>
 												</tr>
 												<tr>
+													<c:url var="advanceSearchUrl" value="advancedSampleSearch.do">
+														<c:param name="dispatch" value="setup" />
+													</c:url>
 													<td>
 														Search for information on nanoparticle formulations including
 														the composition of the particle, results of nanoparticle
 														physico-chemical, in vitro, and other characterizations, and
-														associated publications.
+														associated publications using <a href="${advanceSearchUrl}" id="exportLink">Advanced Sample Search</a>.
 													</td>
 												</tr>
 											</table>
