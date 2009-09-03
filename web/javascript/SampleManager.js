@@ -390,9 +390,9 @@ function setCharacterizationOperandOptions(selectedOperand) {
 		dwr.util.addOptions("charOperand", emptyOption, "value", "label");
 		dwr.util.addOptions("charOperand", data, "value", "label");
 		if (data.length == 1) {
-			dwr.util.setValue("charOperand", data[0].value);
+			dwr.util.setValue("charOperand", data[0].value, {escapeHtml : false});			
 		} else {
-			dwr.util.setValue("charOperand", selectedOperand);
+			dwr.util.setValue("charOperand", selectedOperand, {escapeHtml : false});
 		}
 	});
 }
@@ -429,9 +429,11 @@ function addCharacterizationQuery() {
 		queryId = -100000 - numberOfCharQueries;
 	}
 	var datumName = dwr.util.getValue("datumName");
+	var datumValueUnit=dwr.util.getValue("datumValueUnit");
 	if (datumName.match("^is ")) {
 		var datumValue = dwr.util.getValue("datumValueSelect");
 		var datumValueBoolean = true;
+		datumValueUnit="";
 	} else {
 		datumValue = dwr.util.getValue("datumValue");
 		datumValueBoolean = false;
@@ -443,7 +445,7 @@ function addCharacterizationQuery() {
 		datumName : dwr.util.getValue("datumName"),
 		operand : dwr.util.getValue("charOperand"),
 		datumValue : datumValue,
-		datumValueUnit : dwr.util.getValue("datumValueUnit"),
+		datumValueUnit : datumValueUnit,
 		datumValueBoolean : datumValueBoolean
 	};
 	if (theQuery.characterizationName != "") {
