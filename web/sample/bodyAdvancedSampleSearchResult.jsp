@@ -24,11 +24,15 @@
 				<c:url var="printUrl" value="advancedSampleSearch.do">
 					<c:param name="dispatch" value="print" />
 				</c:url>
-				<c:url var="exportUrl" value="advancedSampleSearch.do">
+				<c:url var="exportCurrentUrl" value="advancedSampleSearch.do">
 					<c:param name="dispatch" value="export" />
 				</c:url>
+				<c:url var="exportAllUrl" value="advancedSampleSearch.do">
+					<c:param name="dispatch" value="exportAll" />
+				</c:url>
 				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
-				<a href="${exportUrl}" id="exportLink">Export</a>
+				<a href="${exportCurrentUrl}" id="exportLink">Export Current Page</a>&nbsp;&nbsp;
+				<a href="${exportAllUrl}" id="exportLink">Export All Pages</a>
 			</td>
 		</tr>
 	</c:if>

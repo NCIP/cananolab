@@ -92,7 +92,83 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Export advance sample search report in excel file.
+	 * Export current page advance sample search report in excel file.
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward exportAll(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		//1.retrieve search bean from session - form.
+		HttpSession session = request.getSession();
+		DynaValidatorForm searchForm = 
+			(DynaValidatorForm) session.getAttribute("advancedSampleSearchForm");
+		AdvancedSampleSearchBean searchBean = 
+			(AdvancedSampleSearchBean) searchForm.get("searchBean");
+		
+		//2.retrieve full list of sample name from session.
+		List<AdvancedSampleBean> sampleSearchResult = 
+			(List<AdvancedSampleBean>) session.getAttribute("advancedSampleSearchResults");
+		
+		if (searchBean != null && 
+			sampleSearchResult != null && !sampleSearchResult.isEmpty()) {
+			List<AdvancedSampleBean> samplesFullList = 
+				(List<AdvancedSampleBean>) session.getAttribute("samplesFullList");
+			// Load all samples by name & location if they are not loaded previously.
+			if (samplesFullList == null) {
+				samplesFullList = 
+					new ArrayList<AdvancedSampleBean>(sampleSearchResult.size());
+				UserBean user = (UserBean) session.getAttribute("user");
+				SampleService localService = null;
+				SampleService remoteService = null;
+				for (AdvancedSampleBean sample : sampleSearchResult) {
+					String location = sample.getLocation();
+					String sampleName = sample.getSampleName();
+					AdvancedSampleBean loadedAdvancedSample = null;
+					if (Constants.LOCAL_SITE.equals(location)) {
+						if (localService == null) {
+							localService = new SampleServiceLocalImpl();
+						}
+						loadedAdvancedSample = 
+							localService.findAdvancedSampleByAdvancedSearch(sampleName, searchBean, user);
+					} else {
+						if (remoteService == null) {
+							String serviceUrl = 
+								InitSetup.getInstance().getGridServiceUrl(request, location);
+							remoteService = new SampleServiceRemoteImpl(serviceUrl);
+						}
+						loadedAdvancedSample = 
+							remoteService.findAdvancedSampleByAdvancedSearch(sampleName, searchBean, user);
+					}
+					loadedAdvancedSample.setLocation(location);
+					samplesFullList.add(loadedAdvancedSample);
+				}
+				// save full sample result set in session for later use.
+				session.setAttribute("samplesFullList", samplesFullList);
+			}
+			
+			// Export all advanced sample search report.
+			ExportUtils.prepareReponseForExcell(response, getExportFileName());
+			AdvancedSampleServiceHelper.exportSummary(
+				searchBean, samplesFullList, getViewSampleURL(request), response.getOutputStream());
+			return null;
+		} else {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage("error.session.expired", 
+				"Session has timed out, please run your search again");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
+	}
+	
+	/**
+	 * Export current page advance sample search report in excel file.
 	 * 
 	 * @param mapping
 	 * @param form
@@ -120,7 +196,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		} else {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("error.session.expired", 
-				"Session has timed out, please run your search again.");
+				"Session has timed out, please run your search again");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			return mapping.getInputForward();
@@ -128,7 +204,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	}
 	
 	/**
-	 * Print advance sample search report.
+	 * Print current page advance sample search report.
 	 * 
 	 * @param mapping
 	 * @param form
@@ -141,23 +217,15 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		//1.Get search bean from session and set it into request form.
-		DynaValidatorForm searchForm = 
-			(DynaValidatorForm) session.getAttribute("advancedSampleSearchForm");
-		AdvancedSampleSearchBean searchBean = 
-			(AdvancedSampleSearchBean) searchForm.get("searchBean");
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("searchBean", searchBean);
-		
-		//2.Get total sample list from session for total result size.
+		//1.Get total sample list from session for total result size.
 		List<AdvancedSampleBean> sampleTotalList = 
 			(List<AdvancedSampleBean>) session.getAttribute("advancedSampleSearchResults");
 		
-		//3.Get current page sample list from session for display tab.
+		//2.Get current page sample list from session for display tab.
 		List<AdvancedSampleBean> sampleResultList = 
 			(List<AdvancedSampleBean>) session.getAttribute("samplesResultList");
 		
-		if (searchBean != null && sampleTotalList != null && sampleResultList != null) {
+		if (sampleTotalList != null && sampleResultList != null) {
 			request.setAttribute("resultSize", Integer.valueOf((sampleTotalList.size())));
 			request.setAttribute("advancedSamples", sampleResultList);
 			request.setAttribute("printView", Boolean.TRUE);
@@ -166,7 +234,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		} else {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("error.session.expired", 
-					"Session has timed out, please run your search again.");
+					"Session has timed out, please run your search again");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			
