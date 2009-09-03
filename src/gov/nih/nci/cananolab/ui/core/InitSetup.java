@@ -329,11 +329,11 @@ public class InitSetup {
 		appContext.setAttribute("booleanOperands", booleanOperands);
 
 		LabelValueBean[] numberOperands = new LabelValueBean[] {
-				new LabelValueBean("=", "="),
-				new LabelValueBean(">", ">"),
-				new LabelValueBean(">=", ">="),
-				new LabelValueBean("<", "<"),
-				new LabelValueBean("<=", "<=") };
+				new LabelValueBean("equals to", "equals to"),
+				new LabelValueBean("greater than", "greater than"),
+				new LabelValueBean("greater than and equals to", "greater than and equals to"),
+				new LabelValueBean("less than", "less than"),
+				new LabelValueBean("less than and equals to", "less than and equals to") };
 		appContext.setAttribute("numberOperands", numberOperands);
 
 		appContext.setAttribute("allCompositionSections",

@@ -146,8 +146,8 @@ public class AdvancedSampleServiceHelper {
 		for (Object obj : filteredResults) {
 			String sampleName = obj.toString();
 			// remove redundancy
-			if (!sampleNames.contains(sampleName) && user == null
-					|| authService.checkReadPermission(user, sampleName)) {
+			if (!sampleNames.contains(sampleName) && 
+				authService.checkReadPermission(user, sampleName)) {
 				sampleNames.add(sampleName);
 			} else { // ignore no access exception
 				logger.debug("User doesn't have access to sample with name "
@@ -336,19 +336,19 @@ public class AdvancedSampleServiceHelper {
 			Float datumValue = new Float(charQuery.getDatumValue());
 			datumCrit = Restrictions.and(datumCrit, Restrictions.eq(
 					"valueUnit", charQuery.getDatumValueUnit()));
-			if (charQuery.getOperand().equals("=")) {
+			if ("equals to".equals(charQuery.getOperand())) {
 				datumCrit = Restrictions.and(datumCrit, Expression.eq("value",
 						datumValue));
-			} else if (charQuery.getOperand().equals(">")) {
+			} else if ("greater than".equals(charQuery.getOperand())) {
 				datumCrit = Restrictions.and(datumCrit, Expression.gt("value",
 						datumValue));
-			} else if (charQuery.getOperand().equals(">=")) {
+			} else if ("greater than and equals to".equals(charQuery.getOperand())) {
 				datumCrit = Restrictions.and(datumCrit, Expression.ge("value",
 						datumValue));
-			} else if (charQuery.getOperand().equals("<")) {
+			} else if ("less than".equals(charQuery.getOperand())) {
 				datumCrit = Restrictions.and(datumCrit, Expression.lt("value",
 						datumValue));
-			} else if (charQuery.getOperand().equals("<=")) {
+			} else if ("less than and equals to".equals(charQuery.getOperand())) {
 				datumCrit = Restrictions.and(datumCrit, Expression.le("value",
 						datumValue));
 			}
