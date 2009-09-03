@@ -51,21 +51,16 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) theForm
-				.get("searchBean");
+		AdvancedSampleSearchBean searchBean = 
+			(AdvancedSampleSearchBean) theForm.get("searchBean");
 		searchBean.updateQueries();
 		// retrieve from session if it's not null
-		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
-		if (session.getAttribute("advancedSampleSearchResults") != null
-				&& displayPage > 0) {
-			sampleBeans = new ArrayList<AdvancedSampleBean>((List) session
-					.getAttribute("advancedSampleSearchResults"));
-		} else {
+		List<AdvancedSampleBean> sampleBeans = 
+			(List<AdvancedSampleBean>) session.getAttribute("advancedSampleSearchResults");
+		if (sampleBeans == null || displayPage <= 0) {
 			sampleBeans = querySamples(form, request);
 			if (sampleBeans != null && !sampleBeans.isEmpty()) {
-				session
-						.setAttribute("advancedSampleSearchResults",
-								sampleBeans);
+				session.setAttribute("advancedSampleSearchResults",	sampleBeans);
 			} else {
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage(
@@ -85,14 +80,14 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		// get the pagination to work
 		request.setAttribute("resultSize", Integer.valueOf((sampleBeans.size())));
 		
-		// save sample result set in session for exporting/printing.
+		// save sample result set in session for printing.
 		session.setAttribute("samplesResultList", sampleBeansPerPage);
 		
 		return mapping.findForward("success");
 	}
 
 	/**
-	 * Export current page advance sample search report in excel file.
+	 * Export full advance sample search report in excel file.
 	 * 
 	 * @param mapping
 	 * @param form
@@ -101,7 +96,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward exportAll(ActionMapping mapping, ActionForm form,
+	public ActionForward export(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		//1.retrieve search bean from session - form.
@@ -117,9 +112,9 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		
 		if (searchBean != null && 
 			sampleSearchResult != null && !sampleSearchResult.isEmpty()) {
+			// Load all samples by name & location if they are not loaded previously.
 			List<AdvancedSampleBean> samplesFullList = 
 				(List<AdvancedSampleBean>) session.getAttribute("samplesFullList");
-			// Load all samples by name & location if they are not loaded previously.
 			if (samplesFullList == null) {
 				samplesFullList = 
 					new ArrayList<AdvancedSampleBean>(sampleSearchResult.size());
@@ -156,42 +151,6 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 			ExportUtils.prepareReponseForExcell(response, getExportFileName());
 			AdvancedSampleServiceHelper.exportSummary(
 				searchBean, samplesFullList, getViewSampleURL(request), response.getOutputStream());
-			return null;
-		} else {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("error.session.expired", 
-				"Session has timed out, please run your search again");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-			return mapping.getInputForward();
-		}
-	}
-	
-	/**
-	 * Export current page advance sample search report in excel file.
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward export(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		HttpSession session = request.getSession();
-		List<AdvancedSampleBean> sampleResultList = 
-			(List<AdvancedSampleBean>) session.getAttribute("samplesResultList");
-		DynaValidatorForm searchForm = 
-			(DynaValidatorForm) session.getAttribute("advancedSampleSearchForm");
-		AdvancedSampleSearchBean searchBean = 
-			(AdvancedSampleSearchBean) searchForm.get("searchBean");
-		if (searchBean != null && sampleResultList != null) {
-			// Export advanced sample search report.
-			ExportUtils.prepareReponseForExcell(response, getExportFileName());
-			AdvancedSampleServiceHelper.exportSummary(
-				searchBean, sampleResultList, getViewSampleURL(request), response.getOutputStream());
 			return null;
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -296,6 +255,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 		// clear the search results and start over
 		request.getSession().removeAttribute("advancedSampleSearchResults");
 		request.getSession().removeAttribute("samplesResultList");
+		request.getSession().removeAttribute("samplesFullList");
 		request
 				.setAttribute(
 						"onloadJavascript",
@@ -311,6 +271,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 				request);
 		request.getSession().removeAttribute("advancedSampleSearchResults");
 		request.getSession().removeAttribute("samplesResultList");
+		request.getSession().removeAttribute("samplesFullList");
 		return mapping.getInputForward();
 	}
 
