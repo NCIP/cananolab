@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.protocol.helper;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -9,6 +10,7 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,6 +122,26 @@ public class ProtocolServiceHelper {
 		} else {
 			throw new NoAccessException();
 		}
+	}
+
+	public File findFileByProtocolId(String protocolId, UserBean user)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select aProtocol.file from gov.nih.nci.cananolab.domain.common.Protocol aProtocol where aProtocol.id = "
+						+ protocolId);
+		List result = appService.query(crit);
+		File file = null;
+		if (!result.isEmpty()) {
+			file = (File) result.get(0);
+			if (authService.checkReadPermission(user, file.getId().toString())) {
+				return file;
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return file;
 	}
 
 	public AuthorizationService getAuthService() {
