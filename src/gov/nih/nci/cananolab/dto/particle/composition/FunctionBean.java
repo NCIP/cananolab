@@ -25,8 +25,8 @@ import java.util.List;
  * 
  */
 public class FunctionBean {
-	private String id; // needed for use in DWR ordering functions in the
-	// session
+	// needed for use in DWR ordering functions in the session.
+	private String id; 
 
 	private String type;
 
@@ -46,7 +46,10 @@ public class FunctionBean {
 	}
 
 	public FunctionBean(Function function) {
-		id = function.getId().toString();
+		// when function is copied its id is intentionally set to null.
+		if (function.getId() != null && function.getId() != 0) {
+			id = function.getId().toString();
+		}
 		description = function.getDescription();
 		domainFunction = function;
 		if (function instanceof ImagingFunction) {

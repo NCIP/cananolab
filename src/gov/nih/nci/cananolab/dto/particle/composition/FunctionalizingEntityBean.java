@@ -96,9 +96,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		}
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
-		if (functionalizingEntity.getFunctionCollection() != null) {
-			for (Function function : functionalizingEntity
-					.getFunctionCollection()) {
+		Collection<Function> funcs = functionalizingEntity.getFunctionCollection();
+		if (funcs != null) {
+			for (Function function : funcs) {
 				functions.add(new FunctionBean(function));
 				if (function instanceof ImagingFunction) {
 					withImagingFunction = true;
@@ -133,13 +133,12 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		if (copy.getActivationMethod() != null) {
 			copy.getActivationMethod().setId(null);
 		}
-		if (copy.getFunctionCollection() == null
-				|| copy.getFunctionCollection().isEmpty()) {
+		if (copy.getFunctionCollection() == null ||
+			copy.getFunctionCollection().isEmpty()) {
 			copy.setFunctionCollection(null);
 		} else {
 			Collection<Function> functions = copy.getFunctionCollection();
-			copy.setFunctionCollection(new HashSet<Function>());
-			copy.getFunctionCollection().addAll(functions);
+			copy.setFunctionCollection(new HashSet<Function>(functions));
 			for (Function function : copy.getFunctionCollection()) {
 				function.setId(null);
 				function.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
