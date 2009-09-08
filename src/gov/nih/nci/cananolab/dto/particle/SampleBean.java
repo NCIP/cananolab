@@ -73,13 +73,16 @@ public class SampleBean {
 		if (domain != null) {
 			PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
 			primaryPOCBean = new PointOfContactBean(primaryPOC);
-			for (PointOfContact poc : domain.getOtherPointOfContactCollection()) {
-				PointOfContactBean pocBean = new PointOfContactBean(poc);
-				pocBean.setPrimaryStatus(false);
-				otherPOCBeans.add(pocBean);
+			if (domain.getOtherPointOfContactCollection() != null) {
+				for (PointOfContact poc : domain
+						.getOtherPointOfContactCollection()) {
+					PointOfContactBean pocBean = new PointOfContactBean(poc);
+					pocBean.setPrimaryStatus(false);
+					otherPOCBeans.add(pocBean);
+				}
+				Collections.sort(otherPOCBeans,
+						new Comparators.PointOfContactBeanNameOrgComparator());
 			}
-			Collections.sort(otherPOCBeans,
-					new Comparators.PointOfContactBeanNameOrgComparator());
 			thePOC = primaryPOCBean;
 		}
 		if (sample.getSampleComposition() != null
