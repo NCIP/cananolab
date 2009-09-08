@@ -70,7 +70,7 @@ public class GridClientTest {
 					CaNanoLabServiceClient client = new CaNanoLabServiceClient(
 							args[1]);
 					GridClientTest test=new GridClientTest(client);
-					//test.testCharacterization();
+					test.testCharacterization();
 					test.testNanomaterialEntity();
 				} else {
 					System.exit(1);
