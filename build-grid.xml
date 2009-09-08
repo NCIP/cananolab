@@ -25,7 +25,19 @@
 		<!-- repackage caNanoLabSDK-orm.jar -->
 		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" basedir="${tmp.dir}/orm" />
 		<delete dir="${tmp.dir}/orm" quiet="true" />
+	    
+		<!-- unpack caNanoLabSDK-customConfig.jar -->
+		<unzip dest="${tmp.dir}/customConfig" src="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" />
+		<!-- replace database connection info -->
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_PASSWORD" value="${database.password}" />
+		<!-- repackage caNanoLabSDK-customConfig.jar -->
+		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" basedir="${tmp.dir}/customConfig" />
+		<delete dir="${tmp.dir}/customConfig" quiet="true" />
 
+		
 		<!-- replace grid service hostname -->
 		<replace file="${tmp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
 
