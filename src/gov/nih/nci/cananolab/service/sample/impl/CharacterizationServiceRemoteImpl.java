@@ -35,9 +35,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Service methods involving local characterizations
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class CharacterizationServiceRemoteImpl implements
 		CharacterizationService {
@@ -117,58 +117,35 @@ public class CharacterizationServiceRemoteImpl implements
 
 	/**
 	 * Get all the associated data of a Characterization
-	 *
+	 * 
 	 * @param particleSample
 	 * @throws Exception
 	 */
 	private void loadCharacterizationAssociations(Characterization achar)
 			throws Exception {
-		Protocol protocol = gridClient.getProtocolByCharacterizationId(achar
+		 Protocol protocol = gridClient.getProtocolByCharacterizationId(achar
 				.getId().toString());
 		if (protocol != null) {
-			loadProtocolFileForProtocol(protocol);
+			File file = gridClient.getFileByProtocolId(protocol.getId().toString());
+			if (file!=null) {
+				protocol.setFile(file);
+			}
 			achar.setProtocol(protocol);
 		}
 		loadExperimentConfigsForCharacterization(achar);
 		loadFindingsForCharacterization(achar);
 	}
-
-	private void loadProtocolFileForProtocol(Protocol protocol)
-			throws Exception {
-//		CQLQuery query = new CQLQuery();
-//		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-//		target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
-//		Association association = new Association();
-//		association.setName("gov.nih.nci.cananolab.domain.common.Protocol");
-//		association.setRoleName("protocol");
-//		Attribute attribute = new Attribute();
-//		attribute.setName("id");
-//		attribute.setPredicate(Predicate.EQUAL_TO);
-//		attribute.setValue(protocol.getId().toString());
-//		association.setAttribute(attribute);
-//
-//		target.setAssociation(association);
-//		query.setTarget(target);
-//		CQLQueryResults results = gridClient.query(query);
-//		results
-//				.setTargetClassname("gov.nih.nci.cananolab.domain.common.ProtocolFile");
-//		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-//		File file = null;
-//		while (iter.hasNext()) {
-//			java.lang.Object obj = iter.next();
-//			file = (File) obj;
-//		}
-//		file.setProtocol(protocol);
-	}
-
+	
 	private void loadExperimentConfigsForCharacterization(Characterization achar)
 			throws Exception {
 		ExperimentConfig[] configs = gridClient
 				.getExperimentConfigsByCharacterizationId(achar.getId()
 						.toString());
-		for (ExperimentConfig config : configs) {
-			loadTechniqueForConfig(config);
-			loadInstrumentsForConfig(config);
+		if (configs != null) {
+			for (ExperimentConfig config : configs) {
+				loadTechniqueForConfig(config);
+				loadInstrumentsForConfig(config);
+			}
 		}
 	}
 
@@ -283,7 +260,7 @@ public class CharacterizationServiceRemoteImpl implements
 		target.setName("gov.nih.nci.cananolab.domain.common.Datum");
 		Association association = new Association();
 		association.setName("gov.nih.nci.cananolab.domain.common.Finding");
-		association.setRoleName("findingCollection");
+		association.setRoleName("finding");
 		Attribute attribute = new Attribute();
 		attribute.setName("id");
 		attribute.setPredicate(Predicate.EQUAL_TO);
