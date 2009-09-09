@@ -207,7 +207,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Keyword");
 		Association association = new Association();
-		association.setName("gov.nih.nci.cananolab.domain.common.Publication");
+		association.setName("gov.nih.nci.cananolab.domain.common.File");
 		association.setRoleName("fileCollection");
 		Attribute attribute = new Attribute();
 		attribute.setName("id");
