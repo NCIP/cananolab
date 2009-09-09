@@ -36,13 +36,14 @@ public class ClassUtils {
 		Collection<Class> list = new ArrayList<Class>();
 		JarFile file = null;
 		URL url = Thread.currentThread().getContextClassLoader().getResource(
-				"application-config.xml");
+				"client-config.wsdd");
 
-		File webinfDirect = (new File(url.getPath())).getParentFile()
+		File webInfDirectory = (new File(url.getPath())).getParentFile()
 				.getParentFile();
 
-		String fullJarFilePath = webinfDirect + File.separator + "lib"
+		String fullJarFilePath = webInfDirectory + File.separator + "lib"
 				+ File.separatorChar + Constants.SDK_BEAN_JAR;
+
 		file = new JarFile(fullJarFilePath);
 
 		if (file == null)
