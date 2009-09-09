@@ -393,6 +393,19 @@ public class SampleServiceLocalImpl implements SampleService {
 			SampleBean sampleBean = null;
 			if (sample != null) {
 				sampleBean = new SampleBean(sample);
+				// load summary information
+				sampleBean.setCharacterizationClassNames(helper
+						.getStoredCharacterizationClassNames(sample).toArray(
+								new String[0]));
+				sampleBean.setFunctionalizingEntityClassNames(helper
+						.getStoredFunctionalizingEntityClassNames(sample)
+						.toArray(new String[0]));
+				sampleBean.setNanomaterialEntityClassNames(helper
+						.getStoredNanomaterialEntityClassNames(sample).toArray(
+								new String[0]));
+				sampleBean.setFunctionClassNames(helper
+						.getStoredFunctionClassNames(sample).toArray(
+				 new String[0]));
 				if (user != null)
 					retrieveVisibility(sampleBean, user);
 			}
