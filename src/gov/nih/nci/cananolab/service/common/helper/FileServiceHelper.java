@@ -133,7 +133,7 @@ public class FileServiceHelper {
 			return null;
 		}
 		String fileRoot = PropertyUtils.getProperty(
-				Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 
 		java.io.File fileObj = new java.io.File(fileRoot
 				+ java.io.File.separator + file.getUri());
