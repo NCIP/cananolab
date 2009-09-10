@@ -30,18 +30,19 @@ import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
+import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.apache.commons.lang.ClassUtils;
 import org.apache.log4j.Logger;
 
 /**
  * Local implementation of CompositionService.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CompositionServiceRemoteImpl implements CompositionService {
 	private static Logger logger = Logger
@@ -74,9 +75,9 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	private void loadNanomaterialEntityAssociations(NanomaterialEntity entity)
 			throws Exception {
 		File[] files = gridClient.getFilesByCompositionInfoId(entity.getId()
-				.toString(), ClassUtils.getShortClassName(NanomaterialEntity.class));		
+				.toString(), "NanomaterialEntity");
 		if (files != null && files.length > 0) {
-			loadKeywordsForFiles(files);		
+			loadKeywordsForFiles(files);
 			entity.setFileCollection(new HashSet<File>(Arrays.asList(files)));
 		}
 		loadComposingElementForNanomaterialEntity(entity);
@@ -92,7 +93,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 
 	/**
 	 * load all ComposingElement for an associated NanomaterialEntity
-	 *
+	 * 
 	 * @param nanoEntityId
 	 * @return
 	 * @throws ParticleCompositionException
@@ -191,7 +192,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	private void loadFunctionalizingEntityAssociations(
 			FunctionalizingEntity entity) throws Exception {
 		File[] files = gridClient.getFilesByCompositionInfoId(entity.getId()
-				.toString(), ClassUtils.getShortClassName(FunctionalizingEntity.class));		
+				.toString(), "FunctionalizingEntity");
 		if (files != null && files.length > 0) {
 			loadKeywordsForFiles(files);
 			entity.setFileCollection(new HashSet<File>(Arrays.asList(files)));
@@ -300,6 +301,22 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			UserBean user) throws CompositionException {
 		CompositionBean compositionBean = null;
 		try {
+			// find all nanomaterial entity class names, functionalizing entity
+			// class names first
+			String[] sampleViewStrs = gridClient.getSampleViewStrs(sampleId);
+			// column 8 contains characterization short class names
+			String[] nanoEntityClassNames = null;
+			if (sampleViewStrs.length > 5 && sampleViewStrs[5] != null
+					&& sampleViewStrs[5].length() > 0) {
+				nanoEntityClassNames = sampleViewStrs[5]
+						.split(Constants.VIEW_CLASSNAME_DELIMITER);
+			}
+			String[] funcEntityClassNames = null;
+			if (sampleViewStrs.length > 6 && sampleViewStrs[6] != null
+					&& sampleViewStrs[6].length() > 0) {
+				funcEntityClassNames = sampleViewStrs[6]
+						.split(Constants.VIEW_CLASSNAME_DELIMITER);
+			}
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
@@ -325,7 +342,8 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				sampleComposition = (SampleComposition) obj;
-				loadCompositionAssociations(sampleComposition);
+				loadCompositionAssociations(sampleComposition,
+						nanoEntityClassNames, funcEntityClassNames);
 				compositionBean = new CompositionBean(sampleComposition);
 			}
 		} catch (Exception e) {
@@ -337,14 +355,17 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 		return compositionBean;
 	}
 
-	private void loadCompositionAssociations(SampleComposition composition)
+	private void loadCompositionAssociations(SampleComposition composition,
+			String[] nanoEntityClassNames, String[] funcEntityClassNames)
 			throws Exception {
-		loadNanomaterialEntitiesForComposition(composition);
-		loadFunctionalizingEntitiesForComposition(composition);
+		loadNanomaterialEntitiesForComposition(composition,
+				nanoEntityClassNames);
+		loadFunctionalizingEntitiesForComposition(composition,
+				funcEntityClassNames);
 		loadChemicalAssociationsForComposition(composition);
-		File[] files = gridClient
-				.getFilesByCompositionInfoId(composition.getId().toString(),
-						ClassUtils.getShortClassName(SampleComposition.class));		
+		File[] files = gridClient.getFilesByCompositionInfoId(composition
+				.getId().toString(), ClassUtils
+				.getShortClassName("SampleComposition"));
 		if (files != null && files.length > 0) {
 			loadKeywordsForFiles(files);
 			composition.setFileCollection(new HashSet<File>(Arrays
@@ -353,68 +374,85 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	}
 
 	private void loadNanomaterialEntitiesForComposition(
-			SampleComposition composition) throws Exception {
-		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target
-				.setName("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-		Association association = new Association();
-		association
-				.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
-		association.setRoleName("sampleComposition");
+			SampleComposition composition, String[] nanoEntityClassNames)
+			throws Exception {
+		if (nanoEntityClassNames != null) {
+			for (String name : nanoEntityClassNames) {
+				String fullClassName = ClassUtils.getFullClass(name)
+						.getCanonicalName();
+				CQLQuery query = new CQLQuery();
+				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+				target.setName(fullClassName);
+				Association association = new Association();
+				association
+						.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+				association.setRoleName("sampleComposition");
 
-		Attribute attribute = new Attribute();
-		attribute.setName("id");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue(composition.getId().toString());
-		association.setAttribute(attribute);
+				Attribute attribute = new Attribute();
+				attribute.setName("id");
+				attribute.setPredicate(Predicate.EQUAL_TO);
+				attribute.setValue(composition.getId().toString());
+				association.setAttribute(attribute);
 
-		target.setAssociation(association);
-		query.setTarget(target);
-		CQLQueryResults results = gridClient.query(query);
-		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		NanomaterialEntity nanoEntity = null;
-		composition.setNanomaterialEntityCollection(new HashSet<NanomaterialEntity>());
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			nanoEntity = (NanomaterialEntity) obj;
-			loadNanomaterialEntityAssociations(nanoEntity);
-			composition.getNanomaterialEntityCollection().add(nanoEntity);
+				target.setAssociation(association);
+				query.setTarget(target);
+				CQLQueryResults results = gridClient.query(query);
+				results.setTargetClassname(fullClassName);
+				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+						results);
+				NanomaterialEntity nanoEntity = null;
+				composition
+						.setNanomaterialEntityCollection(new HashSet<NanomaterialEntity>());
+				while (iter.hasNext()) {
+					java.lang.Object obj = iter.next();
+					nanoEntity = (NanomaterialEntity) obj;
+					loadNanomaterialEntityAssociations(nanoEntity);
+					composition.getNanomaterialEntityCollection().add(
+							nanoEntity);
+				}
+			}
 		}
 	}
 
 	private void loadFunctionalizingEntitiesForComposition(
-			SampleComposition composition) throws Exception {
-		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target
-				.setName("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-		Association association = new Association();
-		association
-				.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
-		association.setRoleName("sampleComposition");
+			SampleComposition composition, String[] funcEntityClassNames)
+			throws Exception {
+		if (funcEntityClassNames != null) {
+			for (String name : funcEntityClassNames) {
+				String fullClassName = ClassUtils.getFullClass(name)
+						.getCanonicalName();
+				CQLQuery query = new CQLQuery();
+				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+				target.setName(fullClassName);
 
-		Attribute attribute = new Attribute();
-		attribute.setName("id");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue(composition.getId().toString());
-		association.setAttribute(attribute);
+				Association association = new Association();
+				association
+						.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+				association.setRoleName("sampleComposition");
 
-		target.setAssociation(association);
-		query.setTarget(target);
-		CQLQueryResults results = gridClient.query(query);
-		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		FunctionalizingEntity funcEntity = null;
-		composition.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			funcEntity = (FunctionalizingEntity) obj;
-			loadFunctionalizingEntityAssociations(funcEntity);
-			composition.getFunctionalizingEntityCollection().add(funcEntity);
+				Attribute attribute = new Attribute();
+				attribute.setName("id");
+				attribute.setPredicate(Predicate.EQUAL_TO);
+				attribute.setValue(composition.getId().toString());
+				association.setAttribute(attribute);
+
+				target.setAssociation(association);
+				query.setTarget(target);
+				CQLQueryResults results = gridClient.query(query);
+				results.setTargetClassname(fullClassName);
+				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+						results);
+				FunctionalizingEntity funcEntity = null;
+				composition
+						.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
+				while (iter.hasNext()) {
+					java.lang.Object obj = iter.next();
+					funcEntity = (FunctionalizingEntity) obj;
+					loadFunctionalizingEntityAssociations(funcEntity);
+					composition.getFunctionalizingEntityCollection().add(
+							funcEntity);
+				}
+			}
 		}
 	}
 
@@ -442,7 +480,8 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 		ChemicalAssociation assoc = null;
-		composition.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>());
+		composition
+				.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>());
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
 			assoc = (ChemicalAssociation) obj;
@@ -454,7 +493,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	private void loadChemicalAssociationAssociations(ChemicalAssociation assoc)
 			throws Exception {
 		File[] files = gridClient.getFilesByCompositionInfoId(assoc.getId()
-				.toString(), ClassUtils.getShortClassName(ChemicalAssociation.class));
+				.toString(), "ChemicalAssociation");
 		if (files != null && files.length > 0) {
 			loadKeywordsForFiles(files);
 			assoc.setFileCollection(new HashSet<File>(Arrays.asList(files)));
@@ -503,15 +542,15 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 
 	public void copyAndSaveNanomaterialEntity(
 			NanomaterialEntityBean entityBean, SampleBean oldSampleBean,
-			SampleBean[] newSampleBeans, UserBean user) throws CompositionException,
-			NoAccessException {
+			SampleBean[] newSampleBeans, UserBean user)
+			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public void copyAndSaveFunctionalizingEntity(
 			FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
-			SampleBean[] newSampleBeans, UserBean user) throws CompositionException,
-			NoAccessException {
+			SampleBean[] newSampleBeans, UserBean user)
+			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 }
