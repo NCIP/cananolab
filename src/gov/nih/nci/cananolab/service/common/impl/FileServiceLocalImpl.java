@@ -86,7 +86,7 @@ public class FileServiceLocalImpl implements FileService {
 		try {
 			if (fileBean.getNewFileData() != null) {
 				String rootPath = PropertyUtils.getProperty(
-						Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+						Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 				String fullFileName = rootPath + "/"
 						+ fileBean.getDomainFile().getUri();
 				writeFile(fileBean.getNewFileData(), fullFileName);
