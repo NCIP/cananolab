@@ -334,7 +334,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 		try {
 			String[] columns = gridClient.getSampleViewStrs(sampleName);
 			// String[] sampleViewStrs = {
-			// "35444457~~~NCICB-6~~~DNT~~~Carbon nanotube!!!small
+			// "35444457~~~NCICB-6~~~DNT~~~Carbon nanotube~~~small
 			// molecule~~~therapeutic~~~Enzyme Induction:Molecular
 			// Weight:Oxidative Stress"
 
@@ -354,21 +354,28 @@ public class SampleServiceRemoteImpl implements SampleService {
 				sample.setPrimaryPointOfContact(primaryPOC);
 
 				SampleBean sampleBean = new SampleBean(sample);
-				// composition, set all compositions as Nanomaterial Entity
-				// for now
 				if (columns.length > 5 && columns[5] != null
 						&& columns[5].length() > 0) {
-					String[] compositionsClazzNames = columns[5]
+					String[] nanoEntityClazzNames = columns[5]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
-					if (compositionsClazzNames != null) {
+					if (nanoEntityClazzNames != null) {
 						sampleBean
-								.setNanomaterialEntityClassNames(compositionsClazzNames);
+								.setNanomaterialEntityClassNames(nanoEntityClazzNames);
+					}
+				}
+				if (columns.length > 6 && columns[6] != null
+						&& columns[6].length() > 0) {
+					String[] funcEntityClazzNames = columns[6]
+							.split(Constants.VIEW_CLASSNAME_DELIMITER);
+					if (funcEntityClazzNames != null) {
+						sampleBean
+								.setFunctionalizingEntityClassNames(funcEntityClazzNames);
 					}
 				}
 				// functionClassNames
-				if (columns.length > 6 && columns[6] != null
-						&& columns[6].length() > 0) {
-					String[] functionClazzNames = columns[6]
+				if (columns.length > 7 && columns[7] != null
+						&& columns[7].length() > 0) {
+					String[] functionClazzNames = columns[7]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (functionClazzNames != null) {
 						sampleBean.setFunctionClassNames(functionClazzNames);
@@ -376,9 +383,9 @@ public class SampleServiceRemoteImpl implements SampleService {
 				}
 
 				// characterizationClassNames
-				if (columns.length > 7 && columns[7] != null
-						&& columns[7].length() > 0) {
-					String[] characterizationClazzNames = columns[7]
+				if (columns.length > 8 && columns[8] != null
+						&& columns[8].length() > 0) {
+					String[] characterizationClazzNames = columns[8]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (characterizationClazzNames != null) {
 						sampleBean
