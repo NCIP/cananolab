@@ -70,7 +70,7 @@ public class CompositionServiceHelper {
 	public static final String FILE_ID = "fileId";
 
 	private static String fileRoot = PropertyUtils.getProperty(
-			Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
+			Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
 
 	private static Logger logger = Logger
 			.getLogger(CompositionServiceHelper.class);
