@@ -26,6 +26,8 @@ import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,34 +79,49 @@ public class CharacterizationServiceRemoteImpl implements
 			String sampleId, UserBean user) throws CharacterizationException {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.Characterization");
-			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.Sample");
-			association.setRoleName("sample");
+			// find all characterization class names first
+			String[] sampleViewStrs = gridClient.getSampleViewStrs(sampleId);
+			// column 8 contains characterization short class names
+			String[] charClassNames = null;
+			if (sampleViewStrs.length > 8 && sampleViewStrs[8] != null
+					&& sampleViewStrs[8].length() > 0) {
+				charClassNames = sampleViewStrs[8]
+						.split(Constants.VIEW_CLASSNAME_DELIMITER);
+			}
+			if (charClassNames != null) {
+				for (String charClassName : charClassNames) {
+					CQLQuery query = new CQLQuery();
+					gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+					String fullClassName = ClassUtils.getFullClass(
+							charClassName).getCanonicalName();
+					target.setName(fullClassName);
+					Association association = new Association();
+					association
+							.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+					association.setRoleName("sample");
 
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(sampleId);
+					Attribute attribute = new Attribute();
+					attribute.setName("id");
+					attribute.setPredicate(Predicate.EQUAL_TO);
+					attribute.setValue(sampleId);
 
-			association.setAttribute(attribute);
+					association.setAttribute(attribute);
 
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Characterization");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				Characterization achar = (Characterization) obj;
-				loadCharacterizationAssociations(achar);
-				CharacterizationBean charBean = new CharacterizationBean(achar);
-				charBeans.add(charBean);
+					target.setAssociation(association);
+					query.setTarget(target);
+					CQLQueryResults results = gridClient.query(query);
+					results.setTargetClassname(fullClassName);
+					CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+							results);
+					while (iter.hasNext()) {
+						java.lang.Object obj = iter.next();
+						Characterization achar = (Characterization) obj;
+						loadCharacterizationAssociations(achar);
+						CharacterizationBean charBean = new CharacterizationBean(
+								achar);
+						charBeans.add(charBean);
+					}
+				}
 			}
 		} catch (Exception e) {
 			String err = "Problem finding the remote characterizations by sample id: "
@@ -123,11 +140,12 @@ public class CharacterizationServiceRemoteImpl implements
 	 */
 	private void loadCharacterizationAssociations(Characterization achar)
 			throws Exception {
-		 Protocol protocol = gridClient.getProtocolByCharacterizationId(achar
+		Protocol protocol = gridClient.getProtocolByCharacterizationId(achar
 				.getId().toString());
 		if (protocol != null) {
-			File file = gridClient.getFileByProtocolId(protocol.getId().toString());
-			if (file!=null) {
+			File file = gridClient.getFileByProtocolId(protocol.getId()
+					.toString());
+			if (file != null) {
 				protocol.setFile(file);
 			}
 			achar.setProtocol(protocol);
@@ -135,7 +153,7 @@ public class CharacterizationServiceRemoteImpl implements
 		loadExperimentConfigsForCharacterization(achar);
 		loadFindingsForCharacterization(achar);
 	}
-	
+
 	private void loadExperimentConfigsForCharacterization(Characterization achar)
 			throws Exception {
 		ExperimentConfig[] configs = gridClient
