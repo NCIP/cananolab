@@ -58,7 +58,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaActionForm theForm = (DynaActionForm) form;
 		String siteName = PropertyUtils.getProperty(
-				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME);
+				Constants.CANANOLAB_PROPERTY, Constants.SITE_NAME);
 		theForm.set(Constants.SITE_NAME, siteName);
 		theForm.set(Constants.SITE_LOGO, null);
 
@@ -229,7 +229,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 	private String getLogoFileName() {
 		StringBuilder sb = new StringBuilder();
 		String fileRoot = PropertyUtils.getProperty(
-				Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
+				Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
 		sb.append(fileRoot).append(File.separator).append(Constants.SITE_LOGO_FILENAME);
 
 		return sb.toString();
@@ -243,7 +243,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 	 */
 	private boolean setSiteName(String siteName, ActionMessages messages) {
 		boolean success = PropertyUtils.setProperty(
-				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME, siteName);
+				Constants.CANANOLAB_PROPERTY, Constants.SITE_NAME, siteName);
 		if (!success) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteName");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -259,7 +259,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 	 */
 	private boolean setSiteLogo(String siteLogo, ActionMessages messages) {
 		boolean success = PropertyUtils.setProperty(
-				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_LOGO, siteLogo);
+				Constants.CANANOLAB_PROPERTY, Constants.SITE_LOGO, siteLogo);
 		if (!success) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteLogo");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
