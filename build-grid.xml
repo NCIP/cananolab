@@ -25,7 +25,7 @@
 		<!-- repackage caNanoLabSDK-orm.jar -->
 		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" basedir="${tmp.dir}/orm" />
 		<delete dir="${tmp.dir}/orm" quiet="true" />
-	    
+
 		<!-- unpack caNanoLabSDK-customConfig.jar -->
 		<unzip dest="${tmp.dir}/customConfig" src="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" />
 		<!-- replace database connection info -->
@@ -37,7 +37,22 @@
 		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" basedir="${tmp.dir}/customConfig" />
 		<delete dir="${tmp.dir}/customConfig" quiet="true" />
 
-		
+		<!-- unpack caNanoLab-utils.jar -->
+		<unzip dest="${tmp.dir}/utils" src="${tmp.dir}/WEB-INF/lib/caNanoLab-utils.jar" />
+		<!-- replace cananolab properties tokens with values from build properties -->
+		<copy file="${tmp.dir}/utils/caNanoLab.properties.template" toFile="${tmp.dir}/utils/caNanoLab.properties" filtering="true" >
+			<!-- replace tokens with values from build properties -->
+			<filterset>
+				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
+				<filter token="APP_OWNER" value="${application.owner}" />
+				<filter token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
+			</filterset>
+		</copy>
+		<delete file="${tmp.dir}/utils/caNanoLab.properties.template" quiet="true"/>
+		<!-- repackage caNanoLab-utils.jar -->
+		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLab-utils.jar" basedir="${tmp.dir}/utils" />
+		<delete dir="${tmp.dir}/utils" quiet="true" />
+
 		<!-- replace grid service hostname -->
 		<replace file="${tmp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
 
