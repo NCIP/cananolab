@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="sampleForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="sampleBean"
+				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="location" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="searchSampleForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="samplePointOfContact" type="java.lang.String" />
+			<form-property name="nanomaterialEntityTypes" type="java.lang.String[]" />
+			<form-property name="functionalizingEntityTypes" type="java.lang.String[]" />
+			<form-property name="functionTypes" type="java.lang.String[]" />
+			<form-property name="characterizationType" type="java.lang.String" />
+			<form-property name="characterizations" type="java.lang.String[]" />
+			<form-property name="text" type="java.lang.String" />
+			<form-property name="searchLocations" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+		<form-bean name="advancedSampleSearchForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="searchBean"
+				type="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean" />
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+		<form-bean name="compositionForm"
+			type="org.apache.struts.validator.DynaValidatorActionForm">
+			<form-property name="comp"
+				type="gov.nih.nci.cananolab.dto.particle.composition.CompositionBean" />
+			<form-property name="nanomaterialEntity"
+				type="gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean" />
+			<form-property name="functionalizingEntity"
+				type="gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean" />
+			<form-property name="assoc"
+				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="location" type="java.lang.String" />
+			<form-property name="dataId" type="java.lang.String" />
+			<form-property name="otherSamples" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="dispatch" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="characterizationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="achar"
+				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="location" type="java.lang.String" />
+			<form-property name="otherSamples" type="java.lang.String[]" />
+			<form-property name="charId" type="java.lang.String" />
+			<form-property name="copyData" type="java.lang.Boolean"
+				initial="false" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="numberOfColumns" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="numberOfRows" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="fileSupplied" type="java.lang.String"
+				initial="false" />
+			<form-property name="dispatch" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.composition" path="sample.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.CompositionException" />
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.sample" path="sample.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.SampleException" />
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.characterization" path="sample.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.CharacterizationException" />
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.characterization" path="sample.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.ExperimentConfigException" />
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.pointOfContact" path="sample.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.PointOfContactException" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="sampleMessage" path="sample.annotationMessage" />
+		<forward name="detailPrintView"
+			path="/sample/characterization/bodyCharacterizationDetailPrintView.jsp" />
+		<forward name="summaryPrintView"
+			path="/sample/characterization/bodyCharacterizationSummaryPrintView.jsp" />
+		<forward name="summaryPrintAllView"
+			path="/sample/characterization/bodyCharacterizationSummaryPrintAllView.jsp" />
+		<forward name="sampleSearchResult" path="sample.searchSampleResult"></forward>
+		<forward name="advancedSampleSearchResult" path="sample.advancedSampleSearchResult"></forward>
+	</global-forwards>
+	<action-mappings>
+		<action path="/manageSample" type="org.apache.struts.actions.ForwardAction"
+			parameter="sample.manageSample" scope="request" />
+		<action name="sampleForm" parameter="dispatch" path="/sample"
+			type="gov.nih.nci.cananolab.ui.sample.SampleAction" input="input">
+			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.duplicateSample" path="sample.submitSample"
+				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
+			<forward name="summaryView" path="sample.summaryView" />
+			<forward name="summaryEdit" path="sample.summaryEdit" />
+			<forward name="input" path="sample.submitSample" />
+			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />
+		</action>
+		<action input="input" name="searchSampleForm" parameter="dispatch"
+			path="/searchSample" type="gov.nih.nci.cananolab.ui.sample.SearchSampleAction"
+			scope="request">
+			<forward name="input" path="sample.searchSample" />
+			<forward name="success" path="sample.searchSampleResult" />
+		</action>
+		<action input="input" name="advancedSampleSearchForm"
+			parameter="dispatch" path="/advancedSampleSearch"
+			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">
+			<forward name="inputForm" path="sample.advancedSearch" />
+			<forward name="input" path="/advancedSampleSearch.do?dispatch=input" />
+			<forward name="success" path="sample.advancedSampleSearchResult" />
+			<forward name="print" path="/sample/bodyAdvancedSampleSearchResultPrintView.jsp" />
+		</action>
+		<action path="/advancedSampleResults" type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
+			parameter="sample.advancedSampleSearchResult" scope="request" />
+		<action name="compositionForm" parameter="dispatch" path="/composition"
+			type="gov.nih.nci.cananolab.ui.sample.CompositionAction" input="input">
+			<forward name="input" path="sample.composition.summaryview" />
+			<forward name="summaryView" path="sample.composition.summaryView" />
+			<forward name="summaryEdit" path="sample.composition.summaryEdit" />
+			<forward name="summaryPrint"
+				path="/sample/composition/bodyCompositionSummaryPrintView.jsp" />
+		</action>
+		<action name="compositionForm" parameter="dispatch" path="/nanomaterialEntity"
+			type="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction"
+			input="input">
+			<forward name="input"
+				path="/nanomaterialEntity.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="sample.composition.nanomaterialEntity" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+			<forward name="singleSummaryView"
+				path="/sample/composition/nanomaterialEntity/bodySingleNanomaterialEntitySummaryView.jsp" />
+		</action>
+		<action name="compositionForm" parameter="dispatch"
+			path="/functionalizingEntity" type="gov.nih.nci.cananolab.ui.sample.FunctionalizingEntityAction"
+			input="input">
+			<forward name="input"
+				path="/functionalizingEntity.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="sample.composition.functionalizingEntity" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+			<forward name="singleSummaryView"
+				path="/sample/composition/functionalizingEntity/bodySingleFunctionalizingEntitySummaryView.jsp" />
+		</action>
+		<action name="compositionForm" parameter="dispatch" path="/chemicalAssociation"
+			type="gov.nih.nci.cananolab.ui.sample.ChemicalAssociationAction"
+			input="input">
+			<forward name="input"
+				path="/chemicalAssociation.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="sample.composition.chemicalAssociation" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+		</action>
+		<action name="compositionForm" parameter="dispatch" path="/compositionFile"
+			type="gov.nih.nci.cananolab.ui.sample.CompositionFileAction" input="input">
+			<forward name="input" path="/compositionFile.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="sample.composition.compositionFile" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+		</action>
+		<action name="characterizationForm" parameter="dispatch"
+			path="/characterization" type="gov.nih.nci.cananolab.ui.sample.CharacterizationAction"
+			input="input" validate="true">
+			<forward name="input"
+				path="/characterization.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="sample.submitCharacterization" />
+			<forward name="success"
+				path="/characterization.do?dispatch=summaryEdit&amp;page=0" />
+			<forward name="singleSummaryView"
+				path="/sample/characterization/shared/bodySingleCharacterizationSummaryView.jsp" />
+			<forward name="summaryView" path="sample.characterization.summaryView" />
+			<forward name="summaryEdit" path="sample.characterization.summaryEdit" />
+			<forward name="saveExperimentConfig"
+				path="/submitExperimentConfig.do?dispatch=create&amp;page=1" />
+		</action>
+	</action-mappings>
+</struts-config>

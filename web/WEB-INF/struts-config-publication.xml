@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="publicationForm"
+			type="gov.nih.nci.cananolab.ui.publication.PublicationForm">
+			<form-property name="addToSample" type="java.lang.Boolean"
+				initial="false" />
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="publication"
+				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
+			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="location" type="java.lang.String" />
+			<form-property name="otherSamples"
+				type="java.lang.String[]" />
+		</form-bean>
+
+		<form-bean name="searchPublicationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="sampleBean"
+				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
+			<form-property name="publicationOrReport"
+				type="java.lang.String[]" />
+			<form-property name="researchArea"
+				type="java.lang.String[]" />
+			<form-property name="nanomaterialEntityTypes"
+				type="java.lang.String[]" />
+			<form-property name="functionalizingEntityTypes"
+				type="java.lang.String[]" />
+			<form-property name="functionTypes"
+				type="java.lang.String[]" />
+			<form-property name="title" type="java.lang.String" />
+			<form-property name="category"
+				type="java.lang.String" />
+			<form-property name="searchLocations"
+				type="java.lang.String[]"/>
+			<form-property name="authorsStr" type="java.lang.String" />
+			<form-property name="pubMedId" type="java.lang.String" />
+			<form-property name="digitalObjectId" type="java.lang.String" />
+			<form-property name="keywordsStr" type="java.lang.String" />
+			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			bundle="publication" key="error.publicationException" path="publication.message"
+			type="gov.nih.nci.cananolab.exception.PublicationException" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="publicationMessage" path="publication.message" />
+		<forward name="reportDetailPrintView"
+			path="/publication/bodyReportDetailPrintView.jsp" />
+		<forward name="publicationDetailPrintView"
+			path="/publication/bodyPublicationDetailPrintView.jsp" />
+		<forward name="publicationSummaryPrintView"
+			path="/publication/bodyPublicationSummaryPrintView.jsp" />
+	</global-forwards>
+	<action-mappings>
+		<action name="publicationForm" parameter="dispatch"
+			path="/publication"
+			type="gov.nih.nci.cananolab.ui.publication.PublicationAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.duplicatePublication" path="publication.message"
+				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
+			<forward name="success" path="publication.message" />
+			<forward name="sampleSuccess" path="sample.annotationMessage" />
+			<forward name="input"
+				path="/publication.do?dispatch=input&amp;page=0" />
+			<forward name="view" path="publication.viewPublication" />
+			<forward name="sampleDetailView" path="sample.detailViewPublication" />
+			<forward name="publicationDetailView" path="publication.detailViewPublication" />
+			<forward name="summaryView" path="sample.publication.summaryView" />
+			<forward name="summaryPrint"
+				path="/publication/bodySamplePublicationSummaryPrintView.jsp" />
+			<forward name="summaryEdit" path="sample.publication.summaryEdit" />
+			<forward name="publicationSubmitPublication"
+				path="publication.submitPublication" />
+			<forward name="sampleSubmitPublication"
+				path="sample.submitPublication" />
+			<forward name="publicationSubmitPubmedPublication"
+				path="publication.submitPublicationPubmed" />
+			<forward name="sampleSubmitPubmedPublication"
+				path="sample.submitPublicationPubmed" />
+			<forward name="sampleViewPublication"
+				path="sample.viewPublication" />
+			<forward name="sampleSuccess"
+				path="sample.annotationMessage" />
+			<forward name="publicationSubmitReport"
+				path="publication.submitReport" />
+			<forward name="sampleSubmitReport"
+				path="sample.submitReport" />
+		</action>
+		<action path="/publicationResults"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			parameter="publication.searchPublicationResult" scope="request" />
+		<action input="input" name="searchPublicationForm"
+			parameter="dispatch" path="/searchPublication"
+			type="gov.nih.nci.cananolab.ui.publication.SearchPublicationAction"
+			scope="request">
+			<forward name="input" path="publication.searchPublication" />
+			<forward name="success" path="publication.searchPublicationResult" />
+			<forward name="publicationView" path="sample.publicationInfo" />
+		</action>
+		<action path="/managePublication"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="publication.managePublication" scope="request" />
+		<action path="/choosePublication"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="publication.choosePublication" scope="request" />
+		<action path="/chooseSamplePublication"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="sample.choosePublication" scope="request" />
+	</action-mappings>
+</struts-config>
+
