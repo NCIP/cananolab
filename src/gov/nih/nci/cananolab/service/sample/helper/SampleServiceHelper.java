@@ -746,6 +746,53 @@ public class SampleServiceHelper {
 		return sample;
 	}
 
+	public Sample findSampleById(String sampleId, UserBean user)
+			throws Exception {
+		Sample sample = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+			if (authService.checkReadPermission(user, sample.getName())) {
+				return sample;
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return sample;
+	}
+
 	public List<Keyword> findKeywordsBySampleId(String sampleId, UserBean user)
 			throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
@@ -967,12 +1014,11 @@ public class SampleServiceHelper {
 		columns.add(primaryPOC.getDomain().getFirstName());
 		columns.add(primaryPOC.getDomain().getLastName());
 		columns.add(primaryPOC.getDomain().getOrganization().getName());
-		// nanomaterial entities and functionalizing entities are in one
-		// column.
-		SortedSet<String> entities = new TreeSet<String>();
-		entities.addAll(getStoredNanomaterialEntityClassNames(sample));
-		entities.addAll(getStoredFunctionalizingEntityClassNames(sample));
-		columns.add(StringUtils.join(entities,
+		columns.add(StringUtils.join(
+				getStoredNanomaterialEntityClassNames(sample),
+				Constants.VIEW_CLASSNAME_DELIMITER));
+		columns.add(StringUtils
+				.join(getStoredFunctionalizingEntityClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
 		columns.add(StringUtils.join(getStoredFunctionClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
