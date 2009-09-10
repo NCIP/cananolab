@@ -21,12 +21,12 @@
 			<a
 				href="javascript:showSummary('ALL', ${fn:length(compositionSections)})"
 				title="All"><span>All</span> </a>
-			<c:url var="printUrl" value="${actionName}">
+			<c:url var="printUrl" value="composition.do">
 				<c:param name="dispatch" value="summaryPrint" />
 				<c:param name="sampleId" value="${sampleId}" />
 				<c:param name="location" value="${location}" />
 			</c:url>
-			<c:url var="exportUrl" value="${actionName}">
+			<c:url var="exportUrl" value="composition.do">
 				<c:param name="dispatch" value="summaryExport" />
 				<c:param name="sampleId" value="${sampleId}" />
 				<c:param name="location" value="${location}" />
@@ -75,12 +75,17 @@
 	</div>
 </c:forEach>
 <table class="summaryViewLayer1" width="100%">
-	<tr>
-		<td>
-			<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
-			<a href="${exportUrl}" id="exportLink">Export</a>
-		</td>
-	</tr>
+	<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities ||
+				!empty compositionForm.map.comp.functionalizingEntities ||
+				!empty compositionForm.map.comp.chemicalAssociations ||
+				!empty compositionForm.map.comp.files}">
+		<tr>
+			<td>
+				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
+				<a href="${exportUrl}" id="exportLink">Export</a>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<td>
 			<jsp:include
