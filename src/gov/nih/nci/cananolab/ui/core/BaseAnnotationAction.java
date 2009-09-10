@@ -272,7 +272,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Retrieve a value from request by name in the order of 
-	 * Parameter - Request Attribute
+	 * Parameter - Request Attribute - Session Attribute
 	 * 
 	 * @param request
 	 * @param name
@@ -282,6 +282,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		Object value = request.getParameter(name);
 		if (value == null) {
 			value = request.getAttribute(name);
+		}
+		if (value == null) {
+			value = request.getSession().getAttribute(name);
 		}
 		return value;
 	}
