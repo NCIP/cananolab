@@ -21,7 +21,6 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -31,7 +30,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class SampleAction extends BaseAnnotationAction {
 	// logger
-	private static Logger logger = Logger.getLogger(SampleAction.class);
+	//private static Logger logger = Logger.getLogger(SampleAction.class);
 
 	/**
 	 * Save or update POC data.
