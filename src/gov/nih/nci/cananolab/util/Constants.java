@@ -14,9 +14,6 @@ public class Constants {
 
 	public static final String ACCEPT_DATE_FORMAT = "MM/dd/yy";
 
-	// File upload
-	public static final String FILEUPLOAD_PROPERTY = "caNanoLab.properties";
-
 	public static final String UNCOMPRESSED_FILE_DIRECTORY = "decompressedFiles";
 
 	public static final String EMPTY = "N/A";
@@ -36,11 +33,6 @@ public class Constants {
 	public static final String DEFAULT_APP_OWNER = "NCICB";
 
 	public static final String APP_OWNER;
-
-	public static final String VIEW_COL_DELIMITER = "~~~";
-
-	public static final String VIEW_CLASSNAME_DELIMITER = "!!!";
-
 	static {
 		String appOwner = PropertyUtils.getProperty(CANANOLAB_PROPERTY,
 				"applicationOwner").trim();
@@ -48,6 +40,10 @@ public class Constants {
 			appOwner = DEFAULT_APP_OWNER;
 		APP_OWNER = appOwner;
 	}
+
+	public static final String VIEW_COL_DELIMITER = "~~~";
+
+	public static final String VIEW_CLASSNAME_DELIMITER = "!!!";
 
 	public static final String SAMPLE_PREFIX;
 	static {
@@ -170,7 +166,7 @@ public class Constants {
 	// default discovery internal for grid index server
 	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 20;
 
-	public static final String DOMAIN_MODEL_VERSION = "1.4";
+	public static final String DOMAIN_MODEL_VERSION = "1.5";
 
 	public static final String GRID_SERVICE_PATH = "wsrf-canano/services/cagrid/CaNanoLabService";
 
