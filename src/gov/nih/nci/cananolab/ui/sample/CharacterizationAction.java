@@ -316,9 +316,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 
-		// "actionName" is for constructing the Print/Export URL.
-		request.setAttribute("actionName", request.getRequestURL().toString());
-
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -339,9 +336,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 		this.prepareCharacterizationTypes(mapping, form, request, response);
-
-		// "actionName" is for constructing the Print/Export URL.
-		request.setAttribute("actionName", request.getRequestURL().toString());
 
 		return mapping.findForward("summaryView");
 	}
@@ -411,7 +405,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
-	 *             if error occurred.
 	 */
 	private void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -433,18 +426,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.findCharacterizationsBySampleId(sampleId, user);
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
-		request.setAttribute("characterizationSummaryView", summaryView);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, sampleId);
+		
+		// Save result bean in session for later use - export/print. 
+		request.getSession().setAttribute("characterizationSummaryView", summaryView);
+		
 		// forward to appropriate tab
-		String tab = request.getParameter("tab");
-		// default tab to all;
+		String tab = (String) getValueFromRequest(request, "tab");
 		if (tab == null) {
-			// get from attribute
-			tab = (String) request.getSession().getAttribute("tab");
-			if (tab == null) {
-				tab = "ALL";
-			}
+			tab = "ALL"; // default tab to all;
 		}
 		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
