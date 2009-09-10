@@ -76,8 +76,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			service = new SampleServiceRemoteImpl(serviceUrl);
 		}
 		// TODO remove this
-		// service = new SampleServiceRemoteImpl(
-		// "http://localhost:8080/wsrf/services/cagrid/CaNanoLabService");
+//		service = new SampleServiceRemoteImpl(
+//				"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
+
 		SampleBean sampleBean = service.findSampleById(sampleId, user);
 		if (sampleBean != null) {
 			sampleBean.setLocation(location);
@@ -158,7 +159,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 
 		String fileRoot = PropertyUtils.getProperty(
-				Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {
@@ -290,8 +291,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Check if user entered customized value by selecting [other] option,
-	 * if so, set it request, so user can see it again and won't lost it. 
+	 * Check if user entered customized value by selecting [other] option, if
+	 * so, set it request, so user can see it again and won't lost it.
 	 * 
 	 * @param request
 	 * @param value
@@ -301,8 +302,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected void setOtherValueOption(HttpServletRequest request,
 			String value, String sessionName) {
 		if (!StringUtils.isEmpty(value)) {
-			Collection<String> charTypes = 
-				(Collection<String>) request.getSession().getAttribute(sessionName);
+			Collection<String> charTypes = (Collection<String>) request
+					.getSession().getAttribute(sessionName);
 			if (charTypes != null && !charTypes.contains(value)) {
 				charTypes.add(value);
 			}
