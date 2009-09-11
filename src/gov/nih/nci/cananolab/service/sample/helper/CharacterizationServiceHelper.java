@@ -237,12 +237,12 @@ public class CharacterizationServiceHelper {
 	 * @param out
 	 * @throws IOException
 	 */
-	public static void exportSummary(
+	public static void exportSummary(List<String> charTypes,
 			CharacterizationSummaryViewBean summaryBean, String downloadURL,
 			OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			outputSummarySheet(summaryBean, downloadURL, wb);
+			outputSummarySheet(charTypes, summaryBean, downloadURL, wb);
 			wb.write(out);
 			out.flush();
 			out.close();
@@ -257,7 +257,7 @@ public class CharacterizationServiceHelper {
 	 * @param wb
 	 * @throws IOException
 	 */
-	private static void outputSummarySheet(
+	private static void outputSummarySheet(List<String> charTypes,
 			CharacterizationSummaryViewBean summaryBean, String downloadURL,
 			HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
@@ -272,11 +272,11 @@ public class CharacterizationServiceHelper {
 		hlinkStyle.setFont(hlinkFont);
 
 		int charCount = 1;
-		Map<String, SortedSet<CharacterizationBean>> pubs = summaryBean
-				.getType2Characterizations();
-		for (String type : summaryBean.getCharacterizationTypes()) {
+		Map<String, SortedSet<CharacterizationBean>> charBeanMap = 
+			summaryBean.getType2Characterizations();
+		for (String type : charTypes) {
 			// Output data of report
-			SortedSet<CharacterizationBean> charBeans = pubs.get(type);
+			SortedSet<CharacterizationBean> charBeans = charBeanMap.get(type);
 			for (CharacterizationBean charBean : charBeans) {
 				int rowIndex = 0;
 
