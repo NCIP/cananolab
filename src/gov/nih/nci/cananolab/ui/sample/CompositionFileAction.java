@@ -123,7 +123,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		 */
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		String currentFileType = comp.getTheFile().getDomainFile().getType();
-		setOtherValueOption(request, currentFileType, "otherFileType");
+		setOtherValueOption(request, currentFileType, "fileTypes");
 
 		return mapping.findForward("inputForm");
 	}
