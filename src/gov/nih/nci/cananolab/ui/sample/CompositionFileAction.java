@@ -122,8 +122,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		 * page.
 		 */
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
-		String currentCharType = comp.getTheFile().getDomainFile().getType();
-		setOtherValueOption(request, currentCharType, "characterizationTypes");
+		String currentFileType = comp.getTheFile().getDomainFile().getType();
+		setOtherValueOption(request, currentFileType, "otherFileType");
 
 		return mapping.findForward("inputForm");
 	}
