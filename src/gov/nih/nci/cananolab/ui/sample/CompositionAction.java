@@ -164,12 +164,19 @@ public class CompositionAction extends BaseAnnotationAction {
 	private void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		// Remove previous result from session.
+		HttpSession session = request.getSession();
+		session.removeAttribute(CompositionBean.CHEMICAL_SELECTION);
+		session.removeAttribute(CompositionBean.FILE_SELECTION);
+		session.removeAttribute(CompositionBean.FUNCTIONALIZING_SELECTION);
+		session.removeAttribute(CompositionBean.NANOMATERIAL_SELECTION);
+		session.removeAttribute("theSample");
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
 		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
-		HttpSession session = request.getSession();
 		CompositionService compService = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			compService = new CompositionServiceLocalImpl();
@@ -193,12 +200,6 @@ public class CompositionAction extends BaseAnnotationAction {
 			session.setAttribute(CompositionBean.NANOMATERIAL_SELECTION, 
 					compBean.getNanomaterialEntities());
 			session.setAttribute("theSample", sampleBean); //for showing title.
-		} else {
-			session.removeAttribute(CompositionBean.CHEMICAL_SELECTION);
-			session.removeAttribute(CompositionBean.FILE_SELECTION);
-			session.removeAttribute(CompositionBean.FUNCTIONALIZING_SELECTION);
-			session.removeAttribute(CompositionBean.NANOMATERIAL_SELECTION);
-			session.removeAttribute("theSample");
 		}
 		
 		// retain action messages from send redirects
