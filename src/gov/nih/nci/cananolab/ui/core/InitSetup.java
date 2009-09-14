@@ -320,12 +320,12 @@ public class InitSetup {
 		appContext.setAttribute("booleanOptions", booleanOptions);
 
 		LabelValueBean[] stringOperands = new LabelValueBean[] {
-				new LabelValueBean("equals to", "equals"),
+				new LabelValueBean("equals", "equals"),
 				new LabelValueBean("contains", "contains") };
 		appContext.setAttribute("stringOperands", stringOperands);
 
 		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
-				"equals to", "is") };
+				"equals", "is") };
 		appContext.setAttribute("booleanOperands", booleanOperands);
 
 		LabelValueBean[] numberOperands = new LabelValueBean[] {
