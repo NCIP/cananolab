@@ -231,23 +231,24 @@ public class CompositionAction extends BaseAnnotationAction {
 	 * @param compBean
 	 */
 	private void filterType(HttpServletRequest request, CompositionBean compBean) {
+		//1. Restore all data first.
 		HttpSession session = request.getSession();
+		List<ChemicalAssociationBean> chemBeans = (List<ChemicalAssociationBean>) 
+			session.getAttribute(CompositionBean.CHEMICAL_SELECTION);
+		compBean.setChemicalAssociations(chemBeans);
+		List<FileBean> fileBeans = (List<FileBean>) 
+			session.getAttribute(CompositionBean.FILE_SELECTION);
+		compBean.setFiles(fileBeans);
+		List<FunctionalizingEntityBean> funcBeans = (List<FunctionalizingEntityBean>) 
+			session.getAttribute(CompositionBean.FUNCTIONALIZING_SELECTION);
+		compBean.setFunctionalizingEntities(funcBeans);
+		List<NanomaterialEntityBean> nanoBeans = (List<NanomaterialEntityBean>) 
+			session.getAttribute(CompositionBean.NANOMATERIAL_SELECTION);
+		compBean.setNanomaterialEntities(nanoBeans);
+		
+		//2. Filter out unselected type.
 		String type = request.getParameter("type");
-		if (compBean != null) {
-			List<ChemicalAssociationBean> chemBeans = (List<ChemicalAssociationBean>) 
-				session.getAttribute(CompositionBean.CHEMICAL_SELECTION);
-			compBean.setChemicalAssociations(chemBeans);
-			List<FileBean> fileBeans = (List<FileBean>) 
-				session.getAttribute(CompositionBean.FILE_SELECTION);
-			compBean.setFiles(fileBeans);
-			List<FunctionalizingEntityBean> funcBeans = (List<FunctionalizingEntityBean>) 
-				session.getAttribute(CompositionBean.FUNCTIONALIZING_SELECTION);
-			compBean.setFunctionalizingEntities(funcBeans);
-			List<NanomaterialEntityBean> nanoBeans = (List<NanomaterialEntityBean>) 
-				session.getAttribute(CompositionBean.NANOMATERIAL_SELECTION);
-			compBean.setNanomaterialEntities(nanoBeans);
-		}
-		if (!StringUtils.isEmpty(type) && compBean != null) {
+		if (!StringUtils.isEmpty(type)) {
 			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
 				compBean.setChemicalAssociations(Collections.EMPTY_LIST);
 			}
