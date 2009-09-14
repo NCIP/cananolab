@@ -30,12 +30,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -221,27 +224,20 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// Prepare data.
-		this.prepareSummary(mapping, form, request, response);
-
 		// Marker that indicates page is for printing (hide tabs, links, etc).
 		request.setAttribute("printView", Boolean.TRUE);
 
-		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) request
-				.getAttribute("publicationSummaryView");
+		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) 
+			request.getSession().getAttribute("publicationSummaryView");
+		if (summaryBean == null) {
+			// Prepare data.
+			this.prepareSummary(mapping, form, request, response);
+			summaryBean = (PublicationSummaryViewBean) 
+				request.getSession().getAttribute("publicationSummaryView");
+		}
 
 		// Filter out categories that not selected.
-		String type = request.getParameter("type");
-		if (!StringUtils.isEmpty(type)) {
-			SortedMap<String, List<PublicationBean>> categories = summaryBean
-					.getCategory2Publications();
-			List<PublicationBean> pubs = categories.get(type);
-			categories.clear(); // clear all, then put back selected type only.
-			if (pubs != null) {
-				categories.put(type, pubs);
-				summaryBean.setPublicationCategories(categories.keySet());
-			}
-		}
+		this.filterType(request, summaryBean);
 
 		return mapping.findForward("summaryPrint");
 	}
@@ -301,35 +297,27 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// Prepare data.
-		prepareSummary(mapping, form, request, response);
-
-		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) request
-				.getAttribute("publicationSummaryView");
-
-		// Filter out categories that not selected.
-		String type = request.getParameter("type");
-		if (!StringUtils.isEmpty(type)) {
-			SortedMap<String, List<PublicationBean>> categories = summaryBean
-					.getCategory2Publications();
-			List<PublicationBean> pubs = categories.get(type);
-			categories.clear(); // clear all, then put back selected type only.
-			if (pubs != null) {
-				categories.put(type, pubs);
-				summaryBean.setPublicationCategories(categories.keySet());
-			}
+		SampleBean sampleBean = (SampleBean) 
+			request.getSession().getAttribute("theSample");
+		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) 
+			request.getSession().getAttribute("publicationSummaryView");
+		if (sampleBean == null || summaryBean == null) {
+			// Prepare data.
+			this.prepareSummary(mapping, form, request, response);
+			sampleBean = (SampleBean) 
+				request.getSession().getAttribute("theSample");
+			summaryBean = (PublicationSummaryViewBean) 
+				request.getSession().getAttribute("publicationSummaryView");
 		}
+		this.filterType(request, summaryBean);
 
 		// Get sample name for constructing file name.
-		PublicationForm theForm = (PublicationForm) form;
-		String location = request.getParameter(Constants.LOCATION);
-		SampleBean sampleBean = setupSample(theForm, request, location);
-
-		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
-				.getName(), "PublicationSummaryView", type);
+		String type = request.getParameter("type");
+		String fileName = ExportUtils.getExportFileName(
+			sampleBean.getDomain().getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		PublicationServiceHelper.exportSummary(summaryBean, response
-				.getOutputStream());
+		PublicationServiceHelper.exportSummary(summaryBean, 
+			response.getOutputStream());
 
 		return null;
 	}
@@ -348,10 +336,15 @@ public class PublicationAction extends BaseAnnotationAction {
 	private void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		// Remove previous result from session.
+		HttpSession session = request.getSession();
+		session.removeAttribute("publicationSummaryView");
+		session.removeAttribute("theSample");
+		
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString(Constants.LOCATION);
-		setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request, location);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
@@ -375,10 +368,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		for (PublicationBean pubBean : publications) {
 			pubBean.setLocation(location);
 		}
-		request.setAttribute("publicationSummaryView", summaryView);
+		// Save sample & publication bean in session for printing/exporting.
+		session.setAttribute("publicationSummaryView", summaryView);
+		session.setAttribute("theSample", sampleBean);
 
-		if (request.getParameter("clearTab") != null
-				&& request.getParameter("clearTab").equals("true")) {
+		if ("true".equals(request.getParameter("clearTab"))) {
 			request.getSession().removeAttribute("onloadJavascript");
 		}
 	}
@@ -556,5 +550,28 @@ public class PublicationAction extends BaseAnnotationAction {
 				.getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
+	}
+
+	/**
+	 * Shared function for summaryExport() and summaryPrint().
+	 * Filter out unselected types when user selected one type for print/export. 
+	 * 
+	 * @param request
+	 * @param compBean
+	 */
+	private void filterType(HttpServletRequest request, 
+			PublicationSummaryViewBean summaryBean) {
+		//1. Restore all data first as bean might be filtered before.
+		SortedMap<String, List<PublicationBean>> dataMap = 
+			summaryBean.getCategory2Publications();
+		summaryBean.setPublicationCategories(dataMap.keySet());
+		
+		//2. Filter out categories that are not selected.
+		String type = request.getParameter("type");
+		if (!StringUtils.isEmpty(type)) {
+			Set<String> cats = new HashSet<String>(1);
+			cats.add(type);
+			summaryBean.setPublicationCategories(cats);
+		}
 	}
 }

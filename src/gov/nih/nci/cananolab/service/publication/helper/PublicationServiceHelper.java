@@ -663,15 +663,12 @@ public class PublicationServiceHelper {
 	private static void exportSummarySheet(
 			PublicationSummaryViewBean summaryBean, HSSFWorkbook wb) {
 		HSSFRow row = null;
-		StringBuilder sb = new StringBuilder();
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
-		SortedMap<String, List<PublicationBean>> pubs = summaryBean
-				.getCategory2Publications();
-		for (String category : pubs.keySet()) {
+		for (String category : summaryBean.getPublicationCategories()) {
 			int rowIndex = 0;
 
 			// Create one work sheet for each category.
@@ -685,6 +682,8 @@ public class PublicationServiceHelper {
 			ExportUtils.createCell(row, 3, headerStyle, PUB_STATUS);
 
 			// Output data of report
+			SortedMap<String, List<PublicationBean>> pubs = 
+				summaryBean.getCategory2Publications();
 			List<PublicationBean> pubBeans = pubs.get(category);
 			for (PublicationBean pubBean : pubBeans) {
 				Publication pub = (Publication) pubBean.getDomainFile();
