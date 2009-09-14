@@ -262,9 +262,6 @@ public class PublicationAction extends BaseAnnotationAction {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 
-		// "actionName" is for constructing the Print/Export URL.
-		request.setAttribute("actionName", request.getRequestURL().toString());
-
 		return mapping.findForward("summaryView");
 	}
 
@@ -287,9 +284,6 @@ public class PublicationAction extends BaseAnnotationAction {
 			return summaryView(mapping, form, request, response);
 		}
 		this.prepareSummary(mapping, form, request, response);
-
-		// "actionName" is for constructing the Print/Export URL.
-		request.setAttribute("actionName", request.getRequestURL().toString());
 
 		return mapping.findForward("summaryEdit");
 	}

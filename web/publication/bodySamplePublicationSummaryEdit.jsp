@@ -19,12 +19,12 @@
 			<a
 				href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
 				title="All"><span>All</span> </a>
-			<c:url var="printUrl" value="${actionName}">
+			<c:url var="printUrl" value="publication.do">
 				<c:param name="dispatch" value="summaryPrint" />
 				<c:param name="sampleId" value="${sampleId}" />
 				<c:param name="location" value="${location}" />
 			</c:url>
-			<c:url var="exportUrl" value="${actionName}">
+			<c:url var="exportUrl" value="publication.do">
 				<c:param name="dispatch" value="summaryExport" />
 				<c:param name="sampleId" value="${sampleId}" />
 				<c:param name="location" value="${location}" />
