@@ -32,7 +32,7 @@ public class ExportUtils {
 	public static final String PRIVATE = "Private";
 	public static final String CONTENT_DISPOSITION = "Content-disposition";
 	public static final String ATTACHMENT = "attachment;filename=\"";
-	public static final String EXCELL_EXTENTION = ".xls\"";
+	public static final String EXCEL_EXTENTION = ".xls\"";
 	
 	/**
 	 * Get file name for exporting report as an Excell file.
@@ -58,16 +58,31 @@ public class ExportUtils {
 	}
 
 	/**
-	 * Set content type and header in response for exporting.
+	 * Set content type and header in response for exporting Excel.
 	 *
 	 * @param response HttpServletResponse
 	 * @param fileName String
 	 */
-	public static void prepareReponseForExcell(HttpServletResponse response, String fileName) {
+	public static void prepareReponseForExcel(HttpServletResponse response, String fileName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(ATTACHMENT).append(fileName).append(EXCELL_EXTENTION);
+		sb.append(ATTACHMENT).append(fileName).append(EXCEL_EXTENTION);
 		
 		response.setContentType(EXCEL_CONTENT_TYPE);
+		response.setHeader(CACHE_CONTROL, PRIVATE);
+		response.setHeader(CONTENT_DISPOSITION, sb.toString());
+	}
+	
+	/**
+	 * Set content type and header in response for image file download.
+	 *
+	 * @param response HttpServletResponse
+	 * @param fileName String
+	 */
+	public static void prepareReponseForImage(HttpServletResponse response, String fileName) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(ATTACHMENT).append(fileName).append("\"");
+		
+		response.setContentType(IMAGE_CONTENT_TYPE);
 		response.setHeader(CACHE_CONTROL, PRIVATE);
 		response.setHeader(CONTENT_DISPOSITION, sb.toString());
 	}

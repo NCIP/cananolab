@@ -135,7 +135,7 @@ public class CompositionAction extends BaseAnnotationAction {
 			String location = request.getParameter(Constants.LOCATION);
 			String fileName = ExportUtils.getExportFileName(compBean.getDomain()
 					.getSample().getName(), "CompositionSummaryView", type);
-			ExportUtils.prepareReponseForExcell(response, fileName);
+			ExportUtils.prepareReponseForExcel(response, fileName);
 
 			StringBuilder sb = new StringBuilder();
 			sb.append(request.getRequestURL().toString());
