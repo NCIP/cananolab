@@ -146,9 +146,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((nanomaterialEntity.type!='liposome') or
-						((nanomaterialEntity.liposome.polymerized==0) or
-						(*this*!=null)))
+						(((*this*!=null) or
+						(isPolymerized != "true")) or
+						(nanomaterialEntity.type!='liposome'))
 					</var-value>
 				</var>
 			</field>
@@ -159,9 +159,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((nanomaterialEntity.type!='emulsion') or
-						((nanomaterialEntity.emulsion.polymerized==0) or
-						(*this*!=null)))
+						(((*this*!=null) or
+						(isPolymerized != "true")) or
+						(nanomaterialEntity.type!='emulsion'))
 					</var-value>
 				</var>
 			</field>

@@ -38,27 +38,27 @@
 				<td class="cellLabel">
 					<c:choose>
 						<c:when
-							test="${empty compositionForm.map.nanomaterialEntity.emulsion.polymerized}">
-							<c:set var="selectNoneStr" value="selected" />
+							test="${empty compositionForm.map.isPolymerized}">
+							<c:set var="selectNoneStr" value='selected="selected"' />
 						</c:when>
 						<c:otherwise>
 							<c:choose>
 								<c:when
-									test="${compositionForm.map.nanomaterialEntity.emulsion.polymerized eq 'true'}">
-									<c:set var="selectYesStr" value="selected" />
+									test="${compositionForm.map.isPolymerized}">
+									<c:set var="selectYesStr" value='selected="selected"' />
 								</c:when>
 								<c:otherwise>
-									<c:set var="selectNoStr" value="selected" />
+									<c:set var="selectNoStr" value='selected="selected"' />
 								</c:otherwise>
 							</c:choose>
 						</c:otherwise>
 					</c:choose>
-					<select name="nanomaterialEntity.emulsion.polymerized">
+					<select name="isPolymerized">
 						<option value="" ${selectNoneStr}></option>
-						<option value="1" ${selectYesStr}>
+						<option value="true" ${selectYesStr}>
 							Yes
 						</option>
-						<option value="0" ${selectNoStr}>
+						<option value="false" ${selectNoStr}>
 							No
 						</option>
 					</select>
