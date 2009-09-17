@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/login.do" location="0,149" dimension="258,88" />
+  <StrutsActivity path="/updatePassword.do" location="358,149" dimension="314,88" />
+  <StrutsActivity path="/logout.do" location="772,149" dimension="266,88" />
+  <StrutsActivity path="/welcome.do" location="743,357" dimension="259,88" />
+  <StrutsActivity path="/publicCount.do" location="0,490" dimension="245,88" />
+  <StrutsActivity path="welcome;6" location="1138,155" dimension="100,75" />
+  <StrutsActivity path="canano.password" location="305,376" dimension="114,49" />
+  <StrutsActivity path="canano.welcome" location="0,376" dimension="109,49" />
+  <StrutsActivity path="input" location="309,0" dimension="53,49" />
+  <StrutsTransition id="/updatePassword.do,success,/welcome.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="593,237" />
+      <AbsolutePoint location="593,267" />
+      <AbsolutePoint location="840,267" />
+      <AbsolutePoint location="840,357" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/logout.do,success,/welcome.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="905,237" />
+      <AbsolutePoint location="905,357" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,input,/welcome.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="215,237" />
+      <AbsolutePoint location="215,297" />
+      <AbsolutePoint location="775,297" />
+      <AbsolutePoint location="775,357" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="welcome;6,null,/welcome.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1188,230" />
+      <AbsolutePoint location="1188,267" />
+      <AbsolutePoint location="970,267" />
+      <AbsolutePoint location="970,357" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/updatePassword.do,input,canano.password,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="436,237" />
+      <AbsolutePoint location="436,327" />
+      <AbsolutePoint location="391,327" />
+      <AbsolutePoint location="391,376" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/login.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="323,49" />
+      <AbsolutePoint location="323,99" />
+      <AbsolutePoint location="129,99" />
+      <AbsolutePoint location="129,149" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,success,canano.welcome,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="43,237" />
+      <AbsolutePoint location="43,267" />
+      <AbsolutePoint location="54,267" />
+      <AbsolutePoint location="54,376" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/updatePassword.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="349,49" />
+      <AbsolutePoint location="349,99" />
+      <AbsolutePoint location="515,99" />
+      <AbsolutePoint location="515,149" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/login.do,changePassword,canano.password,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="129,237" />
+      <AbsolutePoint location="129,327" />
+      <AbsolutePoint location="334,327" />
+      <AbsolutePoint location="334,376" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

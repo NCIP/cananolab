@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/publication.do" location="1875,149" dimension="297,88" />
+  <StrutsActivity path="/publicationResults.do" location="920,571" dimension="279,88" />
+  <StrutsActivity path="/searchPublication.do" location="4290,149" dimension="330,88" />
+  <StrutsActivity path="/managePublication.do" location="1244,571" dimension="238,88" />
+  <StrutsActivity path="/choosePublication.do" location="0,840" dimension="238,88" />
+  <StrutsActivity path="/chooseSamplePublication.do" location="283,840" dimension="238,88" />
+  <StrutsActivity path="publicationMessage;6" location="3883,155" dimension="136,75" />
+  <StrutsActivity path="reportDetailPrintView;6" location="631,571" dimension="244,75" />
+  <StrutsActivity path="publicationDetailPrintView;6" location="324,571" dimension="262,75" />
+  <StrutsActivity path="publicationSummaryPrintView;6" location="0,571" dimension="279,75" />
+  <StrutsActivity path="sample.publication.summaryEdit" location="0,477" dimension="182,49" />
+  <StrutsActivity path="sample.detailViewPublication" location="282,477" dimension="165,49" />
+  <StrutsActivity path="sample.submitReport" location="547,477" dimension="130,49" />
+  <StrutsActivity path="sample.annotationMessage" location="777,477" dimension="160,49" />
+  <StrutsActivity path="publication.submitReport" location="1037,477" dimension="148,49" />
+  <StrutsActivity path="publication.submitPublicationPubmed" location="1285,477" dimension="204,49" />
+  <StrutsActivity path="publication.detailViewPublication" location="1589,477" dimension="183,49" />
+  <StrutsActivity path="/publication/bodySamplePublicationSummaryPrintView.jsp" location="1872,477" dimension="303,49" />
+  <StrutsActivity path="sample.submitPublication" location="2275,477" dimension="148,49" />
+  <StrutsActivity path="sample.viewPublication" location="2523,477" dimension="139,49" />
+  <StrutsActivity path="sample.publication.summaryView" location="2762,477" dimension="186,49" />
+  <StrutsActivity path="sample.submitPublicationPubmed" location="3048,477" dimension="186,49" />
+  <StrutsActivity path="publication.viewPublication" location="3334,477" dimension="157,49" />
+  <StrutsActivity path="publication.message" location="3857,477" dimension="126,49" />
+  <StrutsActivity path="publication.submitPublication" location="3591,477" dimension="166,49" />
+  <StrutsActivity path="input" location="3231,0" dimension="53,49" />
+  <StrutsActivity path="publication.searchPublication" location="4083,477" dimension="167,49" />
+  <StrutsActivity path="sample.publicationInfo" location="4350,477" dimension="137,49" />
+  <StrutsActivity path="publication.searchPublicationResult" location="4587,477" dimension="197,49" />
+  <StrutsActivity path="/publication/bodyReportDetailPrintView.jsp" location="636,746" dimension="234,49" />
+  <StrutsActivity path="/publication/bodyPublicationDetailPrintView.jsp" location="329,746" dimension="252,49" />
+  <StrutsActivity path="/publication/bodyPublicationSummaryPrintView.jsp" location="5,746" dimension="269,49" />
+  <StrutsTransition id="/publication.do,summaryEdit,sample.publication.summaryEdit,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1884,237" />
+      <AbsolutePoint location="1884,267" />
+      <AbsolutePoint location="91,267" />
+      <AbsolutePoint location="91,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="publicationDetailPrintView;6,null,/publication/bodyPublicationDetailPrintView.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="455,646" />
+      <AbsolutePoint location="455,746" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,sampleSuccess,sample.annotationMessage,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1944,237" />
+      <AbsolutePoint location="1944,357" />
+      <AbsolutePoint location="857,357" />
+      <AbsolutePoint location="857,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,success,publication.message,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2162,237" />
+      <AbsolutePoint location="2162,267" />
+      <AbsolutePoint location="3888,267" />
+      <AbsolutePoint location="3888,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/publication.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3244,49" />
+      <AbsolutePoint location="3244,84" />
+      <AbsolutePoint location="2097,84" />
+      <AbsolutePoint location="2097,149" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,sampleSubmitPubmedPublication,sample.submitPublicationPubmed,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2102,237" />
+      <AbsolutePoint location="2102,357" />
+      <AbsolutePoint location="3141,357" />
+      <AbsolutePoint location="3141,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/searchPublication.do,success,publication.searchPublicationResult,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="4565,237" />
+      <AbsolutePoint location="4565,267" />
+      <AbsolutePoint location="4685,267" />
+      <AbsolutePoint location="4685,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="publicationMessage;6,null,publication.message,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3951,230" />
+      <AbsolutePoint location="3951,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,input,/publication.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1949,149" />
+      <AbsolutePoint location="1949,119" />
+      <AbsolutePoint location="1845,119" />
+      <AbsolutePoint location="1845,193" />
+      <AbsolutePoint location="1875,193" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="publicationSummaryPrintView;6,null,/publication/bodyPublicationSummaryPrintView.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="139,646" />
+      <AbsolutePoint location="139,746" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,sampleDetailView,sample.detailViewPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1904,237" />
+      <AbsolutePoint location="1904,297" />
+      <AbsolutePoint location="364,297" />
+      <AbsolutePoint location="364,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/searchPublication.do,input,publication.searchPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="4345,237" />
+      <AbsolutePoint location="4345,267" />
+      <AbsolutePoint location="4166,267" />
+      <AbsolutePoint location="4166,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,sampleSubmitPublication,sample.submitPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2043,237" />
+      <AbsolutePoint location="2043,447" />
+      <AbsolutePoint location="2349,447" />
+      <AbsolutePoint location="2349,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,summaryView,sample.publication.summaryView,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2082,237" />
+      <AbsolutePoint location="2082,387" />
+      <AbsolutePoint location="2855,387" />
+      <AbsolutePoint location="2855,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,sampleViewPublication,sample.viewPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2063,237" />
+      <AbsolutePoint location="2063,417" />
+      <AbsolutePoint location="2592,417" />
+      <AbsolutePoint location="2592,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,sampleSubmitReport,sample.submitReport,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1924,237" />
+      <AbsolutePoint location="1924,327" />
+      <AbsolutePoint location="612,327" />
+      <AbsolutePoint location="612,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/searchPublication.do,publicationView,sample.publicationInfo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="4455,237" />
+      <AbsolutePoint location="4455,267" />
+      <AbsolutePoint location="4418,267" />
+      <AbsolutePoint location="4418,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,publicationSubmitPublication,publication.submitPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2142,237" />
+      <AbsolutePoint location="2142,297" />
+      <AbsolutePoint location="3674,297" />
+      <AbsolutePoint location="3674,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="input,null,/searchPublication.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3271,49" />
+      <AbsolutePoint location="3271,84" />
+      <AbsolutePoint location="4455,84" />
+      <AbsolutePoint location="4455,149" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,summaryPrint,/publication/bodySamplePublicationSummaryPrintView.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2023,237" />
+      <AbsolutePoint location="2023,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,publicationDetailView,publication.detailViewPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2003,237" />
+      <AbsolutePoint location="2003,447" />
+      <AbsolutePoint location="1680,447" />
+      <AbsolutePoint location="1680,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,view,publication.viewPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2122,237" />
+      <AbsolutePoint location="2122,327" />
+      <AbsolutePoint location="3412,327" />
+      <AbsolutePoint location="3412,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,publicationSubmitPubmedPublication,publication.submitPublicationPubmed,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1983,237" />
+      <AbsolutePoint location="1983,417" />
+      <AbsolutePoint location="1387,417" />
+      <AbsolutePoint location="1387,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/publication.do,publicationSubmitReport,publication.submitReport,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1964,237" />
+      <AbsolutePoint location="1964,387" />
+      <AbsolutePoint location="1111,387" />
+      <AbsolutePoint location="1111,477" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="reportDetailPrintView;6,null,/publication/bodyReportDetailPrintView.jsp,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="753,646" />
+      <AbsolutePoint location="753,746" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+
