@@ -183,8 +183,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
 			// TODO remove this
-			// service = new
-			// SampleServiceRemoteImpl("http://localhost:8080/wsrf/services/cagrid/CaNanoLabService");
+//			service = new SampleServiceRemoteImpl(
+//					"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
 			UserBean user = (UserBean) session.getAttribute("user");
 			List<String> sampleNames = service.findSampleNamesBy(
 					samplePointOfContact, nanomaterialEntityClassNames
@@ -209,7 +209,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			int page, int pageSize, HttpServletRequest request)
 			throws Exception {
 		List<SampleBean> loadedSampleBeans = new ArrayList<SampleBean>();
-		SampleServiceHelper helper = new SampleServiceHelper();
 		SampleService service = null;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
@@ -223,23 +222,13 @@ public class SearchSampleAction extends AbstractDispatchAction {
 							.getGridServiceUrl(request, location);
 					service = new SampleServiceRemoteImpl(serviceUrl);
 				}
+				// TODO remove this
+//				service = new SampleServiceRemoteImpl(
+//						"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
+
 				String sampleName = sampleBeans.get(i).getDomain().getName();
 				SampleBean sampleBean = service.findSampleByName(sampleName,
 						user);
-				Sample sample = sampleBean.getDomain();
-				// load summary information
-				sampleBean.setCharacterizationClassNames(helper
-						.getStoredCharacterizationClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionalizingEntityClassNames(helper
-						.getStoredFunctionalizingEntityClassNames(sample)
-						.toArray(new String[0]));
-				sampleBean.setNanomaterialEntityClassNames(helper
-						.getStoredNanomaterialEntityClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionClassNames(helper
-						.getStoredFunctionClassNames(sample).toArray(
-								new String[0]));
 				sampleBean.setLocation(location);
 				loadedSampleBeans.add(sampleBean);
 			}
