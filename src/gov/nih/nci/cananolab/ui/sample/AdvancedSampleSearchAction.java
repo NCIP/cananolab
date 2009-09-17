@@ -148,7 +148,7 @@ public class AdvancedSampleSearchAction extends AbstractDispatchAction {
 			}
 			
 			// Export all advanced sample search report.
-			ExportUtils.prepareReponseForExcell(response, getExportFileName());
+			ExportUtils.prepareReponseForExcel(response, getExportFileName());
 			AdvancedSampleServiceHelper.exportSummary(
 				searchBean, samplesFullList, getViewSampleURL(request), response.getOutputStream());
 			return null;
