@@ -515,13 +515,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				sampleName, "CharacterizationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
 
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = theForm.getString(Constants.LOCATION);
-		StringBuilder sb = new StringBuilder();
-		sb.append(request.getRequestURL().toString());
-		sb.append(DOWNLOAD_URL);
-		sb.append(request.getParameter(location));
-
+		String serviceUrl = null;
+		String location = request.getParameter(Constants.LOCATION);
+		if (!Constants.LOCAL_SITE.equals(location)) {
+			serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+		}
+		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
 		CharacterizationServiceHelper.exportSummary(charTypes, charSummaryBean, 
 				sb.toString(), response.getOutputStream());
 

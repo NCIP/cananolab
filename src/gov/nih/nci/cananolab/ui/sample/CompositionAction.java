@@ -137,11 +137,12 @@ public class CompositionAction extends BaseAnnotationAction {
 					.getSample().getName(), "CompositionSummaryView", type);
 			ExportUtils.prepareReponseForExcel(response, fileName);
 
-			StringBuilder sb = new StringBuilder();
-			sb.append(request.getRequestURL().toString());
-			sb.append(DOWNLOAD_URL);
-			sb.append(request.getParameter(location));
-
+			String serviceUrl = null;
+			if (!Constants.LOCAL_SITE.equals(location)) {
+				serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
+			}
+			StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
 			CompositionServiceHelper.exportSummary(compBean, sb.toString(),
 					response.getOutputStream());
 			return null;

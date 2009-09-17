@@ -13,10 +13,14 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
@@ -126,7 +130,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		FileService fileService = null;
 		FileBean fileBean = null;
 		String serviceUrl = null;
-		if (location.equals(Constants.LOCAL_SITE)) {
+		if (Constants.LOCAL_SITE.equals(location)) {
 			fileService = new FileServiceLocalImpl();
 		} else {
 			// CQL2HQL filters out subclasses, disabled the filter
@@ -142,19 +146,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			}
 		}
 		if (!Constants.LOCAL_SITE.equals(location)) {
-			// assume grid service is located on the same server and port as
-			// webapp
-			URL localURL = new URL(request.getRequestURL().toString());
-			String actionPath = localURL.getPath();
-
-			URL remoteUrl = new URL(serviceUrl);
-			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
-					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
-			String remoteDownloadUrl = remoteServerHostUrl + actionPath
-					+ "?dispatch=download" + "&fileId=" + fileId + "&location="
-					+ Constants.LOCAL_SITE;
-			// remote URL
-			response.sendRedirect(remoteDownloadUrl);
+			StringBuilder remoteUrl = getDownloadUrl(request, serviceUrl, location);
+			remoteUrl.append(fileId);
+			response.sendRedirect(remoteUrl.toString());
 			return null;
 		}
 
@@ -163,21 +157,25 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-disposition", "attachment;filename=\""
-					+ fileBean.getDomainFile().getName() + "\"");
-			response.setHeader("cache-control", "Private");
-
-			java.io.InputStream in = new FileInputStream(dFile);
-			java.io.OutputStream out = response.getOutputStream();
-
-			byte[] bytes = new byte[32768];
-
-			int numRead = 0;
-			while ((numRead = in.read(bytes)) > 0) {
-				out.write(bytes, 0, numRead);
+			ExportUtils.prepareReponseForImage(response, 
+				fileBean.getDomainFile().getName());
+			
+			InputStream in = null;
+			OutputStream out = null;
+			try {
+				in = new BufferedInputStream(new FileInputStream(dFile));
+				out = response.getOutputStream();
+				byte[] bytes = new byte[32768];
+				int numRead = 0;
+				while ((numRead = in.read(bytes)) > 0) {
+					out.write(bytes, 0, numRead);
+				}
+			} finally {
+				if (in != null) 
+					in.close();
+				if (out != null)
+					out.close();
 			}
-			out.close();
 		} else {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("error.noFile");
@@ -291,8 +289,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Check if user entered customized value by selecting [other] option, if
-	 * so, set it request, so user can see it again and won't lost it.
+	 * If user entered customized value by selecting [other] option previously, 
+	 * then add the value in collection, so user can see it again.
 	 * 
 	 * @param request
 	 * @param value
@@ -302,11 +300,44 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected void setOtherValueOption(HttpServletRequest request,
 			String value, String sessionName) {
 		if (!StringUtils.isEmpty(value)) {
-			Collection<String> otherTypes = (Collection<String>) request
-					.getSession().getAttribute(sessionName);
+			Collection<String> otherTypes = (Collection<String>) 
+				request.getSession().getAttribute(sessionName);
 			if (otherTypes != null && !otherTypes.contains(value)) {
 				otherTypes.add(value);
 			}
 		}
+	}
+
+	/**
+	 * Returns a partial URL for downloading a file from local/remote host.
+	 * 
+	 * @param request
+	 * @param serviceUrl
+	 * @param location
+	 * @return
+	 * @throws Exception
+	 */
+	protected StringBuilder getDownloadUrl(HttpServletRequest request, 
+			String serviceUrl, String location) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		
+		// Return local Url if serviceUrl is empty.  
+		if (StringUtils.isEmpty(serviceUrl)) {
+			sb.append(request.getRequestURL().toString());
+		} else {
+			// assume grid service is located on the same server and port as webapp
+			URL remoteUrl = new URL(serviceUrl);
+			URL localURL = new URL(request.getRequestURL().toString());
+			String actionPath = localURL.getPath();
+			
+			sb.append(remoteUrl.getProtocol()).append("://");
+			sb.append(remoteUrl.getHost()).append(':');
+			sb.append(remoteUrl.getPort());
+			sb.append(actionPath);
+		}
+		sb.append(ExportUtils.DOWNLOAD_URL);
+		sb.append(location).append("&fileId=");
+		
+		return sb;
 	}
 }

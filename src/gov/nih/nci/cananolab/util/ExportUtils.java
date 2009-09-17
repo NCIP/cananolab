@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.util;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,6 +23,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class ExportUtils {
+	
+	// Partial URL for downloading an image file.
+	public static final String DOWNLOAD_URL = "?dispatch=download&location=";
 	
 	/**
 	 * Constant for setting response header. 
@@ -91,12 +95,11 @@ public class ExportUtils {
 		int pictureIndex;
 		InputStream fis = null;
 		ByteArrayOutputStream bos = null;
-		
 		if (path.startsWith("http:")){
 			URL url = new URL(path);
 			fis = url.openStream();  
 		}else{
-			fis = new FileInputStream(path);
+			fis = new BufferedInputStream(new FileInputStream(path));
 		}
 		try {			
 			int c;

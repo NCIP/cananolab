@@ -87,12 +87,9 @@ public class CharacterizationServiceHelper {
 	public static final String CONCENTRATION = "Critical Concentration";
 	public static final String IS_HYDROPHOBIC = "Is Hydrophobic?";
 
-	// FILE_ID for constructing file down load URL.
-	public static final String FILE_ID = "fileId";
-
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
-
+	
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceHelper.class);
 
@@ -759,11 +756,10 @@ public class CharacterizationServiceHelper {
 
 				// Construct the URL for downloading the file.
 				StringBuilder sb = new StringBuilder(downloadURL);
-				sb.append('&').append(FILE_ID).append('=');
 				sb.append(fileBean.getDomainFile().getId());
 				if (fileBean.getDomainFile().getUriExternal().booleanValue()) {
-					ExportUtils.createCell(row, 0, hlinkStyle, fileBean
-							.getDomainFile().getUri(), sb.toString());
+					ExportUtils.createCell(row, 0, hlinkStyle, 
+						fileBean.getDomainFile().getUri(), sb.toString());
 				} else if (fileBean.isImage()) {
 					sb.setLength(0);
 					sb.append(fileRoot).append(java.io.File.separator);
@@ -775,18 +771,15 @@ public class CharacterizationServiceHelper {
 							rowIndex = ExportUtils.createImage(rowIndex,
 									(short) 0, filePath, wb, sheet);
 						} catch (Exception e) {
-							logger
-									.error(
-											"Error exporting Characterization image data.",
-											e);
+							logger.error("Error exporting Char image file.", e);
 						}
 					} else {
 						logger.error("Characterization image file not exists: "
 								+ filePath);
 					}
 				} else {
-					ExportUtils.createCell(row, 0, hlinkStyle, fileBean
-							.getDomainFile().getTitle(), sb.toString());
+					ExportUtils.createCell(row, 0, hlinkStyle, 
+						fileBean.getDomainFile().getTitle(), sb.toString());
 				}
 			}
 		}
