@@ -1118,7 +1118,7 @@ public class CompositionServiceHelper {
 					if (imgFile.exists()) {
 						try {
 							rowIndex = ExportUtils.createImage(rowIndex,
-									(short) 0, filePath, wb, sheet);
+									(short) 1, filePath, wb, sheet);
 						} catch (Exception e) {
 							logger.error("Error exporting Comp image file.", e);
 						}
@@ -1188,7 +1188,7 @@ public class CompositionServiceHelper {
 			if (imgFile.exists()) {
 				try {
 					rowIndex = ExportUtils.createImage(rowIndex,
-							(short) 0, filePath, wb, sheet);
+							(short) 1, filePath, wb, sheet);
 				} catch (Exception e) {
 					logger.error("Error exporting Comp image file.", e);
 				}
