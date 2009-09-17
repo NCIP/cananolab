@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class sets up information required for canano forms.
- *
+ * 
  * @author pansu, cais
- *
+ * 
  */
 public class InitSampleSetup {
 	private InitSampleSetup() {
@@ -111,19 +111,11 @@ public class InitSampleSetup {
 		getAllOrganizationNames(request, user);
 	}
 
-	public void persistPOCDropdowns(HttpServletRequest request, Sample sample)
-			throws Exception {
+	public void persistPOCDropdowns(HttpServletRequest request,
+			SampleBean sampleBean) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "point of contact",
 				"role", "otherRole",
-				sample.getPrimaryPointOfContact().getRole());
-		if (sample.getOtherPointOfContactCollection() != null) {
-			for (PointOfContact otherPoc : sample
-					.getOtherPointOfContactCollection()) {
-				InitSetup.getInstance().persistLookup(request,
-						"point of contact", "role", "otherRole",
-						(otherPoc.getRole()));
-			}
-		}
+				sampleBean.getThePOC().getDomain().getRole());
 		setPOCDropdowns(request);
 	}
 }

@@ -2,8 +2,8 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -61,6 +61,7 @@ public class InitCharacterizationSetup {
 
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String sampleId) throws Exception {
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		getCharacterizationTypes(request);
 		getDatumConditionValueTypes(request);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
@@ -75,6 +76,8 @@ public class InitCharacterizationSetup {
 
 	public void setCharacterizationDropdowns(HttpServletRequest request)
 			throws Exception {
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
+		setExperimentConfigDropDowns(request);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
 
@@ -99,7 +102,6 @@ public class InitCharacterizationSetup {
 				true);
 	}
 
-	// TODO::
 	public void persistCharacterizationDropdowns(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "shape", "type",
@@ -118,10 +120,10 @@ public class InitCharacterizationSetup {
 		InitSetup.getInstance().persistLookup(request, "enzyme induction",
 				"enzyme", "otherEnzyme",
 				charBean.getEnzymeInduction().getEnzyme());
-		setCharacterizationDropdowns(request);
 
-		for (FindingBean findingBean : charBean.getFindings()) {
-			for (Datum datum : findingBean.getDomain().getDatumCollection()) {
+		if (charBean.getTheFinding().getDomain().getDatumCollection() != null) {
+			for (Datum datum : charBean.getTheFinding().getDomain()
+					.getDatumCollection()) {
 				InitSetup.getInstance().persistLookup(request,
 						charBean.getCharacterizationName(), "datumName",
 						"otherDatumName", datum.getName());
@@ -141,11 +143,20 @@ public class InitCharacterizationSetup {
 							"otherValueType", condition.getValueType());
 				}
 			}
-			for (File file : findingBean.getDomain().getFileCollection()) {
-				InitSetup.getInstance().persistLookup(request, "file", "type",
-						"otherType", file.getType());
-			}
 		}
+
+		InitSetup.getInstance()
+				.persistLookup(
+						request,
+						"file",
+						"type",
+						"otherType",
+						charBean.getTheFinding().getTheFile().getDomainFile()
+								.getType());
+
+		persistExperimentConfigDropdowns(request, charBean
+				.getTheExperimentConfig());
+		setCharacterizationDropdowns(request);
 	}
 
 	public SortedSet<String> getCharNamesByCharType(HttpServletRequest request,
@@ -258,5 +269,38 @@ public class InitCharacterizationSetup {
 					+ charClassName + "Info.jsp";
 		}
 		return includePage;
+	}
+
+	public void getInstrumentsForTechnique(HttpServletRequest request,
+			String technique) throws Exception {
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"techniqueInstruments", technique, "instrument",
+				"otherInstrument", true);
+	}
+
+	public void setExperimentConfigDropDowns(HttpServletRequest request)
+			throws Exception {
+		// instrument manufacturers and techniques
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"manufacturers", "instrument", "manufacturer",
+				"otherManufacturer", true);
+
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"techniqueTypes", "technique", "type", "otherType", true);
+	}
+
+	public void persistExperimentConfigDropdowns(HttpServletRequest request,
+			ExperimentConfigBean configBean) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "technique", "type",
+				"otherType", configBean.getDomain().getTechnique().getType());
+		for (Instrument instrument : configBean.getInstruments()) {
+			InitSetup.getInstance().persistLookup(request,
+					configBean.getDomain().getTechnique().getType(),
+					"instrument", "otherInstrument", instrument.getType());
+			InitSetup.getInstance().persistLookup(request, "instrument",
+					"manufacturer", "otherManufacturer",
+					instrument.getManufacturer());
+		}
+		setExperimentConfigDropDowns(request);
 	}
 }

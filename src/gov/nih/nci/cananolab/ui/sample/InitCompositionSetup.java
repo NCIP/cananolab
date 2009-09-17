@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
@@ -38,6 +37,7 @@ public class InitCompositionSetup {
 
 	public void setNanomaterialEntityDropdowns(HttpServletRequest request)
 			throws Exception {
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		getEmulsionComposingElementTypes(request);
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
 				request, "defaultFunctionTypes", "functionTypes",
@@ -88,39 +88,42 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().persistLookup(request, "carbon nanotube",
 				"averageLengthUnit", "otherAverageLengthUnit",
 				entityBean.getCarbonNanotube().getAverageLengthUnit());
-		for (ComposingElementBean elementBean : entityBean
-				.getComposingElements()) {
-			if (entityBean.getDomainEntity() instanceof Emulsion) {
-				InitSetup.getInstance().persistLookup(request, "emulsion",
-						"composingElementType", "otherComposingElementType",
-						elementBean.getDomain().getType());
-			} else {
-				InitSetup.getInstance().persistLookup(request,
-						"composing element", "type", "otherType",
-						elementBean.getDomain().getType());
-			}
+
+		ComposingElementBean theComposingElement = entityBean
+				.getTheComposingElement();
+		if (entityBean.getDomainEntity() instanceof Emulsion) {
+			InitSetup.getInstance().persistLookup(request, "emulsion",
+					"composingElementType", "otherComposingElementType",
+					entityBean.getTheComposingElement().getDomain().getType());
+		} else {
 			InitSetup.getInstance().persistLookup(request, "composing element",
-					"valueUnit", "otherValueUnit",
-					elementBean.getDomain().getValueUnit());
-			InitSetup.getInstance().persistLookup(request, "molecular formula",
 					"type", "otherType",
-					elementBean.getDomain().getMolecularFormulaType());
-			for (FunctionBean functionBean : elementBean.getInherentFunctions()) {
-				InitSetup.getInstance().persistLookup(request,
-						"imaging function", "modality", "otherModality",
-						functionBean.getImagingFunction().getModality());
-			}
+					theComposingElement.getDomain().getType());
 		}
-		for (FileBean fileBean : entityBean.getFiles()) {
-			InitSetup.getInstance().persistLookup(request, "file", "type",
-					"otherType", fileBean.getDomainFile().getType());
-		}
+		InitSetup.getInstance().persistLookup(request, "composing element",
+				"valueUnit", "otherValueUnit",
+				theComposingElement.getDomain().getValueUnit());
+		InitSetup.getInstance().persistLookup(request, "molecular formula",
+				"type", "otherType",
+				theComposingElement.getDomain().getMolecularFormulaType());
+
+		InitSetup.getInstance().persistLookup(
+				request,
+				"imaging function",
+				"modality",
+				"otherModality",
+				theComposingElement.getTheFunction().getImagingFunction()
+						.getModality());
+
+		InitSetup.getInstance().persistLookup(request, "file", "type",
+				"otherType", entityBean.getTheFile().getDomainFile().getType());
 
 		setNanomaterialEntityDropdowns(request);
 	}
 
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
 			throws Exception {
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		// reload function types
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
 				request, "defaultFunctionTypes", "functionTypes",
@@ -181,29 +184,26 @@ public class InitCompositionSetup {
 				.getInstance()
 				.persistLookup(request, "activation method", "type",
 						"otherType", entityBean.getActivationMethod().getType());
+		InitSetup.getInstance().persistLookup(request, "imaging function",
+				"modality", "otherModality",
+				entityBean.getTheFunction().getImagingFunction().getModality());
 
-		for (FunctionBean functionBean : entityBean.getFunctions()) {
-			InitSetup.getInstance().persistLookup(request, "imaging function",
-					"modality", "otherModality",
-					functionBean.getImagingFunction().getModality());
-		}
-		for (FileBean fileBean : entityBean.getFiles()) {
-			InitSetup.getInstance().persistLookup(request, "file", "type",
-					"otherType", fileBean.getDomainFile().getType());
-		}
+		InitSetup.getInstance().persistLookup(request, "file", "type",
+				"otherType", entityBean.getTheFile().getDomainFile().getType());
+
 		setFunctionalizingEntityDropdowns(request);
 	}
 
 	public void setChemicalAssociationDropdowns(HttpServletRequest request,
 			boolean hasFunctionalizingEntity) throws Exception {
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		HttpSession session = request.getSession();
 		List<String> compositionTypes = new ArrayList<String>();
 		compositionTypes.add("nanomaterial entity");
 		if (hasFunctionalizingEntity) {
 			compositionTypes.add("functionalizing entity");
 		}
-		session
-				.setAttribute("associationCompositionTypes", compositionTypes);
+		session.setAttribute("associationCompositionTypes", compositionTypes);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"bondTypes", "attachment", "bondType", "otherBondType", true);
 		InitSetup
@@ -225,12 +225,10 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().persistLookup(request, "attachment",
 				"bondType", "otherBondType",
 				assocBean.getAttachment().getBondType());
-		if (assocBean.getFiles() != null) {
-			for (FileBean fileBean : assocBean.getFiles()) {
-				InitSetup.getInstance().persistLookup(request, "file", "type",
-						"otherType", fileBean.getDomainFile().getType());
-			}
-		}
+
+		InitSetup.getInstance().persistLookup(request, "file", "type",
+				"otherType", assocBean.getTheFile().getDomainFile().getType());
+
 		setChemicalAssociationDropdowns(request, hasFunctionalizingEntity);
 	}
 
