@@ -289,7 +289,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		String fileName = this.getExportFileName(sampleBean.getDomain()
 				.getName(), "summaryView");
-		ExportUtils.prepareReponseForExcell(response, fileName);
+		ExportUtils.prepareReponseForExcel(response, fileName);
 
 		PublicationService service = null;
 		if (Constants.LOCAL_SITE.equals(location)) {

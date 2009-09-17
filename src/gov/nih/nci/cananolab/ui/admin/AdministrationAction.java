@@ -80,10 +80,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			throws Exception {
 		File siteLogo = new File(this.getLogoFileName());
 		if (siteLogo.exists() && siteLogo.length() > 0) {
-			response.setContentType(ExportUtils.IMAGE_CONTENT_TYPE);
-			response.setHeader(ExportUtils.CONTENT_DISPOSITION, ExportUtils.ATTACHMENT
-					+ Constants.SITE_LOGO_FILENAME + "\"");
-			response.setHeader(ExportUtils.CACHE_CONTROL, ExportUtils.PRIVATE);
+			ExportUtils.prepareReponseForImage(response, Constants.SITE_LOGO_FILENAME);
 
 			int numRead = 0;
 			InputStream in = null;
