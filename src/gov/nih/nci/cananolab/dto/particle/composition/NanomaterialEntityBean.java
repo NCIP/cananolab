@@ -53,6 +53,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private boolean withProperties = false;
 
 	private ComposingElementBean theComposingElement = new ComposingElementBean();
+	
+	private String isPolymerized;
 
 	public NanomaterialEntityBean() {
 	}
@@ -313,5 +315,13 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	// used for DWR ajax
 	public String getDisplayName() {
 		return type;
+	}
+
+	public String getIsPolymerized() {
+		return isPolymerized;
+	}
+
+	public void setIsPolymerized(String isPolymerized) {
+		this.isPolymerized = isPolymerized;
 	}
 }

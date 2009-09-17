@@ -57,8 +57,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		if (!validateEntityFile(request, entityBean)) {
 			return mapping.getInputForward();
 		}
-		// Copy "polymerized" property from form bean to entity bean.
-		this.setupIsPolymerized(form);
+		// Copy "polymerized" property from entity bean to mapping bean.
+		this.copyIsPolymerized(entityBean);
 		
 		this.saveEntity(request, theForm, entityBean);
 		ActionMessages msgs = new ActionMessages();
@@ -224,8 +224,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		NanomaterialEntityBean entityBean = compService
 				.findNanomaterialEntityById(entityId, user);
 		theForm.set("nanomaterialEntity", entityBean);
-		this.setLookups(request);
 		theForm.set("otherSamples", new String[0]);
+		this.setLookups(request);
+		this.setupIsPolymerized(entityBean);
 		String detailPage = null;
 		if (entityBean.isWithProperties()) {
 			detailPage = InitCompositionSetup.getInstance().getDetailPage(
@@ -396,24 +397,41 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Setup "polymerized" property for Emulsion or Liposome entity.
+	 * Copy "polymerized" property from entityBean to Emulsion or Liposome.
 	 *   
-	 * @param form
+	 * @param entityBean
 	 */
-	private void setupIsPolymerized(ActionForm form) {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String isPolymerized = (String) theForm.get("isPolymerized");
+	private void copyIsPolymerized(NanomaterialEntityBean entityBean) {
+		Boolean polymerized = null;
+		String isPolymerized = entityBean.getIsPolymerized();
 		if (!StringUtils.isEmpty(isPolymerized)) {
-			Boolean polymerized = Boolean.valueOf(isPolymerized);
-			NanomaterialEntityBean entityBean = (NanomaterialEntityBean) 
-				theForm.get("nanomaterialEntity");
-			String entityType = entityBean.getType();
-			if ("emulsion".equals(entityType)) {
-				entityBean.getEmulsion().setPolymerized(polymerized);
-			} else if ("liposome".equals(entityType)) {
-				entityBean.getLiposome().setPolymerized(polymerized);
-			}
+			polymerized = Boolean.valueOf(isPolymerized);
+		}
+		String entityType = entityBean.getType();
+		if ("emulsion".equals(entityType)) {
+			entityBean.getEmulsion().setPolymerized(polymerized);
+		} else if ("liposome".equals(entityType)) {
+			entityBean.getLiposome().setPolymerized(polymerized);
 		}
 	}
 
+	/**
+	 * Setup "polymerized" property in entityBean from Emulsion or Liposome.
+	 *   
+	 * @param entityBean
+	 */
+	private void setupIsPolymerized(NanomaterialEntityBean entityBean) {
+		Boolean polymerized = null;
+		String entityType = entityBean.getType();
+		if ("emulsion".equals(entityType)) {
+			polymerized = entityBean.getEmulsion().getPolymerized();
+		} else if ("liposome".equals(entityType)) {
+			polymerized = entityBean.getLiposome().getPolymerized();
+		}
+		if (polymerized == null) {
+			entityBean.setIsPolymerized(null);
+		} else {
+			entityBean.setIsPolymerized(polymerized.toString());
+		}
+	}
 }

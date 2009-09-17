@@ -50,7 +50,6 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="isPolymerized" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="characterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
