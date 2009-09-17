@@ -38,11 +38,6 @@ public class FileBean {
 
 	private String location; // e.g. local, caNanoLab-WashU
 
-	private String fullPath; // e.g.
-	// C:/temp/caNanoLab/fileUpload/particles/NCL-23/...,
-
-	// or for remote files, it will be the remote download URL
-
 	private String createdDateStr;
 
 	public FileBean() {
@@ -186,14 +181,6 @@ public class FileBean {
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-
-	public String getFullPath() {
-		return fullPath;
-	}
-
-	public void setFullPath(String fullPath) {
-		this.fullPath = fullPath;
 	}
 
 	public void setDomainFile(File domainFile) {
