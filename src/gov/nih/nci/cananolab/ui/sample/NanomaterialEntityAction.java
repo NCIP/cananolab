@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
@@ -21,7 +20,6 @@ import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -175,8 +173,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		return true;
 	}
 
-	private void setLookups(HttpServletRequest request) throws Exception {
-		InitSampleSetup.getInstance().setSharedDropdowns(request);
+	private void setLookups(HttpServletRequest request) throws Exception {		
 		InitCompositionSetup.getInstance().setNanomaterialEntityDropdowns(
 				request);
 	}
@@ -383,38 +380,15 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		session.setAttribute("openComposingElement", openComposingElement);
 
 		/**
-		 * If user entered customized value selecting [other] on previous page,
-		 * we should show and highlight the entered value on the edit page.
+		 * other nanomaterial entity types are not stored in the lookup
+		 * are retrieved through reflection only after saving to the database.
+		 * Need to update session variable before saving to the database 
 		 */
 		// Nanomaterial Entity Type
 		String entityType = entity.getType();
 		setOtherValueOption(request, entityType, "nanomaterialEntityTypes");
-
-		// Composing Element Type
-		ComposingElementBean compBean = entity.getTheComposingElement();
-		String compType = compBean.getDomain().getType();
-		setOtherValueOption(request, compType, "composingElementTypes");
-		setOtherValueOption(request, compType, "emulsionComposingElementTypes");
-
-		// Composing Element Unit
-		String compUnit = compBean.getDomain().getValueUnit();
-		setOtherValueOption(request, compUnit, "composingElementUnits");
-
-		// Composing Element Formula Type
-		String compFormula = compBean.getDomain().getMolecularFormulaType();
-		setOtherValueOption(request, compFormula, "molecularFormulaTypes");
-
-		// Composing Element Function Type
-		String compFunction = compBean.getTheFunction().getType();
-		setOtherValueOption(request, compFunction, "functionTypes");
-
-		// Composing Element Modality Type
-		String compModality = compBean.getTheFunction().getImagingFunction()
-				.getModality();
-		setOtherValueOption(request, compModality, "modalityTypes");
-
-		// File Type
-		String fileType = entity.getTheFile().getDomainFile().getType();
-		setOtherValueOption(request, fileType, "fileTypes");
+		//function type
+		String functionType=entity.getTheComposingElement().getTheFunction().getType();
+		setOtherValueOption(request, functionType, "functionTypes");
 	}
 }

@@ -176,8 +176,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return mapping.findForward("inputForm");
 	}
 
-	private void setLookups(HttpServletRequest request) throws Exception {
-		InitSampleSetup.getInstance().setSharedDropdowns(request);
+	private void setLookups(HttpServletRequest request) throws Exception {		
 		InitCompositionSetup.getInstance().setFunctionalizingEntityDropdowns(
 				request);
 	}
@@ -377,24 +376,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String entityType = entity.getType();
 		setOtherValueOption(request, entityType, "functionalizingEntityTypes");
 
-		// Functional Entity Unit
-		String entityUnit = entity.getValueUnit();
-		setOtherValueOption(request, entityUnit, "functionalizingEntityUnits");
-
-		// Functional Entity Formula Type
-		String entityFormula = entity.getMolecularFormulaType();
-		setOtherValueOption(request, entityFormula, "molecularFormulaTypes");
-
-		// Functional Entity Activation Method Type
-		String activationType = entity.getActivationMethod().getType();
-		setOtherValueOption(request, activationType, "activationMethods");
-
 		// Functional Entity Function Type
 		String functionType = entity.getTheFunction().getType();
 		setOtherValueOption(request, functionType, "functionTypes");
-
-		// File Type
-		String fileType = entity.getTheFile().getDomainFile().getType();
-		setOtherValueOption(request, fileType, "fileTypes");
 	}
 }

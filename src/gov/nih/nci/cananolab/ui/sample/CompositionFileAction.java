@@ -116,14 +116,9 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupSample(theForm, request, Constants.LOCAL_SITE);
 		this.setLookups(request);
-		/**
-		 * If user entered customized Char Type/Name, Assay Type by selecting
-		 * [other], we should show and highlight the entered value on the edit
-		 * page.
-		 */
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
-		String currentFileType = comp.getTheFile().getDomainFile().getType();
-		setOtherValueOption(request, currentFileType, "fileTypes");
+		InitCompositionSetup.getInstance().persistCompositionFileDropdowns(
+				request, comp.getTheFile());
 
 		return mapping.findForward("inputForm");
 	}

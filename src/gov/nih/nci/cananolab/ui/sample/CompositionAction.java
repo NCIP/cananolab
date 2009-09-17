@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -186,6 +188,10 @@ public class CompositionAction extends BaseAnnotationAction {
 					request, location);
 			compService = new CompositionServiceRemoteImpl(serviceUrl);
 		}
+		// TODO remove this
+//		compService = new CompositionServiceRemoteImpl(
+//				"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
+
 		CompositionBean compBean = compService.findCompositionBySampleId(
 				sampleId, user);
 		theForm.set("comp", compBean);

@@ -268,8 +268,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		boolean hasFunctionalizingEntity = false;
 		if (!compositionBean.getFunctionalizingEntities().isEmpty()) {
 			hasFunctionalizingEntity = true;
-		}
-		InitSampleSetup.getInstance().setSharedDropdowns(request);
+		}		
 		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
 				request, hasFunctionalizingEntity);
 		// use BaseCompositionEntityBean for DWR ajax

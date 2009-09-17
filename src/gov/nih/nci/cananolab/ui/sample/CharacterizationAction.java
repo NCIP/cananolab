@@ -138,12 +138,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private void setupInputForm(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		String sampleId = request.getParameter("sampleId");
-		String charType = request.getParameter("charType");
-		InitSampleSetup.getInstance().setSharedDropdowns(request);
+		String charType = request.getParameter("charType");		
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
-				request, sampleId);
-		InitExperimentConfigSetup.getInstance().setExperimentConfigDropDowns(
-				request);
+				request, sampleId);	
 		if (!StringUtils.isEmpty(charType))
 			InitProtocolSetup.getInstance().getProtocolsByChar(request,
 					charType);
@@ -542,8 +539,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.addExperimentConfig(configBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
-		InitExperimentConfigSetup.getInstance()
-				.persistExperimentConfigDropdowns(request, configBean);
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
 		this.checkOpenForms(achar, request);
@@ -785,9 +780,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		service.deleteExperimentConfig(configBean.getDomain(), user);
 		achar.removeExperimentConfig(configBean);
 		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, achar);
-		InitExperimentConfigSetup.getInstance()
-				.persistExperimentConfigDropdowns(request, configBean);
+				.persistCharacterizationDropdowns(request, achar);		
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
 		this.checkOpenForms(achar, request);
