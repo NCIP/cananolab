@@ -35,7 +35,7 @@ public class ExportUtils {
 	public static final String EXCEL_EXTENTION = ".xls\"";
 	
 	/**
-	 * Get file name for exporting report as an Excell file.
+	 * Get file name for exporting report as an Excel file.
 	 *
 	 * @param sampleName
 	 * @param viewType
