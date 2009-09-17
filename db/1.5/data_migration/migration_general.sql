@@ -219,18 +219,6 @@ DROP TABLE IF EXISTS composition_temp;
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-
--- Reset data in [emulsion] for validation.
-update emulsion
-   set is_polymerized = null, is_polymerized = null
- where length(polymer_name) = 0
-   and is_polymerized = 0;
-
--- Reset data in [liposome] for validation.
-update liposome
-   set is_polymerized = null, is_polymerized = null
- where length(polymer_name) = 0
-   and is_polymerized = 0;
  
 -- End of script
 
