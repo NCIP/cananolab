@@ -388,6 +388,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
 		}
+		// TODO remove this
+//		service = new CharacterizationServiceRemoteImpl(
+//				"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
+
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId, user);
 		CharacterizationSummaryViewBean summaryView = 
@@ -509,7 +513,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String sampleName = sampleBean.getDomain().getName();
 		String fileName = ExportUtils.getExportFileName(
 				sampleName, "CharacterizationSummaryView", type);
-		ExportUtils.prepareReponseForExcell(response, fileName);
+		ExportUtils.prepareReponseForExcel(response, fileName);
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = theForm.getString(Constants.LOCATION);
