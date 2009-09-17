@@ -30,11 +30,11 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class SampleAction extends BaseAnnotationAction {
 	// logger
-	//private static Logger logger = Logger.getLogger(SampleAction.class);
+	// private static Logger logger = Logger.getLogger(SampleAction.class);
 
 	/**
 	 * Save or update POC data.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -67,16 +67,16 @@ public class SampleAction extends BaseAnnotationAction {
 		ActionMessage msg = null;
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
-		if (!StringUtils.isEmpty(updateSample)) {			
+		if (!StringUtils.isEmpty(updateSample)) {
 			msg = new ActionMessage("message.updateSample");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
-		}		
+		}
 	}
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -96,7 +96,7 @@ public class SampleAction extends BaseAnnotationAction {
 		theForm.set("sampleBean", sampleBean);
 		return mapping.findForward("summaryView");
 	}
-	
+
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -112,7 +112,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -138,7 +138,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -157,7 +157,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 *
+	 * 
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception
@@ -179,7 +179,8 @@ public class SampleAction extends BaseAnnotationAction {
 		PointOfContactBean thePOC = sample.getThePOC();
 		thePOC.setupDomain(user.getLoginName());
 		SampleService service = new SampleServiceLocalImpl();
-		//have to save POC separately because the same organizations can not be save in the same session
+		// have to save POC separately because the same organizations can not be
+		// save in the same session
 		service.savePointOfContact(thePOC, user);
 		sample.addPointOfContact(thePOC);
 		// save sample
@@ -196,8 +197,7 @@ public class SampleAction extends BaseAnnotationAction {
 					.toString());
 			forward = summaryEdit(mapping, form, request, response);
 		}
-		InitSampleSetup.getInstance().persistPOCDropdowns(request,
-				sample.getDomain());
+		InitSampleSetup.getInstance().persistPOCDropdowns(request, sample);
 		return forward;
 	}
 
