@@ -131,7 +131,7 @@
 			parameter="sample.advancedSampleSearchResult" scope="request" />
 		<action name="compositionForm" parameter="dispatch" path="/composition"
 			type="gov.nih.nci.cananolab.ui.sample.CompositionAction" input="input">
-			<forward name="input" path="sample.composition.summaryview" />
+			<forward name="input" path="sample.composition.summaryView" />
 			<forward name="summaryView" path="sample.composition.summaryView" />
 			<forward name="summaryEdit" path="sample.composition.summaryEdit" />
 			<forward name="summaryPrint"
