@@ -428,7 +428,8 @@
 					<tr>
 						<td>
 							<div align="right">
-								<input type="button" value="Reset">
+								<input type="button" value="Reset" 
+									onclick="javascript:location.href='advancedSampleSearch.do?dispatch=setup'">
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
 								<html:submit value="Search" />
