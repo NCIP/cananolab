@@ -33,9 +33,11 @@ function setAssayTypeOptionsByCharName() {
 	var charType = document.getElementById("charType").value;
 	dwr.util.removeAllOptions("assayType");
 	if (charType == "physico chemical characterization") {
-		dwr.util.addOptions("assayType", [ charName ]);
+		dwr.util.addOptions("assayType", [ "" ]);
+		if (charName != "other") {
+			dwr.util.addOptions("assayType", [ charName ]);
+		}
 		dwr.util.addOptions("assayType", [ "[other]" ]);
-		dwr.util.setValue("assayType", charName);
 	} else {
 		CharacterizationManager.getAssayTypeOptions(charName, function(data) {
 			dwr.util.addOptions("assayType", [ "" ]);
