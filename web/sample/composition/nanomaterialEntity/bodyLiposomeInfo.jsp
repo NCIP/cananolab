@@ -44,7 +44,7 @@
 						<c:otherwise>
 							<c:choose>
 								<c:when
-									test="${compositionForm.map.nanomaterialEntity.isPolymerized}">
+									test="${compositionForm.map.nanomaterialEntity.isPolymerized eq 'true'}">
 									<c:set var="selectYesStr" value='selected="selected"' />
 								</c:when>
 								<c:otherwise>

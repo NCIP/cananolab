@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
@@ -44,9 +45,6 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 public class CharacterizationAction extends BaseAnnotationAction {
 
-	// Partial URL for downloading characterization report file.
-	public static final String DOWNLOAD_URL = "?dispatch=download&location=";
-
 	/**
 	 * Add or update the data to database
 	 *
@@ -61,11 +59,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean charBean = (CharacterizationBean) theForm
-				.get("achar");
+		CharacterizationBean charBean = 
+			(CharacterizationBean) theForm.get("achar");
+		
+		// Copy "isSoluble" property from char bean to mapping bean.
+		this.copyIsSoluble(charBean);
+		
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
-
 		this.saveCharacterization(request, theForm, charBean);
 
 		ActionMessages msgs = new ActionMessages();
@@ -81,7 +82,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.getInstance().getCharacterizationTypes(request);
 		int ind = allCharacterizationTypes.indexOf(charBean
 				.getCharacterizationType()) + 1;
-		request.getSession().setAttribute("tab", ind+"");
+		request.getSession().setAttribute("tab", String.valueOf(ind));
+		
 		return summaryEdit(mapping, form, request, response);
 	}
 
@@ -181,8 +183,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance().getAssayTypesByCharName(
 				request, charBean.getCharacterizationName());
 
-		// TODO: Find out what this is for, "charNameDatumNames" not used in any
-		// JSPs.
+		// TODO: Find out what "charNameDatumNames" is for, not used in any JSPs.
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
 				charBean.getCharacterizationName(), charBean.getAssayType());
@@ -190,6 +191,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
 		this.setupInputForm(request, theForm);
+		this.setupIsSoluble(charBean);	// setup "isSoluble" property.
+		
 		String detailPage = null;
 		if (charBean.isWithProperties()) {
 			detailPage = setupDetailPage(charBean);
@@ -816,8 +819,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		/**
 		 * If user entered customized Char Type/Name, Assay Type by selecting
-		 * [other], we should show and highlight the entered value on the edit
-		 * page.
+		 * [other], we should show and highlight the value on the edit page.
 		 */
 		String currentCharType = achar.getCharacterizationType();
 		setOtherValueOption(request, currentCharType, "characterizationTypes");
@@ -845,5 +847,38 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			charTypes.add(type);
 		}
 		return charTypes;
+	}
+
+	/**
+	 * Copy "isSoluble" property from achar to Solubility entity.
+	 *   
+	 * @param achar
+	 */
+	private void copyIsSoluble(CharacterizationBean achar) {
+		Boolean soluble = null;
+		String isSoluble = achar.getIsSoluble();
+		if (!StringUtils.isEmpty(isSoluble)) {
+			soluble = Boolean.valueOf(isSoluble);
+		}
+		if ("Solubility".equals(achar.getClassName())) {
+			achar.getSolubility().setIsSoluble(soluble);
+		}
+	}
+
+	/**
+	 * Setup "isSoluble" property in achar from Solubility entity.
+	 *   
+	 * @param achar
+	 */
+	private void setupIsSoluble(CharacterizationBean achar) {
+		Boolean soluble = null;
+		if ("Solubility".equals(achar.getClassName())) {
+			soluble = achar.getSolubility().getIsSoluble();
+		}
+		if (soluble == null) {
+			achar.setIsSoluble(null);
+		} else {
+			achar.setIsSoluble(soluble.toString());
+		}
 	}
 }

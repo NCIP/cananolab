@@ -85,6 +85,8 @@ public class CharacterizationBean {
 
 	private Transfection transfection = new Transfection();
 
+	private String isSoluble; // Data holder for Boolean field in Solubility.
+	
 	public CharacterizationBean() {
 		// initialize finding matrix
 //		theFinding.setNumberOfColumns(1);
@@ -515,5 +517,13 @@ public class CharacterizationBean {
 		} else {
 			characterizationName = ClassUtils.getDisplayName(className);
 		}
+	}
+
+	public String getIsSoluble() {
+		return isSoluble;
+	}
+
+	public void setIsSoluble(String isSoluble) {
+		this.isSoluble = isSoluble;
 	}
 }

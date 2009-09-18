@@ -75,35 +75,27 @@
 					Is Soluble
 				</td>
 				<td>
-					<select name="achar.solubility.isSoluble">
-						<option value="">
-						</option>
-						<c:choose>
-							<c:when
-								test="${characterizationForm.map.achar.solubility.isSoluble eq 'true'}">
-								<option value="1" selected="selected">
-									Yes
-								</option>
-							</c:when>
-							<c:otherwise>
-								<option value="1">
-									Yes
-								</option>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when
-								test="${characterizationForm.map.achar.solubility.isSoluble eq 'false'}">
-								<option value="0" selected="selected">
-									No
-								</option>
-							</c:when>
-							<c:otherwise>
-								<option value="">
-									No
-								</option>
-							</c:otherwise>
-						</c:choose>
+					<c:choose>
+						<c:when
+							test="${empty characterizationForm.map.achar.isSoluble}">
+							<c:set var="selectNoneStr" value='selected="selected"' />
+						</c:when>
+						<c:otherwise>
+							<c:choose>
+								<c:when
+									test="${characterizationForm.map.achar.isSoluble eq 'true'}">
+									<c:set var="selectYesStr" value='selected="selected"' />
+								</c:when>
+								<c:otherwise>
+									<c:set var="selectNoStr" value='selected="selected"' />
+								</c:otherwise>
+							</c:choose>
+						</c:otherwise>
+					</c:choose>
+					<select name="achar.isSoluble">
+						<option value="" ${selectNoneStr}></option>
+						<option value="true" ${selectYesStr}>Yes</option>
+						<option value="false" ${selectNoStr}>No</option>
 					</select>
 				</td>
 			</tr>
