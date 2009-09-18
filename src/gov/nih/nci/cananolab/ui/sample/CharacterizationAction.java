@@ -39,7 +39,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
- * 
+ *
  * @author pansu
  */
 public class CharacterizationAction extends BaseAnnotationAction {
@@ -49,7 +49,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -81,7 +81,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.getInstance().getCharacterizationTypes(request);
 		int ind = allCharacterizationTypes.indexOf(charBean
 				.getCharacterizationType()) + 1;
-		request.getSession().setAttribute("tab", ind+"");		
+		request.getSession().setAttribute("tab", ind+"");
 		return summaryEdit(mapping, form, request, response);
 	}
 
@@ -100,7 +100,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -130,7 +130,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up drop-downs need for the input form
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @throws Exception
@@ -138,9 +138,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private void setupInputForm(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
 		String sampleId = request.getParameter("sampleId");
-		String charType = request.getParameter("charType");		
+		String charType = request.getParameter("charType");
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
-				request, sampleId);	
+				request, sampleId);
 		if (!StringUtils.isEmpty(charType))
 			InitProtocolSetup.getInstance().getProtocolsByChar(request,
 					charType);
@@ -156,7 +156,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for editing existing characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -217,7 +217,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup characterization bean for saving.
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -238,7 +238,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup, prepare and save characterization.
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -295,7 +295,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -314,7 +314,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryView() handles View request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -332,12 +332,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		return mapping.findForward("summaryView");
 	}
-	
+
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");		
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = theForm.getString(Constants.LOCATION);
 		String charId=theForm.getString("charId");
 		setupSample(theForm, request, location);
@@ -349,7 +349,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
 		}
-		CharacterizationBean charBean = service.findCharacterizationById(charId, user);		
+		CharacterizationBean charBean = service.findCharacterizationById(charId, user);
 		request.setAttribute("charBean", charBean);
 		return mapping.findForward("singleSummaryView");
 	}
@@ -357,7 +357,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
 	 * Prepare CharacterizationBean based on Sample Id.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -371,7 +371,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Remove previous result from session.
 		request.getSession().removeAttribute("characterizationSummaryView");
 		request.getSession().removeAttribute("theSample");
-		
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
@@ -385,18 +385,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
 		}
-		// TODO remove this
-//		service = new CharacterizationServiceRemoteImpl(
-//				"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
 
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId, user);
-		CharacterizationSummaryViewBean summaryView = 
+		CharacterizationSummaryViewBean summaryView =
 			new CharacterizationSummaryViewBean(charBeans);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, sampleId);
-		
-		// Save result bean in session for later use - export/print. 
+
+		// Save result bean in session for later use - export/print.
 		request.getSession().setAttribute("characterizationSummaryView", summaryView);
 		request.getSession().setAttribute("theSample", sampleBean); //for showing title.
 
@@ -421,7 +418,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * Shared function for summaryView() and summaryPrint(). Keep submitted
 	 * characterization types in the correct display order. Should be called
 	 * after calling prepareSummary(), to avoid session timeout issue.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -432,7 +429,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private void prepareCharacterizationTypes(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean) 
+		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean)
 			request.getSession().getAttribute("characterizationSummaryView");
 		// Keep submitted characterization types in the correct display order
 		List<String> allCharacterizationTypes = new ArrayList<String>(
@@ -450,7 +447,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -461,17 +458,17 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) 
+		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean)
 			request.getSession().getAttribute("characterizationSummaryView");
 		if (charSummaryBean == null) {
 			// Retrieve data again when session timeout.
 			this.prepareSummary(mapping, form, request, response);
-			charSummaryBean = (CharacterizationSummaryViewBean) 
+			charSummaryBean = (CharacterizationSummaryViewBean)
 				request.getSession().getAttribute("characterizationSummaryView");
 		}
 		this.prepareCharacterizationTypes(mapping, form, request, response);
 		this.filterType(request); // Filter out un-selected types.
-		
+
 		// Marker that indicates page is for printing only, hide tabs/links.
 		request.setAttribute("printView", Boolean.TRUE);
 
@@ -480,7 +477,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Export Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -491,21 +488,21 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		SampleBean sampleBean = (SampleBean) 
+		SampleBean sampleBean = (SampleBean)
 			request.getSession().getAttribute("theSample");
-		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) 
+		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean)
 			request.getSession().getAttribute("characterizationSummaryView");
 		if (sampleBean == null || charSummaryBean == null) {
 			// Prepare data.
 			this.prepareSummary(mapping, form, request, response);
-			sampleBean = (SampleBean) 
+			sampleBean = (SampleBean)
 				request.getSession().getAttribute("theSample");
-			charSummaryBean = (CharacterizationSummaryViewBean) 
+			charSummaryBean = (CharacterizationSummaryViewBean)
 				request.getSession().getAttribute("characterizationSummaryView");
 		}
 		this.prepareCharacterizationTypes(mapping, form, request, response);
 		List<String> charTypes = this.filterType(request); //Filter out unselected types.
-		
+
 		String type = request.getParameter("type");
 		String sampleName = sampleBean.getDomain().getName();
 		String fileName = ExportUtils.getExportFileName(
@@ -519,7 +516,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request, location);
 		}
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
-		CharacterizationServiceHelper.exportSummary(charTypes, charSummaryBean, 
+		CharacterizationServiceHelper.exportSummary(charTypes, charSummaryBean,
 				sb.toString(), response.getOutputStream());
 
 		return null;
@@ -620,7 +617,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Return true if every finding cell has value entered, false otherwise.
-	 * 
+	 *
 	 * @param findingBean
 	 * @return true if every finding cell has value entered, false otherwise.
 	 */
@@ -780,7 +777,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		service.deleteExperimentConfig(configBean.getDomain(), user);
 		achar.removeExperimentConfig(configBean);
 		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, achar);		
+				.persistCharacterizationDropdowns(request, achar);
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
 		this.checkOpenForms(achar, request);
@@ -831,16 +828,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String currentAssayType = achar.getAssayType();
 		setOtherValueOption(request, currentAssayType, "charNameAssays");
 	}
-	
+
 	/**
 	 * Shared function for summaryExport() and summaryPrint().
-	 * Filter out unselected types when user selected one type for print/export. 
-	 * 
+	 * Filter out unselected types when user selected one type for print/export.
+	 *
 	 * @param request
 	 * @param compBean
 	 */
 	private List<String> filterType(HttpServletRequest request) {
-		List<String> charTypes = (List<String>) 
+		List<String> charTypes = (List<String>)
 			request.getAttribute("characterizationTypes");
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {

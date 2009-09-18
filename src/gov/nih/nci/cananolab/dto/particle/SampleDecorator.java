@@ -14,9 +14,9 @@ import org.displaytag.decorator.TableDecorator;
 /**
  * This decorator is used to for decorate different properties of a sample to be
  * shown properly in the view page using display tag lib.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleDecorator extends TableDecorator {
 
@@ -25,10 +25,6 @@ public class SampleDecorator extends TableDecorator {
 		if (!Constants.LOCAL_SITE.equals(sample.getLocation())) {
 			return this.getViewSampleURL();
 		}
-		// TODO remove this
-		// if (sample.getLocation().equals("WUSTL")) {
-		// return this.getViewSampleURL();
-		// }
 		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
 		StringBuilder sb = new StringBuilder("<a href=");

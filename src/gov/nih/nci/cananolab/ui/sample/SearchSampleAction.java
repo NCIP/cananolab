@@ -182,9 +182,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 						request, location);
 				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
-			// TODO remove this
-//			service = new SampleServiceRemoteImpl(
-//					"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
 			UserBean user = (UserBean) session.getAttribute("user");
 			List<String> sampleNames = service.findSampleNamesBy(
 					samplePointOfContact, nanomaterialEntityClassNames

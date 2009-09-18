@@ -38,9 +38,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for all annotation actions
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
@@ -50,7 +50,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
 	 * of sample based on user's privilege. Finally, set the SampleBean in
 	 * request object.
-	 * 
+	 *
 	 * @param theForm
 	 * @param request
 	 * @param location
@@ -79,10 +79,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					request, location);
 			service = new SampleServiceRemoteImpl(serviceUrl);
 		}
-		// TODO remove this
-//		service = new SampleServiceRemoteImpl(
-//				"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
-
 		SampleBean sampleBean = service.findSampleById(sampleId, user);
 		if (sampleBean != null) {
 			sampleBean.setLocation(location);
@@ -116,7 +112,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -157,9 +153,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {
-			ExportUtils.prepareReponseForImage(response, 
+			ExportUtils.prepareReponseForImage(response,
 				fileBean.getDomainFile().getName());
-			
+
 			InputStream in = null;
 			OutputStream out = null;
 			try {
@@ -171,7 +167,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					out.write(bytes, 0, numRead);
 				}
 			} finally {
-				if (in != null) 
+				if (in != null)
 					in.close();
 				if (out != null)
 					out.close();
@@ -270,9 +266,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Retrieve a value from request by name in the order of 
+	 * Retrieve a value from request by name in the order of
 	 * Parameter - Request Attribute - Session Attribute
-	 * 
+	 *
 	 * @param request
 	 * @param name
 	 * @return
@@ -289,9 +285,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * If user entered customized value by selecting [other] option previously, 
+	 * If user entered customized value by selecting [other] option previously,
 	 * then add the value in collection, so user can see it again.
-	 * 
+	 *
 	 * @param request
 	 * @param value
 	 * @param sessionName
@@ -300,7 +296,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected void setOtherValueOption(HttpServletRequest request,
 			String value, String sessionName) {
 		if (!StringUtils.isEmpty(value)) {
-			Collection<String> otherTypes = (Collection<String>) 
+			Collection<String> otherTypes = (Collection<String>)
 				request.getSession().getAttribute(sessionName);
 			if (otherTypes != null && !otherTypes.contains(value)) {
 				otherTypes.add(value);
@@ -310,18 +306,18 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Returns a partial URL for downloading a file from local/remote host.
-	 * 
+	 *
 	 * @param request
 	 * @param serviceUrl
 	 * @param location
 	 * @return
 	 * @throws Exception
 	 */
-	protected StringBuilder getDownloadUrl(HttpServletRequest request, 
+	protected StringBuilder getDownloadUrl(HttpServletRequest request,
 			String serviceUrl, String location) throws Exception {
 		StringBuilder sb = new StringBuilder();
-		
-		// Return local Url if serviceUrl is empty.  
+
+		// Return local Url if serviceUrl is empty.
 		if (StringUtils.isEmpty(serviceUrl)) {
 			sb.append(request.getRequestURL().toString());
 		} else {
@@ -329,7 +325,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			URL remoteUrl = new URL(serviceUrl);
 			URL localURL = new URL(request.getRequestURL().toString());
 			String actionPath = localURL.getPath();
-			
+
 			sb.append(remoteUrl.getProtocol()).append("://");
 			sb.append(remoteUrl.getHost()).append(':');
 			sb.append(remoteUrl.getPort());
@@ -337,7 +333,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		sb.append(ExportUtils.DOWNLOAD_URL);
 		sb.append(location).append("&fileId=");
-		
+
 		return sb;
 	}
 }
