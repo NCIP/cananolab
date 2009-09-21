@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
-<table id="summarySection2" width="95%" align="center"
+<table id="summarySection${index}" width="95%" align="center"
 	style="display: block" class="summaryViewLayer2">
 	<tr>
 		<th align="left">
@@ -18,6 +18,6 @@
 	 	<%@include file="bodySingleFunctionalizingEntitySummaryView.jsp" %>
 	</logic:iterate>
 </table>
-<div id="summarySeparator2">
+<div id="summarySeparator${index}">
 	<br>
 </div>
