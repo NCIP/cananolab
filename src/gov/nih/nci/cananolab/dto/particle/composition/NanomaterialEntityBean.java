@@ -86,18 +86,20 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		}
 		className = ClassUtils.getShortClassName(nanomaterialEntity.getClass()
 				.getName());
-		for (ComposingElement composingElement : nanomaterialEntity
-				.getComposingElementCollection()) {
-			composingElements.add(new ComposingElementBean(composingElement));
+		if (nanomaterialEntity.getComposingElementCollection() != null) {
+			for (ComposingElement composingElement : 
+					nanomaterialEntity.getComposingElementCollection()) {
+				composingElements.add(new ComposingElementBean(composingElement));
+			}
+			Collections.sort(composingElements,
+					new Comparators.ComposingElementBeanDateComparator());
 		}
-		Collections.sort(composingElements,
-				new Comparators.ComposingElementBeanDateComparator());
 		if (nanomaterialEntity.getFileCollection() != null) {
 			for (File file : nanomaterialEntity.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
+			Collections.sort(files, new Comparators.FileBeanDateComparator());
 		}
-		Collections.sort(files, new Comparators.FileBeanDateComparator());
 		updateType();
 	}
 
