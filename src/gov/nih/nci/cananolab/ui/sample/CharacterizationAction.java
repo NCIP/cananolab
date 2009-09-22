@@ -258,13 +258,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.saveCharacterization(sampleBean, charBean, user);
 
-		// save to other samples
-		SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
-				sampleBean);
-		if (otherSampleBeans != null) {
-			Boolean copyData = (Boolean) theForm.get("copyData");
-			charService.copyAndSaveCharacterization(charBean, sampleBean,
-					otherSampleBeans, copyData, user);
+		// save to other samples (only when user click [Submit] button.)
+		String dispatch = (String) theForm.get("dispatch");
+		if ("create".equals(dispatch)) {
+			SampleBean[] otherSampleBeans = 
+				prepareCopy(request, theForm, sampleBean);
+			if (otherSampleBeans != null) {
+				Boolean copyData = (Boolean) theForm.get("copyData");
+				charService.copyAndSaveCharacterization(charBean, sampleBean,
+						otherSampleBeans, copyData, user);
+			}
 		}
 		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId());
