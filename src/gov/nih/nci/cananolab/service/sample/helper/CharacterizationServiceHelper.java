@@ -883,27 +883,31 @@ public class CharacterizationServiceHelper {
 	public void assignVisibility(Characterization aChar,
 			String[] visibleGroups, String owningGroup) throws Exception {
 		// characterization
-		if (aChar != null) {
-			authService.assignVisibility(aChar.getId().toString(),
-					visibleGroups, owningGroup);
+		if (aChar != null && aChar.getId() != null) {
+			authService.assignVisibility(
+				aChar.getId().toString(), visibleGroups, owningGroup);
 			if (aChar.getFindingCollection() != null) {
 				for (Finding finding : aChar.getFindingCollection()) {
 					if (finding != null) {
 						authService.assignVisibility(
-								finding.getId().toString(), visibleGroups,
-								owningGroup);
+							finding.getId().toString(), visibleGroups,
+							owningGroup);
 					}
 					// datum
-					for (Datum datum : finding.getDatumCollection()) {
-						if (datum != null) {
-							authService.assignVisibility(datum.getId()
+					if (finding.getDatumCollection() != null) {
+						for (Datum datum : finding.getDatumCollection()) {
+							if (datum != null) {
+								authService.assignVisibility(datum.getId()
 									.toString(), visibleGroups, owningGroup);
-						}
-						// condition
-						for (Condition condition : datum
-								.getConditionCollection()) {
-							authService.assignVisibility(condition.getId()
-									.toString(), visibleGroups, owningGroup);
+							}
+							// condition
+							if (datum.getConditionCollection() != null) {
+								for (Condition condition : 
+										datum.getConditionCollection()) {
+									authService.assignVisibility(condition.getId()
+										.toString(), visibleGroups, owningGroup);
+								}
+							}
 						}
 					}
 				}
@@ -911,10 +915,10 @@ public class CharacterizationServiceHelper {
 
 			// ExperimentConfiguration
 			if (aChar.getExperimentConfigCollection() != null) {
-				for (ExperimentConfig config : aChar
-						.getExperimentConfigCollection()) {
-					authService.assignVisibility(config.getId().toString(),
-							visibleGroups, owningGroup);
+				for (ExperimentConfig config : 
+						aChar.getExperimentConfigCollection()) {
+					authService.assignVisibility(
+						config.getId().toString(), visibleGroups, owningGroup);
 				}
 			}
 		}
