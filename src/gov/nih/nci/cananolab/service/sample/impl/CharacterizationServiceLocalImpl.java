@@ -519,22 +519,13 @@ public class CharacterizationServiceLocalImpl implements
 			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
 			boolean copyData, UserBean user) throws CharacterizationException,
 			NoAccessException {
-		CharacterizationBean copyBean = null;
-		try {
-			// create a deep copy
-			Characterization copy = charBean.getDomainCopy(copyData);
-			copyBean = new CharacterizationBean(copy);
-			// copy file visibility
-			for (FindingBean findingBean : copyBean.getFindings()) {
-				for (FileBean fileBean : findingBean.getFiles()) {
-					fileHelper.retrieveVisibilityAndContentForCopiedFile(
-							fileBean, user);
-				}
-			}
-		} catch (Exception e) {
-			String error = "Error in copying the characterization.";
-			throw new CharacterizationException(error, e);
-		}
+		// create a deep copy
+		Characterization copy = charBean.getDomainCopy(copyData);
+		CharacterizationBean copyBean = new CharacterizationBean(copy);
+		/**
+		 * Note: As the file id in copy is set to null for creating new row,
+		 * the copy object must be saved first, then setting its visibility.  
+		 */
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				// replace file URI with new sample name
@@ -545,13 +536,24 @@ public class CharacterizationServiceLocalImpl implements
 								sampleBean.getDomain().getName());
 					}
 				}
-				if (copyBean != null)
-					saveCharacterization(sampleBean, copyBean, user);
+				this.saveCharacterization(sampleBean, copyBean, user);
 			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String error = "Error in copying the characterization.";
+			String error = "Error saving the copy of characterization.";
+			throw new CharacterizationException(error, e);
+		}
+		try {
+			// copy file visibility
+			for (FindingBean findingBean : copyBean.getFindings()) {
+				for (FileBean fileBean : findingBean.getFiles()) {
+					fileHelper.retrieveVisibilityAndContentForCopiedFile(
+							fileBean, user);
+				}
+			}
+		} catch (Exception e) {
+			String error = "Error setting visibility of the copy.";
 			throw new CharacterizationException(error, e);
 		}
 	}
