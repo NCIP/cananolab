@@ -37,6 +37,8 @@ public class SampleBean {
 
 	private String[] functionalizingEntityClassNames = new String[0];
 
+	private String[] chemicalAssociationClassNames = new String[0];
+	
 	private String[] functionClassNames = new String[0];
 
 	private String[] characterizationClassNames = new String[0];
@@ -208,6 +210,15 @@ public class SampleBean {
 	public void setCharacterizationClassNames(
 			String[] characterizationClassNames) {
 		this.characterizationClassNames = characterizationClassNames;
+	}
+
+	public String[] getChemicalAssociationClassNames() {
+		return chemicalAssociationClassNames;
+	}
+
+	public void setChemicalAssociationClassNames(
+			String[] chemicalAssociationClassNames) {
+		this.chemicalAssociationClassNames = chemicalAssociationClassNames;
 	}
 
 	public PointOfContactBean getPrimaryPOCBean() {
