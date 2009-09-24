@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -83,9 +84,8 @@ public class CharacterizationServiceRemoteImpl implements
 			String[] sampleViewStrs = gridClient.getSampleViewStrs(sampleId);
 			// column 8 contains characterization short class names
 			String[] charClassNames = null;
-			if (sampleViewStrs.length > 8 && sampleViewStrs[8] != null
-					&& sampleViewStrs[8].length() > 0) {
-				charClassNames = sampleViewStrs[8]
+			if (sampleViewStrs.length > 9 && !StringUtils.isEmpty(sampleViewStrs[9])) {
+				charClassNames = sampleViewStrs[9]
 						.split(Constants.VIEW_CLASSNAME_DELIMITER);
 			}
 			if (charClassNames != null) {

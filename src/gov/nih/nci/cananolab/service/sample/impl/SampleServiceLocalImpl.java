@@ -404,7 +404,7 @@ public class SampleServiceLocalImpl implements SampleService {
 						.getStoredNanomaterialEntityClassNames(sample).toArray(
 								new String[0]));
 				sampleBean.setFunctionClassNames(helper
-						.getStoredFunctionClassNames(sample).toArray(
+						.getStoredFunctionClassNames(sample).toArray(	
 				 new String[0]));
 				if (user != null)
 					retrieveVisibility(sampleBean, user);

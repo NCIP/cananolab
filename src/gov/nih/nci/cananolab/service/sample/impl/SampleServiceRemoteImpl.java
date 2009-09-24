@@ -292,50 +292,13 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
-	// this method is too slow
-	// public SampleBean findSampleByName(String sampleName, UserBean user)
-	// throws SampleException {
-	// try {
-	// CQLQuery query = new CQLQuery();
-	// gov.nih.nci.cagrid.cqlquery.Object target = new
-	// gov.nih.nci.cagrid.cqlquery.Object();
-	// target.setName("gov.nih.nci.cananolab.domain.particle.Sample");
-	// Attribute attribute = new Attribute();
-	// attribute.setName("id");
-	// attribute.setPredicate(Predicate.EQUAL_TO);
-	// attribute.setValue(sampleName);
-	// target.setAttribute(attribute);
-	// query.setTarget(target);
-	// CQLQueryResults results = gridClient.query(query);
-	// results
-	// .setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
-	// CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-	// Sample sample = null;
-	// while (iter.hasNext()) {
-	// java.lang.Object obj = iter.next();
-	// sample = (Sample) obj;
-	// loadSamplesAssociations(sample);
-	// }
-	// SampleBean sampleBean = new SampleBean(sample);
-	// return sampleBean;
-	// } catch (RemoteException e) {
-	// logger.error(Constants.NODE_UNAVAILABLE, e);
-	// throw new SampleException(Constants.NODE_UNAVAILABLE, e);
-	// } catch (Exception e) {
-	// String err = "Problem finding the remote sample by name: "
-	// + sampleName;
-	// logger.error(err, e);
-	// throw new SampleException(err, e);
-	// }
-	// }
-
 	public SampleBean findSampleByName(String sampleName, UserBean user)
 			throws SampleException {
 		try {
 			String[] columns = gridClient.getSampleViewStrs(sampleName);
 			// String[] sampleViewStrs = {
-			// "35444457~~~NCICB-6~~~DNT~~~Carbon nanotube~~~small
-			// molecule~~~therapeutic~~~Enzyme Induction:Molecular
+			// "35444457~~~NCICB-6~~~DNT~~~carbon nanotube~~~small
+			// molecule~~~therapeutic~~~association~~~Enzyme Induction:Molecular
 			// Weight:Oxidative Stress"
 
 			if (columns != null && columns.length > 0) {
@@ -381,11 +344,20 @@ public class SampleServiceRemoteImpl implements SampleService {
 						sampleBean.setFunctionClassNames(functionClazzNames);
 					}
 				}
-
-				// characterizationClassNames
+				// chemicalAssociationClassNames
 				if (columns.length > 8 && columns[8] != null
 						&& columns[8].length() > 0) {
-					String[] characterizationClazzNames = columns[8]
+					String[] chemicalAssociationClazzNames = columns[8]
+							.split(Constants.VIEW_CLASSNAME_DELIMITER);
+					if (chemicalAssociationClazzNames != null) {
+						sampleBean
+								.setChemicalAssociationClassNames(chemicalAssociationClazzNames);
+					}
+				}
+				// characterizationClassNames
+				if (columns.length > 9 && columns[9] != null
+						&& columns[9].length() > 0) {
+					String[] characterizationClazzNames = columns[9]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (characterizationClazzNames != null) {
 						sampleBean
