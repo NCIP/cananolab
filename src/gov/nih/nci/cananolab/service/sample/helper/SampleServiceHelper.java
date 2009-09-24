@@ -1,14 +1,14 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
@@ -16,11 +16,6 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
-import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
-import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -33,7 +28,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
@@ -41,18 +35,14 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Junction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 
 /**
  * Helper class providing implementations of search methods needed for both
@@ -573,18 +563,17 @@ public class SampleServiceHelper {
 	 * Return all stored functionalizing entity class names. In case of
 	 * OtherFunctionalizingEntity, store the OtherFunctionalizingEntity type
 	 * 
-	 * @param particleSample
+	 * @param sample
 	 * @return
 	 */
 	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
-			Sample particleSample) {
+			Sample sample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particleSample.getSampleComposition() != null
-				&& particleSample.getSampleComposition()
+		if (sample.getSampleComposition() != null
+				&& sample.getSampleComposition()
 						.getFunctionalizingEntityCollection() != null) {
-			for (FunctionalizingEntity entity : particleSample
-					.getSampleComposition()
+			for (FunctionalizingEntity entity : sample.getSampleComposition()
 					.getFunctionalizingEntityCollection()) {
 				if (entity instanceof OtherFunctionalizingEntity) {
 					storedEntities.add(((OtherFunctionalizingEntity) entity)
@@ -602,17 +591,15 @@ public class SampleServiceHelper {
 	 * Return all stored function class names. In case of OtherFunction, store
 	 * the otherFunction type
 	 * 
-	 * @param particleSample
+	 * @param sample
 	 * @return
 	 */
-	public SortedSet<String> getStoredFunctionClassNames(Sample particleSample) {
+	public SortedSet<String> getStoredFunctionClassNames(Sample sample) {
 		SortedSet<String> storedFunctions = new TreeSet<String>();
 
-		if (particleSample.getSampleComposition() != null) {
-			if (particleSample.getSampleComposition()
-					.getNanomaterialEntityCollection() != null) {
-				for (NanomaterialEntity entity : particleSample
-						.getSampleComposition()
+		if (sample.getSampleComposition() != null) {
+			if (sample.getSampleComposition().getNanomaterialEntityCollection() != null) {
+				for (NanomaterialEntity entity : sample.getSampleComposition()
 						.getNanomaterialEntityCollection()) {
 					if (entity.getComposingElementCollection() != null) {
 						for (ComposingElement element : entity
@@ -636,9 +623,9 @@ public class SampleServiceHelper {
 					}
 				}
 			}
-			if (particleSample.getSampleComposition()
+			if (sample.getSampleComposition()
 					.getFunctionalizingEntityCollection() != null) {
-				for (FunctionalizingEntity entity : particleSample
+				for (FunctionalizingEntity entity : sample
 						.getSampleComposition()
 						.getFunctionalizingEntityCollection()) {
 					if (entity.getFunctionCollection() != null) {
@@ -663,18 +650,17 @@ public class SampleServiceHelper {
 	 * Return all stored nanomaterial entity class names. In case of
 	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
 	 * 
-	 * @param particleSample
+	 * @param sample
 	 * @return
 	 */
-	public SortedSet<String> getStoredNanomaterialEntityClassNames(
-			Sample particleSample) {
+	public SortedSet<String> getStoredNanomaterialEntityClassNames(Sample sample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particleSample.getSampleComposition() != null
-				&& particleSample.getSampleComposition()
+		if (sample.getSampleComposition() != null
+				&& sample.getSampleComposition()
 						.getNanomaterialEntityCollection() != null) {
-			for (NanomaterialEntity entity : particleSample
-					.getSampleComposition().getNanomaterialEntityCollection()) {
+			for (NanomaterialEntity entity : sample.getSampleComposition()
+					.getNanomaterialEntityCollection()) {
 				if (entity instanceof OtherNanomaterialEntity) {
 					storedEntities.add(((OtherNanomaterialEntity) entity)
 							.getType());
@@ -687,10 +673,30 @@ public class SampleServiceHelper {
 		return storedEntities;
 	}
 
-	public SortedSet<String> getStoredCharacterizationClassNames(Sample particle) {
+	public SortedSet<String> getStoredChemicalAssociationClassNames(
+			Sample sample) {
+		SortedSet<String> storedAssocs = new TreeSet<String>();
+		if (sample.getSampleComposition() != null
+				&& sample.getSampleComposition()
+						.getChemicalAssociationCollection() != null) {
+			for (ChemicalAssociation assoc : sample.getSampleComposition()
+					.getChemicalAssociationCollection()) {
+				if (assoc instanceof OtherChemicalAssociation) {
+					storedAssocs.add(((OtherChemicalAssociation) assoc)
+							.getType());
+				} else {
+					storedAssocs.add(ClassUtils.getShortClassName(assoc
+							.getClass().getCanonicalName()));
+				}
+			}
+		}
+		return storedAssocs;
+	}
+
+	public SortedSet<String> getStoredCharacterizationClassNames(Sample sample) {
 		SortedSet<String> storedChars = new TreeSet<String>();
-		if (particle.getCharacterizationCollection() != null) {
-			for (Characterization achar : particle
+		if (sample.getCharacterizationCollection() != null) {
+			for (Characterization achar : sample
 					.getCharacterizationCollection()) {
 				storedChars.add(ClassUtils.getShortClassName(achar.getClass()
 						.getCanonicalName()));
@@ -714,6 +720,8 @@ public class SampleServiceHelper {
 				FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
 		crit
@@ -761,6 +769,8 @@ public class SampleServiceHelper {
 				FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
 		crit
@@ -874,136 +884,6 @@ public class SampleServiceHelper {
 		return publicNames.size();
 	}
 
-	public String[] getCharacterizationClassNames(String sampleId)
-			throws Exception {
-		String hql = "select distinct achar.class from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar"
-				+ " where achar.sample.id = " + sampleId;
-		return this.getClassNames(hql);
-	}
-
-	public String[] getFunctionalizingEntityClassNames(String sampleId)
-			throws Exception {
-		SortedSet<String> names = new TreeSet<String>();
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			Sample particleSample = (Sample) obj;
-			names = this
-					.getStoredFunctionalizingEntityClassNames(particleSample);
-		}
-		return names.toArray(new String[0]);
-	}
-
-	public String[] getFunctionClassNames(String sampleId) throws Exception {
-		SortedSet<String> names = new TreeSet<String>();
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.functionalizingEntityCollection.functionCollection",
-						FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			Sample particleSample = (Sample) obj;
-			names = this.getStoredFunctionClassNames(particleSample);
-		}
-		return names.toArray(new String[0]);
-	}
-
-	public String[] getNanomaterialEntityClassNames(String sampleId)
-			throws Exception {
-		String hql = "select distinct entity.class from "
-				+ " gov.nih.nci.cananolab.domain.particle.NanomaterialEntity entity"
-				+ " where entity.class!='OtherNanomaterialEntity' and entity.sampleComposition.sample.id = "
-				+ sampleId;
-
-		String[] classNames = this.getClassNames(hql);
-		SortedSet<String> names = new TreeSet<String>();
-		if (classNames.length > 0) {
-			names.addAll(Arrays.asList(classNames));
-		}
-		String hql2 = "select distinct entity.type from "
-				+ " gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity entity"
-				+ " where entity.sampleComposition.sample.id = " + sampleId;
-		String[] otherTypes = this.getClassNames(hql2);
-		if (otherTypes.length > 0) {
-			names.addAll(Arrays.asList(otherTypes));
-		}
-		return names.toArray(new String[0]);
-	}
-
-	private String[] getClassNames(String hql) throws Exception {
-		String[] classNames = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(hql);
-		List results = appService.query(crit);
-		if (results != null) {
-			classNames = new String[results.size()];
-		} else {
-			classNames = new String[0];
-		}
-		int i = 0;
-		for (Object obj : results) {
-			classNames[i] = (String) obj.toString();
-			i++;
-		}
-		return classNames;
-	}
-
-	public String[] getSampleViewStrs(List<Sample> samples) {
-		List<String> sampleStrings = new ArrayList<String>(samples.size());
-
-		List<String> columns = new ArrayList<String>(7);
-		for (Sample sample : samples) {
-			columns.clear();
-			columns.add(sample.getId().toString());
-			columns.add(sample.getName());
-			PointOfContactBean primaryPOC = new PointOfContactBean(sample
-					.getPrimaryPointOfContact());
-			columns.add(primaryPOC.getDomain().getFirstName());
-			columns.add(primaryPOC.getDomain().getLastName());
-			columns.add(primaryPOC.getDomain().getOrganization().getName());
-			// nanomaterial entities and functionalizing entities are in one
-			// column.
-			SortedSet<String> entities = new TreeSet<String>();
-			entities.addAll(getStoredNanomaterialEntityClassNames(sample));
-			entities.addAll(getStoredFunctionalizingEntityClassNames(sample));
-			columns.add(StringUtils.join(entities,
-					Constants.VIEW_CLASSNAME_DELIMITER));
-			columns.add(StringUtils.join(getStoredFunctionClassNames(sample),
-					Constants.VIEW_CLASSNAME_DELIMITER));
-			columns.add(StringUtils.join(
-					getStoredCharacterizationClassNames(sample),
-					Constants.VIEW_CLASSNAME_DELIMITER));
-
-			sampleStrings.add(StringUtils.joinEmptyItemIncluded(columns,
-					Constants.VIEW_COL_DELIMITER));
-		}
-		return sampleStrings.toArray(new String[0]);
-	}
-
 	public String[] getSampleViewStrs(Sample sample) {
 		List<String> columns = new ArrayList<String>(7);
 		columns.clear();
@@ -1017,10 +897,13 @@ public class SampleServiceHelper {
 		columns.add(StringUtils.join(
 				getStoredNanomaterialEntityClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
-		columns.add(StringUtils
-				.join(getStoredFunctionalizingEntityClassNames(sample),
+		columns.add(StringUtils.join(
+				getStoredFunctionalizingEntityClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
 		columns.add(StringUtils.join(getStoredFunctionClassNames(sample),
+				Constants.VIEW_CLASSNAME_DELIMITER));
+		columns.add(StringUtils.join(
+				getStoredChemicalAssociationClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
 		columns.add(StringUtils.join(
 				getStoredCharacterizationClassNames(sample),
