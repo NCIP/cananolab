@@ -144,12 +144,10 @@ public class PublicationBean extends FileBean {
 	private String getAuthorsDisplayName() {
 		List<String> strs = new ArrayList<String>();
 		for (Author author : authors) {
-			String authorDisplayName = "";
 			List<String> authorStrs = new ArrayList<String>();
 			authorStrs.add(author.getLastName());
 			authorStrs.add(author.getInitial());
-			authorDisplayName = StringUtils.join(authorStrs, ", ");
-			strs.add(authorDisplayName);
+			strs.add(StringUtils.join(authorStrs, ", "));
 		}
 		return StringUtils.join(strs, ", ");
 	}
@@ -230,9 +228,10 @@ public class PublicationBean extends FileBean {
 		strs.add(getAuthorsDisplayName());
 		// remove last . in the title
 		if (pub.getTitle().endsWith(".")) {
-			pub.getTitle().substring(0, pub.getTitle().length() - 2);
+			strs.add(pub.getTitle().substring(0, pub.getTitle().length() - 1));
+		} else {
+			strs.add(pub.getTitle());
 		}
-		strs.add(pub.getTitle());
 		strs.add(pub.getJournalName());
 		strs.add(getPublishInfoDisplayName());
 		strs.add(getPubMedDisplayName());
