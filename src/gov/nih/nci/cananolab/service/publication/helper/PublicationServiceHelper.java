@@ -690,7 +690,7 @@ public class PublicationServiceHelper {
 				row = sheet.createRow(rowIndex++);
 
 				// Bibliography Info: cell index = 0.
-				ExportUtils.createCell(row, 0, pubBean.getDisplayName());
+				ExportUtils.createCell(row, 0, getBibliographyInfo(pubBean));
 
 				// Research Category: cell index = 1.
 				ExportUtils.createCell(row, 1, pub.getResearchArea());
@@ -704,6 +704,72 @@ public class PublicationServiceHelper {
 				ExportUtils.createCell(row, 3, pub.getStatus());
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @param pubBean
+	 * @return
+	 */
+	private static String getBibliographyInfo(PublicationBean pubBean) {
+		Publication pub = (Publication) pubBean.getDomainFile();
+		List<String> strs = new ArrayList<String>();
+		
+		//1.Author name.
+		if (!pubBean.getAuthors().isEmpty()) {
+			List<String> strList = new ArrayList<String>();
+			for (Author author : pubBean.getAuthors()) {
+				List<String> authorStrs = new ArrayList<String>(2);
+				authorStrs.add(author.getLastName());
+				authorStrs.add(author.getInitial());
+				strList.add(StringUtils.join(authorStrs, ", "));
+			}
+			strs.add(StringUtils.join(strList, ", "));
+		}
+		
+		//2.Title.
+		if (!StringUtils.isEmpty(pub.getTitle())) {
+			if (pub.getTitle().endsWith(".")) {
+				strs.add(pub.getTitle().substring(0, pub.getTitle().length() - 1));
+			} else {
+				strs.add(pub.getTitle());
+			}
+		}
+		
+		//3.Journal Name.
+		if (!StringUtils.isEmpty(pub.getJournalName())) {
+			strs.add(pub.getJournalName());
+		}
+		
+		//4.Publish Info Name.
+		String publishInfo = "";
+		if (pub.getYear() != null) {
+			publishInfo += pub.getYear().toString() + "; ";
+		}
+		if (!StringUtils.isEmpty((pub.getVolume()))) {
+			publishInfo += pub.getVolume() + ":";
+		}
+		if (!StringUtils.isEmpty(pub.getVolume()) &&
+			!StringUtils.isEmpty(pub.getStartPage()) &&
+			!StringUtils.isEmpty(pub.getEndPage())) {
+			publishInfo += pub.getStartPage() + '-' + pub.getEndPage();
+		}
+		strs.add(publishInfo);
+		
+		//5.PMID.
+		if (pub.getPubMedId() != null && pub.getPubMedId() != 0) {
+			strs.add("PMID: " + pub.getPubMedId());
+		}
+				
+		//6.DOI.
+		if (!StringUtils.isEmpty(pub.getDigitalObjectId())) {
+			strs.add("DOI: " + pub.getDigitalObjectId());
+		}
+		
+		//7.Publication Name.
+		strs.add(pub.getName());
+		
+		return StringUtils.join(strs, ". ") + '.';
 	}
 
 	public String[] findSampleNamesByPublicationId(String publicationId,
