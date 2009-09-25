@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -84,22 +85,20 @@ public class CompositionAction extends BaseAnnotationAction {
 	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// As form bean is sessional, retrieve it from session to avoid re-querying.
-		DynaValidatorForm theForm =
-			(DynaValidatorForm) request.getSession().getAttribute("compositionForm");
-		if (theForm == null) {
-			this.prepareSummary(mapping, form, request, response);
-			theForm = (DynaValidatorForm) form;
+		// Retrieve compBean from session to avoid re-querying.
+		CompositionBean compBean = (CompositionBean) 
+			request.getSession().getAttribute("compBean");
+		if (compBean != null) {
+			// Marker that indicates page is for printing (hide tabs, links, etc).
+			request.setAttribute("printView", Boolean.TRUE);
+	
+			// Show only the selected type.
+			this.filterType(request, compBean);
+	
+			return mapping.findForward("summaryPrint");
+		} else {
+			throw new InvalidSessionException();
 		}
-		CompositionBean compBean = (CompositionBean) theForm.get("comp");
-
-		// Marker that indicates page is for printing (hide tabs, links, etc).
-		request.setAttribute("printView", Boolean.TRUE);
-
-		// Show only the selected type.
-		this.filterType(request, compBean);
-
-		return mapping.findForward("summaryPrint");
 	}
 
 	/**
@@ -115,14 +114,9 @@ public class CompositionAction extends BaseAnnotationAction {
 	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// As form bean is sessional, retrieve it from session to avoid re-querying.
-		DynaValidatorForm theForm =
-			(DynaValidatorForm) request.getSession().getAttribute("compositionForm");
-		if (theForm == null) {
-			this.prepareSummary(mapping, form, request, response);
-			theForm = (DynaValidatorForm) form;
-		}
-		CompositionBean compBean = (CompositionBean) theForm.get("comp");
+		// Retrieve compBean from session to avoid re-querying.
+		CompositionBean compBean = (CompositionBean) 
+			request.getSession().getAttribute("compBean");
 		if (compBean != null) {
 			// Export only the selected type.
 			this.filterType(request, compBean);
@@ -144,7 +138,7 @@ public class CompositionAction extends BaseAnnotationAction {
 					response.getOutputStream());
 			return null;
 		} else {
-			return mapping.getInputForward();
+			throw new InvalidSessionException();
 		}
 	}
 
@@ -187,18 +181,17 @@ public class CompositionAction extends BaseAnnotationAction {
 				sampleId, user);
 		theForm.set("comp", compBean);
 
-		// Save result set in session for later use - export/print.
-		if (compBean != null) {
-			session.setAttribute(CompositionBean.CHEMICAL_SELECTION,
-					compBean.getChemicalAssociations());
-			session.setAttribute(CompositionBean.FILE_SELECTION,
-					compBean.getFiles());
-			session.setAttribute(CompositionBean.FUNCTIONALIZING_SELECTION,
-					compBean.getFunctionalizingEntities());
-			session.setAttribute(CompositionBean.NANOMATERIAL_SELECTION,
-					compBean.getNanomaterialEntities());
-			session.setAttribute("theSample", sampleBean); //for showing title.
-		}
+		// Save result bean in session for later use - export/print.
+		session.setAttribute("compBean", compBean);
+		session.setAttribute("theSample", sampleBean); //for showing title.
+		session.setAttribute(CompositionBean.CHEMICAL_SELECTION,
+				compBean.getChemicalAssociations());
+		session.setAttribute(CompositionBean.FILE_SELECTION,
+				compBean.getFiles());
+		session.setAttribute(CompositionBean.FUNCTIONALIZING_SELECTION,
+				compBean.getFunctionalizingEntities());
+		session.setAttribute(CompositionBean.NANOMATERIAL_SELECTION,
+				compBean.getNanomaterialEntities());
 
 		// retain action messages from send redirects
 		ActionMessages msgs = (ActionMessages) session
