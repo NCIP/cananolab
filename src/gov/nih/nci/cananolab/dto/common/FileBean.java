@@ -44,17 +44,19 @@ public class FileBean {
 		domainFile.setUriExternal(false);
 	}
 
-	public FileBean(File File) {
-		this.domainFile = File;
-		SortedSet<String> keywordStrs = new TreeSet<String>();
-		if (domainFile.getKeywordCollection() != null) {
-			for (Keyword keyword : domainFile.getKeywordCollection()) {
-				keywordStrs.add(keyword.getName());
+	public FileBean(File file) {
+		this.domainFile = file;
+		if (file != null) {
+			SortedSet<String> keywordStrs = new TreeSet<String>();
+			if (domainFile.getKeywordCollection() != null) {
+				for (Keyword keyword : domainFile.getKeywordCollection()) {
+					keywordStrs.add(keyword.getName());
+				}
 			}
-		}
-		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
-		if (File.getUriExternal() != null && File.getUriExternal()) {
-			externalUrl = File.getUri();
+			keywordsStr = StringUtils.join(keywordStrs, "\r\n");
+			if (file.getUriExternal() != null && file.getUriExternal()) {
+				externalUrl = file.getUri();
+			}
 		}
 	}
 
