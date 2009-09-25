@@ -88,17 +88,23 @@ public class CompositionAction extends BaseAnnotationAction {
 		// Retrieve compBean from session to avoid re-querying.
 		CompositionBean compBean = (CompositionBean) 
 			request.getSession().getAttribute("compBean");
-		if (compBean != null) {
-			// Marker that indicates page is for printing (hide tabs, links, etc).
-			request.setAttribute("printView", Boolean.TRUE);
-	
-			// Show only the selected type.
-			this.filterType(request, compBean);
-	
-			return mapping.findForward("summaryPrint");
-		} else {
-			throw new InvalidSessionException();
+		SampleBean sampleBean = (SampleBean)
+			request.getSession().getAttribute("theSample");
+		if (compBean == null || sampleBean == null) {
+			// Call shared function to prepare CompositionBean for viewing.
+			this.prepareSummary(mapping, form, request, response);
+			compBean = (CompositionBean) 
+				request.getSession().getAttribute("compBean");
+			sampleBean = (SampleBean)
+				request.getSession().getAttribute("theSample");
 		}
+		// Marker that indicates page is for printing (hide tabs, links, etc).
+		request.setAttribute("printView", Boolean.TRUE);
+
+		// Show only the selected type.
+		this.filterType(request, compBean);
+
+		return mapping.findForward("summaryPrint");
 	}
 
 	/**
@@ -117,29 +123,37 @@ public class CompositionAction extends BaseAnnotationAction {
 		// Retrieve compBean from session to avoid re-querying.
 		CompositionBean compBean = (CompositionBean) 
 			request.getSession().getAttribute("compBean");
-		if (compBean != null) {
-			// Export only the selected type.
-			this.filterType(request, compBean);
-
-			// Get sample name for constructing file name.
-			String type = request.getParameter("type");
-			String location = request.getParameter(Constants.LOCATION);
-			String fileName = ExportUtils.getExportFileName(compBean.getDomain()
-					.getSample().getName(), "CompositionSummaryView", type);
-			ExportUtils.prepareReponseForExcel(response, fileName);
-
-			String serviceUrl = null;
-			if (!Constants.LOCAL_SITE.equals(location)) {
-				serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-			}
-			StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
-			CompositionServiceHelper.exportSummary(compBean, sb.toString(),
-					response.getOutputStream());
-			return null;
-		} else {
-			throw new InvalidSessionException();
+		SampleBean sampleBean = (SampleBean)
+			request.getSession().getAttribute("theSample");
+		if (compBean == null || sampleBean == null) {
+			// Call shared function to prepare CompositionBean for viewing.
+			this.prepareSummary(mapping, form, request, response);
+			compBean = (CompositionBean) 
+				request.getSession().getAttribute("compBean");
+			sampleBean = (SampleBean)
+				request.getSession().getAttribute("theSample");
 		}
+		
+		// Export only the selected type.
+		this.filterType(request, compBean);
+
+		// Get sample name for constructing file name.
+		String type = request.getParameter("type");
+		String location = request.getParameter(Constants.LOCATION);
+		String fileName = ExportUtils.getExportFileName(
+			sampleBean.getDomain().getName(), "CompositionSummaryView", type);
+		ExportUtils.prepareReponseForExcel(response, fileName);
+
+		String serviceUrl = null;
+		if (!Constants.LOCAL_SITE.equals(location)) {
+			serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+		}
+		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
+		CompositionServiceHelper.exportSummary(compBean, sb.toString(),
+				response.getOutputStream());
+		
+		return null;
 	}
 
 	/**
