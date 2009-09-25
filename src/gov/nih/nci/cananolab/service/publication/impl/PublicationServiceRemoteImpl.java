@@ -166,7 +166,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		// load authors
 		loadAuthorsForPublication(publication);
 		// load keywords
-		loadKeywordsForPublication(publication);
+		//loadKeywordsForPublication(publication);
 	}
 
 	private void loadAuthorsForPublication(Publication publication)
