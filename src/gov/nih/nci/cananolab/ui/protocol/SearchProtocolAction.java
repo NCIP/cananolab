@@ -5,11 +5,14 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,11 +63,11 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				service = new ProtocolServiceLocalImpl();
 			}
-			// else {
-			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-			// request, location);
-			// service = new ProtocolServiceRemoteImpl(serviceUrl);
-			// }
+			 else {
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
+				service = new ProtocolServiceRemoteImpl(serviceUrl);
+			}
 
 			protocols = service.findProtocolsBy(protocolType, protocolName,
 					protocolAbbreviation, fileTitle, user);
@@ -73,12 +76,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 				protocol.getFileBean().setLocation(location);
 			}
 		}
-		if (protocols != null && !protocols.isEmpty()) {
-			// Collections
-			// .sort(
-			// foundProtocols,
-			// new
-			// Comparators.ProtocolBeanNameVersionComparator());
+		if (protocols != null && !protocols.isEmpty()) {			
 			request.getSession().setAttribute("protocols", protocols);
 			forward = mapping.findForward("success");
 		} else {
