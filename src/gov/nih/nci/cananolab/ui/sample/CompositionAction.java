@@ -198,14 +198,16 @@ public class CompositionAction extends BaseAnnotationAction {
 		// Save result bean in session for later use - export/print.
 		session.setAttribute("compBean", compBean);
 		session.setAttribute("theSample", sampleBean); //for showing title.
-		session.setAttribute(CompositionBean.CHEMICAL_SELECTION,
-				compBean.getChemicalAssociations());
-		session.setAttribute(CompositionBean.FILE_SELECTION,
-				compBean.getFiles());
-		session.setAttribute(CompositionBean.FUNCTIONALIZING_SELECTION,
-				compBean.getFunctionalizingEntities());
-		session.setAttribute(CompositionBean.NANOMATERIAL_SELECTION,
-				compBean.getNanomaterialEntities());
+		if (compBean != null) {
+			session.setAttribute(CompositionBean.CHEMICAL_SELECTION,
+					compBean.getChemicalAssociations());
+			session.setAttribute(CompositionBean.FILE_SELECTION,
+					compBean.getFiles());
+			session.setAttribute(CompositionBean.FUNCTIONALIZING_SELECTION,
+					compBean.getFunctionalizingEntities());
+			session.setAttribute(CompositionBean.NANOMATERIAL_SELECTION,
+					compBean.getNanomaterialEntities());
+		}
 
 		// retain action messages from send redirects
 		ActionMessages msgs = (ActionMessages) session
