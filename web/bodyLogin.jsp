@@ -59,7 +59,6 @@
 													<option value="${location.hostName}">
 														${location.hostName}
 													</option>
-													<option>test</option>
 												</c:forEach>
 											</select>
 										</td>
@@ -67,20 +66,18 @@
 											<table class="gridtableNoBorder">
 												<tr>
 													<td rowspan="2">
-														<a href="#" onclick="gotoProtocols('setup')"> <img
-																src="images/icon_protocol_48x.jpg"
-																style="border-style: none;" alt="Search Protocals" /> </a>
+														<a href="#" onclick="gotoProtocols('setup')">
+															<img src="images/icon_protocol_48x.jpg" style="border-style: none;" alt="Search Protocals"/>
+														</a>
 													</td>
 													<td>
-														<a href="#" onclick="gotoProtocols('setup')"><b>Search
-																Protocols</b>
-														</a>
+														<a href="#" onclick="gotoProtocols('setup')"><b>Search Protocols</b></a>
 													</td>
 												</tr>
 												<tr>
 													<td>
-														Search for nanotechnology protocols leveraged in
-														performing nanoparticle characterization assays.
+														Search for nanotechnology protocols leveraged in performing
+														nanoparticle characterization assays.
 													</td>
 												</tr>
 											</table>
@@ -96,28 +93,23 @@
 											<table class="gridtableNoBorder">
 												<tr>
 													<td rowspan="2">
-														<a href="#" onclick="gotoSamples('setup')"> <img
-																src="images/icon_nanoparticle_48x.jpg"
-																style="border-style: none;" alt="Search Samples" /> </a>
+														<a href="#" onclick="gotoSamples('setup')">
+															<img src="images/icon_nanoparticle_48x.jpg" style="border-style: none;" alt="Search Samples"/>
+														</a>
 													</td>
 													<td>
-														<a href="#" onclick="gotoSamples('setup')"><b>Search
-																Samples</b>
-														</a>
+														<a href="#" onclick="gotoSamples('setup')"><b>Search Samples</b></a>
 													</td>
 												</tr>
 												<tr>
-													<c:url var="advanceSearchUrl"
-														value="advancedSampleSearch.do">
+													<c:url var="advanceSearchUrl" value="advancedSampleSearch.do">
 														<c:param name="dispatch" value="setup" />
 													</c:url>
 													<td>
-														Search for information on nanoparticle formulations
-														including the composition of the particle, results of
-														nanoparticle physico-chemical, in vitro, and other
-														characterizations, and associated publications. See also
-														<a href="${advanceSearchUrl}" id="advanceSearch">Advanced
-															Sample Search</a>.
+														Search for information on nanoparticle formulations including
+														the composition of the particle, results of nanoparticle
+														physico-chemical, in vitro, and other characterizations, and
+														associated publications. See also <a href="${advanceSearchUrl}" id="advanceSearch">Advanced Sample Search</a>.
 													</td>
 												</tr>
 											</table>
@@ -133,25 +125,19 @@
 											<table class="gridtableNoBorder">
 												<tr>
 													<td rowspan="2">
-														<a href="#" onclick="gotoPublications('setup')"> <img
-																src="images/icon_report_48x.gif"
-																style="border-style: none;" alt="Search Publications" />
+														<a href="#" onclick="gotoPublications('setup')">
+															<img src="images/icon_report_48x.gif" style="border-style: none;" alt="Search Publications"/>
 														</a>
 													</td>
 													<td>
-														<a href="#" onclick=
-	gotoPublications('setup');
-><b>Search
-																Publications</b>
-														</a>
+														<a href="#" onclick="gotoPublications('setup')"><b>Search Publications</b></a>
 													</td>
 												</tr>
 												<tr>
 													<td>
 														Search for information on nanotechnology publications
-														including peer reviewed articles, reviews, and other types
-														of reports related to the use of nanotechnology in
-														biomedicine.
+														including peer reviewed articles, reviews, and other types of
+														reports related to the use of nanotechnology in biomedicine.
 													</td>
 												</tr>
 											</table>
@@ -191,13 +177,9 @@
 							<tr>
 								<td class="sidebarTitle" height="25">
 									<span class="loginLink"><a href="#" class="loginText"
-										onClick=
-	displayLogin();;
->Login</a> </span>
+										onClick="displayLogin();">Login</a> </span>
 									<span class="loginLink"><a href="#" class="loginText"
-										onClick=
-	javascript: location.href = 'changePassword.jsp';
->Update
+										onClick="javascript:location.href='changePassword.jsp'">Update
 											Password</a> </span>
 									<span class="loginLink"><a
 										href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=welcome_login')"
@@ -268,72 +250,53 @@
 											Support for the creation of custom assay characterizations
 										</li>
 										<li>
-											Enhanced Source Metadata including support for investigators
-											and manufacturers associated with a nanoparticle
-											characterization
+											Enhanced Source Metadata including support for investigators and manufacturers associated with a nanoparticle characterization
 										</li>
 										<li>
-											Support for conditions (temperature, time, media solvent,
-											etc.) associated with characterizations
+											Support for conditions (temperature, time, media solvent, etc.) associated with characterizations
 										</li>
 										<li>
-											Curated techniques and instruments used in characterization
-											assays
+											Curated techniques and instruments used in characterization assays
 										</li>
 										<li>
-											Enhanced summary views for particle composition,
-											characterizations, and publications
+											Enhanced summary views for particle composition, characterizations, and publications
 										</li>
 										<li>
-											Cross-references to PubChem for chemical names associated
-											with material components
+											Cross-references to PubChem for chemical names associated with material components
 										</li>
 										<li>
-											Inclusion of particle relaxivity as a physico-chemical
-											characterization
+											Inclusion of particle relaxivity as a physico-chemical characterization
 										</li>
 										<li>
-											Administrative functions supporting site preferences (site
-											name, logo)
+											Administrative functions supporting site preferences (site name, logo)
 										</li>
 										<li>
-											Upgrade to the latest version of the NCI Common Security
-											Module (CSM) which provides support for user authentication
-											and authorization
+											Upgrade to the latest version of the NCI Common Security Module (CSM) which provides support for user authentication and authorization
 										</li>
 									</ul>
-									caNanoLab 1.5 expands upon existing caNanoLab functionality
-									including:
+									caNanoLab 1.5 expands upon existing caNanoLab functionality	including:
 									<br>
 									<ul>
 										<li>
-											Support for the composition and structure of nanoparticles
-											including material entities, functionalizing entities, and
-											chemical associations
+											Support for the composition and structure of nanoparticles including material entities, functionalizing entities, and chemical associations
 										</li>
 										<li>
-											Support for nanoparticle protocols, characterizations, and
-											publications
+											Support for nanoparticle protocols, characterizations, and publications
 										</li>
 										<li>
-											Support for physico-chemical and in vitro nanoparticle
-											characterizations
+											Support for physico-chemical and in vitro nanoparticle characterizations
 										</li>
 										<li>
-											Summary views of nanoparticle characterizations with print,
-											export, and delete features
+											Summary views of nanoparticle characterizations with print, export, and delete features
 										</li>
 										<li>
-											Basic local and caBIG&reg; grid (caGrid) remote search
-											functionality
+											Basic local and caBIG&reg; grid (caGrid) remote search functionality
 										</li>
 										<li>
-											Role-based security supporting user authentication and
-											authorization
+											Role-based security supporting user authentication and authorization
 										</li>
 										<li>
-											Product upgrades to the caCORE SDK 4.0, caGrid 1.3.0.1, and
-											MySQL 5.0.x Database
+											Product upgrades to the caCORE SDK 4.0, caGrid 1.3.0.1, and MySQL 5.0.x Database
 										</li>
 									</ul>
 									<br>
@@ -356,5 +319,3 @@
 		</td>
 	</tr>
 </table>
-
-
