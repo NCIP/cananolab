@@ -5,46 +5,58 @@ function getPublicCounts() {
 }
 
 function getProtocolCounts() {
+	show("protocolLoaderImg");
+	hide("protocolCount");
 	var sites = dwr.util.getValue("sites");
 	ProtocolManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
+			hide("protocolLoaderImg");
 			var link = "<a href=javascript:gotoProtocols('search')>" + data
 					+ "</a>";
 			dwr.util.setValue("protocolCount", link, {
 				escapeHtml : false
 			});
+			show("protocolCount");
 		} else {
-			dwr.util.setValue("protocolCount", "");
+			show("protocolLoaderImg");
 		}
 	});
 }
 
 function getSampleCounts() {
+	show("sampleLoaderImg");
+	hide("sampleCount");
 	var sites = dwr.util.getValue("sites");
 	SampleManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
+			hide("sampleLoaderImg");
 			var link = "<a href=javascript:gotoSamples('search')>" + data
 					+ "</a>";
 			dwr.util.setValue("sampleCount", link, {
 				escapeHtml : false
-			});
+			});			
+			show("sampleCount");
 		} else {
-			dwr.util.setValue("sampleCount", "");
+			show("sampleLoaderImg");
 		}
 	});
 }
 
 function getPublicationCounts() {
+	show("publicationLoaderImg");
+	hide("publicationCount");
 	var sites = dwr.util.getValue("sites");
 	PublicationManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
+			hide("publicationLoaderImg");
 			var link = "<a href=javascript:gotoPublications('search')>" + data
 					+ "</a>";
 			dwr.util.setValue("publicationCount", link, {
 				escapeHtml : false
-			});
+			});	
+			show("publicationCount");
 		} else {
-			dwr.util.setValue("publicationCount", "");
+			show("publicationLoaderImg");
 		}
 	});
 }
