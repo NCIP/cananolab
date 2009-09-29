@@ -12,7 +12,6 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -84,8 +83,9 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 	private void loadProtocolAssociations(Protocol protocol) throws Exception {
 		// load protocol file
 		File file = gridClient.getFileByProtocolId(protocol.getId().toString());
+		protocol.setFile(file);
 		// load protocol file keywords
-		loadKeywordsForFile(protocol.getFile());
+		// loadKeywordsForFile(protocol.getFile());
 	}
 
 	private void loadKeywordsForFile(File file) throws Exception {
@@ -175,61 +175,79 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			String protocolName, String protocolAbbreviation, String fileTitle,
 			UserBean user) throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
-		// replace * with %
-		if (!StringUtils.isEmpty(protocolName)) {
-			protocolName.replace('*', '%');
-		}
-		if (!StringUtils.isEmpty(protocolAbbreviation)) {
-			protocolAbbreviation.replace('*', '%');
-		}
-		if (!StringUtils.isEmpty(fileTitle)) {
-			fileTitle.replace('*', '%');
-		}
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
-			Group group = new Group();
-			group.setLogicRelation(LogicalOperator.AND);
-
-			List<Attribute> attributeList = new ArrayList<Attribute>();
-			if (!StringUtils.isEmpty(protocolType)) {
-				Attribute attr = new Attribute();
-				attr.setName("type");
-				attr.setPredicate(Predicate.EQUAL_TO);
-				attr.setValue(protocolType);
-				attributeList.add(attr);
+			if (!StringUtils.isEmpty(protocolType)
+					|| !StringUtils.isEmpty(protocolName)
+					|| !StringUtils.isEmpty(protocolAbbreviation)
+					|| !StringUtils.isEmpty(fileTitle)) {
+				List<Attribute> attributeList = new ArrayList<Attribute>();
+				List<Association> associationList = new ArrayList<Association>();
+				Group group = new Group();
+				if (!StringUtils.isEmpty(protocolType)) {
+					Attribute attr = new Attribute();
+					attr.setName("type");
+					attr.setPredicate(Predicate.EQUAL_TO);
+					attr.setValue(protocolType);
+					attributeList.add(attr);
+				}
+				if (!StringUtils.isEmpty(protocolName)) {
+					Attribute attr = new Attribute();
+					if (protocolName.indexOf("*") != -1) {
+						attr.setPredicate(Predicate.LIKE);
+						protocolName = protocolName.replaceAll("[*]", "%");
+					} else {
+						attr.setPredicate(Predicate.EQUAL_TO);
+					}
+					attr.setName("name");
+					attr.setValue(protocolName);
+					attributeList.add(attr);
+				}
+				if (!StringUtils.isEmpty(protocolAbbreviation)) {
+					Attribute attr = new Attribute();
+					if (protocolAbbreviation.indexOf("*") != -1) {
+						attr.setPredicate(Predicate.LIKE);
+						protocolAbbreviation = protocolAbbreviation.replaceAll(
+								"[*]", "%");
+					} else {
+						attr.setPredicate(Predicate.EQUAL_TO);
+					}
+					attr.setName("abbreviation");
+					attr.setValue(protocolAbbreviation);
+					attributeList.add(attr);
+				}
+				if (!StringUtils.isEmpty(fileTitle)) {
+					Attribute attribute = new Attribute();
+					if (fileTitle.indexOf("*") != -1) {
+						attribute.setPredicate(Predicate.LIKE);
+						fileTitle = fileTitle.replaceAll("[*]", "%");
+					} else {
+						attribute.setPredicate(Predicate.EQUAL_TO);
+					}
+					Association association = new Association();
+					association
+							.setName("gov.nih.nci.cananolab.domain.common.File");
+					association.setRoleName("file");
+					attribute.setName("title");
+					attribute.setValue(fileTitle);
+					association.setAttribute(attribute);
+					association.setGroup(group);
+				}
+				if (attributeList.size() > 1) {					
+					group.setAttribute(attributeList.toArray(new Attribute[0]));
+					group.setLogicRelation(LogicalOperator.AND);					
+					target.setGroup(group);
+				} else {
+					if (associationList.size() == 0) {
+						target.setAttribute(attributeList.get(0));
+					} else if (associationList.size() == 1) {
+						target.setAssociation(associationList.get(0));
+					}
+				}
 			}
-			if (!StringUtils.isEmpty(protocolName)) {
-				Attribute attr = new Attribute();
-				attr.setName("name");
-				attr.setPredicate(Predicate.LIKE);
-				attr.setValue(protocolName);
-				attributeList.add(attr);
-			}
-			if (!StringUtils.isEmpty(protocolAbbreviation)) {
-				Attribute attr = new Attribute();
-				attr.setName("abbreviation");
-				attr.setPredicate(Predicate.LIKE);
-				attr.setValue(protocolAbbreviation);
-				attributeList.add(attr);
-			}
-			group.setAttribute(attributeList.toArray(new Attribute[0]));
-			if (!StringUtils.isEmpty(fileTitle)) {
-				Association[] association = new Association[1];
-				association[0]
-						.setName("gov.nih.nci.cananolab.domain.common.File");
-				association[0].setRoleName("fileCollection");
-				Attribute attribute = new Attribute();
-				attribute.setName("title");
-				attribute.setPredicate(Predicate.LIKE);
-				attribute.setValue(fileTitle);
-				association[0].setAttribute(attribute);
-				group.setAssociation(association);
-			}
-			target.setGroup(group);
 			query.setTarget(target);
-
 			CQLQueryResults results = gridClient.query(query);
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Protocol");

@@ -62,13 +62,14 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		for (String location : searchLocations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				service = new ProtocolServiceLocalImpl();
-			}
-			 else {
+			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
 				service = new ProtocolServiceRemoteImpl(serviceUrl);
 			}
-
+			//TODO remove this
+//			service = new ProtocolServiceRemoteImpl(
+//					"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
 			protocols = service.findProtocolsBy(protocolType, protocolName,
 					protocolAbbreviation, fileTitle, user);
 			for (ProtocolBean protocol : protocols) {
@@ -76,7 +77,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 				protocol.getFileBean().setLocation(location);
 			}
 		}
-		if (protocols != null && !protocols.isEmpty()) {			
+		if (protocols != null && !protocols.isEmpty()) {
 			request.getSession().setAttribute("protocols", protocols);
 			forward = mapping.findForward("success");
 		} else {
