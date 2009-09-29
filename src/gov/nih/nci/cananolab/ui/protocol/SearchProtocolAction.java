@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -67,9 +68,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 						request, location);
 				service = new ProtocolServiceRemoteImpl(serviceUrl);
 			}
-			//TODO remove this
-//			service = new ProtocolServiceRemoteImpl(
-//					"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
+			// TODO remove this
+			// service = new ProtocolServiceRemoteImpl(
+			// "http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
 			protocols = service.findProtocolsBy(protocolType, protocolName,
 					protocolAbbreviation, fileTitle, user);
 			for (ProtocolBean protocol : protocols) {
@@ -94,7 +95,6 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		InitSetup.getInstance().getGridNodesInContext(request);
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
@@ -102,6 +102,12 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		if (!StringUtils.isEmpty(gridNodeHostStr)) {
 			selectedLocations = gridNodeHostStr.split("~");
 		}
+		if (Constants.LOCAL_SITE.equals(selectedLocations[0])
+				&& selectedLocations.length == 1) {
+			InitProtocolSetup.getInstance().setLocalSearchDropdowns(request);
+		} else {
+			InitProtocolSetup.getInstance().setRemoteSearchDropdowns(request);
+		}		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 		return mapping.getInputForward();
