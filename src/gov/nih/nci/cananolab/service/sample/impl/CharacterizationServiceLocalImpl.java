@@ -84,11 +84,14 @@ public class CharacterizationServiceLocalImpl implements
 			// sample.getCharacterizationCollection().add(achar);
 
 			// save file data to file system and assign visibility
-			FileService fileService = new FileServiceLocalImpl();
-			for (FindingBean findingBean : charBean.getFindings()) {
-				for (FileBean fileBean : findingBean.getFiles()) {
-					fileService.prepareSaveFile(fileBean.getDomainFile(), user);
-					fileService.writeFile(fileBean, user);
+			List<FindingBean> findingBeans = charBean.getFindings();
+			if (findingBeans != null && !findingBeans.isEmpty()) {
+				FileService fileService = new FileServiceLocalImpl();
+				for (FindingBean findingBean : findingBeans) {
+					for (FileBean fileBean : findingBean.getFiles()) {
+						fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+						fileService.writeFile(fileBean, user);
+					}
 				}
 			}
 			appService.saveOrUpdate(achar);
@@ -378,7 +381,6 @@ public class CharacterizationServiceLocalImpl implements
 				Collection<Instrument> instruments = new HashSet<Instrument>(
 						config.getInstrumentCollection());
 				config.setInstrumentCollection(new HashSet<Instrument>());
-				int i = 0;
 				for (Instrument instrument : instruments) {
 					Instrument dbInstrument = findInstrumentBy(instrument
 							.getType(), instrument.getManufacturer(),
@@ -524,16 +526,26 @@ public class CharacterizationServiceLocalImpl implements
 		CharacterizationBean copyBean = new CharacterizationBean(copy);
 		/**
 		 * Note: As the file id in copy is set to null for creating new row,
-		 * the copy object must be saved first, then setting its visibility.  
+		 * the copy object must be saved first, then set its visibility.  
 		 */
 		try {
+			/**
+			 * Need to save Experiment Config data in copy bean first,
+			 * otherwise will get "transient object" hibernate exception.  
+			 */
+			List<ExperimentConfigBean> expConfigs = copyBean.getExperimentConfigs();
+			if (expConfigs != null && !expConfigs.isEmpty()) {
+				for (ExperimentConfigBean configBean : expConfigs) {
+					this.saveExperimentConfig(configBean, user);
+				}
+			}
 			for (SampleBean sampleBean : newSampleBeans) {
 				// replace file URI with new sample name
 				for (FindingBean findingBean : copyBean.getFindings()) {
 					for (FileBean fileBean : findingBean.getFiles()) {
 						fileBean.getDomainFile().getUri().replace(
-								oldSampleBean.getDomain().getName(),
-								sampleBean.getDomain().getName());
+							oldSampleBean.getDomain().getName(),
+							sampleBean.getDomain().getName());
 					}
 				}
 				this.saveCharacterization(sampleBean, copyBean, user);
