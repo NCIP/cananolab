@@ -274,7 +274,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
+			target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
 			query.setTarget(target);
 			QueryModifier modifier = new QueryModifier();
 			modifier.setCountOnly(true);
@@ -282,7 +282,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 
 			CQLQueryResults results = gridClient.query(query);
 			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.common.ProtocolFile");
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Protocol");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			int count = 0;
 			while (iter.hasNext()) {
@@ -291,7 +291,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			}
 			return count;
 		} catch (Exception e) {
-			String err = "Error finding counts of public remote protocol files.";
+			String err = "Error finding counts of public remote protocols.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
