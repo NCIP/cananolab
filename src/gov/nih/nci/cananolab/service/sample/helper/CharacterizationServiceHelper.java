@@ -893,10 +893,10 @@ public class CharacterizationServiceHelper {
 							finding.getId().toString(), visibleGroups,
 							owningGroup);
 					}
-					// datum
+					// datum, need to check for null for copy bean.
 					if (finding.getDatumCollection() != null) {
 						for (Datum datum : finding.getDatumCollection()) {
-							if (datum != null) {
+							if (datum != null && datum.getId() != null) {
 								authService.assignVisibility(datum.getId()
 									.toString(), visibleGroups, owningGroup);
 							}
@@ -912,7 +912,6 @@ public class CharacterizationServiceHelper {
 					}
 				}
 			}
-
 			// ExperimentConfiguration
 			if (aChar.getExperimentConfigCollection() != null) {
 				for (ExperimentConfig config : 
