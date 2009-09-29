@@ -61,7 +61,7 @@ public class FileServiceRemoteImpl implements FileService {
 			target.setAttribute(attribute);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
-			results.setTargetClassname("gov.nih.nci.cananolab.domain.File");
+			results.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			File file = null;
 			while (iter.hasNext()) {
