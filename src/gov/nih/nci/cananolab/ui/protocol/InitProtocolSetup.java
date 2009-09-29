@@ -9,7 +9,9 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
+import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -33,15 +35,30 @@ public class InitProtocolSetup {
 
 	public void setProtocolDropdowns(HttpServletRequest request)
 			throws Exception {
+		setLocalSearchDropdowns(request);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
+	}
+
+	public void setLocalSearchDropdowns(HttpServletRequest request)
+			throws Exception {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"protocolTypes", "protocol", "type", "otherType", true);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
+	}
+
+	public void setRemoteSearchDropdowns(HttpServletRequest request)
+			throws Exception {
+		ServletContext appContext = request.getSession().getServletContext();
+		SortedSet<String> types = InitSetup.getInstance()
+				.getServletContextDefaultLookupTypes(appContext,
+						"defaultProtocolTypes", "protocol", "type");
+		request.getSession().setAttribute("protocolTypes", types);
 	}
 
 	public List<ProtocolBean> getProtocolsByChar(HttpServletRequest request,
 			String characterizationType) throws Exception {
 		String protocolType = null;
-		if (characterizationType.equals(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
+		if (characterizationType
+				.equals(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
 			protocolType = Constants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
 		} else if (characterizationType.equals("In Vitro Characterization")) {
 			protocolType = Constants.INVITRO_ASSAY_PROTOCOL;
