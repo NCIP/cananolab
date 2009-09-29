@@ -25,11 +25,12 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -162,55 +163,60 @@ public class CharacterizationBean {
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		copy.setCreatedDate(new Date());
-		if (copy.getExperimentConfigCollection() == null
-				|| copy.getExperimentConfigCollection().isEmpty()) {
+		copy.setCreatedDate(Calendar.getInstance().getTime());
+		Collection<ExperimentConfig> oldConfigs = copy.getExperimentConfigCollection();
+		if (oldConfigs == null || oldConfigs.isEmpty()) {
 			copy.setExperimentConfigCollection(null);
 		} else {
-			// Collection<ExperimentConfig> configs = copy
-			// .getExperimentConfigCollection();
-			// copy.setExperimentConfigCollection(new
-			// HashSet<ExperimentConfig>());
-			// copy.getExperimentConfigCollection().addAll(configs);
-			for (ExperimentConfig config : copy.getExperimentConfigCollection()) {
-				config.setId(null);
-				config.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				config.setCreatedDate(new Date());
+			/**
+			 * Create new set for configs, otherwise will lost old configs in old bean.
+			 */
+			Set<ExperimentConfig> newConfigs = 
+				new HashSet<ExperimentConfig>(oldConfigs);
+			for (ExperimentConfig newConfig : newConfigs) {
+				newConfig.setId(null);
+				newConfig.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				newConfig.setCreatedDate(Calendar.getInstance().getTime());
 			}
+			copy.setExperimentConfigCollection(newConfigs);
 		}
-		if (copy.getFindingCollection() == null
-				|| copy.getFindingCollection().isEmpty()) {
+		Collection<Finding> oldFindings = copy.getFindingCollection();
+		if (oldFindings == null	|| oldFindings.isEmpty()) {
 			copy.setFindingCollection(null);
 		} else {
-			// Collection<Finding> findings = copy.getFindingCollection();
-			// copy.setFindingCollection(new HashSet<Finding>());
-			// copy.getFindingCollection().addAll(findings);
-			for (Finding finding : copy.getFindingCollection()) {
+			/**
+			 * Create new set for finding, otherwise will lost old finding in old bean.
+			 */
+			Set<Finding> newFindings = new HashSet<Finding>(oldFindings);
+			for (Finding finding : newFindings) {
 				if (copyData) {
-					Collection<Datum> data = finding.getDatumCollection();
-					if (data == null || data.isEmpty()) {
+					Collection<Datum> oldDatums = finding.getDatumCollection();
+					if (oldDatums == null || oldDatums.isEmpty()) {
 						finding.setDatumCollection(null);
 					} else {
-						for (Datum datum : finding.getDatumCollection()) {
+						Set<Datum> newDatums = new HashSet<Datum>(oldDatums);
+						for (Datum datum : newDatums) {
 							datum.setId(null);
-							datum
-									.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-							datum.setCreatedDate(new Date());
+							datum.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+							datum.setCreatedDate(Calendar.getInstance().getTime());
 						}
+						finding.setDatumCollection(newDatums);
 					}
 				}
-				Collection<File> files = finding.getFileCollection();
-				if (files == null || files.isEmpty()) {
+				Collection<File> oldFiles = finding.getFileCollection();
+				if (oldFiles == null || oldFiles.isEmpty()) {
 					finding.setFileCollection(null);
 				} else {
-					for (File file : finding.getFileCollection()) {
+					Set<File> newFiles = new HashSet<File>(oldFiles);
+					for (File file : newFiles) {
 						file.setId(null);
-						file
-								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						file.setCreatedDate(new Date());
+						file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+						file.setCreatedDate(Calendar.getInstance().getTime());
 					}
+					finding.setFileCollection(newFiles);
 				}
 			}
+			copy.setFindingCollection(newFindings);
 		}
 		return copy;
 	}
@@ -247,7 +253,7 @@ public class CharacterizationBean {
 				&& domainChar.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainChar.setCreatedBy(createdBy);
-			domainChar.setCreatedDate(new Date());
+			domainChar.setCreatedDate(Calendar.getInstance().getTime());
 		}
 		domainChar.setDesignMethodsDescription(description);
 		domainChar.setAssayType(assayType);
