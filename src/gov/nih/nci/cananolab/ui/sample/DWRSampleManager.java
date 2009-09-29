@@ -119,8 +119,7 @@ public class DWRSampleManager {
 				isLocal = true;
 			} else if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
-			}
-
+			}			
 			SortedSet<String> types = null;
 			if (isLocal) {
 				types = InitSetup
@@ -133,7 +132,7 @@ public class DWRSampleManager {
 								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
 								true);
 			} else {
-				InitSetup
+				types=InitSetup
 						.getInstance()
 						.getServletContextDefaultTypesByReflection(appContext,
 								"defaultFunctionalizingEntityTypes",
@@ -171,7 +170,7 @@ public class DWRSampleManager {
 								"gov.nih.nci.cananolab.domain.function.OtherFunction",
 								true);
 			} else {
-				InitSetup
+				types=InitSetup
 						.getInstance()
 						.getServletContextDefaultTypesByReflection(appContext,
 								"defaultFunctionTypes",
