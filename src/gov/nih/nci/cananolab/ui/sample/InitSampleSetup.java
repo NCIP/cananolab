@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -8,6 +7,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.SortableName;
 
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -60,18 +60,29 @@ public class InitSampleSetup {
 	public void setRemoteSearchDropdowns(HttpServletRequest request)
 			throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
-		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				appContext, "defaultFunctionalizingEntityTypes",
-				"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				appContext, "defaultNanomaterialEntityTypes",
-				"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				appContext, "defaultFunctionTypes",
-				"gov.nih.nci.cananolab.domain.particle.Function");
+		SortedSet<String> funcEntityTypes = InitSetup
+				.getInstance()
+				.getServletContextDefaultTypesByReflection(appContext,
+						"defaultFunctionalizingEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+		request.getSession().setAttribute("functionalizingEntityTypes",
+				funcEntityTypes);
 
-		InitCharacterizationSetup.getInstance()
+		SortedSet<String> nanoEntityTypes = InitSetup
+				.getInstance()
+				.getServletContextDefaultTypesByReflection(appContext,
+						"defaultNanomaterialEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
+		request.getSession().setAttribute("nanomaterialEntityTypes",
+				nanoEntityTypes);
+		SortedSet<String> funcTypes = InitSetup.getInstance()
+				.getServletContextDefaultTypesByReflection(appContext,
+						"defaultFunctionTypes",
+						"gov.nih.nci.cananolab.domain.particle.Function");
+		request.getSession().setAttribute("functionTypes", funcTypes);
+		List<String> charTypes = InitCharacterizationSetup.getInstance()
 				.getDefaultCharacterizationTypes(request);
+		request.getSession().setAttribute("characterizationTypes", charTypes);
 	}
 
 	public SortedSet<String> getAllSampleNames(HttpServletRequest request,
