@@ -20,7 +20,7 @@
 					<td>
 						<c:if test="${param.annotation eq 'characterization'}">
 							<html:checkbox property="copyData" />
-							<strong>Also copy characterization results?</strong>
+							<strong>Also copy finding data and conditions ?</strong>
 						</c:if>
 						&nbsp;
 					</td>
