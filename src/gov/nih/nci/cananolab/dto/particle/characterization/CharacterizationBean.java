@@ -190,6 +190,8 @@ public class CharacterizationBean {
 			Set<Finding> newFindings = new HashSet<Finding>(oldFindings);
 			for (Finding finding : newFindings) {
 				finding.setId(null);
+				finding.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				finding.setCreatedDate(Calendar.getInstance().getTime());
 				if (copyData) {
 					Collection<Datum> oldDatums = finding.getDatumCollection();
 					if (oldDatums == null || oldDatums.isEmpty()) {
