@@ -25,14 +25,13 @@ function getAssociatedElementOptions(elementNumber) {
 		if (entities != null) {
 			dwr.util.removeAllOptions("entityId" + elementNumber);
 			dwr.util.addOptions("entityId" + elementNumber, [ "" ]);
-			// requires getters for domainId and displayName
-			// in
+			// requires getters for domainId and displayName in
 			// BaseCompositionEntityBean
 			dwr.util.addOptions("entityId" + elementNumber, entities,
 					"domainId", "displayName");
 			// if there is only one in the option, preselect it
 			if (entities.length == 1) {
-				dwr.util.setValue("entityId", entities[0].domainId);
+				dwr.util.setValue("entityId" + elementNumber, entities[0].domainId);
 				getComposingElementOptions(elementNumber);
 			}
 		} else {
