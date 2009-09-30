@@ -30,7 +30,7 @@
 				<br>
 				<html:select styleId="entityId${elementNumber}"
 					property="assoc.associatedElement${elementNumber}.entityId"
-					onchange="getComposingElementOptions('${elementNumber}');setEntityDisplayName('entityId${elementNumber}', '${elementNumber}');">
+					onchange="getComposingElementOptions('${elementNumber}');">
 					<option value=""></option>
 					<c:if test="${!empty entityList}">
 						<html:options collection="entityList" property="domainId"
@@ -43,7 +43,7 @@
 				<html:select styleId="composingElementId${elementNumber}"
 					property="assoc.associatedElement${elementNumber}.composingElement.id">
 					<option value="" />
-						<c:if test="${!empty ceList }">
+						<c:if test="${!empty ceList}">
 							<html:options collection="ceList" property="domainId"
 								labelProperty="displayName" />
 						</c:if>

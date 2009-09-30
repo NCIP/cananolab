@@ -65,29 +65,33 @@ function getComposingElementOptions(elementNumber) {
 	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
 	if (compositionType == "nanomaterial entity") {
 		var entityId = dwr.util.getValue("entityId" + elementNumber);
-		CompositionManager.getComposingElementsByNanomaterialEntityId(entityId,
+		if (entityId != null && entityId != "") {
+			CompositionManager.getComposingElementsByNanomaterialEntityId(entityId,
 				function(composingElements) {
 					if (composingElements != null) {
 						dwr.util.removeAllOptions("composingElementId"
 								+ elementNumber);
 						dwr.util.addOptions("composingElementId"
 								+ elementNumber, [ "" ]);
-						// requires getters for domainId and displayName in
-				// ComposingElementBean
-				dwr.util.addOptions("composingElementId" + elementNumber,
-						composingElements, "domainId", "displayName");
-				if (composingElements.length == 1) {
-					dwr.util.setValue("composingElementId",
-							composingElements[0].domainId);
-				}
-			} else {
-				sessionTimeout();
-			}
-		});
-		show("composingElementSelect" + elementNumber);
+						//requires getters for domainId and displayName in ComposingElementBean
+						dwr.util.addOptions("composingElementId" + elementNumber,
+								composingElements, "domainId", "displayName");
+							if (composingElements.length == 1) {
+								dwr.util.setValue("composingElementId" + elementNumber,
+										composingElements[0].domainId);
+							}
+					} else {
+						sessionTimeout();
+					}
+			});
+			show("composingElementSelect" + elementNumber);
+		} else {
+			hide("composingElementSelect" + elementNumber);
+		}
 	} else {
 		hide("composingElementSelect" + elementNumber);
 	}
+	setEntityDisplayName("entityId" + elementNumber, elementNumber);
 }
 /* end of set submit chemical association form */
 /* set submit file form */
