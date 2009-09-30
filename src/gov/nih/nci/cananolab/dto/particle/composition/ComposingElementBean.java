@@ -66,7 +66,9 @@ public class ComposingElementBean {
 
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(getDomain().getType());
+		if (!StringUtils.isEmpty(getDomain().getType())) {
+			buffer.append(getDomain().getType());
+		}
 		if (!StringUtils.isEmpty(getDomain().getName())) {
 			buffer.append(" (name: ");
 			buffer.append(getDomain().getName());
@@ -85,7 +87,9 @@ public class ComposingElementBean {
 
 	public String getAdvancedSearchDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(getDomain().getType());
+		if (!StringUtils.isEmpty(getDomain().getType())) {
+			buffer.append(getDomain().getType());
+		}		
 		if (!StringUtils.isEmpty(getDomain().getName())) {
 			buffer.append(" (");
 			buffer.append(getDomain().getName());

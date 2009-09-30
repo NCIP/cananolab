@@ -96,7 +96,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		}
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
-		Collection<Function> funcs = functionalizingEntity.getFunctionCollection();
+		Collection<Function> funcs = functionalizingEntity
+				.getFunctionCollection();
 		if (funcs != null) {
 			for (Function function : funcs) {
 				functions.add(new FunctionBean(function));
@@ -133,8 +134,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		if (copy.getActivationMethod() != null) {
 			copy.getActivationMethod().setId(null);
 		}
-		if (copy.getFunctionCollection() == null ||
-			copy.getFunctionCollection().isEmpty()) {
+		if (copy.getFunctionCollection() == null
+				|| copy.getFunctionCollection().isEmpty()) {
 			copy.setFunctionCollection(null);
 		} else {
 			Collection<Function> functions = copy.getFunctionCollection();
@@ -334,7 +335,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public String getMolecularFormulaDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		if (molecularFormula != null && molecularFormula.length() > 0) {
+		if (!StringUtils.isEmpty(molecularFormula)) {
 			buffer.append(molecularFormula);
 			if (molecularFormulaType != null
 					&& molecularFormulaType.length() > 0) {
@@ -383,7 +384,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	// for use in chemical association submission form
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(getType());
+		if (!StringUtils.isEmpty(getType())) {
+			buffer.append(getType());
+		}
 		if (!StringUtils.isEmpty(getDomainEntity().getName())) {
 			buffer.append(" (name: ");
 			buffer.append(getDomainEntity().getName());
@@ -402,12 +405,14 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public String getAdvancedSearchDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(getType());
+		if (!StringUtils.isEmpty(getType())) {
+			buffer.append(getType());
+		}
 		if (!StringUtils.isEmpty(getDomainEntity().getName())) {
 			buffer.append(" (");
 			buffer.append(getDomainEntity().getName());
 			buffer.append(")");
-		}
+		}		
 		return buffer.toString();
 	}
 

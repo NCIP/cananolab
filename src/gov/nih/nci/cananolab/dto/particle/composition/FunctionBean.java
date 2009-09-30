@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class FunctionBean {
 	// needed for use in DWR ordering functions in the session.
-	private String id; 
+	private String id;
 
 	private String type;
 
@@ -165,7 +165,9 @@ public class FunctionBean {
 
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(type);
+		if (!StringUtils.isEmpty(type)) {
+			buffer.append(type);
+		}
 		if (!StringUtils.isEmpty(getDescription())) {
 			buffer.append(": " + description);
 		}
@@ -186,7 +188,6 @@ public class FunctionBean {
 			}
 			buffer.append(")");
 		}
-
 		return buffer.toString();
 	}
 

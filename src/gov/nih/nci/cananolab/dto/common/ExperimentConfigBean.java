@@ -135,8 +135,7 @@ public class ExperimentConfigBean {
 
 	private String getInstrumentDisplayName(Instrument instrument) {
 		StringBuffer sb = new StringBuffer();
-		if (instrument.getType() != null
-				&& instrument.getType().trim().length() > 0) {
+		if (!StringUtils.isEmpty(instrument.getType())) {
 			sb.append(instrument.getType());
 			sb.append(" ");
 		}
