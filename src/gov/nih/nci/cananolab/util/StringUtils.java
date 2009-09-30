@@ -114,7 +114,7 @@ public class StringUtils {
 			Collection<String> stringCollection, String delimiter) {
 		StringBuffer buffer = new StringBuffer();
 		if (stringCollection == null || stringCollection.isEmpty()) {
-			return buffer.toString();
+			return "";
 		}
 
 		Iterator iter = stringCollection.iterator();
