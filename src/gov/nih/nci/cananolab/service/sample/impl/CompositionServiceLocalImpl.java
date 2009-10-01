@@ -36,9 +36,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of CompositionService.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
@@ -506,22 +506,21 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		}
 	}
 
-	public void deleteCompositionFile(Sample sample, File file,
-			UserBean user) throws CompositionException, NoAccessException {
+	public void deleteCompositionFile(Sample sample, File file, UserBean user)
+			throws CompositionException, NoAccessException {
 		if (user == null || !user.isCurator() && !user.isAdmin()) {
 			throw new NoAccessException();
 		}
-		try {			
+		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			//load files first
-			List<File> fileList = helper.findFilesByCompositionInfoId(
-					sample.getSampleComposition().getId().toString(),
+			// load files first
+			List<File> fileList = helper.findFilesByCompositionInfoId(sample
+					.getSampleComposition().getId().toString(),
 					"SampleComposition", user);
 			sample.getSampleComposition().setFileCollection(
-					new HashSet<File>(fileList));			
-			sample.getSampleComposition().getFileCollection().remove(
-					file);
+					new HashSet<File>(fileList));
+			sample.getSampleComposition().getFileCollection().remove(file);
 			appService.saveOrUpdate(sample.getSampleComposition());
 		} catch (Exception e) {
 			String err = "Error deleting composition file " + file.getUri();
@@ -692,9 +691,10 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			for (SampleBean sampleBean : newSampleBeans) {
 				// replace file URI with new sample name
 				for (FileBean fileBean : copyBean.getFiles()) {
-					fileBean.getDomainFile().getUri().replace(
+					String newUri = fileBean.getDomainFile().getUri().replace(
 							oldSampleBean.getDomain().getName(),
 							sampleBean.getDomain().getName());
+					fileBean.getDomainFile().setUri(newUri);
 				}
 				if (copyBean != null)
 					saveNanomaterialEntity(sampleBean, copyBean, user);
@@ -728,9 +728,10 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			for (SampleBean sampleBean : newSampleBeans) {
 				// replace file URI with new sample name
 				for (FileBean fileBean : copyBean.getFiles()) {
-					fileBean.getDomainFile().getUri().replace(
+					String newUri = fileBean.getDomainFile().getUri().replace(
 							oldSampleBean.getDomain().getName(),
 							sampleBean.getDomain().getName());
+					fileBean.getDomainFile().setUri(newUri);
 				}
 				if (copyBean != null)
 					saveFunctionalizingEntity(sampleBean, copyBean, user);
