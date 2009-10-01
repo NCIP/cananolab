@@ -28,6 +28,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,9 +39,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Service methods involving samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleServiceRemoteImpl implements SampleService {
 	private static Logger logger = Logger
@@ -58,10 +59,10 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 * 
+	 *
 	 * @param sample
-	 * @throws SampleException
-	 *             , DuplicateEntriesException
+	 * @throws SampleException ,
+	 *             DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sample, UserBean user)
 			throws SampleException, DuplicateEntriesException {
@@ -85,7 +86,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 			if (sampleNames != null) {
 				return Arrays.asList(sampleNames);
 			} else {
-				return null;
+				return new ArrayList<String>();
 			}
 		} catch (Exception e) {
 			String err = "Error finding remote public samples.";
@@ -139,7 +140,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * Get all the associated data of a sample
-	 * 
+	 *
 	 * @param particleSample
 	 * @throws Exception
 	 */
@@ -152,11 +153,11 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * load the source for an associated Sample
-	 * 
+	 *
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
-	 * 
+	 *
 	 */
 	private void loadPointOfContactsForSample(Sample sample) throws Exception {
 		PointOfContact primaryPOC = gridClient
@@ -175,7 +176,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * load all keywords for an associated Sample equal to particleId
-	 * 
+	 *
 	 */
 	private void loadKeywordsForSample(Sample sample) throws Exception {
 		Keyword[] keywords = gridClient.getKeywordsBySampleId(sample.getId()
