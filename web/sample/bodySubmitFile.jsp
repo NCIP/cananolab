@@ -7,9 +7,11 @@
 <c:set var="submissionViewStyle" value="subSubmissionView" />
 <c:set var="tableWidth" value="85%" />
 <c:set var="buttonStyle" value="" />
+<c:set var="buttonText" value="Save"/>
 <c:if test="${actionName eq 'characterization'}">
 	<c:set var="submissionViewStyle" value="promptbox" />
 	<c:set var="buttonStyle" value="promptButton" />
+	<c:set var="buttonText" value="Add"/>
 </c:if>
 <c:if test="${actionName eq 'compositionFile'}">
 	<c:set var="submissionViewStyle" value="submissionView" />
@@ -140,7 +142,7 @@
 				</td>
 				<td>
 					<div align="right">
-						<input class="${buttonStyle}" type="button" value="Add"
+						<input class="${buttonStyle}" type="button" value="${buttonText}"
 							onclick="addFile('${actionName}', ${fileForm});" />
 						<input class="${buttonStyle}" type="button" value="Cancel"
 							onclick="clearFile('${fileParent }');closeSubmissionForm('File');" />
