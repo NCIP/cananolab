@@ -315,6 +315,22 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
+		// prepare characterization tabs and forward to appropriate tab
+		List<String> allCharacterizationTypes = InitCharacterizationSetup
+				.getInstance().getCharacterizationTypes(request);
+		String tab = (String) getValueFromRequest(request, "tab");
+		if (tab == null) {
+			tab = "ALL"; // default tab to all;
+		}
+		if (tab.equals("ALL")) {
+			request.getSession().removeAttribute("onloadJavascript");
+			request.getSession().removeAttribute("tab");
+		} else {
+			request.getSession().setAttribute(
+					"onloadJavascript",
+					"showSummary('" + tab + "', "
+							+ allCharacterizationTypes.size() + ")");
+		}
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -396,31 +412,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.findCharacterizationsBySampleId(sampleId, user);
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
-		// prepare characterization tabs
-		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
-				request);
 		// Save result bean in session for later use - export/print.
 		request.getSession().setAttribute("characterizationSummaryView",
 				summaryView);
 		request.getSession().setAttribute("theSample", sampleBean); // for
 		// showing
 		// title.
-
-		// forward to appropriate tab
-		String tab = (String) getValueFromRequest(request, "tab");
-		if (tab == null) {
-			tab = "ALL"; // default tab to all;
-		}
-		if (tab.equals("ALL")) {
-			request.getSession().removeAttribute("onloadJavascript");
-			request.getSession().removeAttribute("tab");
-		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ summaryView.getCharacterizationTypes().size()
-							+ ")");
-		}
 	}
 
 	/**
@@ -460,6 +457,19 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
+		String tab = (String) getValueFromRequest(request, "tab");
+		if (tab == null) {
+			tab = "ALL"; // default tab to all;
+		}
+		if (tab.equals("ALL")) {
+			request.getSession().removeAttribute("onloadJavascript");
+			request.getSession().removeAttribute("tab");
+		} else {
+			request.getSession().setAttribute(
+					"onloadJavascript",
+					"showSummary('" + tab + "', "
+							+ characterizationTypes.size() + ")");
+		}
 	}
 
 	/**
