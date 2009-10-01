@@ -4,6 +4,7 @@
 .shadetabs{
 	border-bottom: 1px solid #cccccc;
 	width: 100%; /*width of menu. Uncomment to change to a specific width */
+	white-space: nowrap;
 	/*margin-bottom: 1em;*/
 }
 
