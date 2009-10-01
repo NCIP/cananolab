@@ -89,7 +89,8 @@ public class CharacterizationServiceLocalImpl implements
 				FileService fileService = new FileServiceLocalImpl();
 				for (FindingBean findingBean : findingBeans) {
 					for (FileBean fileBean : findingBean.getFiles()) {
-						fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+						fileService.prepareSaveFile(fileBean.getDomainFile(),
+								user);
 						fileService.writeFile(fileBean, user);
 					}
 				}
@@ -317,14 +318,14 @@ public class CharacterizationServiceLocalImpl implements
 
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : finding.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile(), user);				
+				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
 			}
 			appService.saveOrUpdate(finding.getDomain());
 			// save file data to file system and assign visibility
-			for (FileBean fileBean : finding.getFiles()) {				
+			for (FileBean fileBean : finding.getFiles()) {
 				fileService.writeFile(fileBean, user);
 			}
-			//visibility assignment is handled by saving characterization
+			// visibility assignment is handled by saving characterization
 		} catch (Exception e) {
 			String err = "Error saving characterization result finding. ";
 			logger.error(err, e);
@@ -397,7 +398,7 @@ public class CharacterizationServiceLocalImpl implements
 				}
 			}
 			appService.saveOrUpdate(config);
-			//visibility assignment is handled by saving characterization
+			// visibility assignment is handled by saving characterization
 
 		} catch (Exception e) {
 			String err = "Error in saving the technique and associated instruments.";
@@ -524,38 +525,6 @@ public class CharacterizationServiceLocalImpl implements
 		// create a deep copy
 		Characterization copy = charBean.getDomainCopy(copyData);
 		CharacterizationBean copyBean = new CharacterizationBean(copy);
-		/**
-		 * Note: As the file id in copy is set to null for creating new row,
-		 * the copy object must be saved first, then set its visibility.  
-		 */
-		try {
-			/**
-			 * Need to save Experiment Config data in copy bean first,
-			 * otherwise will get "transient object" hibernate exception.  
-			 */
-			List<ExperimentConfigBean> expConfigs = copyBean.getExperimentConfigs();
-			if (expConfigs != null && !expConfigs.isEmpty()) {
-				for (ExperimentConfigBean configBean : expConfigs) {
-					this.saveExperimentConfig(configBean, user);
-				}
-			}
-			for (SampleBean sampleBean : newSampleBeans) {
-				// replace file URI with new sample name
-				for (FindingBean findingBean : copyBean.getFindings()) {
-					for (FileBean fileBean : findingBean.getFiles()) {
-						fileBean.getDomainFile().getUri().replace(
-							oldSampleBean.getDomain().getName(),
-							sampleBean.getDomain().getName());
-					}
-				}
-				this.saveCharacterization(sampleBean, copyBean, user);
-			}
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
-			String error = "Error saving the copy of characterization.";
-			throw new CharacterizationException(error, e);
-		}
 		try {
 			// copy file visibility
 			for (FindingBean findingBean : copyBean.getFindings()) {
@@ -566,6 +535,41 @@ public class CharacterizationServiceLocalImpl implements
 			}
 		} catch (Exception e) {
 			String error = "Error setting visibility of the copy.";
+			throw new CharacterizationException(error, e);
+		}
+		try {
+			for (SampleBean sampleBean : newSampleBeans) {
+				/**
+				 * Need to save associate Config & Finding in copy bean first,
+				 * otherwise will get "transient object" Hibernate exception.
+				 */
+				List<ExperimentConfigBean> expConfigs = copyBean
+						.getExperimentConfigs();
+				if (expConfigs != null && !expConfigs.isEmpty()) {
+					for (ExperimentConfigBean configBean : expConfigs) {
+						this.saveExperimentConfig(configBean, user);
+					}
+				}
+				List<FindingBean> findings = copyBean.getFindings();
+				// replace file URI with new sample name
+				if (findings != null && !findings.isEmpty()) {
+					for (FindingBean findingBean : findings) {
+						for (FileBean fileBean : findingBean.getFiles()) {
+							String newUri=
+							fileBean.getDomainFile().getUri().replace(
+									oldSampleBean.getDomain().getName(),
+									sampleBean.getDomain().getName());
+							fileBean.getDomainFile().setUri(newUri);
+						}
+						this.saveFinding(findingBean, user);
+					}
+				}
+				this.saveCharacterization(sampleBean, copyBean, user);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error saving the copy of characterization.";
 			throw new CharacterizationException(error, e);
 		}
 	}
