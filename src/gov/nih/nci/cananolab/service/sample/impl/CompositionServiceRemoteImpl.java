@@ -7,9 +7,12 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
@@ -386,8 +389,15 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			throws Exception {
 		if (nanoEntityClassNames != null) {
 			for (String name : nanoEntityClassNames) {
-				String fullClassName = ClassUtils.getFullClass(name)
-						.getCanonicalName();
+				String fullClassName = null;
+				if (ClassUtils.getFullClass(name) != null) {
+					fullClassName = ClassUtils.getFullClass(name)
+							.getCanonicalName();
+				} else {
+					fullClassName = ClassUtils.getFullClass(
+							OtherNanomaterialEntity.class.getCanonicalName())
+							.getCanonicalName();
+				}
 				CQLQuery query = new CQLQuery();
 				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 				target.setName(fullClassName);
@@ -427,8 +437,17 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			throws Exception {
 		if (funcEntityClassNames != null) {
 			for (String name : funcEntityClassNames) {
-				String fullClassName = ClassUtils.getFullClass(name)
-						.getCanonicalName();
+				String fullClassName = null;
+				if (ClassUtils.getFullClass(name) != null) {
+					fullClassName = ClassUtils.getFullClass(name)
+							.getCanonicalName();
+				} else {
+					fullClassName = ClassUtils
+							.getFullClass(
+									OtherFunctionalizingEntity.class
+											.getCanonicalName())
+							.getCanonicalName();
+				}
 				CQLQuery query = new CQLQuery();
 				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 				target.setName(fullClassName);
@@ -469,8 +488,15 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			throws Exception {
 		if (assocClassNames != null) {
 			for (String name : assocClassNames) {
-				String fullClassName = ClassUtils.getFullClass(name)
-						.getCanonicalName();
+				String fullClassName = null;
+				if (ClassUtils.getFullClass(name) != null) {
+					fullClassName = ClassUtils.getFullClass(name)
+							.getCanonicalName();
+				} else {
+					fullClassName = ClassUtils.getFullClass(
+							OtherChemicalAssociation.class.getCanonicalName())
+							.getCanonicalName();
+				}
 				CQLQuery query = new CQLQuery();
 				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 				target.setName(fullClassName);

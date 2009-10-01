@@ -7,6 +7,7 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
@@ -84,16 +85,24 @@ public class CharacterizationServiceRemoteImpl implements
 			String[] sampleViewStrs = gridClient.getSampleViewStrs(sampleId);
 			// column 8 contains characterization short class names
 			String[] charClassNames = null;
-			if (sampleViewStrs.length > 9 && !StringUtils.isEmpty(sampleViewStrs[9])) {
+			if (sampleViewStrs.length > 9
+					&& !StringUtils.isEmpty(sampleViewStrs[9])) {
 				charClassNames = sampleViewStrs[9]
 						.split(Constants.VIEW_CLASSNAME_DELIMITER);
 			}
 			if (charClassNames != null) {
-				for (String charClassName : charClassNames) {
+				for (String name : charClassNames) {
 					CQLQuery query = new CQLQuery();
 					gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-					String fullClassName = ClassUtils.getFullClass(
-							charClassName).getCanonicalName();
+					String fullClassName = null;
+					if (ClassUtils.getFullClass(name) != null) {
+						fullClassName = ClassUtils.getFullClass(name)
+								.getCanonicalName();
+					} else {
+						fullClassName = ClassUtils.getFullClass(
+								OtherCharacterization.class.getCanonicalName())
+								.getCanonicalName();
+					}					
 					target.setName(fullClassName);
 					Association association = new Association();
 					association
