@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
@@ -698,8 +699,12 @@ public class SampleServiceHelper {
 		if (sample.getCharacterizationCollection() != null) {
 			for (Characterization achar : sample
 					.getCharacterizationCollection()) {
-				storedChars.add(ClassUtils.getShortClassName(achar.getClass()
-						.getCanonicalName()));
+				if (achar instanceof OtherCharacterization) {
+					storedChars.add(((OtherCharacterization) achar).getName());
+				} else {
+					storedChars.add(ClassUtils.getShortClassName(achar
+							.getClass().getCanonicalName()));
+				}
 			}
 		}
 		return storedChars;
