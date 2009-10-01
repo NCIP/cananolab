@@ -80,7 +80,7 @@
 		<td>
 			<c:if
 				test="${not empty characterizationForm.map.achar.theFinding.domain.id}">
-				<input type="button" value="Delete" id="deleteFinding"
+				<input type="button" value="Remove" id="deleteFinding"
 					onclick="javascript: deleteTheFinding(characterizationForm);">
 			</c:if>
 		</td>

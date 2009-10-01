@@ -162,7 +162,7 @@
 		<td>
 			<c:if test="${!empty user && user.curator && user.admin}">
 				<input style="display: none;" id="deleteExperimentConfig"
-					type="button" value="Delete"
+					type="button" value="Remove"
 					onclick="javascript:deleteTheExperimentConfig()">
 			</c:if>
 		</td>
