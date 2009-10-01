@@ -28,9 +28,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Remote implementation of PublicationService
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PublicationServiceRemoteImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -50,7 +50,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication
 	 *            ,
 	 * @param sampleNames
@@ -285,7 +285,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 				return Arrays.asList(publicationIds);
 			}
 			else {
-				return null;
+				return new ArrayList<String>();
 			}
 		} catch (Exception e) {
 			String err = "Error finding remote public publications.";
