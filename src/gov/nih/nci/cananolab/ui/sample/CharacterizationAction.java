@@ -438,9 +438,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean) request
 				.getSession().getAttribute("characterizationSummaryView");
 		// Keep submitted characterization types in the correct display order
-		List<String> allCharacterizationTypes = new ArrayList<String>(
-				(List<? extends String>) request.getSession().getAttribute(
-						"characterizationTypes"));
+		// prepare characterization tabs and forward to appropriate tab
+		List<String> allCharacterizationTypes = InitCharacterizationSetup
+				.getInstance().getCharacterizationTypes(request);
 		Set<String> foundTypes = summaryView.getCharacterizationTypes();
 		List<String> characterizationTypes = new ArrayList<String>();
 		for (String charType : allCharacterizationTypes) {
@@ -458,9 +458,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
 		String tab = (String) getValueFromRequest(request, "tab");
-		if (tab == null) {
-			tab = "ALL"; // default tab to all;
-		}
 		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
 			request.getSession().removeAttribute("tab");
