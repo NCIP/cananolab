@@ -62,7 +62,7 @@
 								<td class="cellLabel">
 									Molecular Formula
 								</td>
-								<td>
+								<td style="word-wrap:break-word;max-width:280px;">
 									${functionalizingEntity.molecularFormulaDisplayName}
 								</td>
 							</tr>

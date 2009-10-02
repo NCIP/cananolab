@@ -106,7 +106,7 @@
 									<td class="cellLabel">
 										Molecular Formula
 									</td>
-									<td>
+									<td style="word-wrap:break-word;max-width:280px;">
 										<c:choose>
 											<c:when
 												test="${!empty functionalizingEntity.molecularFormulaDisplayName}">

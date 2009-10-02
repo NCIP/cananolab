@@ -51,7 +51,7 @@
 		<c:choose>
 			<c:when test="${!empty composingElement.molecularFormulaDisplayName}">
 				<tr>
-					<td>
+					<td style="word-wrap:break-word;max-width:280px;">
 						Molecular Formula: ${composingElement.molecularFormulaDisplayName}
 					</td>
 					<td></td>
