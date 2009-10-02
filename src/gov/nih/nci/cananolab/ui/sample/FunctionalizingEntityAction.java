@@ -176,7 +176,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return mapping.findForward("inputForm");
 	}
 
-	private void setLookups(HttpServletRequest request) throws Exception {		
+	private void setLookups(HttpServletRequest request) throws Exception {
 		InitCompositionSetup.getInstance().setFunctionalizingEntityDropdowns(
 				request);
 	}
@@ -191,8 +191,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		if (entityId == null) {
 			entityId = (String) request.getAttribute("dataId");
-		}		
-		CompositionService compService = new CompositionServiceLocalImpl();		
+		}
+		CompositionService compService = new CompositionServiceLocalImpl();
 		if (Constants.LOCAL_SITE.equals(location)) {
 			compService = new CompositionServiceLocalImpl();
 		} else {
@@ -208,10 +208,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			detailPage = InitCompositionSetup.getInstance().getDetailPage(
 					entityBean.getClassName(), "FunctionalizingEntity");
 		}
-		request.setAttribute("entityDetailPage", detailPage);		
+		request.setAttribute("entityDetailPage", detailPage);
 		return mapping.findForward("singleSummaryView");
 	}
-	
+
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -361,9 +361,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				&& browserDispatch.equals("saveFunction")
 				|| ((dispatch.equals("setupNew") || dispatch
 						.equals("setupUpdate")) && entity.getFunctions()
-						.isEmpty())
-				|| (!StringUtils.isEmpty(entity.getTheFunction()
-						.getDisplayName()) && !dispatch.equals("saveFunction"))) {
+						.isEmpty())) {
 			openFunction = true;
 		}
 		session.setAttribute("openFunction", openFunction);

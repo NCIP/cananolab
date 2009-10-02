@@ -59,7 +59,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		}
 		// Copy "polymerized" property from entity bean to mapping bean.
 		this.copyIsPolymerized(entityBean);
-		
+
 		this.saveEntity(request, theForm, entityBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
@@ -176,7 +176,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		return true;
 	}
 
-	private void setLookups(HttpServletRequest request) throws Exception {		
+	private void setLookups(HttpServletRequest request) throws Exception {
 		InitCompositionSetup.getInstance().setNanomaterialEntityDropdowns(
 				request);
 	}
@@ -247,8 +247,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		if (entityId == null) {
 			entityId = (String) request.getAttribute("dataId");
-		}		
-		CompositionService compService = new CompositionServiceLocalImpl();		
+		}
+		CompositionService compService = new CompositionServiceLocalImpl();
 		if (Constants.LOCAL_SITE.equals(location)) {
 			compService = new CompositionServiceLocalImpl();
 		} else {
@@ -264,7 +264,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			detailPage = InitCompositionSetup.getInstance().getDetailPage(
 					entityBean.getClassName(), "nanomaterialEntity");
 		}
-		request.setAttribute("entityDetailPage", detailPage);		
+		request.setAttribute("entityDetailPage", detailPage);
 		return mapping.findForward("singleSummaryView");
 	}
 
@@ -310,7 +310,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.get("nanomaterialEntity");
 		FileBean theFile = entity.getTheFile();
 		entity.addFile(theFile);
-		// save nanomaterial entity
+		// save nanomaterial entity to save file because inverse="false"
 		this.saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
@@ -375,30 +375,28 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				&& browserDispatch.equals("saveComposingElement")
 				|| ((dispatch.equals("setupNew") || dispatch
 						.equals("setupUpdate")) && entity
-						.getComposingElements().isEmpty())
-				|| (!StringUtils.isEmpty(entity.getTheComposingElement()
-						.getDisplayName()) && !dispatch
-						.equals("saveComposingElement"))) {
+						.getComposingElements().isEmpty())) {
 			openComposingElement = true;
 		}
 		session.setAttribute("openComposingElement", openComposingElement);
 
 		/**
-		 * other nanomaterial entity types are not stored in the lookup
-		 * are retrieved through reflection only after saving to the database.
-		 * Need to update session variable before saving to the database 
+		 * other nanomaterial entity types are not stored in the lookup are
+		 * retrieved through reflection only after saving to the database. Need
+		 * to update session variable before saving to the database
 		 */
 		// Nanomaterial Entity Type
 		String entityType = entity.getType();
 		setOtherValueOption(request, entityType, "nanomaterialEntityTypes");
-		//function type
-		String functionType=entity.getTheComposingElement().getTheFunction().getType();
+		// function type
+		String functionType = entity.getTheComposingElement().getTheFunction()
+				.getType();
 		setOtherValueOption(request, functionType, "functionTypes");
 	}
 
 	/**
 	 * Copy "polymerized" property from entityBean to Emulsion or Liposome.
-	 *   
+	 * 
 	 * @param entityBean
 	 */
 	private void copyIsPolymerized(NanomaterialEntityBean entityBean) {
@@ -417,7 +415,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup "polymerized" property in entityBean from Emulsion or Liposome.
-	 *   
+	 * 
 	 * @param entityBean
 	 */
 	private void setupIsPolymerized(NanomaterialEntityBean entityBean) {
