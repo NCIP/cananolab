@@ -40,14 +40,14 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
- * 
+ *
  * @author pansu
  */
 public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -102,7 +102,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -132,7 +132,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up drop-downs need for the input form
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @throws Exception
@@ -158,7 +158,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for editing existing characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -221,7 +221,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup characterization bean for saving.
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -242,7 +242,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup, prepare and save characterization.
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -302,7 +302,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -336,7 +336,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryView() handles View request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -379,7 +379,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
 	 * Prepare CharacterizationBean based on Sample Id.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -424,7 +424,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * Shared function for summaryView() and summaryPrint(). Keep submitted
 	 * characterization types in the correct display order. Should be called
 	 * after calling prepareSummary(), to avoid session timeout issue.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -474,7 +474,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -504,7 +504,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Export Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -645,7 +645,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Return true if every finding cell has value entered, false otherwise.
-	 * 
+	 *
 	 * @param findingBean
 	 * @return true if every finding cell has value entered, false otherwise.
 	 */
@@ -836,8 +836,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				|| dispatch.equals("removeFile")
 				|| dispatch.equals("drawMatrix")
 				|| dispatch.equals("getFinding")
-				|| dispatch.equals("resetFinding")
-				|| !achar.getTheFinding().getFiles().isEmpty()) {
+				|| dispatch.equals("resetFinding")) {
 			openFinding = true;
 		}
 		session.setAttribute("openFinding", openFinding);
@@ -859,7 +858,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 * 
+	 *
 	 * @param request
 	 * @param compBean
 	 */
@@ -876,7 +875,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Copy "isSoluble" property from achar to Solubility entity.
-	 * 
+	 *
 	 * @param achar
 	 */
 	private void copyIsSoluble(CharacterizationBean achar) {
@@ -892,7 +891,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup "isSoluble" property in achar from Solubility entity.
-	 * 
+	 *
 	 * @param achar
 	 */
 	private void setupIsSoluble(CharacterizationBean achar) {
