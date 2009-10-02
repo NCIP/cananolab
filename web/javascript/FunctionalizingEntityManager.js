@@ -79,6 +79,7 @@ function setTheFunction(funcId) {
 function populateFunction(func) {
 	if (func != null) {
 		currentFunction = func;
+		dwr.util.setValue("functionId", func.id);
 		dwr.util.setValue("functionType", func.type);
 		dwr.util.setValue("imagingModality", func.imagingFunction.modality);
 		dwr.util.setValue("functionDescription", func.description);
@@ -161,7 +162,7 @@ function deleteTheTarget() {
 				}
 			});
 			window.setTimeout("populateTargets()", 200);
-			openSubmissionForm("Target");
+			closeSubmissionForm("Target");
 		}
 	}
 }

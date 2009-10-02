@@ -95,6 +95,7 @@ function setTheComposingElement(id) {
 function populateComposingElement(element) {
 	if (element != null) {
 		currentComposingElement = element;
+		dwr.util.setValue("elementId", element.domain.id);
 		dwr.util.setValue("elementType", element.domain.type);
 		dwr.util.setValue("elementName", element.domain.name);
 		dwr.util.setValue("elementValue", element.domain.value);
@@ -143,7 +144,7 @@ function deleteTheInherentFunction() {
 				}
 			});
 			window.setTimeout("populateInherentFunctions()", 200);
-			openSubmissionForm("InherentFunction");
+			closeSubmissionForm("InherentFunction");
 		}
 	}
 }
