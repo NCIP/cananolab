@@ -165,13 +165,45 @@ public class SampleServiceRemoteImpl implements SampleService {
 		PointOfContact[] otherPOCs = gridClient
 				.getOtherPointOfContactsBySampleId(sample.getId().toString());
 		if (primaryPOC != null) {
+			loadOrganizationForPointOfContact(primaryPOC);
 			sample.setPrimaryPointOfContact(primaryPOC);
 		}
 		if (otherPOCs != null && otherPOCs.length > 0) {
 			Collection<PointOfContact> otherPOCCollection = new HashSet<PointOfContact>(
 					Arrays.asList(otherPOCs));
+			for (PointOfContact poc : otherPOCCollection) {
+				loadOrganizationForPointOfContact(poc);
+			}
 			sample.setOtherPointOfContactCollection((otherPOCCollection));
 		}
+	}
+
+	private void loadOrganizationForPointOfContact(PointOfContact poc)
+			throws Exception {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Organization");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.common.PointOfContact");
+		association.setRoleName("pointOfContactCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(poc.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.common.Organization");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		Organization org = null;
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			org = (Organization) obj;
+		}
+		poc.setOrganization(org);
 	}
 
 	/**
