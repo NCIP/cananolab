@@ -13,7 +13,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -41,7 +40,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		saveEntity(request, theForm, entityBean);
+		this.saveEntity(request, theForm, entityBean);
 		if (!validateTargets(request, entityBean)) {
 			return mapping.getInputForward();
 		}
@@ -106,7 +105,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return true;
 	}
 
-	public void saveEntity(HttpServletRequest request,
+	private void saveEntity(HttpServletRequest request,
 			DynaValidatorForm theForm, FunctionalizingEntityBean entityBean)
 			throws Exception {
 		CompositionService compositionService = new CompositionServiceLocalImpl();
@@ -140,12 +139,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
-		// save to other samples
-		SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
-				sampleBean);
-		if (otherSampleBeans != null) {
-			compositionService.copyAndSaveFunctionalizingEntity(entityBean,
-					sampleBean, otherSampleBeans, user);
+		// save to other samples (only when user click [Submit] button.)
+		String dispatch = (String) theForm.get("dispatch");
+		if ("create".equals(dispatch)) {
+			SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
+					sampleBean);
+			if (otherSampleBeans != null) {
+				compositionService.copyAndSaveFunctionalizingEntity(entityBean,
+						sampleBean, otherSampleBeans, user);
+			}
 		}
 	}
 
@@ -252,7 +254,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.get("functionalizingEntity");
 		FunctionBean function = entity.getTheFunction();
 		entity.addFunction(function);
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
@@ -269,7 +271,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.get("functionalizingEntity");
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
 		checkOpenForms(entity, request);
@@ -285,7 +287,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FileBean theFile = entity.getTheFile();
 		entity.addFile(theFile);
 		// save the functionalizing entity
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
@@ -301,7 +303,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		entity.removeFile(theFile);
 		request.setAttribute("anchor", "file");
 		// save the functionalizing entity
-		saveEntity(request, theForm, entity);
+		this.saveEntity(request, theForm, entity);
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}

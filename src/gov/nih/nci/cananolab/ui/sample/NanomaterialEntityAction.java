@@ -130,12 +130,15 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		CompositionService compositionService = new CompositionServiceLocalImpl();
 		compositionService.saveNanomaterialEntity(sampleBean, entityBean, user);
 
-		// save to other samples
-		SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
-				sampleBean);
-		if (otherSampleBeans != null) {
-			compositionService.copyAndSaveNanomaterialEntity(entityBean,
-					sampleBean, otherSampleBeans, user);
+		// save to other samples (only when user click [Submit] button.)
+		String dispatch = (String) theForm.get("dispatch");
+		if ("create".equals(dispatch)) {
+			SampleBean[] otherSampleBeans = 
+				prepareCopy(request, theForm, sampleBean);
+			if (otherSampleBeans != null) {
+				compositionService.copyAndSaveNanomaterialEntity(entityBean,
+						sampleBean, otherSampleBeans, user);
+			}
 		}
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
