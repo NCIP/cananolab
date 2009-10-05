@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebWorksHelpBook version="5.0" name="caNanoLab" context="caNanoLab" locale="en" xmlns="urn:WebWorks-Help-Book-Files-Schema">
+  <CommonWordsToSkip minlen="3">
+    a about after all also am an and another any are as at
+    be because been before being between both but by
+    came can come copyright corp corporation could
+    did do does
+    each etc
+    for from
+    get goes got
+    had has have he her here him himself his how
+    if in inc into is it its
+    let like
+    make many me might more most much must my
+    never nor not now
+    of off on one only or other our out over own
+    reserved rights
+    said same see set shall she should since so some still such
+    take than that the their them then there these they this those though through to too
+    under us use
+    very
+    was way we well were what when where which while who why will with would
+    yes yet you your
+   </CommonWordsToSkip>
+  <ScoringPrefs>
+    <meta name="keywords" weight="100" />
+    <meta name="description" weight="50" />
+    <meta name="summary" weight="50" />
+    <title weight="20" />
+    <h1 weight="15" />
+    <h2 weight="10" />
+    <caption weight="10" />
+    <h3 weight="7" />
+    <th weight="5" />
+    <h4 weight="5" />
+    <h5 weight="4" />
+    <h6 weight="3" />
+    <h7 weight="2" />
+  </ScoringPrefs>
+  <DocumentInfo>
+    <Document title="Welcome to the caNanoLab Online Help" href="Welcome.1.1.html" />
+    <Document title="Getting Started with caNanoLab" href="Getting%20Started.2.1.html" />
+    <Document title="Using caNanoLab Online Help" href="Getting%20Started.2.2.html" />
+    <Document title="About caNanoLab" href="Getting%20Started.2.3.html" />
+    <Document title="caNanoLab Functionality Overview" href="Getting%20Started.2.4.html" />
+    <Document title="Permissions and Visibility" href="Getting%20Started.2.5.html" />
+    <Document title="Welcome to caNanoLab Login Page" href="Getting%20Started.2.6.html" />
+    <Document title="Browsing Public Information" href="Getting%20Started.2.7.html" />
+    <Document title="Registering a New User" href="Getting%20Started.2.8.html" />
+    <Document title="Logging into caNanoLab/Updating Password" href="Getting%20Started.2.9.html" />
+    <Document title="Welcome to caNanoLab Home Page" href="Getting%20Started.2.10.html" />
+    <Document title="Managing Protocols" href="Manage%20Protocols.3.1.html" />
+    <Document title="Protocols Overview" href="Manage%20Protocols.3.2.html" />
+    <Document title="Description of a Protocol" href="Manage%20Protocols.3.3.html" />
+    <Document title="Submitting a Protocol" href="Manage%20Protocols.3.4.html" />
+    <Document title="Searching Existing Protocols" href="Manage%20Protocols.3.5.html" />
+    <Document title="Protocol Search Results" href="Manage%20Protocols.3.6.html" />
+    <Document title="Protocol Update Page" href="Manage%20Protocols.3.7.html" />
+    <Document title="Managing Samples" href="Manage%20Samples.4.1.html" />
+    <Document title="Samples Overview" href="Manage%20Samples.4.2.html" />
+    <Document title="Annotating a Sample" href="Manage%20Samples.4.3.html" />
+    <Document title="Submitting a Sample" href="Manage%20Samples.4.4.html" />
+    <Document title="Searching Existing Samples" href="Manage%20Samples.4.5.html" />
+    <Document title="Launching a Basic Search" href="Manage%20Samples.4.6.html" />
+    <Document title="Launching an Advanced Search" href="Manage%20Samples.4.7.html" />
+    <Document title="Sample Search Results" href="Manage%20Samples.4.8.html" />
+    <Document title="Updating a Sample" href="Manage%20Samples.4.9.html" />
+    <Document title="Performing a Remote Sample Search" href="Manage%20Samples.4.10.html" />
+    <Document title="Adding Publications to a Sample" href="Manage%20Samples.4.11.html" />
+    <Document title="Managing Sample Composition Annotations" href="Managing%20Composition.5.1.html" />
+    <Document title="Understanding the Navigation Tree" href="Managing%20Composition.5.2.html" />
+    <Document title="[Sample] Composition Overview" href="Managing%20Composition.5.3.html" />
+    <Document title="Adding Nanomaterial Entity Composition Annotations" href="Managing%20Composition.5.4.html" />
+    <Document title="Defining Nanomaterial Entity Properties" href="Managing%20Composition.5.5.html" />
+    <Document title="Biopolymer" href="Managing%20Composition.5.6.html" />
+    <Document title="Carbon Nanotube" href="Managing%20Composition.5.7.html" />
+    <Document title="Dendrimer" href="Managing%20Composition.5.8.html" />
+    <Document title="Emulsion" href="Managing%20Composition.5.9.html" />
+    <Document title="Fullerene" href="Managing%20Composition.5.10.html" />
+    <Document title="Liposome" href="Managing%20Composition.5.11.html" />
+    <Document title="Metal Particle" href="Managing%20Composition.5.12.html" />
+    <Document title="Nanohorn" href="Managing%20Composition.5.13.html" />
+    <Document title="Nanorod" href="Managing%20Composition.5.14.html" />
+    <Document title="Polymer" href="Managing%20Composition.5.15.html" />
+    <Document title="Quantum Dot" href="Managing%20Composition.5.16.html" />
+    <Document title="Defining Nanomaterial Composing Elements" href="Managing%20Composition.5.17.html" />
+    <Document title="Adding a File" href="Managing%20Composition.5.18.html" />
+    <Document title="Adding Functionalizing Entity Composition Annotations" href="Managing%20Composition.5.19.html" />
+    <Document title="Defining a Functionalizing Entity Summary" href="Managing%20Composition.5.20.html" />
+    <Document title="Defining [Funtionalizing Entity type] Properties" href="Managing%20Composition.5.21.html" />
+    <Document title="Defining Function Information" href="Managing%20Composition.5.22.html" />
+    <Document title="Adding a File" href="Managing%20Composition.5.23.html" />
+    <Document title="Adding Chemical Association Composition Annotations" href="Managing%20Composition.5.24.html" />
+    <Document title="Adding Composition Files" href="Managing%20Composition.5.25.html" />
+    <Document title="Managing Sample Characterizations" href="Managing%20Characterizations.6.1.html" />
+    <Document title="Understanding the Navigation Tree" href="Managing%20Characterizations.6.2.html" />
+    <Document title="[Sample] Characterization Overview" href="Managing%20Characterizations.6.3.html" />
+    <Document title="Submitting Characterizations" href="Managing%20Characterizations.6.4.html" />
+    <Document title="Adding a Physico-Chemical Characterization" href="Managing%20Characterizations.6.5.html" />
+    <Document title="Defining Physico-Chemical Characterization Summary" href="Managing%20Characterizations.6.6.html" />
+    <Document title="Defining Physico-Chemical [Characterization] Properties" href="Managing%20Characterizations.6.7.html" />
+    <Document title="Defining Physico-Chemical Design and Methods" href="Managing%20Characterizations.6.8.html" />
+    <Document title="Describing Results and Findings for Physico-Chemical Characterization" href="Managing%20Characterizations.6.9.html" />
+    <Document title="Adding a File" href="Managing%20Characterizations.6.10.html" />
+    <Document title="Adding Data and Conditions" href="Managing%20Characterizations.6.11.html" />
+    <Document title="Adding an In Vitro Characterization" href="Managing%20Characterizations.6.12.html" />
+    <Document title="Defining an In Vitro Characterization Summary" href="Managing%20Characterizations.6.13.html" />
+    <Document title="Assay Type Options for In Vitro Characterizations" href="Managing%20Characterizations.6.14.html" />
+    <Document title="Defining In Vitro [Characterization] Properties" href="Managing%20Characterizations.6.15.html" />
+    <Document title="Defining In Vitro Design and Methods" href="Managing%20Characterizations.6.16.html" />
+    <Document title="Describing Results and Findings for an In Vitro Characterization" href="Managing%20Characterizations.6.17.html" />
+    <Document title="Adding a File" href="Managing%20Characterizations.6.18.html" />
+    <Document title="Adding Data and Conditions" href="Managing%20Characterizations.6.19.html" />
+    <Document title="Adding an In Vivo Characterization" href="Managing%20Characterizations.6.20.html" />
+    <Document title="Defining an In Vivo Characterization Summary" href="Managing%20Characterizations.6.21.html" />
+    <Document title="Defining In Vivo Design and Methods" href="Managing%20Characterizations.6.22.html" />
+    <Document title="Describing Results and Findings for In Vivo Characterizations" href="Managing%20Characterizations.6.23.html" />
+    <Document title="Adding a File" href="Managing%20Characterizations.6.24.html" />
+    <Document title="Adding Data and Conditions" href="Managing%20Characterizations.6.25.html" />
+    <Document title="Viewing Characterizations Summary" href="Managing%20Characterizations.6.26.html" />
+    <Document title="Characterization Tasks" href="Managing%20Characterizations.6.27.html" />
+    <Document title="Printing a Characterization" href="Managing%20Characterizations.6.28.html" />
+    <Document title="Exporting Characterizations" href="Managing%20Characterizations.6.29.html" />
+    <Document title="Editing Characterizations" href="Managing%20Characterizations.6.30.html" />
+    <Document title="Copying Characterizations" href="Managing%20Characterizations.6.31.html" />
+    <Document title="Deleting a Characterization" href="Managing%20Characterizations.6.32.html" />
+    <Document title="Publication Tasks Associated with a Sample" href="Managing%20Characterizations.6.33.html" />
+    <Document title="Managing Publications" href="Manage%20Publications.7.1.html" />
+    <Document title="Publications Overview" href="Manage%20Publications.7.2.html" />
+    <Document title="Submitting a Publication" href="Manage%20Publications.7.3.html" />
+    <Document title="Searching Publications" href="Manage%20Publications.7.4.html" />
+    <Document title="Publications Search Results" href="Manage%20Publications.7.5.html" />
+    <Document title="Publication Summary Page" href="Manage%20Publications.7.6.html" />
+    <Document title="Editing Publications" href="Manage%20Publications.7.7.html" />
+    <Document title="Update Publication Page" href="Manage%20Publications.7.8.html" />
+    <Document title="Downloading a Publication" href="Manage%20Publications.7.9.html" />
+    <Document title="Deleting a Publication" href="Manage%20Publications.7.10.html" />
+    <Document title="caNanoLab Glossary" href="caNanoLab_Glossary.8.1.html" />
+    <Document title="Application Support" href="Application%20Support.9.1.html" />
+  </DocumentInfo>
+  <TopicMap>
+    <Topic name="Welcome" href="Welcome.1.1.html#1052621" />
+    <Topic name="welcome_login" href="Getting%20Started.2.6.html#1112801" />
+    <Topic name="register_user" href="Getting%20Started.2.8.html#1156990" />
+    <Topic name="update_password_help" href="Getting%20Started.2.9.html#1157009" />
+    <Topic name="welcome_workflow" href="Getting%20Started.2.10.html#1151003" />
+    <Topic name="manage_protocols_help" href="Manage%20Protocols.3.2.html#1144998" />
+    <Topic name="submit_protocol_help" href="Manage%20Protocols.3.4.html#1148872" />
+    <Topic name="search_protocol_help" href="Manage%20Protocols.3.5.html#1147811" />
+    <Topic name="protocol_search_results_help" href="Manage%20Protocols.3.6.html#1149120" />
+    <Topic name="manage_samples_help" href="Manage%20Samples.4.2.html#1175673" />
+    <Topic name="submit_sample_help" href="Manage%20Samples.4.4.html#1151789" />
+    <Topic name="search_sample_help" href="Manage%20Samples.4.5.html#1153194" />
+    <Topic name="sample_search_results_help" href="Manage%20Samples.4.8.html#1153267" />
+    <Topic name="composition_all_tab_help" href="Managing%20Composition.5.3.html#1555221" />
+    <Topic name="nanomaterial_entity_help" href="Managing%20Composition.5.4.html#1551405" />
+    <Topic name="function_entity_help" href="Managing%20Composition.5.19.html#1559578" />
+    <Topic name="chem_association_help" href="Managing%20Composition.5.24.html#1498074" />
+    <Topic name="compo_file_help" href="Managing%20Composition.5.25.html#1561615" />
+    <Topic name="char_all_tab_help" href="Managing%20Characterizations.6.3.html#1571625" />
+    <Topic name="submit_char_help" href="Managing%20Characterizations.6.4.html#1576213" />
+    <Topic name="add_in_vitro_char_help" href="Managing%20Characterizations.6.12.html#1571690" />
+    <Topic name="publications_all_tab_help" href="Managing%20Characterizations.6.33.html#1575209" />
+    <Topic name="manage_publications_help" href="Manage%20Publications.7.2.html#1123962" />
+    <Topic name="submit_publication_help" href="Manage%20Publications.7.3.html#1131845" />
+    <Topic name="search_publications_help" href="Manage%20Publications.7.4.html#1135396" />
+    <Topic name="publications_search_results_help" href="Manage%20Publications.7.5.html#1104802" />
+    <Topic name="publication_summary_help" href="Manage%20Publications.7.6.html#1142741" />
+    <Topic name="delete_doc_help" href="Manage%20Publications.7.10.html#1150515" />
+    <Topic name="glossary_help" href="caNanoLab_Glossary.8.1.html#1065170" />
+  </TopicMap>
+</WebWorksHelpBook>
