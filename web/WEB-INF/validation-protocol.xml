@@ -22,14 +22,7 @@
 				<arg position="0" key="protocol.version"
 					bundle="protocol" />
 			</field>
-			<field property="protocol.fileBean.domainFile.title" page="1" depends="validwhen,mask">
-				<arg position="0" key="protocol.title" bundle="protocol" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((*this* != null) or (protocol.fileBean.uploadedFile == null))
-					</var-value>
-				</var>
+			<field property="protocol.fileBean.domainFile.title" page="1" depends="mask">
 				<arg position="0" key="protocol.title" bundle="protocol" />
 				<msg name="mask" key="protocol.title.invalid" />
 				<var>
