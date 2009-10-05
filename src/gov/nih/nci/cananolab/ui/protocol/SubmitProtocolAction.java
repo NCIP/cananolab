@@ -38,10 +38,10 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
 		protocolBean
 				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
+		InitProtocolSetup.getInstance().persistProtocolDropdowns(
+				request, protocolBean);
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		service.saveProtocol(protocolBean, user);
-		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
-				protocolBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitProtocol.file",
 				protocolBean.getFileBean().getDomainFile().getTitle());
@@ -58,6 +58,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
+		InitProtocolSetup.getInstance().persistProtocolDropdowns(
+				request, protocolBean);
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -89,7 +91,6 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		List<ProtocolBean> protocols = service.findProtocolsBy(
 				selectedProtocolType, null, null, null, user);
 		request.getSession().setAttribute("protocolsByType", protocols);
-		ProtocolService protocolService = new ProtocolServiceLocalImpl();
 		return mapping.findForward("inputPage");
 	}
 
