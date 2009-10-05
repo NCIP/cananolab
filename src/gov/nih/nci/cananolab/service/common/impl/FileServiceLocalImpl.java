@@ -77,7 +77,7 @@ public class FileServiceLocalImpl implements FileService {
 		oStream.write(fileContent);
 	}
 
-	// save to the file system fileData is not empty
+	// save to the file system if fileData is not empty
 	public void writeFile(FileBean fileBean, UserBean user)
 			throws FileException, NoAccessException {
 		if (user == null || !user.isCurator()) {
@@ -89,9 +89,9 @@ public class FileServiceLocalImpl implements FileService {
 						Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 				String fullFileName = rootPath + "/"
 						+ fileBean.getDomainFile().getUri();
-				writeFile(fileBean.getNewFileData(), fullFileName);
-				assignVisibility(fileBean);
+				writeFile(fileBean.getNewFileData(), fullFileName);				
 			}
+			assignVisibility(fileBean);
 		} catch (Exception e) {
 			logger.error("Problem writing file "
 					+ fileBean.getDomainFile().getUri()
