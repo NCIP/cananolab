@@ -867,7 +867,7 @@ public class SampleServiceHelper {
 		}
 		for (Object obj : filteredResults) {
 			PointOfContact poc = (PointOfContact) obj;
-
+			pocs.add(poc);
 		}
 		return pocs;
 	}
