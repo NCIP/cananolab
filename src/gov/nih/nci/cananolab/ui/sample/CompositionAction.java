@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;

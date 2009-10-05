@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +54,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private boolean withProperties = false;
 
 	private ComposingElementBean theComposingElement = new ComposingElementBean();
-	
+
 	private String isPolymerized;
 
 	public NanomaterialEntityBean() {
@@ -87,9 +88,10 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		className = ClassUtils.getShortClassName(nanomaterialEntity.getClass()
 				.getName());
 		if (nanomaterialEntity.getComposingElementCollection() != null) {
-			for (ComposingElement composingElement : 
-					nanomaterialEntity.getComposingElementCollection()) {
-				composingElements.add(new ComposingElementBean(composingElement));
+			for (ComposingElement composingElement : nanomaterialEntity
+					.getComposingElementCollection()) {
+				composingElements
+						.add(new ComposingElementBean(composingElement));
 			}
 			Collections.sort(composingElements,
 					new Comparators.ComposingElementBeanDateComparator());
@@ -198,10 +200,10 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public void setupDomainEntity(String createdBy, String internalUriPath)
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
-		Class clazz = ClassUtils.getFullClass("nanomaterial." + className);			
+		Class clazz = ClassUtils.getFullClass("nanomaterial." + className);
 		if (clazz == null) {
 			clazz = OtherNanomaterialEntity.class;
-		} 
+		}
 		if (domainEntity == null) {
 			domainEntity = (NanomaterialEntity) clazz.newInstance();
 		}
@@ -223,7 +225,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			domainEntity = fullerene;
 		}
 		if (domainEntity.getId() == null
-				|| domainEntity.getCreatedBy() != null
+				|| !StringUtils.isEmpty(domainEntity.getCreatedBy())
 				&& domainEntity.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);

@@ -15,9 +15,9 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class FileBean {
 	protected File domainFile = new File();
@@ -127,7 +127,7 @@ public class FileBean {
 			domainFile.setId(null);
 		}
 		if (domainFile.getId() == null
-				|| domainFile.getCreatedBy() != null
+				|| !StringUtils.isEmpty(domainFile.getCreatedBy())
 				&& domainFile.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
@@ -136,15 +136,15 @@ public class FileBean {
 			// seconds
 			domainFile.setCreatedDate(DateUtils.addSecondsToCurrentDate(index));
 		}
-		if (uploadedFile != null && uploadedFile.getFileName().length() > 0) {
+		if (uploadedFile != null
+				&& !StringUtils.isEmpty(uploadedFile.getFileName())) {
 			domainFile.setName(uploadedFile.getFileName());
 			newFileData = uploadedFile.getFileData();
 		} else {
 			newFileData = null;
 		}
 		// if entered external url
-		if (domainFile.getUriExternal() && externalUrl != null
-				&& externalUrl.length() > 0) {
+		if (domainFile.getUriExternal() && !StringUtils.isEmpty(externalUrl)) {
 			domainFile.setUri(externalUrl);
 			domainFile.setName(externalUrl);
 		} else {
@@ -157,7 +157,7 @@ public class FileBean {
 			}
 		}
 
-		if (keywordsStr != null) {
+		if (!StringUtils.isEmpty(keywordsStr)) {
 			if (domainFile.getKeywordCollection() != null) {
 				domainFile.getKeywordCollection().clear();
 			} else {

@@ -51,8 +51,7 @@ public class ExperimentConfigBean {
 		if (domain.getTechnique() == null) {
 			return techniqueDisplayName;
 		}
-		if (domain.getTechnique().getAbbreviation() != null
-				&& domain.getTechnique().getAbbreviation().trim().length() > 0) {
+		if (!StringUtils.isEmpty(domain.getTechnique().getAbbreviation())) {
 			techniqueDisplayName = domain.getTechnique().getType() + "("
 					+ domain.getTechnique().getAbbreviation() + ")";
 		} else {
@@ -139,12 +138,10 @@ public class ExperimentConfigBean {
 			sb.append(instrument.getType());
 			sb.append(" ");
 		}
-		if (instrument.getManufacturer() != null
-				&& instrument.getManufacturer().trim().length() > 0) {
+		if (!StringUtils.isEmpty(instrument.getManufacturer())) {
 			sb.append("(");
 			sb.append(instrument.getManufacturer());
-			if (instrument.getModelName() != null
-					&& instrument.getModelName().trim().length() > 0) {
+			if (!StringUtils.isEmpty(instrument.getModelName())) {
 				sb.append(", ");
 				sb.append(instrument.getModelName());
 

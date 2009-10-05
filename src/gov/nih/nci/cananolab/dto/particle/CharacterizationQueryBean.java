@@ -1,11 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import gov.nih.nci.cananolab.util.StringUtils;
 
 /**
  * Information for the characterization query form

@@ -236,7 +236,7 @@ public class AdvancedSampleSearchBean {
 	public List<String> getQueryAsColumnNames() {
 		List<String> columnNames = new ArrayList<String>();
 		for (SampleQueryBean query : sampleQueries) {
-			if (query.getQueryAsColumnName() != null)
+			if (!StringUtils.isEmpty(query.getQueryAsColumnName()))
 				columnNames.add(query.getQueryAsColumnName());
 		}
 		for (CompositionQueryBean query : compositionQueries) {

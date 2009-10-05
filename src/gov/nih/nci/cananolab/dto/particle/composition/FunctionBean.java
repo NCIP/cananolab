@@ -139,7 +139,7 @@ public class FunctionBean {
 		}
 		domainFunction.setDescription(description);
 		if (domainFunction.getId() == null
-				|| domainFunction.getCreatedBy() != null
+				|| !StringUtils.isEmpty(domainFunction.getCreatedBy())
 				&& domainFunction.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFunction.setCreatedBy(createdBy);

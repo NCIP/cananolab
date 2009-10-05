@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
 import gov.nih.nci.cananolab.util.SAXEventSwitcher;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -190,7 +191,8 @@ public class EndNoteXMLHandler {
 		}
 
 		public void endElement(String uri, String localName, String qname) {
-			if (url != null && url.length() > 0 && url.indexOf("http:") != -1) {
+			if (!StringUtils.isEmpty(url.toString())
+					&& url.indexOf("http:") != -1) {
 				publication.setUriExternal(true);
 				publication.setUri(url.toString());
 				int index = url.toString().indexOf("list_uids=", 0);

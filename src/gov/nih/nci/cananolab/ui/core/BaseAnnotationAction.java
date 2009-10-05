@@ -38,9 +38,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for all annotation actions
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
@@ -50,7 +50,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
 	 * of sample based on user's privilege. Finally, set the SampleBean in
 	 * request object.
-	 *
+	 * 
 	 * @param theForm
 	 * @param request
 	 * @param location
@@ -61,7 +61,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	public SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request, String location) throws Exception {
 		String sampleId = request.getParameter("sampleId");
-		if (sampleId != null) {
+		if (!StringUtils.isEmpty(sampleId)) {
 			theForm.set("sampleId", sampleId);
 		} else {
 			sampleId = (String) request.getAttribute("sampleId");
@@ -112,7 +112,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -142,7 +142,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			}
 		}
 		if (!Constants.LOCAL_SITE.equals(location)) {
-			StringBuilder remoteUrl = getDownloadUrl(request, serviceUrl, location);
+			StringBuilder remoteUrl = getDownloadUrl(request, serviceUrl,
+					location);
 			remoteUrl.append(fileId);
 			response.sendRedirect(remoteUrl.toString());
 			return null;
@@ -153,8 +154,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {
-			ExportUtils.prepareReponseForImage(response,
-				fileBean.getDomainFile().getName());
+			ExportUtils.prepareReponseForImage(response, fileBean
+					.getDomainFile().getName());
 
 			InputStream in = null;
 			OutputStream out = null;
@@ -251,10 +252,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				noErrors = false;
 				// the case that user switch from url to upload file, but no
 				// file is selected
-			} else if ((fileBean.getUploadedFile() == null || fileBean
-					.getUploadedFile().getFileName().length() == 0)
-					&& fileBean.getExternalUrl() != null
-					&& fileBean.getExternalUrl().trim().length() > 0) {
+			} else if ((fileBean.getUploadedFile() == null || StringUtils
+					.isEmpty(fileBean.getUploadedFile().getFileName()))
+					&& !StringUtils.isEmpty(fileBean.getExternalUrl())) {
 				ActionMessage msg = new ActionMessage("errors.required",
 						"uploaded file");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -266,9 +266,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Retrieve a value from request by name in the order of
-	 * Parameter - Request Attribute - Session Attribute
-	 *
+	 * Retrieve a value from request by name in the order of Parameter - Request
+	 * Attribute - Session Attribute
+	 * 
 	 * @param request
 	 * @param name
 	 * @return
@@ -287,7 +287,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	/**
 	 * If user entered customized value by selecting [other] option previously,
 	 * then add the value in collection, so user can see it again.
-	 *
+	 * 
 	 * @param request
 	 * @param value
 	 * @param sessionName
@@ -296,8 +296,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected void setOtherValueOption(HttpServletRequest request,
 			String value, String sessionName) {
 		if (!StringUtils.isEmpty(value)) {
-			Collection<String> otherTypes = (Collection<String>)
-				request.getSession().getAttribute(sessionName);
+			Collection<String> otherTypes = (Collection<String>) request
+					.getSession().getAttribute(sessionName);
 			if (otherTypes != null && !otherTypes.contains(value)) {
 				otherTypes.add(value);
 			}
@@ -306,7 +306,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Returns a partial URL for downloading a file from local/remote host.
-	 *
+	 * 
 	 * @param request
 	 * @param serviceUrl
 	 * @param location
@@ -321,7 +321,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (StringUtils.isEmpty(serviceUrl)) {
 			sb.append(request.getRequestURL().toString());
 		} else {
-			// assume grid service is located on the same server and port as webapp
+			// assume grid service is located on the same server and port as
+			// webapp
 			URL remoteUrl = new URL(serviceUrl);
 			URL localURL = new URL(request.getRequestURL().toString());
 			String actionPath = localURL.getPath();

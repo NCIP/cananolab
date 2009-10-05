@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,13 +88,13 @@ public class CharacterizationBean {
 	private Transfection transfection = new Transfection();
 
 	private String isSoluble; // Data holder for Boolean field in Solubility.
-	
+
 	public CharacterizationBean() {
 		// initialize finding matrix
-//		theFinding.setNumberOfColumns(1);
-//		theFinding.setNumberOfRows(1);
-//		theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
-//				.getNumberOfRows());
+		// theFinding.setNumberOfColumns(1);
+		// theFinding.setNumberOfRows(1);
+		// theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
+		// .getNumberOfRows());
 	}
 
 	public CharacterizationBean(Characterization chara) {
@@ -164,15 +165,17 @@ public class CharacterizationBean {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(Calendar.getInstance().getTime());
-		Collection<ExperimentConfig> oldConfigs = copy.getExperimentConfigCollection();
+		Collection<ExperimentConfig> oldConfigs = copy
+				.getExperimentConfigCollection();
 		if (oldConfigs == null || oldConfigs.isEmpty()) {
 			copy.setExperimentConfigCollection(null);
 		} else {
 			/**
-			 * Create new set for configs, otherwise will lost old configs in old bean.
+			 * Create new set for configs, otherwise will lost old configs in
+			 * old bean.
 			 */
-			Set<ExperimentConfig> newConfigs = 
-				new HashSet<ExperimentConfig>(oldConfigs);
+			Set<ExperimentConfig> newConfigs = new HashSet<ExperimentConfig>(
+					oldConfigs);
 			for (ExperimentConfig newConfig : newConfigs) {
 				newConfig.setId(null);
 				newConfig.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
@@ -181,11 +184,12 @@ public class CharacterizationBean {
 			copy.setExperimentConfigCollection(newConfigs);
 		}
 		Collection<Finding> oldFindings = copy.getFindingCollection();
-		if (oldFindings == null	|| oldFindings.isEmpty()) {
+		if (oldFindings == null || oldFindings.isEmpty()) {
 			copy.setFindingCollection(null);
 		} else {
 			/**
-			 * Create new set for finding, otherwise will lost old finding in old bean.
+			 * Create new set for finding, otherwise will lost old finding in
+			 * old bean.
 			 */
 			Set<Finding> newFindings = new HashSet<Finding>(oldFindings);
 			for (Finding finding : newFindings) {
@@ -200,8 +204,10 @@ public class CharacterizationBean {
 						Set<Datum> newDatums = new HashSet<Datum>(oldDatums);
 						for (Datum datum : newDatums) {
 							datum.setId(null);
-							datum.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-							datum.setCreatedDate(Calendar.getInstance().getTime());
+							datum
+									.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+							datum.setCreatedDate(Calendar.getInstance()
+									.getTime());
 						}
 						finding.setDatumCollection(newDatums);
 					}
@@ -213,7 +219,8 @@ public class CharacterizationBean {
 					Set<File> newFiles = new HashSet<File>(oldFiles);
 					for (File file : newFiles) {
 						file.setId(null);
-						file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+						file
+								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 						file.setCreatedDate(Calendar.getInstance().getTime());
 					}
 					finding.setFileCollection(newFiles);
@@ -226,9 +233,9 @@ public class CharacterizationBean {
 
 	public void setupDomain(String createdBy) throws Exception {
 		Class clazz = ClassUtils.getFullClass(className);
-		if (clazz==null) {
+		if (clazz == null) {
 			clazz = OtherCharacterization.class;
-		} 
+		}
 		if (domainChar == null) {
 			domainChar = (Characterization) clazz.newInstance();
 		}
@@ -252,7 +259,7 @@ public class CharacterizationBean {
 			domainChar = transfection;
 		}
 		if (domainChar.getId() == null
-				|| domainChar.getCreatedBy() != null
+				|| !StringUtils.isEmpty(domainChar.getCreatedBy())
 				&& domainChar.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainChar.setCreatedBy(createdBy);
@@ -280,8 +287,8 @@ public class CharacterizationBean {
 			domainChar.getExperimentConfigCollection().add(config.getDomain());
 		}
 
-		if (protocolBean != null && protocolBean.getDomain().getId() != null &&
-			protocolBean.getDomain().getId().longValue() != 0) {
+		if (protocolBean != null && protocolBean.getDomain().getId() != null
+				&& protocolBean.getDomain().getId().longValue() != 0) {
 			domainChar.setProtocol(protocolBean.getDomain());
 		} else {
 			domainChar.setProtocol(null);

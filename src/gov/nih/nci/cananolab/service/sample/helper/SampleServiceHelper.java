@@ -79,7 +79,7 @@ public class SampleServiceHelper {
 		// limitations in pagination in SDK
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
 				.setProjection(Projections.distinct(Property.forName("name")));
-		if (samplePointOfContact != null && samplePointOfContact.length() > 0) {
+		if (!StringUtils.isEmpty(samplePointOfContact)) {
 			TextMatchMode pocMatchMode = new TextMatchMode(samplePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("primaryPointOfContact", "pointOfContact");

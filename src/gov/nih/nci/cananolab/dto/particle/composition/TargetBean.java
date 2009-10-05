@@ -104,7 +104,7 @@ public class TargetBean {
 		domainTarget.setName(name);
 		domainTarget.setDescription(description);
 		if (domainTarget.getId() == null
-				|| (domainTarget.getCreatedBy() != null && domainTarget
+				|| (!StringUtils.isEmpty(domainTarget.getCreatedBy()) && domainTarget
 						.getCreatedBy().equals(
 								Constants.AUTO_COPY_ANNOTATION_PREFIX))) {
 			domainTarget.setCreatedBy(createdBy);

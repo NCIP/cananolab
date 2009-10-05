@@ -26,6 +26,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -350,8 +351,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 				sample.setPrimaryPointOfContact(primaryPOC);
 
 				SampleBean sampleBean = new SampleBean(sample);
-				if (columns.length > 5 && columns[5] != null
-						&& columns[5].length() > 0) {
+				if (columns.length > 5 && !StringUtils.isEmpty(columns[5])) {
 					String[] nanoEntityClazzNames = columns[5]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (nanoEntityClazzNames != null) {
@@ -359,8 +359,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 								.setNanomaterialEntityClassNames(nanoEntityClazzNames);
 					}
 				}
-				if (columns.length > 6 && columns[6] != null
-						&& columns[6].length() > 0) {
+				if (columns.length > 6 && !StringUtils.isEmpty(columns[6])) {
 					String[] funcEntityClazzNames = columns[6]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (funcEntityClazzNames != null) {
@@ -369,8 +368,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 					}
 				}
 				// functionClassNames
-				if (columns.length > 7 && columns[7] != null
-						&& columns[7].length() > 0) {
+				if (columns.length > 7 && !StringUtils.isEmpty(columns[7])) {
 					String[] functionClazzNames = columns[7]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (functionClazzNames != null) {
@@ -378,8 +376,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 					}
 				}
 				// chemicalAssociationClassNames
-				if (columns.length > 8 && columns[8] != null
-						&& columns[8].length() > 0) {
+				if (columns.length > 8 && !StringUtils.isEmpty(columns[8])) {
 					String[] chemicalAssociationClazzNames = columns[8]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (chemicalAssociationClazzNames != null) {
@@ -388,8 +385,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 					}
 				}
 				// characterizationClassNames
-				if (columns.length > 9 && columns[9] != null
-						&& columns[9].length() > 0) {
+				if (columns.length > 9 && !StringUtils.isEmpty(columns[9])) {
 					String[] characterizationClazzNames = columns[9]
 							.split(Constants.VIEW_CLASSNAME_DELIMITER);
 					if (characterizationClazzNames != null) {

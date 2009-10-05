@@ -89,7 +89,7 @@ public class ComposingElementBean {
 		StringBuffer buffer = new StringBuffer();
 		if (!StringUtils.isEmpty(getDomain().getType())) {
 			buffer.append(getDomain().getType());
-		}		
+		}
 		if (!StringUtils.isEmpty(getDomain().getName())) {
 			buffer.append(" (");
 			buffer.append(getDomain().getName());
@@ -136,7 +136,7 @@ public class ComposingElementBean {
 			domain.setId(null);
 		}
 		if (domain.getId() == null
-				|| domain.getCreatedBy() != null
+				|| !StringUtils.isEmpty(domain.getCreatedBy())
 				&& domain.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domain.setCreatedBy(createdBy);

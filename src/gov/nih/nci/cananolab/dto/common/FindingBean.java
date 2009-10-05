@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +40,7 @@ public class FindingBean {
 
 	/**
 	 * Constructor for CharBean copying & "findFindingById()".
+	 * 
 	 * @param finding
 	 */
 	public FindingBean(Finding finding) {
@@ -49,8 +51,8 @@ public class FindingBean {
 			Collections.sort(data, new Comparators.DatumDateComparator());
 		}
 
-		if (finding.getFileCollection() != null && 
-			!finding.getFileCollection().isEmpty()) {
+		if (finding.getFileCollection() != null
+				&& !finding.getFileCollection().isEmpty()) {
 			for (File file : finding.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
@@ -59,7 +61,8 @@ public class FindingBean {
 
 		// generate matrix
 		if (data != null && !data.isEmpty()) {
-			// get data matrix column headers in order and generate a map based on headers.
+			// get data matrix column headers in order and generate a map based
+			// on headers.
 			Map<ColumnHeader, List<Datum>> datumMap = new HashMap<ColumnHeader, List<Datum>>();
 			Map<ColumnHeader, List<Condition>> conditionMap = new HashMap<ColumnHeader, List<Condition>>();
 
@@ -237,7 +240,7 @@ public class FindingBean {
 			domain.setId(null);
 		}
 		if (domain.getId() == null
-				|| domain.getCreatedBy() != null
+				|| !StringUtils.isEmpty(domain.getCreatedBy())
 				&& domain.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domain.setCreatedBy(createdBy);

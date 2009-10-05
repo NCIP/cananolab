@@ -1,12 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.FetchMode;
-
 import gov.nih.nci.cananolab.dto.BaseQueryBean;
 import gov.nih.nci.cananolab.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Information for the composition query form

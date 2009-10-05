@@ -271,14 +271,14 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		domainEntity.setMolecularFormula(molecularFormula);
 		domainEntity.setMolecularFormulaType(molecularFormulaType);
 		domainEntity.setName(name);
-		if (value != null && value.trim().length() > 0) {
+		if (!StringUtils.isEmpty(value)) {
 			domainEntity.setValue(new Float(value));
 		} else {
 			domainEntity.setValue(null);
 		}
 		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setPubChemDataSourceName(pubChemDataSourceName);
-		if (pubChemId != null && pubChemId.trim().length() > 0) {
+		if (!StringUtils.isEmpty(pubChemId)) {
 			domainEntity.setPubChemId(new Long(pubChemId));
 		} else {
 			domainEntity.setPubChemId(null);
@@ -337,8 +337,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		StringBuffer buffer = new StringBuffer();
 		if (!StringUtils.isEmpty(molecularFormula)) {
 			buffer.append(molecularFormula);
-			if (molecularFormulaType != null
-					&& molecularFormulaType.length() > 0) {
+			if (!StringUtils.isEmpty(molecularFormulaType)) {
 				buffer.append(" (");
 				buffer.append(molecularFormulaType);
 				buffer.append(")");
@@ -412,7 +411,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			buffer.append(" (");
 			buffer.append(getDomainEntity().getName());
 			buffer.append(")");
-		}		
+		}
 		return buffer.toString();
 	}
 

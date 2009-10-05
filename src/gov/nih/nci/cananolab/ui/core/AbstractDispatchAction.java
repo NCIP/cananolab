@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Enumeration;
 
@@ -70,6 +71,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 
 	/**
 	 * Get the page number used in display tag library pagination
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -87,21 +89,20 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		}
 		return page;
 	}
-	
+
 	public String getBrowserDispatch(HttpServletRequest request) {
 		String dispatch = request.getParameter("dispatch");
 		// get the dispatch value from the URL in the browser address bar
 		// used in case of validation
 		if (dispatch != null
-				&& request
-						.getAttribute("javax.servlet.forward.query_string") != null) {
+				&& request.getAttribute("javax.servlet.forward.query_string") != null) {
 			String browserQueryString = request.getAttribute(
 					"javax.servlet.forward.query_string").toString();
-			if (browserQueryString != null) {
+			if (!StringUtils.isEmpty(browserQueryString)) {
 				String browserDispatch = browserQueryString.replaceAll(
 						"dispatch=(.+)&(.+)", "$1");
 				return browserDispatch;
-			}			
+			}
 		}
 		return "";
 	}

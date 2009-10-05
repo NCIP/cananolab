@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
@@ -115,7 +116,7 @@ public class DWRPointOfContactManager {
 				&& sample.getPrimaryPOCBean().getDomain().getId() != null) {
 			orgName = sample.getPrimaryPOCBean().getDomain().getOrganization()
 					.getName();
-			if (orgName!=null) {
+			if (!StringUtils.isEmpty(orgName)) {
 				visibilityGroup.remove(orgName);
 			}
 		}

@@ -132,19 +132,19 @@ public class PublicationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.setProjection(Projections.distinct(Property.forName("id")));
 
-		if (title != null && title.length() > 0) {
+		if (!StringUtils.isEmpty(title)) {
 			TextMatchMode titleMatchMode = new TextMatchMode(title);
 			crit.add(Restrictions.ilike("title", titleMatchMode
 					.getUpdatedText(), titleMatchMode.getMatchMode()));
 		}
-		if (category != null && category.length() > 0) {
+		if (!StringUtils.isEmpty(category)) {
 			TextMatchMode categoryMatchMode = new TextMatchMode(category);
 			crit.add(Restrictions.ilike("category", categoryMatchMode
 					.getUpdatedText(), categoryMatchMode.getMatchMode()));
 		}
 
 		// pubMedId
-		if (pubMedId != null && pubMedId.length() > 0) {
+		if (!StringUtils.isEmpty(pubMedId)) {
 			TextMatchMode pubMedIdMatchMode = new TextMatchMode(pubMedId);
 			Long pubMedIdLong = null;
 			try {
@@ -155,7 +155,7 @@ public class PublicationServiceHelper {
 			}
 			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
 		}
-		if (digitalObjectId != null && digitalObjectId.length() > 0) {
+		if (!StringUtils.isEmpty(digitalObjectId)) {
 			TextMatchMode digitalObjectIdMatchMode = new TextMatchMode(
 					digitalObjectId);
 			crit.add(Restrictions.ilike("digitalObjectId",
@@ -165,7 +165,6 @@ public class PublicationServiceHelper {
 
 		// researchArea
 		if (researchArea != null && researchArea.length > 0) {
-
 			Disjunction disjunction = Restrictions.disjunction();
 			for (String research : researchArea) {
 				Criterion crit1 = Restrictions.like("researchArea", research,
@@ -682,8 +681,8 @@ public class PublicationServiceHelper {
 			ExportUtils.createCell(row, 3, headerStyle, PUB_STATUS);
 
 			// Output data of report
-			SortedMap<String, List<PublicationBean>> pubs = 
-				summaryBean.getCategory2Publications();
+			SortedMap<String, List<PublicationBean>> pubs = summaryBean
+					.getCategory2Publications();
 			List<PublicationBean> pubBeans = pubs.get(category);
 			for (PublicationBean pubBean : pubBeans) {
 				Publication pub = (Publication) pubBean.getDomainFile();
@@ -705,7 +704,7 @@ public class PublicationServiceHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param pubBean
@@ -714,8 +713,8 @@ public class PublicationServiceHelper {
 	private static String getBibliographyInfo(PublicationBean pubBean) {
 		Publication pub = (Publication) pubBean.getDomainFile();
 		List<String> strs = new ArrayList<String>();
-		
-		//1.Author name.
+
+		// 1.Author name.
 		if (!pubBean.getAuthors().isEmpty()) {
 			List<String> strList = new ArrayList<String>();
 			for (Author author : pubBean.getAuthors()) {
@@ -726,22 +725,23 @@ public class PublicationServiceHelper {
 			}
 			strs.add(StringUtils.join(strList, ", "));
 		}
-		
-		//2.Title.
+
+		// 2.Title.
 		if (!StringUtils.isEmpty(pub.getTitle())) {
 			if (pub.getTitle().endsWith(".")) {
-				strs.add(pub.getTitle().substring(0, pub.getTitle().length() - 1));
+				strs.add(pub.getTitle().substring(0,
+						pub.getTitle().length() - 1));
 			} else {
 				strs.add(pub.getTitle());
 			}
 		}
-		
-		//3.Journal Name.
+
+		// 3.Journal Name.
 		if (!StringUtils.isEmpty(pub.getJournalName())) {
 			strs.add(pub.getJournalName());
 		}
-		
-		//4.Publish Info Name.
+
+		// 4.Publish Info Name.
 		String publishInfo = "";
 		if (pub.getYear() != null) {
 			publishInfo += pub.getYear().toString() + "; ";
@@ -749,26 +749,26 @@ public class PublicationServiceHelper {
 		if (!StringUtils.isEmpty((pub.getVolume()))) {
 			publishInfo += pub.getVolume() + ":";
 		}
-		if (!StringUtils.isEmpty(pub.getVolume()) &&
-			!StringUtils.isEmpty(pub.getStartPage()) &&
-			!StringUtils.isEmpty(pub.getEndPage())) {
+		if (!StringUtils.isEmpty(pub.getVolume())
+				&& !StringUtils.isEmpty(pub.getStartPage())
+				&& !StringUtils.isEmpty(pub.getEndPage())) {
 			publishInfo += pub.getStartPage() + '-' + pub.getEndPage();
 		}
 		strs.add(publishInfo);
-		
-		//5.PMID.
+
+		// 5.PMID.
 		if (pub.getPubMedId() != null && pub.getPubMedId() != 0) {
 			strs.add("PMID: " + pub.getPubMedId());
 		}
-				
-		//6.DOI.
+
+		// 6.DOI.
 		if (!StringUtils.isEmpty(pub.getDigitalObjectId())) {
 			strs.add("DOI: " + pub.getDigitalObjectId());
 		}
-		
-		//7.Publication Name.
+
+		// 7.Publication Name.
 		strs.add(pub.getName());
-		
+
 		return StringUtils.join(strs, ". ") + '.';
 	}
 
