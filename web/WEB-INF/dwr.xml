@@ -122,7 +122,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
 			<param name="include"
-				value="type, name, pubChemDataSourceName, pubChemId, value, valueUnit, molecularFormula, molecularFormulaType, description" />
+				value="id, type, name, pubChemDataSourceName, pubChemId, value, valueUnit, molecularFormula, molecularFormulaType, description" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.FunctionBean">
@@ -162,7 +162,7 @@
 		</convert>
 		<convert converter="bean" match="gov.nih.nci.cananolab.domain.common.File">
 			<param name="exclude"
-				value="keywordCollection, findingCollection, datumCollection, protocol" />
+				value="id, keywordCollection, findingCollection, datumCollection, protocol" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
