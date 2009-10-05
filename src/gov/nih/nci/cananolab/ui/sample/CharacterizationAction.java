@@ -458,6 +458,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
 		String tab = (String) getValueFromRequest(request, "tab");
+		if (tab == null) {
+			tab = "ALL"; // default tab to all;
+		}
 		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
 			request.getSession().removeAttribute("tab");
