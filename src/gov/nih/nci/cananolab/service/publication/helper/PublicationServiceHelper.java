@@ -667,40 +667,47 @@ public class PublicationServiceHelper {
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
-		for (String category : summaryBean.getPublicationCategories()) {
-			int rowIndex = 0;
-
-			// Create one work sheet for each category.
-			HSSFSheet sheet = wb.createSheet(category);
-			row = sheet.createRow(rowIndex++);
-
-			// Output header of report
-			ExportUtils.createCell(row, 0, headerStyle, BIBLIOBRAPHY_INFO);
-			ExportUtils.createCell(row, 1, headerStyle, RESEARCH_CATEGORY);
-			ExportUtils.createCell(row, 2, headerStyle, DESCRIPTION);
-			ExportUtils.createCell(row, 3, headerStyle, PUB_STATUS);
-
-			// Output data of report
-			SortedMap<String, List<PublicationBean>> pubs = summaryBean
-					.getCategory2Publications();
-			List<PublicationBean> pubBeans = pubs.get(category);
-			for (PublicationBean pubBean : pubBeans) {
-				Publication pub = (Publication) pubBean.getDomainFile();
+		Set<String> categories = summaryBean.getPublicationCategories();
+		if (categories != null & !categories.isEmpty()) {
+			for (String category : categories) {
+				int rowIndex = 0;
+	
+				// Create one work sheet for each category.
+				HSSFSheet sheet = wb.createSheet(category);
 				row = sheet.createRow(rowIndex++);
-
-				// Bibliography Info: cell index = 0.
-				ExportUtils.createCell(row, 0, getBibliographyInfo(pubBean));
-
-				// Research Category: cell index = 1.
-				ExportUtils.createCell(row, 1, pub.getResearchArea());
-
-				// Description: cell index = 2.
-				if (!StringUtils.isEmpty(pub.getDescription())) {
-					ExportUtils.createCell(row, 2, pub.getDescription());
+	
+				// Output header of report
+				ExportUtils.createCell(row, 0, headerStyle, BIBLIOBRAPHY_INFO);
+				ExportUtils.createCell(row, 1, headerStyle, RESEARCH_CATEGORY);
+				ExportUtils.createCell(row, 2, headerStyle, DESCRIPTION);
+				ExportUtils.createCell(row, 3, headerStyle, PUB_STATUS);
+	
+				// Output data of report
+				SortedMap<String, List<PublicationBean>> pubs = 
+					summaryBean.getCategory2Publications();
+				if (pubs != null && !pubs.isEmpty()) {
+					List<PublicationBean> pubBeans = pubs.get(category);
+					if (pubBeans != null && !pubBeans.isEmpty()) {
+						for (PublicationBean pubBean : pubBeans) {
+							Publication pub = (Publication) pubBean.getDomainFile();
+							row = sheet.createRow(rowIndex++);
+			
+							// Bibliography Info: cell index = 0.
+							ExportUtils.createCell(row, 0, getBibliographyInfo(pubBean));
+			
+							// Research Category: cell index = 1.
+							ExportUtils.createCell(row, 1, pub.getResearchArea());
+			
+							// Description: cell index = 2.
+							if (!StringUtils.isEmpty(pub.getDescription())) {
+								ExportUtils.createCell(row, 2, pub.getDescription());
+							}
+			
+							// Publication Status: cell index = 3.
+							ExportUtils.createCell(row, 3, pub.getStatus());
+						}
+					}
 				}
-
-				// Publication Status: cell index = 3.
-				ExportUtils.createCell(row, 3, pub.getStatus());
 			}
 		}
 	}

@@ -526,18 +526,6 @@ public class CharacterizationServiceLocalImpl implements
 		Characterization copy = charBean.getDomainCopy(copyData);
 		CharacterizationBean copyBean = new CharacterizationBean(copy);
 		try {
-			// copy file visibility
-			for (FindingBean findingBean : copyBean.getFindings()) {
-				for (FileBean fileBean : findingBean.getFiles()) {
-					fileHelper.retrieveVisibilityAndContentForCopiedFile(
-							fileBean, user);
-				}
-			}
-		} catch (Exception e) {
-			String error = "Error setting visibility of the copy.";
-			throw new CharacterizationException(error, e);
-		}
-		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				/**
 				 * Need to save associate Config & Finding in copy bean first,
@@ -570,6 +558,18 @@ public class CharacterizationServiceLocalImpl implements
 			throw e;
 		} catch (Exception e) {
 			String error = "Error saving the copy of characterization.";
+			throw new CharacterizationException(error, e);
+		}
+		try {
+			// copy file visibility
+			for (FindingBean findingBean : copyBean.getFindings()) {
+				for (FileBean fileBean : findingBean.getFiles()) {
+					fileHelper.retrieveVisibilityAndContentForCopiedFile(
+							fileBean, user);
+				}
+			}
+		} catch (Exception e) {
+			String error = "Error setting visibility of the copy.";
 			throw new CharacterizationException(error, e);
 		}
 	}
