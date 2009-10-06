@@ -13,7 +13,7 @@
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<!-- Associations mapping for the Finding class -->
-		<set name="fileCollection" table="finding_file" lazy="true" cascade="save-update">
+		<set name="fileCollection" table="finding_file" lazy="true" cascade="all-delete-orphan">
 			<cache usage="read-write" />
 			<key column="finding_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true"/>
