@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
@@ -179,6 +180,12 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 				file.setId(null);
 				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				file.setCreatedDate(new Date());
+				Collection<Keyword> keywords = file.getKeywordCollection();
+				file.setKeywordCollection(new HashSet<Keyword>());
+				file.getKeywordCollection().addAll(keywords);
+				for (Keyword keyword : file.getKeywordCollection()) {
+					keyword.setId(null);
+				}
 			}
 		}
 		return copy;

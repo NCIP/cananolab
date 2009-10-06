@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
@@ -156,6 +157,16 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 				file.setId(null);
 				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				file.setCreatedDate(new Date());
+				if (file.getKeywordCollection().isEmpty()) {
+					file.setKeywordCollection(null);
+				} else {
+					Collection<Keyword> keywords = file.getKeywordCollection();
+					file.setKeywordCollection(new HashSet<Keyword>());
+					file.getKeywordCollection().addAll(keywords);
+					for (Keyword keyword : file.getKeywordCollection()) {
+						keyword.setId(null);
+					}
+				}
 			}
 		}
 		return copy;
