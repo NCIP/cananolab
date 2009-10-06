@@ -261,6 +261,8 @@ public class SampleServiceLocalImpl implements SampleService {
 					FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+			//used for delete check
+			crit.setFetchMode("sampleComposition.chemicalAssociationCollection", FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
