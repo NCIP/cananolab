@@ -24,9 +24,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Utility service for file retrieving and writing.
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class FileServiceHelper {
 	private Logger logger = Logger.getLogger(FileServiceHelper.class);
@@ -42,7 +42,7 @@ public class FileServiceHelper {
 
 	/**
 	 * Load the file for the given fileId from the database
-	 *
+	 * 
 	 * @param fileId
 	 * @return
 	 */
@@ -93,7 +93,9 @@ public class FileServiceHelper {
 		File file = findFileByUri(copy.getDomainFile().getUri());
 		List<String> accessibleGroups = authService.getAccessibleGroups(file
 				.getId().toString(), Constants.CSM_READ_ROLE);
-		copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
+		if (accessibleGroups != null) {
+			copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
+		}
 		if (file != null) {
 			byte[] content = this.getFileContent(file.getId(), user);
 			copy.setNewFileData(content);
@@ -118,7 +120,7 @@ public class FileServiceHelper {
 
 	/**
 	 * Get the content of the file into a byte array.
-	 *
+	 * 
 	 * @param fileId
 	 * @return
 	 * @throws FileException
@@ -178,7 +180,7 @@ public class FileServiceHelper {
 	/**
 	 * Check if file is accessible first. If so, retrieve visibility for files.
 	 * If no, remove the file from the list.
-	 *
+	 * 
 	 * @param fileBeans
 	 * @param user
 	 * @throws CompositionException
