@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -22,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -336,5 +339,51 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		sb.append(location).append("&fileId=");
 
 		return sb;
+	}
+	
+	/**
+	 * Save uploaded form file in session for later use, avoid upload again.
+	 * 
+	 * @param request
+	 * @param theFile
+	 */
+	protected void preserveUploadedFile(HttpServletRequest request, 
+			FileBean theFile, String folder) {
+		FormFile uploadedFile = theFile.getUploadedFile();
+		if (uploadedFile != null && uploadedFile.getFileSize() > 0) {
+			//1.save uploaded file in session for later use.
+			HttpSession session = request.getSession();
+			session.removeAttribute("uploadedFormFile");
+			session.setAttribute("uploadedFormFile", uploadedFile);
+			
+			//2.construct URI for File to show it on file upload page. 
+			SampleBean sampleBean = 
+				(SampleBean) request.getSession().getAttribute("theSample");
+			String internalUriPath = Constants.FOLDER_PARTICLE
+				+ '/' + sampleBean.getDomain().getName() + '/' + folder;
+			String timestamp = DateUtils.convertDateToString(
+				Calendar.getInstance().getTime(), "yyyyMMdd_HH-mm-ss-SSS");
+			theFile.getDomainFile().setUri(
+				internalUriPath + '/' + timestamp + '_'	+ uploadedFile.getFileName());
+		}
+	}
+
+	/**
+	 * If FileBean specified using a uploaded file but the file is empty,
+	 * we know we should get the uploaded file from session.  
+	 * 
+	 * @param request
+	 * @param theFile
+	 */
+	protected void restoreUploadedFile(HttpServletRequest request,
+			FileBean theFile) {
+		if (!theFile.getDomainFile().getUriExternal() && 
+			StringUtils.isEmpty(theFile.getExternalUrl()) &&
+			(theFile.getUploadedFile() == null || 
+			theFile.getUploadedFile().getFileSize() <= 0)) {
+			HttpSession session = request.getSession();
+			theFile.setUploadedFile(
+				(FormFile) session.getAttribute("uploadedFormFile"));
+		}
 	}
 }
