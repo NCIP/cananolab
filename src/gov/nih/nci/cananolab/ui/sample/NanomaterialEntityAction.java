@@ -76,16 +76,20 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String detailPage = null;
-		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
-				.get("nanomaterialEntity");
+		NanomaterialEntityBean entityBean = 
+			(NanomaterialEntityBean) theForm.get("nanomaterialEntity");
 		if (!StringUtils.isEmpty(entityBean.getType())) {
 			detailPage = InitCompositionSetup.getInstance().getDetailPage(
 					entityBean.getType(), "nanomaterialEntity");
 			request.setAttribute("entityDetailPage", detailPage);
 		}
-		// set pubChemId and value for composing element to be null if they
-		// were
-		// default to zero from the form
+		
+		//Save uploaded data in session to avoid asking user to upload again.
+		FileBean theFile = entityBean.getTheFile();
+		preserveUploadedFile(request, theFile, "nanomaterialEntity");
+		
+		// set pubChemId and value for composing element to be null 
+		// if they were default to zero from the form
 		ComposingElementBean ce = entityBean.getTheComposingElement();
 		if (ce.getDomain().getPubChemId() != null
 				&& ce.getDomain().getPubChemId() == 0) {
@@ -313,6 +317,10 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.get("nanomaterialEntity");
 		FileBean theFile = entity.getTheFile();
 		entity.addFile(theFile);
+		
+		// restore previously uploaded file from session.
+		restoreUploadedFile(request, theFile);
+		
 		// save nanomaterial entity to save file because inverse="false"
 		this.saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");

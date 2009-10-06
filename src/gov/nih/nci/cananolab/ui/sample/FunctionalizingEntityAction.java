@@ -282,14 +282,20 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("functionalizingEntity");
+		FunctionalizingEntityBean entity = 
+			(FunctionalizingEntityBean) theForm.get("functionalizingEntity");
 		FileBean theFile = entity.getTheFile();
 		entity.addFile(theFile);
+		
+		// restore previously uploaded file from session.
+		restoreUploadedFile(request, theFile);
+		
 		// save the functionalizing entity
 		this.saveEntity(request, theForm, entity);
+		
 		request.setAttribute("anchor", "file");
-		checkOpenForms(entity, request);
+		this.checkOpenForms(entity, request);
+		
 		return mapping.findForward("inputForm");
 	}
 
@@ -317,7 +323,13 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.get("functionalizingEntity");
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
-		checkOpenForms(entity, request);
+		
+		//Save uploaded data in session to avoid asking user to upload again.
+		FileBean theFile = entity.getTheFile();
+		preserveUploadedFile(request, theFile, "functionalizingEntity");
+		
+		this.checkOpenForms(entity, request);
+		
 		return mapping.findForward("inputForm");
 	}
 

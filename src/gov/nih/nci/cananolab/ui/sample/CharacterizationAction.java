@@ -18,11 +18,13 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -36,6 +38,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -97,6 +100,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.persistCharacterizationDropdowns(request, charBean);
 		this.checkOpenForms(charBean, request);
 
+		//Save uploaded data in session to avoid asking user to upload again.
+		FileBean theFile = charBean.getTheFinding().getTheFile();
+		String charName = 
+			StringUtils.getOneWordLowerCaseFirstLetter(charBean.getCharacterizationName());
+		preserveUploadedFile(request, theFile, charName);
+		
 		return mapping.findForward("inputForm");
 	}
 
@@ -415,9 +424,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Save result bean in session for later use - export/print.
 		request.getSession().setAttribute("characterizationSummaryView",
 				summaryView);
-		request.getSession().setAttribute("theSample", sampleBean); // for
-		// showing
-		// title.
+		
+		// Save sample bean in session for sample name in export/print.
+		request.getSession().setAttribute("theSample", sampleBean);
 	}
 
 	/**
@@ -444,8 +453,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		Set<String> foundTypes = summaryView.getCharacterizationTypes();
 		List<String> characterizationTypes = new ArrayList<String>();
 		for (String charType : allCharacterizationTypes) {
-			if (foundTypes.contains(charType)
-					&& !characterizationTypes.contains(charType)) {
+			if (foundTypes.contains(charType) &&
+				!characterizationTypes.contains(charType)) {
 				characterizationTypes.add(charType);
 			}
 		}
@@ -528,8 +537,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					.getSession().getAttribute("characterizationSummaryView");
 		}
 		this.prepareCharacterizationTypes(mapping, form, request, response);
-		List<String> charTypes = this.filterType(request); // Filter out
-		// unselected types.
+		List<String> charTypes = this.filterType(request);
 
 		String type = request.getParameter("type");
 		String sampleName = sampleBean.getDomain().getName();
@@ -615,8 +623,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			if (!StringUtils.isEmpty(theFindingId)) {
 				findingBean.getDomain().setId(new Long(theFindingId));
 			}
-			UserBean user = (UserBean) request.getSession()
-					.getAttribute("user");
+			UserBean user = (UserBean) request.getSession().getAttribute("user");
 			findingBean.setupDomain(user.getLoginName());
 			CharacterizationService service = new CharacterizationServiceLocalImpl();
 			service.saveFinding(findingBean, user);
@@ -679,15 +686,19 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		FindingBean findingBean = achar.getTheFinding();
 		FileBean theFile = findingBean.getTheFile();
 		int theFileIndex = findingBean.getTheFileIndex();
+
+		// restore previously uploaded file from session.
+		restoreUploadedFile(request, theFile);
+		
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
+				+ '/'
 				+ sampleBean.getDomain().getName()
-				+ "/"
+				+ '/'
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -860,8 +871,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param compBean
 	 */
 	private List<String> filterType(HttpServletRequest request) {
-		List<String> charTypes = (List<String>) request
-				.getAttribute("characterizationTypes");
+		List<String> charTypes = 
+			(List<String>) request.getAttribute("characterizationTypes");
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			charTypes.clear();

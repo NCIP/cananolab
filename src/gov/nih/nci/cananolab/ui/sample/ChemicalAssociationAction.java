@@ -258,6 +258,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
 				request, assocBean, hasFunctionalizingEntities);
+		
+		//Save uploaded data in session to avoid asking user to upload again.
+		FileBean theFile = assocBean.getTheFile();
+		preserveUploadedFile(request, theFile, "Chemical Association");
+		
 		this.checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
@@ -363,6 +368,10 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.get("assoc");
 		FileBean theFile = assoc.getTheFile();
 		assoc.addFile(theFile);
+		
+		// restore previously uploaded file from session.
+		this.restoreUploadedFile(request, theFile);
+		
 		// save the association
 		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");

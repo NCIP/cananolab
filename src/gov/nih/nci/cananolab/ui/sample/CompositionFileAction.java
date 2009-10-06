@@ -35,6 +35,10 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
+		
+		// restore previously uploaded file from session.
+		restoreUploadedFile(request, theFile);
+		
 		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -119,7 +123,11 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		InitCompositionSetup.getInstance().persistCompositionFileDropdowns(
 				request, comp.getTheFile());
-
+		
+		//Save uploaded data in session to avoid asking user to upload again.
+		FileBean theFile = comp.getTheFile();
+		preserveUploadedFile(request, theFile, "compositionFile");
+		
 		return mapping.findForward("inputForm");
 	}
 
