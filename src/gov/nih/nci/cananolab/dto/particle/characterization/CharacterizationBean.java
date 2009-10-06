@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -222,6 +223,13 @@ public class CharacterizationBean {
 						file
 								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 						file.setCreatedDate(Calendar.getInstance().getTime());
+						Collection<Keyword> keywords = file
+								.getKeywordCollection();
+						file.setKeywordCollection(new HashSet<Keyword>());
+						file.getKeywordCollection().addAll(keywords);
+						for (Keyword keyword : file.getKeywordCollection()) {
+							keyword.setId(null);
+						}
 					}
 					finding.setFileCollection(newFiles);
 				}
