@@ -30,9 +30,9 @@ import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for all forms.
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class InitSetup {
 
@@ -45,7 +45,7 @@ public class InitSetup {
 
 	/**
 	 * Queries and common_lookup table and creates a map in application context
-	 * 
+	 *
 	 * @param appContext
 	 * @return
 	 * @throws BaseException
@@ -67,7 +67,7 @@ public class InitSetup {
 	/**
 	 * Retrieve lookup attribute for lookup name from the database and store in
 	 * the application context
-	 * 
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -79,16 +79,20 @@ public class InitSetup {
 			ServletContext appContext, String contextAttribute,
 			String lookupName, String lookupAttribute) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
-		SortedSet<String> types = defaultLookupTable.get(lookupName).get(
-				lookupAttribute);
-		appContext.setAttribute(contextAttribute, types);
-		return types;
+		SortedSet<String> types = new TreeSet<String>();
+		if (defaultLookupTable.get(lookupName) != null) {
+			types = defaultLookupTable.get(lookupName).get(lookupAttribute);
+			appContext.setAttribute(contextAttribute, types);
+			return types;
+		} else {
+			return types;
+		}
 	}
 
 	/**
 	 * Retrieve lookup attribute and other attribute for lookup name from the
 	 * database and store in the session
-	 * 
+	 *
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
@@ -143,7 +147,7 @@ public class InitSetup {
 	/**
 	 * Retrieve lookup attribute and other attribute for lookup name based on
 	 * reflection and store in the application context
-	 * 
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
