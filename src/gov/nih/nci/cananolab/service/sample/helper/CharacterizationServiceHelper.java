@@ -274,50 +274,52 @@ public class CharacterizationServiceHelper {
 		for (String type : charTypes) {
 			// Output data of report
 			SortedSet<CharacterizationBean> charBeans = charBeanMap.get(type);
-			for (CharacterizationBean charBean : charBeans) {
-				int rowIndex = 0;
-
-				// Create one work sheet for each Characterization.
-				HSSFSheet sheet = wb.createSheet(charCount++ + "."
-						+ charBean.getCharacterizationName());
-
-				// 1. Output Characterization type at (0, 0).
-				rowIndex = outputHeader(charBean, sheet, headerStyle, rowIndex);
-
-				// 2. Output Assay Type (2, 0).
-				rowIndex = outputAssayType(charBean, sheet, headerStyle,
-						rowIndex);
-
-				// 3. Output POC at (3, 0).
-				rowIndex = outputPOC(charBean, sheet, headerStyle, rowIndex);
-
-				// 4. Output Characterization Date at (4, 0).
-				rowIndex = outputCharDate(charBean, sheet, headerStyle,
-						rowIndex);
-
-				// 5. Output Protocol at (5, 0).
-				rowIndex = outputProtocol(charBean, sheet, headerStyle,
-						rowIndex);
-
-				// 6. Output Properties at (6, 0).
-				rowIndex = outputProperties(charBean, sheet, headerStyle,
-						rowIndex);
-
-				// 7. Output Design Description at (7, 0).
-				rowIndex = outputDesignDescription(charBean, sheet,
-						headerStyle, rowIndex);
-
-				// 8. Output Technique and Instruments at (8, 0).
-				rowIndex = outputTechInstruments(charBean, sheet, headerStyle,
-						rowIndex);
-
-				// 9. Output Characterization Results at (9, 0).
-				rowIndex = outputCharResults(charBean, downloadURL, wb, sheet,
-						headerStyle, hlinkStyle, rowIndex);
-
-				// 10.Output Analysis and Conclusion at (10, 0).
-				rowIndex = outputConclusion(charBean, sheet, headerStyle,
-						rowIndex);
+			if (charBeans != null && !charBeans.isEmpty()) {
+				for (CharacterizationBean charBean : charBeans) {
+					int rowIndex = 0;
+	
+					// Create one work sheet for each Characterization.
+					HSSFSheet sheet = wb.createSheet(charCount++ + "."
+							+ charBean.getCharacterizationName());
+	
+					// 1. Output Characterization type at (0, 0).
+					rowIndex = outputHeader(charBean, sheet, headerStyle, rowIndex);
+	
+					// 2. Output Assay Type (2, 0).
+					rowIndex = outputAssayType(charBean, sheet, headerStyle,
+							rowIndex);
+	
+					// 3. Output POC at (3, 0).
+					rowIndex = outputPOC(charBean, sheet, headerStyle, rowIndex);
+	
+					// 4. Output Characterization Date at (4, 0).
+					rowIndex = outputCharDate(charBean, sheet, headerStyle,
+							rowIndex);
+	
+					// 5. Output Protocol at (5, 0).
+					rowIndex = outputProtocol(charBean, sheet, headerStyle,
+							rowIndex);
+	
+					// 6. Output Properties at (6, 0).
+					rowIndex = outputProperties(charBean, sheet, headerStyle,
+							rowIndex);
+	
+					// 7. Output Design Description at (7, 0).
+					rowIndex = outputDesignDescription(charBean, sheet,
+							headerStyle, rowIndex);
+	
+					// 8. Output Technique and Instruments at (8, 0).
+					rowIndex = outputTechInstruments(charBean, sheet, headerStyle,
+							rowIndex);
+	
+					// 9. Output Characterization Results at (9, 0).
+					rowIndex = outputCharResults(charBean, downloadURL, wb, sheet,
+							headerStyle, hlinkStyle, rowIndex);
+	
+					// 10.Output Analysis and Conclusion at (10, 0).
+					rowIndex = outputConclusion(charBean, sheet, headerStyle,
+							rowIndex);
+				}
 			}
 		}
 	}
