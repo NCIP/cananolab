@@ -210,6 +210,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
 		this.checkOpenForms(entityBean, request);
+		// clear copy to otherSamples
+		theForm.set("otherSamples", new String[0]);
+		
 		return mapping.findForward("inputForm");
 	}
 

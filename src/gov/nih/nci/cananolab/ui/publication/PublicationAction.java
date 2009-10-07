@@ -23,13 +23,11 @@ import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
-import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -144,6 +142,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("sampleId", sampleId);
+		// clear copy to otherSamples
+		theForm.set("otherSamples", new String[0]);
+		
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			((Publication) pubBean.getDomainFile()).setCategory(type);
@@ -174,37 +175,14 @@ public class PublicationAction extends BaseAnnotationAction {
 				publicationId, user);
 		theForm.set("publication", pubBean);
 		theForm.set("sampleId", sampleId);
+		theForm.set("otherSamples", new String[0]); //clear copy otherSamples.
+		
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
 		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
-			/**
-			 * Highlight selected other sample name on publication edit page.
-			 */
-			SortedSet<SortableName> names = 
-				(SortedSet<SortableName>) request.getSession().getAttribute("otherSampleNames");
-			if (names != null && !names.isEmpty()) {
-				List<String> selectedNames = new ArrayList<String>();
-				SampleService sampleService = new SampleServiceLocalImpl();
-				for (SortableName name : names) {
-					SampleBean sampleBean = sampleService.findSampleByName(name.getName(), user);
-					Collection<Publication> pubs = 
-						sampleBean.getDomain().getPublicationCollection();
-					if (pubs != null && !pubs.isEmpty()) {
-						for (Publication pub : pubs) {
-							if (pub.getId().equals(pubBean.getDomainFile().getId())) {
-								selectedNames.add(name.getName());
-								break;
-							}
-						}
-					}
-				}
-				if (!selectedNames.isEmpty()) {
-					theForm.set("otherSamples", selectedNames.toArray(new String[0]));
-				}
-			}
 			return mapping.findForward("sampleSubmitPublication");
 		} else {
 			return mapping.findForward("publicationSubmitPublication");

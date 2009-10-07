@@ -174,7 +174,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		this.setLookups(request);
 		request.getSession().setAttribute("onloadJavascript",
 				"setEntityInclude('feType', 'functionalizingEntity');");
-		checkOpenForms(entityBean, request);
+		this.checkOpenForms(entityBean, request);
+		// clear copy to otherSamples
+		theForm.set("otherSamples", new String[0]);
+		
 		return mapping.findForward("inputForm");
 	}
 

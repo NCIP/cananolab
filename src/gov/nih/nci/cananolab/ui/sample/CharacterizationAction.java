@@ -136,6 +136,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			request.getSession().setAttribute("charTypeChars", charNames);
 		}
 		this.checkOpenForms(charBean, request);
+		// clear copy to otherSamples
+		theForm.set("otherSamples", new String[0]);
+		
 		return mapping.findForward("inputForm");
 	}
 
@@ -209,6 +212,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("characterizationDetailPage", detailPage);
 		this.checkOpenForms(charBean, request);
+		// clear copy to otherSamples
+		theForm.set("otherSamples", new String[0]);
+		
 		return mapping.findForward("inputForm");
 	}
 
