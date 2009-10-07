@@ -29,8 +29,7 @@
 					<td width="490" height="32">
 						<div align="right">
 							<div align="right">
-								<input type="reset" value="Reset"
-									onclick="javascript:window.location.href='${origUrl}'">
+								<input type="reset" value="Reset">
 								<input type="hidden" name="dispatch" value="create">
 								<input type="hidden" name="page" value="1">
 								<html:hidden property="sampleId" value="${sampleId}" />
