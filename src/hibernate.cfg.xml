@@ -5,7 +5,7 @@
 
 		<!-- Properties for the session factory -->
 		<property name="connection.datasource">java:/caNanoLab</property>
-		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.show_sql">false</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="max_fetch_depth">1</property>
 		<property name="cglib.use_reflection_optimizer">false</property>
