@@ -110,7 +110,7 @@ public class GridService {
 			for (EndpointReferenceType service : services) {
 				for (String extantURL : extantURLs) {
 					// if the URL exists (because it's previously queried,
-					// remove itF
+					// remove it)
 					if (extantURL.equals(service.getAddress().toString())) {
 						servicesToRemove.add(service);
 					}
