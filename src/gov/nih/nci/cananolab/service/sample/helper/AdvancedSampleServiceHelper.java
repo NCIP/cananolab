@@ -1322,7 +1322,7 @@ public class AdvancedSampleServiceHelper {
 			crit.add(junction);
 		}
 		if (searchBean.getNanoEntityCount() > 1) {
-			setNanomatieralEntityAndCriteria(searchBean, crit, "id");
+			setNanomaterialEntityAndCriteria(searchBean, crit, "id");
 		}
 		if (searchBean.getFuncEntityCount() > 1) {
 			setFunctionalizingEntityAndCriteria(searchBean, crit, "id");
@@ -1355,7 +1355,7 @@ public class AdvancedSampleServiceHelper {
 		}
 	}
 
-	private void setNanomatieralEntityAndCriteria(
+	private void setNanomaterialEntityAndCriteria(
 			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
 			String projectionProperty) throws Exception {
 		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
