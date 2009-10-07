@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -62,7 +63,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			CustomizedApplicationService appService = 
 				(CustomizedApplicationService) ApplicationServiceProvider.getApplicationService();
 			// check if publication is already entered based on PubMedId or DOI
-			if (publication.getPubMedId() != null) {
+			if (publication.getPubMedId() != null && publication.getPubMedId() != 0) {
 				Publication dbPublication = (Publication) appService.getObject(
 						Publication.class, "pubMedId", publication
 								.getPubMedId());
@@ -72,7 +73,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 							"PubMed ID is already used");
 				}
 			}
-			if (publication.getDigitalObjectId() != null) {
+			if (!StringUtils.isEmpty(publication.getDigitalObjectId())) {
 				Publication dbPublication = (Publication) appService.getObject(
 						Publication.class, "digitalObjectId", publication
 								.getDigitalObjectId());
