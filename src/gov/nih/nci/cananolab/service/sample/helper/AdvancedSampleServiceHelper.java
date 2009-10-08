@@ -1206,41 +1206,6 @@ public class AdvancedSampleServiceHelper {
 	}
 
 	/**
-	 * Get the poc junction used in sample queries
-	 * 
-	 * @param searchBean
-	 * @param crit
-	 * @return
-	 * @throws Exception
-	 */
-	private Junction getPOCJunction(AdvancedSampleSearchBean searchBean)
-			throws Exception {
-		// if there are more than one POC query in AND, don't use junction.
-		if (searchBean.getSampleLogicalOperator().equals("and")
-				&& searchBean.getPocCount() > 1) {
-			return null;
-		}
-		Disjunction sampleDisjunction = Restrictions.disjunction();
-		Conjunction sampleConjunction = Restrictions.conjunction();
-		for (SampleQueryBean query : searchBean.getSampleQueries()) {
-			if (query.getNameType().equals("point of contact name")) {
-				Disjunction pocDisjunction = getPointOfContactDisjunction(
-						searchBean, "poc.", "otherPOC.");
-				if (pocDisjunction != null) {
-					sampleDisjunction.add(pocDisjunction);
-					if (searchBean.getPocCount() == 1) {
-						sampleConjunction.add(pocDisjunction);
-					}
-				}
-			}
-		}
-		Junction junction = (searchBean.getSampleLogicalOperator().equals("or") || searchBean
-				.getSampleQueries().size() == 1) ? sampleDisjunction
-				: sampleConjunction;
-		return junction;
-	}
-
-	/**
 	 * Get the sample disjunction used in sample queries
 	 * 
 	 * @param searchBean
@@ -1500,17 +1465,18 @@ public class AdvancedSampleServiceHelper {
 			crit.createAlias("otherPOC.organization", "otherOrg",
 					CriteriaSpecification.LEFT_JOIN);
 		}
-		crit.add(getSampleNameJunction(searchBean));
-		if (getPOCJunction(searchBean) != null) {
-			crit.add(getPOCJunction(searchBean));
-		} else {
-			if (searchBean.getPocCount() > 1) {
-				for (SampleQueryBean query : searchBean.getSampleQueries()) {
-					if (query.getNameType().equals("point of contact name")) {
-						DetachedCriteria subCrit = getPointOfContactSubquery(
-								query, "poc.", "poc.", "id");
-						crit.add(Subqueries.exists(subCrit));
-					}
+		Junction junction = getSampleJunction(searchBean);
+		if (junction != null) {
+			crit.add(junction);
+		}
+		// more than one POC and AND
+		else {
+			crit.add(getSampleNameJunction(searchBean));
+			for (SampleQueryBean query : searchBean.getSampleQueries()) {
+				if (query.getNameType().equals("point of contact name")) {
+					DetachedCriteria subCrit = getPointOfContactSubquery(query,
+							"poc.", "otherPOC.", "id");
+					crit.add(Subqueries.exists(subCrit));
 				}
 			}
 		}
