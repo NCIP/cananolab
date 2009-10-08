@@ -82,7 +82,7 @@ public class AdvancedSampleSearchBean {
 
 	public void addQuery(BaseQueryBean query) {
 		if (query instanceof SampleQueryBean) {
-			int index = compositionQueries.indexOf(query);
+			int index = sampleQueries.indexOf(query);
 			if (index != -1) {
 				sampleQueries.remove(query);
 				// retain the original order`
