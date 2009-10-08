@@ -432,6 +432,7 @@ public class AdvancedSampleServiceHelper {
 			crit.setFetchMode("functionCollection.targetCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
@@ -458,6 +459,7 @@ public class AdvancedSampleServiceHelper {
 					crit.setFetchMode("functionCollection.targetCollection",
 							FetchMode.JOIN);
 					crit.setFetchMode("fileCollection", FetchMode.JOIN);
+					crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
@@ -576,6 +578,7 @@ public class AdvancedSampleServiceHelper {
 			crit.add(Restrictions.eq("sample.name", sampleName));
 			crit.add(junction);
 			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 			crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
 			crit.setFetchMode(
 					"composingElementCollection.inherentFunctionCollection",
@@ -607,6 +610,7 @@ public class AdvancedSampleServiceHelper {
 					}
 					crit.add(Restrictions.eq("sample.name", sampleName));
 					crit.setFetchMode("fileCollection", FetchMode.JOIN);
+					crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 					crit.setFetchMode("composingElementCollection",
 							FetchMode.JOIN);
 					crit
@@ -1192,7 +1196,7 @@ public class AdvancedSampleServiceHelper {
 				if (sampleNameCrit != null) {
 					sampleDisjunction.add(sampleNameCrit);
 					sampleConjunction.add(sampleNameCrit);
-				}
+				} 
 			}
 			if (query.getNameType().equals("point of contact name")) {
 				Disjunction pocDisjunction = getPointOfContactDisjunction(
@@ -1429,10 +1433,10 @@ public class AdvancedSampleServiceHelper {
 			crit.createAlias("otherPOC.organization", "otherOrg",
 					CriteriaSpecification.LEFT_JOIN);
 		}
-		if (getSampleJunction(searchBean) != null) {
-			crit.add(getSampleJunction(searchBean));
-		} else {
-			if (searchBean.getPocCount() > 1) {
+//		if (getSampleJunction(searchBean) != null) {
+//			crit.add(getSampleJunction(searchBean));
+//		} else {
+//			if (searchBean.getPocCount() > 1) {
 				for (SampleQueryBean query : searchBean.getSampleQueries()) {
 					if (query.getNameType().equals("point of contact name")) {
 						DetachedCriteria subCrit = getPointOfContactSubquery(
@@ -1441,8 +1445,8 @@ public class AdvancedSampleServiceHelper {
 					}
 				}
 			}
-		}
-	}
+//		}
+//	}
 	
 	/**
 	 * Export advance sample summary report as Excel spread sheet.
