@@ -210,6 +210,15 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onclick="openWindow('http://csn.ncifcrf.gov/csn/index2.php', '', '800', '800')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			height="20">
+			<a class="subMenuSecondary">NCI CSN</a>
+		</td>
+	</tr>
+	<tr>
 		<td class="subMenuSecondaryTitle" height="20">
 			&nbsp;
 		</td>
