@@ -144,8 +144,8 @@ public class AdvancedSampleServiceHelper {
 		for (Object obj : filteredResults) {
 			String sampleName = obj.toString();
 			// remove redundancy
-			if (!sampleNames.contains(sampleName) && 
-				authService.checkReadPermission(user, sampleName)) {
+			if (!sampleNames.contains(sampleName)
+					&& authService.checkReadPermission(user, sampleName)) {
 				sampleNames.add(sampleName);
 			} else { // ignore no access exception
 				logger.debug("User doesn't have access to sample with name "
@@ -172,7 +172,8 @@ public class AdvancedSampleServiceHelper {
 		if (!getAuthService().checkReadPermission(user, sampleName)) {
 			throw new NoAccessException();
 		}
-		// load sample first with point of contact info and function info and datum info
+		// load sample first with point of contact info and function info and
+		// datum info
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Restrictions.eq("name", sampleName));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
@@ -432,7 +433,8 @@ public class AdvancedSampleServiceHelper {
 			crit.setFetchMode("functionCollection.targetCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection",
+					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
@@ -459,7 +461,8 @@ public class AdvancedSampleServiceHelper {
 					crit.setFetchMode("functionCollection.targetCollection",
 							FetchMode.JOIN);
 					crit.setFetchMode("fileCollection", FetchMode.JOIN);
-					crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+					crit.setFetchMode("fileCollection.keywordCollection",
+							FetchMode.JOIN);
 					crit
 							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 					List results = appService.query(crit);
@@ -578,7 +581,8 @@ public class AdvancedSampleServiceHelper {
 			crit.add(Restrictions.eq("sample.name", sampleName));
 			crit.add(junction);
 			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection",
+					FetchMode.JOIN);
 			crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
 			crit.setFetchMode(
 					"composingElementCollection.inherentFunctionCollection",
@@ -610,7 +614,8 @@ public class AdvancedSampleServiceHelper {
 					}
 					crit.add(Restrictions.eq("sample.name", sampleName));
 					crit.setFetchMode("fileCollection", FetchMode.JOIN);
-					crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+					crit.setFetchMode("fileCollection.keywordCollection",
+							FetchMode.JOIN);
 					crit.setFetchMode("composingElementCollection",
 							FetchMode.JOIN);
 					crit
@@ -1174,6 +1179,68 @@ public class AdvancedSampleServiceHelper {
 	}
 
 	/**
+	 * Get the sample name junction used in sample queries
+	 * 
+	 * @param searchBean
+	 * @param crit
+	 * @return
+	 * @throws Exception
+	 */
+	private Junction getSampleNameJunction(AdvancedSampleSearchBean searchBean)
+			throws Exception {
+		Disjunction sampleDisjunction = Restrictions.disjunction();
+		Conjunction sampleConjunction = Restrictions.conjunction();
+		for (SampleQueryBean query : searchBean.getSampleQueries()) {
+			if (query.getNameType().equals("sample name")) {
+				Criterion sampleNameCrit = getSampleNameCriterion(query);
+				if (sampleNameCrit != null) {
+					sampleDisjunction.add(sampleNameCrit);
+					sampleConjunction.add(sampleNameCrit);
+				}
+			}
+		}
+		Junction junction = (searchBean.getSampleLogicalOperator().equals("or") || searchBean
+				.getSampleQueries().size() == 1) ? sampleDisjunction
+				: sampleConjunction;
+		return junction;
+	}
+
+	/**
+	 * Get the poc junction used in sample queries
+	 * 
+	 * @param searchBean
+	 * @param crit
+	 * @return
+	 * @throws Exception
+	 */
+	private Junction getPOCJunction(AdvancedSampleSearchBean searchBean)
+			throws Exception {
+		// if there are more than one POC query in AND, don't use junction.
+		if (searchBean.getSampleLogicalOperator().equals("and")
+				&& searchBean.getPocCount() > 1) {
+			return null;
+		}
+		Disjunction sampleDisjunction = Restrictions.disjunction();
+		Conjunction sampleConjunction = Restrictions.conjunction();
+		for (SampleQueryBean query : searchBean.getSampleQueries()) {
+			if (query.getNameType().equals("point of contact name")) {
+				Disjunction pocDisjunction = getPointOfContactDisjunction(
+						searchBean, "poc.", "otherPOC.");
+				if (pocDisjunction != null) {
+					sampleDisjunction.add(pocDisjunction);
+					if (searchBean.getPocCount() == 1) {
+						sampleConjunction.add(pocDisjunction);
+					}
+				}
+			}
+		}
+		Junction junction = (searchBean.getSampleLogicalOperator().equals("or") || searchBean
+				.getSampleQueries().size() == 1) ? sampleDisjunction
+				: sampleConjunction;
+		return junction;
+	}
+
+	/**
 	 * Get the sample disjunction used in sample queries
 	 * 
 	 * @param searchBean
@@ -1196,7 +1263,7 @@ public class AdvancedSampleServiceHelper {
 				if (sampleNameCrit != null) {
 					sampleDisjunction.add(sampleNameCrit);
 					sampleConjunction.add(sampleNameCrit);
-				} 
+				}
 			}
 			if (query.getNameType().equals("point of contact name")) {
 				Disjunction pocDisjunction = getPointOfContactDisjunction(
@@ -1394,7 +1461,7 @@ public class AdvancedSampleServiceHelper {
 			String pocAlias1, String pocAlias2, String projectionProperty) {
 		DetachedCriteria subCrit = DetachedCriteria.forClass(
 				PointOfContact.class, "subCrit");
-		subCrit.createAlias("organization", "organization",
+		subCrit.createAlias("subCrit.organization", "organization",
 				CriteriaSpecification.LEFT_JOIN);
 		subCrit.setProjection(Projections.distinct(Property.forName("id")));
 		Disjunction pocDisjunction = getPointOfContactDisjunctionPerQuery(
@@ -1433,21 +1500,22 @@ public class AdvancedSampleServiceHelper {
 			crit.createAlias("otherPOC.organization", "otherOrg",
 					CriteriaSpecification.LEFT_JOIN);
 		}
-//		if (getSampleJunction(searchBean) != null) {
-//			crit.add(getSampleJunction(searchBean));
-//		} else {
-//			if (searchBean.getPocCount() > 1) {
+		crit.add(getSampleNameJunction(searchBean));
+		if (getPOCJunction(searchBean) != null) {
+			crit.add(getPOCJunction(searchBean));
+		} else {
+			if (searchBean.getPocCount() > 1) {
 				for (SampleQueryBean query : searchBean.getSampleQueries()) {
 					if (query.getNameType().equals("point of contact name")) {
 						DetachedCriteria subCrit = getPointOfContactSubquery(
-								query, "poc", "otherPOC", "id");
+								query, "poc.", "poc.", "id");
 						crit.add(Subqueries.exists(subCrit));
 					}
 				}
 			}
-//		}
-//	}
-	
+		}
+	}
+
 	/**
 	 * Export advance sample summary report as Excel spread sheet.
 	 * 
@@ -1456,7 +1524,7 @@ public class AdvancedSampleServiceHelper {
 	 * @throws CompositionException
 	 */
 	public static void exportSummary(AdvancedSampleSearchBean searchBean,
-			List<AdvancedSampleBean> sampleBeans, String viewSampleUrl, 
+			List<AdvancedSampleBean> sampleBeans, String viewSampleUrl,
 			OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
@@ -1468,14 +1536,14 @@ public class AdvancedSampleServiceHelper {
 	}
 
 	/**
-	 * Output advance sample summary report, representing, 
+	 * Output advance sample summary report, representing,
 	 * bodyAdvancedSampleSearchResult.jsp
 	 * 
 	 * @param searchBean
 	 * @param wb
 	 */
 	private static void outputSummarySheet(AdvancedSampleSearchBean searchBean,
-			List<AdvancedSampleBean> sampleBeans, String viewSampleUrl, 
+			List<AdvancedSampleBean> sampleBeans, String viewSampleUrl,
 			HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
@@ -1490,19 +1558,21 @@ public class AdvancedSampleServiceHelper {
 
 		int rowIndex = 0;
 		HSSFSheet sheet = wb.createSheet("Advanced Sample Search Report");
-		
-		//1.Output Search Criteria. comment out as per Sharon.
-		//rowIndex = outputCriteria(searchBean, sheet, headerStyle, rowIndex);
-		
-		//2.Output table column headers.
-		rowIndex = outputHeader(sampleBeans.get(0), sheet, headerStyle, rowIndex);
-		
-		//3.Output each table row.
+
+		// 1.Output Search Criteria. comment out as per Sharon.
+		// rowIndex = outputCriteria(searchBean, sheet, headerStyle, rowIndex);
+
+		// 2.Output table column headers.
+		rowIndex = outputHeader(sampleBeans.get(0), sheet, headerStyle,
+				rowIndex);
+
+		// 3.Output each table row.
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
-			rowIndex = outputRow(sampleBean, viewSampleUrl, sheet, hlinkStyle, rowIndex);
+			rowIndex = outputRow(sampleBean, viewSampleUrl, sheet, hlinkStyle,
+					rowIndex);
 		}
 	}
-	
+
 	/**
 	 * Output Search Criteria for work sheet.
 	 * 
@@ -1511,20 +1581,21 @@ public class AdvancedSampleServiceHelper {
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
-	 *
-	private static int outputCriteria(AdvancedSampleSearchBean searchBean, 
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-		// 1. Output "Selected Criteria" at (0, 0).
-		HSSFRow row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, headerStyle, "Selected Criteria");
-
-		// 2. Output Criteria Display Name at (1, 0).
-		row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, searchBean.getDisplayName());
-		rowIndex++; // Create one empty line as separator.
-
-		return rowIndex;
-	}*/
+	 * 
+	            private static int outputCriteria(AdvancedSampleSearchBean
+	 *            searchBean, HSSFSheet sheet, HSSFCellStyle headerStyle, int
+	 *            rowIndex) { // 1. Output "Selected Criteria" at (0, 0).
+	 *            HSSFRow row = sheet.createRow(rowIndex++);
+	 *            ExportUtils.createCell(row, 0, headerStyle,
+	 *            "Selected Criteria");
+	 * 
+	 *            // 2. Output Criteria Display Name at (1, 0). row =
+	 *            sheet.createRow(rowIndex++); ExportUtils.createCell(row, 0,
+	 *            searchBean.getDisplayName()); rowIndex++; // Create one empty
+	 *            line as separator.
+	 * 
+	 *            return rowIndex; }
+	 */
 
 	/**
 	 * Output headers for work sheet.
@@ -1541,13 +1612,13 @@ public class AdvancedSampleServiceHelper {
 		int columnIndex = 0;
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, columnIndex++, headerStyle, "Sample Name");
-		
+
 		// 2. Output selected column(s).
 		Map<String, List<LinkableItem>> columns = sampleBean.getAttributeMap();
 		if (columns != null && !columns.isEmpty()) {
 			for (String header : columns.keySet()) {
-				ExportUtils.createCell(row, columnIndex++, headerStyle, 
-						header.replaceAll("<br>", " "));
+				ExportUtils.createCell(row, columnIndex++, headerStyle, header
+						.replaceAll("<br>", " "));
 			}
 		}
 
@@ -1556,7 +1627,7 @@ public class AdvancedSampleServiceHelper {
 
 		return rowIndex;
 	}
-	
+
 	/**
 	 * Output one table row for work sheet.
 	 * 
@@ -1566,13 +1637,14 @@ public class AdvancedSampleServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputRow(AdvancedSampleBean sampleBean, String viewSampleUrl, 
-			HSSFSheet sheet, HSSFCellStyle hlinkStyle, int rowIndex) {
+	private static int outputRow(AdvancedSampleBean sampleBean,
+			String viewSampleUrl, HSSFSheet sheet, HSSFCellStyle hlinkStyle,
+			int rowIndex) {
 		// 1. Output first column - Sample Name at index 0.
 		HSSFRow row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, hlinkStyle, sampleBean.getSampleName(),  
-			getViewSampleURL(sampleBean, viewSampleUrl));
-		
+		ExportUtils.createCell(row, 0, hlinkStyle, sampleBean.getSampleName(),
+				getViewSampleURL(sampleBean, viewSampleUrl));
+
 		// 2. Output selected column(s) starting from index 1.
 		int columnIndex = 1;
 		Map<String, List<LinkableItem>> columns = sampleBean.getAttributeMap();
@@ -1580,7 +1652,8 @@ public class AdvancedSampleServiceHelper {
 			StringBuilder sb = new StringBuilder();
 			for (String key : columns.keySet()) {
 				sb.setLength(0);
-				List<LinkableItem> items = (List<LinkableItem>) columns.get(key);
+				List<LinkableItem> items = (List<LinkableItem>) columns
+						.get(key);
 				for (LinkableItem item : items) {
 					sb.append(item.getDisplayName()).append(' ');
 				}
@@ -1593,14 +1666,14 @@ public class AdvancedSampleServiceHelper {
 
 		return rowIndex;
 	}
-	
+
 	/**
 	 * Return complete view sample URL including sample id & location.
 	 * 
 	 * @param sample
 	 * @return
 	 */
-	private static String getViewSampleURL(AdvancedSampleBean sample, 
+	private static String getViewSampleURL(AdvancedSampleBean sample,
 			String viewSampleUrl) {
 		StringBuilder sb = new StringBuilder(viewSampleUrl);
 		sb.append("&sampleId=").append(sample.getSampleId());
