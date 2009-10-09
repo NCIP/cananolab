@@ -6,7 +6,7 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Site Preference" />
-	<jsp:param name="topic" value="manage_nanoparticles_help" />
+	<jsp:param name="topic" value="site_preference_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/admin" enctype="multipart/form-data">

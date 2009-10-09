@@ -29,6 +29,8 @@ if(P=="search_publications_help")C="Manage%20Publications.7.4.html#1135396";
 if(P=="publications_search_results_help")C="Manage%20Publications.7.5.html#1104802";
 if(P=="publication_summary_help")C="Manage%20Publications.7.6.html#1142741";
 if(P=="delete_doc_help")C="Manage%20Publications.7.10.html#1150515";
+if(P=="administration_help")C="Administration.8.1.html#1178409";
+if(P=="site_preference_help")C="Administration.8.3.html#1178409";
 if(P=="glossary_help")C="caNanoLab_Glossary.9.1.html#1065170";
 return C;
 }

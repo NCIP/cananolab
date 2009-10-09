@@ -2,7 +2,7 @@
 	<td colspan="2">
 		<jsp:include page="/bodyTitle.jsp">
 			<jsp:param name="pageTitle" value="Administration" />
-			<jsp:param name="topic" value="manage_nanoparticles_help" />
+			<jsp:param name="topic" value="administration_help" />
 			<jsp:param name="glossaryTopic" value="glossary_help" />
 		</jsp:include>
 	</td>
