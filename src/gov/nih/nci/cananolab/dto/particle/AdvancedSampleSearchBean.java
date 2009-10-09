@@ -10,9 +10,9 @@ import java.util.Set;
 
 /**
  * information needed for the advanced sample search form
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class AdvancedSampleSearchBean {
 	private List<SampleQueryBean> sampleQueries = new ArrayList<SampleQueryBean>();
@@ -88,7 +88,12 @@ public class AdvancedSampleSearchBean {
 				// retain the original order`
 				sampleQueries.add(index, (SampleQueryBean) query);
 			} else {
-				sampleQueries.add((SampleQueryBean) query);
+				SampleQueryBean sampleQuery=(SampleQueryBean)query;
+				//set operand empty if name is empty
+				if (StringUtils.isEmpty(sampleQuery.getName())) {
+					sampleQuery.setOperand("");
+				}
+				sampleQueries.add(sampleQuery);
 			}
 		} else if (query instanceof CompositionQueryBean) {
 			int index = compositionQueries.indexOf(query);
@@ -97,7 +102,12 @@ public class AdvancedSampleSearchBean {
 				// retain the original order
 				compositionQueries.add(index, (CompositionQueryBean) query);
 			} else {
-				compositionQueries.add((CompositionQueryBean) query);
+				CompositionQueryBean compQuery = (CompositionQueryBean) query;
+				//set operand empty if chemical name is empty
+				if (StringUtils.isEmpty(compQuery.getChemicalName())) {
+					compQuery.setOperand("");
+				}
+				compositionQueries.add(compQuery);
 			}
 		} else if (query instanceof CharacterizationQueryBean) {
 			int index = characterizationQueries.indexOf(query);
@@ -108,7 +118,6 @@ public class AdvancedSampleSearchBean {
 						(CharacterizationQueryBean) query);
 			} else {
 				CharacterizationQueryBean charQuery = (CharacterizationQueryBean) query;
-				//edit query for empty information
 				//set operand and unit empty if value is empty
 				if (StringUtils.isEmpty(charQuery.getDatumValue())) {
 					charQuery.setOperand("");
