@@ -18,13 +18,11 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -38,7 +36,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -195,8 +192,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance().getAssayTypesByCharName(
 				request, charBean.getCharacterizationName());
 
-		// TODO: Find out what "charNameDatumNames" is for, not used in any
-		// JSPs.
+		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
 				charBean.getCharacterizationName(), charBean.getAssayType());
@@ -597,6 +593,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.setTheFinding(findingBean);
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, request);
+		
+		/**
+		 * Setup number of column/row in form for validation.
+		 */
+		theForm.set("numberOfColumns", 
+			Integer.valueOf(findingBean.getNumberOfColumns()));
+		theForm.set("numberOfRows", 
+			Integer.valueOf(findingBean.getNumberOfRows()));
+		
 		return mapping.findForward("inputForm");
 	}
 
@@ -624,7 +629,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		if (this.validateCellNotEmpty(findingBean)) {
+		if (this.validateMatrix(findingBean)) {
 			String theFindingId = (String) request.getAttribute("theFindingId");
 			if (!StringUtils.isEmpty(theFindingId)) {
 				findingBean.getDomain().setId(new Long(theFindingId));
@@ -662,28 +667,29 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param findingBean
 	 * @return true if one finding cell has value entered, false otherwise.
 	 */
-	private boolean validateCellNotEmpty(FindingBean findingBean) {
+	private boolean validateMatrix(FindingBean findingBean) {
 		if (findingBean != null) {
 			int rowNum = findingBean.getNumberOfRows();
+			int colNum = findingBean.getNumberOfColumns();
 			List<Row> rows = findingBean.getRows();
-			if (rows == null || rows.size() != rowNum || rows.size() == 0) {
-				return false; // Matrix must have at least 1 row.
+			if (rows == null || rows.size() != rowNum || 
+				rows.size() == 0 || colNum == 0) {
+				return false; // There should be at least 1 row & 1 column.
 			}
-			for (Row row : rows) {
-				List<TableCell> cells = row.getCells();
-				if (cells != null && !cells.isEmpty()) {
-					for (TableCell cell : cells) {
-						if (!StringUtils.isEmpty(cell.getValue())) {
-							return true; // Matrix must have 1 cell with value.
-						}
-					}
-				} else {
-					return false; // Each column must have at least 1 row.
+			// Iterate matrix to check if each column has >=1 filled cell.
+			for (int colIndex = 0; colIndex < colNum; colIndex++) {
+				int rowIndex = 0;
+				TableCell cell = rows.get(rowIndex).getCells().get(colIndex);
+				boolean emptyCell = StringUtils.isEmpty(cell.getValue());
+				for (rowIndex++; emptyCell && rowIndex < rowNum; rowIndex++) {
+					cell = rows.get(rowIndex).getCells().get(colIndex);
+					emptyCell = StringUtils.isEmpty(cell.getValue());
 				}
+				if (emptyCell)
+					return false; // Return false as every cell is empty.
 			}
-			return false; // Every cell is empty.
 		}
-		return true; 
+		return true;  // Null FindingBean is allowed.
 	}
 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
@@ -751,10 +757,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		/**
 		 * Set number of column/row in form for validation.
 		 */
-		theForm.set("numberOfColumns", Integer.valueOf(findingBean
-				.getNumberOfColumns()));
-		theForm.set("numberOfRows", Integer.valueOf(findingBean
-				.getNumberOfRows()));
+		theForm.set("numberOfColumns", 
+			Integer.valueOf(findingBean.getNumberOfColumns()));
+		theForm.set("numberOfRows", 
+			Integer.valueOf(findingBean	.getNumberOfRows()));
 
 		if (request.getParameter("removeColumn") != null) {
 			int columnToRemove = Integer.parseInt(request
