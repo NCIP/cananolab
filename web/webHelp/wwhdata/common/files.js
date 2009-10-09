@@ -97,6 +97,9 @@ P.fA("Editing Publications","Manage%20Publications.7.7.html");
 P.fA("Update Publication Page","Manage%20Publications.7.8.html");
 P.fA("Downloading a Publication","Manage%20Publications.7.9.html");
 P.fA("Deleting a Publication","Manage%20Publications.7.10.html");
-P.fA("caNanoLab Glossary","caNanoLab_Glossary.8.1.html");
-P.fA("Application Support","Application%20Support.9.1.html");
+P.fA("Administration","Administration.8.1.html");
+P.fA("Configuring a New User","Administration.8.2.html");
+P.fA("Configuring Site Preferences","Administration.8.3.html");
+P.fA("caNanoLab Glossary","caNanoLab_Glossary.9.1.html");
+P.fA("Application Support","Application%20Support.10.1.html");
 }
