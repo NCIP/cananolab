@@ -107,7 +107,14 @@ public class AdvancedSampleSearchBean {
 				characterizationQueries.add(index,
 						(CharacterizationQueryBean) query);
 			} else {
-				characterizationQueries.add((CharacterizationQueryBean) query);
+				CharacterizationQueryBean charQuery = (CharacterizationQueryBean) query;
+				//edit query for empty information
+				//set operand and unit empty if value is empty
+				if (StringUtils.isEmpty(charQuery.getDatumValue())) {
+					charQuery.setOperand("");
+					charQuery.setDatumValueUnit("");
+				}
+				characterizationQueries.add(charQuery);
 			}
 		}
 	}
