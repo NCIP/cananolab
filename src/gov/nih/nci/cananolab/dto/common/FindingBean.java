@@ -112,19 +112,30 @@ public class FindingBean {
 				Row row = new Row();
 				for (int j = 0; j < numberOfColumns; j++) {
 					if (!conditionMap.isEmpty()) {
-						if (conditionMap.get(columnHeaders.get(j)) != null) {
-							Condition condition = conditionMap.get(
-									columnHeaders.get(j)).get(i);
-							row.getCells().add(new TableCell(condition));
+						ColumnHeader theHeader = columnHeaders.get(j);
+						if (conditionMap.get(theHeader) != null
+								&& !conditionMap.get(theHeader).isEmpty()) {
+							try {
+								Condition condition = conditionMap.get(
+										theHeader).get(i);
+								row.getCells().add(new TableCell(condition));
+							} catch (IndexOutOfBoundsException e) {
+								row.getCells().add(new TableCell());
+							}
 						}
 					}
 				}
 				for (int j = 0; j < numberOfColumns; j++) {
 					if (!datumMap.isEmpty()) {
-						if (datumMap.get(columnHeaders.get(j)) != null) {
-							Datum datum = datumMap.get(columnHeaders.get(j))
-									.get(i);
-							row.getCells().add(new TableCell(datum));
+						ColumnHeader theHeader = columnHeaders.get(j);
+						if (datumMap.get(theHeader) != null
+								&& !datumMap.get(theHeader).isEmpty()) {
+							try {
+								Datum datum = datumMap.get(theHeader).get(i);
+								row.getCells().add(new TableCell(datum));
+							} catch (IndexOutOfBoundsException e) {
+								row.getCells().add(new TableCell());
+							}
 						}
 					}
 				}
