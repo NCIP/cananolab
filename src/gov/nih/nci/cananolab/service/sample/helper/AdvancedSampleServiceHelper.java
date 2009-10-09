@@ -727,7 +727,7 @@ public class AdvancedSampleServiceHelper {
 			Float datumValue = new Float(charQuery.getDatumValue());
 			charCrit = Restrictions.and(charCrit, Restrictions.eq(
 					"datum.valueUnit", charQuery.getDatumValueUnit()));
-			if (charQuery.getOperand().equals("=")) {
+			if (charQuery.getOperand().equals("=")||charQuery.getOperand().equals("is")) {
 				charCrit = Restrictions.and(charCrit, Expression.eq(
 						"datum.value", datumValue));
 			} else if (charQuery.getOperand().equals(">")) {
