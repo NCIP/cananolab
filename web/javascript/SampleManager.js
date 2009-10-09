@@ -390,9 +390,13 @@ function setCharacterizationOperandOptions(selectedOperand) {
 		dwr.util.addOptions("charOperand", emptyOption, "value", "label");
 		dwr.util.addOptions("charOperand", data, "value", "label");
 		if (data.length == 1) {
-			dwr.util.setValue("charOperand", data[0].value, {escapeHtml : false});			
+			dwr.util.setValue("charOperand", data[0].value, {
+				escapeHtml : false
+			});
 		} else {
-			dwr.util.setValue("charOperand", selectedOperand, {escapeHtml : false});
+			dwr.util.setValue("charOperand", selectedOperand, {
+				escapeHtml : false
+			});
 		}
 	});
 }
@@ -420,6 +424,8 @@ function clearCharacterizationQuery() {
 	dwr.util.setValue("charOperand", "");
 	dwr.util.setValue("datumValue", "");
 	dwr.util.setValue("datumValueUnit", "");
+	show("datumValueTextBlock");
+	hide("datumValueSelectBlock");
 	hide("deleteCharacterizationQuery");
 }
 
@@ -429,11 +435,11 @@ function addCharacterizationQuery() {
 		queryId = -100000 - numberOfCharQueries;
 	}
 	var datumName = dwr.util.getValue("datumName");
-	var datumValueUnit=dwr.util.getValue("datumValueUnit");
+	var datumValueUnit = dwr.util.getValue("datumValueUnit");
 	if (datumName.match("^is ")) {
 		var datumValue = dwr.util.getValue("datumValueSelect");
 		var datumValueBoolean = true;
-		datumValueUnit="";
+		datumValueUnit = "";
 	} else {
 		datumValue = dwr.util.getValue("datumValue");
 		datumValueBoolean = false;
@@ -513,23 +519,19 @@ function populateCharacterizationQueries() {
 
 		dwr.util.setValue("datumNameValue" + id, theQuery.datumName);
 		dwr.util.setValue("charOperandValue" + id, theQuery.operand);
-
+		dwr.util.setValue("datumValueUnitValue" + id, theQuery.datumValueUnit);
 		// display the words true/false if boolean
 		if (theQuery.datumValueBoolean == true) {
-			if (theQuery.datumValue == 1) {
-				var datumValueString = "true";
+			if (theQuery.datumValue == "") {
+				var datumValueString = "";
+			} else if (theQuery.datumValue == 1) {
+				datumValueString = "true";
 			} else {
 				datumValueString = "false";
 			}
 			dwr.util.setValue("datumValueValue" + id, datumValueString);
 		} else {
 			dwr.util.setValue("datumValueValue" + id, theQuery.datumValue);
-		}
-		if (theQuery.operand == "") {
-			dwr.util.setValue("datumValueUnitValue" + id, "");
-		} else {
-			dwr.util.setValue("datumValueUnitValue" + id,
-					theQuery.datumValueUnit);
 		}
 		dwr.util.setValue("charQueryId", id);
 		$("charPattern" + id).style.display = "";
@@ -571,7 +573,7 @@ function deleteTheCharacterizationQuery() {
 }
 
 function showDetailView(styleId, url) {
-	url=url+"&advancedSearch="+styleId;
+	url = url + "&advancedSearch=" + styleId;
 	SampleManager.getAdvancedSearchDetailContent(url, function(pageData) {
 		var contentElement = document.getElementById("content" + styleId);
 		if (pageData == "") {
