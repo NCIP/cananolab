@@ -657,30 +657,33 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Return true if every finding cell has value entered, false otherwise.
+	 * Return true if one finding cell has value entered, false otherwise.
 	 * 
 	 * @param findingBean
-	 * @return true if every finding cell has value entered, false otherwise.
+	 * @return true if one finding cell has value entered, false otherwise.
 	 */
 	private boolean validateCellNotEmpty(FindingBean findingBean) {
 		if (findingBean != null) {
 			int rowNum = findingBean.getNumberOfRows();
 			List<Row> rows = findingBean.getRows();
-			if (rows == null || rows.size() != rowNum) {
-				return false;
+			if (rows == null || rows.size() != rowNum || rows.size() == 0) {
+				return false; // Matrix must have at least 1 row.
 			}
 			for (Row row : rows) {
 				List<TableCell> cells = row.getCells();
-				if (cells != null) {
+				if (cells != null && !cells.isEmpty()) {
 					for (TableCell cell : cells) {
-						if (StringUtils.isEmpty(cell.getValue())) {
-							return false;
+						if (!StringUtils.isEmpty(cell.getValue())) {
+							return true; // Matrix must have 1 cell with value.
 						}
 					}
+				} else {
+					return false; // Each column must have at least 1 row.
 				}
 			}
+			return false; // Every cell is empty.
 		}
-		return true;
+		return true; 
 	}
 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
