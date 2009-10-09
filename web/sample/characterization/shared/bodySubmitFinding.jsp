@@ -67,8 +67,6 @@
 				styleId="rowNum" onkeydown="return filterInteger(event)" />
 			rows &nbsp;&nbsp;
 			<a href="javascript:updateMatrix(characterizationForm)">Update</a>
-			<input type="hidden" name="numberOfColumns" value="${characterizationForm.map.numberOfColumns}">
-			<input type="hidden" name="numberOfRows" value="${characterizationForm.map.numberOfRows}">
 		</td>
 	</tr>
 	<tr>
