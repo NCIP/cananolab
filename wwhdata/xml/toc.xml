@@ -122,6 +122,10 @@
       <i t="Deleting a Publication" l="96" />
     </i>
   </i>
-  <i t="caNanoLab Glossary" l="97" />
-  <i t="Application Support" l="98" />
+  <i t="Administration" l="97">
+    <i t="Configuring a New User" l="98" />
+    <i t="Configuring Site Preferences" l="99" />
+  </i>
+  <i t="caNanoLab Glossary" l="100" />
+  <i t="Application Support" l="101" />
 </WebWorksHelpTOC>

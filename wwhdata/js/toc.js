@@ -97,6 +97,9 @@ B=A.fN("Editing Publications","93");
 C=B.fN("Update Publication Page","94");
 C=B.fN("Downloading a Publication","95");
 C=B.fN("Deleting a Publication","96");
-A=P.fN("caNanoLab Glossary","97");
-A=P.fN("Application Support","98");
+A=P.fN("Administration","97");
+B=A.fN("Configuring a New User","98");
+B=A.fN("Configuring Site Preferences","99");
+A=P.fN("caNanoLab Glossary","100");
+A=P.fN("Application Support","101");
 }

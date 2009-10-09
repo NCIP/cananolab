@@ -135,8 +135,11 @@
     <Document title="Update Publication Page" href="Manage%20Publications.7.8.html" />
     <Document title="Downloading a Publication" href="Manage%20Publications.7.9.html" />
     <Document title="Deleting a Publication" href="Manage%20Publications.7.10.html" />
-    <Document title="caNanoLab Glossary" href="caNanoLab_Glossary.8.1.html" />
-    <Document title="Application Support" href="Application%20Support.9.1.html" />
+    <Document title="Administration" href="Administration.8.1.html" />
+    <Document title="Configuring a New User" href="Administration.8.2.html" />
+    <Document title="Configuring Site Preferences" href="Administration.8.3.html" />
+    <Document title="caNanoLab Glossary" href="caNanoLab_Glossary.9.1.html" />
+    <Document title="Application Support" href="Application%20Support.10.1.html" />
   </DocumentInfo>
   <TopicMap>
     <Topic name="Welcome" href="Welcome.1.1.html#1052621" />
@@ -167,6 +170,6 @@
     <Topic name="publications_search_results_help" href="Manage%20Publications.7.5.html#1104802" />
     <Topic name="publication_summary_help" href="Manage%20Publications.7.6.html#1142741" />
     <Topic name="delete_doc_help" href="Manage%20Publications.7.10.html#1150515" />
-    <Topic name="glossary_help" href="caNanoLab_Glossary.8.1.html#1065170" />
+    <Topic name="glossary_help" href="caNanoLab_Glossary.9.1.html#1065170" />
   </TopicMap>
 </WebWorksHelpBook>
