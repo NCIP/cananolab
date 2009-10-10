@@ -250,10 +250,8 @@ public class FindingBean {
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
 		}
-		if (domain.getId() == null
-				|| !StringUtils.isEmpty(domain.getCreatedBy())
-				&& domain.getCreatedBy().equals(
-						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+		if (domain.getId() == null ||
+				Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain.getCreatedBy())) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());
 		}
@@ -267,10 +265,8 @@ public class FindingBean {
 		} else {
 			domain.setFileCollection(new HashSet<File>());
 		}
-		int j = 0;
 		for (FileBean file : files) {
 			domain.getFileCollection().add(file.getDomainFile());
-			j++;
 		}
 
 		for (Row row : rows) {
@@ -279,15 +275,19 @@ public class FindingBean {
 			List<Datum> rowData = new ArrayList<Datum>();
 			for (TableCell cell : row.getCells()) {
 				ColumnHeader columnHeader = columnHeaders.get(cInd);
-				if (columnHeader.getColumnType().equals(FindingBean.DATUM_TYPE)) {
+				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType())) {
 					Datum datum = cell.getDatum();
-					datum.setValue(new Float(cell.getValue()));
+					if (StringUtils.isEmpty(cell.getValue())) {
+						datum.setValue(null);
+					} else {
+						datum.setValue(Float.valueOf(cell.getValue()));
+					}
 					datum.setValueType(columnHeader.getValueType());
 					datum.setValueUnit(columnHeader.getValueUnit());
 					datum.setName(columnHeader.getColumnName());
 					rowData.add(datum);
-				} else if (columnHeader.getColumnType().equals(
-						FindingBean.CONDITION_TYPE)) {
+				} else if (FindingBean.CONDITION_TYPE.equals(columnHeader
+						.getColumnType())) {
 					Condition condition = cell.getCondition();
 					condition.setValue(cell.getValue());
 					condition.setValueType(columnHeader.getValueType());

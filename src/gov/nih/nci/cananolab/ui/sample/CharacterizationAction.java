@@ -662,10 +662,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Return true if one finding cell has value entered, false otherwise.
+	 * Return true if at least 1 filled cell exists in each Row/Column.
 	 * 
 	 * @param findingBean
-	 * @return true if one finding cell has value entered, false otherwise.
+	 * @return true if at least 1 filled cell exists in each Row/Column.
 	 */
 	private boolean validateMatrix(FindingBean findingBean) {
 		if (findingBean != null) {
@@ -676,7 +676,21 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				rows.size() == 0 || colNum == 0) {
 				return false; // There should be at least 1 row & 1 column.
 			}
-			// Iterate matrix to check if each column has >=1 filled cell.
+			// Iterate matrix to check if each Row has >=1 filled cell.
+			for (Row row : rows) {
+				boolean emptyCell = true;
+				List<TableCell> cells = row.getCells();
+				for (TableCell cell : cells) {
+					emptyCell = StringUtils.isEmpty(cell.getValue());
+					if (!emptyCell) {
+						break; // Once found 1 filled cell this row is fine.
+					}
+				}
+				if (emptyCell) {
+					return false; // Return false as every cell in row is empty.
+				}
+			}
+			// Iterate matrix to check if each Column has >=1 filled cell.
 			for (int colIndex = 0; colIndex < colNum; colIndex++) {
 				int rowIndex = 0;
 				TableCell cell = rows.get(rowIndex).getCells().get(colIndex);
@@ -686,7 +700,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					emptyCell = StringUtils.isEmpty(cell.getValue());
 				}
 				if (emptyCell)
-					return false; // Return false as every cell is empty.
+					return false; // Return false as every cell in column is empty.
 			}
 		}
 		return true;  // Null FindingBean is allowed.

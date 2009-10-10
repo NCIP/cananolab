@@ -4,7 +4,7 @@ CREATE TABLE DATUM
 (
   DATUM_PK_ID                  NUMBER           NOT NULL,
   NAME                         VARCHAR2(2000)   NOT NULL,
-  VALUE                        NUMBER           NOT NULL,
+  VALUE                        NUMBER,
   VALUE_UNIT                   VARCHAR2(200),
   DERIVED_BIOASSAY_DATA_PK_ID  NUMBER,
   CONTROL_NAME                 VARCHAR2(200),

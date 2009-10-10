@@ -21,7 +21,10 @@ public class TableCell {
 
 	public TableCell(Datum datum) {
 		this.datumOrCondition = FindingBean.DATUM_TYPE;
-		this.value = datum.getValue().toString();
+		// Allow empty Datum (associated with a Condition).
+		if (datum.getValue() != null) {
+			this.value = datum.getValue().toString();
+		}
 		this.datum = datum;
 		this.condition = null;
 	}
