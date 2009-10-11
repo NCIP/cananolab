@@ -24,7 +24,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class allows users to submit composition files under sample composition.
- * 
+ *
  * @author pansu
  */
 public class CompositionFileAction extends BaseAnnotationAction {
@@ -35,17 +35,17 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
-		
+
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
-		
+
 		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
 				+ sampleBean.getDomain().getName() + "/" + "compositionFile";
 
-		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
+		theFile.setupDomainFile(internalUriPath, user.getLoginName());
 		CompositionService service = new CompositionServiceLocalImpl();
 		service.saveCompositionFile(sampleBean, theFile, user);
 		ActionMessages msgs = new ActionMessages();
@@ -106,7 +106,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	/**
 	 * Handle input request, when validation failed this handler will be called
 	 * too.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -123,11 +123,11 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		InitCompositionSetup.getInstance().persistCompositionFileDropdowns(
 				request, comp.getTheFile());
-		
+
 		//Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = comp.getTheFile();
 		preserveUploadedFile(request, theFile, "compositionFile");
-		
+
 		return mapping.findForward("inputForm");
 	}
 
