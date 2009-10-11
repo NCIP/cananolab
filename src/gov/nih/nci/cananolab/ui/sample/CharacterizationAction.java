@@ -40,14 +40,14 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
- * 
+ *
  * @author pansu
  */
 public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -99,16 +99,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		//Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = charBean.getTheFinding().getTheFile();
-		String charName = 
+		String charName =
 			StringUtils.getOneWordLowerCaseFirstLetter(charBean.getCharacterizationName());
 		preserveUploadedFile(request, theFile, charName);
-		
+
 		return mapping.findForward("inputForm");
 	}
 
 	/**
 	 * Set up the input form for adding new characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -134,14 +134,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		this.checkOpenForms(charBean, request);
 		// clear copy to otherSamples
-		theForm.set("otherSamples", new String[0]);
-		
+		clearCopy(theForm);
 		return mapping.findForward("inputForm");
 	}
 
 	/**
 	 * Set up drop-downs need for the input form
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @throws Exception
@@ -167,7 +166,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for editing existing characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -209,9 +208,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("characterizationDetailPage", detailPage);
 		this.checkOpenForms(charBean, request);
 		// clear copy to otherSamples
-		theForm.set("otherSamples", new String[0]);
-		
+		clearCopy(theForm);
 		return mapping.findForward("inputForm");
+	}
+
+	private void clearCopy(DynaValidatorForm theForm) {
+		theForm.set("otherSamples", new String[0]);
+		theForm.set("copyData", false);
 	}
 
 	private String setupDetailPage(CharacterizationBean charBean) {
@@ -232,7 +235,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup characterization bean for saving.
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -253,7 +256,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup, prepare and save characterization.
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -313,7 +316,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -347,7 +350,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryView() handles View request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -390,7 +393,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
 	 * Prepare CharacterizationBean based on Sample Id.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -426,7 +429,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Save result bean in session for later use - export/print.
 		request.getSession().setAttribute("characterizationSummaryView",
 				summaryView);
-		
+
 		// Save sample bean in session for sample name in export/print.
 		request.getSession().setAttribute("theSample", sampleBean);
 	}
@@ -435,7 +438,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * Shared function for summaryView() and summaryPrint(). Keep submitted
 	 * characterization types in the correct display order. Should be called
 	 * after calling prepareSummary(), to avoid session timeout issue.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -485,7 +488,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -515,7 +518,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Export Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -593,15 +596,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.setTheFinding(findingBean);
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, request);
-		
+
 		/**
 		 * Setup number of column/row in form for validation.
 		 */
-		theForm.set("numberOfColumns", 
+		theForm.set("numberOfColumns",
 			Integer.valueOf(findingBean.getNumberOfColumns()));
-		theForm.set("numberOfRows", 
+		theForm.set("numberOfRows",
 			Integer.valueOf(findingBean.getNumberOfRows()));
-		
+
 		return mapping.findForward("inputForm");
 	}
 
@@ -663,7 +666,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Return true if at least 1 filled cell exists in each Row/Column.
-	 * 
+	 *
 	 * @param findingBean
 	 * @return true if at least 1 filled cell exists in each Row/Column.
 	 */
@@ -671,8 +674,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (findingBean != null) {
 			int rowNum = findingBean.getNumberOfRows();
 			int colNum = findingBean.getNumberOfColumns();
+			//it's okay not to have any datum
+			if (rowNum==0 && colNum==0) {
+				return true;
+			}
 			List<Row> rows = findingBean.getRows();
-			if (rows == null || rows.size() != rowNum || 
+			if (rows == null || rows.size() != rowNum ||
 				rows.size() == 0 || colNum == 0) {
 				return false; // There should be at least 1 row & 1 column.
 			}
@@ -718,7 +725,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
-		
+
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
 		SampleBean sampleBean = setupSample(theForm, request,
@@ -731,7 +738,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
+		newFile.setupDomainFile(internalUriPath, user.getLoginName());
 		findingBean.addFile(newFile, theFileIndex);
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, request);
@@ -771,9 +778,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		/**
 		 * Set number of column/row in form for validation.
 		 */
-		theForm.set("numberOfColumns", 
+		theForm.set("numberOfColumns",
 			Integer.valueOf(findingBean.getNumberOfColumns()));
-		theForm.set("numberOfRows", 
+		theForm.set("numberOfRows",
 			Integer.valueOf(findingBean	.getNumberOfRows()));
 
 		if (request.getParameter("removeColumn") != null) {
@@ -895,12 +902,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 * 
+	 *
 	 * @param request
 	 * @param compBean
 	 */
 	private List<String> filterType(HttpServletRequest request) {
-		List<String> charTypes = 
+		List<String> charTypes =
 			(List<String>) request.getAttribute("characterizationTypes");
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
@@ -912,7 +919,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Copy "isSoluble" property from achar to Solubility entity.
-	 * 
+	 *
 	 * @param achar
 	 */
 	private void copyIsSoluble(CharacterizationBean achar) {
@@ -928,7 +935,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup "isSoluble" property in achar from Solubility entity.
-	 * 
+	 *
 	 * @param achar
 	 */
 	private void setupIsSoluble(CharacterizationBean achar) {
