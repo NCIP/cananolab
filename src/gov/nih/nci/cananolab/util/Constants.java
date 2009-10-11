@@ -195,4 +195,6 @@ public class Constants {
 	public static final String LOCATION = "location";
 
 	public static final int DISPLAY_TAG_TABLE_SIZE = 25;
+
+	public static final String PLACEHOLDER_DATUM_CONDITION_CREATED_BY="place holder";
 }
