@@ -32,7 +32,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 /**
  * This class allows users to submit chemical association data under sample
  * composition.
- * 
+ *
  * @author pansu
  */
 public class ChemicalAssociationAction extends BaseAnnotationAction {
@@ -119,16 +119,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	public void saveAssociation(HttpServletRequest request,
 			DynaValidatorForm theForm, ChemicalAssociationBean assocBean)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
-				+ sampleBean.getDomain().getName() + "/"
-				+ "chemicalAssociation";
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		try {
-			assocBean.setupDomainAssociation(user.getLoginName(),
-					internalUriPath);
+			assocBean.setupDomainAssociation(user.getLoginName());
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
@@ -155,7 +150,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new chemical association
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -258,11 +253,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
 				request, assocBean, hasFunctionalizingEntities);
-		
-		//Save uploaded data in session to avoid asking user to upload again.
+
+		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = assocBean.getTheFile();
 		preserveUploadedFile(request, theFile, "Chemical Association");
-		
+
 		this.checkOpenForms(assocBean, request);
 		return mapping.findForward("inputForm");
 	}
@@ -273,7 +268,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		boolean hasFunctionalizingEntity = false;
 		if (!compositionBean.getFunctionalizingEntities().isEmpty()) {
 			hasFunctionalizingEntity = true;
-		}		
+		}
 		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
 				request, hasFunctionalizingEntity);
 		// use BaseCompositionEntityBean for DWR ajax
@@ -367,11 +362,19 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ChemicalAssociationBean assoc = (ChemicalAssociationBean) theForm
 				.get("assoc");
 		FileBean theFile = assoc.getTheFile();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE);
+		// setup domainFile uri for fileBeans
+		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
+				+ sampleBean.getDomain().getName() + "/"
+				+ "chemicalAssociation";
+		theFile.setupDomainFile(internalUriPath, user.getLoginName());
 		assoc.addFile(theFile);
-		
+
 		// restore previously uploaded file from session.
 		this.restoreUploadedFile(request, theFile);
-		
+
 		// save the association
 		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");
@@ -403,16 +406,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.get("assoc");
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Chemical Association");
-		assocBean.setupDomainAssociation(user.getLoginName(), internalUriPath);
+		assocBean.setupDomainAssociation(user.getLoginName());
 
 		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteChemicalAssociation(assocBean.getDomainAssociation(),
