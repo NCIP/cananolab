@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -362,7 +363,11 @@ public class CharacterizationServiceLocalImpl implements
 				ExperimentConfig dbConfig = helper.findExperimentConfigById(
 						config.getId().toString(), user);
 				if (dbConfig != null) {
-					config.setCreatedBy(dbConfig.getCreatedBy());
+					// don't change createdBy if it is not COPY
+					if (!dbConfig.getCreatedBy().equals(
+							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						config.setCreatedBy(dbConfig.getCreatedBy());
+					}
 					config.setCreatedDate(dbConfig.getCreatedDate());
 				}
 			}
@@ -555,10 +560,12 @@ public class CharacterizationServiceLocalImpl implements
 				if (findings != null && !findings.isEmpty()) {
 					for (FindingBean findingBean : findings) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							String newUri=
-							fileBean.getDomainFile().getUri().replace(
-									oldSampleBean.getDomain().getName(),
-									sampleBean.getDomain().getName());
+							String newUri = fileBean
+									.getDomainFile()
+									.getUri()
+									.replace(
+											oldSampleBean.getDomain().getName(),
+											sampleBean.getDomain().getName());
 							fileBean.getDomainFile().setUri(newUri);
 						}
 						this.saveFinding(findingBean, user);
