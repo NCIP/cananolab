@@ -28,6 +28,15 @@ public class TableCell {
 				&& datum.getCreatedBy().equals(
 						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 			this.value = "";
+		}
+		// remove .0 from boolean
+		else if (datum.getValueType().equals("boolean")) {
+			if (datum.getValue() == 1) {
+				// remove .0 from number
+				this.value = "1";
+			} else if (datum.getValue() == 0) {
+				this.value = "0";
+			}
 		} else {
 			this.value = datum.getValue().toString();
 		}
