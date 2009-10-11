@@ -18,7 +18,7 @@
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<!-- Associations mapping for the Condition class -->
-		<set name="datumCollection" table="datum_condition" lazy="true" inverse="false">
+		<set name="datumCollection" table="datum_condition" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="condition_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Datum" column="datum_pk_id" />
