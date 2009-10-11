@@ -4,6 +4,7 @@ function setNameOptionsByCharName(columnNumber) {
 	var assayType = dwr.util.getValue("assayType");
 	var columnType = dwr.util.getValue("columnType" + columnNumber);
 	var currentColumnName = dwr.util.getValue("theColumnName"+columnNumber);
+	dwr.util.setValue("constantValue" + columnNumber, "");
 	
 	if (columnType == "datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
