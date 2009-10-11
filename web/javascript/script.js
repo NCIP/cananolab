@@ -1,8 +1,8 @@
 // IE and firefox behaves differently for table row style
-if(navigator.appName.indexOf("Microsoft") > -1){
-var canSeeTableRow = 'block';
+if (navigator.appName.indexOf("Microsoft") > -1) {
+	var canSeeTableRow = "block";
 } else {
-var canSeeTableRow = 'table-row';
+	var canSeeTableRow = "table-row";
 }
 function changeMenuStyle(obj, new_style) {
 	obj.className = new_style;
@@ -19,32 +19,6 @@ function confirmDelete() {
 	} else {
 		return false;
 	}
-}
-function get_tree() {
-	d = new dTree("d");
-	d.config.target = "";
-	d.add(0, -1, "Workflow");
-	d.add(1, 0, "Pre-screening Assays", "javascript:void(0)", "", "", "");
-	d.add(2, 1, "STE-1", "javascript:gotoPage('assayActionMenu.jsp')", "", "", "");
-	d.add(3, 2, "run 1", "javascript:void(0)");
-	d.add(4, 3, "In", "javascript:gotoPage('inputActionMenu.jsp')");
-	d.add(5, 4, "NCL6-7105-1", "javascript:gotoPage('viewAliquot.do?aliquotId=NCL6-7105-1')", "", "", "");
-	d.add(6, 4, "NCL6-7105-2", "javascript:void(0)", "", "", "");
-	d.add(7, 3, "Out", "javascript:gotoPage('outputActionMenu.jsp')");
-	d.add(8, 7, "NCL6.vaf", "doc/astra_5.doc");
-	d.add(9, 2, "run 2", "javascript:void(0)");
-	d.add(10, 9, "In", "javascript:gotoPage('inputActionMenu.jsp')");
-	d.add(11, 9, "Out", "javascript:gotoPage('outputActionMenu.jsp')");
-	d.add(12, 1, "STE-2", "javascript:gotoPage('assayActionMenu.jsp')");
-	d.add(13, 1, "STE-3", "javascript:gotoPage('assayActionMenu.jsp')", "", "", "");
-	d.add(14, 1, "PCC-1", "javascript:gotoPage('assayActionMenu.jsp')", "", "", "");
-	d.add(15, 0, "In Vitro Assays", "javascript:void(0)", "", "", "");
-	d.add(16, 0, "In Vivo Assays", "javascript:void(0)", "", "", "");
-	d.add(17, 0, "Physical Characterization Assays", "javascript:void(0)", "", "", "");
-	document.write(d);
-}
-function add_hist() {
-	document.getElementById("hists").options[document.getElementById("hists").options.length] = new Option("new text", "new value");
 }
 function gotoPage(pageURL) {
 	window.location.href = pageURL;
@@ -108,20 +82,10 @@ function resetSelect(selectObj) {
 function removeSelectOptions(selectObj) {
 	selectObj.options.length = 0;
 }
-
 function submitAction(form, actionName, dispatchName, page) {
 	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=" + page;
 	form.submit();
 }
-function addComponent(form, actionName, dispatchName) {
-	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1";
-	form.submit();
-}
-function removeComponent(form, actionName, compInd, dispatchName) {
-	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd;
-	form.submit();
-}
-
 function getElement(form, elementName) {
 	var element;
 	for (var i = 0; i < form.elements.length; ) {
@@ -283,11 +247,10 @@ function showhide(layer_ref, isTableRow) {
 		return;
 	}
 	if (layerBlock.style.display == "none") {
-		if (isTableRow==true) {
-		    layerBlock.style.display =canSeeTableRow;
-		}
-		else {
-		   layerBlock.style.display = "block";
+		if (isTableRow == true) {
+			layerBlock.style.display = canSeeTableRow;
+		} else {
+			layerBlock.style.display = "block";
 		}
 	} else {
 		layerBlock.style.display = "none";
@@ -300,15 +263,13 @@ function show(layer_ref, isTableRow) {
 		return;
 	}
 	if (layerBlock.style.display == "none") {
-		if (isTableRow==true) {
-		    layerBlock.style.display = canSeeTableRow;
-		}
-		else {
-		   layerBlock.style.display = "block";
+		if (isTableRow == true) {
+			layerBlock.style.display = canSeeTableRow;
+		} else {
+			layerBlock.style.display = "block";
 		}
 	}
 }
-
 function hide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock == null) {
@@ -359,8 +320,7 @@ function addFile(actionName, form) {
 	} else {
 		dispatch = "saveFile";
 	}
-	form.action = actionName + ".do?dispatch=" + dispatch + "&page=3";
-	form.submit();
+	submitAction(form, actionName, dispatch, 3);
 }
 function confirmDelete(type) {
 	answer = confirm("Are you sure you want to delete the " + type + "?");
@@ -369,8 +329,7 @@ function confirmDelete(type) {
 function removeFile(actionName, form, index) {
 	var answer = confirmDelete("file");
 	if (answer != 0) {
-		form.action = actionName + ".do?dispatch=removeFile&page=3";
-		form.submit();
+		submitAction(form, actionName, "removeFile", 3);
 	}
 }
 function populateFile(file) {
@@ -429,32 +388,28 @@ function displayFileRadioButton() {
 function deleteData(type, form, actionName) {
 	var answer = confirmDelete(type);
 	if (answer) {
-		form.action = actionName + ".do?dispatch=delete&page=0";
-		form.submit();
+		submitAction(form, actionName, "delete", 0);
 	}
 }
 function sessionTimeout() {
 	alert("Session has timed out.  Please log in again.");
 	location.href = "welcome.do";
 }
-
 function openSubmissionForm(styleId) {
-	show("new"+styleId);
-	hide("add"+styleId);
+	show("new" + styleId);
+	hide("add" + styleId);
 }
-
 function closeSubmissionForm(styleId) {
-	hide("new"+styleId);
-	show("add"+styleId);
+	hide("new" + styleId);
+	show("add" + styleId);
+}
+function validateSavingTheData(dataStyleId, dataName) {
+	var displayStatus = document.getElementById(dataStyleId).style.display;
+	if (displayStatus == "block" || displayStatus == canSeeTableRow) {
+		alert("Please click on either the Save button or the Cancel button in the " + dataName + " form.");
+		return false;
+	} else {
+		return true;
+	}
 }
 
-function validateSavingTheData(dataStyleId, dataName) {
-  var displayStatus=document.getElementById(dataStyleId).style.display;
-  if (displayStatus=='block' || displayStatus==canSeeTableRow) {
-	  alert("Please click on either the Save button or the Cancel button in the "+dataName+" form.");
-	  return false;
-  }
-  else {
-	  return true;
-  }
-}
