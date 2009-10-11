@@ -140,6 +140,11 @@
 		<action name="compositionForm" parameter="dispatch" path="/nanomaterialEntity"
 			type="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction"
 			input="input">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.deleteNanomaterialEntityWithChemicalAssociation"
+				path="sample.composition.nanomaterialEntity"
+				type="gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException" />
 			<forward name="input"
 				path="/nanomaterialEntity.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="sample.composition.nanomaterialEntity" />
@@ -151,6 +156,11 @@
 		<action name="compositionForm" parameter="dispatch"
 			path="/functionalizingEntity" type="gov.nih.nci.cananolab.ui.sample.FunctionalizingEntityAction"
 			input="input">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.deleteFunctionalizingEntityWithChemicalAssociation"
+				path="sample.composition.functionalizingEntity"
+				type="gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException" />
 			<forward name="input"
 				path="/functionalizingEntity.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="sample.composition.functionalizingEntity" />
