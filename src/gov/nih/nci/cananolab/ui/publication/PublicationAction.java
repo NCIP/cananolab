@@ -50,17 +50,17 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
-		PublicationBean publicationBean = 
-			(PublicationBean) theForm.get("publication");
+		PublicationBean publicationBean = (PublicationBean) theForm
+				.get("publication");
 		String sampleId = (String) theForm.get("sampleId");
 		Boolean addToSample = (Boolean) theForm.get("addToSample");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
+
 		/**
 		 * If user chosen other samples, need to add this pub to those samples.
 		 */
 		List<String> newNames = null;
-		String[] otherSamples = (String[]) theForm.get("otherSamples");		
+		String[] otherSamples = (String[]) theForm.get("otherSamples");
 		if (otherSamples == null || otherSamples.length == 0) {
 			newNames = new ArrayList<String>(1);
 		} else {
@@ -72,14 +72,15 @@ public class PublicationAction extends BaseAnnotationAction {
 		 */
 		if (addToSample != null && addToSample.booleanValue()) {
 			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService.findSampleById(sampleId, user);
+			SampleBean sampleBean = sampleService
+					.findSampleById(sampleId, user);
 			newNames.add(sampleBean.getDomain().getName());
 		}
 		if (!newNames.isEmpty()) {
 			publicationBean.setSampleNames(newNames.toArray(new String[0]));
 		}
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION, user
-				.getLoginName(), 0);
+				.getLoginName());
 		PublicationService service = new PublicationServiceLocalImpl();
 		service.savePublication(publicationBean, user);
 
@@ -104,7 +105,7 @@ public class PublicationAction extends BaseAnnotationAction {
 							.getCategory()) + 1;
 			request.setAttribute("onloadJavascript", "showSummary('" + ind
 					+ "', " + allPublicationTypes.size() + ")");
-			
+
 			return summaryEdit(mapping, form, request, response);
 		} else {
 			return mapping.findForward("success");
@@ -113,7 +114,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle delete request from Sample -> Publication -> Edit page.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -126,15 +127,15 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
 		PublicationService service = new PublicationServiceLocalImpl();
-		PublicationBean publicationBean = 
-			(PublicationBean) theForm.get("publication");
+		PublicationBean publicationBean = (PublicationBean) theForm
+				.get("publication");
 		String sampleId = (String) theForm.get("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		service.removePublicationFromSample(sampleId, publicationBean, user);
-		
+
 		return summaryEdit(mapping, form, request, response);
 	}
-	
+
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -144,7 +145,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		theForm.set("sampleId", sampleId);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
-		
+
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			((Publication) pubBean.getDomainFile()).setCategory(type);
@@ -175,8 +176,8 @@ public class PublicationAction extends BaseAnnotationAction {
 				publicationId, user);
 		theForm.set("publication", pubBean);
 		theForm.set("sampleId", sampleId);
-		theForm.set("otherSamples", new String[0]); //clear copy otherSamples.
-		
+		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
+
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
@@ -191,7 +192,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -205,13 +206,13 @@ public class PublicationAction extends BaseAnnotationAction {
 		// Marker that indicates page is for printing (hide tabs, links, etc).
 		request.setAttribute("printView", Boolean.TRUE);
 
-		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) 
-			request.getSession().getAttribute("publicationSummaryView");
+		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) request
+				.getSession().getAttribute("publicationSummaryView");
 		if (summaryBean == null) {
 			// Prepare data.
 			this.prepareSummary(mapping, form, request, response);
-			summaryBean = (PublicationSummaryViewBean) 
-				request.getSession().getAttribute("publicationSummaryView");
+			summaryBean = (PublicationSummaryViewBean) request.getSession()
+					.getAttribute("publicationSummaryView");
 		}
 
 		// Filter out categories that not selected.
@@ -222,7 +223,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -241,7 +242,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -264,7 +265,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -275,27 +276,27 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		SampleBean sampleBean = (SampleBean) 
-			request.getSession().getAttribute("theSample");
-		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) 
-			request.getSession().getAttribute("publicationSummaryView");
+		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute(
+				"theSample");
+		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) request
+				.getSession().getAttribute("publicationSummaryView");
 		if (sampleBean == null || summaryBean == null) {
 			// Prepare data.
 			this.prepareSummary(mapping, form, request, response);
-			sampleBean = (SampleBean) 
-				request.getSession().getAttribute("theSample");
-			summaryBean = (PublicationSummaryViewBean) 
-				request.getSession().getAttribute("publicationSummaryView");
+			sampleBean = (SampleBean) request.getSession().getAttribute(
+					"theSample");
+			summaryBean = (PublicationSummaryViewBean) request.getSession()
+					.getAttribute("publicationSummaryView");
 		}
 		this.filterType(request, summaryBean);
 
 		// Get sample name for constructing file name.
 		String type = request.getParameter("type");
-		String fileName = ExportUtils.getExportFileName(
-			sampleBean.getDomain().getName(), "PublicationSummaryView", type);
+		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
+				.getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
-		PublicationServiceHelper.exportSummary(summaryBean, 
-			response.getOutputStream());
+		PublicationServiceHelper.exportSummary(summaryBean, response
+				.getOutputStream());
 
 		return null;
 	}
@@ -303,7 +304,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -318,7 +319,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		session.removeAttribute("publicationSummaryView");
 		session.removeAttribute("theSample");
-		
+
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString(Constants.LOCATION);
@@ -341,7 +342,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 		/**
-		 * Set location for display name where location is needed for making URL.
+		 * Set location for display name where location is needed for making
+		 * URL.
 		 */
 		for (PublicationBean pubBean : publications) {
 			pubBean.setLocation(location);
@@ -409,17 +411,18 @@ public class PublicationAction extends BaseAnnotationAction {
 			}
 		}
 		theForm.set("publication", publicationBean);
-		
+
 		/**
-		 * Set PubMedId from default value 0 to null for better displaying result.
+		 * Set PubMedId from default value 0 to null for better displaying
+		 * result.
 		 */
 		Publication pub = (Publication) publicationBean.getDomainFile();
 		if (pub.getPubMedId() != null && pub.getPubMedId() == 0) {
 			pub.setPubMedId(null);
 		}
 		request.setAttribute("onloadJavascript",
-			"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
-		
+				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
+
 		return mapping.findForward("publicationSubmitPublication");
 	}
 
@@ -531,20 +534,20 @@ public class PublicationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Shared function for summaryExport() and summaryPrint().
-	 * Filter out unselected types when user selected one type for print/export. 
-	 * 
+	 * Shared function for summaryExport() and summaryPrint(). Filter out
+	 * unselected types when user selected one type for print/export.
+	 *
 	 * @param request
 	 * @param compBean
 	 */
-	private void filterType(HttpServletRequest request, 
+	private void filterType(HttpServletRequest request,
 			PublicationSummaryViewBean summaryBean) {
-		//1. Restore all data first as bean might be filtered before.
-		SortedMap<String, List<PublicationBean>> dataMap = 
-			summaryBean.getCategory2Publications();
+		// 1. Restore all data first as bean might be filtered before.
+		SortedMap<String, List<PublicationBean>> dataMap = summaryBean
+				.getCategory2Publications();
 		summaryBean.setPublicationCategories(dataMap.keySet());
-		
-		//2. Filter out categories that are not selected.
+
+		// 2. Filter out categories that are not selected.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			Set<String> cats = new HashSet<String>(1);
