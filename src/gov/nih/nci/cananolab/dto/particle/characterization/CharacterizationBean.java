@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
@@ -37,9 +38,9 @@ import java.util.Set;
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CharacterizationBean {
 	private PointOfContactBean pocBean = new PointOfContactBean();
@@ -165,7 +166,6 @@ public class CharacterizationBean {
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		copy.setCreatedDate(Calendar.getInstance().getTime());
 		Collection<ExperimentConfig> oldConfigs = copy
 				.getExperimentConfigCollection();
 		if (oldConfigs == null || oldConfigs.isEmpty()) {
@@ -180,7 +180,9 @@ public class CharacterizationBean {
 			for (ExperimentConfig newConfig : newConfigs) {
 				newConfig.setId(null);
 				newConfig.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				newConfig.setCreatedDate(Calendar.getInstance().getTime());
+				// don't need to set instrument and technique ID's to null
+				// because
+				// they are reused.
 			}
 			copy.setExperimentConfigCollection(newConfigs);
 		}
@@ -196,7 +198,6 @@ public class CharacterizationBean {
 			for (Finding finding : newFindings) {
 				finding.setId(null);
 				finding.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				finding.setCreatedDate(Calendar.getInstance().getTime());
 				if (copyData) {
 					Collection<Datum> oldDatums = finding.getDatumCollection();
 					if (oldDatums == null || oldDatums.isEmpty()) {
@@ -205,10 +206,42 @@ public class CharacterizationBean {
 						Set<Datum> newDatums = new HashSet<Datum>(oldDatums);
 						for (Datum datum : newDatums) {
 							datum.setId(null);
-							datum
-									.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-							datum.setCreatedDate(Calendar.getInstance()
-									.getTime());
+							// keep the bogus place holder if empty datum
+							if (StringUtils.isEmpty(datum.getCreatedBy())
+									|| !datum
+											.getCreatedBy()
+											.equals(
+													Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
+									&& datum.getValue() != 0) {
+								datum
+										.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+							}
+							// conditions
+							Collection<Condition> oldConditions = datum
+									.getConditionCollection();
+							if (oldConditions == null
+									|| oldConditions.isEmpty()) {
+								datum.setConditionCollection(null);
+							} else {
+								Set<Condition> newConditions = new HashSet<Condition>(
+										oldConditions);
+								for (Condition condition : newConditions) {
+									condition.setId(null);
+									// keep the bogus place holder if empty condition
+									if (StringUtils.isEmpty(condition
+											.getCreatedBy())
+											|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+													.equals(condition
+															.getCreatedBy())
+											&& !condition
+													.getValue()
+													.equals(
+															Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+										condition
+												.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+									}
+								}
+							}
 						}
 						finding.setDatumCollection(newDatums);
 					}
@@ -222,7 +255,6 @@ public class CharacterizationBean {
 						file.setId(null);
 						file
 								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						file.setCreatedDate(Calendar.getInstance().getTime());
 						Collection<Keyword> keywords = file
 								.getKeywordCollection();
 						file.setKeywordCollection(new HashSet<Keyword>());
