@@ -24,13 +24,14 @@ public class TableCell {
 		this.datumOrCondition = FindingBean.DATUM_TYPE;
 		// display bogus placeholder datum as emtpy string
 		if (datum.getValue() == null
-				|| datum.getValue() == 0
+				|| datum.getValue() == -1
 				&& datum.getCreatedBy().equals(
 						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 			this.value = "";
 		}
 		// remove .0 from boolean
-		else if (datum.getValueType().equals("boolean")) {
+		else if (datum.getValueType() != null
+				&& datum.getValueType().equals("boolean")) {
 			if (datum.getValue() == 1) {
 				// remove .0 from number
 				this.value = "1";

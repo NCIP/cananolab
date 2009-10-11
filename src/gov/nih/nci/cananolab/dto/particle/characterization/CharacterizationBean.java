@@ -212,7 +212,7 @@ public class CharacterizationBean {
 											.getCreatedBy()
 											.equals(
 													Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
-									&& datum.getValue() != 0) {
+									&& datum.getValue() != -1) {
 								datum
 										.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 							}

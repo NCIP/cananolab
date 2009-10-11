@@ -299,7 +299,7 @@ public class FindingBean {
 				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType())) {
 					Datum datum = cell.getDatum();
 					if (StringUtils.isEmpty(cell.getValue())) {
-						datum.setValue(new Float(0));
+						datum.setValue(new Float(-1));
 						datum
 								.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
@@ -342,13 +342,13 @@ public class FindingBean {
 						|| !StringUtils.isEmpty(datum.getCreatedBy())
 						|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
 								.equals(datum.getCreatedBy())
-						&& datum.getValue() == 0) {
+						&& datum.getValue() == -1) {
 					// keep the bogus place holder created by for empty datum
 					// entered
 					if (StringUtils.isEmpty(datum.getCreatedBy())
 							|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
 									.equals(datum.getCreatedBy())
-							&& datum.getValue() != 0) {
+							&& datum.getValue() != -1) {
 						datum.setCreatedBy(createdBy);
 					}
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
