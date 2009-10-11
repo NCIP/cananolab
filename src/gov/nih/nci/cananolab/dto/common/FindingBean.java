@@ -19,9 +19,9 @@ import java.util.Map;
 
 /**
  * View bean for Datum
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class FindingBean {
 	public static final String DATUM_TYPE = "datum";
@@ -40,7 +40,7 @@ public class FindingBean {
 
 	/**
 	 * Constructor for CharBean copying & "findFindingById()".
-	 * 
+	 *
 	 * @param finding
 	 */
 	public FindingBean(Finding finding) {
@@ -69,23 +69,26 @@ public class FindingBean {
 			List<Datum> datumList = new ArrayList<Datum>();
 			List<Condition> conditionList = new ArrayList<Condition>();
 			for (Datum datum : data) {
-				List<Condition> conditions = new ArrayList<Condition>(datum
-						.getConditionCollection());
-				Collections.sort(conditions,
-						new Comparators.ConditionDateComparator());
-				for (Condition condition : conditions) {
-					ColumnHeader conditionColumn = new ColumnHeader(condition);
-					if (!columnHeaders.contains(conditionColumn)) {
-						columnHeaders.add(conditionColumn);
-					}
-					if (conditionMap.get(conditionColumn) != null) {
-						conditionList = conditionMap.get(conditionColumn);
-					} else {
-						conditionList = new ArrayList<Condition>();
-						conditionMap.put(conditionColumn, conditionList);
-					}
-					if (!conditionList.contains(condition)) {
-						conditionList.add(condition);
+				if (datum.getConditionCollection() != null) {
+					List<Condition> conditions = new ArrayList<Condition>(datum
+							.getConditionCollection());
+					Collections.sort(conditions,
+							new Comparators.ConditionDateComparator());
+					for (Condition condition : conditions) {
+						ColumnHeader conditionColumn = new ColumnHeader(
+								condition);
+						if (!columnHeaders.contains(conditionColumn)) {
+							columnHeaders.add(conditionColumn);
+						}
+						if (conditionMap.get(conditionColumn) != null) {
+							conditionList = conditionMap.get(conditionColumn);
+						} else {
+							conditionList = new ArrayList<Condition>();
+							conditionMap.put(conditionColumn, conditionList);
+						}
+						if (!conditionList.contains(condition)) {
+							conditionList.add(condition);
+						}
 					}
 				}
 				ColumnHeader datumColumn = new ColumnHeader(datum);
@@ -101,11 +104,27 @@ public class FindingBean {
 				datumList.add(datum);
 			}
 
-			if (conditionMap.get(columnHeaders.get(0)) != null) {
-				numberOfRows = conditionMap.get(columnHeaders.get(0)).size();
-			} else {
-				numberOfRows = datumMap.get(columnHeaders.get(0)).size();
+			int numRows = -1;
+			// iterate through all condition columns and find the biggest list
+			// size as the
+			// number of rows
+			for (Map.Entry<ColumnHeader, List<Condition>> entry : conditionMap
+					.entrySet()) {
+				int numConditions = entry.getValue().size();
+				if (numConditions > numRows) {
+					numRows = numConditions;
+				}
 			}
+			// iterate through all datum columns and find the biggest list size
+			// as the number of rows
+			for (Map.Entry<ColumnHeader, List<Datum>> entry : datumMap
+					.entrySet()) {
+				int numData = entry.getValue().size();
+				if (numData > numRows) {
+					numRows = numData;
+				}
+			}
+			numberOfRows = numRows;
 			numberOfColumns = columnHeaders.size();
 
 			for (int i = 0; i < numberOfRows; i++) {
@@ -250,8 +269,10 @@ public class FindingBean {
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
 		}
-		if (domain.getId() == null ||
-				Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain.getCreatedBy())) {
+		if (domain.getId() == null
+				|| !StringUtils.isEmpty(domain.getCreatedBy())
+				&& Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain
+						.getCreatedBy())) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());
 		}
@@ -278,7 +299,9 @@ public class FindingBean {
 				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType())) {
 					Datum datum = cell.getDatum();
 					if (StringUtils.isEmpty(cell.getValue())) {
-						datum.setValue(null);
+						datum.setValue(new Float(0));
+						datum
+								.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
 						datum.setValue(Float.valueOf(cell.getValue()));
 					}
@@ -286,10 +309,18 @@ public class FindingBean {
 					datum.setValueUnit(columnHeader.getValueUnit());
 					datum.setName(columnHeader.getColumnName());
 					rowData.add(datum);
+
 				} else if (FindingBean.CONDITION_TYPE.equals(columnHeader
 						.getColumnType())) {
 					Condition condition = cell.getCondition();
-					condition.setValue(cell.getValue());
+					if (StringUtils.isEmpty(cell.getValue())) {
+						condition
+								.setValue(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
+						condition
+								.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
+					} else {
+						condition.setValue(cell.getValue());
+					}
 					condition.setValueType(columnHeader.getValueType());
 					condition.setValueUnit(columnHeader.getValueUnit());
 					condition.setName(columnHeader.getColumnName());
@@ -303,9 +334,23 @@ public class FindingBean {
 				if (datum.getId() != null && datum.getId() <= 0) {
 					datum.setId(null);
 				}
-				// if new
-				if (datum.getId() == null) {
-					datum.setCreatedBy(createdBy);
+				// if new or copy or bogus empty
+				if (datum.getId() == null
+						|| !StringUtils.isEmpty(datum.getCreatedBy())
+						&& Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(datum
+								.getCreatedBy())
+						|| !StringUtils.isEmpty(datum.getCreatedBy())
+						|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+								.equals(datum.getCreatedBy())
+						&& datum.getValue() == 0) {
+					// keep the bogus place holder created by for empty datum
+					// entered
+					if (StringUtils.isEmpty(datum.getCreatedBy())
+							|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+									.equals(datum.getCreatedBy())
+							&& datum.getValue() != 0) {
+						datum.setCreatedBy(createdBy);
+					}
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 				}
 
@@ -318,15 +363,34 @@ public class FindingBean {
 					if (condition.getId() != null && condition.getId() <= 0) {
 						condition.setId(null);
 					}
-					// if new
-					if (condition.getId() == null) {
-						condition.setCreatedBy(createdBy);
+					// if new or copy or bogus empty
+					if (condition.getId() == null
+							|| !StringUtils.isEmpty(condition.getCreatedBy())
+							&& Constants.AUTO_COPY_ANNOTATION_PREFIX
+									.equals(condition.getCreatedBy())
+							|| !StringUtils.isEmpty(condition.getCreatedBy())
+							&& Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+									.equals(condition.getCreatedBy())
+							&& condition
+									.getValue()
+									.equals(
+											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+						// keep the bogus place holder created by for empty
+						// condition entered
+						if (StringUtils.isEmpty(condition.getCreatedBy())
+								|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+										.equals(condition.getCreatedBy())
+								&& !condition
+										.getValue()
+										.equals(
+												Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+							condition.setCreatedBy(createdBy);
+						}
 						condition.setCreatedDate(DateUtils
 								.addSecondsToCurrentDate(i));
 					}
 					datum.getConditionCollection().add(condition);
 				}
-
 				domain.getDatumCollection().add(datum);
 				datum.setFinding(domain);
 				i++;
@@ -337,7 +401,7 @@ public class FindingBean {
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
-	 * 
+	 *
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {
