@@ -30,7 +30,8 @@
 		</td>
 		<td>
 			<div id="columnNamePrompt${param.cInd}">
-				<select name="achar.theFinding.columnHeaders[${param.cInd}].columnName"
+				<select
+					name="achar.theFinding.columnHeaders[${param.cInd}].columnName"
 					id="columnName${param.cInd}"
 					onchange="javascript:callPrompt('Column Name', 'columnName${param.cInd}', 'columnNamePrompt${param.cInd}');setConditionPropertyOptionsByCharName(null, ${param.cInd});setColumnValueUnit(${param.cInd});">
 					<option value=""></option>
@@ -48,8 +49,7 @@
 			</div>
 		</td>
 		<td>
-			<div id="conditionPropertyPrompt${param.cInd}"
-				style="display: none;">
+			<div id="conditionPropertyPrompt${param.cInd}" style="display: none;">
 				<select
 					name="achar.theFinding.columnHeaders[${param.cInd}].conditionProperty"
 					id="conditionProperty${param.cInd}"
@@ -104,6 +104,8 @@
 				name="achar.theFinding.columnHeaders[${param.cInd}].constantValue"
 				id="constantValue${param.cInd}"
 				onkeydown="return filterFloatForColumn(event, 'columnType${param.cInd}');" />
+				<br>
+				<em>For boolean column value type, please enter 1 for true, 0 for false</em>
 		</td>
 	</tr>
 	<tr>
