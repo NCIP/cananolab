@@ -89,7 +89,7 @@ public class FileServiceLocalImpl implements FileService {
 						Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 				String fullFileName = rootPath + "/"
 						+ fileBean.getDomainFile().getUri();
-				writeFile(fileBean.getNewFileData(), fullFileName);				
+				writeFile(fileBean.getNewFileData(), fullFileName);
 			}
 			assignVisibility(fileBean);
 		} catch (Exception e) {
@@ -117,9 +117,12 @@ public class FileServiceLocalImpl implements FileService {
 			if (file.getId() != null) {
 				File dbFile = (File) appService.get(File.class, file.getId());
 				if (dbFile != null) {
-					// don't change createdBy and createdDate if it is already
-					// persisted
-					file.setCreatedBy(dbFile.getCreatedBy());
+					// don't change createdDate if it is already persisted
+					// don't change createdBy if it is not COPY
+					if (!dbFile.getCreatedBy().equals(
+							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						file.setCreatedBy(dbFile.getCreatedBy());
+					}
 					file.setCreatedDate(dbFile.getCreatedDate());
 				} else {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
