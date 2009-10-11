@@ -11,9 +11,9 @@ import org.apache.axis.utils.StringUtils;
 
 /**
  * Represents the view bean for the Target domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class TargetBean {
 	private String id;
@@ -34,7 +34,11 @@ public class TargetBean {
 	}
 
 	public TargetBean(Target target) {
-		id = target.getId().toString();
+		if (target.getId() != null) {
+			id = target.getId().toString();
+		} else {
+			id = "";
+		}
 		domainTarget = target;
 		name = target.getName();
 		description = target.getDescription();
