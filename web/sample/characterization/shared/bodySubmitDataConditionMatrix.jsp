@@ -63,3 +63,14 @@
 		</tr>
 	</logic:iterate>
 </table>
+<c:if
+	test="${!empty characterizationForm.map.achar.theFinding.columnHeaders}">
+	<table class="promptbox" width="85%" align="center">
+		<tr>
+			<td>
+				<em>For boolean column value type, please enter 1 for true, 0
+					for false</em>
+			</td>
+		</tr>
+	</table>
+</c:if>
