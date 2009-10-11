@@ -531,7 +531,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 	// check if any composing elements of the nanomaterial entity is invovled in
 	// the chemical association
-	private boolean checkChemicalAssociationBeforeDelete(
+	public boolean checkChemicalAssociationBeforeDelete(
 			NanomaterialEntity entity) {
 		// need to delete chemical associations first if associated elements
 		// are composing elements
