@@ -53,7 +53,7 @@
 		</td>
 		<td colspan="3">
 			<div id="targetSection" style="position: relative; display: none">
-				<a style="display:block" id="addTarget"
+				<a style="display: block" id="addTarget"
 					href="javascript:clearTarget();openSubmissionForm('Target');">Add</a>
 				<br>
 				<br>
@@ -91,7 +91,8 @@
 							</td>
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
-									value="Edit" onclick="editTarget(this.id); openSubmissionForm('Target');" />
+									value="Edit"
+									onclick="editTarget(this.id); openSubmissionForm('Target');" />
 							</td>
 						</tr>
 					</tbody>
@@ -180,6 +181,9 @@
 			<html:textarea
 				property="functionalizingEntity.theFunction.description" cols="50"
 				rows="3" styleId="functionDescription" />
+			<html:hidden
+				property="functionalizingEntity.theFunction.id"
+				styleId="functionId" />
 		</td>
 	</tr>
 	<tr>
