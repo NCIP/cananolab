@@ -59,9 +59,9 @@ import org.hibernate.criterion.Subqueries;
 /**
  * Helper class providing implementations of advanced sample search methods
  * needed for both local implementation of SampleService and grid service *
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class AdvancedSampleServiceHelper {
 	private AuthorizationService authService;
@@ -82,7 +82,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Find sample names based on advanced search parameters
-	 * 
+	 *
 	 * @param searchBean
 	 * @param user
 	 * @return
@@ -159,7 +159,7 @@ public class AdvancedSampleServiceHelper {
 	/**
 	 * Find sample details as an AdvancedSampleBean for the given sample name
 	 * and advanced search parameters
-	 * 
+	 *
 	 * @param sampleName
 	 * @param searchBean
 	 * @param user
@@ -727,7 +727,8 @@ public class AdvancedSampleServiceHelper {
 			Float datumValue = new Float(charQuery.getDatumValue());
 			charCrit = Restrictions.and(charCrit, Restrictions.eq(
 					"datum.valueUnit", charQuery.getDatumValueUnit()));
-			if (charQuery.getOperand().equals("=")||charQuery.getOperand().equals("is")) {
+			if (charQuery.getOperand().equals("=")
+					|| charQuery.getOperand().equals("is")) {
 				charCrit = Restrictions.and(charCrit, Expression.eq(
 						"datum.value", datumValue));
 			} else if (charQuery.getOperand().equals(">")) {
@@ -743,6 +744,11 @@ public class AdvancedSampleServiceHelper {
 				charCrit = Restrictions.and(charCrit, Expression.le(
 						"datum.value", datumValue));
 			}
+			// ignore the bogus place holder entered for emtpy datum/condition
+			// cells
+			charCrit = Restrictions.and(charCrit, Expression.ne(
+					"datum.createdBy",
+					Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY));
 		}
 		return charCrit;
 	}
@@ -784,7 +790,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in composition queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -855,7 +861,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in function queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -895,7 +901,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in nanomaterial entity queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -936,7 +942,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in functionalizing entity queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1132,7 +1138,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Set the disjunction used in point of contact queries
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -1180,7 +1186,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the sample name junction used in sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1207,7 +1213,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the sample disjunction used in sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1249,7 +1255,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the criterion used for sample name query
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -1312,7 +1318,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria used for composition queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception
@@ -1446,7 +1452,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria for sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception
@@ -1484,7 +1490,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Export advance sample summary report as Excel spread sheet.
-	 * 
+	 *
 	 * @param searchBean
 	 * @param out
 	 * @throws CompositionException
@@ -1504,7 +1510,7 @@ public class AdvancedSampleServiceHelper {
 	/**
 	 * Output advance sample summary report, representing,
 	 * bodyAdvancedSampleSearchResult.jsp
-	 * 
+	 *
 	 * @param searchBean
 	 * @param wb
 	 */
@@ -1541,31 +1547,28 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Output Search Criteria for work sheet.
-	 * 
+	 *
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
-	 * 
-	            private static int outputCriteria(AdvancedSampleSearchBean
-	 *            searchBean, HSSFSheet sheet, HSSFCellStyle headerStyle, int
-	 *            rowIndex) { // 1. Output "Selected Criteria" at (0, 0).
-	 *            HSSFRow row = sheet.createRow(rowIndex++);
-	 *            ExportUtils.createCell(row, 0, headerStyle,
-	 *            "Selected Criteria");
-	 * 
-	 *            // 2. Output Criteria Display Name at (1, 0). row =
-	 *            sheet.createRow(rowIndex++); ExportUtils.createCell(row, 0,
-	 *            searchBean.getDisplayName()); rowIndex++; // Create one empty
-	 *            line as separator.
-	 * 
-	 *            return rowIndex; }
+	 *
+	 * private static int outputCriteria(AdvancedSampleSearchBean searchBean,
+	 * HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) { // 1. Output
+	 * "Selected Criteria" at (0, 0). HSSFRow row = sheet.createRow(rowIndex++);
+	 * ExportUtils.createCell(row, 0, headerStyle, "Selected Criteria"); // 2.
+	 * Output Criteria Display Name at (1, 0). row =
+	 * sheet.createRow(rowIndex++); ExportUtils.createCell(row, 0,
+	 * searchBean.getDisplayName()); rowIndex++; // Create one empty line as
+	 * separator.
+	 *
+	 * return rowIndex; }
 	 */
 
 	/**
 	 * Output headers for work sheet.
-	 * 
+	 *
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
@@ -1596,7 +1599,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Output one table row for work sheet.
-	 * 
+	 *
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
@@ -1635,7 +1638,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Return complete view sample URL including sample id & location.
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
