@@ -153,7 +153,7 @@ public class Constants {
 
 	public static final String[] PRIVATE_DISPATCHES = { "input", "create",
 			"delete", "setupNew", "setupUpdate", "summaryEdit", "add",
-			"remove", "save" };
+			"remove", "save", "resetFinding", "getFinding", "drawMatrix"};
 
 	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico chemical characterization";
 	public static final String INVIVO_CHARACTERIZATION = "invivo characterization";
