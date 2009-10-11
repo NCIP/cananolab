@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -97,10 +98,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.persistCharacterizationDropdowns(request, charBean);
 		this.checkOpenForms(charBean, request);
 
-		//Save uploaded data in session to avoid asking user to upload again.
+		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = charBean.getTheFinding().getTheFile();
-		String charName =
-			StringUtils.getOneWordLowerCaseFirstLetter(charBean.getCharacterizationName());
+		String charName = StringUtils.getOneWordLowerCaseFirstLetter(charBean
+				.getCharacterizationName());
 		preserveUploadedFile(request, theFile, charName);
 
 		return mapping.findForward("inputForm");
@@ -458,8 +459,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		Set<String> foundTypes = summaryView.getCharacterizationTypes();
 		List<String> characterizationTypes = new ArrayList<String>();
 		for (String charType : allCharacterizationTypes) {
-			if (foundTypes.contains(charType) &&
-				!characterizationTypes.contains(charType)) {
+			if (foundTypes.contains(charType)
+					&& !characterizationTypes.contains(charType)) {
 				characterizationTypes.add(charType);
 			}
 		}
@@ -583,8 +584,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
 		// after saving to database.
-		request.setAttribute("charId", achar.getDomainChar().getId()
-				.toString());
+		request
+				.setAttribute("charId", achar.getDomainChar().getId()
+						.toString());
 		return setupUpdate(mapping, form, request, response);
 	}
 
@@ -605,10 +607,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		/**
 		 * Setup number of column/row in form for validation.
 		 */
-		theForm.set("numberOfColumns",
-			Integer.valueOf(findingBean.getNumberOfColumns()));
-		theForm.set("numberOfRows",
-			Integer.valueOf(findingBean.getNumberOfRows()));
+		theForm.set("numberOfColumns", Integer.valueOf(findingBean
+				.getNumberOfColumns()));
+		theForm.set("numberOfRows", Integer.valueOf(findingBean
+				.getNumberOfRows()));
 
 		return mapping.findForward("inputForm");
 	}
@@ -637,13 +639,17 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		if (this.validateMatrix(findingBean)) {
-			String theFindingId = (String) request.getAttribute("theFindingId");
-			if (!StringUtils.isEmpty(theFindingId)) {
-				findingBean.getDomain().setId(new Long(theFindingId));
-			}
-			UserBean user = (UserBean) request.getSession().getAttribute("user");
-			findingBean.setupDomain(user.getLoginName());
+
+		String theFindingId = (String) request.getAttribute("theFindingId");
+		if (!StringUtils.isEmpty(theFindingId)) {
+			findingBean.getDomain().setId(new Long(theFindingId));
+		}
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		findingBean.setupDomain(user.getLoginName());
+		boolean validCell = validateMatrixForEmptyCell(findingBean);
+		boolean validBoolean = validateMatrixForBoolean(findingBean);
+
+		if (validCell && validBoolean) {
 			CharacterizationService service = new CharacterizationServiceLocalImpl();
 			service.saveFinding(findingBean, user);
 			achar.addFinding(findingBean);
@@ -660,9 +666,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			request.setAttribute("charId", achar.getDomainChar().getId()
 					.toString());
 			return setupUpdate(mapping, form, request, response);
-		} else {
+		} else if (!validCell) {
 			ActionMessages messages = new ActionMessages();
 			ActionMessage msg = new ActionMessage("achar.theFinding.emptyCell");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, messages);
+			return mapping.getInputForward();
+		} else {
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"achar.theFinding.invalidBoolean");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, messages);
 			return mapping.getInputForward();
@@ -675,17 +688,17 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param findingBean
 	 * @return true if at least 1 filled cell exists in each Row/Column.
 	 */
-	private boolean validateMatrix(FindingBean findingBean) {
+	private boolean validateMatrixForEmptyCell(FindingBean findingBean) {
 		if (findingBean != null) {
 			int rowNum = findingBean.getNumberOfRows();
 			int colNum = findingBean.getNumberOfColumns();
-			//it's okay not to have any datum
-			if (rowNum==0 && colNum==0) {
+			// it's okay not to have any datum
+			if (rowNum == 0 && colNum == 0) {
 				return true;
 			}
 			List<Row> rows = findingBean.getRows();
-			if (rows == null || rows.size() != rowNum ||
-				rows.size() == 0 || colNum == 0) {
+			if (rows == null || rows.size() != rowNum || rows.size() == 0
+					|| colNum == 0) {
 				return false; // There should be at least 1 row & 1 column.
 			}
 			// Iterate matrix to check if each Row has >=1 filled cell.
@@ -699,7 +712,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					}
 				}
 				if (emptyCell) {
-					return false; // Return false as every cell in row is empty.
+					return false; // Return false as every cell in row is
+					// empty.
 				}
 			}
 			// Iterate matrix to check if each Column has >=1 filled cell.
@@ -712,10 +726,28 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					emptyCell = StringUtils.isEmpty(cell.getValue());
 				}
 				if (emptyCell)
-					return false; // Return false as every cell in column is empty.
+					return false; // Return false as every cell in column is
+				// empty.
 			}
 		}
-		return true;  // Null FindingBean is allowed.
+
+		return true; // Null FindingBean is allowed.
+	}
+
+	private boolean validateMatrixForBoolean(FindingBean findingBean) {
+		// make sure boolean values are entered as either 1 or 0
+		if (findingBean.getDomain().getDatumCollection() != null) {
+			for (Datum datum : findingBean.getDomain().getDatumCollection()) {
+				if (datum.getValueType().equals("boolean")
+						&& (datum.getValue() != 0 && datum.getValue() != 1 && !datum
+								.getCreatedBy()
+								.equals(
+										Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY))) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
@@ -783,10 +815,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		/**
 		 * Set number of column/row in form for validation.
 		 */
-		theForm.set("numberOfColumns",
-			Integer.valueOf(findingBean.getNumberOfColumns()));
-		theForm.set("numberOfRows",
-			Integer.valueOf(findingBean	.getNumberOfRows()));
+		theForm.set("numberOfColumns", Integer.valueOf(findingBean
+				.getNumberOfColumns()));
+		theForm.set("numberOfRows", Integer.valueOf(findingBean
+				.getNumberOfRows()));
 
 		if (request.getParameter("removeColumn") != null) {
 			int columnToRemove = Integer.parseInt(request
@@ -912,8 +944,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param compBean
 	 */
 	private List<String> filterType(HttpServletRequest request) {
-		List<String> charTypes =
-			(List<String>) request.getAttribute("characterizationTypes");
+		List<String> charTypes = (List<String>) request
+				.getAttribute("characterizationTypes");
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			charTypes.clear();
