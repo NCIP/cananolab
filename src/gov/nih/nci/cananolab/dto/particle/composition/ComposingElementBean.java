@@ -4,10 +4,10 @@ import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -15,9 +15,9 @@ import org.apache.axis.utils.StringUtils;
 
 /**
  * Represents the view bean for ComposingElement domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ComposingElementBean {
 	private ComposingElement domain = new ComposingElement();
@@ -131,7 +131,7 @@ public class ComposingElementBean {
 		}
 	}
 
-	public void setupDomain(String createdBy, int index) throws Exception {
+	public void setupDomain(String createdBy) throws Exception {
 		if (domain.getId() != null && domain.getId() == 0) {
 			domain.setId(null);
 		}
@@ -140,10 +140,7 @@ public class ComposingElementBean {
 				&& domain.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domain.setCreatedBy(createdBy);
-			// domain.setCreatedDate(new Date());
-			// fix for MySQL database, which supports precision only up to
-			// seconds
-			domain.setCreatedDate(DateUtils.addSecondsToCurrentDate(index));
+			domain.setCreatedDate(new Date());
 		}
 		// update zero values defaulted from forms to null
 		if (domain.getPubChemId() != null && domain.getPubChemId() == 0) {
@@ -158,6 +155,7 @@ public class ComposingElementBean {
 			domain.setInherentFunctionCollection(new HashSet<Function>());
 		}
 		int i = 0;
+		//inherent functions are saved separated so need to setupDomainFunction here
 		for (FunctionBean functionBean : inherentFunctions) {
 			functionBean.setupDomainFunction(createdBy, i);
 			domain.getInherentFunctionCollection().add(
