@@ -151,7 +151,7 @@ public class EndNoteXMLHandler {
 			publicationBean = new PublicationBean();
 			try {
 				publicationBean.setupDomainFile(Constants.FOLDER_PUBLICATION,
-						"DATA_PARSING", 0);
+						"DATA_PARSING");
 			} catch (Exception ex) {
 				System.out.println("exception publicationBean.setupDomainFile");
 				ex.printStackTrace();
