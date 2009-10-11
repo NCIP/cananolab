@@ -29,9 +29,9 @@ import java.util.List;
 
 /**
  * Represents the view bean for the NanomaterialEntity domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private Polymer polymer = new Polymer();
@@ -112,7 +112,6 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		copy.setCreatedDate(new Date());
 		if (copy.getComposingElementCollection() == null
 				|| copy.getComposingElementCollection().isEmpty()) {
 			copy.setComposingElementCollection(null);
@@ -125,7 +124,6 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			for (ComposingElement ce : copy.getComposingElementCollection()) {
 				ce.setId(null);
 				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				ce.setCreatedDate(new Date());
 				if (ce.getInherentFunctionCollection().isEmpty()) {
 					ce.setInherentFunctionCollection(null);
 				} else {
@@ -137,7 +135,6 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 						function.setId(null);
 						function
 								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						function.setCreatedDate(new Date());
 						if (function instanceof TargetingFunction) {
 							((TargetingFunction) function)
 									.setTargetCollection(null);
@@ -156,7 +153,6 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			for (File file : copy.getFileCollection()) {
 				file.setId(null);
 				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				file.setCreatedDate(new Date());
 				if (file.getKeywordCollection().isEmpty()) {
 					file.setKeywordCollection(null);
 				} else {
@@ -208,8 +204,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		return domainEntity;
 	}
 
-	public void setupDomainEntity(String createdBy, String internalUriPath)
-			throws Exception {
+	public void setupDomainEntity(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass("nanomaterial." + className);
 		if (clazz == null) {
@@ -249,17 +244,9 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			domainEntity
 					.setComposingElementCollection(new HashSet<ComposingElement>());
 		}
-		int i = 0;
 		for (ComposingElementBean composingElementBean : composingElements) {
-			composingElementBean.setupDomain(createdBy, i);
-			ComposingElement domain = composingElementBean.getDomain();
-			if (domain.getId() == null) {
-				domain.setCreatedBy(createdBy);
-				domain.setCreatedDate(new Date());
-			}
-			domain.setNanomaterialEntity(domainEntity);
-			domainEntity.getComposingElementCollection().add(domain);
-			i++;
+			domainEntity.getComposingElementCollection().add(
+					composingElementBean.getDomain());
 		}
 		if (files.isEmpty()) {
 			domainEntity.setFileCollection(null);
@@ -268,11 +255,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		} else {
 			domainEntity.setFileCollection(new HashSet<File>());
 		}
-		int j = 0;
 		for (FileBean file : files) {
-			file.setupDomainFile(internalUriPath, createdBy, j);
 			domainEntity.getFileCollection().add(file.getDomainFile());
-			j++;
 		}
 	}
 

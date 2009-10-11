@@ -49,7 +49,7 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		return domainAssociation;
 	}
 
-	public void setupDomainAssociation(String createdBy, String internalUriPath)
+	public void setupDomainAssociation(String createdBy)
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass(className);
@@ -86,11 +86,8 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		} else {
 			domainAssociation.setFileCollection(new HashSet<File>());
 		}
-		int i = 0;
 		for (FileBean file : files) {
-			file.setupDomainFile(internalUriPath, createdBy, i);
 			domainAssociation.getFileCollection().add(file.getDomainFile());
-			i++;
 		}
 	}
 

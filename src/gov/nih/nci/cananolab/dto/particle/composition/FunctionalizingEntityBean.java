@@ -28,9 +28,9 @@ import org.apache.axis.utils.StringUtils;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private String molecularFormula;
@@ -131,7 +131,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		// clear Id
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		copy.setCreatedDate(new Date());
 		if (copy.getActivationMethod() != null) {
 			copy.getActivationMethod().setId(null);
 		}
@@ -144,7 +143,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			for (Function function : copy.getFunctionCollection()) {
 				function.setId(null);
 				function.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				function.setCreatedDate(new Date());
 				if (function instanceof TargetingFunction) {
 					if (((TargetingFunction) function).getTargetCollection() == null
 							|| ((TargetingFunction) function)
@@ -163,7 +161,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 							target.setId(null);
 							target
 									.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-							target.setCreatedDate(new Date());
 						}
 					}
 				}
@@ -179,7 +176,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			for (File file : copy.getFileCollection()) {
 				file.setId(null);
 				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				file.setCreatedDate(new Date());
 				Collection<Keyword> keywords = file.getKeywordCollection();
 				file.setKeywordCollection(new HashSet<Keyword>());
 				file.getKeywordCollection().addAll(keywords);
@@ -255,8 +251,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		return activationMethod;
 	}
 
-	public void setupDomainEntity(String createdBy, String internalUriPath)
-			throws Exception {
+	public void setupDomainEntity(String createdBy) throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
 		Class clazz = ClassUtils.getFullClass("agentmaterial." + className);
 		if (clazz == null) {
@@ -312,23 +307,17 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		} else {
 			domainEntity.setFunctionCollection(new HashSet<Function>());
 		}
-		int i = 0;
 		for (FunctionBean functionBean : functions) {
-			functionBean.setupDomainFunction(createdBy, i);
 			domainEntity.getFunctionCollection().add(
 					functionBean.getDomainFunction());
-			i++;
 		}
 		if (domainEntity.getFileCollection() != null) {
 			domainEntity.getFileCollection().clear();
 		} else {
 			domainEntity.setFileCollection(new HashSet<File>());
 		}
-		int j = 0;
 		for (FileBean file : files) {
-			file.setupDomainFile(internalUriPath, createdBy, j);
 			domainEntity.getFileCollection().add(file.getDomainFile());
-			j++;
 		}
 	}
 
