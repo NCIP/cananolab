@@ -247,6 +247,9 @@
 			<html:textarea
 				property="nanomaterialEntity.theComposingElement.domain.description"
 				rows="3" cols="65" styleId="elementDescription" />
+			<html:hidden
+				property="nanomaterialEntity.theComposingElement.domain.id"
+				styleId="elementId" />
 		</td>
 	</tr>
 	<tr>
