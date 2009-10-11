@@ -346,7 +346,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		CompositionBean compositionBean = compService
 				.findCompositionBySampleId(sampleId, user);
 		setLookups(request, compositionBean);
-		String assocId = request.getParameter("dataId");
+		String assocId = (String) getValueFromRequest(request, "dataId");
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssociationById(assocId, user);
 		prepareEntityLists(assocBean, request);
@@ -379,7 +379,10 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(assoc, request);
-		return mapping.findForward("inputForm");
+
+		request.setAttribute("dataId", assoc.getDomainAssociation().getId()
+				.toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
