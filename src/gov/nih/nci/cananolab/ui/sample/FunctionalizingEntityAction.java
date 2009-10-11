@@ -112,12 +112,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
-				+ sampleBean.getDomain().getName() + "/"
-				+ "functionalizingEntity";
 		try {
-			entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
+			entityBean.setupDomainEntity(user.getLoginName());
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
@@ -153,7 +149,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new nanomaterial entity
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -177,7 +173,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
-		
+
 		return mapping.findForward("inputForm");
 	}
 
@@ -256,6 +252,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
 		FunctionBean function = entity.getTheFunction();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		function.setupDomainFunction(user.getLoginName(), 0);
 		entity.addFunction(function);
 		this.saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
@@ -285,20 +283,28 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = 
-			(FunctionalizingEntityBean) theForm.get("functionalizingEntity");
+		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+				.get("functionalizingEntity");
 		FileBean theFile = entity.getTheFile();
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// setup domainFile uri for fileBeans
+		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
+				+ sampleBean.getDomain().getName() + "/"
+				+ "functionalizingEntity";
+		theFile.setupDomainFile(internalUriPath, user.getLoginName());
 		entity.addFile(theFile);
-		
+
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
-		
+
 		// save the functionalizing entity
 		this.saveEntity(request, theForm, entity);
-		
+
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);
-		
+
 		return mapping.findForward("inputForm");
 	}
 
@@ -326,13 +332,13 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.get("functionalizingEntity");
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
-		
-		//Save uploaded data in session to avoid asking user to upload again.
+
+		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entity.getTheFile();
 		preserveUploadedFile(request, theFile, "functionalizingEntity");
-		
+
 		this.checkOpenForms(entity, request);
-		
+
 		return mapping.findForward("inputForm");
 	}
 
@@ -344,17 +350,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
-				+ sampleBean.getDomain().getName() + "/"
-				+ "functionalizingEntity";
-		entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
+		entityBean.setupDomainEntity(user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
 				.getDomainEntity(), user);
-		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
 		ActionMessage msg = new ActionMessage(
 				"message.deleteFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

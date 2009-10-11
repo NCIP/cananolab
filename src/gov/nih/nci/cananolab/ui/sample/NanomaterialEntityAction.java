@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
@@ -37,7 +38,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -76,19 +77,19 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String detailPage = null;
-		NanomaterialEntityBean entityBean = 
-			(NanomaterialEntityBean) theForm.get("nanomaterialEntity");
+		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
+				.get("nanomaterialEntity");
 		if (!StringUtils.isEmpty(entityBean.getType())) {
 			detailPage = InitCompositionSetup.getInstance().getDetailPage(
 					entityBean.getType(), "nanomaterialEntity");
 			request.setAttribute("entityDetailPage", detailPage);
 		}
-		
-		//Save uploaded data in session to avoid asking user to upload again.
+
+		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entityBean.getTheFile();
 		preserveUploadedFile(request, theFile, "nanomaterialEntity");
-		
-		// set pubChemId and value for composing element to be null 
+
+		// set pubChemId and value for composing element to be null
 		// if they were default to zero from the form
 		ComposingElementBean ce = entityBean.getTheComposingElement();
 		if (ce.getDomain().getPubChemId() != null
@@ -110,11 +111,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
-				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
 		try {
-			entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
+			entityBean.setupDomainEntity(user.getLoginName());
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
@@ -137,8 +135,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
-			SampleBean[] otherSampleBeans = 
-				prepareCopy(request, theForm, sampleBean);
+			SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
+					sampleBean);
 			if (otherSampleBeans != null) {
 				compositionService.copyAndSaveNanomaterialEntity(entityBean,
 						sampleBean, otherSampleBeans, user);
@@ -190,7 +188,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new nanomaterial entity
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -212,7 +210,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
-		
+
 		return mapping.findForward("inputForm");
 	}
 
@@ -285,6 +283,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
 		ComposingElementBean composingElement = entity.getTheComposingElement();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		composingElement.setupDomain(user.getLoginName());
 		entity.addComposingElement(composingElement);
 		// save nanomaterial entity
 		this.saveEntity(request, theForm, entity);
@@ -303,8 +303,15 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		ComposingElementBean element = entity.getTheComposingElement();
-		entity.removeComposingElement(element);
+		ComposingElementBean composingElement = entity.getTheComposingElement();
+		// check if composing element is associated with an association
+		CompositionServiceLocalImpl compService = new CompositionServiceLocalImpl();
+		if (!compService.checkChemicalAssociationBeforeDelete(entity
+				.getDomainEntity())) {
+			throw new ChemicalAssociationViolationException(
+					"The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
+		}
+		entity.removeComposingElement(composingElement);
 		this.saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
@@ -319,11 +326,19 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
 		FileBean theFile = entity.getTheFile();
+
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE);
+		// setup domainFile uri for fileBean
+		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
+				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		theFile.setupDomainFile(internalUriPath, user.getLoginName());
 		entity.addFile(theFile);
-		
+
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
-		
+
 		// save nanomaterial entity to save file because inverse="false"
 		this.saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
@@ -356,15 +371,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
-				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";
-		entityBean.setupDomainEntity(user.getLoginName(), internalUriPath);
+		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteNanomaterialEntity(entityBean
 				.getDomainEntity(), user);
-		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteNanomaterialEntity");
@@ -410,7 +419,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Copy "polymerized" property from entityBean to Emulsion or Liposome.
-	 * 
+	 *
 	 * @param entityBean
 	 */
 	private void copyIsPolymerized(NanomaterialEntityBean entityBean) {
@@ -429,7 +438,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup "polymerized" property in entityBean from Emulsion or Liposome.
-	 * 
+	 *
 	 * @param entityBean
 	 */
 	private void setupIsPolymerized(NanomaterialEntityBean entityBean) {
