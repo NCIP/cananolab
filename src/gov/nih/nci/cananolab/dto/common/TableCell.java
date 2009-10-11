@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.util.Constants;
 
 /**
  * View bean for a cell in a table
@@ -12,8 +13,8 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 public class TableCell {
 	private String value;
 	private String datumOrCondition;
-	private Datum datum=new Datum();
-	private Condition condition=new Condition();
+	private Datum datum = new Datum();
+	private Condition condition = new Condition();
 
 	public TableCell() {
 
@@ -21,8 +22,13 @@ public class TableCell {
 
 	public TableCell(Datum datum) {
 		this.datumOrCondition = FindingBean.DATUM_TYPE;
-		// Allow empty Datum (associated with a Condition).
-		if (datum.getValue() != null) {
+		// display bogus placeholder datum as emtpy string
+		if (datum.getValue() == null
+				|| datum.getValue() == 0
+				&& datum.getCreatedBy().equals(
+						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+			this.value = "";
+		} else {
 			this.value = datum.getValue().toString();
 		}
 		this.datum = datum;
@@ -31,7 +37,14 @@ public class TableCell {
 
 	public TableCell(Condition condition) {
 		this.datumOrCondition = "condition";
-		this.value = condition.getValue();
+		if (condition.getValue().equals(
+				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
+				&& condition.getCreatedBy().equals(
+						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+			this.value = "";
+		} else {
+			this.value = condition.getValue();
+		}
 		this.condition = condition;
 		this.datum = null;
 	}
