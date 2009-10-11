@@ -580,7 +580,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
 		this.checkOpenForms(achar, request);
-		return mapping.findForward("inputForm");
+		// return to setupUpdate to retrieve the data matrix in the correct
+		// form from database
+		// after saving to database.
+		request.setAttribute("charId", achar.getDomainChar().getId()
+				.toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
