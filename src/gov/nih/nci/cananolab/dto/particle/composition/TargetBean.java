@@ -34,10 +34,9 @@ public class TargetBean {
 	}
 
 	public TargetBean(Target target) {
+		//when the target is copied, its id is intentionally set to nul
 		if (target.getId() != null) {
 			id = target.getId().toString();
-		} else {
-			id = "";
 		}
 		domainTarget = target;
 		name = target.getName();
