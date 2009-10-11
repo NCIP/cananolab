@@ -11,9 +11,9 @@ import org.apache.axis.utils.StringUtils;
 
 /**
  * Protocol view bean
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolBean {
 	private FileBean fileBean = new FileBean();
@@ -61,7 +61,7 @@ public class ProtocolBean {
 	public void setupDomain(String internalUriPath, String createdBy)
 			throws Exception {
 		domain.setFile(fileBean.getDomainFile());
-		fileBean.setupDomainFile(internalUriPath, createdBy, 0);
+		fileBean.setupDomainFile(internalUriPath, createdBy);
 		if (domain.getId() == 0) {
 			domain.setId(null);
 		}

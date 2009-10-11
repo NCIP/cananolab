@@ -17,9 +17,9 @@ import java.util.List;
 
 /**
  * Publication view bean
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
@@ -241,9 +241,9 @@ public class PublicationBean extends FileBean {
 		return displayName;
 	}
 
-	public void setupDomain(String internalUriPath, String createdBy, int index)
+	public void setupDomain(String internalUriPath, String createdBy)
 			throws Exception {
-		super.setupDomainFile(internalUriPath, createdBy, 0);
+		super.setupDomainFile(internalUriPath, createdBy);
 		Publication domain = (Publication) domainFile;
 		if (domain.getPubMedId() != null && domain.getPubMedId() == 0) {
 			domain.setPubMedId(null);
