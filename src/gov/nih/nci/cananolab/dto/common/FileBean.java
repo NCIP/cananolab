@@ -15,9 +15,9 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FileBean {
 	protected File domainFile = new File();
@@ -121,8 +121,7 @@ public class FileBean {
 		this.uploadedFile = uploadedFile;
 	}
 
-	public void setupDomainFile(String internalUriPath, String createdBy,
-			int index) throws Exception {
+	public void setupDomainFile(String internalUriPath, String createdBy) throws Exception {
 		if (domainFile.getId() != null && domainFile.getId() == 0) {
 			domainFile.setId(null);
 		}
@@ -131,10 +130,7 @@ public class FileBean {
 				&& domainFile.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
-			// domainFile.setCreatedDate(new Date());
-			// fix for MySQL database, which supports precision only up to
-			// seconds
-			domainFile.setCreatedDate(DateUtils.addSecondsToCurrentDate(index));
+			domainFile.setCreatedDate(new Date());
 		}
 		if (uploadedFile != null
 				&& !StringUtils.isEmpty(uploadedFile.getFileName())) {
