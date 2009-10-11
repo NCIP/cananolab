@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import org.apache.axis.utils.StringUtils;
 
 /**
  * View bean for technique and associated instruments;
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class ExperimentConfigBean {
 	private ExperimentConfig domain = new ExperimentConfig();
@@ -31,11 +32,13 @@ public class ExperimentConfigBean {
 
 	public ExperimentConfigBean(ExperimentConfig config) {
 		domain = config;
-		for (Instrument instrument : config.getInstrumentCollection()) {
-			instruments.add(instrument);
+		if (config.getInstrumentCollection() != null) {
+			for (Instrument instrument : config.getInstrumentCollection()) {
+				instruments.add(instrument);
+			}
+			Collections.sort(instruments,
+					new Comparators.InstrumentDateComparator());
 		}
-		Collections.sort(instruments,
-				new Comparators.InstrumentDateComparator());
 	}
 
 	public ExperimentConfig getDomain() {
@@ -94,7 +97,10 @@ public class ExperimentConfigBean {
 		if (domain.getId() != null && domain.getId() == 0) {
 			domain.setId(null);
 		}
-		if (domain.getId() == null) {
+		if (domain.getId() == null
+				|| !StringUtils.isEmpty(domain.getCreatedBy())
+				&& domain.getCreatedBy().equals(
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());
 		}
