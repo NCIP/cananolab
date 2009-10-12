@@ -74,3 +74,5 @@
 		</tr>
 	</table>
 </c:if>
+<html:hidden property="numberOfRows" value="${characterizationForm.map.achar.theFinding.numberOfRows}" />
+<html:hidden property="numberOfColumns" value="${characterizationForm.map.achar.theFinding.numberOfColumns}" />
