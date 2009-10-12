@@ -36,9 +36,9 @@ import org.hibernate.Hibernate;
 
 /**
  * This class takes care of authentication and authorization of a user and group
- * 
+ *
  * @author Pansu
- * 
+ *
  */
 public class AuthorizationService {
 	private Logger logger = Logger.getLogger(AuthorizationService.class);
@@ -73,7 +73,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user is the admin of the application.
-	 * 
+	 *
 	 * @param user
 	 * @return
 	 */
@@ -85,7 +85,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user belongs to the given group.
-	 * 
+	 *
 	 * @param user
 	 * @param groupName
 	 * @return
@@ -112,7 +112,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has the given privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @param privilege
@@ -145,7 +145,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has execute privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -160,7 +160,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has read privilege on the given protection
 	 * element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -171,11 +171,13 @@ public class AuthorizationService {
 		if (protectionElementObjectId == null) {
 			return false;
 		}
-		if (user == null) {
-			return isPublic(protectionElementObjectId);
+		boolean publicStatus = isPublic(protectionElementObjectId);
+		if (publicStatus) {
+			return true;
+		} else {
+			return checkPermission(user, protectionElementObjectId,
+					Constants.CSM_READ_PRIVILEGE);
 		}
-		return checkPermission(user, protectionElementObjectId,
-				Constants.CSM_READ_PRIVILEGE);
 	}
 
 	public List<String> getPublicDataSlow() throws SecurityException {
@@ -211,7 +213,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has delete privilege on the given protection
 	 * element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -225,7 +227,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get all user groups in the application
-	 * 
+	 *
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -268,7 +270,7 @@ public class AuthorizationService {
 	/**
 	 * Get all user visiblity groups in the application (filtering out all
 	 * groups starting with APP_OWNER).
-	 * 
+	 *
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -312,7 +314,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Group object for the given groupName.
-	 * 
+	 *
 	 * @param groupName
 	 * @return
 	 */
@@ -331,7 +333,7 @@ public class AuthorizationService {
 
 	/**
 	 * Create a user group in the CSM database if it's not already created
-	 * 
+	 *
 	 * @param groupName
 	 * @throws SecurityException
 	 */
@@ -351,7 +353,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Role object for the given roleName.
-	 * 
+	 *
 	 * @param roleName
 	 * @return
 	 */
@@ -370,7 +372,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionElement object for the given objectId.
-	 * 
+	 *
 	 * @param objectId
 	 * @return
 	 * @throws SecurityException
@@ -402,7 +404,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionGroup object for the given protectionGroupName.
-	 * 
+	 *
 	 * @param protectionGroupName
 	 * @return
 	 * @throws SecurityException
@@ -433,7 +435,7 @@ public class AuthorizationService {
 
 	/**
 	 * Assign a ProtectionElement to a ProtectionGroup if not already assigned.
-	 * 
+	 *
 	 * @param pe
 	 * @param pg
 	 * @throws SecurityException
@@ -471,7 +473,7 @@ public class AuthorizationService {
 	/**
 	 * Direct CSM schema query to improve performance. Get the existing role IDs
 	 * from database
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -506,7 +508,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get the existing role IDs from database
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -543,7 +545,7 @@ public class AuthorizationService {
 	/**
 	 * Assign the given objectName to the given groupName with the given
 	 * roleName. Add to existing roles the object has for the group.
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
@@ -552,8 +554,8 @@ public class AuthorizationService {
 	public void secureObject(String objectName, String groupName,
 			String roleName) throws SecurityException {
 		try {
-			//trim spaces in objectName
-			objectName=objectName.trim();
+			// trim spaces in objectName
+			objectName = objectName.trim();
 			// create protection element
 			ProtectionElement pe = getProtectionElement(objectName);
 
@@ -601,7 +603,7 @@ public class AuthorizationService {
 			if (groups != null)
 				for (Object obj : groups) {
 					Group group = (Group) obj;
-					groupNames.add(group.getGroupName());					
+					groupNames.add(group.getGroupName());
 				}
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
@@ -655,7 +657,7 @@ public class AuthorizationService {
 					secureObject(dataToProtect, owningGroup,
 							Constants.CSM_READ_ROLE);
 				}
-			}			
+			}
 		} catch (Exception e) {
 			logger.error("Error in setting visibility", e);
 			throw new SecurityException();
@@ -708,7 +710,7 @@ public class AuthorizationService {
 
 	/**
 	 * Return only the public data
-	 * 
+	 *
 	 * @param rawObjects
 	 * @return
 	 * @throws Exception
@@ -761,7 +763,7 @@ public class AuthorizationService {
 					+ " and protection_group_name='" + dataId + "'";
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
-			List results = appService.directSQL(query, columns, columnTypes);	
+			List results = appService.directSQL(query, columns, columnTypes);
 			if (results.isEmpty()) {
 				return false;
 			} else {
