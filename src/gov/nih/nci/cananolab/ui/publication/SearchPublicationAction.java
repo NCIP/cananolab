@@ -9,7 +9,7 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -40,7 +40,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author tanq
  */
 
-public class SearchPublicationAction extends BaseAnnotationAction {
+public class SearchPublicationAction extends AbstractDispatchAction {
 
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -270,84 +270,6 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		session.removeAttribute("publicationSearchResults");
 		return mapping.getInputForward();
-	}
-
-	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter(Constants.LOCATION);
-		String sampleId = request.getParameter("sampleId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, location);
-		String fileName = this.getExportFileName(sampleBean.getDomain()
-				.getName(), "summaryView");
-		ExportUtils.prepareReponseForExcel(response, fileName);
-
-		PublicationService service = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
-			service = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new PublicationServiceRemoteImpl(serviceUrl);
-		}
-
-		List<PublicationBean> publications = service
-				.findPublicationsBySampleId(sampleId, user);
-		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
-				publications);
-
-		PublicationServiceHelper.exportSummary(summaryView, response
-				.getOutputStream());
-
-		return null;
-	}
-
-	private String getExportFileName(String titleName, String viewType) {
-		List<String> nameParts = new ArrayList<String>();
-		nameParts.add(titleName);
-		nameParts.add("Publication");
-		nameParts.add(viewType);
-		nameParts.add(DateUtils.convertDateToString(new Date(),
-				"yyyyMMdd_HH-mm-ss-SSS"));
-		String exportFileName = StringUtils.join(nameParts, "_");
-		return exportFileName;
-	}
-
-	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String location = request.getParameter(Constants.LOCATION);
-		String sampleId = request.getParameter("sampleId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		PublicationService service = null;
-		if (location.equals(Constants.LOCAL_SITE)) {
-			service = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new PublicationServiceRemoteImpl(serviceUrl);
-		}
-
-		List<PublicationBean> publications = service
-				.findPublicationsBySampleId(sampleId, user);
-
-		HttpSession session = request.getSession();
-		session.setAttribute("publicationCollection", publications);
-		String requestUrl = request.getRequestURL().toString();
-		String printLinkURL = requestUrl + "?page=0&sampleId=" + sampleId
-				+ "&dispatch=printSummaryView" + "&location=" + location;
-		request.getSession().setAttribute("printSummaryViewLinkURL",
-				printLinkURL);
-		return mapping.findForward("publicationView");
-	}
-
-	public ActionForward printSummaryView(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		// return mapping.findForward("publicationDetailPrintView");
-		return mapping.findForward("publicationSummaryPrintView");
 	}
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
