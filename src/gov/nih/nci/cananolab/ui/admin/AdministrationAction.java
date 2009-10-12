@@ -44,8 +44,7 @@ import org.apache.struts.upload.FormFile;
 
 public class AdministrationAction extends AbstractDispatchAction {
 
-	private static Logger logger =
-		Logger.getLogger(AdministrationAction.class);
+	private static Logger logger = Logger.getLogger(AdministrationAction.class);
 
 	/**
 	 * Action to show site preference page.
@@ -53,7 +52,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 	 * @param
 	 * @return
 	 */
-	public ActionForward sitePreference(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaActionForm theForm = (DynaActionForm) form;
@@ -80,7 +79,8 @@ public class AdministrationAction extends AbstractDispatchAction {
 			throws Exception {
 		File siteLogo = new File(this.getLogoFileName());
 		if (siteLogo.exists() && siteLogo.length() > 0) {
-			ExportUtils.prepareReponseForImage(response, Constants.SITE_LOGO_FILENAME);
+			ExportUtils.prepareReponseForImage(response,
+					Constants.SITE_LOGO_FILENAME);
 
 			int numRead = 0;
 			InputStream in = null;
@@ -93,18 +93,18 @@ public class AdministrationAction extends AbstractDispatchAction {
 					out.write(bytes, 0, numRead);
 				}
 			} finally {
-	            try {
-		            //Close the InputStream
-	                if (in != null) {
-	                    in.close();
-	                }
-		            //Close the OutputStream
-	                if (out != null) {
-	                    out.flush();
-	                    out.close();
-	                }
-	            } catch (IOException e) {
-	            }
+				try {
+					// Close the InputStream
+					if (in != null) {
+						in.close();
+					}
+					// Close the OutputStream
+					if (out != null) {
+						out.flush();
+						out.close();
+					}
+				} catch (IOException e) {
+				}
 			}
 		}
 		return null;
@@ -116,7 +116,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 	 * @param
 	 * @return
 	 */
-	public ActionForward clearAll(ActionMapping mapping, ActionForm form,
+	public ActionForward remove(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionMessages messages = new ActionMessages();
@@ -134,7 +134,8 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 		// Set success message in request if everything is fine now.
 		if (messages.size() == 0) {
-			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
+			ActionMessage msg = new ActionMessage(
+					"admin.sitePreference.success");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
 		} else {
@@ -178,37 +179,40 @@ public class AdministrationAction extends AbstractDispatchAction {
 		} else {
 			// If the new logo file is too large, set error msg to warn user.
 			if (data.length > Constants.MAX_LOGO_SIZE) {
-				ActionMessage msg =
-					new ActionMessage("admin.sitePreference.error.logoTooLarge", Constants.MAX_LOGO_SIZE);
+				ActionMessage msg = new ActionMessage(
+						"admin.sitePreference.error.logoTooLarge",
+						Constants.MAX_LOGO_SIZE);
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			} else {
 				// Save the uploaded logo file name in property.
 				if (this.setSiteLogo(logoFilename, messages)) {
 					OutputStream out = null;
-			        try {
-						out = new BufferedOutputStream(new FileOutputStream(siteLogo));
-			            out.write(data);
-			        } catch (Exception e) {
-						ActionMessage msg =
-							new ActionMessage("admin.sitePreference.error.siteLogo");
+					try {
+						out = new BufferedOutputStream(new FileOutputStream(
+								siteLogo));
+						out.write(data);
+					} catch (Exception e) {
+						ActionMessage msg = new ActionMessage(
+								"admin.sitePreference.error.siteLogo");
 						messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			        } finally {
-			            //Close the BufferedOutputStream
-		                if (out != null) {
-				            try {
-			                    out.flush();
-			                    out.close();
-				            } catch (IOException e) {
-				            }
-		                }
-			        }
+					} finally {
+						// Close the BufferedOutputStream
+						if (out != null) {
+							try {
+								out.flush();
+								out.close();
+							} catch (IOException e) {
+							}
+						}
+					}
 				}
 			}
 		}
 
 		// Set success message in request if everything is fine now.
 		if (messages.size() == 0) {
-			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
+			ActionMessage msg = new ActionMessage(
+					"admin.sitePreference.success");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
 		} else {
@@ -227,7 +231,8 @@ public class AdministrationAction extends AbstractDispatchAction {
 		StringBuilder sb = new StringBuilder();
 		String fileRoot = PropertyUtils.getProperty(
 				Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
-		sb.append(fileRoot).append(File.separator).append(Constants.SITE_LOGO_FILENAME);
+		sb.append(fileRoot).append(File.separator).append(
+				Constants.SITE_LOGO_FILENAME);
 
 		return sb.toString();
 	}
@@ -242,7 +247,8 @@ public class AdministrationAction extends AbstractDispatchAction {
 		boolean success = PropertyUtils.setProperty(
 				Constants.CANANOLAB_PROPERTY, Constants.SITE_NAME, siteName);
 		if (!success) {
-			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteName");
+			ActionMessage msg = new ActionMessage(
+					"admin.sitePreference.error.siteName");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
 		return success;
@@ -258,17 +264,14 @@ public class AdministrationAction extends AbstractDispatchAction {
 		boolean success = PropertyUtils.setProperty(
 				Constants.CANANOLAB_PROPERTY, Constants.SITE_LOGO, siteLogo);
 		if (!success) {
-			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteLogo");
+			ActionMessage msg = new ActionMessage(
+					"admin.sitePreference.error.siteLogo");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
 		return success;
 	}
 
-	public boolean loginRequired() {
-		return true;
-	}
-
-	public boolean canUserExecute(UserBean user)
+	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasAdminPrivilege(user);
 	}
