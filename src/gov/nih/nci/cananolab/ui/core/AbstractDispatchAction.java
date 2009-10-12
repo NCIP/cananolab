@@ -55,7 +55,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		boolean privateDispatch = isDispatchPublic(dispatch);
 		if (!privateDispatch) {
 			return true;
-		} else if (user == null & privateDispatch) {
+		} else if (user == null && privateDispatch) {
 			return false;
 		} else {
 			return canUserExecutePrivateDispatch(user);
