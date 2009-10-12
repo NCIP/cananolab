@@ -1,12 +1,9 @@
 package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
@@ -15,12 +12,9 @@ import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DateUtils;
-import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +43,6 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
 
-		UserBean user = (UserBean) session.getAttribute("user");
 		List<PublicationBean> publicationBeans = null;
 		// retrieve from session if it's not null and not the first page
 		if (session.getAttribute("publicationSearchResults") != null
