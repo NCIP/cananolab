@@ -2,15 +2,15 @@
 source migration_to_csm_4.1.sql
 
 -- remove adminstrator group, not needed anymore
-delete from csm_user_group 
+delete from csm_user_group
 where group_id in
-(select group_id 
+(select group_id
 from csm_group g
 where g.group_name like '%_Administrator');
 
-delete from csm_user_group_role_pg 
+delete from csm_user_group_role_pg
 where group_id in
-(select group_id 
+(select group_id
 from csm_group g
 where g.group_name like '%_Administrator');
 
@@ -21,6 +21,10 @@ where group_name like '%_Administrator';
 update csm_protection_element
 set protection_element_name='sample'
 where protection_element_name='nanoparticle';
+
+update csm_protection_element
+set object_id='sample'
+where object_id='nanoparticle';
 
 delete from csm_user_group_role_pg
 where protection_group_id in
