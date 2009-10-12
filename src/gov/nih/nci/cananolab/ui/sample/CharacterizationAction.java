@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -633,15 +634,24 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-
+		boolean validFloat = this.validateMatrixForFloat(findingBean);
+		if (!validFloat) {
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"achar.theFinding.invalidFloat");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, messages);
+			return mapping.getInputForward();
+		}
+		
 		String theFindingId = (String) request.getAttribute("theFindingId");
 		if (!StringUtils.isEmpty(theFindingId)) {
 			findingBean.getDomain().setId(new Long(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		findingBean.setupDomain(user.getLoginName());
-		boolean validCell = validateMatrixForEmptyCell(findingBean);
-		boolean validBoolean = validateMatrixForBoolean(findingBean);
+		boolean validCell = this.validateMatrixForEmptyCell(findingBean);
+		boolean validBoolean = this.validateMatrixForBoolean(findingBean);
 
 		if (validCell && validBoolean) {
 			CharacterizationService service = new CharacterizationServiceLocalImpl();
@@ -691,10 +701,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				return true;
 			}
 			List<Row> rows = findingBean.getRows();
-			if (rows == null || rows.size() != rowNum || rows.size() == 0
-					|| colNum == 0) {
-				return false; // There should be at least 1 row & 1 column.
-			}
 			// Iterate matrix to check if each Row has >=1 filled cell.
 			for (Row row : rows) {
 				boolean emptyCell = true;
@@ -706,8 +712,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					}
 				}
 				if (emptyCell) {
-					return false; // Return false as every cell in row is
-					// empty.
+					return false; // False as every cell in row is empty.
 				}
 			}
 			// Iterate matrix to check if each Column has >=1 filled cell.
@@ -720,8 +725,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					emptyCell = StringUtils.isEmpty(cell.getValue());
 				}
 				if (emptyCell)
-					return false; // Return false as every cell in column is
-				// empty.
+					return false; // False as every cell in column is empty.
 			}
 		}
 
@@ -738,6 +742,32 @@ public class CharacterizationAction extends BaseAnnotationAction {
 								.equals(
 										Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY))) {
 					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return true if every value in datum cell can be converted to Float.
+	 * 
+	 * @param findingBean
+	 * @return true validation passed, false otherwise.
+	 */
+	private boolean validateMatrixForFloat(FindingBean findingBean) {
+		List<Row> rows = findingBean.getRows();
+		List<ColumnHeader> columnHeaders = findingBean.getColumnHeaders();
+		for (Row row : rows) {
+			int cInd = 0;
+			for (TableCell cell : row.getCells()) {
+				ColumnHeader columnHeader = columnHeaders.get(cInd);
+				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType()) &&
+					!StringUtils.isEmpty(cell.getValue())) {
+				    try {
+				      Float.valueOf(cell.getValue());
+				    } catch (NumberFormatException nfe) {
+				    	return false;
+				    }
 				}
 			}
 		}
