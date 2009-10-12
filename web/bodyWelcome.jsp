@@ -46,35 +46,35 @@
 
 				<%-- Site Preference --%>
 				<c:if test="${!empty user && user.admin }">
-					<area href="admin.do?dispatch=sitePreference" shape="rect"
+					<area href="admin.do?dispatch=setupNew" shape="rect"
 						coords="60,156,156,195" alt="rectangle" />
 				</c:if>
-				
+
 				<%-- Search Protocols --%>
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
 					coords="60,259,156,297" alt="rectangle" />
-					
+
 				<%-- Search Sample --%>
 				<area href="searchSample.do?dispatch=setup&searchLocations=${param.location}" shape="rect"
 					coords="60,311,156,363" alt="rectangle" />
-					
+
 				<%-- Search Publication --%>
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
 					coords="60,375,156,413" alt="rectangle" />
-					
+
 				<c:if test="${!empty user && user.curator}">
 					<%-- Submit Protocols --%>
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
 						coords="272,36,368,74" alt="rectangle" />
-						
+
 					<%-- Submit Samples --%>
 					<area href="sample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="272,88,368,141" alt="rectangle" />
-						
+
 					<%-- Submit Publication --%>
 					<area href="publication.do?dispatch=setupNew&page=0" shape="rect"
 						coords="332,412,428,450" alt="rectangle" />
-						
+
 					<%-- Submit Samples (Others) --%>
 					<area href="sample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="332,152,428,189" alt="rectangle" />

@@ -46,9 +46,9 @@
 											<div align="right">
 												<input type="hidden" name="dispatch" value="update">
 												<input type="reset" value="Reset"
-													onclick="javascript:location.href='admin.do?dispatch=sitePreference'">
+													onclick="javascript:location.href='admin.do?dispatch=setupNew'">
 												<input type="button" value="Delete"
-													onclick="javascript:location.href='admin.do?dispatch=clearAll'">
+													onclick="javascript:location.href='admin.do?dispatch=remove'">
 												<html:submit />
 											</div>
 										</div>

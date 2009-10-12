@@ -40,7 +40,7 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<a href="admin.do?dispatch=sitePreference">
+										<a href="admin.do?dispatch=setupNew">
 											Configure Site Preferences
 										</a>
 										<br>
