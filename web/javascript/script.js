@@ -228,7 +228,7 @@ function filterInteger(evt) {
 	var keyCode = evt.which ? evt.which : evt.keyCode;
 	return (keyCode >= "0".charCodeAt() && keyCode <= "9".charCodeAt())
 			|| (keyCode >= 96 && keyCode <= 105) || keyCode == 46
-			|| keyCode == 8 || keyCode == 109;
+			|| keyCode == 8;
 }
 function getSelectedOptions(selectEle) {
 	var options = selectEle.options;
