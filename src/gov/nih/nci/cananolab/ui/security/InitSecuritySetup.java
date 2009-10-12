@@ -95,7 +95,7 @@ public class InitSecuritySetup {
 			authorizationService.createAGroup(groupName);
 		}
 
-		// assign PI group to role CURD on protocol, sample and
+		// assign Curator group to role CURD on protocol, sample and
 		// publication
 		authorizationService.assignGroupToProtectionGroupWithRole(
 				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PROTOCOL,
