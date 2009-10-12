@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
@@ -27,9 +28,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Search protocol file and protocol
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -65,8 +66,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 						request, location);
 				service = new ProtocolServiceRemoteImpl(serviceUrl);
 			}
-			List<ProtocolBean> protocols = service.findProtocolsBy(protocolType, protocolName,
-					protocolAbbreviation, fileTitle, user);
+			List<ProtocolBean> protocols = service.findProtocolsBy(
+					protocolType, protocolName, protocolAbbreviation,
+					fileTitle, user);
 			for (ProtocolBean protocol : protocols) {
 				protocol.setLocation(location);
 				protocol.getFileBean().setLocation(location);
@@ -102,17 +104,15 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			InitProtocolSetup.getInstance().setLocalSearchDropdowns(request);
 		} else {
 			InitProtocolSetup.getInstance().setRemoteSearchDropdowns(request);
-		}		
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 		return mapping.getInputForward();
 	}
 
-	public boolean loginRequired() {
-		return false;
-	}
-
-	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return true;
+	public Boolean canUserExecutePrivateDispatch(UserBean user)
+			throws SecurityException {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				Constants.CSM_PG_PROTOCOL);
 	}
 }

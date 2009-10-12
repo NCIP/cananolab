@@ -38,8 +38,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
 		protocolBean
 				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
-		InitProtocolSetup.getInstance().persistProtocolDropdowns(
-				request, protocolBean);
+		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
+				protocolBean);
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		service.saveProtocol(protocolBean, user);
 		ActionMessages msgs = new ActionMessages();
@@ -58,8 +58,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
-		InitProtocolSetup.getInstance().persistProtocolDropdowns(
-				request, protocolBean);
+		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
+				protocolBean);
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -94,11 +94,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		return mapping.findForward("inputPage");
 	}
 
-	public boolean loginRequired() {
-		return true;
-	}
-
-	public boolean canUserExecute(UserBean user) throws SecurityException {
+	public Boolean canUserExecutePrivateDispatch(UserBean user)
+			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PROTOCOL);
 	}

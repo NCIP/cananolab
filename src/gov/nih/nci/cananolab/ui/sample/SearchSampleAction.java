@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -218,8 +219,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					service = new SampleServiceRemoteImpl(serviceUrl);
 				}
 				// TODO remove this
-//				service = new SampleServiceRemoteImpl(
-//						"http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
+				// service = new SampleServiceRemoteImpl(
+				// "http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
 
 				String sampleName = sampleBeans.get(i).getDomain().getName();
 				SampleBean sampleBean = service.findSampleByName(sampleName,
@@ -256,11 +257,9 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		return mapping.getInputForward();
 	}
 
-	public boolean loginRequired() {
-		return false;
-	}
-
-	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return true;
+	public Boolean canUserExecutePrivateDispatch(UserBean user)
+			throws SecurityException {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				Constants.CSM_PG_SAMPLE);
 	}
 }

@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteIm
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -35,7 +36,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class searches canano publication based on user supplied criteria
- * 
+ *
  * @author tanq
  */
 
@@ -271,14 +272,6 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public boolean loginRequired() {
-		return false;
-	}
-
-	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return true;
-	}
-
 	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -357,4 +350,9 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		return mapping.findForward("publicationSummaryPrintView");
 	}
 
+	public Boolean canUserExecutePrivateDispatch(UserBean user)
+			throws SecurityException {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				Constants.CSM_PG_PUBLICATION);
+	}
 }

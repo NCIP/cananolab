@@ -34,7 +34,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -76,7 +76,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -112,7 +112,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -138,7 +138,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -157,7 +157,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 * 
+	 *
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception

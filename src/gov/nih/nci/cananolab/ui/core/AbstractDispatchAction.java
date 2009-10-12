@@ -24,54 +24,61 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String dispatch = request.getParameter("dispatch");
-		// private dispatch in public actions
-		boolean privateDispatch = false;
-		if (dispatch != null) {
-			for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
-				if (dispatch.startsWith(theDispatch)) {
-					privateDispatch = true;
-					break;
-				}
-			}
-		}
-		if (session.isNew() && (dispatch == null || privateDispatch)) {
-			throw new InvalidSessionException();
-		}
-		if (!loginRequired()) {
-			return super.execute(mapping, form, request, response);
-		} else {
-			UserBean user = (UserBean) session.getAttribute("user");
-			if (user != null) {
-				// check whether user have access to the class
-				boolean accessStatus = canUserExecute(user);
-				if (accessStatus) {
-					return super.execute(mapping, form, request, response);
-				} else {
-					request.getSession().removeAttribute("user");
-					throw new NoAccessException();
-				}
-			} else {
+		String dispatch = (String) getValueFromRequest(request, "dispatch");
+		UserBean user = (UserBean) session.getAttribute("user");
+		boolean executeStatus = canUserExecute(user, dispatch);
+		if (executeStatus) {
+			// private dispatch and session expired
+			boolean privateDispatch = isDispatchPublic(dispatch);
+			if (session.isNew() && (dispatch == null || privateDispatch)) {
 				throw new InvalidSessionException();
+			} else {
+				return super.execute(mapping, form, request, response);
 			}
+		} else {
+			request.getSession().removeAttribute("user");
+			throw new NoAccessException();
 		}
 	}
 
-	public abstract boolean loginRequired();
-
 	/**
-	 * Check whether the current user can execute the action
-	 * 
+	 * Check whether the current user can execute the action with the specified
+	 * dispatch
+	 *
 	 * @param user
 	 * @return
 	 * @throws SecurityException
 	 */
-	public abstract boolean canUserExecute(UserBean user)
+	public boolean canUserExecute(UserBean user, String dispatch)
+			throws SecurityException {
+		// private dispatch in public actions
+		boolean privateDispatch = isDispatchPublic(dispatch);
+		if (!privateDispatch) {
+			return true;
+		} else if (user == null & privateDispatch) {
+			return false;
+		} else {
+			return canUserExecutePrivateDispatch(user);
+		}
+	}
+
+	public abstract Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException;
+
+	public boolean isDispatchPublic(String dispatch) {
+		if (dispatch != null) {
+			for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
+				if (dispatch.startsWith(theDispatch)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Get the page number used in display tag library pagination
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -105,5 +112,24 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			}
 		}
 		return "";
+	}
+
+	/**
+	 * Retrieve a value from request by name in the order of Parameter - Request
+	 * Attribute - Session Attribute
+	 *
+	 * @param request
+	 * @param name
+	 * @return
+	 */
+	public Object getValueFromRequest(HttpServletRequest request, String name) {
+		Object value = request.getParameter(name);
+		if (value == null) {
+			value = request.getAttribute(name);
+		}
+		if (value == null) {
+			value = request.getSession().getAttribute(name);
+		}
+		return value;
 	}
 }
