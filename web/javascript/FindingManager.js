@@ -121,10 +121,17 @@ function saveFinding(actionName) {
 function validateMatrix() {
 	var rowNum = document.getElementById("matrixRowNum").value;
 	var colNum = document.getElementById("matrixColNum").value;
-	// Empty matrix is fine.
-	if (rowNum == 0 && colNum == 0) {
-		return true;
+	// Iterate matrix to check for empty column headers
+	for (var cInd = 0; cInd < colNum; cInd++) {
+		var columnType=dwr.util.getValue("theColumnType"+cInd);
+		var columnName=dwr.util.getValue("theColumnName"+cInd);
+		
+		if (columnType==""||columnName=="" && !(rowNum==0 &&colNum==0)) {
+			alert("Please click on the column header to update the column type and column name.");
+			return false;
+		}
 	}
+	
 	// Iterate matrix to check for empty row.
 	for (var rInd = 0; rInd < rowNum; rInd++) {
 		var cInd = 0;
@@ -139,7 +146,7 @@ function validateMatrix() {
 			return false;
 		}
 	}
-	// Iterate matrix to check for empty column.
+	// Iterate matrix to check for empty column
 	for (var cInd = 0; cInd < colNum; cInd++) {
 		var rInd = 0;
 		for (; rInd < rowNum; rInd++) {
@@ -151,7 +158,7 @@ function validateMatrix() {
 		if (rInd == rowNum) {
 			alert("An empty column is not allowed in Data and Conditions table.");
 			return false;
-		}
+		}		
 	}
 	// validate each datum entry for valid float number.
 	for (var rInd = 0; rInd < rowNum; rInd++) {
@@ -213,7 +220,7 @@ function openColumnForm(characterizationName, columnNumber) {
 					function(pageData) {
 						document.getElementById("newColumn" + columnNumber).innerHTML = pageData;
 						// populate column entry table from hidden values, use
-						// timeout to populate drop down first				
+						// timeout to populate drop down first
 						dwr.util.setValue("columnType" + columnNumber, dwr.util
 								.getValue("theColumnType" + columnNumber));
 						setNameOptionsByCharName(columnNumber);						
@@ -337,5 +344,6 @@ function setTheFile(index) {
 	FindingManager.getFileFromList(index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
 	openSubmissionForm("File");
+	show("deleteFile");
 }
 /* end of set submit file form */
