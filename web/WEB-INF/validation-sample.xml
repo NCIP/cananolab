@@ -445,48 +445,6 @@
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
-			
-			<!-- 4.Optional properties: Finding - Data Matrix form -->
-			<field property="achar.theFinding.numberOfColumns" page="4"
-				depends="validwhenmatch">
-				<arg position="0" key="achar.theFinding.numberOfColumns" 
- 					bundle="sample" /> 
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((fileSupplied == "true")
-						or
-						((*this* > 0) and (*this* == numberOfColumns)))
-					</var-value>
-				</var>
-			</field>
-			<field property="achar.theFinding.numberOfRows" page="4"
-				depends="validwhenmatch">
-				<arg position="0" key="achar.theFinding.numberOfRows" 
-					bundle="sample" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((fileSupplied == "true")
-						or
-						((*this* > 0) and (*this* == numberOfRows)))
-					</var-value>
-				</var>
-			</field>
-			<field property="columnType" indexedListProperty="achar.theFinding.columnHeaders"
-				page="4" depends="validwhenmatch">
-				<arg position="0" key="achar.theFinding.columnHeaders.columnType" 
-					bundle="sample" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((fileSupplied == "true")
-						or
-						((*this*!=null) and
-						(achar.theFinding.columnHeaders[].columnName!=null)))
-					</var-value>
-				</var>
-			</field>
 		</form>
 		<form name="searchSampleForm">
 			<field property="text" page="1" depends="mask">
