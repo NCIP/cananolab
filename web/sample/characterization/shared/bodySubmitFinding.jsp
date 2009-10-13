@@ -91,8 +91,6 @@
 					<input type="hidden"
 						value="${characterizationForm.map.achar.theFinding.domain.id}" />
 				</c:if>
-				<html:hidden property="fileSupplied" 
-					value="${characterizationForm.map.fileSupplied}" />
 				<input type="button" value="Save"
 					onclick="javascript:saveFinding('characterization');">
 				<input type="button" value="Cancel"	onclick="javascript:closeSubmissionForm('Finding');">
