@@ -640,48 +640,23 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		findingBean.setupDomain(user.getLoginName());
-		boolean validBoolean = this.validateMatrixForBoolean(findingBean);
-		if (validBoolean) {
-			CharacterizationService service = new CharacterizationServiceLocalImpl();
-			service.saveFinding(findingBean, user);
-			achar.addFinding(findingBean);
-			InitCharacterizationSetup.getInstance()
-					.persistCharacterizationDropdowns(request, achar);
+		
+		CharacterizationService service = new CharacterizationServiceLocalImpl();
+		service.saveFinding(findingBean, user);
+		achar.addFinding(findingBean);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
 
-			// also save characterization
-			this.saveCharacterization(request, theForm, achar);
-			this.checkOpenForms(achar, request);
-			request.setAttribute("anchor", "result");
-			// return to setupUpdate to retrieve the data matrix in the correct
-			// form from database
-			// after saving to database.
-			request.setAttribute("charId", achar.getDomainChar().getId()
-					.toString());
-			return setupUpdate(mapping, form, request, response);
-		} else {
-			ActionMessages messages = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"achar.theFinding.invalidBoolean");
-			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, messages);
-			return mapping.getInputForward();
-		}
-	}
-
-	private boolean validateMatrixForBoolean(FindingBean findingBean) {
-		// make sure boolean values are entered as either 1 or 0
-		if (findingBean.getDomain().getDatumCollection() != null) {
-			for (Datum datum : findingBean.getDomain().getDatumCollection()) {
-				if (datum.getValueType().equals("boolean")
-						&& (datum.getValue() != 0 && datum.getValue() != 1 && !datum
-								.getCreatedBy()
-								.equals(
-										Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY))) {
-					return false;
-				}
-			}
-		}
-		return true;
+		// also save characterization
+		this.saveCharacterization(request, theForm, achar);
+		this.checkOpenForms(achar, request);
+		request.setAttribute("anchor", "result");
+		// return to setupUpdate to retrieve the data matrix in the correct
+		// form from database
+		// after saving to database.
+		request.setAttribute("charId", achar.getDomainChar().getId()
+				.toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,

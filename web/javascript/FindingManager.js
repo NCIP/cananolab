@@ -165,6 +165,20 @@ function validateMatrix() {
 			}
 		}
 	}
+	// validate each datum entry for valid boolean value.
+	for (var rInd = 0; rInd < rowNum; rInd++) {
+		for (var cInd = 0; cInd < colNum; cInd++) {
+			var header = document.getElementById("theValueType" + cInd);
+			var cell = document.getElementById("cellValue" + rInd + ":" + cInd);
+			if (cell != null && header != null) {
+				if (header.value == "boolean" && cell.value != "" &&
+					cell.value != "0" && cell.value != "1") {
+					alert("Please enter 1 or 0 for values of boolean type.");
+					return false;
+				}
+			}
+		}
+	}
 	return true;
 }
 function deleteTheFinding(form) {
