@@ -102,8 +102,8 @@
 		<td>
 			<input type="text"
 				name="achar.theFinding.columnHeaders[${param.cInd}].constantValue"
-				id="constantValue${param.cInd}"
-				onkeydown="return filterFloatForColumn(event, 'columnType${param.cInd}');" />
+				id="constantValue${param.cInd}" />
+				<%--onkeydown="return filterFloatForColumn(event, 'columnType${param.cInd}');" /--%>
 				<br>
 				<em>For boolean column value type, please enter 1 for true, 0 for false</em>
 		</td>
