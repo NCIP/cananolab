@@ -152,7 +152,8 @@ function addComposingElement(actionName) {
 	if (validateComposingInfo() &&
 		validateTubeInfo() && 
 		validateFullereneInfo() && 
-		validatePolymerInfo()) {
+		validatePolymerInfo() &&
+		validateSavingTheData('newInherentFunction', 'Inherent Function')) {
 		submitAction(document.forms[0], actionName, "saveComposingElement", 2);
 		return true;
 	} else {

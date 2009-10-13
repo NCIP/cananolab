@@ -328,13 +328,17 @@ function addFile(actionName, form) {
 		dispatch = "addFile";
 	} else {
 		dispatch = "saveFile";
-		if (actionName == "functionalizingEntity" && !validateAmountValue()) {
+		if (actionName == "functionalizingEntity" && 
+			(!validateAmountValue() ||
+			 !validateSavingTheData('newFunction', 'function'))) {
 			return false;
 		}
 		if (actionName == "nanomaterialEntity" && 
 			(!validateTubeInfo() || 
 			!validateFullereneInfo() || 
-			!validatePolymerInfo())) {
+			!validatePolymerInfo() ||
+			!validateSavingTheData('newComposingElement', 'Composing Element') 
+			)) {
 			return false;
 		}
 	}

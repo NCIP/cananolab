@@ -92,7 +92,8 @@ function deleteTheExperimentConfig() {
 	}
 }
 function validateSaveConfig(actionName) {
-	if (validateShapeInfo() && validateSolubilityInfo()) {
+	if (validateShapeInfo() && validateSolubilityInfo() && 
+		validateSavingTheData('newInstrument', 'Instrument')) {
 		submitAction(document.forms[0], actionName, "saveExperimentConfig", 2);
 		return true;
 	} else {

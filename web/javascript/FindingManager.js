@@ -107,7 +107,9 @@ function saveFinding(actionName) {
 			return false;
 		}
 		else {
-			if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo()) {
+			if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo() && 
+				validateSavingTheData('newExperimentConfig', 'Technique and Instrument') 
+				) {
 			    submitAction(document.forms[0], actionName, "saveFinding", 4);
 				return true;
 			} else {
