@@ -149,7 +149,10 @@ function deleteTheInherentFunction() {
 	}
 }
 function addComposingElement(actionName) {
-	if (validateComposingInfo()) {
+	if (validateComposingInfo() &&
+		validateTubeInfo() && 
+		validateFullereneInfo() && 
+		validatePolymerInfo()) {
 		submitAction(document.forms[0], actionName, "saveComposingElement", 2);
 		return true;
 	} else {

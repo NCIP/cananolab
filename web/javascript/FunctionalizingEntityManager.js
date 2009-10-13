@@ -182,7 +182,7 @@ function validateAmountValue() {
 	var inputField = document.getElementById("amountValue");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Amount.");
+		alert("Please enter a valid float number for Functionalizing Entity Amount.");
 		return false;
 	}
 	return true;

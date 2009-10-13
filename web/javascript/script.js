@@ -328,6 +328,15 @@ function addFile(actionName, form) {
 		dispatch = "addFile";
 	} else {
 		dispatch = "saveFile";
+		if (actionName == "functionalizingEntity" && !validateAmountValue()) {
+			return false;
+		}
+		if (actionName == "nanomaterialEntity" && 
+			(!validateTubeInfo() || 
+			!validateFullereneInfo() || 
+			!validatePolymerInfo())) {
+			return false;
+		}
 	}
 	submitAction(form, actionName, dispatch, 3);
 }

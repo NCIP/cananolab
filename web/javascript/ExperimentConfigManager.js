@@ -92,13 +92,12 @@ function deleteTheExperimentConfig() {
 	}
 }
 function validateSaveConfig(actionName) {
-	/**
-	var techniqueType = document.getElementById("techniqueType");
-	if (techniqueType.value == "") {
-		alert("Please select a technique");
+	if (validateShapeInfo() && validateSolubilityInfo()) {
+		submitAction(document.forms[0], actionName, "saveExperimentConfig", 2);
+		return true;
+	} else {
 		return false;
-	}*/
-	submitAction(document.forms[0], actionName, "saveExperimentConfig", 2);
+	}
 }
 function addInstrument() {
 	var instrument = {id:null, manufacturer:null, modelName:null, type:null};

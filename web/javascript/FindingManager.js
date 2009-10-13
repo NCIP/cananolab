@@ -107,7 +107,7 @@ function saveFinding(actionName) {
 			return false;
 		}
 		else {
-			if (validateMatrix()) {
+			if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo()) {
 			    submitAction(document.forms[0], actionName, "saveFinding", 4);
 				return true;
 			} else {
