@@ -53,8 +53,8 @@
 					<input type="text"
 						id="averageLength"
 						name="nanomaterialEntity.carbonNanotube.averageLength"
-						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.averageLength}"
-						onkeydown="return filterFloatNumber(event)" />
+						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.averageLength}" />
+						<%-- onkeydown="return filterFloatNumber(event)" /--%>
 				</td>
 				<td class="cellLabel">
 					Average Length Unit
@@ -103,8 +103,8 @@
 					<input type="text"
 						id="tubeDiameter"
 						name="nanomaterialEntity.carbonNanotube.diameter"
-						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.diameter}"
-						onkeydown="return filterFloatNumber(event)" />
+						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.diameter}" />
+						<%-- onkeydown="return filterFloatNumber(event)" /--%>
 				</td>
 				<td class="cellLabel">
 					Diameter Unit

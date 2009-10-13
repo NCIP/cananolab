@@ -343,8 +343,8 @@
 							<div id="datumValueTextBlock" style="display: block">
 								<html:text
 									property="searchBean.theCharacterizationQuery.datumValue"
-									styleId="datumValue" size="10"
-									onkeydown="return filterFloatNumber(event)" />
+									styleId="datumValue" size="10" />
+									<%--onkeydown="return filterFloatNumber(event)" /--%>
 							</div>
 							<div id="datumValueSelectBlock" style="display: none">
 								<html:select

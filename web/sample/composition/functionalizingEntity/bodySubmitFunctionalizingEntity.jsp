@@ -95,8 +95,8 @@
 			</td>
 			<td>
 				<html:text property="functionalizingEntity.value"
-					styleId="amountValue"
-					onkeydown="return filterFloatNumber(event)" />
+					styleId="amountValue" />
+					<%-- onkeydown="return filterFloatNumber(event)" /--%>
 			</td>
 			<td class="cellLabel">
 				Amount Unit
