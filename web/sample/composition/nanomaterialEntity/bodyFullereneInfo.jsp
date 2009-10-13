@@ -38,8 +38,9 @@
 				</td>
 				<td class="cellLabel">
 					<input type="text" name="nanomaterialEntity.fullerene.averageDiameter"
-						id="averageDiameter" onkeydown="return filterFloatNumber(event)"
+						id="averageDiameter" 
 						value="${compositionForm.map.nanomaterialEntity.fullerene.averageDiameter}" />
+						<%--onkeydown="return filterFloatNumber(event)"--%>
 				</td>
 				<td class="cellLabel">
 					Average Diameter Unit
