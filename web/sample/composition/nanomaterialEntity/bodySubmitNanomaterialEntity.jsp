@@ -67,11 +67,12 @@
 			</td>
 		</tr>
 	</table>
-	<br>
+	<br>	
+	<div id="entityInclude">
 	<c:if test="${!empty entityDetailPage}">
 		<jsp:include page="${entityDetailPage}" />
 	</c:if>
-	<div id="entityInclude"></div>
+	</div>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="15%">
