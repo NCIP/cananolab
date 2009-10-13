@@ -167,13 +167,13 @@ function validateTubeInfo() {
 	var inputField = document.getElementById("averageLength");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Average Length.");
+		alert("Please enter a valid number for Average Length.");
 		return false;
 	}
 	inputField = document.getElementById("tubeDiameter");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Diameter.");
+		alert("Please enter a valid number for Diameter.");
 		return false;
 	}
 	return true;
@@ -182,7 +182,7 @@ function validateFullereneInfo() {
 	var inputField = document.getElementById("averageDiameter");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Average Diameter.");
+		alert("Please enter a valid number for Average Diameter.");
 		return false;
 	}
 	return true;
@@ -191,7 +191,7 @@ function validatePolymerInfo() {
 	var inputField = document.getElementById("crossLinkDegree");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Cross Link Degree.");
+		alert("Please enter a valid number for Cross Link Degree.");
 		return false;
 	}
 	return true;
@@ -200,7 +200,7 @@ function validateComposingInfo() {
 	var inputField = document.getElementById("elementValue");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Composing Element Amount.");
+		alert("Please enter a valid number for Composing Element Amount.");
 		return false;
 	}
 	return true;

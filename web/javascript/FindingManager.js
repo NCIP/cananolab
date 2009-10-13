@@ -159,7 +159,7 @@ function validateMatrix() {
 			if (cell != null && header != null) {
 				if (header.value == "datum" && cell.value != "" &&
 					!validFloatNumber(cell.value)) {
-					alert("Please enter a valid float number for datum value.");
+					alert("Please enter a valid number for datum value.");
 					return false;
 				}
 			}
@@ -280,7 +280,7 @@ function addColumnHeader(columnNumber) {
 	if (columnHeader.constantValue != null && columnHeader.constantValue != "") {
 		if (columnHeader.columnType == "datum" && 
 			!validFloatNumber(columnHeader.constantValue)) {
-			alert("Please enter a valid float number for constant datum value.");
+			alert("Please enter a valid number for constant datum value.");
 			dwr.util.setValue("constantValue" + columnNumber, "");
 			return false;
 		}

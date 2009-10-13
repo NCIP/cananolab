@@ -68,19 +68,19 @@ function validateShapeInfo() {
 	var inputField = document.getElementById("aspectRatio");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Aspect Ratio.");
+		alert("Please enter a valid number for Aspect Ratio.");
 		return false;
 	}
 	inputField = document.getElementById("shapeMaxDimension");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Minimum Dimension.");
+		alert("Please enter a valid number for Minimum Dimension.");
 		return false;
 	}
 	inputField = document.getElementById("shapeMaxDimension");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Maximum Dimension.");
+		alert("Please enter a valid number for Maximum Dimension.");
 		return false;
 	}
 	return true;
@@ -89,7 +89,7 @@ function validateSolubilityInfo() {
 	var inputField = document.getElementById("criticalConcentration");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
-		alert("Please enter a valid float number for Critical Concentration.");
+		alert("Please enter a valid number for Critical Concentration.");
 		return false;
 	}
 	return true;
