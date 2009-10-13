@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.util.Constants;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.axis.utils.StringUtils;
 
