@@ -71,7 +71,7 @@ function validateShapeInfo() {
 		alert("Please enter a valid number for Aspect Ratio.");
 		return false;
 	}
-	inputField = document.getElementById("shapeMaxDimension");
+	inputField = document.getElementById("shapeMinDimension");
 	if (inputField != null && inputField.value != "" &&
 		!validFloatNumber(inputField.value)) {
 		alert("Please enter a valid number for Minimum Dimension.");
