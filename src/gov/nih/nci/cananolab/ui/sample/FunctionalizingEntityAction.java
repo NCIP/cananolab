@@ -40,7 +40,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		this.saveEntity(request, theForm, entityBean);
 		if (!validateTargets(request, entityBean)) {
 			return mapping.getInputForward();
 		}
@@ -48,6 +47,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		if (!validateEntityFile(request, entityBean)) {
 			return mapping.getInputForward();
 		}
+
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entityBean);
+
+		this.saveEntity(request, theForm, entityBean);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
@@ -132,9 +136,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 		compositionService.saveFunctionalizingEntity(sampleBean, entityBean,
 				user);
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entityBean);
-
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
@@ -149,7 +150,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new nanomaterial entity
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -235,12 +236,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		this.setLookups(request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
-		String detailPage = null;
-		if (entityBean.isWithProperties()) {
-			detailPage = InitCompositionSetup.getInstance().getDetailPage(
-					entityBean.getClassName(), "functionalizingEntity");
-		}
-		request.setAttribute("entityDetailPage", detailPage);
 		checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
@@ -256,8 +251,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		function.setupDomainFunction(user.getLoginName(), 0);
 		entity.addFunction(function);
 		this.saveEntity(request, theForm, entity);
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
 		// return to setupUpdate to get the correct entity from database
@@ -273,8 +266,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
 		this.saveEntity(request, theForm, entity);
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}
@@ -330,9 +321,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
-
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entity.getTheFile();
 		preserveUploadedFile(request, theFile, "functionalizingEntity");
@@ -364,7 +352,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	}
 
 	private void checkOpenForms(FunctionalizingEntityBean entity,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws Exception {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
@@ -382,6 +370,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 		session.setAttribute("openFunction", openFunction);
 
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
+
 		/**
 		 * If user entered customized value selecting [other] on previous page,
 		 * we should show and highlight the entered value on the edit page.
@@ -393,5 +384,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// Functional Entity Function Type
 		String functionType = entity.getTheFunction().getType();
 		setOtherValueOption(request, functionType, "functionTypes");
+		String detailPage = null;
+		if (!StringUtils.isEmpty(entity.getType())) {
+			detailPage = InitCompositionSetup.getInstance().getDetailPage(
+					entity.getType(), "functionalizingEntity");
+		}
+		request.setAttribute("entityDetailPage", detailPage);
 	}
 }
