@@ -34,16 +34,6 @@ public class InitSecuritySetup {
 		return authorizationService;
 	}
 
-	public boolean canUserExecuteClass(HttpSession session, Class classObj)
-			throws SecurityException {
-		UserBean user = (UserBean) session.getAttribute("user");
-		// assume the part of the package name containing the function domain
-		// is the same as the protection element defined in CSM
-		String[] nameStrs = classObj.getName().split("\\.");
-		String domain = nameStrs[nameStrs.length - 2];
-		return authorizationService.checkExecutePermission(user, domain);
-	}
-
 	public boolean userHasCreatePrivilege(UserBean user,
 			String protectionElementObjectId) throws SecurityException {
 		boolean status = false;
