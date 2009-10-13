@@ -167,7 +167,12 @@ function deleteTheTarget() {
 	}
 }
 function addFunction(actionName) {
-	submitAction(document.forms[0], actionName, "saveFunction", 2);
+	if (validateAmountValue()) {
+		submitAction(document.forms[0], actionName, "saveFunction", 2);
+		return true;
+	} else {
+		return false;
+	}
 }
 function removeFunction(actionName) {
 	submitAction(document.forms[0], actionName, "removeFunction", 2);
