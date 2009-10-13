@@ -51,6 +51,7 @@
 				</td>
 				<td class="cellLabel">
 					<input type="text"
+						id="averageLength"
 						name="nanomaterialEntity.carbonNanotube.averageLength"
 						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.averageLength}"
 						onkeydown="return filterFloatNumber(event)" />
@@ -68,7 +69,7 @@
 								<c:choose>
 									<c:when
 										test="${unit eq compositionForm.map.nanomaterialEntity.carbonNanotube.averageLengthUnit}">
-										<option value="${unit}" selected>
+										<option value="${unit}" selected="selected">
 											${unit}
 										</option>
 									</c:when>
@@ -100,6 +101,7 @@
 				</td>
 				<td class="cellLabel">
 					<input type="text"
+						id="tubeDiameter"
 						name="nanomaterialEntity.carbonNanotube.diameter"
 						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.diameter}"
 						onkeydown="return filterFloatNumber(event)" />
@@ -117,7 +119,7 @@
 								<c:choose>
 									<c:when
 										test="${unit eq compositionForm.map.nanomaterialEntity.carbonNanotube.diameterUnit}">
-										<option value="${unit}" selected>
+										<option value="${unit}" selected="selected">
 											${unit}
 										</option>
 									</c:when>
@@ -145,7 +147,7 @@
 							<c:choose>
 								<c:when
 									test="${type eq compositionForm.map.nanomaterialEntity.carbonNanotube.wallType}">
-									<option value="${type}" selected>
+									<option value="${type}" selected="selected">
 										${type}
 									</option>
 								</c:when>

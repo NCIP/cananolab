@@ -59,7 +59,9 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/characterization" enctype="multipart/form-data" 
-	onsubmit="return validateSavingTheData('newExperimentConfig', 'Technique and Instrument') && validateSavingTheData('newFinding', 'Finding');">
+	onsubmit="return validateShapeInfo() && validateSolubilityInfo() && 
+	validateSavingTheData('newExperimentConfig', 'Technique and Instrument') && 
+	validateSavingTheData('newFinding', 'Finding');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<jsp:include
 		page="/sample/characterization/shared/bodyCharacterizationSummary.jsp" />

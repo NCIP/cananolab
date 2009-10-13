@@ -33,7 +33,8 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/functionalizingEntity" enctype="multipart/form-data"
-	onsubmit="return validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
+	onsubmit="return validateAmountValue() && 
+	validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<c:if
@@ -94,6 +95,7 @@
 			</td>
 			<td>
 				<html:text property="functionalizingEntity.value"
+					styleId="amountValue"
 					onkeydown="return filterFloatNumber(event)" />
 			</td>
 			<td class="cellLabel">

@@ -85,6 +85,7 @@
 				</td>
 				<td class="cellLabel">
 					<input type="text"
+						id="crossLinkDegree"
 						name="nanomaterialEntity.polymer.crossLinkDegree"
 						onkeydown="return filterFloatNumber(event)"
 						value="${compositionForm.map.nanomaterialEntity.polymer.crossLinkDegree}" />

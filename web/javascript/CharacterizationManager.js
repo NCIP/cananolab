@@ -64,3 +64,33 @@ function populatePage(pageData) {
 		inclueBlock.style.display = "inline";
 	}
 }
+function validateShapeInfo() {
+	var inputField = document.getElementById("aspectRatio");
+	if (inputField != null && inputField.value != "" &&
+		!validFloatNumber(inputField.value)) {
+		alert("Please enter a valid float number for Aspect Ratio.");
+		return false;
+	}
+	inputField = document.getElementById("shapeMaxDimension");
+	if (inputField != null && inputField.value != "" &&
+		!validFloatNumber(inputField.value)) {
+		alert("Please enter a valid float number for Minimum Dimension.");
+		return false;
+	}
+	inputField = document.getElementById("shapeMaxDimension");
+	if (inputField != null && inputField.value != "" &&
+		!validFloatNumber(inputField.value)) {
+		alert("Please enter a valid float number for Maximum Dimension.");
+		return false;
+	}
+	return true;
+}
+function validateSolubilityInfo() {
+	var inputField = document.getElementById("criticalConcentration");
+	if (inputField != null && inputField.value != "" &&
+		!validFloatNumber(inputField.value)) {
+		alert("Please enter a valid float number for Critical Concentration.");
+		return false;
+	}
+	return true;
+}

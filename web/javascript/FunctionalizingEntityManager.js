@@ -173,4 +173,12 @@ function removeFunction(actionName) {
 	submitAction(document.forms[0], actionName, "removeFunction", 2);
 }
 /* end of submit composing element form */
-
+function validateAmountValue() {
+	var inputField = document.getElementById("amountValue");
+	if (inputField != null && inputField.value != "" &&
+		!validFloatNumber(inputField.value)) {
+		alert("Please enter a valid float number for Amount.");
+		return false;
+	}
+	return true;
+}

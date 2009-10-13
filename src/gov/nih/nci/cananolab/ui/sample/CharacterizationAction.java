@@ -634,26 +634,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		boolean validFloat = this.validateMatrixForFloat(findingBean);
-		if (!validFloat) {
-			ActionMessages messages = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"achar.theFinding.invalidFloat");
-			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, messages);
-			return mapping.getInputForward();
-		}
-		
 		String theFindingId = (String) request.getAttribute("theFindingId");
 		if (!StringUtils.isEmpty(theFindingId)) {
 			findingBean.getDomain().setId(new Long(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		findingBean.setupDomain(user.getLoginName());
-		boolean validCell = this.validateMatrixForEmptyCell(findingBean);
 		boolean validBoolean = this.validateMatrixForBoolean(findingBean);
-
-		if (validCell && validBoolean) {
+		if (validBoolean) {
 			CharacterizationService service = new CharacterizationServiceLocalImpl();
 			service.saveFinding(findingBean, user);
 			achar.addFinding(findingBean);
@@ -670,12 +658,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			request.setAttribute("charId", achar.getDomainChar().getId()
 					.toString());
 			return setupUpdate(mapping, form, request, response);
-		} else if (!validCell) {
-			ActionMessages messages = new ActionMessages();
-			ActionMessage msg = new ActionMessage("achar.theFinding.emptyCell");
-			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, messages);
-			return mapping.getInputForward();
 		} else {
 			ActionMessages messages = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
@@ -684,52 +666,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			saveErrors(request, messages);
 			return mapping.getInputForward();
 		}
-	}
-
-	/**
-	 * Return true if at least 1 filled cell exists in each Row/Column.
-	 *
-	 * @param findingBean
-	 * @return true if at least 1 filled cell exists in each Row/Column.
-	 */
-	private boolean validateMatrixForEmptyCell(FindingBean findingBean) {
-		if (findingBean != null) {
-			int rowNum = findingBean.getNumberOfRows();
-			int colNum = findingBean.getNumberOfColumns();
-			// it's okay not to have any datum
-			if (rowNum == 0 && colNum == 0) {
-				return true;
-			}
-			List<Row> rows = findingBean.getRows();
-			// Iterate matrix to check if each Row has >=1 filled cell.
-			for (Row row : rows) {
-				boolean emptyCell = true;
-				List<TableCell> cells = row.getCells();
-				for (TableCell cell : cells) {
-					emptyCell = StringUtils.isEmpty(cell.getValue());
-					if (!emptyCell) {
-						break; // Once found 1 filled cell this row is fine.
-					}
-				}
-				if (emptyCell) {
-					return false; // False as every cell in row is empty.
-				}
-			}
-			// Iterate matrix to check if each Column has >=1 filled cell.
-			for (int colIndex = 0; colIndex < colNum; colIndex++) {
-				int rowIndex = 0;
-				TableCell cell = rows.get(rowIndex).getCells().get(colIndex);
-				boolean emptyCell = StringUtils.isEmpty(cell.getValue());
-				for (rowIndex++; emptyCell && rowIndex < rowNum; rowIndex++) {
-					cell = rows.get(rowIndex).getCells().get(colIndex);
-					emptyCell = StringUtils.isEmpty(cell.getValue());
-				}
-				if (emptyCell)
-					return false; // False as every cell in column is empty.
-			}
-		}
-
-		return true; // Null FindingBean is allowed.
 	}
 
 	private boolean validateMatrixForBoolean(FindingBean findingBean) {
@@ -742,32 +678,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 								.equals(
 										Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY))) {
 					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Return true if every value in datum cell can be converted to Float.
-	 * 
-	 * @param findingBean
-	 * @return true validation passed, false otherwise.
-	 */
-	private boolean validateMatrixForFloat(FindingBean findingBean) {
-		List<Row> rows = findingBean.getRows();
-		List<ColumnHeader> columnHeaders = findingBean.getColumnHeaders();
-		for (Row row : rows) {
-			int cInd = 0;
-			for (TableCell cell : row.getCells()) {
-				ColumnHeader columnHeader = columnHeaders.get(cInd);
-				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType()) &&
-					!StringUtils.isEmpty(cell.getValue())) {
-				    try {
-				      Float.valueOf(cell.getValue());
-				    } catch (NumberFormatException nfe) {
-				    	return false;
-				    }
 				}
 			}
 		}

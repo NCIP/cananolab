@@ -86,6 +86,7 @@
 				</td>
 				<td>
 					<input type="text" name="achar.shape.aspectRatio" id="aspectRatio"
+						id="aspectRatio" 
 						value="${characterizationForm.map.achar.shape.aspectRatio}"
 						onkeydown="return filterFloatNumber(event)" />
 				</td>
@@ -96,6 +97,7 @@
 				</td>
 				<td>
 					<input type="text" name="achar.shape.minDimension"
+						id="shapeMinDimension" 
 						value="${characterizationForm.map.achar.shape.minDimension}"
 						onkeydown="return filterFloatNumber(event)" />
 					<div id="minDimensionUnitPrompt">
@@ -128,6 +130,7 @@
 				</td>
 				<td>
 					<input type="text" name="achar.shape.maxDimension"
+						id="shapeMaxDimension" 
 						value="${characterizationForm.map.achar.shape.maxDimension}"
 						onkeydown="return filterFloatNumber(event)" />
 					<div id="maxDimensionUnitPrompt">

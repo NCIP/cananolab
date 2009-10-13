@@ -56,7 +56,7 @@
 			<td>
 				<c:choose>
 					<c:when test="${! empty finding.rows}">
-						<table class="summaryViewLayer4" border="1">
+						<table class="summaryViewLayer4" width="100%">
 							<tr>
 								<c:forEach var="col" items="${finding.columnHeaders}">
 									<td>

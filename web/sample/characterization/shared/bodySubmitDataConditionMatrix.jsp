@@ -74,5 +74,7 @@
 		</tr>
 	</table>
 </c:if>
-<html:hidden property="numberOfRows" value="${characterizationForm.map.achar.theFinding.numberOfRows}" />
-<html:hidden property="numberOfColumns" value="${characterizationForm.map.achar.theFinding.numberOfColumns}" />
+<html:hidden styleId="matrixRowNum" property="numberOfRows"
+	value="${characterizationForm.map.achar.theFinding.numberOfRows}" />
+<html:hidden styleId="matrixColNum" property="numberOfColumns"
+	value="${characterizationForm.map.achar.theFinding.numberOfColumns}" />

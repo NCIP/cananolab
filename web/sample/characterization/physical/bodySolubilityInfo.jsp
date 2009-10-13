@@ -105,6 +105,7 @@
 				</td>
 				<td>
 					<input type="text" name="achar.solubility.criticalConcentration"
+						id="criticalConcentration"
 						onkeydown="return filterFloatNumber(event)"
 						value="${characterizationForm.map.achar.solubility.criticalConcentration}" />
 					<div id="concentrationUnitPrompt">

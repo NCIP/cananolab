@@ -631,3 +631,12 @@ function showDetailLinks() {
 		}
 	}
 }
+function validateDatumValue() {
+	var inputField = document.getElementById("datumValue");
+	if (inputField != null && inputField.value != "" &&
+		!validFloatNumber(inputField.value)) {
+		alert("Please enter a valid float number for datum value.");
+		return false;
+	}
+	return true;
+}

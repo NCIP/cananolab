@@ -217,6 +217,10 @@ function cancel(parameter) {
 		gotoPage(url);
 	}
 }
+function validFloatNumber(floatString) {
+	var re = new RegExp("[-+]?[0-9]*\.?[0-9]+");
+	return re.test(floatString);
+}
 function filterFloatNumber(evt) {
 	var keyCode = evt.which ? evt.which : evt.keyCode;
 	return (keyCode >= "0".charCodeAt() && keyCode <= "9".charCodeAt())

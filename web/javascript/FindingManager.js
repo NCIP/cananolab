@@ -107,10 +107,65 @@ function saveFinding(actionName) {
 			return false;
 		}
 		else {
-		    submitAction(document.forms[0], actionName, "saveFinding", 4);
-			return true;
+			if (validateMatrix()) {
+			    submitAction(document.forms[0], actionName, "saveFinding", 4);
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
+}
+function validateMatrix() {
+	var rowNum = document.getElementById("matrixRowNum").value;
+	var colNum = document.getElementById("matrixColNum").value;
+	// Empty matrix is fine.
+	if (rowNum == 0 && colNum == 0) {
+		return true;
+	}
+	// Iterate matrix to check for empty row.
+	for (var rInd = 0; rInd < rowNum; rInd++) {
+		var cInd = 0;
+		for (; cInd < colNum; cInd++) {
+			var cell = document.getElementById("cellValue" + rInd + ":" + cInd);
+			if (cell != null && cell.value != "") {
+				break;
+			}
+		}
+		if (cInd == colNum) {
+			alert("An empty row is not allowed in Data and Conditions table.");
+			return false;
+		}
+	}
+	// Iterate matrix to check for empty column.
+	for (var cInd = 0; cInd < colNum; cInd++) {
+		var rInd = 0;
+		for (; rInd < rowNum; rInd++) {
+			var cell = document.getElementById("cellValue" + rInd + ":" + cInd);
+			if (cell != null && cell.value != "") {
+				break;
+			}
+		}
+		if (rInd == rowNum) {
+			alert("An empty column is not allowed in Data and Conditions table.");
+			return false;
+		}
+	}
+	// validate each datum entry for valid float number.
+	for (var rInd = 0; rInd < rowNum; rInd++) {
+		for (var cInd = 0; cInd < colNum; cInd++) {
+			var header = document.getElementById("theColumnType" + cInd);
+			var cell = document.getElementById("cellValue" + rInd + ":" + cInd);
+			if (cell != null && header != null) {
+				if (header.value == "datum" && cell.value != "" &&
+					!validFloatNumber(cell.value)) {
+					alert("Please enter a valid float number for datum value.");
+					return false;
+				}
+			}
+		}
+	}
+	return true;
 }
 function deleteTheFinding(form) {
 	var answer = confirmDelete("finding");
@@ -209,6 +264,12 @@ function addColumnHeader(columnNumber) {
 	
 	var numberOfRows = dwr.util.getValue("rowNum");
 	if (columnHeader.constantValue != null && columnHeader.constantValue != "") {
+		if (columnHeader.columnType == "datum" && 
+			!validFloatNumber(columnHeader.constantValue)) {
+			alert("Please enter a valid float number for constant datum value.");
+			dwr.util.setValue("constantValue" + columnNumber, "");
+			return false;
+		}
 		for (i = 0; i < numberOfRows; i++) {
 			dwr.util.setValue("cellValue" + i + ":" + columnNumber,
 					columnHeader.constantValue);
@@ -246,21 +307,6 @@ function filterFloatForColumn(event, columnTypeId) {
 	}
 }
 
-function validateDataMatrix() {
-	var rowNum=dwr.util.getValue("rowNum");
-	var colNum=dwr.util.getValue("colNum");
-	for (i=0; i<rowNum; i++) {
-		for (j=0; j<colNum; j++) {
-			var cellValue=dwr.util.getValue("cellValue"+i+":"+j);			
-			if (cellValue=="") {
-				alert("Please fill in value(s) in the data and condition table");
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
 /* set submit file form */
 function clearFile() {
 	// go to server and clean form bean
@@ -277,4 +323,3 @@ function setTheFile(index) {
 	openSubmissionForm("File");
 }
 /* end of set submit file form */
-

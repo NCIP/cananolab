@@ -24,7 +24,8 @@
 	<jsp:param name="other" value="Basic Search" />
 	<jsp:param name="otherLink" value="searchSample.do?dispatch=setup&searchLocations=${param.location}" />
 </jsp:include>
-<html:form action="/advancedSampleSearch" enctype="multipart/form-data">
+<html:form action="/advancedSampleSearch" enctype="multipart/form-data"
+	onsubmit="return validateDatumValue()">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
