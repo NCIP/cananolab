@@ -26,15 +26,14 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		HttpSession session = request.getSession();
 		String dispatch = (String) getValueFromRequest(request, "dispatch");
 		UserBean user = (UserBean) session.getAttribute("user");
+		// private dispatch and session expired
+		boolean privateDispatch = isDispatchPublic(dispatch);
+		if (session.isNew() && (dispatch == null || privateDispatch)) {
+			throw new InvalidSessionException();
+		}
 		boolean executeStatus = canUserExecute(user, dispatch);
 		if (executeStatus) {
-			// private dispatch and session expired
-			boolean privateDispatch = isDispatchPublic(dispatch);
-			if (session.isNew() && (dispatch == null || privateDispatch)) {
-				throw new InvalidSessionException();
-			} else {
-				return super.execute(mapping, form, request, response);
-			}
+			return super.execute(mapping, form, request, response);
 		} else {
 			request.getSession().removeAttribute("user");
 			throw new NoAccessException();
@@ -44,7 +43,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	/**
 	 * Check whether the current user can execute the action with the specified
 	 * dispatch
-	 *
+	 * 
 	 * @param user
 	 * @return
 	 * @throws SecurityException
@@ -78,7 +77,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 
 	/**
 	 * Get the page number used in display tag library pagination
-	 *
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -117,7 +116,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	/**
 	 * Retrieve a value from request by name in the order of Parameter - Request
 	 * Attribute - Session Attribute
-	 *
+	 * 
 	 * @param request
 	 * @param name
 	 * @return
