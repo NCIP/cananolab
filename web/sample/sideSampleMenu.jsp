@@ -48,7 +48,7 @@
 		<td class="subMenuPrimaryTitle" height="60" onmouseover="showCursor()"
 			onmouseout="hideCursor()" onclick="gotoPage('${sampleUrl}')"
 			height="20">
-			<a class="pname">${applicationOwner} Sample<br> <br>${sampleName}</a>
+			<a class="pname">${location} Sample<br> <br>${sampleName}</a>
 		</td>
 	</tr>
 	<tr>
