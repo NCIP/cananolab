@@ -72,8 +72,8 @@
 		<td>
 			<html:text
 				property="nanomaterialEntity.theComposingElement.domain.value"
-				onkeydown="return filterFloatNumber(event)" size="30"
-				styleId="elementValue" />
+				size="30" styleId="elementValue" />
+				<%--onkeydown="return filterFloatNumber(event)" --%>
 		</td>
 		<td class="cellLabel">
 			Amount Unit
