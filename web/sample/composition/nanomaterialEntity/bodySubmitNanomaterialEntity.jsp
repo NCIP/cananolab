@@ -33,7 +33,7 @@
 </jsp:include>
 <html:form action="/nanomaterialEntity" enctype="multipart/form-data"
 	onsubmit="return validateTubeInfo() && validateFullereneInfo() && validatePolymerInfo() &&
-	validateSavingTheData('newComposingElement', 'composing element') && validateSavingTheData('newFile', 'file');">
+	validateSavingTheData('newComposingElement', 'Composing Element') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<c:if
