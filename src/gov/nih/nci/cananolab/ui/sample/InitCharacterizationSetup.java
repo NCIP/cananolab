@@ -26,9 +26,9 @@ import org.apache.axis.utils.StringUtils;
 
 /**
  * This class sets up information required for characterization forms.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class InitCharacterizationSetup {
 	public static InitCharacterizationSetup getInstance() {
@@ -93,7 +93,7 @@ public class InitCharacterizationSetup {
 
 		// physical state
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"physicalStateTypes", "physical  state", "type", "otherType",
+				"physicalStateTypes", "physical state", "type", "otherType",
 				true);
 
 		// enzyme induction
