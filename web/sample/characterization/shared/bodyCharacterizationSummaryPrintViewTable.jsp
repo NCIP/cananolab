@@ -5,11 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
-	<table id="summarySection${ind.count}" width="95%" align="center"
+	<table id="summarySection${ind.count}" width="100%" align="center"
 		style="display: block" class="summaryViewLayer2">
 		<tr>
 			<th align="left">
-				${type} &nbsp;&nbsp;&nbsp;
+				${type} &nbsp;&nbsp;&nbsp;summaryViewLayer2
 			</th>
 		</tr>
 		<tr>

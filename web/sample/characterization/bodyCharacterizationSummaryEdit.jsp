@@ -97,7 +97,7 @@
 		<td>
 			<c:forEach var="type" items="${characterizationTypes}"
 				varStatus="ind">
-				<table id="summarySection${ind.count}" width="95%" align="center"
+				<table id="summarySection${ind.count}" width="100%" align="center"
 					style="display: block" class="summaryViewLayer2">
 					<tr>
 						<th align="left" width="1000px">
