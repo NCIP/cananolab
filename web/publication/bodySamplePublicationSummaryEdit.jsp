@@ -97,7 +97,7 @@
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
 				<table id="summarySection${ind.count}" class="summaryViewLayer2"
-					width="95%" align="center">
+					width="100%" align="center">
 					<tr>
 						<th align="left">
 							<a name="${type}" id="${type}">${type}</a> &nbsp;&nbsp;&nbsp;
