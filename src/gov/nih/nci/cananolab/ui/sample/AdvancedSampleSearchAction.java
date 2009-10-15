@@ -257,7 +257,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		return loadedSampleBeans;
 	}
 
-	public ActionForward input(ActionMapping mapping, ActionForm form,
+	public ActionForward validateSetup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		// clear the search results and start over
