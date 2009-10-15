@@ -100,7 +100,7 @@
 				<table id="summarySection${ind.count}" width="100%" align="center"
 					style="display: block" class="summaryViewLayer2">
 					<tr>
-						<th align="left" width="1000px">
+						<th align="left">
 							${type} &nbsp;&nbsp;&nbsp;
 							<a
 								href="characterization.do?dispatch=setupNew&sampleId=${sampleId}&charType=${type}"
