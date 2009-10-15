@@ -9,7 +9,7 @@
 <c:set var="charType" value="${charBean.characterizationType}" />
 <table class="summaryViewLayer3" width="95%" align="center">
 	<tr>
-		<th align="left" colspan="2">
+		<th align="left" colspan="2" width="100%">
 			${charName}
 		</th>
 	</tr>
