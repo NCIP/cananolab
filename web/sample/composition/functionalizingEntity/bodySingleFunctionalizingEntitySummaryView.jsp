@@ -12,7 +12,7 @@
 				<td>
 					<table class="summaryViewLayer3" width="95%" align="center">
 						<tr>
-							<th valign="top" align="left" colspan="2" width="1000px">
+							<th valign="top" align="left" colspan="2" width="100%">
 								${entityType}
 							</th>
 						</tr>

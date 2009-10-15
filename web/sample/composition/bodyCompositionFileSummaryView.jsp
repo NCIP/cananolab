@@ -20,7 +20,7 @@
 					<td>
 						<table class="summaryViewLayer3" width="95%" align="center">
 							<tr>
-								<th valign="top" align="left" width="1000px" colspan="2">
+								<th valign="top" align="left" width="100%" colspan="2">
 									${fileType}
 								</th>
 							</tr>
