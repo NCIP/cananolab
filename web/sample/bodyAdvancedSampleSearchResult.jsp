@@ -50,7 +50,7 @@
 					</th>
 					<td style="text-align: right">
 						<c:if test="${empty printView}">
-							<a href="advancedSampleSearch.do?dispatch=input">Edit</a>
+							<a href="advancedSampleSearch.do?dispatch=validateSetup">Edit</a>
 						</c:if>
 					</td>
 				</tr>
