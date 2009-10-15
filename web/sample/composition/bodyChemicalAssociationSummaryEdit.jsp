@@ -59,7 +59,7 @@
 									</tr>
 								</c:if>
 								<tr>
-									<td class="cellLabel" width="20%">
+									<td class="cellLabel" width="10%">
 										Description
 									</td>
 									<td colspan="2">
