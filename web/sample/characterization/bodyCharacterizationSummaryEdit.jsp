@@ -128,7 +128,7 @@
 											<a name="${charBean.domainChar.id}">
 											<table class="summaryViewLayer3" width="95%" align="center">
 												<tr>
-													<th align="left" width="20%">
+													<th align="left" width="10%">
 														${charName}
 													</th>
 													<th align="right">
