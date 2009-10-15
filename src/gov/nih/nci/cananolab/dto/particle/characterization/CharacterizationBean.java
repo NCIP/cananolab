@@ -272,6 +272,7 @@ public class CharacterizationBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
+		className = ClassUtils.getShortClassNameFromDisplayName(characterizationName);
 		Class clazz = ClassUtils.getFullClass(className);
 		if (clazz == null) {
 			clazz = OtherCharacterization.class;
