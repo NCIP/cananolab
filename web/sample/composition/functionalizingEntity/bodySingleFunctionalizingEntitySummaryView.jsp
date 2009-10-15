@@ -115,7 +115,7 @@
 						</c:if>
 						<c:if test="${!empty fn:trim(functionalizingEntity.description)}">
 							<tr>
-								<td class="cellLabel" width="20%">
+								<td class="cellLabel" width="10%">
 									Description
 								</td>
 								<td>

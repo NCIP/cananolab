@@ -57,7 +57,7 @@
 							</tr>
 							<c:if test="${!empty fn:trim(file.keywordsStr)}">
 								<tr>
-									<td class="cellLabel" width="20%">
+									<td class="cellLabel" width="10%">
 										Keywords
 									</td>
 									<td>
@@ -70,7 +70,7 @@
 							</c:if>
 							<c:if test="${!empty fn:trim(file.domainFile.description)}">
 								<tr>
-									<td class="cellLabel" width="20%">
+									<td class="cellLabel" width="10%">
 										Description
 									</td>
 									<td>
