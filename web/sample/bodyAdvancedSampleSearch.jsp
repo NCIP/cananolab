@@ -22,7 +22,8 @@
 	<jsp:param name="topic" value="search_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Basic Search" />
-	<jsp:param name="otherLink" value="searchSample.do?dispatch=setup&searchLocations=${param.location}" />
+	<jsp:param name="otherLink"
+		value="searchSample.do?dispatch=setup&searchLocations=${param.location}" />
 </jsp:include>
 <html:form action="/advancedSampleSearch" enctype="multipart/form-data"
 	onsubmit="return validateDatumValue()">
@@ -344,7 +345,7 @@
 								<html:text
 									property="searchBean.theCharacterizationQuery.datumValue"
 									styleId="datumValue" size="10" />
-									<%--onkeydown="return filterFloatNumber(event)" /--%>
+								<%--onkeydown="return filterFloatNumber(event)" /--%>
 							</div>
 							<div id="datumValueSelectBlock" style="display: none">
 								<html:select
@@ -372,7 +373,7 @@
 					<tr>
 						<td colspan="6">
 							<table cellspacing="0" align="left">
-								<tr>								
+								<tr>
 									<td>
 										<input class="promptButton" type="button" value="Add"
 											onclick="addCharacterizationQuery();show('characterizationQueryTable');" />
@@ -425,11 +426,14 @@
 		cellspacing="0">
 		<tr>
 			<td>
+				<span class="formMessage"> <em>Searching without any
+						parameters would return all samples.</em> </span>
+				<br>
 				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td>
 							<div align="right">
-								<input type="button" value="Reset" 
+								<input type="button" value="Reset"
 									onclick="javascript:location.href='advancedSampleSearch.do?dispatch=setup'">
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">

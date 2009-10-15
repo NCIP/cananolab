@@ -171,6 +171,9 @@
 		cellspacing="0">
 		<tr>
 			<td>
+				<span class="formMessage"> <em>Searching without any
+						parameters would return all publications.</em>
+				</span>
 				<br>
 				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>

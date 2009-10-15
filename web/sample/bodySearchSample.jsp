@@ -18,7 +18,8 @@
 	<jsp:param name="topic" value="search_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Advanced Search" />
-	<jsp:param name="otherLink" value="advancedSampleSearch.do?dispatch=setup&searchLocations=${param.location}" />
+	<jsp:param name="otherLink"
+		value="advancedSampleSearch.do?dispatch=setup&searchLocations=${param.location}" />
 </jsp:include>
 <html:form action="searchSample">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
@@ -143,6 +144,9 @@
 		cellspacing="0">
 		<tr>
 			<td>
+				<span class="formMessage"> <em>Searching without any
+						parameters would return all samples.</em> </span>
+				<br>
 				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td>
