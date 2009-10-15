@@ -25,12 +25,12 @@
 
 <c:choose>
 	<c:when	test="${!empty characterizationForm.map.achar.domainChar.id}">
-		<c:set var="charTitle" 
+		<c:set var="charTitle"
 			value="${fn:toUpperCase(param.location)} ${sampleName} ${characterizationForm.map.achar.characterizationType} -
 			${characterizationForm.map.achar.characterizationName}"/>
 	</c:when>
 	<c:otherwise>
-		<c:set var="charTitle" 
+		<c:set var="charTitle"
 			value="${fn:toUpperCase(param.location)} ${sampleName} Characterization"/>
 	</c:otherwise>
 </c:choose>
@@ -58,17 +58,19 @@
 	<jsp:param name="topic" value="submit_char_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/characterization" enctype="multipart/form-data" 
-	onsubmit="return validateShapeInfo() && validateSolubilityInfo() && 
-	validateSavingTheData('newExperimentConfig', 'Technique and Instrument') && 
+<html:form action="/characterization" enctype="multipart/form-data"
+	onsubmit="return validateShapeInfo() && validateSolubilityInfo() &&
+	validateSavingTheData('newExperimentConfig', 'Technique and Instrument') &&
 	validateSavingTheData('newFinding', 'Finding');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<jsp:include
 		page="/sample/characterization/shared/bodyCharacterizationSummary.jsp" />
+
+	<div id="characterizationDetail">
 	<c:if test="${!empty characterizationDetailPage}">
 		<jsp:include page="${characterizationDetailPage}" />
 	</c:if>
-	<div id="characterizationDetail"></div>
+	</div>
 	<a name="designAndMethod"> <jsp:include
 			page="shared/bodyCharacterizationDesignMethods.jsp" /></a>
 	<a name="result"> <jsp:include
