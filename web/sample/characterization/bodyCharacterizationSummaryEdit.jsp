@@ -128,7 +128,7 @@
 											<a name="${charBean.domainChar.id}">
 											<table class="summaryViewLayer3" width="95%" align="center">
 												<tr>
-													<th align="left" width="10%">
+													<th align="left" colspan="2" width="90%">
 														${charName}
 													</th>
 													<th align="right">
@@ -137,10 +137,10 @@
 													</th>
 												</tr>
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Assay Type
 													</td>
-													<td>
+													<td colspan="2">
 														<c:choose>
 															<c:when test="${!empty charObj.assayType}">
 																${charObj.assayType}
@@ -158,10 +158,10 @@
 													</td>
 												</tr>
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Point of Contact
 													</td>
-													<td>
+													<td colspan="2">
 														<c:choose>
 															<c:when test="${!empty charBean.pocBean.displayName}">
 																${charBean.pocBean.displayName}
@@ -173,10 +173,10 @@
 													</td>
 												</tr>
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Characterization Date
 													</td>
-													<td>
+													<td colspan="2">
 														<c:choose>
 															<c:when test="${!empty charBean.dateString}">
 																${charBean.dateString}
@@ -188,11 +188,10 @@
 													</td>
 												</tr>
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Protocol
 													</td>
-													<td>
-
+													<td colspan="2">
 														<c:choose>
 															<c:when
 																test="${!empty charBean.protocolBean.displayName}">
@@ -207,10 +206,10 @@
 												</tr>
 												<c:if test="${charBean.withProperties }">
 													<tr>
-														<td class="cellLabel">
+														<td class="cellLabel" width="10%">
 															Properties
 														</td>
-														<td>
+														<td colspan="2">
 															<%
 																String detailPage=gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup.getInstance().getDetailPage((String)pageContext.getAttribute("charType"), (String)pageContext.getAttribute("charName"));
 																pageContext.setAttribute("detailPage", detailPage);
@@ -223,10 +222,10 @@
 													</tr>
 												</c:if>
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Design Description
 													</td>
-													<td>
+													<td colspan="2">
 														<c:choose>
 															<c:when
 																test="${!empty fn:trim(charObj.designMethodsDescription)}">
@@ -241,10 +240,10 @@
 												</tr>
 
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Techniques and Instruments
 													</td>
-													<td>
+													<td colspan="2">
 														<c:choose>
 															<c:when test="${!empty charBean.experimentConfigs}">
 																<%@ include file="shared/bodyExperimentConfigView.jsp"%>
@@ -255,10 +254,10 @@
 													</td>
 												</tr>
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Characterization Results
 													</td>
-													<td>
+													<td colspan="2">
 														<c:choose>
 															<c:when test="${!empty charBean.findings}">
 																<%@ include file="shared/bodyFindingView.jsp"%>
@@ -269,14 +268,14 @@
 													</td>
 												</tr>
 												<tr>
-													<td class="cellLabel">
+													<td class="cellLabel" width="10%">
 														Analysis and Conclusion
 													</td>
-													<td>
+													<td colspan="2">
 														<c:choose>
 															<c:when test="${!empty charBean.conclusion}">
-													${charBean.conclusion}
-												</c:when>
+																${charBean.conclusion}
+															</c:when>
 															<c:otherwise>
 															N/A</c:otherwise>
 														</c:choose>

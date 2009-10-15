@@ -9,16 +9,16 @@
 <c:set var="charType" value="${charBean.characterizationType}" />
 <table class="summaryViewLayer3" width="95%" align="center">
 	<tr>
-		<th align="left" width="10%">
+		<th align="left" colspan="2" width="90%">
 			${charName}
 		</th>
-		<th align="right" colspan="2">
+		<th align="right">
 		</th>
 	</tr>
 	<c:choose>
 		<c:when test="${!empty charObj.assayType}">
 			<tr>
-				<td class="cellLabel">
+				<td class="cellLabel" width="10%">
 					Assay Type
 				</td>
 				<td colspan="2">
@@ -30,7 +30,7 @@
 			<c:if
 				test="${'physico chemical characterization' eq charBean.characterizationType}">
 				<tr>
-					<td class="cellLabel">
+					<td class="cellLabel" width="10%">
 						Assay Type
 					</td>
 					<td colspan="2">
@@ -42,7 +42,7 @@
 	</c:choose>
 	<c:if test="${!empty charBean.pocBean.displayName}">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Point of Contact
 			</td>
 			<td colspan="2">
@@ -52,7 +52,7 @@
 	</c:if>
 	<c:if test="${!empty charBean.dateString}">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Characterization Date
 			</td>
 			<td colspan="2">
@@ -62,7 +62,7 @@
 	</c:if>
 	<c:if test="${!empty charBean.protocolBean.displayName}">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Protocol
 			</td>
 			<td colspan="2">
@@ -72,10 +72,10 @@
 	</c:if>
 	<c:if test="${charBean.withProperties }">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Properties
 			</td>
-			<td>
+			<td colspan="2">
 				<%
 					String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup
 								.getInstance().getDetailPage(
@@ -92,7 +92,7 @@
 	</c:if>
 	<c:if test="${!empty fn:trim(charObj.designMethodsDescription)}">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Design Description
 			</td>
 			<td colspan="2">
@@ -111,7 +111,7 @@
 	</c:if>
 	<c:if test="${!empty charBean.experimentConfigs}">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Techniques and Instruments
 			</td>
 			<td colspan="2">
@@ -121,7 +121,7 @@
 	</c:if>
 	<c:if test="${!empty charBean.findings}">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Characterization Results
 			</td>
 			<td colspan="2">
@@ -131,7 +131,7 @@
 	</c:if>
 	<c:if test="${!empty charBean.conclusion}">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="10%">
 				Analysis and Conclusion
 			</td>
 			<td colspan="2">
