@@ -31,7 +31,7 @@
 						<c:if test="${!empty fileType}">
 							<table class="summaryViewLayer3" width="95%" align="center">
 								<tr>
-									<th valign="top" align="left" width="1000px">
+									<th valign="top" align="left" colspan="2" width="90%">
 										${fileType}
 									</th>
 									<th valign="top" align="right">
@@ -40,10 +40,10 @@
 									</th>
 								</tr>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Title and Download Link
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${file.domainFile.uriExternal}">
 												<a
@@ -71,10 +71,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel" width="20%">
+									<td class="cellLabel" width="10%">
 										Keywords
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${!empty fn:trim(file.keywordsStr)}">
 												<c:out value="${fn:replace(file.keywordsStr, cr, '<br>')}"
@@ -86,10 +86,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel" width="20%">
+									<td class="cellLabel" width="10%">
 										Description
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${!empty fn:trim(file.domainFile.description)}">
 												<c:out

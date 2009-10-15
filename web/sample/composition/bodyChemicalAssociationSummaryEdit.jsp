@@ -34,7 +34,7 @@
 						<c:if test="${!empty assocType}">
 							<table class="summaryViewLayer3" width="95%" align="center">
 								<tr>
-									<th valign="top" align="left">
+									<th valign="top" align="left" colspan="2" width="90%">
 										${assocType}
 									</th>
 									<th valign="top" align="right">
@@ -44,10 +44,10 @@
 								</tr>
 								<c:if test="${! empty assoc.attachment.id}">
 									<tr>
-										<td class="cellLabel">
+										<td class="cellLabel" width="10%">
 											Bond Type
 										</td>
-										<td>
+										<td colspan="2">
 											<c:choose>
 												<c:when test="${!empty assoc.attachment.bondType}">
 												${assoc.attachment.bondType}
@@ -62,7 +62,7 @@
 									<td class="cellLabel" width="20%">
 										Description
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${!empty fn:trim(assoc.description)}">
 												<c:out value="${fn:replace(assoc.description, cr, '<br>')}"
@@ -74,10 +74,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Associated Elements
 									</td>
-									<td>
+									<td colspan="2">
 										<table>
 											<tr>
 												<td>
@@ -118,10 +118,10 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Files
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${! empty assoc.files}">
 												<c:set var="files" value="${assoc.files }" />
@@ -129,8 +129,8 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 												<%@include file="bodyFileView.jsp"%>
 											</c:when>
 											<c:otherwise>
-					N/A
-					</c:otherwise>
+											N/A
+											</c:otherwise>
 										</c:choose>
 									</td>
 								</tr>

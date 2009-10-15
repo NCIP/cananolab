@@ -36,7 +36,7 @@
 							<a name="${nanomaterialEntity.domainEntity.id}">
 								<table class="summaryViewLayer3" width="95%" align="center">
 									<tr>
-										<th valign="top" align="left" width="1000px">
+										<th valign="top" align="left" colspan="2" width="90%">
 											${entityType}
 										</th>
 										<th valign="top" align="right">
@@ -45,10 +45,10 @@
 										</th>
 									</tr>
 									<tr>
-										<td class="cellLabel" width="20%">
+										<td class="cellLabel" width="10%">
 											Description
 										</td>
-										<td>
+										<td colspan="2">
 											<c:choose>
 												<c:when
 													test="${!empty fn:trim(nanomaterialEntity.description)}">
@@ -63,10 +63,10 @@
 									</tr>
 									<c:if test="${nanomaterialEntity.withProperties }">
 										<tr>
-											<td class="cellLabel">
+											<td class="cellLabel" width="10%">
 												Properties
 											</td>
-											<td>
+											<td colspan="2">
 												<%
 													String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 																						.getInstance()
@@ -86,19 +86,19 @@
 										</tr>
 									</c:if>
 									<tr>
-										<td class="cellLabel">
+										<td class="cellLabel" width="10%">
 											Composing Elements
 										</td>
-										<td>
+										<td colspan="2">
 											<c:set var="entity" value="${nanomaterialEntity}" />
 											<%@include file="bodyComposingElementView.jsp"%>
 										</td>
 									</tr>
 									<tr>
-										<td class="cellLabel">
+										<td class="cellLabel" width="10%">
 											Files
 										</td>
-										<td>
+										<td colspan="2">
 											<c:choose>
 												<c:when test="${! empty nanomaterialEntity.files}">
 													<c:set var="files" value="${nanomaterialEntity.files }" />
@@ -128,6 +128,3 @@
 <div id="summarySeparator1">
 	<br>
 </div>
-
-
-

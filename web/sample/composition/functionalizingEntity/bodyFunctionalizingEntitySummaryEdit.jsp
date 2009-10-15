@@ -38,7 +38,7 @@
 							<a name="${functionalizingEntity.domainEntity.id}">
 							<table class="summaryViewLayer3" width="95%" align="center">
 								<tr>
-									<th valign="top" align="left" width="1000px">
+									<th valign="top" align="left" colspan="2" width="90%">
 										${entityType}
 									</th>
 									<th valign="top" align="right">
@@ -47,10 +47,10 @@
 									</th>
 								</tr>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Name
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${!empty functionalizingEntity.name}">
 													${functionalizingEntity.name}
@@ -63,10 +63,10 @@
 								</tr>
 
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										PubChem ID
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when
 												test="${!empty functionalizingEntity.domainEntity.pubChemId &&
@@ -88,10 +88,10 @@
 								</tr>
 
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Amount
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${!empty functionalizingEntity.value}">
 													${functionalizingEntity.value} ${functionalizingEntity.valueUnit}
@@ -103,10 +103,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Molecular Formula
 									</td>
-									<td style="word-wrap:break-word;max-width:280px;">
+									<td colspan="2" style="word-wrap:break-word;max-width:280px;">
 										<c:choose>
 											<c:when
 												test="${!empty functionalizingEntity.molecularFormulaDisplayName}">
@@ -120,10 +120,10 @@
 								</tr>
 								<c:if test="${functionalizingEntity.withProperties }">
 									<tr>
-										<td class="cellLabel">
+										<td class="cellLabel" width="10%">
 											Properties
 										</td>
-										<td>
+										<td colspan="2">
 											<%
 													String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 																						.getInstance()
@@ -143,10 +143,10 @@
 									</tr>
 								</c:if>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Function(s)
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${!empty functionalizingEntity.functions}">
 												<c:set var="entity" value="${functionalizingEntity }" />
@@ -159,10 +159,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Activation Method
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when
 												test="${!empty functionalizingEntity.activationMethodDisplayName}">
@@ -175,10 +175,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel" width="20%">
+									<td class="cellLabel" width="10%">
 										Description
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when
 												test="${!empty fn:trim(functionalizingEntity.description)}">
@@ -192,10 +192,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="cellLabel">
+									<td class="cellLabel" width="10%">
 										Files
 									</td>
-									<td>
+									<td colspan="2">
 										<c:choose>
 											<c:when test="${! empty functionalizingEntity.files}">
 												<c:set var="files" value="${functionalizingEntity.files }" />
