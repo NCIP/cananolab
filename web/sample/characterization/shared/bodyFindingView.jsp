@@ -5,10 +5,10 @@
 <table class="summaryViewLayer4" align="center" width="95%">
 	<tr>
 		<th>
-			File(s)
+			Data and Conditions
 		</th>
 		<th>
-			Data and Conditions
+			File(s)
 		</th>
 		<th>
 		</th>
@@ -16,6 +16,33 @@
 	<c:forEach var="finding" varStatus="findingIndex"
 		items="${charBean.findings}">
 		<tr>
+			<td>
+				<c:choose>
+					<c:when test="${! empty finding.rows}">
+						<table class="summaryViewLayer4" width="100%">
+							<tr>
+								<c:forEach var="col" items="${finding.columnHeaders}">
+									<td>
+										<strong>${col.displayName}</strong>
+									</td>
+								</c:forEach>
+							</tr>
+							<c:forEach var="row" items="${finding.rows}">
+								<tr>
+									<c:forEach var="cell" items="${row.cells}">
+										<td>
+											${cell.value}
+										</td>
+									</c:forEach>
+								</tr>
+							</c:forEach>
+						</table>
+					</c:when>
+					<c:otherwise>
+						N/A
+					</c:otherwise>
+				</c:choose>
+			</td>
 			<td>
 				<c:choose>
 					<c:when test="${! empty finding.files}">
@@ -47,33 +74,6 @@
 							<br>
 							<br>
 						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						N/A
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td>
-				<c:choose>
-					<c:when test="${! empty finding.rows}">
-						<table class="summaryViewLayer4" width="100%">
-							<tr>
-								<c:forEach var="col" items="${finding.columnHeaders}">
-									<td>
-										<strong>${col.displayName}</strong>
-									</td>
-								</c:forEach>
-							</tr>
-							<c:forEach var="row" items="${finding.rows}">
-								<tr>
-									<c:forEach var="cell" items="${row.cells}">
-										<td>
-											${cell.value}
-										</td>
-									</c:forEach>
-								</tr>
-							</c:forEach>
-						</table>
 					</c:when>
 					<c:otherwise>
 						N/A
