@@ -9,7 +9,7 @@
 		style="display: block" class="summaryViewLayer2">
 		<tr>
 			<th align="left">
-				${type} &nbsp;&nbsp;&nbsp;summaryViewLayer2
+				${type} &nbsp;&nbsp;&nbsp;
 			</th>
 		</tr>
 		<tr>
