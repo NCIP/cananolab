@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
@@ -40,14 +39,14 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
- * 
+ *
  * @author pansu
  */
 public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -61,7 +60,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
-
 		// Copy "isSoluble" property from char bean to mapping bean.
 		this.copyIsSoluble(charBean);
 
@@ -104,7 +102,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -136,7 +134,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up drop-downs need for the input form
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @throws Exception
@@ -162,7 +160,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for editing existing characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -208,49 +206,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		theForm.set("copyData", false);
 	}
 
-	private String setupDetailPage(CharacterizationBean charBean) {
-		String includePage = null;
-		if (charBean.getClassName().equals("PhysicalState")
-				|| charBean.getClassName().equals("Shape")
-				|| charBean.getClassName().equals("Solubility")
-				|| charBean.getClassName().equals("Surface")) {
-			includePage = "physical/body" + charBean.getClassName()
-					+ "Info.jsp";
-		} else if (charBean.getClassName().equals("Cytotoxicity")
-				|| charBean.getClassName().equals("EnzymeInduction")
-				|| charBean.getClassName().equals("Transfection")) {
-			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
-		}
-		return includePage;
-	}
-
-	/**
-	 * Setup characterization bean for saving.
-	 * 
-	 * @param request
-	 * @param theForm
-	 * @param charBean
-	 * @throws Exception
-	 */
-	private void setupDomainChar(HttpServletRequest request,
-			DynaValidatorForm theForm, CharacterizationBean charBean)
-			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (StringUtils.isEmpty(charBean.getClassName())) {
-			String className = "";
-			if (!StringUtils.isEmpty(charBean.getCharacterizationName())) {
-				className = ClassUtils
-						.getShortClassNameFromDisplayName(charBean
-								.getCharacterizationName());
-			}
-			charBean.setClassName(className);
-		}
-		charBean.setupDomain(user.getLoginName());
-	}
-
 	/**
 	 * Setup, prepare and save characterization.
-	 * 
+	 *
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -263,7 +221,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		this.setupDomainChar(request, theForm, charBean);
+		charBean.setupDomain(user.getLoginName());
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.saveCharacterization(sampleBean, charBean, user);
 
@@ -310,7 +268,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -344,7 +302,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryView() handles View request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -387,7 +345,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
 	 * Prepare CharacterizationBean based on Sample Id.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -432,7 +390,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * Shared function for summaryView() and summaryPrint(). Keep submitted
 	 * characterization types in the correct display order. Should be called
 	 * after calling prepareSummary(), to avoid session timeout issue.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -482,7 +440,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -512,7 +470,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Export Characterization Summary report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -826,15 +784,20 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		setOtherValueOption(request, currentAssayType, "charNameAssays");
 
 		// setup detail page
-		this.setupDomainChar(request, theForm, achar);
-		String detailPage = setupDetailPage(achar);
+		String detailPage = null;
+		if (!StringUtils.isEmpty(achar.getCharacterizationType())
+				&& !StringUtils.isEmpty(achar.getCharacterizationName())) {
+			detailPage = InitCharacterizationSetup.getInstance().getDetailPage(
+					achar.getCharacterizationType(),
+					achar.getCharacterizationName());
+		}
 		request.setAttribute("characterizationDetailPage", detailPage);
 	}
 
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 * 
+	 *
 	 * @param request
 	 * @param compBean
 	 */
@@ -860,7 +823,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Copy "isSoluble" property from achar to Solubility entity.
-	 * 
+	 *
 	 * @param achar
 	 */
 	private void copyIsSoluble(CharacterizationBean achar) {
@@ -876,7 +839,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup "isSoluble" property in achar from Solubility entity.
-	 * 
+	 *
 	 * @param achar
 	 */
 	private void setupIsSoluble(CharacterizationBean achar) {
