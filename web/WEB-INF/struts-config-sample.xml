@@ -117,7 +117,7 @@
 			parameter="dispatch" path="/advancedSampleSearch"
 			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">
 			<forward name="inputForm" path="sample.advancedSearch" />
-			<forward name="input" path="/advancedSampleSearch.do?dispatch=input" />
+			<forward name="input" path="/advancedSampleSearch.do?dispatch=validateSetup" />
 			<forward name="success" path="sample.advancedSampleSearchResult" />
 			<forward name="print" path="/sample/bodyAdvancedSampleSearchResultPrintView.jsp" />
 		</action>
