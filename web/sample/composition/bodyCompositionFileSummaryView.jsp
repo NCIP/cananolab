@@ -25,7 +25,7 @@
 								</th>
 							</tr>
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Title and Download Link
 								</td>
 								<td>

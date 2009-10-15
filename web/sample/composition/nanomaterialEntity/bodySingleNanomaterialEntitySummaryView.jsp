@@ -17,7 +17,7 @@
 					<c:if
 						test="${!empty fn:trim(nanomaterialEntity.emulsion.description)}">
 						<tr>
-							<td class="cellLabel">
+							<td class="cellLabel" width="10%">
 								Description
 							</td>
 							<td>
@@ -29,7 +29,7 @@
 					</c:if>
 					<c:if test="${nanomaterialEntity.withProperties }">
 						<tr>
-							<td class="cellLabel">
+							<td class="cellLabel" width="10%">
 								Properties
 							</td>
 							<td>
@@ -53,7 +53,7 @@
 					</c:if>
 					<c:if test="${! empty nanomaterialEntity.composingElements }">
 						<tr>
-							<td class="cellLabel">
+							<td class="cellLabel" width="10%">
 								Composing Elements
 							</td>
 							<td>
@@ -64,7 +64,7 @@
 					</c:if>
 					<c:if test="${! empty nanomaterialEntity.files}">
 						<tr>
-							<td class="cellLabel">
+							<td class="cellLabel" width="10%">
 								Files
 							</td>
 							<td>

@@ -26,7 +26,7 @@
 						<c:if
 							test="${! empty assoc.attachment.id && ! empty assoc.attachment.bondType}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Bond Type
 								</td>
 								<td>
@@ -46,7 +46,7 @@
 							</tr>
 						</c:if>
 						<tr>
-							<td class="cellLabel">
+							<td class="cellLabel" width="10%">
 								Associated Elements
 							</td>
 							<td>
@@ -91,7 +91,7 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 						</tr>
 						<c:if test="${! empty assoc.files}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Files
 								</td>
 								<td>

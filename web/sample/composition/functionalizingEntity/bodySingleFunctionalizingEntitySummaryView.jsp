@@ -18,7 +18,7 @@
 						</tr>
 						<c:if test="${!empty functionalizingEntity.name}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Name
 								</td>
 								<td>
@@ -30,7 +30,7 @@
 							test="${!empty functionalizingEntity.domainEntity.pubChemId &&
 											functionalizingEntity.domainEntity.pubChemId != 0}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									PubChem ID
 								</td>
 								<td>
@@ -47,7 +47,7 @@
 						</c:if>
 						<c:if test="${!empty functionalizingEntity.value}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Amount
 								</td>
 								<td>
@@ -59,7 +59,7 @@
 						<c:if
 							test="${!empty functionalizingEntity.molecularFormulaDisplayName}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Molecular Formula
 								</td>
 								<td style="word-wrap:break-word;max-width:280px;">
@@ -69,7 +69,7 @@
 						</c:if>
 						<c:if test="${functionalizingEntity.withProperties }">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Properties
 								</td>
 								<td>
@@ -93,7 +93,7 @@
 						</c:if>
 						<c:if test="${!empty functionalizingEntity.functions}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Function(s)
 								</td>
 								<td>
@@ -105,7 +105,7 @@
 						<c:if
 							test="${!empty functionalizingEntity.activationMethodDisplayName}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Activation Method
 								</td>
 								<td>
@@ -127,7 +127,7 @@
 						</c:if>
 						<c:if test="${! empty functionalizingEntity.files}">
 							<tr>
-								<td class="cellLabel">
+								<td class="cellLabel" width="10%">
 									Files
 								</td>
 								<td>
