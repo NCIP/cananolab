@@ -9,10 +9,8 @@
 <c:set var="charType" value="${charBean.characterizationType}" />
 <table class="summaryViewLayer3" width="95%" align="center">
 	<tr>
-		<th align="left" colspan="2" width="90%">
+		<th align="left" colspan="2">
 			${charName}
-		</th>
-		<th align="right">
 		</th>
 	</tr>
 	<c:choose>
@@ -21,7 +19,7 @@
 				<td class="cellLabel" width="10%">
 					Assay Type
 				</td>
-				<td colspan="2">
+				<td>
 					${charObj.assayType}
 				</td>
 			</tr>
@@ -33,7 +31,7 @@
 					<td class="cellLabel" width="10%">
 						Assay Type
 					</td>
-					<td colspan="2">
+					<td>
 						${charName}
 					</td>
 				</tr>
@@ -45,7 +43,7 @@
 			<td class="cellLabel" width="10%">
 				Point of Contact
 			</td>
-			<td colspan="2">
+			<td>
 				${charBean.pocBean.displayName}
 			</td>
 		</tr>
@@ -55,7 +53,7 @@
 			<td class="cellLabel" width="10%">
 				Characterization Date
 			</td>
-			<td colspan="2">
+			<td>
 				${charBean.dateString}
 			</td>
 		</tr>
@@ -65,7 +63,7 @@
 			<td class="cellLabel" width="10%">
 				Protocol
 			</td>
-			<td colspan="2">
+			<td>
 				${charBean.protocolBean.displayName}
 			</td>
 		</tr>
@@ -75,7 +73,7 @@
 			<td class="cellLabel" width="10%">
 				Properties
 			</td>
-			<td colspan="2">
+			<td>
 				<%
 					String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup
 								.getInstance().getDetailPage(
@@ -95,7 +93,7 @@
 			<td class="cellLabel" width="10%">
 				Design Description
 			</td>
-			<td colspan="2">
+			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(charObj.designMethodsDescription)}">
 						<c:out
@@ -114,7 +112,7 @@
 			<td class="cellLabel" width="10%">
 				Techniques and Instruments
 			</td>
-			<td colspan="2">
+			<td>
 				<%@ include file="bodyExperimentConfigView.jsp"%>
 			</td>
 		</tr>
@@ -124,7 +122,7 @@
 			<td class="cellLabel" width="10%">
 				Characterization Results
 			</td>
-			<td colspan="2">
+			<td>
 				<%@ include file="bodyFindingView.jsp"%>
 			</td>
 		</tr>
@@ -134,7 +132,7 @@
 			<td class="cellLabel" width="10%">
 				Analysis and Conclusion
 			</td>
-			<td colspan="2">
+			<td>
 				${charBean.conclusion}
 			</td>
 		</tr>
