@@ -7,7 +7,7 @@
 <%@include file="bodyHideAdvancedSearchDetailView.jsp" %>
 <table width="100%" align="center" class="summaryViewLayer3">
 	<tr>
-		<th valign="top" align="left" colspan="2" width="1000px">
+		<th valign="top" align="left" colspan="2" width="100%">
 			Sample Information
 		</th>
 	</tr>
