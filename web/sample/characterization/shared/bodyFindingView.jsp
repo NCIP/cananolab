@@ -46,7 +46,7 @@
 						N/A
 					</c:otherwise>
 				</c:choose>
-				</br>
+				<br />
 			</td>
 		</tr>
 		<tr>
@@ -56,8 +56,15 @@
 		</tr>
 		<tr>
 			<td>
-				<c:set var="files" value="${finding.files }" />
-				<%@include file="../../composition/bodyFileView.jsp"%>
+				<c:choose>
+					<c:when test="${! empty finding.files}">
+						<c:set var="files" value="${finding.files }" />
+						<%@include file="../../composition/bodyFileView.jsp"%>
+					</c:when>
+					<c:otherwise>
+						N/A
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</table>
