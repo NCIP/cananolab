@@ -29,7 +29,7 @@
 			<td>
 				<c:choose>
 					<c:when test="${file.domainFile.uriExternal}">
-						<a
+						<a  style="white-space: normal;"
 							href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
 							${file.domainFile.uri}</a>
 					</c:when>
@@ -44,7 +44,7 @@
 										border="0" width="150"> </a>
 							</c:when>
 							<c:otherwise>
-								<a
+								<a  style="white-space: normal;"
 									href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
 									${file.domainFile.title}</a>
 							</c:otherwise>
