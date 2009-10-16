@@ -71,7 +71,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 					fileTitle, user);
 			for (ProtocolBean protocol : protocols) {
 				protocol.setLocation(location);
-				protocol.getFileBean().setLocation(location);
+				if (protocol.getFileBean() != null) {
+					protocol.getFileBean().setLocation(location);
+				}
 				allProtocols.add(protocol);
 			}
 		}
