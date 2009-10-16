@@ -22,14 +22,35 @@ function populateProtocols(protocols) {
 		}
 		dwr.util.addOptions("protocolName", protocolNames);
 		dwr.util.addOptions("protocolName", ["[other]"]);
+	} else {
+		dwr.util.addOptions("protocolName", ["[other]"]);
+	}
+}
+
+function retrieveProtocolVersions() {
+	var protocolType = document.getElementById("protocolType").value;
+	var protocolName = document.getElementById("protocolName").value;
+	ProtocolManager.getProtocolsByTypeAndName(protocolType, protocolName, populateProtocolVersions);
+}
+
+function populateProtocolVersions(protocols) {
+	dwr.util.removeAllOptions("protocolVersion");
+	dwr.util.addOptions("protocolVersion", emptyOption, "value", "label");
+
+	if (protocols != null) {
+		var protocolVersions = new Array();
+		for (i = 0; i < protocols.length; i++) {
+			protocolVersions[i] = protocols[i].domain.version;
+		}
 		dwr.util.addOptions("protocolVersion", protocolVersions);
 		dwr.util.addOptions("protocolVersion", ["[other]"]);
 	} else {
-		dwr.util.addOptions("protocolName", ["[other]"]);
 		dwr.util.addOptions("protocolVersion", ["[other]"]);
 	}
 }
-function retrieveProtocol() {
+var appOwner;
+function retrieveProtocol(applicationOwner) {
+	appOwner=applicationOwner;
 	var protocolType = document.getElementById("protocolType").value;
 	var protocolName = document.getElementById("protocolName").value;
 	var protocolVersion = document.getElementById("protocolVersion").value;
@@ -50,6 +71,9 @@ function populateProtocol(protocol) {
 	if (protocol.fileBean != null) {
 		dwr.util.setValue("fileTitle", protocol.fileBean.domainFile.title);
 		dwr.util.setValue("fileDescription", protocol.fileBean.domainFile.description);
+		dwr.util.setValue("fileId", protocol.fileBean.domainFile.id);
+		dwr.util.setValue("fileUri", protocol.fileBean.domainFile.uri);
+		dwr.util.setValue("fileName", protocol.fileBean.domainFile.name);
 		writeLink(protocol);
 	}
 }
@@ -65,7 +89,7 @@ function writeLink(protocol) {
 		fileId = protocol.fileBean.domainFile.id;
 	}
 	if (uri != null && fileId != null) {
-		document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=${applicationOwner}&amp;fileId=" + fileId + "'>" + uri + "</a>";
+		document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location="+appOwner+"&amp;fileId=" + fileId + "'>" + uri + "</a>";
 	} else {
 		document.getElementById("protocolFileLink").innerHTML = "";
 	}

@@ -47,7 +47,7 @@
 			<td colspan="3">
 				<div id="protocolNamePrompt">
 					<html:select styleId="protocolName" property="protocol.domain.name"
-						onchange="javascript:callPrompt('Protocol Name', 'protocolName', 'protocolNamePrompt');">
+						onchange="javascript:callPrompt('Protocol Name', 'protocolName', 'protocolNamePrompt'); retrieveProtocolVersions()">
 						<option value="" />
 							<c:if test="${!empty protocolsByType}">
 								<html:options collection="protocolsByType"
@@ -68,7 +68,7 @@
 				<div id="protocolVersionPrompt">
 					<html:select styleId="protocolVersion"
 						property="protocol.domain.version"
-						onchange="javascript:callPrompt('Protocol Version', 'protocolVersion', 'protocolVersionPrompt');retrieveProtocol();">
+						onchange="javascript:callPrompt('Protocol Version', 'protocolVersion', 'protocolVersionPrompt');retrieveProtocol('${applicationOwner}');">
 						<option value="" />
 							<c:if test="${!empty protocolsByType}">
 								<html:options collection="protocolsByType"
@@ -104,6 +104,9 @@
 					</c:if> </span>&nbsp;
 			</td>
 			<html:hidden property="protocol.domain.id" styleId="protocolId" />
+			<html:hidden property="protocol.fileBean.domainFile.id" styleId="fileId"/>
+			<html:hidden property="protocol.fileBean.domainFile.uri" styleId="fileUri"/>
+			<html:hidden property="protocol.fileBean.domainFile.name" styleId="fileName"/>
 		</tr>
 		<tr>
 			<td class="cellLabel">
