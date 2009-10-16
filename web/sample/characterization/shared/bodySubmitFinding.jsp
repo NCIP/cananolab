@@ -26,6 +26,8 @@
 			<div id="newMatrix">
 				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
 			</div>
+			<br/>
+			<br/>
 		</td>
 	</tr>
 	<tr>
