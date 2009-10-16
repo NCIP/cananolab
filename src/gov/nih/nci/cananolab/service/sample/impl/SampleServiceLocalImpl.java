@@ -328,6 +328,12 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit.setFetchMode(
 					"characterizationCollection.experimentConfigCollection",
 					FetchMode.JOIN);
+			crit.setFetchMode(
+					"characterizationCollection.experimentConfigCollection.instrumentCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"characterizationCollection.experimentConfigCollection.technique",
+					FetchMode.JOIN);
 			// sampleComposition
 			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
