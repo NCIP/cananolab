@@ -51,7 +51,7 @@ public class ProtocolServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
-		crit.createAlias("file", "file");
+		crit.createAlias("file", "file", CriteriaSpecification.LEFT_JOIN);
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		if (!StringUtils.isEmpty(protocolType)) {
