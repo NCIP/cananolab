@@ -61,9 +61,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving composition.
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class CompositionServiceHelper {
 
@@ -72,7 +72,7 @@ public class CompositionServiceHelper {
 
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
-	
+
 	private AuthorizationService authService;
 
 	public CompositionServiceHelper() {
@@ -137,7 +137,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Get PubChem URL in format of
 	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 * 
+	 *
 	 * @param pubChemDS
 	 * @param pubChemId
 	 * @return PubChem URL
@@ -195,7 +195,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Export sample composition summary report as Excel spread sheet.
-	 * 
+	 *
 	 * @param compBean
 	 * @param out
 	 * @throws CompositionException
@@ -214,7 +214,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Output sample Composition Summary report =>
 	 * bodyCompositionSummaryView.jsp
-	 * 
+	 *
 	 * @param compBean
 	 * @param wb
 	 */
@@ -247,7 +247,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output NanomaterialEntities data => bodyNanomaterialEntitySummaryView.jsp
-	 * 
+	 *
 	 * @param compBean
 	 * @param wb
 	 * @param headerStyle
@@ -422,7 +422,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Output FunctionalEntities data =>
 	 * bodyFunctionalizingEntitySummaryView.jsp
-	 * 
+	 *
 	 * @param compBean
 	 * @param sheet
 	 * @param headerStyle
@@ -617,7 +617,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Outputting ChemicalEntities data =>
 	 * bodyChemicalAssociationSummaryView.jsp
-	 * 
+	 *
 	 * @param compBean
 	 * @param sheet
 	 * @param headerStyle
@@ -742,7 +742,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Composition Files data => bodyCompositionFileSummaryView.jsp
-	 * 
+	 *
 	 * @param compBean
 	 * @param sheet
 	 * @param headerStyle
@@ -782,7 +782,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output header for work sheet.
-	 * 
+	 *
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
@@ -806,7 +806,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Biopolymer Info for NanomaterialEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -833,7 +833,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output CarbonNanotube Info for NanomaterialEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -873,7 +873,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Dendrimer Info for NanomaterialEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -899,7 +899,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Emulsion Info for NanomaterialEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -925,7 +925,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Fullerene Info for NanomaterialEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -953,7 +953,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Liposome Info for NanomaterialEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -979,7 +979,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Polymer Info for NanomaterialEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1008,7 +1008,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Antibody Info for FunctionalizingEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1035,7 +1035,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output SmallMolecule Info for FunctionalizingEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1055,7 +1055,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Biopolymer Info for FunctionalizingEntityBean.
-	 * 
+	 *
 	 * @param entityBean
 	 * @param sheet
 	 * @param headerStyle
@@ -1081,7 +1081,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Outputting Files info: => bodyFileView.jsp
-	 * 
+	 *
 	 * @param fileBeans
 	 * @param sheet
 	 * @param headerStyle
@@ -1158,7 +1158,7 @@ public class CompositionServiceHelper {
 
 	/**
 	 * Output Composition File info => bodyCompositionFileSummaryView.jsp
-	 * 
+	 *
 	 * @param fileBeans
 	 * @param sheet
 	 * @param headerStyle
@@ -1183,8 +1183,8 @@ public class CompositionServiceHelper {
 		StringBuilder sb = new StringBuilder(downloadURL);
 		sb.append(file.getId());
 		if (file.getUriExternal()) {
-			ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), 
-				sb.toString());
+			ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), sb
+					.toString());
 		} else if (fileBean.isImage()) {
 			ExportUtils.createCell(row, 1, file.getTitle());
 			sb.setLength(0);
@@ -1194,18 +1194,17 @@ public class CompositionServiceHelper {
 			java.io.File imgFile = new java.io.File(filePath);
 			if (imgFile.exists()) {
 				try {
-					rowIndex = ExportUtils.createImage(rowIndex,
-							(short) 1, filePath, wb, sheet, patriarch);
+					rowIndex = ExportUtils.createImage(rowIndex, (short) 1,
+							filePath, wb, sheet, patriarch);
 				} catch (Exception e) {
 					logger.error("Error exporting Comp image file.", e);
 				}
 			} else {
-				logger.error("Composition image file not exists: "
-						+ filePath);
+				logger.error("Composition image file not exists: " + filePath);
 			}
 		} else {
-			ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), 
-				sb.toString());
+			ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), sb
+					.toString());
 		}
 
 		// 3. output Keywords.
@@ -1271,6 +1270,12 @@ public class CompositionServiceHelper {
 		if (functionalizingEntity != null) {
 			authService.assignVisibility(functionalizingEntity.getId()
 					.toString(), visibleGroups, owningGroup);
+			// activation method
+			if (functionalizingEntity.getActivationMethod() != null) {
+				authService.assignVisibility(functionalizingEntity
+						.getActivationMethod().getId().toString(),
+						visibleGroups, owningGroup);
+			}
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
 					.getFunctionCollection();
@@ -1333,7 +1338,7 @@ public class CompositionServiceHelper {
 	}
 
 	public void removeVisibility(SampleComposition comp) throws Exception {
-		authService.removeExistingVisibleGroups(comp.getId().toString());
+		authService.removeCSMEntry(comp.getId().toString());
 		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
 			removeVisibility(entity);
 		}
@@ -1345,22 +1350,31 @@ public class CompositionServiceHelper {
 				.getChemicalAssociationCollection()) {
 			removeVisibility(assoc);
 		}
+		if (comp.getFileCollection() != null) {
+			for (File file : comp.getFileCollection()) {
+				authService.removeCSMEntry(file.getId().toString());
+			}
+		}
 	}
 
 	public void removeVisibility(ChemicalAssociation chemicalAssociation)
 			throws Exception {
 		if (chemicalAssociation != null) {
-			authService.removeExistingVisibleGroups(chemicalAssociation.getId()
-					.toString());
+			authService.removeCSMEntry(chemicalAssociation.getId().toString());
 			// chemicalAssociation.associatedElementA
 			if (chemicalAssociation.getAssociatedElementA() != null) {
-				authService.removeExistingVisibleGroups(chemicalAssociation
+				authService.removeCSMEntry(chemicalAssociation
 						.getAssociatedElementA().getId().toString());
 			}
 			// chemicalAssociation.associatedElementB
 			if (chemicalAssociation.getAssociatedElementB() != null) {
-				authService.removeExistingVisibleGroups(chemicalAssociation
+				authService.removeCSMEntry(chemicalAssociation
 						.getAssociatedElementB().getId().toString());
+			}
+			if (chemicalAssociation.getFileCollection() != null) {
+				for (File file : chemicalAssociation.getFileCollection()) {
+					authService.removeCSMEntry(file.getId().toString());
+				}
 			}
 		}
 	}
@@ -1368,24 +1382,32 @@ public class CompositionServiceHelper {
 	public void removeVisibility(FunctionalizingEntity functionalizingEntity)
 			throws Exception {
 		if (functionalizingEntity != null) {
-			authService.removeExistingVisibleGroups(functionalizingEntity
-					.getId().toString());
+			authService
+					.removeCSMEntry(functionalizingEntity.getId().toString());
+			if (functionalizingEntity.getActivationMethod() != null) {
+				authService.removeCSMEntry(functionalizingEntity
+						.getActivationMethod().getId().toString());
+			}
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
 					.getFunctionCollection();
 			if (functionCollection != null) {
 				for (Function function : functionCollection) {
 					if (function != null) {
-						authService.removeExistingVisibleGroups(function
-								.getId().toString());
+						authService.removeCSMEntry(function.getId().toString());
 						if (function instanceof TargetingFunction) {
 							for (Target target : ((TargetingFunction) function)
 									.getTargetCollection()) {
-								authService.removeExistingVisibleGroups(target
-										.getId().toString());
+								authService.removeCSMEntry(target.getId()
+										.toString());
 							}
 						}
 					}
+				}
+			}
+			if (functionalizingEntity.getFileCollection() != null) {
+				for (File file : functionalizingEntity.getFileCollection()) {
+					authService.removeCSMEntry(file.getId().toString());
 				}
 			}
 		}
@@ -1393,16 +1415,15 @@ public class CompositionServiceHelper {
 
 	public void removeVisibility(NanomaterialEntity entity) throws Exception {
 		if (entity != null) {
-			authService.removeExistingVisibleGroups(entity.getId().toString());
+			authService.removeCSMEntry(entity.getId().toString());
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = entity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
-						authService
-								.removeExistingVisibleGroups(composingElement
-										.getId().toString());
+						authService.removeCSMEntry(composingElement.getId()
+								.toString());
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -1410,12 +1431,16 @@ public class CompositionServiceHelper {
 					if (inherentFunctionCollection != null) {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
-								authService
-										.removeExistingVisibleGroups(function
-												.getId().toString());
+								authService.removeCSMEntry(function.getId()
+										.toString());
 							}
 						}
 					}
+				}
+			}
+			if (entity.getFileCollection() != null) {
+				for (File file : entity.getFileCollection()) {
+					authService.removeCSMEntry(file.getId().toString());
 				}
 			}
 		}
