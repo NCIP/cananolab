@@ -984,46 +984,42 @@ public class CharacterizationServiceHelper {
 	public void removeVisibility(Characterization aChar) throws Exception {
 		// characterization
 		if (aChar != null) {
-			authService.removeExistingVisibleGroups(aChar.getId().toString());
+			authService.removeCSMEntry(aChar.getId().toString());
 			for (Finding finding : aChar.getFindingCollection()) {
 				if (finding != null) {
-					authService.removeExistingVisibleGroups(finding.getId()
-							.toString());
-				}
-				// datum
-				for (Datum datum : finding.getDatumCollection()) {
-					if (datum != null) {
-						authService.removeExistingVisibleGroups(datum.getId()
-								.toString());
-					}
-					for (Condition condition : datum.getConditionCollection()) {
-						authService.removeExistingVisibleGroups(condition
-								.getId().toString());
-					}
+					removeVisibility(finding);
 				}
 			}
 
 			// ExperimentConfiguration
 			for (ExperimentConfig config : aChar
 					.getExperimentConfigCollection()) {
-				authService.removeExistingVisibleGroups(config.getId()
-						.toString());
+				authService.removeCSMEntry(config.getId().toString());
 			}
 		}
 	}
 
 	public void removeVisibility(Finding finding) throws Exception {
-		authService.removeExistingVisibleGroups(finding.getId().toString());
+		authService.removeCSMEntry(finding.getId().toString());
 
 		// datum
-		for (Datum datum : finding.getDatumCollection()) {
-			if (datum != null) {
-				authService.removeExistingVisibleGroups(datum.getId()
-						.toString());
+		if (finding.getDatumCollection() != null) {
+			for (Datum datum : finding.getDatumCollection()) {
+				if (datum != null) {
+					authService.removeCSMEntry(datum.getId().toString());
+				}
+				if (datum.getConditionCollection() != null) {
+					for (Condition condition : datum.getConditionCollection()) {
+						authService
+								.removeCSMEntry(condition.getId().toString());
+					}
+				}
 			}
-			for (Condition condition : datum.getConditionCollection()) {
-				authService.removeExistingVisibleGroups(condition.getId()
-						.toString());
+		}
+		// file
+		if (finding.getFileCollection() != null) {
+			for (File file : finding.getFileCollection()) {
+				authService.removeCSMEntry(file.getId().toString());
 			}
 		}
 	}
