@@ -41,9 +41,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class CharacterizationServiceLocalImpl implements
 		CharacterizationService {
@@ -268,6 +268,12 @@ public class CharacterizationServiceLocalImpl implements
 				Characterization achar = (Characterization) obj;
 				if (helper.getAuthService().checkReadPermission(user,
 						achar.getId().toString())) {
+					if (achar.getProtocol() != null) {
+						if (!helper.getAuthService().checkReadPermission(user,
+								achar.getProtocol().getId().toString())) {
+							achar.setProtocol(null);
+						}
+					}
 					CharacterizationBean charBean = new CharacterizationBean(
 							achar);
 					for (FindingBean finding : charBean.getFindings()) {
