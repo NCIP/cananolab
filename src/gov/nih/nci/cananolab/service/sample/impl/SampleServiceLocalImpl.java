@@ -44,9 +44,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -57,10 +57,10 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 * 
+	 *
 	 * @param sample
-	 * @throws SampleException
-	 *             , DuplicateEntriesException
+	 * @throws SampleException ,
+	 *             DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean, UserBean user)
 			throws SampleException, DuplicateEntriesException,
@@ -194,6 +194,16 @@ public class SampleServiceLocalImpl implements SampleService {
 			compHelper.assignVisibility(sample.getSampleComposition(),
 					visibleGroups, owningGroup);
 		}
+
+		// keywords to public
+		if (sample.getKeywordCollection() != null) {
+			for (Keyword keyword : sample.getKeywordCollection()) {
+				helper.getAuthService().assignVisibility(
+						keyword.getId().toString(),
+						new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+
+			}
+		}
 	}
 
 	private void assignVisibility(PointOfContactBean pocBean) throws Exception {
@@ -210,7 +220,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -261,8 +271,10 @@ public class SampleServiceLocalImpl implements SampleService {
 					FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-			//used for delete check
-			crit.setFetchMode("sampleComposition.chemicalAssociationCollection", FetchMode.JOIN);
+			// used for delete check
+			crit.setFetchMode(
+					"sampleComposition.chemicalAssociationCollection",
+					FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -348,6 +360,10 @@ public class SampleServiceLocalImpl implements SampleService {
 					FetchMode.JOIN);
 			crit
 					.setFetchMode(
+							"sampleComposition.functionalizingEntityCollection.activationMethod",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
 							"sampleComposition.functionalizingEntityCollection.functionCollection",
 							FetchMode.JOIN);
 			crit
@@ -406,8 +422,8 @@ public class SampleServiceLocalImpl implements SampleService {
 						.getStoredNanomaterialEntityClassNames(sample).toArray(
 								new String[0]));
 				sampleBean.setFunctionClassNames(helper
-						.getStoredFunctionClassNames(sample).toArray(	
-				 new String[0]));
+						.getStoredFunctionClassNames(sample).toArray(
+								new String[0]));
 				if (user != null)
 					retrieveVisibility(sampleBean, user);
 			}
@@ -678,18 +694,50 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public void updateInitialPublicOrganization(UserBean user) throws Exception {
+	public void updateInitialPublicData(UserBean user) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
+
+		// assign Public visibility for keyword
 		HQLCriteria crit = new HQLCriteria(
-				"select org.id from gov.nih.nci.cananolab.domain.common.Organization org");
+				"select id from gov.nih.nci.cananolab.domain.common.Keyword");
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			String id = obj.toString();
-			// assign Public visibility for organization
 			helper.getAuthService().assignVisibility(id,
 					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
 		}
+
+		// assign Public visibility for instrument
+		crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.common.Instrument");
+		results = appService.query(crit);
+		for (Object obj : results) {
+			String id = obj.toString();
+			helper.getAuthService().assignVisibility(id,
+					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+		}
+
+		// assign Public visibility for technique
+		crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.common.Technique");
+		results = appService.query(crit);
+		for (Object obj : results) {
+			String id = obj.toString();
+			helper.getAuthService().assignVisibility(id,
+					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+		}
+
+		// assign Public visibility for organization
+		crit = new HQLCriteria(
+				"select org.id from gov.nih.nci.cananolab.domain.common.Organization org");
+		results = appService.query(crit);
+		for (Object obj : results) {
+			String id = obj.toString();
+			helper.getAuthService().assignVisibility(id,
+					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+		}
+
 	}
 
 	public List<String> findSampleNamesByAdvancedSearch(
@@ -727,7 +775,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (user.isCurator()) {
 				SampleServiceLocalImpl service = new SampleServiceLocalImpl();
 				service.updateAssociatedVisibility(user);
-				service.updateInitialPublicOrganization(user);
+				service.updateInitialPublicData(user);
 				System.exit(0);
 			} else {
 				System.out
