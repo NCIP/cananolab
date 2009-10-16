@@ -1110,6 +1110,7 @@ public class CompositionServiceHelper {
 					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
 							sb.toString());
 				} else if (fileBean.isImage()) {
+					ExportUtils.createCell(row, 1, file.getTitle());
 					sb.setLength(0);
 					sb.append(fileRoot).append(java.io.File.separator);
 					sb.append(file.getUri());
@@ -1180,6 +1181,7 @@ public class CompositionServiceHelper {
 			ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), 
 				sb.toString());
 		} else if (fileBean.isImage()) {
+			ExportUtils.createCell(row, 1, file.getTitle());
 			sb.setLength(0);
 			sb.append(fileRoot).append(java.io.File.separator);
 			sb.append(file.getUri());
