@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -57,7 +58,7 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving characterizations
- * 
+ *
  * @author tanq, pansu
  */
 public class CharacterizationServiceHelper {
@@ -92,7 +93,7 @@ public class CharacterizationServiceHelper {
 
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
-	
+
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceHelper.class);
 
@@ -138,7 +139,7 @@ public class CharacterizationServiceHelper {
 					.toString())) {
 				return protocol;
 			} else {
-				throw new NoAccessException();
+				logger.debug("User doesn't have access to the protocol.");
 			}
 		}
 		return protocol;
@@ -232,7 +233,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Export sample characterization summary report as Excel spread sheet.
-	 * 
+	 *
 	 * @param summaryBean
 	 * @param out
 	 * @throws IOException
@@ -252,7 +253,7 @@ public class CharacterizationServiceHelper {
 	/**
 	 * Output Sample Characterization Summary report (==>
 	 * bodyCharacterizationSummaryPrintViewTable.jsp)
-	 * 
+	 *
 	 * @param summaryBean
 	 * @param wb
 	 * @throws IOException
@@ -272,54 +273,55 @@ public class CharacterizationServiceHelper {
 		hlinkStyle.setFont(hlinkFont);
 
 		int charCount = 1;
-		Map<String, SortedSet<CharacterizationBean>> charBeanMap = 
-			summaryBean.getType2Characterizations();
+		Map<String, SortedSet<CharacterizationBean>> charBeanMap = summaryBean
+				.getType2Characterizations();
 		for (String type : charTypes) {
 			// Output data of report
 			SortedSet<CharacterizationBean> charBeans = charBeanMap.get(type);
 			if (charBeans != null && !charBeans.isEmpty()) {
 				for (CharacterizationBean charBean : charBeans) {
 					int rowIndex = 0;
-	
+
 					// Create one work sheet for each Characterization.
 					HSSFSheet sheet = wb.createSheet(charCount++ + "."
 							+ charBean.getCharacterizationName());
 					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 
 					// 1. Output Characterization type at (0, 0).
-					rowIndex = outputHeader(charBean, sheet, headerStyle, rowIndex);
-	
+					rowIndex = outputHeader(charBean, sheet, headerStyle,
+							rowIndex);
+
 					// 2. Output Assay Type (2, 0).
 					rowIndex = outputAssayType(charBean, sheet, headerStyle,
 							rowIndex);
-	
+
 					// 3. Output POC at (3, 0).
 					rowIndex = outputPOC(charBean, sheet, headerStyle, rowIndex);
-	
+
 					// 4. Output Characterization Date at (4, 0).
 					rowIndex = outputCharDate(charBean, sheet, headerStyle,
 							rowIndex);
-	
+
 					// 5. Output Protocol at (5, 0).
 					rowIndex = outputProtocol(charBean, sheet, headerStyle,
 							rowIndex);
-	
+
 					// 6. Output Properties at (6, 0).
 					rowIndex = outputProperties(charBean, sheet, headerStyle,
 							rowIndex);
-	
+
 					// 7. Output Design Description at (7, 0).
 					rowIndex = outputDesignDescription(charBean, sheet,
 							headerStyle, rowIndex);
-	
+
 					// 8. Output Technique and Instruments at (8, 0).
-					rowIndex = outputTechInstruments(charBean, sheet, headerStyle,
-							rowIndex);
-	
+					rowIndex = outputTechInstruments(charBean, sheet,
+							headerStyle, rowIndex);
+
 					// 9. Output Characterization Results at (9, 0).
-					rowIndex = outputCharResults(charBean, downloadURL, wb, sheet,
-							headerStyle, hlinkStyle, patriarch, rowIndex);
-	
+					rowIndex = outputCharResults(charBean, downloadURL, wb,
+							sheet, headerStyle, hlinkStyle, patriarch, rowIndex);
+
 					// 10.Output Analysis and Conclusion at (10, 0).
 					rowIndex = outputConclusion(charBean, sheet, headerStyle,
 							rowIndex);
@@ -330,7 +332,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output header for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -355,7 +357,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output AssayType for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -386,7 +388,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output POC for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -406,7 +408,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Characterization Date for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -425,7 +427,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Protocol for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -445,7 +447,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Properties for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -484,7 +486,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Cytotoxicity Info, => bodyCytotoxicityInfo.jsp
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -505,7 +507,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output EnzymeInduction Info, => bodyEnzymeInductionInfo.jsp
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -526,7 +528,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output PhysicalState Info for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -547,7 +549,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Shape Info for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -583,7 +585,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Solubility Info for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -615,7 +617,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Surface Info for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -636,7 +638,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Design Description for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -659,7 +661,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Technique and Instruments for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -705,7 +707,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Characterization Results for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -714,9 +716,8 @@ public class CharacterizationServiceHelper {
 	 */
 	private static int outputCharResults(CharacterizationBean charBean,
 			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, 
-			HSSFPatriarch patriarch, int rowIndex)
-			throws IOException {
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
+			HSSFPatriarch patriarch, int rowIndex) throws IOException {
 		// 9. Output Characterization Results at (8, 0).
 		List<FindingBean> findings = charBean.getFindings();
 		if (findings != null && !findings.isEmpty()) {
@@ -728,11 +729,12 @@ public class CharacterizationServiceHelper {
 						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
 
 				// 9a. Output Characterization Datum Results.
-				rowIndex = outputDatumResult(findingBean, sheet, headerStyle, rowIndex);
+				rowIndex = outputDatumResult(findingBean, sheet, headerStyle,
+						rowIndex);
 
 				// 9b. Output Characterization File Results.
-				rowIndex = outputFileResult(findingBean, downloadURL, wb, sheet,
-						headerStyle, hlinkStyle, patriarch, rowIndex);
+				rowIndex = outputFileResult(findingBean, downloadURL, wb,
+						sheet, headerStyle, hlinkStyle, patriarch, rowIndex);
 				count++;
 			}
 		}
@@ -741,7 +743,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Files Results for report (=> bodyFindingView.jsp).
-	 * 
+	 *
 	 * @param findingBean
 	 * @param request
 	 * @param wb
@@ -752,9 +754,8 @@ public class CharacterizationServiceHelper {
 	 */
 	private static int outputFileResult(FindingBean findingBean,
 			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, 
-			HSSFPatriarch patriarch, int rowIndex)
-			throws IOException {
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
+			HSSFPatriarch patriarch, int rowIndex) throws IOException {
 		// Get list of FileBeans from findingBean.
 		List<FileBean> files = findingBean.getFiles();
 		if (files != null && !files.isEmpty()) {
@@ -766,10 +767,11 @@ public class CharacterizationServiceHelper {
 
 				// output 4x) titles for File.
 				ExportUtils.createCell(row, 0, headerStyle, "File Type");
-				ExportUtils.createCell(row, 1, headerStyle, "Title and Download Link");
+				ExportUtils.createCell(row, 1, headerStyle,
+						"Title and Download Link");
 				ExportUtils.createCell(row, 2, headerStyle, "Keywords");
 				ExportUtils.createCell(row, 3, headerStyle, "Description");
-				
+
 				// 1. output File Type.
 				row = sheet.createRow(rowIndex++);
 				ExportUtils.createCell(row, 0, file.getType());
@@ -778,8 +780,8 @@ public class CharacterizationServiceHelper {
 				StringBuilder sb = new StringBuilder(downloadURL);
 				sb.append(file.getId());
 				if (file.getUriExternal()) {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), 
-						sb.toString());
+					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
+							sb.toString());
 				} else if (fileBean.isImage()) {
 					ExportUtils.createCell(row, 1, file.getTitle());
 					sb.setLength(0);
@@ -799,8 +801,8 @@ public class CharacterizationServiceHelper {
 								+ filePath);
 					}
 				} else {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), 
-						sb.toString());
+					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
+							sb.toString());
 				}
 
 				// 3. output Keywords.
@@ -824,7 +826,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Datums in Characterization Results for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -864,7 +866,7 @@ public class CharacterizationServiceHelper {
 
 	/**
 	 * Output Analysis and Conclusion for work sheet.
-	 * 
+	 *
 	 * @param charBean
 	 * @param sheet
 	 * @param headerStyle
@@ -920,28 +922,31 @@ public class CharacterizationServiceHelper {
 			String[] visibleGroups, String owningGroup) throws Exception {
 		// characterization
 		if (aChar != null && aChar.getId() != null) {
-			authService.assignVisibility(
-				aChar.getId().toString(), visibleGroups, owningGroup);
+			authService.assignVisibility(aChar.getId().toString(),
+					visibleGroups, owningGroup);
 			if (aChar.getFindingCollection() != null) {
 				for (Finding finding : aChar.getFindingCollection()) {
 					if (finding != null) {
 						authService.assignVisibility(
-							finding.getId().toString(), visibleGroups,
-							owningGroup);
+								finding.getId().toString(), visibleGroups,
+								owningGroup);
 					}
 					// datum, need to check for null for copy bean.
 					if (finding.getDatumCollection() != null) {
 						for (Datum datum : finding.getDatumCollection()) {
 							if (datum != null && datum.getId() != null) {
-								authService.assignVisibility(datum.getId()
-									.toString(), visibleGroups, owningGroup);
+								authService
+										.assignVisibility(datum.getId()
+												.toString(), visibleGroups,
+												owningGroup);
 							}
 							// condition
 							if (datum.getConditionCollection() != null) {
-								for (Condition condition : 
-										datum.getConditionCollection()) {
-									authService.assignVisibility(condition.getId()
-										.toString(), visibleGroups, owningGroup);
+								for (Condition condition : datum
+										.getConditionCollection()) {
+									authService.assignVisibility(condition
+											.getId().toString(), visibleGroups,
+											owningGroup);
 								}
 							}
 						}
@@ -950,10 +955,27 @@ public class CharacterizationServiceHelper {
 			}
 			// ExperimentConfiguration
 			if (aChar.getExperimentConfigCollection() != null) {
-				for (ExperimentConfig config : 
-						aChar.getExperimentConfigCollection()) {
-					authService.assignVisibility(
-						config.getId().toString(), visibleGroups, owningGroup);
+				for (ExperimentConfig config : aChar
+						.getExperimentConfigCollection()) {
+					authService.assignVisibility(config.getId().toString(),
+							visibleGroups, owningGroup);
+					// assign instruments and technique to public visibility
+					if (config.getTechnique() != null) {
+						authService.assignVisibility(config.getTechnique()
+								.getId().toString(),
+								new String[] { Constants.CSM_PUBLIC_GROUP },
+								null);
+					}
+					if (config.getInstrumentCollection() != null) {
+						for (Instrument instrument : config
+								.getInstrumentCollection()) {
+							authService
+									.assignVisibility(
+											instrument.getId().toString(),
+											new String[] { Constants.CSM_PUBLIC_GROUP },
+											null);
+						}
+					}
 				}
 			}
 		}
