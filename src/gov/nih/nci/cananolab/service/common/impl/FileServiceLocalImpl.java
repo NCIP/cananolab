@@ -156,6 +156,14 @@ public class FileServiceLocalImpl implements FileService {
 					Constants.CSM_APP_NAME);
 			authService.assignVisibility(fileBean.getDomainFile().getId()
 					.toString(), fileBean.getVisibilityGroups(), null);
+			// assign keyword to public visibility
+			if (fileBean.getDomainFile().getKeywordCollection() != null) {
+				for (Keyword keyword : fileBean.getDomainFile()
+						.getKeywordCollection()) {
+					authService.assignVisibility(keyword.getId().toString(),
+							new String[] { Constants.CSM_PUBLIC_GROUP}, null);
+				}
+			}
 		} catch (Exception e) {
 			String err = "Error in setting file visibility for "
 					+ fileBean.getDisplayName();
