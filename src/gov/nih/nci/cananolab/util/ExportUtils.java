@@ -126,13 +126,13 @@ public class ExportUtils {
 	 * @param wb
 	 * @param sheet
 	 */
-	public static int createImage(int rowIndex, short colIndex, String filePath,
-			HSSFWorkbook wb, HSSFSheet sheet) throws IOException {
+	public static int createImage(int rowIndex, short colIndex,
+			String filePath, HSSFWorkbook wb, HSSFSheet sheet,
+			HSSFPatriarch patriarch) throws IOException {
 		short topLeftCell = colIndex;
 		short bottomRightCell = (short) (colIndex + 7);
 		int topLeftRow = rowIndex + 1;
 		int bottomRightRow = rowIndex + 22;
-		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 255,
 				topLeftCell, topLeftRow, bottomRightCell, bottomRightRow);
 		anchor.setAnchorType(2); // 2 = Move but don't size with cells
