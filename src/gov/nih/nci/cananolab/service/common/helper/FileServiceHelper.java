@@ -190,7 +190,6 @@ public class FileServiceHelper {
 			throws CompositionException {
 		try {
 			List<FileBean> copiedFileBeans = new ArrayList<FileBean>(fileBeans);
-			int i = 0;
 			for (FileBean fileBean : copiedFileBeans) {
 				// check whether user can access the file, if no remove from the
 				// list
@@ -199,11 +198,10 @@ public class FileServiceHelper {
 					if (user != null)
 						retrieveVisibility(fileBean, user);
 				} else {
-					fileBeans.remove(i);
+					fileBeans.remove(fileBean);
 					logger.debug("User can't access file of id:"
 							+ fileBean.getDomainFile().getId());
 				}
-				i++;
 			}
 		} catch (Exception e) {
 			String err = "Error setting visiblity for files ";
