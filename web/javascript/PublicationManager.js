@@ -127,7 +127,7 @@ function populatePubMedInfo(publication) {
 			show("fileSection");
 		}
 	} else {
-		sessionTimeout();
+		alert("Invalid PubMed ID entered, or session has timed out.");
 	}
 }
 
