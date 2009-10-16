@@ -265,12 +265,13 @@ public class PublicationBean extends FileBean {
 		} else {
 			domain.setAuthorCollection(new HashSet<Author>());
 		}
-		for (Author author : authors) {
+		for (int i = 0; i < authors.size(); i++) {
+			Author author = authors.get(i);
 			if (!StringUtils.isEmpty(author.getFirstName())
 					|| !StringUtils.isEmpty(author.getLastName())
 					|| !StringUtils.isEmpty(author.getInitial())) {
 				if (author.getCreatedDate() == null) {
-					author.setCreatedDate(DateUtils.addSecondsToCurrentDate(1));
+					author.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 				}
 				if (author.getCreatedBy() == null
 						|| author.getCreatedBy().trim().length() == 0) {
