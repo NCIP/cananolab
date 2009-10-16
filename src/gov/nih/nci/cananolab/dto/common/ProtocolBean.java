@@ -28,7 +28,11 @@ public class ProtocolBean {
 
 	public ProtocolBean(Protocol protocol) {
 		domain = protocol;
-		fileBean = new FileBean(protocol.getFile());
+		if (protocol.getFile() != null) {
+			fileBean = new FileBean(protocol.getFile());
+		} else {
+			fileBean = new FileBean();
+		}
 	}
 
 	public String getDisplayName() {
@@ -60,8 +64,16 @@ public class ProtocolBean {
 
 	public void setupDomain(String internalUriPath, String createdBy)
 			throws Exception {
-		domain.setFile(fileBean.getDomainFile());
 		fileBean.setupDomainFile(internalUriPath, createdBy);
+		if (StringUtils.isEmpty(fileBean.getDomainFile().getUri())
+				&& StringUtils.isEmpty(fileBean.getDomainFile().getTitle())
+				&& StringUtils.isEmpty(fileBean.getDomainFile()
+						.getDescription())) {
+			fileBean = null;
+			domain.setFile(null);
+		} else {
+			domain.setFile(fileBean.getDomainFile());
+		}
 		if (domain.getId() == 0) {
 			domain.setId(null);
 		}
