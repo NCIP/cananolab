@@ -80,9 +80,11 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 		try {
 			FileService fileService = new FileServiceLocalImpl();
-			fileService.prepareSaveFile(protocolBean.getFileBean()
-					.getDomainFile(), user);
 
+			if (protocolBean.getFileBean() != null) {
+				fileService.prepareSaveFile(protocolBean.getFileBean()
+						.getDomainFile(), user);
+			}
 			Protocol dbProtocol = helper.findProtocolBy(protocolBean
 					.getDomain().getType(), protocolBean.getDomain().getName(),
 					protocolBean.getDomain().getVersion(), user);
@@ -98,17 +100,21 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			appService.saveOrUpdate(protocolBean.getDomain());
 
 			// save to the file system fileData is not empty
-			fileService.writeFile(protocolBean.getFileBean(), user);
+			if (protocolBean.getFileBean() != null) {
+				fileService.writeFile(protocolBean.getFileBean(), user);
+			}
 
 			// set visibility
 			helper.getAuthService().assignVisibility(
 					protocolBean.getDomain().getId().toString(),
 					protocolBean.getVisibilityGroups(), null);
 			// set file visibility as well
-			helper.getAuthService().assignVisibility(
-					protocolBean.getFileBean().getDomainFile().getId()
-							.toString(), protocolBean.getVisibilityGroups(),
-					null);
+			if (protocolBean.getFileBean() != null) {
+				helper.getAuthService().assignVisibility(
+						protocolBean.getFileBean().getDomainFile().getId()
+								.toString(),
+						protocolBean.getVisibilityGroups(), null);
+			}
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
 			logger.error(err, e);
@@ -195,6 +201,5 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 			protocolBean.setVisibilityGroups(visibilityGroups);
 		}
-
 	}
 }
