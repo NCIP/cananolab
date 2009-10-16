@@ -95,6 +95,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
 			<include method="getProtocols" />
+			<include method="getProtocolsByTypeAndName"/>
 			<include method="getProtocol" />
 			<include method="getProtocolTypes" />
 			<include method="getPublicCounts" />
@@ -162,7 +163,7 @@
 		</convert>
 		<convert converter="bean" match="gov.nih.nci.cananolab.domain.common.File">
 			<param name="exclude"
-				value="id, keywordCollection, findingCollection, datumCollection, protocol" />
+				value="keywordCollection, findingCollection, datumCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
