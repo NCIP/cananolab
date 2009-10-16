@@ -21,8 +21,7 @@ public class DateUtils {
 		Calendar cal = Calendar.getInstance();
 		// add 5 seconds to it.
 		cal.add(Calendar.SECOND, seconds);
-		Date newDate = new Date(cal.getTimeInMillis());
-		return newDate;
+		return cal.getTime();
 	}
 
 	public static String convertDateToString(Date date) {
