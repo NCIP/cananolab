@@ -43,8 +43,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		service.saveProtocol(protocolBean, user);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.submitProtocol.file",
-				protocolBean.getFileBean().getDomainFile().getTitle());
+		ActionMessage msg = new ActionMessage("message.submitProtocol",
+				protocolBean.getDisplayName());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
