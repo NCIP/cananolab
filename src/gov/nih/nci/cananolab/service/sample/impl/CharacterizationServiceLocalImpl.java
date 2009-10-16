@@ -41,9 +41,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class CharacterizationServiceLocalImpl implements
 		CharacterizationService {
@@ -155,12 +155,9 @@ public class CharacterizationServiceLocalImpl implements
 				if (helper.getAuthService().checkReadPermission(user,
 						achar.getId().toString())) {
 					charBean = new CharacterizationBean(achar);
-					if (user != null) {
-						for (FindingBean finding : charBean.getFindings()) {
-							fileHelper
-									.checkReadPermissionAndRetrieveVisibility(
-											finding.getFiles(), user);
-						}
+					for (FindingBean finding : charBean.getFindings()) {
+						fileHelper.checkReadPermissionAndRetrieveVisibility(
+								finding.getFiles(), user);
 					}
 				} else {
 					throw new NoAccessException(
@@ -268,8 +265,17 @@ public class CharacterizationServiceLocalImpl implements
 			List results = appService.query(crit);
 			List<CharacterizationBean> chars = new ArrayList<CharacterizationBean>();
 			for (Object obj : results) {
-				Characterization chara = (Characterization) obj;
-				chars.add(new CharacterizationBean(chara));
+				Characterization achar = (Characterization) obj;
+				if (helper.getAuthService().checkReadPermission(user,
+						achar.getId().toString())) {
+					CharacterizationBean charBean = new CharacterizationBean(
+							achar);
+					for (FindingBean finding : charBean.getFindings()) {
+						fileHelper.checkReadPermissionAndRetrieveVisibility(
+								finding.getFiles(), user);
+					}
+					chars.add(charBean);
+				}
 			}
 			return chars;
 		} catch (Exception e) {
