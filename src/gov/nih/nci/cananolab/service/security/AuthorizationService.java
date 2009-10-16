@@ -635,6 +635,32 @@ public class AuthorizationService {
 		}
 	}
 
+	public void removeCSMEntry(String objectName) throws SecurityException {
+		removeExistingVisibleGroups(objectName);
+		removePGAndPE(objectName);
+	}
+
+	public void removePGAndPE(String objectName) throws SecurityException {
+		try {
+			ProtectionElement pe = getProtectionElement(objectName);
+			ProtectionGroup pg = getProtectionGroup(objectName);
+			authorizationManager.removeProtectionElementsFromProtectionGroup(pg
+					.getProtectionGroupId().toString(), new String[] { pe
+					.getProtectionElementId().toString() });
+			authorizationManager.removeProtectionElement(pe
+					.getProtectionElementId().toString());
+			authorizationManager.removeProtectionGroup(pg
+					.getProtectionGroupId().toString());
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in removing existing protection element and protection group",
+							e);
+			throw new SecurityException();
+		}
+
+	}
+
 	public void assignVisibility(String dataToProtect, String[] visibleGroups,
 			String owningGroup) throws SecurityException {
 		try {
