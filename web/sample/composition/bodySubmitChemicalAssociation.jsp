@@ -179,7 +179,7 @@
 				<td colspan="2">
 					<c:if test="${! empty compositionForm.map.assoc.files }">
 						<c:set var="files" value="${compositionForm.map.assoc.files}" />
-						<c:set var="edit" value="true" />
+						<c:set var="editFile" value="true" />
 						<%@ include file="bodyFileView.jsp"%>
 					</c:if>
 				</td>
