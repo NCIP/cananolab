@@ -122,8 +122,4 @@ public class FileServiceRemoteImpl implements FileService {
 			NoAccessException {
 		throw new FileException("Not implemented for grid service");
 	}
-
-	private void assignVisibility(FileBean fileBean) throws FileException {
-		throw new FileException("Not implemented for grid service");
-	}
 }
