@@ -73,7 +73,7 @@
 												</c:otherwise>
 				</c:choose>
 			</td>
-			<c:if test="${edit eq 'true'}">
+			<c:if test="${editFile eq 'true'}">
 				<td align="right">
 					<a
 						href="javascript:setTheFile('${fileParent}', ${file.domainFile.id});">Edit</a>&nbsp;
