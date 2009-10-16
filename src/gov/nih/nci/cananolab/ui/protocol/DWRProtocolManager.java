@@ -21,9 +21,9 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * This class loads protocol data for ajax
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class DWRProtocolManager {
 
@@ -98,10 +98,28 @@ public class DWRProtocolManager {
 		}
 	}
 
+	public List<ProtocolBean> getProtocolsByTypeAndName(String protocolType,
+			String protocolName) {
+		try {
+			if (protocolType == null || protocolType.length() == 0) {
+				return null;
+			}
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			UserBean user = (UserBean) webContext.getHttpServletRequest()
+					.getSession().getAttribute("user");
+			List<ProtocolBean> protocols = service.findProtocolsBy(
+					protocolType, protocolName, null, null, user);
+			return protocols;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public String getPublicCounts(String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
-		if (locations.length==0){
+		if (locations.length == 0) {
 			return null;
 		}
 		Integer counts = 0;
