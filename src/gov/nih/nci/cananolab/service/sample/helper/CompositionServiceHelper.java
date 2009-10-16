@@ -49,6 +49,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -268,6 +269,7 @@ public class CompositionServiceHelper {
 
 					// Create one work sheet for each Nanomaterial Entity.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
+					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 
 					// 1. Output Header: NanoMaterial at (0, 0), Composition
 					// Type at (2, 0).
@@ -408,7 +410,7 @@ public class CompositionServiceHelper {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
 						outputFiles(fileBeans, downloadURL, wb, sheet,
-								headerStyle, hlinkStyle, rowIndex);
+								headerStyle, hlinkStyle, patriarch, rowIndex);
 					}
 				}
 			} // End of iterating nanoList.
@@ -440,9 +442,9 @@ public class CompositionServiceHelper {
 					sb.append(entityCount++).append('.').append(
 							nanoEntity.getType());
 
-					// Create one work sheet for each Composition Functional
-					// Entity.
+					// Create 1 work sheet for each Functional Entity.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
+					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 
 					// 1. Output Composition type at (0, 0).
 					rowIndex = outputHeader(
@@ -604,7 +606,7 @@ public class CompositionServiceHelper {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
 						outputFiles(fileBeans, downloadURL, wb, sheet,
-								headerStyle, hlinkStyle, rowIndex);
+								headerStyle, hlinkStyle, patriarch, rowIndex);
 					}
 				}
 			} // End of iterating nanoList.
@@ -637,6 +639,7 @@ public class CompositionServiceHelper {
 
 					// Create one work sheet for each Composition.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
+					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 
 					// 1. Output Composition type at (0, 0).
 					rowIndex = outputHeader(CompositionBean.CHEMICAL_SELECTION,
@@ -729,7 +732,7 @@ public class CompositionServiceHelper {
 						row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
 						outputFiles(fileBeans, downloadURL, wb, sheet,
-								headerStyle, hlinkStyle, rowIndex);
+								headerStyle, hlinkStyle, patriarch, rowIndex);
 					}
 				}
 			}
@@ -760,6 +763,7 @@ public class CompositionServiceHelper {
 
 					// Create one work sheet for each Composition File.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
+					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 
 					// 1. Output Composition type at (0, 0).
 					HSSFRow row = sheet.createRow(rowIndex++);
@@ -769,7 +773,7 @@ public class CompositionServiceHelper {
 
 					// 2. Output File info, one File per sheet.
 					outputFile(nanoEntity, downloadURL, wb, sheet, headerStyle,
-							hlinkStyle, rowIndex);
+							hlinkStyle, patriarch, rowIndex);
 				}
 			}
 		}
@@ -1086,7 +1090,8 @@ public class CompositionServiceHelper {
 	 */
 	private static int outputFiles(List<FileBean> fileBeans,
 			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex) {
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
+			HSSFPatriarch patriarch, int rowIndex) {
 		// Output file table Header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "File Type");
@@ -1119,7 +1124,7 @@ public class CompositionServiceHelper {
 					if (imgFile.exists()) {
 						try {
 							rowIndex = ExportUtils.createImage(rowIndex,
-									(short) 1, filePath, wb, sheet);
+									(short) 1, filePath, wb, sheet, patriarch);
 						} catch (Exception e) {
 							logger.error("Error exporting Comp image file.", e);
 						}
@@ -1162,7 +1167,7 @@ public class CompositionServiceHelper {
 	 */
 	private static int outputFile(FileBean fileBean, String downloadURL,
 			HSSFWorkbook wb, HSSFSheet sheet, HSSFCellStyle headerStyle,
-			HSSFCellStyle hlinkStyle, int rowIndex) {
+			HSSFCellStyle hlinkStyle, HSSFPatriarch patriarch, int rowIndex) {
 		File file = fileBean.getDomainFile();
 
 		// 1. output File Type.
@@ -1190,7 +1195,7 @@ public class CompositionServiceHelper {
 			if (imgFile.exists()) {
 				try {
 					rowIndex = ExportUtils.createImage(rowIndex,
-							(short) 1, filePath, wb, sheet);
+							(short) 1, filePath, wb, sheet, patriarch);
 				} catch (Exception e) {
 					logger.error("Error exporting Comp image file.", e);
 				}

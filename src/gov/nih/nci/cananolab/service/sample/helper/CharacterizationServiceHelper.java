@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
@@ -37,6 +38,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -44,6 +46,7 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -281,7 +284,8 @@ public class CharacterizationServiceHelper {
 					// Create one work sheet for each Characterization.
 					HSSFSheet sheet = wb.createSheet(charCount++ + "."
 							+ charBean.getCharacterizationName());
-	
+					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+
 					// 1. Output Characterization type at (0, 0).
 					rowIndex = outputHeader(charBean, sheet, headerStyle, rowIndex);
 	
@@ -314,7 +318,7 @@ public class CharacterizationServiceHelper {
 	
 					// 9. Output Characterization Results at (9, 0).
 					rowIndex = outputCharResults(charBean, downloadURL, wb, sheet,
-							headerStyle, hlinkStyle, rowIndex);
+							headerStyle, hlinkStyle, patriarch, rowIndex);
 	
 					// 10.Output Analysis and Conclusion at (10, 0).
 					rowIndex = outputConclusion(charBean, sheet, headerStyle,
@@ -710,7 +714,8 @@ public class CharacterizationServiceHelper {
 	 */
 	private static int outputCharResults(CharacterizationBean charBean,
 			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex)
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, 
+			HSSFPatriarch patriarch, int rowIndex)
 			throws IOException {
 		// 9. Output Characterization Results at (8, 0).
 		List<FindingBean> findings = charBean.getFindings();
@@ -722,12 +727,13 @@ public class CharacterizationServiceHelper {
 				ExportUtils
 						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
 
-				// 9a. Output Characterization File Results.
-				outputFileResult(findingBean, downloadURL, wb, sheet,
-						headerStyle, hlinkStyle, rowIndex);
+				// 9a. Output Characterization Datum Results.
+				rowIndex = outputDatumResult(findingBean, sheet, headerStyle, rowIndex);
 
-				// 9b. Output Characterization Datum Results.
-				outputDatumResult(findingBean, sheet, headerStyle, rowIndex);
+				// 9b. Output Characterization File Results.
+				rowIndex = outputFileResult(findingBean, downloadURL, wb, sheet,
+						headerStyle, hlinkStyle, patriarch, rowIndex);
+				count++;
 			}
 		}
 		return rowIndex;
@@ -746,7 +752,8 @@ public class CharacterizationServiceHelper {
 	 */
 	private static int outputFileResult(FindingBean findingBean,
 			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex)
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, 
+			HSSFPatriarch patriarch, int rowIndex)
 			throws IOException {
 		// Get list of FileBeans from findingBean.
 		List<FileBean> files = findingBean.getFiles();
@@ -755,23 +762,35 @@ public class CharacterizationServiceHelper {
 			ExportUtils.createCell(row, 0, headerStyle, FILES);
 			for (FileBean fileBean : files) {
 				row = sheet.createRow(rowIndex++);
+				File file = fileBean.getDomainFile();
 
-				// Construct the URL for downloading the file.
+				// output 4x) titles for File.
+				ExportUtils.createCell(row, 0, headerStyle, "File Type");
+				ExportUtils.createCell(row, 1, headerStyle, "Title and Download Link");
+				ExportUtils.createCell(row, 2, headerStyle, "Keywords");
+				ExportUtils.createCell(row, 3, headerStyle, "Description");
+				
+				// 1. output File Type.
+				row = sheet.createRow(rowIndex++);
+				ExportUtils.createCell(row, 0, file.getType());
+
+				// 2. output Title and Download Link.
 				StringBuilder sb = new StringBuilder(downloadURL);
-				sb.append(fileBean.getDomainFile().getId());
-				if (fileBean.getDomainFile().getUriExternal().booleanValue()) {
-					ExportUtils.createCell(row, 0, hlinkStyle, 
-						fileBean.getDomainFile().getUri(), sb.toString());
+				sb.append(file.getId());
+				if (file.getUriExternal()) {
+					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), 
+						sb.toString());
 				} else if (fileBean.isImage()) {
+					ExportUtils.createCell(row, 1, file.getTitle());
 					sb.setLength(0);
 					sb.append(fileRoot).append(java.io.File.separator);
-					sb.append(fileBean.getDomainFile().getUri());
+					sb.append(file.getUri());
 					String filePath = sb.toString();
 					java.io.File imgFile = new java.io.File(filePath);
 					if (imgFile.exists()) {
 						try {
 							rowIndex = ExportUtils.createImage(rowIndex,
-									(short) 0, filePath, wb, sheet);
+									(short) 1, filePath, wb, sheet, patriarch);
 						} catch (Exception e) {
 							logger.error("Error exporting Char image file.", e);
 						}
@@ -780,8 +799,23 @@ public class CharacterizationServiceHelper {
 								+ filePath);
 					}
 				} else {
-					ExportUtils.createCell(row, 0, hlinkStyle, 
-						fileBean.getDomainFile().getTitle(), sb.toString());
+					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), 
+						sb.toString());
+				}
+
+				// 3. output Keywords.
+				Collection<Keyword> keywords = file.getKeywordCollection();
+				if (keywords != null && !keywords.isEmpty()) {
+					sb.setLength(0);
+					for (Keyword keyword : keywords) {
+						sb.append(',').append(' ').append(keyword.getName());
+					}
+					ExportUtils.createCell(row, 2, sb.substring(2));
+				}
+
+				// 4. output Description.
+				if (!StringUtils.isEmpty(file.getDescription())) {
+					ExportUtils.createCell(row, 3, file.getDescription());
 				}
 			}
 		}
