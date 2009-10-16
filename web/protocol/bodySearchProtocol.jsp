@@ -84,7 +84,7 @@
 		cellspacing="0" class="topBorderOnly" summary="">
 		<tr>
 			<td>
-				<span class="formMessage"> <em>Searching without any parameters would return all protocol.</em></span>
+				<span class="formMessage"> <em>Searching without any parameters would return all protocols.</em></span>
 				<br>
 				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
