@@ -139,7 +139,7 @@ public class ProtocolServiceHelper {
 			if (authService.checkReadPermission(user, file.getId().toString())) {
 				return file;
 			} else {
-				throw new NoAccessException();
+				logger.debug("User doesn't have access file under protocol");
 			}
 		}
 		return file;
