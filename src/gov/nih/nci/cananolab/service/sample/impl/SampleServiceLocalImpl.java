@@ -288,6 +288,40 @@ public class SampleServiceLocalImpl implements SampleService {
 				if (helper.getAuthService().checkReadPermission(user,
 						sample.getName())) {
 					sampleBean = new SampleBean(sample);
+					// check visibility of POC
+					if (sampleBean.getPrimaryPOCBean() != null) {
+						Organization org = sampleBean.getPrimaryPOCBean()
+								.getDomain().getOrganization();
+						if (org != null) {
+							if (!helper.getAuthService().checkReadPermission(
+									user, org.getId().toString())) {
+								sampleBean.setPrimaryPOCBean(null);
+								logger
+										.debug("User can't access primary point of contact:"
+												+ org.getId());
+							}
+						}
+					}
+					if (sampleBean.getOtherPOCBeans() != null) {
+						List<PointOfContactBean> pocBeans = new ArrayList<PointOfContactBean>();
+						for (PointOfContactBean poc : sampleBean
+								.getOtherPOCBeans()) {
+							Organization org = poc.getDomain()
+									.getOrganization();
+							if (org != null) {
+								if (helper.getAuthService()
+										.checkReadPermission(user,
+												org.getId().toString())) {
+									pocBeans.add(poc);
+								} else {
+									logger
+											.debug("User can't access point of contact:"
+													+ poc.getDomain().getId());
+								}
+							}
+						}
+						sampleBean.setOtherPOCBeans(pocBeans);
+					}
 					if (user != null) {
 						retrieveVisibility(sampleBean, user);
 					}
@@ -328,12 +362,14 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit.setFetchMode(
 					"characterizationCollection.experimentConfigCollection",
 					FetchMode.JOIN);
-			crit.setFetchMode(
-					"characterizationCollection.experimentConfigCollection.instrumentCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"characterizationCollection.experimentConfigCollection.technique",
-					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"characterizationCollection.experimentConfigCollection.instrumentCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"characterizationCollection.experimentConfigCollection.technique",
+							FetchMode.JOIN);
 			// sampleComposition
 			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
