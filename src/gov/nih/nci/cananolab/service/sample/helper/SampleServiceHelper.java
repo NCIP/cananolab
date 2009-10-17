@@ -48,9 +48,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of SampleService and grid service *
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class SampleServiceHelper {
 	private AuthorizationService authService;
@@ -563,7 +563,7 @@ public class SampleServiceHelper {
 	/**
 	 * Return all stored functionalizing entity class names. In case of
 	 * OtherFunctionalizingEntity, store the OtherFunctionalizingEntity type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -591,7 +591,7 @@ public class SampleServiceHelper {
 	/**
 	 * Return all stored function class names. In case of OtherFunction, store
 	 * the otherFunction type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -650,7 +650,7 @@ public class SampleServiceHelper {
 	/**
 	 * Return all stored nanomaterial entity class names. In case of
 	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -846,7 +846,8 @@ public class SampleServiceHelper {
 			if (authService.checkReadPermission(user, poc.getId().toString())) {
 				return poc;
 			} else {
-				throw new NoAccessException();
+				logger.debug("Don't have access to point of contact "
+						+ poc.getId());
 			}
 		}
 		return poc;
@@ -867,7 +868,14 @@ public class SampleServiceHelper {
 		}
 		for (Object obj : filteredResults) {
 			PointOfContact poc = (PointOfContact) obj;
-			pocs.add(poc);
+			if (user == null
+					|| authService.checkReadPermission(user, poc.getId()
+							.toString())) {
+				pocs.add(poc);
+			} else {
+				logger.debug("User doesn't have access to point of contact of id:"
+						+ poc.getId());
+			}
 		}
 		return pocs;
 	}
