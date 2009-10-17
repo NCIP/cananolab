@@ -22,10 +22,15 @@
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=publication" />
+			<c:set var="defaultSortColumn" value="6" />
+			<c:if test="${!empty user && user.curator}">
+				<c:set var="defaultSortColumn" value="7" />
+			</c:if>
 			<display:table name="publications" id="publication"
-				requestURI="searchPublication.do" pagesize="25" class="displaytable"				
+				requestURI="searchPublication.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
-				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
+				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator"
+				defaultsort="${defaultSortColumn}">
 				<c:if test="${!empty user && user.curator}">
 					<display:column title="" property="editPublicationURL" />
 				</c:if>
@@ -37,8 +42,8 @@
 					sortable="true" />
 				<display:column title="Associated<br>Sample Names"
 					property="sampleNames" sortable="true" />
-				<display:column title="Description"
-					property="descriptionDetail" sortable="true" />
+				<display:column title="Description" property="descriptionDetail"
+					sortable="true" />
 				<display:column title="Created<br>Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
