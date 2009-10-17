@@ -1,0 +1,3 @@
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('PlateletAggregation','otherDerivedDatumName','induces platelet aggregation?');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('PlateletAggregation','otherDerivedDatumName','interferes with collagen-induced platelett aggregation?');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('MolecularWeight','otherDerivedDatumName','PDI');
