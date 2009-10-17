@@ -1,5 +1,5 @@
 
-var inherentFunctionCache = null;
+var inherentFunctionCache = {};
 var currentComposingElement = null;
 var numberOfFunctions;
 /* set the submit composing element form */
