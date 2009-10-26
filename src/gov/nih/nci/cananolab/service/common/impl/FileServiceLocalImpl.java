@@ -140,6 +140,9 @@ public class FileServiceLocalImpl implements FileService {
 					if (dbKeyword != null) {
 						keyword.setId(dbKeyword.getId());
 					}
+					else {
+						keyword.setId(null);
+					}
 					appService.saveOrUpdate(keyword);
 					file.getKeywordCollection().add(keyword);
 				}

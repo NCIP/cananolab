@@ -91,6 +91,9 @@ public class SampleServiceLocalImpl implements SampleService {
 					if (dbKeyword != null) {
 						keyword.setId(dbKeyword.getId());
 					}
+					else {
+						keyword.setId(null);
+					}
 					// turned off cascade save-update in order to share the same
 					// keyword instance with File keywords.
 					appService.saveOrUpdate(keyword);
@@ -149,6 +152,10 @@ public class SampleServiceLocalImpl implements SampleService {
 				domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
 				domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
 			}
+			//create a new POC if not an existing one
+			else {
+				domainPOC.setId(null);
+			}
 
 			// get created by and created date from database
 			Organization dbOrganization = helper.findOrganizationByName(
@@ -157,6 +164,10 @@ public class SampleServiceLocalImpl implements SampleService {
 				domainOrg.setId(dbOrganization.getId());
 				domainOrg.setCreatedBy(dbOrganization.getCreatedBy());
 				domainOrg.setCreatedDate(dbOrganization.getCreatedDate());
+			}
+			//create a new org if not an existing one
+			else {
+				domainOrg.setId(null);
 			}
 			appService.saveOrUpdate(domainPOC);
 

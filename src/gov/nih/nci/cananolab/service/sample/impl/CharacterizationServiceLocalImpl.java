@@ -381,7 +381,7 @@ public class CharacterizationServiceLocalImpl implements
 						config.setCreatedBy(dbConfig.getCreatedBy());
 					}
 					config.setCreatedDate(dbConfig.getCreatedDate());
-				}
+				}				
 			}
 			Technique technique = config.getTechnique();
 			// check if technique already exists;
@@ -391,6 +391,7 @@ public class CharacterizationServiceLocalImpl implements
 				technique.setCreatedBy(dbTechnique.getCreatedBy());
 				technique.setCreatedDate(dbTechnique.getCreatedDate());
 			} else {
+				technique.setId(null);
 				technique.setCreatedBy(config.getCreatedBy());
 				technique.setCreatedDate(new Date());
 			}
