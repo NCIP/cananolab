@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -43,21 +44,42 @@ public class DWRPublicationManager {
 	public PublicationBean retrievePubMedInfo(String pubmedID) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
 		PublicationForm form = (PublicationForm) wctx.getSession()
 				.getAttribute("publicationForm");
-		PublicationBean pbean = (PublicationBean) form.get("publication");
-
+		PublicationBean oldPubBean = (PublicationBean) form.get("publication");
+		Publication oldPub = (Publication) oldPubBean.getDomainFile();
+		
+		// New a pubBean each time, so we know if parsing is success or not.
+		PublicationBean newPubBean = new PublicationBean();
+		Publication newPub = (Publication) newPubBean.getDomainFile();
 		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
-			Long pubMedIDLong = 0L;
+			Long pubMedIDLong = null;
 			try {
-				pubMedIDLong = Long.valueOf(pubmedID);
+				pubMedIDLong = Long.valueOf(pubmedID.trim());
+				if (phandler.parsePubMedXML(pubMedIDLong, newPubBean)) {
+					newPub.setPubMedId(pubMedIDLong);
+				}
 			} catch (Exception ex) {
-				logger.error("invalid PubMed ID");
-				return null;
+				logger.warn("Invalid PubMed ID: " + pubmedID);
 			}
-			phandler.parsePubMedXML(pubMedIDLong, pbean);
 		}
-		return pbean;
+		
+        // Copy PubMed data so that we can erase previous result.
+		oldPub.setPubMedId(newPub.getPubMedId());
+		oldPub.setDigitalObjectId(newPub.getDigitalObjectId());
+		oldPub.setTitle(newPub.getTitle());
+		oldPub.setJournalName(newPub.getJournalName());
+		oldPub.setStartPage(newPub.getStartPage());
+		oldPub.setEndPage(newPub.getEndPage());
+		oldPub.setVolume(newPub.getVolume());
+		oldPub.setYear(newPub.getYear());
+		oldPubBean.setAuthors(newPubBean.getAuthors());
+		
+		return oldPubBean;
 	}
 
 	public String[] getPublicationCategories(String searchLocations) {

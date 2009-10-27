@@ -105,9 +105,15 @@ function fillPubMedInfo() {
 
 function populatePubMedInfo(publication) {
 	if (publication != null) {
-		var pubMedId = dwr.util.getValue("domainFile.pubMedId");
-		if (pubMedId != "") {
-			dwr.util.setValues(publication);
+		currentPublication = publication;
+		dwr.util.setValues(publication);
+		// If PubMedId is null in returned pub -> pubMedId not found.
+		if (publication.domainFile.pubMedId == null) {
+			alert("Invalid PubMed ID entered.");
+			populateAuthors(false);
+			show("addAuthor");
+			show("fileSection");
+		} else {
 			document.getElementById("domainFile.digitalObjectId").readOnly = true;
 			document.getElementById("domainFile.title").readOnly = true;
 			document.getElementById("domainFile.journalName").readOnly = true;
@@ -115,19 +121,12 @@ function populatePubMedInfo(publication) {
 			document.getElementById("domainFile.volume").readOnly = true;
 			document.getElementById("domainFile.startPage").readOnly = true;
 			document.getElementById("domainFile.endPage").readOnly = true;
-			currentPublication = publication;
 			populateAuthors(true);
 			hide("addAuthor");
-			// disable file upload
-			hide("fileSection");
-		} else {
-			currentPublication = publication;
-			populateAuthors(false);
-			show("addAuthor");
-			show("fileSection");
+			hide("fileSection"); //disable file upload
 		}
 	} else {
-		alert("Invalid PubMed ID entered, or session has timed out.");
+		sessionTimeout();
 	}
 }
 

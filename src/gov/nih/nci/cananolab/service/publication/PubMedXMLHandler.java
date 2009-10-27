@@ -12,6 +12,7 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.xml.sax.Attributes;
 
 public class PubMedXMLHandler {
@@ -50,23 +51,16 @@ public class PubMedXMLHandler {
     
     private PubMedXMLHandler(){}
 	
-	public PublicationBean parsePubMedXML (Long pubMedId,
-			PublicationBean pubBean) {
-			publicationBean = pubBean;
-			publication = (Publication) pubBean.getDomainFile();
-			
- 			publication.setPubMedId(pubMedId);
-			String uri = PUBMED_URL + pubMedId;
-	        try {
-	        	//System.out.println("pubmed id:" + pubMedId);
-	        	go(uri);
-	        	publicationBean.setDomainFile(publication);
-	        } catch(Exception ex) {
-	        	System.out.println("exception in parsePubMedXML, ");
-	        	ex.printStackTrace();
-	        }
-	        
-	        return publicationBean;
+	public boolean parsePubMedXML(Long pubMedId, PublicationBean pubBean) {
+		publicationBean = pubBean;
+		publication = (Publication) publicationBean.getDomainFile();
+        try {
+        	go(PUBMED_URL + pubMedId);
+        } catch(Exception ex) {
+        	System.out.println("Exception in parsePubMedXML, ");
+        	ex.printStackTrace();
+        }
+        return !StringUtils.isEmpty(publication.getTitle());
 	}
 	
 	private class PubmedArticleHandler extends SAXElementHandler
@@ -314,14 +308,15 @@ public class PubMedXMLHandler {
 	// for testing
 	public static void main(String[] args) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
-		phandler.parsePubMedXML(Long.valueOf("18294836"), new PublicationBean());
-//		
-//		System.out.println("bean journal:" + publicationBean.getJournal());
-//		System.out.println("abstract:" + publicationBean.getAbstractText());
-//		System.out.println("year:" + publicationBean.getYear());
-//		System.out.println("title:" + publicationBean.getTitle());
-//		System.out.println("start page:" + publicationBean.getStartPage());
-//		System.out.println("end page:" + publicationBean.getEndPage());
-
+		PublicationBean pubBean = new PublicationBean();
+		phandler.parsePubMedXML(Long.valueOf("18294836"), pubBean);
+		
+		Publication pub = (Publication) pubBean.getDomainFile();
+		System.out.println("JournalName:" + pub.getJournalName());
+		System.out.println("Volume:" + pub.getVolume());
+		System.out.println("year:" + pub.getYear());
+		System.out.println("title:" + pub.getTitle());
+		System.out.println("start page:" + pub.getStartPage());
+		System.out.println("end page:" + pub.getEndPage());
 	}
 }
