@@ -1,4 +1,9 @@
-source ../create_database_and_user.sql
 use canano;
-source 2009-10-12_WashU.sql
-source migration_general.sql
+
+update nano_function nf
+set discriminator='TargetingFunction'
+where exists
+(SELECT t.targeting_function_pk_id
+  FROM target t
+ WHERE nf.function_pk_id = t.targeting_function_pk_id
+and nf.discriminator!='TargetingFunction');
