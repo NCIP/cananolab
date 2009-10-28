@@ -69,6 +69,27 @@ public class PublicationBean extends FileBean {
 		this.sampleNames = sampleNames;
 	}
 
+	/**
+	 * Copy PubMed data from source PublicationBean to this PublicationBean.
+	 * 
+	 * @param source
+	 * @param taget
+	 */
+	public void copyPubMedData(PublicationBean source) {
+		Publication oldPub = (Publication) this.getDomainFile();
+		Publication newPub = (Publication) source.getDomainFile();
+		
+		oldPub.setPubMedId(newPub.getPubMedId());
+		oldPub.setDigitalObjectId(newPub.getDigitalObjectId());
+		oldPub.setTitle(newPub.getTitle());
+		oldPub.setJournalName(newPub.getJournalName());
+		oldPub.setStartPage(newPub.getStartPage());
+		oldPub.setEndPage(newPub.getEndPage());
+		oldPub.setVolume(newPub.getVolume());
+		oldPub.setYear(newPub.getYear());
+		this.setAuthors(source.getAuthors());
+	}
+
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof PublicationBean) {
