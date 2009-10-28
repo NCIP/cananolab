@@ -103,6 +103,7 @@
 		<create creator="new" javascript="PublicationManager" scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
+			<include method="searchPubMedById" />
 			<include method="retrievePubMedInfo" />
 			<include method="addAuthor" />
 			<include method="deleteAuthor" />
