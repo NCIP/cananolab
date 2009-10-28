@@ -96,6 +96,19 @@ function setPublicationDropdowns() {
 	return false;
 }
 
+function searchPubMedInfo() {
+	var pubMedId = dwr.util.getValue("pubMedId");
+	if (pubMedId != null && pubMedId != 0) {
+		PublicationManager.searchPubMedById(pubMedId, validatePubMedInfo);
+	}
+}
+
+function validatePubMedInfo(publication) {
+	if (publication.domainFile.pubMedId == null) {
+		alert("Invalid PubMed ID entered.");
+	}
+}
+
 function fillPubMedInfo() {
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
 	if (pubMedId != null && pubMedId != 0) {

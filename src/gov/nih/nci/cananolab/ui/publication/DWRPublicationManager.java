@@ -41,8 +41,25 @@ public class DWRPublicationManager {
 		return pbean;
 	}
 
+	public PublicationBean searchPubMedById(String pubmedID) {
+		// New a pubBean each time, so we know if parsing is success or not.
+		PublicationBean newPubBean = new PublicationBean();
+		Publication newPub = (Publication) newPubBean.getDomainFile();
+		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
+			try {
+				Long pubMedIDLong = Long.valueOf(pubmedID.trim());
+				PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
+				if (phandler.parsePubMedXML(pubMedIDLong, newPubBean)) {
+					newPub.setPubMedId(pubMedIDLong);
+				}
+			} catch (Exception ex) {
+				logger.warn("Invalid PubMed ID: " + pubmedID);
+			}
+		}
+		return newPubBean;
+	}
+	
 	public PublicationBean retrievePubMedInfo(String pubmedID) {
-		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		if (user == null) {
@@ -51,33 +68,10 @@ public class DWRPublicationManager {
 		PublicationForm form = (PublicationForm) wctx.getSession()
 				.getAttribute("publicationForm");
 		PublicationBean oldPubBean = (PublicationBean) form.get("publication");
-		Publication oldPub = (Publication) oldPubBean.getDomainFile();
-		
-		// New a pubBean each time, so we know if parsing is success or not.
-		PublicationBean newPubBean = new PublicationBean();
-		Publication newPub = (Publication) newPubBean.getDomainFile();
-		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
-			Long pubMedIDLong = null;
-			try {
-				pubMedIDLong = Long.valueOf(pubmedID.trim());
-				if (phandler.parsePubMedXML(pubMedIDLong, newPubBean)) {
-					newPub.setPubMedId(pubMedIDLong);
-				}
-			} catch (Exception ex) {
-				logger.warn("Invalid PubMed ID: " + pubmedID);
-			}
-		}
+		PublicationBean newPubBean = this.searchPubMedById(pubmedID);
 		
         // Copy PubMed data so that we can erase previous result.
-		oldPub.setPubMedId(newPub.getPubMedId());
-		oldPub.setDigitalObjectId(newPub.getDigitalObjectId());
-		oldPub.setTitle(newPub.getTitle());
-		oldPub.setJournalName(newPub.getJournalName());
-		oldPub.setStartPage(newPub.getStartPage());
-		oldPub.setEndPage(newPub.getEndPage());
-		oldPub.setVolume(newPub.getVolume());
-		oldPub.setYear(newPub.getYear());
-		oldPubBean.setAuthors(newPubBean.getAuthors());
+		oldPubBean.copyPubMedData(newPubBean);
 		
 		return oldPubBean;
 	}

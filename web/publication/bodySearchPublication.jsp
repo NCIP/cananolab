@@ -67,8 +67,8 @@
 				PubMed ID&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
 			<td>
-				<html:text property="pubMedId" size="30"
-					onkeydown="return filterInteger(event)" />
+				<html:text styleId="pubMedId" property="pubMedId" size="30"
+					onchange="javascript:searchPubMedInfo()" />
 				<br>
 				<em>(exact numeric PubMed ID)</em>
 				<br>
