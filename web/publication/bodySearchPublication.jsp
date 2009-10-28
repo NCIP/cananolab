@@ -183,7 +183,7 @@
 									onclick="javascript:location.href='searchPublication.do?dispatch=setup&page=0'">
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
-								<html:submit value="Search" />
+								<html:submit value="Search" onclick="javascript:searchPubMedInfo();"/>
 							</div>
 						</td>
 					</tr>

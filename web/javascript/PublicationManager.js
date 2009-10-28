@@ -99,14 +99,17 @@ function setPublicationDropdowns() {
 function searchPubMedInfo() {
 	var pubMedId = dwr.util.getValue("pubMedId");
 	if (pubMedId != null && pubMedId != 0) {
-		PublicationManager.searchPubMedById(pubMedId, validatePubMedInfo);
+		return PublicationManager.searchPubMedById(pubMedId, validatePubMedInfo);
 	}
+	return true;
 }
 
 function validatePubMedInfo(publication) {
 	if (publication.domainFile.pubMedId == null) {
 		alert("Invalid PubMed ID entered.");
+		return false;
 	}
+	return true;
 }
 
 function fillPubMedInfo() {
