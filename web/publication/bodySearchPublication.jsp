@@ -14,7 +14,7 @@
 	<jsp:param name="topic" value="search_publications_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="searchPublication">
+<html:form action="searchPublication" onsubmit="return searchPubMedInfo();">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -183,7 +183,7 @@
 									onclick="javascript:location.href='searchPublication.do?dispatch=setup&page=0'">
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
-								<html:submit value="Search" onclick="javascript:searchPubMedInfo();"/>
+								<html:submit value="Search"/>
 							</div>
 						</td>
 					</tr>
