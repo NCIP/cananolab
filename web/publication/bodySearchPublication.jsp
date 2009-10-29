@@ -14,7 +14,7 @@
 	<jsp:param name="topic" value="search_publications_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="searchPublication" onsubmit="return searchPubMedInfo();">
+<html:form action="searchPublication">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -68,7 +68,7 @@
 			</td>
 			<td>
 				<html:text styleId="pubMedId" property="pubMedId" size="30"
-					onchange="javascript:searchPubMedInfo()" />
+					/>
 				<br>
 				<em>(exact numeric PubMed ID)</em>
 				<br>
@@ -181,9 +181,7 @@
 							<div align="right">
 								<input type="button" value="Reset"
 									onclick="javascript:location.href='searchPublication.do?dispatch=setup&page=0'">
-								<input type="hidden" name="dispatch" value="search">
-								<input type="hidden" name="page" value="1">
-								<html:submit value="Search"/>
+								<input type="button" value="Search" onclick="searchPublication()">
 							</div>
 						</td>
 					</tr>
