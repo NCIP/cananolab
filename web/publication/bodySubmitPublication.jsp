@@ -150,8 +150,7 @@
 				Start Page
 			</td>
 			<td>
-				<html:text property="publication.domainFile.startPage" size="8"
-					onkeydown="return filterInteger(event)"
+				<html:text property="publication.domainFile.startPage" size="8"					
 					styleId="domainFile.startPage" />
 				&nbsp;
 			</td>
@@ -160,7 +159,6 @@
 			</td>
 			<td>
 				<html:text property="publication.domainFile.endPage" size="8"
-					onkeydown="return filterInteger(event)"
 					styleId="domainFile.endPage" />
 				&nbsp;
 			</td>
