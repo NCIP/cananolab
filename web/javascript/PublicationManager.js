@@ -100,7 +100,10 @@ function searchPublication() {
 	var pubMedId = dwr.util.getValue("pubMedId");
 	if (pubMedId != null && pubMedId != 0) {
 	   PublicationManager.searchPubMedById(pubMedId, validatePubMedInfo);		
-	}	
+	}
+	else {
+	   submitAction(document.forms[0], "searchPublication", "search", 1);
+	}
 }
 
 function validatePubMedInfo(publication) {	
