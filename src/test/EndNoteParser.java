@@ -9,12 +9,9 @@ import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 
 /**
@@ -41,18 +38,7 @@ public class EndNoteParser {
 		String outputFileName = null;
 		PrintStream p = System.out;
 		UserBean user = null;
-		if (args != null) {
-			String userLoginName = args[0];
-			String userPassword = args[1];
-			// Call CSM to authenticate the user.
-			try {
-				LoginService loginservice = new LoginService(
-						Constants.CSM_APP_NAME);
-				user = loginservice.login(userLoginName, userPassword);
-			} catch (Exception e) {
-				System.out.println("Can't log in the user");
-				e.printStackTrace();
-			}
+		if (args != null && args.length > 2) {
 			if (args.length == 3) {
 				inputFileName = args[2];
 			} else if (args.length == 4) {
@@ -69,6 +55,21 @@ public class EndNoteParser {
 				printHelpPage();
 				return;
 			}
+			System.setProperty("gov.nih.nci.security.configFile",
+		 		"C:/caNanolab_1.5/conf/standalone/ApplicationSecurityConfig.xml");
+			System.setProperty("java.security.auth.login.config",
+				"C:/caNanolab_1.5/conf/standalone/login.config");
+			String userLoginName = args[0];
+			String userPassword = args[1];
+			// Call CSM to authenticate the user.
+			try {
+				LoginService loginservice = new LoginService(
+						Constants.CSM_APP_NAME);
+				user = loginservice.login(userLoginName, userPassword);
+			} catch (Exception e) {
+				System.out.println("Can't log in the user");
+				e.printStackTrace();
+			}
 		} else {
 			printHelpPage();
 			return;
@@ -76,9 +77,7 @@ public class EndNoteParser {
 		boolean isSuccess = false;
 		EndNoteXMLHandler endNotehandler = null;
 		try {
-			File dFile = new File(inputFileName);
-			InputStream inputStream = new FileInputStream(dFile);
-			endNotehandler = new EndNoteXMLHandler(inputStream, p);
+			endNotehandler = new EndNoteXMLHandler(inputFileName);
 			isSuccess = endNotehandler.parsePublicationXML(user);
 		} catch (Exception ex) {
 			isSuccess = false;
@@ -88,7 +87,7 @@ public class EndNoteParser {
 				p.close();
 			}
 		}
-		System.exit(0);
+		System.exit(isSuccess ? 0 : 1);
 	}
 
 	private static void printHelpPage() {
@@ -124,5 +123,4 @@ public class EndNoteParser {
 		PrintStream p = new PrintStream(out);
 		p.print(fileString);
 	}
-
 }

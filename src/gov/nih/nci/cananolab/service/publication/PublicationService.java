@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.publication;
 
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -33,6 +34,9 @@ public interface PublicationService {
 	public PublicationBean findPublicationById(String publicationId,
 			UserBean user) throws PublicationException, NoAccessException;
 
+	public Publication findPublicationByKey(String keyName, Object keyValue,
+			UserBean user) throws PublicationException, NoAccessException;
+
 	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
 			UserBean user) throws PublicationException;
 
@@ -40,6 +44,16 @@ public interface PublicationService {
 
 	public void removePublicationFromSample(String sampleId, PublicationBean pubBean, UserBean user)
 			throws PublicationException, NoAccessException;
+
+	public List<Publication> findPublicationsBy(String title, String category,
+			String sampleName, String[] researchAreas, String[] keywords,
+			String pubMedId, String digitalObjectId, String[] authors,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			UserBean user) throws PublicationException;
 
 	public List<String> findPublicationIdsBy(String title, String category,
 			String sampleName, String[] researchAreas, String[] keywords,

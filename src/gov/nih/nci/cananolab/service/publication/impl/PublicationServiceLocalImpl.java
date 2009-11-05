@@ -230,6 +230,46 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
+	public Publication findPublicationByKey(String keyName, Object keyValue,
+			UserBean user) throws PublicationException, NoAccessException {
+		Publication publication = null;
+		CustomizedApplicationService appService = null;
+		try {
+			appService = (CustomizedApplicationService) ApplicationServiceProvider.getApplicationService();
+			publication = (Publication) appService.getObject(
+					Publication.class, keyName, keyValue);
+		} catch (Exception e) {
+			String err = "Error finding the publication.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+		return publication;
+	}
+
+	public List<Publication> findPublicationsBy(String title, String category,
+			String sampleName, String[] researchAreas, String[] keywords,
+			String pubMedId, String digitalObjectId, String[] authors,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			UserBean user) throws PublicationException {
+		try {
+			return helper.findPublicationsBy(title, category, sampleName,
+					researchAreas, keywords, pubMedId, digitalObjectId,
+					authors, nanomaterialEntityClassNames,
+					otherNanomaterialEntityTypes,
+					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes, functionClassNames,
+					otherFunctionTypes, user);
+		} catch (Exception e) {
+			String err = "Problem finding publication info.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+	}
+
 	public int getNumberOfPublicPublications() throws PublicationException {
 		try {
 			int count = helper.getNumberOfPublicPublications();
