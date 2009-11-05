@@ -145,6 +145,8 @@
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 			<sysproperty key="java.security.auth.login.config"
 				value="${tmp.dir}/classes/login.config" />
+			<arg value="${endnote.database.user}" />
+			<arg value="${endnote.database.password}" />
 			<arg value="${endnote.xml.dir}" />
 		</java>
 		<!-- remove tmp directory -->
