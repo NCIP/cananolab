@@ -119,6 +119,8 @@ function fillPubMedInfo() {
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
 	if (pubMedId != null && pubMedId != 0) {
 		PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
+	} else {
+		PublicationManager.retrieveCurrentPub(populateAuthorInfo);
 	}
 }
 
@@ -144,6 +146,15 @@ function populatePubMedInfo(publication) {
 			hide("addAuthor");
 			hide("fileSection"); // disable file upload
 		}
+	} else {
+		sessionTimeout();
+	}
+}
+
+function populateAuthorInfo(publication) {
+	if (publication != null) {
+		currentPublication = publication;
+		populateAuthors(false);
 	} else {
 		sessionTimeout();
 	}

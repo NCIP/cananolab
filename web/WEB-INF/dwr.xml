@@ -105,6 +105,7 @@
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
 			<include method="searchPubMedById" />
 			<include method="retrievePubMedInfo" />
+			<include method="retrieveCurrentPub" />
 			<include method="addAuthor" />
 			<include method="deleteAuthor" />
 			<include method="clearPublication" />
