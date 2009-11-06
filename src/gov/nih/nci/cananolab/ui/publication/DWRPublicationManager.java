@@ -75,6 +75,23 @@ public class DWRPublicationManager {
 		
 		return oldPubBean;
 	}
+	
+	/**
+	 * Return current PublicationBean for displaying Author list on page
+	 * when no PubMedId exists.
+	 * 
+	 * @return PublicationBean
+	 */
+	public PublicationBean retrieveCurrentPub() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+		PublicationForm form = (PublicationForm) wctx.getSession()
+				.getAttribute("publicationForm");
+		return (PublicationBean) form.get("publication");
+	}
 
 	public String[] getPublicationCategories(String searchLocations) {
 		WebContext wctx = WebContextFactory.get();
