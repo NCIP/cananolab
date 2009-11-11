@@ -204,7 +204,7 @@ public class EndNoteXMLHandler {
 					dupLog.flush();
 					dupLog.close();
 				}
-				if (dbLog != null) {
+				if (savedLog != null) {
 					savedLog.flush();
 					savedLog.close();
 				}
