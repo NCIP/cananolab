@@ -16,18 +16,17 @@ import org.apache.commons.lang.StringUtils;
 import org.xml.sax.Attributes;
 
 public class PubMedXMLHandler {
-
-	private static final String PUBMED_URL = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
-	
+	private static final String PUBMED_URL = 
+		"http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
 	private static PublicationBean publicationBean = null;
-	private Publication publication = null;
 	private static PubMedXMLHandler onlyInstance = null;
+	private Publication publication = null;
 	
     private StringBuffer journal;
     private StringBuffer volume;
     private StringBuffer articleTitle;
     private StringBuffer year;
-    // private StringBuffer abstractText;
+    private StringBuffer abstractText;
     private StringBuffer pageStr;
     private String startPage;
     private String endPage;
@@ -175,21 +174,20 @@ public class PubMedXMLHandler {
 		}
 	}
 	
-	
-//	private class AbstractHandler extends SAXElementHandler
-//	{
-//		public void startElement(String uri, String localName, String qname, Attributes atts) {
-//			abstractText = new StringBuffer();
-//		}
-//		
-//		public void characters(char[] ch, int start, int length) {
-//			abstractText.append(new String(ch, start, length));
-//		}
-//		
-//		public void endElement(String uri, String localName, String qname) {
-//			publicationBean.setAbstractText(abstractText.toString());
-//		}
-//	}
+	private class AbstractHandler extends SAXElementHandler
+	{
+		public void startElement(String uri, String localName, String qname, Attributes atts) {
+			abstractText = new StringBuffer();
+		}
+		
+		public void characters(char[] ch, int start, int length) {
+			abstractText.append(new String(ch, start, length));
+		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			publication.setDescription(abstractText.toString());
+		}
+	}
 	
 	private class PageHandler extends SAXElementHandler
 	{
@@ -202,32 +200,32 @@ public class PubMedXMLHandler {
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			if (pageStr.toString().trim().length() > 0) {
-				String[] pages = pageStr.toString().split("-");
-				try {
-					startPage = pages[0];
-					if (pages.length == 2) {
-
-						int endPagePrefixLength = pages[0].length()
-								- pages[1].length();
-						if (endPagePrefixLength > 0) {
-							String endPagePrefix = pages[0].substring(0,
-									endPagePrefixLength);
-							endPage = endPagePrefix + pages[1];
-						} else {
-							endPage = pages[1];
-						}
+			String page = pageStr.toString().trim();
+			if (page.length() > 0) {
+				String[] pages = page.split("-");
+				startPage = pages[0];
+				if (pages.length == 2) {
+					int endPagePrefixLength = pages[0].length()
+							- pages[1].length();
+					if (endPagePrefixLength > 0) {
+						String endPagePrefix = pages[0].substring(0,
+								endPagePrefixLength);
+						endPage = endPagePrefix + pages[1];
 					} else {
-						endPage = startPage;
+						endPage = pages[1];
 					}
-					publication.setStartPage(startPage);
-					publication.setEndPage(endPage);
-				} catch (NumberFormatException nfe) {
-					System.out
-							.println("publication page number format exception:"
-									+ pageStr.toString());
+				} else {
+					endPage = startPage;
 				}
-
+				try {
+					publication.setStartPage(Integer.valueOf(startPage).toString());
+					publication.setEndPage(Integer.valueOf(endPage).toString());
+				} catch (NumberFormatException nfe) {
+					publication.setStartPage(page);
+					publication.setEndPage(null);
+					//System.out.println(
+						//"publication page number format exception:" + pageStr.toString());
+				}
 			}
 		}
 	}
@@ -290,7 +288,7 @@ public class PubMedXMLHandler {
 		s.setElementHandler("year", new YearHandler());
 		s.setElementHandler("title", new JournalTitleHandler());
 		s.setElementHandler("articletitle", new ArticleTitleHandler());
-//		s.setElementHandler("abstracttext", new AbstractHandler());
+		s.setElementHandler("abstracttext", new AbstractHandler());
 		s.setElementHandler("medlinepgn", new PageHandler());
 		s.setElementHandler("authorlist", new AuthorListHandler());
 		s.setElementHandler("author", new AuthorHandler());

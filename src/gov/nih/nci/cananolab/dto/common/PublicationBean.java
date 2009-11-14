@@ -80,6 +80,7 @@ public class PublicationBean extends FileBean {
 		Publication newPub = (Publication) source.getDomainFile();
 		
 		oldPub.setPubMedId(newPub.getPubMedId());
+		oldPub.setDescription(newPub.getDescription());
 		oldPub.setDigitalObjectId(newPub.getDigitalObjectId());
 		oldPub.setTitle(newPub.getTitle());
 		oldPub.setJournalName(newPub.getJournalName());

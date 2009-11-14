@@ -67,6 +67,9 @@ public class DWRPublicationManager {
 		}
 		PublicationForm form = (PublicationForm) wctx.getSession()
 				.getAttribute("publicationForm");
+		if (form == null) {
+			return null;
+		}
 		PublicationBean oldPubBean = (PublicationBean) form.get("publication");
 		PublicationBean newPubBean = this.searchPubMedById(pubmedID);
 		
@@ -90,6 +93,9 @@ public class DWRPublicationManager {
 		}
 		PublicationForm form = (PublicationForm) wctx.getSession()
 				.getAttribute("publicationForm");
+		if (form == null) {
+			return null;
+		}
 		return (PublicationBean) form.get("publication");
 	}
 

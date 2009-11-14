@@ -268,7 +268,7 @@
 			</td>
 			<td colspan="5">
 				<html:textarea property="publication.domainFile.description"
-					rows="3" cols="120" />
+					styleId="domainFile.description" rows="3" cols="120" />
 			</td>
 		</tr>
 	</table>
