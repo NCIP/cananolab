@@ -4,18 +4,13 @@ import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExcelParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +32,7 @@ public class ZScoreDataLoader {
 
 	public final static Map<String, String> ASSAY_TYPE_MAP = new HashMap<String, String>();
 	static {
-		//TODO verify with Michal
+		// TODO verify with Michal
 		ASSAY_TYPE_MAP.put("APO", "caspase 3 apoptosis");
 		ASSAY_TYPE_MAP.put("JC1", "mitochondrial membrane potential");
 		ASSAY_TYPE_MAP.put("RES", "intracellular metabolism indicator");
@@ -64,10 +59,10 @@ public class ZScoreDataLoader {
 
 	public final static Map<String, Double> QDOT_DOSE_MAP = new HashMap<String, Double>();
 	static {
-		FE_DOSE_MAP.put("0_01", 3d);
-		FE_DOSE_MAP.put("0_03", 10d);
-		FE_DOSE_MAP.put("0_1", 30d);
-		FE_DOSE_MAP.put("0_3", 100d);
+		QDOT_DOSE_MAP.put("0_01", 3d);
+		QDOT_DOSE_MAP.put("0_03", 10d);
+		QDOT_DOSE_MAP.put("0_1", 30d);
+		QDOT_DOSE_MAP.put("0_3", 100d);
 	}
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-SShawPNAS2008-";
@@ -86,6 +81,8 @@ public class ZScoreDataLoader {
 			String sampleName = null;
 			if (name.matches("NP\\d")) {
 				sampleName = name.replaceAll("NP(\\d)", "NP0$1");
+			} else {
+				sampleName = name;
 			}
 			sampleName = sampleName.replaceAll("NP", SAMPLE_NAME_PREFIX).trim();
 			sampleNameMap.put(name, sampleName);
@@ -93,13 +90,13 @@ public class ZScoreDataLoader {
 		List<String> assayNames = new ArrayList<String>(horizontalMatrix
 				.keySet());
 		for (String name : assayNames) {
-			if (name.matches("([A-Z]+)_([A-Z]+)_+(*+)")) {
-				String cellType = name.replaceAll("([A-Z]+)_([A-Z]+)_+(*+)",
+			if (name.matches("([A-Z]+)_([A-Z]+)_(.+)")) {
+				String cellType = name.replaceAll("([A-Z]+)_([A-Z]+)_(.+)",
 						"$1");
-				String assayType = name.replaceAll("([A-Z]+)_([A-Z]+)_+(*+)",
+				String assayType = name.replaceAll("([A-Z]+)_([A-Z]+)_(.+)",
 						"$2");
 				String conditionString = name.replaceAll(
-						"([A-Z]+)_([A-Z]+)_+(*+)", "$3");
+						"([A-Z]+)_([A-Z]+)_(.+)", "$3");
 
 				AssayCondition assayCondition = new AssayCondition(
 						CELL_TYPE_MAP.get(cellType), ASSAY_TYPE_MAP
@@ -112,55 +109,72 @@ public class ZScoreDataLoader {
 	}
 
 	public void load(UserBean user) {
-		SampleService service = new SampleServiceLocalImpl();
+		// SampleService service = new SampleServiceLocalImpl();
 		for (String name : sampleNameMap.keySet()) {
 			String sampleName = sampleNameMap.get(name);
-			try {
-				SampleBean sampleBean = service.findSampleByName(sampleName,
-						user);
-			} catch (Exception e) {
-				logger.error(e);
-			}
+			// try {
+			// SampleBean sampleBean = service.findSampleByName(sampleName,
+			// user);
+			// } catch (Exception e) {
+			// logger.error(e);
+			// }
 			Map<String, Cytotoxicity> charMap = new HashMap<String, Cytotoxicity>();
 			SortedMap<String, Double> data = dataMatrix.get(name);
-			int i = 0;
+			int i=0;
 			for (String assayStr : data.keySet()) {
 				AssayCondition ac = assayMap.get(assayStr);
 				Double dataValue = data.get(assayStr);
 
 				Cytotoxicity achar = null;
 				Finding finding = null;
-				if (charMap.get(ac.getCellType() + "||" + ac.getAssayType()) != null) {
-					achar = charMap.get(ac.getCellType() + "||"
-							+ ac.getAssayType());
-					for (Finding aFinding : achar.getFindingCollection()) {
-						finding = aFinding;
-						break;
-					}
+				if (ac != null) {
+					if (charMap
+							.get(ac.getCellType() + "||" + ac.getAssayType()) != null) {
+						achar = charMap.get(ac.getCellType() + "||"
+								+ ac.getAssayType());
+						for (Finding aFinding : achar.getFindingCollection()) {
+							finding = aFinding;
+							break;
+						}
 
-				} else {
-					achar = new Cytotoxicity();
-					achar.setCellLine(ac.getCellType());
-					achar.setAssayType(ac.getAssayType());
-					achar.setFindingCollection(new HashSet<Finding>());
-					finding = new Finding();
-					achar.getFindingCollection().add(finding);
-					finding.setDatumCollection(new HashSet<Datum>());
+					} else {
+						i=0;
+						achar = new Cytotoxicity();
+						achar.setCellLine(ac.getCellType());
+						achar.setAssayType(ac.getAssayType());
+						achar.setFindingCollection(new HashSet<Finding>());
+						finding = new Finding();
+						achar.getFindingCollection().add(finding);
+						finding.setDatumCollection(new HashSet<Datum>());
+						charMap.put(
+								ac.getCellType() + "||" + ac.getAssayType(),
+								achar);
+					}
+					Datum datum = new Datum();
+					datum.setValue(dataValue.floatValue());
+					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
+					datum.setValueType("Z-score");
+					datum.setCreatedBy("AUTO_PARSER");
+					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
+					Condition condition = new Condition();
+					condition.setName("sample concentration");
+					//NP49, NP50, NP51 are QDots
+					if (sampleName.matches(SAMPLE_NAME_PREFIX + "49")
+							|| sampleName.matches(SAMPLE_NAME_PREFIX + "50")
+							|| sampleName.matches(SAMPLE_NAME_PREFIX + "51")) {
+						condition.setValue(ac.getConditionValue2().toString());
+						condition.setValueUnit(ac.getConditionUnit2());
+					} else {
+						condition.setValue(ac.getConditionValue().toString());
+						condition.setValueUnit(ac.getConditionUnit());
+					}
+					condition.setCreatedBy("AUTO_PARSER");
+					condition.setCreatedDate(new Date());
+					datum.setConditionCollection(new HashSet<Condition>());
+					datum.getConditionCollection().add(condition);
+					finding.getDatumCollection().add(datum);
+					i++;
 				}
-				Datum datum = new Datum();
-				datum.setValue(dataValue.floatValue());
-				datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
-				datum.setValueType("Z-score");
-				datum.setCreatedBy("PARSER");
-				datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
-				Condition condition = new Condition();
-				condition.setName("sample concentration");
-				condition.setValue(ac.getConditionValue().toString());
-				condition.setValueUnit(ac.getConditionUnit());
-				datum.setConditionCollection(new HashSet<Condition>());
-				datum.getConditionCollection().add(condition);
-				finding.getDatumCollection().add(datum);
-				i++;
 				// TODO saving characterization and finding
 			}
 		}
@@ -184,22 +198,22 @@ public class ZScoreDataLoader {
 				e.printStackTrace();
 				System.exit(0);
 			}
-			try {
-				LoginService loginService = new LoginService(
-						Constants.CSM_APP_NAME);
-				UserBean user = loginService.login(loginName, password);
-				if (user.isCurator()) {
-					loader.load(user);
-				} else {
-					System.out
-							.println("You need to be the curator to be able to execute this function");
-					System.exit(0);
-				}
-			} catch (SecurityException e) {
-				System.out.println("Can't authenticate the login name.");
-				e.printStackTrace();
-				System.exit(0);
-			}
+			// try {
+			// LoginService loginService = new LoginService(
+			// Constants.CSM_APP_NAME);
+			// UserBean user = loginService.login(loginName, password);
+			// if (user.isCurator()) {
+			loader.load(null);
+			// } else {
+			// System.out
+			// .println("You need to be the curator to be able to execute this function");
+			// System.exit(0);
+			// }
+			// } catch (SecurityException e) {
+			// System.out.println("Can't authenticate the login name.");
+			// e.printStackTrace();
+			// System.exit(0);
+			// }
 		} else {
 			System.out.println("Invalid argument!");
 			System.out
@@ -211,16 +225,6 @@ public class ZScoreDataLoader {
 
 class AssayCondition {
 	private String cellType;
-	private Characterization achar;
-
-	public Characterization getAchar() {
-		return achar;
-	}
-
-	public void setAchar(Characterization achar) {
-		this.achar = achar;
-	}
-
 	private String assayType;
 	private Double conditionValue;
 	private String conditionUnit;
@@ -235,6 +239,8 @@ class AssayCondition {
 		this.assayType = assayType;
 		this.conditionValue = conditionValue;
 		this.conditionUnit = conditionUnit;
+		this.conditionValue2 = conditionValue2;
+		this.conditionUnit2 = conditionUnit2;
 	}
 
 	public String getCellType() {
