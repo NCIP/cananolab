@@ -32,7 +32,7 @@ public class ExcelParser {
 	 * @return
 	 * @throws IOException
 	 */
-	public SortedMap<String, SortedMap<String, Double>> parse()
+	public SortedMap<String, SortedMap<String, Double>> verticalParse()
 			throws IOException {
 		Workbook wb = null;
 
@@ -62,6 +62,53 @@ public class ExcelParser {
 					if (cell != null) {
 						columnData.put(rowHeader, cell.getNumericCellValue());
 						dataMatrix.put(columnHeader, columnData);
+					}
+				}
+				j++;
+			}
+			i++;
+		}
+		return dataMatrix;
+	}
+
+	/**
+	 * Parse the Excel file into a 2-D matrix represented as a map of map. Key
+	 * is row header, value is a map, whose key is column header and value is
+	 * the cell.
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public SortedMap<String, SortedMap<String, Double>> horizontalParse()
+			throws IOException {
+		Workbook wb = null;
+
+		InputStream inputStream = new BufferedInputStream(new FileInputStream(
+				fileName));
+		POIFSFileSystem fs = new POIFSFileSystem(inputStream);
+		wb = new HSSFWorkbook(fs);
+
+		Sheet sheet1 = wb.getSheetAt(0);
+		// printSheet(sheet1);
+		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
+		Row firstRow = sheet1.getRow(0);
+		int i = 0;
+		for (Row row : sheet1) {
+			String rowHeader = row.getCell(0).getStringCellValue();
+			int j = 0;
+			for (Cell cell : row) {
+				if (i > 0 && j > 0) {
+					String columnHeader = firstRow.getCell(j)
+							.getStringCellValue();
+					SortedMap<String, Double> rowData = null;
+					if (dataMatrix.get(rowHeader) != null) {
+						rowData = dataMatrix.get(rowHeader);
+					} else {
+						rowData = new TreeMap<String, Double>();
+					}
+					if (cell != null) {
+						rowData.put(columnHeader, cell.getNumericCellValue());
+						dataMatrix.put(rowHeader, rowData);
 					}
 				}
 				j++;
@@ -107,10 +154,10 @@ public class ExcelParser {
 	public void printMatrix(
 			SortedMap<String, SortedMap<String, Double>> dataMatrix) {
 		for (String key : dataMatrix.keySet()) {
-			System.out.println("column header:" + key);
-			Map<String, Double> colData = dataMatrix.get(key);
-			for (Map.Entry<String, Double> entry : colData.entrySet()) {
-				System.out.println("row header:" + entry.getValue());
+			System.out.println("key:" + key);
+			Map<String, Double> data = dataMatrix.get(key);
+			for (Map.Entry<String, Double> entry : data.entrySet()) {
+				System.out.println("key-" + entry.getKey()+": "+entry.getValue());
 			}
 		}
 	}
@@ -120,9 +167,12 @@ public class ExcelParser {
 			String inputFileName = args[0];
 			try {
 				ExcelParser parser = new ExcelParser(inputFileName);
-				SortedMap<String, SortedMap<String, Double>> matrix = parser
-						.parse();
-				parser.printMatrix(matrix);
+//				SortedMap<String, SortedMap<String, Double>> matrix1 = parser
+//						.verticalParse();
+//				parser.printMatrix(matrix1);
+				SortedMap<String, SortedMap<String, Double>> matrix2 = parser
+						.horizontalParse();
+				parser.printMatrix(matrix2);
 			} catch (IOException e) {
 				System.out.println("Input file not found.");
 				e.printStackTrace();
