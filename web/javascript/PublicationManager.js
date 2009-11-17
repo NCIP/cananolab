@@ -37,7 +37,6 @@ function updateSubmitFormBasedOnCategory() {
 }
 
 function enableAutoFields() {
-	document.getElementById("domainFile.description").readOnly = false;
 	document.getElementById("domainFile.digitalObjectId").readOnly = false;
 	document.getElementById("domainFile.title").readOnly = false;
 	document.getElementById("domainFile.journalName").readOnly = false;
@@ -135,12 +134,6 @@ function populatePubMedInfo(publication) {
 			show("addAuthor");
 			show("fileSection");
 		} else {
-			if (publication.domainFile.description != null &&
-				publication.domainFile.description != "") {
-				document.getElementById("domainFile.description").readOnly = true;
-			} else {
-				document.getElementById("domainFile.description").readOnly = false;
-			}
 			document.getElementById("domainFile.digitalObjectId").readOnly = true;
 			document.getElementById("domainFile.title").readOnly = true;
 			document.getElementById("domainFile.journalName").readOnly = true;

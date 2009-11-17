@@ -259,7 +259,8 @@
 				<i>(one keyword per line)</i>
 			</td>
 			<td colspan="5">
-				<html:textarea property="publication.keywordsStr" rows="3" cols="80" />
+				<html:textarea property="publication.keywordsStr"
+					styleId="keywordsStr" rows="3" cols="80" />
 			</td>
 		</tr>
 		<tr>

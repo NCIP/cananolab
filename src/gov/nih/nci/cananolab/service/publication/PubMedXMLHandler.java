@@ -1,12 +1,15 @@
 package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
 import gov.nih.nci.cananolab.util.SAXEventSwitcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -18,24 +21,28 @@ import org.xml.sax.Attributes;
 public class PubMedXMLHandler {
 	private static final String PUBMED_URL = 
 		"http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
-	private static PublicationBean publicationBean = null;
 	private static PubMedXMLHandler onlyInstance = null;
+	
+	private PublicationBean publicationBean = null;
 	private Publication publication = null;
 	
-    private StringBuffer journal;
-    private StringBuffer volume;
-    private StringBuffer articleTitle;
-    private StringBuffer year;
-    private StringBuffer abstractText;
-    private StringBuffer pageStr;
+    private StringBuilder journal;
+    private StringBuilder volume;
+    private StringBuilder articleTitle;
+    private StringBuilder year;
+    private StringBuilder abstractText;
+    private StringBuilder pageStr;
     private String startPage;
     private String endPage;
     private List<Author> authorList = null;
     private Author author = null;
-    private StringBuffer firstName;
-    private StringBuffer initial;
-    private StringBuffer lastName;
-    private StringBuffer doi;
+    private List<Keyword> keywordList = null;
+    private Keyword keyword = null;
+    private StringBuilder keywordString;
+    private StringBuilder firstName;
+    private StringBuilder initial;
+    private StringBuilder lastName;
+    private StringBuilder doi;
     private boolean inPubDate;
     private boolean isDoi = false;
     private boolean foundDoi = false;
@@ -48,7 +55,8 @@ public class PubMedXMLHandler {
         return onlyInstance;
     }
     
-    private PubMedXMLHandler(){}
+    private PubMedXMLHandler(){
+    }
 	
 	public boolean parsePubMedXML(Long pubMedId, PublicationBean pubBean) {
 		publicationBean = pubBean;
@@ -80,7 +88,7 @@ public class PubMedXMLHandler {
 	private class VolumeHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			volume = new StringBuffer();
+			volume = new StringBuilder();
 		}
 		
 		public void characters(char[] ch, int start, int length) {
@@ -95,7 +103,7 @@ public class PubMedXMLHandler {
 	private class JournalTitleHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			journal = new StringBuffer();
+			journal = new StringBuilder();
 		}
 		
 		public void characters(char[] ch, int start, int length) {
@@ -121,7 +129,7 @@ public class PubMedXMLHandler {
 	private class YearHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			if(inPubDate) year = new StringBuffer();
+			if(inPubDate) year = new StringBuilder();
 		}
 		
 		public void characters(char[] ch, int start, int length) {
@@ -136,7 +144,7 @@ public class PubMedXMLHandler {
 	private class ArticleTitleHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			articleTitle = new StringBuffer();
+			articleTitle = new StringBuilder();
 		}
 		
 		public void characters(char[] ch, int start, int length) {
@@ -151,7 +159,7 @@ public class PubMedXMLHandler {
 	private class ArticleIdHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			doi = new StringBuffer();
+			doi = new StringBuilder();
 			String idType = atts.getValue("IdType");
 			//System.out.println("start doi, idtype:" + idType);
 			if(idType != null && idType.equalsIgnoreCase("doi")) {
@@ -177,7 +185,7 @@ public class PubMedXMLHandler {
 	private class AbstractHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			abstractText = new StringBuffer();
+			abstractText = new StringBuilder();
 		}
 		
 		public void characters(char[] ch, int start, int length) {
@@ -192,7 +200,7 @@ public class PubMedXMLHandler {
 	private class PageHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			pageStr = new StringBuffer();
+			pageStr = new StringBuilder();
 		}
 		
 		public void characters(char[] ch, int start, int length) {
@@ -245,9 +253,9 @@ public class PubMedXMLHandler {
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
 			author = new Author();
-			lastName = new StringBuffer();
-			firstName = new StringBuffer();
-			initial = new StringBuffer();
+			lastName = new StringBuilder();
+			firstName = new StringBuilder();
+			initial = new StringBuilder();
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
@@ -279,6 +287,51 @@ public class PubMedXMLHandler {
 		}
 	}
 	
+	private class KeywordListHandler extends SAXElementHandler
+	{
+		public void startElement(String uri, String localName, String qname, Attributes atts) {
+			keywordList = new ArrayList<Keyword>();
+		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			publication.setKeywordCollection(keywordList);
+			if (!keywordList.isEmpty()) {
+				StringBuilder sb = new StringBuilder();
+				for (Keyword key : keywordList) {
+					sb.append(key.getName()).append("\r\n");
+				}
+				publicationBean.setKeywordsStr(sb.toString());
+			}
+		}
+	}
+	
+	private class KeywordHandler extends SAXElementHandler
+	{
+		public void startElement(String uri, String localName, String qname, Attributes atts) {
+			keyword = new Keyword();
+			keywordString = new StringBuilder();
+		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			keyword.setName(keywordString.toString());
+			keywordList.add(keyword);
+		}
+	}
+	
+	private class DescriptorNameHandler extends SAXElementHandler
+	{
+		public void characters(char[] ch, int start, int length) {
+			keywordString.append(new String(ch, start, length));
+		}
+	}
+	
+	private class QualifierNameHandler extends SAXElementHandler
+	{
+		public void characters(char[] ch, int start, int length) {
+			keywordString.append('/').append(new String(ch, start, length));
+		}
+	}
+	
 	public void go(String xmlinput) throws Exception
 	{
 		SAXEventSwitcher s = new SAXEventSwitcher();
@@ -298,6 +351,12 @@ public class PubMedXMLHandler {
 		s.setElementHandler("initials", new InitialHandler());
 		s.setElementHandler("articleid", new ArticleIdHandler());
 		
+		// Retrieve keyword information from PubMed (must be all lower case).
+		s.setElementHandler("meshheadinglist", new KeywordListHandler());
+		s.setElementHandler("meshheading", new KeywordHandler());
+		s.setElementHandler("descriptorname", new DescriptorNameHandler());
+		s.setElementHandler("qualifiername", new QualifierNameHandler());
+		
         SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser sparser = spf.newSAXParser();
         sparser.parse(xmlinput, s);
@@ -310,11 +369,24 @@ public class PubMedXMLHandler {
 		phandler.parsePubMedXML(Long.valueOf("18294836"), pubBean);
 		
 		Publication pub = (Publication) pubBean.getDomainFile();
-		System.out.println("JournalName:" + pub.getJournalName());
-		System.out.println("Volume:" + pub.getVolume());
-		System.out.println("year:" + pub.getYear());
-		System.out.println("title:" + pub.getTitle());
-		System.out.println("start page:" + pub.getStartPage());
-		System.out.println("end page:" + pub.getEndPage());
+		System.out.println("=========================================");
+		System.out.println("title: " + pub.getTitle());
+		System.out.println("url: " + pub.getUri());
+		System.out.println("pubmed id: " + pub.getPubMedId());
+		System.out.println("doi: " + pub.getDigitalObjectId());
+		System.out.println("journal: " + pub.getJournalName());
+		System.out.println("year: " + pub.getYear());
+		System.out.println("createdBy: " + pub.getCreatedBy());
+		System.out.println("createdDate: " + pub.getCreatedDate());
+		System.out.println("start page: " + pub.getStartPage());
+		System.out.println("end page: " + pub.getEndPage());
+		System.out.println("volume: " + pub.getVolume());
+		System.out.println("Abstract: " + pub.getDescription());
+		for (Author author : pubBean.getAuthors()) {
+			System.out.println("       author: " + author.getLastName() + ","
+					+ author.getFirstName() + "(" + author.getInitial()
+					+ ")");
+		}
+		System.out.println("Keywords: " + pubBean.getKeywordsStr());
 	}
 }
