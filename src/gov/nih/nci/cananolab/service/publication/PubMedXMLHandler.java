@@ -1,15 +1,12 @@
 package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
 import gov.nih.nci.cananolab.util.SAXEventSwitcher;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -36,9 +33,8 @@ public class PubMedXMLHandler {
     private String endPage;
     private List<Author> authorList = null;
     private Author author = null;
-    private List<Keyword> keywordList = null;
-    private Keyword keyword = null;
-    private StringBuilder keywordString;
+	private StringBuilder keywordsStr;
+    private StringBuilder keywordName;
     private StringBuilder firstName;
     private StringBuilder initial;
     private StringBuilder lastName;
@@ -290,45 +286,36 @@ public class PubMedXMLHandler {
 	private class KeywordListHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			keywordList = new ArrayList<Keyword>();
+			keywordsStr = new StringBuilder();
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			publication.setKeywordCollection(keywordList);
-			if (!keywordList.isEmpty()) {
-				StringBuilder sb = new StringBuilder();
-				for (Keyword key : keywordList) {
-					sb.append(key.getName()).append("\r\n");
-				}
-				publicationBean.setKeywordsStr(sb.toString());
-			}
+			publicationBean.setKeywordsStr(keywordsStr.toString());
 		}
 	}
 	
 	private class KeywordHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			keyword = new Keyword();
-			keywordString = new StringBuilder();
+			keywordName = new StringBuilder();
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			keyword.setName(keywordString.toString());
-			keywordList.add(keyword);
+			keywordsStr.append(keywordName.toString()).append("\r\n");
 		}
 	}
 	
 	private class DescriptorNameHandler extends SAXElementHandler
 	{
 		public void characters(char[] ch, int start, int length) {
-			keywordString.append(new String(ch, start, length));
+			keywordName.append(new String(ch, start, length));
 		}
 	}
 	
 	private class QualifierNameHandler extends SAXElementHandler
 	{
 		public void characters(char[] ch, int start, int length) {
-			keywordString.append('/').append(new String(ch, start, length));
+			keywordName.append('/').append(new String(ch, start, length));
 		}
 	}
 	

@@ -89,6 +89,7 @@ public class PublicationBean extends FileBean {
 		oldPub.setVolume(newPub.getVolume());
 		oldPub.setYear(newPub.getYear());
 		this.setAuthors(source.getAuthors());
+		this.setKeywordsStr(source.getKeywordsStr());
 	}
 
 	public boolean equals(Object obj) {
