@@ -134,6 +134,25 @@
 		<delete dir="${tmp.dir}" />
 	</target>
 
+	<target name="run-stanshaw-loader"
+		depends="prepare-standalone-database-connection">
+		<property file="stanshaw.properties" />
+		<java
+			classname="gov.nih.nci.cananolab.util.StanShawExcelParser"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+			<arg value="${stanshaw.user}" />
+			<arg value="${stanshaw.password}" />
+			<arg value="${stanshaw.excel}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
 	<target name="run-endnote-loader"
 		depends="prepare-standalone-database-connection">
 		<property file="endnote.properties" />
@@ -145,9 +164,9 @@
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 			<sysproperty key="java.security.auth.login.config"
 				value="${tmp.dir}/classes/login.config" />
-			<arg value="${endnote.database.user}" />
-			<arg value="${endnote.database.password}" />
-			<arg value="${endnote.xml.dir}" />
+			<arg value="${endnote.user}" />
+			<arg value="${endnote.password}" />
+			<arg value="${endnote.xml}" />
 		</java>
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" />
