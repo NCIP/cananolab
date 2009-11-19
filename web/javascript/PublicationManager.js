@@ -126,7 +126,7 @@ function fillPubMedInfo() {
 function populatePubMedInfo(publication) {
 	if (publication != null) {
 		currentPublication = publication;
-		dwr.util.setValues(publication);
+		dwr.util.setValues(publication, {escapeHtml:false});
 		// If PubMedId is null in returned pub -> pubMedId not found.
 		if (publication.domainFile.pubMedId == null) {
 			alert("Invalid PubMed ID entered.");
@@ -134,6 +134,11 @@ function populatePubMedInfo(publication) {
 			show("addAuthor");
 			show("fileSection");
 		} else {
+			// Set keywordsStr & description again for special characters.
+			dwr.util.setValue("keywordsStr", publication.keywordsStr, 
+				{escapeHtml:false});
+			dwr.util.setValue("domainFile.description",
+				publication.domainFile.description, {escapeHtml:false});
 			document.getElementById("domainFile.digitalObjectId").readOnly = true;
 			document.getElementById("domainFile.title").readOnly = true;
 			document.getElementById("domainFile.journalName").readOnly = true;
