@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.util.SAXEventSwitcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -301,7 +302,12 @@ public class PubMedXMLHandler {
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			keywordsStr.append(keywordName.toString()).append("\r\n");
+			String name = keywordName.toString();
+			if (keywordName.length() > 0 && 
+				keywordName.charAt(keywordName.length() - 1) == '/') {
+				name = keywordName.substring(0, keywordName.length() - 1);
+			}
+			keywordsStr.append(name).append("\r\n");
 		}
 	}
 	
@@ -310,12 +316,21 @@ public class PubMedXMLHandler {
 		public void characters(char[] ch, int start, int length) {
 			keywordName.append(new String(ch, start, length));
 		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			keywordName.append('/');
+		}
 	}
 	
 	private class QualifierNameHandler extends SAXElementHandler
 	{
+		//Note: this will be called 3 times for "antagonists & inhibitors".
 		public void characters(char[] ch, int start, int length) {
-			keywordName.append('/').append(new String(ch, start, length));
+			keywordName.append(new String(ch, start, length));
+		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			keywordName.append('/');
 		}
 	}
 	
@@ -353,7 +368,7 @@ public class PubMedXMLHandler {
 	public static void main(String[] args) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		PublicationBean pubBean = new PublicationBean();
-		phandler.parsePubMedXML(Long.valueOf("18294836"), pubBean);
+		phandler.parsePubMedXML(Long.valueOf("19420561"), pubBean); //16642514
 		
 		Publication pub = (Publication) pubBean.getDomainFile();
 		System.out.println("=========================================");
@@ -370,10 +385,11 @@ public class PubMedXMLHandler {
 		System.out.println("volume: " + pub.getVolume());
 		System.out.println("Abstract: " + pub.getDescription());
 		for (Author author : pubBean.getAuthors()) {
-			System.out.println("       author: " + author.getLastName() + ","
+			System.out.println("       Authors: " + author.getLastName() + ","
 					+ author.getFirstName() + "(" + author.getInitial()
 					+ ")");
 		}
-		System.out.println("Keywords: " + pubBean.getKeywordsStr());
+		System.out.println("Keywords:");
+		System.out.println(pubBean.getKeywordsStr());
 	}
 }
