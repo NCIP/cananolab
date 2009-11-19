@@ -259,8 +259,9 @@
 				<i>(one keyword per line)</i>
 			</td>
 			<td colspan="5">
-				<html:textarea property="publication.keywordsStr"
-					styleId="keywordsStr" rows="3" cols="80" />
+				<textarea id="keywordsStr" rows="3" cols="80">
+					<c:out value="${publicationForm.map.publication.keywordsStr}" escapeXml="false"/>
+				</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -268,8 +269,9 @@
 				Description
 			</td>
 			<td colspan="5">
-				<html:textarea property="publication.domainFile.description"
-					styleId="domainFile.description" rows="3" cols="120" />
+				<textarea id="domainFile.description" rows="3" cols="120">
+					<c:out value="${publicationForm.map.publication.domainFile.description}" escapeXml="false"/>
+				</textarea>
 			</td>
 		</tr>
 	</table>
