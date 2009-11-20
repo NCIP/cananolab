@@ -38,7 +38,7 @@ public class CompositionQueryBean extends BaseQueryBean {
 	}
 
 	public void setChemicalName(String chemicalName) {
-		this.chemicalName = chemicalName;
+		this.chemicalName = chemicalName.trim();
 	}
 
 	public String getDisplayName() {
