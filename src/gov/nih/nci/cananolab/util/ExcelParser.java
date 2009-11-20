@@ -97,11 +97,11 @@ public class ExcelParser {
 			//printSheet(sheet1);
 			Row firstRow = sheet1.getRow(0);
 			int rowIndex = 0;
-			for (Row row : sheet1) { //skipping first row/column
+			for (Row row : sheet1) {
 				int colIndex = 0;
 				String rowHeader = row.getCell(0).getStringCellValue();
 				for (Cell cell : row) {
-					if (rowIndex > 0 && colIndex > 0) {
+					if (rowIndex > 0 && colIndex > 0) { //skipping first row/column
 						String columnHeader = firstRow.getCell(colIndex)
 								.getStringCellValue();
 						SortedMap<String, Double> rowData = null;
