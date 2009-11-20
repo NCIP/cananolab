@@ -41,9 +41,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class CharacterizationServiceLocalImpl implements
 		CharacterizationService {
@@ -381,7 +381,7 @@ public class CharacterizationServiceLocalImpl implements
 						config.setCreatedBy(dbConfig.getCreatedBy());
 					}
 					config.setCreatedDate(dbConfig.getCreatedDate());
-				}				
+				}
 			}
 			Technique technique = config.getTechnique();
 			// check if technique already exists;
@@ -540,23 +540,24 @@ public class CharacterizationServiceLocalImpl implements
 			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
 			boolean copyData, UserBean user) throws CharacterizationException,
 			NoAccessException {
-		// create a deep copy
-		Characterization copy = charBean.getDomainCopy(copyData);
-		CharacterizationBean copyBean = new CharacterizationBean(copy);
-		try {
-			// copy file visibility
-			for (FindingBean findingBean : copyBean.getFindings()) {
-				for (FileBean fileBean : findingBean.getFiles()) {
-					fileHelper.retrieveVisibilityAndContentForCopiedFile(
-							fileBean, user);
-				}
-			}
-		} catch (Exception e) {
-			String error = "Error setting visibility of the copy.";
-			throw new CharacterizationException(error, e);
-		}
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
+				// create a deep copy
+				Characterization copy = charBean.getDomainCopy(copyData);
+				CharacterizationBean copyBean = new CharacterizationBean(copy);
+				try {
+					// copy file visibility
+					for (FindingBean findingBean : copyBean.getFindings()) {
+						for (FileBean fileBean : findingBean.getFiles()) {
+							fileHelper
+									.retrieveVisibilityAndContentForCopiedFile(
+											fileBean, user);
+						}
+					}
+				} catch (Exception e) {
+					String error = "Error setting visibility of the copy.";
+					throw new CharacterizationException(error, e);
+				}
 				/**
 				 * Need to save associate Config & Finding in copy bean first,
 				 * otherwise will get "transient object" Hibernate exception.
