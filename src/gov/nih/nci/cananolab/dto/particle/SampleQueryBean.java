@@ -29,7 +29,7 @@ public class SampleQueryBean extends BaseQueryBean {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	public String getDisplayName() {
