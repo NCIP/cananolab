@@ -36,9 +36,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of CompositionService.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
@@ -674,21 +674,22 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			NanomaterialEntityBean entityBean, SampleBean oldSampleBean,
 			SampleBean[] newSampleBeans, UserBean user)
 			throws CompositionException, NoAccessException {
-		NanomaterialEntityBean copyBean = null;
-		try {
-			NanomaterialEntity copy = entityBean.getDomainCopy();
-			copyBean = new NanomaterialEntityBean(copy);
-			// copy file visibility and file content
-			for (FileBean fileBean : copyBean.getFiles()) {
-				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
-						user);
-			}
-		} catch (Exception e) {
-			String error = "Error in copying the nanomaterial entity.";
-			throw new CompositionException(error, e);
-		}
+
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
+				NanomaterialEntityBean copyBean = null;
+				try {
+					NanomaterialEntity copy = entityBean.getDomainCopy();
+					copyBean = new NanomaterialEntityBean(copy);
+					// copy file visibility and file content
+					for (FileBean fileBean : copyBean.getFiles()) {
+						fileHelper.retrieveVisibilityAndContentForCopiedFile(
+								fileBean, user);
+					}
+				} catch (Exception e) {
+					String error = "Error in copying the nanomaterial entity.";
+					throw new CompositionException(error, e);
+				}
 				// replace file URI with new sample name
 				for (FileBean fileBean : copyBean.getFiles()) {
 					String newUri = fileBean.getDomainFile().getUri().replace(
@@ -710,22 +711,22 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	public void copyAndSaveFunctionalizingEntity(
 			FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
 			SampleBean[] newSampleBeans, UserBean user)
-			throws CompositionException, NoAccessException {
-		FunctionalizingEntityBean copyBean = null;
-		try {
-			FunctionalizingEntity copy = entityBean.getDomainCopy();
-			copyBean = new FunctionalizingEntityBean(copy);
-			// copy file visibility and file content
-			for (FileBean fileBean : copyBean.getFiles()) {
-				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
-						user);
-			}
-		} catch (Exception e) {
-			String error = "Error in copying the functionalizing entity.";
-			throw new CompositionException(error, e);
-		}
+			throws CompositionException, NoAccessException {		
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
+				FunctionalizingEntityBean copyBean = null;
+				try {
+					FunctionalizingEntity copy = entityBean.getDomainCopy();
+					copyBean = new FunctionalizingEntityBean(copy);
+					// copy file visibility and file content
+					for (FileBean fileBean : copyBean.getFiles()) {
+						fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
+								user);
+					}
+				} catch (Exception e) {
+					String error = "Error in copying the functionalizing entity.";
+					throw new CompositionException(error, e);
+				}
 				// replace file URI with new sample name
 				for (FileBean fileBean : copyBean.getFiles()) {
 					String newUri = fileBean.getDomainFile().getUri().replace(
