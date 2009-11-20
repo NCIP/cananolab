@@ -21,12 +21,13 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Contains a list of static comparators for use in caNanoLab
- *
+ * 
  * @author pansu
- *
+ * 
  */
 
 /* CVS $Id: Comparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
@@ -137,8 +138,15 @@ public class Comparators {
 				NanomaterialEntityBean entity2) {
 			if (entity1.getDomainEntity().getClass().getCanonicalName().equals(
 					entity2.getDomainEntity().getClass().getCanonicalName())) {
-				return entity1.getDomainEntity().getCreatedDate().compareTo(
-						entity2.getDomainEntity().getCreatedDate());
+				if (entity1.getDomainEntity().getCreatedDate().compareTo(
+						entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId().compareTo(
+							entity2.getDomainEntity().getId());
+				} else {
+					return entity1.getDomainEntity().getCreatedDate()
+							.compareTo(
+									entity2.getDomainEntity().getCreatedDate());
+				}
 			} else {
 				return entity1.getDomainEntity().getClass().getCanonicalName()
 						.compareTo(
@@ -154,6 +162,11 @@ public class Comparators {
 				FunctionalizingEntityBean entity2) {
 			if (entity1.getDomainEntity().getClass().getCanonicalName().equals(
 					entity2.getDomainEntity().getClass().getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate().compareTo(
+						entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId().compareTo(
+							entity2.getDomainEntity().getId());
+				}
 				return entity1.getDomainEntity().getCreatedDate().compareTo(
 						entity2.getDomainEntity().getCreatedDate());
 			} else {
@@ -259,8 +272,14 @@ public class Comparators {
 			String name1 = chara1.getCharacterizationName();
 			String name2 = chara2.getCharacterizationName();
 			if (name1.compareTo(name2) == 0) {
-				return chara1.getDomainChar().getCreatedDate().compareTo(
-						chara2.getDomainChar().getCreatedDate());
+				Date date1 = chara1.getDomainChar().getCreatedDate();
+				Date date2 = chara2.getDomainChar().getCreatedDate();
+				if (date1.compareTo(date2) == 0) {
+					return chara1.getDomainChar().getId().compareTo(
+							chara2.getDomainChar().getId());
+				} else {
+					return date1.compareTo(date2);
+				}
 			} else {
 				return name1.compareTo(name2);
 			}
