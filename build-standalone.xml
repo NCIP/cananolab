@@ -164,8 +164,8 @@
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 			<sysproperty key="java.security.auth.login.config"
 				value="${tmp.dir}/classes/login.config" />
-			<arg value="${endnote.user}" />
-			<arg value="${endnote.password}" />
+			<arg value="${curator.login.name}" />
+			<arg value="${curator.password}" />
 			<arg value="${endnote.xml}" />
 		</java>
 		<!-- remove tmp directory -->
