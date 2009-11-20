@@ -246,6 +246,9 @@ public class CharacterizationBean {
 						finding.setDatumCollection(newDatums);
 					}
 				}
+				else {
+					finding.setDatumCollection(null);
+				}
 				Collection<File> oldFiles = finding.getFileCollection();
 				if (oldFiles == null || oldFiles.isEmpty()) {
 					finding.setFileCollection(null);
