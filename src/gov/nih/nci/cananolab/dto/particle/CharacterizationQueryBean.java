@@ -58,7 +58,7 @@ public class CharacterizationQueryBean extends BaseQueryBean {
 	}
 
 	public void setDatumValue(String datumValue) {
-		this.datumValue = datumValue;
+		this.datumValue = datumValue.trim();
 	}
 
 	public String getDatumValueUnit() {
