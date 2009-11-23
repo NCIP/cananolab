@@ -75,7 +75,7 @@ public class ZScoreDataLoader {
 	}
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-SShawPNAS2008-";
-	public final static String AUTO_PARSER = "AUTO_PARSER";
+	private String userName = "AUTO_PARSER";
 	
 	// Sample name map, {NP1 -> MIT_MGH-SShawPNAS2008-01}, etc.
 	private Map<String, String> sampleNameMap = new HashMap<String, String>();
@@ -124,6 +124,7 @@ public class ZScoreDataLoader {
 	}
 
 	public void load(UserBean user) {
+		userName = user.getLoginName();
 		SampleService service = new SampleServiceLocalImpl();
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		//iterate each Sample name, load sample & save Cytotoxity char.
@@ -134,11 +135,13 @@ public class ZScoreDataLoader {
 				//1.load sampleBean by sample name.
 				sampleBean = service.findSampleByName(sampleName, user);
 			} catch (Exception e) {
-				logger.error("Sample not found for: " + sampleName, e);
+				logger.error("Error loading Sample for: " + sampleName, e);
 				continue;
 			}
 			if (sampleBean == null) {
-				logger.warn("Sample not found for: " + sampleName);
+				if (logger.isDebugEnabled()) {
+					logger.debug("Sample not found for: " + sampleName);
+				}
 				continue;
 			}
 			//2.create a Char map for holding all Chars for this sample.
@@ -161,26 +164,26 @@ public class ZScoreDataLoader {
 					} else {
 						i = 0;
 						achar = new Cytotoxicity();
-						achar.setCreatedBy(AUTO_PARSER);
+						achar.setCreatedBy(userName);
 						achar.setCreatedDate(Calendar.getInstance().getTime());
 						achar.setCellLine(ac.getCellType());
 						achar.setAssayType(ac.getAssayType());
 						achar.setFindingCollection(new HashSet<Finding>());
 						finding = new Finding();
-						finding.setCreatedBy(AUTO_PARSER);
+						finding.setCreatedBy(userName);
 						finding.setCreatedDate(Calendar.getInstance().getTime());
 						achar.getFindingCollection().add(finding);
 						finding.setDatumCollection(new HashSet<Datum>());
 						charMap.put(acStr, achar);
 					}
 					Datum datum = new Datum();
-					datum.setCreatedBy(AUTO_PARSER);
+					datum.setCreatedBy(userName);
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 					datum.setValue(data.get(assayStr).floatValue());
 					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
 					datum.setValueType("Z-score");
 					Condition condition = new Condition();
-					condition.setCreatedBy(AUTO_PARSER);
+					condition.setCreatedBy(userName);
 					condition.setCreatedDate(new Date());
 					condition.setName("sample concentration");
 					//NP49, NP50, NP51 are QDots
@@ -201,6 +204,7 @@ public class ZScoreDataLoader {
 			} // end of loop - iterate data matrix.
 			
 			//4.saving Finding and then save Characterization.
+			i = 0;
 			for (String charKey : charMap.keySet()) {
 				Cytotoxicity achar = charMap.get(charKey);
 				CharacterizationBean charBean = new CharacterizationBean(achar);
@@ -210,10 +214,17 @@ public class ZScoreDataLoader {
 						charService.saveFinding(finding, user);
 					}
 					charService.saveCharacterization(sampleBean, charBean, user);
+					if (logger.isDebugEnabled()) {
+						logger.debug("charBean saved for charKey: " + charKey);
+					}
+					i++;
 				} catch (Exception e) {
-					logger.error("Error saving charBean for: " + charBean, e);
+					logger.error("Error saving charBean for charKey: " + charKey, e);
 					continue;
 				}
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("charBean# saved: " + i + ", for sample:" + name);
 			}
 		} // end of loop - iterate sample name map.
 	}
