@@ -137,6 +137,10 @@ public class ZScoreDataLoader {
 				logger.error("Sample not found for: " + sampleName, e);
 				continue;
 			}
+			if (sampleBean == null) {
+				logger.warn("Sample not found for: " + sampleName);
+				continue;
+			}
 			//2.create a Char map for holding all Chars for this sample.
 			Map<String, Cytotoxicity> charMap = new HashMap<String, Cytotoxicity>();
 			SortedMap<String, Double> data = dataMatrix.get(name);
@@ -211,7 +215,7 @@ public class ZScoreDataLoader {
 					continue;
 				}
 			}
-		}
+		} // end of loop - iterate sample name map.
 	}
 
 	public static void main(String[] args) {
