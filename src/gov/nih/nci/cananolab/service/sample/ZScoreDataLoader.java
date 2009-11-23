@@ -5,6 +5,13 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.LoginService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExcelParser;
 
@@ -66,14 +73,19 @@ public class ZScoreDataLoader {
 	}
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-SShawPNAS2008-";
-
+	
+	// Sample name map, {NP1 -> MIT_MGH-SShawPNAS2008-01}, etc.
 	private Map<String, String> sampleNameMap = new HashMap<String, String>();
+	
+	// Assay map, {AO_RES_0_01 -> [AssayCondition]}.
 	private Map<String, AssayCondition> assayMap = new HashMap<String, AssayCondition>();
-	private SortedMap<String, SortedMap<String, Double>> dataMatrix;
+	
+	// Data map, is the Vertical Map, {NP1 -> {AO_RES_0_01, 0.403302864}}.
+	private Map<String, SortedMap<String, Double>> dataMatrix;
 
 	public ZScoreDataLoader(
-			SortedMap<String, SortedMap<String, Double>> verticalMatrix,
-			SortedMap<String, SortedMap<String, Double>> horizontalMatrix) {
+			Map<String, SortedMap<String, Double>> verticalMatrix,
+			Map<String, SortedMap<String, Double>> horizontalMatrix) {
 		this.dataMatrix = verticalMatrix;
 		List<String> particleNames = new ArrayList<String>(verticalMatrix
 				.keySet());
@@ -109,36 +121,38 @@ public class ZScoreDataLoader {
 	}
 
 	public void load(UserBean user) {
-		// SampleService service = new SampleServiceLocalImpl();
+		SampleService service = new SampleServiceLocalImpl();
+		CharacterizationService charService = new CharacterizationServiceLocalImpl();
+		//iterate each Sample name, load sample & save Cytotoxity char.
 		for (String name : sampleNameMap.keySet()) {
 			String sampleName = sampleNameMap.get(name);
-			// try {
-			// SampleBean sampleBean = service.findSampleByName(sampleName,
-			// user);
-			// } catch (Exception e) {
-			// logger.error(e);
-			// }
+			SampleBean sampleBean = null;
+			try {
+				//1.load sampleBean by sample name.
+				sampleBean = service.findSampleByName(sampleName, user);
+			} catch (Exception e) {
+				logger.error("Sample not found for: " + sampleName, e);
+				continue;
+			}
+			//2.create a Char map for holding all Chars for this sample.
 			Map<String, Cytotoxicity> charMap = new HashMap<String, Cytotoxicity>();
 			SortedMap<String, Double> data = dataMatrix.get(name);
-			int i=0;
+			int i = 0;
+			//3.iterate data matrix for creating Cytotoxicity by data.
 			for (String assayStr : data.keySet()) {
-				AssayCondition ac = assayMap.get(assayStr);
-				Double dataValue = data.get(assayStr);
-
 				Cytotoxicity achar = null;
 				Finding finding = null;
+				AssayCondition ac = assayMap.get(assayStr);
 				if (ac != null) {
-					if (charMap
-							.get(ac.getCellType() + "||" + ac.getAssayType()) != null) {
-						achar = charMap.get(ac.getCellType() + "||"
-								+ ac.getAssayType());
+					String acStr = ac.getCellType() + "||" + ac.getAssayType();
+					achar = charMap.get(acStr);
+					if (achar != null) {
 						for (Finding aFinding : achar.getFindingCollection()) {
 							finding = aFinding;
 							break;
 						}
-
 					} else {
-						i=0;
+						i = 0;
 						achar = new Cytotoxicity();
 						achar.setCellLine(ac.getCellType());
 						achar.setAssayType(ac.getAssayType());
@@ -146,12 +160,10 @@ public class ZScoreDataLoader {
 						finding = new Finding();
 						achar.getFindingCollection().add(finding);
 						finding.setDatumCollection(new HashSet<Datum>());
-						charMap.put(
-								ac.getCellType() + "||" + ac.getAssayType(),
-								achar);
+						charMap.put(acStr, achar);
 					}
 					Datum datum = new Datum();
-					datum.setValue(dataValue.floatValue());
+					datum.setValue(data.get(assayStr).floatValue());
 					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
 					datum.setValueType("Z-score");
 					datum.setCreatedBy("AUTO_PARSER");
@@ -175,7 +187,16 @@ public class ZScoreDataLoader {
 					finding.getDatumCollection().add(datum);
 					i++;
 				}
-				// TODO saving characterization and finding
+			} // end of loop - iterate data matrix. 
+			for (String charKey : charMap.keySet()) {
+				Cytotoxicity achar = charMap.get(charKey);
+				CharacterizationBean charBean = new CharacterizationBean(achar);
+				try {
+					charService.saveCharacterization(sampleBean, charBean, user);
+				} catch (Exception e) {
+					logger.error("Error saving charBean for: " + charBean, e);
+					continue;
+				}
 			}
 		}
 	}
@@ -188,32 +209,31 @@ public class ZScoreDataLoader {
 			ZScoreDataLoader loader = null;
 			try {
 				ExcelParser parser = new ExcelParser(inputFileName);
-				SortedMap<String, SortedMap<String, Double>> verticalMatrix = parser
-						.verticalParse();
-				SortedMap<String, SortedMap<String, Double>> horizontalMatrix = parser
-						.horizontalParse();
+				Map<String, SortedMap<String, Double>> verticalMatrix = 
+					parser.verticalParse();
+				Map<String, SortedMap<String, Double>> horizontalMatrix = 
+					parser.horizontalParse();
 				loader = new ZScoreDataLoader(verticalMatrix, horizontalMatrix);
 			} catch (IOException e) {
 				System.out.println("Input file not found.");
 				e.printStackTrace();
 				System.exit(0);
 			}
-			// try {
-			// LoginService loginService = new LoginService(
-			// Constants.CSM_APP_NAME);
-			// UserBean user = loginService.login(loginName, password);
-			// if (user.isCurator()) {
-			loader.load(null);
-			// } else {
-			// System.out
-			// .println("You need to be the curator to be able to execute this function");
-			// System.exit(0);
-			// }
-			// } catch (SecurityException e) {
-			// System.out.println("Can't authenticate the login name.");
-			// e.printStackTrace();
-			// System.exit(0);
-			// }
+			try {
+				LoginService loginService = new LoginService(Constants.CSM_APP_NAME);
+				UserBean user = loginService.login(loginName, password);
+				if (user.isCurator()) {
+					loader.load(user);
+				} else {
+					System.out
+					.println("You need to be the curator to be able to execute this function");
+					System.exit(0);
+				}
+			} catch (SecurityException e) {
+				System.out.println("Can't authenticate the login name.");
+				e.printStackTrace();
+				System.exit(0);
+			}
 		} else {
 			System.out.println("Invalid argument!");
 			System.out

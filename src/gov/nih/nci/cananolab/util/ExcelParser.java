@@ -32,8 +32,7 @@ public class ExcelParser {
 	 * @return
 	 * @throws IOException
 	 */
-	public SortedMap<String, SortedMap<String, Double>> verticalParse()
-			throws IOException {
+	public Map<String, SortedMap<String, Double>> verticalParse() throws IOException {
 		InputStream inputStream = null;
 		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
 		try {
@@ -85,8 +84,7 @@ public class ExcelParser {
 	 * @return
 	 * @throws IOException
 	 */
-	public SortedMap<String, SortedMap<String, Double>> horizontalParse()
-			throws IOException {
+	public Map<String, SortedMap<String, Double>> horizontalParse()	throws IOException {
 		InputStream inputStream = null;
 		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
 		try {
@@ -164,7 +162,7 @@ public class ExcelParser {
 	}
 
 	public void printMatrix(
-			SortedMap<String, SortedMap<String, Double>> dataMatrix) {
+			Map<String, SortedMap<String, Double>> dataMatrix) {
 		for (String key : dataMatrix.keySet()) {
 			System.out.println("key:" + key);
 			Map<String, Double> data = dataMatrix.get(key);
@@ -179,11 +177,11 @@ public class ExcelParser {
 			String inputFileName = args[0];
 			try {
 				ExcelParser parser = new ExcelParser(inputFileName);
-				SortedMap<String, SortedMap<String, Double>> matrix1 = parser
-						.verticalParse();
+				Map<String, SortedMap<String, Double>> matrix1 = 
+					parser.verticalParse();
 				parser.printMatrix(matrix1);
-				SortedMap<String, SortedMap<String, Double>> matrix2 = parser
-						.horizontalParse();
+				Map<String, SortedMap<String, Double>> matrix2 = 
+					parser.horizontalParse();
 				parser.printMatrix(matrix2);
 			} catch (IOException e) {
 				System.out.println("Input file not found.");
