@@ -23,11 +23,13 @@ import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts.util.LabelValueBean;
+
 /**
  * This class sets up information required for characterization forms.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class InitCharacterizationSetup {
 	public static InitCharacterizationSetup getInstance() {
@@ -45,6 +47,27 @@ public class InitCharacterizationSetup {
 		}
 		request.getSession().setAttribute("characterizationTypes", types);
 		return types;
+	}
+
+	public List<LabelValueBean> getDecoratedCharacterizationTypes(
+			HttpServletRequest request) throws Exception {
+		List<LabelValueBean> charTypes = new ArrayList<LabelValueBean>();
+		List<String> types = getDefaultCharacterizationTypes(request);
+		for (String type : types) {
+			LabelValueBean bean = new LabelValueBean(type, type);
+			charTypes.add(bean);
+		}
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
+		for (String type : otherTypes) {
+			if (!types.contains(type)) {
+				LabelValueBean bean = new LabelValueBean("[" + type + "]", type);
+				charTypes.add(bean);
+			}
+		}
+		request.getSession().setAttribute("decoratedCharacterizationTypes",
+				charTypes);
+		return charTypes;
 	}
 
 	public List<String> getDefaultCharacterizationTypes(
@@ -191,6 +214,45 @@ public class InitCharacterizationSetup {
 		return charNames;
 	}
 
+	public List<LabelValueBean> getDecoratedCharNamesByCharType(
+			HttpServletRequest request, String charType) throws Exception {
+		if (StringUtils.isEmpty(charType)) {
+			return null;
+		}
+		SortedSet<String> charNames = new TreeSet<String>();
+		List<LabelValueBean> charNameBeans = new ArrayList<LabelValueBean>();
+		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
+		String shortClassNameForCharType = ClassUtils
+				.getShortClassNameFromDisplayName(charType);
+		Class clazz = ClassUtils.getFullClass(shortClassNameForCharType);
+		if (clazz != null) {
+			String fullCharTypeClassName = clazz.getName();
+			List<String> charClassNames = ClassUtils
+					.getChildClassNames(fullCharTypeClassName);
+			for (String charClass : charClassNames) {
+				if (!charClass.startsWith("Other")) {
+					String shortClassName = ClassUtils
+							.getShortClassName(charClass);
+					String charName = ClassUtils.getDisplayName(shortClassName);
+					LabelValueBean bean = new LabelValueBean(charName, charName);
+					charNames.add(charName);
+					charNameBeans.add(bean);
+				}
+			}
+		}
+		List<String> otherCharNames = helper
+				.findOtherCharacterizationByAssayCategory(charType);
+		if (!otherCharNames.isEmpty()) {
+			for (String name : otherCharNames) {
+				if (!charNames.contains(name)) {
+					LabelValueBean bean = new LabelValueBean(name, name);
+					charNameBeans.add(bean);
+				}
+			}
+		}
+		return charNameBeans;
+	}
+
 	public SortedSet<String> getAssayTypesByCharName(
 			HttpServletRequest request, String charName) throws Exception {
 		SortedSet<String> assayTypes = LookupService
@@ -203,12 +265,12 @@ public class InitCharacterizationSetup {
 	public SortedSet<String> getDatumNamesByCharName(
 			HttpServletRequest request, String charType, String charName,
 			String assayType) throws Exception {
-		SortedSet<String> allDatumNames = new TreeSet<String>();
+		SortedSet<String> allDatumNames = LookupService
+				.getDefaultAndOtherLookupTypes(charName, "datumName",
+						"otherDatumName");
 		// if assayType is empty, use charName to look up datums, as well as
 		// look up all assay types and use assay type to look up datum
 		if (StringUtils.isEmpty(assayType)) {
-			allDatumNames = LookupService.getDefaultAndOtherLookupTypes(
-					charName, "datumName", "otherDatumName");
 			SortedSet<String> assayTypes = LookupService
 					.getDefaultAndOtherLookupTypes(charName, "assayType",
 							"otherAssayType");
@@ -223,8 +285,8 @@ public class InitCharacterizationSetup {
 				}
 			}
 		} else {
-			allDatumNames = LookupService.getDefaultAndOtherLookupTypes(
-					assayType, "datumName", "otherDatumName");
+			allDatumNames.addAll(LookupService.getDefaultAndOtherLookupTypes(
+					assayType, "datumName", "otherDatumName"));
 		}
 		request.getSession().setAttribute("charNameDatumNames", allDatumNames);
 		return allDatumNames;
