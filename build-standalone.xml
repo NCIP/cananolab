@@ -136,7 +136,7 @@
 
 	<target name="run-zscore-loader"
 		depends="prepare-standalone-database-connection">
-		<property file="stanshaw.properties" />
+		<property file="zscore.properties" />
 		<java
 			classname="gov.nih.nci.cananolab.service.sample.ZScoreDataLoader"
 			fork="true">
