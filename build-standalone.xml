@@ -147,7 +147,7 @@
 				value="${tmp.dir}/classes/login.config" />
 			<arg value="${curator.login.name}" />
 			<arg value="${curator.password}" />
-			<arg value="${stanshaw.excel}" />
+			<arg value="${zscore.excel}" />
 		</java>
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" />
