@@ -34,7 +34,7 @@ public class ExcelParser {
 	 */
 	public Map<String, SortedMap<String, Double>> verticalParse() throws IOException {
 		InputStream inputStream = null;
-		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
+		Map<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
 		try {
 			inputStream = new BufferedInputStream(new FileInputStream(fileName));
 			POIFSFileSystem fs = new POIFSFileSystem(inputStream);
@@ -77,7 +77,7 @@ public class ExcelParser {
 	}
 
 	/**
-	 * Horizontal parse the Excel file into a 2-D matrix represented as a map of map.
+	 * Horizontally parse the Excel file into a 2-D matrix represented as a map of map.
 	 * Key is Row header, value is a map, whose key is Column header and value is
 	 * the cell.
 	 * 
@@ -86,7 +86,7 @@ public class ExcelParser {
 	 */
 	public Map<String, SortedMap<String, Double>> horizontalParse()	throws IOException {
 		InputStream inputStream = null;
-		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
+		Map<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
 		try {
 			inputStream = new BufferedInputStream(new FileInputStream(fileName));
 			POIFSFileSystem fs = new POIFSFileSystem(inputStream);
@@ -161,8 +161,7 @@ public class ExcelParser {
 		}
 	}
 
-	public void printMatrix(
-			Map<String, SortedMap<String, Double>> dataMatrix) {
+	public void printMatrix(Map<String, SortedMap<String, Double>> dataMatrix) {
 		for (String key : dataMatrix.keySet()) {
 			System.out.println("key:" + key);
 			Map<String, Double> data = dataMatrix.get(key);
