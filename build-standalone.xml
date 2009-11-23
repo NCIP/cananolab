@@ -134,7 +134,7 @@
 		<delete dir="${tmp.dir}" />
 	</target>
 
-	<target name="run-stanshaw-loader"
+	<target name="run-zscore-loader"
 		depends="prepare-standalone-database-connection">
 		<property file="stanshaw.properties" />
 		<java
