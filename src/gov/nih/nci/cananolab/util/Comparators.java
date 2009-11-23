@@ -272,13 +272,25 @@ public class Comparators {
 			String name1 = chara1.getCharacterizationName();
 			String name2 = chara2.getCharacterizationName();
 			if (name1.compareTo(name2) == 0) {
-				Date date1 = chara1.getDomainChar().getCreatedDate();
-				Date date2 = chara2.getDomainChar().getCreatedDate();
-				if (date1.compareTo(date2) == 0) {
-					return chara1.getDomainChar().getId().compareTo(
-							chara2.getDomainChar().getId());
+				String assay1 = chara1.getAssayType();
+				if (assay1 == null) {
+					assay1 = "";
+				}
+				String assay2 = chara2.getAssayType();
+				if (assay2 == null) {
+					assay2 = "";
+				}
+				if (assay1.compareTo(assay2) == 0) {
+					Date date1 = chara1.getDomainChar().getCreatedDate();
+					Date date2 = chara2.getDomainChar().getCreatedDate();
+					if (date1.compareTo(date2) == 0) {
+						return chara1.getDomainChar().getId().compareTo(
+								chara2.getDomainChar().getId());
+					} else {
+						return date1.compareTo(date2);
+					}
 				} else {
-					return date1.compareTo(date2);
+					return assay1.compareTo(assay2);
 				}
 			} else {
 				return name1.compareTo(name2);
