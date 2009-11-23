@@ -32,9 +32,10 @@ public class ExcelParser {
 	 * @return
 	 * @throws IOException
 	 */
-	public Map<String, SortedMap<String, Double>> verticalParse() throws IOException {
+	public SortedMap<String, SortedMap<String, Double>> verticalParse()
+			throws IOException {
 		InputStream inputStream = null;
-		Map<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
+		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
 		try {
 			inputStream = new BufferedInputStream(new FileInputStream(fileName));
 			POIFSFileSystem fs = new POIFSFileSystem(inputStream);
@@ -84,9 +85,10 @@ public class ExcelParser {
 	 * @return
 	 * @throws IOException
 	 */
-	public Map<String, SortedMap<String, Double>> horizontalParse()	throws IOException {
+	public SortedMap<String, SortedMap<String, Double>> horizontalParse()
+			throws IOException {
 		InputStream inputStream = null;
-		Map<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
+		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
 		try {
 			inputStream = new BufferedInputStream(new FileInputStream(fileName));
 			POIFSFileSystem fs = new POIFSFileSystem(inputStream);
@@ -161,10 +163,10 @@ public class ExcelParser {
 		}
 	}
 
-	public void printMatrix(Map<String, SortedMap<String, Double>> dataMatrix) {
+	public void printMatrix(SortedMap<String, SortedMap<String, Double>> dataMatrix) {
 		for (String key : dataMatrix.keySet()) {
 			System.out.println("key:" + key);
-			Map<String, Double> data = dataMatrix.get(key);
+			SortedMap<String, Double> data = dataMatrix.get(key);
 			for (Map.Entry<String, Double> entry : data.entrySet()) {
 				System.out.println("key-" + entry.getKey()+": "+entry.getValue());
 			}
@@ -176,10 +178,10 @@ public class ExcelParser {
 			String inputFileName = args[0];
 			try {
 				ExcelParser parser = new ExcelParser(inputFileName);
-				Map<String, SortedMap<String, Double>> matrix1 = 
+				SortedMap<String, SortedMap<String, Double>> matrix1 = 
 					parser.verticalParse();
 				parser.printMatrix(matrix1);
-				Map<String, SortedMap<String, Double>> matrix2 = 
+				SortedMap<String, SortedMap<String, Double>> matrix2 = 
 					parser.horizontalParse();
 				parser.printMatrix(matrix2);
 			} catch (IOException e) {

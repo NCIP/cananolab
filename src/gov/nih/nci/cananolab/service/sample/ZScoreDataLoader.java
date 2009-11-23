@@ -84,11 +84,11 @@ public class ZScoreDataLoader {
 	private Map<String, AssayCondition> assayMap = new HashMap<String, AssayCondition>();
 	
 	// Data map, is the Vertical Map, {NP1 -> {AO_RES_0_01, 0.403302864}}.
-	private Map<String, SortedMap<String, Double>> dataMatrix;
+	private SortedMap<String, SortedMap<String, Double>> dataMatrix;
 
 	public ZScoreDataLoader(
-			Map<String, SortedMap<String, Double>> verticalMatrix,
-			Map<String, SortedMap<String, Double>> horizontalMatrix) {
+			SortedMap<String, SortedMap<String, Double>> verticalMatrix,
+			SortedMap<String, SortedMap<String, Double>> horizontalMatrix) {
 		this.dataMatrix = verticalMatrix;
 		List<String> particleNames = new ArrayList<String>(verticalMatrix
 				.keySet());
@@ -222,9 +222,9 @@ public class ZScoreDataLoader {
 			ZScoreDataLoader loader = null;
 			try {
 				ExcelParser parser = new ExcelParser(inputFileName);
-				Map<String, SortedMap<String, Double>> verticalMatrix = 
+				SortedMap<String, SortedMap<String, Double>> verticalMatrix = 
 					parser.verticalParse();
-				Map<String, SortedMap<String, Double>> horizontalMatrix = 
+				SortedMap<String, SortedMap<String, Double>> horizontalMatrix = 
 					parser.horizontalParse();
 				loader = new ZScoreDataLoader(verticalMatrix, horizontalMatrix);
 			} catch (IOException e) {
