@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,7 +15,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 
 public class TestConnectionPool {
