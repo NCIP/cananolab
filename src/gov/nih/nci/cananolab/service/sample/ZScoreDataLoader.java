@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -17,6 +18,7 @@ import gov.nih.nci.cananolab.util.ExcelParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,6 +75,7 @@ public class ZScoreDataLoader {
 	}
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-SShawPNAS2008-";
+	public final static String AUTO_PARSER = "AUTO_PARSER";
 	
 	// Sample name map, {NP1 -> MIT_MGH-SShawPNAS2008-01}, etc.
 	private Map<String, String> sampleNameMap = new HashMap<String, String>();
@@ -154,21 +157,27 @@ public class ZScoreDataLoader {
 					} else {
 						i = 0;
 						achar = new Cytotoxicity();
+						achar.setCreatedBy(AUTO_PARSER);
+						achar.setCreatedDate(Calendar.getInstance().getTime());
 						achar.setCellLine(ac.getCellType());
 						achar.setAssayType(ac.getAssayType());
 						achar.setFindingCollection(new HashSet<Finding>());
 						finding = new Finding();
+						finding.setCreatedBy(AUTO_PARSER);
+						finding.setCreatedDate(Calendar.getInstance().getTime());
 						achar.getFindingCollection().add(finding);
 						finding.setDatumCollection(new HashSet<Datum>());
 						charMap.put(acStr, achar);
 					}
 					Datum datum = new Datum();
+					datum.setCreatedBy(AUTO_PARSER);
+					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 					datum.setValue(data.get(assayStr).floatValue());
 					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
 					datum.setValueType("Z-score");
-					datum.setCreatedBy("AUTO_PARSER");
-					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 					Condition condition = new Condition();
+					condition.setCreatedBy(AUTO_PARSER);
+					condition.setCreatedDate(new Date());
 					condition.setName("sample concentration");
 					//NP49, NP50, NP51 are QDots
 					if (sampleName.matches(SAMPLE_NAME_PREFIX + "49")
@@ -180,18 +189,22 @@ public class ZScoreDataLoader {
 						condition.setValue(ac.getConditionValue().toString());
 						condition.setValueUnit(ac.getConditionUnit());
 					}
-					condition.setCreatedBy("AUTO_PARSER");
-					condition.setCreatedDate(new Date());
 					datum.setConditionCollection(new HashSet<Condition>());
 					datum.getConditionCollection().add(condition);
 					finding.getDatumCollection().add(datum);
 					i++;
 				}
-			} // end of loop - iterate data matrix. 
+			} // end of loop - iterate data matrix.
+			
+			//4.saving Finding and then save Characterization.
 			for (String charKey : charMap.keySet()) {
 				Cytotoxicity achar = charMap.get(charKey);
 				CharacterizationBean charBean = new CharacterizationBean(achar);
 				try {
+					List<FindingBean> findings = charBean.getFindings();
+					for (FindingBean finding : findings) {
+						charService.saveFinding(finding, user);
+					}
 					charService.saveCharacterization(sampleBean, charBean, user);
 				} catch (Exception e) {
 					logger.error("Error saving charBean for: " + charBean, e);
@@ -217,7 +230,7 @@ public class ZScoreDataLoader {
 			} catch (IOException e) {
 				System.out.println("Input file not found.");
 				e.printStackTrace();
-				System.exit(0);
+				System.exit(1);
 			}
 			try {
 				LoginService loginService = new LoginService(Constants.CSM_APP_NAME);
@@ -227,7 +240,7 @@ public class ZScoreDataLoader {
 				} else {
 					System.out
 					.println("You need to be the curator to be able to execute this function");
-					System.exit(0);
+					System.exit(1);
 				}
 			} catch (SecurityException e) {
 				System.out.println("Can't authenticate the login name.");
@@ -239,7 +252,7 @@ public class ZScoreDataLoader {
 			System.out
 					.println("java ZScoreDataLoader <loginName> <password> <inputFileName>");
 		}
-		System.exit(1);
+		System.exit(0);
 	}
 }
 
