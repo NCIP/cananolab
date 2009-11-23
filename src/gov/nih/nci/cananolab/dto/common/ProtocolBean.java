@@ -4,10 +4,9 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
-
-import org.apache.axis.utils.StringUtils;
 
 /**
  * Protocol view bean

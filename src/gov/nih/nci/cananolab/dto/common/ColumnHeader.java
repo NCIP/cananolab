@@ -2,8 +2,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
-
-import org.apache.axis.utils.StringUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 /**
  * View bean representing a column header in a matrix column

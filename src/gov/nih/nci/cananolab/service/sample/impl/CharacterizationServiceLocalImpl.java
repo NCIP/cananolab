@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;

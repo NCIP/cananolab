@@ -14,8 +14,10 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -72,9 +74,19 @@ public class FileServiceLocalImpl implements FileService {
 		if (file.exists()) {
 			return; // don't save again
 		}
-		FileOutputStream oStream = new FileOutputStream(new java.io.File(
-				fullFileName));
-		oStream.write(fileContent);
+		OutputStream oStream = null;
+		try {
+			oStream = new BufferedOutputStream(new FileOutputStream(file));
+			oStream.write(fileContent);
+			oStream.flush();
+		}
+		finally {
+			if (oStream != null) {
+				try {
+					oStream.close();
+				} catch (Exception e) {}	
+			}
+		}
 	}
 
 	// save to the file system if fileData is not empty

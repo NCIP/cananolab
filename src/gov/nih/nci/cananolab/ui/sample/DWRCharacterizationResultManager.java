@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.SortedSet;
 
 import javax.servlet.ServletException;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;

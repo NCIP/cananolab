@@ -8,12 +8,12 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;

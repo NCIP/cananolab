@@ -14,12 +14,12 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteIm
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;

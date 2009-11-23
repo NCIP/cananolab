@@ -35,11 +35,11 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 
 /**

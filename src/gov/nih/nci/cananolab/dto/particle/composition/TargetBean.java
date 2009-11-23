@@ -6,8 +6,7 @@ import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
-
-import org.apache.axis.utils.StringUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 /**
  * Represents the view bean for the Target domain object

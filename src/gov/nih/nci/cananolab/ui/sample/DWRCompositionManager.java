@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;

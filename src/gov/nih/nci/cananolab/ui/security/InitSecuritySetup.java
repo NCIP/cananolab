@@ -4,12 +4,11 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.axis.utils.StringUtils;
 
 /**
  * This class sets up information required for CSM.

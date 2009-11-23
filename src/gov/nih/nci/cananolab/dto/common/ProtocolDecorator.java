@@ -2,10 +2,10 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.axis.utils.StringUtils;
 import org.displaytag.decorator.TableDecorator;
 
 /**

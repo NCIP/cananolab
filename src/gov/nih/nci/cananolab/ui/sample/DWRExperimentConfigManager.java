@@ -10,10 +10,10 @@ import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.SortedSet;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;

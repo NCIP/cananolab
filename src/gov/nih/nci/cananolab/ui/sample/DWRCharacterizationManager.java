@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.SortedSet;
 
 import javax.servlet.ServletException;
 
-import org.apache.axis.utils.StringUtils;
 import org.apache.struts.util.LabelValueBean;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
