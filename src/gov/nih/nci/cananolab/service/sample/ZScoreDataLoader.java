@@ -105,13 +105,13 @@ public class ZScoreDataLoader {
 		List<String> assayNames = new ArrayList<String>(horizontalMatrix
 				.keySet());
 		for (String name : assayNames) {
-			if (name.matches("([A-Z]+)_([A-Z]+)_(.+)")) {
-				String cellType = name.replaceAll("([A-Z]+)_([A-Z]+)_(.+)",
+			if (name.matches("([A-Z]+)_([A-Z0-9]+)_(.+)")) {
+				String cellType = name.replaceAll("([A-Z]+)_([A-Z0-9]+)_(.+)",
 						"$1");
-				String assayType = name.replaceAll("([A-Z]+)_([A-Z]+)_(.+)",
+				String assayType = name.replaceAll("([A-Z]+)_([A-Z0-9]+)_(.+)",
 						"$2");
 				String conditionString = name.replaceAll(
-						"([A-Z]+)_([A-Z]+)_(.+)", "$3");
+						"([A-Z]+)_([A-Z0-9]+)_(.+)", "$3");
 
 				AssayCondition assayCondition = new AssayCondition(
 						CELL_TYPE_MAP.get(cellType), ASSAY_TYPE_MAP
@@ -180,6 +180,9 @@ public class ZScoreDataLoader {
 					datum.setCreatedBy(userName);
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 					datum.setValue(data.get(assayStr).floatValue());
+//					logger.debug(assayStr + ": "
+//							+ data.get(assayStr).doubleValue() + ", "
+//							+ data.get(assayStr).floatValue());
 					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
 					datum.setValueType("Z-score");
 					Condition condition = new Condition();
