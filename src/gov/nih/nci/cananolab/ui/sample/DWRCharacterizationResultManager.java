@@ -4,12 +4,10 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -29,16 +27,20 @@ import org.directwebremoting.WebContextFactory;
 public class DWRCharacterizationResultManager {
 	public String[] getConditionOptions() throws Exception {
 		WebContext wctx = WebContextFactory.get();
-		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
-				.getConditions(wctx.getHttpServletRequest());
+		SortedSet<String> conditions = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+						"datumConditions", "condition", "name", "otherName",
+						true);
 		return conditions.toArray(new String[conditions.size()]);
 	}
 
 	public String[] getConditionPropertyOptions(String conditionName)
 			throws Exception {
-		SortedSet<String> properties = LookupService
-				.getDefaultAndOtherLookupTypes(conditionName, "property",
-						"otherProperty");
+		WebContext wctx = WebContextFactory.get();
+		SortedSet<String> properties = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+						"conditionProperties", conditionName, "property",
+						"otherProperty", true);
 		return properties.toArray(new String[properties.size()]);
 	}
 
@@ -54,32 +56,36 @@ public class DWRCharacterizationResultManager {
 	public List<LabelValueBean> getDecoratedDatumNameOptions(
 			String characterizationType, String characterizationName,
 			String assayType) throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		List<LabelValueBean> allDatumNames = new ArrayList<LabelValueBean>();
-		//extract assayType from characterizationName
+		// extract assayType from characterizationName
 		if (characterizationName.contains(":")) {
-			int ind=characterizationName.indexOf(":");
-			characterizationName=characterizationName.substring(ind+1);
+			int ind = characterizationName.indexOf(":");
+			assayType = characterizationName.substring(ind + 1);
+			characterizationName = characterizationName.substring(0, ind);
 		}
+		List<LabelValueBean> allDatumNames = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookupAsOptions(characterizationName,
+						"datumName", "otherDatumName");
 		// if assayType is empty, use charName to look up datums, as well as
 		// look up all assay types and use assay type to look up datum
 		if (StringUtils.isEmpty(assayType)) {
-			allDatumNames = InitSetup.getInstance().getLookupValuesAsOptions(
-					characterizationName, "datumName", "otherDatumName");
-			SortedSet<String> assayTypes = LookupService
-					.getDefaultAndOtherLookupTypes(characterizationName,
-							"assayType", "otherAssayType");
-			if (assayTypes != null && !assayTypes.isEmpty()) {
-				for (String type : assayTypes) {
+			List<LabelValueBean> assayTypeBeans = InitSetup
+					.getInstance()
+					.getDefaultAndOtherTypesByLookupAsOptions(
+							characterizationName, "assayType", "otherAssayType");
+			if (assayTypeBeans != null && !assayTypeBeans.isEmpty()) {
+				for (LabelValueBean bean : assayTypeBeans) {
 					List<LabelValueBean> datumNamesByAssayTypes = InitSetup
-							.getInstance().getLookupValuesAsOptions(type,
-									"datumName", "otherDatumName");
+							.getInstance()
+							.getDefaultAndOtherTypesByLookupAsOptions(
+									bean.getValue(), "datumName",
+									"otherDatumName");
 					allDatumNames.addAll(datumNamesByAssayTypes);
 				}
 			}
 		} else {
-			allDatumNames = InitSetup.getInstance().getLookupValuesAsOptions(
-					assayType, "datumName", "otherDatumName");
+			allDatumNames.addAll(InitSetup.getInstance()
+					.getDefaultAndOtherTypesByLookupAsOptions(assayType,
+							"datumName", "otherDatumName"));
 		}
 		return allDatumNames;
 	}
@@ -91,8 +97,9 @@ public class DWRCharacterizationResultManager {
 		if (!StringUtils.isEmpty(property)) {
 			valueName = property;
 		}
-		SortedSet<String> units = InitCharacterizationSetup.getInstance()
-				.getValueUnits(wctx.getHttpServletRequest(), valueName);
+		SortedSet<String> units = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+						"valueUnits", valueName, "unit", "otherUnit", true);
 		return units.toArray(new String[units.size()]);
 	}
 

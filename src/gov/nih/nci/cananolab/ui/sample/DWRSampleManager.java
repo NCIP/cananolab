@@ -42,7 +42,7 @@ public class DWRSampleManager {
 			if (compType.equals("nanomaterial entity")) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypesAsOptions(
+						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultNanomaterialEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
@@ -50,7 +50,7 @@ public class DWRSampleManager {
 			} else if (compType.equals("functionalizing entity")) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypesAsOptions(
+						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultFunctionalizingEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
@@ -58,7 +58,7 @@ public class DWRSampleManager {
 			} else if (compType.equals("function")) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypesAsOptions(
+						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultFunctionTypes",
 								"gov.nih.nci.cananolab.domain.particle.Function",
@@ -85,7 +85,7 @@ public class DWRSampleManager {
 			if (isLocal) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypes(
+						.getDefaultAndOtherTypesByReflection(
 								request,
 								"defaultNanomaterialEntityTypes",
 								"nanomaterialEntityTypes",
@@ -95,7 +95,7 @@ public class DWRSampleManager {
 			} else {
 				types = InitSetup
 						.getInstance()
-						.getServletContextDefaultTypesByReflection(appContext,
+						.getDefaultTypesByReflection(appContext,
 								"defaultNanomaterialEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 			}
@@ -119,12 +119,12 @@ public class DWRSampleManager {
 				isLocal = true;
 			} else if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
-			}			
+			}
 			SortedSet<String> types = null;
 			if (isLocal) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypes(
+						.getDefaultAndOtherTypesByReflection(
 								request,
 								"defaultFunctionalizingEntityTypes",
 								"functionalizingEntityTypes",
@@ -132,9 +132,9 @@ public class DWRSampleManager {
 								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
 								true);
 			} else {
-				types=InitSetup
+				types = InitSetup
 						.getInstance()
-						.getServletContextDefaultTypesByReflection(appContext,
+						.getDefaultTypesByReflection(appContext,
 								"defaultFunctionalizingEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 			}
@@ -162,7 +162,7 @@ public class DWRSampleManager {
 			if (isLocal) {
 				types = InitSetup
 						.getInstance()
-						.getReflectionDefaultAndOtherLookupTypes(
+						.getDefaultAndOtherTypesByReflection(
 								request,
 								"defaultFunctionTypes",
 								"functionTypes",
@@ -170,11 +170,9 @@ public class DWRSampleManager {
 								"gov.nih.nci.cananolab.domain.function.OtherFunction",
 								true);
 			} else {
-				types=InitSetup
-						.getInstance()
-						.getServletContextDefaultTypesByReflection(appContext,
-								"defaultFunctionTypes",
-								"gov.nih.nci.cananolab.domain.particle.Function");
+				types = InitSetup.getInstance().getDefaultTypesByReflection(
+						appContext, "defaultFunctionTypes",
+						"gov.nih.nci.cananolab.domain.particle.Function");
 			}
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
@@ -313,8 +311,8 @@ public class DWRSampleManager {
 	public String getAdvancedSearchDetailContent(String url)
 			throws ServletException, IOException, BaseException {
 		try {
-			WebContext wctx = WebContextFactory.get();			
-			String content = wctx.forwardToString("/"+url);
+			WebContext wctx = WebContextFactory.get();
+			String content = wctx.forwardToString("/" + url);
 			return content;
 		} catch (Exception e) {
 			return "";

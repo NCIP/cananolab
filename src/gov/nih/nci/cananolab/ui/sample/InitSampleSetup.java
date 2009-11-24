@@ -31,13 +31,13 @@ public class InitSampleSetup {
 
 	public void setLocalSearchDropdowns(HttpServletRequest request)
 			throws Exception {
-		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "defaultFunctionTypes", "functionTypes",
+		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
+				"defaultFunctionTypes", "functionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function",
 				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
 		InitSetup
 				.getInstance()
-				.getReflectionDefaultAndOtherLookupTypes(
+				.getDefaultAndOtherTypesByReflection(
 						request,
 						"defaultNanomaterialEntityTypes",
 						"nanomaterialEntityTypes",
@@ -46,7 +46,7 @@ public class InitSampleSetup {
 						true);
 		InitSetup
 				.getInstance()
-				.getReflectionDefaultAndOtherLookupTypes(
+				.getDefaultAndOtherTypesByReflection(
 						request,
 						"defaultFunctionalizingEntityTypes",
 						"functionalizingEntityTypes",
@@ -62,7 +62,7 @@ public class InitSampleSetup {
 		ServletContext appContext = request.getSession().getServletContext();
 		SortedSet<String> funcEntityTypes = InitSetup
 				.getInstance()
-				.getServletContextDefaultTypesByReflection(appContext,
+				.getDefaultTypesByReflection(appContext,
 						"defaultFunctionalizingEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 		request.getSession().setAttribute("functionalizingEntityTypes",
@@ -70,18 +70,19 @@ public class InitSampleSetup {
 
 		SortedSet<String> nanoEntityTypes = InitSetup
 				.getInstance()
-				.getServletContextDefaultTypesByReflection(appContext,
+				.getDefaultTypesByReflection(appContext,
 						"defaultNanomaterialEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 		request.getSession().setAttribute("nanomaterialEntityTypes",
 				nanoEntityTypes);
 		SortedSet<String> funcTypes = InitSetup.getInstance()
-				.getServletContextDefaultTypesByReflection(appContext,
+				.getDefaultTypesByReflection(appContext,
 						"defaultFunctionTypes",
 						"gov.nih.nci.cananolab.domain.particle.Function");
 		request.getSession().setAttribute("functionTypes", funcTypes);
 		List<String> charTypes = InitCharacterizationSetup.getInstance()
-				.getDefaultCharacterizationTypes(request);
+				.getDefaultCharacterizationTypes(
+						request.getSession().getServletContext());
 		request.getSession().setAttribute("characterizationTypes", charTypes);
 	}
 
@@ -102,7 +103,7 @@ public class InitSampleSetup {
 	}
 
 	public void setSharedDropdowns(HttpServletRequest request) throws Exception {
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"fileTypes", "file", "type", "otherType", true);
 	}
 
@@ -116,7 +117,7 @@ public class InitSampleSetup {
 	}
 
 	public void setPOCDropdowns(HttpServletRequest request) throws Exception {
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"contactRoles", "point of contact", "role", "otherRole", true);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getAllOrganizationNames(request, user);

@@ -8,8 +8,8 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.SortedSet;
@@ -59,7 +59,9 @@ public class DWRExperimentConfigManager {
 
 	public String getTechniqueAbbreviation(String techniqueType)
 			throws Exception {
-		SortedSet<String> abbrevs = LookupService.findLookupValues(
+		WebContext wctx = WebContextFactory.get();
+		SortedSet<String> abbrevs = InitSetup.getInstance().getDefaultTypesByLookup(
+				wctx.getServletContext(), "defaultAbbreviations",
 				techniqueType, "abbreviation");
 		String abbreviation = "";
 		if (!abbrevs.isEmpty()) {
@@ -70,9 +72,12 @@ public class DWRExperimentConfigManager {
 
 	public String[] getInstrumentTypesByTechniqueType(String techniqueType)
 			throws ExperimentConfigException, BaseException {
-		SortedSet<String> types = null;
-		types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
-				"instrument", "otherInstrument");
+		WebContext wctx = WebContextFactory.get();
+		SortedSet<String> types = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
+						"techniqueInstruments", techniqueType, "instrument",
+						"otherInstrument", true);
+
 		if (types != null && types.size() > 0) {
 			String[] typeArray = new String[types.size()];
 			types.toArray(typeArray);
@@ -86,13 +91,17 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException, BaseException {
 		String techniqueType = null;
 		SortedSet<String> types = null;
+		WebContext wctx = WebContextFactory.get();
 		ExperimentConfigBean config = getExperimentConfigById(configId);
 
-		if (config != null && config.getDomain().getTechnique() != null
-				&& !StringUtils.isEmpty(config.getDomain().getTechnique().getType())) {
+		if (config != null
+				&& config.getDomain().getTechnique() != null
+				&& !StringUtils.isEmpty(config.getDomain().getTechnique()
+						.getType())) {
 			techniqueType = config.getDomain().getTechnique().getType();
-			types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
-					"instrument", "otherInstrument");
+			types = InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
+					wctx.getHttpServletRequest(), "techniqueInstruments",
+					techniqueType, "instrument", "otherInstrument", true);
 		}
 		if (types != null && types.size() > 0) {
 			String[] typeArray = new String[types.size()];

@@ -97,8 +97,8 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		if (!StringUtils.isEmpty(sampleId)) {
 			SortedSet<String> publicationCategories = InitSetup.getInstance()
-					.getDefaultAndOtherLookupTypes(request,
-							"publicationCategories", "Publication", "category",
+					.getDefaultAndOtherTypesByLookup(request,
+							"publicationCategories", "publication", "category",
 							"otherCategory", true);
 			List<String> allPublicationTypes = new ArrayList<String>(
 					publicationCategories);
@@ -116,7 +116,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle delete request from Sample -> Publication -> Edit page.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -194,7 +194,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -225,7 +225,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -244,7 +244,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -267,7 +267,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -306,7 +306,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -326,8 +326,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"publicationCategories", "Publication", "category",
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+				"publicationCategories", "publication", "category",
 				"otherCategory", true);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
@@ -538,7 +538,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 *
+	 * 
 	 * @param request
 	 * @param compBean
 	 */

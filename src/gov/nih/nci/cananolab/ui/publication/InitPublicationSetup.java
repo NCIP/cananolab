@@ -24,13 +24,13 @@ public class InitPublicationSetup {
 
 	public void setPublicationDropdowns(HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "publicationCategories",
+				.getDefaultAndOtherTypesByLookup(request, "publicationCategories",
 						"publication", "category", "otherCategory", true);
 		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
+				.getDefaultAndOtherTypesByLookup(request, "publicationStatuses",
 						"publication", "status", "otherStatus", true);
 		InitSetup.getInstance()
-			.getDefaultAndOtherLookupTypes(request, "publicationResearchAreas",
+			.getDefaultAndOtherTypesByLookup(request, "publicationResearchAreas",
 				"publication", "researchArea", "otherResearchArea", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -51,7 +51,7 @@ public class InitPublicationSetup {
 	public void setDefaultResearchAreas(
 			HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
-			.getDefaultAndOtherLookupTypes(request, "publicationResearchAreas",
+			.getDefaultAndOtherTypesByLookup(request, "publicationResearchAreas",
 			"publication", "researchArea", "otherResearchArea", true);
 	}
 }

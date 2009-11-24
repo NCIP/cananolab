@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
@@ -32,7 +31,7 @@ public class DWRPublicationManager {
 	public DWRPublicationManager() {
 	}
 
-	public PublicationBean clearPublication() {		
+	public PublicationBean clearPublication() {
 		WebContext wctx = WebContextFactory.get();
 		PublicationForm form = (PublicationForm) wctx.getSession()
 				.getAttribute("publicationForm");
@@ -58,7 +57,7 @@ public class DWRPublicationManager {
 		}
 		return newPubBean;
 	}
-	
+
 	public PublicationBean retrievePubMedInfo(String pubmedID) {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
@@ -72,16 +71,16 @@ public class DWRPublicationManager {
 		}
 		PublicationBean oldPubBean = (PublicationBean) form.get("publication");
 		PublicationBean newPubBean = this.searchPubMedById(pubmedID);
-		
-        // Copy PubMed data so that we can erase previous result.
+
+		// Copy PubMed data so that we can erase previous result.
 		oldPubBean.copyPubMedData(newPubBean);
-		
+
 		return oldPubBean;
 	}
-	
+
 	/**
-	 * Return current PublicationBean for displaying Author list on page
-	 * when no PubMedId exists.
+	 * Return current PublicationBean for displaying Author list on page when no
+	 * PubMedId exists.
 	 * 
 	 * @return PublicationBean
 	 */
@@ -109,11 +108,14 @@ public class DWRPublicationManager {
 			}
 			SortedSet<String> types = null;
 			if (isLocal) {
-				types = InitSetup.getInstance().getDefaultAndOtherLookupTypes(
-						request, "publicationCategories", "Publication",
-						"category", "otherCategory", true);
+				types = InitSetup.getInstance()
+						.getDefaultAndOtherTypesByLookup(request,
+								"publicationCategories", "publication",
+								"category", "otherCategory", true);
 			} else {
-				types = LookupService.findLookupValues("Publication",
+				types = InitSetup.getInstance().getDefaultTypesByLookup(
+						wctx.getServletContext(),
+						"defaultPublicationCategories", "publication",
 						"category");
 			}
 			types.add("");
@@ -136,11 +138,14 @@ public class DWRPublicationManager {
 			}
 			SortedSet<String> types = null;
 			if (isLocal) {
-				types = InitSetup.getInstance().getDefaultAndOtherLookupTypes(
-						request, "publicationStatuses", "Publication",
-						"status", "otherStatus", true);
+				types = InitSetup.getInstance()
+						.getDefaultAndOtherTypesByLookup(request,
+								"publicationStatuses", "publication", "status",
+								"otherStatus", true);
 			} else {
-				types = LookupService.findLookupValues("Publication", "status");
+				types = InitSetup.getInstance().getDefaultTypesByLookup(
+						wctx.getServletContext(), "defaultPublicationStatuses",
+						"publication", "status");
 			}
 			types.add("");
 			String[] eleArray = new String[types.size()];
@@ -193,12 +198,12 @@ public class DWRPublicationManager {
 		pubBean.removeAuthor(author);
 		return pubBean;
 	}
-	
+
 	public String getPublicCounts(String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		request.getSession().removeAttribute("publicationSearchResults");
-		if (locations.length==0){
+		if (locations.length == 0) {
 			return null;
 		}
 		Integer counts = 0;

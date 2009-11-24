@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
@@ -35,21 +36,22 @@ public class DWRCharacterizationManager {
 			return null;
 		}
 		WebContext wctx = WebContextFactory.get();
-		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
-				.getCharNamesByCharType(wctx.getHttpServletRequest(),
-						characterizationType);
+		List<LabelValueBean> charNames = InitCharacterizationSetup
+				.getInstance().getDecoratedCharNamesByCharType(
+						wctx.getHttpServletRequest(), characterizationType);
 		List<LabelValueBean> charNamesWithAssayTypes = new ArrayList<LabelValueBean>();
-		for (String charName : charNames) {
-			SortedSet<String> assayTypes = InitCharacterizationSetup
-					.getInstance().getAssayTypesByCharName(
-							wctx.getHttpServletRequest(), charName);
+		for (LabelValueBean bean : charNames) {
+			String charName = bean.getValue();
+			// setup Assay Type drop down.
+			List<LabelValueBean> assayTypes = InitSetup.getInstance()
+					.getDefaultAndOtherTypesByLookupAsOptions(charName,
+							"assayType", "otherAssayType");
 			if (!assayTypes.isEmpty()) {
-				LabelValueBean labelValue = new LabelValueBean(charName,
-						charName);
-				charNamesWithAssayTypes.add(labelValue);
-				for (String assayType : assayTypes) {
+				charNamesWithAssayTypes.add(bean);
+				for (LabelValueBean assayTypeBean : assayTypes) {
 					LabelValueBean labelValueWithAssay = new LabelValueBean(
-							" --" + assayType, charName+":"+assayType);
+							" --" + assayTypeBean.getLabel(), charName + ":"
+									+ assayTypeBean.getValue());
 					charNamesWithAssayTypes.add(labelValueWithAssay);
 				}
 			} else {
@@ -60,9 +62,7 @@ public class DWRCharacterizationManager {
 				// do not include if char name doesn't have any predefined datum
 				// names
 				if (datumNames != null && !datumNames.isEmpty()) {
-					LabelValueBean labelValue = new LabelValueBean(charName,
-							charName);
-					charNamesWithAssayTypes.add(labelValue);
+					charNamesWithAssayTypes.add(bean);
 				}
 			}
 		}
@@ -72,9 +72,10 @@ public class DWRCharacterizationManager {
 	public String[] getAssayTypeOptions(String characterizationName)
 			throws Exception {
 		WebContext wctx = WebContextFactory.get();
-		SortedSet<String> assayTypes = InitCharacterizationSetup.getInstance()
-				.getAssayTypesByCharName(wctx.getHttpServletRequest(),
-						characterizationName);
+		SortedSet<String> assayTypes = // setup Assay Type drop down.
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(
+				wctx.getHttpServletRequest(), "charNameAssays",
+				characterizationName, "assayType", "otherAssayType", true);
 		return assayTypes.toArray(new String[assayTypes.size()]);
 	}
 

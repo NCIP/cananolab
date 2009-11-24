@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
@@ -21,9 +20,9 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * This class loads protocol data for ajax
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class DWRProtocolManager {
 
@@ -44,11 +43,14 @@ public class DWRProtocolManager {
 			}
 			SortedSet<String> types = null;
 			if (isLocal) {
-				types = InitSetup.getInstance().getDefaultAndOtherLookupTypes(
-						request, "protocolTypes", "Protocol", "type",
-						"otherType", true);
+				types = InitSetup.getInstance()
+						.getDefaultAndOtherTypesByLookup(request,
+								"protocolTypes", "protocol", "type",
+								"otherType", true);
 			} else {
-				types = LookupService.findLookupValues("Protocol", "type");
+				types = InitSetup.getInstance().getDefaultTypesByLookup(
+						webContext.getServletContext(), "defaultProtocolTypes",
+						"protocol", "type");
 			}
 			types.add("");
 			String[] eleArray = new String[types.size()];

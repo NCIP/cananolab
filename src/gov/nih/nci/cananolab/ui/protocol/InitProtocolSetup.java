@@ -41,16 +41,15 @@ public class InitProtocolSetup {
 
 	public void setLocalSearchDropdowns(HttpServletRequest request)
 			throws Exception {
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"protocolTypes", "protocol", "type", "otherType", true);
 	}
 
 	public void setRemoteSearchDropdowns(HttpServletRequest request)
 			throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> types = InitSetup.getInstance()
-				.getServletContextDefaultLookupTypes(appContext,
-						"defaultProtocolTypes", "protocol", "type");
+		SortedSet<String> types = InitSetup.getInstance().getDefaultTypesByLookup(
+				appContext, "defaultProtocolTypes", "protocol", "type");
 		request.getSession().setAttribute("protocolTypes", types);
 	}
 

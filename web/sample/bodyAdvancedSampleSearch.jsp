@@ -306,7 +306,8 @@
 								<option value="">
 									-- Please Select --
 								</option>
-								<html:options name="characterizationTypes" />
+								<html:options collection="decoratedCharacterizationTypes" labelProperty="label"
+									property="value" />
 							</html:select>
 						</td>
 						<td>

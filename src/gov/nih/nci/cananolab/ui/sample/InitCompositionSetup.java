@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -39,39 +37,36 @@ public class InitCompositionSetup {
 			throws Exception {
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		getEmulsionComposingElementTypes(request);
-		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "defaultFunctionTypes", "functionTypes",
+		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
+				"defaultFunctionTypes", "functionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function",
 				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
 
 		InitSetup
 				.getInstance()
-				.getReflectionDefaultAndOtherLookupTypes(
+				.getDefaultAndOtherTypesByReflection(
 						request,
 						"defaultNanomaterialEntityTypes",
 						"nanomaterialEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
 						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
 						true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"biopolymerTypes", "biopolymer", "type", "otherType", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"modalityTypes", "imaging function", "modality",
 				"otherModality", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"composingElementTypes", "composing element", "type",
 				"otherType", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"composingElementUnits", "composing element", "valueUnit",
 				"otherValueUnit", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"molecularFormulaTypes", "molecular formula", "type",
 				"otherType", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
-		ServletContext appContext = request.getSession().getServletContext();
-		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
-				"wallTypes", "carbon nanotube", "wallType");
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
@@ -125,43 +120,43 @@ public class InitCompositionSetup {
 			throws Exception {
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		// reload function types
-		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "defaultFunctionTypes", "functionTypes",
+		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
+				"defaultFunctionTypes", "functionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function",
 				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
 
 		InitSetup
 				.getInstance()
-				.getReflectionDefaultAndOtherLookupTypes(
+				.getDefaultAndOtherTypesByReflection(
 						request,
 						"defaultFunctionalizingEntityTypes",
 						"functionalizingEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
 						"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
 						true);
-		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "defaultTargetTypes", "targetTypes",
+		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
+				"defaultTargetTypes", "targetTypes",
 				"gov.nih.nci.cananolab.domain.function.Target",
 				"gov.nih.nci.cananolab.domain.function.OtherTarget", true);
 
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"antibodyTypes", "antibody", "type", "otherType", true);
 		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "antibodyIsotypes",
+				.getDefaultAndOtherTypesByLookup(request, "antibodyIsotypes",
 						"antibody", "isotype", "otherIsotype", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"activationMethods", "activation method", "type", "otherType",
 				true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"functionalizingEntityUnits", "functionalizing entity",
 				"valueUnit", "otherValueUnit", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"modalityTypes", "imaging function", "modality",
 				"otherModality", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"molecularFormulaTypes", "molecular formula", "type",
 				"otherType", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"biopolymerTypes", "biopolymer", "type", "otherType", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
@@ -204,11 +199,11 @@ public class InitCompositionSetup {
 			compositionTypes.add("functionalizing entity");
 		}
 		session.setAttribute("associationCompositionTypes", compositionTypes);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"bondTypes", "attachment", "bondType", "otherBondType", true);
 		InitSetup
 				.getInstance()
-				.getReflectionDefaultAndOtherLookupTypes(
+				.getDefaultAndOtherTypesByReflection(
 						request,
 						"defaultChemicalAssociationTypes",
 						"chemicalAssociationTypes",
@@ -236,22 +231,27 @@ public class InitCompositionSetup {
 			FileBean fileBean) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "file", "type",
 				"otherType", fileBean.getDomainFile().getType());
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"fileTypes", "file", "type", "otherType", true);
 	}
 
-	public SortedSet<String> getEmulsionComposingElementTypes(
+	public List<String> getEmulsionComposingElementTypes(
 			HttpServletRequest request) throws BaseException {
-		SortedSet<String> emulsionCETypes = LookupService
-				.getDefaultAndOtherLookupTypes("emulsion",
-						"composingElementType", "otherComposingElementType");
-		SortedSet<String> ceTypes = LookupService
-				.getDefaultAndOtherLookupTypes("composing element", "type",
-						"otherType");
-		emulsionCETypes.addAll(ceTypes);
+		List<String> allTypes = new ArrayList<String>();
+		SortedSet<String> emulsionCETypes = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookup(request,
+						"emulsionComposingElementTypes", "emulsion",
+						"composingElementType", "otherComposingElementType",
+						true);
+		allTypes.addAll(emulsionCETypes);
+		SortedSet<String> ceTypes = InitSetup.getInstance()
+				.getDefaultAndOtherTypesByLookup(request,
+						"composingElementTypes", "composing element", "type",
+						"otherType", true);
+		allTypes.addAll(ceTypes);
 		request.getSession().setAttribute("emulsionComposingElementTypes",
-				emulsionCETypes);
-		return emulsionCETypes;
+				allTypes);
+		return allTypes;
 	}
 
 	public String getDetailPage(String entityType, String parentPath)

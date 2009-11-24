@@ -30,9 +30,9 @@ import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for all forms.
- *
+ * 
  * @author pansu, cais
- *
+ * 
  */
 public class InitSetup {
 
@@ -45,7 +45,7 @@ public class InitSetup {
 
 	/**
 	 * Queries and common_lookup table and creates a map in application context
-	 *
+	 * 
 	 * @param appContext
 	 * @return
 	 * @throws BaseException
@@ -65,9 +65,9 @@ public class InitSetup {
 	}
 
 	/**
-	 * Retrieve lookup attribute for lookup name from the database and store in
-	 * the application context
-	 *
+	 * Retrieve default lookup values from lookup table in the database and
+	 * store in the application context
+	 * 
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -75,9 +75,9 @@ public class InitSetup {
 	 * @return
 	 * @throws BaseException
 	 */
-	public SortedSet<String> getServletContextDefaultLookupTypes(
-			ServletContext appContext, String contextAttribute,
-			String lookupName, String lookupAttribute) throws BaseException {
+	public SortedSet<String> getDefaultTypesByLookup(ServletContext appContext,
+			String contextAttribute, String lookupName, String lookupAttribute)
+			throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
 		SortedSet<String> types = new TreeSet<String>();
 		if (defaultLookupTable.get(lookupName) != null) {
@@ -90,9 +90,9 @@ public class InitSetup {
 	}
 
 	/**
-	 * Retrieve lookup attribute and other attribute for lookup name from the
+	 * Retrieve default lookup and other values from lookup table in the
 	 * database and store in the session
-	 *
+	 * 
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
@@ -102,7 +102,7 @@ public class InitSetup {
 	 * @return
 	 * @throws BaseException
 	 */
-	public SortedSet<String> getDefaultAndOtherLookupTypes(
+	public SortedSet<String> getDefaultAndOtherTypesByLookup(
 			HttpServletRequest request, String sessionAttribute,
 			String lookupName, String lookupAttribute,
 			String otherTypeAttribute, boolean updateSession)
@@ -119,14 +119,54 @@ public class InitSetup {
 		return types;
 	}
 
-	public SortedSet<String> getReflectionDefaultAndOtherLookupTypes(
+	/**
+	 * Retrieve default lookup values by reflection and store in the app context
+	 * 
+	 * @param appContext
+	 * @param contextAttribute
+	 * @param lookupName
+	 * @param fullParentClassName
+	 * @return
+	 * @throws Exception
+	 */
+	public SortedSet<String> getDefaultTypesByReflection(
+			ServletContext appContext, String contextAttribute,
+			String fullParentClassName) throws Exception {
+		SortedSet<String> types = new TreeSet<String>();
+		List<String> classNames = ClassUtils
+				.getChildClassNames(fullParentClassName);
+		for (String name : classNames) {
+			if (!name.contains("Other")) {
+				String shortClassName = ClassUtils.getShortClassName(name);
+				String displayName = ClassUtils.getDisplayName(shortClassName);
+				types.add(displayName);
+			}
+		}
+		appContext.setAttribute(contextAttribute, types);
+		return types;
+	}
+
+	/**
+	 * Retrieve default lookup and other values by reflection and store in the
+	 * session
+	 * 
+	 * @param request
+	 * @param contextAttributeForDefaults
+	 * @param sessionAttribute
+	 * @param fullParentClassName
+	 * @param otherFullParentClassName
+	 * @param updateSession
+	 * @return
+	 * @throws Exception
+	 */
+	public SortedSet<String> getDefaultAndOtherTypesByReflection(
 			HttpServletRequest request, String contextAttributeForDefaults,
 			String sessionAttribute, String fullParentClassName,
 			String otherFullParentClassName, boolean updateSession)
 			throws Exception {
 
 		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> defaultTypes = getServletContextDefaultTypesByReflection(
+		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
 				appContext, contextAttributeForDefaults, fullParentClassName);
 
 		SortedSet<String> types = null;
@@ -142,40 +182,6 @@ public class InitSetup {
 					.getSession().getAttribute(sessionAttribute)));
 		}
 		return types;
-	}
-
-	/**
-	 * Retrieve lookup attribute and other attribute for lookup name based on
-	 * reflection and store in the application context
-	 *
-	 * @param appContext
-	 * @param contextAttribute
-	 * @param lookupName
-	 * @param fullParentClassName
-	 * @return
-	 * @throws Exception
-	 */
-	public SortedSet<String> getServletContextDefaultTypesByReflection(
-			ServletContext appContext, String contextAttribute,
-			String fullParentClassName) throws Exception {
-		if (appContext.getAttribute(contextAttribute) == null) {
-			SortedSet<String> types = new TreeSet<String>();
-			List<String> classNames = ClassUtils
-					.getChildClassNames(fullParentClassName);
-			for (String name : classNames) {
-				if (!name.contains("Other")) {
-					String shortClassName = ClassUtils.getShortClassName(name);
-					String displayName = ClassUtils
-							.getDisplayName(shortClassName);
-					types.add(displayName);
-				}
-			}
-			appContext.setAttribute(contextAttribute, types);
-			return types;
-		} else {
-			return new TreeSet<String>((SortedSet<? extends String>) appContext
-					.getAttribute(contextAttribute));
-		}
 	}
 
 	public String getFileUriFromFormFile(FormFile file, String folderType,
@@ -275,8 +281,9 @@ public class InitSetup {
 		return gridNodes;
 	}
 
-	public List<LabelValueBean> getLookupValuesAsOptions(String lookupName,
-			String lookupAttribute, String otherTypeAttribute) throws Exception {
+	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
+			String lookupName, String lookupAttribute, String otherTypeAttribute)
+			throws Exception {
 		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
 		SortedSet<String> defaultValues = LookupService.findLookupValues(
 				lookupName, lookupAttribute);
@@ -294,12 +301,12 @@ public class InitSetup {
 		return lvBeans;
 	}
 
-	public List<LabelValueBean> getReflectionDefaultAndOtherLookupTypesAsOptions(
+	public List<LabelValueBean> getDefaultAndOtherTypesByReflectionAsOptions(
 			ServletContext appContext, String contextAttributeForDefaults,
 			String fullParentClassName, String otherFullParentClassName)
 			throws Exception {
 		List<LabelValueBean> lvBeans = new ArrayList<LabelValueBean>();
-		SortedSet<String> defaultTypes = getServletContextDefaultTypesByReflection(
+		SortedSet<String> defaultTypes = getDefaultTypesByReflection(
 				appContext, contextAttributeForDefaults, fullParentClassName);
 		for (String type : defaultTypes) {
 			LabelValueBean lv = new LabelValueBean(type, type);

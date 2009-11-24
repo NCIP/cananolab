@@ -34,6 +34,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class AdvancedSampleSearchAction extends BaseAnnotationAction {
@@ -90,7 +91,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Export full advance sample search report in excel file.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -171,7 +172,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Print current page advance sample search report.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -275,8 +276,8 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("advancedSampleSearchForm");
-		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
-				request);
+		InitCharacterizationSetup.getInstance()
+				.getDecoratedCharacterizationTypes(request);
 		request.getSession().removeAttribute("advancedSampleSearchResults");
 		request.getSession().removeAttribute("samplesResultList");
 		request.getSession().removeAttribute("samplesFullList");
@@ -285,7 +286,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Get file name for exporting report as an Excel file.
-	 *
+	 * 
 	 * @param sampleName
 	 * @param viewType
 	 * @param subType
@@ -300,7 +301,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Get view sample URL.
-	 *
+	 * 
 	 * @param sample
 	 * @return
 	 */

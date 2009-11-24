@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
+import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SampleConstants;
@@ -35,39 +36,38 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup.getInstance().getDefaultLookupTable(appContext);
 			InitSetup
 					.getInstance()
-					.getServletContextDefaultTypesByReflection(appContext,
+					.getDefaultTypesByReflection(appContext,
 							"defaultFunctionalizingEntityTypes",
 							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-					appContext, "defaultNanomaterialEntityTypes",
+			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+					"defaultNanomaterialEntityTypes",
 					"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-					appContext, "defaultFunctionTypes",
+			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+					"defaultFunctionTypes",
 					"gov.nih.nci.cananolab.domain.particle.Function");
-			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-					appContext, "defaultTargetTypes",
+			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+					"defaultTargetTypes",
 					"gov.nih.nci.cananolab.domain.function.Target");
 			InitSetup
 					.getInstance()
-					.getServletContextDefaultTypesByReflection(appContext,
+					.getDefaultTypesByReflection(appContext,
 							"defaultChemicalAssociationTypes",
 							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
 			actionServlet.getServletContext().setAttribute("applicationOwner",
 					Constants.APP_OWNER);
 
-			InitSetup.getInstance().getServletContextDefaultLookupTypes(
-					appContext, "speciesTypes", "species", "type");
-			InitSetup.getInstance().getServletContextDefaultLookupTypes(
-					appContext, "molecularFormulaTypes", "molecular formula",
-					"type");
-			InitSetup.getInstance().getServletContextDefaultLookupTypes(
-					appContext, "wallTypes", "carbon nanotube", "wallType");
+			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+					"speciesTypes", "species", "type");
+			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+					"wallTypes", "carbon nanotube", "wallType");
 
+			InitCharacterizationSetup.getInstance()
+					.getDefaultCharacterizationTypes(appContext);
 			// For PubChem data sources drop-down list.
 			appContext.setAttribute("pubChemDataSources",
 					SampleConstants.PUBCHEM_DS_LIST);
-			
+
 			InitSetup.getInstance().setStaticOptions(appContext);
 
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
