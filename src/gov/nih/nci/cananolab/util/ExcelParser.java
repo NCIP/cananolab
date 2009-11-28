@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -17,13 +18,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import sun.util.logging.resources.logging;
+
 public class ExcelParser {
-	private String fileName;
-
-	public ExcelParser(String fileName) {
-		this.fileName = fileName;
-	}
-
 	/**
 	 * Vertically parse the Excel file into a 2-D matrix represented as a map of map.
 	 * Key is Column header, value is a map, whose key is Row header and value is
@@ -32,7 +29,7 @@ public class ExcelParser {
 	 * @return
 	 * @throws IOException
 	 */
-	public SortedMap<String, SortedMap<String, Double>> verticalParse()
+	public SortedMap<String, SortedMap<String, Double>> verticalParse(String fileName)
 			throws IOException {
 		InputStream inputStream = null;
 		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
@@ -85,7 +82,7 @@ public class ExcelParser {
 	 * @return
 	 * @throws IOException
 	 */
-	public SortedMap<String, SortedMap<String, Double>> horizontalParse()
+	public SortedMap<String, SortedMap<String, Double>> horizontalParse(String fileName)
 			throws IOException {
 		InputStream inputStream = null;
 		SortedMap<String, SortedMap<String, Double>> dataMatrix = new TreeMap<String, SortedMap<String, Double>>();
@@ -130,6 +127,82 @@ public class ExcelParser {
 		return dataMatrix;
 	}
 
+	/**
+	 * Parse secondary StanShaw Excel spreadsheet and store data in a 3-layer map.
+	 * 1st layer: sample map, key is sample name (261-13-4), value is the 2nd layer map.
+	 * 2nd layer: assay map, key is assay name (Aorta 1), value is the 3rd layer map.
+	 * 3rd layer: datum map, there are always 3 entries in this map, for example,  
+	 * 			  key is datum name Median (M), value is 9.02194E-08.
+	 * 			  key is datum name Mean (M), value is 7.96025E-08.
+	 * 			  key is datum name SEM (M), value is 6.12968E-09.
+	 *  
+	 * @param fileName
+	 * @return a 3-layer map
+	 * @throws IOException
+	 */
+	public SortedMap<String, SortedMap<String, SortedMap<String, Double>>> twoWayParse(
+			String fileName) throws IOException {
+		InputStream inputStream = null;
+		SortedMap<String, SortedMap<String, SortedMap<String, Double>>> dataMatrix = 
+			new TreeMap<String, SortedMap<String, SortedMap<String, Double>>>();
+		try {
+			inputStream = new BufferedInputStream(new FileInputStream(fileName));
+			POIFSFileSystem fs = new POIFSFileSystem(inputStream);
+			Workbook wb = new HSSFWorkbook(fs);
+			Sheet sheet1 = wb.getSheetAt(0);
+			//printSheet(sheet1);
+			// Sheet must contain >= 2 rows (header + data).
+			if (sheet1.getLastRowNum() < 1) {
+				return dataMatrix;
+			}
+			// Sheet must contain >= 5 columns (assay, sample + 3 datums).   
+			Row firstRow = sheet1.getRow(0);
+			if (firstRow.getLastCellNum() < 4) {
+				return dataMatrix;
+			}
+			// Iterate sheet from 2nd row and populate the data matrix.
+			for (int rowIndex = 1; rowIndex <= sheet1.getLastRowNum(); rowIndex++) {
+				Row row = sheet1.getRow(rowIndex);
+				
+				//1.get sampleName key for 1st layer map, assayName key for 2 layer map.
+				String sampleName = row.getCell(1).getStringCellValue();
+				String assayName = row.getCell(0).getStringCellValue();
+				
+				//2.find sampleMap in dataMatrix, if null create & store new sampleMap.
+				SortedMap<String, SortedMap<String, Double>> sampleMap = 
+					dataMatrix.get(sampleName);
+				if (sampleMap == null) {
+					sampleMap = new TreeMap<String, SortedMap<String, Double>>();
+					dataMatrix.put(sampleName, sampleMap);
+				}
+				
+				//3.find assayMap in sampleMap, if null create & store new assayMap.
+				SortedMap<String, Double> assayMap = sampleMap.get(assayName);
+				if (assayMap == null) {
+					assayMap = new TreeMap<String, Double>();
+					sampleMap.put(assayName, assayMap);
+				}
+				
+				//4.iterate row from col-2 to last column, store datum value.
+				for (int colIndex = 2; colIndex <= row.getLastCellNum(); colIndex++) {
+					Cell cell = row.getCell(colIndex);
+					if (cell != null && cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+						String datumName = firstRow.getCell(colIndex).getStringCellValue();
+						assayMap.put(datumName,	cell.getNumericCellValue());
+					}
+				}
+			}
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (Exception e) {}
+			}
+			this.print2ndMatrix(dataMatrix);
+		}
+		return dataMatrix;
+	}
+	
 	public void printSheet(Sheet sheet) {
 		for (Row row : sheet) {
 			for (Cell cell : row) {
@@ -172,18 +245,40 @@ public class ExcelParser {
 			}
 		}
 	}
+	
+	public void print2ndMatrix(SortedMap<String, SortedMap<String, SortedMap<String, Double>>> dataMatrix) {
+		int sampleCount = 1;
+		for (String sampleName : dataMatrix.keySet()) {
+			int assayCount = 1;
+			System.out.println("NP" + sampleCount + ": " + sampleName);
+			SortedMap<String, SortedMap<String, Double>> assayMap = dataMatrix.get(sampleName);
+			for (String assayName : assayMap.keySet()) {
+				System.out.println("    Assay" + assayCount + ": " + assayName);
+				SortedMap<String, Double> datumMap = assayMap.get(assayName);
+				for (String datumName : datumMap.keySet()) {
+					Double datumValue = datumMap.get(datumName);
+					System.out.println("      Datum: " + datumName + " | " + datumValue);
+				}
+				assayCount++;
+			}
+			sampleCount++;
+		}
+	}
 
 	public static void main(String[] args) {
 		if (args != null && args.length == 1) {
 			String inputFileName = args[0];
 			try {
-				ExcelParser parser = new ExcelParser(inputFileName);
+				ExcelParser parser = new ExcelParser();
+				parser.twoWayParse(inputFileName);
+				/**
 				SortedMap<String, SortedMap<String, Double>> matrix1 = 
-					parser.verticalParse();
+					parser.verticalParse(inputFileName);
 				parser.printMatrix(matrix1);
 				SortedMap<String, SortedMap<String, Double>> matrix2 = 
-					parser.horizontalParse();
+					parser.horizontalParse(inputFileName);
 				parser.printMatrix(matrix2);
+				*/
 			} catch (IOException e) {
 				System.out.println("Input file not found.");
 				e.printStackTrace();
