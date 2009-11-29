@@ -239,11 +239,11 @@ public class ZScoreDataLoader {
 			String inputFileName = args[2];
 			ZScoreDataLoader loader = null;
 			try {
-				ExcelParser parser = new ExcelParser(inputFileName);
+				ExcelParser parser = new ExcelParser();
 				SortedMap<String, SortedMap<String, Double>> verticalMatrix = 
-					parser.verticalParse();
+					parser.verticalParse(inputFileName);
 				SortedMap<String, SortedMap<String, Double>> horizontalMatrix = 
-					parser.horizontalParse();
+					parser.horizontalParse(inputFileName);
 				loader = new ZScoreDataLoader(verticalMatrix, horizontalMatrix);
 			} catch (IOException e) {
 				System.out.println("Input file not found.");
