@@ -198,7 +198,7 @@ public class ExcelParser {
 					inputStream.close();
 				} catch (Exception e) {}
 			}
-			this.print2ndMatrix(dataMatrix);
+			//this.print2ndMatrix(dataMatrix);
 		}
 		return dataMatrix;
 	}
