@@ -1380,7 +1380,7 @@ input.noBorderButton {
 	font-size: 1.02em;
 	text-decoration: underline;
 	border:0px solid;
-	#background-color: #f4f4f5;
+	background-color: #f4f4f5;
 }
 
 input.noBorderText {
