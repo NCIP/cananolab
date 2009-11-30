@@ -102,8 +102,8 @@ public class EndNoteXMLHandler {
 	
 	private static final String[] visibilityGroups = {"Public"};
 
-	public EndNoteXMLHandler(String inputFileName) throws FileNotFoundException {
-		inputStream = new BufferedInputStream(
+	public EndNoteXMLHandler(String inputFileName, boolean moreLog) throws FileNotFoundException {
+		this.inputStream = new BufferedInputStream(
 				new FileInputStream(inputFileName));
 		
 		int index = inputFileName.lastIndexOf('.');
@@ -111,17 +111,21 @@ public class EndNoteXMLHandler {
 			index = inputFileName.length();
 		}
 		String logFileName = inputFileName.substring(0, index);
-		log = new PrintStream(logFileName + ".log");
-		allLog = new PrintStream(new BufferedOutputStream(
-				new FileOutputStream(logFileName + ".all")));
-		dbLog = new PrintStream(new BufferedOutputStream(
-				new FileOutputStream(logFileName + ".db")));
-		dupLog = new PrintStream(new BufferedOutputStream(
-				new FileOutputStream(logFileName + ".dup")));
-		savedLog = new PrintStream(new BufferedOutputStream(
-				new FileOutputStream(logFileName + ".saved")));
-		uniqueLog = new PrintStream(new BufferedOutputStream(
-				new FileOutputStream(logFileName + ".unique")));
+		this.log = new PrintStream(logFileName + ".log");
+		if (moreLog) {
+			this.allLog = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(logFileName + ".all")));
+			this.dbLog = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(logFileName + ".db")));
+			this.dupLog = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(logFileName + ".dup")));
+			this.savedLog = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(logFileName + ".saved")));
+			this.uniqueLog = new PrintStream(new BufferedOutputStream(
+					new FileOutputStream(logFileName + ".unique")));
+		} else {
+			allLog = dbLog = dupLog = savedLog = uniqueLog = log;
+		}
 	}
 
 	public boolean parsePublicationXML(UserBean user) {
@@ -910,12 +914,16 @@ public class EndNoteXMLHandler {
 			String userLoginName = args[0];
 			String userPassword = args[1];
 			String inputFileName = args[2];
+			boolean moreLog = false;
+			try {
+				moreLog = Boolean.valueOf(args[3]);
+			} catch (Exception e) {}
 			try {
 				// Call CSM to authenticate the user.
 				LoginService loginservice = new LoginService(
 						Constants.CSM_APP_NAME);
 				UserBean user = loginservice.login(userLoginName, userPassword);
-				EndNoteXMLHandler endNotehandler = new EndNoteXMLHandler(inputFileName);
+				EndNoteXMLHandler endNotehandler = new EndNoteXMLHandler(inputFileName, moreLog);
 				isSuccess = endNotehandler.parsePublicationXML(user);
 			} catch (FileNotFoundException e) {
 				System.out.println("Input file not found.");
@@ -927,7 +935,8 @@ public class EndNoteXMLHandler {
 			}
 		} else {
 			System.out.println("Invalid argument!");
-			System.out.println("java EndnoteParser <account> <password> <inputFileName>");
+			System.out.println(
+					"java EndnoteParser <account> <password> <inputFileName> [true/false]");
 		}
 		System.exit(isSuccess ? 0 : 1);
 	}

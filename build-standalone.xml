@@ -186,6 +186,7 @@
 			<arg value="${curator.login.name}" />
 			<arg value="${curator.password}" />
 			<arg value="${endnote.xml}" />
+			<arg value="${endnote.morelog}" />
 		</java>
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" />

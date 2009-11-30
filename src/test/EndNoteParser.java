@@ -77,7 +77,7 @@ public class EndNoteParser {
 		boolean isSuccess = false;
 		EndNoteXMLHandler endNotehandler = null;
 		try {
-			endNotehandler = new EndNoteXMLHandler(inputFileName);
+			endNotehandler = new EndNoteXMLHandler(inputFileName, true);
 			isSuccess = endNotehandler.parsePublicationXML(user);
 		} catch (Exception ex) {
 			isSuccess = false;
