@@ -153,6 +153,25 @@
 		<delete dir="${tmp.dir}" />
 	</target>
 
+	<target name="run-kelly-loader"
+		depends="prepare-standalone-database-connection">
+		<mkdir dir="/tmp/log" />
+		<java
+			classname="gov.nih.nci.cananolab.service.sample.KellyDataLoader"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+			<arg value="${curator.login.name}" />
+			<arg value="${curator.password}" />
+			<arg value="${kelly.excel}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
 	<target name="run-endnote-loader"
 		depends="prepare-standalone-database-connection">
 		<property file="endnote.properties" />
