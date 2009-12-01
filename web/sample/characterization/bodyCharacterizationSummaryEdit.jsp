@@ -33,9 +33,9 @@
 				style="display: none;"></a>
 			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 		</li>
-		<li>
-			<c:forEach var="type" items="${characterizationTypes}"
+		<c:forEach var="type" items="${characterizationTypes}"
 				varStatus="ind">
+			<li>
 				<a
 					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
 					title="${type}"><span>${type}</span> </a>
@@ -43,8 +43,8 @@
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
 					style="display: none;"></a>
-			</c:forEach>
-		</li>
+			</li>
+		</c:forEach>		
 		<li>
 			<a href="characterization.do?dispatch=setupNew&sampleId=${sampleId }"><span>other</span>
 			</a>

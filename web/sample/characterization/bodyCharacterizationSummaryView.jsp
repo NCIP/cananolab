@@ -31,14 +31,19 @@
 			<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
 			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 		</li>
-		<li>
-			<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
-				<a	href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
-					title="${type}"><span>${type}</span></a>
-				<a href="javascript:printPage('${printUrl}&type=${type}')" id="printUrl${ind.count}" style="display: none;"></a>
-				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}" style="display: none;"></a>
-			</c:forEach>
-		</li>
+		<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
+			<li>
+				<a
+					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
+					title="${type}"><span>${type}</span>
+				</a>
+				<a href="javascript:printPage('${printUrl}&type=${type}')"
+					id="printUrl${ind.count}" style="display: none;"></a>
+				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
+					style="display: none;"></a>
+
+			</li>
+		</c:forEach>
 	</ul>
 </div>
 <c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
