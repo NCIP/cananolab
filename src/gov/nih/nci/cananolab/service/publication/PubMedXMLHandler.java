@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.util.SAXEventSwitcher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
