@@ -1,0 +1,59 @@
+/*Credits: Dynamic Drive CSS Library */
+/*URL: http://www.dynamicdrive.com/style/ */
+
+.shadetabs{
+	border-bottom: 1px solid #cccccc;
+	width: 100%; /*width of menu. Uncomment to change to a specific width */
+	white-space: nowrap;
+	/*margin-bottom: 1em;*/
+}
+
+.shadetabs ul{
+	padding: 3px 0;
+	margin-left: 0;
+	margin-top: 1px;
+	margin-bottom: 0;
+	font: bold 12px Verdana;
+	list-style-type: none;
+	text-align: left; /*set to left, center, or right to align the menu as desired*/
+}
+
+.shadetabs li{
+	display: inline;
+	margin: 0;
+}
+
+.shadetabs li a{
+	text-decoration: none;
+	padding: 3px 7px;
+	margin-right: 3px;
+	border: 1px solid #cccccc;
+	color: #5C5C5C;
+	background: white url(../images/shade.gif) top left repeat-x;
+}
+
+.shadetabs li a:visited{
+	color: #5C5C5C;
+	text-decoration: none;
+}
+
+.shadetabs li a:hover{
+	color: #5C5C5C;
+	text-decoration: none;
+}
+
+.shadetabs li.selected{
+	/*position: relative;*/
+	text-decoration: none;
+	top: 1px;
+}
+
+.shadetabs li.selected a{ /*selected main tab style */
+	background-image: url(../images/shadeactive.gif);
+	border-bottom-color: white;
+	text-decoration: none;
+}
+
+.shadetabs li.selected a:hover{ /*selected main tab style */
+	text-decoration: none;
+}
