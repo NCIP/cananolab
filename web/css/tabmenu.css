@@ -43,7 +43,7 @@
 }
 
 .shadetabs li.selected{
-	position: relative;
+	/*position: relative;*/
 	text-decoration: none;
 	top: 1px;
 }
