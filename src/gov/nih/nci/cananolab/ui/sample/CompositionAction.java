@@ -179,7 +179,7 @@ public class CompositionAction extends BaseAnnotationAction {
 					location);
 		}
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
-		CompositionServiceHelper.exportSummary(compBean, sb.toString(),
+		CompositionServiceLocalImpl.exportSummary(compBean, sb.toString(),
 				response.getOutputStream());
 
 		return null;

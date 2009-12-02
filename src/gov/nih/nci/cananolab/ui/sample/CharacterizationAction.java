@@ -510,7 +510,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					location);
 		}
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
-		CharacterizationServiceHelper.exportSummary(charTypes, charSummaryBean,
+		CharacterizationServiceLocalImpl.exportSummary(charTypes, charSummaryBean,
 				sb.toString(), response.getOutputStream());
 
 		return null;

@@ -297,7 +297,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
 				.getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
-		PublicationServiceHelper.exportSummary(summaryBean, response
+		PublicationServiceLocalImpl.exportSummary(summaryBean, response
 				.getOutputStream());
 
 		return null;
@@ -518,7 +518,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		String fileName = this.getExportFileName(title, "detailView");
 		ExportUtils.prepareReponseForExcel(response, fileName);
-		PublicationServiceHelper.exportDetail(pubBean, response
+		PublicationServiceLocalImpl.exportDetail(pubBean, response
 				.getOutputStream());
 
 		return null;
