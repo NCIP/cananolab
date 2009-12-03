@@ -18,7 +18,7 @@
 		<li class="selected">
 			<a
 				href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
-				title="All"><span>All</span> </a>
+				title="All"><span>&nbsp;All&nbsp;&nbsp;</span></a>
 			<c:url var="printUrl" value="characterization.do">
 				<c:param name="dispatch" value="summaryPrint" />
 				<c:param name="sampleId" value="${sampleId}" />
@@ -33,8 +33,7 @@
 				style="display: none;"></a>
 			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 		</li>
-		<c:forEach var="type" items="${characterizationTypes}"
-				varStatus="ind">
+		<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
 			<li>
 				<a
 					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
@@ -58,10 +57,9 @@
 			<li>
 				<a
 					href="javascript:showSummary('ALL',${fn:length(characterizationTypes)})"
-					title="All"><span>All</span> </a>
+					title="All"><span>&nbsp;All&nbsp;&nbsp;</span></a>
 			</li>
-			<c:forEach var="type" items="${characterizationTypes}"
-				varStatus="ind2">
+			<c:forEach var="type" items="${characterizationTypes}" varStatus="ind2">
 				<c:choose>
 					<c:when test="${ind.count eq ind2.count }">
 						<c:set var="selectedClass" value="selected" />
