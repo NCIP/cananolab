@@ -40,6 +40,7 @@
 			<item value="SAMPLES"
 				link="gotoPage('manageSample.do')" />
 			<item value="PUBLICATIONS" link="gotoPage('managePublication.do')" />
+			<item value="STUDY" link="gotoPage('manageStudy.do')" />
 			<item value="ADMINISTRATION" link="gotoPage('adminHome.do')" />
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+	<!-- definition for the Study home page -->
+	<definition name="study.home" extends="canano.home">
+		<put name="itemDescription"	value="/study/bodyStudyDescription.jsp" />
+		<put name="cananoContent" value="/study/bodyStudyContent.jsp" />
+		<put name="menu" value="STUDY" />
+		<put name="item" value="Study" />
+	</definition>
+	
+	<!-- definition for the site preference page -->
+	<definition name="study.submitStudy" extends="canano.home">
+		<put name="cananoContent" value="/study/bodySubmitStudy.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+</tiles-definitions>
