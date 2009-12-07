@@ -1,0 +1,26 @@
+function FileData_Pairs(x)
+{
+x.t("managing","sample");
+x.t("deleting","characterization");
+x.t("summary","page");
+x.t("copying","characterizations");
+x.t("sample","characterizations");
+x.t("editing","characterizations");
+x.t("printing","characterization");
+x.t("characterization","summary");
+x.t("characterization","tasks");
+x.t("characterization","exporting");
+x.t("tasks","managing");
+x.t("tasks","printing");
+x.t("tasks","characterization");
+x.t("perform","following");
+x.t("exporting","characterizations");
+x.t("page","curator");
+x.t("characterizations","deleting");
+x.t("characterizations","copying");
+x.t("characterizations","editing");
+x.t("characterizations","characterization");
+x.t("privileges","perform");
+x.t("curator","privileges");
+x.t("following","tasks");
+}

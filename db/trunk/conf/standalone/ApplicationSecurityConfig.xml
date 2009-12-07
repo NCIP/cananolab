@@ -1,0 +1,34 @@
+<security-config>
+	<upt-context-name>csmupt</upt-context-name>
+	<application-list>
+		<!-- For every application using the security api an entry should be made here -->
+		<application>
+			<context-name>caNanoLab</context-name>
+			<authentication>
+				<authentication-provider-class>
+					<!-- Fully qualified class name-->
+				</authentication-provider-class>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+					<!-- Fully qualified class name-->
+				</authorization-provider-class>
+				<hibernate-config-file>CONF_PATH/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
+			</authorization>
+		</application>
+		<application>
+			<context-name>csmupt</context-name>
+			<authentication>
+				<authentication-provider-class>
+					<!-- Fully qualified class name-->
+				</authentication-provider-class>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+					<!-- Fully qualified class name-->
+				</authorization-provider-class>
+				<hibernate-config-file>CONF_PATH/caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
+			</authorization>
+		</application>
+	</application-list>
+</security-config>

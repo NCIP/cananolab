@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+	<!-- definition for the manage publication page -->
+	<definition name="publication.managePublication"
+		extends="canano.home">
+		<put name="cananoContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="publications" />
+		<put name="item" value="Publication" />
+		<put name="itemDescription"
+			value="/publication/bodyPublicationDescription.jsp" />
+		<put name="createLink"
+			value="publication.do?dispatch=setupNew&amp;page=0" />
+		<put name="searchLink"
+			value="searchPublication.do?dispatch=setup" />
+	</definition>
+
+	<definition name="publication.message" extends="canano.home">
+		<put name="cananoContent"
+			value="/bodyMessage.jsp?bundle=publication" />
+		<put name="menu" value="publications" />
+	</definition>
+
+	<definition name="publication.submitPublication"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodySubmitPublication.jsp" />
+		<put name="menu" value="publications" />
+	</definition>
+	<definition name="publication.submitPublicationPubmed"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
+		<put name="menu" value="publications" />
+	</definition>
+	<definition name="publication.submitReport" extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodySubmitReport.jsp" />
+		<put name="menu" value="reports" />
+	</definition>
+
+	<!-- definition for the search publication page -->
+	<definition name="publication.searchPublication"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodySearchPublication.jsp" />
+		<put name="menu" value="publications" />
+	</definition>
+
+	<definition name="publication.viewPublication"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodyViewPublicationFile.jsp" />
+		<put name="menu" value="publications" />
+		<put name="publicationActionName" value="updatePublication" />
+	</definition>
+
+	<definition name="publication.detailViewPublication"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodyPublicationDetailView.jsp" />
+		<put name="menu" value="publications" />
+	</definition>
+
+	<!-- definition for the search publication result page -->
+	<definition name="publication.searchPublicationResult"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodySearchPublicationResult.jsp" />
+		<put name="menu" value="publications" />
+	</definition>
+
+	<definition name="publication.remoteSearchPublication"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodyRemoteSearchPublication.jsp" />
+		<put name="menu" value="publications" />
+	</definition>
+
+	<!-- definition for the remote search publication result page -->
+	<definition name="publication.remoteSearchPublicationResult"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/publication/bodyRemoteSearchPublicationResult.jsp" />
+		<put name="menu" value="publications" />
+	</definition>
+</tiles-definitions>
+
