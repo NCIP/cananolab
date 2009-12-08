@@ -11,9 +11,15 @@
 		<put name="item" value="Study" />
 	</definition>
 	
-	<!-- definition for the site preference page -->
+	<!-- definition for the submit study page -->
 	<definition name="study.submitStudy" extends="canano.home">
 		<put name="cananoContent" value="/study/bodySubmitStudy.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	
+	<!-- definition for the submit outcome page -->
+	<definition name="study.submitOutcome" extends="canano.home">
+		<put name="cananoContent" value="/study/bodySubmitOutcome.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 </tiles-definitions>
