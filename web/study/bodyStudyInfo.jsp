@@ -31,7 +31,7 @@
 				Study Name*
 			</td>
 			<td colspan="3">
-				<input type="text" size="128" value="Efficacy of nanoparticle"/>
+				<input type="text" size="100" value="Efficacy of nanoparticle"/>
 			</td>
 		</tr>
 		<tr>
@@ -79,25 +79,18 @@
 				Study Disease
 			</td>
 			<td>
-				<div id="protocolNamePrompt">
-					<SELECT >
-						<option value="">
-						</option>
-						<option value="other">
-							[other]
-						</option>
-					</SELECT>
-					&nbsp;&nbsp;&nbsp;
-					<a href="study.do?dispatch=addDisease" class="addlink"><img
-						align="middle" src="images/btn_add.gif" border="0" />
-					</a>
-				</div>
-			</td>
-			<td align="left" class="cellLabel">
-				Study Type
-			</td>
-			<td align="left">
-				<input type="text">
+				<SELECT >
+					<option value="">
+					</option>
+					<option value="other">
+						[other]
+					</option>
+				</SELECT>
+				&nbsp;&nbsp;&nbsp;
+				<a href="study.do?dispatch=addDisease" class="addlink"><img
+					align="middle" src="images/btn_add.gif" border="0" /></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>Disease Type</b>&nbsp;&nbsp;<input type="text">
 			</td>
 		</tr>
 		<tr>
@@ -109,12 +102,9 @@
 				<a href="javascript:cal1.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
-						title="Click Here to Pick up the date" align="top"> </a>
-			</td>
-			<td align="left" class="cellLabel">
-				End Date
-			</td>
-			<td align="left">
+						title="Click Here to Pick up the date" align="top"></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>End Date</b>&nbsp;&nbsp;
 				<input type="text" value="12/01/2009"/>
 				<a href="javascript:cal1.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
