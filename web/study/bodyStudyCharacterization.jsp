@@ -21,22 +21,20 @@
 		</td>
 		<td>
 			<div id="assayTypePrompt">
-				<select name="achar.assayType" onchange="javascript:callPrompt('Assay Type', 'assayType', 'assayTypePrompt');" id="assayType"><option value=""></option>
+				<select name="achar.assayType" multiple="true" onchange="javascript:callPrompt('Assay Type', 'assayType', 'assayTypePrompt');" id="assayType">
 					<option	value="size" selected="selected">
-						NCL-49
+						MIT_MGH-AWangCMC2008-01
 					</option>
 					<option	value="size">
-						NCL-50
+						MIT_MGH-AWangCMC2008-02
 					</option>
 					<option	value="size" selected="selected">
-						NCL-51
+						MIT_MGH-AWangCMC2008-03
 					</option>
 					<option	value="size">
-						NCL-52
+						MIT_MGH-AWangCMC2008-04
 					</option>
-					<option value="other">
-						[other]
-					</option></select>
+				</select>
 			</div>
 		</td>
 		<td class="cellLabel">
