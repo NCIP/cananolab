@@ -32,11 +32,13 @@ public class KellyDataLoader {
 	
 	public final static String ASSAY_TYPE = "immunoassay";
 	
+	public final static String CELL_LINE_PREFIX = "CELL  LINE: ";
+	
 	public final static String DATUM_NAME = "sample concentration after treatment (mg/mL)";
 	
 	public final static double VALUE_CONVERTOR = 1000000000000d;
 	
-	private String userName = "AUTO_PARSER";
+	private String userName = "SPREAD_SHEET_PARSER_4_KELLY_DATA";
 	
 	// Data map: {MIT_MGH-KKellyIB2009-02, {Aorta 1, {Median (M), 9.02194E-08}}}.
 	private SortedMap<String, SortedMap<String, SortedMap<String, Double>>> dataMatrix;
@@ -53,8 +55,8 @@ public class KellyDataLoader {
 				sampleName.append('0');
 			}
 			sampleName.append(count++);
-			SortedMap<String, SortedMap<String, Double>> assayMap = kellyMatrix.get(key);
-			this.dataMatrix.put(sampleName.toString(), assayMap);
+			SortedMap<String, SortedMap<String, Double>> cellLineMap = kellyMatrix.get(key);
+			this.dataMatrix.put(sampleName.toString(), cellLineMap);
 			if (logger.isDebugEnabled()) {
 				logger.debug(key + " ==> " + sampleName);
 			}
@@ -62,8 +64,7 @@ public class KellyDataLoader {
 	}
 
 	public void load(UserBean user) {
-		//TODO: Verify logic below.
-		//this.userName = user.getLoginName();
+		Date currentDate = Calendar.getInstance().getTime();
 		SampleService service = new SampleServiceLocalImpl();
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		
@@ -83,24 +84,17 @@ public class KellyDataLoader {
 				}
 				continue;
 			}
-			//2.iterate assayMap, create Cytotoxicity, Finding & Datum.
-			SortedMap<String, SortedMap<String, Double>> assayMap = 
+			//2.iterate cellLineMap, create Targeting, Finding & Datum.
+			SortedMap<String, SortedMap<String, Double>> cellLineMap = 
 				this.dataMatrix.get(sampleName);
-			for (String assayName : assayMap.keySet()) {
-				Date currentDate = Calendar.getInstance().getTime();
+			for (String cellLine : cellLineMap.keySet()) {
 				
-				//2a.create 1 Cytotoxicity for each CellLine.
-				//Cytotoxicity achar = new Cytotoxicity();
-				
-				//TODO: Verify logic below.
+				//2a.create 1 Targeting char object for each CellLine.
 				Targeting achar = new Targeting();
 				achar.setCreatedBy(this.userName);
 				achar.setCreatedDate(currentDate);
-				achar.setDesignMethodsDescription(assayName);
+				achar.setDesignMethodsDescription(CELL_LINE_PREFIX + cellLine);
 				achar.setAssayType(ASSAY_TYPE);
-				
-				//achar.setCellLine(assayName);
-				//achar.setAssayType("???"); 
 				achar.setFindingCollection(new HashSet<Finding>());
 				
 				//2b.create 1 Finding for each CellLine.
@@ -109,7 +103,7 @@ public class KellyDataLoader {
 				finding.setCreatedDate(currentDate);
 				achar.getFindingCollection().add(finding);
 				finding.setDatumCollection(new HashSet<Datum>());
-				SortedMap<String, Double> datumMap = assayMap.get(assayName);
+				SortedMap<String, Double> datumMap = cellLineMap.get(cellLine);
 				
 				//2c.iterate datumMap & add datum to finding.
 				int i = 0;
@@ -133,10 +127,10 @@ public class KellyDataLoader {
 					}
 					charService.saveCharacterization(sampleBean, charBean, user);
 					if (logger.isDebugEnabled()) {
-						logger.debug("charBean saved: " + sampleName + ", " + assayName);
+						logger.debug("charBean saved: " + sampleName + ", " + cellLine);
 					}
 				} catch (Exception e) {
-					logger.error("Error saving charBean: " + sampleName + ", " + assayName, e);
+					logger.error("Error saving charBean: " + sampleName + ", " + cellLine, e);
 					continue;
 				}
 			}

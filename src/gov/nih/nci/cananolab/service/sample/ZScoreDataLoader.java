@@ -41,21 +41,19 @@ public class ZScoreDataLoader {
 
 	public final static Map<String, String> ASSAY_TYPE_MAP = new HashMap<String, String>();
 	static {
-		// TODO verify with Michal
 		ASSAY_TYPE_MAP.put("APO", "caspase 3 apoptosis");
 		ASSAY_TYPE_MAP.put("JC1", "mitochondrial membrane potential");
-		ASSAY_TYPE_MAP.put("RES", "intracellular metabolism indicator");
-		ASSAY_TYPE_MAP.put("CTG", "cell viability");
+		ASSAY_TYPE_MAP.put("RES", "cellular metabolism");
+		ASSAY_TYPE_MAP.put("CTG", "intracellular ATP content");
 	}
 
 	public final static Map<String, String> DATUM_TYPE_MAP = new HashMap<String, String>();
 	static {
-		// TODO verify with Michal
-		DATUM_TYPE_MAP.put("caspase 3 apoptosis", "% control");
+		DATUM_TYPE_MAP.put("caspase 3 apoptosis", "fluorescence");
 		DATUM_TYPE_MAP.put("mitochondrial membrane potential",
 				"ratio of red to green fluorescence");
-		DATUM_TYPE_MAP.put("intracellular metabolism indicator", "question");
-		DATUM_TYPE_MAP.put("cell viability", "% cell viability");
+		DATUM_TYPE_MAP.put("cellular metabolism", "fluorescence");
+		DATUM_TYPE_MAP.put("intracellular ATP content", "luminescence");
 	}
 
 	public final static Map<String, Double> FE_DOSE_MAP = new HashMap<String, Double>();
@@ -75,7 +73,8 @@ public class ZScoreDataLoader {
 	}
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-SShawPNAS2008-";
-	private String userName = "AUTO_PARSER";
+	
+	private String userName = "SPREAD_SHEET_PARSER_4_STANSHAW_DATA";
 	
 	// Sample name map, {NP1 -> MIT_MGH-SShawPNAS2008-01}, etc.
 	private Map<String, String> sampleNameMap = new HashMap<String, String>();
@@ -124,7 +123,7 @@ public class ZScoreDataLoader {
 	}
 
 	public void load(UserBean user) {
-		userName = user.getLoginName();
+		//userName = user.getLoginName();
 		SampleService service = new SampleServiceLocalImpl();
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		//iterate each Sample name, load sample & save Cytotoxity char.
@@ -164,20 +163,20 @@ public class ZScoreDataLoader {
 					} else {
 						i = 0;
 						achar = new Cytotoxicity();
-						achar.setCreatedBy(userName);
+						achar.setCreatedBy(this.userName);
 						achar.setCreatedDate(Calendar.getInstance().getTime());
 						achar.setCellLine(ac.getCellType());
 						achar.setAssayType(ac.getAssayType());
 						achar.setFindingCollection(new HashSet<Finding>());
 						finding = new Finding();
-						finding.setCreatedBy(userName);
+						finding.setCreatedBy(this.userName);
 						finding.setCreatedDate(Calendar.getInstance().getTime());
 						achar.getFindingCollection().add(finding);
 						finding.setDatumCollection(new HashSet<Datum>());
 						charMap.put(acStr, achar);
 					}
 					Datum datum = new Datum();
-					datum.setCreatedBy(userName);
+					datum.setCreatedBy(this.userName);
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 					datum.setValue(data.get(assayStr).floatValue());
 //					logger.debug(assayStr + ": "
@@ -186,7 +185,7 @@ public class ZScoreDataLoader {
 					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
 					datum.setValueType("Z-score");
 					Condition condition = new Condition();
-					condition.setCreatedBy(userName);
+					condition.setCreatedBy(this.userName);
 					condition.setCreatedDate(new Date());
 					condition.setName("sample concentration");
 					//NP49, NP50, NP51 are QDots
