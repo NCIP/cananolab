@@ -28,7 +28,14 @@
 			parameter="dispatch" input="input" scope="request">
 			<forward name="input" path="/study.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="study.submitStudy" />
-			<forward name="outcomeForm" path="study.submitOutcome" />
+			<forward name="studyInfoForm" path="study.studyInfo" />
+			<forward name="sampleInfoForm" path="study.sampleInfo" />
+			<forward name="sampleSearchResult" path="study.sampleSearchResult" />
+			<forward name="animalInfoForm" path="study.animalInfo" />
+			<forward name="treatmentInfoForm" path="study.treatmentInfo" />
+			<forward name="characterizationForm" path="study.characterization" />
+			<forward name="protocolForm" path="study.protocol" />
+			<forward name="publicationForm" path="study.publication" />
 		</action>
 	</action-mappings>
 </struts-config>
