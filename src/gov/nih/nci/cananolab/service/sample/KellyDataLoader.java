@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.sample;
 
-import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
+import gov.nih.nci.cananolab.domain.characterization.invitro.Targeting;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -29,43 +29,41 @@ public class KellyDataLoader {
 	private static Logger logger = Logger.getLogger(KellyDataLoader.class);
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-KKellyIB2009-";
-	public final static String DATUM_NAME = "sample concentration (mg/mL)";
+	
+	public final static String ASSAY_TYPE = "immunoassay";
+	
+	public final static String DATUM_NAME = "sample concentration after treatment (mg/mL)";
+	
+	public final static double VALUE_CONVERTOR = 1000000000000d;
+	
 	private String userName = "AUTO_PARSER";
 	
-	// Data map, is the Vertical Map, {NP1 -> {AO_RES_0_01, 0.403302864}}.
+	// Data map: {MIT_MGH-KKellyIB2009-02, {Aorta 1, {Median (M), 9.02194E-08}}}.
 	private SortedMap<String, SortedMap<String, SortedMap<String, Double>>> dataMatrix;
 
 	public KellyDataLoader(
 			SortedMap<String, SortedMap<String, SortedMap<String, Double>>> kellyMatrix) {
 		this.dataMatrix = new TreeMap<String, SortedMap<String, SortedMap<String, Double>>>(); 
 		
-		//1.generate a sorted key map, make 261-9-1 => 261-09-01.
-		SortedMap<String, String> sortedKeyMap = new TreeMap<String, String>();
+		//replace sorted key with sample name prefix, "MIT...02" to "MIT...39".
+		int count = 2;
 		for (String key : kellyMatrix.keySet()) {
-			String sortedKey = key.replaceAll("-(\\d)-", "-0$1-");
-			sortedKey = sortedKey.replaceAll("-(\\d)$", "-0$1");
-			sortedKeyMap.put(sortedKey, key);
-		}
-		
-		//2.replace sorted key with sample name prefix, "MIT...01" to "MIT...39".
-		int count = 1;
-		for (String key : sortedKeyMap.keySet()) {
 			StringBuilder sampleName = new StringBuilder(SAMPLE_NAME_PREFIX);
 			if (count < 10) {
 				sampleName.append('0');
 			}
 			sampleName.append(count++);
-			SortedMap<String, SortedMap<String, Double>> assayMap = 
-				kellyMatrix.get(sortedKeyMap.get(key));
+			SortedMap<String, SortedMap<String, Double>> assayMap = kellyMatrix.get(key);
 			this.dataMatrix.put(sampleName.toString(), assayMap);
 			if (logger.isDebugEnabled()) {
-				logger.debug(sortedKeyMap.get(key) + " ==> " + sampleName);
+				logger.debug(key + " ==> " + sampleName);
 			}
 		}
 	}
 
 	public void load(UserBean user) {
-		this.userName = user.getLoginName();
+		//TODO: Verify logic below.
+		//this.userName = user.getLoginName();
 		SampleService service = new SampleServiceLocalImpl();
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		
@@ -92,11 +90,17 @@ public class KellyDataLoader {
 				Date currentDate = Calendar.getInstance().getTime();
 				
 				//2a.create 1 Cytotoxicity for each CellLine.
-				Cytotoxicity achar = new Cytotoxicity();
+				//Cytotoxicity achar = new Cytotoxicity();
+				
+				//TODO: Verify logic below.
+				Targeting achar = new Targeting();
 				achar.setCreatedBy(this.userName);
 				achar.setCreatedDate(currentDate);
-				achar.setCellLine(assayName);
-				//achar.setAssayType("???"); //TODO: AssayType unknown.
+				achar.setDesignMethodsDescription(assayName);
+				achar.setAssayType(ASSAY_TYPE);
+				
+				//achar.setCellLine(assayName);
+				//achar.setAssayType("???"); 
 				achar.setFindingCollection(new HashSet<Finding>());
 				
 				//2b.create 1 Finding for each CellLine.
@@ -114,8 +118,9 @@ public class KellyDataLoader {
 					datum.setCreatedBy(this.userName);
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i++));
 					datum.setName(DATUM_NAME);
-					datum.setValue(datumMap.get(valueType).floatValue());
+					datum.setValue((float)(datumMap.get(valueType) * VALUE_CONVERTOR));
 					datum.setValueType(valueType);
+					datum.setValueUnit("pM");
 					finding.getDatumCollection().add(datum);
 				}
 				
