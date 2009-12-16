@@ -8,7 +8,9 @@ import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.LoginService;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 
 import org.apache.log4j.Logger;
@@ -41,21 +44,19 @@ public class ZScoreDataLoader {
 
 	public final static Map<String, String> ASSAY_TYPE_MAP = new HashMap<String, String>();
 	static {
-		// TODO verify with Michal
 		ASSAY_TYPE_MAP.put("APO", "caspase 3 apoptosis");
 		ASSAY_TYPE_MAP.put("JC1", "mitochondrial membrane potential");
-		ASSAY_TYPE_MAP.put("RES", "intracellular metabolism indicator");
-		ASSAY_TYPE_MAP.put("CTG", "cell viability");
+		ASSAY_TYPE_MAP.put("RES", "cellular metabolism");
+		ASSAY_TYPE_MAP.put("CTG", "intracellular ATP content");
 	}
 
 	public final static Map<String, String> DATUM_TYPE_MAP = new HashMap<String, String>();
 	static {
-		// TODO verify with Michal
-		DATUM_TYPE_MAP.put("caspase 3 apoptosis", "% control");
+		DATUM_TYPE_MAP.put("caspase 3 apoptosis", "fluorescence");
 		DATUM_TYPE_MAP.put("mitochondrial membrane potential",
 				"ratio of red to green fluorescence");
-		DATUM_TYPE_MAP.put("intracellular metabolism indicator", "question");
-		DATUM_TYPE_MAP.put("cell viability", "% cell viability");
+		DATUM_TYPE_MAP.put("cellular metabolism", "fluorescence");
+		DATUM_TYPE_MAP.put("intracellular ATP content", "luminescence");
 	}
 
 	public final static Map<String, Double> FE_DOSE_MAP = new HashMap<String, Double>();
@@ -75,7 +76,10 @@ public class ZScoreDataLoader {
 	}
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-SShawPNAS2008-";
-	private String userName = "AUTO_PARSER";
+	
+	public final static String CONDITION_NAME = "sample concentration";
+	
+	public final static String USER_NAME = "SPREAD_SHEET_PARSER_4_STANSHAW_DATA";
 	
 	// Sample name map, {NP1 -> MIT_MGH-SShawPNAS2008-01}, etc.
 	private Map<String, String> sampleNameMap = new HashMap<String, String>();
@@ -123,8 +127,8 @@ public class ZScoreDataLoader {
 		}
 	}
 
-	public void load(UserBean user) {
-		userName = user.getLoginName();
+	public void load(UserBean user) throws BaseException {
+		Date currentDate = Calendar.getInstance().getTime();
 		SampleService service = new SampleServiceLocalImpl();
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		//iterate each Sample name, load sample & save Cytotoxity char.
@@ -153,6 +157,7 @@ public class ZScoreDataLoader {
 				Cytotoxicity achar = null;
 				Finding finding = null;
 				AssayCondition ac = assayMap.get(assayStr);
+				this.saveOtherTypes(ac);
 				if (ac != null) {
 					String acStr = ac.getCellType() + "||" + ac.getAssayType();
 					achar = charMap.get(acStr);
@@ -164,40 +169,37 @@ public class ZScoreDataLoader {
 					} else {
 						i = 0;
 						achar = new Cytotoxicity();
-						achar.setCreatedBy(userName);
-						achar.setCreatedDate(Calendar.getInstance().getTime());
+						achar.setCreatedBy(USER_NAME);
+						achar.setCreatedDate(currentDate);
 						achar.setCellLine(ac.getCellType());
-						achar.setAssayType(ac.getAssayType());
+						achar.setAssayType(ac.getAssayType());//TODO
 						achar.setFindingCollection(new HashSet<Finding>());
 						finding = new Finding();
-						finding.setCreatedBy(userName);
-						finding.setCreatedDate(Calendar.getInstance().getTime());
+						finding.setCreatedBy(USER_NAME);
+						finding.setCreatedDate(currentDate);
 						achar.getFindingCollection().add(finding);
 						finding.setDatumCollection(new HashSet<Datum>());
 						charMap.put(acStr, achar);
 					}
 					Datum datum = new Datum();
-					datum.setCreatedBy(userName);
+					datum.setCreatedBy(USER_NAME);
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 					datum.setValue(data.get(assayStr).floatValue());
-//					logger.debug(assayStr + ": "
-//							+ data.get(assayStr).doubleValue() + ", "
-//							+ data.get(assayStr).floatValue());
-					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));
+					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));//TODO
 					datum.setValueType("Z-score");
 					Condition condition = new Condition();
-					condition.setCreatedBy(userName);
-					condition.setCreatedDate(new Date());
-					condition.setName("sample concentration");
+					condition.setCreatedBy(USER_NAME);
+					condition.setCreatedDate(currentDate);
+					condition.setName(CONDITION_NAME);
 					//NP49, NP50, NP51 are QDots
 					if (sampleName.matches(SAMPLE_NAME_PREFIX + "49")
 							|| sampleName.matches(SAMPLE_NAME_PREFIX + "50")
 							|| sampleName.matches(SAMPLE_NAME_PREFIX + "51")) {
 						condition.setValue(ac.getConditionValue2().toString());
-						condition.setValueUnit(ac.getConditionUnit2());
+						condition.setValueUnit(ac.getConditionUnit2());//TODO
 					} else {
 						condition.setValue(ac.getConditionValue().toString());
-						condition.setValueUnit(ac.getConditionUnit());
+						condition.setValueUnit(ac.getConditionUnit());//TODO
 					}
 					datum.setConditionCollection(new HashSet<Condition>());
 					datum.getConditionCollection().add(condition);
@@ -232,43 +234,93 @@ public class ZScoreDataLoader {
 		} // end of loop - iterate sample name map.
 	}
 
+	protected void saveOtherTypes(AssayCondition ac) throws BaseException {
+		Set<String> valueSet = null;
+		//1.find & save assay type.
+		String assayType = ac.getAssayType();
+		valueSet = LookupService.getDefaultAndOtherLookupTypes("cytotoxicity",
+				"assayType", "otherAssayType");
+		if (valueSet != null && !valueSet.contains(assayType)) {
+			LookupService.saveOtherType("cytotoxicity", "otherAssayType", assayType);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Lookup saved: cytotoxicity, otherAssaytype, " + assayType);
+			}
+		}
+		//2.find & save datum name.
+		String datumName = DATUM_TYPE_MAP.get(ac.getAssayType());
+		valueSet = LookupService.getDefaultAndOtherLookupTypes("cytotoxicity",
+				"datumName", "otherDatumName");
+		if (valueSet != null && !valueSet.contains(datumName)) {
+			LookupService.saveOtherType("cytotoxicity", "otherDatumName", datumName);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Lookup saved: cytotoxicity, otherDatumName, " + datumName);
+			}
+		}
+		//3.find & save condition unit1.
+		String conditionUnit = ac.getConditionUnit();
+		valueSet = LookupService.getDefaultAndOtherLookupTypes(
+				CONDITION_NAME, "unit", "otherUnit");
+		if (valueSet != null && !valueSet.contains(conditionUnit)) {
+			LookupService.saveOtherType(CONDITION_NAME,
+					"otherUnit", conditionUnit);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Lookup saved: " + CONDITION_NAME + ", otherUnit, "
+					+ conditionUnit);
+			}
+		}
+		//4.find & save condition unit2.
+		conditionUnit = ac.getConditionUnit2();
+		valueSet = LookupService.getDefaultAndOtherLookupTypes(
+				CONDITION_NAME, "unit", "otherUnit");
+		if (valueSet != null && !valueSet.contains(conditionUnit)) {
+			LookupService.saveOtherType(CONDITION_NAME,
+					"otherUnit", conditionUnit);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Lookup saved: " + CONDITION_NAME + ", otherUnit, "
+					+ conditionUnit);
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		if (args != null && args.length == 3) {
 			String loginName = args[0];
 			String password = args[1];
 			String inputFileName = args[2];
-			ZScoreDataLoader loader = null;
-			try {
-				ExcelParser parser = new ExcelParser();
-				SortedMap<String, SortedMap<String, Double>> verticalMatrix = 
-					parser.verticalParse(inputFileName);
-				SortedMap<String, SortedMap<String, Double>> horizontalMatrix = 
-					parser.horizontalParse(inputFileName);
-				loader = new ZScoreDataLoader(verticalMatrix, horizontalMatrix);
-			} catch (IOException e) {
-				System.out.println("Input file not found.");
-				e.printStackTrace();
-				System.exit(1);
-			}
 			try {
 				LoginService loginService = new LoginService(Constants.CSM_APP_NAME);
 				UserBean user = loginService.login(loginName, password);
 				if (user.isCurator()) {
+					ExcelParser parser = new ExcelParser();
+					SortedMap<String, SortedMap<String, Double>> verticalMatrix = 
+						parser.verticalParse(inputFileName);
+					SortedMap<String, SortedMap<String, Double>> horizontalMatrix = 
+						parser.horizontalParse(inputFileName);
+					ZScoreDataLoader loader = new ZScoreDataLoader(
+							verticalMatrix, horizontalMatrix);
 					loader.load(user);
 				} else {
-					System.out
-					.println("You need to be the curator to be able to execute this function");
+					System.out.println(
+							"You need to be the curator to be able to execute this function");
 					System.exit(1);
 				}
 			} catch (SecurityException e) {
 				System.out.println("Can't authenticate the login name.");
 				e.printStackTrace();
-				System.exit(0);
+				System.exit(2);
+			} catch (IOException e) {
+				System.out.println("Input file not found.");
+				e.printStackTrace();
+				System.exit(3);
+			} catch (BaseException e) {
+				System.out.println("Error saving data.");
+				e.printStackTrace();
+				System.exit(4);
 			}
 		} else {
 			System.out.println("Invalid argument!");
-			System.out
-					.println("java ZScoreDataLoader <loginName> <password> <inputFileName>");
+			System.out.println(
+					"java ZScoreDataLoader <loginName> <password> <inputFileName>");
 		}
 		System.exit(0);
 	}
