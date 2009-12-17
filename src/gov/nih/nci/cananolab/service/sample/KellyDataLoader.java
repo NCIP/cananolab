@@ -23,8 +23,10 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -42,12 +44,19 @@ public class KellyDataLoader {
 	
 	public final static String CELL_LINE_PREFIX = "CELL  LINE: ";
 	
-	public final static String DATUM_NAME = "sample concentration after treatment (mg/mL)";
+	public final static String DATUM_NAME = "sample concentration after treatment";
 	
 	public final static String DATUM_UNIT = "pM";
 	
-	public final static double VALUE_CONVERTOR = 1000000000000d;
+	public final static double VALUE_FACTOR = 1000000000000d;
 	
+	public final static Map<String, String> DATUM_TYPE_MAP = new HashMap<String, String>();
+	static {
+		DATUM_TYPE_MAP.put("Mean (M)", "mean");
+		DATUM_TYPE_MAP.put("Median (M)", "median");
+		DATUM_TYPE_MAP.put("SEM (M)", "standard error of mean");
+	}
+
 	// Data map: {MIT_MGH-KKellyIB2009-02, {Aorta 1, {Median (M), 9.02194E-08}}}.
 	private SortedMap<String, SortedMap<String, SortedMap<String, Double>>> dataMatrix;
 
@@ -119,9 +128,10 @@ public class KellyDataLoader {
 		for (String valueType : valueTypeSet) {
 			valueSet = LookupService.getDefaultAndOtherLookupTypes(
 					"datum and condition", "valueType", "otherValueType");
-			if (valueSet != null && !valueSet.contains(DATUM_UNIT)) {
+			String datumValueType = DATUM_TYPE_MAP.get(valueType);
+			if (valueSet != null && !valueSet.contains(datumValueType)) {
 				LookupService.saveOtherType("datum and condition",
-						"otherValueType", valueType);
+						"otherValueType", datumValueType);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Lookup saved: datum and condition, otherValueType, "
 						+ valueType);
@@ -181,8 +191,8 @@ public class KellyDataLoader {
 					datum.setCreatedBy(USER_NAME);
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i++));
 					datum.setName(DATUM_NAME);
-					datum.setValue((float)(datumMap.get(valueType) * VALUE_CONVERTOR));
-					datum.setValueType(valueType);
+					datum.setValue((float)(datumMap.get(valueType) * VALUE_FACTOR));
+					datum.setValueType(DATUM_TYPE_MAP.get(valueType));
 					datum.setValueUnit(DATUM_UNIT);
 					finding.getDatumCollection().add(datum);
 				}
