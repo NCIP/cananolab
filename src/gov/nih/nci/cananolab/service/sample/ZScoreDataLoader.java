@@ -50,6 +50,28 @@ public class ZScoreDataLoader {
 		ASSAY_TYPE_MAP.put("CTG", "intracellular ATP content");
 	}
 
+	public final static Map<String, String> ASSAY_DESC_MAP = new HashMap<String, String>();
+	static {
+		ASSAY_DESC_MAP.put("APO", "Apo-ONE reagent was added in equal volume to the " +
+			"384-well plates; the remainder of the protocol followed the " + 
+			"manufacturer's protocol. Fluorescence was read after a " + 
+			"1-h incubation (485/530 nm).");
+		
+		ASSAY_DESC_MAP.put("JC1", "JC1 reagent was added to to a final concentration " +
+			"of 2 micro M and incubated for 2 h. Plates were washed 3 x with PBS and " + 
+			"read sequentially in the red (530/580 nm) and green (485/530 nm) " + 
+			"fluorescence spectrum, and the red:green fluorescence ratio was calculated.");
+		
+		ASSAY_DESC_MAP.put("RES", "C12-resazurin was added to a final concentration of " + 
+			"1 microM and incubated for 1 h at 37 C. Plates were washed 3 x with PBS, " + 
+			"and read at 530/580 nm.");
+		
+		ASSAY_DESC_MAP.put("CTG", "Plates were washed 3 x with PBS, and 30 microL of " + 
+			"PBS added to each well. CellTiter-Glo reagent was first diluted 1:3 " +
+			"with PBS and added in equal volume. The remainder of the protocol " + 
+			"followed the manufacturer's protocol.");
+	}
+
 	public final static Map<String, String> DATUM_TYPE_MAP = new HashMap<String, String>();
 	static {
 		DATUM_TYPE_MAP.put("caspase 3 apoptosis", "fluorescence");
@@ -118,10 +140,11 @@ public class ZScoreDataLoader {
 						"([A-Z]+)_([A-Z0-9]+)_(.+)", "$3");
 
 				AssayCondition assayCondition = new AssayCondition(
-						CELL_TYPE_MAP.get(cellType), ASSAY_TYPE_MAP
-								.get(assayType), FE_DOSE_MAP
-								.get(conditionString), "mg/ml", QDOT_DOSE_MAP
-								.get(conditionString), "nM");
+						CELL_TYPE_MAP.get(cellType), 
+						ASSAY_TYPE_MAP.get(assayType), 
+						FE_DOSE_MAP.get(conditionString), "mg/mL", 
+						QDOT_DOSE_MAP.get(conditionString), "nM",
+						ASSAY_DESC_MAP.get(assayType));
 				assayMap.put(name, assayCondition);
 			}
 		}
@@ -157,7 +180,7 @@ public class ZScoreDataLoader {
 				Cytotoxicity achar = null;
 				Finding finding = null;
 				AssayCondition ac = assayMap.get(assayStr);
-				this.saveOtherTypes(ac);
+				this.saveLookupValue(ac);
 				if (ac != null) {
 					String acStr = ac.getCellType() + "||" + ac.getAssayType();
 					achar = charMap.get(acStr);
@@ -174,6 +197,7 @@ public class ZScoreDataLoader {
 						achar.setCellLine(ac.getCellType());
 						achar.setAssayType(ac.getAssayType());//TODO
 						achar.setFindingCollection(new HashSet<Finding>());
+						achar.setDesignMethodsDescription(ac.getAssayDesciption());
 						finding = new Finding();
 						finding.setCreatedBy(USER_NAME);
 						finding.setCreatedDate(currentDate);
@@ -237,7 +261,7 @@ public class ZScoreDataLoader {
 		}
 	}
 
-	protected void saveOtherTypes(AssayCondition ac) throws BaseException {
+	protected void saveLookupValue(AssayCondition ac) throws BaseException {
 		Set<String> valueSet = null;
 		//1.find & save assay type.
 		String assayType = ac.getAssayType();
@@ -338,10 +362,12 @@ class AssayCondition {
 	private String conditionUnit;
 	private Double conditionValue2;
 	private String conditionUnit2;
+	private String assayDesciption;
 
 	public AssayCondition(String cellType, String assayType,
 			Double conditionValue, String conditionUnit,
-			Double conditionValue2, String conditionUnit2) {
+			Double conditionValue2, String conditionUnit2,
+			String assayDesciption) {
 		super();
 		this.cellType = cellType;
 		this.assayType = assayType;
@@ -349,6 +375,7 @@ class AssayCondition {
 		this.conditionUnit = conditionUnit;
 		this.conditionValue2 = conditionValue2;
 		this.conditionUnit2 = conditionUnit2;
+		this.assayDesciption = assayDesciption;
 	}
 
 	public String getCellType() {
@@ -397,5 +424,13 @@ class AssayCondition {
 
 	public void setConditionUnit2(String conditionUnit2) {
 		this.conditionUnit2 = conditionUnit2;
+	}
+
+	public String getAssayDesciption() {
+		return assayDesciption;
+	}
+
+	public void setAssayDesciption(String assayDesciption) {
+		this.assayDesciption = assayDesciption;
 	}
 }
