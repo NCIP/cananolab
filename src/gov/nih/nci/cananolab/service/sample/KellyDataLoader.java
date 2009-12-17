@@ -134,7 +134,7 @@ public class KellyDataLoader {
 						"otherValueType", datumValueType);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Lookup saved: datum and condition, otherValueType, "
-						+ valueType);
+						+ datumValueType);
 				}
 			}
 		}
