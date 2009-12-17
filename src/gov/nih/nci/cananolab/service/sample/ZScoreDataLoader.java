@@ -232,6 +232,9 @@ public class ZScoreDataLoader {
 				logger.debug("charBean# saved: " + i + ", for sample:" + name);
 			}
 		} // end of loop - iterate sample name map.
+		if (logger.isDebugEnabled()) {
+			logger.debug("Loading completed.");
+		}
 	}
 
 	protected void saveOtherTypes(AssayCondition ac) throws BaseException {
@@ -243,17 +246,19 @@ public class ZScoreDataLoader {
 		if (valueSet != null && !valueSet.contains(assayType)) {
 			LookupService.saveOtherType("cytotoxicity", "otherAssayType", assayType);
 			if (logger.isDebugEnabled()) {
-				logger.debug("Lookup saved: cytotoxicity, otherAssaytype, " + assayType);
+				logger.debug(
+					"Lookup saved: cytotoxicity, otherAssaytype, " + assayType);
 			}
 		}
 		//2.find & save datum name.
-		String datumName = DATUM_TYPE_MAP.get(ac.getAssayType());
-		valueSet = LookupService.getDefaultAndOtherLookupTypes("cytotoxicity",
+		String datumName = DATUM_TYPE_MAP.get(assayType);
+		valueSet = LookupService.getDefaultAndOtherLookupTypes(assayType,
 				"datumName", "otherDatumName");
 		if (valueSet != null && !valueSet.contains(datumName)) {
-			LookupService.saveOtherType("cytotoxicity", "otherDatumName", datumName);
+			LookupService.saveOtherType(assayType, "otherDatumName", datumName);
 			if (logger.isDebugEnabled()) {
-				logger.debug("Lookup saved: cytotoxicity, otherDatumName, " + datumName);
+				logger.debug(
+					"Lookup saved: " + assayType + ", otherDatumName, " + datumName);
 			}
 		}
 		//3.find & save condition unit1.

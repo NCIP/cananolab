@@ -86,9 +86,10 @@ public class KellyDataLoader {
 		valueSet = LookupService.getDefaultAndOtherLookupTypes("targeting",
 				"datumName", "otherDatumName");
 		if (valueSet != null && !valueSet.contains(DATUM_NAME)) {
-			LookupService.saveOtherType("targeting", "otherDatumName", DATUM_NAME);
+			LookupService.saveOtherType(ASSAY_TYPE, "otherDatumName", DATUM_NAME);
 			if (logger.isDebugEnabled()) {
-				logger.debug("Lookup saved: targeting, otherDatumName, " + DATUM_NAME);
+				logger.debug(
+					"Lookup saved: " + ASSAY_TYPE + ", otherDatumName, " + DATUM_NAME);
 			}
 		}
 		//3.find & save datum unit.
@@ -136,7 +137,8 @@ public class KellyDataLoader {
 		SampleService service = new SampleServiceLocalImpl();
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		
-		//iterate dataMatrix map, load sample & save Cytotoxity char.
+		//iterate dataMatrix map, load sample & save Targeting char.
+		int count = 0;
 		for (String sampleName : this.dataMatrix.keySet()) {
 			SampleBean sampleBean = null;
 			try {
@@ -194,12 +196,16 @@ public class KellyDataLoader {
 					charService.saveCharacterization(sampleBean, charBean, user);
 					if (logger.isDebugEnabled()) {
 						logger.debug("charBean saved: " + sampleName + ", " + cellLine);
+						count++;
 					}
 				} catch (Exception e) {
 					logger.error("Error saving charBean: " + sampleName + ", " + cellLine, e);
 					continue;
 				}
 			}
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("Loading completed, char# saved: " + count);
 		}
 	}
 
