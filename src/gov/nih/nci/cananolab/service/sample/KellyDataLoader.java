@@ -86,9 +86,10 @@ public class KellyDataLoader {
 		valueSet = LookupService.getDefaultAndOtherLookupTypes("targeting",
 				"datumName", "otherDatumName");
 		if (valueSet != null && !valueSet.contains(DATUM_NAME)) {
-			LookupService.saveOtherType("targeting", "otherDatumName", DATUM_NAME);
+			LookupService.saveOtherType(ASSAY_TYPE, "otherDatumName", DATUM_NAME);
 			if (logger.isDebugEnabled()) {
-				logger.debug("Lookup saved: targeting, otherDatumName, " + DATUM_NAME);
+				logger.debug(
+					"Lookup saved: " + ASSAY_TYPE + ", otherDatumName, " + DATUM_NAME);
 			}
 		}
 		//3.find & save datum unit.
