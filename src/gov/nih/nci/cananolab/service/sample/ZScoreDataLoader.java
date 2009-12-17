@@ -232,6 +232,9 @@ public class ZScoreDataLoader {
 				logger.debug("charBean# saved: " + i + ", for sample:" + name);
 			}
 		} // end of loop - iterate sample name map.
+		if (logger.isDebugEnabled()) {
+			logger.debug("Loading completed.");
+		}
 	}
 
 	protected void saveOtherTypes(AssayCondition ac) throws BaseException {
