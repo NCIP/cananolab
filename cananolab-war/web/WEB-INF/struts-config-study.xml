@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="studyForm"
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="conclusion" type="java.lang.String" />
+			<form-property name="description" type="java.lang.String" />
+			<form-property name="name" type="java.lang.String" />
+			<form-property name="startDateString" type="java.lang.String" />
+			<form-property name="endDateString" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+	</global-exceptions>
+	<global-forwards>
+	</global-forwards>
+	<action-mappings>
+		<action path="/manageStudy"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="study.home" scope="request">
+		</action>
+
+		<action path="/study"
+			name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudyAction"
+			parameter="dispatch" input="input" scope="request">
+			<forward name="input" path="/study.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.submitStudy" />
+			<forward name="studyEdit" path="study.studyInfo" />
+			<forward name="sampleSummary" path="study.sample.summary" />
+			<forward name="sampleAdd" path="study.sample.add" />
+			<forward name="animalSummary" path="study.animalInfo" />
+			<forward name="charSummary" path="study.char.summary" />
+			<forward name="charEdit" path="study.char.edit" />
+			<forward name="protocolSummary" path="study.protocol" />
+			<forward name="publicationSummary" path="study.publication" />
+		</action>
+	</action-mappings>
+</struts-config>
