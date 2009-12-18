@@ -1,0 +1,9 @@
+<CQLQuery xmlns="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Target name="gov.nih.nci.cananolab.domain.particle.Characterization">
+		<Association name="gov.nih.nci.cananolab.domain.particle.Sample"
+			roleName="sample">
+			<Attribute name="id" value="10780676" predicate="EQUAL_TO" />
+		</Association>
+	</Target>
+</CQLQuery>
