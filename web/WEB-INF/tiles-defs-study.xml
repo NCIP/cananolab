@@ -34,9 +34,15 @@
 		<put name="menu" value="STUDY" />
 	</definition>
 	
-	<!-- definition for the sample info page -->
-	<definition name="study.sampleInfo" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudySample.jsp" />
+	<!-- definition for the sample summary page -->
+	<definition name="study.sample.summary" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudySampleSummary.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	
+	<!-- definition for the sample edit page -->
+	<definition name="study.sample.add" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudySampleAdd.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	
@@ -53,8 +59,14 @@
 	</definition>
 	
 	<!-- definition for the characterization info page -->
-	<definition name="study.characterization" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudyCharacterization.jsp" />
+	<definition name="study.char.summary" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyCharSummaryEdit.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	
+	<!-- definition for the characterization info page -->
+	<definition name="study.char.edit" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyCharSubmit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	

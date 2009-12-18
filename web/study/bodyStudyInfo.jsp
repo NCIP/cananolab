@@ -19,7 +19,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Submit Study" />
+	<jsp:param name="pageTitle" value="${pageTitle}" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -52,7 +52,7 @@
 				Description
 			</td>
 			<td colspan="3">
-				<textarea rows="3" cols="125"></textarea>
+				<textarea rows="3" cols="97"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -70,27 +70,34 @@
 			<td colspan="4">
 				<div style="display:none" id="newPointOfContact">
 					<a name="submitPointOfContact"><jsp:include
-							page="bodySubmitPointOfContact.jsp"/></a>
+							page="bodyStudySubmitPointOfContact.jsp"/></a>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Study Disease
+				Disease Type
 			</td>
 			<td>
 				<SELECT >
 					<option value="">
+						Cancer
 					</option>
 					<option value="other">
 						[other]
 					</option>
 				</SELECT>
-				&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="study.do?dispatch=addDisease" class="addlink"><img
 					align="middle" src="images/btn_add.gif" border="0" /></a>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<b>Disease Type</b>&nbsp;&nbsp;<input type="text">
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Disease Name
+			</td>
+			<td>
+				<textarea rows="2" cols="50"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -115,7 +122,7 @@
 		<tr>
 			<td class="cellLabel" colspan="4">
 				Observations/Conclusions<br>
-				<textarea rows="3" cols="160">Use of nanoparticle as delivery device for drug x demonstrated decrease in tumor size greater than use of drug x alone.
+				<textarea rows="3" cols="132">Use of nanoparticle as delivery device for drug x demonstrated decrease in tumor size greater than use of drug x alone.
 				</textarea>
 			</td>
 		</tr>
@@ -133,7 +140,7 @@
 								<div align="right">
 									<input type="reset" value="Reset"
 										onclick="javascript:location.href='study.do?dispatch=setupNew&page=0'">
-									<input type="hidden" name="dispatch" value="studyInfo">
+									<input type="hidden" name="dispatch" value="studyEdit">
 									<input type="hidden" name="page" value="2">
 									<html:submit />
 								</div>

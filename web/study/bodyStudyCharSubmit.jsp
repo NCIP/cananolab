@@ -10,7 +10,7 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 <script type="text/javascript" src="javascript/calendar2.js"></script>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Submit Study Characterization" />
+	<jsp:param name="pageTitle" value="WUSTL Study Efficacy of nanoparticle Characterization" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -41,7 +41,7 @@
 			Characterization Name
 		</td>
 		<td>
-			<input type="text" name="achar.dateString" size="12" value="Clinical Chemistry" id="charName">
+			<input type="text" name="achar.dateString" size="12" value="size" id="charName">
 		</td>
 	</tr>
 	<tr>
@@ -453,12 +453,9 @@
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel" width="20%">
-			Outcome	 
+			Result	 
 		</td>
-
 		<td>
-			
-			
 			<a style="display:block" id="addFinding"
 				href="javascript:resetTheFinding(characterizationForm);openSubmissionForm('Finding');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
@@ -466,17 +463,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			
-				
-				
-				
-
-
-
-
-
 	<table class="summaryViewLayer4" align="center" width="95%">
-		
 			<tr>
 
 				<th style="text-align: right">
@@ -484,7 +471,6 @@
 						href="javascript:setTheFinding(characterizationForm, 'characterization', 8224778);">Edit</a>&nbsp;
 				</th>
 			</tr>
-		
 		<tr>
 			<td>
 				<b> Data and Conditions</b>
@@ -493,30 +479,24 @@
 		</tr>
 		<tr>
 			<td>
-				
-					
 						<table class="summaryViewLayer4" width="95%" align="center">
 							<tr>
-								
-									<th>
-										<strong>size<br>(RMS,nm)</strong>
-
-									</th>
-								
+								<th>
+									<strong>size (RMS,nm)</strong>
+								</th>
+								<th>
+									<strong>Source Name</strong>
+								</th>
 							</tr>
-							
-								<tr>
-									
-										<td>
-											179.0
-										</td>
-									
-								</tr>
-							
+							<tr>
+								<td>179.0</td>
+								<td>MIT_MGH-AWangCMC2008-01</td>
+							</tr>
+							<tr>
+								<td>129.0</td>
+								<td>MIT_MGH-AWangCMC2008-03</td>
+							</tr>
 						</table>
-					
-					
-				
 				<br />
 
 			</td>

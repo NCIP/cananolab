@@ -40,7 +40,7 @@
 	</tr>
 	<tr>
 		<c:url var="studyUrl" value="study.do">
-			<c:param name="dispatch" value="studyInfo" />
+			<c:param name="dispatch" value="studyEdit" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
@@ -53,7 +53,7 @@
 	</tr>
 	<tr>
 		<c:url var="sampleInfoUrl" value="study.do">
-			<c:param name="dispatch" value="sampleInfo" />
+			<c:param name="dispatch" value="sampleSummary" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
@@ -67,7 +67,7 @@
 	</tr>
 	<tr>
 		<c:url var="animalInfoUrl" value="study.do">
-			<c:param name="dispatch" value="animalInfo" />
+			<c:param name="dispatch" value="animalSummary" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
@@ -76,26 +76,12 @@
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			onclick="gotoPage('${animalInfoUrl}')" height="20">
-			<a class="subMenuSecondary">ANIMAL MODEL</a>
-		</td>
-	</tr>
-	<tr>
-		<c:url var="treatmentInfoUrl" value="study.do">
-			<c:param name="dispatch" value="treatmentInfo" />
-			<c:param name="location" value="${location}" />
-			<c:param name="page" value="0" />
-			<c:param name="tab" value="ALL"/>
-		</c:url>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			onclick="gotoPage('${treatmentInfoUrl}')" height="20">
-			<a class="subMenuSecondary">TREATMENT</a>
+			<a class="subMenuSecondary">ANIMAL INFORMATION</a>
 		</td>
 	</tr>
 	<tr>
 		<c:url var="characterizationUrl" value="study.do">
-			<c:param name="dispatch" value="characterization" />
+			<c:param name="dispatch" value="charSummary" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
@@ -109,7 +95,7 @@
 	</tr>
 	<tr>
 		<c:url var="ProtocolUrl" value="study.do">
-			<c:param name="dispatch" value="protocol" />
+			<c:param name="dispatch" value="protocolSummary" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
@@ -123,7 +109,7 @@
 	</tr>
 	<tr>
 		<c:url var="publicationUrl" value="study.do">
-			<c:param name="dispatch" value="publication" />
+			<c:param name="dispatch" value="publicationSummary" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
