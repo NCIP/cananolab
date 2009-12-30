@@ -35,6 +35,15 @@
 										Click to submit a new study.
 									</td>
 								</tr>
+								<tr>
+									<td class="sidebarContent">
+										<a href="studySearch.do?dispatch=setupNew">
+											Search Existing Studies
+										</a>
+										<br>
+										Enter search criteria to obtain information on studies of interest.
+									</td>
+								</tr>
 							</table>
 						</c:if>
 					</td>
