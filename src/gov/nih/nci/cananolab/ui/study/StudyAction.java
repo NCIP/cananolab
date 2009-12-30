@@ -27,55 +27,57 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		request.setAttribute("pageTitle", "Submit Study");
 		return mapping.getInputForward();
 	}
 
-	public ActionForward studyInfo(ActionMapping mapping, ActionForm form,
+	public ActionForward studyEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("studyInfoForm");
+		request.setAttribute("pageTitle", "Update Study");
+		return mapping.findForward("studyEdit");
 	}
 
-	public ActionForward sampleInfo(ActionMapping mapping, ActionForm form,
+	public ActionForward sampleSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("sampleInfoForm");
+		return mapping.findForward("sampleSummary");
 	}
 
-	public ActionForward searchSample(ActionMapping mapping, ActionForm form,
+	public ActionForward sampleAdd(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("sampleSearchResult");
+		return mapping.findForward("sampleAdd");
+	}
+
+	public ActionForward animalSummary(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return mapping.findForward("animalSummary");
 	}
 	
-	public ActionForward animalInfo(ActionMapping mapping, ActionForm form,
+	public ActionForward charSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("animalInfoForm");
+		return mapping.findForward("charSummary");
 	}
 	
-	public ActionForward treatmentInfo(ActionMapping mapping, ActionForm form,
+	public ActionForward charEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("treatmentInfoForm");
+		return mapping.findForward("charEdit");
 	}
 	
-	public ActionForward characterization(ActionMapping mapping, ActionForm form,
+	public ActionForward protocolSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("characterizationForm");
+		return mapping.findForward("protocolSummary");
 	}
 	
-	public ActionForward protocol(ActionMapping mapping, ActionForm form,
+	public ActionForward publicationSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("protocolForm");
-	}
-	
-	public ActionForward publication(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return mapping.findForward("publicationForm");
+		return mapping.findForward("publicationSummary");
 	}
 	
 }
