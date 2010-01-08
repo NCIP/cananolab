@@ -37,7 +37,7 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<a href="studySearch.do?dispatch=setupNew">
+										<a href="searchStudy.do?dispatch=setupNew">
 											Search Existing Studies
 										</a>
 										<br>

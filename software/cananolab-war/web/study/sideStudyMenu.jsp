@@ -66,8 +66,8 @@
 		</td>
 	</tr>
 	<tr>
-		<c:url var="animalInfoUrl" value="study.do">
-			<c:param name="dispatch" value="animalSummary" />
+		<c:url var="animalInfoUrl" value="studyAnimalModel.do">
+			<c:param name="dispatch" value="summaryEdit" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
@@ -94,8 +94,8 @@
 		</td>
 	</tr>
 	<tr>
-		<c:url var="ProtocolUrl" value="study.do">
-			<c:param name="dispatch" value="protocolSummary" />
+		<c:url var="ProtocolUrl" value="studyProtocol.do">
+			<c:param name="dispatch" value="summaryEdit" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
@@ -108,8 +108,8 @@
 		</td>
 	</tr>
 	<tr>
-		<c:url var="publicationUrl" value="study.do">
-			<c:param name="dispatch" value="publicationSummary" />
+		<c:url var="publicationUrl" value="studyPublication.do">
+			<c:param name="dispatch" value="summaryEdit" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
