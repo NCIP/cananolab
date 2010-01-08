@@ -92,7 +92,7 @@
 						</td>
 						<td>
 							<a
-								href="study.do?dispatch=studyEdit&amp;location=&amp;page=0amp;&tab=ALL&amp;sampleId=9994265&amp;location=WUSTL">CLM_UHA_CDS_INSERM-TDaouLGMR2009-04</a>
+								href="study.do?dispatch=studyEdit&amp;location=&amp;page=0amp;&tab=ALL&amp;sampleId=9994265&amp;location=WUSTL">UC_HU_UEN-FRancanPhPh2007-03</a>
 						</td>
 						<td>
 							UC_HU_UEN_GERMANY

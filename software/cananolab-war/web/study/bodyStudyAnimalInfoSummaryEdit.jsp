@@ -31,7 +31,7 @@
 			<table width="100%" align="center" class="summaryViewLayer3">
 				<tr>
 					<th valign="top" align="left" width="20%">
-						Animal Model Information
+						&nbsp;
 					</th>
 					<th valign="top" align="right" width="80%">
 						<a href="studyAnimalModel.do?dispatch=setupUpdate&page=0&sampleId=11337747">Edit</a>
@@ -86,7 +86,7 @@
 			<table width="100%" align="center" class="summaryViewLayer3">
 				<tr>
 					<th valign="top" align="left" width="20%">
-						Animal Model Information
+						&nbsp;
 					</th>
 					<th valign="top" align="right" width="80%">
 						<a href="studyAnimalModel.do?dispatch=setupUpdate&page=0&sampleId=11337747">Edit</a>
