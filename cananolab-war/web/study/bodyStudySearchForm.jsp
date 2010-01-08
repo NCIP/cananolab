@@ -23,31 +23,43 @@
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/study">
+<html:form action="searchStudy">
 	<jsp:include page="/bodyMessage.jsp?bundle=study" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
+			<td class="cellLabel" width="20%">
+				Search Site
+			</td>
+			<td>
+				<SELECT multiple="true" size="4">
+					<option value="${applicationOwner}">${applicationOwner}</option>
+				</SELECT>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table width="100%" align="center" class="submissionView">
+		<tr>
 			<td width="16%" class="cellLabel">
-				Study Name*
+				Study Name
 			</td>
 			<td colspan="3">
 				<input type="text" size="100" value="Efficacy of nanoparticle"/>
+				<br>
+				<em>case insensitive, * for wildcard search</em>
 			</td>
 		</tr>
 		<tr>
 			<td width="16%" class="cellLabel">
 				Study Type
 			</td>
-			<td colspan="3" class="cellLabel">
+			<td colspan="3">
 				<SELECT >
 					<option value="Reproductive">Reproductive</option>
 					<option value="Continuous Breeding">Continuous Breeding</option>
 					<option value="Developmental">Developmental</option>
 					<option value="Cancer Bioassay">Cancer Bioassay</option>
 				</SELECT>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				Is Animal Study?&nbsp;
-				<input type="checkbox" checked="checked">
 			</td>
 		</tr>
 		<tr>
@@ -55,18 +67,33 @@
 				Description
 			</td>
 			<td colspan="3">
-				<textarea rows="3" cols="97"></textarea>
+				<input type="text" size="100"/>
+				<br>
+				<em>case insensitive, * for wildcard search</em>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
+				Sample Name
+			</td>
+			<td colspan="3">
+				<input type="text" size="100"/>
+				<br>
+				<em>case insensitive, * for wildcard search</em>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel" width="20%">
 				Point of Contact
 			</td>
-			<td>
-				<a href="#"
-					onclick="javascript:openSubmissionForm('PointOfContact');"
-					id="addPointOfContact" style="display:block"><img align="top"
-						src="images/btn_add.gif" border="0" /></a>
+			<td colspan="5">
+				<br>
+				<input type="text" size="100"/>
+				<br>
+				<em>case insensitive, * for wildcard search</em>
+				<br>
+				<em>searching organization name or first name or last name of a
+					person </em>
 			</td>
 		</tr>
 		<tr>
@@ -79,95 +106,54 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Disease Type
-			</td>
-			<td>
-				<SELECT >
-					<option value="">
-						Cancer
-					</option>
-					<option value="other">
-						[other]
-					</option>
-				</SELECT>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="study.do?dispatch=addDisease" class="addlink"><img
-					align="middle" src="images/btn_add.gif" border="0" /></a>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
 				Disease Name
 			</td>
 			<td>
-				<textarea rows="2" cols="50"></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Start Date
-			</td>
-			<td>
-				<input type="text" value="10/01/2009"/>
-				<a href="javascript:cal1.popup();"><img
-						src="images/calendar-icon.gif" width="22" height="18" border="0"
-						alt="Click Here to Pick up the date"
-						title="Click Here to Pick up the date" align="top"></a>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<b>End Date</b>&nbsp;&nbsp;
-				<input type="text" value="12/01/2009"/>
-				<a href="javascript:cal1.popup();"><img
-						src="images/calendar-icon.gif" width="22" height="18" border="0"
-						alt="Click Here to Pick up the date"
-						title="Click Here to Pick up the date" align="top"> </a>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Observations/Conclusions
-			</td>
-			<td>
-				<textarea rows="3" cols="97">Use of nanoparticle as delivery device for drug x demonstrated decrease in tumor size greater than use of drug x alone.
-				</textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Visibility
-			</td>
-			<td>
-				<select name="sampleBean.visibilityGroups" multiple="multiple" size="6" id="sampleVisibilityGroups"><option value="Public" selected="selected">Public</option>
-					<option value="BROWN_STANFORD">BROWN_STANFORD</option>
-					<option value="CAS_VT_VCU">CAS_VT_VCU</option>
-					<option value="CLM_UHA_CDS_INSERM">CLM_UHA_CDS_INSERM</option>
-					<option value="CP_UCLA_CalTech">CP_UCLA_CalTech</option>
-					<option value="CTRAIN">CTRAIN</option>
-					<option value="WU_SU_CHINA">WU_SU_CHINA</option>
-				</select>
+				<input type="text" size="100"/>
 				<br>
-				<i>(WUSTL_Researcher,
-					WUSTL_DataCurator, and the organization name for the
-					primary point of contact are always selected by default.)</i>
+				<em>case insensitive, * for wildcard search</em>
 			</td>
-		</tr>		
-		
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Observations / Conclusions
+			</td>
+			<td>
+				<input type="text" size="100"/>
+				<br>
+				<em>case insensitive, * for wildcard search</em>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Keyword / Text
+			</td>
+			<td>
+				<input type="text" size="100"/>
+				<br>
+				<em>case insensitive, * for wildcard search</em>
+			</td>
+		</tr>
 	</table>
 	<br>
 	<table width="100%" border="0" align="center" cellpadding="3"
 		cellspacing="0" class="topBorderOnly" summary="">
 		<tr>
 			<td width="30%">
+				<span class="formMessage"> <em>Searching without any
+						parameters would return all studies.</em> </span>
+				<br>
 				<table width="498" height="15" border="0" align="right"
 					cellpadding="4" cellspacing="0">
 					<tr>
 						<td width="490" height="15">
 							<div align="right">
 								<div align="right">
-									<input type="reset" value="Reset"
-										onclick="javascript:location.href='study.do?dispatch=setupNew&page=0'">
-									<input type="hidden" name="dispatch" value="studyEdit">
+									<input type="reset" value="Clear"
+										onclick="javascript:location.href='searchStudy.do?dispatch=setupNew&page=0'">
+									<input type="hidden" name="dispatch" value="search">
 									<input type="hidden" name="page" value="2">
-									<html:submit />
+									<html:submit value="Search"/>
 								</div>
 							</div>
 						</td>

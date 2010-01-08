@@ -16,69 +16,77 @@
 		<put name="menu" value="samples" />
 	</definition>
 
-	<!-- definition for the submit study page -->
-	<definition name="study.submitStudy" extends="canano.home">
-		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
-		<put name="menu" value="STUDY" />
-	</definition>
-	
-	<!-- definition for the study info page -->
+	<!-- Definition for study info related pages, Start -->
 	<definition name="study.studyInfo" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	
-	<!-- definition for the study info page -->
-	<definition name="study.sampleSearchResult" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudySampleSearchResult.jsp" />
+	<definition name="study.submitStudy" extends="canano.home">
+		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	<!-- Definition for study info related pages, End -->
+	
+	<!-- Definition for the study search related page, Start -->
+	<definition name="study.search.input" extends="canano.home">
+		<put name="cananoContent" value="/study/bodyStudySearchForm.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	
-	<!-- definition for the sample summary page -->
-	<definition name="study.sample.summary" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudySampleSummary.jsp" />
+	<definition name="study.search.result" extends="canano.home">
+		<put name="cananoContent" value="/study/bodyStudySearchResult.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	<!-- Definition for study search related pages, End -->
+	
+	<!-- Definition for sample related pages, Start -->
+	<definition name="study.sample.summaryEdit" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudySampleSummaryEdit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	
-	<!-- definition for the sample edit page -->
 	<definition name="study.sample.add" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudySampleAdd.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<!-- Definition for sample related pages, End -->
 	
-	<!-- definition for the animal info page -->
-	<definition name="study.animalInfo" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
+	<!-- Definition for animal info related pages, Start -->
+	<definition name="study.animal.summaryEdit" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyAnimalInfoSummaryEdit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	
-	<!-- definition for the treatment info page -->
-	<definition name="study.treatmentInfo" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
+	<definition name="study.animal.input" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudySubmitAnimalInfo.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<!-- Definition for animal info related pages, End -->
 	
-	<!-- definition for the characterization info page -->
+	<!-- Definition for characterization related pages, Start -->
 	<definition name="study.char.summary" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudyCharSummaryEdit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	
-	<!-- definition for the characterization info page -->
 	<definition name="study.char.edit" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudyCharSubmit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<!-- Definition for animal info related pages, End -->
 	
-	<!-- definition for the characterization info page -->
-	<definition name="study.protocol" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
+	<!-- Definition for the protocol related page, Start -->
+	<definition name="study.protocol.summaryEdit" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyProtocolSummaryEdit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<!-- Definition for protocol related pages, End -->
 	
-	<!-- definition for the characterization info page -->
-	<definition name="study.publication" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
+	<!-- Definition for the publication related page, Start -->
+	<definition name="study.publication.summaryEdit" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyPublicationSummaryEdit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<!-- Definition for publication related pages, End -->
 </tiles-definitions>
