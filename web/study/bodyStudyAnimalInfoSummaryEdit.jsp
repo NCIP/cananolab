@@ -97,7 +97,7 @@
 						caMOD ID
 					</td>
 					<td>
-						26578
+						16237
 					</td>
 				</tr>
 				<tr>
@@ -105,7 +105,7 @@
 						Species
 					</td>
 					<td>
-						Rat (Rattus Rattus)
+						Rabit
 					</td>
 				</tr>
 				<tr>
@@ -121,7 +121,7 @@
 						Age
 					</td>
 					<td>
-						18 Days
+						38 Days
 					</td>
 				</tr>
 				<tr>
