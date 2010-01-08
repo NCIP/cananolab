@@ -60,13 +60,8 @@
 			<td class="cellLabel">
 				Age
 			</td>
-			<td>
-				<input type="text" size="20" value="26">
-			</td>
-			<td class="cellLabel">
-				Age Unit
-			</td>
-			<td>
+			<td colspan="3">
+				<input type="text" size="20" value="26">&nbsp;&nbsp;
 				<SELECT >
 					<option value="">
 						Days
@@ -85,69 +80,61 @@
 				<textarea name="achar.description" cols="136" rows="5"></textarea>
 			</td>
 		</tr>
-	</table>
-	<br>
-	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<th align="left" colspan="2">
-				Animal Diet Information
-			</th>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Is Diet Restricted?
+			<td class="cellLabel" colspan="4">
+				Animal Diet
 			</td>
-			<td class="cellLabel">
-				<input type="radio" name="dietRestricted" value="true" checked="checked">Yes
-				<input type="radio" name="dietRestricted" value="false">No
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Dietary Restriction
-			</td>
-			<td>
-				<textarea name="achar.description" cols="126" rows="5"></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Fee Lot Number
-			</td>
-			<td>
-				<input type="text" size="126">
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Fee
-			</td>
-			<td>
-				<input type="text" size="126">
-			</td>
-		</tr>
-	</table>
-	<br>
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th align="left" colspan="4">
-				Animal Diet &nbsp;&nbsp;&nbsp;<a href="#"
-					onclick="javascript:openSubmissionForm('AnimalDiet');"
-					id="addPointOfContact" style="display:block"><img align="top"
-						src="images/btn_add.gif" border="0" /></a>
-			</th>
 		</tr>
 		<tr>
 			<td colspan="4">
-				<div style="display:none" id="newAnimalDiet">
-					<a name="submitAnimalDiet"><jsp:include
-							page="bodyStudySubmitAnimalDiet.jsp"/></a>
-				</div>
+				<table width="95%" align="center" class="submissionView">
+					<tr>
+						<th align="left" colspan="2">
+							Animal Diet Information
+						</th>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Is Diet Restricted?
+						</td>
+						<td class="cellLabel">
+							<input type="radio" name="dietRestricted" value="true" checked="checked">Yes
+							<input type="radio" name="dietRestricted" value="false">No
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Dietary Restriction
+						</td>
+						<td>
+							<textarea name="achar.description" cols="126" rows="5"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Fee Lot Number
+						</td>
+						<td>
+							<input type="text" size="126">
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Fee
+						</td>
+						<td>
+							<input type="text" size="126">
+						</td>
+					</tr>
+				</table><br>
 			</td>
 		</tr>
+	</table>
+	<br>
+	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<th align="left" colspan="4">
-				Animal Information &nbsp;&nbsp;&nbsp;
+				Individual Animal &nbsp;&nbsp;&nbsp;
 				<a href="studyAnimalInfo.do?dispatch=addAnimal" class="addlink">
 				<img align="middle" src="images/btn_add.gif" border="0" />
 				</a>
@@ -185,13 +172,8 @@
 			<td class="cellLabel">
 				Age
 			</td>
-			<td>
-				<input type="text" size="20" value="16">
-			</td>
-			<td class="cellLabel">
-				Age Unit
-			</td>
-			<td>
+			<td colspan="3">
+				<input type="text" size="20" value="26">&nbsp;&nbsp;
 				<SELECT >
 					<option value="">
 						Days
@@ -280,101 +262,23 @@
 		</tr>
 	</table>
 	<br>
-	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel">
-				Administrative Route
-			</td>
-			<td>
-				<SELECT >
-					<option value="">
-						Aspiration
-					</option>
-					<option value="other">
-						[other]
-					</option>
-				</SELECT>
-			</td>
-			<td class="cellLabel">
-				Surgery Type
-			</td>
-			<td>
-				<input type="text" size="20" value="26">
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Age at Treatment
-			</td>
-			<td>
-				<input type="text" size="20" value="26">
-			</td>
-			<td class="cellLabel">
-				Age Unit
-			</td>
-			<td>
-				<SELECT >
-					<option value="">
-						Weeks
-					</option>
-					<option value="">
-						Days
-					</option>
-					<option value="other">
-						[other]
-					</option>
-				</SELECT>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Regimen
-			</td>
-			<td colspan="3">
-				<input type="text" size="20" value="26">
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Description
-			</td>
-			<td colspan="3">
-				<textarea name="achar.description" cols="136" rows="5"></textarea>
-			</td>
-		</tr>
-	</table>
-	<br>
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th align="left" colspan="2">
-				Dose Group Information &nbsp;&nbsp;&nbsp;
+			<th align="left">
+				Treatment Group Information &nbsp;&nbsp;&nbsp;
 				<a href="studyAnimalInfo.do?dispatch=addDoseGroup" class="addlink">
 				<img align="middle" src="images/btn_add.gif" border="0" />
 				</a>
 			</th>
+			<th colspan="3"></th>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Dose Group Name
+				Treatment Group Name
 			</td>
-			<td colspan="3">
-				<input type="text" size="126">
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Description
-			</td>
-			<td colspan="3">
-				<textarea name="achar.description" cols="136" rows="5"></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Sample Name
-			</td>
-			<td colspan="3">
+			<td class="cellLabel" colspan="3">
+				<input type="text" size="56">&nbsp;&nbsp;&nbsp;&nbsp;
+				Sample Name&nbsp;
 				<SELECT >
 					<option value="">
 						NCL 49-2
@@ -383,6 +287,14 @@
 						[other]
 					</option>
 				</SELECT>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Description
+			</td>
+			<td colspan="3">
+				<textarea name="achar.description" cols="136" rows="5"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -411,7 +323,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Number of Doses
+				Number of Treatments
 			</td>
 			<td>
 				<input type="text" size="26">
@@ -432,7 +344,7 @@
 				Body Weight
 			</td>
 			<td>
-				<input type="text" size="20" value="26">
+				<input type="text" size="20" value="326">
 			</td>
 			<td class="cellLabel">
 				Body Weight Unit
@@ -440,16 +352,101 @@
 			<td>
 				<SELECT >
 					<option value="">
-						mg
+						g
 					</option>
 					<option value="">
-						g
+						mg
 					</option>
 					<option value="other">
 						[other]
 					</option>
 				</SELECT>
+				<br>
 			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel" colspan="4">
+				Treatment &nbsp;&nbsp;&nbsp;
+				<a href="studyAnimalInfo.do?dispatch=addAnimal" class="addlink">
+				<img align="middle" src="images/btn_add.gif" border="0" />
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<table width="95%" align="center" class="submissionView">
+					<tr>
+						<th align="left" colspan="4">
+							Treatment Information
+						</th>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Administrative Route
+						</td>
+						<td>
+							<SELECT >
+								<option value="">
+									Aspiration
+								</option>
+								<option value="other">
+									[other]
+								</option>
+							</SELECT>
+						</td>
+						<td class="cellLabel">
+							Surgery Type
+						</td>
+						<td>
+							<input type="text" size="20" value="26">
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Age at Treatment
+						</td>
+						<td colspan="3">
+							<input type="text" size="20" value="26">&nbsp;&nbsp;
+							<SELECT >
+								<option value="">
+									Days
+								</option>
+								<option value="other">
+									[other]
+								</option>
+							</SELECT>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Regimen
+						</td>
+						<td colspan="3">
+							<input type="text" size="20" value="26">
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Description
+						</td>
+						<td colspan="3">
+							<textarea name="achar.description" cols="136" rows="5"></textarea>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel" colspan="4">
+				Component &nbsp;&nbsp;&nbsp;
+				<a href="studyAnimalInfo.do?dispatch=addAnimal" class="addlink">
+				<img align="middle" src="images/btn_add.gif" border="0" />
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4"><%@ include
+					file="bodyDoseGroupComponentInfoView.jsp"%><br></td>
 		</tr>
 	</table>
 	<br>
