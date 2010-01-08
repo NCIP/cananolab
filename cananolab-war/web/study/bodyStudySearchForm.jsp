@@ -19,7 +19,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="${pageTitle}" />
+	<jsp:param name="pageTitle" value="Search Study" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -60,16 +60,6 @@
 					<option value="Developmental">Developmental</option>
 					<option value="Cancer Bioassay">Cancer Bioassay</option>
 				</SELECT>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Description
-			</td>
-			<td colspan="3">
-				<input type="text" size="100"/>
-				<br>
-				<em>case insensitive, * for wildcard search</em>
 			</td>
 		</tr>
 		<tr>
@@ -116,20 +106,11 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Observations / Conclusions
-			</td>
-			<td>
-				<input type="text" size="100"/>
-				<br>
-				<em>case insensitive, * for wildcard search</em>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
 				Keyword / Text
 			</td>
 			<td>
-				<input type="text" size="100"/>
+				<textarea rows="5" cols="97">
+				</textarea>
 				<br>
 				<em>case insensitive, * for wildcard search</em>
 			</td>
