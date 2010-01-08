@@ -31,7 +31,7 @@
 			<table width="100%" align="center" class="summaryViewLayer3">
 				<tr>
 					<th valign="top" align="left" width="20%">
-						Sample Information
+						&nbsp;
 					</th>
 					<th valign="top" align="right" width="80%">
 						<a href="sample.do?dispatch=summaryEdit&page=0&sampleId=11337747">Edit</a>
@@ -120,7 +120,7 @@
 			<table width="100%" align="center" class="summaryViewLayer3">
 				<tr>
 					<th valign="top" align="left" width="20%">
-						Sample Information
+						&nbsp;
 					</th>
 					<th valign="top" align="right" width="80%">
 						<a href="sample.do?dispatch=summaryEdit&page=0&sampleId=11337748">Edit</a>

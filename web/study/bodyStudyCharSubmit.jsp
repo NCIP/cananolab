@@ -99,20 +99,9 @@
 		cal1.context = '/caNanoLab';
   	//-->
 </script>
-
-
 	<div id="characterizationDetail">
-	
-		
-	
 	</div>
-
 	<a name="designAndMethod"> 
-
-
-
-
-
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel">
@@ -121,30 +110,19 @@
 		<td>
 			<textarea name="achar.description" cols="120" rows="3"></textarea>
 		</td>
-
 	</tr>
 	<tr>
 		<td class="cellLabel" width="20%">
 			Technique and Instrument
 		</td>
 		<td>
-			
-			
 			<a style="display:block" id="addExperimentConfig"
 				href="javascript:clearExperimentConfig();openSubmissionForm('ExperimentConfig');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
-
 	<tr>
 		<td colspan="2">
-			
-				
-				
-				
-
-
-
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table class="summaryViewLayer4" align="center" width="95%">
