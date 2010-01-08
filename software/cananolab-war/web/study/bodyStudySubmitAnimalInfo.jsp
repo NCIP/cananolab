@@ -215,7 +215,7 @@
 			<td>
 				<SELECT >
 					<option value="">
-						Mg
+						mg
 					</option>
 					<option value="">
 						g
@@ -440,7 +440,7 @@
 			<td>
 				<SELECT >
 					<option value="">
-						Mg
+						mg
 					</option>
 					<option value="">
 						g
