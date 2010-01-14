@@ -22,7 +22,7 @@
 			<td class="cellLabel">
 				caMOD ID *
 			</td>
-			<td colspan="3">
+			<td>
 				<input type="text" size="20" value="26587">
 				&nbsp;
 				<a href="">Browse caMOD</a>
@@ -32,7 +32,7 @@
 			<td class="cellLabel">
 				Species
 			</td>
-			<td>
+			<td class="cellLabel">
 				<SELECT >
 					<option value="">
 						Rat (Rattus Rattus)
@@ -41,11 +41,8 @@
 						[other]
 					</option>
 				</SELECT>
-			</td>
-			<td class="cellLabel">
+				&nbsp;&nbsp;&nbsp;&nbsp;
 				Strain Name
-			</td>
-			<td>
 				<SELECT >
 					<option value="">
 						Sprague Dawley
@@ -76,21 +73,20 @@
 			<td class="cellLabel">
 				Description
 			</td>
-			<td colspan="3">
+			<td>
 				<textarea name="achar.description" cols="136" rows="5"></textarea>
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel" colspan="4">
+			<td class="cellLabel" colspan="2">
 				Animal Diet
 			</td>
 		</tr>
 		<tr>
-			<td colspan="4">
+			<td colspan="2">
 				<table width="95%" align="center" class="submissionView">
 					<tr>
 						<th align="left" colspan="2">
-							Animal Diet Information
 						</th>
 					</tr>
 					<tr>
@@ -112,7 +108,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel">
-							Fee Lot Number
+							Feed Lot Number
 						</td>
 						<td>
 							<input type="text" size="126">
@@ -120,7 +116,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel">
-							Fee
+							Feed
 						</td>
 						<td>
 							<input type="text" size="126">
@@ -144,10 +140,16 @@
 			<td class="cellLabel">
 				caELMIR ID
 			</td>
-			<td colspan="3">
+			<td>
 				<input type="text" size="20" value="26587">
 				&nbsp;
 				<a href="">Browse caELMIR</a>
+			</td>
+			<td class="cellLabel">
+				External ID
+			</td>
+			<td>
+				<input type="text" size="20" value="31226587">
 			</td>
 		</tr>
 		<tr>
@@ -172,7 +174,7 @@
 			<td class="cellLabel">
 				Age
 			</td>
-			<td colspan="3">
+			<td>
 				<input type="text" size="20" value="26">&nbsp;&nbsp;
 				<SELECT >
 					<option value="">
@@ -183,18 +185,11 @@
 					</option>
 				</SELECT>
 			</td>
-		</tr>
-		<tr>
 			<td class="cellLabel">
 				Body Weight
 			</td>
-			<td>
-				<input type="text" size="20" value="26">
-			</td>
 			<td class="cellLabel">
-				Body Weight Unit
-			</td>
-			<td>
+				<input type="text" size="20" value="26">&nbsp;&nbsp;
 				<SELECT >
 					<option value="">
 						mg
@@ -264,29 +259,53 @@
 	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<th align="left">
-				Treatment Group Information &nbsp;&nbsp;&nbsp;
-				<a href="studyAnimalInfo.do?dispatch=addDoseGroup" class="addlink">
-				<img align="middle" src="images/btn_add.gif" border="0" />
-				</a>
+			<th align="left" colspan="4">
+				Treatment Information
 			</th>
-			<th colspan="3"></th>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Treatment Group Name
+				Administrative Route
 			</td>
-			<td class="cellLabel" colspan="3">
-				<input type="text" size="56">&nbsp;&nbsp;&nbsp;&nbsp;
-				Sample Name&nbsp;
+			<td>
 				<SELECT >
 					<option value="">
-						NCL 49-2
+						Aspiration
 					</option>
 					<option value="other">
 						[other]
 					</option>
 				</SELECT>
+			</td>
+			<td class="cellLabel">
+				Surgery Type
+			</td>
+			<td>
+				<input type="text" size="20" value="26">
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Age at Treatment
+			</td>
+			<td colspan="3">
+				<input type="text" size="20" value="26">&nbsp;&nbsp;
+				<SELECT >
+					<option value="">
+						Days
+					</option>
+					<option value="other">
+						[other]
+					</option>
+				</SELECT>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Regimen
+			</td>
+			<td colspan="3">
+				<input type="text" size="30" value="26">
 			</td>
 		</tr>
 		<tr>
@@ -298,75 +317,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
-				Number of Animals
-			</td>
-			<td>
-				<input type="text" size="26">
-			</td>
-			<td class="cellLabel">
-				Gender
-			</td>
-			<td>
-				<SELECT >
-					<option value="">
-						Male
-					</option>
-					<option value="other">
-						Female
-					</option>
-					<option value="other">
-						Both
-					</option>
-				</SELECT>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Number of Treatments
-			</td>
-			<td>
-				<input type="text" size="26">
-			</td>
-			<td class="cellLabel">
-				cdELMIR ID
-			</td>
-			<td>
-				<SELECT >
-					<option value="">
-						2345
-					</option>
-				</SELECT>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Body Weight
-			</td>
-			<td>
-				<input type="text" size="20" value="326">
-			</td>
-			<td class="cellLabel">
-				Body Weight Unit
-			</td>
-			<td>
-				<SELECT >
-					<option value="">
-						g
-					</option>
-					<option value="">
-						mg
-					</option>
-					<option value="other">
-						[other]
-					</option>
-				</SELECT>
-				<br>
-			</td>
-		</tr>
-		<tr>
 			<td class="cellLabel" colspan="4">
-				Treatment &nbsp;&nbsp;&nbsp;
+				Treatment Group&nbsp;&nbsp;&nbsp;
 				<a href="studyAnimalInfo.do?dispatch=addAnimal" class="addlink">
 				<img align="middle" src="images/btn_add.gif" border="0" />
 				</a>
@@ -377,52 +329,27 @@
 				<table width="95%" align="center" class="submissionView">
 					<tr>
 						<th align="left" colspan="4">
-							Treatment Information
+							Treatment Group Information &nbsp;&nbsp;&nbsp;
+							<a href="studyAnimalInfo.do?dispatch=addDoseGroup" class="addlink">
+							<img align="middle" src="images/btn_add.gif" border="0" />
+							</a>
 						</th>
 					</tr>
 					<tr>
 						<td class="cellLabel">
-							Administrative Route
+							Treatment Group Name
 						</td>
-						<td>
+						<td class="cellLabel" colspan="3">
+							<input type="text" size="56">&nbsp;&nbsp;&nbsp;&nbsp;
+							Sample Name&nbsp;
 							<SELECT >
 								<option value="">
-									Aspiration
+									NCL 49-2
 								</option>
 								<option value="other">
 									[other]
 								</option>
 							</SELECT>
-						</td>
-						<td class="cellLabel">
-							Surgery Type
-						</td>
-						<td>
-							<input type="text" size="20" value="26">
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Age at Treatment
-						</td>
-						<td colspan="3">
-							<input type="text" size="20" value="26">&nbsp;&nbsp;
-							<SELECT >
-								<option value="">
-									Days
-								</option>
-								<option value="other">
-									[other]
-								</option>
-							</SELECT>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Regimen
-						</td>
-						<td colspan="3">
-							<input type="text" size="20" value="26">
 						</td>
 					</tr>
 					<tr>
@@ -433,20 +360,121 @@
 							<textarea name="achar.description" cols="136" rows="5"></textarea>
 						</td>
 					</tr>
+					<tr>
+						<td class="cellLabel">
+							Number of Animals
+						</td>
+						<td>
+							<input type="text" size="26">
+						</td>
+						<td class="cellLabel">
+							Gender
+						</td>
+						<td>
+							<SELECT >
+								<option value="">
+									Male
+								</option>
+								<option value="other">
+									Female
+								</option>
+								<option value="other">
+									Both
+								</option>
+							</SELECT>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Number of Treatments
+						</td>
+						<td>
+							<input type="text" size="26">
+						</td>
+						<td class="cellLabel">
+							cdELMIR ID
+						</td>
+						<td>
+							<SELECT >
+								<option value="">
+									2345
+								</option>
+							</SELECT>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Body Weight
+						</td>
+						<td>
+							<input type="text" size="13" value="326">&nbsp;&nbsp;
+							<SELECT >
+								<option value="">
+									g
+								</option>
+								<option value="">
+									mg
+								</option>
+								<option value="other">
+									[other]
+								</option>
+							</SELECT>
+							<br>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel" colspan="4">
+							Component &nbsp;&nbsp;&nbsp;
+							<a href="studyAnimalInfo.do?dispatch=addAnimal" class="addlink">
+							<img align="middle" src="images/btn_add.gif" border="0" />
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><%@ include
+								file="bodyDoseGroupComponentInfoView.jsp"%><br></td>
+					</tr>
 				</table>
 			</td>
 		</tr>
+	</table>
+	<br>
+	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" colspan="4">
-				Component &nbsp;&nbsp;&nbsp;
-				<a href="studyAnimalInfo.do?dispatch=addAnimal" class="addlink">
+			<th align="left" colspan="4">
+				Organism Information &nbsp;&nbsp;&nbsp;
+				<a href="studyAnimalInfo.do?dispatch=addOrganism" class="addlink">
 				<img align="middle" src="images/btn_add.gif" border="0" />
 				</a>
+			</th>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Common Name
+			</td>
+			<td>
+				<input type="text" size="20" value="spleen">
+			</td>
+			<td class="cellLabel">
+				Scientific Name
+			</td>
+			<td>
+				<input type="text" size="20" value="spleen">
 			</td>
 		</tr>
 		<tr>
-			<td colspan="4"><%@ include
-					file="bodyDoseGroupComponentInfoView.jsp"%><br></td>
+			<td class="cellLabel">
+				Taxonomy Id
+			</td>
+			<td>
+				<input type="text" size="20" value="56986">
+			</td>
+			<td class="cellLabel">
+				Taxonomy Rank
+			</td>
+			<td>
+				<input type="text" size="20" value="3">
+			</td>
 		</tr>
 	</table>
 	<br>
