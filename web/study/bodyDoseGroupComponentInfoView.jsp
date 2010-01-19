@@ -7,7 +7,7 @@
 <table class="summaryViewLayer4" align="center" width="95%">
 	<tr>
 		<th class="cellLabel">
-			Component Information
+			Dose Component Information
 		</th>
 		<th>
 		</th>
