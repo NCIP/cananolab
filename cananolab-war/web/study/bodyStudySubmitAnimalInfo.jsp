@@ -108,6 +108,14 @@
 					</tr>
 					<tr>
 						<td class="cellLabel">
+							Feed
+						</td>
+						<td>
+							<input type="text" size="126">
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
 							Feed Lot Number
 						</td>
 						<td>
@@ -116,13 +124,57 @@
 					</tr>
 					<tr>
 						<td class="cellLabel">
-							Feed
+							Water
 						</td>
 						<td>
 							<input type="text" size="126">
 						</td>
 					</tr>
-				</table><br>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel" colspan="2">
+				Organism
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table width="95%" align="center" class="submissionView">
+					<tr>
+						<th align="left" colspan="4">
+						</th>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Common Name
+						</td>
+						<td>
+							<input type="text" size="20" value="spleen">
+						</td>
+						<td class="cellLabel">
+							Scientific Name
+						</td>
+						<td>
+							<input type="text" size="20" value="spleen">
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Taxonomy Id
+						</td>
+						<td>
+							<input type="text" size="20" value="56986">
+						</td>
+						<td class="cellLabel">
+							Taxonomy Rank
+						</td>
+						<td>
+							<input type="text" size="20" value="3">
+						</td>
+					</tr>
+				</table>
+				<br>
 			</td>
 		</tr>
 	</table>
@@ -146,7 +198,7 @@
 				<a href="">Browse caELMIR</a>
 			</td>
 			<td class="cellLabel">
-				External ID
+				Other ID
 			</td>
 			<td>
 				<input type="text" size="20" value="31226587">
@@ -281,28 +333,12 @@
 				Surgery Type
 			</td>
 			<td>
-				<input type="text" size="20" value="26">
+				<input type="text" size="26" value="">
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Age at Treatment
-			</td>
-			<td colspan="3">
-				<input type="text" size="20" value="26">&nbsp;&nbsp;
-				<SELECT >
-					<option value="">
-						Days
-					</option>
-					<option value="other">
-						[other]
-					</option>
-				</SELECT>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Regimen
+				Duration
 			</td>
 			<td colspan="3">
 				<input type="text" size="30" value="26">
@@ -392,13 +428,12 @@
 							<input type="text" size="26">
 						</td>
 						<td class="cellLabel">
-							cdELMIR ID
+							Animal ID
 						</td>
 						<td>
-							<SELECT >
-								<option value="">
-									2345
-								</option>
+							<SELECT multiple="multiple">
+								<option value="26587">26587</option>
+								<option value="31226587">31226587</option>
 							</SELECT>
 						</td>
 					</tr>
@@ -421,10 +456,24 @@
 							</SELECT>
 							<br>
 						</td>
+						<td class="cellLabel">
+							Age at Treatment
+						</td>
+						<td colspan="3">
+							<input type="text" size="20" value="26">&nbsp;&nbsp;
+							<SELECT >
+								<option value="">
+									Days
+								</option>
+								<option value="other">
+									[other]
+								</option>
+							</SELECT>
+						</td>
 					</tr>
 					<tr>
 						<td class="cellLabel" colspan="4">
-							Component &nbsp;&nbsp;&nbsp;
+							Dose Component &nbsp;&nbsp;&nbsp;
 							<a href="studyAnimalInfo.do?dispatch=addAnimal" class="addlink">
 							<img align="middle" src="images/btn_add.gif" border="0" />
 							</a>
@@ -435,45 +484,6 @@
 								file="bodyDoseGroupComponentInfoView.jsp"%><br></td>
 					</tr>
 				</table>
-			</td>
-		</tr>
-	</table>
-	<br>
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<th align="left" colspan="4">
-				Organism Information &nbsp;&nbsp;&nbsp;
-				<a href="studyAnimalInfo.do?dispatch=addOrganism" class="addlink">
-				<img align="middle" src="images/btn_add.gif" border="0" />
-				</a>
-			</th>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Common Name
-			</td>
-			<td>
-				<input type="text" size="20" value="spleen">
-			</td>
-			<td class="cellLabel">
-				Scientific Name
-			</td>
-			<td>
-				<input type="text" size="20" value="spleen">
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Taxonomy Id
-			</td>
-			<td>
-				<input type="text" size="20" value="56986">
-			</td>
-			<td class="cellLabel">
-				Taxonomy Rank
-			</td>
-			<td>
-				<input type="text" size="20" value="3">
 			</td>
 		</tr>
 	</table>
