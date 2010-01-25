@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
-import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
-import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
+import gov.nih.nci.cananolab.dto.search.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.search.CharacterizationQueryBean;
+import gov.nih.nci.cananolab.dto.search.CompositionQueryBean;
+import gov.nih.nci.cananolab.dto.search.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;

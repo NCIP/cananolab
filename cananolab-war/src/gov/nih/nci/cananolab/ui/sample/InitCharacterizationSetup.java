@@ -3,9 +3,9 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
@@ -164,38 +164,38 @@ public class InitCharacterizationSetup {
 		InitSetup.getInstance().persistLookup(request,
 				charBean.getCharacterizationName(), "assayType",
 				"otherAssayType", charBean.getAssayType());
-		if (charBean.getTheFinding().getDomain().getDatumCollection() != null) {
-			for (Datum datum : charBean.getTheFinding().getDomain()
-					.getDatumCollection()) {
-				InitSetup.getInstance().persistLookup(request,
-						charBean.getCharacterizationName(), "datumName",
-						"otherDatumName", datum.getName());
-				InitSetup.getInstance().persistLookup(request, datum.getName(),
-						"unit", "otherUnit", datum.getValueUnit());
-				InitSetup.getInstance().persistLookup(request,
-						"datum and condition", "valueType", "otherValueType",
-						datum.getValueType());
-				for (Condition condition : datum.getConditionCollection()) {
-					InitSetup.getInstance().persistLookup(request, "condition",
-							"name", "otherName", condition.getName());
-					InitSetup.getInstance().persistLookup(request,
-							condition.getName(), "unit", "otherUnit",
-							condition.getValueUnit());
-					InitSetup.getInstance().persistLookup(request,
-							"datum and condition", "valueType",
-							"otherValueType", condition.getValueType());
-				}
-			}
-		}
+//		if (charBean.getTheFinding().getDomain().getDatumCollection() != null) {
+//			for (Datum datum : charBean.getTheFinding().getDomain()
+//					.getDatumCollection()) {
+//				InitSetup.getInstance().persistLookup(request,
+//						charBean.getCharacterizationName(), "datumName",
+//						"otherDatumName", datum.getName());
+//				InitSetup.getInstance().persistLookup(request, datum.getName(),
+//						"unit", "otherUnit", datum.getValueUnit());
+//				InitSetup.getInstance().persistLookup(request,
+//						"datum and condition", "valueType", "otherValueType",
+//						datum.getValueType());
+//				for (Condition condition : datum.getConditionCollection()) {
+//					InitSetup.getInstance().persistLookup(request, "condition",
+//							"name", "otherName", condition.getName());
+//					InitSetup.getInstance().persistLookup(request,
+//							condition.getName(), "unit", "otherUnit",
+//							condition.getValueUnit());
+//					InitSetup.getInstance().persistLookup(request,
+//							"datum and condition", "valueType",
+//							"otherValueType", condition.getValueType());
+//				}
+//			}
+//		}
 
-		InitSetup.getInstance()
-				.persistLookup(
-						request,
-						"file",
-						"type",
-						"otherType",
-						charBean.getTheFinding().getTheFile().getDomainFile()
-								.getType());
+//		InitSetup.getInstance()
+//				.persistLookup(
+//						request,
+//						"file",
+//						"type",
+//						"otherType",
+//						charBean.getTheFinding().getTheFile().getDomainFile()
+//								.getType());
 
 		persistExperimentConfigDropdowns(request, charBean
 				.getTheExperimentConfig());

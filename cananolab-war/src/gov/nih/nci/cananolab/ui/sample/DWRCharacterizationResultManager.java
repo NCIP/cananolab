@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -103,31 +103,31 @@ public class DWRCharacterizationResultManager {
 		return units.toArray(new String[units.size()]);
 	}
 
-	public FileBean getFileFromList(int index) {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm == null) {
-			return null;
-		}
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		List<FileBean> files = charBean.getTheFinding().getFiles();
-		FileBean theFile = files.get(index);
-		return theFile;
-	}
+//	public FileBean getFileFromList(int index) {
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		if (charForm == null) {
+//			return null;
+//		}
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		List<FileBean> files = charBean.getTheFinding().getFiles();
+//		FileBean theFile = files.get(index);
+//		return theFile;
+//	}
 
-	public FileBean resetTheFile() {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		if (charForm == null) {
-			return null;
-		}
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		FileBean fileBean = new FileBean();
-		charBean.getTheFinding().setTheFile(fileBean);
-		return fileBean;
-	}
+//	public FileBean resetTheFile() {
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		if (charForm == null) {
+//			return null;
+//		}
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		FileBean fileBean = new FileBean();
+//		charBean.getTheFinding().setTheFile(fileBean);
+//		return fileBean;
+//	}
 
 	public String addColumnHeader(ColumnHeader header) {
 		// added other valueType to the dropdown list in the session
