@@ -10,13 +10,13 @@
                         </generator>
 		</id>
 		<!-- Attributes mapping for the Condition class -->
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="name" type="string" column="name"/>
 		<property name="property" type="string" column="property"/>
 		<property name="value" type="string" column="value"/>
 		<property name="valueType" type="string" column="value_type"/>
 		<property name="valueUnit" type="string" column="value_unit"/>
-		<property name="createdBy" type="string" column="created_by"/>
-		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<!-- Associations mapping for the Condition class -->
 		<set name="datumCollection" table="datum_condition" lazy="true" inverse="true">
 			<cache usage="read-write" />

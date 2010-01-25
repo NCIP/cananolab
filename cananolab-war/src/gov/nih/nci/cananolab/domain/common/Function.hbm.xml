@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle" auto-import="false">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
 	<class name="Function" table="nano_function" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="function_pk_id">
@@ -15,11 +15,8 @@
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="description" type="string" column="description"/>
 		<!-- Associations mapping for the Function class -->
-		<many-to-one name="functionalizingEntity" class="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity" column="functionalizing_entity_pk_id" lazy="proxy" />
-		<many-to-one name="composingElement" class="gov.nih.nci.cananolab.domain.particle.ComposingElement" column="composing_element_pk_id" lazy="proxy" />
-		<subclass name="gov.nih.nci.cananolab.domain.function.ImagingFunction" discriminator-value="ImagingFunction">
-			<!-- Attributes mapping for the ImagingFunction class -->
-			<property name="modality" type="string" column="imaging_function_modality"/>
+		<many-to-one name="materialCollection" class="gov.nih.nci.cananolab.domain.common.Material" column="material_pk_id" lazy="proxy" />
+		<subclass name="gov.nih.nci.cananolab.domain.function.TherapeuticFunction" discriminator-value="TherapeuticFunction">
 
 		</subclass>
 		<subclass name="gov.nih.nci.cananolab.domain.function.TargetingFunction" discriminator-value="TargetingFunction">
@@ -36,7 +33,9 @@
 			<property name="type" type="string" column="other_function_type"/>
 
 		</subclass>
-		<subclass name="gov.nih.nci.cananolab.domain.function.TherapeuticFunction" discriminator-value="TherapeuticFunction">
+		<subclass name="gov.nih.nci.cananolab.domain.function.ImagingFunction" discriminator-value="ImagingFunction">
+			<!-- Attributes mapping for the ImagingFunction class -->
+			<property name="modality" type="string" column="imaging_function_modality"/>
 
 		</subclass>
 	</class>

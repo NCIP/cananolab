@@ -14,9 +14,21 @@
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="name" type="string" column="protocol_name"/>
+		<property name="standardAuthority" type="string" column="standard_authority"/>
+		<property name="standardized" type="boolean" column="is_standardized"/>
 		<property name="type" type="string" column="protocol_type"/>
 		<property name="version" type="string" column="protocol_version"/>
 		<!-- Associations mapping for the Protocol class -->
-		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true" lazy="proxy" cascade="save-update, delete"/>
+		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true" lazy="proxy" />
+		<set name="experimentCollection" lazy="true">
+			<cache usage="read-write" />
+			<key column="protocol_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.Experiment"/>
+		</set>
+		<set name="studyCollection" table="study_protocol" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="protocol_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Study" column="study_pk_id" />
+		</set>
 	</class>
 </hibernate-mapping>

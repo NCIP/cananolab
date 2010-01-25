@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="Material" table="material" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="material_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<discriminator column="discriminator" type="string"/>
+		<!-- Attributes mapping for the Material class -->
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="description" type="string" column="description"/>
+		<property name="molecularFormula" type="string" column="molecular_formula"/>
+		<property name="molecularFormulaType" type="string" column="molecular_formula_type"/>
+		<property name="name" type="string" column="name"/>
+		<property name="nanoSized" type="boolean" column="is_nano_sized"/>
+		<property name="pubChemDataSourceName" type="string" column="pub_chem_datasource_name"/>
+		<property name="pubChemId" type="long" column="pub_chem_id"/>
+		<property name="value" type="double" column="value"/>
+		<property name="valueUnit" type="string" column="value_unit"/>
+		<!-- Associations mapping for the Material class -->
+		<set name="chemicalAssociationACollection" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="material_a_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.ChemicalAssociation"/>
+		</set>
+		<set name="functionCollection" lazy="true" cascade="all-delete-orphan">
+			<cache usage="read-write" />
+			<key column="material_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.Function"/>
+		</set>
+		<many-to-one name="activationMethod" class="gov.nih.nci.cananolab.domain.common.ActivationMethod" column="activation_method_pk_id" unique="true" lazy="proxy" cascade="save-update"/>
+		<set name="materialComponentCollection" lazy="true" cascade="all-delete-orphan">
+			<cache usage="read-write" />
+			<key column="parent_material_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.MaterialComponent"/>
+		</set>
+		<set name="chemicalAssociationBCollection" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="material_b_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.ChemicalAssociation"/>
+		</set>
+		<join table="sample_material" inverse="false" optional="true">
+			<key column="material_pk_id" />
+			<many-to-one name="sample" column="sample_pk_id" not-null="true" cascade="save-update"/>
+		</join>
+		<set name="fileCollection" table="material_file" lazy="true" inverse="false" cascade="all-delete-orphan">
+			<cache usage="read-write" />
+			<key column="material_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+		</set>
+		<subclass name="gov.nih.nci.cananolab.domain.material.Emulsion" discriminator-value="Emulsion">
+			<join table="emulsion">
+				<key column="emulsion_pk_id" />
+			<!-- Attributes mapping for the Emulsion class -->
+			<property name="polymerized" type="boolean" column="is_polymerized"/>
+			<property name="polymerName" type="string" column="polymer_name"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.OtherMaterial" discriminator-value="OtherMaterial">
+			<!-- Attributes mapping for the OtherMaterial class -->
+			<property name="type" type="string" column="other_material_type"/>
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.common.MaterialComponent" discriminator-value="MaterialComponent">
+			<!-- Attributes mapping for the MaterialComponent class -->
+			<property name="type" type="string" column="child_material_type"/>
+			<!-- Associations mapping for the MaterialComponent class -->
+			<many-to-one name="material" class="gov.nih.nci.cananolab.domain.common.Material" column="parent_material_pk_id" lazy="proxy" />
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.QuantumDot" discriminator-value="QuantumDot">
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.Polymer" discriminator-value="Polymer">
+			<join table="polymer">
+				<key column="polymer_pk_id" />
+			<!-- Attributes mapping for the Polymer class -->
+			<property name="crossLinkDegree" type="float" column="cross_link_degree"/>
+			<property name="crossLinked" type="boolean" column="is_cross_linked"/>
+			<property name="initiator" type="string" column="initiator"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.Biopolymer" discriminator-value="Biopolymer">
+			<join table="biopolymer">
+				<key column="biopolymer_pk_id" />
+			<!-- Attributes mapping for the Biopolymer class -->
+			<property name="sequence" type="string" column="sequence"/>
+			<property name="type" type="string" column="type"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.Dendrimer" discriminator-value="Dendrimer">
+			<join table="dendrimer">
+				<key column="dendrimer_pk_id" />
+			<!-- Attributes mapping for the Dendrimer class -->
+			<property name="branch" type="string" column="branch"/>
+			<property name="generation" type="float" column="generation"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.Antibody" discriminator-value="Antibody">
+			<join table="antibody">
+				<key column="antibody_pk_id" />
+			<!-- Attributes mapping for the Antibody class -->
+			<property name="isotype" type="string" column="isotype"/>
+			<property name="species" type="string" column="species"/>
+			<property name="type" type="string" column="type"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.SmallMolecule" discriminator-value="SmallMolecule">
+			<join table="small_molecule">
+				<key column="small_molecule_pk_id" />
+			<!-- Attributes mapping for the SmallMolecule class -->
+			<property name="alternateName" type="string" column="alternate_name"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.MetalParticle" discriminator-value="MetalParticle">
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.Fullerene" discriminator-value="Fullerene">
+			<join table="fullerene">
+				<key column="fullerene_pk_id" />
+			<!-- Attributes mapping for the Fullerene class -->
+			<property name="averageDiameter" type="float" column="average_diameter"/>
+			<property name="averageDiameterUnit" type="string" column="average_diameter_unit"/>
+			<property name="numberOfCarbon" type="integer" column="number_of_carbon"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.CarbonNanotube" discriminator-value="CarbonNanotube">
+			<join table="carbon_nanotube">
+				<key column="carbon_nanotube_pk_id" />
+			<!-- Attributes mapping for the CarbonNanotube class -->
+			<property name="averageLength" type="float" column="average_length"/>
+			<property name="averageLengthUnit" type="string" column="average_length_unit"/>
+			<property name="chirality" type="string" column="chirality"/>
+			<property name="diameter" type="float" column="diameter"/>
+			<property name="diameterUnit" type="string" column="diameter_unit"/>
+			<property name="wallType" type="string" column="wall_type"/>
+
+			</join>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.material.Liposome" discriminator-value="Liposome">
+			<join table="liposome">
+				<key column="liposome_pk_id" />
+			<!-- Attributes mapping for the Liposome class -->
+			<property name="polymerized" type="boolean" column="is_polymerized"/>
+			<property name="polymerName" type="string" column="polymer_name"/>
+
+			</join>
+		</subclass>
+	</class>
+</hibernate-mapping>
