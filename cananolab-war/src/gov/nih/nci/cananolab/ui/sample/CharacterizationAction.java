@@ -1,15 +1,13 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
-import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -91,11 +89,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		this.checkOpenForms(charBean, theForm, request);
 
-		// Save uploaded data in session to avoid asking user to upload again.
-		FileBean theFile = charBean.getTheFinding().getTheFile();
-		String charName = StringUtils.getOneWordLowerCaseFirstLetter(charBean
-				.getCharacterizationName());
-		preserveUploadedFile(request, theFile, charName);
+//		// Save uploaded data in session to avoid asking user to upload again.
+//		FileBean theFile = charBean.getTheFinding().getTheFile();
+//		String charName = StringUtils.getOneWordLowerCaseFirstLetter(charBean
+//				.getCharacterizationName());
+//		preserveUploadedFile(request, theFile, charName);
 
 		return mapping.findForward("inputForm");
 	}
@@ -540,78 +538,78 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return setupUpdate(mapping, form, request, response);
 	}
 
-	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String theFindingId = request.getParameter("findingId");
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		FindingBean findingBean = service.findFindingById(theFindingId, user);
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		achar.setTheFinding(findingBean);
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
-
-		return mapping.findForward("inputForm");
-	}
-
-	public ActionForward resetFinding(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FindingBean theFinding = new FindingBean();
-		// theFinding.setNumberOfColumns(1);
-		// theFinding.setNumberOfRows(1);
-		// theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
-		// .getNumberOfRows());
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		achar.setTheFinding(theFinding);
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
-		return mapping.findForward("inputForm");
-	}
-
-	public ActionForward saveFinding(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		FindingBean findingBean = achar.getTheFinding();
-		if (!validateEmptyFinding(findingBean)) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"achar.theFinding.emptyFinding");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-			return mapping.getInputForward();
-		}
-		String theFindingId = (String) request.getAttribute("theFindingId");
-		if (!StringUtils.isEmpty(theFindingId)) {
-			findingBean.getDomain().setId(new Long(theFindingId));
-		}
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		findingBean.setupDomain(user.getLoginName());
-
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveFinding(findingBean, user);
-		achar.addFinding(findingBean);
-
-		// also save characterization
-		this.saveCharacterization(request, theForm, achar);
-		this.checkOpenForms(achar, theForm, request);
-		request.setAttribute("anchor", "result");
-		// return to setupUpdate to retrieve the data matrix in the correct
-		// form from database
-		// after saving to database.
-		request
-				.setAttribute("charId", achar.getDomainChar().getId()
-						.toString());
-		return setupUpdate(mapping, form, request, response);
-	}
+//	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		String theFindingId = request.getParameter("findingId");
+//		CharacterizationService service = new CharacterizationServiceLocalImpl();
+//		CharacterizationResultBean characterizationResultBean = service.findFindingById(theFindingId, user);
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		achar.setTheFinding(characterizationResultBean);
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
+//
+//		return mapping.findForward("inputForm");
+//	}
+//
+//	public ActionForward resetFinding(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		CharacterizationResultBean theFinding = new CharacterizationResultBean();
+//		// theFinding.setNumberOfColumns(1);
+//		// theFinding.setNumberOfRows(1);
+//		// theFinding.updateMatrix(theFinding.getNumberOfColumns(), theFinding
+//		// .getNumberOfRows());
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		achar.setTheFinding(theFinding);
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
+//		return mapping.findForward("inputForm");
+//	}
+//
+//	public ActionForward saveFinding(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		CharacterizationResultBean characterizationResultBean = achar.getTheFinding();
+//		if (!validateEmptyFinding(characterizationResultBean)) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage(
+//					"achar.theFinding.emptyFinding");
+//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			saveMessages(request, msgs);
+//			return mapping.getInputForward();
+//		}
+//		String theFindingId = (String) request.getAttribute("theFindingId");
+//		if (!StringUtils.isEmpty(theFindingId)) {
+//			characterizationResultBean.getDomain().setId(new Long(theFindingId));
+//		}
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		characterizationResultBean.setupDomain(user.getLoginName());
+//
+//		CharacterizationService service = new CharacterizationServiceLocalImpl();
+//		service.saveFinding(characterizationResultBean, user);
+//		achar.addFinding(characterizationResultBean);
+//
+//		// also save characterization
+//		this.saveCharacterization(request, theForm, achar);
+//		this.checkOpenForms(achar, theForm, request);
+//		request.setAttribute("anchor", "result");
+//		// return to setupUpdate to retrieve the data matrix in the correct
+//		// form from database
+//		// after saving to database.
+//		request
+//				.setAttribute("charId", achar.getDomainChar().getId()
+//						.toString());
+//		return setupUpdate(mapping, form, request, response);
+//	}
 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -619,44 +617,42 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		FindingBean findingBean = achar.getTheFinding();
-		FileBean theFile = findingBean.getTheFile();
-		int theFileIndex = findingBean.getTheFileIndex();
-
-		// restore previously uploaded file from session.
-		restoreUploadedFile(request, theFile);
-
-		// create a new copy before adding to finding
-		FileBean newFile = theFile.copy();
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ '/'
-				+ sampleBean.getDomain().getName()
-				+ '/'
-				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
-						.getCharacterizationName());
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		newFile.setupDomainFile(internalUriPath, user.getLoginName());
-		findingBean.addFile(newFile, theFileIndex);
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
+////		FileBean theFile = achar.getTheFile();
+////		int theFileIndex = characterizationResultBean.getTheFileIndex();
+//
+//		// restore previously uploaded file from session.
+//		restoreUploadedFile(request, theFile);
+//
+//		// create a new copy before adding to finding
+//		FileBean newFile = theFile.copy();
+//		SampleBean sampleBean = setupSample(theForm, request,
+//				Constants.LOCAL_SITE);
+//		// setup domainFile uri for fileBeans
+//		String internalUriPath = Constants.FOLDER_PARTICLE
+//				+ '/'
+//				+ sampleBean.getDomain().getName()
+//				+ '/'
+//				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
+//						.getCharacterizationName());
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		newFile.setupDomainFile(internalUriPath, user.getLoginName());
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
 		return mapping.findForward("inputForm");
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		FindingBean findingBean = achar.getTheFinding();
-		int theFileIndex = findingBean.getTheFileIndex();
-		findingBean.removeFile(theFileIndex);
-		findingBean.setTheFile(new FileBean());
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		CharacterizationResultBean characterizationResultBean = achar.getTheFinding();
+//		int theFileIndex = characterizationResultBean.getTheFileIndex();
+//		characterizationResultBean.removeFile(theFileIndex);
+//		characterizationResultBean.setTheFile(new FileBean());
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -667,62 +663,62 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		request.setAttribute("anchor", "result");
-		FindingBean findingBean = achar.getTheFinding();
+//		CharacterizationResultBean characterizationResultBean = achar.getTheFinding();
 
-		if (request.getParameter("removeColumn") != null) {
-			int columnToRemove = Integer.parseInt(request
-					.getParameter("removeColumn"));
-			findingBean.removeColumn(columnToRemove);
-			return mapping.findForward("inputForm");
-		} else if (request.getParameter("removeRow") != null) {
-			int rowToRemove = Integer.parseInt(request
-					.getParameter("removeRow"));
-			findingBean.removeRow(rowToRemove);
-			this.checkOpenForms(achar, theForm, request);
-			return mapping.findForward("inputForm");
-		}
-		int existingNumberOfColumns = findingBean.getColumnHeaders().size();
-		int existingNumberOfRows = findingBean.getRows().size();
-		if (existingNumberOfColumns > findingBean.getNumberOfColumns()) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.addCharacterization.removeMatrixColumn");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-			findingBean.setNumberOfColumns(existingNumberOfColumns);
-			return mapping.getInputForward();
-		}
-		if (existingNumberOfRows > findingBean.getNumberOfRows()) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.addCharacterization.removeMatrixRow");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-			findingBean.setNumberOfRows(existingNumberOfRows);
-			return mapping.getInputForward();
-		}
-		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean
-				.getNumberOfRows());
-		request.setAttribute("anchor", "submitFinding");
-		this.checkOpenForms(achar, theForm, request);
+//		if (request.getParameter("removeColumn") != null) {
+//			int columnToRemove = Integer.parseInt(request
+//					.getParameter("removeColumn"));
+//			characterizationResultBean.removeColumn(columnToRemove);
+//			return mapping.findForward("inputForm");
+//		} else if (request.getParameter("removeRow") != null) {
+//			int rowToRemove = Integer.parseInt(request
+//					.getParameter("removeRow"));
+//			characterizationResultBean.removeRow(rowToRemove);
+//			this.checkOpenForms(achar, theForm, request);
+//			return mapping.findForward("inputForm");
+//		}
+//		int existingNumberOfColumns = characterizationResultBean.getColumnHeaders().size();
+//		int existingNumberOfRows = characterizationResultBean.getRows().size();
+//		if (existingNumberOfColumns > characterizationResultBean.getNumberOfColumns()) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage(
+//					"message.addCharacterization.removeMatrixColumn");
+//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			saveMessages(request, msgs);
+//			characterizationResultBean.setNumberOfColumns(existingNumberOfColumns);
+//			return mapping.getInputForward();
+//		}
+//		if (existingNumberOfRows > characterizationResultBean.getNumberOfRows()) {
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage(
+//					"message.addCharacterization.removeMatrixRow");
+//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			saveMessages(request, msgs);
+//			characterizationResultBean.setNumberOfRows(existingNumberOfRows);
+//			return mapping.getInputForward();
+//		}
+//		characterizationResultBean.updateMatrix(characterizationResultBean.getNumberOfColumns(), characterizationResultBean
+//				.getNumberOfRows());
+//		request.setAttribute("anchor", "submitFinding");
+//		this.checkOpenForms(achar, theForm, request);
 		return mapping.findForward("inputForm");
 	}
 
-	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		CharacterizationBean achar = (CharacterizationBean) theForm
-				.get("achar");
-		FindingBean dataSetBean = achar.getTheFinding();
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.deleteFinding(dataSetBean.getDomain(), user);
-		achar.removeFinding(dataSetBean);
-		request.setAttribute("anchor", "result");
-		this.checkOpenForms(achar, theForm, request);
-		return mapping.findForward("inputForm");
-	}
+//	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		CharacterizationBean achar = (CharacterizationBean) theForm
+//				.get("achar");
+//		CharacterizationResultBean dataSetBean = achar.getTheFinding();
+//		CharacterizationService service = new CharacterizationServiceLocalImpl();
+//		service.deleteFinding(dataSetBean.getDomain(), user);
+//		achar.removeFinding(dataSetBean);
+//		request.setAttribute("anchor", "result");
+//		this.checkOpenForms(achar, theForm, request);
+//		return mapping.findForward("inputForm");
+//	}
 
 	public ActionForward deleteExperimentConfig(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
@@ -813,14 +809,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return charTypes;
 	}
 
-	private boolean validateEmptyFinding(FindingBean finding) {
-		if (finding.getFiles().isEmpty()
-				&& finding.getColumnHeaders().isEmpty()) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+//	private boolean validateEmptyFinding(CharacterizationResultBean finding) {
+//		if (finding.getFiles().isEmpty()
+//				&& finding.getColumnHeaders().isEmpty()) {
+//			return false;
+//		} else {
+//			return true;
+//		}
+//	}
 
 	/**
 	 * Copy "isSoluble" property from achar to Solubility entity.
