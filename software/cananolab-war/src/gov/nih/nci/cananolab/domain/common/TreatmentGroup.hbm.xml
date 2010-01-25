@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="TreatmentGroup" table="treatment_group" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="treatment_group_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the TreatmentGroup class -->
+		<property name="ageAtTreatment" type="double" column="age"/>
+		<property name="ageUnit" type="string" column="age_unit"/>
+		<property name="bodyWeight" type="double" column="body_weight"/>
+		<property name="bodyWeightUnit" type="string" column="body_weight_unit"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="description" type="string" column="description"/>
+		<property name="gender" type="string" column="gender"/>
+		<property name="name" type="string" column="name"/>
+		<property name="numberOfAnimals" type="integer" column="number_of_animals"/>
+		<property name="numberOfTreatments" type="integer" column="number_of_treatments"/>
+		<!-- Associations mapping for the TreatmentGroup class -->
+		<many-to-one name="dose" class="gov.nih.nci.cananolab.domain.common.Dose" column="dose_pk_id" unique="true" lazy="proxy" />
+		<set name="animalCollection" lazy="true">
+			<cache usage="read-write" />
+			<key column="treatment_group_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.Animal"/>
+		</set>
+		<set name="doseComponentCollection" lazy="true">
+			<cache usage="read-write" />
+			<key column="treatment_group_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.DoseComponent"/>
+		</set>
+		<many-to-one name="treatment" class="gov.nih.nci.cananolab.domain.common.Treatment" column="treatment_pk_id" lazy="proxy" />
+	</class>
+</hibernate-mapping>
