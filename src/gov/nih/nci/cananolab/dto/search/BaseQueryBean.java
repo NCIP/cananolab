@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.dto;
+package gov.nih.nci.cananolab.dto.search;
 
 /**
  * Contains information about a basic query
