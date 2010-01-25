@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle" auto-import="false">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
 	<class name="ActivationMethod" table="activation_method" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="activation_method_pk_id">
@@ -13,6 +13,6 @@
 		<property name="activationEffect" type="string" column="activation_effect"/>
 		<property name="type" type="string" column="type"/>
 		<!-- Associations mapping for the ActivationMethod class -->
-		<one-to-one name="functionalizingEntity" class="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity" property-ref="activationMethod" />
+		<one-to-one name="material" class="gov.nih.nci.cananolab.domain.common.Material" property-ref="activationMethod" />
 	</class>
 </hibernate-mapping>

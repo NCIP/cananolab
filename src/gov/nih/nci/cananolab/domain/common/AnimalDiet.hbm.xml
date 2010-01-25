@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="AnimalDiet" table="animal_diet" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="animal_diet_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the AnimalDiet class -->
+		<property name="dietaryRestriction" type="string" column="dietary_restriction"/>
+		<property name="dietRestricted" type="boolean" column="is_diet_restricted"/>
+		<property name="feed" type="string" column="feed"/>
+		<property name="feedLotNumber" type="string" column="feed_lot_number"/>
+		<property name="water" type="string" column="water"/>
+		<!-- Associations mapping for the AnimalDiet class -->
+	</class>
+</hibernate-mapping>
