@@ -1,20 +1,14 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
+import gov.nih.nci.cananolab.domain.common.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -567,148 +561,148 @@ public class SampleServiceHelper {
 	 * @param sample
 	 * @return
 	 */
-	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
-			Sample sample) {
-		SortedSet<String> storedEntities = new TreeSet<String>();
-
-		if (sample.getSampleComposition() != null
-				&& sample.getSampleComposition()
-						.getFunctionalizingEntityCollection() != null) {
-			for (FunctionalizingEntity entity : sample.getSampleComposition()
-					.getFunctionalizingEntityCollection()) {
-				if (entity instanceof OtherFunctionalizingEntity) {
-					storedEntities.add(((OtherFunctionalizingEntity) entity)
-							.getType());
-				} else {
-					storedEntities.add(ClassUtils.getShortClassName(entity
-							.getClass().getCanonicalName()));
-				}
-			}
-		}
-		return storedEntities;
-	}
-
-	/**
-	 * Return all stored function class names. In case of OtherFunction, store
-	 * the otherFunction type
-	 *
-	 * @param sample
-	 * @return
-	 */
-	public SortedSet<String> getStoredFunctionClassNames(Sample sample) {
-		SortedSet<String> storedFunctions = new TreeSet<String>();
-
-		if (sample.getSampleComposition() != null) {
-			if (sample.getSampleComposition().getNanomaterialEntityCollection() != null) {
-				for (NanomaterialEntity entity : sample.getSampleComposition()
-						.getNanomaterialEntityCollection()) {
-					if (entity.getComposingElementCollection() != null) {
-						for (ComposingElement element : entity
-								.getComposingElementCollection()) {
-							if (element.getInherentFunctionCollection() != null) {
-								for (Function function : element
-										.getInherentFunctionCollection()) {
-									if (function instanceof OtherFunction) {
-										storedFunctions
-												.add(((OtherFunction) function)
-														.getType());
-									} else {
-										storedFunctions.add(ClassUtils
-												.getShortClassName(function
-														.getClass()
-														.getCanonicalName()));
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if (sample.getSampleComposition()
-					.getFunctionalizingEntityCollection() != null) {
-				for (FunctionalizingEntity entity : sample
-						.getSampleComposition()
-						.getFunctionalizingEntityCollection()) {
-					if (entity.getFunctionCollection() != null) {
-						for (Function function : entity.getFunctionCollection()) {
-							if (function instanceof OtherFunction) {
-								storedFunctions.add(((OtherFunction) function)
-										.getType());
-							} else {
-								storedFunctions.add(ClassUtils
-										.getShortClassName(function.getClass()
-												.getCanonicalName()));
-							}
-						}
-					}
-				}
-			}
-		}
-		return storedFunctions;
-	}
-
-	/**
-	 * Return all stored nanomaterial entity class names. In case of
-	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
-	 *
-	 * @param sample
-	 * @return
-	 */
-	public SortedSet<String> getStoredNanomaterialEntityClassNames(Sample sample) {
-		SortedSet<String> storedEntities = new TreeSet<String>();
-
-		if (sample.getSampleComposition() != null
-				&& sample.getSampleComposition()
-						.getNanomaterialEntityCollection() != null) {
-			for (NanomaterialEntity entity : sample.getSampleComposition()
-					.getNanomaterialEntityCollection()) {
-				if (entity instanceof OtherNanomaterialEntity) {
-					storedEntities.add(((OtherNanomaterialEntity) entity)
-							.getType());
-				} else {
-					storedEntities.add(ClassUtils.getShortClassName(entity
-							.getClass().getCanonicalName()));
-				}
-			}
-		}
-		return storedEntities;
-	}
-
-	public SortedSet<String> getStoredChemicalAssociationClassNames(
-			Sample sample) {
-		SortedSet<String> storedAssocs = new TreeSet<String>();
-		if (sample.getSampleComposition() != null
-				&& sample.getSampleComposition()
-						.getChemicalAssociationCollection() != null) {
-			for (ChemicalAssociation assoc : sample.getSampleComposition()
-					.getChemicalAssociationCollection()) {
-				if (assoc instanceof OtherChemicalAssociation) {
-					storedAssocs.add(((OtherChemicalAssociation) assoc)
-							.getType());
-				} else {
-					storedAssocs.add(ClassUtils.getShortClassName(assoc
-							.getClass().getCanonicalName()));
-				}
-			}
-		}
-		return storedAssocs;
-	}
-
-	public SortedSet<String> getStoredCharacterizationClassNames(Sample sample) {
-		SortedSet<String> storedChars = new TreeSet<String>();
-		if (sample.getCharacterizationCollection() != null) {
-			for (Characterization achar : sample
-					.getCharacterizationCollection()) {
-				if (achar instanceof OtherCharacterization) {
-					storedChars.add(((OtherCharacterization) achar).getName());
-				} else {
-					storedChars.add(ClassUtils.getShortClassName(achar
-							.getClass().getCanonicalName()));
-				}
-			}
-		}
-		return storedChars;
-	}
+//	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
+//			Sample sample) {
+//		SortedSet<String> storedEntities = new TreeSet<String>();
+//
+//		if (sample.getSampleComposition() != null
+//				&& sample.getSampleComposition()
+//						.getFunctionalizingEntityCollection() != null) {
+//			for (FunctionalizingEntity entity : sample.getSampleComposition()
+//					.getFunctionalizingEntityCollection()) {
+//				if (entity instanceof OtherFunctionalizingEntity) {
+//					storedEntities.add(((OtherFunctionalizingEntity) entity)
+//							.getType());
+//				} else {
+//					storedEntities.add(ClassUtils.getShortClassName(entity
+//							.getClass().getCanonicalName()));
+//				}
+//			}
+//		}
+//		return storedEntities;
+//	}
+//
+//	/**
+//	 * Return all stored function class names. In case of OtherFunction, store
+//	 * the otherFunction type
+//	 *
+//	 * @param sample
+//	 * @return
+//	 */
+//	public SortedSet<String> getStoredFunctionClassNames(Sample sample) {
+//		SortedSet<String> storedFunctions = new TreeSet<String>();
+//
+//		if (sample.getSampleComposition() != null) {
+//			if (sample.getSampleComposition().getNanomaterialEntityCollection() != null) {
+//				for (NanomaterialEntity entity : sample.getSampleComposition()
+//						.getNanomaterialEntityCollection()) {
+//					if (entity.getComposingElementCollection() != null) {
+//						for (ComposingElement element : entity
+//								.getComposingElementCollection()) {
+//							if (element.getInherentFunctionCollection() != null) {
+//								for (Function function : element
+//										.getInherentFunctionCollection()) {
+//									if (function instanceof OtherFunction) {
+//										storedFunctions
+//												.add(((OtherFunction) function)
+//														.getType());
+//									} else {
+//										storedFunctions.add(ClassUtils
+//												.getShortClassName(function
+//														.getClass()
+//														.getCanonicalName()));
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//			if (sample.getSampleComposition()
+//					.getFunctionalizingEntityCollection() != null) {
+//				for (FunctionalizingEntity entity : sample
+//						.getSampleComposition()
+//						.getFunctionalizingEntityCollection()) {
+//					if (entity.getFunctionCollection() != null) {
+//						for (Function function : entity.getFunctionCollection()) {
+//							if (function instanceof OtherFunction) {
+//								storedFunctions.add(((OtherFunction) function)
+//										.getType());
+//							} else {
+//								storedFunctions.add(ClassUtils
+//										.getShortClassName(function.getClass()
+//												.getCanonicalName()));
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return storedFunctions;
+//	}
+//
+//	/**
+//	 * Return all stored nanomaterial entity class names. In case of
+//	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
+//	 *
+//	 * @param sample
+//	 * @return
+//	 */
+//	public SortedSet<String> getStoredNanomaterialEntityClassNames(Sample sample) {
+//		SortedSet<String> storedEntities = new TreeSet<String>();
+//
+//		if (sample.getSampleComposition() != null
+//				&& sample.getSampleComposition()
+//						.getNanomaterialEntityCollection() != null) {
+//			for (NanomaterialEntity entity : sample.getSampleComposition()
+//					.getNanomaterialEntityCollection()) {
+//				if (entity instanceof OtherNanomaterialEntity) {
+//					storedEntities.add(((OtherNanomaterialEntity) entity)
+//							.getType());
+//				} else {
+//					storedEntities.add(ClassUtils.getShortClassName(entity
+//							.getClass().getCanonicalName()));
+//				}
+//			}
+//		}
+//		return storedEntities;
+//	}
+//
+//	public SortedSet<String> getStoredChemicalAssociationClassNames(
+//			Sample sample) {
+//		SortedSet<String> storedAssocs = new TreeSet<String>();
+//		if (sample.getSampleComposition() != null
+//				&& sample.getSampleComposition()
+//						.getChemicalAssociationCollection() != null) {
+//			for (ChemicalAssociation assoc : sample.getSampleComposition()
+//					.getChemicalAssociationCollection()) {
+//				if (assoc instanceof OtherChemicalAssociation) {
+//					storedAssocs.add(((OtherChemicalAssociation) assoc)
+//							.getType());
+//				} else {
+//					storedAssocs.add(ClassUtils.getShortClassName(assoc
+//							.getClass().getCanonicalName()));
+//				}
+//			}
+//		}
+//		return storedAssocs;
+//	}
+//
+//	public SortedSet<String> getStoredCharacterizationClassNames(Sample sample) {
+//		SortedSet<String> storedChars = new TreeSet<String>();
+//		if (sample.getCharacterizationCollection() != null) {
+//			for (Characterization achar : sample
+//					.getCharacterizationCollection()) {
+//				if (achar instanceof OtherCharacterization) {
+//					storedChars.add(((OtherCharacterization) achar).getName());
+//				} else {
+//					storedChars.add(ClassUtils.getShortClassName(achar
+//							.getClass().getCanonicalName()));
+//				}
+//			}
+//		}
+//		return storedChars;
+//	}
 
 	public Sample findSampleByName(String sampleName, UserBean user)
 			throws Exception {
@@ -897,32 +891,32 @@ public class SampleServiceHelper {
 		return publicNames.size();
 	}
 
-	public String[] getSampleViewStrs(Sample sample) {
-		List<String> columns = new ArrayList<String>(7);
-		columns.clear();
-		columns.add(sample.getId().toString());
-		columns.add(sample.getName());
-		PointOfContactBean primaryPOC = new PointOfContactBean(sample
-				.getPrimaryPointOfContact());
-		columns.add(primaryPOC.getDomain().getFirstName());
-		columns.add(primaryPOC.getDomain().getLastName());
-		columns.add(primaryPOC.getDomain().getOrganization().getName());
-		columns.add(StringUtils.join(
-				getStoredNanomaterialEntityClassNames(sample),
-				Constants.VIEW_CLASSNAME_DELIMITER));
-		columns.add(StringUtils.join(
-				getStoredFunctionalizingEntityClassNames(sample),
-				Constants.VIEW_CLASSNAME_DELIMITER));
-		columns.add(StringUtils.join(getStoredFunctionClassNames(sample),
-				Constants.VIEW_CLASSNAME_DELIMITER));
-		columns.add(StringUtils.join(
-				getStoredChemicalAssociationClassNames(sample),
-				Constants.VIEW_CLASSNAME_DELIMITER));
-		columns.add(StringUtils.join(
-				getStoredCharacterizationClassNames(sample),
-				Constants.VIEW_CLASSNAME_DELIMITER));
-		return columns.toArray(new String[0]);
-	}
+//	public String[] getSampleViewStrs(Sample sample) {
+//		List<String> columns = new ArrayList<String>(7);
+//		columns.clear();
+//		columns.add(sample.getId().toString());
+//		columns.add(sample.getName());
+//		PointOfContactBean primaryPOC = new PointOfContactBean(sample
+//				.getPrimaryPointOfContact());
+//		columns.add(primaryPOC.getDomain().getFirstName());
+//		columns.add(primaryPOC.getDomain().getLastName());
+//		columns.add(primaryPOC.getDomain().getOrganization().getName());
+//		columns.add(StringUtils.join(
+//				getStoredNanomaterialEntityClassNames(sample),
+//				Constants.VIEW_CLASSNAME_DELIMITER));
+//		columns.add(StringUtils.join(
+//				getStoredFunctionalizingEntityClassNames(sample),
+//				Constants.VIEW_CLASSNAME_DELIMITER));
+//		columns.add(StringUtils.join(getStoredFunctionClassNames(sample),
+//				Constants.VIEW_CLASSNAME_DELIMITER));
+//		columns.add(StringUtils.join(
+//				getStoredChemicalAssociationClassNames(sample),
+//				Constants.VIEW_CLASSNAME_DELIMITER));
+//		columns.add(StringUtils.join(
+//				getStoredCharacterizationClassNames(sample),
+//				Constants.VIEW_CLASSNAME_DELIMITER));
+//		return columns.toArray(new String[0]);
+//	}
 
 	public AuthorizationService getAuthService() {
 		return authService;

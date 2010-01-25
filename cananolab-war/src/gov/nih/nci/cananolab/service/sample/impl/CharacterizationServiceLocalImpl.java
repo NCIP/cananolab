@@ -1,35 +1,26 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
-import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
-import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.dto.common.DataConditionMatrixBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
-import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -137,27 +128,27 @@ public class CharacterizationServiceLocalImpl implements
 			// sample
 			// .setCharacterizationCollection(new HashSet<Characterization>());
 			// }
-			achar.setSample(sample);
-			// sample.getCharacterizationCollection().add(achar);
-
-			// save file data to file system and assign visibility
-			List<FindingBean> findingBeans = charBean.getFindings();
-			if (findingBeans != null && !findingBeans.isEmpty()) {
-				FileService fileService = new FileServiceLocalImpl();
-				for (FindingBean findingBean : findingBeans) {
-					for (FileBean fileBean : findingBean.getFiles()) {
-						fileService.prepareSaveFile(fileBean.getDomainFile(),
-								user);
-						fileService.writeFile(fileBean, user);
-					}
-				}
-			}
+//			achar.setSample(sample);
+//			// sample.getCharacterizationCollection().add(achar);
+//
+//			// save file data to file system and assign visibility
+//			List<CharacterizationResultBean> characterizationResultBeans = charBean.getFindings();
+//			if (characterizationResultBeans != null && !characterizationResultBeans.isEmpty()) {
+//				FileService fileService = new FileServiceLocalImpl();
+//				for (CharacterizationResultBean characterizationResultBean : characterizationResultBeans) {
+//					for (FileBean fileBean : characterizationResultBean.getFiles()) {
+//						fileService.prepareSaveFile(fileBean.getDomainFile(),
+//								user);
+//						fileService.writeFile(fileBean, user);
+//					}
+//				}
+//			}
 			appService.saveOrUpdate(achar);
 
 			// set visibility
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
 			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName();
+					.getOrganization().getAbbreviatedName();
 			helper.assignVisibility(charBean.getDomainChar(), visibleGroups,
 					owningGroup);
 		} catch (Exception e) {
@@ -206,20 +197,20 @@ public class CharacterizationServiceLocalImpl implements
 
 			List result = appService.query(crit);
 			CharacterizationBean charBean = null;
-			if (!result.isEmpty()) {
-				achar = (Characterization) result.get(0);
-				if (helper.getAuthService().checkReadPermission(user,
-						achar.getId().toString())) {
-					charBean = new CharacterizationBean(achar);
-					for (FindingBean finding : charBean.getFindings()) {
-						fileHelper.checkReadPermissionAndRetrieveVisibility(
-								finding.getFiles(), user);
-					}
-				} else {
-					throw new NoAccessException(
-							"User doesn't have access to the sample");
-				}
-			}
+//			if (!result.isEmpty()) {
+//				achar = (Characterization) result.get(0);
+//				if (helper.getAuthService().checkReadPermission(user,
+//						achar.getId().toString())) {
+//					charBean = new CharacterizationBean(achar);
+//					for (CharacterizationResultBean finding : charBean.getFindings()) {
+//						fileHelper.checkReadPermissionAndRetrieveVisibility(
+//								finding.getFiles(), user);
+//					}
+//				} else {
+//					throw new NoAccessException(
+//							"User doesn't have access to the sample");
+//				}
+//			}
 			return charBean;
 		} catch (NoAccessException e) {
 			throw e;
@@ -332,10 +323,10 @@ public class CharacterizationServiceLocalImpl implements
 					}
 					CharacterizationBean charBean = new CharacterizationBean(
 							achar);
-					for (FindingBean finding : charBean.getFindings()) {
-						fileHelper.checkReadPermissionAndRetrieveVisibility(
-								finding.getFiles(), user);
-					}
+//					for (CharacterizationResultBean finding : charBean.getFindings()) {
+//						fileHelper.checkReadPermissionAndRetrieveVisibility(
+//								finding.getFiles(), user);
+//					}
 					chars.add(charBean);
 				}
 			}
@@ -348,74 +339,74 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public FindingBean findFindingById(String findingId, UserBean user)
-			throws CharacterizationException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Finding.class)
-					.add(Property.forName("id").eq(new Long(findingId)));
-			crit.setFetchMode("datumCollection", FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.conditionCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			List result = appService.query(crit);
-			Finding finding = null;
-			FindingBean findingBean = null;
-			if (!result.isEmpty()) {
-				finding = (Finding) result.get(0);
-				findingBean = new FindingBean(finding);
-			}
-			return findingBean;
-		} catch (Exception e) {
-			String err = "Error getting finding of ID " + findingId;
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-		}
-	}
-
-	public void saveFinding(FindingBean finding, UserBean user)
-			throws CharacterizationException, NoAccessException {
-		if (user == null || !user.isCurator()) {
-			throw new NoAccessException();
-		}
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
-			FileService fileService = new FileServiceLocalImpl();
-			for (FileBean fileBean : finding.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
-			}
-			appService.saveOrUpdate(finding.getDomain());
-			// save file data to file system and assign visibility
-			for (FileBean fileBean : finding.getFiles()) {
-				fileService.writeFile(fileBean, user);
-			}
-			// visibility assignment is handled by saving characterization
-		} catch (Exception e) {
-			String err = "Error saving characterization result finding. ";
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-		}
-	}
-
-	public void deleteFinding(Finding finding, UserBean user)
-			throws CharacterizationException, NoAccessException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			helper.removeVisibility(finding);
-			appService.delete(finding);
-
-		} catch (Exception e) {
-			String err = "Error deleting finding " + finding.getId();
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-		}
-	}
+//	public CharacterizationResultBean findFindingById(String findingId, UserBean user)
+//			throws CharacterizationException {
+//		try {
+//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//					.getApplicationService();
+//			DetachedCriteria crit = DetachedCriteria.forClass(Finding.class)
+//					.add(Property.forName("id").eq(new Long(findingId)));
+//			crit.setFetchMode("datumCollection", FetchMode.JOIN);
+//			crit.setFetchMode("datumCollection.conditionCollection",
+//					FetchMode.JOIN);
+//			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+//			crit.setFetchMode("fileCollection.keywordCollection",
+//					FetchMode.JOIN);
+//			List result = appService.query(crit);
+//			Finding finding = null;
+//			CharacterizationResultBean characterizationResultBean = null;
+//			if (!result.isEmpty()) {
+//				finding = (Finding) result.get(0);
+//				characterizationResultBean = new CharacterizationResultBean(finding);
+//			}
+//			return characterizationResultBean;
+//		} catch (Exception e) {
+//			String err = "Error getting finding of ID " + findingId;
+//			logger.error(err, e);
+//			throw new CharacterizationException(err, e);
+//		}
+//	}
+//
+//	public void saveFinding(CharacterizationResultBean finding, UserBean user)
+//			throws CharacterizationException, NoAccessException {
+//		if (user == null || !user.isCurator()) {
+//			throw new NoAccessException();
+//		}
+//		try {
+//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//					.getApplicationService();
+//
+//			FileService fileService = new FileServiceLocalImpl();
+//			for (FileBean fileBean : finding.getFiles()) {
+//				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+//			}
+//			appService.saveOrUpdate(finding.getDomain());
+//			// save file data to file system and assign visibility
+//			for (FileBean fileBean : finding.getFiles()) {
+//				fileService.writeFile(fileBean, user);
+//			}
+//			// visibility assignment is handled by saving characterization
+//		} catch (Exception e) {
+//			String err = "Error saving characterization result finding. ";
+//			logger.error(err, e);
+//			throw new CharacterizationException(err, e);
+//		}
+//	}
+//
+//	public void deleteFinding(Finding finding, UserBean user)
+//			throws CharacterizationException, NoAccessException {
+//		try {
+//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//					.getApplicationService();
+//			helper.removeVisibility(finding);
+//			appService.delete(finding);
+//
+//		} catch (Exception e) {
+//			String err = "Error deleting finding " + finding.getId();
+//			logger.error(err, e);
+//			throw new CharacterizationException(err, e);
+//		}
+//	}
 
 	public void saveExperimentConfig(ExperimentConfigBean configBean,
 			UserBean user) throws ExperimentConfigException, NoAccessException {
@@ -603,13 +594,13 @@ public class CharacterizationServiceLocalImpl implements
 				CharacterizationBean copyBean = new CharacterizationBean(copy);
 				try {
 					// copy file visibility
-					for (FindingBean findingBean : copyBean.getFindings()) {
-						for (FileBean fileBean : findingBean.getFiles()) {
-							fileHelper
-									.retrieveVisibilityAndContentForCopiedFile(
-											fileBean, user);
-						}
-					}
+//					for (CharacterizationResultBean characterizationResultBean : copyBean.getFindings()) {
+//						for (FileBean fileBean : characterizationResultBean.getFiles()) {
+//							fileHelper
+//									.retrieveVisibilityAndContentForCopiedFile(
+//											fileBean, user);
+//						}
+//					}
 				} catch (Exception e) {
 					String error = "Error setting visibility of the copy.";
 					throw new CharacterizationException(error, e);
@@ -625,22 +616,22 @@ public class CharacterizationServiceLocalImpl implements
 						this.saveExperimentConfig(configBean, user);
 					}
 				}
-				List<FindingBean> findings = copyBean.getFindings();
-				// replace file URI with new sample name
-				if (findings != null && !findings.isEmpty()) {
-					for (FindingBean findingBean : findings) {
-						for (FileBean fileBean : findingBean.getFiles()) {
-							String newUri = fileBean
-									.getDomainFile()
-									.getUri()
-									.replace(
-											oldSampleBean.getDomain().getName(),
-											sampleBean.getDomain().getName());
-							fileBean.getDomainFile().setUri(newUri);
-						}
-						this.saveFinding(findingBean, user);
-					}
-				}
+//				List<CharacterizationResultBean> findings = copyBean.getFindings();
+//				// replace file URI with new sample name
+//				if (findings != null && !findings.isEmpty()) {
+//					for (CharacterizationResultBean characterizationResultBean : findings) {
+//						for (FileBean fileBean : characterizationResultBean.getFiles()) {
+//							String newUri = fileBean
+//									.getDomainFile()
+//									.getUri()
+//									.replace(
+//											oldSampleBean.getDomain().getName(),
+//											sampleBean.getDomain().getName());
+//							fileBean.getDomainFile().setUri(newUri);
+//						}
+//						this.saveFinding(characterizationResultBean, user);
+//					}
+//				}
 				this.saveCharacterization(sampleBean, copyBean, user);
 			}
 		} catch (NoAccessException e) {
@@ -725,8 +716,8 @@ public class CharacterizationServiceLocalImpl implements
 					rowIndex = outputProperties(charBean, sheet, headerStyle,
 							rowIndex);
 					// 7. Output Design Description at (7, 0).
-					rowIndex = outputDesignDescription(charBean, sheet,
-							headerStyle, rowIndex);
+//					rowIndex = outputDesignDescription(charBean, sheet,
+//							headerStyle, rowIndex);
 					// 8. Output Technique and Instruments at (8, 0).
 					rowIndex = outputTechInstruments(charBean, sheet,
 							headerStyle, rowIndex);
@@ -780,14 +771,14 @@ public class CharacterizationServiceLocalImpl implements
 				.getDomainChar();
 		// 3. Output Assay Type (2, 0).
 		StringBuilder sb = new StringBuilder();
-		if (StringUtils.isEmpty(charactization.getAssayType())) {
-			if (Constants.PHYSICOCHEMICAL_CHARACTERIZATION.equals(charBean
-					.getCharacterizationType())) {
-				sb.append(charBean.getCharacterizationName());
-			}
-		} else {
-			sb.append(charactization.getAssayType());
-		}
+//		if (StringUtils.isEmpty(charactization.getAssayType())) {
+//			if (Constants.PHYSICOCHEMICAL_CHARACTERIZATION.equals(charBean
+//					.getCharacterizationType())) {
+//				sb.append(charBean.getCharacterizationName());
+//			}
+//		} else {
+//			sb.append(charactization.getAssayType());
+//		}
 		if (sb.length() > 0) {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, ASSAY_TYPE);
@@ -829,25 +820,25 @@ public class CharacterizationServiceLocalImpl implements
 			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
 			HSSFPatriarch patriarch, int rowIndex) throws IOException {
 		// 9. Output Characterization Results at (8, 0).
-		List<FindingBean> findings = charBean.getFindings();
-		if (findings != null && !findings.isEmpty()) {
-			int count = 1;
-			for (FindingBean findingBean : findings) {
-				rowIndex++; // Create one empty line as separator.
-				HSSFRow row = sheet.createRow(rowIndex++);
-				ExportUtils
-						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
-	
-				// 9a. Output Characterization Datum Results.
-				rowIndex = outputDatumResult(findingBean, sheet, headerStyle,
-						rowIndex);
-	
-				// 9b. Output Characterization File Results.
-				rowIndex = outputFileResult(findingBean, downloadURL, wb,
-						sheet, headerStyle, hlinkStyle, patriarch, rowIndex);
-				count++;
-			}
-		}
+//		List<CharacterizationResultBean> findings = charBean.getFindings();
+//		if (findings != null && !findings.isEmpty()) {
+//			int count = 1;
+//			for (CharacterizationResultBean characterizationResultBean : findings) {
+//				rowIndex++; // Create one empty line as separator.
+//				HSSFRow row = sheet.createRow(rowIndex++);
+//				ExportUtils
+//						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
+//	
+//				// 9a. Output Characterization Datum Results.
+//				rowIndex = outputDatumResult(characterizationResultBean, sheet, headerStyle,
+//						rowIndex);
+//	
+//				// 9b. Output Characterization File Results.
+//				rowIndex = outputFileResult(characterizationResultBean, downloadURL, wb,
+//						sheet, headerStyle, hlinkStyle, patriarch, rowIndex);
+//				count++;
+//			}
+//		}
 		return rowIndex;
 	}
 
@@ -862,11 +853,11 @@ public class CharacterizationServiceLocalImpl implements
 	private static int outputConclusion(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 9. Output Analysis and Conclusion at last.
-		if (!StringUtils.isEmpty(charBean.getConclusion())) {
-			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle, ANALYSIS_CONCLUSION);
-			ExportUtils.createCell(row, 1, charBean.getConclusion());
-		}
+//		if (!StringUtils.isEmpty(charBean.getConclusion())) {
+//			HSSFRow row = sheet.createRow(rowIndex++);
+//			ExportUtils.createCell(row, 0, headerStyle, ANALYSIS_CONCLUSION);
+//			ExportUtils.createCell(row, 1, charBean.getConclusion());
+//		}
 		return rowIndex;
 	}
 
@@ -899,36 +890,36 @@ public class CharacterizationServiceLocalImpl implements
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputDatumResult(FindingBean findingBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
-		// Get list of Rows from findingBean.
-		List<Row> rows = findingBean.getRows();
-		if (rows != null && !rows.isEmpty()) {
-			// Output general header "Data and Conditions".
-			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle, DATA_CONDITIONS);
-	
-			// Output header of each column.
-			int cellIndex = 0;
-			row = sheet.createRow(rowIndex++);
-			for (ColumnHeader column : findingBean.getColumnHeaders()) {
-				String displayName = column.getDisplayName().replaceAll("<br>",
-						" ");
-				ExportUtils.createCell(row, cellIndex++, headerStyle,
-						displayName);
-			}
-			// Output value of each row.
-			for (Row rowBean : rows) {
-				cellIndex = 0;
-				row = sheet.createRow(rowIndex++);
-				for (TableCell cell : rowBean.getCells()) {
-					ExportUtils.createCell(row, cellIndex++, cell.getValue());
-				}
-			}
-		}
-		return rowIndex;
-	}
+//	private static int outputDatumResult(CharacterizationResultBean characterizationResultBean,
+//			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+//	
+//		// Get list of Rows from findingBean.
+//		List<Row> rows = characterizationResultBean.getRows();
+//		if (rows != null && !rows.isEmpty()) {
+//			// Output general header "Data and Conditions".
+//			HSSFRow row = sheet.createRow(rowIndex++);
+//			ExportUtils.createCell(row, 0, headerStyle, DATA_CONDITIONS);
+//	
+//			// Output header of each column.
+//			int cellIndex = 0;
+//			row = sheet.createRow(rowIndex++);
+//			for (ColumnHeader column : characterizationResultBean.getColumnHeaders()) {
+//				String displayName = column.getDisplayName().replaceAll("<br>",
+//						" ");
+//				ExportUtils.createCell(row, cellIndex++, headerStyle,
+//						displayName);
+//			}
+//			// Output value of each row.
+//			for (Row rowBean : rows) {
+//				cellIndex = 0;
+//				row = sheet.createRow(rowIndex++);
+//				for (TableCell cell : rowBean.getCells()) {
+//					ExportUtils.createCell(row, cellIndex++, cell.getValue());
+//				}
+//			}
+//		}
+//		return rowIndex;
+//	}
 
 	/**
 	 * Output Design Description for work sheet.
@@ -938,20 +929,20 @@ public class CharacterizationServiceLocalImpl implements
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputDesignDescription(CharacterizationBean charBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-		Characterization charactization = (Characterization) charBean
-				.getDomainChar();
-	
-		// 7. Output Design Description at (6, 0).
-		if (!StringUtils.isEmpty(charactization.getDesignMethodsDescription())) {
-			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle, DESIGN_DESCRIPTION);
-			ExportUtils.createCell(row, 1, charactization
-					.getDesignMethodsDescription());
-		}
-		return rowIndex;
-	}
+//	private static int outputDesignDescription(CharacterizationBean charBean,
+//			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+//		Characterization charactization = (Characterization) charBean
+//				.getDomainChar();
+//	
+//		// 7. Output Design Description at (6, 0).
+//		if (!StringUtils.isEmpty(charactization.getDesignMethodsDescription())) {
+//			HSSFRow row = sheet.createRow(rowIndex++);
+//			ExportUtils.createCell(row, 0, headerStyle, DESIGN_DESCRIPTION);
+//			ExportUtils.createCell(row, 1, charactization
+//					.getDesignMethodsDescription());
+//		}
+//		return rowIndex;
+//	}
 
 	/**
 	 * Output EnzymeInduction Info, => bodyEnzymeInductionInfo.jsp
@@ -977,7 +968,7 @@ public class CharacterizationServiceLocalImpl implements
 	/**
 	 * Output Files Results for report (=> bodyFindingView.jsp).
 	 *
-	 * @param findingBean
+	 * @param characterizationResultBean
 	 * @param request
 	 * @param wb
 	 * @param sheet
@@ -985,98 +976,98 @@ public class CharacterizationServiceLocalImpl implements
 	 * @param rowIndex
 	 * @throws IOException
 	 */
-	private static int outputFileResult(FindingBean findingBean,
-			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
-			HSSFPatriarch patriarch, int rowIndex) throws IOException {
-		// Get list of FileBeans from findingBean.
-		List<FileBean> files = findingBean.getFiles();
-		if (files != null && !files.isEmpty()) {
-			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle, FILES);
-			for (FileBean fileBean : files) {
-				row = sheet.createRow(rowIndex++);
-				File file = fileBean.getDomainFile();
-	
-				// output 4x) titles for File.
-				ExportUtils.createCell(row, 0, headerStyle, "File Type");
-				ExportUtils.createCell(row, 1, headerStyle,
-						"Title and Download Link");
-				ExportUtils.createCell(row, 2, headerStyle, "Keywords");
-				ExportUtils.createCell(row, 3, headerStyle, "Description");
-	
-				// 1. output File Type.
-				row = sheet.createRow(rowIndex++);
-				ExportUtils.createCell(row, 0, file.getType());
-	
-				// 2. output Title and Download Link.
-				StringBuilder sb = new StringBuilder(downloadURL);
-				sb.append(file.getId());
-				if (file.getUriExternal()) {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
-							sb.toString());
-				} else if (fileBean.isImage()) {
-					ExportUtils.createCell(row, 1, file.getTitle());
-					sb.setLength(0);
-					sb.append(fileRoot).append(java.io.File.separator);
-					sb.append(file.getUri());
-					String filePath = sb.toString();
-					java.io.File imgFile = new java.io.File(filePath);
-					if (imgFile.exists()) {
-						try {
-							rowIndex = ExportUtils.createImage(rowIndex,
-									(short) 1, filePath, wb, sheet, patriarch);
-						} catch (Exception e) {
-							logger.error("Error exporting Char image file.", e);
-						}
-					} else {
-						logger.error("Characterization image file not exists: "
-								+ filePath);
-					}
-				} else {
-					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
-							sb.toString());
-				}
-	
-				// 3. output Keywords.
-				Collection<Keyword> keywords = file.getKeywordCollection();
-				if (keywords != null && !keywords.isEmpty()) {
-					sb.setLength(0);
-					for (Keyword keyword : keywords) {
-						sb.append(',').append(' ').append(keyword.getName());
-					}
-					ExportUtils.createCell(row, 2, sb.substring(2));
-				}
-	
-				// 4. output Description.
-				if (!StringUtils.isEmpty(file.getDescription())) {
-					ExportUtils.createCell(row, 3, file.getDescription());
-				}
-			}
-		}
-		return rowIndex;
-	}
-
-	/**
-	 * Output PhysicalState Info for work sheet.
-	 *
-	 * @param charBean
-	 * @param sheet
-	 * @param headerStyle
-	 * @param rowIndex
-	 */
-	private static int outputPhysicalState(CharacterizationBean charBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-		// 7c. Output PhysicalState Info.
-		if (!StringUtils.isEmpty(charBean.getPhysicalState().getType())) {
-			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle, TYPE);
-			row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, charBean.getPhysicalState()
-					.getType());
-		}
-		return rowIndex;
-	}
+//	private static int outputFileResult(CharacterizationResultBean characterizationResultBean,
+//			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
+//			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
+//			HSSFPatriarch patriarch, int rowIndex) throws IOException {
+//		// Get list of FileBeans from findingBean.
+//		List<FileBean> files = characterizationResultBean.getFiles();
+//		if (files != null && !files.isEmpty()) {
+//			HSSFRow row = sheet.createRow(rowIndex++);
+//			ExportUtils.createCell(row, 0, headerStyle, FILES);
+//			for (FileBean fileBean : files) {
+//				row = sheet.createRow(rowIndex++);
+//				File file = fileBean.getDomainFile();
+//	
+//				// output 4x) titles for File.
+//				ExportUtils.createCell(row, 0, headerStyle, "File Type");
+//				ExportUtils.createCell(row, 1, headerStyle,
+//						"Title and Download Link");
+//				ExportUtils.createCell(row, 2, headerStyle, "Keywords");
+//				ExportUtils.createCell(row, 3, headerStyle, "Description");
+//	
+//				// 1. output File Type.
+//				row = sheet.createRow(rowIndex++);
+//				ExportUtils.createCell(row, 0, file.getType());
+//	
+//				// 2. output Title and Download Link.
+//				StringBuilder sb = new StringBuilder(downloadURL);
+//				sb.append(file.getId());
+//				if (file.getUriExternal()) {
+//					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
+//							sb.toString());
+//				} else if (fileBean.isImage()) {
+//					ExportUtils.createCell(row, 1, file.getTitle());
+//					sb.setLength(0);
+//					sb.append(fileRoot).append(java.io.File.separator);
+//					sb.append(file.getUri());
+//					String filePath = sb.toString();
+//					java.io.File imgFile = new java.io.File(filePath);
+//					if (imgFile.exists()) {
+//						try {
+//							rowIndex = ExportUtils.createImage(rowIndex,
+//									(short) 1, filePath, wb, sheet, patriarch);
+//						} catch (Exception e) {
+//							logger.error("Error exporting Char image file.", e);
+//						}
+//					} else {
+//						logger.error("Characterization image file not exists: "
+//								+ filePath);
+//					}
+//				} else {
+//					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
+//							sb.toString());
+//				}
+//	
+//				// 3. output Keywords.
+//				Collection<Keyword> keywords = file.getKeywordCollection();
+//				if (keywords != null && !keywords.isEmpty()) {
+//					sb.setLength(0);
+//					for (Keyword keyword : keywords) {
+//						sb.append(',').append(' ').append(keyword.getName());
+//					}
+//					ExportUtils.createCell(row, 2, sb.substring(2));
+//				}
+//	
+//				// 4. output Description.
+//				if (!StringUtils.isEmpty(file.getDescription())) {
+//					ExportUtils.createCell(row, 3, file.getDescription());
+//				}
+//			}
+//		}
+//		return rowIndex;
+//	}
+//
+//	/**
+//	 * Output PhysicalState Info for work sheet.
+//	 *
+//	 * @param charBean
+//	 * @param sheet
+//	 * @param headerStyle
+//	 * @param rowIndex
+//	 */
+//	private static int outputPhysicalState(CharacterizationBean charBean,
+//			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+//		// 7c. Output PhysicalState Info.
+//		if (!StringUtils.isEmpty(charBean.getPhysicalState().getType())) {
+//			HSSFRow row = sheet.createRow(rowIndex++);
+//			ExportUtils.createCell(row, 0, headerStyle, TYPE);
+//			row = sheet.createRow(rowIndex++);
+//			ExportUtils.createCell(row, 0, charBean.getPhysicalState()
+//					.getType());
+//		}
+//		return rowIndex;
+//	}
 
 	/**
 	 * Output POC for work sheet.
@@ -1120,9 +1111,9 @@ public class CharacterizationServiceLocalImpl implements
 			} else if (domainChar instanceof EnzymeInduction) {
 				rowIndex = outputEnzymeInduction(charBean, sheet, headerStyle,
 						rowIndex);
-			} else if (domainChar instanceof PhysicalState) {
-				rowIndex = outputPhysicalState(charBean, sheet, headerStyle,
-						rowIndex);
+//			} else if (domainChar instanceof PhysicalState) {
+//				rowIndex = outputPhysicalState(charBean, sheet, headerStyle,
+//						rowIndex);
 			} else if (domainChar instanceof Shape) {
 				rowIndex = outputShape(charBean, sheet, headerStyle, rowIndex);
 			} else if (domainChar instanceof Solubility) {
@@ -1290,5 +1281,23 @@ public class CharacterizationServiceLocalImpl implements
 			}
 		}
 		return rowIndex;
+	}
+
+	public void deleteFile(FileBean fileBean, UserBean user)
+			throws CharacterizationException, NoAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void saveDataConditionMatrix(DataConditionMatrixBean matrix,
+			UserBean user) throws CharacterizationException, NoAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void saveFile(FileBean fileBean, UserBean user)
+			throws CharacterizationException, NoAccessException {
+		// TODO Auto-generated method stub
+		
 	}
 }
