@@ -1,13 +1,13 @@
 package gov.nih.nci.cananolab.service.sample;
 
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
-import gov.nih.nci.cananolab.domain.common.Finding;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.common.DataConditionMatrixBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -16,9 +16,9 @@ import java.util.List;
 
 /**
  * Interface defining service methods involving characterizations
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public interface CharacterizationService {
 
@@ -35,13 +35,13 @@ public interface CharacterizationService {
 			String sampleId, UserBean user) throws CharacterizationException,
 			NoAccessException;
 
-	public void saveFinding(FindingBean findingBean, UserBean user)
+	public void saveDataConditionMatrix(DataConditionMatrixBean matrix,
+			UserBean user) throws CharacterizationException, NoAccessException;
+
+	public void saveFile(FileBean fileBean, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
-	public FindingBean findFindingById(String findingId, UserBean user)
-			throws CharacterizationException, NoAccessException;
-
-	public void deleteFinding(Finding finding, UserBean user)
+	public void deleteFile(FileBean fileBean, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
 	public void saveExperimentConfig(ExperimentConfigBean experimentConfigBean,
@@ -52,7 +52,7 @@ public interface CharacterizationService {
 
 	/**
 	 * Copy and save a characterization from one sample to other samples
-	 *
+	 * 
 	 * @param charBean
 	 * @param oldSampleBean
 	 * @param newSampleBeans
