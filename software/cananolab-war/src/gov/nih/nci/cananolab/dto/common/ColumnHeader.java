@@ -23,7 +23,7 @@ public class ColumnHeader {
 		this.columnName = datum.getName();
 		this.valueType = datum.getValueType();
 		this.valueUnit = datum.getValueUnit();
-		this.columnType = FindingBean.DATUM_TYPE;
+//		this.columnType = CharacterizationResultBean.DATUM_TYPE;
 	}
 
 	public ColumnHeader(Condition condition) {
@@ -31,7 +31,7 @@ public class ColumnHeader {
 		this.conditionProperty = condition.getProperty();
 		this.valueType = condition.getValueType();
 		this.valueUnit = condition.getValueUnit();
-		this.columnType = FindingBean.CONDITION_TYPE;
+//		this.columnType = CharacterizationResultBean.CONDITION_TYPE;
 	}
 
 	public ColumnHeader() {
