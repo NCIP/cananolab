@@ -7,8 +7,7 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.service.common.GridService;
 
@@ -37,12 +36,12 @@ public class GridClientTest {
 		results
 				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		NanomaterialEntity nanoEntity = null;
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			nanoEntity = (NanomaterialEntity) obj;
-			System.out.println("nano entity: " + nanoEntity.getDescription());
-		}
+//		NanomaterialEntity nanoEntity = null;
+//		while (iter.hasNext()) {
+//			java.lang.Object obj = iter.next();
+//			nanoEntity = (NanomaterialEntity) obj;
+//			System.out.println("nano entity: " + nanoEntity.getDescription());
+//		}
 	}
 
 	public void testCharacterization() throws Exception {
@@ -64,8 +63,8 @@ public class GridClientTest {
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
 			chara = (Characterization) obj;
-			System.out.println("characterization: "
-					+ chara.getDesignMethodsDescription());
+//			System.out.println("characterization: "
+//					+ chara.getDesignMethodsDescription());
 		}
 	}
 
