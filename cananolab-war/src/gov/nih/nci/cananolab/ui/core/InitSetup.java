@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.dto.common.CompositionBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.GridDownException;
 import gov.nih.nci.cananolab.service.common.GridService;

@@ -1,12 +1,11 @@
 package gov.nih.nci.cananolab.service.common;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.CommonLookup;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.OtherTarget;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
+import gov.nih.nci.cananolab.domain.material.OtherMaterial;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -161,16 +160,12 @@ public class LookupService {
 			for (Object obj : results) {
 				if (obj instanceof OtherFunction) {
 					types.add(((OtherFunction) obj).getType());
-				} else if (obj instanceof OtherNanomaterialEntity) {
-					types.add(((OtherNanomaterialEntity) obj).getType());
-				} else if (obj instanceof OtherNanomaterialEntity) {
-					types.add(((OtherNanomaterialEntity) obj).getType());
-				} else if (obj instanceof OtherFunctionalizingEntity) {
-					types.add(((OtherFunctionalizingEntity) obj).getType());
+				} else if (obj instanceof OtherMaterial) {
+					types.add(((OtherMaterial) obj).getType());
 				} else if (obj instanceof OtherChemicalAssociation) {
 					types.add(((OtherChemicalAssociation) obj).getType());
 				} else if (obj instanceof OtherCharacterization) {
-					types.add(((OtherCharacterization) obj).getAssayCategory());
+					types.add(((OtherCharacterization) obj).getCharacterizationCategory());
 				} else if (obj instanceof OtherFunction) {
 					types.add(((OtherFunction) obj).getType());
 				} else if (obj instanceof OtherTarget) {

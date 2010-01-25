@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;

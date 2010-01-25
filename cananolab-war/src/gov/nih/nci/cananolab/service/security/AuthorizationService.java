@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.security;
 
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
