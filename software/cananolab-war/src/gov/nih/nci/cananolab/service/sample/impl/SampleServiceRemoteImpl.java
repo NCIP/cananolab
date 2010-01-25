@@ -12,12 +12,12 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.search.AdvancedSampleBean;
+import gov.nih.nci.cananolab.dto.search.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
@@ -119,9 +119,9 @@ public class SampleServiceRemoteImpl implements SampleService {
 				loadSamplesAssociations(sample);
 			}
 			SampleBean sampleBean = new SampleBean(sample);
-			if (checkCompositionForSample(sample)) {
-				sampleBean.setHasComposition(true);
-			}
+//			if (checkCompositionForSample(sample)) {
+//				sampleBean.setHasComposition(true);
+//			}
 			if (checkCharacterizationsForSample(sample)) {
 				sampleBean.setHasCharacterizations(true);
 			}
@@ -346,7 +346,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 				Organization org = new Organization();
 				primaryPOC.setFirstName(columns[2]);
 				primaryPOC.setLastName(columns[3]);
-				org.setName(columns[4]);
+//				org.setName(columns[4]);
 				primaryPOC.setOrganization(org);
 				sample.setPrimaryPointOfContact(primaryPOC);
 
