@@ -1,19 +1,16 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Function;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
-import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
-import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
+import gov.nih.nci.cananolab.dto.search.AdvancedSampleBean;
+import gov.nih.nci.cananolab.dto.search.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.search.CharacterizationQueryBean;
+import gov.nih.nci.cananolab.dto.search.CompositionQueryBean;
+import gov.nih.nci.cananolab.dto.search.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -201,20 +198,21 @@ public class AdvancedSampleServiceHelper {
 			sample = (Sample) result.get(0);
 		}
 
-		List<PointOfContact> pocs = findPointOfContactsBy(sample, searchBean);
-		List<Function> functions = findFunctionsBy(sampleName, searchBean);
-		List<NanomaterialEntity> nanoEntities = findNanomaterialEntitiesBy(
-				sampleName, searchBean);
-		List<FunctionalizingEntity> funcEntities = findFunctionalizingEntitiesBy(
-				sampleName, searchBean);
+//		List<PointOfContact> pocs = findPointOfContactsBy(sample, searchBean);
+//		List<Function> functions = findFunctionsBy(sampleName, searchBean);
+//		List<NanomaterialEntity> nanoEntities = findNanomaterialEntitiesBy(
+//				sampleName, searchBean);
+//		List<FunctionalizingEntity> funcEntities = findFunctionalizingEntitiesBy(
+//				sampleName, searchBean);
 		List<Characterization> charas = findCharacterizationsBy(sampleName,
 				searchBean);
-		List<Datum> data = findDataBy(sample, searchBean);
+//		List<Datum> data = findDataBy(sample, searchBean);
 		String sampleId = sample.getId().toString();
-		AdvancedSampleBean advancedSampleBean = new AdvancedSampleBean(
-				sampleName, sampleId, pocs, functions, nanoEntities,
-				funcEntities, charas, data, searchBean, sample);
-		return advancedSampleBean;
+//		AdvancedSampleBean advancedSampleBean = new AdvancedSampleBean(
+//				sampleName, sampleId, pocs, functions, nanoEntities,
+//				funcEntities, charas, data, searchBean, sample);
+//		return advancedSampleBean;
+		return null;
 	}
 
 	private List<Characterization> findCharacterizationsBy(String sampleName,
@@ -271,8 +269,8 @@ public class AdvancedSampleServiceHelper {
 				}
 			}
 		}
-		Collections.sort(chars,
-				new Comparators.CharacterizationNameAssayTypeDateComparator());
+//		Collections.sort(chars,
+//				new Comparators.CharacterizationNameAssayTypeDateComparator());
 		return chars;
 	}
 
@@ -345,294 +343,294 @@ public class AdvancedSampleServiceHelper {
 		return datumCrit;
 	}
 
-	private List<Datum> findDataBy(Sample sample,
-			AdvancedSampleSearchBean searchBean) throws Exception {
-		List<Datum> data = new ArrayList<Datum>();
-		Boolean hasDatum = searchBean.getHasDatum();
-		if (!hasDatum) {
-			return data;
-		}
-		List<Datum> sampleData = new ArrayList<Datum>();
-		for (Characterization achar : sample.getCharacterizationCollection()) {
-			for (Finding finding : achar.getFindingCollection()) {
-				sampleData.addAll(finding.getDatumCollection());
-			}
-		}
-		DetachedCriteria crit = DetachedCriteria.forClass(Datum.class);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		Junction datumJunction = getDatumJunction(searchBean);
-		if (datumJunction != null) {
-			crit.add(datumJunction);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Datum datum = (Datum) obj;
-				if (sampleData.contains(datum)) {
-					data.add(datum);
-				}
-			}
-		} else {
-			// hibernate doesn't support union have to execute the query one at
-			// a time union the result in Java
-			for (CharacterizationQueryBean charQuery : searchBean
-					.getCharacterizationQueries()) {
-				// query for datum only when datum is specified as a search
-				// criterion
-				if (!StringUtils.isEmpty(charQuery.getDatumName())) {
-					crit = DetachedCriteria.forClass(Datum.class, "rootCrit");
-					DetachedCriteria subCrit = getDatumSubquery(charQuery, "id");
-					crit.add(Subqueries.exists(subCrit));
-					crit
-							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-					List results = appService.query(crit);
-					for (Object obj : results) {
-						Datum datum = (Datum) obj;
-						if (sampleData.contains(datum)) {
-							data.add(datum);
-						}
-					}
-				}
-			}
-		}
+//	private List<Datum> findDataBy(Sample sample,
+//			AdvancedSampleSearchBean searchBean) throws Exception {
+//		List<Datum> data = new ArrayList<Datum>();
+//		Boolean hasDatum = searchBean.getHasDatum();
+//		if (!hasDatum) {
+//			return data;
+//		}
+//		List<Datum> sampleData = new ArrayList<Datum>();
+//		for (Characterization achar : sample.getCharacterizationCollection()) {
+//			for (Finding finding : achar.getFindingCollection()) {
+//				sampleData.addAll(finding.getDatumCollection());
+//			}
+//		}
+//		DetachedCriteria crit = DetachedCriteria.forClass(Datum.class);
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		Junction datumJunction = getDatumJunction(searchBean);
+//		if (datumJunction != null) {
+//			crit.add(datumJunction);
+//			crit
+//					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//			List results = appService.query(crit);
+//			for (Object obj : results) {
+//				Datum datum = (Datum) obj;
+//				if (sampleData.contains(datum)) {
+//					data.add(datum);
+//				}
+//			}
+//		} else {
+//			// hibernate doesn't support union have to execute the query one at
+//			// a time union the result in Java
+//			for (CharacterizationQueryBean charQuery : searchBean
+//					.getCharacterizationQueries()) {
+//				// query for datum only when datum is specified as a search
+//				// criterion
+//				if (!StringUtils.isEmpty(charQuery.getDatumName())) {
+//					crit = DetachedCriteria.forClass(Datum.class, "rootCrit");
+//					DetachedCriteria subCrit = getDatumSubquery(charQuery, "id");
+//					crit.add(Subqueries.exists(subCrit));
+//					crit
+//							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//					List results = appService.query(crit);
+//					for (Object obj : results) {
+//						Datum datum = (Datum) obj;
+//						if (sampleData.contains(datum)) {
+//							data.add(datum);
+//						}
+//					}
+//				}
+//			}
+//		}
+//
+//		return data;
+//	}
+//
+//	private List<FunctionalizingEntity> findFunctionalizingEntitiesBy(
+//			String sampleName, AdvancedSampleSearchBean searchBean)
+//			throws Exception {
+//		List<FunctionalizingEntity> entities = new ArrayList<FunctionalizingEntity>();
+//		if (!searchBean.getHasAgentMaterial()) {
+//			return entities;
+//		}
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		DetachedCriteria crit = DetachedCriteria
+//				.forClass(FunctionalizingEntity.class);
+//		Junction junction = getFunctionalizingEntityJunction(searchBean, crit);
+//		if (junction != null) {
+//			crit.createAlias("sampleComposition", "comp",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.createAlias("comp.sample", "sample",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.add(Restrictions.eq("sample.name", sampleName));
+//			crit.add(junction);
+//			crit.setFetchMode("functionCollection", FetchMode.JOIN);
+//			crit.setFetchMode("functionCollection.targetCollection",
+//					FetchMode.JOIN);
+//			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+//			crit.setFetchMode("fileCollection.keywordCollection",
+//					FetchMode.JOIN);
+//			crit
+//					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//			List results = appService.query(crit);
+//			for (Object obj : results) {
+//				FunctionalizingEntity entity = (FunctionalizingEntity) obj;
+//				entities.add(entity);
+//			}
+//		} else if (searchBean.getFuncEntityCount() > 1) {
+//			// Hibernate Criteria API doesn't support union, union in java
+//			for (CompositionQueryBean query : searchBean
+//					.getCompositionQueries()) {
+//				if (query.getCompositionType().equals("functionalizing entity")) {
+//					crit = DetachedCriteria
+//							.forClass(FunctionalizingEntity.class);
+//					crit.createAlias("sampleComposition", "comp",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("comp.sample", "sample",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.add(Restrictions.eq("sample.name", sampleName));
+//					DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
+//							query, "", "id");
+//					crit.add(Subqueries.exists(subCrit));
+//					crit.setFetchMode("functionCollection", FetchMode.JOIN);
+//					crit.setFetchMode("functionCollection.targetCollection",
+//							FetchMode.JOIN);
+//					crit.setFetchMode("fileCollection", FetchMode.JOIN);
+//					crit.setFetchMode("fileCollection.keywordCollection",
+//							FetchMode.JOIN);
+//					crit
+//							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//					List results = appService.query(crit);
+//					for (Object obj : results) {
+//						FunctionalizingEntity entity = (FunctionalizingEntity) obj;
+//						if (!entities.contains(entity)) {
+//							entities.add(entity);
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return entities;
+//	}
 
-		return data;
-	}
+//	private List<Function> findFunctionsBy(String sampleName,
+//			AdvancedSampleSearchBean searchBean) throws Exception {
+//		List<Function> functions = new ArrayList<Function>();
+//		if (!searchBean.getHasFunction()) {
+//			return functions;
+//		}
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		DetachedCriteria crit = DetachedCriteria.forClass(Function.class);
+//		Junction junction = getFunctionJunction(searchBean, crit);
+//		if (junction != null) {
+//			crit.createAlias("composingElement", "ce",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.createAlias("ce.nanomaterialEntity", "nanoEntity",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.createAlias("nanoEntity.sampleComposition", "comp",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.createAlias("comp.sample", "sample",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.createAlias("functionalizingEntity", "funcEntity",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.createAlias("funcEntity.sampleComposition", "comp2",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.createAlias("comp2.sample", "sample2",
+//					CriteriaSpecification.LEFT_JOIN);
+//			crit.add(Restrictions.or(
+//					Restrictions.eq("sample.name", sampleName), Restrictions
+//							.eq("sample2.name", sampleName)));
+//			crit.add(junction);
+//			crit.setFetchMode("targetCollection", FetchMode.JOIN);
+//
+//			List results = appService.query(crit);
+//			for (Object obj : results) {
+//				Function function = (Function) obj;
+//				functions.add(function);
+//			}
+//		} else if (searchBean.getFuncCount() > 1) {
+//			// Hibernate Criteria API doesn't support union, union in java
+//			for (CompositionQueryBean query : searchBean
+//					.getCompositionQueries()) {
+//				if (query.getCompositionType().equals("function")) {
+//					crit = DetachedCriteria.forClass(Function.class);
+//					crit.createAlias("composingElement", "ce",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("ce.nanomaterialEntity", "nanoEntity",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("nanoEntity.sampleComposition", "comp",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("comp.sample", "sample",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("functionalizingEntity", "funcEntity",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("funcEntity.sampleComposition", "comp2",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("comp2.sample", "sample2",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.add(Restrictions.or(Restrictions.eq("sample.name",
+//							sampleName), Restrictions.eq("sample2.name",
+//							sampleName)));
+//					DetachedCriteria subCrit = getFunctionSubquery(query, "",
+//							"", "id");
+//					crit.add(Subqueries.exists(subCrit));
+//					crit.setFetchMode("targetCollection", FetchMode.JOIN);
+//					crit
+//							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//					List results = appService.query(crit);
+//					for (Object obj : results) {
+//						Function function = (Function) obj;
+//						if (!functions.contains(function)) {
+//							functions.add(function);
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return functions;
+//	}
 
-	private List<FunctionalizingEntity> findFunctionalizingEntitiesBy(
-			String sampleName, AdvancedSampleSearchBean searchBean)
-			throws Exception {
-		List<FunctionalizingEntity> entities = new ArrayList<FunctionalizingEntity>();
-		if (!searchBean.getHasAgentMaterial()) {
-			return entities;
-		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(FunctionalizingEntity.class);
-		Junction junction = getFunctionalizingEntityJunction(searchBean, crit);
-		if (junction != null) {
-			crit.createAlias("sampleComposition", "comp",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("comp.sample", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.name", sampleName));
-			crit.add(junction);
-			crit.setFetchMode("functionCollection", FetchMode.JOIN);
-			crit.setFetchMode("functionCollection.targetCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				FunctionalizingEntity entity = (FunctionalizingEntity) obj;
-				entities.add(entity);
-			}
-		} else if (searchBean.getFuncEntityCount() > 1) {
-			// Hibernate Criteria API doesn't support union, union in java
-			for (CompositionQueryBean query : searchBean
-					.getCompositionQueries()) {
-				if (query.getCompositionType().equals("functionalizing entity")) {
-					crit = DetachedCriteria
-							.forClass(FunctionalizingEntity.class);
-					crit.createAlias("sampleComposition", "comp",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("comp.sample", "sample",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.add(Restrictions.eq("sample.name", sampleName));
-					DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
-							query, "", "id");
-					crit.add(Subqueries.exists(subCrit));
-					crit.setFetchMode("functionCollection", FetchMode.JOIN);
-					crit.setFetchMode("functionCollection.targetCollection",
-							FetchMode.JOIN);
-					crit.setFetchMode("fileCollection", FetchMode.JOIN);
-					crit.setFetchMode("fileCollection.keywordCollection",
-							FetchMode.JOIN);
-					crit
-							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-					List results = appService.query(crit);
-					for (Object obj : results) {
-						FunctionalizingEntity entity = (FunctionalizingEntity) obj;
-						if (!entities.contains(entity)) {
-							entities.add(entity);
-						}
-					}
-				}
-			}
-		}
-		return entities;
-	}
-
-	private List<Function> findFunctionsBy(String sampleName,
-			AdvancedSampleSearchBean searchBean) throws Exception {
-		List<Function> functions = new ArrayList<Function>();
-		if (!searchBean.getHasFunction()) {
-			return functions;
-		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Function.class);
-		Junction junction = getFunctionJunction(searchBean, crit);
-		if (junction != null) {
-			crit.createAlias("composingElement", "ce",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("ce.nanomaterialEntity", "nanoEntity",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("nanoEntity.sampleComposition", "comp",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("comp.sample", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("functionalizingEntity", "funcEntity",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("funcEntity.sampleComposition", "comp2",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("comp2.sample", "sample2",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.or(
-					Restrictions.eq("sample.name", sampleName), Restrictions
-							.eq("sample2.name", sampleName)));
-			crit.add(junction);
-			crit.setFetchMode("targetCollection", FetchMode.JOIN);
-
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Function function = (Function) obj;
-				functions.add(function);
-			}
-		} else if (searchBean.getFuncCount() > 1) {
-			// Hibernate Criteria API doesn't support union, union in java
-			for (CompositionQueryBean query : searchBean
-					.getCompositionQueries()) {
-				if (query.getCompositionType().equals("function")) {
-					crit = DetachedCriteria.forClass(Function.class);
-					crit.createAlias("composingElement", "ce",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("ce.nanomaterialEntity", "nanoEntity",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("nanoEntity.sampleComposition", "comp",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("comp.sample", "sample",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("functionalizingEntity", "funcEntity",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("funcEntity.sampleComposition", "comp2",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("comp2.sample", "sample2",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.add(Restrictions.or(Restrictions.eq("sample.name",
-							sampleName), Restrictions.eq("sample2.name",
-							sampleName)));
-					DetachedCriteria subCrit = getFunctionSubquery(query, "",
-							"", "id");
-					crit.add(Subqueries.exists(subCrit));
-					crit.setFetchMode("targetCollection", FetchMode.JOIN);
-					crit
-							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-					List results = appService.query(crit);
-					for (Object obj : results) {
-						Function function = (Function) obj;
-						if (!functions.contains(function)) {
-							functions.add(function);
-						}
-					}
-				}
-			}
-		}
-		return functions;
-	}
-
-	private List<NanomaterialEntity> findNanomaterialEntitiesBy(
-			String sampleName, AdvancedSampleSearchBean searchBean)
-			throws Exception {
-		List<NanomaterialEntity> entities = new ArrayList<NanomaterialEntity>();
-		if (!searchBean.getHasNanomaterial()) {
-			return entities;
-		}
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(NanomaterialEntity.class);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		Junction junction = getNanomaterialEntityJunction(searchBean, crit);
-		if (junction != null) {
-			// join nanomaterialEntity
-			if (searchBean.getHasNanomaterial() && !searchBean.getHasFunction()) {
-				if (searchBean.getHasChemicalName()) {
-					crit.createAlias("composingElementCollection",
-							"compElement", CriteriaSpecification.LEFT_JOIN);
-				}
-			}
-			crit.createAlias("sampleComposition", "comp");
-			crit.createAlias("comp.sample", "sample");
-			crit.add(Restrictions.eq("sample.name", sampleName));
-			crit.add(junction);
-			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
-			crit.setFetchMode(
-					"composingElementCollection.inherentFunctionCollection",
-					FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"composingElementCollection.inherentFunctionCollection.targetCollection",
-							FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				NanomaterialEntity entity = (NanomaterialEntity) obj;
-				entities.add(entity);
-			}
-		} else if (searchBean.getNanoEntityCount() > 1) {
-			// Hibernate Criteria API doesn't support union, union in java
-			for (CompositionQueryBean query : searchBean
-					.getCompositionQueries()) {
-				if (query.getCompositionType().equals("nanomaterial entity")) {
-					crit = DetachedCriteria.forClass(NanomaterialEntity.class);
-					crit.createAlias("sampleComposition", "comp",
-							CriteriaSpecification.LEFT_JOIN);
-					crit.createAlias("comp.sample", "sample",
-							CriteriaSpecification.LEFT_JOIN);
-					if (!StringUtils.isEmpty(query.getChemicalName())) {
-						crit.createAlias("composingElementCollection",
-								"compElement");
-					}
-					crit.add(Restrictions.eq("sample.name", sampleName));
-					crit.setFetchMode("fileCollection", FetchMode.JOIN);
-					crit.setFetchMode("fileCollection.keywordCollection",
-							FetchMode.JOIN);
-					crit.setFetchMode("composingElementCollection",
-							FetchMode.JOIN);
-					crit
-							.setFetchMode(
-									"composingElementCollection.inherentFunctionCollection",
-									FetchMode.JOIN);
-					crit
-							.setFetchMode(
-									"composingElementCollection.inherentFunctionCollection.targetCollection",
-									FetchMode.JOIN);
-					DetachedCriteria subCrit = getNanomaterialEntitySubquery(
-							query, "", "id");
-					crit.add(Subqueries.exists(subCrit));
-					crit
-							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-					List results = appService.query(crit);
-					for (Object obj : results) {
-						NanomaterialEntity entity = (NanomaterialEntity) obj;
-						if (!entities.contains(entity)) {
-							entities.add(entity);
-						}
-					}
-				}
-			}
-		}
-		return entities;
-	}
+//	private List<NanomaterialEntity> findNanomaterialEntitiesBy(
+//			String sampleName, AdvancedSampleSearchBean searchBean)
+//			throws Exception {
+//		List<NanomaterialEntity> entities = new ArrayList<NanomaterialEntity>();
+//		if (!searchBean.getHasNanomaterial()) {
+//			return entities;
+//		}
+//		DetachedCriteria crit = DetachedCriteria
+//				.forClass(NanomaterialEntity.class);
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		Junction junction = getNanomaterialEntityJunction(searchBean, crit);
+//		if (junction != null) {
+//			// join nanomaterialEntity
+//			if (searchBean.getHasNanomaterial() && !searchBean.getHasFunction()) {
+//				if (searchBean.getHasChemicalName()) {
+//					crit.createAlias("composingElementCollection",
+//							"compElement", CriteriaSpecification.LEFT_JOIN);
+//				}
+//			}
+//			crit.createAlias("sampleComposition", "comp");
+//			crit.createAlias("comp.sample", "sample");
+//			crit.add(Restrictions.eq("sample.name", sampleName));
+//			crit.add(junction);
+//			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+//			crit.setFetchMode("fileCollection.keywordCollection",
+//					FetchMode.JOIN);
+//			crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
+//			crit.setFetchMode(
+//					"composingElementCollection.inherentFunctionCollection",
+//					FetchMode.JOIN);
+//			crit
+//					.setFetchMode(
+//							"composingElementCollection.inherentFunctionCollection.targetCollection",
+//							FetchMode.JOIN);
+//			crit
+//					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//			List results = appService.query(crit);
+//			for (Object obj : results) {
+//				NanomaterialEntity entity = (NanomaterialEntity) obj;
+//				entities.add(entity);
+//			}
+//		} else if (searchBean.getNanoEntityCount() > 1) {
+//			// Hibernate Criteria API doesn't support union, union in java
+//			for (CompositionQueryBean query : searchBean
+//					.getCompositionQueries()) {
+//				if (query.getCompositionType().equals("nanomaterial entity")) {
+//					crit = DetachedCriteria.forClass(NanomaterialEntity.class);
+//					crit.createAlias("sampleComposition", "comp",
+//							CriteriaSpecification.LEFT_JOIN);
+//					crit.createAlias("comp.sample", "sample",
+//							CriteriaSpecification.LEFT_JOIN);
+//					if (!StringUtils.isEmpty(query.getChemicalName())) {
+//						crit.createAlias("composingElementCollection",
+//								"compElement");
+//					}
+//					crit.add(Restrictions.eq("sample.name", sampleName));
+//					crit.setFetchMode("fileCollection", FetchMode.JOIN);
+//					crit.setFetchMode("fileCollection.keywordCollection",
+//							FetchMode.JOIN);
+//					crit.setFetchMode("composingElementCollection",
+//							FetchMode.JOIN);
+//					crit
+//							.setFetchMode(
+//									"composingElementCollection.inherentFunctionCollection",
+//									FetchMode.JOIN);
+//					crit
+//							.setFetchMode(
+//									"composingElementCollection.inherentFunctionCollection.targetCollection",
+//									FetchMode.JOIN);
+//					DetachedCriteria subCrit = getNanomaterialEntitySubquery(
+//							query, "", "id");
+//					crit.add(Subqueries.exists(subCrit));
+//					crit
+//							.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//					List results = appService.query(crit);
+//					for (Object obj : results) {
+//						NanomaterialEntity entity = (NanomaterialEntity) obj;
+//						if (!entities.contains(entity)) {
+//							entities.add(entity);
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return entities;
+//	}
 
 	private List<PointOfContact> findPointOfContactsBy(Sample sample,
 			AdvancedSampleSearchBean searchBean) throws Exception {
@@ -1010,40 +1008,40 @@ public class AdvancedSampleServiceHelper {
 		return funcEntityCrit;
 	}
 
-	private DetachedCriteria getFunctionalizingEntitySubquery(
-			CompositionQueryBean query, String funcEntityAlias,
-			String projectionProperty) throws Exception {
-		DetachedCriteria subCrit = DetachedCriteria.forClass(
-				FunctionalizingEntity.class, "subCrit");
-		subCrit.setProjection(Projections.distinct(Property
-				.forName(projectionProperty)));
-		Criterion funcCrit = getFunctionalizingEntityCriterion(query, "");
-		subCrit.add(funcCrit);
-		subCrit.add(Restrictions.eqProperty("subCrit." + projectionProperty,
-				funcEntityAlias + "id"));
-		return subCrit;
-	}
+//	private DetachedCriteria getFunctionalizingEntitySubquery(
+//			CompositionQueryBean query, String funcEntityAlias,
+//			String projectionProperty) throws Exception {
+//		DetachedCriteria subCrit = DetachedCriteria.forClass(
+//				FunctionalizingEntity.class, "subCrit");
+//		subCrit.setProjection(Projections.distinct(Property
+//				.forName(projectionProperty)));
+//		Criterion funcCrit = getFunctionalizingEntityCriterion(query, "");
+//		subCrit.add(funcCrit);
+//		subCrit.add(Restrictions.eqProperty("subCrit." + projectionProperty,
+//				funcEntityAlias + "id"));
+//		return subCrit;
+//	}
 
-	private DetachedCriteria getFunctionSubquery(CompositionQueryBean query,
-			String funcAlias1, String funcAlias2, String projectionProperty)
-			throws Exception {
-		DetachedCriteria subCrit = DetachedCriteria.forClass(Function.class,
-				"subCrit");
-		subCrit.setProjection(Projections.distinct(Property
-				.forName(projectionProperty)));
-		Criterion funcCrit = getFunctionCriterion(query, "", "");
-		subCrit.add(funcCrit);
-		if (funcAlias1.equals(funcAlias2)) {
-			subCrit.add(Restrictions.eqProperty(
-					"subCrit." + projectionProperty, funcAlias1 + "id"));
-		} else {
-			subCrit.add(Restrictions.or(Restrictions.eqProperty("subCrit."
-					+ projectionProperty, funcAlias1 + "id"), Restrictions
-					.eqProperty("subCrit." + projectionProperty, funcAlias2
-							+ "id")));
-		}
-		return subCrit;
-	}
+//	private DetachedCriteria getFunctionSubquery(CompositionQueryBean query,
+//			String funcAlias1, String funcAlias2, String projectionProperty)
+//			throws Exception {
+//		DetachedCriteria subCrit = DetachedCriteria.forClass(Function.class,
+//				"subCrit");
+//		subCrit.setProjection(Projections.distinct(Property
+//				.forName(projectionProperty)));
+//		Criterion funcCrit = getFunctionCriterion(query, "", "");
+//		subCrit.add(funcCrit);
+//		if (funcAlias1.equals(funcAlias2)) {
+//			subCrit.add(Restrictions.eqProperty(
+//					"subCrit." + projectionProperty, funcAlias1 + "id"));
+//		} else {
+//			subCrit.add(Restrictions.or(Restrictions.eqProperty("subCrit."
+//					+ projectionProperty, funcAlias1 + "id"), Restrictions
+//					.eqProperty("subCrit." + projectionProperty, funcAlias2
+//							+ "id")));
+//		}
+//		return subCrit;
+//	}
 
 	private Criterion getFunctionCriterion(CompositionQueryBean compQuery,
 			String functionAlias1, String functionAlias2) throws Exception {
@@ -1353,70 +1351,70 @@ public class AdvancedSampleServiceHelper {
 		if (junction != null) {
 			crit.add(junction);
 		}
-		if (searchBean.getNanoEntityCount() > 1) {
-			setNanomaterialEntityAndCriteria(searchBean, crit, "id");
-		}
-		if (searchBean.getFuncEntityCount() > 1) {
-			setFunctionalizingEntityAndCriteria(searchBean, crit, "id");
-		}
-		if (searchBean.getFuncCount() > 1) {
-			setFunctionAndCriteria(searchBean, crit, "id");
-		}
+//		if (searchBean.getNanoEntityCount() > 1) {
+//			setNanomaterialEntityAndCriteria(searchBean, crit, "id");
+//		}
+//		if (searchBean.getFuncEntityCount() > 1) {
+//			setFunctionalizingEntityAndCriteria(searchBean, crit, "id");
+//		}
+//		if (searchBean.getFuncCount() > 1) {
+//			setFunctionAndCriteria(searchBean, crit, "id");
+//		}
 	}
 
-	private void setFunctionalizingEntityAndCriteria(
-			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
-			String projectionProperty) throws Exception {
-		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
-			if (query.getCompositionType().equals("functionalizing entity")) {
-				DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
-						query, "funcEntity.", projectionProperty);
-				crit.add(Subqueries.exists(subCrit));
-			}
-		}
-	}
+//	private void setFunctionalizingEntityAndCriteria(
+//			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
+//			String projectionProperty) throws Exception {
+//		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
+//			if (query.getCompositionType().equals("functionalizing entity")) {
+//				DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
+//						query, "funcEntity.", projectionProperty);
+//				crit.add(Subqueries.exists(subCrit));
+//			}
+//		}
+//	}
 
-	private void setFunctionAndCriteria(AdvancedSampleSearchBean searchBean,
-			DetachedCriteria crit, String projectionProperty) throws Exception {
-		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
-			if (query.getCompositionType().equals("function")) {
-				DetachedCriteria subCrit = getFunctionSubquery(query,
-						"inherentFunction.", "function.", projectionProperty);
-				crit.add(Subqueries.exists(subCrit));
-			}
-		}
-	}
+//	private void setFunctionAndCriteria(AdvancedSampleSearchBean searchBean,
+//			DetachedCriteria crit, String projectionProperty) throws Exception {
+//		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
+//			if (query.getCompositionType().equals("function")) {
+//				DetachedCriteria subCrit = getFunctionSubquery(query,
+//						"inherentFunction.", "function.", projectionProperty);
+//				crit.add(Subqueries.exists(subCrit));
+//			}
+//		}
+//	}
 
-	private void setNanomaterialEntityAndCriteria(
-			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
-			String projectionProperty) throws Exception {
-		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
-			if (query.getCompositionType().equals("nanomaterial entity")) {
-				DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
-						"nanoEntity.", projectionProperty);
-				crit.add(Subqueries.exists(subCrit));
-			}
-		}
-	}
+//	private void setNanomaterialEntityAndCriteria(
+//			AdvancedSampleSearchBean searchBean, DetachedCriteria crit,
+//			String projectionProperty) throws Exception {
+//		for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
+//			if (query.getCompositionType().equals("nanomaterial entity")) {
+//				DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
+//						"nanoEntity.", projectionProperty);
+//				crit.add(Subqueries.exists(subCrit));
+//			}
+//		}
+//	}
 
-	private DetachedCriteria getNanomaterialEntitySubquery(
-			CompositionQueryBean query, String nanoEntityAlias,
-			String projectionProperty) throws Exception {
-		DetachedCriteria subCrit = DetachedCriteria.forClass(
-				NanomaterialEntity.class, "subCrit");
-		subCrit.setProjection(Projections.distinct(Property
-				.forName(projectionProperty)));
-		// join composing element
-		if (!StringUtils.isEmpty(query.getChemicalName())) {
-			subCrit.createAlias("subCrit.composingElementCollection",
-					"compElement", CriteriaSpecification.LEFT_JOIN);
-		}
-		Criterion nanoCrit = getNanomaterialEntityCriterion(query, "");
-		subCrit.add(nanoCrit);
-		subCrit.add(Restrictions.eqProperty("subCrit." + projectionProperty,
-				nanoEntityAlias + "id"));
-		return subCrit;
-	}
+//	private DetachedCriteria getNanomaterialEntitySubquery(
+//			CompositionQueryBean query, String nanoEntityAlias,
+//			String projectionProperty) throws Exception {
+//		DetachedCriteria subCrit = DetachedCriteria.forClass(
+//				NanomaterialEntity.class, "subCrit");
+//		subCrit.setProjection(Projections.distinct(Property
+//				.forName(projectionProperty)));
+//		// join composing element
+//		if (!StringUtils.isEmpty(query.getChemicalName())) {
+//			subCrit.createAlias("subCrit.composingElementCollection",
+//					"compElement", CriteriaSpecification.LEFT_JOIN);
+//		}
+//		Criterion nanoCrit = getNanomaterialEntityCriterion(query, "");
+//		subCrit.add(nanoCrit);
+//		subCrit.add(Restrictions.eqProperty("subCrit." + projectionProperty,
+//				nanoEntityAlias + "id"));
+//		return subCrit;
+//	}
 
 	private DetachedCriteria getPointOfContactSubquery(SampleQueryBean query,
 			String pocAlias1, String pocAlias2, String projectionProperty) {

@@ -7,21 +7,21 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.common.DataConditionMatrixBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -160,7 +160,7 @@ public class CharacterizationServiceRemoteImpl implements
 			achar.setProtocol(protocol);
 		}
 		loadExperimentConfigsForCharacterization(achar);
-		loadFindingsForCharacterization(achar);
+//		loadFindingsForCharacterization(achar);
 	}
 
 	private void loadExperimentConfigsForCharacterization(Characterization achar)
@@ -234,79 +234,52 @@ public class CharacterizationServiceRemoteImpl implements
 		}
 	}
 
-	private void loadFindingsForCharacterization(Characterization achar)
-			throws Exception {
-		Finding[] findings = gridClient.getFindingsByCharacterizationId(achar
-				.getId().toString());
-		if (findings != null && findings.length > 0) {
-			achar.setFindingCollection(new HashSet<Finding>());
-			for (Finding finding : findings) {
-				loadFindingAssociations(finding);
-				achar.getFindingCollection().add(finding);
-			}
-		}
-	}
-
-	private void loadFindingAssociations(Finding finding) throws Exception {
-		loadFilesForFinding(finding);
-		loadDataForFinding(finding);
-	}
-
-	private void loadFilesForFinding(Finding finding) throws Exception {
-		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("gov.nih.nci.cananolab.domain.common.File");
-		Association association = new Association();
-		association.setName("gov.nih.nci.cananolab.domain.common.Finding");
-		association.setRoleName("findingCollection");
-		Attribute attribute = new Attribute();
-		attribute.setName("id");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue(finding.getId().toString());
-		association.setAttribute(attribute);
-
-		target.setAssociation(association);
-		query.setTarget(target);
-		CQLQueryResults results = gridClient.query(query);
-		results.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
-		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		finding.setFileCollection(new HashSet<File>());
-		FileServiceRemoteImpl fileService = new FileServiceRemoteImpl(
-				serviceUrl);
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			File file = (File) obj;
-			fileService.loadKeywordsForFile(file);
-			finding.getFileCollection().add(file);
-		}
-	}
-
-	private void loadDataForFinding(Finding finding) throws Exception {
-		CQLQuery query = new CQLQuery();
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("gov.nih.nci.cananolab.domain.common.Datum");
-		Association association = new Association();
-		association.setName("gov.nih.nci.cananolab.domain.common.Finding");
-		association.setRoleName("finding");
-		Attribute attribute = new Attribute();
-		attribute.setName("id");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue(finding.getId().toString());
-		association.setAttribute(attribute);
-
-		target.setAssociation(association);
-		query.setTarget(target);
-		CQLQueryResults results = gridClient.query(query);
-		results.setTargetClassname("gov.nih.nci.cananolab.domain.common.Datum");
-		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		finding.setDatumCollection(new HashSet<Datum>());
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			Datum datum = (Datum) obj;
-			loadConditionsForDatum(datum);
-			finding.getDatumCollection().add(datum);
-		}
-	}
+//	private void loadFindingsForCharacterization(Characterization achar)
+//			throws Exception {
+//		Finding[] findings = gridClient.getFindingsByCharacterizationId(achar
+//				.getId().toString());
+//		if (findings != null && findings.length > 0) {
+//			achar.setFindingCollection(new HashSet<Finding>());
+//			for (Finding finding : findings) {
+//				loadFindingAssociations(finding);
+//				achar.getFindingCollection().add(finding);
+//			}
+//		}
+//	}
+//
+//	private void loadFindingAssociations(Finding finding) throws Exception {
+//		loadFilesForFinding(finding);
+//		loadDataForFinding(finding);
+//	}
+//
+//	private void loadFilesForFinding(Finding finding) throws Exception {
+//		CQLQuery query = new CQLQuery();
+//		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+//		target.setName("gov.nih.nci.cananolab.domain.common.File");
+//		Association association = new Association();
+//		association.setName("gov.nih.nci.cananolab.domain.common.Finding");
+//		association.setRoleName("findingCollection");
+//		Attribute attribute = new Attribute();
+//		attribute.setName("id");
+//		attribute.setPredicate(Predicate.EQUAL_TO);
+//		attribute.setValue(finding.getId().toString());
+//		association.setAttribute(attribute);
+//
+//		target.setAssociation(association);
+//		query.setTarget(target);
+//		CQLQueryResults results = gridClient.query(query);
+//		results.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
+//		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+//		finding.setFileCollection(new HashSet<File>());
+//		FileServiceRemoteImpl fileService = new FileServiceRemoteImpl(
+//				serviceUrl);
+//		while (iter.hasNext()) {
+//			java.lang.Object obj = iter.next();
+//			File file = (File) obj;
+//			fileService.loadKeywordsForFile(file);
+//			finding.getFileCollection().add(file);
+//		}
+//	}
 
 	private void loadConditionsForDatum(Datum datum) throws Exception {
 		CQLQuery query = new CQLQuery();
@@ -335,21 +308,6 @@ public class CharacterizationServiceRemoteImpl implements
 		}
 	}
 
-	public FindingBean findFindingById(String findingId, UserBean user)
-			throws CharacterizationException {
-		throw new CharacterizationException("Not implemented for grid service");
-	}
-
-	public void saveFinding(FindingBean finding, UserBean user)
-			throws CharacterizationException, NoAccessException {
-		throw new CharacterizationException("Not implemented for grid service");
-	}
-
-	public void deleteFinding(Finding finding, UserBean user)
-			throws CharacterizationException, NoAccessException {
-		throw new CharacterizationException("Not implemented for grid service");
-	}
-
 	public void saveExperimentConfig(ExperimentConfigBean configBean,
 			UserBean user) throws ExperimentConfigException, NoAccessException {
 		throw new ExperimentConfigException("Not implemented for grid service");
@@ -365,5 +323,23 @@ public class CharacterizationServiceRemoteImpl implements
 			boolean copyData, UserBean user) throws CharacterizationException,
 			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
+	}
+
+	public void deleteFile(FileBean fileBean, UserBean user)
+			throws CharacterizationException, NoAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void saveDataConditionMatrix(DataConditionMatrixBean matrix,
+			UserBean user) throws CharacterizationException, NoAccessException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void saveFile(FileBean fileBean, UserBean user)
+			throws CharacterizationException, NoAccessException {
+		// TODO Auto-generated method stub
+		
 	}
 }
