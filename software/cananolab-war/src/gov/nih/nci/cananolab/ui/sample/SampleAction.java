@@ -9,8 +9,8 @@ package gov.nih.nci.cananolab.ui.sample;
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -133,7 +133,7 @@ public class SampleAction extends BaseAnnotationAction {
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
-				.getOrganization().getName());
+				.getOrganization().getAbbreviatedName());
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -191,7 +191,7 @@ public class SampleAction extends BaseAnnotationAction {
 		if (updateSample == null) {
 			forward = mapping.getInputForward();
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName());
+					.getOrganization().getAbbreviatedName());
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -222,7 +222,7 @@ public class SampleAction extends BaseAnnotationAction {
 		if (updateSample == null) {
 			forward = mapping.getInputForward();
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName());
+					.getOrganization().getAbbreviatedName());
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());

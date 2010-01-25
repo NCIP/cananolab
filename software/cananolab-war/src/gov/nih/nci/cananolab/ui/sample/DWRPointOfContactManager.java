@@ -2,8 +2,8 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -75,7 +75,7 @@ public class DWRPointOfContactManager {
 		if (pocBean == null) {
 			return null;
 		}
-		String orgName = pocBean.getDomain().getOrganization().getName();
+		String orgName = pocBean.getDomain().getOrganization().getAbbreviatedName();
 		return removeOrgFromVisibilityGroupsByOrgName(orgName);
 	}
 
@@ -115,7 +115,7 @@ public class DWRPointOfContactManager {
 		if (sample.getPrimaryPOCBean() != null
 				&& sample.getPrimaryPOCBean().getDomain().getId() != null) {
 			orgName = sample.getPrimaryPOCBean().getDomain().getOrganization()
-					.getName();
+					.getAbbreviatedName();
 			if (!StringUtils.isEmpty(orgName)) {
 				visibilityGroup.remove(orgName);
 			}

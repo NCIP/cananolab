@@ -1,11 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
+import gov.nih.nci.cananolab.dto.common.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
-import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -70,51 +66,51 @@ public class InitCompositionSetup {
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
-	public void persistNanomaterialEntityDropdowns(HttpServletRequest request,
-			NanomaterialEntityBean entityBean) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "biopolymer", "type",
-				"otherType", entityBean.getBiopolymer().getType());
-		InitSetup.getInstance().persistLookup(request, "fullerene",
-				"averageDiameterUnit", "otherAverageDiameterUnit",
-				entityBean.getFullerene().getAverageDiameterUnit());
-		InitSetup.getInstance().persistLookup(request, "carbon nanotube",
-				"diameterUnit", "otherDiameterUnit",
-				entityBean.getCarbonNanotube().getDiameterUnit());
-		InitSetup.getInstance().persistLookup(request, "carbon nanotube",
-				"averageLengthUnit", "otherAverageLengthUnit",
-				entityBean.getCarbonNanotube().getAverageLengthUnit());
-
-		ComposingElementBean theComposingElement = entityBean
-				.getTheComposingElement();
-		if (entityBean.getDomainEntity() instanceof Emulsion) {
-			InitSetup.getInstance().persistLookup(request, "emulsion",
-					"composingElementType", "otherComposingElementType",
-					entityBean.getTheComposingElement().getDomain().getType());
-		} else {
-			InitSetup.getInstance().persistLookup(request, "composing element",
-					"type", "otherType",
-					theComposingElement.getDomain().getType());
-		}
-		InitSetup.getInstance().persistLookup(request, "composing element",
-				"valueUnit", "otherValueUnit",
-				theComposingElement.getDomain().getValueUnit());
-		InitSetup.getInstance().persistLookup(request, "molecular formula",
-				"type", "otherType",
-				theComposingElement.getDomain().getMolecularFormulaType());
-
-		InitSetup.getInstance().persistLookup(
-				request,
-				"imaging function",
-				"modality",
-				"otherModality",
-				theComposingElement.getTheFunction().getImagingFunction()
-						.getModality());
-
-		InitSetup.getInstance().persistLookup(request, "file", "type",
-				"otherType", entityBean.getTheFile().getDomainFile().getType());
-
-		setNanomaterialEntityDropdowns(request);
-	}
+//	public void persistNanomaterialEntityDropdowns(HttpServletRequest request,
+//			NanomaterialEntityBean entityBean) throws Exception {
+//		InitSetup.getInstance().persistLookup(request, "biopolymer", "type",
+//				"otherType", entityBean.getBiopolymer().getType());
+//		InitSetup.getInstance().persistLookup(request, "fullerene",
+//				"averageDiameterUnit", "otherAverageDiameterUnit",
+//				entityBean.getFullerene().getAverageDiameterUnit());
+//		InitSetup.getInstance().persistLookup(request, "carbon nanotube",
+//				"diameterUnit", "otherDiameterUnit",
+//				entityBean.getCarbonNanotube().getDiameterUnit());
+//		InitSetup.getInstance().persistLookup(request, "carbon nanotube",
+//				"averageLengthUnit", "otherAverageLengthUnit",
+//				entityBean.getCarbonNanotube().getAverageLengthUnit());
+//
+//		ComposingElementBean theComposingElement = entityBean
+//				.getTheComposingElement();
+//		if (entityBean.getDomainEntity() instanceof Emulsion) {
+//			InitSetup.getInstance().persistLookup(request, "emulsion",
+//					"composingElementType", "otherComposingElementType",
+//					entityBean.getTheComposingElement().getDomain().getType());
+//		} else {
+//			InitSetup.getInstance().persistLookup(request, "composing element",
+//					"type", "otherType",
+//					theComposingElement.getDomain().getType());
+//		}
+//		InitSetup.getInstance().persistLookup(request, "composing element",
+//				"valueUnit", "otherValueUnit",
+//				theComposingElement.getDomain().getValueUnit());
+//		InitSetup.getInstance().persistLookup(request, "molecular formula",
+//				"type", "otherType",
+//				theComposingElement.getDomain().getMolecularFormulaType());
+//
+//		InitSetup.getInstance().persistLookup(
+//				request,
+//				"imaging function",
+//				"modality",
+//				"otherModality",
+//				theComposingElement.getTheFunction().getImagingFunction()
+//						.getModality());
+//
+//		InitSetup.getInstance().persistLookup(request, "file", "type",
+//				"otherType", entityBean.getTheFile().getDomainFile().getType());
+//
+//		setNanomaterialEntityDropdowns(request);
+//	}
 
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
 			throws Exception {
@@ -161,33 +157,33 @@ public class InitCompositionSetup {
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
-	public void persistFunctionalizingEntityDropdowns(
-			HttpServletRequest request, FunctionalizingEntityBean entityBean)
-			throws Exception {
-		InitSetup.getInstance().persistLookup(request, "antibody", "type",
-				"otherType", entityBean.getAntibody().getType());
-		InitSetup.getInstance().persistLookup(request, "antibody", "isotype",
-				"otherIsoType", entityBean.getAntibody().getIsotype());
-		InitSetup.getInstance().persistLookup(request, "biopolymer", "type",
-				"otherType", entityBean.getBiopolymer().getType());
-		InitSetup.getInstance().persistLookup(request,
-				"functionalizing entity", "valueUnit", "otherValueUnit",
-				entityBean.getValueUnit());
-		InitSetup.getInstance().persistLookup(request, "molecular formula",
-				"type", "otherType", entityBean.getMolecularFormulaType());
-		InitSetup
-				.getInstance()
-				.persistLookup(request, "activation method", "type",
-						"otherType", entityBean.getActivationMethod().getType());
-		InitSetup.getInstance().persistLookup(request, "imaging function",
-				"modality", "otherModality",
-				entityBean.getTheFunction().getImagingFunction().getModality());
-
-		InitSetup.getInstance().persistLookup(request, "file", "type",
-				"otherType", entityBean.getTheFile().getDomainFile().getType());
-
-		setFunctionalizingEntityDropdowns(request);
-	}
+//	public void persistFunctionalizingEntityDropdowns(
+//			HttpServletRequest request, FunctionalizingEntityBean entityBean)
+//			throws Exception {
+//		InitSetup.getInstance().persistLookup(request, "antibody", "type",
+//				"otherType", entityBean.getAntibody().getType());
+//		InitSetup.getInstance().persistLookup(request, "antibody", "isotype",
+//				"otherIsoType", entityBean.getAntibody().getIsotype());
+//		InitSetup.getInstance().persistLookup(request, "biopolymer", "type",
+//				"otherType", entityBean.getBiopolymer().getType());
+//		InitSetup.getInstance().persistLookup(request,
+//				"functionalizing entity", "valueUnit", "otherValueUnit",
+//				entityBean.getValueUnit());
+//		InitSetup.getInstance().persistLookup(request, "molecular formula",
+//				"type", "otherType", entityBean.getMolecularFormulaType());
+//		InitSetup
+//				.getInstance()
+//				.persistLookup(request, "activation method", "type",
+//						"otherType", entityBean.getActivationMethod().getType());
+//		InitSetup.getInstance().persistLookup(request, "imaging function",
+//				"modality", "otherModality",
+//				entityBean.getTheFunction().getImagingFunction().getModality());
+//
+//		InitSetup.getInstance().persistLookup(request, "file", "type",
+//				"otherType", entityBean.getTheFile().getDomainFile().getType());
+//
+//		setFunctionalizingEntityDropdowns(request);
+//	}
 
 	public void setChemicalAssociationDropdowns(HttpServletRequest request,
 			boolean hasFunctionalizingEntity) throws Exception {
