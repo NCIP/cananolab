@@ -1,16 +1,16 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.LinkableItem;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
-import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.search.AdvancedSampleBean;
+import gov.nih.nci.cananolab.dto.search.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -48,7 +48,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.hssf.util.HSSFColor.BLUE;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -159,7 +158,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			PointOfContact dbPointOfContact = helper
 					.findPointOfContactByNameAndOrg(domainPOC.getFirstName(),
 							domainPOC.getLastName(), domainPOC
-									.getOrganization().getName(), user);
+									.getOrganization().getAbbreviatedName(), user);
 			if (dbPointOfContact != null) {
 				domainPOC.setId(dbPointOfContact.getId());
 				domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
@@ -170,18 +169,18 @@ public class SampleServiceLocalImpl implements SampleService {
 				domainPOC.setId(null);
 			}
 
-			// get created by and created date from database
-			Organization dbOrganization = helper.findOrganizationByName(
-					domainOrg.getName(), user);
-			if (dbOrganization != null) {
-				domainOrg.setId(dbOrganization.getId());
-				domainOrg.setCreatedBy(dbOrganization.getCreatedBy());
-				domainOrg.setCreatedDate(dbOrganization.getCreatedDate());
-			}
-			//create a new org if not an existing one
-			else {
-				domainOrg.setId(null);
-			}
+//			// get created by and created date from database
+//			Organization dbOrganization = helper.findOrganizationByName(
+//					domainOrg.getName(), user);
+//			if (dbOrganization != null) {
+//				domainOrg.setId(dbOrganization.getId());
+//				domainOrg.setCreatedBy(dbOrganization.getCreatedBy());
+//				domainOrg.setCreatedDate(dbOrganization.getCreatedDate());
+//			}
+//			//create a new org if not an existing one
+//			else {
+//				domainOrg.setId(null);
+//			}
 			appService.saveOrUpdate(domainPOC);
 
 			// assign visibility
@@ -195,29 +194,29 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private void assignVisibility(SampleBean sampleBean) throws Exception {
 		String[] visibleGroups = sampleBean.getVisibilityGroups();
-		String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-				.getOrganization().getName();
+//		String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
+//				.getOrganization().getName();
 		// assign visibility for sample
 		// visibility for POC is handled by POC separately
-		helper.getAuthService().assignVisibility(
-				sampleBean.getDomain().getName(), visibleGroups, owningGroup);
+//		helper.getAuthService().assignVisibility(
+//				sampleBean.getDomain().getName(), visibleGroups, owningGroup);
 		// assign associated visibilities
 		Sample sample = sampleBean.getDomain();
 		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
 		CompositionServiceHelper compHelper = new CompositionServiceHelper();
-		Collection<Characterization> characterizationCollection = sample
-				.getCharacterizationCollection();
-		// characterizations
-		if (characterizationCollection != null) {
-			for (Characterization aChar : characterizationCollection) {
-				charHelper.assignVisibility(aChar, visibleGroups, owningGroup);
-			}
-		}
-		// sampleComposition
-		if (sample.getSampleComposition() != null) {
-			compHelper.assignVisibility(sample.getSampleComposition(),
-					visibleGroups, owningGroup);
-		}
+//		Collection<Characterization> characterizationCollection = sample
+//				.getCharacterizationCollection();
+//		// characterizations
+//		if (characterizationCollection != null) {
+//			for (Characterization aChar : characterizationCollection) {
+//				charHelper.assignVisibility(aChar, visibleGroups, owningGroup);
+//			}
+//		}
+//		// sampleComposition
+//		if (sample.getSampleComposition() != null) {
+//			compHelper.assignVisibility(sample.getSampleComposition(),
+//					visibleGroups, owningGroup);
+//		}
 
 		// keywords to public
 		if (sample.getKeywordCollection() != null) {
@@ -232,15 +231,15 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private void assignVisibility(PointOfContactBean pocBean) throws Exception {
 		String[] visibleGroups = pocBean.getVisibilityGroups();
-		String owningGroup = pocBean.getDomain().getOrganization().getName();
-		// poc
-		helper.getAuthService().assignVisibility(
-				pocBean.getDomain().getId().toString(), visibleGroups,
-				owningGroup);
-		// org
-		helper.getAuthService().assignVisibility(
-				pocBean.getDomain().getOrganization().getId().toString(),
-				visibleGroups, owningGroup);
+//		String owningGroup = pocBean.getDomain().getOrganization().getName();
+//		// poc
+//		helper.getAuthService().assignVisibility(
+//				pocBean.getDomain().getId().toString(), visibleGroups,
+//				owningGroup);
+//		// org
+//		helper.getAuthService().assignVisibility(
+//				pocBean.getDomain().getOrganization().getId().toString(),
+//				visibleGroups, owningGroup);
 	}
 
 	/**
