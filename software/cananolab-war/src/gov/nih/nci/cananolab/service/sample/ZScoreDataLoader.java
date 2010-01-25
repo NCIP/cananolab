@@ -3,11 +3,9 @@ package gov.nih.nci.cananolab.service.sample;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.Finding;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -176,82 +174,82 @@ public class ZScoreDataLoader {
 			SortedMap<String, Double> data = dataMatrix.get(name);
 			int i = 0;
 			//3.iterate data matrix for creating Cytotoxicity by data.
-			for (String assayStr : data.keySet()) {
-				Cytotoxicity achar = null;
-				Finding finding = null;
-				AssayCondition ac = assayMap.get(assayStr);
-				this.saveLookupValue(ac);
-				if (ac != null) {
-					String acStr = ac.getCellType() + "||" + ac.getAssayType();
-					achar = charMap.get(acStr);
-					if (achar != null) {
-						for (Finding aFinding : achar.getFindingCollection()) {
-							finding = aFinding;
-							break;
-						}
-					} else {
-						i = 0;
-						achar = new Cytotoxicity();
-						achar.setCreatedBy(USER_NAME);
-						achar.setCreatedDate(currentDate);
-						achar.setCellLine(ac.getCellType());
-						achar.setAssayType(ac.getAssayType());//TODO
-						achar.setFindingCollection(new HashSet<Finding>());
-						achar.setDesignMethodsDescription(ac.getAssayDesciption());
-						finding = new Finding();
-						finding.setCreatedBy(USER_NAME);
-						finding.setCreatedDate(currentDate);
-						achar.getFindingCollection().add(finding);
-						finding.setDatumCollection(new HashSet<Datum>());
-						charMap.put(acStr, achar);
-					}
-					Datum datum = new Datum();
-					datum.setCreatedBy(USER_NAME);
-					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
-					datum.setValue(data.get(assayStr).floatValue());
-					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));//TODO
-					datum.setValueType("Z-score");
-					Condition condition = new Condition();
-					condition.setCreatedBy(USER_NAME);
-					condition.setCreatedDate(currentDate);
-					condition.setName(CONDITION_NAME);
-					//NP49, NP50, NP51 are QDots
-					if (sampleName.matches(SAMPLE_NAME_PREFIX + "49")
-							|| sampleName.matches(SAMPLE_NAME_PREFIX + "50")
-							|| sampleName.matches(SAMPLE_NAME_PREFIX + "51")) {
-						condition.setValue(ac.getConditionValue2().toString());
-						condition.setValueUnit(ac.getConditionUnit2());//TODO
-					} else {
-						condition.setValue(ac.getConditionValue().toString());
-						condition.setValueUnit(ac.getConditionUnit());//TODO
-					}
-					datum.setConditionCollection(new HashSet<Condition>());
-					datum.getConditionCollection().add(condition);
-					finding.getDatumCollection().add(datum);
-					i++;
-				}
-			} // end of loop - iterate data matrix.
+//			for (String assayStr : data.keySet()) {
+//				Cytotoxicity achar = null;
+//				Finding finding = null;
+//				AssayCondition ac = assayMap.get(assayStr);
+//				this.saveLookupValue(ac);
+//				if (ac != null) {
+//					String acStr = ac.getCellType() + "||" + ac.getAssayType();
+//					achar = charMap.get(acStr);
+//					if (achar != null) {
+//						for (Finding aFinding : achar.getFindingCollection()) {
+//							finding = aFinding;
+//							break;
+//						}
+//					} else {
+//						i = 0;
+//						achar = new Cytotoxicity();
+//						achar.setCreatedBy(USER_NAME);
+//						achar.setCreatedDate(currentDate);
+//						achar.setCellLine(ac.getCellType());
+//						achar.setAssayType(ac.getAssayType());//TODO
+//						achar.setFindingCollection(new HashSet<Finding>());
+//						achar.setDesignMethodsDescription(ac.getAssayDesciption());
+//						finding = new Finding();
+//						finding.setCreatedBy(USER_NAME);
+//						finding.setCreatedDate(currentDate);
+//						achar.getFindingCollection().add(finding);
+//						finding.setDatumCollection(new HashSet<Datum>());
+//						charMap.put(acStr, achar);
+//					}
+//					Datum datum = new Datum();
+//					datum.setCreatedBy(USER_NAME);
+//					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
+//					datum.setValue(data.get(assayStr).floatValue());
+//					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));//TODO
+//					datum.setValueType("Z-score");
+//					Condition condition = new Condition();
+//					condition.setCreatedBy(USER_NAME);
+//					condition.setCreatedDate(currentDate);
+//					condition.setName(CONDITION_NAME);
+//					//NP49, NP50, NP51 are QDots
+//					if (sampleName.matches(SAMPLE_NAME_PREFIX + "49")
+//							|| sampleName.matches(SAMPLE_NAME_PREFIX + "50")
+//							|| sampleName.matches(SAMPLE_NAME_PREFIX + "51")) {
+//						condition.setValue(ac.getConditionValue2().toString());
+//						condition.setValueUnit(ac.getConditionUnit2());//TODO
+//					} else {
+//						condition.setValue(ac.getConditionValue().toString());
+//						condition.setValueUnit(ac.getConditionUnit());//TODO
+//					}
+//					datum.setConditionCollection(new HashSet<Condition>());
+//					datum.getConditionCollection().add(condition);
+//					finding.getDatumCollection().add(datum);
+//					i++;
+//				}
+//			} // end of loop - iterate data matrix.
 			
 			//4.saving Finding and then save Characterization.
 			i = 0;
-			for (String charKey : charMap.keySet()) {
-				Cytotoxicity achar = charMap.get(charKey);
-				CharacterizationBean charBean = new CharacterizationBean(achar);
-				try {
-					List<FindingBean> findings = charBean.getFindings();
-					for (FindingBean finding : findings) {
-						charService.saveFinding(finding, user);
-					}
-					charService.saveCharacterization(sampleBean, charBean, user);
-					if (logger.isDebugEnabled()) {
-						logger.debug("charBean saved for charKey: " + charKey);
-					}
-					i++;
-				} catch (Exception e) {
-					logger.error("Error saving charBean for charKey: " + charKey, e);
-					continue;
-				}
-			}
+//			for (String charKey : charMap.keySet()) {
+//				Cytotoxicity achar = charMap.get(charKey);
+//				CharacterizationBean charBean = new CharacterizationBean(achar);
+//				try {
+//					List<FindingBean> findings = charBean.getFindings();
+//					for (FindingBean finding : findings) {
+//						charService.saveFinding(finding, user);
+//					}
+//					charService.saveCharacterization(sampleBean, charBean, user);
+//					if (logger.isDebugEnabled()) {
+//						logger.debug("charBean saved for charKey: " + charKey);
+//					}
+//					i++;
+//				} catch (Exception e) {
+//					logger.error("Error saving charBean for charKey: " + charKey, e);
+//					continue;
+//				}
+//			}
 			if (logger.isDebugEnabled()) {
 				logger.debug("charBean# saved: " + i + ", for sample:" + name);
 			}

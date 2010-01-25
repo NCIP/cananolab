@@ -2,11 +2,9 @@ package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.domain.characterization.invitro.Targeting;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.common.Finding;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -172,46 +170,46 @@ public class KellyDataLoader {
 				Targeting achar = new Targeting();
 				achar.setCreatedBy(USER_NAME);
 				achar.setCreatedDate(currentDate);
-				achar.setDesignMethodsDescription(CELL_LINE_PREFIX + cellLine);
-				achar.setAssayType(ASSAY_TYPE);
-				achar.setFindingCollection(new HashSet<Finding>());
-				
-				//2b.create 1 Finding for each CellLine.
-				Finding finding = new Finding();
-				finding.setCreatedBy(USER_NAME);
-				finding.setCreatedDate(currentDate);
-				achar.getFindingCollection().add(finding);
-				finding.setDatumCollection(new HashSet<Datum>());
+//				achar.setDesignMethodsDescription(CELL_LINE_PREFIX + cellLine);
+//				achar.setAssayType(ASSAY_TYPE);
+//				achar.setFindingCollection(new HashSet<Finding>());
+//				
+//				//2b.create 1 Finding for each CellLine.
+//				Finding finding = new Finding();
+//				finding.setCreatedBy(USER_NAME);
+//				finding.setCreatedDate(currentDate);
+//				achar.getFindingCollection().add(finding);
+//				finding.setDatumCollection(new HashSet<Datum>());
 				SortedMap<String, Double> datumMap = cellLineMap.get(cellLine);
 				
 				//2c.iterate datumMap & add datum to finding.
 				int i = 0;
-				for (String valueType : datumMap.keySet()) {
-					Datum datum = new Datum();
-					datum.setCreatedBy(USER_NAME);
-					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i++));
-					datum.setName(DATUM_NAME);
-					datum.setValue((float)(datumMap.get(valueType) * VALUE_FACTOR));
-					datum.setValueType(DATUM_TYPE_MAP.get(valueType));
-					datum.setValueUnit(DATUM_UNIT);
-					finding.getDatumCollection().add(datum);
-				}
-				//3.new CharBean, save Finding and the Targeting bean.
-				CharacterizationBean charBean = new CharacterizationBean(achar);
-				try {
-					List<FindingBean> findings = charBean.getFindings();
-					for (FindingBean findingBean : findings) {
-						charService.saveFinding(findingBean, user);
-					}
-					charService.saveCharacterization(sampleBean, charBean, user);
-					if (logger.isDebugEnabled()) {
-						logger.debug("charBean saved: " + sampleName + ", " + cellLine);
-						count++;
-					}
-				} catch (Exception e) {
-					logger.error("Error saving charBean: " + sampleName + ", " + cellLine, e);
-					continue;
-				}
+//				for (String valueType : datumMap.keySet()) {
+//					Datum datum = new Datum();
+//					datum.setCreatedBy(USER_NAME);
+//					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i++));
+//					datum.setName(DATUM_NAME);
+//					datum.setValue((float)(datumMap.get(valueType) * VALUE_FACTOR));
+//					datum.setValueType(DATUM_TYPE_MAP.get(valueType));
+//					datum.setValueUnit(DATUM_UNIT);
+//					finding.getDatumCollection().add(datum);
+//				}
+//				//3.new CharBean, save Finding and the Targeting bean.
+//				CharacterizationBean charBean = new CharacterizationBean(achar);
+//				try {
+//					List<FindingBean> findings = charBean.getFindings();
+//					for (FindingBean findingBean : findings) {
+//						charService.saveFinding(findingBean, user);
+//					}
+//					charService.saveCharacterization(sampleBean, charBean, user);
+//					if (logger.isDebugEnabled()) {
+//						logger.debug("charBean saved: " + sampleName + ", " + cellLine);
+//						count++;
+//					}
+//				} catch (Exception e) {
+//					logger.error("Error saving charBean: " + sampleName + ", " + cellLine, e);
+//					continue;
+//				}
 			}
 		}
 		if (logger.isDebugEnabled()) {
