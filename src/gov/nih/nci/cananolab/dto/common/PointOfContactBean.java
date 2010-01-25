@@ -71,7 +71,7 @@ public class PointOfContactBean {
 		}
 		String orgName = "";
 		if (domain.getOrganization() != null) {
-			orgName = domain.getOrganization().getName();
+			orgName = domain.getOrganization().getAbbreviatedName();
 		}
 		List<String> nameStrs = new ArrayList<String>();
 		nameStrs.add(domain.getFirstName());
@@ -150,7 +150,7 @@ public class PointOfContactBean {
 		}
 		List<String> orgStrs = new ArrayList<String>();
 		if (domain.getOrganization() != null) {
-			orgStrs.add(domain.getOrganization().getName());
+			orgStrs.add(domain.getOrganization().getAbbreviatedName());
 			orgStrs.add(domain.getOrganization().getStreetAddress1());
 			orgStrs.add(domain.getOrganization().getStreetAddress2());
 
