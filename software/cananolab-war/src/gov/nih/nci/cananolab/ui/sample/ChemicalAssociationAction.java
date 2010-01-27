@@ -1,11 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.dto.common.MaterialBean;
 import gov.nih.nci.cananolab.dto.common.ChemicalAssociationBean;
-import gov.nih.nci.cananolab.dto.common.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.common.CompositionBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.common.SampleBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
@@ -13,10 +9,6 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -233,46 +233,46 @@ public class MaterialBean {
 			copy
 					.setMaterialComponentCollection(new HashSet<MaterialComponent>());
 			copy.getMaterialComponentCollection().addAll(ces);
-			for (MaterialComponent mc : copy.getMaterialComponentCollection()) {
-				mc.setId(null);
-				mc.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				if (mc.getFunctionCollection().isEmpty()) {
-					mc.setFunctionCollection(null);
-				} else {
-					Collection<Function> functions = mc.getFunctionCollection();
-					mc.setFunctionCollection(new HashSet<Function>());
-					mc.getFunctionCollection().addAll(functions);
-					for (Function function : mc.getFunctionCollection()) {
-						function.setId(null);
-						function
-								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						if (function instanceof TargetingFunction) {
-							((TargetingFunction) function)
-									.setTargetCollection(null);
-							if (((TargetingFunction) function)
-									.getTargetCollection() == null
-									|| ((TargetingFunction) function)
-											.getTargetCollection().isEmpty()) {
-								((TargetingFunction) function)
-										.setTargetCollection(null);
-							} else {
-								Collection<Target> targets = ((TargetingFunction) function)
-										.getTargetCollection();
-								((TargetingFunction) function)
-										.setTargetCollection(new HashSet<Target>());
-								((TargetingFunction) function)
-										.getTargetCollection().addAll(targets);
-								for (Target target : ((TargetingFunction) function)
-										.getTargetCollection()) {
-									target.setId(null);
-									target
-											.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-								}
-							}
-						}
-					}
-				}
-			}
+//			for (MaterialComponent mc : copy.getMaterialComponentCollection()) {
+//				mc.setId(null);
+//				mc.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+//				if (mc.getFunctionCollection().isEmpty()) {
+//					mc.setFunctionCollection(null);
+//				} else {
+//					Collection<Function> functions = mc.getFunctionCollection();
+//					mc.setFunctionCollection(new HashSet<Function>());
+//					mc.getFunctionCollection().addAll(functions);
+//					for (Function function : mc.getFunctionCollection()) {
+//						function.setId(null);
+//						function
+//								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+//						if (function instanceof TargetingFunction) {
+//							((TargetingFunction) function)
+//									.setTargetCollection(null);
+//							if (((TargetingFunction) function)
+//									.getTargetCollection() == null
+//									|| ((TargetingFunction) function)
+//											.getTargetCollection().isEmpty()) {
+//								((TargetingFunction) function)
+//										.setTargetCollection(null);
+//							} else {
+//								Collection<Target> targets = ((TargetingFunction) function)
+//										.getTargetCollection();
+//								((TargetingFunction) function)
+//										.setTargetCollection(new HashSet<Target>());
+//								((TargetingFunction) function)
+//										.getTargetCollection().addAll(targets);
+//								for (Target target : ((TargetingFunction) function)
+//										.getTargetCollection()) {
+//									target.setId(null);
+//									target
+//											.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
 		}
 		if (copy.getFileCollection() == null
 				|| copy.getFileCollection().isEmpty()) {
