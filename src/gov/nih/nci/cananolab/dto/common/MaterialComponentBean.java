@@ -2,10 +2,11 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.MaterialComponent;
 
-public class MaterialComponentBean extends MaterialBean{
+public class MaterialComponentBean {
 	private MaterialComponent domain=new MaterialComponent();
-
-	public MaterialComponent getDomain() {
+	private MaterialBean componentMaterial;
+	
+	public MaterialComponent getDomain() {  
 		return domain;
 	}
 	

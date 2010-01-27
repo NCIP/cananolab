@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.dto.common.CompositionBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.GridDownException;
@@ -345,7 +344,7 @@ public class InitSetup {
 				new LabelValueBean("<=", "<=") };
 		appContext.setAttribute("numberOperands", numberOperands);
 
-		appContext.setAttribute("allCompositionSections",
-				CompositionBean.ALL_COMPOSITION_SECTIONS);
+//		appContext.setAttribute("allCompositionSections",
+//				CompositionBean.ALL_COMPOSITION_SECTIONS);
 	}
 }

@@ -21,7 +21,7 @@ public class TableCell {
 	}
 
 	public TableCell(Datum datum) {
-		this.datumOrCondition = CharacterizationResultBean.DATUM_TYPE;
+//		this.datumOrCondition = CharacterizationResultBean.DATUM_TYPE;
 		// display bogus placeholder datum as emtpy string
 		if (datum.getValue() == null
 				|| datum.getValue() == -1
