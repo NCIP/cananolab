@@ -28,21 +28,16 @@
 			<key column="material_a_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.ChemicalAssociation"/>
 		</set>
-		<set name="functionCollection" lazy="true" cascade="all-delete-orphan">
-			<cache usage="read-write" />
-			<key column="material_pk_id" />
-			<one-to-many class="gov.nih.nci.cananolab.domain.common.Function"/>
-		</set>
-		<many-to-one name="activationMethod" class="gov.nih.nci.cananolab.domain.common.ActivationMethod" column="activation_method_pk_id" unique="true" lazy="proxy" cascade="save-update"/>
+		<many-to-one name="activationMethod" class="gov.nih.nci.cananolab.domain.common.ActivationMethod" column="activation_method_pk_id" unique="true" lazy="proxy" />
 		<set name="materialComponentCollection" lazy="true" cascade="all-delete-orphan">
 			<cache usage="read-write" />
 			<key column="parent_material_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.MaterialComponent"/>
 		</set>
-		<set name="chemicalAssociationBCollection" lazy="true" inverse="true">
+		<set name="functionCollection" lazy="true" cascade="all-delete-orphan">
 			<cache usage="read-write" />
-			<key column="material_b_pk_id" />
-			<one-to-many class="gov.nih.nci.cananolab.domain.common.ChemicalAssociation"/>
+			<key column="material_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.Function"/>
 		</set>
 		<join table="sample_material" inverse="false" optional="true">
 			<key column="material_pk_id" />
@@ -52,6 +47,11 @@
 			<cache usage="read-write" />
 			<key column="material_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+		</set>
+		<set name="chemicalAssociationBCollection" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="material_b_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.ChemicalAssociation"/>
 		</set>
 		<subclass name="gov.nih.nci.cananolab.domain.material.Emulsion" discriminator-value="Emulsion">
 			<join table="emulsion">
@@ -65,13 +65,6 @@
 		<subclass name="gov.nih.nci.cananolab.domain.material.OtherMaterial" discriminator-value="OtherMaterial">
 			<!-- Attributes mapping for the OtherMaterial class -->
 			<property name="type" type="string" column="other_material_type"/>
-
-		</subclass>
-		<subclass name="gov.nih.nci.cananolab.domain.common.MaterialComponent" discriminator-value="MaterialComponent">
-			<!-- Attributes mapping for the MaterialComponent class -->
-			<property name="type" type="string" column="child_material_type"/>
-			<!-- Associations mapping for the MaterialComponent class -->
-			<many-to-one name="material" class="gov.nih.nci.cananolab.domain.common.Material" column="parent_material_pk_id" lazy="proxy" />
 
 		</subclass>
 		<subclass name="gov.nih.nci.cananolab.domain.material.QuantumDot" discriminator-value="QuantumDot">
