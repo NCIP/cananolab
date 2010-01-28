@@ -40,20 +40,7 @@
 
 		</subclass>
 		<subclass name="gov.nih.nci.cananolab.domain.common.Publication" discriminator-value="Publication">
-			<join table="publication">
-				<key column="publication_pk_id" />
-			<!-- Attributes mapping for the Publication class -->
-			<property name="category" type="string" column="category"/>
-			<property name="digitalObjectId" type="string" column="digital_object_id"/>
-			<property name="endPage" type="string" column="end_page"/>
-			<property name="journalName" type="string" column="journal_name"/>
-			<property name="pubMedId" type="long" column="pubmed_id"/>
-			<property name="researchArea" type="string" column="research_area"/>
-			<property name="startPage" type="string" column="start_page"/>
-			<property name="status" type="string" column="publication_status"/>
-			<property name="volume" type="string" column="volume"/>
-			<property name="year" type="integer" column="year"/>
-			<!-- Associations mapping for the Publication class -->
+						<!-- Associations mapping for the Publication class -->
 			<set name="authorCollection" table="author_publication" lazy="true" inverse="false" cascade="save-update">
 				<cache usage="read-write" />
 				<key column="publication_pk_id" />
@@ -69,7 +56,19 @@
 				<key column="publication_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.Sample" column="sample_pk_id" />
 			</set>
-
+			<join table="publication">
+				<key column="publication_pk_id" />
+			<!-- Attributes mapping for the Publication class -->
+			<property name="category" type="string" column="category"/>
+			<property name="digitalObjectId" type="string" column="digital_object_id"/>
+			<property name="endPage" type="string" column="end_page"/>
+			<property name="journalName" type="string" column="journal_name"/>
+			<property name="pubMedId" type="long" column="pubmed_id"/>
+			<property name="researchArea" type="string" column="research_area"/>
+			<property name="startPage" type="string" column="start_page"/>
+			<property name="status" type="string" column="publication_status"/>
+			<property name="volume" type="string" column="volume"/>
+			<property name="year" type="integer" column="year"/>
 			</join>
 		</subclass>
 	</class>
