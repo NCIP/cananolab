@@ -21,7 +21,7 @@
 	<tr>
 		<th align="left">
 			Sample &nbsp;&nbsp;&nbsp;
-			<a href="study.do?dispatch=sampleAdd"
+			<a href="studySample.do?dispatch=setupNew"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" /></a>
 		</th>

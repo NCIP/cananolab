@@ -27,15 +27,8 @@
 			type="gov.nih.nci.cananolab.ui.study.StudyAction"
 			parameter="dispatch" input="input" scope="request">
 			<forward name="input" path="/study.do?dispatch=input&amp;page=0" />
-			<forward name="inputForm" path="study.submitStudy" />
-			<forward name="studyEdit" path="study.studyInfo" />
-			<forward name="sampleSummary" path="study.sample.summaryEdit" />
-			<forward name="sampleAdd" path="study.sample.add" />
-			<forward name="animalSummary" path="study.animalInfo" />
-			<forward name="charSummary" path="study.char.summary" />
-			<forward name="charEdit" path="study.char.edit" />
-			<forward name="protocolSummary" path="study.protocol" />
-			<forward name="publicationSummary" path="study.publication" />
+			<forward name="inputForm" path="study.input" />
+			<forward name="setupUpdate" path="study.studyInfo" />
 		</action>
 
 		<action path="/searchStudy"
@@ -45,6 +38,17 @@
 			<forward name="input" path="/searchStudy.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="study.search.input" />
 			<forward name="searchResult" path="study.search.result" />
+		</action>
+
+		<action path="/studySample"
+			name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudySampleAction"
+			parameter="dispatch" input="input" scope="request">
+			<forward name="input" path="/studySample.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.sample.add" />
+			<forward name="summaryEdit" path="study.sample.summaryEdit" />
+			<forward name="summaryView" path="study.sample.summaryView" />
+			<forward name="sampleAdd" path="study.sample.add" />
 		</action>
 
 		<action path="/studyAnimalModel"
