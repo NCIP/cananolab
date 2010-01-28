@@ -51,8 +51,46 @@
 		</td>
 	</tr>
 	<tr>
-		<c:url var="studyInfoUrl" value="study.do">
-			<c:param name="dispatch" value="studySummary" />
+		<c:choose>
+			<c:when
+				test="${theSample.hasComposition|| !empty user && user.curator}">
+				<c:url var="compUrl" value="composition.do">
+					<c:param name="dispatch" value="${dispatch}" />
+					<c:param name="sampleId" value="${sampleId}" />
+					<c:param name="location" value="${location}" />
+					<c:param name="page" value="0" />
+					<c:param name="tab" value="ALL"/>
+				</c:url>
+				<c:choose>
+					<c:when
+						test="${actionPath eq '/composition.do' || actionPath eq '/nanomaterialEntity.do' || actionPath eq '/functionalizingEntity.do' ||actionPath eq '/chemicalAssociation.do' ||actionPath eq '/compositionFile.do'}">
+						<td class="subMenuSecondaryTitleSelected"
+							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+							onclick="gotoPage('${compUrl}')" height="20">
+							<a class="subMenuSecondary">COMPOSITION</a>
+						</td>
+					</c:when>
+					<c:otherwise>
+						<td class="subMenuSecondaryTitle"
+							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+							onclick="gotoPage('${compUrl}')" height="20">
+							<a class="subMenuSecondary">COMPOSITION</a>
+						</td>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<c:otherwise>
+				<td class="subMenuSecondaryTitle" height="20">
+					<i>COMPOSITION</i>
+				</td>
+			</c:otherwise>
+		</c:choose>
+
+
+		<c:url var="studyInfoUrl" value="studySample.do">
+			<c:param name="dispatch" value="summaryEdit" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
