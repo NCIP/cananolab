@@ -103,7 +103,7 @@ function validateSaveConfig(actionName) {
 function addInstrument() {
 	var instrument = {id:null, manufacturer:null, modelName:null, type:null};
 	dwr.util.getValues(instrument);
-	if (instrument.id == null || instrument.id == "") {
+	if (instrument.id == null || instrument.id == NaN) {
 		instrument.id = -1000 - numberOfInstruments;
 	}
 	if (instrument.manufacturer != "" || instrument.modelName != "" || instrument.type != "") {
@@ -123,7 +123,7 @@ function addInstrument() {
 	}
 }
 function clearInstrument() {
-	document.getElementById("id").value = "";
+	document.getElementById("id").value = null;
 	document.getElementById("manufacturer").value = "";
 	document.getElementById("modelName").value = "";
 	document.getElementById("type").value = "";
