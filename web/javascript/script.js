@@ -396,15 +396,17 @@ function populateFile(file) {
 	}
 }
 function displayFileRadioButton() {
-	var external0 = dwr.util.getValue("external0");
-	var external1 = dwr.util.getValue("external1");
-	show("load");
-	hide("link");
-	show("uploadedUri");
-	if (external0 == false && external1 == true) {
-		show("link");
-		hide("load");
-		hide("uploadedUri");
+	var external0 = document.getElementById("external0");
+	var external1 = document.getElementById("external1");
+	if (external0 != null && external1 != null) {
+		show("load");
+		show("uploadedUri");
+		hide("link");
+		if (!external0.checked && external1.checked) {
+			show("link");
+			hide("load");
+			hide("uploadedUri");
+		}
 	}
 }
 function deleteData(type, form, actionName) {
