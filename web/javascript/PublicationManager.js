@@ -246,7 +246,7 @@ function deleteTheAuthor() {
 	var eleid = document.getElementById("id").value;
 	// we were an id of the form "delete{id}", eg "delete42". We lookup the "42"
 	// var author = authorCache[eleid.substring(6)];
-	if (eleid != "") {
+	if (eleid != null && eleid != NaN) {
 		var author = authorCache[eleid];
 		if (confirm("Are you sure you want to delete '" + author.firstName
 				+ " " + author.lastName + "'?")) {
