@@ -48,18 +48,16 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.hssf.util.HSSFColor.BLUE;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving samples
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -70,10 +68,10 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
+	 * 
 	 * @param sample
-	 * @throws SampleException ,
-	 *             DuplicateEntriesException
+	 * @throws SampleException
+	 *             , DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean, UserBean user)
 			throws SampleException, DuplicateEntriesException,
@@ -103,8 +101,7 @@ public class SampleServiceLocalImpl implements SampleService {
 							Keyword.class, "name", keyword.getName());
 					if (dbKeyword != null) {
 						keyword.setId(dbKeyword.getId());
-					}
-					else {
+					} else {
 						keyword.setId(null);
 					}
 					// turned off cascade save-update in order to share the same
@@ -155,21 +152,27 @@ public class SampleServiceLocalImpl implements SampleService {
 					.getApplicationService();
 			PointOfContact domainPOC = pocBean.getDomain();
 			Organization domainOrg = domainPOC.getOrganization();
+			PointOfContact dbPointOfContact = null;
+			// if update an existing POC
+			if (domainPOC.getId() != null) {
+				dbPointOfContact = helper.findPointOfContactById(domainPOC
+						.getId().toString(), user);
+			}
+			else {
+				dbPointOfContact = helper.findPointOfContactByNameAndOrg(
+						domainPOC.getFirstName(), domainPOC.getLastName(),
+						domainPOC.getOrganization().getName(), user);
+			}
 			// get created by and created date from database
-			PointOfContact dbPointOfContact = helper
-					.findPointOfContactByNameAndOrg(domainPOC.getFirstName(),
-							domainPOC.getLastName(), domainPOC
-									.getOrganization().getName(), user);
 			if (dbPointOfContact != null) {
 				domainPOC.setId(dbPointOfContact.getId());
 				domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
 				domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
 			}
-			//create a new POC if not an existing one
+			// create a new POC if not an existing one
 			else {
 				domainPOC.setId(null);
 			}
-
 			// get created by and created date from database
 			Organization dbOrganization = helper.findOrganizationByName(
 					domainOrg.getName(), user);
@@ -178,7 +181,7 @@ public class SampleServiceLocalImpl implements SampleService {
 				domainOrg.setCreatedBy(dbOrganization.getCreatedBy());
 				domainOrg.setCreatedDate(dbOrganization.getCreatedDate());
 			}
-			//create a new org if not an existing one
+			// create a new org if not an existing one
 			else {
 				domainOrg.setId(null);
 			}
@@ -244,7 +247,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -625,31 +628,12 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public PointOfContactBean findPointOfContactById(String POCId, UserBean user)
+	public PointOfContactBean findPointOfContactById(String pocId, UserBean user)
 			throws PointOfContactException, NoAccessException {
 		PointOfContactBean pocBean = null;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(PointOfContact.class);
-			crit.setFetchMode("organization", FetchMode.JOIN);
-			crit.add(Restrictions.eq("id", new Long(POCId)));
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				PointOfContact poc = (PointOfContact) obj;
-				if (helper.getAuthService().checkReadPermission(user,
-						poc.getId().toString())) {
-					pocBean = new PointOfContactBean(poc);
-					if (user != null)
-						retrieveVisibility(pocBean);
-				} else {
-					throw new NoAccessException();
-				}
-			}
+			PointOfContact poc = helper.findPointOfContactById(pocId, user);
+			pocBean = new PointOfContactBean(poc);
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -865,23 +849,23 @@ public class SampleServiceLocalImpl implements SampleService {
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
-	
+
 		HSSFCellStyle hlinkStyle = wb.createCellStyle();
 		HSSFFont hlinkFont = wb.createFont();
 		hlinkFont.setUnderline(HSSFFont.U_SINGLE);
 		hlinkFont.setColor(HSSFColor.BLUE.index);
 		hlinkStyle.setFont(hlinkFont);
-	
+
 		int rowIndex = 0;
 		HSSFSheet sheet = wb.createSheet("Advanced Sample Search Report");
-	
+
 		// 1.Output Search Criteria. comment out as per Sharon.
 		// rowIndex = outputCriteria(searchBean, sheet, headerStyle, rowIndex);
-	
+
 		// 2.Output table column headers.
 		rowIndex = outputHeader(sampleBeans.get(0), sheet, headerStyle,
 				rowIndex);
-	
+
 		// 3.Output each table row.
 		for (AdvancedSampleBean sampleBean : sampleBeans) {
 			rowIndex = outputRow(sampleBean, viewSampleUrl, sheet, hlinkStyle,
@@ -897,18 +881,18 @@ public class SampleServiceLocalImpl implements SampleService {
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
-	 *
-	private static int outputCriteria(AdvancedSampleSearchBean searchBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) { 
-		// 1. Output "Selected Criteria" at (0, 0).
-		HSSFRow row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, headerStyle, "Selected Criteria"); 
-		// 2. Output Criteria Display Name at(1, 0).
-		row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, searchBean.getDisplayName());
-		rowIndex++; // Create one empty line as separator.
-		return rowIndex;
-	}*/
+	 * 
+	 *            private static int outputCriteria(AdvancedSampleSearchBean
+	 *            searchBean, HSSFSheet sheet, HSSFCellStyle headerStyle, int
+	 *            rowIndex) { // 1. Output "Selected Criteria" at (0, 0).
+	 *            HSSFRow row = sheet.createRow(rowIndex++);
+	 *            ExportUtils.createCell(row, 0, headerStyle,
+	 *            "Selected Criteria"); // 2. Output Criteria Display Name at(1,
+	 *            0). row = sheet.createRow(rowIndex++);
+	 *            ExportUtils.createCell(row, 0, searchBean.getDisplayName());
+	 *            rowIndex++; // Create one empty line as separator. return
+	 *            rowIndex; }
+	 */
 
 	/**
 	 * Output headers for work sheet.
@@ -925,7 +909,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		int columnIndex = 0;
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, columnIndex++, headerStyle, "Sample Name");
-	
+
 		// 2. Output selected column(s).
 		Map<String, List<LinkableItem>> columns = sampleBean.getAttributeMap();
 		if (columns != null && !columns.isEmpty()) {
@@ -934,10 +918,10 @@ public class SampleServiceLocalImpl implements SampleService {
 						.replaceAll("<br>", " "));
 			}
 		}
-	
+
 		// 3. Output "Site" at last column.
 		ExportUtils.createCell(row, columnIndex, headerStyle, "Site");
-	
+
 		return rowIndex;
 	}
 
@@ -957,7 +941,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, hlinkStyle, sampleBean.getSampleName(),
 				getViewSampleURL(sampleBean, viewSampleUrl));
-	
+
 		// 2. Output selected column(s) starting from index 1.
 		int columnIndex = 1;
 		Map<String, List<LinkableItem>> columns = sampleBean.getAttributeMap();
@@ -973,10 +957,10 @@ public class SampleServiceLocalImpl implements SampleService {
 				ExportUtils.createCell(row, columnIndex++, sb.toString());
 			}
 		}
-	
+
 		// 3. Output last column - Location.
 		ExportUtils.createCell(row, columnIndex, sampleBean.getLocation());
-	
+
 		return rowIndex;
 	}
 
@@ -991,7 +975,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		StringBuilder sb = new StringBuilder(viewSampleUrl);
 		sb.append("&sampleId=").append(sample.getSampleId());
 		sb.append("&location=").append(sample.getLocation());
-	
+
 		return sb.toString();
 	}
 
