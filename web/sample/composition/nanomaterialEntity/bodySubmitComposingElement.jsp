@@ -256,7 +256,7 @@
 		<td>
 			<c:if test="${!empty user && user.curator && user.admin}">
 				<input type="button" value="Remove"
-					onclick="removeComposingElement('nanomaterialEntity');clearComposingElement()"
+					onclick="removeComposingElement('nanomaterialEntity')"
 					id="deleteComposingElement" style="display: none;" />
 			</c:if>
 		</td>
