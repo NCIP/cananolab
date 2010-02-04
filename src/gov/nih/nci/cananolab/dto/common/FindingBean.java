@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -266,15 +267,14 @@ public class FindingBean {
 
 	public void setupDomain(String createdBy) throws Exception {
 		int i = 0;
+		Date currentDate = Calendar.getInstance().getTime();
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
 		}
-		if (domain.getId() == null
-				|| !StringUtils.isEmpty(domain.getCreatedBy())
-				&& Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain
-						.getCreatedBy())) {
+		if (domain.getId() == null ||
+			Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain.getCreatedBy())) {
 			domain.setCreatedBy(createdBy);
-			domain.setCreatedDate(new Date());
+			domain.setCreatedDate(currentDate);
 		}
 		if (domain.getDatumCollection() != null) {
 			domain.getDatumCollection().clear();
@@ -286,8 +286,15 @@ public class FindingBean {
 		} else {
 			domain.setFileCollection(new HashSet<File>());
 		}
+		// Setup uploaded files and add them to file collection.
 		for (FileBean file : files) {
-			domain.getFileCollection().add(file.getDomainFile());
+			File newFile = file.getDomainFile();
+			if (StringUtils.isEmpty(newFile.getCreatedBy()) || 
+				Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(newFile.getCreatedBy())) {
+				newFile.setCreatedBy(createdBy); // required field in DB.
+				newFile.setCreatedDate(currentDate);
+			}
+			domain.getFileCollection().add(newFile);
 		}
 
 		for (Row row : rows) {
