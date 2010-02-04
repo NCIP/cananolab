@@ -213,7 +213,7 @@
 					<td>
 						<c:if test="${!empty user && user.curator && user.admin}">
 							<input type="button" value="Remove"
-								onclick="removePointOfContact('sample');clearPointOfContact();"
+								onclick="removePointOfContact('sample')"
 								id="deletePointOfContact" style="display: none;" />
 						</c:if>
 					</td>
