@@ -1,0 +1,310 @@
+package gov.nih.nci.cananolab.service.sample.helper;
+
+import gov.nih.nci.cananolab.domain.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
+
+/**
+ * Service methods involving characterizations
+ *
+ * @author tanq, pansu
+ */
+public class CharacterizationServiceHelper {
+	private static Logger logger = Logger
+			.getLogger(CharacterizationServiceHelper.class);
+	private AuthorizationService authService;
+
+	public CharacterizationServiceHelper() {
+		try {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
+
+	public List<String> findOtherCharacterizationByAssayCategory(
+			String assayCategory) throws Exception {
+		List<String> charNames = new ArrayList<String>();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				OtherCharacterization.class).add(
+				Property.forName("assayCategory").eq(assayCategory));
+		List result = appService.query(crit);
+		for (Object obj : result) {
+			charNames.add(((OtherCharacterization) obj).getName());
+		}
+		return charNames;
+	}
+
+	public Protocol findProtocolByCharacterizationId(
+			java.lang.String characterizationId, UserBean user)
+			throws Exception {
+		Protocol protocol = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.particle.Characterization aChar where aChar.id="
+				+ characterizationId;
+		HQLCriteria crit = new HQLCriteria(hql);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			protocol = (Protocol) obj;
+			if (authService.checkReadPermission(user, protocol.getId()
+					.toString())) {
+				return protocol;
+			} else {
+				logger.debug("User doesn't have access to the protocol.");
+			}
+		}
+		return protocol;
+	}
+
+//	public List<Finding> findFindingsByCharacterizationId(String charId,
+//			UserBean user) throws Exception {
+//		List<Finding> findings = new ArrayList<Finding>();
+//
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		DetachedCriteria crit = DetachedCriteria.forClass(
+//				Characterization.class).add(
+//				Property.forName("id").eq(new Long(charId)));
+//		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+//		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+//		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+//				FetchMode.JOIN);
+//		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+//		crit.setFetchMode(
+//				"findingCollection.datumCollection.conditionCollection",
+//				FetchMode.JOIN);
+//		List result = appService.query(crit);
+//		if (!result.isEmpty()) {
+//			Characterization achar = (Characterization) result.get(0);
+//			// check whether user has access to the characterization
+//			if (authService.checkReadPermission(user, achar.getId().toString())) {
+//				findings.addAll(achar.getFindingCollection());
+//				return findings;
+//			} else {
+//				logger.debug("USer doesn't have access to the sample");
+//			}
+//		}
+//		return findings;
+//	}
+
+	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(
+			String charId, UserBean user) throws Exception {
+		List<ExperimentConfig> configs = new ArrayList<ExperimentConfig>();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Characterization.class).add(
+				Property.forName("id").eq(new Long(charId)));
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
+				FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			Characterization achar = (Characterization) result.get(0);
+			// check whether user has access to the characterization
+			if (authService.checkReadPermission(user, achar.getId().toString())) {
+				configs.addAll(achar.getExperimentConfigCollection());
+				return configs;
+			} else {
+				logger.debug("USer doesn't have access to the sample");
+			}
+		}
+		return configs;
+	}
+
+	public List<File> findFilesByCharacterizationId(String charId, UserBean user)
+			throws Exception {
+		List<File> fileCollection = new ArrayList<File>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select achar.fileCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
+						+ charId);
+		List results = appService.query(crit);
+		List filteredResults = new ArrayList(results);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
+		}
+		for (Object obj : filteredResults) {
+			File file = (File) obj;
+			if (user == null
+					|| authService.checkReadPermission(user, file.getId()
+							.toString())) {
+				fileCollection.add(file);
+			} else {
+				logger.debug("USer doesn't have access to file of id: "
+						+ file.getId());
+			}
+		}
+		return fileCollection;
+	}
+
+	public ExperimentConfig findExperimentConfigById(String id, UserBean user)
+			throws ExperimentConfigException, NoAccessException {
+		ExperimentConfig config = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					ExperimentConfig.class).add(
+					Property.forName("id").eq(new Long(id)));
+			crit.setFetchMode("technique", FetchMode.JOIN);
+			crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				config = (ExperimentConfig) result.get(0);
+				if (authService.checkReadPermission(user, config.getId()
+						.toString())) {
+					return config;
+				} else {
+					throw new NoAccessException();
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem to retrieve experiment config by id.";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err);
+		}
+		return config;
+	}
+
+	public AuthorizationService getAuthService() {
+		return authService;
+	}
+
+	public void assignVisibility(Characterization aChar,
+			String[] visibleGroups, String owningGroup) throws Exception {
+		// characterization
+		if (aChar != null && aChar.getId() != null) {
+			authService.assignVisibility(aChar.getId().toString(),
+					visibleGroups, owningGroup);
+//			if (aChar.getFindingCollection() != null) {
+//				for (Finding finding : aChar.getFindingCollection()) {
+//					if (finding != null) {
+//						authService.assignVisibility(
+//								finding.getId().toString(), visibleGroups,
+//								owningGroup);
+//					}
+//					// datum, need to check for null for copy bean.
+//					if (finding.getDatumCollection() != null) {
+//						for (Datum datum : finding.getDatumCollection()) {
+//							if (datum != null && datum.getId() != null) {
+//								authService
+//										.assignVisibility(datum.getId()
+//												.toString(), visibleGroups,
+//												owningGroup);
+//							}
+//							// condition
+//							if (datum.getConditionCollection() != null) {
+//								for (Condition condition : datum
+//										.getConditionCollection()) {
+//									authService.assignVisibility(condition
+//											.getId().toString(), visibleGroups,
+//											owningGroup);
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+			// ExperimentConfiguration
+			if (aChar.getExperimentConfigCollection() != null) {
+				for (ExperimentConfig config : aChar
+						.getExperimentConfigCollection()) {
+					authService.assignVisibility(config.getId().toString(),
+							visibleGroups, owningGroup);
+					// assign instruments and technique to public visibility
+					if (config.getTechnique() != null) {
+						authService.assignVisibility(config.getTechnique()
+								.getId().toString(),
+								new String[] { Constants.CSM_PUBLIC_GROUP },
+								null);
+					}
+					if (config.getInstrumentCollection() != null) {
+						for (Instrument instrument : config
+								.getInstrumentCollection()) {
+							authService
+									.assignVisibility(
+											instrument.getId().toString(),
+											new String[] { Constants.CSM_PUBLIC_GROUP },
+											null);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void removeVisibility(Characterization aChar) throws Exception {
+		// characterization
+		if (aChar != null) {
+			authService.removeCSMEntry(aChar.getId().toString());
+//			for (Finding finding : aChar.getFindingCollection()) {
+//				if (finding != null) {
+//					removeVisibility(finding);
+//				}
+//			}
+
+			// ExperimentConfiguration
+			for (ExperimentConfig config : aChar
+					.getExperimentConfigCollection()) {
+				authService.removeCSMEntry(config.getId().toString());
+			}
+		}
+	}
+
+//	public void removeVisibility(Finding finding) throws Exception {
+//		authService.removeCSMEntry(finding.getId().toString());
+//
+//		// datum
+//		if (finding.getDatumCollection() != null) {
+//			for (Datum datum : finding.getDatumCollection()) {
+//				if (datum != null) {
+//					authService.removeCSMEntry(datum.getId().toString());
+//				}
+//				if (datum.getConditionCollection() != null) {
+//					for (Condition condition : datum.getConditionCollection()) {
+//						authService
+//								.removeCSMEntry(condition.getId().toString());
+//					}
+//				}
+//			}
+//		}
+//		// file
+//		if (finding.getFileCollection() != null) {
+//			for (File file : finding.getFileCollection()) {
+//				authService.removeCSMEntry(file.getId().toString());
+//			}
+//		}
+//	}
+}

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="caNanoLab-standalone" default="test-connection-pool"
+	basedir=".">
+	<property name="file.separator" value="/" />
+	<property file="deploy.properties" />
+	<target name="init-standalone">
+		<!-- create the necessary folders -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${tmp.dir}" />
+		<mkdir dir="${tmp.dir}/classes" />
+	</target>
+	<target name="compile-standalone"
+		depends="clean, init-standalone">
+		<echo
+			message="*****************************************************" />
+		<echo message="**   Compiling Java Classes ...          		  **" />
+		<echo
+			message="*****************************************************" />
+		<path id="cp">
+			<fileset dir="${webapp.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		<javac srcdir="${src.dir}" destdir="${tmp.dir}/classes"
+			debug="true">
+			<exclude
+				name="gov/nih/nci/cananolab/dto/particle/NanoparticleDecorator.java" />
+			<exclude name="test/TestGrid.java" />
+			<exclude name="gov/nih/nci/cananolab/ui/**" />
+			<exclude
+				name="gov/nih/nci/cananolab/service/common/GridService.java" />
+			<exclude
+				name="gov/nih/nci/cananolab/service/**/impl/*RemoteImpl.java" />
+			<classpath refid="cp" />
+		</javac>
+
+		<!--copy xml and properties files -->
+		<copy todir="${tmp.dir}/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml" />
+				<exclude name="hibernate.cfg.xml" />
+				<exclude name="caNanoLab.csm.new.hibernate.cfg.xml" />
+			</fileset>
+			<fileset dir="${conf.dir}/standalone">
+				<include name="ApplicationSecurityConfig.xml" />
+				<include name="login.config" />
+				<include name="caNanoLab.csm.hibernate.cfg.xml" />
+				<include name="hibernate.cfg.xml" />
+				<include name="log4j.properties" />
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${tmp.dir}/classes"
+			file="${src.dir}/caNanoLab.properties.template">
+			<!-- replace tokens with values from build properties -->
+			<filterset>
+				<filter token="FILE_REPOSITORY_DIR"
+					value="${file.repository.dir}" />
+				<filter token="APP_OWNER" value="${application.owner}" />
+				<filter token="GRID_INDEX_SERVER"
+					value="${grid.indexserver}" />
+			</filterset>
+		</copy>
+		<move file="${tmp.dir}/classes/caNanoLab.properties.template"
+			tofile="${tmp.dir}/classes/caNanoLab.properties" />
+	</target>
+
+	<target name="prepare-standalone-database-connection"
+		depends="compile-standalone">
+		<!-- replace database connection info -->
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_PASSWORD" value="${database.password}" />
+
+		<!-- use connection pool for CSM database connection-->
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_HOST" value="${database.host}" />
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_PORT" value="${database.port}" />
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_USER" value="${database.user}" />
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_PASSWORD" value="${database.password}" />
+
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/classes/login.config"
+			token="DATABASE_PASSWORD" value="${database.password}" />
+
+		<!-- specify directory for CSM hibernate config file location -->
+		<replace file="${tmp.dir}/classes/ApplicationSecurityConfig.xml"
+			token="CONF_PATH" value="${tmp.dir}/classes" />
+	</target>
+
+	<path id="class.path">
+		<fileset dir="${webapp.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}">
+			<include name="log4j.jar" />
+		</fileset>
+		<fileset dir="${conf.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${tmp.dir}/classes" />
+	</path>
+
+	<target name="test-connection-pool"
+		depends="prepare-standalone-database-connection">
+		<java classname="test.TestConnectionPool" fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
+	<target name="run-zscore-loader"
+		depends="prepare-standalone-database-connection">
+		<mkdir dir="/tmp/log" />
+		<java
+			classname="gov.nih.nci.cananolab.service.sample.ZScoreDataLoader"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+			<arg value="${curator.login.name}" />
+			<arg value="${curator.password}" />
+			<arg value="${zscore.excel}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
+	<target name="run-kelly-loader"
+		depends="prepare-standalone-database-connection">
+		<mkdir dir="/tmp/log" />
+		<java
+			classname="gov.nih.nci.cananolab.service.sample.KellyDataLoader"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+			<arg value="${curator.login.name}" />
+			<arg value="${curator.password}" />
+			<arg value="${kelly.excel}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
+	<target name="run-endnote-loader"
+		depends="prepare-standalone-database-connection">
+		<property file="endnote.properties" />
+		<java
+			classname="gov.nih.nci.cananolab.service.publication.EndNoteXMLHandler"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+			<arg value="${curator.login.name}" />
+			<arg value="${curator.password}" />
+			<arg value="${endnote.xml}" />
+			<arg value="${endnote.morelog}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
+	<target name="reset-csm-db-connection"
+		depends="prepare-standalone-database-connection">
+		<java
+			classname="gov.nih.nci.cananolab.service.security.AuthorizationService"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<arg value="org.hibernate.dialect.MySQLDialect" />
+			<arg value="com.mysql.jdbc.Driver" />
+			<arg
+				value="jdbc:mysql://${database.host}:${database.port}/canano" />
+			<arg value="${database.user}" />
+			<arg value="${database.password}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
+	<target name="reset-passwords"
+		depends="prepare-standalone-database-connection">
+		<java
+			classname="gov.nih.nci.cananolab.service.security.LoginService"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+
+	<target name="set-sample-associated-visibility"
+		depends="prepare-standalone-database-connection">
+		<java
+			classname="gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl"
+			fork="true">
+			<jvmarg value="-Xmx1024m"/>
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<sysproperty key="java.security.auth.login.config"
+				value="${tmp.dir}/classes/login.config" />
+			<arg value="${curator.login.name}" />
+			<arg value="${curator.password}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
+	</target>
+</project>

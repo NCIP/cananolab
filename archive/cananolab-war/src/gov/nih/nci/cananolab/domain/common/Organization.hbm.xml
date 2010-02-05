@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="Organization" table="organization" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="organization_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the Organization class -->
+		<property name="abbreviatedName" type="string" column="abbreviated_name"/>
+		<property name="city" type="string" column="city"/>
+		<property name="country" type="string" column="country"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="departmentName" type="string" column="department_name"/>
+		<property name="divisionName" type="string" column="division_name"/>
+		<property name="fullName" type="string" column="full_name"/>
+		<property name="postalCode" type="string" column="postal_code"/>
+		<property name="state" type="string" column="state"/>
+		<property name="streetAddress1" type="string" column="streetAddress1"/>
+		<property name="streetAddress2" type="string" column="streetAddress2"/>
+		<!-- Associations mapping for the Organization class -->
+		<set name="pointOfContactCollection" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="organization_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.PointOfContact"/>
+		</set>
+	</class>
+</hibernate-mapping>

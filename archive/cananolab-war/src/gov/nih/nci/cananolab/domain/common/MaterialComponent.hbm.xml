@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="MaterialComponent" table="material_component" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="material_component_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the MaterialComponent class -->
+		<property name="type" type="string" column="material_component_type"/>
+		<!-- Associations mapping for the MaterialComponent class -->
+		<many-to-one name="componentMaterial" class="gov.nih.nci.cananolab.domain.common.Material" column="component_material_pk_id" unique="true" lazy="proxy" />
+		<many-to-one name="parentMaterial" class="gov.nih.nci.cananolab.domain.common.Material" column="parent_material_pk_id" lazy="proxy" />
+	</class>
+</hibernate-mapping>

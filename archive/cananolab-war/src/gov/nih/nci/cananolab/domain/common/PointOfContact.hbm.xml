@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="PointOfContact" table="point_of_contact" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="poc_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the PointOfContact class -->
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="email" type="string" column="email"/>
+		<property name="firstName" type="string" column="first_name"/>
+		<property name="lastName" type="string" column="last_name"/>
+		<property name="middleInitial" type="string" column="middle_initial"/>
+		<property name="phone" type="string" column="phone"/>
+		<property name="role" type="string" column="role"/>
+		<!-- Associations mapping for the PointOfContact class -->
+		<many-to-one name="organization" class="gov.nih.nci.cananolab.domain.common.Organization" column="organization_pk_id" lazy="proxy" />
+	</class>
+</hibernate-mapping>
