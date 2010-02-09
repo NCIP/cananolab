@@ -1,10 +1,12 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.List;
@@ -15,9 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class sets up information required for canano forms.
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class InitSampleSetup {
 	private InitSampleSetup() {
@@ -129,5 +131,14 @@ public class InitSampleSetup {
 				"role", "otherRole",
 				sampleBean.getThePOC().getDomain().getRole());
 		setPOCDropdowns(request);
+	}
+
+	public void setSamplePOCs(HttpServletRequest request,
+			String sampleId) throws Exception {
+		// set point of contacts
+		SampleService service = new SampleServiceLocalImpl();
+		List<PointOfContactBean> pocs = service
+				.findPointOfContactsBySampleId(sampleId);
+		request.getSession().setAttribute("samplePointOfContacts", pocs);
 	}
 }
