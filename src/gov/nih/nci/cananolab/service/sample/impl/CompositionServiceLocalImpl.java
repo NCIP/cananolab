@@ -62,14 +62,14 @@ import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of CompositionService.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
 			.getLogger(CompositionServiceLocalImpl.class);
-	
+
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
 
@@ -359,6 +359,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			}
 			// write file to file system and assign visibility
 			fileService.writeFile(fileBean, user);
+			// assign visibility for composition
+
+			String[] visibleGroups = sampleBean.getVisibilityGroups();
+			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName();
+
+			helper.getAuthService().assignVisibility(
+					sample.getSampleComposition().getId().toString(),
+					visibleGroups, owningGroup);
+
 		} catch (Exception e) {
 			String err = "Error in saving the composition file.";
 			logger.error(err, e);
@@ -741,7 +751,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	public void copyAndSaveFunctionalizingEntity(
 			FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
 			SampleBean[] newSampleBeans, UserBean user)
-			throws CompositionException, NoAccessException {		
+			throws CompositionException, NoAccessException {
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				FunctionalizingEntityBean copyBean = null;
@@ -815,15 +825,15 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					sb.setLength(0);
 					sb.append(entityCount++).append('.').append(
 							nanoEntity.getType());
-	
+
 					// Create one work sheet for each Composition.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
 					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-	
+
 					// 1. Output Composition type at (0, 0).
 					rowIndex = outputHeader(CompositionBean.CHEMICAL_SELECTION,
 							nanoEntity.getType(), sheet, headerStyle, rowIndex);
-	
+
 					// 2. Output Bond Type.
 					if (nanoEntity.getAttachment().getId() != null
 							&& !StringUtils.isEmpty(nanoEntity.getAttachment()
@@ -834,7 +844,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						ExportUtils.createCell(row, 1, nanoEntity
 								.getAttachment().getBondType());
 					}
-	
+
 					// 3. Output Description.
 					if (!StringUtils.isEmpty(nanoEntity.getDescription())) {
 						HSSFRow row = sheet.createRow(rowIndex++);
@@ -843,13 +853,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						ExportUtils.createCell(row, 1, nanoEntity
 								.getDescription());
 					}
-	
+
 					// Output Associated Elements.
 					rowIndex++; // Create an empty line as seperator.
 					HSSFRow row = sheet.createRow(rowIndex++);
 					ExportUtils.createCell(row, 0, headerStyle,
 							"Associated Elements");
-	
+
 					// 4a. Output Associated Element A.
 					row = sheet.createRow(rowIndex++);
 					sb.setLength(0);
@@ -875,9 +885,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						sb.append(')');
 					}
 					ExportUtils.createCell(row, 0, sb.toString());
-	
+
 					ExportUtils.createCell(row, 1, "associated with");
-	
+
 					// 4b. Output Associated Element B.
 					sb.setLength(0);
 					sb.append(nanoEntity.getAssociatedElementB()
@@ -903,7 +913,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					}
 					ExportUtils.createCell(row, 2, sb.toString());
 					rowIndex++; // Create an empty line as seperator.
-	
+
 					// 5. Output Files: bodyFileView.jsp
 					List<FileBean> fileBeans = nanoEntity.getFiles();
 					if (fileBeans != null && !fileBeans.isEmpty()) {
@@ -932,16 +942,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			HSSFWorkbook wb, HSSFSheet sheet, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, HSSFPatriarch patriarch, int rowIndex) {
 		File file = fileBean.getDomainFile();
-	
+
 		// 1. output File Type.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, file.getType());
 		rowIndex++; // Create one empty line as separator.
-	
+
 		// 2. output Title and Download Link.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Title and Download Link");
-	
+
 		// Construct the URL for downloading the file.
 		StringBuilder sb = new StringBuilder(downloadURL);
 		sb.append(file.getId());
@@ -969,7 +979,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), sb
 					.toString());
 		}
-	
+
 		// 3. output Keywords.
 		Collection<Keyword> keywords = file.getKeywordCollection();
 		if (keywords != null && !keywords.isEmpty()) {
@@ -981,14 +991,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			ExportUtils.createCell(row, 0, headerStyle, "Keywords");
 			ExportUtils.createCell(row, 1, sb.substring(2));
 		}
-	
+
 		// 4. output Description.
 		if (!StringUtils.isEmpty(file.getDescription())) {
 			row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, "Description");
 			ExportUtils.createCell(row, 1, file.getDescription());
 		}
-	
+
 		return rowIndex;
 	}
 
@@ -1017,7 +1027,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				// 1. output File Type.
 				row = sheet.createRow(rowIndex++);
 				ExportUtils.createCell(row, 0, file.getType());
-	
+
 				/**
 				 * 2. output Title and Download Link. Construct the URL for
 				 * downloading the file.
@@ -1049,7 +1059,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
 							sb.toString());
 				}
-	
+
 				// 3. output Keywords.
 				Collection<Keyword> keywords = file.getKeywordCollection();
 				if (keywords != null && !keywords.isEmpty()) {
@@ -1059,7 +1069,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					}
 					ExportUtils.createCell(row, 2, sb.substring(2));
 				}
-	
+
 				// 4. output Description.
 				if (!StringUtils.isEmpty(file.getDescription())) {
 					ExportUtils.createCell(row, 3, file.getDescription());
@@ -1089,17 +1099,17 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					sb.setLength(0);
 					sb.append(entityCount++).append('.').append(
 							nanoEntity.getDomainFile().getType());
-	
+
 					// Create one work sheet for each Composition File.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
 					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-	
+
 					// 1. Output Composition type at (0, 0).
 					HSSFRow row = sheet.createRow(rowIndex++);
 					ExportUtils.createCell(row, 0, headerStyle,
 							CompositionBean.FILE_SELECTION);
 					rowIndex++; // Create one empty line as separator.
-	
+
 					// 2. Output File info, one File per sheet.
 					outputFile(nanoEntity, downloadURL, wb, sheet, headerStyle,
 							hlinkStyle, patriarch, rowIndex);
@@ -1120,19 +1130,19 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputFuncProperties(Antibody entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Type");
 		ExportUtils.createCell(row, 1, headerStyle, "Isotype");
 		ExportUtils.createCell(row, 2, headerStyle, "Species");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, entityBean.getType());
 		ExportUtils.createCell(row, 1, entityBean.getIsotype());
 		ExportUtils.createCell(row, 2, entityBean.getSpecies());
-	
+
 		return rowIndex;
 	}
 
@@ -1148,17 +1158,17 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	private static int outputFuncProperties(
 			gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Type");
 		ExportUtils.createCell(row, 1, headerStyle, "Isotype");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, entityBean.getType());
 		ExportUtils.createCell(row, 1, entityBean.getSequence());
-	
+
 		return rowIndex;
 	}
 
@@ -1173,12 +1183,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputFuncProperties(SmallMolecule entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output SmallMolecule Info.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Alternate Name");
 		ExportUtils.createCell(row, 1, entityBean.getAlternateName());
-	
+
 		return rowIndex;
 	}
 
@@ -1204,23 +1214,23 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					sb.setLength(0);
 					sb.append(entityCount++).append('.').append(
 							nanoEntity.getType());
-	
+
 					// Create 1 work sheet for each Functional Entity.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
 					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-	
+
 					// 1. Output Composition type at (0, 0).
 					rowIndex = outputHeader(
 							CompositionBean.FUNCTIONALIZING_SELECTION,
 							nanoEntity.getType(), sheet, headerStyle, rowIndex);
-	
+
 					// 2. Output Name.
 					if (!StringUtils.isEmpty(nanoEntity.getName())) {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Name");
 						ExportUtils.createCell(row, 1, nanoEntity.getName());
 					}
-	
+
 					// 3. Output PubChem.
 					if (nanoEntity.getDomainEntity().getPubChemId() != null) {
 						HSSFRow row = sheet.createRow(rowIndex++);
@@ -1237,7 +1247,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 								.toString(), CompositionServiceHelper
 								.getPubChemURL(pubChemDs, pubChemId));
 					}
-	
+
 					// Output Amount.
 					if (nanoEntity.getValue() != null) {
 						HSSFRow row = sheet.createRow(rowIndex++);
@@ -1247,7 +1257,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						sb.append(nanoEntity.getValueUnit());
 						ExportUtils.createCell(row, 1, sb.toString());
 					}
-	
+
 					// 5. Output Molecular Formula.
 					if (!StringUtils.isEmpty(nanoEntity
 							.getMolecularFormulaDisplayName())) {
@@ -1257,14 +1267,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						ExportUtils.createCell(row, 1, nanoEntity
 								.getMolecularFormulaDisplayName());
 					}
-	
+
 					// 6. Output Properties: 3x) "functionalizingEntity/*.jsp"
 					if (nanoEntity.isWithProperties()) {
 						rowIndex++; // Create one empty line as separator.
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle,
 								"Properties");
-	
+
 						FunctionalizingEntity domainEntity = nanoEntity
 								.getDomainEntity();
 						if (domainEntity instanceof Antibody) {
@@ -1282,7 +1292,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						}
 						rowIndex++; // Create one empty line as separator.
 					}
-	
+
 					// 7. Output Functions: bodyFunctionView.jsp
 					List<FunctionBean> functions = nanoEntity.getFunctions();
 					if (functions != null && !functions.isEmpty()) {
@@ -1292,7 +1302,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle,
 								"Function(s)");
-	
+
 						// 6.1. output Functions table header.
 						int colIndex = 0;
 						row = sheet.createRow(rowIndex++);
@@ -1308,12 +1318,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						}
 						ExportUtils.createCell(row, colIndex, headerStyle,
 								"Description");
-	
+
 						// 6.2. output Functions table data.
 						for (FunctionBean function : functions) {
 							colIndex = 0;
 							row = sheet.createRow(rowIndex++);
-	
+
 							ExportUtils.createCell(row, colIndex++, function
 									.getType());
 							if (nanoEntity.isWithImagingFunction()) {
@@ -1342,7 +1352,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						}
 						rowIndex++; // Create one empty line as separator.
 					}// 7. End of Output Functions: bodyFunctionView.jsp
-	
+
 					// 8. Output Activation Method.
 					if (!StringUtils.isEmpty(nanoEntity
 							.getActivationMethodDisplayName())) {
@@ -1352,7 +1362,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						ExportUtils.createCell(row, 1, nanoEntity
 								.getActivationMethodDisplayName());
 					}
-	
+
 					// 9. Output Description.
 					if (!StringUtils.isEmpty(nanoEntity.getDescription())) {
 						HSSFRow row = sheet.createRow(rowIndex++);
@@ -1361,7 +1371,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						ExportUtils.createCell(row, 1, nanoEntity
 								.getDescription());
 					}
-	
+
 					// 10. Output Files: bodyFileView.jsp
 					List<FileBean> fileBeans = nanoEntity.getFiles();
 					if (fileBeans != null && !fileBeans.isEmpty()) {
@@ -1392,12 +1402,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, compType);
 		rowIndex++; // Create one empty line as separator.
-	
+
 		// 2. Output Entity Type at (2, 0).
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, entityType);
 		rowIndex++; // Create one empty line as separator.
-	
+
 		return rowIndex;
 	}
 
@@ -1422,17 +1432,17 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					sb.setLength(0);
 					sb.append(entityCount++).append('.').append(
 							nanoEntity.getType());
-	
+
 					// Create one work sheet for each Nanomaterial Entity.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
 					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-	
+
 					// 1. Output Header: NanoMaterial at (0, 0), Composition
 					// Type at (2, 0).
 					rowIndex = outputHeader(
 							CompositionBean.NANOMATERIAL_SELECTION, nanoEntity
 									.getType(), sheet, headerStyle, rowIndex);
-	
+
 					// 2. Output Composition Description at (4, 0).
 					String description = nanoEntity.getEmulsion()
 							.getDescription();
@@ -1442,7 +1452,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 								"Description");
 						ExportUtils.createCell(row, 1, description);
 					}
-	
+
 					// 3. Output Composition Properties: 7x)
 					// "nanomaterialEntity/*.jsp"
 					if (nanoEntity.isWithProperties()) {
@@ -1452,7 +1462,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle,
 								"Properties");
-	
+
 						NanomaterialEntity domainEntity = nanoEntity
 								.getDomainEntity();
 						if (domainEntity instanceof Biopolymer) {
@@ -1486,7 +1496,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						}
 						rowIndex++; // Create one empty line as separator.
 					}
-	
+
 					// 3. Output Composing Elements:
 					// bodyComposingElementView.jsp
 					List<ComposingElementBean> compElementBeans = nanoEntity
@@ -1495,7 +1505,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle,
 								"Composing Elements");
-	
+
 						row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Type");
 						ExportUtils.createCell(row, 1, headerStyle,
@@ -1513,7 +1523,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 									.getDomain();
 							ExportUtils.createCell(row, 0, compElement
 									.getType());
-	
+
 							if (compElement.getPubChemId() != null) {
 								Long pubChemId = compElement.getPubChemId();
 								String pubChemDs = compElement
@@ -1525,21 +1535,21 @@ public class CompositionServiceLocalImpl implements CompositionService {
 										.toString(), CompositionServiceHelper
 										.getPubChemURL(pubChemDs, pubChemId));
 							}
-	
+
 							ExportUtils.createCell(row, 2, compElement
 									.getName());
-	
+
 							sb.setLength(0);
 							sb.append(compElement.getValue()).append(' ');
 							sb.append(compElement.getValueUnit());
 							ExportUtils.createCell(row, 3, sb.toString());
-	
+
 							if (!StringUtils.isEmpty(compElementBean
 									.getMolecularFormulaDisplayName())) {
 								ExportUtils.createCell(row, 4, compElementBean
 										.getMolecularFormulaDisplayName());
 							}
-	
+
 							String[] funcNames = compElementBean
 									.getFunctionDisplayNames();
 							if (funcNames != null && funcNames.length > 0) {
@@ -1549,7 +1559,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 								}
 								ExportUtils.createCell(row, 5, sb.substring(2));
 							}
-	
+
 							if (!StringUtils.isEmpty(compElement
 									.getDescription())) {
 								ExportUtils.createCell(row, 6, compElement
@@ -1558,7 +1568,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						}
 						rowIndex++; // Create one empty line as separator.
 					}// 3. End of outputting Composing Elements.
-	
+
 					// Output Files: bodyFileView.jsp
 					List<FileBean> fileBeans = nanoEntity.getFiles();
 					if (fileBeans != null && !fileBeans.isEmpty()) {
@@ -1571,7 +1581,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				}
 			} // End of iterating nanoList.
 		}
-	
+
 		return entityCount;
 	}
 
@@ -1586,19 +1596,19 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputNanoProperties(Biopolymer entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Name");
 		ExportUtils.createCell(row, 1, headerStyle, "Type");
 		ExportUtils.createCell(row, 2, headerStyle, "Sequence");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, entityBean.getName());
 		ExportUtils.createCell(row, 1, entityBean.getType());
 		ExportUtils.createCell(row, 2, entityBean.getSequence());
-	
+
 		return rowIndex;
 	}
 
@@ -1613,32 +1623,32 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputNanoProperties(CarbonNanotube entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Average Length");
 		ExportUtils.createCell(row, 1, headerStyle, "Chirality");
 		ExportUtils.createCell(row, 2, headerStyle, "Diameter");
 		ExportUtils.createCell(row, 3, headerStyle, "Wall Type");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		StringBuilder sb = new StringBuilder();
 		sb.append(entityBean.getAverageLength());
 		sb.append(' ');
 		sb.append(entityBean.getAverageLengthUnit());
-	
+
 		ExportUtils.createCell(row, 0, sb.toString());
 		ExportUtils.createCell(row, 1, entityBean.getChirality());
-	
+
 		sb.setLength(0);
 		sb.append(entityBean.getDiameter());
 		sb.append(' ');
 		sb.append(entityBean.getDiameterUnit());
-	
+
 		ExportUtils.createCell(row, 2, sb.toString());
 		ExportUtils.createCell(row, 3, entityBean.getWallType());
-	
+
 		return rowIndex;
 	}
 
@@ -1653,18 +1663,18 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputNanoProperties(Dendrimer entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Branch");
 		ExportUtils.createCell(row, 1, headerStyle, "Generation");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, entityBean.getBranch());
 		ExportUtils.createCell(row, 1, String.valueOf(entityBean
 				.getGeneration()));
-	
+
 		return rowIndex;
 	}
 
@@ -1679,18 +1689,18 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputNanoProperties(Emulsion entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Is Polymerized");
 		ExportUtils.createCell(row, 1, headerStyle, "Polymer Name");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, String.valueOf(entityBean
 				.getPolymerized()));
 		ExportUtils.createCell(row, 1, entityBean.getPolymerName());
-	
+
 		return rowIndex;
 	}
 
@@ -1705,12 +1715,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputNanoProperties(Fullerene entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Average Diameter");
 		ExportUtils.createCell(row, 1, headerStyle, "Number of Carbons");
-	
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(entityBean.getAverageDiameter());
 		sb.append(' ');
@@ -1718,7 +1728,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		ExportUtils.createCell(row, 0, sb.toString());
 		ExportUtils.createCell(row, 1, String.valueOf(entityBean
 				.getNumberOfCarbon()));
-	
+
 		return rowIndex;
 	}
 
@@ -1733,18 +1743,18 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputNanoProperties(Liposome entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Polymer Name");
 		ExportUtils.createCell(row, 1, headerStyle, "Is Polymerized");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, entityBean.getPolymerName());
 		ExportUtils.createCell(row, 1, String.valueOf(entityBean
 				.getPolymerized()));
-	
+
 		return rowIndex;
 	}
 
@@ -1759,13 +1769,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	 */
 	private static int outputNanoProperties(Polymer entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Initiator");
 		ExportUtils.createCell(row, 1, headerStyle, "Cross Link Degree");
 		ExportUtils.createCell(row, 2, headerStyle, "Is Cross Linked");
-	
+
 		// 2. Output table data.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, entityBean.getInitiator());
@@ -1773,7 +1783,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				.getCrossLinkDegree()));
 		ExportUtils.createCell(row, 2, String.valueOf(entityBean
 				.getCrossLinked()));
-	
+
 		return rowIndex;
 	}
 
@@ -1790,23 +1800,23 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
-	
+
 		HSSFCellStyle hlinkStyle = wb.createCellStyle();
 		HSSFFont hlinkFont = wb.createFont();
 		hlinkFont.setUnderline(HSSFFont.U_SINGLE);
 		hlinkFont.setColor(HSSFColor.BLUE.index);
 		hlinkStyle.setFont(hlinkFont);
-	
+
 		int entityCount = 1;
 		entityCount = outputNanomaterialEntities(compBean, wb, headerStyle,
 				hlinkStyle, entityCount, downloadURL);
-	
+
 		entityCount = outputFunctionalEntities(compBean, wb, headerStyle,
 				hlinkStyle, entityCount, downloadURL);
-	
+
 		entityCount = outputChemicalEntities(compBean, wb, headerStyle,
 				hlinkStyle, entityCount, downloadURL);
-	
+
 		outputFilesEntities(compBean, wb, headerStyle, hlinkStyle, entityCount,
 				downloadURL);
 	}
