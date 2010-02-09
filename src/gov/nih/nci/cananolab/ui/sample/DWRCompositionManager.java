@@ -13,6 +13,8 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
@@ -28,9 +30,9 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * Work with DWR to set up drop-downs required in the composition pages
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class DWRCompositionManager {
 	public DWRCompositionManager() {
@@ -79,13 +81,30 @@ public class DWRCompositionManager {
 		return fileBean;
 	}
 
-	public FileBean resetTheFile(String type) {
+	public FileBean resetTheFile(String type) throws Exception {
+		WebContext wctx = WebContextFactory.get();
+
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
 		if (compositionForm == null) {
 			return null;
 		}
 		FileBean fileBean = new FileBean();
+		// set file default visibilities
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		// get assigned visible groups for samples
+		String sampleName = (String) wctx.getSession().getAttribute(
+				"sampleName");
+		if (sampleName == null) {
+			return null;
+		}
+
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				sampleName, Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		fileBean.setVisibilityGroups(visibilityGroups);
+
 		if (type.equals("nanomaterialEntity")) {
 			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 					.get("nanomaterialEntity");
@@ -131,7 +150,7 @@ public class DWRCompositionManager {
 	}
 
 	public List<ComposingElementBean> getComposingElementsByNanomaterialEntityId(
-			String id) throws Exception {	
+			String id) throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		if (user == null) {

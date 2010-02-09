@@ -4,7 +4,9 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
@@ -20,9 +22,9 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class DWRCharacterizationResultManager {
 	public String[] getConditionOptions() throws Exception {
@@ -116,7 +118,8 @@ public class DWRCharacterizationResultManager {
 		return theFile;
 	}
 
-	public FileBean resetTheFile() {
+	public FileBean resetTheFile() throws Exception {
+		WebContext wctx = WebContextFactory.get();
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		if (charForm == null) {
@@ -125,6 +128,21 @@ public class DWRCharacterizationResultManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		FileBean fileBean = new FileBean();
+
+		// set file default visibilities
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		// get assigned visible groups for samples
+		String sampleName = (String) wctx.getSession().getAttribute(
+				"sampleName");
+		if (sampleName == null) {
+			return null;
+		}
+
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				sampleName, Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		fileBean.setVisibilityGroups(visibilityGroups);
 		charBean.getTheFinding().setTheFile(fileBean);
 		return fileBean;
 	}
