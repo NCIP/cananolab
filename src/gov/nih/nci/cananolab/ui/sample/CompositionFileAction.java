@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import java.util.List;
+
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -8,6 +10,7 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -84,8 +87,19 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.getSession().removeAttribute("compositionForm");
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sample = this.setupSample(theForm, request,
+				Constants.LOCAL_SITE);
 
+		// set file default visibilities
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		List<String> accessibleGroups = authService.getAccessibleGroups(sample
+				.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		CompositionBean compBean = new CompositionBean();
+		compBean.getTheFile().setVisibilityGroups(visibilityGroups);
+		theForm.set("comp", compBean);
 		return mapping.getInputForward();
 	}
 
@@ -124,7 +138,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance().persistCompositionFileDropdowns(
 				request, comp.getTheFile());
 
-		//Save uploaded data in session to avoid asking user to upload again.
+		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = comp.getTheFile();
 		preserveUploadedFile(request, theFile, "compositionFile");
 
