@@ -66,9 +66,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class CharacterizationServiceLocalImpl implements
 		CharacterizationService {
@@ -78,7 +78,7 @@ public class CharacterizationServiceLocalImpl implements
 	private FileServiceHelper fileHelper = new FileServiceHelper();
 	public static final String ANALYSIS_CONCLUSION = "Analysis and Conclusion";
 	public static final String ASPECT_RATIO = "Aspect Ratio";
-	
+
 	/**
 	 * Constants for generating Excel report for summary view.
 	 */
@@ -367,6 +367,9 @@ public class CharacterizationServiceLocalImpl implements
 			if (!result.isEmpty()) {
 				finding = (Finding) result.get(0);
 				findingBean = new FindingBean(finding);
+				fileHelper.checkReadPermissionAndRetrieveVisibility(findingBean
+						.getFiles(), user);
+
 			}
 			return findingBean;
 		} catch (Exception e) {
@@ -685,13 +688,13 @@ public class CharacterizationServiceLocalImpl implements
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
-	
+
 		HSSFCellStyle hlinkStyle = wb.createCellStyle();
 		HSSFFont hlinkFont = wb.createFont();
 		hlinkFont.setUnderline(HSSFFont.U_SINGLE);
 		hlinkFont.setColor(HSSFColor.BLUE.index);
 		hlinkStyle.setFont(hlinkFont);
-	
+
 		int charCount = 1;
 		Map<String, SortedSet<CharacterizationBean>> charBeanMap = summaryBean
 				.getType2Characterizations();
@@ -701,12 +704,12 @@ public class CharacterizationServiceLocalImpl implements
 			if (charBeans != null && !charBeans.isEmpty()) {
 				for (CharacterizationBean charBean : charBeans) {
 					int rowIndex = 0;
-	
+
 					// Create one work sheet for each Characterization.
 					HSSFSheet sheet = wb.createSheet(charCount++ + "."
 							+ charBean.getCharacterizationName());
 					HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-	
+
 					// 1. Output Characterization type at (0, 0).
 					rowIndex = outputHeader(charBean, sheet, headerStyle,
 							rowIndex);
@@ -756,13 +759,13 @@ public class CharacterizationServiceLocalImpl implements
 		ExportUtils.createCell(row, 0, headerStyle, charBean
 				.getCharacterizationType());
 		rowIndex++; // Create one empty line as separator.
-	
+
 		// 2. Output Characterization name at (1, 0).
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, charBean
 				.getCharacterizationName());
 		rowIndex++; // Create one empty line as separator.
-	
+
 		return rowIndex;
 	}
 
@@ -837,11 +840,11 @@ public class CharacterizationServiceLocalImpl implements
 				HSSFRow row = sheet.createRow(rowIndex++);
 				ExportUtils
 						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
-	
+
 				// 9a. Output Characterization Datum Results.
 				rowIndex = outputDatumResult(findingBean, sheet, headerStyle,
 						rowIndex);
-	
+
 				// 9b. Output Characterization File Results.
 				rowIndex = outputFileResult(findingBean, downloadURL, wb,
 						sheet, headerStyle, hlinkStyle, patriarch, rowIndex);
@@ -901,14 +904,14 @@ public class CharacterizationServiceLocalImpl implements
 	 */
 	private static int outputDatumResult(FindingBean findingBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-	
+
 		// Get list of Rows from findingBean.
 		List<Row> rows = findingBean.getRows();
 		if (rows != null && !rows.isEmpty()) {
 			// Output general header "Data and Conditions".
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, DATA_CONDITIONS);
-	
+
 			// Output header of each column.
 			int cellIndex = 0;
 			row = sheet.createRow(rowIndex++);
@@ -942,7 +945,7 @@ public class CharacterizationServiceLocalImpl implements
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		Characterization charactization = (Characterization) charBean
 				.getDomainChar();
-	
+
 		// 7. Output Design Description at (6, 0).
 		if (!StringUtils.isEmpty(charactization.getDesignMethodsDescription())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -997,18 +1000,18 @@ public class CharacterizationServiceLocalImpl implements
 			for (FileBean fileBean : files) {
 				row = sheet.createRow(rowIndex++);
 				File file = fileBean.getDomainFile();
-	
+
 				// output 4x) titles for File.
 				ExportUtils.createCell(row, 0, headerStyle, "File Type");
 				ExportUtils.createCell(row, 1, headerStyle,
 						"Title and Download Link");
 				ExportUtils.createCell(row, 2, headerStyle, "Keywords");
 				ExportUtils.createCell(row, 3, headerStyle, "Description");
-	
+
 				// 1. output File Type.
 				row = sheet.createRow(rowIndex++);
 				ExportUtils.createCell(row, 0, file.getType());
-	
+
 				// 2. output Title and Download Link.
 				StringBuilder sb = new StringBuilder(downloadURL);
 				sb.append(file.getId());
@@ -1037,7 +1040,7 @@ public class CharacterizationServiceLocalImpl implements
 					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
 							sb.toString());
 				}
-	
+
 				// 3. output Keywords.
 				Collection<Keyword> keywords = file.getKeywordCollection();
 				if (keywords != null && !keywords.isEmpty()) {
@@ -1047,7 +1050,7 @@ public class CharacterizationServiceLocalImpl implements
 					}
 					ExportUtils.createCell(row, 2, sb.substring(2));
 				}
-	
+
 				// 4. output Description.
 				if (!StringUtils.isEmpty(file.getDescription())) {
 					ExportUtils.createCell(row, 3, file.getDescription());
@@ -1131,7 +1134,7 @@ public class CharacterizationServiceLocalImpl implements
 			} else if (domainChar instanceof Surface) {
 				rowIndex = outputSurface(charBean, sheet, headerStyle, rowIndex);
 			}
-	
+
 			rowIndex++; // Leave one empty line as separator.
 		}
 		return rowIndex;
@@ -1174,17 +1177,17 @@ public class CharacterizationServiceLocalImpl implements
 			ExportUtils.createCell(row, 1, headerStyle, ASPECT_RATIO);
 			ExportUtils.createCell(row, 2, headerStyle, MINIMUM_DIMENSION);
 			ExportUtils.createCell(row, 3, headerStyle, MAXIMUM_DIMENSION);
-	
+
 			row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, charBean.getShape().getType());
 			ExportUtils.createCell(row, 1, String.valueOf(charBean.getShape()
 					.getAspectRatio()));
-	
+
 			StringBuilder sb = new StringBuilder();
 			sb.append(charBean.getShape().getMinDimension()).append(' ');
 			sb.append(charBean.getShape().getMinDimensionUnit());
 			ExportUtils.createCell(row, 2, sb.toString());
-	
+
 			sb.setLength(0);
 			sb.append(charBean.getShape().getMaxDimension()).append(' ');
 			sb.append(charBean.getShape().getMaxDimensionUnit());
@@ -1209,13 +1212,13 @@ public class CharacterizationServiceLocalImpl implements
 			ExportUtils.createCell(row, 0, headerStyle, SOLVENT);
 			ExportUtils.createCell(row, 1, headerStyle, IS_SOLUBLE);
 			ExportUtils.createCell(row, 2, headerStyle, CONCENTRATION);
-	
+
 			row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, charBean.getSolubility()
 					.getSolvent());
 			ExportUtils.createCell(row, 1, String.valueOf(charBean
 					.getSolubility().getIsSoluble()));
-	
+
 			StringBuilder sb = new StringBuilder();
 			sb.append(charBean.getSolubility().getCriticalConcentration())
 					.append(' ');
@@ -1263,7 +1266,7 @@ public class CharacterizationServiceLocalImpl implements
 			StringBuilder sb = new StringBuilder();
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, TECH_INSTRUMENTS);
-	
+
 			row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, TECHNIQUE);
 			ExportUtils.createCell(row, 1, headerStyle, INSTRUMENT);
@@ -1272,7 +1275,7 @@ public class CharacterizationServiceLocalImpl implements
 				row = sheet.createRow(rowIndex++);
 				ExportUtils
 						.createCell(row, 0, config.getTechniqueDisplayName());
-	
+
 				String[] names = config.getInstrumentDisplayNames();
 				if (names != null && names.length > 0) {
 					sb.setLength(0);
@@ -1282,7 +1285,7 @@ public class CharacterizationServiceLocalImpl implements
 					sb.deleteCharAt(sb.length() - 1);
 					ExportUtils.createCell(row, 1, sb.toString());
 				}
-	
+
 				if (!StringUtils.isEmpty(config.getDomain().getDescription())) {
 					ExportUtils.createCell(row, 2, config.getDomain()
 							.getDescription());
