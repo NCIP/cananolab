@@ -4,14 +4,10 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -28,9 +24,9 @@ import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for characterization forms.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class InitCharacterizationSetup {
 	public static InitCharacterizationSetup getInstance() {
@@ -77,7 +73,7 @@ public class InitCharacterizationSetup {
 	 * Get the default characterization types in the specified order and store
 	 * in app context. Otherwise, could've used
 	 * InitSetup.getInstance.getDefaultTypesByReflection
-	 * 
+	 *
 	 * @param appContext
 	 * @return
 	 * @throws Exception
@@ -98,27 +94,15 @@ public class InitCharacterizationSetup {
 		return types;
 	}
 
-	public void setCharactierizationDropDowns(HttpServletRequest request,
-			String sampleId) throws Exception {
-		InitSampleSetup.getInstance().setSharedDropdowns(request);
-		getCharacterizationTypes(request);
-		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-				"datumConditionValueTypes", "datum and condition", "valueType",
-				"otherValueType", true);
-		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
-				"fileTypes", "file", "type", "otherType", true);
-		// set point of contacts
-		SampleService service = new SampleServiceLocalImpl();
-		List<PointOfContactBean> pocs = service
-				.findPointOfContactsBySampleId(sampleId);
-		request.getSession().setAttribute("samplePointOfContacts", pocs);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
-	}
-
 	public void setCharacterizationDropdowns(HttpServletRequest request)
 			throws Exception {
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		setExperimentConfigDropDowns(request);
+		getCharacterizationTypes(request);
+		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
+				"datumConditionValueTypes", "datum and condition", "valueType",
+				"otherValueType", true);
+
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
 
