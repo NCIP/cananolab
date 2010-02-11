@@ -13,14 +13,32 @@
 			</th>
 		</tr>
 		<tr>
+			<th align="left">
+				<c:forEach var="charName"
+					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
+					<a href="#${charName}">${charName}</a> &nbsp;
+			</c:forEach>
+				<br>
+			</th>
+		</tr>
+		<tr>
 			<td>
 				<c:forEach var="charBean"
 					items="${characterizationSummaryView.type2Characterizations[type]}">
 					<%@ include file="bodySingleCharacterizationSummaryView.jsp"%>
-					<br/>
+					<br />
 				</c:forEach>
 				<br>
 			</td>
+		</tr>
+		<tr>
+			<th align="left">
+				<c:forEach var="charName"
+					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
+					<a href="#${charName}">${charName}</a> &nbsp;
+			</c:forEach>
+				<br>
+			</th>
 		</tr>
 	</table>
 	<div id="summarySeparator${ind.count}">
