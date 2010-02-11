@@ -218,7 +218,7 @@ function cancel(parameter) {
 	}
 }
 function validFloatNumber(floatString) {
-	var re = /^[-+]?[0-9]+(\.[0-9]+)?$/;
+	var re = /^[-+]?[0-9]*(\.[0-9]+)?$/;
 	return re.test(floatString);
 }
 function filterFloatNumber(evt) {
