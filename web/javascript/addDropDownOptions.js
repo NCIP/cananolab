@@ -157,9 +157,13 @@ function cancelAddOption(selectId, promptParentId) {
 	document.getElementById(promptParentId).removeChild(document.getElementById(cssId));
 	document.getElementById(promptParentId).style.position="";
 	document.getElementById(promptParentId).style.zIndex="";
-	var selected = document.getElementById(selectId).value;	
-	if (selected=='other') {
-		alert("Please make another selection than [other].");		
+	var input = document.getElementById(selectId);
+	if (input != null) {
+		var selected = input.value;	
+		if (selected == 'other') {
+			alert("Please make another selection than [other].");		
+		}
+		input.value = ""; //change the value to empty string if user cancel the add.
 	}
 	return false;
 }
