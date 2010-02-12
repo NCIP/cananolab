@@ -103,7 +103,7 @@ function validateSaveConfig(actionName) {
 function addInstrument() {
 	var instrument = {id:null, manufacturer:null, modelName:null, type:null};
 	dwr.util.getValues(instrument);
-	if (instrument.id == null || instrument.id == NaN) {
+	if (instrument.id == null || instrument.id.length == 0) {
 		instrument.id = -1000 - numberOfInstruments;
 	}
 	if (instrument.manufacturer != "" || instrument.modelName != "" || instrument.type != "") {
