@@ -64,7 +64,7 @@ public class DWRExperimentConfigManager {
 				wctx.getServletContext(), "defaultAbbreviations",
 				techniqueType, "abbreviation");
 		String abbreviation = "";
-		if (!abbrevs.isEmpty()) {
+		if (abbrevs != null && !abbrevs.isEmpty()) {
 			abbreviation = abbrevs.first();
 		}
 		return abbreviation;
