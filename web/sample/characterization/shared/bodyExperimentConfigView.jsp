@@ -4,45 +4,85 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<c:forEach var="experimentConfig" items="${charBean.experimentConfigs}" varStatus="configIndex">
 <table class="summaryViewLayer4" align="center" width="95%">
-	<tr>
-		<th width="33%">
-			Technique
-		</th>
-		<th width="33%">
-			Instruments
-		</th>
-		<th>
-			Description
-		</th>
-		<th>
-		</th>
-	</tr>
-	<c:forEach var="experimentConfig" items="${charBean.experimentConfigs}"
-		varStatus="configIndex">
+	<c:if test="${edit eq 'true'}">
 		<tr>
-			<td>
-				${experimentConfig.techniqueDisplayName}
-			</td>
-			<td>
-				<c:if test="${! empty experimentConfig.instrumentDisplayNames}">
-					<c:forEach var="instrumentDisplayName"
-						items="${experimentConfig.instrumentDisplayNames}">
-							${instrumentDisplayName}
-					</c:forEach>
-				</c:if>
-			</td>
-			<td>
-				<c:if test="${! empty experimentConfig.domain.description}">
-				${fn:replace(experimentConfig.domain.description, cr, "<br>")}
-				</c:if>
-			</td>
-			<c:if test="${edit eq 'true'}">
-				<td align="right">
-					<a
-						href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">Edit</a>&nbsp;
-				</td>
-			</c:if>
+			<th style="text-align: right">
+				<a
+					href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">Edit</a>&nbsp;
+			</th>
 		</tr>
-	</c:forEach>
+	</c:if>
+	<tr>
+		<td class="cellLabel">
+			Technique
+		</td>
+	</tr>
+	<tr>
+		<td>
+			${experimentConfig.techniqueDisplayName}
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Description
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<c:choose>
+				<c:when test="${! empty experimentConfig.domain.description}">
+					${fn:replace(experimentConfig.domain.description, cr, "<br>")}
+				</c:when>
+				<c:otherwise>
+					N/A
+				</c:otherwise>
+			</c:choose>
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Instruments
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<c:choose>
+				<c:when test="${! empty experimentConfig.instruments}">
+					<table class="summaryViewLayer4" width="95%" align="center">
+						<tr>
+							<td width="25%" class="cellLabel">
+								Manufacturer
+							</td>
+							<td width="25%" class="cellLabel">
+								Model Name
+							</td>
+							<td class="cellLabel">
+								Type
+							</td>
+						</tr>
+						<c:forEach var="instrument" items="${experimentConfig.instruments}" varStatus="configIndex">
+							<tr>
+								<td>
+									${instrument.manufacturer}
+								</td>
+								<td>
+									${instrument.modelName}
+								</td>
+								<td>
+									${instrument.type}
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:when>
+				<c:otherwise>
+					N/A
+				</c:otherwise>
+			</c:choose>
+		</td>
+	</tr>
 </table>
+<br>
+</c:forEach>
