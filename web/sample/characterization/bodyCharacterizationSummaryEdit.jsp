@@ -267,12 +267,12 @@
 														</td>
 														<td colspan="2">
 															<c:choose>
-																<c:when test="${!empty charBean.findings}">]
-																[
+																<c:when test="${!empty charBean.findings}">
 																	<%@ include file="shared/bodyFindingView.jsp"%>
 																</c:when>
 																<c:otherwise>
-															N/A</c:otherwise>
+																	N/A
+																</c:otherwise>
 															</c:choose>
 														</td>
 													</tr>
