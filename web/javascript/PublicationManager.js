@@ -209,7 +209,7 @@ function addAuthor() {
 		initial : null
 	};
 	dwr.util.getValues(author);
-	if (author.id == null || author.id == "") {
+	if (author.id == null || author.id.length == 0) {
 		author.id = -1000 - numberOfAuthors;
 	}
 
