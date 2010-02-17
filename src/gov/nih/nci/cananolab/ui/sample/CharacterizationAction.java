@@ -132,7 +132,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Set up drop-downs need for the input form
+	 * Set up drop-downs needed for the input form
 	 *
 	 * @param request
 	 * @param theForm
@@ -185,7 +185,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				"charNameAssays", charBean.getCharacterizationName(),
 				"assayType", "otherAssayType", true);
 
-		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
+		//TODO: Find out what "charNameDatumNames" is for, it's not used in any JSPs.
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
 				charBean.getCharacterizationName(), charBean.getAssayType());
@@ -198,6 +198,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
 		clearCopy(theForm);
+		
+		/**
+		 * Implement feature request [26487] Deeper Edit Links.
+		 * Open file submission form when there is only 1 Finding & 1 File.
+		 */
+		List<FindingBean> findings = charBean.getFindings();
+		if (findings.size() == 1 && findings.get(0).getFiles().size() == 1) {
+			request.setAttribute("openFileForm", Boolean.TRUE);
+		}
+		
 		return mapping.findForward("inputForm");
 	}
 
