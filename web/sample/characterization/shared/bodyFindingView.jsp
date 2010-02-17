@@ -9,8 +9,16 @@
 		<c:if test="${edit eq 'true'}">
 			<tr>
 				<th style="text-align: right">
-					<a
-						href="javascript:setTheFinding(characterizationForm, 'characterization', ${finding.domain.id});">Edit</a>&nbsp;
+					<c:choose>
+						<c:when test="${openFileForm}">
+							<a href="javascript:setTheFinding(characterizationForm, 'characterization', 
+							${finding.domain.id});setTheFile(0);">Edit</a>&nbsp;
+						</c:when>
+						<c:otherwise>
+							<a href="javascript:setTheFinding(characterizationForm, 'characterization', 
+							${finding.domain.id});">Edit</a>&nbsp;
+						</c:otherwise>
+					</c:choose>
 				</th>
 			</tr>
 		</c:if>
