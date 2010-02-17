@@ -33,7 +33,8 @@ INSTRUCTIONS
  #F4F4F5 = light gray
  #FFFFFF = white
  #000000 = black
-*/ body {
+*/
+body {
 	margin: 0;
 	padding: 0;
 }
@@ -71,7 +72,8 @@ td.mainMenuItem { /* for the off state of the main menu (top) cells */
 	padding-right: 1em;
 }
 
-td.mainMenuItemOver { /* for the over state of the main menu (top) cells */
+td.mainMenuItemOver {
+	/* for the over state of the main menu (top) cells */
 	font-size: 0.6em;
 	font-weight: bold;
 	background-color: #6a8989; /* darker */
@@ -79,14 +81,16 @@ td.mainMenuItemOver { /* for the over state of the main menu (top) cells */
 	padding-right: 1em;
 }
 
-td.footerMenu { /* for the basic style of the footer menu (bottom) area */
+td.footerMenu {
+	/* for the basic style of the footer menu (bottom) area */
 	background-color: #5c5c5c; /* constant: dark gray */
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.footerMenuItem { /* for the off state of the footer menu (bottom) cells */
+td.footerMenuItem {
+	/* for the off state of the footer menu (bottom) cells */
 	font-size: 0.6em;
 	font-weight: bold;
 	background-color: #5c5c5c; /* constant: dark gray */
@@ -94,7 +98,8 @@ td.footerMenuItem { /* for the off state of the footer menu (bottom) cells */
 	padding-right: 1em;
 }
 
-td.footerMenuItemOver { /* for the over state of the footer menu (bottom) cells */
+td.footerMenuItemOver {
+	/* for the over state of the footer menu (bottom) cells */
 	font-size: 0.6em;
 	font-weight: bold;
 	background-color: #6a8989; /* darker */
@@ -113,7 +118,8 @@ td.sideMenu { /* for the basic style of the sub-menu area */
 	font-size: 11px;
 }
 
-td.subMenuPrimaryTitle { /* for the title elements of the sub menu (left-side) */
+td.subMenuPrimaryTitle {
+	/* for the title elements of the sub menu (left-side) */
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
@@ -124,7 +130,8 @@ td.subMenuPrimaryTitle { /* for the title elements of the sub menu (left-side) *
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.subMenuPrimaryItems { /* for the items under the sub-menu title elements */
+td.subMenuPrimaryItems {
+	/* for the items under the sub-menu title elements */
 	font-size: 0.6em;
 	background-color: #ffffff; /* constant: white */
 	font-weight: bold;
@@ -134,7 +141,8 @@ td.subMenuPrimaryItems { /* for the items under the sub-menu title elements */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.subMenuSecondaryTitleFill { /* for the off state of the cell for the elements (usually common among pages) below the primary items */
+td.subMenuSecondaryTitleFill {
+	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
@@ -143,7 +151,8 @@ td.subMenuSecondaryTitleFill { /* for the off state of the cell for the elements
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.subMenuSecondaryTitle { /* for the off state of the cell for the elements (usually common among pages) below the primary items */
+td.subMenuSecondaryTitle {
+	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
@@ -153,7 +162,8 @@ td.subMenuSecondaryTitle { /* for the off state of the cell for the elements (us
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.subMenuSecondaryTitleOver { /* for the over state of the cell for the elements (usually common among pages) below the primary items */
+td.subMenuSecondaryTitleOver {
+	/* for the over state of the cell for the elements (usually common among pages) below the primary items */
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
@@ -163,7 +173,8 @@ td.subMenuSecondaryTitleOver { /* for the over state of the cell for the element
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.subMenuSecondaryTitleSelected { /* for the over state of the cell for the elements (usually common among pages) below the primary items */
+td.subMenuSecondaryTitleSelected {
+	/* for the over state of the cell for the elements (usually common among pages) below the primary items */
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
@@ -184,7 +195,8 @@ td.loginMenuFill {
 	border-right: 1px solid #cccccc;
 }
 
-td.subMenuFooter { /* for the last row in the submenu left of the footer menu */
+td.subMenuFooter {
+	/* for the last row in the submenu left of the footer menu */
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
@@ -211,12 +223,14 @@ a:link,a:visited,a:active { /* default links */
 	white-space: nowrap;
 }
 
-a:link.helpText,a:visited.helpText,a:active.helpText { /* for help link text not affected by any cascading text styles */
+a:link.helpText,a:visited.helpText,a:active.helpText {
+	/* for help link text not affected by any cascading text styles */
 	font-weight: normal;
 	text-decoration: underline;
 }
 
-a:link.loginText,a:visited.loginText,a:active.loginText { /* for help link text not affected by any cascading text styles */
+a:link.loginText,a:visited.loginText,a:active.loginText {
+	/* for help link text not affected by any cascading text styles */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 1em;
 	font-weight: bold;
@@ -224,6 +238,9 @@ a:link.loginText,a:visited.loginText,a:active.loginText { /* for help link text 
 	text-decoration: underline;
 }
 
+a:link.sidebarSectionLink {
+	color: blue;
+}
 a:hover.loginText {
 	color: #f4f4f5 /* constant: red */
 }
@@ -236,7 +253,8 @@ a:hover.helpText {
 	color: #a90101; /* constant: red */
 }
 
-a:link.subMenuPrimary,a:visited.subMenuPrimary,a:active.subMenuPrimary { /* for the text links in the primary submenu */
+a:link.subMenuPrimary,a:visited.subMenuPrimary,a:active.subMenuPrimary {
+	/* for the text links in the primary submenu */
 	color: #5c5c5c; /* constant: dark gray */
 	text-decoration: none;
 	white-space: nowrap;
@@ -246,7 +264,9 @@ a:hover.subMenuPrimary {
 	color: #a90101; /* constant: red */
 }
 
-a:link.subMenuSecondary,a:visited.subMenuSecondary,a:active.subMenuSecondary { /* for the text links under the secondary submenu (quick links area) */
+a:link.subMenuSecondary,a:visited.subMenuSecondary,a:active.subMenuSecondary
+	{
+	/* for the text links under the secondary submenu (quick links area) */
 	color: #ffffff; /* constant: white */
 	text-decoration: none;
 	white-space: nowrap;
@@ -258,7 +278,8 @@ a:hover.subMenuSecondary {
 	background-color: #98B7B7; /* lighter */
 }
 
-a:link.mainMenuLink,a:visited.mainMenuLink,a:active.mainMenuLink { /* for the text links in the main menu */
+a:link.mainMenuLink,a:visited.mainMenuLink,a:active.mainMenuLink {
+	/* for the text links in the main menu */
 	color: #ffffff; /* constant: white */
 	text-decoration: none;
 	white-space: nowrap;
@@ -268,7 +289,8 @@ a:hover.mainMenuLink {
 	color: #ffffff; /* constant: white */
 }
 
-a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink { /* for the text links at the top of the footer */
+a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
+	/* for the text links at the top of the footer */
 	color: #ffffff; /* constant: white */
 	text-decoration: none;
 	white-space: nowrap;
@@ -278,7 +300,8 @@ a:hover.footerMenuLink {
 	color: #ffffff; /* constant: white */
 }
 
-a:link.dataPagingLink,a:visited.dataPagingLink,a:active.dataPagingLink { /* for the previous and next links for the paging areas */
+a:link.dataPagingLink,a:visited.dataPagingLink,a:active.dataPagingLink {
+	/* for the previous and next links for the paging areas */
 	color: #5c5c5c; /* constant: dark gray */
 	text-decoration: underline;
 	white-space: nowrap;
@@ -362,7 +385,8 @@ td.formField { /* for the cell that contains the form elements */
 	background-color: #f4f4f5; /* constant: light gray */
 }
 
-input.formFieldSized,textarea.formFieldSized,select.formFieldSized { /* for the form elements themselves and with a constant width (on elements) */
+input.formFieldSized,textareformFieldSized,select.formFieldSized {
+	/* for the form elements themselves and with a constant width (on elements) */
 	font-family: arial, helvetica, verdana, sans-serif;
 	border: 1px solid #5c5c5c; /* constant: dark gray */
 	font-size: 1em;
@@ -382,13 +406,15 @@ td.formFieldLogin { /* for the cell that contains the form elements */
 	color: #000000; /* constant: black */
 }
 
-input.formField,textarea.formField,select.formField { /* for the form elements themselves (on elements) */
+input.formField,textareformField,select.formField {
+	/* for the form elements themselves (on elements) */
 	font-family: arial, helvetica, verdana, sans-serif;
 	border: 1px solid #5c5c5c; /* constant: dark gray */
 	font-size: 1em;
 }
 
-input.formFieldSized,textarea.formFieldSized,select.formFieldSized { /* for the form elements themselves and with a constant width (on elements) */
+input.formFieldSized,textareformFieldSized,select.formFieldSized {
+	/* for the form elements themselves and with a constant width (on elements) */
 	font-family: arial, helvetica, verdana, sans-serif;
 	border: 1px solid #5c5c5c; /* constant: dark gray */
 	font-size: 1em;
@@ -418,27 +444,25 @@ SIDEBAR BEGINS
 .sidebarSection { /* for the individual sidebar sections */
 	background-color: #f4f4f5; /* constant: light gray */
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
-	border: 1px solid #cccccc; /* constant: medium gray */
-}
-
-.noBottomSidebarSection { /* for the individual sidebar sections */
-	background-color: #f4f4f5; /* constant: light gray */
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-left: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+.sidebarSection th { /* for the titles of the individual sidebar sections */
+	font-size: 0.6em;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: left;
+	padding: 5px 5px 5px 10px;
+	background-color: #5c5c5c; /* constant: dark gray */
+	color: #ffffff; /* constant: white */
+}
 
-
-.noTopBottomSidebarSection { /* for the individual sidebar sections */
-	background-color: #f4f4f5; /* constant: light gray */
-	font-family: verdana, arial, helvetica, sans-serif;
+.sidebarSection td { /* for the areas under the sidebar titles and requires text */
 	font-size: 0.7em;
-	border-left: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	font-weight: normal;
+	padding: 5px 5px 5px 10px;
 }
 
 .sidebarTitle { /* for the titles of the individual sidebar sections */
@@ -449,58 +473,34 @@ SIDEBAR BEGINS
 	color: #ffffff; /* constant: white */
 }
 
-.sidebarContent { /* for the areas under the sidebar titles and requires text */
-	font-size: 1em;
-	padding: 0.8em;
+.sidebarContent {
+	/* for the areas under the sidebar titles and requires text */
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 0.9em;
 }
 
 /* for the list inside "WHAT'S NEW" on the Welcome Content */
-.sidebarContent ul {
+.sidebarSection ul {
+	list-style-image: url(../images/diamond_list_item.gif);
 	list-style-type: disc;
 	font-weight: normal;
-	padding-left: 1em;
+	padding-left: 0.8em;
+	font-size: 1em;
 }
 
-.sidebarContent li {
-	padding-bottom: 0.5em;
+.sidebarSection li {
+	padding-bottom: 0.2em;
+}
+
+.boldAndUnderlined {
+	font-weight: bold;
+	text-decoration: underline;
 }
 
 .sidebarLogin { /* for the sidebar login cells */
 	font-size: 0.7em;
 	padding-left: 0.8em;
-}
-
-.sidebarContentTop { /* for the areas under the sidebar titles and requires text */
-	font-size: 1em;
-	padding: 0.8em 0 0 0.8em;
-	margin-bottom: 0;
-}
-
-.sidebarContentTop ul {
-	list-style-type: disc;
-	font-weight: normal;
-	padding: 0 0 0 2em;
-	margin-bottom: 0.3em;
-}
-
-.sidebarContentTop li {
-	padding-bottom: 0.5em;
-}
-
-.sidebarContentBottom { /* for the areas under the sidebar titles and requires text */
-	font-size: 1em;
-	padding: 0 0 0.8em 0.8em;
-
-}
-
-.sidebarContentBottom ul {
-	list-style-type: disc;
-	font-weight: normal;
-	padding-left: 2em;
-}
-
-.sidebarContentBottom li {
-	padding-bottom: 0.5em;
 }
 
 /*###############
@@ -598,7 +598,11 @@ DATA TABLE BEGINS
 	padding-left: 0.5em;
 }
 
-.actionSection { /* for the cell that contains the action buttons table */ /*border-left:1px solid #5C5C5C; /* constant: dark gray */ /*border-right:1px solid #5C5C5C; /* constant: dark gray */ /*border-bottom:1px solid #5C5C5C; /* constant: dark gray */
+.actionSection {
+	/* for the cell that contains the action buttons table */
+	/*border-left:1px solid #5C5C5C; /* constant: dark gray */
+	/*border-right:1px solid #5C5C5C; /* constant: dark gray */
+	/*border-bottom:1px solid #5C5C5C; /* constant: dark gray */
 
 }
 
@@ -707,12 +711,12 @@ h3,.h3 { /* for title of page */
 	text-align: left;
 }
 
+p,.p { /* for paragraphs */ /* padding-left: 1em; */
 
-p,.p { /* for paragraphs */
-	/* padding-left: 1em; */
 }
 
-.standardText { /* for stand-alone text not affected by any cascading text styles */
+.standardText {
+	/* for stand-alone text not affected by any cascading text styles */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
 	color: #666666; /* constant: black */
@@ -736,9 +740,10 @@ p,.p { /* for paragraphs */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 }
 
-.welcomeContent { /* for the area below the title content of the home page */
-	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
+.welcomeContent {
+	/* for the area below the title content of the home page */
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
 	line-height: 1.5em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
@@ -753,7 +758,6 @@ p,.p { /* for paragraphs */
 	padding-left: 1em;
 }
 
-
 .disclaimerTitle { /* for titles of sections inside the content area */
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.7em;
@@ -764,7 +768,8 @@ p,.p { /* for paragraphs */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 }
 
-.disclaimerContent { /* for the area below the title content of the home page */
+.disclaimerContent {
+	/* for the area below the title content of the home page */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
 	color: #000000;
@@ -815,10 +820,11 @@ div.logindiv {
 }
 
 .gridtable {
-	width: 560px;
-	border-width: 1px;
 	border-color: #cccccc;
 	border-style: solid;
+	border-collapse: collapse;
+	font-size: 0.8em;
+	border-width: 1px;
 	border-collapse: collapse;
 }
 
@@ -855,15 +861,14 @@ tr.gridTableHeader {
 
 .gridtableNoBorder td {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
 	padding: 1px 0 1px 1px;
 	border-width: 0px;
 	border-style: none;
 	vertical-align: middle;
 }
 
-#publicLinks, ul { /* for the public links below the welcome content of the home page */
-
+#publicLinks,ul {
+	/* for the public links below the welcome content of the home page */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -890,6 +895,7 @@ tr.gridTableHeader {
 	font-weight: normal;
 	line-height: 1.3em;
 }
+
 label.toplabel {
 	display: block;
 	font-size: 0.9em;
@@ -912,7 +918,7 @@ label.toplabel {
 .countsLink {
 	display: block;
 	margin-left: 22px;
-    margin-right: auto;
+	margin-right: auto;
 }
 
 #publicLinks img {
@@ -997,7 +1003,6 @@ img.img { /* for images that need a border */
 	text-align: left;
 }
 
-
 .rightLabelWithTop {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
@@ -1008,7 +1013,6 @@ img.img { /* for images that need a border */
 	text-align: left;
 	border-right: 1px solid #5c5c5c;
 }
-
 
 .completeLabel {
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -1059,6 +1063,7 @@ img.img { /* for images that need a border */
 	border-left: 1px solid #5c5c5c;
 	border-right: 1px solid #5c5c5c;
 }
+
 .labelNoBottom {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
@@ -1101,7 +1106,6 @@ img.img { /* for images that need a border */
 	text-align: left;
 	border-left: 1px solid #5c5c5c;
 }
-
 
 .labelWithTopNoBottom {
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -1223,7 +1227,8 @@ td.secondMenuItem { /* for the off state of the main menu (top) cells */
 	text-transform: uppercase;
 }
 
-td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
+td.secondMenuItemOver {
+	/* for the over state of the main menu (top) cells */
 	font-size: 0.55em;
 	font-weight: bold;
 	background-color: #98b7b7; /* darker */
@@ -1232,13 +1237,11 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	text-transform: uppercase
 }
 
-
 .addLink {
 	color: #a90101; /* constant: red */
 	font-weight: bold;
 	font-size: 0.7em;
 }
-
 
 .addLink2 {
 	color: #a90101; /* constant: red */
@@ -1322,37 +1325,37 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	color: #000000; /* constant: black */
 }
 
-.thumbnail{
-position: relative;
-z-index: 0;
+.thumbnail {
+	position: relative;
+	z-index: 0;
 }
 
-.thumbnail:hover{
-background-color: transparent;
-z-index: 50;
+.thumbnail:hover {
+	background-color: transparent;
+	z-index: 50;
 }
 
-.thumbnail span{ /*CSS for enlarged image*/
-position: absolute;
-background-color: lightyellow;
-padding: 5px;
-left: -1000px;
-border: 1px dashed gray;
-visibility: hidden;
-color: black;
-text-decoration: none;
+.thumbnail span { /*CSS for enlarged image*/
+	position: absolute;
+	background-color: lightyellow;
+	padding: 5px;
+	left: -1000px;
+	border: 1px dashed gray;
+	visibility: hidden;
+	color: black;
+	text-decoration: none;
 }
 
-.thumbnail span img{ /*CSS for enlarged image*/
-border-width: 0;
-padding: 2px;
+.thumbnail span img { /*CSS for enlarged image*/
+	border-width: 0;
+	padding: 2px;
 }
 
-.thumbnail:hover span{ /*CSS for enlarged image on hover*/
-visibility: visible;
-top: 0;
-left: 60px; /*position where enlarged image should offset horizontally */
-
+.thumbnail:hover span { /*CSS for enlarged image on hover*/
+	visibility: visible;
+	top: 0;
+	left: 60px;
+	/*position where enlarged image should offset horizontally */
 }
 
 .greyFont {
@@ -1370,7 +1373,7 @@ left: 60px; /*position where enlarged image should offset horizontally */
 	text-align: left;
 }
 
-input,textArea,submit,reset,option,select{
+input,textArea,submit,reset,option,select {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 11px;
 }
@@ -1379,14 +1382,39 @@ input.noBorderButton {
 	font-weight: bold;
 	font-size: 1.02em;
 	text-decoration: underline;
-	border:0px solid;
+	border: 0px solid;
 	background-color: #f4f4f5;
 }
 
 input.noBorderText {
 	font-size: 1.02em;
-	border:0px solid;
+	border: 0px solid;
 	background-color: #f4f4f5;
+}
+
+.summaryViewHeader {
+	border-collapse: collapse;
+	background-color: #D7EAEA;
+	/*background: white url(../images/shade.gif) top left repeat-x;*/
+	border-width : 0;
+	padding: none;
+	color: #5C5C5C;
+	border-width: 0;
+}
+
+.summaryViewHeader th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	padding: 0 0 0 0;
+	color: #5C5C5C;
+}
+
+.summaryViewHeader td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.75em;
+	vertical-align: top;
+	text-align: left;
+	color: #5C5C5C;
 }
 
 .summaryViewLayer1 {
@@ -1422,6 +1450,7 @@ input.noBorderText {
 	border-style: solid;
 	border-collapse: collapse;
 	color: #5C5C5C;
+	background-color: #F4F4F5;
 }
 
 .summaryViewLayer2 th {
@@ -1539,7 +1568,7 @@ input.noBorderText {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.60em;
 	padding: 3px 3px 3px 3px;
-/*	color: #FFFFFF;*/
+	/*	color: #FFFFFF;*/
 	font-weight: bold;
 	/*background-color: #6a8989;*/
 	text-align: left;
@@ -1601,22 +1630,25 @@ input.noBorderText {
 }
 
 body {
-	margin:0;
-	padding:0;
-	background:#fff;
-	font:11px verdana,arial,helvetica,sans-serif;
-	color:#4A49A8;
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	font: 11px verdana, arial, helvetica, sans-serif;
+	color: #4A49A8;
 }
+
 p {
-	text-align:center;
-	padding:0 20px;
-	margin:70px 0 0 0;
-	line-height:14px;
+	text-align: center;
+	padding: 0 20px;
+	margin: 70px 0 0 0;
+	line-height: 14px;
 }
+
 p.pText {
-	margin-top:40px;
+	margin-top: 40px;
 }
-ul, ol {
-	font-size:12px;
-	line-height:14px;
+
+ul,ol {
+	font-size: 12px;
+	line-height: 14px;
 }
