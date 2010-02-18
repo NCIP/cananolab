@@ -761,16 +761,18 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				|| dispatch.equals("getFinding")
 				|| dispatch.equals("resetFinding")) {
 			openFinding = true;
-			/**
-			 * Implement feature request [26487] Deeper Edit Links.
-			 * Open file submission form when there is only 1 Finding & 1 File.
-			 */
-			List<FindingBean> findings = achar.getFindings();
-			if (findings.size() == 1 && findings.get(0).getFiles().size() == 1) {
-				FindingBean theFinding = findings.get(0);
-				theFinding.setTheFile(theFinding.getFiles().get(0));
-				achar.setTheFinding(theFinding);
-				openFile = Boolean.TRUE;
+			// Feature request [26487] Deeper Edit Links.
+			// 1 click to open file form when there is only 1 Finding & 1 File.
+			if ("getFinding".equals(dispatch)) {
+				List<FindingBean> findings = achar.getFindings();
+				if (findings.size() == 1 && 
+					findings.get(0).getFiles().size() == 1) {
+					FindingBean theFinding = findings.get(0);
+					theFinding.setTheFile(theFinding.getFiles().get(0));
+					theFinding.setTheFileIndex(0); // change index to 1st file.
+					achar.setTheFinding(theFinding);
+					openFile = Boolean.TRUE;
+				}
 			}
 		}
 		session.setAttribute("openFinding", openFinding);
