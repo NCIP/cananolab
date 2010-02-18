@@ -22,20 +22,20 @@
 				</tr>
 				<tr>
 					<td>
-						<b>caNanoLab contains the following public data counts:</b>
+						<b>caNanoLab contains the following public data counts across all grid nodes:</b>
 						<ul>
 							<li>
-								# of protocols
+								# protocols
 							</li>
 							<li>
-								# of samples from # of sources
+								# samples from of sources
 							</li>
 							<li>
-								# of physico-chemical characterizations,
-								# of in vitro characterizations, and # of other characterizations
+								# characterizations: # physico-chemical,
+								# in vitro, and # other characterizations
 							</li>
 							<li>
-								# of publications
+								# publications
 							</li>
 						</ul>
 						<%--
@@ -110,8 +110,7 @@
 								federated system. caNanoLab operates in a federated system using
 								the caBIG grid infrastructure (caGrid).
 							</li>
-						</ul>
-						<br>
+						</ul>					
 					</td>
 				</tr>
 			</table>
