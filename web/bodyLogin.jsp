@@ -49,22 +49,6 @@
 					</td>
 				</tr>
 			</table>
-			<table align="center">
-				<tr>
-					<td height="20">
-						&nbsp;
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td class="welcomeContent">
-						visitor count
-					</td>
-					<td>
-						<img src="images/hit_counter.png" valign="middle" />
-					</td>
-				</tr>
-			</table>
 		</td>
 		<td valign="top">
 			<!-- right sidebar begins -->
