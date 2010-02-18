@@ -71,7 +71,8 @@
 		</ul>
 	</div>
 </c:forEach>
-<table class="summaryViewLayer1" width="100%">
+<table class="summaryView" width="100%">
+<%--
 	<c:if test="${! empty characterizationTypes}">
 		<tr>
 			<td>
@@ -80,6 +81,7 @@
 			</td>
 		</tr>
 	</c:if>
+--%>
 	<tr>
 		<td>
 			<jsp:include page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />
