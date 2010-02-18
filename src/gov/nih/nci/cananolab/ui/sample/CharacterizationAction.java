@@ -199,15 +199,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// clear copy to otherSamples
 		clearCopy(theForm);
 		
-		/**
-		 * Implement feature request [26487] Deeper Edit Links.
-		 * Open file submission form when there is only 1 Finding & 1 File.
-		 */
-		List<FindingBean> findings = charBean.getFindings();
-		if (findings.size() == 1 && findings.get(0).getFiles().size() == 1) {
-			request.setAttribute("openFileForm", Boolean.TRUE);
-		}
-		
 		return mapping.findForward("inputForm");
 	}
 
@@ -757,12 +748,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
 		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
-		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
-			openFile = true;
-		}
-		session.setAttribute("openFile", openFile);
-		if (dispatch.equals("input")
-				&& browserDispatch.equals("saveExperimentConfig")) {
+		if (dispatch.equals("input") &&
+			browserDispatch.equals("saveExperimentConfig")) {
 			openExperimentConfig = true;
 		}
 		session.setAttribute("openExperimentConfig", openExperimentConfig);
@@ -774,9 +761,24 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				|| dispatch.equals("getFinding")
 				|| dispatch.equals("resetFinding")) {
 			openFinding = true;
+			/**
+			 * Implement feature request [26487] Deeper Edit Links.
+			 * Open file submission form when there is only 1 Finding & 1 File.
+			 */
+			List<FindingBean> findings = achar.getFindings();
+			if (findings.size() == 1 && findings.get(0).getFiles().size() == 1) {
+				FindingBean theFinding = findings.get(0);
+				theFinding.setTheFile(theFinding.getFiles().get(0));
+				achar.setTheFinding(theFinding);
+				openFile = Boolean.TRUE;
+			}
 		}
 		session.setAttribute("openFinding", openFinding);
-
+		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
+			openFile = true;
+		}
+		session.setAttribute("openFile", openFile);
+		
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 

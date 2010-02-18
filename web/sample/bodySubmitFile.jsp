@@ -137,7 +137,7 @@
 					<c:if test="${!empty user && user.curator && user.admin}">
 						<input class="${buttonStyle}" type="button" value="Remove"
 							onclick="removeFile('${actionName}', ${fileForm})"
-							id="deleteFile" style="display: none;" />
+							id="deleteFile" />
 					</c:if>
 				</td>
 				<td>
