@@ -34,7 +34,7 @@ public class FindingBean {
 	private int numberOfColumns;
 	private int numberOfRows;
 	private FileBean theFile = new FileBean();
-	private int theFileIndex;
+	private int theFileIndex = -1; // Shouldn't be 0 which means 1st file.
 
 	public FindingBean() {
 	}
