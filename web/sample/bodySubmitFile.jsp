@@ -129,7 +129,7 @@
 			<html:hidden property="${fileParent}.theFile.domainFile.uri"
 				styleId="hiddenFileUri" />
 			<html:hidden property="${fileParent}.theFileIndex"
-				styleId="hiddenFileIndex" value="-1" />
+				styleId="hiddenFileIndex" />
 		</c:if>
 		<c:if test="${actionName ne 'compositionFile'}">
 			<tr>
