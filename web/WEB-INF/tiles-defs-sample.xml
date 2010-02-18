@@ -24,6 +24,11 @@
 		<put name="menu" value="samples" />
 	</definition>
 
+	<definition name="sample.clone" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodyCloneSample.jsp" />
+		<put name="menu" value="samples" />
+	</definition>
+
 	<definition name="sample.submitPointOfContact" extends="sample.annotationHome">
 		<put name="cananoContent" value="/sample/bodySubmitPointOfContact.jsp" />
 		<put name="menu" value="samples" />
