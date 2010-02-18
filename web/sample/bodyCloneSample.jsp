@@ -18,80 +18,92 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="20%">
-				New Sample Name *
-			</td>
-			<td colspan="3">
-				<html:text property="sampleBean.domain.name" size="50" />
-				<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
-					<html:hidden styleId="sampleId" property="sampleBean.domain.id"
-						value="${sampleForm.map.sampleBean.domain.id}" />
-				</c:if>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				Clone from an Existing Sample *
-			</td>
-			<td width="80">
-				<html:text property="sampleBean.cloningSampleName" size="50" />
-			</td>
-			<td width="40">
-				<img src="images/icon_browse.jpg" align="middle" height="40"
-					width="40" onclick="javascript: show('browseSampleSelect')"/>
+			<td>
+				<table>
+					<tr>
+						<td class="cellLabel">
+							Clone from an Existing Sample *
+						</td>
+						<td width="100">
+							<html:text property="sampleBean.cloningSampleName" size="50" />
+						</td>
+						<td rowspan="2" width="30" height="30">
+							<img src="images/icon_browse.jpg" align="middle" width="30"
+								onclick="javascript:showhide('browseSampleSelect');" alt="search existing samples"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel" valign="top">
+							New Sample Name *
+						</td>
+						<td colspan="2" valign="top">
+							<html:text property="sampleBean.domain.name" size="50" />
+							<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
+								<html:hidden styleId="sampleId" property="sampleBean.domain.id"
+									value="${sampleForm.map.sampleBean.domain.id}" />
+							</c:if>
+						</td>
+					</tr>
+				</table>
 			</td>
 			<td>
-				<html:select property="sampleBean.cloningSampleName"
-					styleId="browseSampleSelect" size="15" style="display:none">
-					<option>
-						KI-HKarlssonCRT2008-01
-					</option>
-					<option>
-						KI-HKarlssonCRT2008-02
-					</option>
-					<option>
-						KI-HKarlssonCRT2008-03
-					</option>
-					<option>
-						KI-HKarlssonCRT2008-04
-					</option>
-					<option>
-						KI-HKarlssonCRT2008-05
-					</option>
-					<option>
-						KI-HKarlssonCRT2008-06
-					</option>
-					<option>
-						KI-HKarlssonCRT2008-07
-					</option>
-					<option>
-						KI-HKarlssonCRT2008-08
-					</option>
-					<option>
-						KI-HKarlssonTL2009-01
-					</option>
-					<option>
-						KI-HKarlssonTL2009-02
-					</option>
-					<option>
-						KI-HKarlssonTL2009-03
-					</option>
-					<option>
-						KI-HKarlssonTL2009-04
-					</option>
-					<option>
-						KI-HKarlssonTL2009-05
-					</option>
-					<option>
-						KI-HKarlssonTL2009-06
-					</option>
-					<option>
-						KI-HKarlssonTL2009-07
-					</option>
-					<option>
-						KI-HKarlssonTL2009-08
-					</option>
-				</html:select>
+				<table>
+					<tr>						
+						<td valign="top">
+							<html:select property="sampleBean.cloningSampleName"
+								styleId="browseSampleSelect" size="15" style="display:none">
+								<option>
+									KI-HKarlssonCRT2008-01
+								</option>
+								<option>
+									KI-HKarlssonCRT2008-02
+								</option>
+								<option>
+									KI-HKarlssonCRT2008-03
+								</option>
+								<option>
+									KI-HKarlssonCRT2008-04
+								</option>
+								<option>
+									KI-HKarlssonCRT2008-05
+								</option>
+								<option>
+									KI-HKarlssonCRT2008-06
+								</option>
+								<option>
+									KI-HKarlssonCRT2008-07
+								</option>
+								<option>
+									KI-HKarlssonCRT2008-08
+								</option>
+								<option>
+									KI-HKarlssonTL2009-01
+								</option>
+								<option>
+									KI-HKarlssonTL2009-02
+								</option>
+								<option>
+									KI-HKarlssonTL2009-03
+								</option>
+								<option>
+									KI-HKarlssonTL2009-04
+								</option>
+								<option>
+									KI-HKarlssonTL2009-05
+								</option>
+								<option>
+									KI-HKarlssonTL2009-06
+								</option>
+								<option>
+									KI-HKarlssonTL2009-07
+								</option>
+								<option>
+									KI-HKarlssonTL2009-08
+								</option>
+							</html:select>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
