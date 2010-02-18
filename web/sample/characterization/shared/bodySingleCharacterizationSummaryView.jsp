@@ -7,13 +7,15 @@
 <c:set var="charObj" value="${charBean.domainChar}" />
 <c:set var="charName" value="${charBean.characterizationName}" />
 <c:set var="charType" value="${charBean.characterizationType}" />
-<a name="${charName}"></a>
-<table class="summaryViewLayer3" width="95%" align="center">
+
+<table class="summaryViewLayer3" width="100%" align="center">
+<%--
 	<tr>
 		<th align="left" colspan="2" width="100%">
 			${charName}
 		</th>
 	</tr>
+--%>
 	<c:choose>
 		<c:when test="${!empty charObj.assayType}">
 			<tr>
