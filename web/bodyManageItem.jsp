@@ -42,6 +42,16 @@
 											<c:out value="${fn:toLowerCase(item)}" />
 										</td>
 									</tr>
+									<c:if test="${item eq 'Sample'}">
+										<tr>
+											<td class="sidebarContent">
+												<a href="sample.do?dispatch=setupClone">Clone 
+													an Existing Sample</a>
+												<br>
+												Click to clone a sample
+											</td>
+										</tr>
+									</c:if>
 								</c:when>
 							</c:choose>
 							<tr>
@@ -50,15 +60,18 @@
 											value="${item}" />s </a>
 									<br>
 									Enter search criteria to obtain information on
-									<c:out value="${fn:toLowerCase(item)}" />s of interest. 
+									<c:out value="${fn:toLowerCase(item)}" />
+									s of interest.
 								</td>
 							</tr>
 							<c:if test="${item eq 'Sample'}">
 								<tr>
 									<td class="sidebarContent">
-										<a href="advancedSampleSearch.do?dispatch=setup">Advanced Sample Search</a>
+										<a href="advancedSampleSearch.do?dispatch=setup">Advanced
+											Sample Search</a>
 										<br>
-										Enter advanced search criteria to obtain meta information on samples of interest.
+										Enter advanced search criteria to obtain meta information on
+										samples of interest.
 									</td>
 								</tr>
 							</c:if>

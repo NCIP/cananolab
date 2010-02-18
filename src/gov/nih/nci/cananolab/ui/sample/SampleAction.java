@@ -8,6 +8,8 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import java.util.SortedSet;
+
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -34,7 +36,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -76,7 +78,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -112,7 +114,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -138,7 +140,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -156,8 +158,23 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setupClone(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return mapping.findForward("cloneInput");
+	}
+
+	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 *
+	 * 
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception

@@ -55,6 +55,8 @@ public class SampleBean {
 
 	private PointOfContactBean thePOC = new PointOfContactBean();
 
+	private String cloningSampleName;
+	
 	public SampleBean() {
 	}
 
@@ -290,5 +292,13 @@ public class SampleBean {
 		if (!poc.getPrimaryStatus()) {
 			otherPOCBeans.remove(poc);
 		}
+	}
+
+	public String getCloningSampleName() {
+		return cloningSampleName;
+	}
+
+	public void setCloningSampleName(String cloningSampleName) {
+		this.cloningSampleName = cloningSampleName;
 	}
 }
