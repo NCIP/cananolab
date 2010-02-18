@@ -102,6 +102,7 @@
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateSample" path="sample.submitSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
+			<forward name="cloneInput" path="sample.clone"/>
 			<forward name="summaryView" path="sample.summaryView" />
 			<forward name="summaryEdit" path="sample.summaryEdit" />
 			<forward name="input" path="sample.submitSample" />
