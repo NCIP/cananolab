@@ -44,7 +44,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td><br/>
 						<jsp:include page="/bodyLoginBrowseGrid.jsp" />
 					</td>
 				</tr>

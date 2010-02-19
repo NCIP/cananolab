@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="gridtable" width="100%">
+<table class="gridtable" width="98%" align="center">
 	<tr>
 		<th>
 			Site
@@ -16,7 +16,7 @@
 	</tr>
 	<tr align="left">
 		<td rowspan="3">
-			<select name="searchLocations" id="sites" multiple="true" size="8"
+			<select name="searchLocations" id="sites" multiple="true" size="15"
 				onchange="getPublicCounts();">
 				<option value="${applicationOwner}" selected="selected">
 					${applicationOwner}
