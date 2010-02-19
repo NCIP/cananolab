@@ -100,20 +100,25 @@
 		cellspacing="0">
 		<tr>
 			<td width="30%">
-				<table width="498" height="32" border="0" align="right"
+				<table width="100%" height="32" border="0"
 					cellpadding="4" cellspacing="0">
 					<tr>
+						<td width="200" height="32">
+							<div align="left">
+								<c:if test="${!empty updateSample}">
+									<input type="button" value="Clone" />
+								</c:if>
+							</div>
+						</td>
 						<td width="490" height="32">
 							<div align="right">
-								<div align="right">
-									<c:set var="origUrl"
-										value="sample.do?page=0&sampleId=${sampleId}&dispatch=${param.dispatch}&location=${applicationOwner}" />
-									<input type="reset" value="Reset"
-										onclick="javascript:window.location.href='${origUrl}'">
-									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="page" value="1">
-									<html:submit/>
-								</div>
+								<c:set var="origUrl"
+									value="sample.do?page=0&sampleId=${sampleId}&dispatch=${param.dispatch}&location=${applicationOwner}" />
+								<input type="reset" value="Reset"
+									onclick="javascript:window.location.href='${origUrl}'">
+								<input type="hidden" name="dispatch" value="create">
+								<input type="hidden" name="page" value="1">
+								<html:submit />
 							</div>
 						</td>
 					</tr>
