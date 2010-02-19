@@ -146,7 +146,7 @@ td.subMenuSecondaryTitleFill {
 	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
-	background-color: #98b7b7; /* lighter */
+	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
@@ -854,7 +854,7 @@ div.logindiv {
 	border-style: solid;
 	border-collapse: collapse;
 	font-size: 0.8em;
-	border-width: 1px;
+	border-width: 0px;
 }
 
 .gridtable th {
