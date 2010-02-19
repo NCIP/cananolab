@@ -978,7 +978,7 @@ public class AdvancedSampleServiceHelper {
 		if (compQuery.getOperand().equals("equals")) {
 			chemicalNameMatchMode = new TextMatchMode(compQuery
 					.getChemicalName());
-		} else if (compQuery.getOperand().equals("contains")) {
+		} else if (compQuery.getOperand().equals(Constants.STRING_OPERAND_CONTAINS)) {
 			chemicalNameMatchMode = new TextMatchMode("*"
 					+ compQuery.getChemicalName() + "*");
 		}
@@ -1096,7 +1096,7 @@ public class AdvancedSampleServiceHelper {
 		if (compQuery.getOperand().equals("equals")) {
 			chemicalNameMatchMode = new TextMatchMode(compQuery
 					.getChemicalName());
-		} else if (compQuery.getOperand().equals("contains")) {
+		} else if (compQuery.getOperand().equals(Constants.STRING_OPERAND_CONTAINS)) {
 			chemicalNameMatchMode = new TextMatchMode("*"
 					+ compQuery.getChemicalName() + "*");
 		}
@@ -1162,7 +1162,7 @@ public class AdvancedSampleServiceHelper {
 		TextMatchMode nameMatchMode = null;
 		if (query.getOperand().equals("equals")) {
 			nameMatchMode = new TextMatchMode(query.getName());
-		} else if (query.getOperand().equals("contains")) {
+		} else if (query.getOperand().equals(Constants.STRING_OPERAND_CONTAINS)) {
 			nameMatchMode = new TextMatchMode("*" + query.getName() + "*");
 		}
 		Disjunction pocDisjunction = Restrictions.disjunction();
@@ -1254,7 +1254,7 @@ public class AdvancedSampleServiceHelper {
 			TextMatchMode nameMatchMode = null;
 			if (query.getOperand().equals("equals")) {
 				nameMatchMode = new TextMatchMode(query.getName());
-			} else if (query.getOperand().equals("contains")) {
+			} else if (query.getOperand().equals(Constants.STRING_OPERAND_CONTAINS)) {
 				nameMatchMode = new TextMatchMode("*" + query.getName() + "*");
 			}
 			Criterion sampleNameCrit = Restrictions.ilike("name", nameMatchMode

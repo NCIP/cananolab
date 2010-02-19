@@ -330,9 +330,9 @@ public class InitSetup {
 				new LabelValueBean("false", "0") };
 		appContext.setAttribute("booleanOptions", booleanOptions);
 
-		LabelValueBean[] stringOperands = new LabelValueBean[] {
-				new LabelValueBean("equals", "equals"),
-				new LabelValueBean("contains", "contains") };
+		LabelValueBean[] stringOperands = new LabelValueBean[] {				
+				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS, Constants.STRING_OPERAND_CONTAINS), 
+		        new LabelValueBean(Constants.STRING_OPERAND_EQUALS, Constants.STRING_OPERAND_EQUALS)};
 		appContext.setAttribute("stringOperands", stringOperands);
 
 		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
