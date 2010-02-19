@@ -13,11 +13,14 @@
 		<form-bean name="searchProtocolForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="fileTitle" type="java.lang.String" />
+			<form-property name="titleOperand" type="java.lang.String"/>
 			<form-property name="searchLocations"
 				type="java.lang.String[]" />
-			<form-property name="protocolType" type="java.lang.String" />
+			<form-property name="protocolType" type="java.lang.String" />			
 			<form-property name="protocolName" type="java.lang.String" />
+			<form-property name="nameOperand" type="java.lang.String"/>
 			<form-property name="protocolAbbreviation" type="java.lang.String" />
+			<form-property name="abbreviationOperand" type="java.lang.String"/>
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
