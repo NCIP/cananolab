@@ -28,6 +28,9 @@ public class Constants {
 	public static final String[] BOOLEAN_CHOICES = new String[] { BOOLEAN_YES,
 			BOOLEAN_NO };
 
+	public static final String STRING_OPERAND_EQUALS = "equals";
+	public static final String STRING_OPERAND_CONTAINS = "contains";
+	
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
 	public static final String DEFAULT_APP_OWNER = "NCICB";
@@ -153,7 +156,7 @@ public class Constants {
 
 	public static final String[] PRIVATE_DISPATCHES = { "input", "create",
 			"delete", "setupNew", "setupUpdate", "summaryEdit", "add",
-			"remove", "save", "resetFinding", "getFinding", "drawMatrix"};
+			"remove", "save", "resetFinding", "getFinding", "drawMatrix" };
 
 	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico chemical characterization";
 	public static final String INVIVO_CHARACTERIZATION = "invivo characterization";
@@ -196,5 +199,5 @@ public class Constants {
 
 	public static final int DISPLAY_TAG_TABLE_SIZE = 25;
 
-	public static final String PLACEHOLDER_DATUM_CONDITION_CREATED_BY="place holder";
+	public static final String PLACEHOLDER_DATUM_CONDITION_CREATED_BY = "place holder";
 }
