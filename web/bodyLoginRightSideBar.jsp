@@ -14,7 +14,7 @@
 	<tr>
 		<td valign="top">
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
-				class="sidebarSection" width="100%">
+				class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<th>
 						stats
@@ -28,7 +28,7 @@
 								# protocols
 							</li>
 							<li>
-								# samples from of sources
+								# samples from # sources
 							</li>
 							<li>
 								# characterizations: # physico-chemical,
@@ -48,7 +48,7 @@
 				</tr>
 			</table>
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
-				class="sidebarSection" width="100%">
+				class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<th>
 						features
@@ -115,7 +115,7 @@
 				</tr>
 			</table>
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
-				class="sidebarSection" width="100%">
+				class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<th>
 						how to
@@ -174,7 +174,7 @@
 				</tr>
 			</table>
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
-				class="sidebarSection" width="100%">
+				class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<th>
 						what's new
