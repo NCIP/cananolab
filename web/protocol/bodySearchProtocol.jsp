@@ -41,7 +41,7 @@
 			<td class="cellLabel">
 				Protocol Type
 			</td>
-			<td>
+			<td colspan="2">
 				<html:select styleId="protocolType" property="protocolType">
 					<option />
 						<html:options name="protocolTypes" />
@@ -53,9 +53,13 @@
 				Protocol Name
 			</td>
 			<td>
-				<html:text property="protocolName" size="100" />
-				<br>
-				<em>* for wildcard search</em>
+				<html:select property="nameOperand" styleId="nameOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td>
+				<html:text property="protocolName" size="80" />
 			</td>
 		</tr>
 		<tr>
@@ -63,9 +67,14 @@
 				Protocol Abbreviation
 			</td>
 			<td>
-				<html:text property="protocolAbbreviation" size="100" />
-				<br>
-				<em>* for wildcard search</em>
+				<html:select property="abbreviationOperand"
+					styleId="abbreviationOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td>
+				<html:text property="protocolAbbreviation" size="80" />				
 			</td>
 		</tr>
 		<tr>
@@ -73,9 +82,15 @@
 				Protocol File Title
 			</td>
 			<td>
-				<html:text property="fileTitle" size="100" />
-				<br>
-				<em>* for wildcard search</em>
+				<html:select property="titleOperand"
+					styleId="titleOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td>
+				<html:text property="fileTitle" size="80" />
+
 			</td>
 		</tr>
 	</table>
@@ -84,14 +99,16 @@
 		cellspacing="0" class="topBorderOnly" summary="">
 		<tr>
 			<td>
-				<span class="formMessage"> <em>Searching without any parameters would return all protocols.</em></span>
+				<span class="formMessage"> <em>Searching without any
+						parameters would return all protocols.</em> </span>
 				<br>
 				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td>
 							<div align="right">
-								<input type="reset" value="Reset"
-									onclick="javascript:location.href='searchProtocol.do?dispatch=setup&page=0'">
+								<input type="reset" value="Reset" onclick=javascript:
+									location.href='searchProtocol.do?dispatch=setup&page=0';
+>
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
 								<html:submit value="Search" />
