@@ -8,7 +8,7 @@
 <c:set var="charName" value="${charBean.characterizationName}" />
 <c:set var="charType" value="${charBean.characterizationType}" />
 
-<table class="summaryViewLayer3" width="100%" align="center">
+<table class="summaryViewNoGrid" width="100%" align="center" bgcolor="#F5F5f5">
 <%--
 	<tr>
 		<th align="left" colspan="2" width="100%">
