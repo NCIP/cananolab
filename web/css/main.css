@@ -241,6 +241,7 @@ a:link.loginText,a:visited.loginText,a:active.loginText {
 a:link.sidebarSectionLink {
 	color: blue;
 }
+
 a:hover.loginText {
 	color: #f4f4f5 /* constant: red */
 }
@@ -444,12 +445,40 @@ SIDEBAR BEGINS
 .sidebarSection { /* for the individual sidebar sections */
 	background-color: #f4f4f5; /* constant: light gray */
 	font-family: verdana, arial, helvetica, sans-serif;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+	border-width: 1px;
+}
+
+.sidebarSection th {
+	/* for the titles of the individual sidebar sections */
+	font-size: 0.6em;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: left;
+	padding: 5px 5px 5px 5px;
+	background-color: #5c5c5c; /* constant: dark gray */
+	color: #ffffff; /* constant: white */
+}
+
+.sidebarSection td {
+	/* for the areas under the sidebar titles and requires text */
+	font-size: 0.7em;
+	font-weight: normal;
+	padding: 5px 5px 5px 5px;
+}
+
+.sidebarSectionNoBottom { /* for the individual sidebar sections */
+	background-color: #f4f4f5; /* constant: light gray */
+	font-family: verdana, arial, helvetica, sans-serif;
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-left: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-.sidebarSection th { /* for the titles of the individual sidebar sections */
+.sidebarSectionNoBottom th {
+	/* for the titles of the individual sidebar sections */
 	font-size: 0.6em;
 	font-weight: bold;
 	text-transform: uppercase;
@@ -459,7 +488,8 @@ SIDEBAR BEGINS
 	color: #ffffff; /* constant: white */
 }
 
-.sidebarSection td { /* for the areas under the sidebar titles and requires text */
+.sidebarSectionNoBottom td {
+	/* for the areas under the sidebar titles and requires text */
 	font-size: 0.7em;
 	font-weight: normal;
 	padding: 5px 5px 5px 10px;
@@ -481,7 +511,7 @@ SIDEBAR BEGINS
 }
 
 /* for the list inside "WHAT'S NEW" on the Welcome Content */
-.sidebarSection ul {
+.sidebarSectionNoBottom ul {
 	list-style-image: url(../images/diamond_list_item.gif);
 	list-style-type: disc;
 	font-weight: normal;
@@ -603,7 +633,7 @@ DATA TABLE BEGINS
 	/*border-left:1px solid #5C5C5C; /* constant: dark gray */
 	/*border-right:1px solid #5C5C5C; /* constant: dark gray */
 	/*border-bottom:1px solid #5C5C5C; /* constant: dark gray */
-
+	
 }
 
 /*###############
@@ -712,7 +742,7 @@ h3,.h3 { /* for title of page */
 }
 
 p,.p { /* for paragraphs */ /* padding-left: 1em; */
-
+	
 }
 
 .standardText {
@@ -825,7 +855,6 @@ div.logindiv {
 	border-collapse: collapse;
 	font-size: 0.8em;
 	border-width: 1px;
-	border-collapse: collapse;
 }
 
 .gridtable th {
@@ -1396,7 +1425,7 @@ input.noBorderText {
 	border-collapse: collapse;
 	background-color: #D7EAEA;
 	/*background: white url(../images/shade.gif) top left repeat-x;*/
-	border-width : 0;
+	border-width: 0;
 	padding: none;
 	color: #5C5C5C;
 	border-width: 0;
