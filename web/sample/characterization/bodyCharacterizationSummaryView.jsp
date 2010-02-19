@@ -3,13 +3,24 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<c:url var="printUrl" value="characterization.do">
+	<c:param name="dispatch" value="summaryPrint" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
+<c:url var="exportUrl" value="characterization.do">
+	<c:param name="dispatch" value="summaryExport" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
 		<jsp:param name="pageTitle" 
 			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Characterization" />
 		<jsp:param name="topic" value="char_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
+		<jsp:param name="printLink"	value="javascript:printPage('${printUrl}" />
+		<jsp:param name="exportLink" value="${exportUrl}" />
 	</jsp:include>
 </c:if>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
@@ -17,17 +28,7 @@
 	<ul>
 		<li class="selected">
 			<a	href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
-				title="All"><span>All</span></a>
-			<c:url var="printUrl" value="characterization.do">
-				<c:param name="dispatch" value="summaryPrint" />
-				<c:param name="sampleId" value="${sampleId}" />
-				<c:param name="location" value="${location}" />
-			</c:url>
-			<c:url var="exportUrl" value="characterization.do">
-				<c:param name="dispatch" value="summaryExport" />
-				<c:param name="sampleId" value="${sampleId}" />
-				<c:param name="location" value="${location}" />
-			</c:url>
+				title="All"><span>All</span></a>		
 			<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
 			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 		</li>
@@ -71,7 +72,7 @@
 		</ul>
 	</div>
 </c:forEach>
-<table class="summaryView" width="100%">
+<table class="summaryViewNoTop" width="100%">
 <%--
 	<c:if test="${! empty characterizationTypes}">
 		<tr>
@@ -84,6 +85,26 @@
 --%>
 	<tr>
 		<td>
+			<c:forEach var="type" items="${characterizationTypes}"
+				varStatus="ind">
+				<table id="summarySectionHeader${ind.count}" width="100%"
+					align="center" style="display: block" class="summaryViewHeader">
+					<tr>
+						<td align="left">
+							<b>${type}</b>
+							<br />
+							<c:forEach var="charName"
+								items="${characterizationSummaryView.type2CharacterizationNames[type]}">
+								<a href="#${charName}">${charName}
+									(${characterizationSummaryView.charName2Counts[charName]})</a> &nbsp;				
+	            </c:forEach>
+						</td>
+					</tr>
+				</table>
+				<div id="summaryHeaderSeparator${ind.count}">
+				</div>
+			</c:forEach>
+			<br/>
 			<jsp:include page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />
 		</td>
 	</tr>
