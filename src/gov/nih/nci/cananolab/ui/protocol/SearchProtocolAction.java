@@ -28,9 +28,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Search protocol file and protocol
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -42,10 +42,26 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileTitle = (String) theForm.get("fileTitle");
+		String titleOperand = (String) theForm.get("titleOperand");
+		if (titleOperand.equals(Constants.STRING_OPERAND_CONTAINS)
+				&& !StringUtils.isEmpty(fileTitle)) {
+			fileTitle = "*" + fileTitle + "*";
+		}
 		String protocolType = (String) theForm.get("protocolType");
 		String protocolName = (String) theForm.get("protocolName");
+		String nameOperand = (String) theForm.get("nameOperand");
+		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
+				&& !StringUtils.isEmpty(protocolName)) {
+			protocolName = "*" + protocolName + "*";
+		}
 		String protocolAbbreviation = (String) theForm
 				.get("protocolAbbreviation");
+		String abbreviationOperand = (String) theForm
+				.get("abbreviationOperand");
+		if (abbreviationOperand.equals(Constants.STRING_OPERAND_CONTAINS)
+				&& !StringUtils.isEmpty(protocolAbbreviation)) {
+			protocolAbbreviation = "*" + protocolAbbreviation + "*";
+		}
 		String[] searchLocations = new String[0];
 		if (theForm.get("searchLocations") != null) {
 			searchLocations = (String[]) theForm.getStrings("searchLocations");
