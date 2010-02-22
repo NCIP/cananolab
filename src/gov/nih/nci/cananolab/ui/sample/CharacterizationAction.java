@@ -748,37 +748,47 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
 		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
+		
 		if (dispatch.equals("input") &&
 			browserDispatch.equals("saveExperimentConfig")) {
 			openExperimentConfig = true;
 		}
-		session.setAttribute("openExperimentConfig", openExperimentConfig);
-		if (dispatch.equals("input")
-				&& (browserDispatch.equals("saveFinding") || browserDispatch
-						.equals("addFile")) || dispatch.equals("addFile")
-				|| dispatch.equals("removeFile")
-				|| dispatch.equals("drawMatrix")
-				|| dispatch.equals("getFinding")
-				|| dispatch.equals("resetFinding")) {
+		if (dispatch.equals("input") && 
+			(browserDispatch.equals("saveFinding") || 
+			 browserDispatch.equals("addFile")) || 
+			dispatch.equals("addFile") || 
+			dispatch.equals("removeFile") || 
+			dispatch.equals("drawMatrix") || 
+			dispatch.equals("getFinding") || 
+			dispatch.equals("resetFinding")) {
 			openFinding = true;
-			// Feature request [26487] Deeper Edit Links.
-			// 1 click to open file form when there is only 1 Finding & 1 File.
-			if ("getFinding".equals(dispatch)) {
-				List<FindingBean> findings = achar.getFindings();
-				if (findings.size() == 1 && 
-					findings.get(0).getFiles().size() == 1) {
-					FindingBean theFinding = findings.get(0);
-					theFinding.setTheFile(theFinding.getFiles().get(0));
-					theFinding.setTheFileIndex(0); // change index to 1st file.
-					achar.setTheFinding(theFinding);
-					openFile = Boolean.TRUE;
-				}
-			}
 		}
-		session.setAttribute("openFinding", openFinding);
 		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
 			openFile = true;
 		}
+		// Feature request [26487] Deeper Edit Links.
+		if ("setupUpdate".equals(dispatch)) {
+			List<ExperimentConfigBean> expConfigs = achar.getExperimentConfigs();
+			if (expConfigs.size() == 1) {
+				ExperimentConfigBean expConfig = expConfigs.get(0);
+				// Have to use JS to populate instrument table.
+				request.setAttribute("onloadJavascript", 
+					"setTheExperimentConfig(" + expConfig.getDomain().getId() + ')');
+			}
+			List<FindingBean> findings = achar.getFindings();
+			if (findings.size() == 1) {
+				openFinding = true;
+				FindingBean theFinding = findings.get(0);
+				achar.setTheFinding(theFinding);
+				if (findings.get(0).getFiles().size() == 1) {
+					theFinding.setTheFile(theFinding.getFiles().get(0));
+					theFinding.setTheFileIndex(0); // change index to 1st file.
+					openFile = true;
+				}
+			}
+		}
+		session.setAttribute("openExperimentConfig", openExperimentConfig);
+		session.setAttribute("openFinding", openFinding);
 		session.setAttribute("openFile", openFile);
 		
 		InitCharacterizationSetup.getInstance()
