@@ -747,8 +747,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
-		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
 		
+		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
 		if (dispatch.equals("input") &&
 			browserDispatch.equals("saveExperimentConfig")) {
 			openExperimentConfig = true;
@@ -771,7 +771,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			List<ExperimentConfigBean> expConfigs = achar.getExperimentConfigs();
 			if (expConfigs.size() == 1) {
 				ExperimentConfigBean expConfig = expConfigs.get(0);
-				// Have to use JS to populate instrument table.
+				// Have to use JavaScript to populate instrument table.
 				request.setAttribute("onloadJavascript", 
 					"setTheExperimentConfig(" + expConfig.getDomain().getId() + ')');
 			}
