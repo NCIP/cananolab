@@ -748,6 +748,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
 		
+		// Feature request [26487] Deeper Edit Links.
+		List<FindingBean> findings = achar.getFindings();
+		boolean oneFinding = findings.size() == 1;
+		boolean oneFile = oneFinding && findings.get(0).getFiles().size() == 1;
 		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
 		if (dispatch.equals("input") &&
 			browserDispatch.equals("saveExperimentConfig")) {
@@ -762,6 +766,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			dispatch.equals("getFinding") || 
 			dispatch.equals("resetFinding")) {
 			openFinding = true;
+			// Feature request [26487] Deeper Edit Links.
+			if (dispatch.equals("getFinding")) { 
+				openFile = oneFile; // open when click on Edit only.
+			}
 		}
 		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
 			openFile = true;
@@ -775,16 +783,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				request.setAttribute("onloadJavascript", 
 					"setTheExperimentConfig(" + expConfig.getDomain().getId() + ')');
 			}
-			List<FindingBean> findings = achar.getFindings();
-			if (findings.size() == 1) {
-				openFinding = true;
-				FindingBean theFinding = findings.get(0);
-				achar.setTheFinding(theFinding);
-				if (findings.get(0).getFiles().size() == 1) {
-					theFinding.setTheFile(theFinding.getFiles().get(0));
-					theFinding.setTheFileIndex(0); // change index to 1st file.
-					openFile = true;
-				}
+			openFinding = oneFinding;
+			openFile = oneFile;
+		}
+		if (openFinding && oneFinding) {
+			achar.setTheFinding(findings.get(0));
+			if (openFile && oneFile) {
+				FindingBean theFinding = achar.getTheFinding();
+				theFinding.setTheFile(theFinding.getFiles().get(0));
+				theFinding.setTheFileIndex(0); // change index to 1st file.
 			}
 		}
 		session.setAttribute("openExperimentConfig", openExperimentConfig);

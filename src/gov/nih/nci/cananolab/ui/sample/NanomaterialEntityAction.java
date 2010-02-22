@@ -8,6 +8,8 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: NanomaterialEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
+import java.util.List;
+
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -376,7 +378,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
 			openFile = true;
 		}
-		session.setAttribute("openFile", openFile);
 		if (dispatch.equals("input")
 				&& browserDispatch.equals("saveComposingElement")
 				|| ((dispatch.equals("setupNew") || dispatch
@@ -384,7 +385,30 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 						.getComposingElements().isEmpty())) {
 			openComposingElement = true;
 		}
+		// Feature request [26487] Deeper Edit Links.
+		if ("setupUpdate".equals(dispatch)) {
+			StringBuilder sb = new StringBuilder();
+			List<ComposingElementBean> compElements = entity.getComposingElements();
+			if (compElements.size() == 1) {
+				ComposingElementBean theElement = compElements.get(0);
+				sb.append("setTheComposingElement(");
+				sb.append(theElement.getDomain().getId());
+				sb.append(");");
+			}
+			List<FileBean> files = entity.getFiles();
+			if (files.size() == 1) {
+				FileBean fileBean = files.get(0);
+				sb.append("setTheFile('nanomaterialEntity', ");
+				sb.append(fileBean.getDomainFile().getId());
+				sb.append(')');
+			}
+			if (sb.length() > 0) {
+				// Have to use JavaScript to populate Function table.
+				request.setAttribute("onloadJavascript", sb.toString());
+			}
+		}
 		session.setAttribute("openComposingElement", openComposingElement);
+		session.setAttribute("openFile", openFile);
 
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);

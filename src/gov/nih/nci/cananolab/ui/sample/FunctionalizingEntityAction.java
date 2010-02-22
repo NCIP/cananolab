@@ -8,9 +8,12 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
+import java.util.List;
+
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
@@ -236,7 +239,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		this.setLookups(request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
-		checkOpenForms(entityBean, request);
+		this.checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
 
@@ -390,5 +393,28 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 					entity.getType(), "functionalizingEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
+		
+		// Feature request [26487] Deeper Edit Links.
+		if ("setupUpdate".equals(dispatch)) {
+			StringBuilder sb = new StringBuilder();
+			List<FunctionBean> functions = entity.getFunctions();
+			if (functions.size() == 1) {
+				FunctionBean theFunction = functions.get(0);
+				sb.append("setTheFunction(");
+				sb.append(theFunction.getDomainFunction().getId());
+				sb.append(");");
+			}
+			List<FileBean> files = entity.getFiles();
+			if (files.size() == 1) {
+				FileBean fileBean = files.get(0);
+				sb.append("setTheFile('functionalizingEntity', ");
+				sb.append(fileBean.getDomainFile().getId());
+				sb.append(')');
+			}
+			if (sb.length() > 0) {
+				// Have to use JavaScript to populate Function table.
+				request.setAttribute("onloadJavascript", sb.toString());
+			}
+		}
 	}
 }
