@@ -5,14 +5,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:choose>
 	<c:when test="${param.summary eq 'true'}">
-		<table class="summaryViewLayer4" align="center" width="95%">
+		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<th>
+				<td class="cellLabel">
 					Type
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Isotype
-				</th>
+				</td>
 			</tr>
 			<tr>
 				<td>

@@ -5,26 +5,26 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
-<table class="summaryViewLayer4" align="center" width="95%">
+<table class="summaryViewNoGrid" align="left">
 	<tr>
-		<th width="33%">
+		<td class="cellLabel">
 			Type
-		</th>
+		</td>
 		<c:if test="${entity.withImagingFunction eq 'true'}">
-			<th width="33%">
+			<td class="cellLabel">
 				Image Modality
-			</th>
+			</td>
 		</c:if>
 		<c:if test="${entity.withTargetingFunction eq 'true'}">
-			<th width="33%">
+			<td class="cellLabel">
 				Targets
-			</th>
+			</td>
 		</c:if>
-		<th>
+		<td class="cellLabel">
 			Description
-		</th>
-		<th>
-		</th>
+		</td>
+		<td>
+		</td>
 	</tr>
 	<c:forEach var="function" items="${entity.functions}">
 		<tr>
