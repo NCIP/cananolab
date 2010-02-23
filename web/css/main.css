@@ -1420,31 +1420,6 @@ input.noBorderText {
 	background-color: #f4f4f5;
 }
 
-.summaryViewHeader {
-	border-collapse: collapse;
-	background-color: #D7EAEA;
-	/*background: white url(../images/shade.gif) top left repeat-x;*/
-	border-width: 0;
-	padding: none;
-	color: #5C5C5C;
-	border-width: 0;
-}
-
-.summaryViewHeader th {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.65em;
-	padding: 0 0 0 0;
-	color: #5C5C5C;
-}
-
-.summaryViewHeader td {
-	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.75em;
-	vertical-align: top;
-	text-align: left;
-	color: #5C5C5C;
-}
-
 .summaryViewLayer1 {
 	border-collapse: collapse;
 	border-color: #cccccc;
