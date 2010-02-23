@@ -6,7 +6,7 @@
 <%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
 <table id="summarySection${index}" width="100%" align="center"
-	style="display: block" class="summaryViewLayer2">
+	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
 			functionalizing entity

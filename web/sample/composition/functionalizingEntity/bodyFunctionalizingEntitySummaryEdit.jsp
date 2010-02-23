@@ -6,7 +6,7 @@
 <%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
 <table id="summarySection2" width="100%" align="center"
-	style="display: block" class="summaryViewLayer2">
+	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
 			functionalizing entity &nbsp;&nbsp;&nbsp;
@@ -36,7 +36,7 @@
 						<c:set var="entityType" value="${functionalizingEntity.type}" />
 						<c:if test="${!empty entityType}">
 							<a name="${functionalizingEntity.domainEntity.id}">
-							<table class="summaryViewLayer3" width="95%" align="center">
+							<table class="summaryViewLayer3" width="99%" align="center">
 								<tr>
 									<th valign="top" align="left" colspan="2" width="90%">
 										${entityType}
