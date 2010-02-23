@@ -30,14 +30,18 @@
 		<li class="selected">
 			<a
 				href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
-				title="All"><span>&nbsp;All&nbsp;&nbsp;</span>
+				title="All"><span>&nbsp;All</span>
 			</a>
 		</li>
 		<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
 			<li>
 				<a
 					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
-					title="${type}"><span>${type}</span> </a>
+					title="${type}"><span>${type}</span></a>
+				<a href="javascript:printPage('${printUrl}&type=${type}')"
+					id="printUrl${ind.count}" style="display: none;"></a>
+				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
+					style="display: none;"></a>	
 			</li>
 		</c:forEach>
 		<li>
@@ -53,7 +57,7 @@
 			<li>
 				<a
 					href="javascript:showSummary('ALL',${fn:length(characterizationTypes)})"
-					title="All"><span>&nbsp;All&nbsp;&nbsp;</span>
+					title="All"><span>&nbsp;All</span>
 				</a>
 			</li>
 			<c:forEach var="type" items="${characterizationTypes}"

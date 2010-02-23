@@ -3,16 +3,17 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:url var="printUrl" value="characterization.do">
+<c:url var="printUrl" value="characterization.do" scope="session">
 	<c:param name="dispatch" value="summaryPrint" />
 	<c:param name="sampleId" value="${sampleId}" />
 	<c:param name="location" value="${location}" />
 </c:url>
-<c:url var="exportUrl" value="characterization.do">
+<c:url var="exportUrl" value="characterization.do" scope="session">
 	<c:param name="dispatch" value="summaryExport" />
 	<c:param name="sampleId" value="${sampleId}" />
 	<c:param name="location" value="${location}" />
 </c:url>
+
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
 		<jsp:param name="pageTitle" 
@@ -28,9 +29,7 @@
 	<ul>
 		<li class="selected">
 			<a	href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
-				title="All"><span>All</span></a>		
-			<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
-			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
+				title="All"><span>All</span></a>
 		</li>
 		<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
 			<li>
@@ -38,6 +37,10 @@
 					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
 					title="${type}"><span>${type}</span>
 				</a>
+				<a href="javascript:printPage('${printUrl}&type=${type}')"
+					id="printUrl${ind.count}" style="display: none;"></a>
+				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
+					style="display: none;"></a>								
 			</li>
 		</c:forEach>
 	</ul>
