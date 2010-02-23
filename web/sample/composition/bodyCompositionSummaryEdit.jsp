@@ -3,7 +3,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<c:url var="printUrl" value="composition.do">
+	<c:param name="dispatch" value="summaryPrint" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
+<c:url var="exportUrl" value="composition.do">
+	<c:param name="dispatch" value="summaryExport" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
 <c:set var="compositionSections" value="${allCompositionSections}" />
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
@@ -11,6 +20,8 @@
 			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Composition" />
 		<jsp:param name="topic" value="composition_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
+		<jsp:param name="printLink" value="${printUrl}" />
+		<jsp:param name="exportLink" value="${exportUrl}" />		
 	</jsp:include>
 </c:if>
 <c:set var="sectionTitles" value="" />
@@ -21,19 +32,6 @@
 			<a
 				href="javascript:showSummary('ALL', ${fn:length(compositionSections)})"
 				title="All"><span>All</span> </a>
-			<c:url var="printUrl" value="composition.do">
-				<c:param name="dispatch" value="summaryPrint" />
-				<c:param name="sampleId" value="${sampleId}" />
-				<c:param name="location" value="${location}" />
-			</c:url>
-			<c:url var="exportUrl" value="composition.do">
-				<c:param name="dispatch" value="summaryExport" />
-				<c:param name="sampleId" value="${sampleId}" />
-				<c:param name="location" value="${location}" />
-			</c:url>
-			<a href="javascript:printPage('${printUrl}')" id="printUrlAll"
-				style="display: none;"></a>
-			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 		</li>
 		<c:forEach var="type" items="${compositionSections}" varStatus="ind">
 			<li>
@@ -74,8 +72,10 @@
 		</ul>
 	</div>
 </c:forEach>
-<table class="summaryViewLayer1" width="100%">
-	<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities ||
+<table class="summaryViewNoTop" width="100%">
+<%--
+	<c:if
+		test="${!empty compositionForm.map.comp.nanomaterialEntities ||
 				!empty compositionForm.map.comp.functionalizingEntities ||
 				!empty compositionForm.map.comp.chemicalAssociations ||
 				!empty compositionForm.map.comp.files}">
@@ -86,6 +86,7 @@
 			</td>
 		</tr>
 	</c:if>
+--%>
 	<tr>
 		<td>
 			<jsp:include

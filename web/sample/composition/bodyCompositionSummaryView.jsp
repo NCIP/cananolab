@@ -3,13 +3,24 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<c:url var="printUrl" value="composition.do">
+	<c:param name="dispatch" value="summaryPrint" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
+<c:url var="exportUrl" value="composition.do">
+	<c:param name="dispatch" value="summaryExport" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
 		<jsp:param name="pageTitle" 
 			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Composition" />
 		<jsp:param name="topic" value="composition_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
+		<jsp:param name="printLink" value="${printUrl}" />
+		<jsp:param name="exportLink" value="${exportUrl}" />
 	</jsp:include>
 </c:if>
 <c:set var="compositionSections"
@@ -20,18 +31,6 @@
 			<li class="selected">
 				<a	href="javascript:showSummary('ALL', ${fn:length(compositionSections)})"
 					title="All"><span>All</span></a>
-				<c:url var="printUrl" value="composition.do">
-					<c:param name="dispatch" value="summaryPrint" />
-					<c:param name="sampleId" value="${sampleId}" />
-					<c:param name="location" value="${location}" />
-				</c:url>
-				<c:url var="exportUrl" value="composition.do">
-					<c:param name="dispatch" value="summaryExport" />
-					<c:param name="sampleId" value="${sampleId}" />
-					<c:param name="location" value="${location}" />
-				</c:url>
-				<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
-				<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 			</li>
 			<c:forEach var="type" items="${compositionSections}" varStatus="ind">
 				<li>
@@ -68,7 +67,8 @@
 		</div>
 	</c:forEach>
 </c:if>
-<table class="summaryViewLayer1" width="100%">
+<table class="summaryViewNoTop" width="100%">
+<%--
 	<c:if test="${! empty compositionSections && empty printView}">
 		<tr>
 			<td>
@@ -77,6 +77,7 @@
 			</td>
 		</tr>
 	</c:if>
+--%>
 	<c:set scope='request' var='index' value='0'/>
 	<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities}">
 		<tr>
