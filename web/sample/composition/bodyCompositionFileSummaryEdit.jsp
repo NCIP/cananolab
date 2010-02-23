@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <table id="summarySection4" width="100%" align="center"
-	style="display: block" class="summaryViewLayer2">
+	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
 			composition file &nbsp;&nbsp;&nbsp;
@@ -29,7 +29,7 @@
 						id="file" indexId="ind">
 						<c:set var="fileType" value="${file.domainFile.type}" />
 						<c:if test="${!empty fileType}">
-							<table class="summaryViewLayer3" width="95%" align="center">
+							<table class="summaryViewLayer3" width="99%" align="center">
 								<tr>
 									<th valign="top" align="left" colspan="2" width="90%">
 										${fileType}

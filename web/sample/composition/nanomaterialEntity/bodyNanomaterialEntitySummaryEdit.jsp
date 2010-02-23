@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <table id="summarySection1" width="100%" align="center"
-	style="display: block" class="summaryViewLayer2">
+	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
 			nanomaterial entity &nbsp;&nbsp;&nbsp;
@@ -13,7 +13,7 @@
 				href="nanomaterialEntity.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" /></a> &nbsp;&nbsp;&nbsp;
-			<%-- 
+			<%--
 			<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities}">
 				<a
 					href="/nanopmaterialEntity.do?dispatch=delete&sampleId=${sampleId}"
@@ -103,7 +103,7 @@
 												<c:when test="${! empty nanomaterialEntity.files}">
 													<c:set var="files" value="${nanomaterialEntity.files }" />
 													<c:set var="entityType" value="nanomaterial entity" />
-													<%@include file="../bodyFileView.jsp"%>
+													<%@include file="../../bodyFileView.jsp"%>
 												</c:when>
 												<c:otherwise>
 					N/A

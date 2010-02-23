@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <table id="summarySection3" width="100%" align="center"
-	style="display: block" class="summaryViewLayer2">
+	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
 			chemical association &nbsp;&nbsp;&nbsp;
@@ -13,7 +13,7 @@
 				href="chemicalAssociation.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" /></a> &nbsp;&nbsp;&nbsp;
-			<%-- 
+			<%--
 			<c:if test="${!empty compositionForm.map.comp.chemicalAssociations}">
 				<a
 					href="/chemicalAssociation.do?dispatch=delete&sampleId=${sampleId}"
@@ -32,10 +32,10 @@
 						property="comp.chemicalAssociations" id="assoc" indexId="ind">
 						<c:set var="assocType" value="${assoc.type}" />
 						<c:if test="${!empty assocType}">
-							<table class="summaryViewLayer3" width="95%" align="center">
+							<table class="summaryViewLayer3" width="99%" align="center">
 								<tr>
 									<th valign="top" align="left" colspan="2" width="90%">
-										${assocType}
+										&nbsp;${assocType}
 									</th>
 									<th valign="top" align="right">
 										<a

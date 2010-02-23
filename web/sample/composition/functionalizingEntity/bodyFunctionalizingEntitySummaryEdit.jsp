@@ -14,7 +14,7 @@
 				href="functionalizingEntity.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" /></a>&nbsp;&nbsp;&nbsp;
-			<%-- 
+			<%--
 			<c:if
 				test="${!empty compositionForm.map.comp.functionalizingEntities}">
 				<a
@@ -127,7 +127,7 @@
 											<%
 													String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 																						.getInstance()
-																						.getDetailPage(																								
+																						.getDetailPage(
 																								(String) pageContext
 																										.getAttribute("entityType"),
 																								"functionalizingEntity");
@@ -200,7 +200,7 @@
 											<c:when test="${! empty functionalizingEntity.files}">
 												<c:set var="files" value="${functionalizingEntity.files }" />
 												<c:set var="entityType" value="functionalizing entity" />
-												<%@include file="../bodyFileView.jsp"%>
+												<%@include file="../../bodyFileView.jsp"%>
 											</c:when>
 											<c:otherwise>
 					N/A

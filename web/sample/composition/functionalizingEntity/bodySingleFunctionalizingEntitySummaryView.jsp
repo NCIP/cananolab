@@ -76,7 +76,7 @@
 									<%
 											String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 																		.getInstance()
-																		.getDetailPage(																				
+																		.getDetailPage(
 																				(String) pageContext
 																						.getAttribute("entityType"),
 																				"functionalizingEntity");
@@ -133,7 +133,7 @@
 								<td>
 									<c:set var="files" value="${functionalizingEntity.files }" />
 									<c:set var="entityType" value="functionalizing entity" />
-									<%@include file="../bodyFileView.jsp"%>
+									<%@include file="../../bodyFileView.jsp"%>
 								</td>
 							</tr>
 						</c:if>
