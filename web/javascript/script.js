@@ -289,12 +289,15 @@ function hide(layer_ref) {
 }
 function showSummary(layer_ref, totalLayers) {
 	var printLink = document.getElementById("printLink");
-	var printUrl = document.getElementById("printUrlAll");
+	//var printUrl = document.getElementById("printUrlAll");
 	var exportLink = document.getElementById("exportLink");
-	var exportUrl = document.getElementById("exportUrlAll");
+	//var exportUrl = document.getElementById("exportUrlAll");
 	if (layer_ref == "ALL") {
 		document.getElementById("summaryTabALL").style.display = "block";
 		for (var i = 1; i <= totalLayers; i++) {
+			if (document.getElementById("summarySectionHeader" + i)!=null) {
+			   document.getElementById("summarySectionHeader" + i).style.display = "block";
+			}
 			document.getElementById("summarySection" + i).style.display = "block";
 			document.getElementById("summarySeparator" + i).style.display = "block";
 			document.getElementById("summaryTab" + i).style.display = "none";
@@ -306,12 +309,18 @@ function showSummary(layer_ref, totalLayers) {
 	document.getElementById("summaryTabALL").style.display = "none";
 	for (var i = 1; i <= totalLayers; i++) {
 		if (layer_ref == i) {
+			if (document.getElementById("summarySectionHeader" + i)!=null) {
+			   document.getElementById("summarySectionHeader" + i).style.display = "block";
+			}
 			document.getElementById("summaryTab" + i).style.display = "block";
 			document.getElementById("summarySection" + i).style.display = "block";
 			document.getElementById("summarySeparator" + i).style.display = "block";
 			printUrl = document.getElementById("printUrl" + i);
 			exportUrl = document.getElementById("exportUrl" + i);
 		} else {
+			if (document.getElementById("summarySectionHeader" + i)!=null) {
+			   document.getElementById("summarySectionHeader" + i).style.display = "none";
+			}
 			document.getElementById("summaryTab" + i).style.display = "none";
 			document.getElementById("summarySection" + i).style.display = "none";
 			document.getElementById("summarySeparator" + i).style.display = "none";
