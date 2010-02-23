@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <table id="summarySection${index}" width="100%" align="center"
-	style="display: block" class="summaryViewLayer2">
+	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
 			nanomaterial entity

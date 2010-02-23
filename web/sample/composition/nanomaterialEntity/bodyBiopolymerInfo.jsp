@@ -6,17 +6,17 @@
 
 <c:choose>
 	<c:when test="${param.summary eq 'true'}">
-		<table class="summaryViewLayer4" align="center" width="95%">
+		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<th>
+				<td class="cellLabel">
 					Name
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Type
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Sequence
-				</th>
+				</td>
 			</tr>
 			<tr>
 				<td>

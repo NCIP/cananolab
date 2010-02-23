@@ -6,7 +6,7 @@
 <%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
 <c:forEach var="composingElement" items="${entity.composingElements}">
-	<table class="summaryViewLayer4" width="95%" align="center">
+	<table class="summaryViewNoGrid" width="99%" align="left">
 		<tr>
 			<td class="cellLabel">
 				${composingElement.displayName}
@@ -50,8 +50,10 @@
 		</c:choose>
 		<c:choose>
 			<c:when test="${!empty composingElement.molecularFormulaDisplayName}">
-				<tr>
+				<tr><%--
 					<td style="word-wrap:break-word;max-width:280px;">
+					--%>
+					<td>
 						Molecular Formula: ${composingElement.molecularFormulaDisplayName}
 					</td>
 					<td></td>

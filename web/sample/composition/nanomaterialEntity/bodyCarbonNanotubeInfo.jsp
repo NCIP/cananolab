@@ -5,20 +5,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:choose>
 	<c:when test="${param.summary eq 'true'}">
-		<table class="summaryViewLayer4" align="center" width="95%">
+		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<th>
+				<td class="cellLabel">
 					Average Length
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Chirality
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Diameter
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Wall Type
-				</th>
+				</td>
 			</tr>
 			<tr>
 				<td>

@@ -5,24 +5,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:choose>
 	<c:when test="${param.summary eq 'true'}">
-		<table class="summaryViewLayer4" align="center" width="95%">
-			<tr>
-				<th>
-					Is Polymerized
-				</th>
-				<th>
-					Polymer Name
-				</th>
-			</tr>
-			<tr>
-				<td>
-					${nanomaterialEntity.emulsion.polymerized}
-				</td>
-				<td>
-					${nanomaterialEntity.emulsion.polymerName}
-				</td>
-			</tr>
-		</table>
+		<c:choose>
+			<c:when test="${! empty charBean.surface.isHydrophobic}">
+				<table class="summaryViewNoGrid" align="left">
+					<tr>
+						<td class="cellLabel">
+							Is Polymerized
+						</td>
+						<td class="cellLabel">
+							Polymer Name
+						</td>
+					</tr>
+					<tr>
+						<td>
+							${nanomaterialEntity.emulsion.polymerized}
+						</td>
+						<td>
+							${nanomaterialEntity.emulsion.polymerName}
+						</td>
+					</tr>
+				</table>
+			</c:when>
+			<c:otherwise>N/A
+	</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		<table width="100%" align="center" class="submissionView">
@@ -54,11 +60,11 @@
 						</c:otherwise>
 					</c:choose>
 					<select name="nanomaterialEntity.isPolymerized">
-						<option value="" ${selectNoneStr}></option>
-						<option value="true" ${selectYesStr}>
+						<option value=""${selectNoneStr}></option>
+						<option value="true"${selectYesStr}>
 							Yes
 						</option>
-						<option value="false" ${selectNoStr}>
+						<option value="false"${selectNoStr}>
 							No
 						</option>
 					</select>

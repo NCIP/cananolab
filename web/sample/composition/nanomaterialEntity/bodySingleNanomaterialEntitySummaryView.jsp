@@ -8,10 +8,10 @@
 <c:if test="${!empty entityType}">
 	<tr>
 		<td>
-				<table class="summaryViewLayer3" width="95%" align="center">
+				<table class="summaryViewLayer3" width="99%" align="center">
 					<tr>
 						<th valign="top" align="left" colspan="2" width="100%">
-							${entityType}
+							&nbsp;${entityType}
 						</th>
 					</tr>
 					<c:if
