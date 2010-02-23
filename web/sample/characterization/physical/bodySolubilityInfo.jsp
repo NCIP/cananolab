@@ -8,17 +8,17 @@
 	<c:when test="${param.summary eq 'true'}">
 		<c:choose>
 			<c:when test="${! empty charBean.solubility.solvent}">
-				<table class="summaryViewLayer4" align="center" width="95%">
+				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<th>
+						<td class="cellLabel">
 							Solvent
-						</th>
-						<th>
+						</td>
+						<td class="cellLabel">
 							Is Soluble?
-						</th>
-						<th>
+						</td>
+						<td class="cellLabel">
 							Critical Concentration
-						</th>
+						</td>
 					</tr>
 					<tr>
 						<td>

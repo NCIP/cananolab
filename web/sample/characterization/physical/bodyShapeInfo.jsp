@@ -5,24 +5,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <c:choose>
-	<c:when
-		test="${param.summary eq 'true'}">
+	<c:when test="${param.summary eq 'true'}">
 		<c:choose>
 			<c:when test="${! empty charBean.shape.type}">
-				<table class="summaryViewLayer4" align="center" width="95%">
+				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<th>
+						<td class="cellLabel">
 							Type
-						</th>
-						<th>
+						</td>
+						<td class="cellLabel">
 							Aspect Ratio
-						</th>
-						<th>
+						</td>
+						<td class="cellLabel">
 							Minimum Dimension
-						</th>
-						<th>
+						</td>
+						<td class="cellLabel">
 							Maximum Dimension
-						</th>
+						</td>
 					</tr>
 					<tr>
 						<td>
@@ -86,9 +85,9 @@
 				</td>
 				<td>
 					<input type="text" name="achar.shape.aspectRatio" id="aspectRatio"
-						id="aspectRatio" 
+						id="aspectRatio"
 						value="${characterizationForm.map.achar.shape.aspectRatio}" />
-						<%-- onkeydown="return filterFloatNumber(event)" /--%>
+					<%-- onkeydown="return filterFloatNumber(event)" /--%>
 				</td>
 			</tr>
 			<tr>
@@ -97,9 +96,9 @@
 				</td>
 				<td>
 					<input type="text" name="achar.shape.minDimension"
-						id="shapeMinDimension" 
+						id="shapeMinDimension"
 						value="${characterizationForm.map.achar.shape.minDimension}" />
-						<%-- onkeydown="return filterFloatNumber(event)" /--%>
+					<%-- onkeydown="return filterFloatNumber(event)" /--%>
 					<div id="minDimensionUnitPrompt">
 						<select name="achar.shape.minDimensionUnit" id="minDimensionUnit"
 							onchange="callPrompt('Unit', 'minDimensionUnit', 'minDimensionUnitPrompt')">
@@ -130,9 +129,9 @@
 				</td>
 				<td>
 					<input type="text" name="achar.shape.maxDimension"
-						id="shapeMaxDimension" 
+						id="shapeMaxDimension"
 						value="${characterizationForm.map.achar.shape.maxDimension}" />
-						<%-- onkeydown="return filterFloatNumber(event)" /--%>
+					<%-- onkeydown="return filterFloatNumber(event)" /--%>
 					<div id="maxDimensionUnitPrompt">
 						<select name="achar.shape.maxDimensionUnit" id="maxDimensionUnit"
 							onchange="callPrompt('Unit', 'maxDimensionUnit', 'maxDimensionUnitPrompt')">

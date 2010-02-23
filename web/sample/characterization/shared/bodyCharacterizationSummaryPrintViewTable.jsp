@@ -5,40 +5,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
-	<table id="summarySectionHeader${ind.count}" width="100%" align="center"
-		style="display: block" class="summaryViewHeader">
-		<tr>
-			<td align="left">
-				<b>${type}</b>
-				<br />
-				<c:forEach var="charName"
-					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
-					<a href="#${charName}">${charName}
-						(${characterizationSummaryView.charName2Counts[charName]})</a> &nbsp;				
-	            </c:forEach>
-			</th>
-		</tr>
-	</table>
-	<div id="summaryHeaderSeparator${ind.count}">		
-	</div>
-</c:forEach>
-<br />
-<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
 	<table id="summarySection${ind.count}" width="100%" align="center"
-		style="display: block">		
+		style="display: block" class="summaryViewNoGrid">
 		<tr>
-			<th align="left" style="font-size: 0.75em">
-				${type} &nbsp;&nbsp;&nbsp;
+			<th align="left">
+				<span class="summaryViewHeading">${type}</span>
 			</th>
-		</tr>		
+		</tr>	
 		<tr>
-			<td>
+			<td bgcolor="#dbdbdb">
 				<c:forEach var="charName"
 					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
-					<a name="${charName}"></a>
-					<table width="100%" align="center" class="summaryViewLayer2">
+					<a name="${charName}"></a>					
+					<table width="99%" align="center" class="summaryViewNoGrid">
 						<tr>
-							<th align="left" style="font-size: 0.70em">
+							<th align="left">
 								${charName}
 							</th>
 						</tr>
@@ -51,8 +32,7 @@
 								</c:forEach>
 							</td>
 						</tr>
-					</table>
-					<br>
+					</table>				
 				</c:forEach>
 			</td>
 		</tr>

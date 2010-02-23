@@ -4,19 +4,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<table class="summaryViewLayer4" align="center" width="95%">
+<table class="summaryViewNoGrid" align="left">
 	<tr>
-		<th width="33%">
+		<td width="33%" class="cellLabel">
 			Technique
-		</th>
-		<th width="33%">
+		</td>
+		<td width="33%" class="cellLabel">
 			Instruments
-		</th>
-		<th>
+		</td>
+		<td class="cellLabel">
 			Description
-		</th>
-		<th>
-		</th>
+		</td>
+		<td>
+		</td>
 	</tr>
 	<c:forEach var="experimentConfig" items="${charBean.experimentConfigs}"
 		varStatus="configIndex">

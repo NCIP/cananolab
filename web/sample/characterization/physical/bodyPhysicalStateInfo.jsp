@@ -8,13 +8,11 @@
 	<c:when test="${param.summary eq 'true'}">
 		<c:choose>
 			<c:when test="${! empty charBean.physicalState.type}">
-				<table class="summaryViewLayer4" align="center" width="95%">
+				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<th>
+						<td class="cellLabel">
 							Type
-						</th>
-					</tr>
-					<tr>
+						</td>
 						<td>
 							${charBean.physicalState.type}
 						</td>
@@ -22,7 +20,7 @@
 				</table>
 			</c:when>
 			<c:otherwise>N/A
-			</c:otherwise>
+	</c:otherwise>
 		</c:choose>
 	</c:when>
 	<c:otherwise>

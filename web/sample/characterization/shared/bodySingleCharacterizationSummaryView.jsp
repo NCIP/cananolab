@@ -8,7 +8,7 @@
 <c:set var="charName" value="${charBean.characterizationName}" />
 <c:set var="charType" value="${charBean.characterizationType}" />
 
-<table class="summaryViewNoGrid" width="100%" align="center" bgcolor="#F5F5f5">
+<table class="summaryViewNoGrid" width="99%" align="center" bgcolor="#F5F5f5">
 <%--
 	<tr>
 		<th align="left" colspan="2" width="100%">
@@ -113,7 +113,7 @@
 	<c:if test="${!empty charBean.experimentConfigs}">
 		<tr>
 			<td class="cellLabel" width="10%">
-				Techniques and Instruments
+				Experiment Configurations
 			</td>
 			<td>
 				<%@ include file="bodyExperimentConfigView.jsp"%>

@@ -8,13 +8,11 @@
 		test="${param.summary eq 'true'}">
 		<c:choose>
 			<c:when test="${! empty charBean.cytotoxicity.cellLine}">
-				<table class="summaryViewLayer4" align="center" width="95%">
+				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<th>
+						<td class="cellLabel">
 							Cell Line
-						</th>
-					</tr>
-					<tr>
+						</td>
 						<td>
 							${charBean.cytotoxicity.cellLine}
 						</td>
@@ -22,7 +20,7 @@
 				</table>
 			</c:when>
 			<c:otherwise>N/A
-			</c:otherwise>
+	</c:otherwise>
 		</c:choose>
 	</c:when>
 	<c:otherwise>

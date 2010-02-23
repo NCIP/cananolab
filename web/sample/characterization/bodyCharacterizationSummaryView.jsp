@@ -19,7 +19,7 @@
 			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Characterization" />
 		<jsp:param name="topic" value="char_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
-		<jsp:param name="printLink"	value="javascript:printPage('${printUrl}" />
+		<jsp:param name="printLink"	value="${printUrl}" />
 		<jsp:param name="exportLink" value="${exportUrl}" />
 	</jsp:include>
 </c:if>
@@ -38,11 +38,6 @@
 					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
 					title="${type}"><span>${type}</span>
 				</a>
-				<a href="javascript:printPage('${printUrl}&type=${type}')"
-					id="printUrl${ind.count}" style="display: none;"></a>
-				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
-					style="display: none;"></a>
-
 			</li>
 		</c:forEach>
 	</ul>

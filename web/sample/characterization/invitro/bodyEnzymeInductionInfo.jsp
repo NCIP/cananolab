@@ -7,13 +7,11 @@
 	<c:when test="${param.summary eq 'true'}">
 		<c:choose>
 			<c:when test="${! empty charBean.enzymeInduction.enzyme}">
-				<table class="summaryViewLayer4" align="center" width="95%">
+				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<th>
+						<td class="cellLabel">
 							Enzyme Name
-						</th>
-					</tr>
-					<tr>
+						</td>
 						<td>
 							${charBean.enzymeInduction.enzyme}
 						</td>

@@ -5,30 +5,28 @@
 
 <c:forEach var="finding" varStatus="findingIndex"
 	items="${charBean.findings}">
-	<table class="summaryViewLayer4" align="center" width="95%">
-		<c:if test="${edit eq 'true'}">
-			<tr>
-				<th style="text-align: right">
-					<a
-						href="javascript:setTheFinding(characterizationForm, 'characterization', ${finding.domain.id});">Edit</a>&nbsp;
-				</th>
-			</tr>
-		</c:if>
+	<table align="center" width="100%" class="summaryViewNoGrid">
 		<tr>
-			<td>
-				<b> Data and Conditions</b>
+			<td class="cellLabel">
+				<c:if test="${! empty finding.rows}">Data and Conditions</c:if>
+			</td>
+			<td width="5">&nbsp;</td>
+			<td class="cellLabel">
+				<c:if test="${! empty finding.files}">
+				Files
+			</c:if>
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<c:choose>
 					<c:when test="${! empty finding.rows}">
-						<table class="summaryViewLayer4" width="95%" align="center">
+						<table class="summaryViewWithGrid" align="left">
 							<tr>
 								<c:forEach var="col" items="${finding.columnHeaders}">
-									<th>
-										<strong>${col.displayName}</strong>
-									</th>
+									<td class="cellLabel">
+										${col.displayName}
+									</td>
 								</c:forEach>
 							</tr>
 							<c:forEach var="row" items="${finding.rows}">
@@ -42,28 +40,15 @@
 							</c:forEach>
 						</table>
 					</c:when>
-					<c:otherwise>
-						N/A
-					</c:otherwise>
 				</c:choose>
-				<br />
 			</td>
-		</tr>
-		<tr>
-			<td>
-				<b> Files</b>
-			</td>
-		</tr>
-		<tr>
+			<td width="5">&nbsp;</td>
 			<td>
 				<c:choose>
 					<c:when test="${! empty finding.files}">
 						<c:set var="files" value="${finding.files }" />
-						<%@include file="../../composition/bodyFileView.jsp"%>
+						<%@include file="../../bodyFileView.jsp"%>
 					</c:when>
-					<c:otherwise>
-						N/A
-					</c:otherwise>
 				</c:choose>
 			</td>
 		</tr>

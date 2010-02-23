@@ -8,20 +8,18 @@
 		test="${param.summary eq 'true'}">
 		<c:choose>
 			<c:when test="${! empty charBean.surface.isHydrophobic}">
-				<table class="summaryViewLayer4" align="center" width="95%">
+				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<th>
+						<td class="cellLabel">
 							Is Hydrophobic?
-						</th>
-					</tr>
-					<tr>
+						</td>					
 						<td>
 							${charBean.surface.isHydrophobic}
 						</td>
 				</table>
-			</c:when>
+			</c:when>	
 			<c:otherwise>N/A
-	</c:otherwise>
+	</c:otherwise>		
 		</c:choose>
 	</c:when>
 	<c:otherwise>

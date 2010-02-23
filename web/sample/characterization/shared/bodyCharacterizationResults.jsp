@@ -24,7 +24,7 @@
 			<c:if test="${! empty characterizationForm.map.achar.findings }">
 				<c:set var="charBean" value="${characterizationForm.map.achar}" />
 				<c:set var="edit" value="true" />
-				<%@ include file="bodyFindingView.jsp"%>
+				<%@ include file="bodyFindingEdit.jsp"%>
 			</c:if>
 		</td>
 	</tr>
