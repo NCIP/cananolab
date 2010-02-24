@@ -21,7 +21,7 @@
 			<td class="cellLabel" width="20%">
 				Search Site
 			</td>
-			<td colspan="5">
+			<td>
 				<html:select property="searchLocations" styleId="searchLocations"
 					onchange="javascript:setPublicationDropdowns()" multiple="true"
 					size="4">
@@ -42,7 +42,7 @@
 			<td class="cellLabel" width="15%">
 				Publication Type
 			</td>
-			<td colspan="3">
+			<td colspan="2">
 				<html:select property="category" styleId="publicationCategory"
 					onchange="javascript:updateSearchFormBasedOnCategory();">
 					<option value="" />
@@ -54,7 +54,7 @@
 			<td class="cellLabel">
 				Research Category
 			</td>
-			<td colspan="3">
+			<td colspan="2">
 				<c:forEach var="data" items="${publicationResearchAreas}">
 					<html:multibox styleId="researchArea" property="researchArea">
 												${data}
@@ -64,72 +64,61 @@
 		</tr>
 		<tr id="pubMedRow">
 			<td class="cellLabel">
-				PubMed ID&nbsp;&nbsp;&nbsp;&nbsp;
+				PubMed ID
 			</td>
-			<td>
-				<html:text styleId="pubMedId" property="pubMedId" size="30"
-					/>
-				<br>
-				<em>(exact numeric PubMed ID)</em>
-				<br>
+			<td colspan="2">
+				<html:text styleId="pubMedId" property="pubMedId" size="30" /> <em>exact match</em>
 			</td>
+		</tr>
+		<tr>
 			<td class="cellLabel">
 				Digital Object ID
 			</td>
-			<td>
-				<html:text property="digitalObjectId" size="30" />
-			</td>
 			<td colspan="2">
-				&nbsp;
+				<html:text property="digitalObjectId" size="30" /> <em>exact match</em>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
 				Publication Title
 			</td>
-			<td colspan="5">
-				<html:text property="title" size="100" />
-				<br>
-				<em>* for wildcard search</em>
+			<td>
+				<html:select property="titleOperand" styleId="titleOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td>
+				<html:text property="title" size="80" />
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
 				Authors
 			</td>
-			<td colspan="5">
-				<html:textarea property="authorsStr" cols="80" styleId="authorsStr"
-					rows="3">
-				</html:textarea>
-				<br>
-				<em>case insensitive, words in quotes are searched together</em>
-				<br>
+			<td colspan="2">
+				<html:textarea property="authorsStr" cols="77" rows="3" styleId="authorsStr"/> 
+				<br/><em>enter one author per line</em>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
 				Keywords
+			</td>			
+			<td colspan="2">
+				<html:textarea property="keywordsStr" cols="77" rows="3" styleId="keywordsStr" />
+				<br/><em>enter one keyword per line</em>
 			</td>
-			<td colspan="5">
-				<html:textarea property="keywordsStr" cols="80"
-					styleId="keywordsStr" rows="3">
-				</html:textarea>
-				<br>
-				<em>case insensitive, words in quotes are searched together</em>
-				<br>
-			</td>
-		</tr>
+		</tr>		
 	</table>
 	<br>
 	<table width="100%" align="center" class="submissionView">
-		<tr>
+	    <tr>
 			<td class="cellLabel">
 				Sample Name
-			</td>
-			<td colspan="5" valign="top">
-				<html:text property="sampleName" size="80" />
-				<br>
-				<em>* for wildcard search</em>
+			</td>			
+			<td valign="top" colspan="4">
+				<html:text property="sampleName" size="80" /> <em>exact match</em>
 			</td>
 		</tr>
 		<tr>
@@ -172,16 +161,14 @@
 		<tr>
 			<td>
 				<span class="formMessage"> <em>Searching without any
-						parameters would return all publications.</em>
-				</span>
+						parameters would return all publications.</em> </span>
 				<br>
 				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td>
 							<div align="right">
-								<input type="button" value="Reset"
-									onclick="javascript:location.href='searchPublication.do?dispatch=setup&page=0'">
-								<input type="button" value="Search" onclick="searchPublication()">
+								<input type="button" value="Reset" onclick="javascript:location.href='searchPublication.do?dispatch=setup&page=0';">
+								<input type="button" value="Search" onclick="searchPublication();">
 							</div>
 						</td>
 					</tr>
