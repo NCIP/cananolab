@@ -30,7 +30,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class searches canano publication based on user supplied criteria
- *
+ * 
  * @author tanq
  */
 
@@ -118,7 +118,6 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		String digitalObjectId = "";
 		String[] authors = new String[0];
 		String sampleName = "";
-		// String[] publicationOrReport = new String[0];
 		String[] researchAreas = new String[0];
 		String[] nanomaterialEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
@@ -126,6 +125,11 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		String[] searchLocations = new String[0];
 
 		title = (String) theForm.get("title");
+		String titleOperand = (String) theForm.get("titleOperand");
+		if (titleOperand.equals(Constants.STRING_OPERAND_CONTAINS)
+				&& !StringUtils.isEmpty(title)) {
+			title = "*" + title + "*";
+		}
 		category = (String) theForm.get("category");
 		String keywordsStr = (String) theForm.get("keywordsStr");
 		List<String> wordList = StringUtils.parseToWords(keywordsStr);
@@ -141,8 +145,9 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			authors = new String[authorList.size()];
 			authorList.toArray(authors);
 		}
+		
 		sampleName = (String) theForm.get("sampleName");
-
+	
 		researchAreas = (String[]) theForm.get("researchArea");
 		// publicationOrReport = (String[]) theForm
 		// .get("publicationOrReport");
