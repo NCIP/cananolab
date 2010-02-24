@@ -553,6 +553,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, theForm, request);
 
+		// Feature request [26487] Deeper Edit Links.
+		if (findingBean.getFiles().size() == 1) {
+			request.setAttribute("onloadJavascript", "setTheFile(0)");
+		}
 		return mapping.findForward("inputForm");
 	}
 
