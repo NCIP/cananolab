@@ -77,8 +77,8 @@
 		</div>
 	</c:forEach>
 </c:if>
-<table class="summaryViewLayer1" width="100%">
-<%--
+<table class="summaryViewNoTop" width="100%">
+	<%--
 	<c:if test="${! empty publicationCategories && empty printView}">
 		<tr>
 			<td>
@@ -92,10 +92,10 @@
 		<td>
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
-				<table id="summarySection${ind.count}" class="summaryViewLayer2"
-					align="center" width="95%">
+				<table id="summarySection${ind.count}" class="summaryViewNoGrid"
+					align="center" width="99%" bgcolor="#dbdbdb">
 					<tr>
-						<th align="left">
+						<th align="left"">
 							<a name="${type}" id="${type}">${type}</a>
 						</th>
 					</tr>
@@ -104,28 +104,22 @@
 							<c:choose>
 								<c:when
 									test="${! empty publicationSummaryView.category2Publications[type]}">
-									<table class="summaryViewLayer3" align="center" width="95%">
-										<tr>
-											<th>
-												Bibliography Info
-											</th>
-											<th>
-												Research Category
-											</th>
-											<th>
-												Description
-											</th>
-											<th>
-												Publication Status
-											</th>
-										</tr>
-										<c:forEach var="pubBean"
-											items="${publicationSummaryView.category2Publications[type]}"
-											varStatus="pubBeanInd">
-											<c:set var="pubObj" value="${pubBean.domainFile}" />
+									<c:forEach var="pubBean"
+										items="${publicationSummaryView.category2Publications[type]}"
+										varStatus="pubBeanInd">
+										<c:set var="pubObj" value="${pubBean.domainFile}" />
+										<table class="summaryViewNoGrid" align="center" width="99%" bgcolor="#F5F5f5">
 											<tr>
+												<td class="cellLabel">
+													Bibliography Info
+												</td>
 												<td valign="top">
 													${pubBean.displayName}&nbsp;
+												</td>
+											</tr>
+											<tr>
+												<td class="cellLabel">
+													Research Category
 												</td>
 												<td valign="top">
 													<c:out
@@ -133,8 +127,13 @@
 														escapeXml="false" />
 													&nbsp;
 												</td>
-												<td valign="top">
-													<c:if test="${!empty pubObj.description}">
+											</tr>
+											<tr>
+												<td class="cellLabel">
+													Description
+												</td>
+												<td>
+													<c:if test="${!empty pubObj.description}"><%--
 														<div id="descriptionSection" style="position: relative;">
 															<a style="display: block" id="viewDetail" href="#"
 																onmouseOver="javascript: show('publicationDescription${pubBeanInd.count}');"
@@ -148,16 +147,22 @@
 																	</td>
 																</tr>
 															</table>
-														</div>
+														</div>--%>
+														${pubObj.description}
 													</c:if>
+												</td>
+											</tr>
+											<tr>
+												<td class="cellLabel">
+													Publication Status
 												</td>
 												<td valign="top">
 													<c:out value="${pubObj.status}" />
 													&nbsp;
 												</td>
 											</tr>
-										</c:forEach>
-									</table>
+										</table>
+									</c:forEach>
 								</c:when>
 							</c:choose>
 						</td>
