@@ -3,13 +3,24 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<c:url var="printUrl" value="publication.do">
+	<c:param name="dispatch" value="summaryPrint" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
+<c:url var="exportUrl" value="publication.do">
+	<c:param name="dispatch" value="summaryExport" />
+	<c:param name="sampleId" value="${sampleId}" />
+	<c:param name="location" value="${location}" />
+</c:url>
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
 		<jsp:param name="pageTitle"
 			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Publication" />
 		<jsp:param name="topic" value="publications_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
+		<jsp:param name="printLink" value="${printUrl}" />
+		<jsp:param name="exportLink" value="${exportUrl}" />
 	</jsp:include>
 </c:if>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
@@ -22,19 +33,6 @@
 				<a
 					href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
 					title="All"><span>All</span> </a>
-				<c:url var="printUrl" value="publication.do">
-					<c:param name="dispatch" value="summaryPrint" />
-					<c:param name="sampleId" value="${sampleId}" />
-					<c:param name="location" value="${location}" />
-				</c:url>
-				<c:url var="exportUrl" value="publication.do">
-					<c:param name="dispatch" value="summaryExport" />
-					<c:param name="sampleId" value="${sampleId}" />
-					<c:param name="location" value="${location}" />
-				</c:url>
-				<a href="javascript:printPage('${printUrl}')" id="printUrlAll"
-					style="display: none;"></a>
-				<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 			</li>
 			<li>
 				<c:forEach var="type" items="${publicationCategories}"
@@ -80,6 +78,7 @@
 	</c:forEach>
 </c:if>
 <table class="summaryViewLayer1" width="100%">
+<%--
 	<c:if test="${! empty publicationCategories && empty printView}">
 		<tr>
 			<td>
@@ -88,6 +87,7 @@
 			</td>
 		</tr>
 	</c:if>
+--%>
 	<tr>
 		<td>
 			<c:forEach var="type" items="${publicationCategories}"
