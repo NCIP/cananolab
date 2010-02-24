@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
@@ -435,6 +434,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			openFile = true;
 		}
 		session.setAttribute("openFile", openFile);
+
 		/**
 		 * If user entered customized value selecting [other] on previous page,
 		 * we should show and highlight the entered value on the edit page.
@@ -442,24 +442,13 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// Association Type
 		String assocType = assoc.getType();
 		setOtherValueOption(request, assocType, "chemicalAssociationTypes");
+
 		// Bond Type
 		String bondType = assoc.getAttachment().getBondType();
 		setOtherValueOption(request, bondType, "bondTypes");
+
 		// File Type
 		String fileType = assoc.getTheFile().getDomainFile().getType();
 		setOtherValueOption(request, fileType, "fileTypes");
-		
-		// Feature request [26487] Deeper Edit Links.
-		if ("setupUpdate".equals(dispatch)) {
-			List<FileBean> files = assoc.getFiles();
-			if (files.size() == 1) {
-				FileBean fileBean = files.get(0);
-				StringBuilder sb = new StringBuilder();
-				sb.append("setTheFile('assoc', ");
-				sb.append(fileBean.getDomainFile().getId());
-				sb.append(')');
-				request.setAttribute("onloadJavascript", sb.toString());
-			}
-		}
 	}
 }

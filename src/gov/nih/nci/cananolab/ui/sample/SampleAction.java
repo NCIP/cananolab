@@ -8,6 +8,8 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import java.util.SortedSet;
+
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -134,20 +136,6 @@ public class SampleAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
 				.getOrganization().getName());
-		
-		// Feature request [26487] Deeper Edit Links.
-		String dispatch = request.getParameter("dispatch"); //as the function is shared.
-		if ("summaryEdit".equals(dispatch) || "removePointOfContact".equals(dispatch)) {
-			if (sampleBean.getPrimaryPOCBean() != null && 
-				sampleBean.getOtherPOCBeans().isEmpty()) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("setThePointOfContact(");
-				sb.append(sampleBean.getPrimaryPOCBean().getDomain().getId());
-				sb.append(", true)");
-				request.setAttribute("onloadJavascript", sb.toString());
-			}
-		}
-		
 		return mapping.findForward("summaryEdit");
 	}
 

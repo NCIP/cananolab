@@ -132,7 +132,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Set up drop-downs needed for the input form
+	 * Set up drop-downs need for the input form
 	 *
 	 * @param request
 	 * @param theForm
@@ -185,7 +185,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				"charNameAssays", charBean.getCharacterizationName(),
 				"assayType", "otherAssayType", true);
 
-		//TODO: Find out what "charNameDatumNames" is for, it's not used in any JSPs.
+		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
 				charBean.getCharacterizationName(), charBean.getAssayType());
@@ -198,7 +198,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
 		clearCopy(theForm);
-		
 		return mapping.findForward("inputForm");
 	}
 
@@ -747,53 +746,27 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
-		
 		Boolean openFile = false, openExperimentConfig = false, openFinding = false;
-		if (dispatch.equals("input") &&
-			browserDispatch.equals("saveExperimentConfig")) {
-			openExperimentConfig = true;
-		}
-		if (dispatch.equals("input") && 
-			(browserDispatch.equals("saveFinding") || 
-			 browserDispatch.equals("addFile")) || 
-			dispatch.equals("addFile") || 
-			dispatch.equals("removeFile") || 
-			dispatch.equals("drawMatrix") || 
-			dispatch.equals("getFinding") || 
-			dispatch.equals("resetFinding")) {
-			openFinding = true;
-		}
 		if (dispatch.equals("input") && browserDispatch.equals("addFile")) {
 			openFile = true;
 		}
-		// Feature request [26487] Deeper Edit Links.
-		if ("setupUpdate".equals(dispatch) ||
-			"getFinding".equals(dispatch)) {
-			if ("setupUpdate".equals(dispatch)) {
-				List<ExperimentConfigBean> expConfigs = achar.getExperimentConfigs();
-				if (expConfigs.size() == 1) {
-					ExperimentConfigBean expConfig = expConfigs.get(0);
-					// Have to use JavaScript to populate instrument table.
-					request.setAttribute("onloadJavascript", 
-						"setTheExperimentConfig(" + expConfig.getDomain().getId() + ')');
-				}
-			}
-			List<FindingBean> findings = achar.getFindings();
-			if (findings.size() == 1) {
-				openFinding = true;
-				FindingBean theFinding = findings.get(0);
-				achar.setTheFinding(theFinding);
-				if (theFinding.getFiles().size() == 1) {
-					theFinding.setTheFile(theFinding.getFiles().get(0));
-					theFinding.setTheFileIndex(0); // change index to 1st file.
-					openFile = true;
-				}
-			}
+		session.setAttribute("openFile", openFile);
+		if (dispatch.equals("input")
+				&& browserDispatch.equals("saveExperimentConfig")) {
+			openExperimentConfig = true;
 		}
 		session.setAttribute("openExperimentConfig", openExperimentConfig);
+		if (dispatch.equals("input")
+				&& (browserDispatch.equals("saveFinding") || browserDispatch
+						.equals("addFile")) || dispatch.equals("addFile")
+				|| dispatch.equals("removeFile")
+				|| dispatch.equals("drawMatrix")
+				|| dispatch.equals("getFinding")
+				|| dispatch.equals("resetFinding")) {
+			openFinding = true;
+		}
 		session.setAttribute("openFinding", openFinding);
-		session.setAttribute("openFile", openFile);
-		
+
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 
