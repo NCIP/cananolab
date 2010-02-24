@@ -129,7 +129,7 @@
 			<html:hidden property="${fileParent}.theFile.domainFile.uri"
 				styleId="hiddenFileUri" />
 			<html:hidden property="${fileParent}.theFileIndex"
-				styleId="hiddenFileIndex" />
+				styleId="hiddenFileIndex" value="-1" />
 		</c:if>
 		<c:if test="${actionName ne 'compositionFile'}">
 			<tr>
@@ -137,7 +137,7 @@
 					<c:if test="${!empty user && user.curator && user.admin}">
 						<input class="${buttonStyle}" type="button" value="Remove"
 							onclick="removeFile('${actionName}', ${fileForm})"
-							id="deleteFile" />
+							id="deleteFile" style="display: none;" />
 					</c:if>
 				</td>
 				<td>
