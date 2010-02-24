@@ -21,8 +21,6 @@
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="sampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
-			<form-property name="publicationOrReport"
-				type="java.lang.String[]" />
 			<form-property name="researchArea"
 				type="java.lang.String[]" />
 			<form-property name="nanomaterialEntityTypes"
@@ -40,7 +38,8 @@
 			<form-property name="pubMedId" type="java.lang.String" />
 			<form-property name="digitalObjectId" type="java.lang.String" />
 			<form-property name="keywordsStr" type="java.lang.String" />
-			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="sampleName" type="java.lang.String" />						
+			<form-property name="titleOperand" type="java.lang.String" />			
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
