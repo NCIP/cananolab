@@ -1,7 +1,7 @@
 
 var instrumentCache = null;
 var currentExperimentConfig = null;
-var numberOfInstruments; //number of unique instruments in the cache, used to generate instrument id
+var numberOfInstruments = 0; //number of unique instruments in the cache, used to generate instrument id
 function retrieveTechniqueAbbreviation() {
 	var techniqueType = document.getElementById("techniqueType").value;
 	if (techniqueType != null && techniqueType != "other") {
@@ -114,7 +114,7 @@ function validateSaveConfig(actionName) {
 function addInstrument() {
 	var instrument = {id:null, manufacturer:null, modelName:null, type:null};
 	dwr.util.getValues(instrument);
-	if (instrument.id == null || instrument.id.length == 0) {
+	if (instrument.id == null || instrument.id.length == 0 || instrument.id.toLowerCase() == "null") {
 		instrument.id = -1000 - numberOfInstruments;
 	}
 	if (instrument.manufacturer != "" || instrument.modelName != "" || instrument.type != "") {
