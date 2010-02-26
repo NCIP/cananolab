@@ -42,7 +42,7 @@ input.promptbox {
 	font-size: 10px;
 	color: black;
 }
-
+/**
 #newInstrument {
 	position: absolute;
 	left: -10px;
@@ -65,6 +65,7 @@ input.promptbox {
 	width: 450px;
 	z-index:5;
 }
+*/
 #newAuthor {
 	position: absolute;
 	left: -10px;
