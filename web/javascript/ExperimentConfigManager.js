@@ -29,9 +29,20 @@ function setManufacturerOptions(manufacturerTypes) {
 function setTheExperimentConfig(configId) {
 	numberOfInstruments = 0;
 	ExperimentConfigManager.getExperimentConfigById(configId, populateExperimentConfig);
-	openSubmissionForm("ExperimentConfig");
-	closeSubmissionForm("Instrument");
 	show("deleteExperimentConfig");
+	openSubmissionForm("ExperimentConfig");
+	// Feature request [26487] Deeper Edit Links.
+	window.setTimeout("openOneInstrument()", 200);
+}
+function openOneInstrument() {
+	if (currentExperimentConfig != null && currentExperimentConfig.instruments.length == 1) {
+		var instrument = currentExperimentConfig.instruments[0];
+		dwr.util.setValues(instrument);
+		show("deleteInstrument");
+		show("newInstrument");
+	} else {
+		hide("newInstrument");
+	}
 }
 function populateExperimentConfig(experimentConfig) {
 	if (experimentConfig != null) {
@@ -82,7 +93,7 @@ function clearExperimentConfig() {
 	//go to server and clean form bean
 	ExperimentConfigManager.resetTheExperimentConfig(populateExperimentConfig);
 	hide("deleteExperimentConfig");
-	closeSubmissionForm("Instrument");
+	hide("newInstrument");
 	numberOfInstruments = 0;
 }
 function deleteTheExperimentConfig() {
@@ -115,7 +126,7 @@ function addInstrument() {
 		});
 		window.setTimeout("populateInstruments()", 200);
 		show('instrumentTable');
-		closeSubmissionForm('Instrument');
+		hide("newInstrument");
 		return true;
 	} else {
 		alert("Please fill in values");
@@ -128,7 +139,7 @@ function clearInstrument() {
 	document.getElementById("modelName").value = "";
 	document.getElementById("type").value = "";
 	hide("deleteInstrument");
-	closeSubmissionForm('Instrument');
+	hide("newInstrument");
 }
 function editInstrument(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
@@ -151,8 +162,18 @@ function deleteTheInstrument() {
 				currentExperimentConfig = experimentConfig;
 			});
 			window.setTimeout("populateInstruments()", 200);
-			closeSubmissionForm("Instrument");
+			hide("newInstrument");
 		}
 	}
 }
-
+function confirmAddInstrument() {
+	var answer = true;
+	var displayStatus = document.getElementById("newInstrument").style.display;
+	if (displayStatus == "block") {
+		answer = confirm("Please save your data before adding new Instrument, otherwise all unsaved data will be lost.\nProcee to add new Instrument?");
+	}
+	if (answer) {
+		clearInstrument();
+		show("newInstrument");
+	}
+}
