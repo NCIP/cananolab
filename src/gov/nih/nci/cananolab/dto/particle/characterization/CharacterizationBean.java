@@ -166,6 +166,8 @@ public class CharacterizationBean {
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		
+		//copy experiment config
 		Collection<ExperimentConfig> oldConfigs = copy
 				.getExperimentConfigCollection();
 		if (oldConfigs == null || oldConfigs.isEmpty()) {
@@ -180,6 +182,8 @@ public class CharacterizationBean {
 			}
 
 		}
+		
+		//copy finding
 		Collection<Finding> oldFindings = copy.getFindingCollection();
 		if (oldFindings == null || oldFindings.isEmpty()) {
 			copy.setFindingCollection(null);
