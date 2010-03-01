@@ -160,6 +160,11 @@ public class ClassUtils {
 	/**
 	 * Returns a copy of the object, or null if the object cannot be serialized.
 	 */
+	
+	/** NOTE: when updating the cloned object, the cloned associated collection in particular,
+	 *  Before persist using Hibernate, need to create a new collection using the cloned collection
+	 *  otherwise Hibernate complains. 
+	 */
 	public static Object deepCopy(Object orig) {
 		Object obj = null;
 		try {
