@@ -71,6 +71,26 @@
 			</c:otherwise>
 		</c:choose>
 		<c:choose>
+			<c:when test="${!empty composingElement.domain.description}">
+				<tr>
+					<td>
+						Description: ${composingElement.domain.description}
+					</td>
+					<td></td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:if test="${param.dispatch ne 'summaryView'}">
+					<tr>
+						<td>
+							Description: N/A
+						</td>
+						<td></td>
+					</tr>
+				</c:if>
+			</c:otherwise>
+		</c:choose>
+		<c:choose>
 			<c:when test="${!empty composingElement.functionDisplayNames}">
 				<tr>
 					<td>
@@ -90,26 +110,6 @@
 					<tr>
 						<td>
 							Function: N/A
-						</td>
-						<td></td>
-					</tr>
-				</c:if>
-			</c:otherwise>
-		</c:choose>
-		<c:choose>
-			<c:when test="${!empty composingElement.domain.description}">
-				<tr>
-					<td>
-						Description: ${composingElement.domain.description}
-					</td>
-					<td></td>
-				</tr>
-			</c:when>
-			<c:otherwise>
-				<c:if test="${param.dispatch ne 'summaryView'}">
-					<tr>
-						<td>
-							Description: N/A
 						</td>
 						<td></td>
 					</tr>
