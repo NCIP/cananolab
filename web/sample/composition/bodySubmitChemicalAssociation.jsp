@@ -166,13 +166,10 @@
 					File
 				</td>
 				<td>
-					<c:set var="addFileButtonStyle" value="display:block"/>
-					<c:if test="${openFile eq 'true'}">
-					    <c:set var="addFileButtonStyle" value="display:none"/>
-					</c:if>
-					<a style="${addFileButtonStyle}" id="addFile"
-						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
-							align="top" src="images/btn_add.gif" border="0" /> </a>
+					<a style="display:block" id="addFile"
+						href="javascript:confirmAddNew('newFile', 'File', 'clearFile(\'${fileParent}\')')">
+						<img align="top" src="images/btn_add.gif" border="0" />
+					</a>
 				</td>
 			</tr>
 			<tr>

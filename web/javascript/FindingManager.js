@@ -339,11 +339,16 @@ function clearFile() {
 	hide("link");
 	dwr.util.setValue("uploadedFile", "");
 	dwr.util.setValue("externalUrl", "");
+	
+	//FR# [26487], Must reset hidden file field for new file.
+	dwr.util.setValue("hiddenFileId", "");
+	dwr.util.setValue("hiddenFileUri", "");
+	dwr.util.setValue("hiddenFileIndex", -1);
 }
 function setTheFile(index) {
 	FindingManager.getFileFromList(index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
-	openSubmissionForm("File");
 	show("deleteFile");
+	show("newFile");
 }
 /* end of set submit file form */

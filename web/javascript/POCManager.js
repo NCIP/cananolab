@@ -34,7 +34,8 @@ function setThePointOfContact(id, isPrimary) {
 
 function fillPointOfContact(id, isPrimary) {	
 	POCManager.getPointOfContactById(id, isPrimary, populatePointOfContact);
-	openSubmissionForm("PointOfContact");
+	//openSubmissionForm("PointOfContact");
+	show("newPointOfContact");
 }
 
 function populatePointOfContact(poc) {

@@ -27,7 +27,6 @@
 				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
 			</div>
 			<br/>
-			<br/>
 		</td>
 	</tr>
 	<tr>
@@ -35,12 +34,8 @@
 			File 
 		</td>
 		<td>
-			<c:set var="addFileButtonStyle" value="display:block" />
-			<c:if test="${openFile eq 'true'}">
-				<c:set var="addFileButtonStyle" value="display:none" />
-			</c:if>
-			<a style="${addFileButtonStyle}" id="addFile"
-				href="javascript:clearFile();openSubmissionForm('File');">Add</a>
+			<a style="display:block" id="addFile"
+				href="javascript:confirmAddNew('newFile', 'File', 'clearFile();')">Add</a>
 		</td>
 	</tr>
 	<tr>
