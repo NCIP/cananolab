@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -252,5 +253,29 @@ public class FunctionBean {
 
 	public void setTheTarget(TargetBean theTarget) {
 		this.theTarget = theTarget;
+	}
+	
+	public void resetDomainCopy(Function copy) {
+		copy.setId(null);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		if (((TargetingFunction) copy).getTargetCollection() == null
+				|| ((TargetingFunction) copy)
+						.getTargetCollection().isEmpty()) {
+			((TargetingFunction) copy)
+					.setTargetCollection(null);
+		} else {
+			Collection<Target> targets = ((TargetingFunction) copy)
+					.getTargetCollection();
+			((TargetingFunction) copy)
+					.setTargetCollection(new HashSet<Target>());
+			((TargetingFunction) copy).getTargetCollection()
+					.addAll(targets);
+			for (Target target : ((TargetingFunction) copy)
+					.getTargetCollection()) {
+				target.setId(null);
+				target
+						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+			}
+		}
 	}
 }

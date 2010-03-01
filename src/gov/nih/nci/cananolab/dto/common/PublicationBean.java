@@ -4,7 +4,10 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -17,9 +20,9 @@ import java.util.List;
 
 /**
  * Publication view bean
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
@@ -78,7 +81,7 @@ public class PublicationBean extends FileBean {
 	public void copyPubMedData(PublicationBean source) {
 		Publication oldPub = (Publication) this.getDomainFile();
 		Publication newPub = (Publication) source.getDomainFile();
-		
+
 		oldPub.setPubMedId(newPub.getPubMedId());
 		oldPub.setDescription(newPub.getDescription());
 		oldPub.setDigitalObjectId(newPub.getDigitalObjectId());
@@ -334,5 +337,16 @@ public class PublicationBean extends FileBean {
 
 	public void removeAuthor(Author author) {
 		authors.remove(author);
+	}
+
+	public void resetDomainCopy(Publication copy) {
+		super.resetDomainCopy(copy);
+		Collection<Author> authors=copy.getAuthorCollection();
+		copy.setAuthorCollection(new HashSet<Author>());
+		copy.getAuthorCollection().addAll(authors);
+		for(Author author: copy.getAuthorCollection()) {
+			author.setId(null);
+			author.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		}
 	}
 }

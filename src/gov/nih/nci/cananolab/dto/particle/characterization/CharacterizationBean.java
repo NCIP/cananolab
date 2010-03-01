@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -38,9 +39,9 @@ import java.util.Set;
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CharacterizationBean {
 	private PointOfContactBean pocBean = new PointOfContactBean();
@@ -163,6 +164,11 @@ public class CharacterizationBean {
 	public Characterization getDomainCopy(boolean copyData) {
 		Characterization copy = (Characterization) ClassUtils
 				.deepCopy(domainChar);
+		resetDomainCopy(copy, copyData);
+		return copy;
+	}
+
+	public void resetDomainCopy(Characterization copy, boolean copyData) {
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
@@ -227,7 +233,8 @@ public class CharacterizationBean {
 										oldConditions);
 								for (Condition condition : newConditions) {
 									condition.setId(null);
-									// keep the bogus place holder if empty condition
+									// keep the bogus place holder if empty
+									// condition
 									if (StringUtils.isEmpty(condition
 											.getCreatedBy())
 											|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
@@ -245,8 +252,7 @@ public class CharacterizationBean {
 						}
 						finding.setDatumCollection(newDatums);
 					}
-				}
-				else {
+				} else {
 					finding.setDatumCollection(null);
 				}
 				Collection<File> oldFiles = finding.getFileCollection();
@@ -255,27 +261,19 @@ public class CharacterizationBean {
 				} else {
 					Set<File> newFiles = new HashSet<File>(oldFiles);
 					for (File file : newFiles) {
-						file.setId(null);
-						file
-								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						Collection<Keyword> keywords = file
-								.getKeywordCollection();
-						file.setKeywordCollection(new HashSet<Keyword>());
-						file.getKeywordCollection().addAll(keywords);
-						for (Keyword keyword : file.getKeywordCollection()) {
-							keyword.setId(null);
-						}
+						FileBean fileBean = new FileBean(file);
+						fileBean.resetDomainCopy(file);
 					}
 					finding.setFileCollection(newFiles);
 				}
 			}
 			copy.setFindingCollection(newFindings);
 		}
-		return copy;
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		className = ClassUtils.getShortClassNameFromDisplayName(characterizationName);
+		className = ClassUtils
+				.getShortClassNameFromDisplayName(characterizationName);
 		Class clazz = ClassUtils.getFullClass(className);
 		if (clazz == null) {
 			clazz = OtherCharacterization.class;

@@ -27,9 +27,9 @@ import java.util.List;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private String molecularFormula;
@@ -127,6 +127,11 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public FunctionalizingEntity getDomainCopy() {
 		FunctionalizingEntity copy = (FunctionalizingEntity) ClassUtils
 				.deepCopy(domainEntity);
+		resetDomainCopy(copy);
+		return copy;
+	}
+
+	public void resetDomainCopy(FunctionalizingEntity copy) {
 		// clear Id
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
@@ -140,29 +145,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			Collection<Function> functions = copy.getFunctionCollection();
 			copy.setFunctionCollection(new HashSet<Function>(functions));
 			for (Function function : copy.getFunctionCollection()) {
-				function.setId(null);
-				function.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				if (function instanceof TargetingFunction) {
-					if (((TargetingFunction) function).getTargetCollection() == null
-							|| ((TargetingFunction) function)
-									.getTargetCollection().isEmpty()) {
-						((TargetingFunction) function)
-								.setTargetCollection(null);
-					} else {
-						Collection<Target> targets = ((TargetingFunction) function)
-								.getTargetCollection();
-						((TargetingFunction) function)
-								.setTargetCollection(new HashSet<Target>());
-						((TargetingFunction) function).getTargetCollection()
-								.addAll(targets);
-						for (Target target : ((TargetingFunction) function)
-								.getTargetCollection()) {
-							target.setId(null);
-							target
-									.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						}
-					}
-				}
+				FunctionBean functionBean = new FunctionBean(function);
+				functionBean.resetDomainCopy(function);
 			}
 		}
 		if (copy.getFileCollection() == null
@@ -173,17 +157,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			copy.setFileCollection(new HashSet<File>());
 			copy.getFileCollection().addAll(files);
 			for (File file : copy.getFileCollection()) {
-				file.setId(null);
-				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				Collection<Keyword> keywords = file.getKeywordCollection();
-				file.setKeywordCollection(new HashSet<Keyword>());
-				file.getKeywordCollection().addAll(keywords);
-				for (Keyword keyword : file.getKeywordCollection()) {
-					keyword.setId(null);
-				}
+				FileBean fileBean = new FileBean(file);
+				fileBean.resetDomainCopy(file);
 			}
 		}
-		return copy;
 	}
 
 	public FunctionalizingEntity getDomainEntity() {

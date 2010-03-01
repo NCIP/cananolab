@@ -5,6 +5,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ import java.util.List;
 
 /**
  * PointOfContact view bean
- *
+ * 
  * @author tanq, cais, pansu
- *
+ * 
  */
 
 public class PointOfContactBean {
@@ -95,7 +96,7 @@ public class PointOfContactBean {
 	}
 
 	public void setupDomain(String createdBy) {
-		if (domain.getId()!=null && domain.getId() == 0) {
+		if (domain.getId() != null && domain.getId() == 0) {
 			domain.setId(null);
 		}
 		if (domain.getId() == null) {
@@ -165,5 +166,17 @@ public class PointOfContactBean {
 		} else {
 			return "";
 		}
+	}
+
+	public void resetDomainCopy(PointOfContact copy) {
+		copy.setId(null);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		
+		//don't need to set organization because organizations are shared
+//		if (copy.getOrganization() != null) {
+//			Organization org = copy.getOrganization();
+//			org.setId(null);
+//			org.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+//		}
 	}
 }

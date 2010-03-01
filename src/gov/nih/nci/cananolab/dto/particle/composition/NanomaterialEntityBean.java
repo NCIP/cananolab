@@ -1,8 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
 import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
@@ -29,9 +27,9 @@ import java.util.List;
 
 /**
  * Represents the view bean for the NanomaterialEntity domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private Polymer polymer = new Polymer();
@@ -109,7 +107,11 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public NanomaterialEntity getDomainCopy() {
 		NanomaterialEntity copy = (NanomaterialEntity) ClassUtils.deepCopy(this
 				.getDomainEntity());
-		// clear Ids, reset createdBy and createdDate, add prefix to
+		resetDomainCopy(copy);
+		return copy;
+	}
+
+	public void resetDomainCopy(NanomaterialEntity copy) {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		if (copy.getComposingElementCollection() == null
@@ -132,13 +134,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 					ce.setInherentFunctionCollection(new HashSet<Function>());
 					ce.getInherentFunctionCollection().addAll(functions);
 					for (Function function : ce.getInherentFunctionCollection()) {
-						function.setId(null);
-						function
-								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-						if (function instanceof TargetingFunction) {
-							((TargetingFunction) function)
-									.setTargetCollection(null);
-						}
+						FunctionBean functionBean=new FunctionBean(function);
+						functionBean.resetDomainCopy(function);
 					}
 				}
 			}
@@ -150,22 +147,11 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			Collection<File> files = copy.getFileCollection();
 			copy.setFileCollection(new HashSet<File>());
 			copy.getFileCollection().addAll(files);
-			for (File file : copy.getFileCollection()) {
-				file.setId(null);
-				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				if (file.getKeywordCollection().isEmpty()) {
-					file.setKeywordCollection(null);
-				} else {
-					Collection<Keyword> keywords = file.getKeywordCollection();
-					file.setKeywordCollection(new HashSet<Keyword>());
-					file.getKeywordCollection().addAll(keywords);
-					for (Keyword keyword : file.getKeywordCollection()) {
-						keyword.setId(null);
-					}
-				}
+			for (File file : files) {
+				FileBean fileBean = new FileBean(file);
+				fileBean.resetDomainCopy(file);
 			}
 		}
-		return copy;
 	}
 
 	public Dendrimer getDendrimer() {
@@ -274,12 +260,6 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	public void removeComposingElement(ComposingElementBean element) {
 		composingElements.remove(element);
-	}
-
-	public NanomaterialEntityBean copy() throws Exception {
-		NanomaterialEntityBean copiedEntity = (NanomaterialEntityBean) ClassUtils
-				.deepCopy(this);
-		return copiedEntity;
 	}
 
 	private void updateType() {

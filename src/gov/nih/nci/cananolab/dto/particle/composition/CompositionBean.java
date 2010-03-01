@@ -9,8 +9,11 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.Comparators;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CompositionBean {
 	public static final String NANOMATERIAL_SELECTION = "nanomaterial entity";
@@ -130,5 +133,56 @@ public class CompositionBean {
 
 	public void setTheFile(FileBean theFile) {
 		this.theFile = theFile;
+	}
+
+	public SampleComposition resetDomainCopy(SampleComposition copy) {
+		if (copy.getNanomaterialEntityCollection() == null
+				|| copy.getNanomaterialEntityCollection().isEmpty()) {
+			copy.setNanomaterialEntityCollection(null);
+		} else {
+			Collection<NanomaterialEntity> nanoEntities = copy
+					.getNanomaterialEntityCollection();
+			copy
+					.setNanomaterialEntityCollection(new HashSet<NanomaterialEntity>());
+			copy.getNanomaterialEntityCollection().addAll(nanoEntities);
+			for (NanomaterialEntity entity : copy
+					.getNanomaterialEntityCollection()) {
+				NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
+						entity);
+				entityBean.resetDomainCopy(entity);
+			}
+		}
+
+		if (copy.getFunctionalizingEntityCollection() == null
+				|| copy.getFunctionalizingEntityCollection().isEmpty()) {
+			copy.setFunctionalizingEntityCollection(null);
+		} else {
+			Collection<FunctionalizingEntity> funcEntities = copy
+					.getFunctionalizingEntityCollection();
+			copy
+					.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
+			copy.getFunctionalizingEntityCollection().addAll(funcEntities);
+			for (FunctionalizingEntity entity : copy
+					.getFunctionalizingEntityCollection()) {
+				FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
+						entity);
+				entityBean.resetDomainCopy(entity);
+			}
+		}
+
+		if (copy.getFileCollection() == null
+				|| copy.getFileCollection().isEmpty()) {
+			copy.setFileCollection(null);
+		} else {
+			Collection<File> files = copy.getFileCollection();
+			copy.setFileCollection(new HashSet<File>());
+			copy.getFileCollection().addAll(files);
+			for (File file : copy.getFileCollection()) {
+				FileBean fileBean = new FileBean(file);
+				fileBean.resetDomainCopy(file);
+			}
+		}
+		
+		return copy;
 	}
 }

@@ -2,10 +2,13 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.SortedSet;
@@ -15,9 +18,9 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class FileBean {
 	protected File domainFile = new File();
@@ -121,7 +124,8 @@ public class FileBean {
 		this.uploadedFile = uploadedFile;
 	}
 
-	public void setupDomainFile(String internalUriPath, String createdBy) throws Exception {
+	public void setupDomainFile(String internalUriPath, String createdBy)
+			throws Exception {
 		if (domainFile.getId() != null && domainFile.getId() == 0) {
 			domainFile.setId(null);
 		}
@@ -220,5 +224,23 @@ public class FileBean {
 
 	public void setNewFileData(byte[] newFileData) {
 		this.newFileData = newFileData;
+	}
+
+	public void resetDomainCopy(File copy) {
+		copy.setId(null);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+
+		if (copy.getKeywordCollection() != null
+				&& copy.getKeywordCollection().isEmpty()) {
+			copy.setKeywordCollection(null);
+		} else {
+			Collection<Keyword> keywords = copy.getKeywordCollection();
+			copy.setKeywordCollection(new HashSet<Keyword>());
+			copy.getKeywordCollection().addAll(keywords);
+			//don't need to set keyword IDs because keywords are shared
+//			for (Keyword keyword : copy.getKeywordCollection()) {
+//				keyword.setId(null);
+//			}
+		}
 	}
 }

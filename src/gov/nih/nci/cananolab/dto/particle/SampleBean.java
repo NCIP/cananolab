@@ -2,12 +2,19 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,7 +45,7 @@ public class SampleBean {
 	private String[] functionalizingEntityClassNames = new String[0];
 
 	private String[] chemicalAssociationClassNames = new String[0];
-	
+
 	private String[] functionClassNames = new String[0];
 
 	private String[] characterizationClassNames = new String[0];
@@ -56,7 +63,7 @@ public class SampleBean {
 	private PointOfContactBean thePOC = new PointOfContactBean();
 
 	private String cloningSampleName;
-	
+
 	public SampleBean() {
 	}
 
@@ -300,5 +307,81 @@ public class SampleBean {
 
 	public void setCloningSampleName(String cloningSampleName) {
 		this.cloningSampleName = cloningSampleName;
+	}
+
+	public Sample getDomainCopy() {
+		Sample copy = (Sample) ClassUtils.deepCopy(domain);
+		// copy characterizations
+		if (copy.getCharacterizationCollection() == null
+				|| copy.getCharacterizationCollection().isEmpty()) {
+			copy.setCharacterizationCollection(null);
+		} else {
+			Collection<Characterization> chars = copy
+					.getCharacterizationCollection();
+			copy.setCharacterizationCollection(new HashSet<Characterization>());
+			copy.getCharacterizationCollection().addAll(chars);
+			for (Characterization achar : copy.getCharacterizationCollection()) {
+				CharacterizationBean charBean = new CharacterizationBean(achar);
+				charBean.resetDomainCopy(achar, true);
+			}
+		}
+
+		// copy composition
+		if (copy.getSampleComposition() != null) {
+			CompositionBean compBean = new CompositionBean(copy
+					.getSampleComposition());
+			compBean.resetDomainCopy(copy.getSampleComposition());
+		}
+
+		// copy keyword
+		// don't need to set keywords because keywords are shared
+		// if (copy.getKeywordCollection() == null
+		// || copy.getKeywordCollection().isEmpty()) {
+		// copy.setKeywordCollection(null);
+		// } else {
+		// Collection<Keyword> keywords = copy.getKeywordCollection();
+		// copy.setKeywordCollection(new HashSet<Keyword>());
+		// copy.getKeywordCollection().addAll(keywords);
+		// for (Keyword keyword : copy.getKeywordCollection()) {
+		// keyword.setId(null);
+		// }
+		// }
+
+		// copy POC
+		if (copy.getPrimaryPointOfContact() != null) {
+			PointOfContact poc = copy.getPrimaryPointOfContact();
+			PointOfContactBean pocBean = new PointOfContactBean(poc);
+			pocBean.resetDomainCopy(poc);
+		}
+		if (copy.getOtherPointOfContactCollection() == null
+				|| copy.getOtherPointOfContactCollection().isEmpty()) {
+			copy.setOtherPointOfContactCollection(null);
+		} else {
+			Collection<PointOfContact> pocs = copy
+					.getOtherPointOfContactCollection();
+			copy
+					.setOtherPointOfContactCollection(new HashSet<PointOfContact>());
+			copy.getOtherPointOfContactCollection().addAll(pocs);
+			for (PointOfContact poc : copy.getOtherPointOfContactCollection()) {
+				PointOfContactBean pocBean = new PointOfContactBean(poc);
+				pocBean.resetDomainCopy(poc);
+			}
+		}
+
+		// copy publications
+		if (copy.getPublicationCollection() == null
+				|| copy.getPublicationCollection().isEmpty()) {
+			copy.setPublicationCollection(null);
+		} else {
+			Collection<Publication> publications = copy
+					.getPublicationCollection();
+			copy.setPublicationCollection(new HashSet<Publication>());
+			copy.getPublicationCollection().addAll(publications);
+			for (Publication pub : copy.getPublicationCollection()) {
+				PublicationBean pubBean = new PublicationBean(pub);
+				pubBean.resetDomainCopy(pub);
+			}
+		}
+		return copy;
 	}
 }
