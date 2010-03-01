@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,9 +21,9 @@ import java.util.Map;
 
 /**
  * View bean for Datum
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class FindingBean {
 	public static final String DATUM_TYPE = "datum";
@@ -41,7 +42,7 @@ public class FindingBean {
 
 	/**
 	 * Constructor for CharBean copying & "findFindingById()".
-	 *
+	 * 
 	 * @param finding
 	 */
 	public FindingBean(Finding finding) {
@@ -271,8 +272,9 @@ public class FindingBean {
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
 		}
-		if (domain.getId() == null ||
-			Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain.getCreatedBy())) {
+		if (domain.getId() == null
+				|| Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain
+						.getCreatedBy())) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(currentDate);
 		}
@@ -289,8 +291,9 @@ public class FindingBean {
 		// Setup uploaded files and add them to file collection.
 		for (FileBean file : files) {
 			File newFile = file.getDomainFile();
-			if (StringUtils.isEmpty(newFile.getCreatedBy()) || 
-				Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(newFile.getCreatedBy())) {
+			if (StringUtils.isEmpty(newFile.getCreatedBy())
+					|| Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(newFile
+							.getCreatedBy())) {
 				newFile.setCreatedBy(createdBy); // required field in DB.
 				newFile.setCreatedDate(currentDate);
 			}
@@ -408,7 +411,7 @@ public class FindingBean {
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
-	 *
+	 * 
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {
@@ -471,5 +474,70 @@ public class FindingBean {
 
 	public void setTheFileIndex(int theFileIndex) {
 		this.theFileIndex = theFileIndex;
+	}
+
+	public void resetDomainCopy(Finding copy, Boolean copyData) {
+		copy.setId(null);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		
+		//copy data and condition
+		if (copyData) {
+			Collection<Datum> oldDatums = copy.getDatumCollection();
+			if (oldDatums == null || oldDatums.isEmpty()) {
+				copy.setDatumCollection(null);
+			} else {
+				copy.setDatumCollection(new HashSet<Datum>(oldDatums));
+				for (Datum datum : copy.getDatumCollection()) {
+					datum.setId(null);
+					// keep the bogus place holder if empty datum
+					if (StringUtils.isEmpty(datum.getCreatedBy())
+							|| !datum
+									.getCreatedBy()
+									.equals(
+											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
+							&& datum.getValue() != -1) {
+						datum
+								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+					}
+					// conditions
+					Collection<Condition> oldConditions = datum
+							.getConditionCollection();
+					if (oldConditions == null || oldConditions.isEmpty()) {
+						datum.setConditionCollection(null);
+					} else {
+						datum.setConditionCollection(new HashSet<Condition>(
+								oldConditions));
+						for (Condition condition : datum
+								.getConditionCollection()) {
+							condition.setId(null);
+							// keep the bogus place holder if empty
+							// condition
+							if (StringUtils.isEmpty(condition.getCreatedBy())
+									|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+											.equals(condition.getCreatedBy())
+									&& !condition
+											.getValue()
+											.equals(
+													Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
+								condition
+										.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		//copy file
+		Collection<File> oldFiles = copy.getFileCollection();
+		if (oldFiles == null || oldFiles.isEmpty()) {
+			copy.setFileCollection(null);
+		} else {
+			copy.setFileCollection(new HashSet<File>(oldFiles));
+			for (File file : copy.getFileCollection()) {
+				FileBean fileBean = new FileBean(file);
+				fileBean.resetDomainCopy(file);
+			}
+		}
 	}
 }

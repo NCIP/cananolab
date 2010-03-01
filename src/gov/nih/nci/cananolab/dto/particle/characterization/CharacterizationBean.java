@@ -8,17 +8,12 @@ import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
-import gov.nih.nci.cananolab.domain.common.Condition;
-import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -34,7 +29,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -177,97 +171,24 @@ public class CharacterizationBean {
 		if (oldConfigs == null || oldConfigs.isEmpty()) {
 			copy.setExperimentConfigCollection(null);
 		} else {
-			/**
-			 * Create new set for configs, otherwise will lost old configs in
-			 * old bean.
-			 */
-			Set<ExperimentConfig> newConfigs = new HashSet<ExperimentConfig>(
-					oldConfigs);
-			for (ExperimentConfig newConfig : newConfigs) {
-				newConfig.setId(null);
-				newConfig.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				// don't need to set instrument and technique ID's to null
-				// because
-				// they are reused.
+			copy.setExperimentConfigCollection(new HashSet<ExperimentConfig>(
+					oldConfigs));
+			for (ExperimentConfig config : copy.getExperimentConfigCollection()) {
+				ExperimentConfigBean configBean = new ExperimentConfigBean(
+						config);
+				configBean.resetDomainCopy(config);
 			}
-			copy.setExperimentConfigCollection(newConfigs);
+
 		}
 		Collection<Finding> oldFindings = copy.getFindingCollection();
 		if (oldFindings == null || oldFindings.isEmpty()) {
 			copy.setFindingCollection(null);
 		} else {
-			/**
-			 * Create new set for finding, otherwise will lost old finding in
-			 * old bean.
-			 */
-			Set<Finding> newFindings = new HashSet<Finding>(oldFindings);
-			for (Finding finding : newFindings) {
-				finding.setId(null);
-				finding.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				if (copyData) {
-					Collection<Datum> oldDatums = finding.getDatumCollection();
-					if (oldDatums == null || oldDatums.isEmpty()) {
-						finding.setDatumCollection(null);
-					} else {
-						Set<Datum> newDatums = new HashSet<Datum>(oldDatums);
-						for (Datum datum : newDatums) {
-							datum.setId(null);
-							// keep the bogus place holder if empty datum
-							if (StringUtils.isEmpty(datum.getCreatedBy())
-									|| !datum
-											.getCreatedBy()
-											.equals(
-													Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
-									&& datum.getValue() != -1) {
-								datum
-										.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-							}
-							// conditions
-							Collection<Condition> oldConditions = datum
-									.getConditionCollection();
-							if (oldConditions == null
-									|| oldConditions.isEmpty()) {
-								datum.setConditionCollection(null);
-							} else {
-								Set<Condition> newConditions = new HashSet<Condition>(
-										oldConditions);
-								for (Condition condition : newConditions) {
-									condition.setId(null);
-									// keep the bogus place holder if empty
-									// condition
-									if (StringUtils.isEmpty(condition
-											.getCreatedBy())
-											|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-													.equals(condition
-															.getCreatedBy())
-											&& !condition
-													.getValue()
-													.equals(
-															Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
-										condition
-												.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-									}
-								}
-							}
-						}
-						finding.setDatumCollection(newDatums);
-					}
-				} else {
-					finding.setDatumCollection(null);
-				}
-				Collection<File> oldFiles = finding.getFileCollection();
-				if (oldFiles == null || oldFiles.isEmpty()) {
-					finding.setFileCollection(null);
-				} else {
-					Set<File> newFiles = new HashSet<File>(oldFiles);
-					for (File file : newFiles) {
-						FileBean fileBean = new FileBean(file);
-						fileBean.resetDomainCopy(file);
-					}
-					finding.setFileCollection(newFiles);
-				}
+			copy.setFindingCollection(new HashSet<Finding>(oldFindings));
+			for (Finding finding : copy.getFindingCollection()) {
+				FindingBean findingBean = new FindingBean(finding);
+				findingBean.resetDomainCopy(finding, copyData);
 			}
-			copy.setFindingCollection(newFindings);
 		}
 	}
 

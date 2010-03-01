@@ -5,9 +5,7 @@ import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
-import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -138,24 +136,21 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		if (copy.getActivationMethod() != null) {
 			copy.getActivationMethod().setId(null);
 		}
-		if (copy.getFunctionCollection() == null
-				|| copy.getFunctionCollection().isEmpty()) {
+		Collection<Function> oldFunctions = copy.getFunctionCollection();
+		if (oldFunctions == null || oldFunctions.isEmpty()) {
 			copy.setFunctionCollection(null);
 		} else {
-			Collection<Function> functions = copy.getFunctionCollection();
-			copy.setFunctionCollection(new HashSet<Function>(functions));
+			copy.setFunctionCollection(new HashSet<Function>(oldFunctions));
 			for (Function function : copy.getFunctionCollection()) {
 				FunctionBean functionBean = new FunctionBean(function);
 				functionBean.resetDomainCopy(function);
 			}
 		}
-		if (copy.getFileCollection() == null
-				|| copy.getFileCollection().isEmpty()) {
+		Collection<File> oldFiles = copy.getFileCollection();
+		if (oldFiles == null || oldFiles.isEmpty()) {
 			copy.setFileCollection(null);
 		} else {
-			Collection<File> files = copy.getFileCollection();
-			copy.setFileCollection(new HashSet<File>());
-			copy.getFileCollection().addAll(files);
+			copy.setFileCollection(new HashSet<File>(oldFiles));
 			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
 				fileBean.resetDomainCopy(file);

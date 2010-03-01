@@ -2,8 +2,6 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -229,18 +227,15 @@ public class FileBean {
 	public void resetDomainCopy(File copy) {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-
-		if (copy.getKeywordCollection() != null
-				&& copy.getKeywordCollection().isEmpty()) {
+		Collection<Keyword> oldKeywords = copy.getKeywordCollection();
+		if (oldKeywords == null || oldKeywords.isEmpty()) {
 			copy.setKeywordCollection(null);
 		} else {
-			Collection<Keyword> keywords = copy.getKeywordCollection();
-			copy.setKeywordCollection(new HashSet<Keyword>());
-			copy.getKeywordCollection().addAll(keywords);
-			//don't need to set keyword IDs because keywords are shared
-//			for (Keyword keyword : copy.getKeywordCollection()) {
-//				keyword.setId(null);
-//			}
+			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
+			// don't need to set keyword IDs because keywords are shared
+			// for (Keyword keyword : copy.getKeywordCollection()) {
+			// keyword.setId(null);
+			// }
 		}
 	}
 }

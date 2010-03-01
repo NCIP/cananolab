@@ -4,8 +4,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -341,10 +339,9 @@ public class PublicationBean extends FileBean {
 
 	public void resetDomainCopy(Publication copy) {
 		super.resetDomainCopy(copy);
-		Collection<Author> authors=copy.getAuthorCollection();
-		copy.setAuthorCollection(new HashSet<Author>());
-		copy.getAuthorCollection().addAll(authors);
-		for(Author author: copy.getAuthorCollection()) {
+		Collection<Author> oldAuthors = copy.getAuthorCollection();
+		copy.setAuthorCollection(new HashSet<Author>(oldAuthors));
+		for (Author author : copy.getAuthorCollection()) {
 			author.setId(null);
 			author.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		}

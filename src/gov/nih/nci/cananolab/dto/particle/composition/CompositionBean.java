@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class CompositionBean {
 	public static final String NANOMATERIAL_SELECTION = "nanomaterial entity";
@@ -136,15 +135,14 @@ public class CompositionBean {
 	}
 
 	public SampleComposition resetDomainCopy(SampleComposition copy) {
-		if (copy.getNanomaterialEntityCollection() == null
-				|| copy.getNanomaterialEntityCollection().isEmpty()) {
+		Collection<NanomaterialEntity> oldNanoEntities = copy
+				.getNanomaterialEntityCollection();
+		if (oldNanoEntities == null || oldNanoEntities.isEmpty()) {
 			copy.setNanomaterialEntityCollection(null);
 		} else {
-			Collection<NanomaterialEntity> nanoEntities = copy
-					.getNanomaterialEntityCollection();
 			copy
-					.setNanomaterialEntityCollection(new HashSet<NanomaterialEntity>());
-			copy.getNanomaterialEntityCollection().addAll(nanoEntities);
+					.setNanomaterialEntityCollection(new HashSet<NanomaterialEntity>(
+							oldNanoEntities));
 			for (NanomaterialEntity entity : copy
 					.getNanomaterialEntityCollection()) {
 				NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
@@ -153,15 +151,14 @@ public class CompositionBean {
 			}
 		}
 
-		if (copy.getFunctionalizingEntityCollection() == null
-				|| copy.getFunctionalizingEntityCollection().isEmpty()) {
+		Collection<FunctionalizingEntity> oldFuncEntities = copy
+				.getFunctionalizingEntityCollection();
+		if (oldFuncEntities == null || oldFuncEntities.isEmpty()) {
 			copy.setFunctionalizingEntityCollection(null);
 		} else {
-			Collection<FunctionalizingEntity> funcEntities = copy
-					.getFunctionalizingEntityCollection();
 			copy
-					.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
-			copy.getFunctionalizingEntityCollection().addAll(funcEntities);
+					.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>(
+							oldFuncEntities));
 			for (FunctionalizingEntity entity : copy
 					.getFunctionalizingEntityCollection()) {
 				FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
@@ -170,19 +167,17 @@ public class CompositionBean {
 			}
 		}
 
-		if (copy.getFileCollection() == null
-				|| copy.getFileCollection().isEmpty()) {
+		Collection<File> oldFiles = copy.getFileCollection();
+		if (oldFiles == null || oldFiles.isEmpty()) {
 			copy.setFileCollection(null);
 		} else {
-			Collection<File> files = copy.getFileCollection();
-			copy.setFileCollection(new HashSet<File>());
-			copy.getFileCollection().addAll(files);
+			copy.setFileCollection(new HashSet<File>(oldFiles));
 			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
 				fileBean.resetDomainCopy(file);
 			}
 		}
-		
+
 		return copy;
 	}
 }

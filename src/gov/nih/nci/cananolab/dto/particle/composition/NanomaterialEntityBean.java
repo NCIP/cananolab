@@ -114,40 +114,38 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public void resetDomainCopy(NanomaterialEntity copy) {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		if (copy.getComposingElementCollection() == null
-				|| copy.getComposingElementCollection().isEmpty()) {
+		Collection<ComposingElement> oldComposingElements = copy
+				.getComposingElementCollection();
+		if (oldComposingElements == null || oldComposingElements.isEmpty()) {
 			copy.setComposingElementCollection(null);
 		} else {
 			// have to create a new collection otherwise Hibernate complains
-			Collection<ComposingElement> ces = copy
-					.getComposingElementCollection();
-			copy.setComposingElementCollection(new HashSet<ComposingElement>());
-			copy.getComposingElementCollection().addAll(ces);
+			copy.setComposingElementCollection(new HashSet<ComposingElement>(
+					oldComposingElements));
 			for (ComposingElement ce : copy.getComposingElementCollection()) {
 				ce.setId(null);
 				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				if (ce.getInherentFunctionCollection().isEmpty()) {
+				Collection<Function> oldFunctions = ce
+						.getInherentFunctionCollection();
+				if (oldFunctions == null || oldFunctions.isEmpty()) {
 					ce.setInherentFunctionCollection(null);
 				} else {
-					Collection<Function> functions = ce
-							.getInherentFunctionCollection();
-					ce.setInherentFunctionCollection(new HashSet<Function>());
-					ce.getInherentFunctionCollection().addAll(functions);
+					ce.setInherentFunctionCollection(new HashSet<Function>(
+							oldFunctions));
 					for (Function function : ce.getInherentFunctionCollection()) {
-						FunctionBean functionBean=new FunctionBean(function);
+						FunctionBean functionBean = new FunctionBean(function);
 						functionBean.resetDomainCopy(function);
 					}
 				}
 			}
 		}
-		if (copy.getFileCollection() == null
-				|| copy.getFileCollection().isEmpty()) {
+
+		Collection<File> oldFiles = copy.getFileCollection();
+		if (oldFiles == null || oldFiles.isEmpty()) {
 			copy.setFileCollection(null);
 		} else {
-			Collection<File> files = copy.getFileCollection();
-			copy.setFileCollection(new HashSet<File>());
-			copy.getFileCollection().addAll(files);
-			for (File file : files) {
+			copy.setFileCollection(new HashSet<File>(oldFiles));
+			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
 				fileBean.resetDomainCopy(file);
 			}

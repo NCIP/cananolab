@@ -167,4 +167,11 @@ public class ExperimentConfigBean {
 		return displayNames.toArray(new String[displayNames.size()]);
 	}
 
+	public void resetDomainCopy(ExperimentConfig copy) {
+		copy.setId(null);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		// don't need to set instrument and technique ID's to null
+		// because
+		// they are reused.
+	}
 }

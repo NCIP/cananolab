@@ -312,14 +312,13 @@ public class SampleBean {
 	public Sample getDomainCopy() {
 		Sample copy = (Sample) ClassUtils.deepCopy(domain);
 		// copy characterizations
-		if (copy.getCharacterizationCollection() == null
-				|| copy.getCharacterizationCollection().isEmpty()) {
+		Collection<Characterization> oldChars = copy
+				.getCharacterizationCollection();
+		if (oldChars == null || oldChars.isEmpty()) {
 			copy.setCharacterizationCollection(null);
 		} else {
-			Collection<Characterization> chars = copy
-					.getCharacterizationCollection();
-			copy.setCharacterizationCollection(new HashSet<Characterization>());
-			copy.getCharacterizationCollection().addAll(chars);
+			copy.setCharacterizationCollection(new HashSet<Characterization>(
+					oldChars));
 			for (Characterization achar : copy.getCharacterizationCollection()) {
 				CharacterizationBean charBean = new CharacterizationBean(achar);
 				charBean.resetDomainCopy(achar, true);
@@ -334,18 +333,15 @@ public class SampleBean {
 		}
 
 		// copy keyword
-		// don't need to set keywords because keywords are shared
-		// if (copy.getKeywordCollection() == null
-		// || copy.getKeywordCollection().isEmpty()) {
-		// copy.setKeywordCollection(null);
-		// } else {
-		// Collection<Keyword> keywords = copy.getKeywordCollection();
-		// copy.setKeywordCollection(new HashSet<Keyword>());
-		// copy.getKeywordCollection().addAll(keywords);
-		// for (Keyword keyword : copy.getKeywordCollection()) {
-		// keyword.setId(null);
-		// }
-		// }
+		Collection<Keyword> oldKeywords = copy.getKeywordCollection();
+		if (oldKeywords == null || oldKeywords.isEmpty()) {
+			copy.setKeywordCollection(null);
+		} else {
+			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
+			// for (Keyword keyword : copy.getKeywordCollection()) {
+			// keyword.setId(null);
+			// }
+		}
 
 		// copy POC
 		if (copy.getPrimaryPointOfContact() != null) {
@@ -353,15 +349,13 @@ public class SampleBean {
 			PointOfContactBean pocBean = new PointOfContactBean(poc);
 			pocBean.resetDomainCopy(poc);
 		}
-		if (copy.getOtherPointOfContactCollection() == null
-				|| copy.getOtherPointOfContactCollection().isEmpty()) {
+		Collection<PointOfContact> oldOtherPOCs = copy
+				.getOtherPointOfContactCollection();
+		if (oldOtherPOCs == null || oldOtherPOCs.isEmpty()) {
 			copy.setOtherPointOfContactCollection(null);
 		} else {
-			Collection<PointOfContact> pocs = copy
-					.getOtherPointOfContactCollection();
-			copy
-					.setOtherPointOfContactCollection(new HashSet<PointOfContact>());
-			copy.getOtherPointOfContactCollection().addAll(pocs);
+			copy.setOtherPointOfContactCollection(new HashSet<PointOfContact>(
+					oldOtherPOCs));
 			for (PointOfContact poc : copy.getOtherPointOfContactCollection()) {
 				PointOfContactBean pocBean = new PointOfContactBean(poc);
 				pocBean.resetDomainCopy(poc);
@@ -369,14 +363,13 @@ public class SampleBean {
 		}
 
 		// copy publications
-		if (copy.getPublicationCollection() == null
-				|| copy.getPublicationCollection().isEmpty()) {
+		Collection<Publication> oldPublications = copy
+				.getPublicationCollection();
+		if (oldPublications == null || oldPublications.isEmpty()) {
 			copy.setPublicationCollection(null);
 		} else {
-			Collection<Publication> publications = copy
-					.getPublicationCollection();
-			copy.setPublicationCollection(new HashSet<Publication>());
-			copy.getPublicationCollection().addAll(publications);
+			copy.setPublicationCollection(new HashSet<Publication>(
+					oldPublications));
 			for (Publication pub : copy.getPublicationCollection()) {
 				PublicationBean pubBean = new PublicationBean(pub);
 				pubBean.resetDomainCopy(pub);
