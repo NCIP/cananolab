@@ -48,6 +48,7 @@ function addInherentFunction() {
 		alert("Please fill in values");
 	}
 }
+//Populate the InherentFunctions table inside Composing Element form.
 function populateInherentFunctions() {
 	var functions = currentComposingElement.inherentFunctions;
 	dwr.util.removeAllRows("functionRows", {filter:function (tr) {
@@ -88,10 +89,23 @@ function populateInherentFunctions() {
 function setTheComposingElement(id) {
 	numberOfFunctions = 0;
 	NanomaterialEntityManager.getComposingElementById(id, populateComposingElement);
-	openSubmissionForm("ComposingElement");
-	closeSubmissionForm("InherentFunction");
 	show("deleteComposingElement");
+	openSubmissionForm("ComposingElement");
+	//closeSubmissionForm("InherentFunction");
+	
+	// Feature request [26487] Deeper Edit Links.
+	window.setTimeout("openOneCompElement()", 200);
 }
+// Populate Inherent Function form and auto open it for user.
+function openOneCompElement() {
+	if (currentComposingElement != null && currentComposingElement.inherentFunctions.length == 1) {
+		var inherentFunction = currentComposingElement.inherentFunctions[0];
+		populateFunctionForm(inherentFunction);
+	} else {
+		hide("newInherentFunction");
+	}
+}
+//Populate the Composing Element submission form.
 function populateComposingElement(element) {
 	if (element != null) {
 		currentComposingElement = element;
@@ -117,6 +131,10 @@ function populateComposingElement(element) {
 function editInherentFunction(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var func = inherentFunctionCache[eleid.substring(4)];
+	populateFunctionForm(func);
+}
+//Populate the Inherent Function submission form.
+function populateFunctionForm(func) {
 	dwr.util.setValue("functionType", func.type);
 	if (func.type == "imaging function") {
 		show("modalityLabel");
@@ -130,6 +148,7 @@ function editInherentFunction(eleid) {
 	dwr.util.setValue("functionDescription", func.description);
 	dwr.util.setValue("functionId", func.id);
 	show("deleteFunction");
+	show("newInherentFunction");
 }
 function deleteTheInherentFunction() {
 	var eleid = document.getElementById("functionId").value;
@@ -144,7 +163,8 @@ function deleteTheInherentFunction() {
 				}
 			});
 			window.setTimeout("populateInherentFunctions()", 200);
-			closeSubmissionForm("InherentFunction");
+			hide("newInherentFunction");
+			//closeSubmissionForm("InherentFunction");
 		}
 	}
 }

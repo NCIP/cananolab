@@ -56,7 +56,7 @@
 		<td>
 			<div id="instrumentSection">
 				<a style="display:block" id="addInstrument"
-					href="javascript:confirmAddInstrument();">Add</a>
+					href="javascript:confirmAddNew('newInstrument', 'Instrument', 'clearInstrument()');">Add</a>
 				<br>
 				<table id="instrumentTable" class="summaryViewLayer4" width="85%" style="display: none;">
 					<tbody id="instrumentRows">
@@ -84,9 +84,8 @@
 								<span id="instrumentType">Type</span>
 							</td>
 							<td>
-								<input class="noBorderButton" id="edit" type="button"
-									value="Edit"
-									onclick="editInstrument(this.id);show('newInstrument');" />
+								<input type="button" class="noBorderButton" id="edit" value="Edit"
+									onclick="editInstrument(this.id);" />
 							</td>
 						</tr>
 					</tbody>

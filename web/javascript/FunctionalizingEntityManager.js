@@ -73,8 +73,20 @@ function setTheFunction(funcId) {
 	numberOfTargets = 0;
 	FunctionalizingEntityManager.getFunctionById(funcId, populateFunction);
 	openSubmissionForm("Function");
-	openSubmissionForm("Target");
+	//openSubmissionForm("Target");
 	show("deleteFunction");
+	
+	// Feature request [26487] Deeper Edit Links.
+	window.setTimeout("openOneTarget()", 200);
+}
+// Populate Target form and auto open it for user.
+function openOneTarget() {
+	if (currentFunction != null && currentFunction.targets.length == 1) {
+		var target = currentFunction.targets[0];
+		populateTargetForm(target);
+	} else {
+		hide("newTarget");
+	}
 }
 function populateFunction(func) {
 	if (func != null) {
@@ -134,6 +146,10 @@ function editTarget(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var id = eleid.substring(4);
 	var target = targetCache[id];
+	populateTargetForm(target);
+}
+// Populate the Target submission form.
+function populateTargetForm(target) {
 	dwr.util.setValue("targetType", target.type);
 	if (target.type == "antigen") {
 		show("antigenSpeciesLabel");
@@ -148,6 +164,7 @@ function editTarget(eleid) {
 	dwr.util.setValue("targetDescription", target.description);
 	dwr.util.setValue("targetId", target.id);
 	show("deleteTarget");
+	show('newTarget');
 }
 function deleteTheTarget() {
 	var eleid = document.getElementById("targetId").value;
@@ -162,7 +179,8 @@ function deleteTheTarget() {
 				}
 			});
 			window.setTimeout("populateTargets()", 200);
-			closeSubmissionForm("Target");
+			hide("newTarget");
+			//closeSubmissionForm("Target");
 		}
 	}
 }

@@ -34,16 +34,16 @@ function setTheExperimentConfig(configId) {
 	// Feature request [26487] Deeper Edit Links.
 	window.setTimeout("openOneInstrument()", 200);
 }
+// Populate Instrument submission form and auto open it for user.
 function openOneInstrument() {
 	if (currentExperimentConfig != null && currentExperimentConfig.instruments.length == 1) {
 		var instrument = currentExperimentConfig.instruments[0];
-		dwr.util.setValues(instrument);
-		show("deleteInstrument");
-		show("newInstrument");
+		populateInstrumentForm(instrument);
 	} else {
 		hide("newInstrument");
 	}
 }
+//Populate the Experiment Config form.
 function populateExperimentConfig(experimentConfig) {
 	if (experimentConfig != null) {
 		currentExperimentConfig = experimentConfig;
@@ -63,6 +63,7 @@ function populateExperimentConfig(experimentConfig) {
 		sessionTimeout();
 	}
 }
+// Populate the Instrument table inside Experiment Config form.
 function populateInstruments() {
 	var instruments = currentExperimentConfig.instruments;
 	dwr.util.removeAllRows("instrumentRows", {filter:function (tr) {
@@ -144,9 +145,12 @@ function clearInstrument() {
 function editInstrument(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var instrument = instrumentCache[eleid.substring(4)];
+	populateInstrumentForm(instrument);
+}
+function populateInstrumentForm(instrument) {
 	dwr.util.setValues(instrument);
-	//document.getElementById("manufacturer").focus(); this doesn't work in IE
 	show("deleteInstrument");
+	show("newInstrument");
 }
 function deleteTheInstrument() {
 	var eleid = document.getElementById("id").value;
@@ -164,16 +168,5 @@ function deleteTheInstrument() {
 			window.setTimeout("populateInstruments()", 200);
 			hide("newInstrument");
 		}
-	}
-}
-function confirmAddInstrument() {
-	var answer = true;
-	var displayStatus = document.getElementById("newInstrument").style.display;
-	if (displayStatus == "block") {
-		answer = confirm("Please save your data before adding new Instrument, otherwise all unsaved data will be lost.\nProcee to add new Instrument?");
-	}
-	if (answer) {
-		clearInstrument();
-		show("newInstrument");
 	}
 }

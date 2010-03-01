@@ -120,27 +120,39 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
+			Description
+		</td>
+		<td colspan="3">
+			<html:textarea
+				property="nanomaterialEntity.theComposingElement.domain.description"
+				rows="3" cols="65" styleId="elementDescription" />
+			<html:hidden
+				property="nanomaterialEntity.theComposingElement.domain.id"
+				styleId="elementId" />
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
 			Inherent Function
 		</td>
 		<td colspan="3">
 			<div id="functionSection" style="position: relative;">
 				<a style="display: block" id="addInherentFunction"
-					href="javascript:clearInherentFunction();openSubmissionForm('InherentFunction');">Add</a>
-				<br>
+					href="javascript:confirmAddNew('newInherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a>
 				<br>
 				<table id="functionTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">
 					<tbody id="functionRows">
 						<tr id="patternHeader">
-							<td width="25%" class="cellLabel">
+							<td width="30%" class="cellLabel">
 								Function Type
 							</td>
-							<td width="25%" class="cellLabel">
+							<td width="30%" class="cellLabel">
 								<div id="modalityHeader" style="display: none">
 									Imaging Modality
 								</div>
 							</td>
-							<td class="cellLabel">
+							<td width="30%" class="cellLabel">
 								Description
 							</td>
 							<td>
@@ -160,13 +172,13 @@
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
 									value="Edit"
-									onclick="editInherentFunction(this.id); openSubmissionForm('InherentFunction');" />
+									onclick="editInherentFunction(this.id);" />
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<table id="newInherentFunction" style="display: none;"
-					class="promptbox">
+				<br>
+				<table id="newInherentFunction" style="display: none;" width="85%" class="promptbox">
 					<tbody>
 						<tr>
 							<html:hidden
@@ -237,19 +249,6 @@
 					</tbody>
 				</table>
 			</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel">
-			Description
-		</td>
-		<td colspan="3">
-			<html:textarea
-				property="nanomaterialEntity.theComposingElement.domain.description"
-				rows="3" cols="65" styleId="elementDescription" />
-			<html:hidden
-				property="nanomaterialEntity.theComposingElement.domain.id"
-				styleId="elementId" />
 		</td>
 	</tr>
 	<tr>
