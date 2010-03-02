@@ -447,16 +447,18 @@ function validateSavingTheData(dataStyleId, dataName) {
 }
 //Feature request [26487] Deeper Edit Links.
 function confirmAddNew(formId, newObjectName, cleanupFunction) {
-	var answer = true;
-	var displayStatus = document.getElementById(formId).style.display;
-	if (displayStatus == "block") {
-		answer = confirm("Please save your data before adding new "
-				+ newObjectName
-				+ ", otherwise all unsaved data will be lost.\nProcee to add new "
-				+ newObjectName + "?");
-	}
-	if (answer) {
-		eval(cleanupFunction);
-		show(formId);
+	var form = document.getElementById(formId);
+	if (form != null) {
+		var answer = true;
+		if (form.style.display == "block") {
+			answer = confirm("Please save your data before adding new "
+					+ newObjectName
+					+ ", otherwise all unsaved data will be lost.\nProcee to add new "
+					+ newObjectName + "?");
+		}
+		if (answer) {
+			show(formId);
+			eval(cleanupFunction);
+		}
 	}
 }
