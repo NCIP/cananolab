@@ -8,7 +8,7 @@
 			<field property="sampleBean.domain.name" page="1" depends="required">
 				<arg position="0" key="sampleForm.sampleName" bundle="sample" />
 			</field>
-			<field property="sampleBean.primaryPOCBean.domain.id" page="1"
+			<field property="sampleBean.primaryPOCBean.domain.id" page="3"
 				depends="validwhen">
 				<arg position="0" key="sampleForm.primaryPOC" bundle="sample" />
 				<var>
@@ -20,7 +20,7 @@
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.name"
-				page="2" depends="required">
+				page="4" depends="required">
 				<arg position="0" key="sampleForm.organizationName" bundle="sample" />
 			</field>
 		</form>
