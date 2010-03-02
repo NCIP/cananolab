@@ -45,7 +45,7 @@
 									<c:if test="${item eq 'Sample'}">
 										<tr>
 											<td class="sidebarContent">
-												<a href="sample.do?dispatch=setupClone">Clone 
+												<a href="sample.do?dispatch=setupClone&page=0">Clone 
 													an Existing Sample</a>
 												<br>
 												Click to clone a sample
@@ -67,7 +67,7 @@
 							<c:if test="${item eq 'Sample'}">
 								<tr>
 									<td class="sidebarContent">
-										<a href="advancedSampleSearch.do?dispatch=setup">Advanced
+										<a href="advancedSampleSearch.do?dispatch=setup&page=0">Advanced
 											Sample Search</a>
 										<br>
 										Enter advanced search criteria to obtain meta information on
