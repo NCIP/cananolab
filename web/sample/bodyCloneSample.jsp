@@ -22,7 +22,7 @@
 				<table>
 					<tr>
 						<td class="cellLabel">
-							Clone from an Existing Sample *
+							Clone from an Existing Sample * 
 						</td>
 						<td width="100">
 							<html:text property="sampleBean.cloningSampleName" size="50" />
@@ -38,10 +38,6 @@
 						</td>
 						<td colspan="2" valign="top">
 							<html:text property="sampleBean.domain.name" size="50" />
-							<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
-								<html:hidden styleId="sampleId" property="sampleBean.domain.id"
-									value="${sampleForm.map.sampleBean.domain.id}" />
-							</c:if>
 						</td>
 					</tr>
 				</table>
@@ -119,7 +115,7 @@
 							<div align="right">
 								<div align="right">
 									<c:set var="origUrl"
-										value="sample.do?page=0&sampleId=${sampleId}&dispatch=${param.dispatch}&location=${applicationOwner}" />
+										value="sample.do?page=1&dispatch=${param.dispatch}&location=${applicationOwner}" />
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="clone">
