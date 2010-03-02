@@ -1,21 +1,35 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.LinkableItem;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
@@ -157,8 +171,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (domainPOC.getId() != null) {
 				dbPointOfContact = helper.findPointOfContactById(domainPOC
 						.getId().toString(), user);
-			}
-			else {
+			} else {
 				dbPointOfContact = helper.findPointOfContactByNameAndOrg(
 						domainPOC.getFirstName(), domainPOC.getLastName(),
 						domainPOC.getOrganization().getName(), user);
@@ -600,7 +613,7 @@ public class SampleServiceLocalImpl implements SampleService {
 					"select other.name from gov.nih.nci.cananolab.domain.particle.Sample as other "
 							+ "where exists ("
 							+ "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample "
-							+ "where sample.primaryPointOfContact=other.primaryPointOfContact and sample.id="
+							+ "where sample.primaryPointOfContact.organization.name=other.primaryPointOfContact.organization.name and sample.id="
 							+ sampleId + " and other.name!=sample.name)");
 			List results = appService.query(crit);
 			List filteredResults = new ArrayList(results);
@@ -977,6 +990,121 @@ public class SampleServiceLocalImpl implements SampleService {
 		sb.append("&location=").append(sample.getLocation());
 
 		return sb.toString();
+	}
+
+	public void cloneSample(String originalSampleName, String newSampleName,
+			UserBean user) throws SampleException, NoAccessException,
+			DuplicateEntriesException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			Sample dbNewSample = (Sample) appService.getObject(Sample.class,
+					"name", newSampleName);
+			if (dbNewSample != null) {
+				throw new DuplicateEntriesException();
+			}
+			// load full sample by original sampleName
+			SampleBean origSampleBean = this.findFullSampleByName(
+					originalSampleName, user);
+			// fully load composition
+			CompositionService compService = new CompositionServiceLocalImpl();
+			CompositionBean compBean = compService.findCompositionBySampleId(
+					origSampleBean.getDomain().getId().toString(), user);
+			origSampleBean.getDomain().setSampleComposition(
+					compBean.getDomain());
+
+			// clone
+			Sample newSample = origSampleBean.getDomainCopy();
+			newSample.setName(newSampleName);
+			SampleBean newSampleBean = new SampleBean(newSample);
+			// need to save associations one by one (except keywords) following
+			// Hibernate mapping
+			// settings for most use cases
+			savePOCs(newSampleBean, user);
+			saveCharacterizations(newSampleBean, user);
+			saveComposition(newSampleBean, user);
+			savePublications(newSampleBean, user);
+			saveSample(newSampleBean, user);
+		} catch (DuplicateEntriesException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Error in cloning the sample " + originalSampleName;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
+	private void savePOCs(SampleBean sampleBean, UserBean user)
+			throws Exception {
+		if (sampleBean.getPrimaryPOCBean() != null) {
+			savePointOfContact(sampleBean.getPrimaryPOCBean(), user);
+		}
+		if (sampleBean.getOtherPOCBeans() != null
+				&& !sampleBean.getOtherPOCBeans().isEmpty()) {
+			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
+				savePointOfContact(pocBean, user);
+			}
+		}
+	}
+
+	private void saveCharacterizations(SampleBean sampleBean, UserBean user)
+			throws Exception {
+		if (sampleBean.getDomain().getCharacterizationCollection() != null) {
+			CharacterizationService charService = new CharacterizationServiceLocalImpl();
+			for (Characterization achar : sampleBean.getDomain()
+					.getCharacterizationCollection()) {
+				charService.saveCharacterization(sampleBean,
+						new CharacterizationBean(achar), user);
+			}
+		}
+	}
+
+	private void saveComposition(SampleBean sampleBean, UserBean user)
+			throws Exception {
+		if (sampleBean.getDomain().getSampleComposition() != null) {
+			CompositionService compService = new CompositionServiceLocalImpl();
+			// save nanomaterial entities
+			if (sampleBean.getDomain().getSampleComposition()
+					.getNanomaterialEntityCollection() != null) {
+				for (NanomaterialEntity entity : sampleBean.getDomain()
+						.getSampleComposition()
+						.getNanomaterialEntityCollection()) {
+					compService.saveNanomaterialEntity(sampleBean,
+							new NanomaterialEntityBean(entity), user);
+				}
+			}
+			if (sampleBean.getDomain().getSampleComposition()
+					.getFunctionalizingEntityCollection() != null) {
+				for (FunctionalizingEntity entity : sampleBean.getDomain()
+						.getSampleComposition()
+						.getFunctionalizingEntityCollection()) {
+					compService.saveFunctionalizingEntity(sampleBean,
+							new FunctionalizingEntityBean(entity), user);
+				}
+			}
+			if (sampleBean.getDomain().getSampleComposition()
+					.getFileCollection() != null) {
+				for (File file : sampleBean.getDomain().getSampleComposition()
+						.getFileCollection()) {
+					compService.saveCompositionFile(sampleBean, new FileBean(
+							file), user);
+				}
+			}
+		}
+	}
+
+	private void savePublications(SampleBean sampleBean, UserBean user)
+			throws Exception {
+		if (sampleBean.getDomain().getPublicationCollection() != null) {
+			PublicationService pubService = new PublicationServiceLocalImpl();
+			for (Publication pub : sampleBean.getDomain()
+					.getPublicationCollection()) {
+				pubService.savePublication(new PublicationBean(pub), user);
+			}
+		}
 	}
 
 	public static void main(String[] args) {

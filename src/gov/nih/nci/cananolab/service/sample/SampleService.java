@@ -5,6 +5,8 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
@@ -73,7 +75,11 @@ public interface SampleService {
 			AdvancedSampleSearchBean searchBean, UserBean user)
 			throws SampleException;
 
-	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(String sampleName, 
-			AdvancedSampleSearchBean searchBean, UserBean user)
-			throws SampleException;
+	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
+			String sampleName, AdvancedSampleSearchBean searchBean,
+			UserBean user) throws SampleException;
+
+	public void cloneSample(String originalSampleName, String newSampleName,
+			UserBean user) throws SampleException, NoAccessException,
+			DuplicateEntriesException;
 }
