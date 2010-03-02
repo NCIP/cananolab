@@ -145,7 +145,7 @@ public class SampleAction extends BaseAnnotationAction {
 			if (sampleBean.getPrimaryPOCBean() != null
 					&& sampleBean.getOtherPOCBeans().isEmpty()) {
 				StringBuilder sb = new StringBuilder();
-				sb.append("setThePointOfContact(");
+				sb.append("openOnePointOfContact(");
 				sb.append(sampleBean.getPrimaryPOCBean().getDomain().getId());
 				sb.append(", true)");
 				request.setAttribute("onloadJavascript", sb.toString());
