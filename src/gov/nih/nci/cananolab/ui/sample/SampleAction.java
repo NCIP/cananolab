@@ -11,6 +11,8 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -134,12 +136,14 @@ public class SampleAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
 				.getOrganization().getName());
-		
+
 		// Feature request [26487] Deeper Edit Links.
-		String dispatch = request.getParameter("dispatch"); //as the function is shared.
-		if ("summaryEdit".equals(dispatch) || "removePointOfContact".equals(dispatch)) {
-			if (sampleBean.getPrimaryPOCBean() != null && 
-				sampleBean.getOtherPOCBeans().isEmpty()) {
+		String dispatch = request.getParameter("dispatch"); // as the function
+		// is shared.
+		if ("summaryEdit".equals(dispatch)
+				|| "removePointOfContact".equals(dispatch)) {
+			if (sampleBean.getPrimaryPOCBean() != null
+					&& sampleBean.getOtherPOCBeans().isEmpty()) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("setThePointOfContact(");
 				sb.append(sampleBean.getPrimaryPOCBean().getDomain().getId());
@@ -147,7 +151,7 @@ public class SampleAction extends BaseAnnotationAction {
 				request.setAttribute("onloadJavascript", sb.toString());
 			}
 		}
-		
+
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -181,6 +185,17 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward setupClone(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;	
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");		
+		if (request.getParameter("cloningSample") != null) {
+			String cloningSampleName = request.getParameter("cloningSample");		
+			sampleBean.setCloningSampleName(cloningSampleName);
+			sampleBean.getDomain().setName(null);
+		}
+		else {
+			sampleBean.setCloningSampleName(null);
+			sampleBean.getDomain().setName(null);
+		}
 		return mapping.findForward("cloneInput");
 	}
 
@@ -259,4 +274,42 @@ public class SampleAction extends BaseAnnotationAction {
 		}
 		return forward;
 	}
+
+	public ActionForward clone(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		ActionMessages messages = new ActionMessages();
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		SampleService service = new SampleServiceLocalImpl();
+		try {
+			service.cloneSample(sampleBean.getCloningSampleName(), sampleBean
+					.getDomain().getName(), user);
+		} catch (DuplicateEntriesException e) {
+			ActionMessage err = new ActionMessage(
+					"error.cloneSample.duplicateSample", sampleBean
+							.getCloningSampleName(), sampleBean.getDomain()
+							.getName());
+			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
+			saveErrors(request, messages);
+			return mapping.findForward("cloneInput");
+		} catch (SampleException e) {
+			ActionMessage err = new ActionMessage("error.cloneSample",
+					sampleBean.getCloningSampleName(), sampleBean.getDomain()
+							.getName());
+			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
+			saveErrors(request, messages);
+			return mapping.findForward("cloneInput");
+		}
+
+		ActionMessage msg = null;
+		msg = new ActionMessage("message.cloneSample", sampleBean
+				.getCloningSampleName(), sampleBean.getDomain().getName());
+		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, messages);
+
+		return summaryEdit(mapping, form, request, response);
+	}
+
 }
