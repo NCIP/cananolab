@@ -106,7 +106,7 @@
 						<td width="200" height="32">
 							<div align="left">
 								<c:if test="${!empty updateSample}">
-									<input type="button" value="Clone" />
+									<input type="button" value="Clone" onclick="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')">
 								</c:if>
 							</div>
 						</td>
@@ -117,7 +117,7 @@
 								<input type="reset" value="Reset"
 									onclick="javascript:window.location.href='${origUrl}'">
 								<input type="hidden" name="dispatch" value="create">
-								<input type="hidden" name="page" value="1">
+								<input type="hidden" name="page" value="2">
 								<html:submit />
 							</div>
 						</td>
