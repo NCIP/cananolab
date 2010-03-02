@@ -479,9 +479,11 @@ public class FindingBean {
 	public void resetDomainCopy(Finding copy, Boolean copyData) {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		
-		//copy data and condition
-		if (copyData) {
+
+		// copy data and condition
+		if (!copyData) {
+			copy.setDatumCollection(null);
+		} else {
 			Collection<Datum> oldDatums = copy.getDatumCollection();
 			if (oldDatums == null || oldDatums.isEmpty()) {
 				copy.setDatumCollection(null);
@@ -528,7 +530,7 @@ public class FindingBean {
 			}
 		}
 
-		//copy file
+		// copy file
 		Collection<File> oldFiles = copy.getFileCollection();
 		if (oldFiles == null || oldFiles.isEmpty()) {
 			copy.setFileCollection(null);
