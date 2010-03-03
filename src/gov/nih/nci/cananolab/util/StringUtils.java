@@ -313,6 +313,14 @@ public class StringUtils {
 		return false;
 	}
 
+	public static String stripWildcards(String searchString) {
+		//strip start from either ends of the search string
+		String newString=searchString;
+		newString=newString.replaceAll("^(\\*)(.*)", "$2");
+		newString=newString.replaceAll("(.*)(\\*)$", "$1");
+		return newString;
+	}
+	
 	/**
 	 * Return true for Null or empty string, false otherwise.
 	 */
@@ -328,8 +336,11 @@ public class StringUtils {
 			for (String word : words) {
 				System.out.println(word);
 			}
+			
+			String testString="*NCL-100**";
+			System.out.println(stripWildcards(testString));
 		} catch (Exception e) {
 			logger.error(e);
 		}
-	}
+	}	
 }
