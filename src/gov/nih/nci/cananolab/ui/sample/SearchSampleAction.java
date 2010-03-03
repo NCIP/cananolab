@@ -82,6 +82,13 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		String samplePointOfContact = (String) theForm
 				.get("samplePointOfContact");
+		//strip wildcards at either end if entered by user
+		samplePointOfContact=StringUtils.stripWildcards(samplePointOfContact);
+		String pocOperand = (String) theForm.get("pocOperand");
+		if (pocOperand.equals(Constants.STRING_OPERAND_CONTAINS)
+				&& !StringUtils.isEmpty(samplePointOfContact)) {
+			samplePointOfContact = "*" + samplePointOfContact + "*";
+		}
 		String[] nanomaterialEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
