@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.impl.CharacterizationExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -509,7 +510,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					location);
 		}
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
-		CharacterizationServiceLocalImpl.exportSummary(charTypes,
+		CharacterizationExporter.exportSummary(charTypes,
 				charSummaryBean, sb.toString(), response.getOutputStream());
 
 		return null;

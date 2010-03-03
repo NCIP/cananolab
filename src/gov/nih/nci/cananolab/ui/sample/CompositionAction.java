@@ -8,7 +8,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
+import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -35,7 +35,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Edit request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -68,7 +68,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary View request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -103,7 +103,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Print request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -138,7 +138,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Export request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -179,7 +179,7 @@ public class CompositionAction extends BaseAnnotationAction {
 					location);
 		}
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
-		CompositionServiceLocalImpl.exportSummary(compBean, sb.toString(),
+		CompositionExporter.exportSummary(compBean, sb.toString(),
 				response.getOutputStream());
 
 		return null;
@@ -188,7 +188,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView() and summaryPrint(). Prepare
 	 * CompositionBean for displaying based on SampleId and location.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -248,7 +248,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 * 
+	 *
 	 * @param request
 	 * @param compBean
 	 */
