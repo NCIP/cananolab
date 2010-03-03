@@ -453,7 +453,7 @@ function confirmAddNew(styleId, newObjectName, cleanupFunction) {
 		if (form.style.display == "block") {
 			answer = confirm("Please save your data before adding new "
 					+ newObjectName
-					+ ", otherwise all unsaved data will be lost.\nProcee to add new "
+					+ ", otherwise all unsaved data will be lost.\nProceed to add new "
 					+ newObjectName + "?");
 		}
 		if (answer) {
