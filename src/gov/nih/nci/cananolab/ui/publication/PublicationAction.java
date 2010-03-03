@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -116,7 +116,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle delete request from Sample -> Publication -> Edit page.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -194,7 +194,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -225,7 +225,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -244,7 +244,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -267,7 +267,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -297,7 +297,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
 				.getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
-		PublicationServiceLocalImpl.exportSummary(summaryBean, response
+		PublicationExporter.exportSummary(summaryBean, response
 				.getOutputStream());
 
 		return null;
@@ -306,7 +306,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -518,7 +518,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		String fileName = this.getExportFileName(title, "detailView");
 		ExportUtils.prepareReponseForExcel(response, fileName);
-		PublicationServiceLocalImpl.exportDetail(pubBean, response
+		PublicationExporter.exportDetail(pubBean, response
 				.getOutputStream());
 
 		return null;
@@ -538,7 +538,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 * 
+	 *
 	 * @param request
 	 * @param compBean
 	 */
