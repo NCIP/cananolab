@@ -15,6 +15,7 @@
 		<form-bean name="searchSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="samplePointOfContact" type="java.lang.String" />
+			<form-property name="pocOperand" type="java.lang.String" />
 			<form-property name="nanomaterialEntityTypes" type="java.lang.String[]" />
 			<form-property name="functionalizingEntityTypes" type="java.lang.String[]" />
 			<form-property name="functionTypes" type="java.lang.String[]" />
