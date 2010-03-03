@@ -42,6 +42,8 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileTitle = (String) theForm.get("fileTitle");
+		//strip wildcards if entered by user
+		fileTitle=StringUtils.stripWildcards(fileTitle);
 		String titleOperand = (String) theForm.get("titleOperand");
 		if (titleOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(fileTitle)) {
@@ -49,6 +51,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		}
 		String protocolType = (String) theForm.get("protocolType");
 		String protocolName = (String) theForm.get("protocolName");
+		//strip wildcards if entered by user
+		protocolName=StringUtils.stripWildcards(protocolName);
+		
 		String nameOperand = (String) theForm.get("nameOperand");
 		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(protocolName)) {
@@ -56,6 +61,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		}
 		String protocolAbbreviation = (String) theForm
 				.get("protocolAbbreviation");
+		//strip wildcards if entered by user
+		protocolAbbreviation=StringUtils.stripWildcards(protocolAbbreviation);
+
 		String abbreviationOperand = (String) theForm
 				.get("abbreviationOperand");
 		if (abbreviationOperand.equals(Constants.STRING_OPERAND_CONTAINS)

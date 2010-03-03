@@ -125,6 +125,8 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		String[] searchLocations = new String[0];
 
 		title = (String) theForm.get("title");
+		//strip wildcards from either end of title if entered
+		title=StringUtils.stripWildcards(title);
 		String titleOperand = (String) theForm.get("titleOperand");
 		if (titleOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(title)) {
