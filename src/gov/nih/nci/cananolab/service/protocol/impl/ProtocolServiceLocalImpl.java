@@ -19,15 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of ProtocolService
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolServiceLocalImpl implements ProtocolService {
 	private static Logger logger = Logger
@@ -38,24 +35,11 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			throws ProtocolException, NoAccessException {
 		ProtocolBean protocolBean = null;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
-					.add(Property.forName("id").eq(new Long(protocolId)));
-			crit.setFetchMode("file", FetchMode.JOIN);
-			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
-			List result = appService.query(crit);
-			if (!result.isEmpty()) {
-				Protocol protocol = (Protocol) result.get(0);
-				if (helper.getAuthService().checkReadPermission(user,
-						protocol.getId().toString())) {
-					protocolBean = new ProtocolBean(protocol);
-					if (user != null)
-						retrieveVisibility(protocolBean, user);
-					return protocolBean;
-				} else {
-					throw new NoAccessException();
-				}
+			Protocol protocol = helper.findProtocolById(protocolId, user);
+			if (protocol != null) {
+				protocolBean = new ProtocolBean(protocol);
+				if (user != null)
+					retrieveVisibility(protocolBean, user);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -69,7 +53,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 	/**
 	 * Persist a new protocol file or update an existing protocol file
-	 *
+	 * 
 	 * @param protocolBean
 	 * @throws Exception
 	 */

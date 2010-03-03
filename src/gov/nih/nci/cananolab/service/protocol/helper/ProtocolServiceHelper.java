@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -28,9 +29,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * This class includes methods involved in searching protocols that can be used
  * in both local and remote searches
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger
@@ -56,7 +57,7 @@ public class ProtocolServiceHelper {
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		if (!StringUtils.isEmpty(protocolType)) {
-			//case insensitive
+			// case insensitive
 			crit.add(Restrictions.ilike("type", protocolType, MatchMode.EXACT));
 		}
 		if (!StringUtils.isEmpty(protocolName)) {
@@ -103,7 +104,6 @@ public class ProtocolServiceHelper {
 
 	public Protocol findProtocolBy(String protocolType, String protocolName,
 			String protocolVersion, UserBean user) throws Exception {
-
 		Protocol protocol = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -115,7 +115,6 @@ public class ProtocolServiceHelper {
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
-		// get user allowed data
 		if (results.isEmpty()) {
 			return null;
 		}
@@ -145,6 +144,27 @@ public class ProtocolServiceHelper {
 			}
 		}
 		return file;
+	}
+
+	public Protocol findProtocolById(String protocolId, UserBean user)
+			throws Exception {
+		Protocol protocol = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
+				Property.forName("id").eq(new Long(protocolId)));
+		crit.setFetchMode("file", FetchMode.JOIN);
+		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			protocol = (Protocol) result.get(0);
+			if (!authService.checkReadPermission(user, protocol.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+		}
+		return protocol;
 	}
 
 	public AuthorizationService getAuthService() {
