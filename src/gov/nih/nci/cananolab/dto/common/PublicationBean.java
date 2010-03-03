@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class PublicationBean extends FileBean {
 	public PublicationBean(String id, String location) {
 		domainFile.setId(new Long(id));
 		setLocation(location);
+	}
+
+	//constructor used to assist in sorting by createdDate
+	public PublicationBean(String id, Date createdDate) {
+		domainFile.setId(new Long(id));
+		domainFile.setCreatedDate(createdDate);
 	}
 
 	public PublicationBean(Publication publication) {
@@ -72,7 +79,7 @@ public class PublicationBean extends FileBean {
 
 	/**
 	 * Copy PubMed data from source PublicationBean to this PublicationBean.
-	 * 
+	 *
 	 * @param source
 	 * @param taget
 	 */
