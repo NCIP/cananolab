@@ -67,7 +67,7 @@
 		<td colspan="3">
 			<div id="targetSection" style="position: relative; display: none">
 				<a style="display: block" id="addTarget"
-					href="javascript:confirmAddNew('newTarget', 'Target', 'clearTarget()');">Add</a>
+					href="javascript:confirmAddNew('Target', 'Target', 'clearTarget()');">Add</a>
 				<br>
 				<table id="targetTable" class="summaryViewLayer4" width="85%" style="display: none;">
 					<tbody id="targetRows">

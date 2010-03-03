@@ -73,7 +73,6 @@ function setTheFunction(funcId) {
 	numberOfTargets = 0;
 	FunctionalizingEntityManager.getFunctionById(funcId, populateFunction);
 	openSubmissionForm("Function");
-	//openSubmissionForm("Target");
 	show("deleteFunction");
 	
 	// Feature request [26487] Deeper Edit Links.
@@ -165,6 +164,7 @@ function populateTargetForm(target) {
 	dwr.util.setValue("targetId", target.id);
 	show("deleteTarget");
 	show('newTarget');
+	show('addTarget');
 }
 function deleteTheTarget() {
 	var eleid = document.getElementById("targetId").value;

@@ -35,7 +35,7 @@
 		</td>
 		<td>
 			<a style="display:block" id="addFile"
-				href="javascript:confirmAddNew('newFile', 'File', 'clearFile();')">Add</a>
+				href="javascript:confirmAddNew('File', 'File', 'clearFile();')">Add</a>
 		</td>
 	</tr>
 	<tr>

@@ -138,7 +138,7 @@
 		<td colspan="3">
 			<div id="functionSection" style="position: relative;">
 				<a style="display: block" id="addInherentFunction"
-					href="javascript:confirmAddNew('newInherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a>
+					href="javascript:confirmAddNew('InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a>
 				<br>
 				<table id="functionTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">

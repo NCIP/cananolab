@@ -349,6 +349,7 @@ function setTheFile(index) {
 	FindingManager.getFileFromList(index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
 	show("deleteFile");
+	show("addFile");
 	show("newFile");
 }
 /* end of set submit file form */

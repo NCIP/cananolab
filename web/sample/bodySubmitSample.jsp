@@ -43,7 +43,7 @@
 					<c:set var="newAddPOCButtonStyle" value="display:none" />
 				</c:if>
 				<a href="#"
-					onclick="javascript:confirmAddNew('newPointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
+					onclick="javascript:confirmAddNew('PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img align="top"
 						src="images/btn_add.gif" border="0" /></a>
 			</td>

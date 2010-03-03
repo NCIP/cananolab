@@ -446,8 +446,8 @@ function validateSavingTheData(dataStyleId, dataName) {
 	}
 }
 //Feature request [26487] Deeper Edit Links.
-function confirmAddNew(formId, newObjectName, cleanupFunction) {
-	var form = document.getElementById(formId);
+function confirmAddNew(styleId, newObjectName, cleanupFunction) {
+	var form = document.getElementById("new" + styleId);
 	if (form != null) {
 		var answer = true;
 		if (form.style.display == "block") {
@@ -457,8 +457,8 @@ function confirmAddNew(formId, newObjectName, cleanupFunction) {
 					+ newObjectName + "?");
 		}
 		if (answer) {
-			show(formId);
 			eval(cleanupFunction);
+			openSubmissionForm(styleId);
 		}
 	}
 }

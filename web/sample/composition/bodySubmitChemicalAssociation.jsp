@@ -167,7 +167,7 @@
 				</td>
 				<td>
 					<a style="display:block" id="addFile"
-						href="javascript:confirmAddNew('newFile', 'File', 'clearFile(\'${fileParent}\')')">
+						href="javascript:confirmAddNew('File', 'File', 'clearFile(\'${fileParent}\')')">
 						<img align="top" src="images/btn_add.gif" border="0" />
 					</a>
 				</td>

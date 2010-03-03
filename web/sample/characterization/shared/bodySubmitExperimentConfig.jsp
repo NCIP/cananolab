@@ -56,7 +56,7 @@
 		<td>
 			<div id="instrumentSection">
 				<a style="display:block" id="addInstrument"
-					href="javascript:confirmAddNew('newInstrument', 'Instrument', 'clearInstrument()');">Add</a>
+					href="javascript:confirmAddNew('Instrument', 'Instrument', 'clearInstrument()');">Add</a>
 				<br>
 				<table id="instrumentTable" class="summaryViewLayer4" width="85%" style="display: none;">
 					<tbody id="instrumentRows">
@@ -154,7 +154,7 @@
 								<input class="promptButton" type="button" value="Add"
 									onclick="addInstrument();" />
 								<input class="promptButton" type="button" value="Cancel"
-									onclick="clearInstrument();" />
+									onclick="clearInstrument();closeSubmissionForm('Instrument');" />
 							</div>
 						</td>
 					</tr>

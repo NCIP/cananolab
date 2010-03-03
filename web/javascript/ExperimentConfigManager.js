@@ -140,7 +140,6 @@ function clearInstrument() {
 	document.getElementById("modelName").value = "";
 	document.getElementById("type").value = "";
 	hide("deleteInstrument");
-	hide("newInstrument");
 }
 function editInstrument(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
