@@ -106,10 +106,11 @@ function clearFile(type) {
 }
 function setTheFile(type, id) {
 	CompositionManager.getFileById(type, id, populateFile);
-	if (type != "assoc") {
-		openSubmissionForm("File");
+	if (type == 'assoc') {
+		show("addFile"); //FR# 26487, always show Add button.
+		show("newFile");
 	} else {
-		show("newFile"); //FR# 26487, always show Add button.
+		openSubmissionForm("File");
 	}
 	show("deleteFile");
 }
