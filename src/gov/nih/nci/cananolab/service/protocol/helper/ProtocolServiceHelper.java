@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -55,7 +56,8 @@ public class ProtocolServiceHelper {
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		if (!StringUtils.isEmpty(protocolType)) {
-			crit.add(Restrictions.eq("type", protocolType));
+			//case insensitive
+			crit.add(Restrictions.ilike("type", protocolType, MatchMode.EXACT));
 		}
 		if (!StringUtils.isEmpty(protocolName)) {
 			TextMatchMode protocolNameMatchMode = new TextMatchMode(

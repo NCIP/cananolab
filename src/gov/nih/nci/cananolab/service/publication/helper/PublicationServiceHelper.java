@@ -110,21 +110,20 @@ public class PublicationServiceHelper {
 
 		if (!StringUtils.isEmpty(title)) {
 			TextMatchMode titleMatchMode = new TextMatchMode(title);
+			//case insensitive
 			crit.add(Restrictions.ilike("title", titleMatchMode
 					.getUpdatedText(), titleMatchMode.getMatchMode()));
 		}
 		if (!StringUtils.isEmpty(category)) {
-			TextMatchMode categoryMatchMode = new TextMatchMode(category);
-			crit.add(Restrictions.ilike("category", categoryMatchMode
-					.getUpdatedText(), categoryMatchMode.getMatchMode()));
+			//case insensitive
+			crit.add(Restrictions.ilike("category", category, MatchMode.EXACT));
 		}
 
 		// pubMedId
 		if (!StringUtils.isEmpty(pubMedId)) {
-			TextMatchMode pubMedIdMatchMode = new TextMatchMode(pubMedId);
 			Long pubMedIdLong = null;
 			try {
-				pubMedIdLong = new Long(pubMedIdMatchMode.getUpdatedText());
+				pubMedIdLong = new Long(pubMedId);
 			} catch (Exception ex) {
 				// ignore
 				pubMedIdLong = new Long(0);
@@ -132,19 +131,18 @@ public class PublicationServiceHelper {
 			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
 		}
 		if (!StringUtils.isEmpty(digitalObjectId)) {
-			TextMatchMode digitalObjectIdMatchMode = new TextMatchMode(
-					digitalObjectId);
-			crit.add(Restrictions.ilike("digitalObjectId",
-					digitalObjectIdMatchMode.getUpdatedText(),
-					digitalObjectIdMatchMode.getMatchMode()));
+			// case insensitive
+			crit.add(Restrictions.ilike("digitalObjectId", digitalObjectId,
+					MatchMode.EXACT));
 		}
 
 		// researchArea
 		if (researchArea != null && researchArea.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
 			for (String research : researchArea) {
-				Criterion crit1 = Restrictions.like("researchArea", research,
-						MatchMode.ANYWHERE);
+				// case insensitive
+				Criterion crit1 = Restrictions.ilike("researchArea", research,
+						MatchMode.EXACT);
 				disjunction.add(crit1);
 			}
 			crit.add(disjunction);
@@ -155,6 +153,9 @@ public class PublicationServiceHelper {
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createCriteria("keywordCollection", "keyword");
 			for (String keyword : keywords) {
+				// string wildcards from either end of keyword is entered
+				keyword = StringUtils.stripWildcards(keyword);
+				// case insensitive
 				Criterion keywordCrit1 = Restrictions.ilike("keyword.name",
 						keyword, MatchMode.ANYWHERE);
 				disjunction.add(keywordCrit1);
@@ -167,6 +168,9 @@ public class PublicationServiceHelper {
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("authorCollection", "author");
 			for (String author : authors) {
+				// string wildcards from either end of author is entered
+				author = StringUtils.stripWildcards(author);
+				// case insensitive
 				Criterion crit1 = Restrictions.ilike("author.lastName", author,
 						MatchMode.ANYWHERE);
 				disjunction.add(crit1);
