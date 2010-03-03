@@ -258,19 +258,16 @@ public class SampleServiceHelper {
 		}
 
 		// keyword
-		if (wordList != null && wordList.length > 0) {
-			// turn words into upper case before searching keywords
-			String[] upperKeywords = new String[wordList.length];
-			for (int i = 0; i < wordList.length; i++) {
-				upperKeywords[i] = wordList[i].toUpperCase();
-			}
+		if (wordList != null && wordList.length > 0) {			
 			Disjunction disjunction = Restrictions.disjunction();
-			for (String keyword : upperKeywords) {
-				Criterion keywordCrit1 = Restrictions.like("keyword1.name",
+			for (String keyword : wordList) {
+				//strip wildcards from either ends of keyword
+				keyword=StringUtils.stripWildcards(keyword);
+				Criterion keywordCrit1 = Restrictions.ilike("keyword1.name",
 						keyword, MatchMode.ANYWHERE);
-				Criterion keywordCrit2 = Restrictions.like("keyword2.name",
+				Criterion keywordCrit2 = Restrictions.ilike("keyword2.name",
 						keyword, MatchMode.ANYWHERE);
-				Criterion keywordCrit3 = Restrictions.like("keyword3.name",
+				Criterion keywordCrit3 = Restrictions.ilike("keyword3.name",
 						keyword, MatchMode.ANYWHERE);
 				disjunction.add(keywordCrit1);
 				disjunction.add(keywordCrit2);
@@ -507,19 +504,16 @@ public class SampleServiceHelper {
 		}
 
 		// keyword
-		if (wordList != null && wordList.length > 0) {
-			// turn words into upper case before searching keywords
-			String[] upperKeywords = new String[wordList.length];
-			for (int i = 0; i < wordList.length; i++) {
-				upperKeywords[i] = wordList[i].toUpperCase();
-			}
+		if (wordList != null && wordList.length > 0) {			
 			Disjunction disjunction = Restrictions.disjunction();
-			for (String keyword : upperKeywords) {
-				Criterion keywordCrit1 = Restrictions.like("keyword1.name",
+			for (String keyword : wordList) {
+				//strip wildcards from either ends of keyword
+				keyword=StringUtils.stripWildcards(keyword);
+				Criterion keywordCrit1 = Restrictions.ilike("keyword1.name",
 						keyword, MatchMode.ANYWHERE);
-				Criterion keywordCrit2 = Restrictions.like("keyword2.name",
+				Criterion keywordCrit2 = Restrictions.ilike("keyword2.name",
 						keyword, MatchMode.ANYWHERE);
-				Criterion keywordCrit3 = Restrictions.like("keyword3.name",
+				Criterion keywordCrit3 = Restrictions.ilike("keyword3.name",
 						keyword, MatchMode.ANYWHERE);
 				disjunction.add(keywordCrit1);
 				disjunction.add(keywordCrit2);
