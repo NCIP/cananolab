@@ -52,15 +52,14 @@
 			<td>
 				<html:textarea property="text" rows="3" cols="60" />
 				<br>
-				<em>case insensitive, words in quotes are searched together</em>
-				<br>
 				<em>searching characterization keywords, publication keywords
 					and text in characterization descriptions</em>
 				<br>
+				<em>enter one keyword per line</em>
 			</td>
 		</tr>
 	</table>
-	<br>
+	<br />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">
@@ -69,13 +68,20 @@
 				Point of Contact
 			</td>
 			<td colspan="5">
-				<br>
-				<html:text property="samplePointOfContact" size="60" />
-				<br>
-				<em>case insensitive, * for wildcard search</em>
-				<br>
-				<em>searching organization name or first name or last name of a
-					person </em>
+				<table>
+					<tr>
+						<td>
+							<html:select property="pocOperand" styleId="pocOperand">
+								<html:options collection="stringOperands" property="value"
+									labelProperty="label" />
+							</html:select>
+						</td>
+						<td>
+							<html:text property="samplePointOfContact" size="60" /><br/>
+							<em>searching organization name or person name</em>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
@@ -152,7 +158,9 @@
 						<td>
 							<div align="right">
 								<input type="reset" value="Reset"
-									onclick="javascript:location.href='searchSample.do?dispatch=setup&page=0'">
+									onclick=
+	javascript: location.href = 'searchSample.do?dispatch=setup&page=0';
+>
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
 								<html:submit value="Search" />
