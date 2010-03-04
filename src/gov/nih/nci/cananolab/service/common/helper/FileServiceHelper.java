@@ -86,7 +86,7 @@ public class FileServiceHelper {
 		}
 	}
 
-	public void retrieveVisibilityAndContentForCopiedFile(FileBean copy,
+	private void retrieveVisibilityAndContentForCopiedFile(FileBean copy,
 			UserBean user) throws Exception {
 
 		// the copied file has been persisted with the same URI but
@@ -102,6 +102,19 @@ public class FileServiceHelper {
 			copy.setNewFileData(content);
 		}
 	}
+
+	// update cloned file with existing visibility and file content, and new
+	// file path
+	public void updateClonedFileInfo(FileBean copy, String origSampleName,
+			String newSampleName, UserBean user) throws Exception {
+		// copy file visibility and file content
+		retrieveVisibilityAndContentForCopiedFile(copy, user);
+		// replace file URI with new sample name
+		String newUri = copy.getDomainFile().getUri().replace(origSampleName,
+				newSampleName);
+		copy.getDomainFile().setUri(newUri);
+	}
+
 
 	private File findFileByUri(String uri) throws Exception {
 		File file = null;
