@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.util.SortableName;
@@ -79,5 +80,5 @@ public interface SampleService {
 
 	public void cloneSample(String originalSampleName, String newSampleName,
 			UserBean user) throws SampleException, NoAccessException,
-			DuplicateEntriesException;
+			DuplicateEntriesException, NotExistException;
 }
