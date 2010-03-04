@@ -9,8 +9,8 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.LinkableItem;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -18,10 +18,8 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
@@ -40,28 +38,18 @@ import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -150,8 +138,8 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private void assignFullVisibility(String[] visibilityGroups,
 			String sampleName, UserBean user) throws Exception {
-		SampleBean fullyLoadedSampleBean = findFullSampleByName(sampleName,
-				user);
+		Sample fullyLoadedSample = findFullyLoadedSampleByName(sampleName, user);
+		SampleBean fullyLoadedSampleBean = new SampleBean(fullyLoadedSample);
 		fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
 		assignVisibility(fullyLoadedSampleBean);
 	}
@@ -298,78 +286,28 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	public SampleBean findSampleById(String sampleId, UserBean user)
 			throws SampleException, NoAccessException {
+		SampleBean sampleBean = null;
 		try {
-			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-					.add(Property.forName("id").eq(new Long(sampleId)));
-
-			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("primaryPointOfContact.organization",
-					FetchMode.JOIN);
-			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-			crit.setFetchMode("otherPointOfContactCollection.organization",
-					FetchMode.JOIN);
-			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-			// used for delete check
-			crit.setFetchMode(
-					"sampleComposition.chemicalAssociationCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List result = appService.query(crit);
-			Sample sample = null;
-			SampleBean sampleBean = null;
-			if (!result.isEmpty()) {
-				sample = (Sample) result.get(0);
-				if (helper.getAuthService().checkReadPermission(user,
-						sample.getName())) {
-					sampleBean = new SampleBean(sample);
-					// check visibility of POC
-					if (sampleBean.getPrimaryPOCBean() != null) {
-						Organization org = sampleBean.getPrimaryPOCBean()
-								.getDomain().getOrganization();
-						if (org != null) {
-							if (!helper.getAuthService().checkReadPermission(
-									user, org.getId().toString())) {
-								sampleBean.setPrimaryPOCBean(null);
-								logger
-										.debug("User can't access primary point of contact:"
-												+ org.getId());
-							}
-						}
-					}
-					if (sampleBean.getOtherPOCBeans() != null) {
-						List<PointOfContactBean> pocBeans = new ArrayList<PointOfContactBean>();
-						for (PointOfContactBean poc : sampleBean
-								.getOtherPOCBeans()) {
-							Organization org = poc.getDomain()
-									.getOrganization();
-							if (org != null) {
-								if (helper.getAuthService()
-										.checkReadPermission(user,
-												org.getId().toString())) {
-									pocBeans.add(poc);
-								} else {
-									logger
-											.debug("User can't access point of contact:"
-													+ poc.getDomain().getId());
-								}
-							}
-						}
-						sampleBean.setOtherPOCBeans(pocBeans);
-					}
-					if (user != null) {
-						retrieveVisibility(sampleBean, user);
-					}
-				} else {
-					throw new NoAccessException();
+			Sample sample = helper.findSampleById(sampleId, user);
+			sampleBean = new SampleBean(sample);
+			// set visibility of POC
+			if (sampleBean.getPrimaryPOCBean() != null) {
+				Organization org = sampleBean.getPrimaryPOCBean().getDomain()
+						.getOrganization();
+				if (org != null) {
+					// retrieve visibility
 				}
 			}
-			return sampleBean;
+			if (sampleBean.getOtherPOCBeans() != null) {
+				List<PointOfContactBean> pocBeans = new ArrayList<PointOfContactBean>();
+				for (PointOfContactBean poc : sampleBean.getOtherPOCBeans()) {
+					Organization org = poc.getDomain().getOrganization();
+					// retrieve visibility
+				}
+			}
+			if (user != null) {
+				retrieveVisibility(sampleBean, user);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -377,113 +315,70 @@ public class SampleServiceLocalImpl implements SampleService {
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
+		return sampleBean;
 	}
 
-	private SampleBean findFullSampleByName(String sampleName, UserBean user)
-			throws SampleException, NoAccessException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+	private Sample findFullyLoadedSampleByName(String sampleName, UserBean user)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		// lazily load sample
+		Sample sample = (Sample) appService.getObject(Sample.class, "name",
+				sampleName);
 
-			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-					.add(Property.forName("name").eq(sampleName));
-			// characterization
-			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-			crit.setFetchMode("characterizationCollection.findingCollection",
-					FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"characterizationCollection.findingCollection.datumCollection",
-							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"characterizationCollection.findingCollection.datumCollection.conditionCollection",
-							FetchMode.JOIN);
-			crit.setFetchMode(
-					"characterizationCollection.experimentConfigCollection",
-					FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"characterizationCollection.experimentConfigCollection.instrumentCollection",
-							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"characterizationCollection.experimentConfigCollection.technique",
-							FetchMode.JOIN);
-			// sampleComposition
-			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-			crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-					FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
-							FetchMode.JOIN);
-			crit.setFetchMode(
-					"sampleComposition.chemicalAssociationCollection",
-					FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.chemicalAssociationCollection.associatedElementA",
-							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.chemicalAssociationCollection.associatedElementB",
-							FetchMode.JOIN);
-			crit.setFetchMode(
-					"sampleComposition.functionalizingEntityCollection",
-					FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.functionalizingEntityCollection.activationMethod",
-							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.functionalizingEntityCollection.functionCollection",
-							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"sampleComposition.functionalizingEntityCollection.functionCollection.targetCollection",
-							FetchMode.JOIN);
-			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("primaryPointOfContact.organization",
-					FetchMode.JOIN);
-			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-			crit.setFetchMode("otherPointOfContactCollection.organization",
-					FetchMode.JOIN);
-			List result = appService.query(crit);
-			Sample sample = null;
-			SampleBean sampleBean = null;
-			if (!result.isEmpty()) {
-				sample = (Sample) result.get(0);
-				// if (helper.getAuthService().checkReadPermission(user,
-				// sample.getName())) {
-				sampleBean = new SampleBean(sample);
-				if (user != null) {
-					retrieveVisibility(sampleBean, user);
-				}
-				// } else {
-				// throw new NoAccessException();
-				// }
-			}
-			return sampleBean;
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
-			String err = "Problem finding the full sample by name: "
-					+ sampleName;
-			logger.error(err, e);
-			throw new SampleException(err, e);
+		String sampleId = sample.getId().toString();
+		// fully load keywords
+		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
+		List<Keyword> keywords = sampleServiceHelper.findKeywordsBySampleId(
+				sampleId, user);
+		if (keywords != null && !keywords.isEmpty()) {
+			sample.setKeywordCollection(new HashSet<Keyword>(keywords));
 		}
+
+		// fully load POCs
+		PointOfContact primaryPOC = sampleServiceHelper
+				.findPrimaryPointOfContactBySampleId(sampleId, user);
+		if (primaryPOC != null) {
+			sample.setPrimaryPointOfContact(primaryPOC);
+		}
+		List<PointOfContact> otherPOCs = sampleServiceHelper
+				.findOtherPointOfContactsBySampleId(sampleId, user);
+		if (otherPOCs != null) {
+			sample
+					.setOtherPointOfContactCollection(new HashSet<PointOfContact>(
+							otherPOCs));
+		}
+
+		// fully load composition
+		CompositionServiceHelper compServiceHelper = new CompositionServiceHelper();
+		SampleComposition comp = compServiceHelper.findCompositionBySampleId(
+				sample.getId().toString(), user);
+		if (comp != null) {
+			sample.setSampleComposition(comp);
+		}
+
+		// fully load characterizations
+		CharacterizationServiceHelper charServiceHelper = new CharacterizationServiceHelper();
+		List<Characterization> chars = charServiceHelper
+				.findCharacterizationsBySampleId(sample.getId().toString(),
+						user);
+		if (chars != null && !chars.isEmpty()) {
+			sample.setCharacterizationCollection(new HashSet<Characterization>(
+					chars));
+		}
+
+		// fully load publications
+		PublicationService pubService = new PublicationServiceLocalImpl();
+		List<PublicationBean> pubBeans = pubService.findPublicationsBySampleId(
+				sample.getId().toString(), user);
+		if (pubBeans != null) {
+			Collection<Publication> publications = new HashSet<Publication>();
+			for (PublicationBean pubBean : pubBeans) {
+				publications.add((Publication) pubBean.getDomainFile());
+			}
+			sample.setPublicationCollection(publications);
+		}
+		return sample;
 	}
 
 	public SampleBean findSampleByName(String sampleName, UserBean user)
@@ -829,169 +724,6 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	/**
-	 * Export advance sample summary report as Excel spread sheet.
-	 * 
-	 * @param searchBean
-	 * @param out
-	 * @throws CompositionException
-	 */
-	public static void exportSummary(AdvancedSampleSearchBean searchBean,
-			List<AdvancedSampleBean> sampleBeans, String viewSampleUrl,
-			OutputStream out) throws IOException {
-		if (out != null) {
-			HSSFWorkbook wb = new HSSFWorkbook();
-			outputSummarySheet(searchBean, sampleBeans, viewSampleUrl, wb);
-			wb.write(out);
-			out.flush();
-			out.close();
-		}
-	}
-
-	/**
-	 * Output advance sample summary report, representing,
-	 * bodyAdvancedSampleSearchResult.jsp
-	 * 
-	 * @param searchBean
-	 * @param wb
-	 */
-	private static void outputSummarySheet(AdvancedSampleSearchBean searchBean,
-			List<AdvancedSampleBean> sampleBeans, String viewSampleUrl,
-			HSSFWorkbook wb) throws IOException {
-		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-		HSSFCellStyle headerStyle = wb.createCellStyle();
-		headerStyle.setFont(headerFont);
-
-		HSSFCellStyle hlinkStyle = wb.createCellStyle();
-		HSSFFont hlinkFont = wb.createFont();
-		hlinkFont.setUnderline(HSSFFont.U_SINGLE);
-		hlinkFont.setColor(HSSFColor.BLUE.index);
-		hlinkStyle.setFont(hlinkFont);
-
-		int rowIndex = 0;
-		HSSFSheet sheet = wb.createSheet("Advanced Sample Search Report");
-
-		// 1.Output Search Criteria. comment out as per Sharon.
-		// rowIndex = outputCriteria(searchBean, sheet, headerStyle, rowIndex);
-
-		// 2.Output table column headers.
-		rowIndex = outputHeader(sampleBeans.get(0), sheet, headerStyle,
-				rowIndex);
-
-		// 3.Output each table row.
-		for (AdvancedSampleBean sampleBean : sampleBeans) {
-			rowIndex = outputRow(sampleBean, viewSampleUrl, sheet, hlinkStyle,
-					rowIndex);
-		}
-	}
-
-	/**
-	 * Output Search Criteria for advance sample search work sheet.
-	 * 
-	 * @param compType
-	 * @param entityType
-	 * @param sheet
-	 * @param headerStyle
-	 * @param rowIndex
-	 * 
-	 *            private static int outputCriteria(AdvancedSampleSearchBean
-	 *            searchBean, HSSFSheet sheet, HSSFCellStyle headerStyle, int
-	 *            rowIndex) { // 1. Output "Selected Criteria" at (0, 0).
-	 *            HSSFRow row = sheet.createRow(rowIndex++);
-	 *            ExportUtils.createCell(row, 0, headerStyle,
-	 *            "Selected Criteria"); // 2. Output Criteria Display Name at(1,
-	 *            0). row = sheet.createRow(rowIndex++);
-	 *            ExportUtils.createCell(row, 0, searchBean.getDisplayName());
-	 *            rowIndex++; // Create one empty line as separator. return
-	 *            rowIndex; }
-	 */
-
-	/**
-	 * Output headers for work sheet.
-	 * 
-	 * @param compType
-	 * @param entityType
-	 * @param sheet
-	 * @param headerStyle
-	 * @param rowIndex
-	 */
-	public static int outputHeader(AdvancedSampleBean sampleBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
-		// 1. Output "Sample Name" at first column.
-		int columnIndex = 0;
-		HSSFRow row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, columnIndex++, headerStyle, "Sample Name");
-
-		// 2. Output selected column(s).
-		Map<String, List<LinkableItem>> columns = sampleBean.getAttributeMap();
-		if (columns != null && !columns.isEmpty()) {
-			for (String header : columns.keySet()) {
-				ExportUtils.createCell(row, columnIndex++, headerStyle, header
-						.replaceAll("<br>", " "));
-			}
-		}
-
-		// 3. Output "Site" at last column.
-		ExportUtils.createCell(row, columnIndex, headerStyle, "Site");
-
-		return rowIndex;
-	}
-
-	/**
-	 * Output one table row for work sheet.
-	 * 
-	 * @param compType
-	 * @param entityType
-	 * @param sheet
-	 * @param headerStyle
-	 * @param rowIndex
-	 */
-	public static int outputRow(AdvancedSampleBean sampleBean,
-			String viewSampleUrl, HSSFSheet sheet, HSSFCellStyle hlinkStyle,
-			int rowIndex) {
-		// 1. Output first column - Sample Name at index 0.
-		HSSFRow row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, hlinkStyle, sampleBean.getSampleName(),
-				getViewSampleURL(sampleBean, viewSampleUrl));
-
-		// 2. Output selected column(s) starting from index 1.
-		int columnIndex = 1;
-		Map<String, List<LinkableItem>> columns = sampleBean.getAttributeMap();
-		if (columns != null && !columns.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			for (String key : columns.keySet()) {
-				sb.setLength(0);
-				List<LinkableItem> items = (List<LinkableItem>) columns
-						.get(key);
-				for (LinkableItem item : items) {
-					sb.append(item.getDisplayName()).append(' ');
-				}
-				ExportUtils.createCell(row, columnIndex++, sb.toString());
-			}
-		}
-
-		// 3. Output last column - Location.
-		ExportUtils.createCell(row, columnIndex, sampleBean.getLocation());
-
-		return rowIndex;
-	}
-
-	/**
-	 * Return complete view sample URL including sample id & location.
-	 * 
-	 * @param sample
-	 * @return
-	 */
-	private static String getViewSampleURL(AdvancedSampleBean sample,
-			String viewSampleUrl) {
-		StringBuilder sb = new StringBuilder(viewSampleUrl);
-		sb.append("&sampleId=").append(sample.getSampleId());
-		sb.append("&location=").append(sample.getLocation());
-
-		return sb.toString();
-	}
-
 	public void cloneSample(String originalSampleName, String newSampleName,
 			UserBean user) throws SampleException, NoAccessException,
 			DuplicateEntriesException {
@@ -1006,17 +738,12 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (dbNewSample != null) {
 				throw new DuplicateEntriesException();
 			}
-			// load full sample by original sampleName
-			SampleBean origSampleBean = this.findFullSampleByName(
-					originalSampleName, user);
-			// fully load composition
-			CompositionService compService = new CompositionServiceLocalImpl();
-			CompositionBean compBean = compService.findCompositionBySampleId(
-					origSampleBean.getDomain().getId().toString(), user);
-			origSampleBean.getDomain().setSampleComposition(
-					compBean.getDomain());
+			// fully load original sample
+			Sample origSample = findFullyLoadedSampleByName(originalSampleName,
+					user);
 
 			// clone
+			SampleBean origSampleBean = new SampleBean(origSample);
 			Sample newSample = origSampleBean.getDomainCopy();
 			newSample.setName(newSampleName);
 			SampleBean newSampleBean = new SampleBean(newSample);
@@ -1034,6 +761,61 @@ public class SampleServiceLocalImpl implements SampleService {
 			String err = "Error in cloning the sample " + originalSampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
+		}
+	}
+
+	private void fullyLoadSample(Sample sample, UserBean user) throws Exception {
+		String sampleId = sample.getId().toString();
+		// fully load keywords
+		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
+		List<Keyword> keywords = sampleServiceHelper.findKeywordsBySampleId(
+				sampleId, user);
+		if (keywords != null && !keywords.isEmpty()) {
+			sample.setKeywordCollection(new HashSet<Keyword>(keywords));
+		}
+
+		// fully load POCs
+		PointOfContact primaryPOC = sampleServiceHelper
+				.findPrimaryPointOfContactBySampleId(sampleId, user);
+		if (primaryPOC != null) {
+			sample.setPrimaryPointOfContact(primaryPOC);
+		}
+		// List<PointOfContact> otherPOCs = sampleServiceHelper
+		// .findOtherPointOfContactsBySampleId(sampleId, user);
+		// if (otherPOCs != null) {
+		// sample.setOtherPointOfContactCollection(new
+		// HashSet<PointOfContact>(otherPOCs));
+		// }
+		// }
+
+		// fully load composition
+		CompositionServiceHelper compServiceHelper = new CompositionServiceHelper();
+		SampleComposition comp = compServiceHelper.findCompositionBySampleId(
+				sample.getId().toString(), user);
+		if (comp != null) {
+			sample.setSampleComposition(comp);
+		}
+
+		// fully load characterizations
+		CharacterizationServiceHelper charServiceHelper = new CharacterizationServiceHelper();
+		List<Characterization> chars = charServiceHelper
+				.findCharacterizationsBySampleId(sample.getId().toString(),
+						user);
+		if (chars != null && !chars.isEmpty()) {
+			sample.setCharacterizationCollection(new HashSet<Characterization>(
+					chars));
+		}
+
+		// fully load publications
+		PublicationService pubService = new PublicationServiceLocalImpl();
+		List<PublicationBean> pubBeans = pubService.findPublicationsBySampleId(
+				sample.getId().toString(), user);
+		if (pubBeans != null) {
+			Collection<Publication> publications = new HashSet<Publication>();
+			for (PublicationBean pubBean : pubBeans) {
+				publications.add((Publication) pubBean.getDomainFile());
+			}
+			sample.setPublicationCollection(publications);
 		}
 	}
 
