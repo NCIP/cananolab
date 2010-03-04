@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -154,9 +155,8 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 			// Export all advanced sample search report.
 			ExportUtils.prepareReponseForExcel(response, getExportFileName());
-			SampleServiceLocalImpl.exportSummary(searchBean,
-					samplesFullList, getViewSampleURL(request), response
-							.getOutputStream());
+			SampleExporter.exportSummary(searchBean, samplesFullList,
+					getViewSampleURL(request), response.getOutputStream());
 			return null;
 		} else {
 			ActionMessages msgs = new ActionMessages();
