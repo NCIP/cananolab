@@ -328,29 +328,30 @@ public class SampleServiceLocalImpl implements SampleService {
 				sampleId, user);
 		if (keywords != null && !keywords.isEmpty()) {
 			sample.setKeywordCollection(new HashSet<Keyword>(keywords));
+		} else {
+			sample.setKeywordCollection(null);
 		}
 
 		// fully load POCs
 		PointOfContact primaryPOC = sampleServiceHelper
 				.findPrimaryPointOfContactBySampleId(sampleId, user);
-		if (primaryPOC != null) {
-			sample.setPrimaryPointOfContact(primaryPOC);
-		}
+		sample.setPrimaryPointOfContact(primaryPOC);
+
 		List<PointOfContact> otherPOCs = sampleServiceHelper
 				.findOtherPointOfContactsBySampleId(sampleId, user);
 		if (otherPOCs != null) {
 			sample
 					.setOtherPointOfContactCollection(new HashSet<PointOfContact>(
 							otherPOCs));
+		} else {
+			sample.setOtherPointOfContactCollection(null);
 		}
 
 		// fully load composition
 		CompositionServiceHelper compServiceHelper = new CompositionServiceHelper();
 		SampleComposition comp = compServiceHelper.findCompositionBySampleId(
 				sample.getId().toString(), user);
-		if (comp != null) {
-			sample.setSampleComposition(comp);
-		}
+		sample.setSampleComposition(comp);
 
 		// fully load characterizations
 		CharacterizationServiceHelper charServiceHelper = new CharacterizationServiceHelper();
@@ -360,6 +361,8 @@ public class SampleServiceLocalImpl implements SampleService {
 		if (chars != null && !chars.isEmpty()) {
 			sample.setCharacterizationCollection(new HashSet<Characterization>(
 					chars));
+		} else {
+			sample.setCharacterizationCollection(null);
 		}
 
 		// fully load publications
@@ -372,6 +375,8 @@ public class SampleServiceLocalImpl implements SampleService {
 				publications.add((Publication) pubBean.getDomainFile());
 			}
 			sample.setPublicationCollection(publications);
+		} else {
+			sample.setPublicationCollection(null);
 		}
 		return sample;
 	}
@@ -689,12 +694,16 @@ public class SampleServiceLocalImpl implements SampleService {
 			// fully load original sample
 			Sample origSample = findFullyLoadedSampleByName(originalSampleName,
 					user);
-
-			// clone
 			SampleBean origSampleBean = new SampleBean(origSample);
 			Sample newSample = origSampleBean.getDomainCopy();
 			newSample.setName(newSampleName);
 			SampleBean newSampleBean = new SampleBean(newSample);
+
+			// retrieve visibilities of the original sample, 
+			// then copy the visibilities to new sample
+			helper.retrieveVisibility(origSampleBean);
+			newSampleBean.setVisibilityGroups(origSampleBean
+					.getVisibilityGroups());
 
 			// need to save associations one by one (except keywords) following
 			// Hibernate mapping settings for most use cases
