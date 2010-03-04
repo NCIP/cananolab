@@ -1100,7 +1100,7 @@ public class SampleServiceHelper {
 
 	// retrieve point of contact accessibility
 	public void retrieveVisibility(PointOfContactBean pocBean) throws Exception {
-		if (pocBean != null) {
+		if (!StringUtils.isEmpty(pocBean.getDisplayName())) {
 			// get assigned visible groups
 			List<String> accessibleGroups = authService.getAccessibleGroups(
 					pocBean.getDomain().getId().toString(),
