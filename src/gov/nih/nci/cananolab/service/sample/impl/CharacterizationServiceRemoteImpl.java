@@ -336,7 +336,7 @@ public class CharacterizationServiceRemoteImpl implements
 	}
 
 	public FindingBean findFindingById(String findingId, UserBean user)
-			throws CharacterizationException {
+			throws CharacterizationException, NoAccessException  {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 

@@ -133,6 +133,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		// clear Id
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		//because activationMethod can't be shared.
 		if (copy.getActivationMethod() != null) {
 			copy.getActivationMethod().setId(null);
 		}
