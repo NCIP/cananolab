@@ -18,12 +18,12 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- *
+ * 
  * Represents the view bean for Function domain object
- *
+ * 
  * @author pansu
- *
- *
+ * 
+ * 
  */
 public class FunctionBean {
 	// needed for use in DWR ordering functions in the session.
@@ -129,7 +129,7 @@ public class FunctionBean {
 						.setTargetCollection(new HashSet<Target>());
 			}
 			int i = 0;
-			//targets are not saved separately so needs setupDomainTarget here.
+			// targets are not saved separately so needs setupDomainTarget here.
 			for (TargetBean targetBean : targets) {
 				targetBean.setupDomainTarget(createdBy, i);
 				((TargetingFunction) domainFunction).getTargetCollection().add(
@@ -254,27 +254,27 @@ public class FunctionBean {
 	public void setTheTarget(TargetBean theTarget) {
 		this.theTarget = theTarget;
 	}
-	
+
 	public void resetDomainCopy(Function copy) {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		if (((TargetingFunction) copy).getTargetCollection() == null
-				|| ((TargetingFunction) copy)
-						.getTargetCollection().isEmpty()) {
-			((TargetingFunction) copy)
-					.setTargetCollection(null);
-		} else {
-			Collection<Target> targets = ((TargetingFunction) copy)
-					.getTargetCollection();
-			((TargetingFunction) copy)
-					.setTargetCollection(new HashSet<Target>());
-			((TargetingFunction) copy).getTargetCollection()
-					.addAll(targets);
-			for (Target target : ((TargetingFunction) copy)
-					.getTargetCollection()) {
-				target.setId(null);
-				target
-						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		if (copy instanceof TargetingFunction) {
+			if (((TargetingFunction) copy).getTargetCollection() == null
+					|| ((TargetingFunction) copy).getTargetCollection()
+							.isEmpty()) {
+				((TargetingFunction) copy).setTargetCollection(null);
+			} else {
+				Collection<Target> targets = ((TargetingFunction) copy)
+						.getTargetCollection();
+				((TargetingFunction) copy)
+						.setTargetCollection(new HashSet<Target>());
+				((TargetingFunction) copy).getTargetCollection()
+						.addAll(targets);
+				for (Target target : ((TargetingFunction) copy)
+						.getTargetCollection()) {
+					target.setId(null);
+					target.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				}
 			}
 		}
 	}
