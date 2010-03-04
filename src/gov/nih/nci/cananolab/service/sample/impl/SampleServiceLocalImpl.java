@@ -10,7 +10,9 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -747,9 +749,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			Sample newSample = origSampleBean.getDomainCopy();
 			newSample.setName(newSampleName);
 			SampleBean newSampleBean = new SampleBean(newSample);
+
 			// need to save associations one by one (except keywords) following
-			// Hibernate mapping
-			// settings for most use cases
+			// Hibernate mapping settings for most use cases
 			savePOCs(newSampleBean, user);
 			saveCharacterizations(newSampleBean, user);
 			saveComposition(newSampleBean, user);
@@ -761,61 +763,6 @@ public class SampleServiceLocalImpl implements SampleService {
 			String err = "Error in cloning the sample " + originalSampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
-		}
-	}
-
-	private void fullyLoadSample(Sample sample, UserBean user) throws Exception {
-		String sampleId = sample.getId().toString();
-		// fully load keywords
-		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
-		List<Keyword> keywords = sampleServiceHelper.findKeywordsBySampleId(
-				sampleId, user);
-		if (keywords != null && !keywords.isEmpty()) {
-			sample.setKeywordCollection(new HashSet<Keyword>(keywords));
-		}
-
-		// fully load POCs
-		PointOfContact primaryPOC = sampleServiceHelper
-				.findPrimaryPointOfContactBySampleId(sampleId, user);
-		if (primaryPOC != null) {
-			sample.setPrimaryPointOfContact(primaryPOC);
-		}
-		// List<PointOfContact> otherPOCs = sampleServiceHelper
-		// .findOtherPointOfContactsBySampleId(sampleId, user);
-		// if (otherPOCs != null) {
-		// sample.setOtherPointOfContactCollection(new
-		// HashSet<PointOfContact>(otherPOCs));
-		// }
-		// }
-
-		// fully load composition
-		CompositionServiceHelper compServiceHelper = new CompositionServiceHelper();
-		SampleComposition comp = compServiceHelper.findCompositionBySampleId(
-				sample.getId().toString(), user);
-		if (comp != null) {
-			sample.setSampleComposition(comp);
-		}
-
-		// fully load characterizations
-		CharacterizationServiceHelper charServiceHelper = new CharacterizationServiceHelper();
-		List<Characterization> chars = charServiceHelper
-				.findCharacterizationsBySampleId(sample.getId().toString(),
-						user);
-		if (chars != null && !chars.isEmpty()) {
-			sample.setCharacterizationCollection(new HashSet<Characterization>(
-					chars));
-		}
-
-		// fully load publications
-		PublicationService pubService = new PublicationServiceLocalImpl();
-		List<PublicationBean> pubBeans = pubService.findPublicationsBySampleId(
-				sample.getId().toString(), user);
-		if (pubBeans != null) {
-			Collection<Publication> publications = new HashSet<Publication>();
-			for (PublicationBean pubBean : pubBeans) {
-				publications.add((Publication) pubBean.getDomainFile());
-			}
-			sample.setPublicationCollection(publications);
 		}
 	}
 
@@ -838,8 +785,19 @@ public class SampleServiceLocalImpl implements SampleService {
 			CharacterizationService charService = new CharacterizationServiceLocalImpl();
 			for (Characterization achar : sampleBean.getDomain()
 					.getCharacterizationCollection()) {
-				charService.saveCharacterization(sampleBean,
-						new CharacterizationBean(achar), user);
+				CharacterizationBean charBean = new CharacterizationBean(achar);
+				if (charBean.getExperimentConfigs() != null) {
+					for (ExperimentConfigBean configBean : charBean
+							.getExperimentConfigs()) {
+						charService.saveExperimentConfig(configBean, user);
+					}
+				}
+				if (charBean.getFindings() != null) {
+					for (FindingBean findingBean : charBean.getFindings()) {
+						charService.saveFinding(findingBean, user);
+					}
+				}
+				charService.saveCharacterization(sampleBean, charBean, user);
 			}
 		}
 	}
