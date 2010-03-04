@@ -167,7 +167,7 @@ public class CharacterizationServiceLocalImpl implements
 						}
 					}
 				}
-				chars.add(achar);
+				charBeans.add(charBean);
 			}
 			return charBeans;
 		} catch (Exception e) {
