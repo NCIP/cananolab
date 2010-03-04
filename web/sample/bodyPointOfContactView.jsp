@@ -8,7 +8,7 @@
 	value="${sampleForm.map.sampleBean.primaryPOCBean}" />
 <c:choose>
 	<c:when
-		test="${empty primaryPOC && empty sampleForm.map.sampleBean.otherPOCBeans}">
+		test="${empty primaryPOC.domain.organization.name && empty sampleForm.map.sampleBean.otherPOCBeans}">
 	N/A
 	</c:when>
 	<c:otherwise>
