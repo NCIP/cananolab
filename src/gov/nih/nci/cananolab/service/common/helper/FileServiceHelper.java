@@ -110,11 +110,12 @@ public class FileServiceHelper {
 		// copy file visibility and file content
 		retrieveVisibilityAndContentForCopiedFile(copy, user);
 		// replace file URI with new sample name
-		String newUri = copy.getDomainFile().getUri().replace(origSampleName,
-				newSampleName);
-		copy.getDomainFile().setUri(newUri);
+		if (copy.getDomainFile().getUri() != null) {
+			String newUri = copy.getDomainFile().getUri().replace(
+					origSampleName, newSampleName);
+			copy.getDomainFile().setUri(newUri);
+		}
 	}
-
 
 	private File findFileByUri(String uri) throws Exception {
 		File file = null;
