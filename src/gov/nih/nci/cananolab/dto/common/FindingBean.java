@@ -227,7 +227,6 @@ public class FindingBean {
 				newRows.add(rows.get(i));
 			}
 		}
-
 		for (int i = 0; i < numberOfRows; i++) {
 			Row row = newRows.get(i);
 			List<TableCell> cells = row.getCells();
@@ -246,8 +245,10 @@ public class FindingBean {
 			}
 			row.setCells(newCells);
 		}
-		columnHeaders = new ArrayList<ColumnHeader>();
-		columnHeaders.addAll(newColumns);
+		columnHeaders = new ArrayList<ColumnHeader>(newColumns);
+		for (int i = 1; i <= columnHeaders.size(); i++) {
+			columnHeaders.get(i - 1).setColumnOrder(i);
+		}
 		rows = new ArrayList<Row>();
 		rows.addAll(newRows);
 	}
