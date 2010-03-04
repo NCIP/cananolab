@@ -18,6 +18,7 @@ public class ColumnHeader {
 	private String columnType;
 	private String displayName;
 	private String constantValue;
+	private Integer columnOrder;
 
 	public ColumnHeader(Datum datum) {
 		this.columnName = datum.getName();
@@ -149,4 +150,11 @@ public class ColumnHeader {
 		this.constantValue = constantValue;
 	}
 
+	public Integer getColumnOrder() {
+		return columnOrder;
+	}
+
+	public void setColumnOrder(Integer columnOrder) {
+		this.columnOrder = columnOrder;
+	}
 }
