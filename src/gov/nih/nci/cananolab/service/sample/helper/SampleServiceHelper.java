@@ -784,13 +784,16 @@ public class SampleServiceHelper {
 			UserBean user) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select aSample.primaryPointOfContact from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
-						+ sampleId);
-		List result = appService.query(crit);
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
 		PointOfContact poc = null;
-		if (!result.isEmpty()) {
-			poc = (PointOfContact) result.get(0);
+		for (Object obj : results) {
+			Sample particle = (Sample) obj;
+			poc = particle.getPrimaryPointOfContact();
 			if (authService.checkReadPermission(user, poc.getId().toString())) {
 				return poc;
 			} else {
