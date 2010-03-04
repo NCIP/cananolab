@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -185,14 +186,13 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward setupClone(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;	
-		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		if (request.getParameter("cloningSample") != null) {
-			String cloningSampleName = request.getParameter("cloningSample");		
+			String cloningSampleName = request.getParameter("cloningSample");
 			sampleBean.setCloningSampleName(cloningSampleName);
 			sampleBean.getDomain().setName(null);
-		}
-		else {
+		} else {
 			sampleBean.setCloningSampleName(null);
 			sampleBean.getDomain().setName(null);
 		}
@@ -286,7 +286,15 @@ public class SampleAction extends BaseAnnotationAction {
 		try {
 			service.cloneSample(sampleBean.getCloningSampleName(), sampleBean
 					.getDomain().getName(), user);
-		} catch (DuplicateEntriesException e) {
+		}catch(NotExistException e) {
+			ActionMessage err = new ActionMessage(
+					"error.cloneSample.noOriginalSample", sampleBean
+							.getCloningSampleName());
+			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
+			saveErrors(request, messages);
+			return mapping.findForward("cloneInput");
+		}
+		catch (DuplicateEntriesException e) {
 			ActionMessage err = new ActionMessage(
 					"error.cloneSample.duplicateSample", sampleBean
 							.getCloningSampleName(), sampleBean.getDomain()
@@ -295,9 +303,7 @@ public class SampleAction extends BaseAnnotationAction {
 			saveErrors(request, messages);
 			return mapping.findForward("cloneInput");
 		} catch (SampleException e) {
-			ActionMessage err = new ActionMessage("error.cloneSample",
-					sampleBean.getCloningSampleName(), sampleBean.getDomain()
-							.getName());
+			ActionMessage err = new ActionMessage("error.cloneSample");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
 			saveErrors(request, messages);
 			return mapping.findForward("cloneInput");
