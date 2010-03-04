@@ -426,19 +426,19 @@ public class CharacterizationServiceLocalImpl implements
 				// create a deep copy
 				Characterization copy = charBean.getDomainCopy(copyData);
 				CharacterizationBean copyBean = new CharacterizationBean(copy);
-				try {
-					// copy file visibility
-					for (FindingBean findingBean : copyBean.getFindings()) {
-						for (FileBean fileBean : findingBean.getFiles()) {
-							fileHelper
-									.retrieveVisibilityAndContentForCopiedFile(
-											fileBean, user);
-						}
-					}
-				} catch (Exception e) {
-					String error = "Error setting visibility of the copy.";
-					throw new CharacterizationException(error, e);
-				}
+				// try {
+				// // copy file visibility
+				// for (FindingBean findingBean : copyBean.getFindings()) {
+				// for (FileBean fileBean : findingBean.getFiles()) {
+				// fileHelper
+				// .retrieveVisibilityAndContentForCopiedFile(
+				// fileBean, user);
+				// }
+				// }
+				// } catch (Exception e) {
+				// String error = "Error setting visibility of the copy.";
+				// throw new CharacterizationException(error, e);
+				// }
 				/**
 				 * Need to save associate Config & Finding in copy bean first,
 				 * otherwise will get "transient object" Hibernate exception.
@@ -451,17 +451,14 @@ public class CharacterizationServiceLocalImpl implements
 					}
 				}
 				List<FindingBean> findings = copyBean.getFindings();
-				// replace file URI with new sample name
+				// copy file visibility and replace file URI with new sample
+				// name
 				if (findings != null && !findings.isEmpty()) {
 					for (FindingBean findingBean : findings) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							String newUri = fileBean
-									.getDomainFile()
-									.getUri()
-									.replace(
-											oldSampleBean.getDomain().getName(),
-											sampleBean.getDomain().getName());
-							fileBean.getDomainFile().setUri(newUri);
+							fileHelper.updateClonedFileInfo(fileBean,
+									oldSampleBean.getDomain().getName(),
+									sampleBean.getDomain().getName(), user);
 						}
 						this.saveFinding(findingBean, user);
 					}

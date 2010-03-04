@@ -557,19 +557,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					copyBean = new NanomaterialEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileHelper.retrieveVisibilityAndContentForCopiedFile(
-								fileBean, user);
+						fileHelper.updateClonedFileInfo(fileBean, oldSampleBean
+								.getDomain().getName(), sampleBean.getDomain()
+								.getName(), user);
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the nanomaterial entity.";
 					throw new CompositionException(error, e);
-				}
-				// replace file URI with new sample name
-				for (FileBean fileBean : copyBean.getFiles()) {
-					String newUri = fileBean.getDomainFile().getUri().replace(
-							oldSampleBean.getDomain().getName(),
-							sampleBean.getDomain().getName());
-					fileBean.getDomainFile().setUri(newUri);
 				}
 				if (copyBean != null)
 					saveNanomaterialEntity(sampleBean, copyBean, user);
@@ -594,19 +588,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					copyBean = new FunctionalizingEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileHelper.retrieveVisibilityAndContentForCopiedFile(
-								fileBean, user);
+						fileHelper.updateClonedFileInfo(fileBean, oldSampleBean
+								.getDomain().getName(), sampleBean.getDomain()
+								.getName(), user);
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the functionalizing entity.";
 					throw new CompositionException(error, e);
-				}
-				// replace file URI with new sample name
-				for (FileBean fileBean : copyBean.getFiles()) {
-					String newUri = fileBean.getDomainFile().getUri().replace(
-							oldSampleBean.getDomain().getName(),
-							sampleBean.getDomain().getName());
-					fileBean.getDomainFile().setUri(newUri);
 				}
 				if (copyBean != null)
 					saveFunctionalizingEntity(sampleBean, copyBean, user);

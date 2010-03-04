@@ -26,6 +26,7 @@ import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -68,6 +69,7 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private SampleServiceHelper helper = new SampleServiceHelper();
 	private AdvancedSampleServiceHelper advancedHelper = new AdvancedSampleServiceHelper();
+	private FileServiceHelper fileHelper = new FileServiceHelper();
 
 	/**
 	 * Persist a new sample or update an existing canano sample
@@ -699,7 +701,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			newSample.setName(newSampleName);
 			SampleBean newSampleBean = new SampleBean(newSample);
 
-			// retrieve visibilities of the original sample, 
+			// retrieve visibilities of the original sample,
 			// then copy the visibilities to new sample
 			helper.retrieveVisibility(origSampleBean);
 			newSampleBean.setVisibilityGroups(origSampleBean
@@ -708,8 +710,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			// need to save associations one by one (except keywords) following
 			// Hibernate mapping settings for most use cases
 			savePOCs(newSampleBean, user);
-			saveCharacterizations(newSampleBean, user);
-			saveComposition(newSampleBean, user);
+			saveClonedCharacterizations(origSample.getName(), newSampleBean,
+					user);
+			saveClonedComposition(origSample.getName(), newSampleBean, user);
 			savePublications(newSampleBean, user);
 			saveSample(newSampleBean, user);
 		} catch (DuplicateEntriesException e) {
@@ -734,9 +737,10 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void saveCharacterizations(SampleBean sampleBean, UserBean user)
-			throws Exception {
+	private void saveClonedCharacterizations(String origSampleName,
+			SampleBean sampleBean, UserBean user) throws Exception {
 		if (sampleBean.getDomain().getCharacterizationCollection() != null) {
+			String newSampleName = sampleBean.getDomain().getName();
 			CharacterizationService charService = new CharacterizationServiceLocalImpl();
 			for (Characterization achar : sampleBean.getDomain()
 					.getCharacterizationCollection()) {
@@ -749,6 +753,10 @@ public class SampleServiceLocalImpl implements SampleService {
 				}
 				if (charBean.getFindings() != null) {
 					for (FindingBean findingBean : charBean.getFindings()) {
+						for (FileBean fileBean : findingBean.getFiles()) {
+							fileHelper.updateClonedFileInfo(fileBean,
+									origSampleName, newSampleName, user);
+						}
 						charService.saveFinding(findingBean, user);
 					}
 				}
@@ -757,9 +765,11 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void saveComposition(SampleBean sampleBean, UserBean user)
-			throws Exception {
+	private void saveClonedComposition(String origSampleName,
+			SampleBean sampleBean, UserBean user) throws Exception {
 		if (sampleBean.getDomain().getSampleComposition() != null) {
+			String newSampleName = sampleBean.getDomain().getName();
+
 			CompositionService compService = new CompositionServiceLocalImpl();
 			// save nanomaterial entities
 			if (sampleBean.getDomain().getSampleComposition()
@@ -767,8 +777,14 @@ public class SampleServiceLocalImpl implements SampleService {
 				for (NanomaterialEntity entity : sampleBean.getDomain()
 						.getSampleComposition()
 						.getNanomaterialEntityCollection()) {
-					compService.saveNanomaterialEntity(sampleBean,
-							new NanomaterialEntityBean(entity), user);
+					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
+							entity);
+					for (FileBean fileBean : entityBean.getFiles()) {
+						fileHelper.updateClonedFileInfo(fileBean,
+								origSampleName, newSampleName, user);
+					}
+					compService.saveNanomaterialEntity(sampleBean, entityBean,
+							user);
 				}
 			}
 			if (sampleBean.getDomain().getSampleComposition()
@@ -776,16 +792,24 @@ public class SampleServiceLocalImpl implements SampleService {
 				for (FunctionalizingEntity entity : sampleBean.getDomain()
 						.getSampleComposition()
 						.getFunctionalizingEntityCollection()) {
+					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
+							entity);
+					for (FileBean fileBean : entityBean.getFiles()) {
+						fileHelper.updateClonedFileInfo(fileBean,
+								origSampleName, newSampleName, user);
+					}
 					compService.saveFunctionalizingEntity(sampleBean,
-							new FunctionalizingEntityBean(entity), user);
+							entityBean, user);
 				}
 			}
 			if (sampleBean.getDomain().getSampleComposition()
 					.getFileCollection() != null) {
 				for (File file : sampleBean.getDomain().getSampleComposition()
 						.getFileCollection()) {
-					compService.saveCompositionFile(sampleBean, new FileBean(
-							file), user);
+					FileBean fileBean = new FileBean(file);
+					fileHelper.updateClonedFileInfo(fileBean, origSampleName,
+							newSampleName, user);
+					compService.saveCompositionFile(sampleBean, fileBean, user);
 				}
 			}
 		}
