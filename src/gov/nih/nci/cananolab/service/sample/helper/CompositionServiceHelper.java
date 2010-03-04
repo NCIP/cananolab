@@ -70,7 +70,7 @@ public class CompositionServiceHelper {
 				return func;
 			} else {
 				throw new NoAccessException(
-						"User doesn't have access to the function");
+						"User doesn't have access to the sample");
 			}
 		}
 		return func;
@@ -97,7 +97,7 @@ public class CompositionServiceHelper {
 				return ce;
 			} else {
 				throw new NoAccessException(
-						"User doesn't have access to the composing element");
+						"User doesn't have access to the sample");
 			}
 		}
 		return ce;
@@ -606,7 +606,8 @@ public class CompositionServiceHelper {
 							.getFileCollection(), user);
 				}
 			} else {
-				throw new NoAccessException();
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
 			}
 		}
 		return assoc;

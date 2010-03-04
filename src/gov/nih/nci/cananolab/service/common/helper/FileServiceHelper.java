@@ -73,8 +73,7 @@ public class FileServiceHelper {
 	}
 
 	// retrieve file visibility
-	public void retrieveVisibility(FileBean fileBean, UserBean user)
-			throws Exception {
+	public void retrieveVisibility(FileBean fileBean) throws Exception {
 		if (fileBean != null) {
 			AuthorizationService auth = new AuthorizationService(
 					Constants.CSM_APP_NAME);

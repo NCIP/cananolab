@@ -115,9 +115,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					entityId, user);
 			if (entity != null) {
 				entityBean = new NanomaterialEntityBean(entity);
-				if (entityBean.getFiles() != null) {
+				if (entityBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean, user);
+						fileHelper.retrieveVisibility(fileBean);
 					}
 				}
 			}
@@ -317,9 +317,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					.findFunctionalizingEntityById(entityId, user);
 			if (entity != null) {
 				entityBean = new FunctionalizingEntityBean(entity);
-				if (entityBean.getFiles() != null) {
+				if (entityBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean, user);
+						fileHelper.retrieveVisibility(fileBean);
 					}
 				}
 			} else {
@@ -345,9 +345,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					assocId, user);
 			if (assoc != null) {
 				assocBean = new ChemicalAssociationBean(assoc);
-				if (assocBean.getFiles() != null) {
+				if (assocBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : assocBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean, user);
+						fileHelper.retrieveVisibility(fileBean);
 					}
 				}
 			} else {
@@ -501,17 +501,17 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					sampleId, user);
 			if (composition != null) {
 				comp = new CompositionBean(composition);
-				if (comp.getFiles() != null) {
+				if (comp.getFiles() != null && user != null) {
 					for (FileBean fileBean : comp.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean, user);
+						fileHelper.retrieveVisibility(fileBean);
 					}
 				}
 				if (comp.getNanomaterialEntities() != null) {
 					for (NanomaterialEntityBean entity : comp
 							.getNanomaterialEntities()) {
-						if (entity.getFiles() != null) {
+						if (entity.getFiles() != null && user != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean, user);
+								fileHelper.retrieveVisibility(fileBean);
 							}
 						}
 					}
@@ -519,9 +519,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				if (comp.getFunctionalizingEntities() != null) {
 					for (FunctionalizingEntityBean entity : comp
 							.getFunctionalizingEntities()) {
-						if (entity.getFiles() != null) {
+						if (entity.getFiles() != null && user != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean, user);
+								fileHelper.retrieveVisibility(fileBean);
 							}
 						}
 					}
@@ -529,9 +529,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				if (comp.getChemicalAssociations() != null) {
 					for (ChemicalAssociationBean assoc : comp
 							.getChemicalAssociations()) {
-						if (assoc.getFiles() != null) {
+						if (assoc.getFiles() != null && user != null) {
 							for (FileBean fileBean : assoc.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean, user);
+								fileHelper.retrieveVisibility(fileBean);
 							}
 						}
 					}

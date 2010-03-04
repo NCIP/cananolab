@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -39,7 +38,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			if (protocol != null) {
 				protocolBean = new ProtocolBean(protocol);
 				if (user != null)
-					retrieveVisibility(protocolBean, user);
+					helper.retrieveVisibility(protocolBean);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -115,7 +114,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			if (protocol != null) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				if (user != null)
-					retrieveVisibility(protocolBean, user);
+					helper.retrieveVisibility(protocolBean);
 				return protocolBean;
 			} else {
 				return null;
@@ -140,7 +139,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				if (user != null)
-					retrieveVisibility(protocolBean, user);
+					helper.retrieveVisibility(protocolBean);
 				protocolBeans.add(protocolBean);
 			}
 			return protocolBeans;
@@ -171,19 +170,6 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			String err = "Error finding counts of public protocols.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
-		}
-	}
-
-	private void retrieveVisibility(ProtocolBean protocolBean, UserBean user)
-			throws Exception {
-		if (protocolBean != null) {
-			// get assigned visible groups
-			List<String> accessibleGroups = helper.getAuthService()
-					.getAccessibleGroups(
-							protocolBean.getDomain().getId().toString(),
-							Constants.CSM_READ_PRIVILEGE);
-			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-			protocolBean.setVisibilityGroups(visibilityGroups);
 		}
 	}
 }

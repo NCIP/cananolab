@@ -17,7 +17,9 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -748,9 +750,42 @@ public class SampleServiceHelper {
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 			if (authService.checkReadPermission(user, sample.getName())) {
-				return sample;
+				// check visibility of POC
+				if (sample.getPrimaryPointOfContact() != null) {
+					Organization org = sample.getPrimaryPointOfContact()
+							.getOrganization();
+					if (org != null) {
+						if (!authService.checkReadPermission(user, org.getId()
+								.toString())) {
+							sample.setPrimaryPointOfContact(null);
+							logger
+									.debug("User can't access primary point of contact:"
+											+ org.getId());
+						}
+					}
+				}
+				// remove POC that are not accessible to user
+				Set<PointOfContact> otherPOCs = new HashSet<PointOfContact>();
+				if (sample.getOtherPointOfContactCollection() != null) {
+					for (PointOfContact poc : sample
+							.getOtherPointOfContactCollection()) {
+						Organization org = poc.getOrganization();
+						if (org != null) {
+							if (authService.checkReadPermission(user, org
+									.getId().toString())) {
+								otherPOCs.add(poc);
+							} else {
+								logger
+										.debug("User can't access point of contact:"
+												+ poc.getId());
+							}
+						}
+					}
+					sample.setOtherPointOfContactCollection(otherPOCs);
+				}
 			} else {
-				throw new NoAccessException();
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
 			}
 		}
 		return sample;
@@ -859,19 +894,15 @@ public class SampleServiceHelper {
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 			if (authService.checkReadPermission(user, sample.getName())) {
-
 				// check visibility of POC
 				if (sample.getPrimaryPointOfContact() != null) {
-					Organization org = sample.getPrimaryPointOfContact()
-							.getOrganization();
-					if (org != null) {
-						if (!authService.checkReadPermission(user, org.getId()
-								.toString())) {
-							sample.setPrimaryPointOfContact(null);
-							logger
-									.debug("User can't access primary point of contact:"
-											+ org.getId());
-						}
+					String pocId = sample.getPrimaryPointOfContact().getId()
+							.toString();
+					if (!authService.checkReadPermission(user, pocId)) {
+						sample.setPrimaryPointOfContact(null);
+						logger
+								.debug("User can't access primary point of contact:"
+										+ pocId);
 					}
 				}
 				// remove POC that are not accessible to user
@@ -879,22 +910,19 @@ public class SampleServiceHelper {
 				if (sample.getOtherPointOfContactCollection() != null) {
 					for (PointOfContact poc : sample
 							.getOtherPointOfContactCollection()) {
-						Organization org = poc.getOrganization();
-						if (org != null) {
-							if (authService.checkReadPermission(user, org
-									.getId().toString())) {
-								otherPOCs.add(poc);
-							} else {
-								logger
-										.debug("User can't access point of contact:"
-												+ poc.getId());
-							}
+						if (authService.checkReadPermission(user, poc.getId()
+								.toString())) {
+							otherPOCs.add(poc);
+						} else {
+							logger.debug("User can't access point of contact:"
+									+ poc.getId());
 						}
 					}
 					sample.setOtherPointOfContactCollection(otherPOCs);
 				}
 			} else {
-				throw new NoAccessException();
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
 			}
 		}
 		return sample;
@@ -1047,11 +1075,47 @@ public class SampleServiceHelper {
 		for (Object obj : results) {
 			Sample particle = (Sample) obj;
 			PointOfContact primaryPOC = particle.getPrimaryPointOfContact();
+			if (authService.checkReadPermission(user, primaryPOC.getId()
+					.toString())) {
+				pointOfContacts.add(primaryPOC);
+			} else { // ignore no access exception
+				logger
+						.debug("User doesn't have access to the primary POC with org name "
+								+ primaryPOC.getOrganization().getName());
+			}
 			Collection<PointOfContact> otherPOCs = particle
 					.getOtherPointOfContactCollection();
-			pointOfContacts.add(primaryPOC);
-			pointOfContacts.addAll(otherPOCs);
+			for (PointOfContact poc : otherPOCs) {
+				if (authService.checkReadPermission(user, primaryPOC.getId()
+						.toString())) {
+					pointOfContacts.add(poc);
+				} else { // ignore no access exception
+					logger
+							.debug("User doesn't have access to the POC with org name "
+									+ poc.getOrganization().getName());
+				}
+			}
 		}
 		return pointOfContacts;
+	}
+
+	// retrieve point of contact accessibility
+	public void retrieveVisibility(PointOfContactBean pocBean) throws Exception {
+		if (pocBean != null) {
+			// get assigned visible groups
+			List<String> accessibleGroups = authService.getAccessibleGroups(
+					pocBean.getDomain().getId().toString(),
+					Constants.CSM_READ_PRIVILEGE);
+			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+			pocBean.setVisibilityGroups(visibilityGroups);
+		}
+	}
+
+	public void retrieveVisibility(SampleBean sampleBean) throws Exception {
+		// get assigned visible groups
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		sampleBean.setVisibilityGroups(visibilityGroups);
 	}
 }

@@ -7,10 +7,10 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
@@ -32,18 +32,19 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of PublicationService
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
 			.getLogger(PublicationServiceLocalImpl.class);
 	private PublicationServiceHelper helper = new PublicationServiceHelper();
+	private FileServiceHelper fileHelper = new FileServiceHelper();
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 *
+	 * 
 	 * @param publication
 	 * @param sampleNames
 	 * @param fileData
@@ -57,13 +58,15 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new NoAccessException();
 		}
 		try {
-			Publication publication = (Publication) publicationBean.getDomainFile();
+			Publication publication = (Publication) publicationBean
+					.getDomainFile();
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication, user);
-			CustomizedApplicationService appService =
-				(CustomizedApplicationService) ApplicationServiceProvider.getApplicationService();
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 			// check if publication is already entered based on PubMedId or DOI
-			if (publication.getPubMedId() != null && publication.getPubMedId() != 0) {
+			if (publication.getPubMedId() != null
+					&& publication.getPubMedId() != 0) {
 				Publication dbPublication = (Publication) appService.getObject(
 						Publication.class, "pubMedId", publication
 								.getPubMedId());
@@ -155,29 +158,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	// retrieve publication visibility
-	private void retrieveVisibility(PublicationBean publicationBean,
-			UserBean user) throws FileException {
-		try {
-			if (publicationBean != null) {
-				// get assigned visible groups
-				List<String> accessibleGroups = helper.getAuthService()
-						.getAccessibleGroups(
-								publicationBean.getDomainFile().getId()
-										.toString(),
-								Constants.CSM_READ_PRIVILEGE);
-				String[] visibilityGroups = accessibleGroups
-						.toArray(new String[0]);
-				publicationBean.setVisibilityGroups(visibilityGroups);
-			}
-		} catch (Exception e) {
-			String err = "Error in setting file visibility for "
-					+ publicationBean.getDisplayName();
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
-	}
-
 	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
 			UserBean user) throws PublicationException {
 		try {
@@ -195,7 +175,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 							sampleNames);
 					// retrieve visibility
 					if (user != null)
-						retrieveVisibility(pubBean, user);
+						fileHelper.retrieveVisibility(pubBean);
 					publicationBeans.add(pubBean);
 				}
 			}
@@ -217,7 +197,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			PublicationBean publicationBean = new PublicationBean(publication,
 					sampleNames);
 			if (user != null)
-				retrieveVisibility(publicationBean, user);
+				fileHelper.retrieveVisibility(publicationBean);
 			return publicationBean;
 		} catch (NoAccessException e) {
 			throw e;
@@ -234,9 +214,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		Publication publication = null;
 		CustomizedApplicationService appService = null;
 		try {
-			appService = (CustomizedApplicationService) ApplicationServiceProvider.getApplicationService();
-			publication = (Publication) appService.getObject(
-					Publication.class, keyName, keyValue);
+			appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			publication = (Publication) appService.getObject(Publication.class,
+					keyName, keyValue);
 		} catch (Exception e) {
 			String err = "Error finding the publication.";
 			logger.error(err, e);
@@ -282,23 +263,26 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Remove sample-publication association for an existing publication.
-	 *
+	 * 
 	 * @param sampleId
 	 * @param pubBean
 	 * @param user
-	 * @throws PublicationException, NoAccessException
+	 * @throws PublicationException
+	 *             , NoAccessException
 	 */
-	public void removePublicationFromSample(String sampleId, PublicationBean pubBean, UserBean user)
+	public void removePublicationFromSample(String sampleId,
+			PublicationBean pubBean, UserBean user)
 			throws PublicationException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService =
-				(CustomizedApplicationService) ApplicationServiceProvider.getApplicationService();
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 
 			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService.findSampleById(sampleId, user);
+			SampleBean sampleBean = sampleService
+					.findSampleById(sampleId, user);
 			Sample sample = sampleBean.getDomain();
 			Collection<Publication> pubs = sample.getPublicationCollection();
 			if (pubs != null && pubs.size() > 0) {

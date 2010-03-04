@@ -119,9 +119,9 @@ public class CharacterizationServiceLocalImpl implements
 				charBean = new CharacterizationBean(achar);
 				if (charBean.getFindings() != null) {
 					for (FindingBean findingBean : charBean.getFindings()) {
-						if (findingBean.getFiles() != null) {
+						if (findingBean.getFiles() != null && user != null) {
 							for (FileBean fileBean : findingBean.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean, user);
+								fileHelper.retrieveVisibility(fileBean);
 							}
 						}
 					}
@@ -161,9 +161,9 @@ public class CharacterizationServiceLocalImpl implements
 			for (Characterization achar : chars) {
 				CharacterizationBean charBean = new CharacterizationBean(achar);
 				for (FindingBean findingBean : charBean.getFindings()) {
-					if (findingBean.getFiles() != null) {
+					if (findingBean.getFiles() != null && user != null) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							fileHelper.retrieveVisibility(fileBean, user);
+							fileHelper.retrieveVisibility(fileBean);
 						}
 					}
 				}
@@ -185,9 +185,9 @@ public class CharacterizationServiceLocalImpl implements
 			Finding finding = helper.findFindingById(findingId, user);
 			if (finding != null) {
 				findingBean = new FindingBean(finding);
-				if (findingBean.getFiles() != null) {
+				if (findingBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : findingBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean, user);
+						fileHelper.retrieveVisibility(fileBean);
 					}
 				}
 			}

@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -168,5 +169,16 @@ public class ProtocolServiceHelper {
 
 	public AuthorizationService getAuthService() {
 		return authService;
+	}
+
+	public void retrieveVisibility(ProtocolBean protocolBean) throws Exception {
+		if (protocolBean != null) {
+			// get assigned visible groups
+			List<String> accessibleGroups = authService.getAccessibleGroups(
+					protocolBean.getDomain().getId().toString(),
+					Constants.CSM_READ_PRIVILEGE);
+			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+			protocolBean.setVisibilityGroups(visibilityGroups);
+		}
 	}
 }
