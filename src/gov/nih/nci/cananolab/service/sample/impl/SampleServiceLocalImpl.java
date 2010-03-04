@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
@@ -46,11 +47,14 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -294,7 +298,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			Sample sample = helper.findSampleById(sampleId, user);
 			sampleBean = new SampleBean(sample);
 			// set visibility of POC
-			if (sampleBean.getPrimaryPOCBean() != null && user != null) {
+			if (user != null) {
 				helper.retrieveVisibility(sampleBean.getPrimaryPOCBean());
 			}
 			if (sampleBean.getOtherPOCBeans() != null && user != null) {
@@ -322,7 +326,9 @@ public class SampleServiceLocalImpl implements SampleService {
 		// lazily load sample
 		Sample sample = (Sample) appService.getObject(Sample.class, "name",
 				sampleName);
-
+		if (sample == null) {
+			throw new NotExistException("Sample doesn't exist in the database");
+		}
 		String sampleId = sample.getId().toString();
 		// fully load keywords
 		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
@@ -391,7 +397,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (sample != null) {
 				sampleBean = new SampleBean(sample);
 				// set visibility of POC
-				if (sampleBean.getPrimaryPOCBean() != null && user != null) {
+				if (user != null) {
 					helper.retrieveVisibility(sampleBean.getPrimaryPOCBean());
 				}
 				if (sampleBean.getOtherPOCBeans() != null && user != null) {
@@ -681,7 +687,7 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	public void cloneSample(String originalSampleName, String newSampleName,
 			UserBean user) throws SampleException, NoAccessException,
-			DuplicateEntriesException {
+			DuplicateEntriesException, NotExistException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
@@ -696,6 +702,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			// fully load original sample
 			Sample origSample = findFullyLoadedSampleByName(originalSampleName,
 					user);
+			// clone the sample
 			SampleBean origSampleBean = new SampleBean(origSample);
 			Sample newSample = origSampleBean.getDomainCopy();
 			newSample.setName(newSampleName);
@@ -709,13 +716,17 @@ public class SampleServiceLocalImpl implements SampleService {
 
 			// need to save associations one by one (except keywords) following
 			// Hibernate mapping settings for most use cases
-			savePOCs(newSampleBean, user);
+			saveClonedPOCs(origSampleBean, newSampleBean, user);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean,
 					user);
 			saveClonedComposition(origSample.getName(), newSampleBean, user);
-			savePublications(newSampleBean, user);
+			// saveClonedPublications(origSample.getName(), newSampleBean,
+			// user);
 			saveSample(newSampleBean, user);
-		} catch (DuplicateEntriesException e) {
+		} catch (NotExistException e) {
+			throw e;
+		}  
+		catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
 			String err = "Error in cloning the sample " + originalSampleName;
@@ -724,14 +735,33 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void savePOCs(SampleBean sampleBean, UserBean user)
-			throws Exception {
-		if (sampleBean.getPrimaryPOCBean() != null) {
-			savePointOfContact(sampleBean.getPrimaryPOCBean(), user);
+	private void saveClonedPOCs(SampleBean origSampleBean,
+			SampleBean sampleBean, UserBean user) throws Exception {
+		// copy primary POC visibility to new sample
+		helper.retrieveVisibility(origSampleBean.getPrimaryPOCBean());
+		sampleBean.getPrimaryPOCBean().setVisibilityGroups(
+				origSampleBean.getPrimaryPOCBean().getVisibilityGroups());
+		savePointOfContact(sampleBean.getPrimaryPOCBean(), user);
+
+		// retrieve other POC visibility and store it in a hash
+		Map<String, String[]> visMap = new HashMap<String, String[]>();
+		if (origSampleBean.getOtherPOCBeans() != null) {
+			for (PointOfContactBean pocBean : origSampleBean.getOtherPOCBeans()) {
+				helper.retrieveVisibility(pocBean);
+				if (!StringUtils.isEmpty(pocBean.getDisplayName())) {
+					visMap.put(pocBean.getDisplayName(), pocBean
+							.getVisibilityGroups());
+				}
+			}
 		}
 		if (sampleBean.getOtherPOCBeans() != null
 				&& !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
+				if (!StringUtils.isEmpty(pocBean.getDisplayName())) {
+					String[] visibilities = visMap
+							.get(pocBean.getDisplayName());
+					pocBean.setVisibilityGroups(visibilities);
+				}
 				savePointOfContact(pocBean, user);
 			}
 		}
@@ -815,13 +845,16 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void savePublications(SampleBean sampleBean, UserBean user)
-			throws Exception {
+	private void saveClonedPublications(String origSampleName,
+			SampleBean sampleBean, UserBean user) throws Exception {
 		if (sampleBean.getDomain().getPublicationCollection() != null) {
 			PublicationService pubService = new PublicationServiceLocalImpl();
 			for (Publication pub : sampleBean.getDomain()
 					.getPublicationCollection()) {
-				pubService.savePublication(new PublicationBean(pub), user);
+				PublicationBean pubBean = new PublicationBean(pub);
+				fileHelper.updateClonedFileInfo(pubBean, origSampleName,
+						sampleBean.getDomain().getName(), user);
+				pubService.savePublication(pubBean, user);
 			}
 		}
 	}
