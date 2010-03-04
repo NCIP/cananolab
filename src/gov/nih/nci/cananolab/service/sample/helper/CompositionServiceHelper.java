@@ -11,11 +11,11 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -32,9 +32,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving composition.
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class CompositionServiceHelper {
 
@@ -42,6 +42,7 @@ public class CompositionServiceHelper {
 			.getLogger(CompositionServiceHelper.class);
 
 	private AuthorizationService authService;
+	private FileServiceHelper fileHelper = new FileServiceHelper();
 
 	public CompositionServiceHelper() {
 		try {
@@ -105,7 +106,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Get PubChem URL in format of
 	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 *
+	 * 
 	 * @param pubChemDS
 	 * @param pubChemId
 	 * @return PubChem URL
@@ -376,5 +377,238 @@ public class CompositionServiceHelper {
 				}
 			}
 		}
+	}
+
+	public SampleComposition findCompositionBySampleId(String sampleId,
+			UserBean user) throws Exception {
+		SampleComposition composition = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(SampleComposition.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode(
+				"nanomaterialEntityCollection.composingElementCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"functionalizingEntityCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"functionalizingEntityCollection.functionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.activationMethod",
+				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"chemicalAssociationCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementA",
+				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementB",
+				FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+
+		if (!result.isEmpty()) {
+			composition = (SampleComposition) result.get(0);
+			if (authService.checkReadPermission(user, composition.getId()
+					.toString())) {
+				if (composition.getFileCollection() != null) {
+					fileHelper.removeUnaccessibleFiles(composition
+							.getFileCollection(), user);
+				}
+				if (composition.getNanomaterialEntityCollection() != null) {
+					for (NanomaterialEntity entity : composition
+							.getNanomaterialEntityCollection()) {
+						if (entity.getFileCollection() != null) {
+							fileHelper.removeUnaccessibleFiles(entity
+									.getFileCollection(), user);
+						}
+					}
+				}
+				if (composition.getFunctionalizingEntityCollection() != null) {
+					for (FunctionalizingEntity entity : composition
+							.getFunctionalizingEntityCollection()) {
+						if (entity.getFileCollection() != null) {
+							fileHelper.removeUnaccessibleFiles(entity
+									.getFileCollection(), user);
+						}
+					}
+				}
+				if (composition.getChemicalAssociationCollection() != null) {
+					for (ChemicalAssociation assoc : composition
+							.getChemicalAssociationCollection()) {
+						if (assoc.getFileCollection() != null) {
+							fileHelper.removeUnaccessibleFiles(assoc
+									.getFileCollection(), user);
+						}
+					}
+				}
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
+			}
+		}
+		return composition;
+	}
+
+	public NanomaterialEntity findNanomaterialEntityById(String entityId,
+			UserBean user) throws Exception {
+		NanomaterialEntity entity = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				NanomaterialEntity.class).add(
+				Property.forName("id").eq(new Long(entityId)));
+		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementA",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementB",
+						FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"composingElementCollection.inherentFunctionCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"composingElementCollection.inherentFunctionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			entity = (NanomaterialEntity) result.get(0);
+			if (authService
+					.checkReadPermission(user, entity.getId().toString())) {
+				if (entity.getFileCollection() != null) {
+					fileHelper.removeUnaccessibleFiles(entity
+							.getFileCollection(), user);
+				}
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
+			}
+		}
+		return entity;
+	}
+
+	public FunctionalizingEntity findFunctionalizingEntityById(String entityId,
+			UserBean user) throws Exception {
+		FunctionalizingEntity entity = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				FunctionalizingEntity.class).add(
+				Property.forName("id").eq(new Long(entityId)));
+		crit.setFetchMode("activationMethod", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionCollection", FetchMode.JOIN);
+		crit
+				.setFetchMode("functionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementA",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementB",
+						FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			entity = (FunctionalizingEntity) result.get(0);
+			if (authService
+					.checkReadPermission(user, entity.getId().toString())) {
+				if (entity.getFileCollection() != null) {
+					fileHelper.removeUnaccessibleFiles(entity
+							.getFileCollection(), user);
+				}
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
+			}
+		}
+		return entity;
+	}
+
+	public ChemicalAssociation findChemicalAssociationById(String assocId,
+			UserBean user) throws Exception {
+		ChemicalAssociation assoc = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				ChemicalAssociation.class).add(
+				Property.forName("id").eq(new Long(assocId)));
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("associatedElementA", FetchMode.JOIN);
+		crit.setFetchMode("associatedElementA.nanomaterialEntity",
+				FetchMode.JOIN);
+		crit.setFetchMode("associatedElementB", FetchMode.JOIN);
+		crit.setFetchMode("associatedElementB.nanomaterialEntity",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			assoc = (ChemicalAssociation) result.get(0);
+			if (authService.checkReadPermission(user, assoc.getId().toString())) {
+				if (assoc.getFileCollection() != null) {
+					fileHelper.removeUnaccessibleFiles(assoc
+							.getFileCollection(), user);
+				}
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return assoc;
 	}
 }

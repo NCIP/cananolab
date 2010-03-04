@@ -29,8 +29,11 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -258,11 +261,11 @@ public class SampleServiceHelper {
 		}
 
 		// keyword
-		if (wordList != null && wordList.length > 0) {			
+		if (wordList != null && wordList.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
 			for (String keyword : wordList) {
-				//strip wildcards from either ends of keyword
-				keyword=StringUtils.stripWildcards(keyword);
+				// strip wildcards from either ends of keyword
+				keyword = StringUtils.stripWildcards(keyword);
 				Criterion keywordCrit1 = Restrictions.ilike("keyword1.name",
 						keyword, MatchMode.ANYWHERE);
 				Criterion keywordCrit2 = Restrictions.ilike("keyword2.name",
@@ -504,11 +507,11 @@ public class SampleServiceHelper {
 		}
 
 		// keyword
-		if (wordList != null && wordList.length > 0) {			
+		if (wordList != null && wordList.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
 			for (String keyword : wordList) {
-				//strip wildcards from either ends of keyword
-				keyword=StringUtils.stripWildcards(keyword);
+				// strip wildcards from either ends of keyword
+				keyword = StringUtils.stripWildcards(keyword);
 				Criterion keywordCrit1 = Restrictions.ilike("keyword1.name",
 						keyword, MatchMode.ANYWHERE);
 				Criterion keywordCrit2 = Restrictions.ilike("keyword2.name",
@@ -753,55 +756,6 @@ public class SampleServiceHelper {
 		return sample;
 	}
 
-	public Sample findSampleById(String sampleId, UserBean user)
-			throws Exception {
-		Sample sample = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
-		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-						FetchMode.JOIN);
-
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.functionalizingEntityCollection.functionCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			sample = (Sample) result.get(0);
-			if (authService.checkReadPermission(user, sample.getName())) {
-				return sample;
-			} else {
-				throw new NoAccessException();
-			}
-		}
-		return sample;
-	}
-
 	public List<Keyword> findKeywordsBySampleId(String sampleId, UserBean user)
 			throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
@@ -847,8 +801,29 @@ public class SampleServiceHelper {
 		return poc;
 	}
 
-	public List<PointOfContact> findOtherPointOfContactBySampleId(
+	public List<PointOfContact> findOtherPointOfContactsBySampleId(
 			String sampleId, UserBean user) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
+		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
+		for (Object obj : results) {
+			Sample particle = (Sample) obj;
+			Collection<PointOfContact> otherPOCs = particle
+					.getOtherPointOfContactCollection();
+			pointOfContacts.addAll(otherPOCs);
+		}
+		return pointOfContacts;
+	}
+
+	public List<PointOfContact> sampleId(String sampleId, UserBean user)
+			throws Exception {
 		List<PointOfContact> pocs = new ArrayList<PointOfContact>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -873,6 +848,72 @@ public class SampleServiceHelper {
 			}
 		}
 		return pocs;
+	}
+
+	public Sample findSampleById(String sampleId, UserBean user)
+			throws Exception {
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+		// used for delete check
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+		Sample sample = null;
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+			if (authService.checkReadPermission(user, sample.getName())) {
+
+				// check visibility of POC
+				if (sample.getPrimaryPointOfContact() != null) {
+					Organization org = sample.getPrimaryPointOfContact()
+							.getOrganization();
+					if (org != null) {
+						if (!authService.checkReadPermission(user, org.getId()
+								.toString())) {
+							sample.setPrimaryPointOfContact(null);
+							logger
+									.debug("User can't access primary point of contact:"
+											+ org.getId());
+						}
+					}
+				}
+				// remove POC that are not accessible to user
+				Set<PointOfContact> otherPOCs = new HashSet<PointOfContact>();
+				if (sample.getOtherPointOfContactCollection() != null) {
+					for (PointOfContact poc : sample
+							.getOtherPointOfContactCollection()) {
+						Organization org = poc.getOrganization();
+						if (org != null) {
+							if (authService.checkReadPermission(user, org
+									.getId().toString())) {
+								otherPOCs.add(poc);
+							} else {
+								logger
+										.debug("User can't access point of contact:"
+												+ poc.getId());
+							}
+						}
+					}
+					sample.setOtherPointOfContactCollection(otherPOCs);
+				}
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return sample;
 	}
 
 	public int getNumberOfPublicSamples() throws Exception {
@@ -992,7 +1033,7 @@ public class SampleServiceHelper {
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class)
 				.add(Property.forName("id").eq(new Long(pocId)));
-		crit.setFetchMode("organization", FetchMode.JOIN);	
+		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			poc = (PointOfContact) obj;
@@ -1003,5 +1044,30 @@ public class SampleServiceHelper {
 			}
 		}
 		return poc;
+	}
+
+	public List<PointOfContact> findPointOfContactsBySampleId(String sampleId,
+			UserBean user) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
+		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
+		for (Object obj : results) {
+			Sample particle = (Sample) obj;
+			PointOfContact primaryPOC = particle.getPrimaryPointOfContact();
+			Collection<PointOfContact> otherPOCs = particle
+					.getOtherPointOfContactCollection();
+			pointOfContacts.add(primaryPOC);
+			pointOfContacts.addAll(otherPOCs);
+		}
+		return pointOfContacts;
 	}
 }

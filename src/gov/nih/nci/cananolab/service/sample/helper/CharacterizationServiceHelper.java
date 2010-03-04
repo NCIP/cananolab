@@ -10,8 +10,10 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -23,18 +25,20 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving characterizations
- *
+ * 
  * @author tanq, pansu
  */
 public class CharacterizationServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceHelper.class);
 	private AuthorizationService authService;
+	private FileServiceHelper fileHelper = new FileServiceHelper();
 
 	public CharacterizationServiceHelper() {
 		try {
@@ -307,5 +311,150 @@ public class CharacterizationServiceHelper {
 				authService.removeCSMEntry(file.getId().toString());
 			}
 		}
+	}
+
+	public List<Characterization> findCharacterizationsBySampleId(
+			String sampleId, UserBean user) throws CharacterizationException {
+		List<Characterization> chars = new ArrayList<Characterization>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(Characterization.class);
+			crit.createAlias("sample", "sample");
+			crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+			// fully load characterization
+			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
+			crit.setFetchMode("protocol", FetchMode.JOIN);
+			crit.setFetchMode("protocol.file", FetchMode.JOIN);
+			crit
+					.setFetchMode("protocol.file.keywordCollection",
+							FetchMode.JOIN);
+			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+			crit.setFetchMode("experimentConfigCollection.technique",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"experimentConfigCollection.instrumentCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("findingCollection", FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.datumCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"findingCollection.datumCollection.conditionCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.fileCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"findingCollection.fileCollection.keywordCollection",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+
+			for (Object obj : results) {
+				Characterization achar = (Characterization) obj;
+				if (authService.checkReadPermission(user, achar.getId()
+						.toString())) {
+					if (achar.getProtocol() != null) {
+						if (!authService.checkReadPermission(user, achar
+								.getProtocol().getId().toString())) {
+							achar.setProtocol(null);
+						}
+					}
+					for (Finding finding : achar.getFindingCollection()) {
+						fileHelper.removeUnaccessibleFiles(finding
+								.getFileCollection(), user);
+					}
+					chars.add(achar);
+				}
+			}
+			return chars;
+		} catch (Exception e) {
+			String err = "Error finding characterization by sample ID "
+					+ sampleId;
+			logger.error(err, e);
+			throw new CharacterizationException(err);
+		}
+	}
+
+	public Characterization findCharacterizationById(String charId,
+			UserBean user) throws Exception {
+
+		Characterization achar = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Characterization.class).add(
+				Property.forName("id").eq(new Long(charId)));
+		// fully load characterization
+		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			achar = (Characterization) result.get(0);
+			if (authService.checkReadPermission(user, achar.getId().toString())) {
+				if (achar.getFindingCollection() != null) {
+					for (Finding finding : achar.getFindingCollection()) {
+						if (achar.getFindingCollection() != null) {
+							fileHelper.removeUnaccessibleFiles(finding
+									.getFileCollection(), user);
+						}
+					}
+				}
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
+			}
+		}
+		return achar;
+	}
+
+	public Finding findFindingById(String findingId, UserBean user)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Finding.class).add(
+				Property.forName("id").eq(new Long(findingId)));
+		crit.setFetchMode("datumCollection", FetchMode.JOIN);
+		crit
+				.setFetchMode("datumCollection.conditionCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		Finding finding = null;
+		if (!result.isEmpty()) {
+			finding = (Finding) result.get(0);
+			if (authService.checkReadPermission(user, finding.getId()
+					.toString())) {
+				if (finding.getFileCollection() != null) {
+					fileHelper.removeUnaccessibleFiles(finding
+							.getFileCollection(), user);
+				}
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the sample");
+			}
+		}
+		return finding;
 	}
 }

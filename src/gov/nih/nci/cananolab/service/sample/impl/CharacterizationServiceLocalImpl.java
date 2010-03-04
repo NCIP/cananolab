@@ -33,17 +33,15 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class CharacterizationServiceLocalImpl implements
 		CharacterizationService {
@@ -113,58 +111,22 @@ public class CharacterizationServiceLocalImpl implements
 
 	public CharacterizationBean findCharacterizationById(String charId,
 			UserBean user) throws CharacterizationException, NoAccessException {
+		CharacterizationBean charBean = null;
 		try {
-			Characterization achar = null;
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Characterization.class).add(
-					Property.forName("id").eq(new Long(charId)));
-			// fully load characterization
-			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-			crit.setFetchMode("protocol", FetchMode.JOIN);
-			crit.setFetchMode("protocol.file", FetchMode.JOIN);
-			crit
-					.setFetchMode("protocol.file.keywordCollection",
-							FetchMode.JOIN);
-			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-			crit.setFetchMode("experimentConfigCollection.technique",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"experimentConfigCollection.instrumentCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("findingCollection", FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.datumCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"findingCollection.datumCollection.conditionCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.fileCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"findingCollection.fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List result = appService.query(crit);
-			CharacterizationBean charBean = null;
-			if (!result.isEmpty()) {
-				achar = (Characterization) result.get(0);
-				if (helper.getAuthService().checkReadPermission(user,
-						achar.getId().toString())) {
-					charBean = new CharacterizationBean(achar);
-					for (FindingBean finding : charBean.getFindings()) {
-						fileHelper.checkReadPermissionAndRetrieveVisibility(
-								finding.getFiles(), user);
+			Characterization achar = helper.findCharacterizationById(charId,
+					user);
+			if (achar != null) {
+				charBean = new CharacterizationBean(achar);
+				if (charBean.getFindings() != null) {
+					for (FindingBean findingBean : charBean.getFindings()) {
+						if (findingBean.getFiles() != null) {
+							for (FileBean fileBean : findingBean.getFiles()) {
+								fileHelper.retrieveVisibility(fileBean, user);
+							}
+						}
 					}
-				} else {
-					throw new NoAccessException(
-							"User doesn't have access to the sample");
 				}
 			}
-			return charBean;
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -172,44 +134,8 @@ public class CharacterizationServiceLocalImpl implements
 					+ charId, e);
 			throw new CharacterizationException();
 		}
+		return charBean;
 	}
-
-	// private Boolean checkRedundantViewTitle(Sample
-	// sample,
-	// Characterization chara) throws CharacterizationException {
-	// Boolean exist = false;
-	// try {
-	// CustomizedApplicationService appService = (CustomizedApplicationService)
-	// ApplicationServiceProvider
-	// .getApplicationService();
-	// DetachedCriteria crit = DetachedCriteria.forClass(
-	// Characterization.class).add(
-	// Property.forName("identificationName").eq(
-	// chara.getIdentificationName()));
-	// crit.createAlias("nanosample", "sample").add(
-	// Restrictions.eq("sample.name", sample.getName()));
-	// crit
-	// .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-	// List results = appService.query(crit);
-	// if (!results.isEmpty()) {
-	// for (Object obj : results) {
-	// Characterization achar = (Characterization) obj;
-	// // same characterization class with different IDs can't have
-	// // the same view titles.
-	// if (achar.getClass().getCanonicalName().equals(
-	// chara.getClass().getCanonicalName())
-	// && !achar.getId().equals(chara.getId())) {
-	// return true;
-	// }
-	// }
-	// }
-	// return exist;
-	// } catch (Exception e) {
-	// logger
-	// .error("Problem checking whether the view title already exists.");
-	// throw new CharacterizationException();
-	// }
-	// }
 
 	public void deleteCharacterization(Characterization chara, UserBean user)
 			throws CharacterizationException, NoAccessException {
@@ -228,62 +154,22 @@ public class CharacterizationServiceLocalImpl implements
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
 			String sampleId, UserBean user) throws CharacterizationException {
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(Characterization.class);
-			crit.createAlias("sample", "sample");
-			crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
-			// fully load characterization
-			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-			crit.setFetchMode("protocol", FetchMode.JOIN);
-			crit.setFetchMode("protocol.file", FetchMode.JOIN);
-			crit
-					.setFetchMode("protocol.file.keywordCollection",
-							FetchMode.JOIN);
-			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-			crit.setFetchMode("experimentConfigCollection.technique",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"experimentConfigCollection.instrumentCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("findingCollection", FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.datumCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"findingCollection.datumCollection.conditionCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.fileCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"findingCollection.fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			List<CharacterizationBean> chars = new ArrayList<CharacterizationBean>();
-			for (Object obj : results) {
-				Characterization achar = (Characterization) obj;
-				if (helper.getAuthService().checkReadPermission(user,
-						achar.getId().toString())) {
-					if (achar.getProtocol() != null) {
-						if (!helper.getAuthService().checkReadPermission(user,
-								achar.getProtocol().getId().toString())) {
-							achar.setProtocol(null);
+			List<Characterization> chars = helper
+					.findCharacterizationsBySampleId(sampleId, user);
+			for (Characterization achar : chars) {
+				CharacterizationBean charBean = new CharacterizationBean(achar);
+				for (FindingBean findingBean : charBean.getFindings()) {
+					if (findingBean.getFiles() != null) {
+						for (FileBean fileBean : findingBean.getFiles()) {
+							fileHelper.retrieveVisibility(fileBean, user);
 						}
 					}
-					CharacterizationBean charBean = new CharacterizationBean(
-							achar);
-					for (FindingBean finding : charBean.getFindings()) {
-						fileHelper.checkReadPermissionAndRetrieveVisibility(
-								finding.getFiles(), user);
-					}
-					chars.add(charBean);
 				}
+				chars.add(achar);
 			}
-			return chars;
+			return charBeans;
 		} catch (Exception e) {
 			String err = "Error finding characterization by sample ID "
 					+ sampleId;
@@ -293,34 +179,26 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	public FindingBean findFindingById(String findingId, UserBean user)
-			throws CharacterizationException {
+			throws CharacterizationException, NoAccessException {
+		FindingBean findingBean = null;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Finding.class)
-					.add(Property.forName("id").eq(new Long(findingId)));
-			crit.setFetchMode("datumCollection", FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.conditionCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			List result = appService.query(crit);
-			Finding finding = null;
-			FindingBean findingBean = null;
-			if (!result.isEmpty()) {
-				finding = (Finding) result.get(0);
+			Finding finding = helper.findFindingById(findingId, user);
+			if (finding != null) {
 				findingBean = new FindingBean(finding);
-				fileHelper.checkReadPermissionAndRetrieveVisibility(findingBean
-						.getFiles(), user);
-
+				if (findingBean.getFiles() != null) {
+					for (FileBean fileBean : findingBean.getFiles()) {
+						fileHelper.retrieveVisibility(fileBean, user);
+					}
+				}
 			}
-			return findingBean;
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Error getting finding of ID " + findingId;
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
+		return findingBean;
 	}
 
 	public void saveFinding(FindingBean finding, UserBean user)

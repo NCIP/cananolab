@@ -14,8 +14,10 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -185,28 +187,26 @@ public class FileServiceHelper {
 	 * @param user
 	 * @throws CompositionException
 	 */
-	public void checkReadPermissionAndRetrieveVisibility(
-			List<FileBean> fileBeans, UserBean user)
-			throws CompositionException {
+	public void removeUnaccessibleFiles(Collection<File> files, UserBean user)
+			throws FileException {
 		try {
-			List<FileBean> copiedFileBeans = new ArrayList<FileBean>(fileBeans);
-			for (FileBean fileBean : copiedFileBeans) {
-				// check whether user can access the file, if no remove from the
+			Set<File> copiedFiles = new HashSet<File>(files);
+			for (File file : copiedFiles) {
+				// check whether user can access the file, if not remove from
+				// the
 				// list
-				if (authService.checkReadPermission(user, fileBean
-						.getDomainFile().getId().toString())) {
-					if (user != null)
-						retrieveVisibility(fileBean, user);
-				} else {
-					fileBeans.remove(fileBean);
-					logger.debug("User can't access file of id:"
-							+ fileBean.getDomainFile().getId());
+				if (!authService.checkReadPermission(user, file.getId()
+						.toString())) {
+					files.remove(file);
+					logger
+							.debug("User can't access file of id:"
+									+ file.getId());
 				}
 			}
 		} catch (Exception e) {
-			String err = "Error setting visiblity for files ";
+			String err = "Error checking access permission for files ";
 			logger.error(err, e);
-			throw new CompositionException(err, e);
+			throw new FileException(err, e);
 		}
 	}
 }
