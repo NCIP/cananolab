@@ -22,14 +22,14 @@
 				<table>
 					<tr>
 						<td class="cellLabel">
-							Clone from an Existing Sample * 
+							Clone from an Existing Sample *
 						</td>
 						<td width="100">
 							<html:text property="sampleBean.cloningSampleName" size="50" />
 						</td>
 						<td rowspan="2" width="30" height="30">
 							<img src="images/icon_browse.jpg" align="middle" width="30"
-								onclick="javascript:showhide('browseSampleSelect');" alt="search existing samples"/>
+								onclick="javascript: showhide('browseSampleSelect');" alt="search existing samples" />
 						</td>
 					</tr>
 					<tr>
@@ -44,7 +44,7 @@
 			</td>
 			<td>
 				<table>
-					<tr>						
+					<tr>
 						<td valign="top">
 							<html:select property="sampleBean.cloningSampleName"
 								styleId="browseSampleSelect" size="15" style="display:none">
@@ -120,7 +120,7 @@
 										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="clone">
 									<input type="hidden" name="page" value="1">
-									<html:submit value="Clone" />
+									<html:submit value="Clone" onclick="show('waitMessage')" />
 								</div>
 							</div>
 						</td>
@@ -130,5 +130,9 @@
 			</td>
 		</tr>
 	</table>
+	<br />
+	<span id="waitMessage" style="display: none" class="welcomeContent"><img
+			src="images/ajax-loader.gif" border="0" class="counts"> Please
+		wait. Cloning might take a while to finish if the original sample is fully curated.</span>
 </html:form>
 
