@@ -100,6 +100,18 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryView");
 	}
 
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String browserDispatch = getBrowserDispatch(request);
+		// from cloning form
+		if (browserDispatch.equals("clone")) {
+			return mapping.findForward("cloneInput");
+		} else {
+			return mapping.findForward("createInput");
+		}
+	}
+
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -282,11 +294,12 @@ public class SampleAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		ActionMessages messages = new ActionMessages();
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		SampleBean clonedSampleBean=null;
+		SampleBean clonedSampleBean = null;
 		SampleService service = new SampleServiceLocalImpl();
 		try {
-			clonedSampleBean=service.cloneSample(sampleBean.getCloningSampleName(), sampleBean
-					.getDomain().getName(), user);
+			clonedSampleBean = service.cloneSample(sampleBean
+					.getCloningSampleName(), sampleBean.getDomain().getName(),
+					user);
 		} catch (NotExistException e) {
 			ActionMessage err = new ActionMessage(
 					"error.cloneSample.noOriginalSample", sampleBean
