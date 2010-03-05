@@ -47,6 +47,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -206,8 +207,12 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private void assignVisibility(SampleBean sampleBean) throws Exception {
 		String[] visibleGroups = sampleBean.getVisibilityGroups();
-		String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-				.getOrganization().getName();
+		String owningGroup = null;
+		if (!StringUtils.isEmpty(sampleBean.getPrimaryPOCBean()
+				.getDisplayName())) {
+			owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName();
+		}
 		// assign visibility for sample
 		// visibility for POC is handled by POC separately
 		helper.getAuthService().assignVisibility(
@@ -685,12 +690,13 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public void cloneSample(String originalSampleName, String newSampleName,
-			UserBean user) throws SampleException, NoAccessException,
-			DuplicateEntriesException, NotExistException {
+	public SampleBean cloneSample(String originalSampleName,
+			String newSampleName, UserBean user) throws SampleException,
+			NoAccessException, DuplicateEntriesException, NotExistException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
+		SampleBean newSampleBean = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -702,19 +708,32 @@ public class SampleServiceLocalImpl implements SampleService {
 			// fully load original sample
 			Sample origSample = findFullyLoadedSampleByName(originalSampleName,
 					user);
-			// clone the sample
 			SampleBean origSampleBean = new SampleBean(origSample);
-			Sample newSample = origSampleBean.getDomainCopy();
-			newSample.setName(newSampleName);
-			SampleBean newSampleBean = new SampleBean(newSample);
-
 			// retrieve visibilities of the original sample,
 			// then copy the visibilities to new sample
 			helper.retrieveVisibility(origSampleBean);
-			newSampleBean.setVisibilityGroups(origSampleBean
-					.getVisibilityGroups());
 
-			// need to save associations one by one (except keywords) following
+			Sample newSample0 = new Sample();
+			newSample0.setName(newSampleName);
+			newSample0.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+			newSample0.setCreatedDate(new Date());
+			// save the sample so later up just update the cloned the
+			// associations.
+			SampleBean newSampleBean0 = new SampleBean(newSample0);
+			// then copy the visibilities to new sample
+			newSampleBean0.setVisibilityGroups(origSampleBean
+					.getVisibilityGroups());
+			// save the sample to get an ID before saving associations
+			saveSample(newSampleBean0, user);
+
+			// clone the sample
+			Sample newSample = origSampleBean.getDomainCopy();
+			newSample.setName(newSampleName);
+			// keep the id
+			newSample.setId(newSample0.getId());
+			newSampleBean = new SampleBean(newSample);
+
+			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
 			saveClonedPOCs(origSampleBean, newSampleBean, user);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean,
@@ -725,14 +744,14 @@ public class SampleServiceLocalImpl implements SampleService {
 			saveSample(newSampleBean, user);
 		} catch (NotExistException e) {
 			throw e;
-		}  
-		catch (DuplicateEntriesException e) {
+		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
 			String err = "Error in cloning the sample " + originalSampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
+		return newSampleBean;
 	}
 
 	private void saveClonedPOCs(SampleBean origSampleBean,

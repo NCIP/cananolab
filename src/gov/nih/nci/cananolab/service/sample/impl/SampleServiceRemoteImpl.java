@@ -455,7 +455,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 		throw new SampleException("Not implemented for grid service");
 	}
 
-	public void cloneSample(String originalSampleName, String newSampleName,
+	public SampleBean cloneSample(String originalSampleName, String newSampleName,
 			UserBean user) throws SampleException, NoAccessException,
 			DuplicateEntriesException, NotExistException {
 		throw new SampleException("Not implemented for grid service");
