@@ -599,7 +599,7 @@ public class AuthorizationService {
 		List<String> groupNames = new ArrayList<String>();
 		try {
 			List groups = authorizationManager.getAccessibleGroups(objectName,
-					Constants.CSM_READ_PRIVILEGE);
+					privilegeName);
 			if (groups != null)
 				for (Object obj : groups) {
 					Group group = (Group) obj;
@@ -631,6 +631,21 @@ public class AuthorizationService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in removing existing visible groups", e);
+			throw new SecurityException();
+		}
+	}
+
+	public void removeExistingGroup(String objectName, String groupName)
+			throws SecurityException {
+		try {
+			Group group = getGroup(groupName);
+			ProtectionGroup pg = getProtectionGroup(objectName);
+			Role role = getRole(Constants.CSM_READ_ROLE);
+			userManager.removeGroupRoleFromProtectionGroup(pg
+					.getProtectionGroupId().toString(), group.getGroupId()
+					.toString(), new String[] { role.getId().toString() });
+		} catch (Exception e) {
+			logger.error("Error in removing visible group " + groupName, e);
 			throw new SecurityException();
 		}
 	}
@@ -669,24 +684,51 @@ public class AuthorizationService {
 	public void assignVisibility(String dataToProtect, String[] visibleGroups,
 			String owningGroup) throws SecurityException {
 		try {
-			removeExistingVisibleGroups(dataToProtect);
-			if (Arrays.asList(visibleGroups).contains(
-					Constants.CSM_PUBLIC_GROUP)) {
-				// only need to assign public visibilities
-				secureObject(dataToProtect, Constants.CSM_PUBLIC_GROUP,
-						Constants.CSM_READ_ROLE);
-			} else {
-				// set new visibilities
-				for (String group : visibleGroups) {
-					secureObject(dataToProtect, group, Constants.CSM_READ_ROLE);
+			// check if there are changes to visibleGroups
+			List<String> groupsToAssign = new ArrayList<String>(Arrays
+					.asList(visibleGroups));
+			if (owningGroup != null) {
+				groupsToAssign.add(owningGroup);
+			}
+			List<String> existingGroups = getAccessibleGroups(dataToProtect,
+					Constants.CSM_READ_PRIVILEGE);
+			// remove the default groups
+			for (String group : Constants.VISIBLE_GROUPS) {
+				existingGroups.remove(group);
+				groupsToAssign.remove(group);
+			}
+			Set<String> allGroups = new HashSet<String>(existingGroups);
+			allGroups.addAll(groupsToAssign);
+
+			List<String> newGroupsToAdd = new ArrayList<String>(allGroups);
+			List<String> groupsToRemove = new ArrayList<String>(allGroups);
+			newGroupsToAdd.removeAll(existingGroups);
+			groupsToRemove.removeAll(groupsToAssign);
+			// no change
+			if (newGroupsToAdd.isEmpty() && groupsToRemove.isEmpty()) {
+				return;
+			}
+			if (!groupsToRemove.isEmpty()) {
+				for (String group : groupsToRemove) {
+					removeExistingGroup(dataToProtect, group);
 				}
-				// set default visibilities
-				for (String group : Constants.VISIBLE_GROUPS) {
-					secureObject(dataToProtect, group, Constants.CSM_READ_ROLE);
-				}
-				if (owningGroup != null) {
-					secureObject(dataToProtect, owningGroup,
+			}
+			if (!newGroupsToAdd.isEmpty()) {
+				// only need to add public visibility
+				if (newGroupsToAdd.contains(Constants.CSM_PUBLIC_GROUP)) {
+					secureObject(dataToProtect, Constants.CSM_PUBLIC_GROUP,
 							Constants.CSM_READ_ROLE);
+				} else {
+					// set new visibilities
+					for (String group : newGroupsToAdd) {
+						secureObject(dataToProtect, group,
+								Constants.CSM_READ_ROLE);
+					}
+					// set default visibilities
+					for (String group : Constants.VISIBLE_GROUPS) {
+						secureObject(dataToProtect, group,
+								Constants.CSM_READ_ROLE);
+					}
 				}
 			}
 		} catch (Exception e) {
