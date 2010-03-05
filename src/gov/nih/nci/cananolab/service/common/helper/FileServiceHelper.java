@@ -122,10 +122,13 @@ public class FileServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
+		// DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
+		// Property.forName("uri").eq(uri)).add(
+		// Property.forName("createdBy").ne(
+		// Constants.AUTO_COPY_ANNOTATION_PREFIX));
 		DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
-				Property.forName("uri").eq(uri)).add(
-				Property.forName("createdBy").ne(
-						Constants.AUTO_COPY_ANNOTATION_PREFIX));
+				Property.forName("uri").eq(uri));
+
 		List results = appService.query(crit);
 		if (!results.isEmpty()) {
 			file = (File) results.get(0);
