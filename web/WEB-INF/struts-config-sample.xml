@@ -104,9 +104,10 @@
 				key="error.duplicateSample" path="sample.submitSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="cloneInput" path="sample.clone"/>
+			<forward name="createInput" path="sample.submitSample"/>
 			<forward name="summaryView" path="sample.summaryView" />
 			<forward name="summaryEdit" path="sample.summaryEdit" />
-			<forward name="input" path="sample.submitSample" />
+			<forward name="input" path="/sample.do?dispatch=input&amp;page=0" />
 			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />
 		</action>
 		<action input="input" name="searchSampleForm" parameter="dispatch"
