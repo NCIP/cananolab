@@ -8,6 +8,9 @@
 			<field property="sampleBean.domain.name" page="1" depends="required">
 				<arg position="0" key="sampleForm.sampleName" bundle="sample" />
 			</field>
+			<field property="sampleBean.cloningSampleName" page="1" depends="required">
+				<arg position="0" key="sampleBean.cloningSampleName" bundle="sample" />
+			</field>
 			<field property="sampleBean.primaryPOCBean.domain.id" page="3"
 				depends="validwhen">
 				<arg position="0" key="sampleForm.primaryPOC" bundle="sample" />

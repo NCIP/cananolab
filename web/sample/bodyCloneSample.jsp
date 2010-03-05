@@ -118,9 +118,12 @@
 										value="sample.do?page=1&dispatch=${param.dispatch}&location=${applicationOwner}" />
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
+									<%--
 									<input type="hidden" name="dispatch" value="clone">
 									<input type="hidden" name="page" value="1">
 									<html:submit value="Clone" onclick="show('waitMessage')" />
+									--%>
+									<input type="button" value="Clone" onclick="submitAction(sampleForm, 'sample', 'clone', 1);show('waitMessage')">
 								</div>
 							</div>
 						</td>
