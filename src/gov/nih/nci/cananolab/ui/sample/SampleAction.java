@@ -284,17 +284,16 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SampleService service = new SampleServiceLocalImpl();
 		try {
-			service.cloneSample(sampleBean.getCloningSampleName(), sampleBean
+			sampleBean=service.cloneSample(sampleBean.getCloningSampleName(), sampleBean
 					.getDomain().getName(), user);
-		}catch(NotExistException e) {
+		} catch (NotExistException e) {
 			ActionMessage err = new ActionMessage(
 					"error.cloneSample.noOriginalSample", sampleBean
 							.getCloningSampleName());
 			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
 			saveErrors(request, messages);
 			return mapping.findForward("cloneInput");
-		}
-		catch (DuplicateEntriesException e) {
+		} catch (DuplicateEntriesException e) {
 			ActionMessage err = new ActionMessage(
 					"error.cloneSample.duplicateSample", sampleBean
 							.getCloningSampleName(), sampleBean.getDomain()
@@ -309,12 +308,12 @@ public class SampleAction extends BaseAnnotationAction {
 			return mapping.findForward("cloneInput");
 		}
 
-		ActionMessage msg = null;
-		msg = new ActionMessage("message.cloneSample", sampleBean
+		ActionMessage msg = new ActionMessage("message.cloneSample", sampleBean
 				.getCloningSampleName(), sampleBean.getDomain().getName());
 		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, messages);
-
+		request.setAttribute("sampleId", sampleBean.getDomain().getId()
+				.toString());
 		return summaryEdit(mapping, form, request, response);
 	}
 
