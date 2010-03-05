@@ -282,9 +282,10 @@ public class SampleAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		ActionMessages messages = new ActionMessages();
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		SampleBean clonedSampleBean=null;
 		SampleService service = new SampleServiceLocalImpl();
 		try {
-			sampleBean=service.cloneSample(sampleBean.getCloningSampleName(), sampleBean
+			clonedSampleBean=service.cloneSample(sampleBean.getCloningSampleName(), sampleBean
 					.getDomain().getName(), user);
 		} catch (NotExistException e) {
 			ActionMessage err = new ActionMessage(
@@ -312,7 +313,7 @@ public class SampleAction extends BaseAnnotationAction {
 				.getCloningSampleName(), sampleBean.getDomain().getName());
 		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, messages);
-		request.setAttribute("sampleId", sampleBean.getDomain().getId()
+		request.setAttribute("sampleId", clonedSampleBean.getDomain().getId()
 				.toString());
 		return summaryEdit(mapping, form, request, response);
 	}
