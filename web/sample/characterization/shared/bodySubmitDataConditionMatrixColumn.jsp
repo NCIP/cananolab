@@ -109,17 +109,6 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel">
-			Column Order
-		</td>
-		<td>
-			<input type="text"
-				name="achar.theFinding.columnHeaders[${param.cInd}].columnOrder"
-				id="columnOrder${param.cInd}"
-				onkeydown="return filterInteger(event, 'columnType${param.cInd}');" />
-		</td>
-	</tr>
-	<tr>
 		<td>
 			<input class="promptButton" type="button" value="Remove"
 				onclick="reduceMatrix(characterizationForm, 'Column', ${param.cInd});" />
