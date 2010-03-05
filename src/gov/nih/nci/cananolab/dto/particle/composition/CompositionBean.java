@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -135,6 +136,7 @@ public class CompositionBean {
 	}
 
 	public SampleComposition resetDomainCopy(SampleComposition copy) {
+		copy.setId(null);
 		Collection<NanomaterialEntity> oldNanoEntities = copy
 				.getNanomaterialEntityCollection();
 		if (oldNanoEntities == null || oldNanoEntities.isEmpty()) {
