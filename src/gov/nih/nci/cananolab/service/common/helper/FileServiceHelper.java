@@ -93,7 +93,7 @@ public class FileServiceHelper {
 		// createdBy is COPY
 		File file = findFileByUri(copy.getDomainFile().getUri());
 		List<String> accessibleGroups = authService.getAccessibleGroups(file
-				.getId().toString(), Constants.CSM_READ_ROLE);
+				.getId().toString(), Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null) {
 			copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
 		}
