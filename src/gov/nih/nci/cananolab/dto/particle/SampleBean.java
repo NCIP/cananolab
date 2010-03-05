@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -311,6 +312,9 @@ public class SampleBean {
 
 	public Sample getDomainCopy() {
 		Sample copy = (Sample) ClassUtils.deepCopy(domain);
+		copy.setId(null);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+
 		// copy characterizations
 		Collection<Characterization> oldChars = copy
 				.getCharacterizationCollection();
@@ -327,6 +331,8 @@ public class SampleBean {
 
 		// copy composition
 		if (copy.getSampleComposition() != null) {
+			//correctly set the other end of the association
+			copy.getSampleComposition().setSample(copy);
 			CompositionBean compBean = new CompositionBean(copy
 					.getSampleComposition());
 			compBean.resetDomainCopy(copy.getSampleComposition());
@@ -337,10 +343,8 @@ public class SampleBean {
 		if (oldKeywords == null || oldKeywords.isEmpty()) {
 			copy.setKeywordCollection(null);
 		} else {
-			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
-			// for (Keyword keyword : copy.getKeywordCollection()) {
-			// keyword.setId(null);
-			// }
+			//reuse keywords
+			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));			
 		}
 
 		// copy POC
@@ -363,18 +367,18 @@ public class SampleBean {
 		}
 
 		// copy publications
-		Collection<Publication> oldPublications = copy
-				.getPublicationCollection();
-		if (oldPublications == null || oldPublications.isEmpty()) {
-			copy.setPublicationCollection(null);
-		} else {
-			copy.setPublicationCollection(new HashSet<Publication>(
-					oldPublications));
-			for (Publication pub : copy.getPublicationCollection()) {
-				PublicationBean pubBean = new PublicationBean(pub);
-				pubBean.resetDomainCopy(pub);
-			}
-		}
+//		Collection<Publication> oldPublications = copy
+//				.getPublicationCollection();
+//		if (oldPublications == null || oldPublications.isEmpty()) {
+//			copy.setPublicationCollection(null);
+//		} else {
+//			copy.setPublicationCollection(new HashSet<Publication>(
+//					oldPublications));
+//			for (Publication pub : copy.getPublicationCollection()) {
+//				PublicationBean pubBean = new PublicationBean(pub);
+//				pubBean.resetDomainCopy(pub);
+//			}
+//		}
 		return copy;
 	}
 }
