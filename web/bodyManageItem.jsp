@@ -60,8 +60,7 @@
 											value="${item}" />s </a>
 									<br>
 									Enter search criteria to obtain information on
-									<c:out value="${fn:toLowerCase(item)}" />
-									s of interest.
+									<c:out value="${fn:toLowerCase(item)}" />s of interest.
 								</td>
 							</tr>
 							<c:if test="${item eq 'Sample'}">
