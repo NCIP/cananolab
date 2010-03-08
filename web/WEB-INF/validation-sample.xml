@@ -5,11 +5,19 @@
 <form-validation>
 	<formset>
 		<form name="sampleForm">
+			<field property="sampleBean.cloningSampleName" page="1"
+				depends="validwhen">
+				<arg position="0" key="sampleBean.cloningSampleName" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((page!=1) and (sampleBean.cloningSampleName==null)) or
+						((page==1) and (sampleBean.cloningSampleName!=null)))
+					</var-value>
+				</var>
+			</field>
 			<field property="sampleBean.domain.name" page="1" depends="required">
 				<arg position="0" key="sampleForm.sampleName" bundle="sample" />
-			</field>
-			<field property="sampleBean.cloningSampleName" page="1" depends="required">
-				<arg position="0" key="sampleBean.cloningSampleName" bundle="sample" />
 			</field>
 			<field property="sampleBean.primaryPOCBean.domain.id" page="3"
 				depends="validwhen">
@@ -150,7 +158,8 @@
 					<var-name>test</var-name>
 					<var-value>
 						(((*this*!=null) or
-						(nanomaterialEntity.isPolymerized != "true")) or
+						(nanomaterialEntity.isPolymerized !=
+						"true")) or
 						(nanomaterialEntity.type != "liposome"))
 					</var-value>
 				</var>
@@ -163,7 +172,8 @@
 					<var-name>test</var-name>
 					<var-value>
 						(((*this*!=null) or
-						(nanomaterialEntity.isPolymerized != "true")) or
+						(nanomaterialEntity.isPolymerized !=
+						"true")) or
 						(nanomaterialEntity.type != "emulsion"))
 					</var-value>
 				</var>
@@ -365,8 +375,10 @@
 					</var-value>
 				</var>
 			</field>
-			
-			<!-- 1.Mandatory properties: Shape Type required if Char Name is Shape -->
+
+			<!--
+				1.Mandatory properties: Shape Type required if Char Name is Shape
+			-->
 			<field property="achar.shape.type" page="1" depends="validwhen">
 				<arg position="0" key="shape.type" bundle="sample" />
 				<var>
@@ -378,7 +390,7 @@
 					</var-value>
 				</var>
 			</field>
-			
+
 			<!-- 2.Optional properties: Technique and Instrument form -->
 			<field property="achar.theExperimentConfig.domain.technique.type"
 				page="2" depends="validwhen">
@@ -386,14 +398,14 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((*this*!=null) 
-						or 
+						((*this*!=null)
+						or
 						((dispatch!='saveExperimentConfig') and
 						(dispatch!='deleteExperimentConfig')))
 					</var-value>
 				</var>
 			</field>
-			
+
 			<!-- 3.Optional properties: Finding - Upload File form -->
 			<field property="achar.theFinding.theFile.uploadedFile" page="3"
 				depends="validwhen">
@@ -403,14 +415,14 @@
 					<var-value>
 						((dispatch!="addFile") or (
 						((achar.theFinding.theFile.domainFile.uri!=null) or
-						((*this*!=null)	and
+						((*this*!=null) and
 						(achar.theFinding.theFile.domainFile.uriExternal=="false")))
 						or
 						(achar.theFinding.theFile.domainFile.uriExternal=="true")))
 					</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.theFile.externalUrl" page="3" 
+			<field property="achar.theFinding.theFile.externalUrl" page="3"
 				depends="validwhen">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
@@ -423,8 +435,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.theFile.domainFile.type" page="3"
-				depends="validwhen">
+			<field property="achar.theFinding.theFile.domainFile.type"
+				page="3" depends="validwhen">
 				<arg position="0" key="file.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -433,8 +445,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="achar.theFinding.theFile.domainFile.title" page="3"
-				depends="validwhen, mask">
+			<field property="achar.theFinding.theFile.domainFile.title"
+				page="3" depends="validwhen, mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<var>
 					<var-name>test</var-name>

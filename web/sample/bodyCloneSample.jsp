@@ -115,7 +115,7 @@
 							<div align="right">
 								<div align="right">
 									<c:set var="origUrl"
-										value="sample.do?page=1&dispatch=${param.dispatch}&location=${applicationOwner}" />
+										value="sample.do?page=0&dispatch=${param.dispatch}" />									
 									<input type="reset" value="Reset"
 										onclick="javascript:window.location.href='${origUrl}'">
 									<%--
