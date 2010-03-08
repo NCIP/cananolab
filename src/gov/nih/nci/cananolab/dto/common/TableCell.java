@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import java.util.Date;
+
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.Constants;
@@ -15,9 +17,12 @@ public class TableCell {
 	private String datumOrCondition;
 	private Datum datum = new Datum();
 	private Condition condition = new Condition();
+	
+	//FR# 26194, matrix column order.
+	private Integer columnOrder;
+	private Date createdDate;
 
 	public TableCell() {
-
 	}
 
 	public TableCell(Datum datum) {
@@ -43,6 +48,7 @@ public class TableCell {
 		}
 		this.datum = datum;
 		this.condition = null;
+		this.createdDate = datum.getCreatedDate();
 	}
 
 	public TableCell(Condition condition) {
@@ -57,6 +63,7 @@ public class TableCell {
 		}
 		this.condition = condition;
 		this.datum = null;
+		this.createdDate = condition.getCreatedDate();
 	}
 
 	/**
@@ -98,4 +105,19 @@ public class TableCell {
 		this.condition = condition;
 	}
 
+	public Integer getColumnOrder() {
+		return columnOrder;
+	}
+
+	public void setColumnOrder(Integer columnOrder) {
+		this.columnOrder = columnOrder;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 }

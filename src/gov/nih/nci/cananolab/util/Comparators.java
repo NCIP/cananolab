@@ -8,11 +8,13 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -383,6 +385,26 @@ public class Comparators {
 			Comparator<GridNodeBean> {
 		public int compare(GridNodeBean node1, GridNodeBean node2) {
 			return node1.getHostName().compareTo(node2.getHostName());
+		}
+	}
+
+	public static class ColumnHeaderComparator implements Comparator<ColumnHeader> {
+		public int compare(ColumnHeader header1, ColumnHeader header2) {
+			if (header1.getColumnOrder() != null && header2.getColumnOrder() != null) {
+				return header1.getColumnOrder().compareTo(header2.getColumnOrder());
+			} else {
+				return header1.getCreatedDate().compareTo(header2.getCreatedDate());
+			}
+		}
+	}
+
+	public static class TableCellComparator implements Comparator<TableCell> {
+		public int compare(TableCell cell1, TableCell cell2) {
+			if (cell1.getColumnOrder() != null && cell2.getColumnOrder() != null) {
+				return cell1.getColumnOrder().compareTo(cell2.getColumnOrder());
+			} else {
+				return cell1.getCreatedDate().compareTo(cell2.getCreatedDate());
+			}
 		}
 	}
 }

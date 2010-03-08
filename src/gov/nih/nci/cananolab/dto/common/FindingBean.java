@@ -108,8 +108,7 @@ public class FindingBean {
 
 			int numRows = -1;
 			// iterate through all condition columns and find the biggest list
-			// size as the
-			// number of rows
+			// size as the number of rows
 			for (Map.Entry<ColumnHeader, List<Condition>> entry : conditionMap
 					.entrySet()) {
 				int numConditions = entry.getValue().size();
@@ -162,6 +161,8 @@ public class FindingBean {
 				}
 				rows.add(row);
 			}
+			// FR# 26194, datum matrix column order.
+			this.updateColumnOrder();
 		}
 	}
 
@@ -245,9 +246,10 @@ public class FindingBean {
 			}
 			row.setCells(newCells);
 		}
+		// FR# 26194, datum matrix column order.
 		columnHeaders = new ArrayList<ColumnHeader>(newColumns);
-		for (int i = 1; i <= columnHeaders.size(); i++) {
-			columnHeaders.get(i - 1).setColumnOrder(i);
+		for (int i = 0; i < columnHeaders.size(); i++) {
+			columnHeaders.get(i).setColumnOrder(i + 1);
 		}
 		rows = new ArrayList<Row>();
 		rows.addAll(newRows);
@@ -268,7 +270,6 @@ public class FindingBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		int i = 0;
 		Date currentDate = Calendar.getInstance().getTime();
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
@@ -300,7 +301,7 @@ public class FindingBean {
 			}
 			domain.getFileCollection().add(newFile);
 		}
-
+		int rInd = 0;
 		for (Row row : rows) {
 			int cInd = 0;
 			List<Condition> rowConditions = new ArrayList<Condition>();
@@ -310,9 +311,8 @@ public class FindingBean {
 				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType())) {
 					Datum datum = cell.getDatum();
 					if (StringUtils.isEmpty(cell.getValue())) {
-						datum.setValue(new Float(-1));
-						datum
-								.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
+						datum.setValue(Float.valueOf(-1));
+						datum.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
 						datum.setValue(Float.valueOf(cell.getValue()));
 					}
@@ -320,7 +320,8 @@ public class FindingBean {
 					datum.setValueUnit(columnHeader.getValueUnit());
 					datum.setName(columnHeader.getColumnName());
 					rowData.add(datum);
-
+					// FR# 26194, datum matrix column order.
+					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(rInd * 100 + cInd));
 				} else if (FindingBean.CONDITION_TYPE.equals(columnHeader
 						.getColumnType())) {
 					Condition condition = cell.getCondition();
@@ -337,6 +338,8 @@ public class FindingBean {
 					condition.setName(columnHeader.getColumnName());
 					condition.setProperty(columnHeader.getConditionProperty());
 					rowConditions.add(condition);
+					// FR# 26194, datum matrix column order.
+					condition.setCreatedDate(DateUtils.addSecondsToCurrentDate(rInd * 100 + cInd));
 				}
 				cInd++;
 			}
@@ -362,7 +365,6 @@ public class FindingBean {
 							&& datum.getValue() != -1) {
 						datum.setCreatedBy(createdBy);
 					}
-					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 				}
 
 				if (datum.getConditionCollection() == null) {
@@ -397,14 +399,12 @@ public class FindingBean {
 												Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 							condition.setCreatedBy(createdBy);
 						}
-						condition.setCreatedDate(DateUtils
-								.addSecondsToCurrentDate(i));
 					}
 					datum.getConditionCollection().add(condition);
 				}
 				domain.getDatumCollection().add(datum);
 				datum.setFinding(domain);
-				i++;
+				rInd++;
 			}
 		}
 	}
@@ -541,6 +541,30 @@ public class FindingBean {
 				FileBean fileBean = new FileBean(file);
 				fileBean.resetDomainCopy(file);
 			}
+		}
+	}
+
+	// FR# 26194, datum matrix column order.
+	public void setupColumnOrder() {
+		for (int i = 0; i < columnHeaders.size(); i++) {
+			columnHeaders.get(i).setColumnOrder(i + 1);
+		}
+	}
+
+	// FR# 26194, datum matrix column order.
+	public void updateColumnOrder() {
+		if (!rows.isEmpty()) {
+			Comparators.TableCellComparator cellComparator = 
+				new Comparators.TableCellComparator();
+			for (Row row : rows) {
+				int cInd = 0;
+				for (TableCell cell : row.getCells()) {
+					ColumnHeader columnHeader = columnHeaders.get(cInd++);
+					cell.setColumnOrder(columnHeader.getColumnOrder());
+				}
+				Collections.sort(row.getCells(), cellComparator);
+			}
+			Collections.sort(columnHeaders, new Comparators.ColumnHeaderComparator());
 		}
 	}
 }

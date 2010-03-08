@@ -558,6 +558,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (findingBean.getFiles().size() == 1) {
 			request.setAttribute("onloadJavascript", "setTheFile(0)");
 		}
+		// FR# [26194], matrix column order.
+		findingBean.setupColumnOrder();
+		
 		return mapping.findForward("inputForm");
 	}
 
@@ -595,7 +598,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		String theFindingId = (String) request.getAttribute("theFindingId");
 		if (!StringUtils.isEmpty(theFindingId)) {
-			findingBean.getDomain().setId(new Long(theFindingId));
+			findingBean.getDomain().setId(Long.valueOf(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		findingBean.setupDomain(user.getLoginName());
@@ -711,7 +714,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.checkOpenForms(achar, theForm, request);
 		return mapping.findForward("inputForm");
 	}
-
+	
 	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -745,6 +748,23 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return mapping.findForward("inputForm");
 	}
 
+	// FR# [26194], matrix column order.
+	public ActionForward updateColumnOrder(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		
+		FindingBean findingBean = achar.getTheFinding();
+		findingBean.updateColumnOrder();
+		
+		request.setAttribute("anchor", "submitFinding");
+		this.checkOpenForms(achar, theForm, request);
+		
+		return mapping.findForward("inputForm");
+	}
+	
 	private void checkOpenForms(CharacterizationBean achar,
 			DynaValidatorForm theForm, HttpServletRequest request)
 			throws Exception {
@@ -767,7 +787,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				|| dispatch.equals("removeFile")
 				|| dispatch.equals("drawMatrix")
 				|| dispatch.equals("getFinding")
-				|| dispatch.equals("resetFinding")) {
+				|| dispatch.equals("resetFinding")
+				|| dispatch.equals("updateColumnOrder")) {
 			openFinding = true;
 		}
 		session.setAttribute("openFinding", openFinding);

@@ -4,6 +4,8 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.Date;
+
 /**
  * View bean representing a column header in a matrix column
  * 
@@ -18,13 +20,17 @@ public class ColumnHeader {
 	private String columnType;
 	private String displayName;
 	private String constantValue;
+	
+	//FR# 26194, matrix column order.
 	private Integer columnOrder;
+	private Date createdDate;
 
 	public ColumnHeader(Datum datum) {
 		this.columnName = datum.getName();
 		this.valueType = datum.getValueType();
 		this.valueUnit = datum.getValueUnit();
 		this.columnType = FindingBean.DATUM_TYPE;
+		this.createdDate = datum.getCreatedDate();
 	}
 
 	public ColumnHeader(Condition condition) {
@@ -33,6 +39,7 @@ public class ColumnHeader {
 		this.valueType = condition.getValueType();
 		this.valueUnit = condition.getValueUnit();
 		this.columnType = FindingBean.CONDITION_TYPE;
+		this.createdDate = condition.getCreatedDate();
 	}
 
 	public ColumnHeader() {
@@ -156,5 +163,13 @@ public class ColumnHeader {
 
 	public void setColumnOrder(Integer columnOrder) {
 		this.columnOrder = columnOrder;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 }

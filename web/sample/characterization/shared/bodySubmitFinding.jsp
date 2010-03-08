@@ -19,6 +19,8 @@
 				styleId="rowNum" onkeydown="return filterInteger(event)" />
 			rows &nbsp;&nbsp;
 			<a href="javascript:updateMatrix(characterizationForm)">Update</a>
+			&nbsp;&nbsp;
+			<a href="javascript:setColumnOrder(characterizationForm)">Set Column Order</a>
 		</td>
 	</tr>
 	<tr>
@@ -27,6 +29,14 @@
 				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
 			</div>
 			<br/>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" colspan="2">
+			<div id="columnOrder" style="display:none">
+				<jsp:include page="bodySubmitDataConditionMatrixColumnOrder.jsp" />
+				<br/>
+			</div>
 		</td>
 	</tr>
 	<tr>

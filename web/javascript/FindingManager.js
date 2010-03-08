@@ -103,10 +103,9 @@ function saveFinding(actionName) {
 	if (fileDiv != null) {
 		var displayStatus = fileDiv.style.display;
 		if (displayStatus == 'block') {
-			alert("Please click on either the Add button or the Cancel button in the File form.");
+			alert("Please click on either the Save button or the Cancel button in the File form.");
 			return false;
-		}
-		else {
+		} else {
 			if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo() && 
 				validateSavingTheData('newExperimentConfig', 'Technique and Instrument') 
 				) {
@@ -353,3 +352,46 @@ function setTheFile(index) {
 	show("newFile");
 }
 /* end of set submit file form */
+
+/** FR# 26194, matrix column order. */
+//"Set Column Order" link on 'bodySubmitFinding.jsp'.
+function setColumnOrder() {
+	var colNum = dwr.util.getValue("colNum");
+	var rowNum = dwr.util.getValue("rowNum");
+	if (colNum > 1 && rowNum > 0) {
+		show('columnOrder');
+	}
+}
+//"Cancel" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
+function clearColumnOrder() {
+	var colNum = dwr.util.getValue("colNum");
+	if (colNum > 1) {
+		for (var i = 0; i < colNum; i++) {
+			var order = dwr.util.getValue("theColumnOrder" + i);
+			dwr.util.setValue("columnOrder" + i, order);
+		}
+	}
+}
+//"Save" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
+function updateColumnOrder(form) {
+	var colNum = dwr.util.getValue("colNum");
+	if (colNum > 1) {
+		var orderValid = true;
+		var aryOrder = new Array();
+		for (var i = 0; i < colNum; i++) {
+			var order = dwr.util.getValue("columnOrder" + i);
+			aryOrder[i] = order;
+		}
+		aryOrder.sort(); // sort array to find duplicated element.
+		for (var i = 0; orderValid && i < colNum - 1; i++) {
+			if (aryOrder[i] == aryOrder[i+1]) {
+				alert('Please select distinctive order number.');
+				orderValid = false;
+			}
+		}
+		if (orderValid) {
+			form.action = "characterization.do?dispatch=updateColumnOrder&page=0";
+			form.submit();
+		}
+	}
+}
