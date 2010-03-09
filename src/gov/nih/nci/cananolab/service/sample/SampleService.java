@@ -78,7 +78,10 @@ public interface SampleService {
 			String sampleName, AdvancedSampleSearchBean searchBean,
 			UserBean user) throws SampleException;
 
-	public SampleBean cloneSample(String originalSampleName, String newSampleName,
-			UserBean user) throws SampleException, NoAccessException,
-			DuplicateEntriesException, NotExistException;
+	public SampleBean cloneSample(String originalSampleName,
+			String newSampleName, UserBean user) throws SampleException,
+			NoAccessException, DuplicateEntriesException, NotExistException;
+
+	public void deleteSample(String sampleName, UserBean user)
+			throws SampleException, NoAccessException, NotExistException;
 }
