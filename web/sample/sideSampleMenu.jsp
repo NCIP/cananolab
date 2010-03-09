@@ -19,7 +19,8 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${!empty user && user.curator && location eq applicationOwner}">
+	<c:when
+		test="${!empty user && user.curator && location eq applicationOwner}">
 		<c:set var="dispatch" value="summaryEdit" />
 	</c:when>
 	<c:otherwise>
@@ -34,21 +35,16 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="subMenuFill" height="5">
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
 		<c:url var="sampleUrl" value="sample.do">
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="sampleId" value="${sampleId}" />
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 		</c:url>
-		<td class="subMenuPrimaryTitle" height="60" onmouseover="showCursor()"
-			onmouseout="hideCursor()" onclick="gotoPage('${sampleUrl}')"
-			height="20">
-			<a class="pname">${location} Sample<br> <br>${sampleName}</a>
+		<td class="subMenuPrimarySubTitle" height="60"
+			onmouseover="showCursor()" onmouseout="hideCursor()"
+			onclick="gotoPage('${sampleUrl}')" height="20">
+			<a>${location} Sample<br> <br>${sampleName}</a>
 		</td>
 	</tr>
 	<tr>
@@ -60,7 +56,7 @@
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
-					<c:param name="tab" value="ALL"/>
+					<c:param name="tab" value="ALL" />
 				</c:url>
 				<c:choose>
 					<c:when
@@ -98,7 +94,7 @@
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
-					<c:param name="tab" value="ALL"/>
+					<c:param name="tab" value="ALL" />
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/characterization.do'}">
@@ -135,7 +131,7 @@
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
-					<c:param name="tab" value="ALL"/>
+					<c:param name="tab" value="ALL" />
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/publication.do'}">
@@ -169,8 +165,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="subMenuPrimaryTitle" height="27">
-			QUICK LINKS
+		<td class="subMenuPrimarySubTitle" height="20">
+			NCI LINKS
 		</td>
 	</tr>
 	<tr>
@@ -185,19 +181,19 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www.cancer.gov', '', '800', '800')"
+			onclick="openWindow('http://ncicb.nci.nih.gov/', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
-			<a class="subMenuSecondary">NCI HOME</a>
+			<a class="subMenuSecondary">NCI CBIIT</a>
 		</td>
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://ncicb.nci.nih.gov/', '', '800', '800')"
+			onclick="openWindow('http://nano.cancer.gov', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
-			<a class="subMenuSecondary">NCICB HOME</a>
+			<a class="subMenuSecondary">NCI Nano Alliance</a>
 		</td>
 	</tr>
 	<tr>
@@ -206,7 +202,7 @@
 			onclick="openWindow('http://ncl.cancer.gov/', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
-			<a class="subMenuSecondary">NCL HOME</a>
+			<a class="subMenuSecondary">NCL</a>
 		</td>
 	</tr>
 	<tr>
@@ -215,18 +211,32 @@
 			onclick="openWindow('http://csn.ncifcrf.gov/csn/index2.php', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
-			<a class="subMenuSecondary">NCI CSN</a>
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle" height="20">
-			&nbsp;
+			<a class="subMenuSecondary">CSN</a>
 		</td>
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://oregonstate.edu/nbi/nbi/nanomaterial.php', '', '800', '800')"
+			onclick="openWindow('http://www.cancer.gov', '', '800', '800')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			height="20">
+			<a class="subMenuSecondary">NCI HOME</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="subMenuFill" height="5">
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="subMenuPrimarySubTitle" height="20">
+			EXTERNAL LINKS
+		</td>
+	</tr>
+	<tr>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onclick="openWindow('http://oregonstate.edu/nbi/', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">NBI</a>
@@ -235,10 +245,10 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www2a.cdc.gov/niosh-nil/', '', '800', '800')"
+			onclick="openWindow('http://www.cdc.gov/niosh/topics/nanotech/NIL.html', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
-			<a class="subMenuSecondary">NIOSH</a>
+			<a class="subMenuSecondary">NIOSH NIL</a>
 		</td>
 	</tr>
 	<tr>
@@ -277,6 +287,18 @@
 			<a class="subMenuSecondary">SAFENANO</a>
 		</td>
 	</tr>
+	<tr>
+		<td class="subMenuFill" height="30">
+			&nbsp;
+		</td>
+	</tr>
+	<!--
+		<tr>
+			<td class="subMenuSecondaryTitleFill">
+				Visitor Count <br/><br/><img src="images/hit_counter.png" width="80"/>
+			</td>
+		</tr>
+		-->
 	<tr>
 		<td class="subMenuFill" height="100%">
 			&nbsp;
