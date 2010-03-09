@@ -1117,4 +1117,22 @@ public class SampleServiceHelper {
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		sampleBean.setVisibilityGroups(visibilityGroups);
 	}
+
+	public void removeVisibility(Sample sample) throws Exception {
+		authService.removeCSMEntry(sample.getName());
+		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
+		CompositionServiceHelper compHelper = new CompositionServiceHelper();
+		Collection<Characterization> characterizationCollection = sample
+				.getCharacterizationCollection();
+		// characterizations
+		if (characterizationCollection != null) {
+			for (Characterization aChar : characterizationCollection) {
+				charHelper.removeVisibility(aChar);
+			}
+		}
+		// sampleComposition
+		if (sample.getSampleComposition() != null) {
+			compHelper.removeVisibility(sample.getSampleComposition());
+		}
+	}
 }
