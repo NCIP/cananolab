@@ -13,8 +13,8 @@
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
 				height="100%">
 				<tr>
-					<td>
-						<br>
+					<td height="30">
+						&nbsp;
 					</td>
 				</tr>
 				<tr>

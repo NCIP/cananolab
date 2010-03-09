@@ -20,8 +20,8 @@
 							Upload Logo File
 						</td>
 						<td colspan="3">
-							<html:file property="siteLogo" />&nbsp;&nbsp;
-							(Recommended image dimension: 304 x 83 pixels, maximum image size: <%=Constants.MAX_LOGO_SIZE%> bytes.)
+							<html:file property="siteLogo" /><br/>
+							<em>(Recommended image dimension: 304 x 83 pixels, maximum image size: <%=Constants.MAX_LOGO_SIZE%> bytes)</em>
 						</td>
 					</tr>
 					<tr>
