@@ -42,9 +42,11 @@
 			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuPrimarySubTitle" height="60"
+		    onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuPrimarySubTitle'), hideCursor()"
 			onmouseover="showCursor()" onmouseout="hideCursor()"
 			onclick="gotoPage('${sampleUrl}')" height="20">
-			<a>${location} Sample<br> <br>${sampleName}</a>
+			<a class="subMenuSecondary">${location} Sample<br> <br>${sampleName}</a>
 		</td>
 	</tr>
 	<tr>
