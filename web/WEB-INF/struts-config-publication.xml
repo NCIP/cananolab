@@ -73,8 +73,6 @@
 			<forward name="input"
 				path="/publication.do?dispatch=input&amp;page=0" />
 			<forward name="view" path="publication.viewPublication" />
-			<forward name="sampleDetailView" path="sample.detailViewPublication" />
-			<forward name="publicationDetailView" path="publication.detailViewPublication" />
 			<forward name="summaryView" path="sample.publication.summaryView" />
 			<forward name="summaryPrint"
 				path="/publication/bodySamplePublicationSummaryPrintView.jsp" />

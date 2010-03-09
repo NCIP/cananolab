@@ -57,13 +57,6 @@
 		<put name="publicationActionName" value="updatePublication" />
 	</definition>
 
-	<definition name="publication.detailViewPublication"
-		extends="canano.home">
-		<put name="cananoContent"
-			value="/publication/bodyPublicationDetailView.jsp" />
-		<put name="menu" value="publications" />
-	</definition>
-
 	<!-- definition for the search publication result page -->
 	<definition name="publication.searchPublicationResult"
 		extends="canano.home">

@@ -28,14 +28,6 @@
 		<put name="menu" value="protocols" />
 	</definition>
 
-	<!-- definition for the submit protocol page -->
-	<definition name="protocol.updateProtocol" extends="canano.home">
-		<put name="cananoContent"
-			value="/protocol/bodyViewProtocolFile.jsp" />
-		<put name="menu" value="protocols" />
-		<put name="protocolActionName" value="updateProtocol" />
-	</definition>
-
 	<!-- definition for the search protocol page -->
 	<definition name="protocol.searchProtocol" extends="canano.home">
 		<put name="cananoContent"

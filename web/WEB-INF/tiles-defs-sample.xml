@@ -148,13 +148,6 @@
 		<put name="cananoContent" value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
 	</definition>
 
-	<definition name="sample.detailViewPublication" extends="sample.annotationHome">
-		<put name="cananoContent" value="/publication/bodyPublicationDetailView.jsp" />
-	</definition>
-	<definition name="sample.detailViewReport" extends="sample.annotationHome">
-		<put name="cananoContent" value="/publication/bodyReportDetailView.jsp" />
-	</definition>
-
 	<!-- definition for the search sample page -->
 	<definition name="sample.searchSample" extends="canano.home">
 		<put name="cananoContent" value="/sample/bodySearchSample.jsp" />
