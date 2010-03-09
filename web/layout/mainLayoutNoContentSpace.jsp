@@ -6,8 +6,7 @@
 %>
 <html>
 	<head>
-		<title><tiles:getAsString name="title" ignore="true" />
-		</title>
+		<title><tiles:getAsString name="title" ignore="true" /></title>
 		<meta name="keywords"
 			content="nano informatics, nanotechnology model, caNanoLab, nanotechnology, nanoparticle, cancer, information model, portal, data portal, data repository, caBIG, caGRID, NCL, nano characterization, nanoparticle composition, Cancer Nanotechnology Excellence">
 		<meta name="description"
@@ -41,7 +40,7 @@
 				<tr>
 					<td valign="top" height="100%">
 						<table height="100%" cellspacing="0" cellpadding="0" summary=""
-							border="0">
+							border="0" width="100%">
 							<tbody>
 								<tr>
 									<td colspan="2" height="50">
@@ -54,10 +53,9 @@
 										<%-- include sidemenu on the left --%>
 										<tiles:insert attribute="cananoSidemenu" />
 									</td>
-
-									<td valign="top" width="100%">
+									<td valign="top">
 										<table height="100%" cellspacing="0" cellpadding="0"
-											width="100%" summary="" border="0">
+											summary="" border="0" width="100%">
 											<tbody>
 												<tr>
 													<td class="mainMenu" width="100%" height="20">
