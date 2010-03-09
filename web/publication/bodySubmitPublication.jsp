@@ -313,7 +313,7 @@
 			<c:if
 				test="${!empty publicationForm.map.publication.domainFile.uri }">
 				<tr>
-					<td class="completeLabel" colspan="3">
+					<td colspan="3">
 						<c:choose>
 							<c:when test="${publicationForm.map.publication.image eq 'true'}">
 						 				${publicationForm.map.publication.domainFile.title}<br>
@@ -334,7 +334,6 @@
 							</c:otherwise>
 						</c:choose>
 					</td>
-
 				</tr>
 			</c:if>
 		</table>
