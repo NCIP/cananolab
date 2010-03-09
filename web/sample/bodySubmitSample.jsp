@@ -107,6 +107,10 @@
 							<div align="left">
 								<c:if test="${!empty updateSample}">
 									<input type="button" value="Clone" onclick="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')">
+									&nbsp;
+									<c:if test="${!empty user && user.curator && user.admin}">
+									    <input type="button" value="Delete" onclick="gotoPage('sample.do?dispatch=delete)')">
+									</c:if>
 								</c:if>
 							</div>
 						</td>
