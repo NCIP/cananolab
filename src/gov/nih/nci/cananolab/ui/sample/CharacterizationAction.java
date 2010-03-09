@@ -680,6 +680,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			int columnToRemove = Integer.parseInt(request
 					.getParameter("removeColumn"));
 			findingBean.removeColumn(columnToRemove);
+			this.checkOpenForms(achar, theForm, request);
 			return mapping.findForward("inputForm");
 		} else if (request.getParameter("removeRow") != null) {
 			int rowToRemove = Integer.parseInt(request
@@ -697,6 +698,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			findingBean.setNumberOfColumns(existingNumberOfColumns);
+			this.checkOpenForms(achar, theForm, request);
 			return mapping.getInputForward();
 		}
 		if (existingNumberOfRows > findingBean.getNumberOfRows()) {
@@ -706,6 +708,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			findingBean.setNumberOfRows(existingNumberOfRows);
+			this.checkOpenForms(achar, theForm, request);
 			return mapping.getInputForward();
 		}
 		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean

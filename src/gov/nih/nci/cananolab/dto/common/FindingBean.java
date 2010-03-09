@@ -246,13 +246,12 @@ public class FindingBean {
 			}
 			row.setCells(newCells);
 		}
-		// FR# 26194, datum matrix column order.
 		columnHeaders = new ArrayList<ColumnHeader>(newColumns);
-		for (int i = 0; i < columnHeaders.size(); i++) {
-			columnHeaders.get(i).setColumnOrder(i + 1);
-		}
 		rows = new ArrayList<Row>();
 		rows.addAll(newRows);
+		
+		// FR# 26194, datum matrix column order.
+		this.setupColumnOrder();
 	}
 
 	public void removeColumn(int colIndex) {
@@ -262,6 +261,9 @@ public class FindingBean {
 			cells.remove(colIndex);
 		}
 		numberOfColumns--;
+		
+		// FR# 26194, datum matrix column order.
+		this.setupColumnOrder();
 	}
 
 	public void removeRow(int rowIndex) {

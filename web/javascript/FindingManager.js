@@ -357,18 +357,16 @@ function setTheFile(index) {
 //"Set Column Order" link on 'bodySubmitFinding.jsp'.
 function setColumnOrder() {
 	var colNum = dwr.util.getValue("colNum");
-	var rowNum = dwr.util.getValue("rowNum");
-	if (colNum > 1 && rowNum > 0) {
-		show('columnOrder');
+	if (colNum > 1) {
+		show('newColumnOrder');
 	}
 }
 //"Cancel" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
-function clearColumnOrder() {
+function resetColumnOrder() {
 	var colNum = dwr.util.getValue("colNum");
 	if (colNum > 1) {
 		for (var i = 0; i < colNum; i++) {
-			var order = dwr.util.getValue("theColumnOrder" + i);
-			dwr.util.setValue("columnOrder" + i, order);
+			dwr.util.setValue("columnOrder" + i, i + 1);
 		}
 	}
 }
@@ -385,7 +383,7 @@ function updateColumnOrder(form) {
 		aryOrder.sort(); // sort array to find duplicated element.
 		for (var i = 0; orderValid && i < colNum - 1; i++) {
 			if (aryOrder[i] == aryOrder[i+1]) {
-				alert('Please select distinctive order number.');
+				alert('Please enter distinct number for column order.');
 				orderValid = false;
 			}
 		}

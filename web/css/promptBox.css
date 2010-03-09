@@ -73,3 +73,10 @@ input.promptbox {
 	/*width: 550px;*/
 	z-index:5;
 }
+#newColumnOrder {
+	position: absolute;
+	left: 203px;
+	top: 3px;
+	width: 450px;
+	z-index:5;
+}
