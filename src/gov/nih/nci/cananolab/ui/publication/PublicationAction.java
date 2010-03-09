@@ -428,43 +428,6 @@ public class PublicationAction extends BaseAnnotationAction {
 		return mapping.findForward("publicationSubmitPublication");
 	}
 
-	public ActionForward detailView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String location = request.getParameter(Constants.LOCATION);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		PublicationService publicationService = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
-			publicationService = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}
-		String publicationId = request.getParameter("publicationId");
-		PublicationBean pubBean = publicationService.findPublicationById(
-				publicationId, user);
-		PublicationForm theForm = (PublicationForm) form;
-		theForm.set("publication", pubBean);
-
-		ActionForward forward = null;
-		String sampleId = request.getParameter("sampleId");
-		if (StringUtils.isEmpty(sampleId)) {
-			forward = mapping.findForward("publicationDetailView");
-		} else {
-			forward = mapping.findForward("sampleDetailView");
-		}
-
-		String requestUrl = request.getRequestURL().toString();
-		String printLinkURL = requestUrl
-				+ "?page=0&dispatch=printDetailView&sampleId=" + sampleId
-				+ "&publicationId=" + publicationId + "&location=" + location;
-		request.getSession().setAttribute("printDetailViewLinkURL",
-				printLinkURL);
-
-		return forward;
-	}
-
 	public ActionForward addAuthor(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
