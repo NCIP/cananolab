@@ -11,26 +11,25 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<div id="authorSection" style="position: relative;">
-				<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
-				<html:text property="achar.theFinding.numberOfColumns" size="1"
-					styleId="colNum" onkeydown="return filterInteger(event)" />
-				columns
-				<html:text property="achar.theFinding.numberOfRows" size="1"
-					styleId="rowNum" onkeydown="return filterInteger(event)" />
-				rows &nbsp;&nbsp;
-				<a href="javascript:updateMatrix(characterizationForm)">Update</a>
-				&nbsp;&nbsp;
-				<a href="javascript:setColumnOrder(characterizationForm)">Set Column Order</a>
-				<br/>
-				<jsp:include page="bodySubmitDataConditionMatrixColumnOrder.jsp" />
-			</div>
+			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
+			<html:text property="achar.theFinding.numberOfColumns" size="1"
+				styleId="colNum" onkeydown="return filterInteger(event)" />
+			columns
+			<html:text property="achar.theFinding.numberOfRows" size="1"
+				styleId="rowNum" onkeydown="return filterInteger(event)" />
+			rows &nbsp;&nbsp;
+			<a href="javascript:updateMatrix(characterizationForm)">Update</a>
+			&nbsp;&nbsp;
+			<a href="javascript:setColumnOrder()">Set Column Order</a>
 		</td>
 	</tr>
 	<tr>
 		<td valign="top" colspan="2">
 			<div id="newMatrix">
 				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
+			</div>
+			<div id="newColumnOrder" style="display:none;">
+				<jsp:include page="bodySubmitDataConditionMatrixColumnOrder.jsp" />
 			</div>
 			<br/>
 		</td>

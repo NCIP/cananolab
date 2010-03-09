@@ -200,8 +200,12 @@ function updateMatrix(form) {
 	var colNum = dwr.util.getValue("colNum");
 	var rowNum = dwr.util.getValue("rowNum");
 	if (colNum > 0 && rowNum > 0) {
-		form.action = "characterization.do?dispatch=drawMatrix&page=0";
-		form.submit();
+		if (document.getElementById("newColumnOrder").style.display != "block") {
+			form.action = "characterization.do?dispatch=drawMatrix&page=0";
+			form.submit();
+		} else {
+			alert('Please close Column Order form before changing column/row number.');
+		}
 	}
 }
 function reduceMatrix(form, type, index) {
@@ -358,16 +362,14 @@ function setTheFile(index) {
 function setColumnOrder() {
 	var colNum = dwr.util.getValue("colNum");
 	if (colNum > 1) {
-		show('newColumnOrder');
-	}
-}
-//"Cancel" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
-function resetColumnOrder() {
-	var colNum = dwr.util.getValue("colNum");
-	if (colNum > 1) {
 		for (var i = 0; i < colNum; i++) {
-			dwr.util.setValue("columnOrder" + i, i + 1);
+			var displayName = dwr.util.getValue("columnHeaderDisplayName" + i);
+			if (displayName != null && displayName.length > 0) {
+				dwr.util.setValue("colOrderName" + i, displayName);
+			}
 		}
+		hide('newMatrix');
+		show('newColumnOrder');
 	}
 }
 //"Save" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
