@@ -367,7 +367,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	public void deleteNanomaterialEntity(NanomaterialEntity entity,
 			UserBean user) throws CompositionException,
 			ChemicalAssociationViolationException, NoAccessException {
-		if (user == null || !user.isCurator() && !user.isAdmin()) {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
@@ -390,7 +390,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	public void deleteFunctionalizingEntity(FunctionalizingEntity entity,
 			UserBean user) throws CompositionException,
 			ChemicalAssociationViolationException, NoAccessException {
-		if (user == null || !user.isCurator() && !user.isAdmin()) {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
@@ -415,7 +415,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 	public void deleteChemicalAssociation(ChemicalAssociation assoc,
 			UserBean user) throws CompositionException, NoAccessException {
-		if (user == null || !user.isCurator() && !user.isAdmin()) {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
 		try {
@@ -432,7 +432,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 	public void deleteCompositionFile(Sample sample, File file, UserBean user)
 			throws CompositionException, NoAccessException {
-		if (user == null || !user.isCurator() && !user.isAdmin()) {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
 		try {

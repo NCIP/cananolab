@@ -139,6 +139,9 @@ public class CharacterizationServiceLocalImpl implements
 
 	public void deleteCharacterization(Characterization chara, UserBean user)
 			throws CharacterizationException, NoAccessException {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			throw new NoAccessException();
+		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -229,6 +232,9 @@ public class CharacterizationServiceLocalImpl implements
 
 	public void deleteFinding(Finding finding, UserBean user)
 			throws CharacterizationException, NoAccessException {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			throw new NoAccessException();
+		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -308,6 +314,9 @@ public class CharacterizationServiceLocalImpl implements
 
 	public void deleteExperimentConfig(ExperimentConfig config, UserBean user)
 			throws ExperimentConfigException, NoAccessException {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			throw new NoAccessException();
+		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
