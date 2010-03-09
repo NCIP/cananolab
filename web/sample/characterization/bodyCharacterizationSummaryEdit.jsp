@@ -142,14 +142,14 @@
 						</th>
 					</tr>
 					<tr>
-						<td bgcolor="#dbdbdb">
+						<td>
 							<c:choose>
 								<c:when
 									test="${!empty characterizationSummaryView.type2Characterizations[type] }">
 									<c:forEach var="charName"
 										items="${characterizationSummaryView.type2CharacterizationNames[type]}">
 										<a name="${charName}"></a>
-										<table width="99%" align="center" class="summaryViewNoGrid">
+										<table width="99%" align="center" class="summaryViewNoGrid" bgcolor="#dbdbdb">
 											<tr>
 												<th align="left">
 													${charName}
@@ -166,6 +166,7 @@
 												</td>
 											</tr>
 										</table>
+										<br/>
 									</c:forEach>
 								</c:when>
 								<c:otherwise>

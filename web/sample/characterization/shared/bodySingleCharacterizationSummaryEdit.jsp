@@ -10,8 +10,10 @@
 
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
-	<tr>		
-		<td></td><td width="95%"></td><td align="right">
+	<tr>
+		<td></td>
+		<td width="95%"></td>
+		<td align="right">
 			<a
 				href="characterization.do?dispatch=setupUpdate&sampleId=${sampleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
 		</td>

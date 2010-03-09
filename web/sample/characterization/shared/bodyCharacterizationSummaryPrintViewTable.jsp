@@ -13,11 +13,11 @@
 			</th>
 		</tr>	
 		<tr>
-			<td bgcolor="#dbdbdb">
+			<td>
 				<c:forEach var="charName"
 					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
 					<a name="${charName}"></a>					
-					<table width="99%" align="center" class="summaryViewNoGrid">
+					<table width="99%" align="center" class="summaryViewNoGrid" bgcolor="#dbdbdb">
 						<tr>
 							<th align="left">
 								${charName}
@@ -32,7 +32,8 @@
 								</c:forEach>
 							</td>
 						</tr>
-					</table>				
+					</table>
+					<br/>				
 				</c:forEach>
 			</td>
 		</tr>
