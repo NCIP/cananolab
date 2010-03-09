@@ -30,7 +30,7 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%" width="150">
 	<tr>
-		<td class="subMenuPrimaryTitle" height="21">
+		<td class="subMenuPrimaryTitle" height="22">
 			NAVIGATION TREE
 		</td>
 	</tr>
@@ -41,13 +41,24 @@
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 		</c:url>
-		<td class="subMenuPrimarySubTitle" height="60"
-		    onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuPrimarySubTitle'), hideCursor()"
-			onmouseover="showCursor()" onmouseout="hideCursor()"
-			onclick="gotoPage('${sampleUrl}')" height="20">
-			<a class="subMenuSecondary">${location} Sample<br> <br>${sampleName}</a>
-		</td>
+		<c:choose>
+			<c:when test="${actionPath eq '/sample.do'}">
+				<td class="subMenuSecondaryTitleSelected"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+					onclick="gotoPage('${sampleUrl}')" height="20">
+					<a class="subMenuSecondary">${location} Sample</a>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="subMenuSecondaryTitle" 
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+					onclick="gotoPage('${sampleUrl}')" height="20">
+					<a class="subMenuSecondary">${location} Sample<br> <br>${sampleName}</a>
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<c:choose>
