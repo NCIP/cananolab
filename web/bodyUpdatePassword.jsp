@@ -1,76 +1,68 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle" value="Update Password" />
+	<jsp:param name="topic" value="update_password_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+</jsp:include>
 <html:form action="/updatePassword">
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3" width=100% align="center" summary="" border="0">
+	<jsp:include page="/bodyMessage.jsp" />
+	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td align="right" width="15%" colspan="2">
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=update_password_help')" class="helpText">Help</a>
+			<td class="cellLabel" width="20%">
+				Login ID*
+			</td>
+			<td>
+				<html:text property="loginId" size="50" />
 			</td>
 		</tr>
 		<tr>
-			<td class="sidebarContent" colspan="2">
-				<jsp:include page="/bodyMessage.jsp" />
+			<td class="cellLabel">
+				Old Password*
+			</td>
+			<td>
+				<html:password property="password" size="50" />
 			</td>
 		</tr>
 		<tr>
-			<td class="formTitle" colspan="2">
-				Update Password
+			<td class="cellLabel">
+				New Password*
+			</td>
+			<td>
+				<html:password property="newPassword" size="50" />
+				<br />
+				<em>(Minimum of 5 characters are required)</em>
 			</td>
 		</tr>
 		<tr>
-			<td class="formLabel" width="20%">
-				<strong>Login ID*</strong>
+			<td class="cellLabel">
+				Retype New Password*
 			</td>
-			<td class="formField">
-				<html:text property="loginId" size="30" />
-			</td>
-		</tr>
-		<tr>
-			<td class="formLabelWhite">
-				<strong>Old Password* </strong><span class="formField">
-			</td>
-			<td class="formFieldWhite">
-				<span class="formFieldWhite"><span class="formField"><html:password property="password" size="30" /></span></span>
-			</td>
-		</tr>
-		<tr>
-			<td class="formLabel">
-				<strong>New Password* </strong><span class="formField">(<em>Minimum of 5 characters are required</em>)</span>
-			</td>
-			<td class="formField">
-				<span class="formFieldWhite"><span class="formField"><html:password property="newPassword" size="30" /></span></span>
-			</td>
-		</tr>
-		<tr>
-			<td class="formLabelWhite">
-				<strong>Retype New Password*</strong>
-			</td>
-			<td class="formFieldWhite">
-				<html:password property="newPassword2" size="30" />
-			</td>
-		</tr>
-		<tr>
-			<td align="right" valign="bottom" colspan="2">
-				<!-- action buttons begins -->
-
-				<!-- action buttons end -->
-				<TABLE border="0" cellpadding="2" cellspacing="0">
-					<TR>
-						<TD>
-							<html:submit value="Update" />
-						</TD>
-						<TD>
-							<input type="button" value="Reset" onclick="javascript:location.href='updatePassword.do?'">
-						</TD>
-					</TR>
-				</TABLE>
+			<td>
+				<html:password property="newPassword2" size="50" />
 			</td>
 		</tr>
 	</table>
-	<BR>
-	<BR>
-
+	<br/>
+	<table width="100%" border="0" align="center" cellpadding="3"
+		cellspacing="0">
+		<tr>
+			<td width="30%">
+				<table border="0" align="right" cellpadding="4" cellspacing="0">
+					<tr>
+						<td>
+							<div align="right">
+								<input type="button" value="Reset"
+									onclick="javascript:location.href='updatePassword.do?'">
+								<html:submit value="Update" />
+							</div>
+						</td>
+					</tr>
+				</table>				
+			</td>
+		</tr>
+	</table>
 </html:form>
 
 
