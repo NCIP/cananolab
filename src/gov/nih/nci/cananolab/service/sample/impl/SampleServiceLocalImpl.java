@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -20,6 +21,7 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -738,7 +740,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			saveClonedPOCs(origSampleBean, newSampleBean, user);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean,
 					user);
-			saveClonedComposition(origSample.getName(), newSampleBean, user);
+			saveClonedComposition(origSampleBean, newSampleBean, user);
 			// saveClonedPublications(origSample.getName(), newSampleBean,
 			// user);
 			saveSample(newSampleBean, user);
@@ -814,11 +816,12 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void saveClonedComposition(String origSampleName,
+	private void saveClonedComposition(SampleBean origSampleBean,
 			SampleBean sampleBean, UserBean user) throws Exception {
+		String origSampleName = origSampleBean.getDomain().getName();
+
 		if (sampleBean.getDomain().getSampleComposition() != null) {
 			String newSampleName = sampleBean.getDomain().getName();
-
 			CompositionService compService = new CompositionServiceLocalImpl();
 			// save nanomaterial entities
 			if (sampleBean.getDomain().getSampleComposition()
@@ -836,6 +839,7 @@ public class SampleServiceLocalImpl implements SampleService {
 							user);
 				}
 			}
+			// save functionalizing entities
 			if (sampleBean.getDomain().getSampleComposition()
 					.getFunctionalizingEntityCollection() != null) {
 				for (FunctionalizingEntity entity : sampleBean.getDomain()
@@ -851,6 +855,7 @@ public class SampleServiceLocalImpl implements SampleService {
 							entityBean, user);
 				}
 			}
+			// save files
 			if (sampleBean.getDomain().getSampleComposition()
 					.getFileCollection() != null) {
 				for (File file : sampleBean.getDomain().getSampleComposition()
@@ -859,6 +864,22 @@ public class SampleServiceLocalImpl implements SampleService {
 					fileHelper.updateClonedFileInfo(fileBean, origSampleName,
 							newSampleName, user);
 					compService.saveCompositionFile(sampleBean, fileBean, user);
+				}
+			}
+			// save chemical association
+			if (sampleBean.getDomain().getSampleComposition()
+					.getChemicalAssociationCollection() != null) {
+				for (ChemicalAssociation assoc : sampleBean.getDomain()
+						.getSampleComposition()
+						.getChemicalAssociationCollection()) {
+					ChemicalAssociationBean assocBean = new ChemicalAssociationBean(
+							assoc);
+					for (FileBean fileBean : assocBean.getFiles()) {
+						fileHelper.updateClonedFileInfo(fileBean,
+								origSampleName, newSampleName, user);
+					}
+					compService.saveChemicalAssociation(sampleBean, assocBean,
+							user);
 				}
 			}
 		}
@@ -875,6 +896,73 @@ public class SampleServiceLocalImpl implements SampleService {
 						sampleBean.getDomain().getName(), user);
 				pubService.savePublication(pubBean, user);
 			}
+		}
+	}
+
+	public void deleteSample(String sampleName, UserBean user)
+			throws SampleException, NoAccessException, NotExistException {
+		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			throw new NoAccessException();
+		}
+		try {
+			// fully load original sample
+			Sample sample = findFullyLoadedSampleByName(sampleName, user);
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// delete characterizations
+			if (sample.getCharacterizationCollection() != null) {
+				CharacterizationService charService = new CharacterizationServiceLocalImpl();
+				for (Characterization achar : sample
+						.getCharacterizationCollection()) {
+					charService.deleteCharacterization(achar, user);
+				}
+			}
+			// delete composition
+			if (sample.getSampleComposition() != null) {
+				CompositionService compService = new CompositionServiceLocalImpl();
+				// delete chemical association
+				if (sample.getSampleComposition()
+						.getChemicalAssociationCollection() != null) {
+					for (ChemicalAssociation assoc : sample
+							.getSampleComposition()
+							.getChemicalAssociationCollection()) {
+						compService.deleteChemicalAssociation(assoc, user);
+					}
+				}
+				// delete nanomaterial entities
+				if (sample.getSampleComposition()
+						.getNanomaterialEntityCollection() != null) {
+					for (NanomaterialEntity entity : sample
+							.getSampleComposition()
+							.getNanomaterialEntityCollection()) {
+						compService.deleteNanomaterialEntity(entity, user);
+					}
+				}
+				// delete functionalizing entities
+				if (sample.getSampleComposition()
+						.getFunctionalizingEntityCollection() != null) {
+					for (FunctionalizingEntity entity : sample
+							.getSampleComposition()
+							.getFunctionalizingEntityCollection()) {
+						compService.deleteFunctionalizingEntity(entity, user);
+					}
+				}
+				// save files
+				if (sample.getSampleComposition().getFileCollection() != null) {
+					for (File file : sample.getSampleComposition()
+							.getFileCollection()) {
+						compService.deleteCompositionFile(sample, file, user);
+					}
+				}
+			}
+			appService.delete(sample);
+
+		} catch (NotExistException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Error in deleting the sample " + sampleName;
+			logger.error(err, e);
+			throw new SampleException(err, e);
 		}
 	}
 
