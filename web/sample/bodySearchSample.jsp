@@ -158,9 +158,7 @@
 						<td>
 							<div align="right">
 								<input type="reset" value="Reset"
-									onclick=
-	javascript: location.href = 'searchSample.do?dispatch=setup&page=0';
->
+									onclick="javascript: location.href = 'searchSample.do?dispatch=setup&page=0';">
 								<input type="hidden" name="dispatch" value="search">
 								<input type="hidden" name="page" value="1">
 								<html:submit value="Search" />
