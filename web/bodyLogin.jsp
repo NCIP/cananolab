@@ -5,10 +5,10 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%">
 	<tr>
-		<td valign="top" width="600">
-			<img src="images/bannerhome.jpg" width="600">
+		<td valign="top">
+			<img src="images/bannerhome.jpg">
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
-				width="100%">
+				width="600">
 				<tr>
 					<td class="welcomeTitle" height="20">
 						Welcome to caNanoLab
@@ -37,7 +37,7 @@
 				</tr>
 			</table>
 			<br />
-			<table summary="" cellpadding="0" cellspacing="0" border="0">
+			<table summary="" cellpadding="0" cellspacing="0" border="0" width="600">
 				<tr>
 					<td class="welcomeTitle" height="20">
 						Browse caNanoLab
@@ -52,7 +52,7 @@
 		</td>
 		<td valign="top">
 			<!-- right sidebar begins -->
-			<jsp:include page="/bodyLoginRightSideBar.jsp" />
+			<jsp:include page="/bodyLoginRightSideBar.jsp" />			
 		</td>
 	</tr>
 </table>

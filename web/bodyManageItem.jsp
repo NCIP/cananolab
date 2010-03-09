@@ -12,13 +12,8 @@
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
 				height="100%">
 				<tr>
-					<td>
-						<br>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<br>
+					<td height="30">
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -26,7 +21,7 @@
 						<table summary="" cellpadding="0" cellspacing="0" border="0"
 							width="100%" height="100%" class="sidebarSection">
 							<tr>
-								<td class="sidebarTitle" height="20">
+								<td height="20" class="sidebarTitle">
 									<c:out value="${fn:toUpperCase(item)}" />
 									LINKS
 								</td>
