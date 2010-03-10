@@ -79,6 +79,7 @@
 			<include method="deleteCharacterizationQuery" />
 			<include method="getCharacterizationOperandOptions" />
 			<include method="getAdvancedSearchDetailContent"/>
+			<include method="getMatchedSampleNames"/>
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"

@@ -633,10 +633,31 @@ function showDetailLinks() {
 }
 function validateDatumValue() {
 	var inputField = document.getElementById("datumValue");
-	if (inputField != null && inputField.value != "" &&
-		!validFloatNumber(inputField.value)) {
+	if (inputField != null && inputField.value != ""
+			&& !validFloatNumber(inputField.value)) {
 		alert("Please enter a valid number for datum value.");
 		return false;
 	}
 	return true;
+}
+
+function showMatchedSampleNameDropdown() {
+	// display progress.gif while waiting for the response.
+	show("loaderImg");
+	hide("matchedSampleSelect");
+	var selected = dwr.util.getValue("matchedSampleSelect");
+	var cloningSampleName = dwr.util.getValue("cloningSampleName");
+	SampleManager.getMatchedSampleNames(cloningSampleName, function(data) {
+		dwr.util.removeAllOptions("matchedSampleSelect");
+		dwr.util.addOptions("matchedSampleSelect", data);
+		dwr.util.setValue("matchedSampleSelect", selected);
+		hide("loaderImg");
+		show("matchedSampleSelect");
+	});
+}
+
+function updateCloningSample() {
+	var selected = dwr.util.getValue("matchedSampleSelect");	
+	dwr.util.setValue("cloningSampleName", selected);
+	hide("matchedSampleSelect");
 }
