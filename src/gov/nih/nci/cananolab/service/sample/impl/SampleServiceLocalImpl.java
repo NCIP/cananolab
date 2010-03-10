@@ -66,9 +66,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -80,7 +80,7 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 * 
+	 *
 	 * @param sample
 	 * @throws SampleException
 	 *             , DuplicateEntriesException
@@ -262,7 +262,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -955,6 +955,7 @@ public class SampleServiceLocalImpl implements SampleService {
 					}
 				}
 			}
+			appService.delete(sample.getSampleComposition());
 			appService.delete(sample);
 
 		} catch (NotExistException e) {
