@@ -1,11 +1,13 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -29,6 +31,7 @@ import org.directwebremoting.WebContextFactory;
 public class DWRSampleManager {
 
 	private Logger logger = Logger.getLogger(DWRSampleManager.class);
+	private SampleServiceHelper helper = new SampleServiceHelper();
 
 	public DWRSampleManager() {
 	}
@@ -317,5 +320,26 @@ public class DWRSampleManager {
 		} catch (Exception e) {
 			return "";
 		}
+	}
+
+	public String[] getMatchedSampleNames(String searchStr) throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+		String[] nameArray = new String[] { "" };
+		try {
+			List<String> names = helper.findSampleNamesBy(searchStr, user);
+			if (!names.isEmpty()) {
+				nameArray=names.toArray(new String[names.size()]);
+			}
+		} catch (Exception e) {
+			logger
+					.error(
+							"Problem getting matched sample names",
+							e);
+		}
+		return nameArray;
 	}
 }
