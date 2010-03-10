@@ -87,13 +87,6 @@ public class InitSampleSetup {
 		request.getSession().setAttribute("characterizationTypes", charTypes);
 	}
 
-	public SortedSet<String> getAllSampleNames(HttpServletRequest request,
-			UserBean user) throws Exception {
-		SortedSet<String> sampleNames = sampleService.findAllSampleNames(user);
-		request.getSession().setAttribute("allSampleNames", sampleNames);
-		return sampleNames;
-	}
-
 	public SortedSet<SortableName> getOtherSampleNames(
 			HttpServletRequest request, String sampleId) throws Exception {
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
