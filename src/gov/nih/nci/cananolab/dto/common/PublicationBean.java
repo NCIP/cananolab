@@ -43,12 +43,6 @@ public class PublicationBean extends FileBean {
 		setLocation(location);
 	}
 
-	//constructor used to assist in sorting by createdDate
-	public PublicationBean(String id, Date createdDate) {
-		domainFile.setId(new Long(id));
-		domainFile.setCreatedDate(createdDate);
-	}
-
 	public PublicationBean(Publication publication) {
 		super(publication);
 		this.domainFile = publication;
