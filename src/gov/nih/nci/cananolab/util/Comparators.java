@@ -303,8 +303,7 @@ public class Comparators {
 
 	public static class CharacterizationNameAssayTypeDateComparator implements
 			Comparator<Characterization> {
-		public int compare(Characterization chara1,
-				Characterization chara2) {
+		public int compare(Characterization chara1, Characterization chara2) {
 			String name1 = chara1.getClass().getName();
 			String name2 = chara2.getClass().getName();
 			if (name1.compareTo(name2) == 0) {
@@ -320,8 +319,7 @@ public class Comparators {
 					Date date1 = chara1.getCreatedDate();
 					Date date2 = chara2.getCreatedDate();
 					if (date1.compareTo(date2) == 0) {
-						return chara1.getId().compareTo(
-								chara2.getId());
+						return chara1.getId().compareTo(chara2.getId());
 					} else {
 						return date1.compareTo(date2);
 					}
@@ -381,6 +379,13 @@ public class Comparators {
 		}
 	}
 
+	public static class PublicationDateComparator implements
+			Comparator<Publication> {
+		public int compare(Publication pub1, Publication pub2) {
+			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
+		}
+	}
+
 	public static class GridNodeHostNameComparator implements
 			Comparator<GridNodeBean> {
 		public int compare(GridNodeBean node1, GridNodeBean node2) {
@@ -388,19 +393,24 @@ public class Comparators {
 		}
 	}
 
-	public static class ColumnHeaderComparator implements Comparator<ColumnHeader> {
+	public static class ColumnHeaderComparator implements
+			Comparator<ColumnHeader> {
 		public int compare(ColumnHeader header1, ColumnHeader header2) {
-			if (header1.getColumnOrder() != null && header2.getColumnOrder() != null) {
-				return header1.getColumnOrder().compareTo(header2.getColumnOrder());
+			if (header1.getColumnOrder() != null
+					&& header2.getColumnOrder() != null) {
+				return header1.getColumnOrder().compareTo(
+						header2.getColumnOrder());
 			} else {
-				return header1.getCreatedDate().compareTo(header2.getCreatedDate());
+				return header1.getCreatedDate().compareTo(
+						header2.getCreatedDate());
 			}
 		}
 	}
 
 	public static class TableCellComparator implements Comparator<TableCell> {
 		public int compare(TableCell cell1, TableCell cell2) {
-			if (cell1.getColumnOrder() != null && cell2.getColumnOrder() != null) {
+			if (cell1.getColumnOrder() != null
+					&& cell2.getColumnOrder() != null) {
 				return cell1.getColumnOrder().compareTo(cell2.getColumnOrder());
 			} else {
 				return cell1.getCreatedDate().compareTo(cell2.getCreatedDate());
