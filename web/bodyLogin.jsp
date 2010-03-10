@@ -38,6 +38,7 @@
 			</table>
 			<br />
 			<table summary="" cellpadding="0" cellspacing="0" border="0" width="600">
+				<tr><td><jsp:include page="/bodyMessage.jsp" /></td></tr>
 				<tr>
 					<td class="welcomeTitle" height="20">
 						Browse caNanoLab
