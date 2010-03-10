@@ -10,11 +10,12 @@ import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -157,16 +158,17 @@ public class DWRPublicationManager {
 		return new String[] { "" };
 	}
 
-	public String[] getAllSampleNames() {
+	public String[] getMatchedSampleNames(String searchStr) {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		if (user == null) {
 			return null;
 		}
 		try {
-			SortedSet<String> allSampleNames = InitSampleSetup.getInstance()
-					.getAllSampleNames(wctx.getHttpServletRequest(), user);
-			return allSampleNames.toArray(new String[0]);
+			SampleServiceHelper sampleHelper = new SampleServiceHelper();
+			List<String> sampleNames = sampleHelper.findSampleNamesBy(
+					searchStr, user);
+			return sampleNames.toArray(new String[sampleNames.size()]);
 		} catch (Exception e) {
 			logger
 					.error(
