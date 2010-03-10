@@ -19,7 +19,7 @@
 </jsp:include>
 <html:form action="/sample" onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">		
+	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">
 				Sample Name *
@@ -109,7 +109,7 @@
 									<input type="button" value="Clone" onclick="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')">
 									&nbsp;
 									<c:if test="${!empty user && user.curator && user.admin}">
-									    <input type="button" value="Delete" onclick="gotoPage('sample.do?dispatch=delete)')">
+									    <input type="button" value="Delete" onclick="deleteData('sample', sampleForm, 'sample')">
 									</c:if>
 								</c:if>
 							</div>
