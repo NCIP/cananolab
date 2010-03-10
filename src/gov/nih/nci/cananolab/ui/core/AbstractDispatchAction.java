@@ -35,7 +35,10 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		if (executeStatus) {
 			return super.execute(mapping, form, request, response);
 		} else {
-			request.getSession().removeAttribute("user");
+			if (user==null) {
+				throw new NoAccessException("Log in is required");
+			}
+			request.getSession().removeAttribute("user");			
 			throw new NoAccessException();
 		}
 	}
