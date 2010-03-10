@@ -11,10 +11,13 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -37,7 +40,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -79,7 +82,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -127,7 +130,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -169,7 +172,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -187,7 +190,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -213,7 +216,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 * 
+	 *
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception
@@ -331,4 +334,20 @@ public class SampleAction extends BaseAnnotationAction {
 		return summaryEdit(mapping, form, request, response);
 	}
 
+	public ActionForward delete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleService service = new SampleServiceLocalImpl();
+		service.deleteSample(sampleBean.getDomain().getName(), user);
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.deleteSample",
+				sampleBean.getDomain().getName());
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		ActionForward forward = mapping.findForward("sampleMessage");
+		return forward;
+	}
 }
