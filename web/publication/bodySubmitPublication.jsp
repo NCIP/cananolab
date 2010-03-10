@@ -347,22 +347,29 @@
 						Sample Name
 					</td>
 					<td>
-						<a href="#" onclick="javascript:showSampleNameDropdown();"
-							id="browseSampleNames" style="display: block">Browse</a>
-						<img src="images/ajax-loader.gif" border="0" class="counts"
-							id="loaderImg" style="display: none">
-						<html:select property="otherSamples" multiple="true"
-							size="5" styleId="allSampleNameSelect" style="display: none">
+						<html:textarea property="otherSamples" cols="80">
 							<c:if
 								test="${!empty publicationForm.map.publication.sampleNames}">
 								<c:forEach var="sampleName"
-									items="${publicationForm.map.publication.sampleNames}">
-									<option selected="selected" value="${sampleName}">
+									items="${publicationForm.map.publication.sampleNames}">									
 										${sampleName}
-									</option>
+									<br />
 								</c:forEach>
 							</c:if>
-						</html:select>
+						</html:textarea>								
+						<a href="#" onclick="showMatchedSampleNameDropdown()"><img
+								src="images/icon_browse.jpg" align="middle"
+								alt="search existing samples" border="0" />
+						</a>
+						<br/><em>one name per line</em>					
+					</td>
+					<td>						
+						<img src="images/ajax-loader.gif" border="0" class="counts"
+							id="loaderImg" style="display: none">
+						<html:select property="otherSamples" multiple="true" size="5"
+							styleId="matchedSampleSelect" style="display: none">							
+						</html:select><br/>
+						<input type="button" value="Select" onclick="updateOtherSamples()" id="selectMatchedSampleButton" style="display:none"/>
 					</td>
 				</tr>
 			</table>
