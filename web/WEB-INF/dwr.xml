@@ -110,7 +110,7 @@
 			<include method="addAuthor" />
 			<include method="deleteAuthor" />
 			<include method="clearPublication" />
-			<include method="getAllSampleNames" />
+			<include method="getMatchedSampleNames" />
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />
 			<include method="getPublicCounts" />
