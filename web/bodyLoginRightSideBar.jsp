@@ -78,17 +78,17 @@
 						<b>Primary caNanoLab features include:</b>
 						<ul>
 							<li>
-								<a href="#">Secure submission</a> of protocols, samples
+								<a href="sample.do?dispatch=setupNew&page=0">Secure submission</a> of protocols, samples
 								(nanomaterial formulation), and publications
 							</li>
 							<li>
 								Basic search facilities for searching for
-								<a href="#">protocols</a>,
-								<a href="#">samples</a>, and
-								<a href="#">publications</a>
+								<a href="searchProtocol.do?dispatch=setup&page=0">protocols</a>,
+								<a href="searchSample.do?dispatch=setup&page=0">samples</a>, and
+								<a href="searchPublication.do?dispatch=setup&page=0">publications</a>
 							</li>
 							<li>
-								<a href="#">Advanced search</a> facilities for formulating range
+								<a href="advancedSampleSearch.do?dispatch=setup&page=0">Advanced search</a> facilities for formulating range
 								and nested queries
 							</li>
 							<li>
@@ -121,24 +121,20 @@
 						<span class="boldAndUnderlined">Functional</span>						
 						<ul>
 							<li>
-								<a href="#">How do I find nanotechnology protocols?</a>
+								<a href="searchProtocol.do?dispatch=setup&page=0">How do I find nanotechnology protocols?</a>
 							</li>													
 							<li>
-								<a href="#">How do I find NCI Nanotechnology Allicance
-									publications?</a>
+								<a href="searchPublication.do?dispatch=setup&page=0">How do I find Nanotechnology publications?</a>
 							</li>
 							
 							<li>
-								<a href="#">How can I search for nanomaterials from a
-									specific organization or investigator?</a>
+								<a href="searchSample.do?dispatch=setup&page=0">How can I search for nanomaterials</a>
 							</li>
 							<li>
-								<a href="#">How can I search for characterizations for a
-									specific type of nanomaterial?</a>
+								<a href="#">How can I search for nanomaterial characterizations?</a>
 							</li>
 							<li>
-								<a href="#">Where can I get a definition of nanotechnology
-									concepts used in caNanoLab?</a>
+								<a href="#">Where can I get definitions for nanotechnology concepts?</a>
 							</li>													
 						</ul>						
 						<span class="boldAndUnderlined">General</span>
@@ -157,8 +153,7 @@
 								<a href="#">Who can I contact to submit data into caNanoLab?</a>
 							</li>
 							<li>
-								<a href="#">What is a caNanoLab site and how do I search
-									across caNanoLab sites?</a>
+								<a href="#">What is a caNanoLab site?</a>
 							</li>
 						</ul>						
 					</td>
@@ -172,7 +167,7 @@
 				</tr>
 				<tr>
 					<td class="sidebarContent">
-						<b>caNanoLab 1.5.1 is now available for </b><a href="#">download</a><b>.
+						<b>caNanoLab 1.5.1 is now available for </b><a href="http://ncicb.nci.nih.gov/download/downloadcalab.jsp">download</a><b>.
 							For information on caNanoLab release, please refer to the </b>
 						<a href="#">caNanoLab Release Notes</a>.
 					</td>
