@@ -57,18 +57,25 @@ function updateSearchFormBasedOnCategory() {
 	}
 }
 
-function showSampleNameDropdown() {
+function showMatchedSampleNameDropdown() {
 	// display progress.gif while waiting for the response.
 	show("loaderImg");
-	hide("browseSampleNames");
-	var selected = dwr.util.getValue("allSampleNameSelect");
-	PublicationManager.getAllSampleNames( function(data) {
-		dwr.util.removeAllOptions("allSampleNameSelect");
-		dwr.util.addOptions("allSampleNameSelect", data);
-		dwr.util.setValue("allSampleNameSelect", selected);
+	hide("matchedSampleSelect");
+	hide("selectMatchedSampleButton");
+	var selected = dwr.util.getValue("matchedSampleSelect");
+	var otherSamples = dwr.util.getValue("otherSamples");
+	SampleManager.getMatchedSampleNames(otherSamples, function(data) {
+		dwr.util.removeAllOptions("matchedSampleSelect");
+		dwr.util.addOptions("matchedSampleSelect", data);
+		dwr.util.setValue("matchedSampleSelect", selected);
 		hide("loaderImg");
-		show("allSampleNameSelect");
+		show("matchedSampleSelect");
+		show("selectMatchedSampleButton");
 	});
+}
+
+function updateOtherSamples() {
+	
 }
 
 function setPublicationDropdowns() {
