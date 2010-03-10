@@ -61,8 +61,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean, UserBean user)
-			throws PublicationException, NoAccessException,
-			DuplicateEntriesException {
+			throws PublicationException, NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}
 

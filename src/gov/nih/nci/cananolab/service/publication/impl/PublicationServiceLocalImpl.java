@@ -52,16 +52,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean, UserBean user)
-			throws PublicationException, NoAccessException,
-			DuplicateEntriesException {
+			throws PublicationException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
 			Publication publication = (Publication) publicationBean
 					.getDomainFile();
-			FileService fileService = new FileServiceLocalImpl();
-			fileService.prepareSaveFile(publication, user);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// check if publication is already entered based on PubMedId or DOI
@@ -72,8 +69,12 @@ public class PublicationServiceLocalImpl implements PublicationService {
 								.getPubMedId());
 				if (dbPublication != null
 						&& !dbPublication.getId().equals(publication.getId())) {
-					throw new DuplicateEntriesException(
-							"PubMed ID is already used");
+					// throw new DuplicateEntriesException(
+					// "PubMed id is already used");
+					// duplicate pubMed ID, update new pub with old pub ID
+					logger.info("PubMed ID " + publication.getPubMedId()
+							+ " is already in use.  Resuse the database entry");
+					publication.setId(dbPublication.getId());
 				}
 			}
 			if (!StringUtils.isEmpty(publication.getDigitalObjectId())) {
@@ -82,10 +83,15 @@ public class PublicationServiceLocalImpl implements PublicationService {
 								.getDigitalObjectId());
 				if (dbPublication != null
 						&& !dbPublication.getId().equals(publication.getId())) {
-					throw new DuplicateEntriesException(
-							"Digital Object ID is already used");
+					// throw new DuplicateEntriesException(
+					// "Digital Object ID is already used");
+					logger.info("DOI " + publication.getDigitalObjectId()
+							+ " is already in use.  Resuse the database entry");
+					publication.setId(dbPublication.getId());
 				}
 			}
+			FileService fileService = new FileServiceLocalImpl();
+			fileService.prepareSaveFile(publication, user);
 			appService.saveOrUpdate(publication);
 			fileService.writeFile(publicationBean, user);
 
@@ -125,8 +131,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					}
 				}
 			}
-		} catch (DuplicateEntriesException e) {
-			throw e;
 		} catch (Exception e) {
 			String err = "Error in saving the publication.";
 			logger.error(err, e);
