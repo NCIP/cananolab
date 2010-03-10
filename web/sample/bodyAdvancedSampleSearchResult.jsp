@@ -11,27 +11,23 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
+<c:url var="printUrl" value="advancedSampleSearch.do">
+	<c:param name="dispatch" value="print" />
+</c:url>
+<c:url var="exportUrl" value="advancedSampleSearch.do">
+	<c:param name="dispatch" value="export" />
+</c:url>
+
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Advanced Sample Search Results" />
 	<jsp:param name="topic" value="sample_search_results_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Back" />
+	<jsp:param name="printLink" value="${printUrl}" />
+	<jsp:param name="exportLink" value="${exportUrl}" />
+
 </jsp:include>
 <table width="100%" align="center">
-	<c:if test="${not empty advancedSamples && empty printView}">
-		<tr style="font-family: verdana, arial, helvetica, sans-serif; font-size: 0.70em;">
-			<td>
-				<c:url var="printUrl" value="advancedSampleSearch.do">
-					<c:param name="dispatch" value="print" />
-				</c:url>
-				<c:url var="exportCurrentUrl" value="advancedSampleSearch.do">
-					<c:param name="dispatch" value="export" />
-				</c:url>
-				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
-				<a href="${exportCurrentUrl}" id="exportLink">Export</a>
-			</td>
-		</tr>
-	</c:if>
 	<tr>
 		<td colspan="2">
 			<c:choose>
@@ -74,15 +70,16 @@
 					varStatus="ind1">
 					<display:column title="${entry.key}" sortable="true">
 						<c:forEach var="item" items="${entry.value}" varStatus="ind2">
-						    ${item.displayName}&nbsp; 						    
+						    ${item.displayName}&nbsp;
 						 	<div id="details${sample.sampleId}:${ind1.count}:${ind2.count}"
 								style="position: relative">
 								<%--<a href="${item.action}" target="detailView">View Details</a>--%>
-								<a id="detailLink${sample.sampleId}:${ind1.count}:${ind2.count}" href="#"
+								<a id="detailLink${sample.sampleId}:${ind1.count}:${ind2.count}"
+									href="#"
 									onclick="showDetailView('${sample.sampleId}:${ind1.count}:${ind2.count}', '${item.action}'); return false;">Details</a>
 								<table
 									id="detailView${sample.sampleId}:${ind1.count}:${ind2.count}"
-									style="display: none; position: absolute; left: -250px; top: 20px; z-index: 5; width:500px; font-size: 10px; background-color: #FFFFFF"
+									style="display: none; position: absolute; left: -250px; top: 20px; z-index: 5; width: 500px; font-size: 10px; background-color: #FFFFFF"
 									class="promptbox">
 									<tr>
 										<td>
@@ -97,7 +94,7 @@
 						</c:forEach>
 					</display:column>
 				</c:forEach>
-				<display:column title="Site" property="location" sortable="true" />				
+				<display:column title="Site" property="location" sortable="true" />
 			</display:table>
 		</td>
 	</tr>
