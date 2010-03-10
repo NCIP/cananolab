@@ -16,6 +16,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -237,10 +238,14 @@ public class PublicationServiceHelper {
 
 		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
 
-		Set<String> samplePublicationIds = new HashSet<String>();
-		Set<String> compositionPublicationIds = new HashSet<String>();
-		Set<String> otherPublicationIds = new HashSet<String>();
-		Set<String> allPublicationIds = new HashSet<String>();
+		// Set<String> samplePublicationIds = new HashSet<String>();
+		// Set<String> compositionPublicationIds = new HashSet<String>();
+		// Set<String> otherPublicationIds = new HashSet<String>();
+		// Set<String> allPublicationIds = new HashSet<String>();
+		Set<Publication> samplePublications = new HashSet<Publication>();
+		Set<Publication> compositionPublications = new HashSet<Publication>();
+		Set<Publication> otherPublications = new HashSet<Publication>();
+		Set<Publication> allPublications = new HashSet<Publication>();
 
 		// check if sample is accessible
 		if (sampleName != null) {
@@ -249,9 +254,11 @@ public class PublicationServiceHelper {
 			if (sample != null) {
 				for (Publication publication : sample
 						.getPublicationCollection()) {
-					samplePublicationIds.add(publication.getId().toString());
+					// samplePublicationIds.add(publication.getId().toString());
+					samplePublications.add(publication);
 				}
-				allPublicationIds.addAll(samplePublicationIds);
+				// allPublicationIds.addAll(samplePublicationIds);
+				allPublications.addAll(samplePublications);
 			}
 		}
 
@@ -270,17 +277,25 @@ public class PublicationServiceHelper {
 			for (Sample sample : samples) {
 				for (Publication publication : sample
 						.getPublicationCollection()) {
-					compositionPublicationIds.add(publication.getId()
-							.toString());
+					// compositionPublicationIds.add(publication.getId()
+					// .toString());
+					compositionPublications.add(publication);
 				}
 			}
-			allPublicationIds.addAll(compositionPublicationIds);
+			// allPublicationIds.addAll(compositionPublicationIds);
+			allPublications.addAll(compositionPublications);
 		}
 
 		// can't query for the entire Publication object due to limitations in
 		// pagination in SDK
+		// DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
+		// .setProjection(Projections.distinct(Property.forName("id")));
+		//		
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-				.setProjection(Projections.distinct(Property.forName("id")));
+				.setProjection(
+						Projections.projectionList().add(
+								Projections.property("id")).add(
+								Projections.property("createdDate")));
 
 		if (!StringUtils.isEmpty(title)) {
 			TextMatchMode titleMatchMode = new TextMatchMode(title);
@@ -359,25 +374,50 @@ public class PublicationServiceHelper {
 				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			otherPublicationIds.add(obj.toString());
+			Object[] row = (Object[]) obj;
+			// otherPublicationIds.add(obj.toString());
+			Publication publication = new Publication();
+			publication.setId((Long) row[0]);
+			publication.setCreatedDate((Date) row[1]);
+			otherPublications.add(publication);
 		}
-		allPublicationIds.addAll(otherPublicationIds);
+		// allPublicationIds.addAll(otherPublicationIds);
+		allPublications.addAll(otherPublications);
 
 		// find the union of all publication Ids
-		if (!samplePublicationIds.isEmpty()) {
-			allPublicationIds.retainAll(samplePublicationIds);
+		// if (!samplePublicationIds.isEmpty()) {
+		// allPublicationIds.retainAll(samplePublicationIds);
+		// }
+		// if (!compositionPublicationIds.isEmpty()) {
+		// allPublicationIds.retainAll(compositionPublicationIds);
+		// }
+		// if (!otherPublicationIds.isEmpty()) {
+		// allPublicationIds.retainAll(otherPublicationIds);
+		// }
+		//		
+		if (!samplePublications.isEmpty()) {
+			allPublications.retainAll(samplePublications);
 		}
-		if (!compositionPublicationIds.isEmpty()) {
-			allPublicationIds.retainAll(compositionPublicationIds);
+		if (!compositionPublications.isEmpty()) {
+			allPublications.retainAll(compositionPublications);
 		}
-		if (!otherPublicationIds.isEmpty()) {
-			allPublicationIds.retainAll(otherPublicationIds);
+		if (!otherPublications.isEmpty()) {
+			allPublications.retainAll(otherPublications);
 		}
-
-		List filteredResults = new ArrayList(allPublicationIds);
+		// order publications by createdDate
+		List<Publication> orderedPubs=new ArrayList<Publication>(allPublications);
+		Collections.sort(orderedPubs,
+				new Comparators.PublicationDateComparator());
+		// get ordered ids
+		List<String>orderedPubIds=new ArrayList<String>();
+		for(Publication pub: orderedPubs) {
+			orderedPubIds.add(pub.getId().toString());
+		}
+		// List filteredResults = new ArrayList(allPublicationIds);
+		List filteredResults = new ArrayList(orderedPubIds);
 		if (user == null) {
 			filteredResults = authService.filterNonPublic(new ArrayList(
-					allPublicationIds));
+					orderedPubIds));
 		}
 		List<String> publicationIds = new ArrayList<String>();
 		for (Object obj : filteredResults) {
