@@ -66,9 +66,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -80,7 +80,7 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
+	 * 
 	 * @param sample
 	 * @throws SampleException
 	 *             , DuplicateEntriesException
@@ -262,7 +262,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -438,39 +438,6 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public SortedSet<String> findAllSampleNames(UserBean user)
-			throws SampleException {
-		try {
-			SortedSet<String> names = new TreeSet<String>(
-					new Comparators.SortableNameComparator());
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select sample.name from gov.nih.nci.cananolab.domain.particle.Sample sample");
-			List results = appService.query(crit);
-			List filteredResults = new ArrayList(results);
-			if (user == null) {
-				filteredResults = helper.getAuthService().filterNonPublic(
-						results);
-			}
-			for (Object obj : filteredResults) {
-				String name = ((String) obj).trim();
-				if (user == null
-						|| helper.getAuthService().checkReadPermission(user,
-								name)) {
-					names.add(name);
-				} else {
-					logger.debug("User doesn't have access to sample of name: "
-							+ name);
-				}
-			}
-			return names;
-		} catch (Exception e) {
-			String err = "Error finding samples for " + user.getLoginName();
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
 
 	public int getNumberOfPublicSamples() throws SampleException {
 		try {

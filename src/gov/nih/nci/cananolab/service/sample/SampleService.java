@@ -49,9 +49,6 @@ public interface SampleService {
 	public SampleBean findSampleByName(String sampleName, UserBean user)
 			throws SampleException, NoAccessException;
 
-	public SortedSet<String> findAllSampleNames(UserBean user)
-			throws SampleException;
-
 	public int getNumberOfPublicSamples() throws SampleException;
 
 	public SortedSet<SortableName> findOtherSamplesFromSamePointOfContact(
@@ -84,4 +81,5 @@ public interface SampleService {
 
 	public void deleteSample(String sampleName, UserBean user)
 			throws SampleException, NoAccessException, NotExistException;
+
 }

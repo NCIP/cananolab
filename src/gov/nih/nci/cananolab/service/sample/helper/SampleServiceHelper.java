@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -1134,5 +1135,55 @@ public class SampleServiceHelper {
 		if (sample.getSampleComposition() != null) {
 			compHelper.removeVisibility(sample.getSampleComposition());
 		}
+	}
+
+	/**
+	 * search sampleNames based on sample name str.  The str can contain just a partial sample name 
+	 * or multiple partial names one per line 
+	 * @param nameStr
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> findSampleNamesBy(String nameStr, UserBean user)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+				.setProjection(Projections.distinct(Property.forName("name")));
+		if (!StringUtils.isEmpty(nameStr)) {
+			// split nameStr to multiple words if needed
+			List<String> nameStrs = StringUtils.parseToWords(nameStr);
+			if (nameStrs.size() == 1) {
+				crit.add(Restrictions
+						.ilike("name", nameStr, MatchMode.ANYWHERE));
+			} else {
+				Disjunction disjunction = Restrictions.disjunction();
+				for (String str : nameStrs) {
+					Criterion strCrit = Restrictions.ilike("name", str,
+							MatchMode.ANYWHERE);
+					disjunction.add(strCrit);
+				}
+				crit.add(disjunction);
+			}
+		}
+		List results = appService.query(crit);
+		List filteredResults = new ArrayList(results);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
+		}
+		List<String> names = new ArrayList<String>();
+		for (Object obj : filteredResults) {
+			String name = ((String) obj).trim();
+			if (user == null || authService.checkReadPermission(user, name)) {
+				names.add(name);
+			} else {
+				logger.debug("User doesn't have access to sample of name: "
+						+ name);
+			}
+		}
+		Collections.sort(names);
+		return names;
 	}
 }
