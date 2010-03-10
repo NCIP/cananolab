@@ -5,7 +5,11 @@
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-
+<script type="text/javascript" src="javascript/SampleManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <c:set var="title" value="Clone" />
 <jsp:include page="/bodyTitle.jsp">
@@ -25,12 +29,12 @@
 							Clone from an Existing Sample *
 						</td>
 						<td width="100">
-							<html:text property="sampleBean.cloningSampleName" size="50" />
+							<html:text property="sampleBean.cloningSampleName" size="50" styleId="cloningSampleName"/>
 						</td>
-						<td rowspan="2" width="30" height="30">
-							<img src="images/icon_browse.jpg" align="middle" width="30"
-								onclick="javascript: showhide('browseSampleSelect');" alt="search existing samples" />
-						</td>
+						<td colspan="2">
+							<a href="#" onclick="showMatchedSampleNameDropdown()"><img src="images/icon_browse.jpg" align="middle"
+								alt="search existing samples" border="0"/></a>
+						</td>						
 					</tr>
 					<tr>
 						<td class="cellLabel" valign="top">
@@ -42,61 +46,14 @@
 					</tr>
 				</table>
 			</td>
-			<td>
+			<td width="40%">
 				<table>
 					<tr>
-						<td valign="top">
+						<td valign="top"><img src="images/ajax-loader.gif" border="0" class="counts"
+								id="loaderImg" style="display: none">							
 							<html:select property="sampleBean.cloningSampleName"
-								styleId="browseSampleSelect" size="15" style="display:none">
-								<option>
-									KI-HKarlssonCRT2008-01
-								</option>
-								<option>
-									KI-HKarlssonCRT2008-02
-								</option>
-								<option>
-									KI-HKarlssonCRT2008-03
-								</option>
-								<option>
-									KI-HKarlssonCRT2008-04
-								</option>
-								<option>
-									KI-HKarlssonCRT2008-05
-								</option>
-								<option>
-									KI-HKarlssonCRT2008-06
-								</option>
-								<option>
-									KI-HKarlssonCRT2008-07
-								</option>
-								<option>
-									KI-HKarlssonCRT2008-08
-								</option>
-								<option>
-									KI-HKarlssonTL2009-01
-								</option>
-								<option>
-									KI-HKarlssonTL2009-02
-								</option>
-								<option>
-									KI-HKarlssonTL2009-03
-								</option>
-								<option>
-									KI-HKarlssonTL2009-04
-								</option>
-								<option>
-									KI-HKarlssonTL2009-05
-								</option>
-								<option>
-									KI-HKarlssonTL2009-06
-								</option>
-								<option>
-									KI-HKarlssonTL2009-07
-								</option>
-								<option>
-									KI-HKarlssonTL2009-08
-								</option>
-							</html:select>
+								styleId="matchedSampleSelect" size="5" style="display:none" onclick="updateCloningSample()">							
+							</html:select>							
 						</td>
 					</tr>
 				</table>
