@@ -70,28 +70,28 @@ public class EndNoteXMLHandler {
 	private StringBuilder keywordsStr;
 	private StringBuilder keywordName;
 	private StringBuilder publicationAbstract;
-	
+
 	// List for holding Every Publication parsed from file.
 	private List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
-	
+
 	// List for holding Unique Publication parsed from file.
 	private List<PublicationBean> uniquePubList = new ArrayList<PublicationBean>();
-	
+
 	// List for holding Duplicated Publication found in file.
 	private List<PublicationBean> dupPubList = new ArrayList<PublicationBean>();
-	
+
 	// Set for checking duplication by PubMedId.
 	private Set<String> pubMedSet = new HashSet<String>();
-	
+
 	// Set for checking duplication by DOI.
 	private Set<String> doiSet = new HashSet<String>();
-	
+
 	// Map for checking duplication by Title + 1st Author.
 	private Map<String, PublicationBean> titleMap = new HashMap<String, PublicationBean>();
-	
+
 	// Marker for ignoring data from file (retrieved from PubMed).
-	private boolean hasPubMedData = false; 
-	
+	private boolean hasPubMedData = false;
+
 	private InputStream inputStream;
 	private PrintStream log;
 	private PrintStream allLog;
@@ -99,13 +99,14 @@ public class EndNoteXMLHandler {
 	private PrintStream dupLog;
 	private PrintStream savedLog;
 	private PrintStream uniqueLog;
-	
-	private static final String[] visibilityGroups = {"Public"};
 
-	public EndNoteXMLHandler(String inputFileName, boolean moreLog) throws FileNotFoundException {
-		this.inputStream = new BufferedInputStream(
-				new FileInputStream(inputFileName));
-		
+	private static final String[] visibilityGroups = { "Public" };
+
+	public EndNoteXMLHandler(String inputFileName, boolean moreLog)
+			throws FileNotFoundException {
+		this.inputStream = new BufferedInputStream(new FileInputStream(
+				inputFileName));
+
 		int index = inputFileName.lastIndexOf('.');
 		if (index == -1) {
 			index = inputFileName.length();
@@ -130,53 +131,65 @@ public class EndNoteXMLHandler {
 
 	public boolean parsePublicationXML(UserBean user) {
 		boolean isSuccess = true;
-		int count = 1;			
+		int count = 1;
 		log.println("Start at: " + Calendar.getInstance().getTime());
 		try {
 			userName = user.getLoginName();
-			//1.Parse input stream.
+			// 1.Parse input stream.
 			doParse(inputStream);
 			log.println("==============================================");
-			log.println("Total Publication parsed: " + publicationCollection.size());
+			log.println("Total Publication parsed: "
+					+ publicationCollection.size());
 			log.println("==============================================");
-			log.println("Duplicated Publication found in File: " + dupPubList.size());
+			log.println("Duplicated Publication found in File: "
+					+ dupPubList.size());
 			log.println("==============================================");
-			log.println("Unique Publication found in File: " + uniquePubList.size());
+			log.println("Unique Publication found in File: "
+					+ uniquePubList.size());
 			log.println("==============================================");
-			
-			//2.Print every/all publication parsed before saving.
+
+			// 2.Print every/all publication parsed before saving.
 			if (!publicationCollection.isEmpty()) {
-				allLog.println("==============================================");
-				allLog.println("Total Publication parsed: " + publicationCollection.size());
+				allLog
+						.println("==============================================");
+				allLog.println("Total Publication parsed: "
+						+ publicationCollection.size());
 				for (PublicationBean pubBean : publicationCollection) {
 					printLog(pubBean, allLog, count++);
 				}
 			}
-			//3.Print duplicated publication before saving.
+			// 3.Print duplicated publication before saving.
 			if (!dupPubList.isEmpty()) {
 				count = 1;
-				dupLog.println("==============================================");
-				dupLog.println("Duplicated Publication found in File: " + dupPubList.size());
+				dupLog
+						.println("==============================================");
+				dupLog.println("Duplicated Publication found in File: "
+						+ dupPubList.size());
 				for (PublicationBean pubBean : dupPubList) {
 					this.printLog(pubBean, dupLog, count++);
 				}
-				dupLog.println("==============================================");
+				dupLog
+						.println("==============================================");
 			}
-			//4.Print unique/filtered publication before saving.
+			// 4.Print unique/filtered publication before saving.
 			if (!uniquePubList.isEmpty()) {
 				count = 1;
-				uniqueLog.println("==============================================");
-				uniqueLog.println("Unique Publication found in File: " + uniquePubList.size());
+				uniqueLog
+						.println("==============================================");
+				uniqueLog.println("Unique Publication found in File: "
+						+ uniquePubList.size());
 				for (PublicationBean pubBean : uniquePubList) {
 					this.printLog(pubBean, uniqueLog, count++);
 				}
-				uniqueLog.println("==============================================");
+				uniqueLog
+						.println("==============================================");
 			}
 			log.println("Start saving publication.");
 			log.println("==============================================");
 			int pubUpdated = this.savePublication(user);
-			isSuccess = pubUpdated > 0; 
-			log.println("Saving done, total Publication saved to database: " + pubUpdated);
+			isSuccess = pubUpdated > 0;
+			log.println("Saving done, total Publication saved to database: "
+					+ pubUpdated);
 			if (!isSuccess) {
 				log.println("ERROR: Please check log file.");
 			}
@@ -232,111 +245,141 @@ public class EndNoteXMLHandler {
 				Publication publication = (Publication) pubBean.getDomainFile();
 				publication.setStatus("published");
 				publication.setCategory("peer review article");
-				
+
 				try {
-					//1.check for duplicated publication in DB by PubMedId.
+					// 1.check for duplicated publication in DB by PubMedId.
 					Long pubMedId = publication.getPubMedId();
 					if (pubMedId != null && pubMedId != 0) {
-						Publication pub = service.findPublicationByKey(
+						PublicationBean pBean = service.findPublicationByKey(
 								"pubMedId", pubMedId, user);
-						if (pub != null && pub.getId() != null && pub.getId() != 0) {
-							log.println("Found duplicated PubMedId in DB: " + pubMedId);
-							dbLog.println("==============================================");
-							dbLog.println("Found duplicated PubMedId in DB: " + pubMedId);
-							this.printLog(pub, dbLog, ++dupCount, true); // No author list.
-							
+						Publication pub = (Publication) pBean.getDomainFile();
+						if (pub != null && pub.getId() != null
+								&& pub.getId() != 0) {
+							log.println("Found duplicated PubMedId in DB: "
+									+ pubMedId);
+							dbLog
+									.println("==============================================");
+							dbLog.println("Found duplicated PubMedId in DB: "
+									+ pubMedId);
+							this.printLog(pub, dbLog, ++dupCount, true); // No
+																			// author
+																			// list.
+
 							// Update DB publication with new PubMed data.
-							this.updatePubMedData(service, 
-									pub.getId().toString(), pubBean, user);
-							
-							continue; // Found duplicated PubMedId, skip this publication.
+							this.updatePubMedData(service, pub.getId()
+									.toString(), pubBean, user);
+
+							continue; // Found duplicated PubMedId, skip this
+										// publication.
 						}
 					}
-					//2.check for duplicated publication in DB by DOI.
+					// 2.check for duplicated publication in DB by DOI.
 					String doi = publication.getDigitalObjectId();
 					if (!StringUtils.isEmpty(doi)) {
-						Publication pub = service.findPublicationByKey(
+						PublicationBean pBean = service.findPublicationByKey(
 								"digitalObjectId", doi, user);
-						if (pub != null && pub.getId() != null && pub.getId() != 0) {
+						Publication pub = (Publication) pBean.getDomainFile();
+						if (pub != null && pub.getId() != null
+								&& pub.getId() != 0) {
 							log.println("Found duplicated DOI in DB: " + doi);
-							dbLog.println("==============================================");
+							dbLog
+									.println("==============================================");
 							dbLog.println("Found duplicated DOI in DB: " + doi);
-							this.printLog(pub, dbLog, ++dupCount, true); // No author list.
-							
+							this.printLog(pub, dbLog, ++dupCount, true); // No
+																			// author
+																			// list.
+
 							// Update DB publication with new PubMed data.
-							this.updatePubMedData(service, 
-									pub.getId().toString(), pubBean, user);
-							
-							continue; // Found duplicated DOI, skip this publication.
+							this.updatePubMedData(service, pub.getId()
+									.toString(), pubBean, user);
+
+							continue; // Found duplicated DOI, skip this
+										// publication.
 						}
 					}
-					//3.check for duplicated publication in DB by Title + 1st Author.
+					// 3.check for duplicated publication in DB by Title + 1st
+					// Author.
 					String title = publication.getTitle().toLowerCase();
 					if (title.endsWith(".")) {
 						title = title.substring(0, title.length() - 1);
 					}
-					List<Publication> publications = service.findPublicationsBy(
-							'*' + title + '*', null, null, null, null, null, null, 
-							null, null, null, null, null, null, null, user);
+					List<Publication> publications = service
+							.findPublicationsBy('*' + title + '*', null, null,
+									null, null, null, null, null, null, null,
+									null, null, null, null, user);
 					if (!publications.isEmpty()) {
-						//3a.filter result by comparing 1st Author.
+						// 3a.filter result by comparing 1st Author.
 						String firstAuthorName = "";
 						if (!pubBean.getAuthors().isEmpty()) {
-							// Get new 1st Author's name for Author comparing later.
+							// Get new 1st Author's name for Author comparing
+							// later.
 							Author firstAuthor = pubBean.getAuthors().get(0);
 							firstAuthorName = firstAuthor.getLastName();
 						}
-						List<Publication> pubs = new ArrayList<Publication>(publications);
+						List<Publication> pubs = new ArrayList<Publication>(
+								publications);
 						for (int i = 0; i < pubs.size(); i++) {
 							Publication pub = pubs.get(i);
-							PublicationBean oldPubBean = new PublicationBean(pub);
+							PublicationBean oldPubBean = new PublicationBean(
+									pub);
 							List<Author> authors = oldPubBean.getAuthors();
 							if (authors != null && !authors.isEmpty()) {
 								String name = authors.get(0).getLastName();
 								if (!firstAuthorName.equalsIgnoreCase(name)) {
-									pubs.remove(i); // Not a match, remove from dup-list.
+									pubs.remove(i); // Not a match, remove from
+													// dup-list.
 								}
 							} else {
-								log.println("WARNING: empty Author for following DB publication");
+								log
+										.println("WARNING: empty Author for following DB publication");
 								this.printLog(oldPubBean, log, -3);
 								continue;
 							}
 						}
-						//3b.if result set is still not empty now then there is a match.  
-						if  (!pubs.isEmpty()) {
-							log.println("Found duplicated Title (" + title + ") + 1st Author ("
-									+ firstAuthorName + ") in DB.");
+						// 3b.if result set is still not empty now then there is
+						// a match.
+						if (!pubs.isEmpty()) {
+							log.println("Found duplicated Title (" + title
+									+ ") + 1st Author (" + firstAuthorName
+									+ ") in DB.");
 							for (Publication pub : pubs) {
-								dbLog.println("==============================================");
-								dbLog.println("Found duplicated Title + 1st Author in DB.");
+								dbLog
+										.println("==============================================");
+								dbLog
+										.println("Found duplicated Title + 1st Author in DB.");
 								this.printLog(pub, dbLog, ++dupCount);
 							}
-							//3c.update old publication only when new PubMed data exists.
+							// 3c.update old publication only when new PubMed
+							// data exists.
 							for (int i = 0; i < pubs.size(); i++) {
 								Publication pub = pubs.get(i);
-								this.updatePubMedData(service, 
-										pub.getId().toString(), pubBean, user);
+								this.updatePubMedData(service, pub.getId()
+										.toString(), pubBean, user);
 							}
-							continue; // Found duplication, skip this publication.
+							continue; // Found duplication, skip this
+										// publication.
 						}
 					}
-					//4.setup publication object inside publicationBean & save.
-					pubBean.setupDomain(Constants.FOLDER_PUBLICATION, user.getLoginName());
+					// 4.setup publication object inside publicationBean & save.
+					pubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
+							.getLoginName());
 					service.savePublication(pubBean, user);
-					
-					//5.set publication object visibility.
-					authService.assignVisibility(pubBean.getDomainFile().getId()
-							.toString(), pubBean.getVisibilityGroups(), null);
-		
-					//6.set author visibility.
+
+					// 5.set publication object visibility.
+					authService.assignVisibility(pubBean.getDomainFile()
+							.getId().toString(), pubBean.getVisibilityGroups(),
+							null);
+
+					// 6.set author visibility.
 					if (publication.getAuthorCollection() != null) {
 						for (Author author : publication.getAuthorCollection()) {
 							if (author != null) {
-								if (author.getId() != null &&
-									author.getId().toString().trim().length() > 0) {
-									authService.assignVisibility(
-										author.getId().toString(), 
-										pubBean.getVisibilityGroups(), null);
+								if (author.getId() != null
+										&& author.getId().toString().trim()
+												.length() > 0) {
+									authService.assignVisibility(author.getId()
+											.toString(), pubBean
+											.getVisibilityGroups(), null);
 								}
 							}
 						}
@@ -368,14 +411,14 @@ public class EndNoteXMLHandler {
 			}
 			publication = (Publication) publicationBean.getDomainFile();
 			publicationCollection.add(publicationBean);
-			
+
 			// True: data retrieved from PubMed, False: data parsed from file.
 			hasPubMedData = false;
 		}
 
 		public void endElement(String uri, String localName, String qname) {
 			boolean duplicatedPub = false;
-			//1.filter duplicated publication by PubMedId.
+			// 1.filter duplicated publication by PubMedId.
 			Long pubMedId = publication.getPubMedId();
 			if (pubMedId != null && pubMedId != 0) {
 				if (pubMedSet.contains(pmid)) {
@@ -385,7 +428,7 @@ public class EndNoteXMLHandler {
 					pubMedSet.add(pmid);
 				}
 			}
-			//2.filter duplicated publication by DOI.
+			// 2.filter duplicated publication by DOI.
 			String doi = publication.getDigitalObjectId();
 			if (!StringUtils.isEmpty(doi)) {
 				if (doiSet.contains(doi)) {
@@ -395,7 +438,8 @@ public class EndNoteXMLHandler {
 					doiSet.add(doi);
 				}
 			}
-			//3.filter duplicated publication by Title + 1st Author's last name.
+			// 3.filter duplicated publication by Title + 1st Author's last
+			// name.
 			String title = publication.getTitle().toLowerCase();
 			if (title.endsWith(".")) {
 				title = title.substring(0, title.length() - 1);
@@ -403,23 +447,29 @@ public class EndNoteXMLHandler {
 			if (!StringUtils.isEmpty(title)) {
 				if (titleMap.containsKey(title)) {
 					log.println("Title is duplicated: " + title);
-					
+
 					PublicationBean pubBean = titleMap.get(title);
 					List<Author> oldAuthors = pubBean.getAuthors();
 					List<Author> newAuthors = publicationBean.getAuthors();
-					if (oldAuthors != null && !oldAuthors.isEmpty() &&
-						newAuthors != null && !newAuthors.isEmpty()) {
+					if (oldAuthors != null && !oldAuthors.isEmpty()
+							&& newAuthors != null && !newAuthors.isEmpty()) {
 						Author oldAuthor = oldAuthors.get(0);
 						Author newAuthor = newAuthors.get(0);
 						String oldName = oldAuthor.getLastName();
 						String newName = newAuthor.getLastName();
-						// Duplicated if both 1st Author's last name are the same.
-						if (oldName != null && oldName.equalsIgnoreCase(newName)) {
-							// Don't replace old pubBean if new pubMedId is empty.
-							Publication pub = (Publication) publicationBean.getDomainFile();
-							if (pub.getPubMedId() == null || pub.getPubMedId() == 0) {
-								log.println("Title (" + title + ") + 1st Author ("
-										+ oldName + ") is duplicated: ");
+						// Duplicated if both 1st Author's last name are the
+						// same.
+						if (oldName != null
+								&& oldName.equalsIgnoreCase(newName)) {
+							// Don't replace old pubBean if new pubMedId is
+							// empty.
+							Publication pub = (Publication) publicationBean
+									.getDomainFile();
+							if (pub.getPubMedId() == null
+									|| pub.getPubMedId() == 0) {
+								log.println("Title (" + title
+										+ ") + 1st Author (" + oldName
+										+ ") is duplicated: ");
 								duplicatedPub = true;
 							}
 						} else {
@@ -428,7 +478,8 @@ public class EndNoteXMLHandler {
 						}
 					} else {
 						log.println("Author list not match, oldAuthors.size()="
-							+ oldAuthors.size() + ", newAuthors.size()=" + newAuthors.size());
+								+ oldAuthors.size() + ", newAuthors.size()="
+								+ newAuthors.size());
 					}
 				} else {
 					titleMap.put(title, publicationBean);
@@ -470,7 +521,8 @@ public class EndNoteXMLHandler {
 		}
 
 		public void endElement(String uri, String localName, String qname) {
-			if (!StringUtils.isEmpty(url.toString()) &&	url.indexOf("http:") != -1) {
+			if (!StringUtils.isEmpty(url.toString())
+					&& url.indexOf("http:") != -1) {
 				publication.setUriExternal(true);
 				publicationBean.setExternalUrl(url.toString());
 				int index = url.indexOf("list_uids=");
@@ -482,16 +534,19 @@ public class EndNoteXMLHandler {
 							Long pubMedId = Long.valueOf(pmid);
 							// Call PubMed for accurate data.
 							PublicationBean newPubBean = new PublicationBean();
-							PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
-							for(; !hasPubMedData; ) {
-								hasPubMedData = phandler.parsePubMedXML(pubMedId, newPubBean);
+							PubMedXMLHandler phandler = PubMedXMLHandler
+									.getInstance();
+							for (; !hasPubMedData;) {
+								hasPubMedData = phandler.parsePubMedXML(
+										pubMedId, newPubBean);
 								if (hasPubMedData) {
 									publicationBean.copyPubMedData(newPubBean);
 								} else {
-									log.println(
-										"Warning: error retrieving PubMed data: " + pmid);
+									log
+											.println("Warning: error retrieving PubMed data: "
+													+ pmid);
 									// Pause 1 second then call PubMed again.
-									Thread.sleep(1000); 
+									Thread.sleep(1000);
 								}
 							}
 							publication.setPubMedId(pubMedId);
@@ -503,18 +558,21 @@ public class EndNoteXMLHandler {
 				} else {
 					index = url.indexOf("doilookup?in_doi=");
 					if (index != -1) {
-						doi = new StringBuilder(url.substring(index + 17).trim());
+						doi = new StringBuilder(url.substring(index + 17)
+								.trim());
 						publication.setDigitalObjectId(doi.toString());
 					} else {
 						/**
-						 * All DOI names start with "10.", see DOI specification below,
+						 * All DOI names start with "10.", see DOI specification
+						 * below,
 						 * http://www.doi.org/handbook_2000/enumeration.html#2.2
 						 */
 						index = url.indexOf("dx.doi.org/");
 						if (index != -1) {
 							index = url.indexOf("10.", index + 11);
 							if (index != -1) {
-								doi = new StringBuilder(url.substring(index).trim());
+								doi = new StringBuilder(url.substring(index)
+										.trim());
 								publication.setDigitalObjectId(doi.toString());
 							}
 						}
@@ -643,21 +701,25 @@ public class EndNoteXMLHandler {
 					startPage = pages[0].trim(); // May contain space(s).
 					if (pages.length == 2) {
 						endPage = pages[1].trim(); // May contain space(s).
-						int endPagePrefixLength = 
-							startPage.length() - endPage.length();
+						int endPagePrefixLength = startPage.length()
+								- endPage.length();
 						if (endPagePrefixLength > 0) {
-							String endPagePrefix = 
-								startPage.substring(0, endPagePrefixLength);
+							String endPagePrefix = startPage.substring(0,
+									endPagePrefixLength);
 							endPage = endPagePrefix + endPage;
 						}
 					} else {
 						endPage = startPage;
 					}
 					try {
-						publication.setStartPage(Integer.valueOf(startPage).toString());
-						publication.setEndPage(Integer.valueOf(endPage).toString());
+						publication.setStartPage(Integer.valueOf(startPage)
+								.toString());
+						publication.setEndPage(Integer.valueOf(endPage)
+								.toString());
 					} catch (NumberFormatException ex) {
-						log.println("Warning: Abnormal Page string: " + pageStr);
+						log
+								.println("Warning: Abnormal Page string: "
+										+ pageStr);
 						publication.setStartPage(pageStr.toString().trim());
 						publication.setEndPage(null);
 					}
@@ -692,17 +754,16 @@ public class EndNoteXMLHandler {
 			String name = fullName.toString().trim();
 			if (!StringUtils.isEmpty(name) && !name.equalsIgnoreCase("et al.")) {
 				/**
-				 * Expect following 5 formats of name (Initial is 1 char):
-				 * 1. lastName, Initial(s). (Gratton, S. E.) 
-				 * 2. lastName, firstName Initial(s). (Hill, Haley D.)
-				 * 3. lastName, firstName (Mrksich, Milan)
-				 * 4. firstName lastName (Bifeng Pan)
-				 * 5. Initial(s). lastName (A. K. M. Newaz)
-				 * Everything else will be set as lastName.
+				 * Expect following 5 formats of name (Initial is 1 char): 1.
+				 * lastName, Initial(s). (Gratton, S. E.) 2. lastName, firstName
+				 * Initial(s). (Hill, Haley D.) 3. lastName, firstName (Mrksich,
+				 * Milan) 4. firstName lastName (Bifeng Pan) 5. Initial(s).
+				 * lastName (A. K. M. Newaz) Everything else will be set as
+				 * lastName.
 				 */
-				int index = name.indexOf(","); 
+				int index = name.indexOf(",");
 				if (index > 0) {
-					// 1. lastName, Initial(s). (Gratton, S. E.) 
+					// 1. lastName, Initial(s). (Gratton, S. E.)
 					// 2. lastName, firstName Initial(s). (Hill, Haley D.)
 					// 3. lastName, firstName (Mrksich, Milan)
 					author.setLastName(name.substring(0, index));
@@ -711,11 +772,11 @@ public class EndNoteXMLHandler {
 					StringBuilder initial = new StringBuilder(name.length());
 					StringBuilder first = new StringBuilder(name.length());
 					for (int i = 0; i < names.length; i++) {
-						String str = names[i].trim(); 
+						String str = names[i].trim();
 						if (str.length() > 1) {
 							first.append(str).append(' ');
 						} else {
-							initial.append(str); //Assume 1-char Initial.
+							initial.append(str); // Assume 1-char Initial.
 						}
 					}
 					author.setFirstName(first.toString().trim());
@@ -734,11 +795,12 @@ public class EndNoteXMLHandler {
 						StringBuilder initial = new StringBuilder(name.length());
 						StringBuilder first = new StringBuilder(name.length());
 						for (int i = 0; i < names.length - 1; i++) {
-							String str = names[i].trim(); 
+							String str = names[i].trim();
 							if (str.length() > 1) {
 								first.append(str);
 							} else {
-								initial.append(str); //Assume Initial is 1-char.
+								initial.append(str); // Assume Initial is
+														// 1-char.
 							}
 						}
 						author.setFirstName(first.toString());
@@ -748,7 +810,7 @@ public class EndNoteXMLHandler {
 					}
 				}
 				if (author.getFirstName() == null) {
-					author.setFirstName(""); //firstName can't be null in DB.
+					author.setFirstName(""); // firstName can't be null in DB.
 				}
 				author.setCreatedBy(userName);
 				authorList.add(author);
@@ -823,8 +885,10 @@ public class EndNoteXMLHandler {
 		this.printLog(publication, log, count, false);
 	}
 
-	private void printLog(Publication publication, PrintStream log, int count, boolean simplified) {
-		log.println("==================================== [" + count + "] =====");
+	private void printLog(Publication publication, PrintStream log, int count,
+			boolean simplified) {
+		log.println("==================================== [" + count
+				+ "] =====");
 		log.println("publication id: " + publication.getId());
 		log.println("title: " + publication.getTitle());
 		if (publication.getTitle() == null) {
@@ -865,7 +929,7 @@ public class EndNoteXMLHandler {
 
 	/**
 	 * Update DB with new PubMed data for matched PubMedId result.
-	 *  
+	 * 
 	 * @param service
 	 * @param oldPubId
 	 * @param newPubBean
@@ -876,28 +940,32 @@ public class EndNoteXMLHandler {
 			String oldPubId, PublicationBean newPubBean, UserBean user) {
 		boolean result = true;
 		try {
-			//1.load PublicationBean from database by Id.
-			PublicationBean oldPubBean = service.findPublicationById(oldPubId, user);
-			
-			//2.copy PubMed data from new bean to old bean.
-			String oldAbstract = null; 
+			// 1.load PublicationBean from database by Id.
+			PublicationBean oldPubBean = service.findPublicationById(oldPubId,
+					user);
+
+			// 2.copy PubMed data from new bean to old bean.
+			String oldAbstract = null;
 			Publication oldPub = (Publication) oldPubBean.getDomainFile();
 			Publication newPub = (Publication) newPubBean.getDomainFile();
-			if (StringUtils.isEmpty(newPub.getDescription()) &&
-				!StringUtils.isEmpty(oldPub.getDescription())) {
-				oldAbstract =  oldPub.getDescription(); //reserve abstract.
+			if (StringUtils.isEmpty(newPub.getDescription())
+					&& !StringUtils.isEmpty(oldPub.getDescription())) {
+				oldAbstract = oldPub.getDescription(); // reserve abstract.
 			}
 			oldPubBean.copyPubMedData(newPubBean);
-			oldPubBean.setupDomain(Constants.FOLDER_PUBLICATION, user.getLoginName());
+			oldPubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
+					.getLoginName());
 			if (oldAbstract != null) {
 				oldPub.setDescription(oldAbstract);
 			}
-			
-			//3.update old bean.
+
+			// 3.update old bean.
 			service.savePublication(oldPubBean, user);
 
-			log.println("Finished updating DB publication with new publication.");
-			dbLog.println("Finished updating DB publication with new publication.");
+			log
+					.println("Finished updating DB publication with new publication.");
+			dbLog
+					.println("Finished updating DB publication with new publication.");
 			this.printLog(oldPubBean, dbLog, 0);
 		} catch (Exception e) {
 			log.println("Error updating DB Publication with bean below:");
@@ -917,26 +985,28 @@ public class EndNoteXMLHandler {
 			boolean moreLog = false;
 			try {
 				moreLog = Boolean.valueOf(args[3]);
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 			try {
 				// Call CSM to authenticate the user.
 				LoginService loginservice = new LoginService(
 						Constants.CSM_APP_NAME);
 				UserBean user = loginservice.login(userLoginName, userPassword);
-				EndNoteXMLHandler endNotehandler = new EndNoteXMLHandler(inputFileName, moreLog);
+				EndNoteXMLHandler endNotehandler = new EndNoteXMLHandler(
+						inputFileName, moreLog);
 				isSuccess = endNotehandler.parsePublicationXML(user);
 			} catch (FileNotFoundException e) {
 				System.out.println("Input file not found.");
 				e.printStackTrace(System.out);
 			} catch (Exception e) {
-				System.out.println("Can't log in the user: " + userLoginName + 
-						", with password: " + userPassword);
+				System.out.println("Can't log in the user: " + userLoginName
+						+ ", with password: " + userPassword);
 				e.printStackTrace(System.out);
 			}
 		} else {
 			System.out.println("Invalid argument!");
-			System.out.println(
-					"java EndnoteParser <account> <password> <inputFileName> [true/false]");
+			System.out
+					.println("java EndnoteParser <account> <password> <inputFileName> [true/false]");
 		}
 		System.exit(isSuccess ? 0 : 1);
 	}
