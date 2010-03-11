@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -70,13 +71,49 @@ public class DWRPublicationManager {
 		if (form == null) {
 			return null;
 		}
-		PublicationBean oldPubBean = (PublicationBean) form.get("publication");
-		PublicationBean newPubBean = this.searchPubMedById(pubmedID);
+		PublicationBean publicationBean = (PublicationBean) form
+				.get("publication");
 
-		// Copy PubMed data so that we can erase previous result.
-		oldPubBean.copyPubMedData(newPubBean);
+		// New a pubBean each time, so we know if parsing is success or not.
+		PublicationBean newPubBean = searchPubMedById(pubmedID);
+		// Copy PubMed data into form bean
+		publicationBean.copyPubMedData(newPubBean);
+		return publicationBean;
+	}
 
-		return oldPubBean;
+	public PublicationBean updatePubMedWithExistingPublication(String pubmedID) {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		PublicationBean publicationBean = this.retrievePubMedInfo(pubmedID);
+		Publication publication = (Publication) publicationBean.getDomainFile();
+			// search database record for pubMed ID
+		try {
+			PublicationService service = new PublicationServiceLocalImpl();
+			PublicationBean dbPubBean = service.findPublicationByKey(
+					"pubMedId", new Long(pubmedID), user);
+			if (dbPubBean != null) {
+				// update form publication with data stored in the databbase
+				Publication dbPub = (Publication) dbPubBean.getDomainFile();
+				publication.setId(dbPub.getId());
+				publication.setCreatedBy(dbPub.getCreatedBy());
+				publication.setCreatedDate(dbPub.getCreatedDate());
+				publication.setCategory(dbPub.getCategory());
+				publication.setDescription(dbPub.getDescription());
+				publication.setKeywordCollection(dbPub.getKeywordCollection());
+				publication.setStatus(dbPub.getStatus());
+				publication.setType(dbPub.getType());
+				publicationBean
+						.setSampleNamesStr(dbPubBean.getSampleNamesStr());
+				return publicationBean;
+			}
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication with Pub Med ID "
+					+ pubmedID);
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication with Pub Med ID "
+					+ pubmedID);
+		}
+		return null;
 	}
 
 	/**
