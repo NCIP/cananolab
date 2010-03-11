@@ -106,6 +106,7 @@
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
 			<include method="searchPubMedById" />
 			<include method="retrievePubMedInfo" />
+			<include method="updatePubMedWithExistingPublication"/>
 			<include method="retrieveCurrentPub" />
 			<include method="addAuthor" />
 			<include method="deleteAuthor" />
@@ -170,7 +171,7 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
-			<param name="include" value="authors, domainFile, keywordsStr" />
+			<param name="include" value="authors, domainFile, keywordsStr, sampleNamesStr" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Publication">
