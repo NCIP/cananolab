@@ -355,22 +355,15 @@
 						Sample Name
 					</td>
 					<td>
-						<html:textarea property="otherSamples" cols="60">
-							<c:if
-								test="${!empty publicationForm.map.publication.sampleNames}">
-								<c:forEach var="sampleName"
-									items="${publicationForm.map.publication.sampleNames}">
-										${sampleName}
-									<br />
-								</c:forEach>
-							</c:if>
-						</html:textarea>
-						<br><em>one name per line</em>
+						<html:textarea property="publication.sampleNamesStr" cols="60" styleId="associatedSampleNames"/>
+						<br>
+						<em>one name per line</em>
 					</td>
 					<td width="5">
 						<a href="#" onclick="showMatchedSampleNameDropdown()"><img
 								src="images/icon_browse.jpg" align="middle"
-								alt="search existing samples" border="0" /></a>
+								alt="search existing samples" border="0" />
+						</a>
 					</td>
 					<td width="45%">
 						<table>
@@ -378,14 +371,13 @@
 								<td>
 									<img src="images/ajax-loader.gif" border="0" class="counts"
 										id="loaderImg" style="display: none">
-									<html:select property="otherSamples" multiple="true" size="5"
-										styleId="matchedSampleSelect" style="display: none">
+									<html:select property="publication.sampleNamesStr" multiple="true"
+										size="5" styleId="matchedSampleSelect" style="display: none">
 									</html:select>
 								</td>
 								<td>
-									<a href="#"
-										onclick="updateOtherSamples()" id="selectMatchedSampleButton"
-										style="display: none">select</a>
+									<a href="#" onclick="updateAssociatedSamples()"
+										id="selectMatchedSampleButton" style="display: none">select</a>
 								</td>
 							</tr>
 						</table>
@@ -406,7 +398,7 @@
 			</td>
 			<td>
 				<html:select property="publication.visibilityGroups" multiple="true"
-					size="6">
+					size="6" styleId="visibilityGroups">
 					<html:options name="allVisibilityGroups" />
 				</html:select>
 				<br>
