@@ -163,7 +163,7 @@ public class CharacterizationBean {
 	}
 
 	public void resetDomainCopy(Characterization copy, boolean copyData) {
-		// clear Ids, reset createdBy and createdDate, add prefix to
+		// clear Ids, reset createdBy add prefix to
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		

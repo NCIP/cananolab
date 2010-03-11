@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.dto.common;
 
-import java.util.Date;
-
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.Constants;
+
+import java.util.Date;
 
 /**
  * View bean for a cell in a table
