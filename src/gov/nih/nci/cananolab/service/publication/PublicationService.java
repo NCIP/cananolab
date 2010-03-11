@@ -32,7 +32,7 @@ public interface PublicationService {
 	public PublicationBean findPublicationById(String publicationId,
 			UserBean user) throws PublicationException, NoAccessException;
 
-	public Publication findPublicationByKey(String keyName, Object keyValue,
+	public PublicationBean findPublicationByKey(String keyName, Object keyValue,
 			UserBean user) throws PublicationException, NoAccessException;
 
 	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
