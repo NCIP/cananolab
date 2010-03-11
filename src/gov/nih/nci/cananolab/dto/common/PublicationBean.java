@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -30,7 +29,8 @@ public class PublicationBean extends FileBean {
 	private String[] researchAreas;
 	private List<Author> authors = new ArrayList<Author>();
 	private Author theAuthor = new Author();
-
+	private String sampleNamesStr;
+	
 	private String displayName = "";;
 
 	public PublicationBean() {
@@ -69,6 +69,7 @@ public class PublicationBean extends FileBean {
 	public PublicationBean(Publication publication, String[] sampleNames) {
 		this(publication);
 		this.sampleNames = sampleNames;
+		sampleNamesStr = StringUtils.join(sampleNames, "\r\n");
 	}
 
 	/**
@@ -346,5 +347,13 @@ public class PublicationBean extends FileBean {
 			author.setId(null);
 			author.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		}
+	}
+
+	public String getSampleNamesStr() {
+		return sampleNamesStr;
+	}
+
+	public void setSampleNamesStr(String sampleNamesStr) {
+		this.sampleNamesStr = sampleNamesStr;
 	}
 }
