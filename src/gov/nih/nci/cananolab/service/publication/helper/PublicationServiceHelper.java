@@ -405,12 +405,13 @@ public class PublicationServiceHelper {
 			allPublications.retainAll(otherPublications);
 		}
 		// order publications by createdDate
-		List<Publication> orderedPubs=new ArrayList<Publication>(allPublications);
+		List<Publication> orderedPubs = new ArrayList<Publication>(
+				allPublications);
 		Collections.sort(orderedPubs,
 				new Comparators.PublicationDateComparator());
 		// get ordered ids
-		List<String>orderedPubIds=new ArrayList<String>();
-		for(Publication pub: orderedPubs) {
+		List<String> orderedPubIds = new ArrayList<String>();
+		for (Publication pub : orderedPubs) {
 			orderedPubIds.add(pub.getId().toString());
 		}
 		// List filteredResults = new ArrayList(allPublicationIds);
@@ -441,6 +442,30 @@ public class PublicationServiceHelper {
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.add(Property.forName("id").eq(new Long(publicationId)));
+		crit.setFetchMode("authorCollection", FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+		Publication publication = null;
+		if (!result.isEmpty()) {
+			publication = (Publication) result.get(0);
+			if (authService.checkReadPermission(user, publication.getId()
+					.toString())) {
+				return publication;
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return publication;
+	}
+
+	public Publication findPublicationByKey(String keyName, Object keyValue,
+			UserBean user) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
+				.add(Property.forName(keyName).eq(keyValue));
 		crit.setFetchMode("authorCollection", FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);

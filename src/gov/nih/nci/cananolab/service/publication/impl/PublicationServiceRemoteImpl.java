@@ -13,7 +13,6 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -293,7 +292,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	public Publication findPublicationByKey(String keyName, Object keyValue,
+	public PublicationBean findPublicationByKey(String keyName, Object keyValue,
 			UserBean user) throws PublicationException, NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}

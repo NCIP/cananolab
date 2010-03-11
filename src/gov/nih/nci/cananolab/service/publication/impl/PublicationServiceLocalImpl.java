@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -57,8 +56,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new NoAccessException();
 		}
 		try {
-			Publication publication = (Publication) publicationBean
-					.getDomainFile();
+			Publication publication =(Publication) publicationBean.getDomainFile();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// check if publication is already entered based on PubMedId or DOI
@@ -193,41 +191,31 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	public PublicationBean findPublicationById(String publicationId,
 			UserBean user) throws PublicationException, NoAccessException {
+		return findPublicationByKey("id", new Long(publicationId), user);
+	}
+
+	public PublicationBean findPublicationByKey(String keyName,
+			Object keyValue, UserBean user) throws PublicationException,
+			NoAccessException {
+		PublicationBean publicationBean = null;
 		try {
-			Publication publication = helper.findPublicationById(publicationId,
-					user);
-			String[] sampleNames = helper.findSampleNamesByPublicationId(
-					publicationId, user);
-			PublicationBean publicationBean = new PublicationBean(publication,
-					sampleNames);
-			if (user != null)
-				fileHelper.retrieveVisibility(publicationBean);
-			return publicationBean;
+			Publication publication = helper.findPublicationByKey(keyName,
+					keyValue, user);
+			if (publication != null) {
+				String[] sampleNames = helper.findSampleNamesByPublicationId(
+						publication.getId().toString(), user);
+				publicationBean = new PublicationBean(publication, sampleNames);
+				if (user != null)
+					fileHelper.retrieveVisibility(publicationBean);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the publication by id: "
-					+ publicationId;
+			String err = "Problem finding the publication by key: " + keyName;
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
-	}
-
-	public Publication findPublicationByKey(String keyName, Object keyValue,
-			UserBean user) throws PublicationException, NoAccessException {
-		Publication publication = null;
-		CustomizedApplicationService appService = null;
-		try {
-			appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			publication = (Publication) appService.getObject(Publication.class,
-					keyName, keyValue);
-		} catch (Exception e) {
-			String err = "Error finding the publication.";
-			logger.error(err, e);
-			throw new PublicationException(err, e);
-		}
-		return publication;
+		return publicationBean;
 	}
 
 	public List<Publication> findPublicationsBy(String title, String category,
