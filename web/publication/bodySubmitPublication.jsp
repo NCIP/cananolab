@@ -17,22 +17,23 @@
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
 <c:choose>
-	<c:when	test="${!empty publicationForm.map.publication.domainFile.id}">
-		<c:set var="publicationTitle" 
-		value="${fn:toUpperCase(param.location)} ${sampleName} ${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}"/>
+	<c:when test="${!empty publicationForm.map.publication.domainFile.id}">
+		<c:set var="publicationTitle"
+			value="${fn:toUpperCase(param.location)} ${sampleName} ${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="publicationTitle" 
-		value="${fn:toUpperCase(param.location)} ${sampleName} Publication"/>
+		<c:set var="publicationTitle"
+			value="${fn:toUpperCase(param.location)} ${sampleName} Publication" />
 	</c:otherwise>
 </c:choose>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle"	value="${publicationTitle}" />
+	<jsp:param name="pageTitle" value="${publicationTitle}" />
 	<jsp:param name="topic" value="submit_publication_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=publication" />
-<html:form action="/publication" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newAuthor', 'Authors');">
+<html:form action="/publication" enctype="multipart/form-data"
+	onsubmit="return validateSavingTheData('newAuthor', 'Authors');">
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel">
@@ -150,7 +151,7 @@
 				Start Page
 			</td>
 			<td>
-				<html:text property="publication.domainFile.startPage" size="8"					
+				<html:text property="publication.domainFile.startPage" size="8"
 					styleId="domainFile.startPage" />
 				&nbsp;
 			</td>
@@ -259,7 +260,10 @@
 				<i>(one keyword per line)</i>
 			</td>
 			<td colspan="5">
-				<textarea id="keywordsStr" name="publication.keywordsStr" rows="3" cols="80"><c:out value="${publicationForm.map.publication.keywordsStr}" escapeXml="false"/>
+				<textarea id="keywordsStr" name="publication.keywordsStr" rows="3"
+					cols="80">
+					<c:out value="${publicationForm.map.publication.keywordsStr}"
+						escapeXml="false" />
 				</textarea>
 			</td>
 		</tr>
@@ -268,7 +272,11 @@
 				Description
 			</td>
 			<td colspan="5">
-				<textarea id="domainFile.description" name="publication.domainFile.description" rows="3" cols="120"><c:out value="${publicationForm.map.publication.domainFile.description}" escapeXml="false"/>
+				<textarea id="domainFile.description"
+					name="publication.domainFile.description" rows="3" cols="120">
+					<c:out
+						value="${publicationForm.map.publication.domainFile.description}"
+						escapeXml="false" />
 				</textarea>
 			</td>
 		</tr>
@@ -343,33 +351,44 @@
 		<c:when test="${empty publicationForm.map.sampleId}">
 			<table width="100%" align="center" class="submissionView">
 				<tr>
-					<td class="cellLabel" width="20%">
+					<td class="cellLabel" width="100">
 						Sample Name
 					</td>
 					<td>
-						<html:textarea property="otherSamples" cols="80">
+						<html:textarea property="otherSamples" cols="60">
 							<c:if
 								test="${!empty publicationForm.map.publication.sampleNames}">
 								<c:forEach var="sampleName"
-									items="${publicationForm.map.publication.sampleNames}">									
+									items="${publicationForm.map.publication.sampleNames}">
 										${sampleName}
 									<br />
 								</c:forEach>
 							</c:if>
-						</html:textarea>								
+						</html:textarea>
+						<br><em>one name per line</em>
+					</td>
+					<td width="5">
 						<a href="#" onclick="showMatchedSampleNameDropdown()"><img
 								src="images/icon_browse.jpg" align="middle"
-								alt="search existing samples" border="0" />
-						</a>
-						<br/><em>one name per line</em>					
+								alt="search existing samples" border="0" /></a>
 					</td>
-					<td>						
-						<img src="images/ajax-loader.gif" border="0" class="counts"
-							id="loaderImg" style="display: none">
-						<html:select property="otherSamples" multiple="true" size="5"
-							styleId="matchedSampleSelect" style="display: none">							
-						</html:select><br/>
-						<input type="button" value="Select" onclick="updateOtherSamples()" id="selectMatchedSampleButton" style="display:none"/>
+					<td width="45%">
+						<table>
+							<tr>
+								<td>
+									<img src="images/ajax-loader.gif" border="0" class="counts"
+										id="loaderImg" style="display: none">
+									<html:select property="otherSamples" multiple="true" size="5"
+										styleId="matchedSampleSelect" style="display: none">
+									</html:select>
+								</td>
+								<td>
+									<a href="#"
+										onclick="updateOtherSamples()" id="selectMatchedSampleButton"
+										style="display: none">select</a>
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 			</table>
@@ -401,8 +420,10 @@
 		cellspacing="0" class="topBorderOnly" summary="">
 		<tr>
 			<td width="30%">
-				<c:set var="dataId"	value="${publicationForm.map.publication.domainFile.id}" />
-				<c:if test="${!empty publicationForm.map.sampleId && !empty dataId && 
+				<c:set var="dataId"
+					value="${publicationForm.map.publication.domainFile.id}" />
+				<c:if
+					test="${!empty publicationForm.map.sampleId && !empty dataId &&
 							  !empty user && user.admin && user.curator}">
 					<table height="32" border="0" align="left" cellpadding="4"
 						cellspacing="0">
@@ -437,9 +458,12 @@
 										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="1">
-									<html:hidden property="sampleId" value="${publicationForm.map.sampleId}" />
-									<html:hidden property="location" value="${publicationForm.map.location}" />
-									<html:hidden property="addToSample" value="${publicationForm.map.addToSample}" />
+									<html:hidden property="sampleId"
+										value="${publicationForm.map.sampleId}" />
+									<html:hidden property="location"
+										value="${publicationForm.map.location}" />
+									<html:hidden property="addToSample"
+										value="${publicationForm.map.addToSample}" />
 									<html:submit />
 								</div>
 							</div>
