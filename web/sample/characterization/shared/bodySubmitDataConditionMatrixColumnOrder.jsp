@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<table class="promptbox" style="border: 1px solid #7F9DB9;" width="85%" align="center">
+<table class="promptbox" width="85%" align="center">
 	<tr>
 		<td class="cellLabel" colspan="${characterizationForm.map.achar.theFinding.numberOfColumns}">
 			Please enter column order for each column below.
@@ -42,7 +42,7 @@
 				<input class="promptButton" type="button" value="Save"
 					onclick="javascript:updateColumnOrder(characterizationForm);" />
 				<input class="promptButton" type="button" value="Cancel"
-					onclick="javascript:hide('newColumnOrder');show('newMatrix');" />
+					onclick="javascript:show('updateMatrixLink');show('newMatrix');hide('newColumnOrder');" />
 			</div>
 		</td>
 	</tr>
