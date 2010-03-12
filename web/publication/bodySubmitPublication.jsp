@@ -247,11 +247,8 @@
 				<i>(one keyword per line)</i>
 			</td>
 			<td colspan="5">
-				<textarea id="keywordsStr" name="publication.keywordsStr" rows="3"
-					cols="80">
-					<c:out value="${publicationForm.map.publication.keywordsStr}"
-						escapeXml="false" />
-				</textarea>
+				<html:textarea styleId="keywordsStr"
+					property="publication.keywordsStr" rows="3" cols="80" />
 			</td>
 		</tr>
 		<tr>
@@ -259,14 +256,10 @@
 				Description
 			</td>
 			<td colspan="5">
-				<textarea id="domainFile.description"
-					name="publication.domainFile.description" rows="3" cols="120">
-					<c:out
-						value="${publicationForm.map.publication.domainFile.description}"
-						escapeXml="false" />
-				</textarea>
+				<html:textarea styleId="domainFile.description"
+					property="publication.domainFile.description" rows="8" cols="120"/>
 			</td>
-			</tr>
+		</tr>
 		<tr>
 			<td class="cellLabel">
 				Research Category
@@ -354,8 +347,8 @@
 						Sample Name
 					</td>
 					<td>
-						<html:textarea property="publication.sampleNamesStr" cols="60" rows="5"
-							styleId="associatedSampleNames" />
+						<html:textarea property="publication.sampleNamesStr" cols="60"
+							rows="5" styleId="associatedSampleNames" />
 						<br>
 						<em>one name per line</em>
 					</td>
@@ -454,8 +447,6 @@
 										value="${publicationForm.map.sampleId}" />
 									<html:hidden property="location"
 										value="${publicationForm.map.location}" />
-									<html:hidden property="addToSample"
-										value="${publicationForm.map.addToSample}" />
 									<html:submit />
 								</div>
 							</div>
