@@ -132,8 +132,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		String[] existingAssociatedSamples = helper
 				.findSampleNamesByPublicationId(publication.getId().toString(),
 						user);
-		// find existing associated samples, remove publications from samples
-		// that are no longer associated with the publication
+		// when saving from publication from, find existing associated samples,
+		// remove publications from samples that are no longer associated
+		// with the publication
 		Set<String> sampleNamesToRemove = new HashSet<String>(Arrays
 				.asList(existingAssociatedSamples));
 		sampleNamesToRemove.removeAll(Arrays.asList(newAssociatedSamples));
@@ -143,7 +144,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				.asList(newAssociatedSamples));
 		sampeNamesToAdd.removeAll(Arrays.asList(existingAssociatedSamples));
 
-		if (sampleNamesToRemove != null && sampleNamesToRemove.size() > 0) {
+		// only remove unassociated samples if saving from publication form
+		if (publicationBean.getFromSamplePage() && sampleNamesToRemove != null
+				&& sampleNamesToRemove.size() > 0) {
 			Set<Sample> samplesToRemove = new HashSet<Sample>();
 			for (String name : sampleNamesToRemove) {
 				SampleBean sampleBean = sampleService.findSampleByName(name,
