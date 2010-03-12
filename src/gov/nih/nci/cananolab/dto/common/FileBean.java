@@ -92,6 +92,13 @@ public class FileBean {
 	}
 
 	public String getKeywordsStr() {
+		SortedSet<String> keywordStrs = new TreeSet<String>();
+		if (domainFile.getKeywordCollection() != null) {
+			for (Keyword keyword : domainFile.getKeywordCollection()) {
+				keywordStrs.add(keyword.getName());
+			}
+		}
+		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
 		return keywordsStr;
 	}
 
