@@ -20,6 +20,11 @@ function confirmDelete() {
 		return false;
 	}
 }
+
+function waitCursor() {
+	document.body.style.cursor="wait";
+}
+
 function gotoPage(pageURL) {
 	window.location.href = pageURL;
 }
