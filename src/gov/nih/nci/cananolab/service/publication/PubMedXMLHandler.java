@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
@@ -8,7 +9,9 @@ import gov.nih.nci.cananolab.util.SAXEventSwitcher;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -16,193 +19,197 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 
 public class PubMedXMLHandler {
-	private static final String PUBMED_URL = 
-		"http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
+	private static final String PUBMED_URL = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
 	private static PubMedXMLHandler onlyInstance = null;
-	
+
 	private PublicationBean publicationBean = null;
 	private Publication publication = null;
-	
-    private StringBuilder journal;
-    private StringBuilder volume;
-    private StringBuilder articleTitle;
-    private StringBuilder year;
-    private StringBuilder abstractText;
-    private StringBuilder pageStr;
-    private String startPage;
-    private String endPage;
-    private List<Author> authorList = null;
-    private Author author = null;
+
+	private StringBuilder journal;
+	private StringBuilder volume;
+	private StringBuilder articleTitle;
+	private StringBuilder year;
+	private StringBuilder abstractText;
+	private StringBuilder pageStr;
+	private String startPage;
+	private String endPage;
+	private List<Author> authorList = null;
+	private Author author = null;
 	private StringBuilder keywordsStr;
-    private StringBuilder keywordName;
-    private StringBuilder firstName;
-    private StringBuilder initial;
-    private StringBuilder lastName;
-    private StringBuilder doi;
-    private boolean inPubDate;
-    private boolean isDoi = false;
-    private boolean foundDoi = false;
-    private boolean foundPubmedArticle = false;
-    
-    public static synchronized PubMedXMLHandler getInstance() {
-        if (onlyInstance == null)
-            onlyInstance = new PubMedXMLHandler();
-        
-        return onlyInstance;
-    }
-    
-    private PubMedXMLHandler(){
-    }
-	
+	private StringBuilder keywordName;
+	private StringBuilder firstName;
+	private StringBuilder initial;
+	private StringBuilder lastName;
+	private StringBuilder doi;
+	private boolean inPubDate;
+	private boolean isDoi = false;
+	private boolean foundDoi = false;
+	private boolean foundPubmedArticle = false;
+	private Keyword keyword = null;
+	private Set<Keyword> keywordSet = null;
+
+	public static synchronized PubMedXMLHandler getInstance() {
+		if (onlyInstance == null)
+			onlyInstance = new PubMedXMLHandler();
+
+		return onlyInstance;
+	}
+
+	private PubMedXMLHandler() {
+	}
+
 	public boolean parsePubMedXML(Long pubMedId, PublicationBean pubBean) {
 		publicationBean = pubBean;
 		publication = (Publication) publicationBean.getDomainFile();
-        try {
-        	go(PUBMED_URL + pubMedId);
-        } catch(Exception ex) {
-        	System.out.println("Exception in parsePubMedXML, ");
-        	ex.printStackTrace();
-        }
-        return !StringUtils.isEmpty(publication.getTitle());
+		try {
+			go(PUBMED_URL + pubMedId);
+		} catch (Exception ex) {
+			System.out.println("Exception in parsePubMedXML, ");
+			ex.printStackTrace();
+		}
+		return !StringUtils.isEmpty(publication.getTitle());
 	}
-	
-	private class PubmedArticleHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class PubmedArticleHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			foundPubmedArticle = true;
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
-			if(!foundDoi)
+			if (!foundDoi)
 				publication.setDigitalObjectId("");
-			
+
 			foundDoi = false;
 		}
 
 	}
-	
-	private class VolumeHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class VolumeHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			volume = new StringBuilder();
 		}
-		
+
 		public void characters(char[] ch, int start, int length) {
 			volume.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			publication.setVolume(volume.toString());
 		}
 	}
-	
-	private class JournalTitleHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class JournalTitleHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			journal = new StringBuilder();
 		}
-		
+
 		public void characters(char[] ch, int start, int length) {
 			journal.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			publication.setJournalName(journal.toString());
 		}
 	}
-	
-	private class PubDateHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class PubDateHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			inPubDate = true;
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			inPubDate = false;
 		}
 	}
-	
-	private class YearHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			if(inPubDate) year = new StringBuilder();
+
+	private class YearHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
+			if (inPubDate)
+				year = new StringBuilder();
 		}
-		
+
 		public void characters(char[] ch, int start, int length) {
-			if(inPubDate) year.append(new String(ch, start, length));
+			if (inPubDate)
+				year.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
-			if(inPubDate) publication.setYear(Integer.parseInt(year.toString()));
+			if (inPubDate)
+				publication.setYear(Integer.parseInt(year.toString()));
 		}
 	}
-	
-	private class ArticleTitleHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class ArticleTitleHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			articleTitle = new StringBuilder();
 		}
-		
+
 		public void characters(char[] ch, int start, int length) {
 			articleTitle.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			publication.setTitle(articleTitle.toString());
 		}
 	}
-	
-	private class ArticleIdHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class ArticleIdHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			doi = new StringBuilder();
 			String idType = atts.getValue("IdType");
-			//System.out.println("start doi, idtype:" + idType);
-			if(idType != null && idType.equalsIgnoreCase("doi")) {
+			// System.out.println("start doi, idtype:" + idType);
+			if (idType != null && idType.equalsIgnoreCase("doi")) {
 				isDoi = true;
 				foundDoi = true;
 			}
 		}
-		
+
 		public void characters(char[] ch, int start, int length) {
-			if(isDoi)
+			if (isDoi)
 				doi.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
-			if(isDoi) {
+			if (isDoi) {
 				publication.setDigitalObjectId(doi.toString());
-				//System.out.println("doi:" + doi.toString());
+				// System.out.println("doi:" + doi.toString());
 				isDoi = false;
 			}
 		}
 	}
-	
-	private class AbstractHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class AbstractHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			abstractText = new StringBuilder();
 		}
-		
+
 		public void characters(char[] ch, int start, int length) {
 			abstractText.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			publication.setDescription(abstractText.toString());
 		}
 	}
-	
-	private class PageHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class PageHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			pageStr = new StringBuilder();
 		}
-		
+
 		public void characters(char[] ch, int start, int length) {
 			pageStr.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			String page = pageStr.toString().trim();
 			if (page.length() > 0) {
@@ -222,38 +229,40 @@ public class PubMedXMLHandler {
 					endPage = startPage;
 				}
 				try {
-					publication.setStartPage(Integer.valueOf(startPage).toString());
+					publication.setStartPage(Integer.valueOf(startPage)
+							.toString());
 					publication.setEndPage(Integer.valueOf(endPage).toString());
 				} catch (NumberFormatException nfe) {
 					publication.setStartPage(page);
 					publication.setEndPage(null);
-					//System.out.println(
-						//"publication page number format exception:" + pageStr.toString());
+					// System.out.println(
+					// "publication page number format exception:" +
+					// pageStr.toString());
 				}
 			}
 		}
 	}
-	
-	private class AuthorListHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class AuthorListHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			authorList = new ArrayList<Author>();
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			publicationBean.setAuthors(authorList);
 		}
 	}
-	
-	private class AuthorHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class AuthorHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
 			author = new Author();
 			lastName = new StringBuilder();
 			firstName = new StringBuilder();
 			initial = new StringBuilder();
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			author.setFirstName(firstName.toString());
 			author.setLastName(lastName.toString());
@@ -261,80 +270,91 @@ public class PubMedXMLHandler {
 			authorList.add(author);
 		}
 	}
-	
-	private class LastNameHandler extends SAXElementHandler
-	{
+
+	private class LastNameHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			lastName.append(new String(ch, start, length));
 		}
 	}
-	
-	private class ForeNameHandler extends SAXElementHandler
-	{
+
+	private class ForeNameHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			firstName.append(new String(ch, start, length));
 		}
 	}
-	
-	private class InitialHandler extends SAXElementHandler
-	{
+
+	private class InitialHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			initial.append(new String(ch, start, length));
 		}
 	}
-	
-	private class KeywordListHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			keywordsStr = new StringBuilder();
+
+	public void startElement(String uri, String localName, String qname,
+			Attributes atts) {
+		author = new Author();
+		lastName = new StringBuilder();
+		firstName = new StringBuilder();
+		initial = new StringBuilder();
+	}
+
+	public void endElement(String uri, String localName, String qname) {
+		author.setFirstName(firstName.toString());
+		author.setLastName(lastName.toString());
+		author.setInitial(initial.toString());
+		authorList.add(author);
+	}
+
+	private class KeywordListHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
+			keywordSet = new HashSet<Keyword>();
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
-			publicationBean.setKeywordsStr(keywordsStr.toString());
+			publication.setKeywordCollection(keywordSet);
 		}
 	}
-	
-	private class KeywordHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
+
+	private class KeywordHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
+			keyword = new Keyword();
 			keywordName = new StringBuilder();
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			String name = keywordName.toString();
-			if (keywordName.length() > 0 && 
-				keywordName.charAt(keywordName.length() - 1) == '/') {
+			if (keywordName.length() > 0
+					&& keywordName.charAt(keywordName.length() - 1) == '/') {
 				name = keywordName.substring(0, keywordName.length() - 1);
 			}
-			keywordsStr.append(name).append("\r\n");
+			keyword.setName(name);
+			keywordSet.add(keyword);
 		}
 	}
-	
-	private class DescriptorNameHandler extends SAXElementHandler
-	{
+
+	private class DescriptorNameHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			keywordName.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			keywordName.append('/');
 		}
 	}
-	
-	private class QualifierNameHandler extends SAXElementHandler
-	{
-		//Note: this will be called 3 times for "antagonists & inhibitors".
+
+	private class QualifierNameHandler extends SAXElementHandler {
+		// Note: this will be called 3 times for "antagonists & inhibitors".
 		public void characters(char[] ch, int start, int length) {
 			keywordName.append(new String(ch, start, length));
 		}
-		
+
 		public void endElement(String uri, String localName, String qname) {
 			keywordName.append('/');
 		}
 	}
-	
-	public void go(String xmlinput) throws Exception
-	{
+
+	public void go(String xmlinput) throws Exception {
 		SAXEventSwitcher s = new SAXEventSwitcher();
 		s.setElementHandler("pubmedarticle", new PubmedArticleHandler());
 		s.setElementHandler("volume", new VolumeHandler());
@@ -345,30 +365,30 @@ public class PubMedXMLHandler {
 		s.setElementHandler("abstracttext", new AbstractHandler());
 		s.setElementHandler("medlinepgn", new PageHandler());
 		s.setElementHandler("authorlist", new AuthorListHandler());
-		s.setElementHandler("author", new AuthorHandler());
+		s.setElementHandler("author", new AuthorHandler());		
 		s.setElementHandler("lastname", new LastNameHandler());
 		s.setElementHandler("forename", new ForeNameHandler());
 		s.setElementHandler("firstname", new ForeNameHandler());
 		s.setElementHandler("initials", new InitialHandler());
 		s.setElementHandler("articleid", new ArticleIdHandler());
-		
+
 		// Retrieve keyword information from PubMed (must be all lower case).
 		s.setElementHandler("meshheadinglist", new KeywordListHandler());
 		s.setElementHandler("meshheading", new KeywordHandler());
 		s.setElementHandler("descriptorname", new DescriptorNameHandler());
 		s.setElementHandler("qualifiername", new QualifierNameHandler());
-		
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        SAXParser sparser = spf.newSAXParser();
-        sparser.parse(xmlinput, s);
+
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		SAXParser sparser = spf.newSAXParser();
+		sparser.parse(xmlinput, s);
 	}
-	
+
 	// for testing
 	public static void main(String[] args) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		PublicationBean pubBean = new PublicationBean();
-		phandler.parsePubMedXML(Long.valueOf("19420561"), pubBean); //16642514
-		
+		phandler.parsePubMedXML(Long.valueOf("19420561"), pubBean); // 16642514
+
 		Publication pub = (Publication) pubBean.getDomainFile();
 		System.out.println("=========================================");
 		System.out.println("title: " + pub.getTitle());
@@ -385,8 +405,7 @@ public class PubMedXMLHandler {
 		System.out.println("Abstract: " + pub.getDescription());
 		for (Author author : pubBean.getAuthors()) {
 			System.out.println("       Authors: " + author.getLastName() + ","
-					+ author.getFirstName() + "(" + author.getInitial()
-					+ ")");
+					+ author.getFirstName() + "(" + author.getInitial() + ")");
 		}
 		System.out.println("Keywords:");
 		System.out.println(pubBean.getKeywordsStr());
