@@ -70,19 +70,6 @@
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td class="cellLabel">
-				Research Category
-			</td>
-			<td colspan="5">
-				<c:forEach var="data" items="${publicationResearchAreas}">
-					<html:multibox property="publication.researchAreas">
-												${data}
-											</html:multibox>${data}
-										</c:forEach>
-				&nbsp;
-			</td>
-		</tr>
 		<tr id="pubMedRow" style="display: none">
 			<td class="cellLabel">
 				PubMed ID
@@ -279,6 +266,18 @@
 						escapeXml="false" />
 				</textarea>
 			</td>
+			</tr>
+		<tr>
+			<td class="cellLabel">
+				Research Category
+			</td>
+			<td colspan="5">
+				<html:select property="publication.researchAreas" multiple="true"
+					size="7" styleId="researchAreas">
+					<html:options name="publicationResearchAreas" />
+				</html:select>
+				&nbsp;
+			</td>
 		</tr>
 	</table>
 	<div id="fileSection" style="display: block">
@@ -355,24 +354,25 @@
 						Sample Name
 					</td>
 					<td>
-						<html:textarea property="publication.sampleNamesStr" cols="60" styleId="associatedSampleNames"/>
+						<html:textarea property="publication.sampleNamesStr" cols="60" rows="5"
+							styleId="associatedSampleNames" />
 						<br>
 						<em>one name per line</em>
 					</td>
 					<td width="5">
 						<a href="#" onclick="showMatchedSampleNameDropdown()"><img
 								src="images/icon_browse.jpg" align="middle"
-								alt="search existing samples" border="0" />
-						</a>
+								alt="search existing samples" border="0" /> </a>
 					</td>
-					<td width="45%">
+					<td width="40%">
 						<table>
 							<tr>
 								<td>
 									<img src="images/ajax-loader.gif" border="0" class="counts"
 										id="loaderImg" style="display: none">
-									<html:select property="publication.sampleNamesStr" multiple="true"
-										size="5" styleId="matchedSampleSelect" style="display: none">
+									<html:select property="publication.sampleNamesStr"
+										multiple="true" size="5" styleId="matchedSampleSelect"
+										style="display: none">
 									</html:select>
 								</td>
 								<td>
