@@ -45,6 +45,18 @@ function enableAutoFields() {
 	show("fileSection");
 }
 
+function disableAutoFields() {
+	document.getElementById("domainFile.digitalObjectId").readOnly = true;
+	document.getElementById("domainFile.title").readOnly = true;
+	document.getElementById("domainFile.journalName").readOnly = true;
+	document.getElementById("domainFile.year").readOnly = true;
+	document.getElementById("domainFile.volume").readOnly = true;
+	document.getElementById("domainFile.startPage").readOnly = true;
+	document.getElementById("domainFile.endPage").readOnly = true;
+	hide("addAuthor");
+	hide("fileSection");
+}
+
 function updateSearchFormBasedOnCategory() {
 	var category = dwr.util.getValue("publicationCategory");
 	if (category != "report" && category != "book chapter" && category != "") {
@@ -71,11 +83,13 @@ function showMatchedSampleNameDropdown() {
 		show("selectMatchedSampleButton");
 	});
 }
-function updateAssociatedSamples() {
+function updateAssociatedSamples() {	
 	var selected = dwr.util.getValue("matchedSampleSelect");
 	if (selected.length == 0) {
 		return;
 	}
+	hide("matchedSampleSelect");
+	hide("selectMatchedSampleButton");
 	if (selected.length == 1) {
 		dwr.util.setValue("associatedSampleNames", selected);
 		return;
@@ -87,9 +101,7 @@ function updateAssociatedSamples() {
 	sampleNames = sampleNames + selected[i];
 	dwr.util.setValue("associatedSampleNames", sampleNames, {
 		escapeHtml : false
-	});
-	hide("matchedSampleSelect");
-	hide("selectMatchedSampleButton");
+	});	
 }
 function setPublicationDropdowns() {
 	var searchLocations = getSelectedOptions(document
@@ -148,8 +160,7 @@ function populatePubMedInfo(publication) {
 		if (publication.domainFile.pubMedId == null) {
 			alert("Invalid PubMed ID entered.");
 			populateAuthors(false);
-			show("addAuthor");
-			show("fileSection");
+			enableAutoFields();
 		} else {
 			// Set keywordsStr & description again special characters
 			dwr.util.setValue("keywordsStr", publication.keywordsStr, {
@@ -159,16 +170,7 @@ function populatePubMedInfo(publication) {
 					publication.domainFile.description, {
 						escapeHtml : false
 					});
-			document.getElementById("domainFile.digitalObjectId").readOnly = true;
-			document.getElementById("domainFile.title").readOnly = true;
-			document.getElementById("domainFile.journalName").readOnly = true;
-			document.getElementById("domainFile.year").readOnly = true;
-			document.getElementById("domainFile.volume").readOnly = true;
-			document.getElementById("domainFile.startPage").readOnly = true;
-			document.getElementById("domainFile.endPage").readOnly = true;
-			populateAuthors(true);
-			hide("addAuthor");
-			hide("fileSection"); // disable file upload
+			disableAutoFields();
 			waitCursor();
 			// update pubmed record with information from database
 			PublicationManager
