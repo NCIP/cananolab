@@ -30,7 +30,8 @@ public class PublicationBean extends FileBean {
 	private List<Author> authors = new ArrayList<Author>();
 	private Author theAuthor = new Author();
 	private String sampleNamesStr;
-
+	private Boolean fromSamplePage=false;
+	
 	private String displayName = "";;
 
 	public PublicationBean() {
@@ -370,5 +371,13 @@ public class PublicationBean extends FileBean {
 
 	public void setSampleNamesStr(String sampleNamesStr) {
 		this.sampleNamesStr = sampleNamesStr;
+	}
+
+	public Boolean getFromSamplePage() {
+		return fromSamplePage;
+	}
+
+	public void setFromSamplePage(Boolean fromSamplePage) {
+		this.fromSamplePage = fromSamplePage;
 	}
 }
