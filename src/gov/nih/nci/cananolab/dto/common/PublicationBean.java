@@ -30,7 +30,7 @@ public class PublicationBean extends FileBean {
 	private List<Author> authors = new ArrayList<Author>();
 	private Author theAuthor = new Author();
 	private String sampleNamesStr;
-	
+
 	private String displayName = "";;
 
 	public PublicationBean() {
@@ -74,7 +74,7 @@ public class PublicationBean extends FileBean {
 
 	/**
 	 * Copy PubMed data from source PublicationBean to this PublicationBean.
-	 *
+	 * 
 	 * @param source
 	 * @param taget
 	 */
@@ -91,8 +91,8 @@ public class PublicationBean extends FileBean {
 		oldPub.setEndPage(newPub.getEndPage());
 		oldPub.setVolume(newPub.getVolume());
 		oldPub.setYear(newPub.getYear());
+		oldPub.setKeywordCollection(newPub.getKeywordCollection());
 		this.setAuthors(source.getAuthors());
-		this.setKeywordsStr(source.getKeywordsStr());
 	}
 
 	public boolean equals(Object obj) {
@@ -119,6 +119,18 @@ public class PublicationBean extends FileBean {
 	 * @return the researchAreas
 	 */
 	public String[] getResearchAreas() {
+		String researchAreasStr = ((Publication) getDomainFile())
+				.getResearchArea();
+		if (!StringUtils.isEmpty(researchAreasStr)) {
+			researchAreas = researchAreasStr.split(delimiter);
+		} else {
+			researchAreas = null;
+		}
+		if (!StringUtils.isEmpty(researchAreasStr)) {
+			researchAreas = researchAreasStr.split(delimiter);
+		} else {
+			researchAreas = null;
+		}
 		return researchAreas;
 	}
 
