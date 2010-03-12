@@ -100,10 +100,12 @@ public class DWRPublicationManager {
 				publication.setCategory(dbPub.getCategory());
 				publication.setDescription(dbPub.getDescription());
 				publication.setKeywordCollection(dbPub.getKeywordCollection());
+				publication.setResearchArea(dbPub.getResearchArea());
 				publication.setStatus(dbPub.getStatus());
 				publication.setType(dbPub.getType());
 				publicationBean
 						.setSampleNamesStr(dbPubBean.getSampleNamesStr());
+				publicationBean.setVisibilityGroups(dbPubBean.getVisibilityGroups());
 				return publicationBean;
 			}
 		} catch (NoAccessException ne) {
