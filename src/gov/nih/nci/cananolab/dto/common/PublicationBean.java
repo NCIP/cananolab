@@ -108,6 +108,9 @@ public class PublicationBean extends FileBean {
 	}
 
 	public String[] getSampleNames() {
+		if (!StringUtils.isEmpty(sampleNamesStr)) {
+			sampleNames = sampleNamesStr.split("\r\n");
+		}
 		return sampleNames;
 	}
 
