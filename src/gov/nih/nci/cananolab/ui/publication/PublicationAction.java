@@ -54,33 +54,39 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
-		String sampleId = (String) theForm.get("sampleId");
-		Boolean addToSample = (Boolean) theForm.get("addToSample");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		String sampleId = (String) theForm.get("sampleId");
+		ActionMessages msgs = new ActionMessages();
+		//validate associated sample names
+		if (StringUtils.isEmpty(sampleId)
+				&& !validateAssociatedSamples(publicationBean, user)) {
+			ActionMessage msg = new ActionMessage(
+					"error.submitPublication.invalidSample");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
+		}
 
 		/**
-		 * If user chosen other samples, need to add this pub to those samples.
+		 * Set associated samples if from sample publication page
 		 */
-		List<String> newNames = null;
-		String[] otherSamples = (String[]) theForm.get("otherSamples");
-		if (otherSamples == null || otherSamples.length == 0) {
-			newNames = new ArrayList<String>(1);
-		} else {
-			newNames = new ArrayList<String>(otherSamples.length + 1);
-			newNames.addAll(Arrays.asList(otherSamples));
+		if (!StringUtils.isEmpty(sampleId)) {
+			List<String> sampleNames = new ArrayList<String>();
+			SampleBean sampleBean = setupSample(theForm, request,
+					Constants.LOCAL_SITE);
+			sampleNames.add(sampleBean.getDomain().getName());
+			/**
+			 * If user chosen other samples, need to add this pub to those
+			 * samples.
+			 */
+			String[] otherSamples = (String[]) theForm.get("otherSamples");
+			if (otherSamples.length > 0) {
+				sampleNames.addAll(Arrays.asList(otherSamples));
+			}
+			publicationBean.setSampleNames(sampleNames
+					.toArray(new String[sampleNames.size()]));
 		}
-		/**
-		 * If new from sample page, need to add this pub to the sample.
-		 */
-		if (addToSample != null && addToSample.booleanValue()) {
-			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService
-					.findSampleById(sampleId, user);
-			newNames.add(sampleBean.getDomain().getName());
-		}
-		if (!newNames.isEmpty()) {
-			publicationBean.setSampleNames(newNames.toArray(new String[0]));
-		}
+
 		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION, user
 				.getLoginName());
 		PublicationService service = new PublicationServiceLocalImpl();
@@ -89,7 +95,6 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
 
-		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitPublication.file",
 				publicationBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -114,9 +119,21 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 	}
 
+	private boolean validateAssociatedSamples(PublicationBean publicationBean,
+			UserBean user) throws Exception {
+		SampleService service = new SampleServiceLocalImpl();
+		for (String sampleName : publicationBean.getSampleNames()) {
+			SampleBean sampleBean = service.findSampleByName(sampleName, user);
+			if (sampleBean == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Handle delete request from Sample -> Publication -> Edit page.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -158,7 +175,6 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
-			theForm.set("addToSample", Boolean.TRUE);
 			forward = mapping.findForward("sampleSubmitPublication");
 		}
 		request.setAttribute("onloadJavascript",
@@ -181,8 +197,15 @@ public class PublicationAction extends BaseAnnotationAction {
 		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
 
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		request.setAttribute("onloadJavascript",
-				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
+		Publication domainPub = (Publication) pubBean.getDomainFile();
+		// disable PubMed fields from parsing
+		if (domainPub.getPubMedId() != null) {
+			request.setAttribute("onloadJavascript",
+					"updateSubmitFormBasedOnCategory();disableAutoFields()");
+		} else {
+			request.setAttribute("onloadJavascript",
+					"updateSubmitFormBasedOnCategory();enableAutoFields()");
+		}
 		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
@@ -194,7 +217,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -225,7 +248,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -244,7 +267,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -267,7 +290,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -306,7 +329,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -422,8 +445,14 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (pub.getPubMedId() != null && pub.getPubMedId() == 0) {
 			pub.setPubMedId(null);
 		}
-		request.setAttribute("onloadJavascript",
-				"updateSubmitFormBasedOnCategory();fillPubMedInfo();");
+		// disable PubMed fields from parsing
+		if (pub.getPubMedId() != null) {
+			request.setAttribute("onloadJavascript",
+					"updateSubmitFormBasedOnCategory();disableAutoFields()");
+		} else {
+			request.setAttribute("onloadJavascript",
+					"updateSubmitFormBasedOnCategory();enableAutoFields()");
+		}
 
 		return mapping.findForward("publicationSubmitPublication");
 	}
@@ -481,8 +510,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		String fileName = this.getExportFileName(title, "detailView");
 		ExportUtils.prepareReponseForExcel(response, fileName);
-		PublicationExporter.exportDetail(pubBean, response
-				.getOutputStream());
+		PublicationExporter.exportDetail(pubBean, response.getOutputStream());
 
 		return null;
 	}
@@ -501,7 +529,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 *
+	 * 
 	 * @param request
 	 * @param compBean
 	 */
