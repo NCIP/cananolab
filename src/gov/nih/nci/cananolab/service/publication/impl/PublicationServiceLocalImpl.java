@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -56,7 +57,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new NoAccessException();
 		}
 		try {
-			Publication publication =(Publication) publicationBean.getDomainFile();
+			Publication publication = (Publication) publicationBean
+					.getDomainFile();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// check if publication is already entered based on PubMedId or DOI
@@ -93,26 +95,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			appService.saveOrUpdate(publication);
 			fileService.writeFile(publicationBean, user);
 
-			// if has associated sample, save sample to update the relationship
-			// between sample and publication
-			if (publicationBean.getSampleNames() != null
-					&& publicationBean.getSampleNames().length > 0) {
-
-				SampleService sampleService = new SampleServiceLocalImpl();
-				Set<Sample> samples = new HashSet<Sample>();
-				String[] sampleNames = publicationBean.getSampleNames();
-				if (sampleNames != null && sampleNames.length > 0) {
-					for (String name : sampleNames) {
-						SampleBean sampleBean = sampleService.findSampleByName(
-								name, user);
-						samples.add(sampleBean.getDomain());
-					}
-				}
-				for (Sample sample : samples) {
-					sample.getPublicationCollection().add(publication);
-					appService.saveOrUpdate(sample);
-				}
-			}
+			// update sample associations
+			updateSampleAssociation(appService, publicationBean, user);
 
 			// set visibility
 			AuthorizationService authService = new AuthorizationService(
@@ -133,6 +117,60 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			String err = "Error in saving the publication.";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
+		}
+	}
+
+	private void updateSampleAssociation(
+			CustomizedApplicationService appService,
+			PublicationBean publicationBean, UserBean user) throws Exception {
+		Publication publication = (Publication) publicationBean.getDomainFile();
+		// if has associated sample, save sample to update the relationship
+		// between sample and publication
+		String[] newAssociatedSamples = publicationBean.getSampleNames();
+		SampleService sampleService = new SampleServiceLocalImpl();
+
+		String[] existingAssociatedSamples = helper
+				.findSampleNamesByPublicationId(publication.getId().toString(),
+						user);
+		// find existing associated samples, remove publications from samples
+		// that are no longer associated with the publication
+		Set<String> sampleNamesToRemove = new HashSet<String>(Arrays
+				.asList(existingAssociatedSamples));
+		sampleNamesToRemove.removeAll(Arrays.asList(newAssociatedSamples));
+
+		// find newly associated samples, add publications to these samples
+		Set<String> sampeNamesToAdd = new HashSet<String>(Arrays
+				.asList(newAssociatedSamples));
+		sampeNamesToAdd.removeAll(Arrays.asList(existingAssociatedSamples));
+
+		if (sampleNamesToRemove != null && sampleNamesToRemove.size() > 0) {
+			Set<Sample> samplesToRemove = new HashSet<Sample>();
+			for (String name : sampleNamesToRemove) {
+				SampleBean sampleBean = sampleService.findSampleByName(name,
+						user);
+				if (sampleBean != null) {
+					samplesToRemove.add(sampleBean.getDomain());
+				}
+			}
+			for (Sample sample : samplesToRemove) {
+				sample.getPublicationCollection().remove(publication);
+				appService.saveOrUpdate(sample);
+			}
+		}
+
+		Set<Sample> samplesToAdd = new HashSet<Sample>();
+		if (sampeNamesToAdd != null && sampeNamesToAdd.size() > 0) {
+			for (String name : sampeNamesToAdd) {
+				SampleBean sampleBean = sampleService.findSampleByName(name,
+						user);
+				if (sampleBean != null) {
+					samplesToAdd.add(sampleBean.getDomain());
+				}
+			}
+		}
+		for (Sample sample : samplesToAdd) {
+			sample.getPublicationCollection().add(publication);
+			appService.saveOrUpdate(sample);
 		}
 	}
 
