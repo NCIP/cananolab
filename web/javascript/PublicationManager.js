@@ -32,6 +32,7 @@ function updateSubmitFormBasedOnCategory() {
 		dwr.util.setValue("status", "published");
 	}
 }
+
 function enableAutoFields() {
 	document.getElementById("domainFile.digitalObjectId").readOnly = false;
 	document.getElementById("domainFile.title").readOnly = false;
@@ -43,6 +44,7 @@ function enableAutoFields() {
 	show("addAuthor");
 	show("fileSection");
 }
+
 function updateSearchFormBasedOnCategory() {
 	var category = dwr.util.getValue("publicationCategory");
 	if (category != "report" && category != "book chapter" && category != "") {
@@ -55,7 +57,7 @@ function showMatchedSampleNameDropdown() {
 	// display progress.gif while waiting for the response.
 	show("loaderImg");
 	hide("matchedSampleSelect");
-	hide("selectMatchedSampleButton");	
+	hide("selectMatchedSampleButton");
 	var associatedSampleNames = dwr.util.getValue("associatedSampleNames");
 	PublicationManager.getMatchedSampleNames(associatedSampleNames, function(
 			data) {
@@ -64,7 +66,7 @@ function showMatchedSampleNameDropdown() {
 		}
 		dwr.util.removeAllOptions("matchedSampleSelect");
 		dwr.util.addOptions("matchedSampleSelect", data);
-		hide("loaderImg");
+		hide("loaderImg");		
 		show("matchedSampleSelect");
 		show("selectMatchedSampleButton");
 	});
@@ -167,6 +169,7 @@ function populatePubMedInfo(publication) {
 			populateAuthors(true);
 			hide("addAuthor");
 			hide("fileSection"); // disable file upload
+			waitCursor();
 			// update pubmed record with information from database
 			PublicationManager
 					.updatePubMedWithExistingPublication(
@@ -195,9 +198,11 @@ function populateUpdatedInformation(publication) {
 					publication.sampleNamesStr, {
 						escapeHtml : false
 					});
-			dwr.util.setValue("visibilityGroups", publication.visibilityGroups);			
+			dwr.util.setValue("visibilityGroups", publication.visibilityGroups);
+			dwr.util.setValue("researchAreas", publication.researchAreas);
 		}
 	}
+	hideCursor();
 }
 
 function populateAuthorInfo(publication) {
