@@ -341,7 +341,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		entityBean.setupDomainEntity(user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
-				.getDomainEntity(), user);
+				.getDomainEntity(), user, true);
 		ActionMessage msg = new ActionMessage(
 				"message.deleteFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

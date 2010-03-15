@@ -32,7 +32,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 /**
  * This class allows users to submit chemical association data under sample
  * composition.
- *
+ * 
  * @author pansu
  */
 public class ChemicalAssociationAction extends BaseAnnotationAction {
@@ -150,7 +150,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new chemical association
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -414,7 +414,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteChemicalAssociation(assocBean.getDomainAssociation(),
-				user);
+				user, true);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteChemicalAssociation");
@@ -447,7 +447,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// File Type
 		String fileType = assoc.getTheFile().getDomainFile().getType();
 		setOtherValueOption(request, fileType, "fileTypes");
-		
+
 		// Feature request [26487] Deeper Edit Links.
 		if ("setupUpdate".equals(dispatch)) {
 			List<FileBean> files = assoc.getFiles();

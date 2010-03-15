@@ -37,7 +37,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -79,7 +79,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -127,7 +127,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -169,7 +169,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -187,7 +187,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -213,7 +213,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 *
+	 * 
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception
@@ -338,12 +338,13 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleService service = new SampleServiceLocalImpl();
-		service.deleteSample(sampleBean.getDomain().getName(), user);
+		service.deleteSample(sampleBean.getDomain().getName(), user, false);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
 				sampleBean.getDomain().getName());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
+		sampleBean=new SampleBean();
 		ActionForward forward = mapping.findForward("sampleMessage");
 		return forward;
 	}

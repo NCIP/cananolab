@@ -356,7 +356,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteNanomaterialEntity(entityBean
-				.getDomainEntity(), user);
+				.getDomainEntity(), user, true);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteNanomaterialEntity");

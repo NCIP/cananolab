@@ -27,7 +27,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class allows users to submit composition files under sample composition.
- *
+ * 
  * @author pansu
  */
 public class CompositionFileAction extends BaseAnnotationAction {
@@ -73,7 +73,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 				Constants.LOCAL_SITE);
 		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteCompositionFile(sampleBean.getDomain(), fileBean
-				.getDomainFile(), user);
+				.getDomainFile(), user, true);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -120,7 +120,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	/**
 	 * Handle input request, when validation failed this handler will be called
 	 * too.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
