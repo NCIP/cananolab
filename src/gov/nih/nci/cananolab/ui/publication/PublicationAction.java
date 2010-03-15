@@ -57,7 +57,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = (String) theForm.get("sampleId");
 		ActionMessages msgs = new ActionMessages();
-		//validate associated sample names
+		// validate associated sample names
 		if (StringUtils.isEmpty(sampleId)
 				&& !validateAssociatedSamples(publicationBean, user)) {
 			ActionMessage msg = new ActionMessage(
@@ -86,8 +86,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			publicationBean.setSampleNames(sampleNames
 					.toArray(new String[sampleNames.size()]));
 			publicationBean.setFromSamplePage(true);
-		}
-		else {
+		} else {
 			publicationBean.setFromSamplePage(false);
 		}
 
@@ -154,7 +153,8 @@ public class PublicationAction extends BaseAnnotationAction {
 				.get("publication");
 		String sampleId = (String) theForm.get("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		service.removePublicationFromSample(sampleId, publicationBean, user);
+		service.removePublicationFromSample(sampleId,
+				(Publication) publicationBean.getDomainFile(), user);
 
 		return summaryEdit(mapping, form, request, response);
 	}
