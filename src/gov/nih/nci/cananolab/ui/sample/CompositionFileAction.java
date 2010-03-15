@@ -72,8 +72,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		CompositionService compService = new CompositionServiceLocalImpl();
-		compService.deleteCompositionFile(sampleBean.getDomain(), fileBean
-				.getDomainFile(), user, true);
+		compService.deleteCompositionFile(sampleBean.getDomain()
+				.getSampleComposition(), fileBean.getDomainFile(), user, true);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

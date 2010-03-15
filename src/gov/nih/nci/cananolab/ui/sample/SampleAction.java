@@ -21,6 +21,8 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -338,13 +340,15 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleService service = new SampleServiceLocalImpl();
-		service.deleteSample(sampleBean.getDomain().getName(), user, false);
+		List<String> csmEntriesToRemove = service.deleteSample(sampleBean
+				.getDomain().getName(), user, false);
+		
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
 				sampleBean.getDomain().getName());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		sampleBean=new SampleBean();
+		sampleBean = new SampleBean();
 		ActionForward forward = mapping.findForward("sampleMessage");
 		return forward;
 	}
