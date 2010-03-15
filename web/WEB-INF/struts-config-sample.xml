@@ -85,7 +85,7 @@
 			type="gov.nih.nci.cananolab.exception.PointOfContactException" />
 	</global-exceptions>
 	<global-forwards>
-		<forward name="sampleMessage" path="sample.annotationMessage" />
+		<forward name="sampleMessage" path="sample.message" />
 		<forward name="detailPrintView"
 			path="/sample/characterization/bodyCharacterizationDetailPrintView.jsp" />
 		<forward name="summaryPrintView"
