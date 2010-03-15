@@ -283,8 +283,17 @@ public class CharacterizationServiceHelper {
 			// ExperimentConfiguration
 			for (ExperimentConfig config : aChar
 					.getExperimentConfigCollection()) {
-				authService.removeCSMEntry(config.getId().toString());
+				removeVisibility(config);
 			}
+		}
+	}
+
+	public void removeVisibility(ExperimentConfig config) throws Exception {
+		authService.removeCSMEntry(config.getId().toString());
+		authService.removeCSMEntry(config.getTechnique().getId().toString());
+		if (config.getInstrumentCollection() != null) {
+			for (Instrument instrument : config.getInstrumentCollection())
+				authService.removeCSMEntry(instrument.getId().toString());
 		}
 	}
 
