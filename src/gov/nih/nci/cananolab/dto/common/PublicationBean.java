@@ -5,7 +5,6 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -25,7 +24,7 @@ import java.util.List;
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
 
-	private String[] sampleNames;
+	private String[] sampleNames=new String[]{""};
 	private String[] researchAreas;
 	private List<Author> authors = new ArrayList<Author>();
 	private Author theAuthor = new Author();
@@ -358,13 +357,27 @@ public class PublicationBean extends FileBean {
 	}
 
 	public void resetDomainCopy(Publication copy) {
-		super.resetDomainCopy(copy);
-		Collection<Author> oldAuthors = copy.getAuthorCollection();
-		copy.setAuthorCollection(new HashSet<Author>(oldAuthors));
-		for (Author author : copy.getAuthorCollection()) {
-			author.setId(null);
-			author.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		}
+//		//share copied id
+//		//copy.setId(null);
+//		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+//		Collection<Keyword> oldKeywords = copy.getKeywordCollection();
+//		if (oldKeywords == null || oldKeywords.isEmpty()) {
+//			copy.setKeywordCollection(null);
+//		} else {
+//			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
+//			// don't need to set keyword IDs because keywords are shared
+//			// for (Keyword keyword : copy.getKeywordCollection()) {
+//			// keyword.setId(null);
+//			// }
+//		}
+//		
+//		Collection<Author> oldAuthors = copy.getAuthorCollection();
+//		copy.setAuthorCollection(new HashSet<Author>(oldAuthors));
+//		for (Author author : copy.getAuthorCollection()) {
+//			author.setId(null);
+//			author.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+//		}
+		//don't need to reset anything because publications can be shared
 	}
 
 	public String getSampleNamesStr() {
