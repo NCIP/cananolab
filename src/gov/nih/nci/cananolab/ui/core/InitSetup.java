@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -281,6 +282,16 @@ public class InitSetup {
 		return gridNodes;
 	}
 
+	public void updateCSMCleanupEntriesInContext(
+			List<String> csmEntriesToRemove, HttpServletRequest request)
+			throws Exception {
+		CSMCleanupJob job = new CSMCleanupJob();
+		Set<String> secureObjects = job.getAllSecureObjectsToRemove();
+		secureObjects.addAll(csmEntriesToRemove);
+		request.getSession().getServletContext().setAttribute(
+				"allCSMEntriesToRemove", secureObjects);
+	}
+
 	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
 			throws Exception {
@@ -330,9 +341,11 @@ public class InitSetup {
 				new LabelValueBean("false", "0") };
 		appContext.setAttribute("booleanOptions", booleanOptions);
 
-		LabelValueBean[] stringOperands = new LabelValueBean[] {				
-				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS, Constants.STRING_OPERAND_CONTAINS), 
-		        new LabelValueBean(Constants.STRING_OPERAND_EQUALS, Constants.STRING_OPERAND_EQUALS)};
+		LabelValueBean[] stringOperands = new LabelValueBean[] {
+				new LabelValueBean(Constants.STRING_OPERAND_CONTAINS,
+						Constants.STRING_OPERAND_CONTAINS),
+				new LabelValueBean(Constants.STRING_OPERAND_EQUALS,
+						Constants.STRING_OPERAND_EQUALS) };
 		appContext.setAttribute("stringOperands", stringOperands);
 
 		LabelValueBean[] booleanOperands = new LabelValueBean[] { new LabelValueBean(
