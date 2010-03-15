@@ -145,7 +145,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		sampeNamesToAdd.removeAll(Arrays.asList(existingAssociatedSamples));
 
 		// only remove unassociated samples if saving from publication form
-		if (publicationBean.getFromSamplePage() && sampleNamesToRemove != null
+		if (!publicationBean.getFromSamplePage() && sampleNamesToRemove != null
 				&& sampleNamesToRemove.size() > 0) {
 			Set<Sample> samplesToRemove = new HashSet<Sample>();
 			for (String name : sampleNamesToRemove) {
