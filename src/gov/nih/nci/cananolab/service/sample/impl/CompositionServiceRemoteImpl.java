@@ -280,24 +280,28 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	}
 
 	public void deleteNanomaterialEntity(NanomaterialEntity entity,
-			UserBean user) throws CompositionException,
-			ChemicalAssociationViolationException, NoAccessException {
+			UserBean user, Boolean removeVisibility)
+			throws CompositionException, ChemicalAssociationViolationException,
+			NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public void deleteFunctionalizingEntity(FunctionalizingEntity entity,
-			UserBean user) throws CompositionException,
-			ChemicalAssociationViolationException, NoAccessException {
+			UserBean user, Boolean removeVisibility)
+			throws CompositionException, ChemicalAssociationViolationException,
+			NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public void deleteChemicalAssociation(ChemicalAssociation assoc,
-			UserBean user) throws CompositionException, NoAccessException {
+			UserBean user, Boolean removeVisibility)
+			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public void deleteCompositionFile(Sample particleSample, File file,
-			UserBean user) throws CompositionException, NoAccessException {
+			UserBean user, Boolean removeVisibility)
+			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 

@@ -72,8 +72,9 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void deleteCharacterization(Characterization chara, UserBean user)
-			throws CharacterizationException, NoAccessException {
+	public void deleteCharacterization(Characterization chara, UserBean user,
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
@@ -102,7 +103,7 @@ public class CharacterizationServiceRemoteImpl implements
 						fullClassName = ClassUtils.getFullClass(
 								OtherCharacterization.class.getCanonicalName())
 								.getCanonicalName();
-					}					
+					}
 					target.setName(fullClassName);
 					Association association = new Association();
 					association
@@ -336,7 +337,7 @@ public class CharacterizationServiceRemoteImpl implements
 	}
 
 	public FindingBean findFindingById(String findingId, UserBean user)
-			throws CharacterizationException, NoAccessException  {
+			throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
@@ -345,8 +346,9 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void deleteFinding(Finding finding, UserBean user)
-			throws CharacterizationException, NoAccessException {
+	public void deleteFinding(Finding finding, UserBean user,
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
@@ -355,8 +357,9 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new ExperimentConfigException("Not implemented for grid service");
 	}
 
-	public void deleteExperimentConfig(ExperimentConfig config, UserBean user)
-			throws ExperimentConfigException, NoAccessException {
+	public void deleteExperimentConfig(ExperimentConfig config, UserBean user,
+			Boolean removeVisibility) throws ExperimentConfigException,
+			NoAccessException {
 		throw new ExperimentConfigException("Not implemented for grid service");
 	}
 

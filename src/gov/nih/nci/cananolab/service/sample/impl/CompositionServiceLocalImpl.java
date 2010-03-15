@@ -365,8 +365,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public void deleteNanomaterialEntity(NanomaterialEntity entity,
-			UserBean user) throws CompositionException,
-			ChemicalAssociationViolationException, NoAccessException {
+			UserBean user, Boolean removeVisibility)
+			throws CompositionException, ChemicalAssociationViolationException,
+			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
@@ -379,7 +380,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
-			helper.removeVisibility(entity);
+			if (removeVisibility == null || removeVisibility)
+				helper.removeVisibility(entity);
 		} catch (Exception e) {
 			String err = "Error deleting nanomaterial entity " + entity.getId();
 			logger.error(err, e);
@@ -388,8 +390,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public void deleteFunctionalizingEntity(FunctionalizingEntity entity,
-			UserBean user) throws CompositionException,
-			ChemicalAssociationViolationException, NoAccessException {
+			UserBean user, Boolean removeVisibility)
+			throws CompositionException, ChemicalAssociationViolationException,
+			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
@@ -404,7 +407,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
-			helper.removeVisibility(entity);
+			if (removeVisibility == null || removeVisibility)
+				helper.removeVisibility(entity);
 		} catch (Exception e) {
 			String err = "Error deleting functionalizing entity "
 					+ entity.getId();
@@ -414,7 +418,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public void deleteChemicalAssociation(ChemicalAssociation assoc,
-			UserBean user) throws CompositionException, NoAccessException {
+			UserBean user, Boolean removeVisibility)
+			throws CompositionException, NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
@@ -422,7 +427,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(assoc);
-			helper.removeVisibility(assoc);
+			if (removeVisibility == null || removeVisibility)
+				helper.removeVisibility(assoc);
 		} catch (Exception e) {
 			String err = "Error deleting chemical association " + assoc.getId();
 			logger.error(err, e);
@@ -430,8 +436,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		}
 	}
 
-	public void deleteCompositionFile(Sample sample, File file, UserBean user)
-			throws CompositionException, NoAccessException {
+	public void deleteCompositionFile(Sample sample, File file, UserBean user,
+			Boolean removeVisibility) throws CompositionException,
+			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}

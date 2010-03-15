@@ -16,9 +16,9 @@ import java.util.List;
 
 /**
  * Interface defining service methods involving characterizations
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public interface CharacterizationService {
 
@@ -28,8 +28,9 @@ public interface CharacterizationService {
 	public CharacterizationBean findCharacterizationById(String charId,
 			UserBean user) throws CharacterizationException, NoAccessException;
 
-	public void deleteCharacterization(Characterization chara, UserBean user)
-			throws CharacterizationException, NoAccessException;
+	public void deleteCharacterization(Characterization chara, UserBean user,
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException;
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
 			String sampleId, UserBean user) throws CharacterizationException,
@@ -41,18 +42,20 @@ public interface CharacterizationService {
 	public FindingBean findFindingById(String findingId, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
-	public void deleteFinding(Finding finding, UserBean user)
-			throws CharacterizationException, NoAccessException;
+	public void deleteFinding(Finding finding, UserBean user,
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException;
 
 	public void saveExperimentConfig(ExperimentConfigBean experimentConfigBean,
 			UserBean user) throws ExperimentConfigException, NoAccessException;
 
 	public void deleteExperimentConfig(ExperimentConfig experimentConfig,
-			UserBean user) throws ExperimentConfigException, NoAccessException;
+			UserBean user, Boolean removeVisibility)
+			throws ExperimentConfigException, NoAccessException;
 
 	/**
 	 * Copy and save a characterization from one sample to other samples
-	 *
+	 * 
 	 * @param charBean
 	 * @param oldSampleBean
 	 * @param newSampleBeans

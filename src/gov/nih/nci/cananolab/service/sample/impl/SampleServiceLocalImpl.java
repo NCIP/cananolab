@@ -438,7 +438,6 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-
 	public int getNumberOfPublicSamples() throws SampleException {
 		try {
 			int count = helper.getNumberOfPublicSamples();
@@ -708,8 +707,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			saveClonedCharacterizations(origSample.getName(), newSampleBean,
 					user);
 			saveClonedComposition(origSampleBean, newSampleBean, user);
-			// saveClonedPublications(origSample.getName(), newSampleBean,
-			// user);
+			saveClonedPublications(origSample.getName(), newSampleBean, user);
 			saveSample(newSampleBean, user);
 		} catch (NotExistException e) {
 			throw e;
@@ -859,21 +857,31 @@ public class SampleServiceLocalImpl implements SampleService {
 			for (Publication pub : sampleBean.getDomain()
 					.getPublicationCollection()) {
 				PublicationBean pubBean = new PublicationBean(pub);
-				fileHelper.updateClonedFileInfo(pubBean, origSampleName,
-						sampleBean.getDomain().getName(), user);
+				List<String> accessibleGroups = helper.getAuthService()
+						.getAccessibleGroups(pub.getId().toString(),
+								Constants.CSM_READ_PRIVILEGE);
+				pubBean.setVisibilityGroups(accessibleGroups
+						.toArray(new String[0]));
+				// to prevent overwriting sample associations
+				pubBean.setFromSamplePage(true);
+				// don't need to reset sample names because savePublication
+				// takes care of empty sample names.
 				pubService.savePublication(pubBean, user);
 			}
 		}
 	}
 
-	public void deleteSample(String sampleName, UserBean user)
-			throws SampleException, NoAccessException, NotExistException {
+	public void deleteSample(String sampleName, UserBean user,
+			Boolean removeVisibility) throws SampleException,
+			NoAccessException, NotExistException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		Sample sample = null;
+		// to save time, clean up CSM entries in the background
 		try {
 			// fully load original sample
-			Sample sample = findFullyLoadedSampleByName(sampleName, user);
+			sample = findFullyLoadedSampleByName(sampleName, user);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// delete characterizations
@@ -881,7 +889,8 @@ public class SampleServiceLocalImpl implements SampleService {
 				CharacterizationService charService = new CharacterizationServiceLocalImpl();
 				for (Characterization achar : sample
 						.getCharacterizationCollection()) {
-					charService.deleteCharacterization(achar, user);
+					charService.deleteCharacterization(achar, user,
+							removeVisibility);
 				}
 			}
 			// delete composition
@@ -893,7 +902,8 @@ public class SampleServiceLocalImpl implements SampleService {
 					for (ChemicalAssociation assoc : sample
 							.getSampleComposition()
 							.getChemicalAssociationCollection()) {
-						compService.deleteChemicalAssociation(assoc, user);
+						compService.deleteChemicalAssociation(assoc, user,
+								removeVisibility);
 					}
 				}
 				// delete nanomaterial entities
@@ -902,7 +912,8 @@ public class SampleServiceLocalImpl implements SampleService {
 					for (NanomaterialEntity entity : sample
 							.getSampleComposition()
 							.getNanomaterialEntityCollection()) {
-						compService.deleteNanomaterialEntity(entity, user);
+						compService.deleteNanomaterialEntity(entity, user,
+								removeVisibility);
 					}
 				}
 				// delete functionalizing entities
@@ -911,20 +922,34 @@ public class SampleServiceLocalImpl implements SampleService {
 					for (FunctionalizingEntity entity : sample
 							.getSampleComposition()
 							.getFunctionalizingEntityCollection()) {
-						compService.deleteFunctionalizingEntity(entity, user);
+						compService.deleteFunctionalizingEntity(entity, user,
+								removeVisibility);
 					}
 				}
 				// save files
 				if (sample.getSampleComposition().getFileCollection() != null) {
 					for (File file : sample.getSampleComposition()
 							.getFileCollection()) {
-						compService.deleteCompositionFile(sample, file, user);
+						compService.deleteCompositionFile(sample, file, user,
+								removeVisibility);
 					}
 				}
+				appService.delete(sample.getSampleComposition());
 			}
-			appService.delete(sample.getSampleComposition());
-			appService.delete(sample);
 
+			// remove publication associations
+			if (sample.getPublicationCollection() != null) {
+				sample.setPublicationCollection(null);
+			}
+			// remove keyword associations
+			if (sample.getKeywordCollection() != null) {
+				sample.setKeywordCollection(null);
+			}
+			appService.saveOrUpdate(sample);
+			appService.delete(sample);
+			if (removeVisibility == null || removeVisibility) {
+				helper.removeVisibility(sample);
+			}
 		} catch (NotExistException e) {
 			throw e;
 		} catch (Exception e) {

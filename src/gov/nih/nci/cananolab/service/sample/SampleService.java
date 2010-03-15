@@ -79,7 +79,8 @@ public interface SampleService {
 			String newSampleName, UserBean user) throws SampleException,
 			NoAccessException, DuplicateEntriesException, NotExistException;
 
-	public void deleteSample(String sampleName, UserBean user)
-			throws SampleException, NoAccessException, NotExistException;
+	public void deleteSample(String sampleName, UserBean user,
+			Boolean removeVisibility) throws SampleException,
+			NoAccessException, NotExistException;
 
 }

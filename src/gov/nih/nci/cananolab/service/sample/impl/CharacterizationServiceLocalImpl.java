@@ -137,8 +137,9 @@ public class CharacterizationServiceLocalImpl implements
 		return charBean;
 	}
 
-	public void deleteCharacterization(Characterization chara, UserBean user)
-			throws CharacterizationException, NoAccessException {
+	public void deleteCharacterization(Characterization chara, UserBean user,
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
@@ -146,7 +147,8 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(chara);
-			helper.removeVisibility(chara);
+			if (removeVisibility == null || removeVisibility)
+				helper.removeVisibility(chara);
 
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
@@ -230,16 +232,19 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void deleteFinding(Finding finding, UserBean user)
-			throws CharacterizationException, NoAccessException {
+	public void deleteFinding(Finding finding, UserBean user,
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			helper.removeVisibility(finding);
 			appService.delete(finding);
+			if (removeVisibility == null || removeVisibility) {
+				helper.removeVisibility(finding);
+			}
 
 		} catch (Exception e) {
 			String err = "Error deleting finding " + finding.getId();
@@ -312,8 +317,9 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void deleteExperimentConfig(ExperimentConfig config, UserBean user)
-			throws ExperimentConfigException, NoAccessException {
+	public void deleteExperimentConfig(ExperimentConfig config, UserBean user,
+			Boolean removeVisibility) throws ExperimentConfigException,
+			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
@@ -371,6 +377,8 @@ public class CharacterizationServiceLocalImpl implements
 			}
 
 			appService.delete(config);
+			if (removeVisibility == null || removeVisibility)
+				helper.removeVisibility(config);
 		} catch (Exception e) {
 			String err = "Error in deleting the technique and associated instruments";
 			logger.error(err, e);
