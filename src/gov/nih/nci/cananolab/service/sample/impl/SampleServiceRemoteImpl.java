@@ -461,7 +461,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 		throw new SampleException("Not implemented for grid service");
 	}
 
-	public void deleteSample(String sampleName, UserBean user,
+	public List<String> deleteSample(String sampleName, UserBean user,
 			Boolean removeVisibility) throws SampleException,
 			NoAccessException, NotExistException {
 		throw new SampleException("Not implemented for grid service");

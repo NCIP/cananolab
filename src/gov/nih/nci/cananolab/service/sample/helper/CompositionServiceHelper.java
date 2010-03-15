@@ -255,71 +255,99 @@ public class CompositionServiceHelper {
 			authService.assignVisibility(
 					chemicalAssociation.getId().toString(), visibleGroups,
 					owningGroup);
+			// visibility of the associated elements should already be assigned
+			// when creating the entities
 			// chemicalAssociation.associatedElementA
-			if (chemicalAssociation.getAssociatedElementA() != null) {
-				authService.assignVisibility(chemicalAssociation
-						.getAssociatedElementA().getId().toString(),
-						visibleGroups, owningGroup);
-			}
-			// chemicalAssociation.associatedElementB
-			if (chemicalAssociation.getAssociatedElementB() != null) {
-				authService.assignVisibility(chemicalAssociation
-						.getAssociatedElementB().getId().toString(),
-						visibleGroups, owningGroup);
-			}
+			// if (chemicalAssociation.getAssociatedElementA() != null) {
+			// authService.assignVisibility(chemicalAssociation
+			// .getAssociatedElementA().getId().toString(),
+			// visibleGroups, owningGroup);
+			// }
+			// // chemicalAssociation.associatedElementB
+			// if (chemicalAssociation.getAssociatedElementB() != null) {
+			// authService.assignVisibility(chemicalAssociation
+			// .getAssociatedElementB().getId().toString(),
+			// visibleGroups, owningGroup);
+			// }
 		}
 	}
 
-	public void removeVisibility(SampleComposition comp) throws Exception {
-		authService.removeCSMEntry(comp.getId().toString());
+	public List<String> removeVisibility(SampleComposition comp, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove)
+			authService.removeCSMEntry(comp.getId().toString());
+		entries.add(comp.getId().toString());
 		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
-			removeVisibility(entity);
+			entries.addAll(removeVisibility(entity, remove));
 		}
 		for (FunctionalizingEntity entity : comp
 				.getFunctionalizingEntityCollection()) {
-			removeVisibility(entity);
+			entries.addAll(removeVisibility(entity, remove));
 		}
 		for (ChemicalAssociation assoc : comp
 				.getChemicalAssociationCollection()) {
-			removeVisibility(assoc);
+			entries.addAll(removeVisibility(assoc, remove));
 		}
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
-				authService.removeCSMEntry(file.getId().toString());
+				if (remove == null || remove)
+					authService.removeCSMEntry(file.getId().toString());
+				entries.add(file.getId().toString());
 			}
 		}
+		return entries;
 	}
 
-	public void removeVisibility(ChemicalAssociation chemicalAssociation)
+	public List<String> removeVisibility(
+			ChemicalAssociation chemicalAssociation, Boolean remove)
 			throws Exception {
+		List<String> entries = new ArrayList<String>();
 		if (chemicalAssociation != null) {
-			authService.removeCSMEntry(chemicalAssociation.getId().toString());
-			// chemicalAssociation.associatedElementA
-			if (chemicalAssociation.getAssociatedElementA() != null) {
-				authService.removeCSMEntry(chemicalAssociation
-						.getAssociatedElementA().getId().toString());
-			}
-			// chemicalAssociation.associatedElementB
-			if (chemicalAssociation.getAssociatedElementB() != null) {
-				authService.removeCSMEntry(chemicalAssociation
-						.getAssociatedElementB().getId().toString());
-			}
+			if (remove == null || remove)
+				authService.removeCSMEntry(chemicalAssociation.getId()
+						.toString());
+			entries.add(chemicalAssociation.getId().toString());
+			// // chemicalAssociation.associatedElementA
+			// if (chemicalAssociation.getAssociatedElementA() != null) {
+			// if (remove == null || remove)
+			// authService.removeCSMEntry(chemicalAssociation
+			// .getAssociatedElementA().getId().toString());
+			// }
+			// // chemicalAssociation.associatedElementB
+			// if (chemicalAssociation.getAssociatedElementB() != null) {
+			// if (remove == null || remove)
+			// authService.removeCSMEntry(chemicalAssociation
+			// .getAssociatedElementB().getId().toString());
+			// entries.add(chemicalAssociation.getAssociatedElementB().getId()
+			// .toString());
+			// }
 			if (chemicalAssociation.getFileCollection() != null) {
 				for (File file : chemicalAssociation.getFileCollection()) {
-					authService.removeCSMEntry(file.getId().toString());
+					if (remove == null || remove)
+						authService.removeCSMEntry(file.getId().toString());
+					entries.add(file.getId().toString());
 				}
 			}
 		}
+		return entries;
 	}
 
-	public void removeVisibility(FunctionalizingEntity functionalizingEntity)
+	public List<String> removeVisibility(
+			FunctionalizingEntity functionalizingEntity, Boolean remove)
 			throws Exception {
+		List<String> entries = new ArrayList<String>();
 		if (functionalizingEntity != null) {
-			authService
-					.removeCSMEntry(functionalizingEntity.getId().toString());
+			if (remove == null || remove)
+				authService.removeCSMEntry(functionalizingEntity.getId()
+						.toString());
+			entries.add(functionalizingEntity.getId().toString());
 			if (functionalizingEntity.getActivationMethod() != null) {
-				authService.removeCSMEntry(functionalizingEntity
-						.getActivationMethod().getId().toString());
+				if (remove == null || remove)
+					authService.removeCSMEntry(functionalizingEntity
+							.getActivationMethod().getId().toString());
+				entries.add(functionalizingEntity.getActivationMethod().getId()
+						.toString());
 			}
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
@@ -327,12 +355,17 @@ public class CompositionServiceHelper {
 			if (functionCollection != null) {
 				for (Function function : functionCollection) {
 					if (function != null) {
-						authService.removeCSMEntry(function.getId().toString());
+						if (remove == null || remove)
+							authService.removeCSMEntry(function.getId()
+									.toString());
+						entries.add(function.getId().toString());
 						if (function instanceof TargetingFunction) {
 							for (Target target : ((TargetingFunction) function)
 									.getTargetCollection()) {
-								authService.removeCSMEntry(target.getId()
-										.toString());
+								if (remove == null || remove)
+									authService.removeCSMEntry(target.getId()
+											.toString());
+								entries.add(target.getId().toString());
 							}
 						}
 					}
@@ -340,23 +373,32 @@ public class CompositionServiceHelper {
 			}
 			if (functionalizingEntity.getFileCollection() != null) {
 				for (File file : functionalizingEntity.getFileCollection()) {
-					authService.removeCSMEntry(file.getId().toString());
+					if (remove == null || remove)
+						authService.removeCSMEntry(file.getId().toString());
+					entries.add(file.getId().toString());
 				}
 			}
 		}
+		return entries;
 	}
 
-	public void removeVisibility(NanomaterialEntity entity) throws Exception {
+	public List<String> removeVisibility(NanomaterialEntity entity,
+			Boolean remove) throws Exception {
+		List<String> entries = new ArrayList<String>();
 		if (entity != null) {
-			authService.removeCSMEntry(entity.getId().toString());
+			if (remove == null || remove)
+				authService.removeCSMEntry(entity.getId().toString());
+			entries.add(entity.getId().toString());
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = entity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
-						authService.removeCSMEntry(composingElement.getId()
-								.toString());
+						if (remove == null || remove)
+							authService.removeCSMEntry(composingElement.getId()
+									.toString());
+						entries.add(composingElement.getId().toString());
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -364,8 +406,10 @@ public class CompositionServiceHelper {
 					if (inherentFunctionCollection != null) {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
-								authService.removeCSMEntry(function.getId()
-										.toString());
+								if (remove == null || remove)
+									authService.removeCSMEntry(function.getId()
+											.toString());
+								entries.add(function.getId().toString());
 							}
 						}
 					}
@@ -373,10 +417,12 @@ public class CompositionServiceHelper {
 			}
 			if (entity.getFileCollection() != null) {
 				for (File file : entity.getFileCollection()) {
-					authService.removeCSMEntry(file.getId().toString());
+					if (remove == null || remove)
+						authService.removeCSMEntry(file.getId().toString());
 				}
 			}
 		}
+		return entries;
 	}
 
 	public SampleComposition findCompositionBySampleId(String sampleId,

@@ -871,12 +871,13 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public void deleteSample(String sampleName, UserBean user,
+	public List<String> deleteSample(String sampleName, UserBean user,
 			Boolean removeVisibility) throws SampleException,
 			NoAccessException, NotExistException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		Sample sample = null;
 		// to save time, clean up CSM entries in the background
 		try {
@@ -889,52 +890,15 @@ public class SampleServiceLocalImpl implements SampleService {
 				CharacterizationService charService = new CharacterizationServiceLocalImpl();
 				for (Characterization achar : sample
 						.getCharacterizationCollection()) {
-					charService.deleteCharacterization(achar, user,
-							removeVisibility);
+					entries.addAll(charService.deleteCharacterization(achar,
+							user, removeVisibility));
 				}
 			}
 			// delete composition
 			if (sample.getSampleComposition() != null) {
 				CompositionService compService = new CompositionServiceLocalImpl();
-				// delete chemical association
-				if (sample.getSampleComposition()
-						.getChemicalAssociationCollection() != null) {
-					for (ChemicalAssociation assoc : sample
-							.getSampleComposition()
-							.getChemicalAssociationCollection()) {
-						compService.deleteChemicalAssociation(assoc, user,
-								removeVisibility);
-					}
-				}
-				// delete nanomaterial entities
-				if (sample.getSampleComposition()
-						.getNanomaterialEntityCollection() != null) {
-					for (NanomaterialEntity entity : sample
-							.getSampleComposition()
-							.getNanomaterialEntityCollection()) {
-						compService.deleteNanomaterialEntity(entity, user,
-								removeVisibility);
-					}
-				}
-				// delete functionalizing entities
-				if (sample.getSampleComposition()
-						.getFunctionalizingEntityCollection() != null) {
-					for (FunctionalizingEntity entity : sample
-							.getSampleComposition()
-							.getFunctionalizingEntityCollection()) {
-						compService.deleteFunctionalizingEntity(entity, user,
-								removeVisibility);
-					}
-				}
-				// save files
-				if (sample.getSampleComposition().getFileCollection() != null) {
-					for (File file : sample.getSampleComposition()
-							.getFileCollection()) {
-						compService.deleteCompositionFile(sample, file, user,
-								removeVisibility);
-					}
-				}
-				appService.delete(sample.getSampleComposition());
+				entries.addAll(compService.deleteComposition(sample
+						.getSampleComposition(), user, removeVisibility));
 			}
 
 			// remove publication associations
@@ -947,9 +911,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			}
 			appService.saveOrUpdate(sample);
 			appService.delete(sample);
-			if (removeVisibility == null || removeVisibility) {
-				helper.removeVisibility(sample);
-			}
+			helper.removeVisibility(sample, removeVisibility);
+			entries.add(sample.getName());
 		} catch (NotExistException e) {
 			throw e;
 		} catch (Exception e) {
@@ -957,6 +920,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
+		return entries;
 	}
 
 	public static void main(String[] args) {

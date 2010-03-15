@@ -28,7 +28,7 @@ public interface CharacterizationService {
 	public CharacterizationBean findCharacterizationById(String charId,
 			UserBean user) throws CharacterizationException, NoAccessException;
 
-	public void deleteCharacterization(Characterization chara, UserBean user,
+	public List<String> deleteCharacterization(Characterization chara, UserBean user,
 			Boolean removeVisibility) throws CharacterizationException,
 			NoAccessException;
 
@@ -42,14 +42,14 @@ public interface CharacterizationService {
 	public FindingBean findFindingById(String findingId, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
-	public void deleteFinding(Finding finding, UserBean user,
+	public List<String> deleteFinding(Finding finding, UserBean user,
 			Boolean removeVisibility) throws CharacterizationException,
 			NoAccessException;
 
 	public void saveExperimentConfig(ExperimentConfigBean experimentConfigBean,
 			UserBean user) throws ExperimentConfigException, NoAccessException;
 
-	public void deleteExperimentConfig(ExperimentConfig experimentConfig,
+	public List<String> deleteExperimentConfig(ExperimentConfig experimentConfig,
 			UserBean user, Boolean removeVisibility)
 			throws ExperimentConfigException, NoAccessException;
 

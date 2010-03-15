@@ -270,46 +270,75 @@ public class CharacterizationServiceHelper {
 		}
 	}
 
-	public void removeVisibility(Characterization aChar) throws Exception {
+	public List<String> removeVisibility(Characterization aChar, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
 		// characterization
 		if (aChar != null) {
-			authService.removeCSMEntry(aChar.getId().toString());
+			if (remove == null || remove) {
+				authService.removeCSMEntry(aChar.getId().toString());
+			}
+			entries.add(aChar.getId().toString());
 			for (Finding finding : aChar.getFindingCollection()) {
 				if (finding != null) {
-					removeVisibility(finding);
+					entries.addAll(removeVisibility(finding, remove));
 				}
 			}
 
 			// ExperimentConfiguration
 			for (ExperimentConfig config : aChar
 					.getExperimentConfigCollection()) {
-				removeVisibility(config);
+				entries.addAll(removeVisibility(config, remove));
 			}
 		}
+		return entries;
 	}
 
-	public void removeVisibility(ExperimentConfig config) throws Exception {
-		authService.removeCSMEntry(config.getId().toString());
-		authService.removeCSMEntry(config.getTechnique().getId().toString());
-		if (config.getInstrumentCollection() != null) {
-			for (Instrument instrument : config.getInstrumentCollection())
-				authService.removeCSMEntry(instrument.getId().toString());
+	public List<String> removeVisibility(ExperimentConfig config, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove) {
+			authService.removeCSMEntry(config.getId().toString());
+			authService
+					.removeCSMEntry(config.getTechnique().getId().toString());
 		}
+		entries.add(config.getId().toString());
+		entries.add(config.getTechnique().getId().toString());
+		if (config.getInstrumentCollection() != null) {
+			for (Instrument instrument : config.getInstrumentCollection()) {
+				if (remove == null || remove) {
+					authService.removeCSMEntry(instrument.getId().toString());
+				}
+				entries.add(instrument.getId().toString());
+			}
+		}
+		return entries;
 	}
 
-	public void removeVisibility(Finding finding) throws Exception {
-		authService.removeCSMEntry(finding.getId().toString());
+	public List<String> removeVisibility(Finding finding, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove) {
+			authService.removeCSMEntry(finding.getId().toString());
+		}
+		entries.add(finding.getId().toString());
 
 		// datum
 		if (finding.getDatumCollection() != null) {
 			for (Datum datum : finding.getDatumCollection()) {
 				if (datum != null) {
-					authService.removeCSMEntry(datum.getId().toString());
+					if (remove == null || remove) {
+						authService.removeCSMEntry(datum.getId().toString());
+					}
+					entries.add(datum.getId().toString());
 				}
 				if (datum.getConditionCollection() != null) {
 					for (Condition condition : datum.getConditionCollection()) {
-						authService
-								.removeCSMEntry(condition.getId().toString());
+						if (remove == null || remove) {
+							authService.removeCSMEntry(condition.getId()
+									.toString());
+						}
+						entries.add(condition.getId().toString());
 					}
 				}
 			}
@@ -317,9 +346,13 @@ public class CharacterizationServiceHelper {
 		// file
 		if (finding.getFileCollection() != null) {
 			for (File file : finding.getFileCollection()) {
-				authService.removeCSMEntry(file.getId().toString());
+				if (remove == null || remove) {
+					authService.removeCSMEntry(file.getId().toString());
+				}
+				entries.add(file.getId().toString());
 			}
 		}
+		return entries;
 	}
 
 	public List<Characterization> findCharacterizationsBySampleId(

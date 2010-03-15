@@ -72,7 +72,7 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void deleteCharacterization(Characterization chara, UserBean user,
+	public List<String> deleteCharacterization(Characterization chara, UserBean user,
 			Boolean removeVisibility) throws CharacterizationException,
 			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
@@ -346,7 +346,7 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void deleteFinding(Finding finding, UserBean user,
+	public List<String> deleteFinding(Finding finding, UserBean user,
 			Boolean removeVisibility) throws CharacterizationException,
 			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
@@ -357,7 +357,7 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new ExperimentConfigException("Not implemented for grid service");
 	}
 
-	public void deleteExperimentConfig(ExperimentConfig config, UserBean user,
+	public List<String> deleteExperimentConfig(ExperimentConfig config, UserBean user,
 			Boolean removeVisibility) throws ExperimentConfigException,
 			NoAccessException {
 		throw new ExperimentConfigException("Not implemented for grid service");

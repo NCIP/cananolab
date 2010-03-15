@@ -137,24 +137,24 @@ public class CharacterizationServiceLocalImpl implements
 		return charBean;
 	}
 
-	public void deleteCharacterization(Characterization chara, UserBean user,
-			Boolean removeVisibility) throws CharacterizationException,
-			NoAccessException {
+	public List<String> deleteCharacterization(Characterization chara,
+			UserBean user, Boolean removeVisibility)
+			throws CharacterizationException, NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(chara);
-			if (removeVisibility == null || removeVisibility)
-				helper.removeVisibility(chara);
-
+			entries = helper.removeVisibility(chara, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
+		return entries;
 	}
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
@@ -232,25 +232,24 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void deleteFinding(Finding finding, UserBean user,
+	public List<String> deleteFinding(Finding finding, UserBean user,
 			Boolean removeVisibility) throws CharacterizationException,
 			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(finding);
-			if (removeVisibility == null || removeVisibility) {
-				helper.removeVisibility(finding);
-			}
-
+			entries = helper.removeVisibility(finding, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting finding " + finding.getId();
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
+		return entries;
 	}
 
 	public void saveExperimentConfig(ExperimentConfigBean configBean,
@@ -317,12 +316,13 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void deleteExperimentConfig(ExperimentConfig config, UserBean user,
-			Boolean removeVisibility) throws ExperimentConfigException,
-			NoAccessException {
+	public List<String> deleteExperimentConfig(ExperimentConfig config,
+			UserBean user, Boolean removeVisibility)
+			throws ExperimentConfigException, NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -375,15 +375,14 @@ public class CharacterizationServiceLocalImpl implements
 					config.getInstrumentCollection().add(instrument);
 				}
 			}
-
 			appService.delete(config);
-			if (removeVisibility == null || removeVisibility)
-				helper.removeVisibility(config);
+			entries = helper.removeVisibility(config, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error in deleting the technique and associated instruments";
 			logger.error(err, e);
 			throw new ExperimentConfigException(err, e);
 		}
+		return entries;
 	}
 
 	private Technique findTechniqueByType(String type)

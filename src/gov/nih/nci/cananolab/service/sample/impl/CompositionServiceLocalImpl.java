@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -364,13 +365,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		return assocBean;
 	}
 
-	public void deleteNanomaterialEntity(NanomaterialEntity entity,
+	public List<String> deleteNanomaterialEntity(NanomaterialEntity entity,
 			UserBean user, Boolean removeVisibility)
 			throws CompositionException, ChemicalAssociationViolationException,
 			NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException(
@@ -380,22 +382,23 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
-			if (removeVisibility == null || removeVisibility)
-				helper.removeVisibility(entity);
+			entries = helper.removeVisibility(entity, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting nanomaterial entity " + entity.getId();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
+		return entries;
 	}
 
-	public void deleteFunctionalizingEntity(FunctionalizingEntity entity,
-			UserBean user, Boolean removeVisibility)
-			throws CompositionException, ChemicalAssociationViolationException,
-			NoAccessException {
+	public List<String> deleteFunctionalizingEntity(
+			FunctionalizingEntity entity, UserBean user,
+			Boolean removeVisibility) throws CompositionException,
+			ChemicalAssociationViolationException, NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException(
@@ -407,57 +410,62 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
-			if (removeVisibility == null || removeVisibility)
-				helper.removeVisibility(entity);
+			entries = helper.removeVisibility(entity, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting functionalizing entity "
 					+ entity.getId();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
+		return entries;
 	}
 
-	public void deleteChemicalAssociation(ChemicalAssociation assoc,
+	public List<String> deleteChemicalAssociation(ChemicalAssociation assoc,
 			UserBean user, Boolean removeVisibility)
 			throws CompositionException, NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(assoc);
-			if (removeVisibility == null || removeVisibility)
-				helper.removeVisibility(assoc);
+			entries = helper.removeVisibility(assoc, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting chemical association " + assoc.getId();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
+		return entries;
 	}
 
-	public void deleteCompositionFile(Sample sample, File file, UserBean user,
-			Boolean removeVisibility) throws CompositionException,
-			NoAccessException {
+	public List<String> deleteCompositionFile(SampleComposition comp,
+			File file, UserBean user, Boolean removeVisibility)
+			throws CompositionException, NoAccessException {
 		if (user == null || !(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
+		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// load files first
-			List<File> fileList = helper.findFilesByCompositionInfoId(sample
-					.getSampleComposition().getId().toString(),
-					"SampleComposition", user);
-			sample.getSampleComposition().setFileCollection(
-					new HashSet<File>(fileList));
-			sample.getSampleComposition().getFileCollection().remove(file);
-			appService.saveOrUpdate(sample.getSampleComposition());
+			List<File> fileList = helper.findFilesByCompositionInfoId(comp
+					.getId().toString(), "SampleComposition", user);
+			comp.setFileCollection(new HashSet<File>(fileList));
+			comp.getFileCollection().remove(file);
+			appService.saveOrUpdate(comp);
+			if (removeVisibility == null || removeVisibility)
+				fileHelper.getAuthService().removeCSMEntry(
+						file.getId().toString());
+			entries.add(file.getId().toString());
 		} catch (Exception e) {
 			String err = "Error deleting composition file " + file.getUri();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
+		return entries;
 	}
 
 	// check if any composing elements of the nanomaterial entity is invovled in
@@ -612,5 +620,53 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			String error = "Error in copying the characterization.";
 			throw new CompositionException(error, e);
 		}
+	}
+
+	public List<String> deleteComposition(SampleComposition comp,
+			UserBean user, Boolean removeVisibility)
+			throws ChemicalAssociationViolationException, CompositionException,
+			NoAccessException {
+		List<String> entries = new ArrayList<String>();
+		// delete chemical association
+		if (comp.getChemicalAssociationCollection() != null) {
+			for (ChemicalAssociation assoc : comp
+					.getChemicalAssociationCollection()) {
+				entries.addAll(deleteChemicalAssociation(assoc, user,
+						removeVisibility));
+			}
+		}
+		// delete nanomaterial entities
+		if (comp.getNanomaterialEntityCollection() != null) {
+			for (NanomaterialEntity entity : comp
+					.getNanomaterialEntityCollection()) {
+				entries.addAll(deleteNanomaterialEntity(entity, user,
+						removeVisibility));
+			}
+		}
+		// delete functionalizing entities
+		if (comp.getFunctionalizingEntityCollection() != null) {
+			for (FunctionalizingEntity entity : comp
+					.getFunctionalizingEntityCollection()) {
+				entries.addAll(deleteFunctionalizingEntity(entity, user,
+						removeVisibility));
+			}
+		}
+		// delete composition files
+		if (comp.getFileCollection() != null) {
+			for (File file : comp.getFileCollection()) {
+				entries.addAll(deleteCompositionFile(comp, file, user,
+						removeVisibility));
+			}
+		}
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.delete(comp);
+		} catch (Exception e) {
+			String err = "Problem deleting composition by id: " + comp.getId();
+			logger.error(err, e);
+			throw new CompositionException(err, e);
+		}
+		return entries;
 	}
 }

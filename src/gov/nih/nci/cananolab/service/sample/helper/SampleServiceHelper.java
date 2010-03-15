@@ -828,11 +828,14 @@ public class SampleServiceHelper {
 		for (Object obj : results) {
 			Sample particle = (Sample) obj;
 			poc = particle.getPrimaryPointOfContact();
-			if (authService.checkReadPermission(user, poc.getId().toString())) {
-				return poc;
-			} else {
-				logger.debug("Don't have access to point of contact "
-						+ poc.getId());
+			if (poc != null) {
+				if (authService.checkReadPermission(user, poc.getId()
+						.toString())) {
+					return poc;
+				} else {
+					logger.debug("Don't have access to point of contact "
+							+ poc.getId());
+				}
 			}
 		}
 		return poc;
@@ -1118,8 +1121,12 @@ public class SampleServiceHelper {
 		sampleBean.setVisibilityGroups(visibilityGroups);
 	}
 
-	public void removeVisibility(Sample sample) throws Exception {
-		authService.removeCSMEntry(sample.getName());
+	public List<String> removeVisibility(Sample sample, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove)
+			authService.removeCSMEntry(sample.getName());
+		entries.add(sample.getName());
 		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
 		CompositionServiceHelper compHelper = new CompositionServiceHelper();
 		Collection<Characterization> characterizationCollection = sample
@@ -1127,18 +1134,21 @@ public class SampleServiceHelper {
 		// characterizations
 		if (characterizationCollection != null) {
 			for (Characterization aChar : characterizationCollection) {
-				charHelper.removeVisibility(aChar);
+				entries.addAll(charHelper.removeVisibility(aChar, remove));
 			}
 		}
 		// sampleComposition
 		if (sample.getSampleComposition() != null) {
-			compHelper.removeVisibility(sample.getSampleComposition());
+			entries.addAll(compHelper.removeVisibility(sample
+					.getSampleComposition(), remove));
 		}
+		return entries;
 	}
 
 	/**
-	 * search sampleNames based on sample name str.  The str can contain just a partial sample name 
-	 * or multiple partial names one per line 
+	 * search sampleNames based on sample name str. The str can contain just a
+	 * partial sample name or multiple partial names one per line
+	 * 
 	 * @param nameStr
 	 * @param user
 	 * @return
