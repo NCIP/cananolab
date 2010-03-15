@@ -259,7 +259,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	 * sample_publication otherwise, remove publicVisibility and delete
 	 * publication
 	 */
-	public void removePublicationFromSample(String sampleId, PublicationBean pubBean, UserBean user)
+	public void removePublicationFromSample(String sampleId, Publication publication, UserBean user)
 			throws PublicationException, NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}
