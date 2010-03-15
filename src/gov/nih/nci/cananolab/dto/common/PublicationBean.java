@@ -30,8 +30,8 @@ public class PublicationBean extends FileBean {
 	private List<Author> authors = new ArrayList<Author>();
 	private Author theAuthor = new Author();
 	private String sampleNamesStr;
-	private Boolean fromSamplePage=false;
-	
+	private Boolean fromSamplePage = false;
+
 	private String displayName = "";;
 
 	public PublicationBean() {
@@ -109,8 +109,10 @@ public class PublicationBean extends FileBean {
 	}
 
 	public String[] getSampleNames() {
-		if (!StringUtils.isEmpty(sampleNamesStr)) {
-			sampleNames = sampleNamesStr.split("\r\n");
+		if (sampleNames.length == 0) {
+			if (!StringUtils.isEmpty(sampleNamesStr)) {
+				sampleNames = sampleNamesStr.split("\r\n");
+			}
 		}
 		return sampleNames;
 	}
