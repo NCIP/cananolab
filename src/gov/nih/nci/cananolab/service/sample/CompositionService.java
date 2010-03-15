@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -15,6 +15,8 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+
+import java.util.List;
 
 /**
  * Service methods involving composition.
@@ -48,24 +50,29 @@ public interface CompositionService {
 	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
 			UserBean user) throws CompositionException, NoAccessException;
 
-	public void deleteNanomaterialEntity(NanomaterialEntity entity,
+	public List<String> deleteNanomaterialEntity(NanomaterialEntity entity,
 			UserBean user, Boolean removeVisibility)
 			throws CompositionException, ChemicalAssociationViolationException,
 			NoAccessException;
 
-	public void deleteFunctionalizingEntity(FunctionalizingEntity entity,
+	public List<String> deleteFunctionalizingEntity(
+			FunctionalizingEntity entity, UserBean user,
+			Boolean removeVisibility) throws CompositionException,
+			ChemicalAssociationViolationException, NoAccessException;
+
+	public List<String> deleteChemicalAssociation(ChemicalAssociation assoc,
 			UserBean user, Boolean removeVisibility)
 			throws CompositionException, ChemicalAssociationViolationException,
 			NoAccessException;
 
-	public void deleteChemicalAssociation(ChemicalAssociation assoc,
-			UserBean user, Boolean removeVisibility)
-			throws CompositionException, ChemicalAssociationViolationException,
-			NoAccessException;
-
-	public void deleteCompositionFile(Sample particleSample, File file,
-			UserBean user, Boolean removeVisibility)
+	public List<String> deleteCompositionFile(SampleComposition comp,
+			File file, UserBean user, Boolean removeVisibility)
 			throws CompositionException, NoAccessException;
+
+	public List<String> deleteComposition(SampleComposition comp,
+			UserBean user, Boolean removeVisibility)
+			throws ChemicalAssociationViolationException, CompositionException,
+			NoAccessException;
 
 	public CompositionBean findCompositionBySampleId(String sampleId,
 			UserBean user) throws CompositionException, NoAccessException;
