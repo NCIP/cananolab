@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -342,7 +343,8 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleService service = new SampleServiceLocalImpl();
 		List<String> csmEntriesToRemove = service.deleteSample(sampleBean
 				.getDomain().getName(), user, false);
-		
+		InitSetup.getInstance().updateCSMCleanupEntriesInContext(
+				csmEntriesToRemove, request);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
 				sampleBean.getDomain().getName());
