@@ -298,13 +298,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * Remove sample-publication association for an existing publication.
 	 * 
 	 * @param sampleId
-	 * @param pubBean
+	 * @param publication
 	 * @param user
 	 * @throws PublicationException
 	 *             , NoAccessException
 	 */
 	public void removePublicationFromSample(String sampleId,
-			PublicationBean pubBean, UserBean user)
+			Publication publication, UserBean user)
 			throws PublicationException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
@@ -318,15 +318,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					.findSampleById(sampleId, user);
 			Sample sample = sampleBean.getDomain();
 			Collection<Publication> pubs = sample.getPublicationCollection();
-			if (pubs != null && pubs.size() > 0) {
-				for (Publication pub : pubs) {
-					if (pub.getId().equals(pubBean.getDomainFile().getId())) {
-						pubs.remove(pubBean.getDomainFile());
-						break;
-					}
-				}
-				appService.saveOrUpdate(sample);
-			}
+			if (pubs != null) {
+				pubs.remove(publication);
+			}			
+			appService.saveOrUpdate(sample);
+
 		} catch (Exception e) {
 			String err = "Error in removing the sample publication association.";
 			logger.error(err, e);
