@@ -21,8 +21,10 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -30,12 +32,31 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.ForwardAction;
 
 public class WelcomeAction extends ForwardAction {
+	
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		saveToken(request); // save token to avoid back and refresh on the login
 		// page.
 		InitSetup.getInstance().getGridNodesInContext(request);
+		
+		//FR# 26489, Implement Vistor Count.
+		HttpSession session = request.getSession();
+		ServletContext context = session.getServletContext();
+		Integer counter = (Integer) context.getAttribute("visitorCounter");
+		if (counter == null) {
+			//TODO: load counter from database using DAO.
+			counter = 100;
+			context.setAttribute("visitorCounter", counter);
+		}
+		String visitorIP = (String) session.getAttribute("visitorIP");
+		if (visitorIP == null || !visitorIP.equals(request.getRemoteAddr())) {
+			session.setAttribute("visitorIP", request.getRemoteAddr());
+			context.setAttribute("visitorCounter", ++counter);
+			
+			//TODO: update counter to database using DAO.
+		}
+		
 		return super.execute(mapping, form, request, response);
 	}
 

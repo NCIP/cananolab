@@ -178,6 +178,12 @@
 		</td>
 	</tr>
 	<tr>
+		<td>
+		<jsp:include page="/html/cananoBaseSidemenu.html"/>
+		</td>
+	</tr>
+	<%-- 
+	<tr>
 		<td class="subMenuPrimarySubTitle" height="20">
 			NCI LINKS
 		</td>
@@ -300,6 +306,7 @@
 			<a class="subMenuSecondary">SAFENANO</a>
 		</td>
 	</tr>
+	--%>
 	<tr>
 		<td class="subMenuFill" height="30">
 			&nbsp;
@@ -311,13 +318,12 @@
 				Visitor Count <br/><br/><img src="images/hit_counter.png" width="80"/>
 			</td>
 		</tr>
-		-->
+	-->
 	<tr>
 		<td class="subMenuFill" height="100%">
 			&nbsp;
 		</td>
 	</tr>
-
 	<tr>
 		<td class="subMenuFooter" height="22">
 			&nbsp;
