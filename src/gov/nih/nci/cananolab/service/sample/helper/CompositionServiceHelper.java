@@ -32,9 +32,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving composition.
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class CompositionServiceHelper {
 
@@ -106,7 +106,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Get PubChem URL in format of
 	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 * 
+	 *
 	 * @param pubChemDS
 	 * @param pubChemId
 	 * @return PubChem URL
@@ -278,17 +278,21 @@ public class CompositionServiceHelper {
 		if (remove == null || remove)
 			authService.removeCSMEntry(comp.getId().toString());
 		entries.add(comp.getId().toString());
-		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
-			entries.addAll(removeVisibility(entity, remove));
-		}
-		for (FunctionalizingEntity entity : comp
-				.getFunctionalizingEntityCollection()) {
-			entries.addAll(removeVisibility(entity, remove));
-		}
-		for (ChemicalAssociation assoc : comp
-				.getChemicalAssociationCollection()) {
-			entries.addAll(removeVisibility(assoc, remove));
-		}
+		if (comp.getNanomaterialEntityCollection() != null)
+			for (NanomaterialEntity entity : comp
+					.getNanomaterialEntityCollection()) {
+				entries.addAll(removeVisibility(entity, remove));
+			}
+		if (comp.getFunctionalizingEntityCollection() != null)
+			for (FunctionalizingEntity entity : comp
+					.getFunctionalizingEntityCollection()) {
+				entries.addAll(removeVisibility(entity, remove));
+			}
+		if (comp.getChemicalAssociationCollection() != null)
+			for (ChemicalAssociation assoc : comp
+					.getChemicalAssociationCollection()) {
+				entries.addAll(removeVisibility(assoc, remove));
+			}
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
 				if (remove == null || remove)

@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -136,6 +137,25 @@ public class CompositionBean {
 
 	public SampleComposition resetDomainCopy(SampleComposition copy) {
 		copy.setId(null);
+
+		// need to set chemical association copy first for associated element
+		// IDs are set to null after setting nanomaterial entity and
+		// functionalizing entity
+		Collection<ChemicalAssociation> oldAssocs = copy
+				.getChemicalAssociationCollection();
+		if (oldAssocs == null || oldAssocs.isEmpty()) {
+			copy.setChemicalAssociationCollection(null);
+		} else {
+			copy
+					.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>(
+							oldAssocs));
+			for (ChemicalAssociation assoc : copy
+					.getChemicalAssociationCollection()) {
+				ChemicalAssociationBean assocBean = new ChemicalAssociationBean(
+						assoc);
+				assocBean.resetDomainCopy(assoc);
+			}
+		}
 		Collection<NanomaterialEntity> oldNanoEntities = copy
 				.getNanomaterialEntityCollection();
 		if (oldNanoEntities == null || oldNanoEntities.isEmpty()) {

@@ -34,7 +34,8 @@ public class AssociatedElementBean {
 						.toString();
 			}
 		} else {
-			entityId = element.getId().toString();
+			if (element.getId() != null)
+				entityId = element.getId().toString();
 		}
 		updateType();
 	}
@@ -63,7 +64,7 @@ public class AssociatedElementBean {
 			Class clazz = ClassUtils.getFullClass("agentmaterial." + className);
 			if (clazz == null) {
 				clazz = OtherFunctionalizingEntity.class;
-			} 
+			}
 			try {
 				domainElement = (AssociatedElement) clazz.newInstance();
 			} catch (ClassCastException ex) {

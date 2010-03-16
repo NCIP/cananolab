@@ -27,9 +27,9 @@ import java.util.List;
 
 /**
  * Represents the view bean for the NanomaterialEntity domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private Polymer polymer = new Polymer();
@@ -123,8 +123,9 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			copy.setComposingElementCollection(new HashSet<ComposingElement>(
 					oldComposingElements));
 			for (ComposingElement ce : copy.getComposingElementCollection()) {
+				//append original ID in created by to aid in chemical association copy
+				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX+":"+ce.getId());
 				ce.setId(null);
-				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				Collection<Function> oldFunctions = ce
 						.getInherentFunctionCollection();
 				if (oldFunctions == null || oldFunctions.isEmpty()) {

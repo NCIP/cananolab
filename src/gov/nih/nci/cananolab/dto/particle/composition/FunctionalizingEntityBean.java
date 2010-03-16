@@ -25,9 +25,9 @@ import java.util.List;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private String molecularFormula;
@@ -130,10 +130,12 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	}
 
 	public void resetDomainCopy(FunctionalizingEntity copy) {
+		//append original ID to assist with chemical association copy
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+				+ copy.getId());
 		// clear Id
 		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		//because activationMethod can't be shared.
+		// because activationMethod can't be shared.
 		if (copy.getActivationMethod() != null) {
 			copy.getActivationMethod().setId(null);
 		}

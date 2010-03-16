@@ -33,9 +33,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of CompositionService.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
@@ -627,6 +627,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			throws ChemicalAssociationViolationException, CompositionException,
 			NoAccessException {
 		List<String> entries = new ArrayList<String>();
+		// delete composition files
+		if (comp.getFileCollection() != null) {
+			for (File file : comp.getFileCollection()) {
+				entries.addAll(deleteCompositionFile(comp, file, user,
+						removeVisibility));
+			}
+		}
 		// delete chemical association
 		if (comp.getChemicalAssociationCollection() != null) {
 			for (ChemicalAssociation assoc : comp
@@ -635,6 +642,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						removeVisibility));
 			}
 		}
+		comp.setChemicalAssociationCollection(null);
+
 		// delete nanomaterial entities
 		if (comp.getNanomaterialEntityCollection() != null) {
 			for (NanomaterialEntity entity : comp

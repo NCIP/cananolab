@@ -14,9 +14,9 @@ import java.util.List;
 
 /**
  * PointOfContact view bean
- * 
+ *
  * @author tanq, cais, pansu
- * 
+ *
  */
 
 public class PointOfContactBean {
@@ -169,14 +169,17 @@ public class PointOfContactBean {
 	}
 
 	public void resetDomainCopy(PointOfContact copy) {
-		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		
-		//don't need to set organization because organizations are shared
-//		if (copy.getOrganization() != null) {
-//			Organization org = copy.getOrganization();
-//			org.setId(null);
-//			org.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-//		}
+//		//append original ID to assist with copy
+//		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+//				+ copy.getId());
+		//don't need to set
+//		copy.setId(null);
+
+		// don't need to set organization because organizations are shared
+		// if (copy.getOrganization() != null) {
+		// Organization org = copy.getOrganization();
+		// org.setId(null);
+		// org.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		// }
 	}
 }

@@ -26,9 +26,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Utility service for file retrieving and writing.
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class FileServiceHelper {
 	private Logger logger = Logger.getLogger(FileServiceHelper.class);
@@ -44,7 +44,7 @@ public class FileServiceHelper {
 
 	/**
 	 * Load the file for the given fileId from the database
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 */
@@ -88,17 +88,15 @@ public class FileServiceHelper {
 
 	private void retrieveVisibilityAndContentForCopiedFile(FileBean copy,
 			UserBean user) throws Exception {
-
-		// the copied file has been persisted with the same URI but
-		// createdBy is COPY
-		File file = findFileByUri(copy.getDomainFile().getUri());
-		List<String> accessibleGroups = authService.getAccessibleGroups(file
-				.getId().toString(), Constants.CSM_READ_PRIVILEGE);
+		// obtain original id from created by
+		String origId = copy.getDomainFile().getCreatedBy().substring(5);
+		List<String> accessibleGroups = authService.getAccessibleGroups(origId,
+				Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null) {
 			copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
 		}
-		if (file != null) {
-			byte[] content = this.getFileContent(file.getId(), user);
+		if (origId != null) {
+			byte[] content = this.getFileContent(new Long(origId), user);
 			copy.setNewFileData(content);
 		}
 	}
@@ -117,28 +115,9 @@ public class FileServiceHelper {
 		}
 	}
 
-	private File findFileByUri(String uri) throws Exception {
-		File file = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		// DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
-		// Property.forName("uri").eq(uri)).add(
-		// Property.forName("createdBy").ne(
-		// Constants.AUTO_COPY_ANNOTATION_PREFIX));
-		DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
-				Property.forName("uri").eq(uri));
-
-		List results = appService.query(crit);
-		if (!results.isEmpty()) {
-			file = (File) results.get(0);
-		}
-		return file;
-	}
-
 	/**
 	 * Get the content of the file into a byte array.
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 * @throws FileException
@@ -198,7 +177,7 @@ public class FileServiceHelper {
 	/**
 	 * Check if file is accessible first. If so, retrieve visibility for files.
 	 * If no, remove the file from the list.
-	 * 
+	 *
 	 * @param fileBeans
 	 * @param user
 	 * @throws CompositionException

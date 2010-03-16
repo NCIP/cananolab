@@ -16,9 +16,9 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FileBean {
 	protected File domainFile = new File();
@@ -232,8 +232,9 @@ public class FileBean {
 	}
 
 	public void resetDomainCopy(File copy) {
+		//append original ID to assist in copy
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX+":"+copy.getId());
 		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		Collection<Keyword> oldKeywords = copy.getKeywordCollection();
 		if (oldKeywords == null || oldKeywords.isEmpty()) {
 			copy.setKeywordCollection(null);

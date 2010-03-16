@@ -5,8 +5,10 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -50,10 +52,8 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -66,9 +66,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -80,10 +80,10 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 * 
+	 *
 	 * @param sample
-	 * @throws SampleException
-	 *             , DuplicateEntriesException
+	 * @throws SampleException ,
+	 *             DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean, UserBean user)
 			throws SampleException, DuplicateEntriesException,
@@ -262,7 +262,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -703,7 +703,7 @@ public class SampleServiceLocalImpl implements SampleService {
 
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
-			saveClonedPOCs(origSampleBean, newSampleBean, user);
+			saveClonedPOCs(newSampleBean, user);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean,
 					user);
 			saveClonedComposition(origSampleBean, newSampleBean, user);
@@ -721,33 +721,15 @@ public class SampleServiceLocalImpl implements SampleService {
 		return newSampleBean;
 	}
 
-	private void saveClonedPOCs(SampleBean origSampleBean,
-			SampleBean sampleBean, UserBean user) throws Exception {
-		// copy primary POC visibility to new sample
-		helper.retrieveVisibility(origSampleBean.getPrimaryPOCBean());
-		sampleBean.getPrimaryPOCBean().setVisibilityGroups(
-				origSampleBean.getPrimaryPOCBean().getVisibilityGroups());
+	private void saveClonedPOCs(SampleBean sampleBean, UserBean user)
+			throws Exception {
+		// retrieve visibility
+		helper.retrieveVisibility(sampleBean.getPrimaryPOCBean());
 		savePointOfContact(sampleBean.getPrimaryPOCBean(), user);
-
-		// retrieve other POC visibility and store it in a hash
-		Map<String, String[]> visMap = new HashMap<String, String[]>();
-		if (origSampleBean.getOtherPOCBeans() != null) {
-			for (PointOfContactBean pocBean : origSampleBean.getOtherPOCBeans()) {
-				helper.retrieveVisibility(pocBean);
-				if (!StringUtils.isEmpty(pocBean.getDisplayName())) {
-					visMap.put(pocBean.getDisplayName(), pocBean
-							.getVisibilityGroups());
-				}
-			}
-		}
 		if (sampleBean.getOtherPOCBeans() != null
 				&& !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
-				if (!StringUtils.isEmpty(pocBean.getDisplayName())) {
-					String[] visibilities = visMap
-							.get(pocBean.getDisplayName());
-					pocBean.setVisibilityGroups(visibilities);
-				}
+				helper.retrieveVisibility(pocBean);
 				savePointOfContact(pocBean, user);
 			}
 		}
@@ -839,12 +821,52 @@ public class SampleServiceLocalImpl implements SampleService {
 						.getChemicalAssociationCollection()) {
 					ChemicalAssociationBean assocBean = new ChemicalAssociationBean(
 							assoc);
+					// set the correct IDs for associated elements
+					updateAssociatedElementId(sampleBean.getDomain()
+							.getSampleComposition(), assoc
+							.getAssociatedElementA());
+					updateAssociatedElementId(sampleBean.getDomain()
+							.getSampleComposition(), assoc
+							.getAssociatedElementB());
 					for (FileBean fileBean : assocBean.getFiles()) {
 						fileHelper.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName, user);
 					}
 					compService.saveChemicalAssociation(sampleBean, assocBean,
 							user);
+				}
+			}
+		}
+	}
+
+	private void updateAssociatedElementId(SampleComposition comp,
+			AssociatedElement associatedElement) {
+		if (associatedElement != null) {
+			String origId = associatedElement.getCreatedBy().substring(5);
+			// finding the matching functionalizing entity
+			if (associatedElement instanceof FunctionalizingEntity) {
+				for (FunctionalizingEntity entity : comp
+						.getFunctionalizingEntityCollection()) {
+					String entityOrigId = entity.getCreatedBy().substring(5);
+					if (entityOrigId.equals(origId)) {
+						associatedElement.setId(entity.getId());
+						break;
+					}
+				}
+			}
+			if (associatedElement instanceof ComposingElement) {
+				for (NanomaterialEntity entity : comp
+						.getNanomaterialEntityCollection()) {
+					if (entity.getComposingElementCollection() != null) {
+						for (ComposingElement ce : entity
+								.getComposingElementCollection()) {
+							String ceOrigId = ce.getCreatedBy().substring(5);
+							if (ceOrigId.equals(origId)) {
+								associatedElement.setId(ce.getId());
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -864,8 +886,9 @@ public class SampleServiceLocalImpl implements SampleService {
 						.toArray(new String[0]));
 				// to prevent overwriting sample associations
 				pubBean.setFromSamplePage(true);
-				// don't need to reset sample names because savePublication
-				// takes care of empty sample names.
+				// / / don't need to reset sample names because
+				// savePublication
+				// / / takes care of empty sample names.
 				pubService.savePublication(pubBean, user);
 			}
 		}
@@ -879,13 +902,13 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 		List<String> entries = new ArrayList<String>();
 		Sample sample = null;
-		// to save time, clean up CSM entries in the background
+		// / / to save time, clean up CSM entries in the background
 		try {
-			// fully load original sample
+			// / / fully load original sample
 			sample = findFullyLoadedSampleByName(sampleName, user);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			// delete characterizations
+			// / / delete characterizations
 			if (sample.getCharacterizationCollection() != null) {
 				CharacterizationService charService = new CharacterizationServiceLocalImpl();
 				for (Characterization achar : sample
@@ -894,18 +917,20 @@ public class SampleServiceLocalImpl implements SampleService {
 							user, removeVisibility));
 				}
 			}
-			// delete composition
+
+			// / / delete composition
 			if (sample.getSampleComposition() != null) {
 				CompositionService compService = new CompositionServiceLocalImpl();
 				entries.addAll(compService.deleteComposition(sample
 						.getSampleComposition(), user, removeVisibility));
 			}
+			sample.setSampleComposition(null);
 
-			// remove publication associations
+			// / / remove publication associations
 			if (sample.getPublicationCollection() != null) {
 				sample.setPublicationCollection(null);
 			}
-			// remove keyword associations
+			// / / remove keyword associations
 			if (sample.getKeywordCollection() != null) {
 				sample.setKeywordCollection(null);
 			}
