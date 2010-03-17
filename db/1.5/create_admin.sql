@@ -9,6 +9,8 @@ CREATE TABLE administration
 	counter_start_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
+	updated_by VARCHAR(200) NULL,
+	updated_date DATETIME NULL,
 	PRIMARY KEY (administration_id)
 ) TYPE=InnoDB
 ;

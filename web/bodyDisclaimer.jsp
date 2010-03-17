@@ -62,7 +62,7 @@
 		<TR>
 			<TD class="disclaimerContent" vAlign="top">
 				<STRONG>I HAVE READ AND UNDERSTOOD THE ABOVE PROVISIONS,
-					AND SIGNIFY MY AGREEMENT BY <a href="welcome.do">CLICKING HERE</A>.
+					AND SIGNIFY MY AGREEMENT BY <a href="home.do">CLICKING HERE</A>.
 				</STRONG>
 		</TR>
 	</TBODY>

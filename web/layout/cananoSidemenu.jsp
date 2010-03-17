@@ -24,7 +24,12 @@
 			</tr>
 			<tr>
 				<td class="subMenuSecondaryTitleFill" height="20">
-					${visitorCounter}
+					${visitorCount}
+				</td>
+			</tr>
+			<tr>
+				<td class="subMenuSecondaryTitleFill" height="20">
+					since ${counterStartDate}
 				</td>
 			</tr>
 		</c:if>

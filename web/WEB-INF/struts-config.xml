@@ -79,6 +79,11 @@
 				key="error.grid.autodiscover" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
 		</action>
+		<action path="/home"
+			type="gov.nih.nci.cananolab.ui.admin.VisitorCounterAction"
+			scope="request">
+			<forward name="welcomePage" path="/welcome.do" />
+		</action>
 		<action path="/publicCount" parameter="dispatch"
 			type="gov.nih.nci.cananolab.ui.core.CountAction">
 			<exception
@@ -142,5 +147,10 @@
 		className="gov.nih.nci.cananolab.ui.core.SchedulerPlugin">
 		<set-property property="startOnLoad" value="false" />
 		<set-property property="startupDelay" value="0" />
+	</plug-in>
+	<plug-in
+		className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation" 
+			value="/WEB-INF/classes/application-config-admin.xml" />
 	</plug-in>
 </struts-config>
