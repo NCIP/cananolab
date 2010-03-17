@@ -94,24 +94,10 @@
 		</tr>		
 	</table>
 	<br>
-	<table width="100%" border="0" align="center" cellpadding="0"
-		cellspacing="0" summary="">
-		<tr>
-			<td align="center">
-				<span class="formMessage"> <em>Searching without any
-						parameters would return all protocols.</em> </span>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="reset" value="Reset"
-					onclick="javascript: location.href = 'searchProtocol.do?dispatch=setup&page=0';" />
-				&nbsp;&nbsp;				
-				<html:submit value="Search" />
-				<input type="hidden" name="dispatch" value="search">
-				<input type="hidden" name="page" value="1">
-			</td>
-		</tr>
-	</table>
+	<c:set var="dataType" value="protocol"/>
+	<c:set var="resetLink" value="searchProtocol.do?dispatch=setup&page=0"/>
+	<c:set var="hiddenDispatch" value="search"/>
+	<c:set var="hiddenPage" value="1"/>	
+	<%@include file="../bodySearchButtons.jsp"%>	
 </html:form>
 <!--_____ main content ends _____-->
