@@ -167,7 +167,10 @@ public class Constants {
 	public static final String NODE_UNAVAILABLE = "Unable to connect to the grid location that you selected";
 
 	// default discovery internal for grid index server
-	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 20;
+	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 240;
+	
+	// default discovery internal for grid index server
+	public static final int DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS = 1;
 
 	public static final String DOMAIN_MODEL_VERSION = "1.5";
 
