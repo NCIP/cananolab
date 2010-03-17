@@ -83,6 +83,13 @@ public class CustomPlugIn implements PlugIn {
 	public void destroy() {
 		System.out.println("Entering CustomPlugIn.destroy()");
 		System.out.println("Exiting CustomPlugIn.destroy()");
+		// be sure to clean up CSM entries that need to be removed before
+		// shutting down the server.
+		try {
+			cleanUpCSM();
+		} catch (Exception e) {
+			logger.error("Error removing obsoleted CSM entries.");
+		}
 	}
 
 	// discover grid nodes during start-up time and populates the grid nodes in
@@ -91,5 +98,10 @@ public class CustomPlugIn implements PlugIn {
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		logger.info("Found " + gridNodes + " grid nodes at start up.");
+	}
+
+	private void cleanUpCSM() throws Exception {
+		CSMCleanupJob csmCleanJob = new CSMCleanupJob();
+		csmCleanJob.cleanUpCSM();
 	}
 }
