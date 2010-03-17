@@ -58,9 +58,13 @@ public class SchedulerPlugin implements PlugIn {
 			scheduler = factory.getScheduler();
 			if (scheduler != null) {
 				scheduler.start();
-				int schedulerInterval = getIntervalInMinutes(actionServlet
-						.getServletConfig());
-				initialiseJob(schedulerInterval);
+				int gridDiscoveryIntervalInMinutes = getIntervalInMinutes(actionServlet
+						.getServletConfig(), "gridDiscoveryIntervalInMinutes");
+				initialiseGridDiscoveryJob(gridDiscoveryIntervalInMinutes);
+
+				int csmCleanupIntervalInMinutes = getIntervalInMinutes(actionServlet
+						.getServletConfig(), "csmCleanupIntervalInMinutes");
+				initialiseCSMCleanupJob(csmCleanupIntervalInMinutes);
 			}
 		} catch (SchedulerException e) {
 			logger.error("Error setting up scheduler", e);
@@ -73,11 +77,11 @@ public class SchedulerPlugin implements PlugIn {
 		System.out.println("Exiting SchedulerPlugIn.destroy()");
 	}
 
-	private int getIntervalInMinutes(ServletConfig servletConfig) {
+	private int getIntervalInMinutes(ServletConfig servletConfig, String parameterName) {
 		Integer interval = 0;
 		try {
 			interval = new Integer(servletConfig
-					.getInitParameter("schedulerIntervalInMinutes"));
+					.getInitParameter(parameterName));
 		} catch (NumberFormatException e) {
 			// use default
 			interval = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
@@ -85,24 +89,38 @@ public class SchedulerPlugin implements PlugIn {
 		return interval;
 	}
 
-	public void initialiseJob(int intervalInMinutes) {
+	public void initialiseGridDiscoveryJob(int intervalInMinutes) {
 		try {
-			Trigger trigger = null;
 			if (intervalInMinutes == 0) {
-				intervalInMinutes = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS; // default
-				// is
-				// 20
-				// minutes
+				// default is 240 minutes
+				intervalInMinutes = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
 			}
-			trigger = TriggerUtils.makeMinutelyTrigger(
+			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
 					"GridDiscoveryServiceJobTrigger", intervalInMinutes,
 					SimpleTrigger.REPEAT_INDEFINITELY);
-
 			JobDetail jobDetail = new JobDetail("GridDiscoveryServiceJob",
 					null, GridDiscoveryServiceJob.class);
-
 			scheduler.scheduleJob(jobDetail, trigger);
 			logger.debug("Discover Scheduler started......");
+		} catch (SchedulerException e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public void initialiseCSMCleanupJob(int intervalInMinutes) {
+		try {
+			if (intervalInMinutes == 0) {
+				// default is 240 minutes
+				intervalInMinutes = Constants.DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
+			}
+
+			JobDetail jobDetail = new JobDetail("CSMCleanupJob", null,
+					CSMCleanupJob.class);
+			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
+					"CSMCleanupJobTrigger", intervalInMinutes,
+					SimpleTrigger.REPEAT_INDEFINITELY);
+			scheduler.scheduleJob(jobDetail, trigger);
+			logger.debug("CSM clean up Scheduler started......");
 		} catch (SchedulerException e) {
 			logger.error(e.getMessage(), e);
 		}
