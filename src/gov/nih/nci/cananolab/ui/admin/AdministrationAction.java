@@ -10,11 +10,13 @@
 package gov.nih.nci.cananolab.ui.admin;
 
 /**
- *
+ * Action class for Administration section.
+ * 
  * @author houyh
  */
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.admin.AdminService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -45,12 +47,11 @@ import org.apache.struts.upload.FormFile;
 public class AdministrationAction extends AbstractDispatchAction {
 
 	private static Logger logger = Logger.getLogger(AdministrationAction.class);
+	
+	private AdminService adminService;
 
 	/**
 	 * Action to show site preference page.
-	 *
-	 * @param
-	 * @return
 	 */
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -274,5 +275,13 @@ public class AdministrationAction extends AbstractDispatchAction {
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasAdminPrivilege(user);
+	}
+
+	public AdminService getAdminService() {
+		return adminService;
+	}
+
+	public void setAdminService(AdminService adminService) {
+		this.adminService = adminService;
 	}
 }
