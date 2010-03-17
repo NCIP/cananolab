@@ -17,7 +17,7 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="20%">
+			<td class="cellLabel" width="120">
 				Search Site
 			</td>
 			<td>
@@ -63,10 +63,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="120">
 				Protocol Abbreviation
 			</td>
-			<td>
+			<td width="30">
 				<html:select property="abbreviationOperand"
 					styleId="abbreviationOperand">
 					<html:options collection="stringOperands" property="value"
@@ -90,31 +90,26 @@
 			</td>
 			<td>
 				<html:text property="fileTitle" size="80" />
-
 			</td>
-		</tr>
+		</tr>		
 	</table>
 	<br>
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0" class="topBorderOnly" summary="">
+	<table width="100%" border="0" align="center" cellpadding="0"
+		cellspacing="0" summary="">
 		<tr>
-			<td>
+			<td align="center">
 				<span class="formMessage"> <em>Searching without any
 						parameters would return all protocols.</em> </span>
-				<br>
-				<table border="0" align="right" cellpadding="4" cellspacing="0">
-					<tr>
-						<td>
-							<div align="right">
-								<input type="reset" value="Reset" onclick="javascript:location.href='searchProtocol.do?dispatch=setup&page=0';">
-								<input type="hidden" name="dispatch" value="search">
-								<input type="hidden" name="page" value="1">
-								<html:submit value="Search" />
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="reset" value="Reset"
+					onclick="javascript: location.href = 'searchProtocol.do?dispatch=setup&page=0';" />
+				&nbsp;&nbsp;				
+				<html:submit value="Search" />
+				<input type="hidden" name="dispatch" value="search">
+				<input type="hidden" name="page" value="1">
 			</td>
 		</tr>
 	</table>
