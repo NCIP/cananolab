@@ -25,7 +25,7 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="20%">
+			<td class="cellLabel" width="120">
 				Search Site
 			</td>
 			<td>
@@ -46,7 +46,7 @@
 	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="20%">
+			<td class="cellLabel" width="120">
 				Keywords
 			</td>
 			<td>
@@ -62,14 +62,14 @@
 	<br />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="20%">
-				Sample
-				<br>
-				Point of Contact
-			</td>
-			<td colspan="5">
-				<table>
+			<td>
+				<table cellspacing="0" cellpadding="0">
 					<tr>
+						<td class="cellLabel" width="120">
+							Sample
+							<br>
+							Point of Contact
+						</td>
 						<td>
 							<html:select property="pocOperand" styleId="pocOperand">
 								<html:options collection="stringOperands" property="value"
@@ -77,7 +77,8 @@
 							</html:select>
 						</td>
 						<td>
-							<html:text property="samplePointOfContact" size="60" /><br/>
+							<html:text property="samplePointOfContact" size="60" />
+							<br />
 							<em>searching organization name or person name</em>
 						</td>
 					</tr>
@@ -85,89 +86,84 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
-				Composition
-				<br>
-				Nanomaterial Entity
-			</td>
 			<td>
-				<html:select styleId="nanomaterialEntityTypes"
-					property="nanomaterialEntityTypes" multiple="true" size="4">
-					<html:options name="nanomaterialEntityTypes" />
-				</html:select>
-			</td>
-			<td class="cellLabel">
-				Composition
-				<br>
-				Functionalizing Entity
-			</td>
-			<td>
-				<html:select styleId="functionalizingEntityTypes"
-					property="functionalizingEntityTypes" multiple="true" size="3">
-					<html:options name="functionalizingEntityTypes" />
-				</html:select>
-			</td>
-			<td class="cellLabel">
-				Function
-			</td>
-			<td>
-				<html:select styleId="functionTypes" property="functionTypes"
-					multiple="true" size="3">
-					<html:options name="functionTypes" />
-				</html:select>
+				<table cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="cellLabel" width="120">
+							Composition
+							<br>
+							Nanomaterial Entity
+						</td>
+						<td>
+							<html:select styleId="nanomaterialEntityTypes"
+								property="nanomaterialEntityTypes" multiple="true" size="4">
+								<html:options name="nanomaterialEntityTypes" />
+							</html:select>
+						</td>
+						<td class="cellLabel">
+							Composition
+							<br>
+							Functionalizing Entity
+						</td>
+						<td>
+							<html:select styleId="functionalizingEntityTypes"
+								property="functionalizingEntityTypes" multiple="true" size="3">
+								<html:options name="functionalizingEntityTypes" />
+							</html:select>
+						</td>
+						<td class="cellLabel">
+							Function
+						</td>
+						<td>
+							<html:select styleId="functionTypes" property="functionTypes"
+								multiple="true" size="3">
+								<html:options name="functionTypes" />
+							</html:select>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
-				Characterization Type
-				<html:hidden styleId="characterizationType"
-					property="characterizationType" />
-			</td>
-			<td>
-				<html:select property="characterizationType" styleId="charType"
-					onchange="javascript:setCharacterizationOptionsByCharType()">
-					<option value="" />
-						<html:options name="characterizationTypes" />
-				</html:select>
-			</td>
-			<td class="cellLabel">
-				Characterization
-			</td>
-			<td colspan="3">
-				<html:select property="characterizations" styleId="charName"
-					multiple="true" size="4">
-					<%--<c:forEach var="achar"
+			<td colspan="2">
+				<table cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="cellLabel" width="120">
+							Characterization
+							<br>
+							Type
+							<html:hidden styleId="characterizationType"
+								property="characterizationType" />
+						</td>
+						<td>
+							<html:select property="characterizationType" styleId="charType"
+								onchange="javascript:setCharacterizationOptionsByCharType()">
+								<option value="" />
+									<html:options name="characterizationTypes" />
+							</html:select>
+						</td>
+						<td class="cellLabel">
+							Characterization
+						</td>
+						<td colspan="3">
+							<html:select property="characterizations" styleId="charName"
+								multiple="true" size="4">
+								<%--<c:forEach var="achar"
 										items="${searchSampleForm.map.characterizations}">
 										<html:option value="${achar}">${achar}</html:option>
 									</c:forEach>--%>
-				</html:select>
+							</html:select>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
 	<br>
+	<c:set var="dataType" value="sample" />
+	<c:set var="resetLink" value="searchSample.do?dispatch=setup&page=0" />
+	<c:set var="hiddenDispatch" value="search" />
+	<c:set var="hiddenPage" value="1" />
+	<%@include file="../bodySearchButtons.jsp"%>
 
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0">
-		<tr>
-			<td>
-				<span class="formMessage"> <em>Searching without any
-						parameters would return all samples.</em> </span>
-				<br>
-				<table border="0" align="right" cellpadding="4" cellspacing="0">
-					<tr>
-						<td>
-							<div align="right">
-								<input type="reset" value="Reset"
-									onclick="javascript: location.href = 'searchSample.do?dispatch=setup&page=0';">
-								<input type="hidden" name="dispatch" value="search">
-								<input type="hidden" name="page" value="1">
-								<html:submit value="Search" />
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
-			</td>
-		</tr>
-	</table>
 </html:form>

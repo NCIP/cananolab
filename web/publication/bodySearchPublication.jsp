@@ -156,27 +156,9 @@
 		</tr>
 	</table>
 	<br>
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0">
-		<tr>
-			<td>
-				<span class="formMessage"> <em>Searching without any
-						parameters would return all publications.</em> </span>
-				<br>
-				<table border="0" align="right" cellpadding="4" cellspacing="0">
-					<tr>
-						<td>
-							<div align="right">
-								<input type="button" value="Reset" onclick="javascript:location.href='searchPublication.do?dispatch=setup&page=0';">
-								<input type="button" value="Search" onclick="searchPublication();">
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
-			</td>
-		</tr>
-	</table>
-
-</html:form>
+	<c:set var="dataType" value="publication"/>
+	<c:set var="resetLink" value="searchPublication.do?dispatch=setup&page=0"/>
+	<c:set var="searchOnclick" value="searchPublication();"/>
+	<%@include file="../bodySearchButtons.jsp"%>	
+	</html:form>
 <!--_____ main content ends _____-->
