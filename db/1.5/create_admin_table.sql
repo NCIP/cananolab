@@ -18,7 +18,7 @@ CREATE TABLE administration
 insert into administration(
 	administration_id, 
 	visitor_count, 
-	count_start_date, 
+	counter_start_date, 
 	created_by, 
 	created_date) 
 values (
