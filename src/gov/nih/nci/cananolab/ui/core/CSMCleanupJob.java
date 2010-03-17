@@ -41,9 +41,13 @@ public class CSMCleanupJob implements Job {
 	public void cleanUpCSM() throws Exception {
 		AuthorizationService service = new AuthorizationService(
 				Constants.CSM_APP_NAME);
+		Set<String> entries = Collections.synchronizedSet(new HashSet<String>(
+				secureObjectsToRemove));
 		for (String securedData : secureObjectsToRemove) {
 			service.removeCSMEntry(securedData);
+			entries.remove(securedData);
 		}
+		secureObjectsToRemove = entries;
 	}
 
 	public Set<String> getAllSecureObjectsToRemove() {
