@@ -8,7 +8,7 @@
 	<tr>
 		<td width="600">
 			<input type="reset" value="Reset"
-				onclick="${resetLink}" />
+				onclick="${resetOnclick}" />
 			&nbsp;&nbsp;
 			<c:set var="submitButtonName" value="Submit" />
 			<c:if test="${!empty updateId}">
