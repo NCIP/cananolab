@@ -96,40 +96,14 @@
 		</tr>
 	</table>
 	<br>
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0">
-		<tr>
-			<td width="30%">
-				<table width="100%" height="32" border="0"
-					cellpadding="4" cellspacing="0">
-					<tr>
-						<td width="200" height="32">
-							<div align="left">
-								<c:if test="${!empty updateSample}">
-									<input type="button" value="Clone" onclick="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')">
-									&nbsp;
-									<c:if test="${!empty user && user.curator && user.admin}">
-									    <input type="button" value="Delete" onclick="deleteData('sample', sampleForm, 'sample')">
-									</c:if>
-								</c:if>
-							</div>
-						</td>
-						<td width="490" height="32">
-							<div align="right">
-								<c:set var="origUrl"
-									value="sample.do?page=0&sampleId=${sampleId}&dispatch=${param.dispatch}&location=${applicationOwner}" />
-								<input type="reset" value="Reset"
-									onclick="javascript:window.location.href='${origUrl}'">
-								<input type="hidden" name="dispatch" value="create">
-								<input type="hidden" name="page" value="2">
-								<html:submit />
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
-			</td>
-		</tr>
-	</table>
+	
+	<c:set var="updateId" value="${param.sampleId}"/>
+	<c:set var="resetLink" value="sample.do?page=0&sampleId=${param.sampleId}&dispatch=${param.dispatch}&location=${applicationOwner}"/>
+	<c:set var="deleteOnclick" value="deleteData('sample', sampleForm, 'sample', 'delete')"/>
+	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="cloneOnclick" value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')"/>
+	<c:set var="hiddenDispatch" value="create"/>
+	<c:set var="hiddenPage" value="2"/>	
+	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 
