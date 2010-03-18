@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -28,9 +29,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of ProtocolService
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolServiceRemoteImpl implements ProtocolService {
 	private static Logger logger = Logger
@@ -118,7 +119,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 
 	/**
 	 * Persist a new protocol file or update an existing protocol file
-	 * 
+	 *
 	 * @param protocolBean
 	 * @throws Exception
 	 */
@@ -235,9 +236,9 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 					association.setAttribute(attribute);
 					association.setGroup(group);
 				}
-				if (attributeList.size() > 1) {					
+				if (attributeList.size() > 1) {
 					group.setAttribute(attributeList.toArray(new Attribute[0]));
-					group.setLogicRelation(LogicalOperator.AND);					
+					group.setLogicRelation(LogicalOperator.AND);
 					target.setGroup(group);
 				} else {
 					if (associationList.size() == 0) {
@@ -295,5 +296,11 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
+	}
+
+	public List<String> deleteProtocol(Protocol protocol, UserBean user,
+			Boolean removeVisibility) throws ProtocolException,
+			NoAccessException {
+		throw new ProtocolException("Not implemented for grid service");
 	}
 }

@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -23,15 +24,16 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
  * This class includes methods involved in searching protocols that can be used
  * in both local and remote searches
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger
@@ -146,6 +148,36 @@ public class ProtocolServiceHelper {
 		return file;
 	}
 
+	public List<Long> findCharacterizationIdsByProtocolId(String protocolId,
+			UserBean user) throws Exception {
+		if (authService.checkReadPermission(user, protocolId)) {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					Characterization.class).setProjection(
+					Projections.distinct(Property.forName("id")));
+			crit.createAlias("protocol", "protocol");
+			crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
+			List results = appService.query(crit);
+			List<Long> ids = new ArrayList<Long>();
+			for (Object obj : results) {
+				Long charId = (Long) obj;
+				if (authService.checkReadPermission(user, charId.toString())) {
+					ids.add(charId);
+				} else {
+					logger
+							.debug("User doesn't have access to characterization "
+									+ charId);
+				}
+			}
+			return ids;
+		} else {
+			throw new NoAccessException(
+					"User doesn't have acess to the protocol of id: "
+							+ protocolId);
+		}
+	}
+
 	public Protocol findProtocolById(String protocolId, UserBean user)
 			throws Exception {
 		Protocol protocol = null;
@@ -181,4 +213,23 @@ public class ProtocolServiceHelper {
 			protocolBean.setVisibilityGroups(visibilityGroups);
 		}
 	}
+
+	public List<String> removeVisibility(Protocol protocol, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (protocol != null) {
+			if (remove == null || remove)
+				authService.removeCSMEntry(protocol.getId().toString());
+			entries.add(protocol.getId().toString());
+			if (protocol.getFile() != null) {
+				if (remove == null || remove) {
+					authService.removeCSMEntry(protocol.getFile().getId()
+							.toString());
+				}
+				entries.add(protocol.getFile().getId().toString());
+			}
+		}
+		return entries;
+	}
+
 }

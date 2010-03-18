@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.protocol;
 
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -36,4 +37,8 @@ public interface ProtocolService {
 			throws ProtocolException, NoAccessException;
 
 	public int getNumberOfPublicProtocols() throws ProtocolException;
+
+	public List<String> deleteProtocol(Protocol protocol, UserBean user,
+			Boolean removeVisibility) throws ProtocolException,
+			NoAccessException;
 }

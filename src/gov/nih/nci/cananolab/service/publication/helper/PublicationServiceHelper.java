@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -37,7 +38,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of PublicationService and grid service *
- * 
+ *
  * @author tanq, pansu
  */
 public class PublicationServiceHelper {
@@ -290,7 +291,7 @@ public class PublicationServiceHelper {
 		// pagination in SDK
 		// DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 		// .setProjection(Projections.distinct(Property.forName("id")));
-		//		
+		//
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.setProjection(
 						Projections.projectionList().add(
@@ -394,7 +395,7 @@ public class PublicationServiceHelper {
 		// if (!otherPublicationIds.isEmpty()) {
 		// allPublicationIds.retainAll(otherPublicationIds);
 		// }
-		//		
+		//
 		if (!samplePublications.isEmpty()) {
 			allPublications.retainAll(samplePublications);
 		}
@@ -566,6 +567,24 @@ public class PublicationServiceHelper {
 		Collections.sort(publications,
 				new Comparators.PublicationCategoryTitleComparator());
 		return publications;
+	}
+
+	public List<String> removeVisibility(Publication publication, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (publication != null) {
+			if (remove == null || remove)
+				authService.removeCSMEntry(publication.getId().toString());
+			entries.add(publication.getId().toString());
+			if (publication.getAuthorCollection() != null) {
+				for (Author author : publication.getAuthorCollection()) {
+					if (remove == null || remove)
+						authService.removeCSMEntry(author.getId().toString());
+					entries.add(author.getId().toString());
+				}
+			}
+		}
+		return entries;
 	}
 
 	public AuthorizationService getAuthService() {

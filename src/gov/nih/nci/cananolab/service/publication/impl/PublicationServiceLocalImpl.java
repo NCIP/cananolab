@@ -32,9 +32,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of PublicationService
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -44,7 +44,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication
 	 * @param sampleNames
 	 * @param fileData
@@ -104,7 +104,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			authService.assignVisibility(publicationBean.getDomainFile()
 					.getId().toString(), publicationBean.getVisibilityGroups(),
 					null);
-			// set author visibility as well
+			// set author visibility as well because didn't share authors
+			// between publications
 			if (publication.getAuthorCollection() != null) {
 				for (Author author : publication.getAuthorCollection()) {
 					if (author != null) {
@@ -296,12 +297,12 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Remove sample-publication association for an existing publication.
-	 * 
+	 *
 	 * @param sampleId
 	 * @param publication
 	 * @param user
-	 * @throws PublicationException
-	 *             , NoAccessException
+	 * @throws PublicationException ,
+	 *             NoAccessException
 	 */
 	public void removePublicationFromSample(String sampleId,
 			Publication publication, UserBean user)
@@ -320,7 +321,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			Collection<Publication> pubs = sample.getPublicationCollection();
 			if (pubs != null) {
 				pubs.remove(publication);
-			}			
+			}
 			appService.saveOrUpdate(sample);
 
 		} catch (Exception e) {
@@ -328,5 +329,41 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
+	}
+
+	public List<String> deletePublication(Publication publication,
+			UserBean user, Boolean removeVisibility)
+			throws PublicationException, NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
+		List<String> entries = new ArrayList<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// assume publication is loaded with authors
+			//delete authors since authors were not shared across publications
+			if (publication.getAuthorCollection()!=null) {
+				for(Author author: publication.getAuthorCollection()) {
+					appService.delete(author);
+				}
+			}
+			publication.setAuthorCollection(null);
+
+			// find associated samples and remove publication association
+			String[] sampleNames = helper.findSampleNamesByPublicationId(
+					publication.getId().toString(), user);
+			for (String name : sampleNames) {
+				removePublicationFromSample(name, publication, user);
+			}
+			appService.delete(publication);
+			entries.addAll(helper.removeVisibility(publication,
+					removeVisibility));
+		} catch (Exception e) {
+			String err = "Error in deleting the publication.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+		return entries;
 	}
 }

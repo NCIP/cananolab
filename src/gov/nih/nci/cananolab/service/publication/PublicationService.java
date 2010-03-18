@@ -10,20 +10,20 @@ import java.util.List;
 
 /**
  * Interface defining methods invovled in submiting and searching publications.
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public interface PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication
 	 * @param sampleNames
 	 * @param fileData
 	 * @param authors
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean, UserBean user)
@@ -32,15 +32,17 @@ public interface PublicationService {
 	public PublicationBean findPublicationById(String publicationId,
 			UserBean user) throws PublicationException, NoAccessException;
 
-	public PublicationBean findPublicationByKey(String keyName, Object keyValue,
-			UserBean user) throws PublicationException, NoAccessException;
+	public PublicationBean findPublicationByKey(String keyName,
+			Object keyValue, UserBean user) throws PublicationException,
+			NoAccessException;
 
 	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
 			UserBean user) throws PublicationException;
 
 	public int getNumberOfPublicPublications() throws PublicationException;
 
-	public void removePublicationFromSample(String sampleId, Publication publication, UserBean user)
+	public void removePublicationFromSample(String sampleId,
+			Publication publication, UserBean user)
 			throws PublicationException, NoAccessException;
 
 	public List<Publication> findPublicationsBy(String title, String category,
@@ -62,4 +64,8 @@ public interface PublicationService {
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			UserBean user) throws PublicationException;
+
+	public List<String> deletePublication(Publication publication,
+			UserBean user, Boolean removeVisibility)
+			throws PublicationException, NoAccessException;
 }

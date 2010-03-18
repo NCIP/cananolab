@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -9,6 +10,7 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
+import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -21,9 +23,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of ProtocolService
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolServiceLocalImpl implements ProtocolService {
 	private static Logger logger = Logger
@@ -52,7 +54,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 	/**
 	 * Persist a new protocol file or update an existing protocol file
-	 * 
+	 *
 	 * @param protocolBean
 	 * @throws Exception
 	 */
@@ -171,5 +173,36 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
+	}
+
+	public List<String> deleteProtocol(Protocol protocol, UserBean user,
+			Boolean removeVisibility) throws ProtocolException,
+			NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
+		List<String> entries = new ArrayList<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// assume protocol is loaded with protocol file
+			// find associated characterizations
+			List<Long> charIds = helper.findCharacterizationIdsByProtocolId(
+					protocol.getId().toString(), user);
+			CharacterizationServiceHelper charServiceHelper = new CharacterizationServiceHelper();
+			for (Long id : charIds) {
+				Characterization achar = charServiceHelper
+						.findCharacterizationById(id.toString(), user);
+				achar.setProtocol(null);
+				appService.saveOrUpdate(achar);
+			}
+			appService.delete(protocol);
+			entries.addAll(helper.removeVisibility(protocol, removeVisibility));
+		} catch (Exception e) {
+			String err = "Error in deleting the protocol.";
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+		return entries;
 	}
 }
