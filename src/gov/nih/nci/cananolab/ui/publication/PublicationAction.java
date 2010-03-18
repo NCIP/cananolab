@@ -144,9 +144,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward delete(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward removeFromSample(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
 		PublicationService service = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = (PublicationBean) theForm
@@ -157,6 +157,34 @@ public class PublicationAction extends BaseAnnotationAction {
 				(Publication) publicationBean.getDomainFile(), user);
 
 		return summaryEdit(mapping, form, request, response);
+	}
+
+	/**
+	 * Delete a publication from Publication update form
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward delete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		PublicationForm theForm = (PublicationForm) form;
+		PublicationService service = new PublicationServiceLocalImpl();
+		PublicationBean publicationBean = (PublicationBean) theForm
+				.get("publication");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		service.deletePublication(
+				(Publication) publicationBean.getDomainFile(), user, true);
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.deletePublication",
+				publicationBean.getDomainFile().getTitle());
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		return mapping.findForward("success");
 	}
 
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
