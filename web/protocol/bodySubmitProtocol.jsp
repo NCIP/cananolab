@@ -20,7 +20,7 @@
 	<jsp:param name="topic" value="submit_protocol_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/submitProtocol" enctype="multipart/form-data">
+<html:form action="/protocol" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -97,10 +97,10 @@
 					onchange="javascript:writeLink(null);" />
 				&nbsp;&nbsp;
 				<span id="protocolFileLink"> <c:if
-						test="${!empty submitProtocolForm.map.protocol.fileBean.domainFile.uri }">&nbsp;&nbsp;
+						test="${!empty protocolForm.map.protocol.fileBean.domainFile.uri }">&nbsp;&nbsp;
 									<a
-							href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.protocol.fileBean.domainFile.id}&amp;location=${applicationOwner}">
-							${submitProtocolForm.map.protocol.fileBean.domainFile.uri }</a>
+							href="searchProtocol.do?dispatch=download&amp;fileId=${protocolForm.map.protocol.fileBean.domainFile.id}&amp;location=${applicationOwner}">
+							${protocolForm.map.protocol.fileBean.domainFile.uri }</a>
 					</c:if> </span>&nbsp;
 			</td>
 			<html:hidden property="protocol.domain.id" styleId="protocolId" />
@@ -143,28 +143,10 @@
 		</tr>
 	</table>
 	<br>
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0" class="topBorderOnly" summary="">
-		<tr>
-			<td width="30%">
-				<table width="498" height="15" border="0" align="right"
-					cellpadding="4" cellspacing="0">
-					<tr>
-						<td width="490" height="15">
-							<div align="right">
-								<div align="right">
-									<input type="reset" value="Reset"
-										onclick="javascript:location.href='submitProtocol.do?dispatch=setup&page=0'">
-									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="page" value="2">
-									<html:submit />
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
-			</td>
-		</tr>
-	</table>
+	<c:set var="updateId" value="${param.protocolId}"/>
+	<c:set var="resetLink" value="protocol.do?dispatch=setup&page=0"/>
+	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="hiddenDispatch" value="create"/>
+	<c:set var="hiddenPage" value="2"/>	
+	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>

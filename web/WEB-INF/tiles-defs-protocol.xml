@@ -11,7 +11,7 @@
 		<put name="itemDescription"
 			value="/protocol/bodyProtocolDescription.jsp" />
 		<put name="createLink"
-			value="submitProtocol.do?dispatch=setup&amp;page=0" />
+			value="protocol.do?dispatch=setup&amp;page=0" />
 		<put name="searchLink" value="searchProtocol.do?dispatch=setup" />
 	</definition>
 

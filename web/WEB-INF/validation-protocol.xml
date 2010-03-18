@@ -4,7 +4,7 @@
 
 <form-validation>
 	<formset>
-		<form name="submitProtocolForm">
+		<form name="protocolForm">
 			<field property="protocol.domain.name" page="1"
 				depends="required, mask">
 				<arg position="0" key="protocol.name" bundle="protocol" />

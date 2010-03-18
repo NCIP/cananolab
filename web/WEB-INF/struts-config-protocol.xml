@@ -2,7 +2,7 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="submitProtocolForm"
+		<form-bean name="protocolForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
@@ -39,13 +39,13 @@
 		<action path="/manageProtocol"
 			type="org.apache.struts.actions.ForwardAction"
 			parameter="protocol.manageProtocol" scope="request" />
-		<action name="submitProtocolForm" parameter="dispatch"
-			path="/submitProtocol"
-			type="gov.nih.nci.cananolab.ui.protocol.SubmitProtocolAction"
+		<action name="protocolForm" parameter="dispatch"
+			path="/protocol"
+			type="gov.nih.nci.cananolab.ui.protocol.ProtocolAction"
 			input="input" scope="request">
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
-				path="/submitProtocol.do?dispatch=input&amp;page=0" />
+				path="/protocol.do?dispatch=input&amp;page=0" />
 			<forward name="inputPage" path="protocol.submitProtocol" />
 		</action>
 		<action input="input" name="searchProtocolForm"

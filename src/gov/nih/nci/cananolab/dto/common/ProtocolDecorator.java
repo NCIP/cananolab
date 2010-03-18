@@ -23,7 +23,7 @@ public class ProtocolDecorator extends TableDecorator {
 			return null;
 		}
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitProtocol.do?dispatch=setupUpdate&protocolId=");
+		sb.append("protocol.do?dispatch=setupUpdate&protocolId=");
 		sb.append(protocol.getDomain().getId());
 		sb.append("&location=");
 		sb.append(protocol.getLocation()).append('>');
