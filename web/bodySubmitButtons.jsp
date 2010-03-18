@@ -8,23 +8,23 @@
 	<tr>
 		<td width="600">
 			<input type="reset" value="Reset"
-				onclick="javascript: location.href = '${resetLink}';" />
+				onclick="${resetLink}" />
 			&nbsp;&nbsp;
 			<c:set var="submitButtonName" value="Submit" />
 			<c:if test="${!empty updateId}">
 				<c:set var="submitButtonName" value="Update" />
-			</c:if>			
+			</c:if>
 			<c:choose>
 				<c:when test="${!empty submitOnclick }">
 					<input type="button" value="${submitButtonName}" onclick="${submitOnclick}">
 				</c:when>
-				<c:otherwise>					
+				<c:otherwise>
 					<html:submit value="${submitButtonName}" />
 					<input type="hidden" name="dispatch" value="${hiddenDispatch}">
 					<input type="hidden" name="page" value="${hiddenPage}">
 				</c:otherwise>
 			</c:choose>
-			
+
 		</td>
 		<td align="right" width="200">
 			<c:if test="${!empty user && !empty updateId && user.admin}">
