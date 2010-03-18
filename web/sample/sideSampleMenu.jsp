@@ -27,8 +27,7 @@
 		<c:set var="dispatch" value="summaryView" />
 	</c:otherwise>
 </c:choose>
-<table summary="" cellpadding="0" cellspacing="0" border="0"
-	height="100%" width="150">
+<table summary="" cellpadding="0" cellspacing="0" border="0">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="22">
 			NAVIGATION TREE
@@ -51,7 +50,7 @@
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="subMenuSecondaryTitle" 
+				<td class="subMenuSecondaryTitle"
 					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 					onclick="gotoPage('${sampleUrl}')" height="20">
@@ -177,141 +176,11 @@
 			&nbsp;
 		</td>
 	</tr>
-	<%--
 	<tr>
 		<td>
-		<jsp:include page="/html/cananoBaseSidemenu.html"/>
+			<jsp:include page="/html/cananoBaseSidemenu.html" />
 		</td>
 	</tr>
-	--%>	 
-	<tr>
-		<td class="subMenuPrimarySubTitle" height="20">
-			NCI LINKS
-		</td>
-	</tr>
-		<tr>
-			<td class="subMenuSecondaryTitle"
-				onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-				onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab', '', '800', '800')"
-				onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-				height="20">
-				<a class="subMenuSecondary">caNanoLab Wiki</a>
-			</td>
-		</tr>
-		<tr>
-			<td class="subMenuSecondaryTitle"
-				onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-				onclick="openWindow('http://ncicb.nci.nih.gov/', '', '800', '800')"
-				onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-				height="20">
-				<a class="subMenuSecondary">NCI CBIIT Home</a>
-			</td>
-		</tr>
-		<tr>
-			<td class="subMenuSecondaryTitle"
-				onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-				onclick="openWindow('http://ncl.cancer.gov/', '', '800', '800')"
-				onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-				height="20">
-				<a class="subMenuSecondary">NCL Home</a>
-			</td>
-		</tr>
-		<tr>
-			<td class="subMenuSecondaryTitle"
-				onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-				onclick="openWindow('http://csn.ncifcrf.gov/csn/index2.php', '', '800', '800')"
-				onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-				height="20">
-				<a class="subMenuSecondary">NCL CSN Home</a>
-			</td>
-		</tr>
-			<tr>
-			<td class="subMenuSecondaryTitle"
-				onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-				onclick="openWindow('http://nano.cancer.gov', '', '800', '800')"
-				onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-				height="20">
-				<a class="subMenuSecondary">NCI Nano Alliance Home</a>
-			</td>
-		</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www.cancer.gov', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			height="20">
-			<a class="subMenuSecondary">NCI Home</a>
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuFill" height="5">
-			&nbsp;
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuPrimarySubTitle" height="20">
-			EXTERNAL LINKS
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://oregonstate.edu/nbi/', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			height="20">
-			<a class="subMenuSecondary">NBI</a>
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www.cdc.gov/niosh/topics/nanotech/NIL.html', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			height="20">
-			<a class="subMenuSecondary">NIOSH NIL</a>
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://beta.internano.org/component/opti', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			height="20">
-			<a class="subMenuSecondary">InterNano</a>
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www.nanohub.org/home', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			height="20">
-			<a class="subMenuSecondary">nanoHUB</a>
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://icon.rice.edu/research.cfm', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			height="20">
-			<a class="subMenuSecondary">ICON</a>
-		</td>
-	</tr>
-	<tr>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www.safenano.org/AdvancedSearch.aspx', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			height="20">
-			<a class="subMenuSecondary">SAFENANO</a>
-		</td>
-	</tr>	
-	<tr>
-		<td class="subMenuFill" height="30">
-			&nbsp;
-		</td>
-	</tr>	
 	<tr>
 		<td class="subMenuFill" height="100%">
 			&nbsp;
