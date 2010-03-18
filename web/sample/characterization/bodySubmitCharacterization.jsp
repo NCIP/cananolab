@@ -80,7 +80,7 @@
 		page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
 	<br/>		
 	<c:set var="updateId" value="${characterizationForm.map.achar.domainChar.id}"/>
-	<c:set var="resetLink" value="this.form.reset();displayFileRadioButton();"/>
+	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
 	<c:set var="deleteOnclick" value="deleteData('characterization', characterizationForm, 'characterization', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
