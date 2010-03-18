@@ -257,7 +257,7 @@
 			</td>
 			<td colspan="5">
 				<html:textarea styleId="domainFile.description"
-					property="publication.domainFile.description" rows="8" cols="120"/>
+					property="publication.domainFile.description" rows="8" cols="120" />
 			</td>
 		</tr>
 		<tr>
@@ -401,60 +401,26 @@
 		</tr>
 	</table>
 	<br>
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0" class="topBorderOnly" summary="">
-		<tr>
-			<td width="30%">
-				<c:set var="dataId"
-					value="${publicationForm.map.publication.domainFile.id}" />
-				<c:if
-					test="${!empty publicationForm.map.sampleId && !empty dataId &&
-							  !empty user && user.admin && user.curator}">
-					<table height="32" border="0" align="left" cellpadding="4"
-						cellspacing="0">
-						<tr>
-							<td height="32">
-								<div align="left">
-									<c:set var="formName" value="publicationForm" />
-									<input type="button" value="Remove association"
-										onclick="deleteData('sample publication association', ${formName}, 'publication')">
-								</div>
-							</td>
-						</tr>
-					</table>
-				</c:if>
-				<table width="498" height="32" border="0" align="right"
-					cellpadding="4" cellspacing="0">
-					<tr>
-						<td width="490" height="32">
-							<div align="right">
-								<div align="right">
-									<c:choose>
-										<c:when test="${empty dataId}">
-											<c:set var="origUrl"
-												value="publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}&location=${applicationOwner}" />
-										</c:when>
-										<c:otherwise>
-											<c:set var="origUrl"
-												value="publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${dataId}&location=${applicationOwner}" />
-										</c:otherwise>
-									</c:choose>
-									<input type="reset" value="Reset"
-										onclick="javascript:window.location.href='${origUrl}'">
-									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="page" value="1">
-									<html:hidden property="sampleId"
-										value="${publicationForm.map.sampleId}" />
-									<html:hidden property="location"
-										value="${publicationForm.map.location}" />
-									<html:submit />
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
-			</td>
-		</tr>
-	</table>
+	<c:set var="updateId" value="${param.publicationId}" />
+	<c:set var="hiddenDispatch" value="create" />
+	<c:set var="hiddenPage" value="2" />
+	
+	<c:set var="resetLink"
+		value="publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}&location=${applicationOwner}" />
+	<c:if test="${!empty param.publicationId }">
+		<c:set var="resetLink"
+			value="publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${param.publicationId}&location=${applicationOwner}" />
+	</c:if>
+	<c:set var="deleteOnclick"
+		value="deleteData('publication', publicationForm, 'publication', 'delete')" />
+	<c:set var="deleteButtonName" value="Delete" />	
+	
+	<c:if test="${!empty param.sampleId}">
+		<c:set var="deleteButtonName" value="Remove from Sample" />
+		<c:set var="deleteOnclick"
+		value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />	
+		<html:hidden property="sampleId" value="${param.sampleId}" />
+		<html:hidden property="location" value="${param.location}" />
+	</c:if>
+	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>

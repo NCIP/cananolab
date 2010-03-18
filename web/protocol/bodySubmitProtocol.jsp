@@ -146,6 +146,8 @@
 	<c:set var="updateId" value="${param.protocolId}"/>
 	<c:set var="resetLink" value="protocol.do?dispatch=setup&page=0"/>
 	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="deleteOnclick"
+		value="deleteData('protocol', protocolForm, 'protocol', 'delete')" />
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>	
 	<%@include file="../bodySubmitButtons.jsp"%>
