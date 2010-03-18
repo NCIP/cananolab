@@ -58,10 +58,7 @@ public class AdminServiceLocalImpl implements AdminService {
 		"update administration set visitor_count=?, count_start_date=? where administration_id=" + 
 		ADMIN_RECORD_ID;
 	
-	public SitePreferenceBean getSitePreference(UserBean user) throws Exception {
-		if (user == null || !user.isAdmin()) {
-			throw new NoAccessException();
-		}
+	public SitePreferenceBean getSitePreference() throws Exception {
 		SitePreferenceBean result = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();

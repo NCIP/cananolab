@@ -7,6 +7,8 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="siteName" type="java.lang.String" />
 			<form-property name="siteLogo" type="org.apache.struts.upload.FormFile"	/>
+			<form-property name="siteBean"
+				type="gov.nih.nci.cananolab.dto.admin.SitePreferenceBean" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
@@ -21,10 +23,11 @@
 
 		<action path="/admin"
 			name="sitePreferenceForm"
-			type="gov.nih.nci.cananolab.ui.admin.AdministrationAction"
-			parameter="dispatch" input="input"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="dispatch" input="input" validate="false"
 			scope="request">
 			<forward name="input" path="admin.sitePreference" />
+			<forward name="cananoHeader" path="/layout/cananoHeader.jsp" />
 		</action>
 	</action-mappings>
 </struts-config>

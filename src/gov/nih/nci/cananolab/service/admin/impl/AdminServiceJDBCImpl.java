@@ -74,11 +74,11 @@ public class AdminServiceJDBCImpl extends JdbcDaoSupport implements AdminService
 		sbSelect.deleteCharAt(sbSelect.length() - 1); //remove last ','
 		sbSelect.append(" from administration where administration_id=");
 		sbSelect.append(ADMIN_RECORD_ID);
-		SELECT_SITE_PREFERENCE = sbSelect.toString();
 		sbUpdate.deleteCharAt(sbUpdate.length() - 1); //remove last ','
 		sbUpdate.append(" where administration_id=");
 		sbUpdate.append(ADMIN_RECORD_ID);
-		UPDATE_SITE_PREFERENCE = sbSelect.toString();
+		SELECT_SITE_PREFERENCE = sbSelect.toString();
+		UPDATE_SITE_PREFERENCE = sbUpdate.toString();
 		
 		// Build select/update statement for visitor count.
 		sbSelect.delete(0, sbSelect.length());
@@ -92,28 +92,23 @@ public class AdminServiceJDBCImpl extends JdbcDaoSupport implements AdminService
 		sbSelect.deleteCharAt(sbSelect.length() - 1); //remove last ','
 		sbSelect.append(" from administration where administration_id=");
 		sbSelect.append(ADMIN_RECORD_ID);
-		SELECT_VISITOR_COUNT = sbSelect.toString();
 		sbUpdate.deleteCharAt(sbUpdate.length() - 1); //remove last ','
 		sbUpdate.append(" where administration_id=");
 		sbUpdate.append(ADMIN_RECORD_ID);
+		SELECT_VISITOR_COUNT = sbSelect.toString();
 		UPDATE_VISITOR_COUNT = sbUpdate.toString();
 	}
 	
 	/**
 	 * Get Site Preference, including site name and logo file name. 
 	 * 
-	 * @param user
 	 * @throws Exception
 	 */
-	public SitePreferenceBean getSitePreference(UserBean user) throws Exception {
-		if (user == null || !user.isAdmin()) {
-			throw new NoAccessException();
-		}
+	public SitePreferenceBean getSitePreference() throws Exception {
 		SitePreferenceBean result = null;
 		JdbcTemplate selectSite = this.getJdbcTemplate();
 		result = (SitePreferenceBean) selectSite.queryForObject(
 				SELECT_SITE_PREFERENCE, SITE_MAPPER);
-		
 		return result;
 	}
 

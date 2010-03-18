@@ -12,10 +12,9 @@ public interface AdminService {
 	/**
 	 * Get Site Preference, including site name and logo file name. 
 	 * 
-	 * @param user
 	 * @throws Exception
 	 */
-	public SitePreferenceBean getSitePreference(UserBean user) throws Exception;
+	public SitePreferenceBean getSitePreference() throws Exception;
 
 	/**
 	 * Save Site Preference, including site name and logo file name. 
