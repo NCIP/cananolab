@@ -78,10 +78,12 @@
 	<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
 	<jsp:include
 		page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
-	<c:set var="type" value="characterization" />
-	<c:set var="actionName" value="characterization" />
-	<c:set var="formName" value="characterizationForm" />
-	<c:set var="dataId"
-		value="${characterizationForm.map.achar.domainChar.id}" />
-	<%@include file="../bodySubmitButtons.jsp"%>
+	<br/>		
+	<c:set var="updateId" value="${characterizationForm.map.achar.domainChar.id}"/>
+	<c:set var="resetLink" value="this.form.reset();displayFileRadioButton();"/>
+	<c:set var="deleteOnclick" value="deleteData('characterization', characterizationForm, 'characterization', 'delete')"/>
+	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="hiddenDispatch" value="create"/>
+	<c:set var="hiddenPage" value="2"/>	
+	<%@include file="../../bodySubmitButtons.jsp"%>
 </html:form>
