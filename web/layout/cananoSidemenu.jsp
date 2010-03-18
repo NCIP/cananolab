@@ -18,18 +18,19 @@
 		</tr>
 		<c:if test="${'true' eq param.showVisitorCount}">
 			<tr>
-				<td class="subMenuPrimarySubTitle" height="20">
-					VISITOR COUNT
+				<td class="subMenuSecondaryTitleFill" height="20">
+					Visitor Count
 				</td>
 			</tr>
 			<tr>
 				<td class="subMenuSecondaryTitleFill" height="20">
-					${visitorCount}
+					<%--Do NOT reformat code style below, otherwise it will introduce gaps between counter images--%>
+					<c:forEach var="index" begin="0" end="${fn:length(countString) - 1}"><c:set var="counterImg" value="${fn:substring(countString, index, index + 1)}"/><img alt="Visitor Counter" src="images/visitorCounter${counterImg}.png"/></c:forEach>
 				</td>
 			</tr>
 			<tr>
-				<td class="subMenuSecondaryTitleFill" height="20">
-					since ${counterStartDate}
+				<td class="subMenuCommentText" height="20">
+					<em>since ${counterStartDate}</em>
 				</td>
 			</tr>
 		</c:if>

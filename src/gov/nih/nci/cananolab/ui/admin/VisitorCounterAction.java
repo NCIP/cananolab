@@ -47,6 +47,7 @@ public class VisitorCounterAction extends ActionSupport {
 			VisitorCountBean counterBean = adminService.getVisitorCount();
 			counter = counterBean.getVisitorCount();
 			context.setAttribute("visitorCount", counter);
+			context.setAttribute("countString", counter.toString());
 			context.setAttribute("counterStartDate", 
 				DateUtils.convertDateToString(counterBean.getCounterStartDate(),
 							Constants.DATE_FORMAT));
@@ -56,12 +57,12 @@ public class VisitorCounterAction extends ActionSupport {
 		if (visitorIP == null || !visitorIP.equals(request.getRemoteAddr())) {
 			session.setAttribute("visitorIP", request.getRemoteAddr());
 			context.setAttribute("visitorCount", ++counter);
+			context.setAttribute("countString", counter.toString());
 			
 			AdminService adminService = (AdminService) this
 				.getWebApplicationContext().getBean("adminServiceDAO");
 			adminService.increaseVisitorCount();
 		}
-		
 		return mapping.findForward("welcomePage");
 	}
 

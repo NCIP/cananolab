@@ -153,6 +153,16 @@ td.subMenuSecondaryTitleFill {
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+td.subMenuCommentText {
+	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	padding-left: 0.8em;
+	background-color: #6A8989; /* darker */
+	color: #ffffff; /* constant: white */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
+}
+
 td.subMenuSecondaryTitle {
 	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
