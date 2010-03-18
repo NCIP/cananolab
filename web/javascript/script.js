@@ -423,10 +423,10 @@ function displayFileRadioButton() {
 		}
 	}
 }
-function deleteData(type, form, actionName) {
+function deleteData(type, form, actionName, dispatch) {
 	var answer = confirmDelete(type);
 	if (answer) {
-		submitAction(form, actionName, "delete", 0);
+		submitAction(form, actionName, dispatch, 0);
 	}
 }
 function sessionTimeout() {
