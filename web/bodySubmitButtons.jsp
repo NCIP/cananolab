@@ -15,7 +15,7 @@
 				<c:set var="submitButtonName" value="Update" />
 			</c:if>			
 			<c:choose>
-				<c:when test="${!empty submitOnclick }">${submitOnclick }
+				<c:when test="${!empty submitOnclick }">
 					<input type="button" value="${submitButtonName}" onclick="${submitOnclick}">
 				</c:when>
 				<c:otherwise>					
