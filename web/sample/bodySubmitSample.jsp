@@ -96,14 +96,14 @@
 		</tr>
 	</table>
 	<br>
-	
+
 	<c:set var="updateId" value="${param.sampleId}"/>
-	<c:set var="resetLink" value="sample.do?page=0&sampleId=${param.sampleId}&dispatch=${param.dispatch}&location=${applicationOwner}"/>
+	<c:set var="resetOnclick" value="this.form.reset();"/>
 	<c:set var="deleteOnclick" value="deleteData('sample', sampleForm, 'sample', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="cloneOnclick" value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')"/>
 	<c:set var="hiddenDispatch" value="create"/>
-	<c:set var="hiddenPage" value="2"/>	
+	<c:set var="hiddenPage" value="2"/>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 

@@ -97,26 +97,26 @@
 				Authors
 			</td>
 			<td colspan="2">
-				<html:textarea property="authorsStr" cols="77" rows="3" styleId="authorsStr"/> 
+				<html:textarea property="authorsStr" cols="77" rows="3" styleId="authorsStr"/>
 				<br/><em>enter one author per line</em>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
 				Keywords
-			</td>			
+			</td>
 			<td colspan="2">
 				<html:textarea property="keywordsStr" cols="77" rows="3" styleId="keywordsStr" />
 				<br/><em>enter one keyword per line</em>
 			</td>
-		</tr>		
+		</tr>
 	</table>
 	<br>
 	<table width="100%" align="center" class="submissionView">
 	    <tr>
 			<td class="cellLabel">
 				Sample Name
-			</td>			
+			</td>
 			<td valign="top" colspan="4">
 				<html:text property="sampleName" size="80" /> <em>exact match</em>
 			</td>
@@ -157,8 +157,8 @@
 	</table>
 	<br>
 	<c:set var="dataType" value="publication"/>
-	<c:set var="resetLink" value="searchPublication.do?dispatch=setup&page=0"/>
+	<c:set var="resetOnclick" value="this.form.reset();"/>
 	<c:set var="searchOnclick" value="searchPublication();"/>
-	<%@include file="../bodySearchButtons.jsp"%>	
+	<%@include file="../bodySearchButtons.jsp"%>
 	</html:form>
 <!--_____ main content ends _____-->

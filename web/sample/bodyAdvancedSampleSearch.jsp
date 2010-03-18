@@ -36,7 +36,7 @@
 		</tr>
 		<tr>
 			<td>
-				<table id="sampleQueryTable" class="summaryViewLayer4" width="85%"
+				<table id="sampleQueryTable" class="editTableWithGrid" width="85%"
 					style="display: none;">
 					<tbody id="sampleQueryRows">
 						<tr id="samplePattern" style="display: none;">
@@ -137,7 +137,7 @@
 		</tr>
 		<tr>
 			<td>
-				<table id="compositionQueryTable" class="summaryViewLayer4"
+				<table id="compositionQueryTable" class="editTableWithGrid"
 					width="85%" style="display: none;">
 					<tbody id="compositionQueryRows">
 						<tr id="compPattern" style="display: none;">
@@ -260,7 +260,7 @@
 		</tr>
 		<tr>
 			<td>
-				<table id="characterizationQueryTable" class="summaryViewLayer4"
+				<table id="characterizationQueryTable" class="editTableWithGrid"
 					width="85%" style="display: none;">
 					<tbody id="characterizationQueryRows">
 						<tr id="charPattern" style="display: none;">
@@ -306,8 +306,8 @@
 								<option value="">
 									-- Please Select --
 								</option>
-								<html:options collection="decoratedCharacterizationTypes" labelProperty="label"
-									property="value" />
+								<html:options collection="decoratedCharacterizationTypes"
+									labelProperty="label" property="value" />
 							</html:select>
 						</td>
 						<td>
@@ -424,8 +424,9 @@
 	</table>
 	<br />
 	<c:set var="dataType" value="sample" />
-	<c:set var="resetLink" value="advancedSampleSearch.do?dispatch=setup&page=0" />
+	<c:set var="resetOnclick"
+		value="javascript: location.href = 'advancedSampleSearch.do?dispatch=setup&page=0'" />
 	<c:set var="hiddenDispatch" value="search" />
 	<c:set var="hiddenPage" value="1" />
-	<%@include file="../bodySearchButtons.jsp"%>	
+	<%@include file="../bodySearchButtons.jsp"%>
 </html:form>

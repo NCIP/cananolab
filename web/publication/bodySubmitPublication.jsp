@@ -404,21 +404,21 @@
 	<c:set var="updateId" value="${param.publicationId}" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="2" />
-	
-	<c:set var="resetLink"
-		value="publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}&location=${applicationOwner}" />
+
+	<c:set var="resetOnclick"
+		value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}&location=${applicationOwner}'" />
 	<c:if test="${!empty param.publicationId }">
-		<c:set var="resetLink"
-			value="publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${param.publicationId}&location=${applicationOwner}" />
+		<c:set var="resetOnclick"
+			value="javascript: location.href = 'publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${param.publicationId}&location=${applicationOwner}'" />
 	</c:if>
 	<c:set var="deleteOnclick"
 		value="deleteData('publication', publicationForm, 'publication', 'delete')" />
-	<c:set var="deleteButtonName" value="Delete" />	
-	
+	<c:set var="deleteButtonName" value="Delete" />
+
 	<c:if test="${!empty param.sampleId}">
 		<c:set var="deleteButtonName" value="Remove from Sample" />
 		<c:set var="deleteOnclick"
-		value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />	
+		value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
 		<html:hidden property="location" value="${param.location}" />
 	</c:if>

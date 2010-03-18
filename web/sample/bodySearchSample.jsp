@@ -161,7 +161,7 @@
 	</table>
 	<br>
 	<c:set var="dataType" value="sample" />
-	<c:set var="resetLink" value="searchSample.do?dispatch=setup&page=0" />
+	<c:set var="resetOnclick" value="javascript: location.href = 'searchSample.do?dispatch=setup&page=0'" />
 	<c:set var="hiddenDispatch" value="search" />
 	<c:set var="hiddenPage" value="1" />
 	<%@include file="../bodySearchButtons.jsp"%>

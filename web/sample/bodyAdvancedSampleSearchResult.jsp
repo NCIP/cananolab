@@ -39,7 +39,7 @@
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-			<table class="summaryViewLayer4" width="100%">
+			<table class="editTableWithGrid" width="100%">
 				<tr>
 					<th style="text-align: center">
 						Selected Criteria

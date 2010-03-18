@@ -74,7 +74,7 @@
 				</html:select>
 			</td>
 			<td>
-				<html:text property="protocolAbbreviation" size="80" />				
+				<html:text property="protocolAbbreviation" size="80" />
 			</td>
 		</tr>
 		<tr>
@@ -91,13 +91,13 @@
 			<td>
 				<html:text property="fileTitle" size="80" />
 			</td>
-		</tr>		
+		</tr>
 	</table>
 	<br>
 	<c:set var="dataType" value="protocol"/>
-	<c:set var="resetLink" value="searchProtocol.do?dispatch=setup&page=0"/>
+	<c:set var="resetOnclick" value="this.form.reset();"/>
 	<c:set var="hiddenDispatch" value="search"/>
-	<c:set var="hiddenPage" value="1"/>	
-	<%@include file="../bodySearchButtons.jsp"%>	
+	<c:set var="hiddenPage" value="1"/>
+	<%@include file="../bodySearchButtons.jsp"%>
 </html:form>
 <!--_____ main content ends _____-->
