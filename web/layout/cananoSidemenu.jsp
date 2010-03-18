@@ -8,7 +8,22 @@
 	<tbody>
 		<tr>
 			<td>
-			<jsp:include page="/html/cananoBaseSidemenu.html"/>
+				<table height="100%" width="150" cellspacing="0" cellpadding="0"
+					summary="" border="0">
+					<tr>
+						<td class="subMenuPrimaryTitle" height="22">
+							QUICK LINKS
+							<!-- anchor to skip sub menu -->
+							<a href="#content"><img height="1" alt="Skip Menu"
+									src="images/shim.gif" width="1" border="0"> </a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<jsp:include page="/html/cananoBaseSidemenu.html" />
 			</td>
 		</tr>
 		<tr>
@@ -25,7 +40,13 @@
 			<tr>
 				<td class="subMenuSecondaryTitleFill" height="20">
 					<%--Do NOT reformat code style below, otherwise it will introduce gaps between counter images--%>
-					<c:forEach var="index" begin="0" end="${fn:length(countString) - 1}"><c:set var="counterImg" value="${fn:substring(countString, index, index + 1)}"/><img alt="Visitor Counter" src="images/visitorCounter${counterImg}.png"/></c:forEach>
+					<c:forEach var="index" begin="0"
+						end="${fn:length(countString) - 1}">
+						<c:set var="counterImg"
+							value="${fn:substring(countString, index, index + 1)}" />
+						<img alt="Visitor Counter"
+							src="images/visitorCounter${counterImg}.png" />
+					</c:forEach>
 				</td>
 			</tr>
 			<tr>
