@@ -13,7 +13,7 @@
 	<tr>
 		<td>
 			<input type="reset" value="Reset"
-				onclick="javascript: location.href = '${resetLink}';" />
+				onclick="${resetOnclick}" />
 			&nbsp;&nbsp;
 			<c:choose>
 				<c:when test="${!empty searchOnclick }">
