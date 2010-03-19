@@ -18,7 +18,7 @@
 			<c:if test="${!empty fileType}">
 				<tr>
 					<td>
-						<table class="summaryViewLayer3" width="99%" align="center">
+						<table class="summaryViewNoGrid" width="99%" align="center">
 							<tr>
 								<th valign="top" align="left" width="100%" colspan="2">
 									${fileType}

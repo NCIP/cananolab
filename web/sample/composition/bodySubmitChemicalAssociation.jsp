@@ -177,7 +177,7 @@
 					<c:if test="${! empty compositionForm.map.assoc.files }">
 						<c:set var="files" value="${compositionForm.map.assoc.files}" />
 						<c:set var="editFile" value="true" />
-						<%@ include file="bodyFileView.jsp"%>
+						<%@ include file="../bodyFileEdit.jsp"%>
 					</c:if>
 				</td>
 			</tr>

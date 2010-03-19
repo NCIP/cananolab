@@ -6,7 +6,7 @@
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel" width="20%">
-			Finding	 
+			Finding
 		</td>
 		<td>
 			<c:set var="addFindingButtonStyle" value="display:block" />
@@ -42,3 +42,4 @@
 	</tr>
 </table>
 <br>
+</a>

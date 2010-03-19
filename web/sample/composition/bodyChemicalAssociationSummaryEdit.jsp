@@ -32,7 +32,7 @@
 						property="comp.chemicalAssociations" id="assoc" indexId="ind">
 						<c:set var="assocType" value="${assoc.type}" />
 						<c:if test="${!empty assocType}">
-							<table class="summaryViewLayer3" width="99%" align="center">
+							<table class="summaryViewNoGrid" width="99%" align="center">
 								<tr>
 									<th valign="top" align="left" colspan="2" width="90%">
 										&nbsp;${assocType}
@@ -126,7 +126,7 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 											<c:when test="${! empty assoc.files}">
 												<c:set var="files" value="${assoc.files }" />
 												<c:set var="entityType" value="chemical association" />
-												<%@include file="bodyFileView.jsp"%>
+												<%@include file="../bodyFileView.jsp"%>
 											</c:when>
 											<c:otherwise>
 											N/A

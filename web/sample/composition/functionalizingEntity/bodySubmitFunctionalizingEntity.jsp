@@ -208,7 +208,7 @@
 					<c:set var="edit" value="true" />
 					<c:set var="entity"
 						value="${compositionForm.map.functionalizingEntity}" />
-					<%@ include file="bodyFunctionView.jsp"%>
+					<%@ include file="bodyFunctionEdit.jsp"%>
 				</c:if>
 			</td>
 		</tr>
@@ -252,7 +252,7 @@
 						<c:set var="files"
 							value="${compositionForm.map.functionalizingEntity.files}" />
 						<c:set var="editFile" value="true" />
-						<%@ include file="../bodyFileView.jsp"%>
+						<%@ include file="../../bodyFileEdit.jsp"%>
 					</c:if>
 				</td>
 			</tr>

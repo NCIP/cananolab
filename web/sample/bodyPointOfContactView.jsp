@@ -12,7 +12,7 @@
 	N/A
 	</c:when>
 	<c:otherwise>
-		<table class="summaryViewLayer4" width="95%" align="center">
+		<table class="editTableWithGrid" width="95%" align="center">
 			<tr>
 				<th>
 					Primary Contact?

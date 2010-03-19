@@ -69,7 +69,7 @@
 				<a style="display: block" id="addTarget"
 					href="javascript:confirmAddNew('Target', 'Target', 'clearTarget()');">Add</a>
 				<br>
-				<table id="targetTable" class="summaryViewLayer4" width="85%" style="display: none;">
+				<table id="targetTable" class="editTableWithGrid" width="85%" style="display: none;">
 					<tbody id="targetRows">
 						<tr id="patternHeader">
 							<td width="25%" class="cellLabel">

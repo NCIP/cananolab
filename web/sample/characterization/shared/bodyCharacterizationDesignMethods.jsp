@@ -33,7 +33,7 @@
 				test="${! empty characterizationForm.map.achar.experimentConfigs }">
 				<c:set var="charBean" value="${characterizationForm.map.achar}" />
 				<c:set var="edit" value="true" />
-				<%@ include file="bodyExperimentConfigView.jsp"%>
+				<%@ include file="bodyExperimentConfigEdit.jsp"%>
 			</c:if>
 		</td>
 	</tr>

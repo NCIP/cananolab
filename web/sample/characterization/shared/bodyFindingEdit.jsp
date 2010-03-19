@@ -5,7 +5,7 @@
 
 <c:forEach var="finding" varStatus="findingIndex"
 	items="${charBean.findings}">
-	<table class="summaryViewLayer4" align="center" width="95%">
+	<table class="editTableWithGrid" align="center" width="95%">
 		<c:if test="${edit eq 'true'}">
 			<tr>
 				<th style="text-align: right">
@@ -15,20 +15,20 @@
 			</tr>
 		</c:if>
 		<tr>
-			<td>
-				<b> Data and Conditions</b>
+			<td class="cellLabel">
+				Data and Conditions
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<c:choose>
 					<c:when test="${! empty finding.rows}">
-						<table class="summaryViewLayer4" width="95%" align="center">
+						<table class="summaryViewWithGrid" align="left" width="95%">
 							<tr>
 								<c:forEach var="col" items="${finding.columnHeaders}">
-									<th>
-										<strong>${col.displayName}</strong>
-									</th>
+									<td class="cellLabel">
+										${col.displayName}
+									</td>
 								</c:forEach>
 							</tr>
 							<c:forEach var="row" items="${finding.rows}">
@@ -50,8 +50,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
-				<b> Files</b>
+			<td class="cellLabel">
+				Files
 			</td>
 		</tr>
 		<tr>

@@ -17,7 +17,7 @@
 		<c:if test="${!empty assocType}">
 			<tr>
 				<td>
-					<table class="summaryViewLayer3" width="99%" align="center">
+					<table class="summaryViewNoGrid" width="99%" align="center">
 						<tr>
 							<th valign="top" align="left" colspan="2">
 								&nbsp;${assocType}
@@ -97,7 +97,7 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 								<td>
 									<c:set var="files" value="${assoc.files }" />
 									<c:set var="entityType" value="chemical association" />
-									<%@include file="bodyFileView.jsp"%>
+									<%@include file="../bodyFileView.jsp"%>
 								</td>
 							</tr>
 						</c:if>

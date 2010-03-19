@@ -6,17 +6,17 @@
 <%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
 <c:forEach var="composingElement" items="${entity.composingElements}">
-	<table class="summaryViewNoGrid" width="99%" align="left">
+	<table class="editTableWithGrid" width="99%" align="left">
 		<tr>
-			<td class="cellLabel">
+			<th class="cellLabel">
 				${composingElement.displayName}
-			</td>
+			</th>
 			<c:choose>
 				<c:when test="${edit eq 'true'}">
-					<td align="right" width="3%">
+					<th align="right" width="3%">
 						<a href="#submitComposingElement"
 							onclick="javascript:setTheComposingElement(${composingElement.domain.id});">Edit</a>&nbsp;
-					</td>
+					</th>
 				</c:when>
 				<c:otherwise>
 					<td></td>
@@ -30,7 +30,7 @@
 					<td>
 						<c:set var="pubChemId" value="${composingElement.domain.pubChemId}"/>
 						<c:set var="pubChemDS" value="${composingElement.domain.pubChemDataSourceName}"/>
-						PubChem ID: 
+						PubChem ID:
 						<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>' target="caNanoLab - View PubChem">${pubChemId}</a>
 						&nbsp;(${pubChemDS})
 					</td>

@@ -140,7 +140,7 @@
 				<a style="display: block" id="addInherentFunction"
 					href="javascript:confirmAddNew('InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a>
 				<br>
-				<table id="functionTable" class="summaryViewLayer4" width="85%"
+				<table id="functionTable" class="editTableWithGrid" width="85%"
 					style="display: none;">
 					<tbody id="functionRows">
 						<tr id="patternHeader">

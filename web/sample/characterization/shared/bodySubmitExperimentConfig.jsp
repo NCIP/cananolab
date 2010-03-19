@@ -58,7 +58,7 @@
 				<a style="display:block" id="addInstrument"
 					href="javascript:confirmAddNew('Instrument', 'Instrument', 'clearInstrument()');">Add</a>
 				<br>
-				<table id="instrumentTable" class="summaryViewLayer4" width="85%" style="display: none;">
+				<table id="instrumentTable" class="editTableWithGrid" width="85%" style="display: none;">
 					<tbody id="instrumentRows">
 						<tr id="patternHeader">
 							<td width="30%" class="cellLabel">

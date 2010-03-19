@@ -10,12 +10,6 @@
 			<td class="cellLabel">
 				<c:if test="${! empty finding.rows}">Data and Conditions</c:if>
 			</td>
-			<td width="5">&nbsp;</td>
-			<td class="cellLabel">
-				<c:if test="${! empty finding.files}">
-				Files
-			</c:if>
-			</td>
 		</tr>
 		<tr>
 			<td>
@@ -42,7 +36,15 @@
 					</c:when>
 				</c:choose>
 			</td>
-			<td width="5">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				<c:if test="${! empty finding.files}">
+				<br>Files
+			</c:if>
+			</td>
+		</tr>
+		<tr>
 			<td>
 				<c:choose>
 					<c:when test="${! empty finding.files}">
@@ -53,6 +55,5 @@
 			</td>
 		</tr>
 	</table>
-	<br />
 </c:forEach>
 <br>

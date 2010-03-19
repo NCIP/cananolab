@@ -4,22 +4,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<table class="summaryViewLayer4" align="center" width="95%">
+<table class="editTableWithGrid" align="center" width="95%">
 	<tr>
-		<th width="20%">
+		<td class="cellLabel" width="20%">
 			File Type
-		</th>
-		<th width="33%">
+		</td>
+		<td width="33%" class="cellLabel">
 			Title and Download Link
-		</th>
-		<th>
+		</td>
+		<td class="cellLabel">
 			Keywords
-		</th>
-		<th>
+		</td>
+		<td class="cellLabel">
 			Description
-		</th>
-		<th>
-		</th>
+		</td>
+		<td>
+		</td>
 	</tr>
 	<c:forEach var="file" items="${files}">
 		<tr>

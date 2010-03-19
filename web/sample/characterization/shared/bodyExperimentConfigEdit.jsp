@@ -6,17 +6,17 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table class="editTableWithGrid" align="center" width="95%">
 	<tr>
-		<td width="33%" class="cellLabel">
+		<th width="33%">
 			Technique
-		</td>
-		<td width="33%" class="cellLabel">
+		</th>
+		<th width="33%">
 			Instruments
-		</td>
-		<td class="cellLabel">
+		</th>
+		<th>
 			Description
-		</td>
-		<td>
-		</td>
+		</th>
+		<th>
+		</th>
 	</tr>
 	<c:forEach var="experimentConfig" items="${charBean.experimentConfigs}"
 		varStatus="configIndex">

@@ -96,7 +96,7 @@
 					<c:set var="edit" value="true" />
 					<c:set var="entity"
 						value="${compositionForm.map.nanomaterialEntity}" />
-					<%@ include file="bodyComposingElementView.jsp"%>
+					<%@ include file="bodyComposingElementEdit.jsp"%>
 				</c:if>
 			</td>
 		</tr>

@@ -29,7 +29,7 @@
 						id="file" indexId="ind">
 						<c:set var="fileType" value="${file.domainFile.type}" />
 						<c:if test="${!empty fileType}">
-							<table class="summaryViewLayer3" width="99%" align="center">
+							<table class="summaryViewNoGrid" width="99%" align="center">
 								<tr>
 									<th valign="top" align="left" colspan="2" width="90%">
 										${fileType}

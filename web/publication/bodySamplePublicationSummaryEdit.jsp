@@ -20,7 +20,7 @@
 		<jsp:param name="topic" value="publications_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 		<jsp:param name="printLink" value="${printUrl}" />
-		<jsp:param name="exportLink" value="${exportUrl}" />		
+		<jsp:param name="exportLink" value="${exportUrl}" />
 	</jsp:include>
 </c:if>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
@@ -29,7 +29,7 @@
 		<li class="selected">
 			<a
 				href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
-				title="All"><span>All</span> </a>		
+				title="All"><span>All</span> </a>
 		</li>
 		<li>
 			<c:forEach var="type" items="${publicationCategories}"
@@ -81,8 +81,8 @@
 		</ul>
 	</div>
 </c:forEach>
-<table class="summaryViewLayer1" width="100%">
-<%--
+<table class="summaryViewNoTop" width="100%">
+	<%--
 	<c:if test="${! empty publicationCategories && empty printView}">
 		<tr>
 			<td>
@@ -96,11 +96,12 @@
 		<td>
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
-				<table id="summarySection${ind.count}" class="summaryViewLayer2"
+				<table id="summarySection${ind.count}" class="summaryViewNoGrid"
 					width="100%" align="center">
 					<tr>
 						<th align="left">
-							<a name="${type}" id="${type}">${type}</a> &nbsp;&nbsp;&nbsp;
+							<a name="${type}" id="${type}"><span
+								class="summaryViewHeading">${type}</span></a>&nbsp;&nbsp;
 							<a
 								href="publication.do?dispatch=setupNew&sampleId=${sampleId}&type=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
@@ -118,71 +119,79 @@
 							<c:choose>
 								<c:when
 									test="${! empty publicationSummaryView.category2Publications[type]}">
-									<table class="summaryViewLayer3" width="95%" align="center">
+									<table width="99%" align="center" class="summaryViewNoGrid"
+										bgcolor="#dbdbdb">
 										<tr>
-											<th>
-												Bibliography Info
-											</th>
-											<th>
-												Research Category
-											</th>
-											<th>
-												Description
-											</th>
-											<th>
-												Publication Status
-											</th>
-											<th width="5%">
-												&nbsp;
+											<th valign="top" align="left" width="90%">&nbsp;
 											</th>
 										</tr>
-										<c:forEach var="pubBean"
-											items="${publicationSummaryView.category2Publications[type]}"
-											varStatus="pubBeanInd">
-											<c:set var="pubObj" value="${pubBean.domainFile}" />
-											<tr>
-												<td valign="top">
-													${pubBean.displayName}&nbsp;
-												</td>
-												<td valign="top">
-													<c:out
-														value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
-														escapeXml="false" />
-													&nbsp;
-												</td>
-												<td valign="top">
-													<c:if test="${!empty pubObj.description}">
-														<div id="descriptionSection" style="position: relative;">
-															<a style="display: block" id="viewDetail" href="#"
-																onmouseOver="javascript: show('publicationDescription${pubBeanInd.count}');"
-																onmouseOut="javascript: hide('publicationDescription${pubBeanInd.count}');">View</a>
-															<table id="publicationDescription${pubBeanInd.count}"
-																style="display: none; position: absolute; left: -510px; top: -50px; width: 500px; z-index: 5; border-width: 1px; border-color: #cccccc; border-style: solid; background-color: #FFFFFF;"
-																class="promptbox">
-																<tr>
-																	<td>
-																		${pubObj.description}
-																	</td>
-																</tr>
-															</table>
-														</div>
-													</c:if>
-												</td>
-												<td valign="top">
-													<c:out value="${pubObj.status}" />
-													&nbsp;
-												</td>
-												<td valign="top">
-													<c:url var="pubUrl" value="publication.do">
-														<c:param name="sampleId" value="${sampleId}" />
-														<c:param name="dispatch" value="setupUpdate" />
-														<c:param name="publicationId" value="${pubObj.id}" />
-														<c:param name="location" value="${location}" />
-													</c:url>
-													<a href="${pubUrl}">Edit</a>
-												</td>
-											</tr>
-										</c:forEach>
+										<tr>
+											<td>
+												<c:forEach var="pubBean"
+													items="${publicationSummaryView.category2Publications[type]}"
+													varStatus="pubBeanInd">
+													<c:set var="pubObj" value="${pubBean.domainFile}" />
+													<table class="summaryViewNoGrid" width="99%" align="center"
+														bgcolor="#F5F5f5">
+														<tr>
+															<td></td>
+															<td width="95%"></td>
+															<td align="right">
+																<c:url var="pubUrl" value="publication.do">
+																	<c:param name="sampleId" value="${sampleId}" />
+																	<c:param name="dispatch" value="setupUpdate" />
+																	<c:param name="publicationId" value="${pubObj.id}" />
+																	<c:param name="location" value="${location}" />
+																</c:url>
+																<a href="${pubUrl}">Edit</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="cellLabel" width="10%">
+																Bibliography Info
+															</td>
+															<td>
+																${pubBean.displayName}&nbsp;
+															</td>
+															<td></td>
+														</tr>
+														<tr>
+															<td class="cellLabel" width="10%">
+																Research Category
+															</td>
+															<td colspan="2">
+																<c:out
+																	value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
+																	escapeXml="false" />
+																&nbsp;
+															</td>
+														</tr>
+														<tr>
+															<td class="cellLabel" width="10%">
+																Description
+															</td>
+															<td>
+																<c:out
+																	value="${fn:replace(pubObj.description, ';', '<br>')}"
+																	escapeXml="false" />
+																&nbsp;
+															</td>
+															<td></td>
+														</tr>
+														<tr>
+															<td class="cellLabel" width="10%">
+																Publication Status
+															</td>
+															<td>
+																${pubObj.status}&nbsp;
+															</td>
+															<td></td>
+														</tr>
+													</table>
+													<br>
+												</c:forEach>
+											</td>
+										</tr>
 									</table>
 								</c:when>
 								<c:otherwise>

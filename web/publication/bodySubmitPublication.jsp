@@ -160,7 +160,7 @@
 					<a style="display: block" id="addAuthor"
 						href="javascript:clearAuthor();openSubmissionForm('Author');">Add</a>
 					<br>
-					<table id="authorTable" class="summaryViewLayer4" width="85%"
+					<table id="authorTable" class="summaryViewNoGrid" width="85%"
 						style="display: none;">
 						<tbody id="authorRows">
 							<tr id="patternHeader">
