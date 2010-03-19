@@ -127,7 +127,7 @@ td.subMenuPrimarySubTitle {
 	color: #ffffff; /* constant: white */
 	border-top: 1px solid #7a7a7a; /* constant: medium gray */
 	border-bottom: 1px solid #7a7a7a; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */	
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuPrimaryItems {
@@ -319,7 +319,13 @@ input.actionButton { /* optional style for form and action buttons */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-left: 1px solid #cccccc; /* constant: medium gray */
 }
-
+input.noBorderButton {
+	font-weight: bold;
+	font-size: 0.8 em;
+	text-decoration: underline;
+	border:0px solid;
+	background-color: #FFFFFF;
+}
 .formMessage { /* for messages above the form */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
@@ -352,7 +358,7 @@ SIDEBAR BEGINS
 	list-style-image: url(../images/diamond_list_item.gif);
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: normal;
-	word-wrap: break-word;	
+	word-wrap: break-word;
 }
 
 .sidebarSectionNoBottom li {
@@ -375,7 +381,7 @@ SIDEBAR BEGINS
 	/* for the areas under the sidebar titles and requires text */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
-	padding: 0.5em;	
+	padding: 0.5em;
 }
 
 .boldAndUnderlined {
@@ -395,7 +401,7 @@ table.contentPage { /* for overall top style for a content page */
 }
 
 h2,.h2 { /* for header of page */
-	font-family: arial, helvetica, verdana, sans-serif;	
+	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 1.6em;
 	font-weight: bold;
 	color: #5c5c5c; /* constant: dark gray */
@@ -411,7 +417,7 @@ h3,.h3 { /* for title of page */
 }
 
 p,.p { /* for paragraphs */ /* padding-left: 1em; */
-	
+
 }
 
 .bannerHome { /* for the banner area of the home page */
@@ -703,7 +709,7 @@ img.img { /* for images that need a border */
 }
 
 input,textArea,submit,reset,option,select {
-	font-family: arial, helvetica, verdana, sans-serif;	
+	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 11px;
 }
 
