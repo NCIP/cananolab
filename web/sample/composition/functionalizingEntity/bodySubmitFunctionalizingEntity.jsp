@@ -33,7 +33,7 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/functionalizingEntity" enctype="multipart/form-data"
-	onsubmit="return validateAmountValue() && 
+	onsubmit="return validateAmountValue() &&
 	validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
@@ -276,11 +276,12 @@
 	<br>
 	<jsp:include page="/sample/bodyAnnotationCopy.jsp" />
 	<br>
-	<c:set var="type" value="functionalizing entity" />
-	<c:set var="actionName" value="functionalizingEntity" />
-	<c:set var="formName" value="compositionForm" />
-	<c:set var="dataId"
+	<c:set var="updateId"
 		value="${compositionForm.map.functionalizingEntity.domainEntity.id}" />
-	<%@include file="../../bodySubmitButtons.jsp"%>
-
+	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
+	<c:set var="deleteOnclick" value="deleteData('functionalizing entity', compositionForm, 'functionalizingEntity', 'delete')"/>
+	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="hiddenDispatch" value="create"/>
+	<c:set var="hiddenPage" value="2"/>
+	<%@include file="../../../bodySubmitButtons.jsp"%>
 </html:form>

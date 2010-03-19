@@ -18,11 +18,11 @@
 
 <c:choose>
 	<c:when test="${!empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
-		<c:set var="nanoTitle" 
+		<c:set var="nanoTitle"
 		value="${sampleName} Sample Composition - Nanomaterial Entity - ${compositionForm.map.nanomaterialEntity.type}"/>
 	</c:when>
 	<c:otherwise>
-		<c:set var="nanoTitle" 
+		<c:set var="nanoTitle"
 		value="${sampleName} Sample Composition - Nanomaterial Entity"/>
 	</c:otherwise>
 </c:choose>
@@ -67,7 +67,7 @@
 			</td>
 		</tr>
 	</table>
-	<br>	
+	<br>
 	<div id="entityInclude">
 	<c:if test="${!empty entityDetailPage}">
 		<jsp:include page="${entityDetailPage}" />
@@ -165,10 +165,13 @@
 	<br>
 	<jsp:include page="/sample/bodyAnnotationCopy.jsp" />
 	<br>
-	<c:set var="type" value="nanomaterial entity" />
-	<c:set var="actionName" value="nanomaterialEntity" />
-	<c:set var="formName" value="compositionForm" />
-	<c:set var="dataId"
+
+	<c:set var="updateId"
 		value="${compositionForm.map.nanomaterialEntity.domainEntity.id}" />
-	<%@include file="../../bodySubmitButtons.jsp"%>
+	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
+	<c:set var="deleteOnclick" value="deleteData('nanomaterial entity', compositionForm, 'nanomaterialEntity', 'delete')"/>
+	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="hiddenDispatch" value="create"/>
+	<c:set var="hiddenPage" value="2"/>
+	<%@include file="../../../bodySubmitButtons.jsp"%>
 </html:form>

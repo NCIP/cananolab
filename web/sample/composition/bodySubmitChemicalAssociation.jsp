@@ -39,11 +39,11 @@
 
 <c:choose>
 	<c:when test="${!empty compositionForm.map.assoc.domainAssociation.id}">
-		<c:set var="chemTitle" 
+		<c:set var="chemTitle"
 		value="${sampleName} Sample Composition - Chemical Association - ${compositionForm.map.assoc.type}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="chemTitle" 
+		<c:set var="chemTitle"
 		value="${sampleName} Sample Composition - Chemical Association" />
 	</c:otherwise>
 </c:choose>
@@ -182,7 +182,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">					
+				<td colspan="2">
 					<c:set var="newFileStyle" value="display:none"/>
 					<c:if test="${openFile eq 'true'}">
 					    <c:set var="newFileStyle" value="display:block"/>
@@ -197,11 +197,12 @@
 			</tr>
 		</table> </a>
 	<br>
-	<c:set var="type" value="chemical association" />
-	<c:set var="actionName" value="chemicalAssociation" />
-	<c:set var="formName" value="compositionForm" />
-	<c:set var="dataId"
-		value="${compositionForm.map.assoc.domainAssociation.id}" />
-	<%@include file="../bodySubmitButtons.jsp"%>
 
+	<c:set var="updateId" value="${compositionForm.map.assoc.domainAssociation.id}"/>
+	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
+	<c:set var="deleteOnclick" value="deleteData('chemical association', compositionForm, 'chemicalAssociation', 'delete')"/>
+	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="hiddenDispatch" value="create"/>
+	<c:set var="hiddenPage" value="2"/>
+	<%@include file="../../bodySubmitButtons.jsp"%>
 </html:form>
