@@ -4,8 +4,6 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.linkage.Attachment;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
