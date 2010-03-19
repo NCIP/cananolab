@@ -304,7 +304,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @throws PublicationException ,
 	 *             NoAccessException
 	 */
-	public void removePublicationFromSample(String sampleId,
+	public void removePublicationFromSample(String sampleName,
 			Publication publication, UserBean user)
 			throws PublicationException, NoAccessException {
 		if (user == null || !user.isCurator()) {
@@ -316,7 +316,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 			SampleService sampleService = new SampleServiceLocalImpl();
 			SampleBean sampleBean = sampleService
-					.findSampleById(sampleId, user);
+					.findSampleByName(sampleName, user);
 			Sample sample = sampleBean.getDomain();
 			Collection<Publication> pubs = sample.getPublicationCollection();
 			if (pubs != null) {

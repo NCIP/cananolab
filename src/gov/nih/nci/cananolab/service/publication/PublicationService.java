@@ -41,7 +41,7 @@ public interface PublicationService {
 
 	public int getNumberOfPublicPublications() throws PublicationException;
 
-	public void removePublicationFromSample(String sampleId,
+	public void removePublicationFromSample(String sampleName,
 			Publication publication, UserBean user)
 			throws PublicationException, NoAccessException;
 
