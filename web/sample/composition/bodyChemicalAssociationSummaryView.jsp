@@ -8,7 +8,7 @@
 	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
-			chemical association
+			<span class="summaryViewHeading">chemical association</span>
 		</th>
 	</tr>
 	<logic:iterate name="compositionForm"
@@ -17,90 +17,98 @@
 		<c:if test="${!empty assocType}">
 			<tr>
 				<td>
-					<table class="summaryViewNoGrid" width="99%" align="center">
+					<table class="summaryViewNoGrid" width="99%" align="center"
+						bgcolor="#dbdbdb">
 						<tr>
 							<th valign="top" align="left" colspan="2">
 								&nbsp;${assocType}
 							</th>
 						</tr>
-						<c:if
-							test="${! empty assoc.attachment.id && ! empty assoc.attachment.bondType}">
-							<tr>
-								<td class="cellLabel" width="10%">
-									Bond Type
-								</td>
-								<td>
-									${assoc.attachment.bondType}
-								</td>
-							</tr>
-						</c:if>
-						<c:if test="${!empty fn:trim(assoc.description)}">
-							<tr>
-								<td class="cellLabel" width="10%">
-									Description
-								</td>
-								<td>
-									<c:out value="${fn:replace(assoc.description, cr, '<br>')}"
-										escapeXml="false" />
-								</td>
-							</tr>
-						</c:if>
 						<tr>
-							<td class="cellLabel" width="10%">
-								Associated Elements
-							</td>
 							<td>
-								<table>
+								<table class="summaryViewNoGrid" width="99%" align="center"
+									bgcolor="#F5F5f5">
+									<c:if
+										test="${! empty assoc.attachment.id && ! empty assoc.attachment.bondType}">
+										<tr>
+											<td class="cellLabel" width="10%">
+												Bond Type
+											</td>
+											<td>
+												${assoc.attachment.bondType}
+											</td>
+										</tr>
+									</c:if>
+									<c:if test="${!empty fn:trim(assoc.description)}">
+										<tr>
+											<td class="cellLabel" width="10%">
+												Description
+											</td>
+											<td>
+												<c:out value="${fn:replace(assoc.description, cr, '<br>')}"
+													escapeXml="false" />
+											</td>
+										</tr>
+									</c:if>
 									<tr>
+										<td class="cellLabel" width="10%">
+											Associated Elements
+										</td>
 										<td>
-											${assoc.associatedElementA.compositionType}
-											${assoc.associatedElementA.entityDisplayName}
-											<c:choose>
-												<c:when
-													test="${! empty assoc.associatedElementA.composingElement.id }">
+											<table>
+												<tr>
+													<td>
+														${assoc.associatedElementA.compositionType}
+														${assoc.associatedElementA.entityDisplayName}
+														<c:choose>
+															<c:when
+																test="${! empty assoc.associatedElementA.composingElement.id }">
 											composing element of type ${assoc.associatedElementA.composingElement.type} <br>(name: ${assoc.associatedElementA.composingElement.name})
 														</c:when>
-												<c:otherwise>
-													<br>(name: ${assoc.associatedElementA.domainElement.name})
+															<c:otherwise>
+																<br>(name: ${assoc.associatedElementA.domainElement.name})
 															</c:otherwise>
-											</c:choose>
-										</td>
-										<td
-											style="border: 0; vertical-align: top; text-align: center;">
-											<img src="images/arrow_left_right_gray.gif" id="assocImg" />
-											<br>
-											<strong>associated with</strong>
-										</td>
-										<td>
-											${assoc.associatedElementB.compositionType}
-											${assoc.associatedElementB.entityDisplayName}
-											<c:choose>
-												<c:when
-													test="${! empty assoc.associatedElementB.composingElement.id }">
+														</c:choose>
+													</td>
+													<td
+														style="border: 0; vertical-align: top; text-align: center;">
+														<img src="images/arrow_left_right_gray.gif" id="assocImg" />
+														<br>
+														<strong>associated with</strong>
+													</td>
+													<td>
+														${assoc.associatedElementB.compositionType}
+														${assoc.associatedElementB.entityDisplayName}
+														<c:choose>
+															<c:when
+																test="${! empty assoc.associatedElementB.composingElement.id }">
 
 composing element of type ${assoc.associatedElementB.composingElement.type} <br>(name: ${assoc.associatedElementB.composingElement.name})
 														</c:when>
-												<c:otherwise>
-													<br> (name: ${assoc.associatedElementB.domainElement.name})
+															<c:otherwise>
+																<br> (name: ${assoc.associatedElementB.domainElement.name})
 															</c:otherwise>
-											</c:choose>
+														</c:choose>
+													</td>
+												</tr>
+											</table>
 										</td>
 									</tr>
-								</table>
+									<c:if test="${! empty assoc.files}">
+										<tr>
+											<td class="cellLabel" width="10%">
+												Files
+											</td>
+											<td>
+												<c:set var="files" value="${assoc.files }" />
+												<c:set var="entityType" value="chemical association" />
+												<%@include file="../bodyFileView.jsp"%>
+											</td>
+										</tr>
+									</c:if>
+								</table><br>
 							</td>
 						</tr>
-						<c:if test="${! empty assoc.files}">
-							<tr>
-								<td class="cellLabel" width="10%">
-									Files
-								</td>
-								<td>
-									<c:set var="files" value="${assoc.files }" />
-									<c:set var="entityType" value="chemical association" />
-									<%@include file="../bodyFileView.jsp"%>
-								</td>
-							</tr>
-						</c:if>
 					</table>
 				</td>
 			</tr>
