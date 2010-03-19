@@ -24,9 +24,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Create or update protocol file and protocol
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolAction extends AbstractDispatchAction {
 
@@ -97,7 +97,7 @@ public class ProtocolAction extends AbstractDispatchAction {
 
 	/**
 	 * Delete a protocol from Protocol update form
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -109,7 +109,7 @@ public class ProtocolAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ProtocolBean protocolBean = (ProtocolBean) theForm.get("Protocol");
+		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		ProtocolService service = new ProtocolServiceLocalImpl();
