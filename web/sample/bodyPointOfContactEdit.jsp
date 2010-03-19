@@ -12,7 +12,7 @@
 	N/A
 	</c:when>
 	<c:otherwise>
-		<table class="summaryViewNoGrid" align="left">
+		<table class="editTableWithGrid" width="95%" align="center">
 			<tr>
 				<th>
 					Primary Contact?
@@ -43,6 +43,12 @@
 					<td>
 						${primaryPOC.domain.role}
 					</td>
+					<c:if test="${edit eq 'true'}">
+						<td align="right">
+							<a
+								href="javascript:setThePointOfContact(${primaryPOC.domain.id}, true);">Edit</a>&nbsp;
+						</td>
+					</c:if>
 				</tr>
 			</c:if>
 			<c:if test="${!empty sampleForm.map.sampleBean.otherPOCBeans}">

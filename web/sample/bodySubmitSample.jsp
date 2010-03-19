@@ -53,7 +53,7 @@
 			<tr>
 				<td colspan="2">
 					<c:set var="edit" value="true" />
-					<%@ include file="bodyPointOfContactView.jsp"%>
+					<%@ include file="bodyPointOfContactEdit.jsp"%>
 				</td>
 			</tr>
 		</c:if>
