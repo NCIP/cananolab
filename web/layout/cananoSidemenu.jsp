@@ -39,8 +39,15 @@
 			</tr>
 			<tr>
 				<td class="subMenuSecondaryTitleFill" height="20">
-					<%--Do NOT reformat code style below, otherwise it will introduce gaps between counter images--%>
-					<%--<c:forEach var="index" begin="0" end="${fn:length(countString) - 1}"><c:set var="counterImg" value="${fn:substring(countString, index, index + 1)}"/><img alt="Visitor Counter" src="images/visitorCounter${counterImg}.png"/></c:forEach>--%>
+				<c:choose>
+					<c:when test="${fn:length(countString) > 1}">
+						<%--Do NOT reformat code style below, otherwise it will introduce gaps between counter images--%>
+						<c:forEach var="index" begin="0" end="${fn:length(countString) - 1}"><c:set var="counterImg" value="${fn:substring(countString, index, index + 1)}"/><img alt="Visitor Counter" src="images/visitorCounter${counterImg}.png"/></c:forEach>
+					</c:when>
+					<c:otherwise>
+						<img alt="Visitor Counter" src="images/visitorCounter${countString}.png"/>
+					</c:otherwise>
+				</c:choose>
 				</td>
 			</tr>
 
