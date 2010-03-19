@@ -19,9 +19,9 @@ import org.apache.struts.config.ModuleConfig;
 /**
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CustomPlugIn implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugIn.class);
@@ -72,7 +72,7 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 
-			setupInitialGridNodes();
+			//setupInitialGridNodes();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
