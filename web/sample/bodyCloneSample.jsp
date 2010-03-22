@@ -11,7 +11,7 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
-<c:set var="title" value="Clone" />
+<c:set var="title" value="Copy" />
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="${title} Sample" />
 	<jsp:param name="topic" value="submit_sample_help" />
@@ -26,7 +26,7 @@
 				<table>
 					<tr>
 						<td class="cellLabel">
-							Clone from an Existing Sample *
+							Copy from an Existing Sample *
 						</td>
 						<td width="100">
 							<html:text property="sampleBean.cloningSampleName" size="50" styleId="cloningSampleName"/>
@@ -60,39 +60,13 @@
 			</td>
 		</tr>
 	</table>
-	<br>
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0">
-		<tr>
-			<td width="30%">
-				<table width="498" height="32" border="0" align="right"
-					cellpadding="4" cellspacing="0">
-					<tr>
-						<td width="490" height="32">
-							<div align="right">
-								<div align="right">
-									<c:set var="origUrl"
-										value="sample.do?page=0&dispatch=${param.dispatch}" />									
-									<input type="reset" value="Reset"
-										onclick="javascript:window.location.href='${origUrl}'">
-									<%--
-									<input type="hidden" name="dispatch" value="clone">
-									<input type="hidden" name="page" value="1">
-									<html:submit value="Clone" onclick="show('waitMessage')" />
-									--%>
-									<input type="button" value="Clone" onclick="submitAction(sampleForm, 'sample', 'clone', 1);show('waitMessage')">
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div align="right"></div>
-			</td>
-		</tr>
-	</table>
+	<br>	
+	<c:set var="resetOnclick" value="this.form.reset();hide('loaderImg'); hide('matchedSampleSelect');"/>	
+	<c:set var="submitOnclick" value="submitAction(sampleForm, 'sample', 'clone', 1);show('waitMessage')"/>	
+	<%@include file="../bodySubmitButtons.jsp"%>
 	<br />
 	<span id="waitMessage" style="display: none" class="welcomeContent"><img
 			src="images/ajax-loader.gif" border="0" class="counts"> Please
-		wait. Cloning might take a while to finish if the original sample is fully curated.</span>
+		wait. Copying might take a while to finish if the original sample is fully curated.</span>
 </html:form>
 
