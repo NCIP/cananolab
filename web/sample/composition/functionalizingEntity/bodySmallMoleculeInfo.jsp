@@ -28,8 +28,9 @@
 					<strong>Alternate Name</strong>
 				</td>
 				<td>
-					<input type="text"
-						name="functionalizingEntity.smallMolecule.alternateName" size="90" />
+					<html:text
+						property="functionalizingEntity.smallMolecule.alternateName"
+						size="90" />
 				</td>
 			</tr>
 		</table>
