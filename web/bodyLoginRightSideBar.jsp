@@ -141,19 +141,19 @@
 						<ul>
 
 							<li>
-								<a href="#">How do I install my own caNanoLab system?</a>
+								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-install">How do I install my own caNanoLab system?</a>
 							</li>
 							<li>
-								<a href="#">How do I submit data into caNanoLab?</a>
+								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-submit">How do I submit data into caNanoLab?</a>
 							</li>
 							<li>
-								<a href="#">What types of data can I submit into caNanoLab?</a>
+								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-datatypes">What types of data can I submit into caNanoLab?</a>
 							</li>
 							<li>
-								<a href="#">Who can I contact to submit data into caNanoLab?</a>
+								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-curator">Who can I contact to submit data into caNanoLab?</a>
 							</li>
 							<li>
-								<a href="#">What is a caNanoLab site?</a>
+								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-site">What is a caNanoLab site?</a>
 							</li>
 						</ul>						
 					</td>
