@@ -44,15 +44,23 @@ public class Comparators {
 		}
 	}
 
-	public static class PointOfContactBeanNameOrgComparator implements
-			Comparator<PointOfContactBean> {
+	//[calab-Bugs][26587] Order of contact persons.
+	public static class PointOfContactBeanDateComparator implements
+		Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
-			//[calab-Bugs][26587] Order of contact persons.
 			Date date1 = poc1.getDomain().getCreatedDate();
 			Date date2 = poc2.getDomain().getCreatedDate();
 			if (date1 != null && date2 != null) {
 				return date1.compareTo(date2);
+			} else {
+				return 0;
 			}
+		}
+	}
+
+	public static class PointOfContactBeanNameOrgComparator implements
+		Comparator<PointOfContactBean> {
+		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
 			if (poc1.getPersonDisplayName().equals(poc2.getPersonDisplayName())) {
 				return poc1.getOrganizationDisplayName().compareTo(
 						poc2.getOrganizationDisplayName());

@@ -91,7 +91,7 @@ public class SampleBean {
 					otherPOCBeans.add(pocBean);
 				}
 				Collections.sort(otherPOCBeans,
-						new Comparators.PointOfContactBeanNameOrgComparator());
+						new Comparators.PointOfContactBeanDateComparator());
 			}
 			thePOC = primaryPOCBean;
 		}
