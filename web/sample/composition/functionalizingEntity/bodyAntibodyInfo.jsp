@@ -51,7 +51,7 @@
 									<c:choose>
 										<c:when
 											test="${type eq compositionForm.map.functionalizingEntity.antibody.type}">
-											<option value="${type}" selected>
+											<option value="${type}" selected="selected">
 												${type}
 											</option>
 										</c:when>
@@ -81,7 +81,7 @@
 									<c:choose>
 										<c:when
 											test="${type eq compositionForm.map.functionalizingEntity.antibody.isotype}">
-											<option value="${type}" selected>
+											<option value="${type}" selected="selected">
 												${type}
 											</option>
 										</c:when>
@@ -111,7 +111,7 @@
 									<c:choose>
 										<c:when
 											test="${species eq compositionForm.map.functionalizingEntity.antibody.species}">
-											<option value="${species}" selected>
+											<option value="${species}" selected="selected">
 												${species}
 											</option>
 										</c:when>
