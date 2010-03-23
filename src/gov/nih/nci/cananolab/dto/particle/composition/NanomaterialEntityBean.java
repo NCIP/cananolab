@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -215,12 +216,17 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		} else if (domainEntity instanceof Fullerene) {
 			domainEntity = fullerene;
 		}
-		if (domainEntity.getId() == null
+		//updated created_date and created_by if id is null
+		if (domainEntity.getId() == null) {
+			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(Calendar.getInstance().getTime());
+		}
+		//updated created_by if created_by contains copy, but keep the original created_date
+		if (domainEntity.getId() != null
 				|| !StringUtils.isEmpty(domainEntity.getCreatedBy())
-				&& domainEntity.getCreatedBy().equals(
+				&& domainEntity.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
-			domainEntity.setCreatedDate(new Date());
 		}
 		domainEntity.setDescription(description);
 		if (domainEntity.getComposingElementCollection() != null) {

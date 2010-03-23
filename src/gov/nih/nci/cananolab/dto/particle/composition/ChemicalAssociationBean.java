@@ -117,23 +117,9 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 				+ copy.getId());
 		// clear Id
 		copy.setId(null);
-		// because associated elements can't be shared by copied association
-
+		
 		// don't need to set associatedElement ID and createdBy because they are
 		// already set in composing elements and functionalizing entity copies
-//		if (copy.getAssociatedElementA() != null) {
-//			copy.getAssociatedElementA().setCreatedBy(
-//					Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-//							+ copy.getAssociatedElementA().getId());
-//			copy.getAssociatedElementA().setId(null);
-//		}
-//
-//		if (copy.getAssociatedElementB() != null) {
-//			copy.getAssociatedElementB().setCreatedBy(
-//					Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-//							+ copy.getAssociatedElementB().getId());
-//			copy.getAssociatedElementB().setId(null);
-//		}
 
 		Collection<File> oldFiles = copy.getFileCollection();
 		if (oldFiles == null || oldFiles.isEmpty()) {

@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
+import java.util.Calendar;
+
 import gov.nih.nci.cananolab.domain.function.Antigen;
 import gov.nih.nci.cananolab.domain.function.OtherTarget;
 import gov.nih.nci.cananolab.domain.function.Target;
@@ -105,16 +107,21 @@ public class TargetBean {
 		}
 		domainTarget.setName(name);
 		domainTarget.setDescription(description);
-		if (domainTarget.getId() == null
-				|| (!StringUtils.isEmpty(domainTarget.getCreatedBy()) && domainTarget
-						.getCreatedBy().equals(
-								Constants.AUTO_COPY_ANNOTATION_PREFIX))) {
+		//updated created_date and created_by if id is null
+		if (domainTarget.getId() == null) {
 			domainTarget.setCreatedBy(createdBy);
 			// domainTarget.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
 			domainTarget.setCreatedDate(DateUtils
 					.addSecondsToCurrentDate(index));
+		}
+		//updated created_by if created_by contains copy, but keep the original created_date
+		if (domainTarget.getId() != null
+				|| !StringUtils.isEmpty(domainTarget.getCreatedBy())
+				&& domainTarget.getCreatedBy().contains(
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainTarget.setCreatedBy(createdBy);
 		}
 	}
 

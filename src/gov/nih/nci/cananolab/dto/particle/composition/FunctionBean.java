@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -140,15 +141,21 @@ public class FunctionBean {
 			((OtherFunction) domainFunction).setType(type);
 		}
 		domainFunction.setDescription(description);
-		if (domainFunction.getId() == null
-				|| !StringUtils.isEmpty(domainFunction.getCreatedBy())
-				&& domainFunction.getCreatedBy().equals(
-						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+	
+		//updated created_date and created_by if id is null
+		if (domainFunction.getId() == null) {
 			domainFunction.setCreatedBy(createdBy);
 			// fix for MySQL database, which supports precision only up to
 			// seconds
 			domainFunction.setCreatedDate(DateUtils
 					.addSecondsToCurrentDate(index));
+		}
+		//updated created_by if created_by contains copy, but keep the original created_date
+		if (domainFunction.getId() != null
+				|| !StringUtils.isEmpty(domainFunction.getCreatedBy())
+				&& domainFunction.getCreatedBy().contains(
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainFunction.setCreatedBy(createdBy);
 		}
 	}
 

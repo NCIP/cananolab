@@ -225,12 +225,17 @@ public class CharacterizationBean {
 		} else if (domainChar instanceof Transfection) {
 			domainChar = transfection;
 		}
-		if (domainChar.getId() == null
-				|| !StringUtils.isEmpty(domainChar.getCreatedBy())
-				&& domainChar.getCreatedBy().equals(
-						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+		//updated created_date and created_by if id is null
+		if (domainChar.getId() == null) {
 			domainChar.setCreatedBy(createdBy);
 			domainChar.setCreatedDate(Calendar.getInstance().getTime());
+		}
+		//updated created_by if created_by contains copy, but keep the original created_date
+		if (domainChar.getId() != null
+				|| !StringUtils.isEmpty(domainChar.getCreatedBy())
+				&& domainChar.getCreatedBy().contains(
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainChar.setCreatedBy(createdBy);
 		}
 		domainChar.setDesignMethodsDescription(description);
 		domainChar.setAssayType(assayType);
