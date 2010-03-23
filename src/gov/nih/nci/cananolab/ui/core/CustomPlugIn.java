@@ -72,7 +72,7 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 
-			//setupInitialGridNodes();
+			setupInitialGridNodes();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
@@ -97,6 +97,9 @@ public class CustomPlugIn implements PlugIn {
 	private void setupInitialGridNodes() {
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
+		PublicDataCountServiceJob dataCountJob=new PublicDataCountServiceJob();
+		dataCountJob.queryPublicDataCounts(gridNodes);
+		dataCountJob.getPublicDataCounts();
 		logger.info("Found " + gridNodes + " grid nodes at start up.");
 	}
 
