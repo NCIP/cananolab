@@ -36,6 +36,7 @@ public class WelcomeAction extends ForwardAction {
 		saveToken(request); // save token to avoid back and refresh on the login
 		// page.
 		InitSetup.getInstance().getGridNodesInContext(request);
+		InitSetup.getInstance().getPublicDataCountsInContext(request);
 		return super.execute(mapping, form, request, response);
 	}
 
