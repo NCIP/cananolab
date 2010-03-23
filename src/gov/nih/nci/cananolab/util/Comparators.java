@@ -44,9 +44,9 @@ public class Comparators {
 		}
 	}
 
-	//[calab-Bugs][26587] Order of contact persons.
+	// [calab-Bugs][26587] Order of contact persons.
 	public static class PointOfContactBeanDateComparator implements
-		Comparator<PointOfContactBean> {
+			Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
 			Date date1 = poc1.getDomain().getCreatedDate();
 			Date date2 = poc2.getDomain().getCreatedDate();
@@ -59,7 +59,7 @@ public class Comparators {
 	}
 
 	public static class PointOfContactBeanNameOrgComparator implements
-		Comparator<PointOfContactBean> {
+			Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
 			if (poc1.getPersonDisplayName().equals(poc2.getPersonDisplayName())) {
 				return poc1.getOrganizationDisplayName().compareTo(
@@ -418,6 +418,13 @@ public class Comparators {
 				return header1.getCreatedDate().compareTo(
 						header2.getCreatedDate());
 			}
+		}
+	}
+
+	public static class ColumnHeaderCreatedDateComparator implements
+			Comparator<ColumnHeader> {
+		public int compare(ColumnHeader header1, ColumnHeader header2) {
+			return header1.getCreatedDate().compareTo(header2.getCreatedDate());
 		}
 	}
 
