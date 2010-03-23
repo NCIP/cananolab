@@ -55,7 +55,7 @@
 						<c:choose>
 							<c:when
 								test="${compositionForm.map.nanomaterialEntity.polymer.crossLinked eq 'true'}">
-								<option value="1" selected>
+								<option value="1" selected="selected">
 									Yes
 								</option>
 							</c:when>
@@ -68,7 +68,7 @@
 						<c:choose>
 							<c:when
 								test="${compositionForm.map.nanomaterialEntity.polymer.crossLinked eq 'false'}">
-								<option value="0" selected>
+								<option value="0" selected="selected">
 									No
 								</option>
 							</c:when>
