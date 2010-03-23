@@ -266,11 +266,12 @@ public class CharacterizationServiceLocalImpl implements
 				ExperimentConfig dbConfig = helper.findExperimentConfigById(
 						config.getId().toString(), user);
 				if (dbConfig != null) {
-					// don't change createdBy if it is not COPY
+					// reuse original createdBy if it is not COPY
 					if (!dbConfig.getCreatedBy().equals(
 							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 						config.setCreatedBy(dbConfig.getCreatedBy());
 					}
+					//reuse original created date
 					config.setCreatedDate(dbConfig.getCreatedDate());
 				}
 			}

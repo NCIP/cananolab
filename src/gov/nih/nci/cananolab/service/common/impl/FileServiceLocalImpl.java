@@ -128,13 +128,13 @@ public class FileServiceLocalImpl implements FileService {
 					.getApplicationService();
 			if (file.getId() != null) {
 				File dbFile = (File) appService.get(File.class, file.getId());
-				if (dbFile != null) {
-					// don't change createdDate if it is already persisted
-					// don't change createdBy if it is not COPY
+				if (dbFile != null) {					
+					// use original createdBy if it is not COPY
 					if (!dbFile.getCreatedBy().equals(
 							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 						file.setCreatedBy(dbFile.getCreatedBy());
 					}
+					// use original createdDate
 					file.setCreatedDate(dbFile.getCreatedDate());
 				} else {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
