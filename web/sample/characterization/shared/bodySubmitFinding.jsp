@@ -10,8 +10,8 @@
 		</th>
 	</tr>
 	<tr>
-		<td colspan="2">
-			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
+		<td colspan="2" class="cellLabel">
+			Data and Conditions &nbsp;&nbsp;
 			<html:text property="achar.theFinding.numberOfColumns" size="1"
 				styleId="colNum" onkeydown="return filterInteger(event)" />
 			columns
