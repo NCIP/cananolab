@@ -40,10 +40,10 @@
 									<c:if test="${item eq 'Sample'}">
 										<tr>
 											<td class="sidebarContent">
-												<a href="sample.do?dispatch=setupClone&page=0">Clone 
+												<a href="sample.do?dispatch=setupClone&page=0">Copy 
 													an Existing Sample</a>
 												<br>
-												Click to clone a sample
+												Click to copy a sample
 											</td>
 										</tr>
 									</c:if>
