@@ -43,7 +43,7 @@
 								<c:choose>
 									<c:when
 										test="${type eq characterizationForm.map.achar.physicalState.type}">
-										<option value="${type}" selected>
+										<option value="${type}" selected="selected">
 											${type}
 										</option>
 									</c:when>

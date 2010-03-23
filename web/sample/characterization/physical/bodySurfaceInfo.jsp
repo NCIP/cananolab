@@ -16,6 +16,7 @@
 						<td>
 							${charBean.surface.isHydrophobic}
 						</td>
+					</tr>
 				</table>
 			</c:when>	
 			<c:otherwise>N/A
@@ -40,7 +41,7 @@
 						<c:choose>
 							<c:when
 								test="${characterizationForm.map.achar.surface.isHydrophobic eq 'true'}">
-								<option value="1" selected>
+								<option value="1" selected="selected">
 									Yes
 								</option>
 							</c:when>
@@ -53,7 +54,7 @@
 						<c:choose>
 							<c:when
 								test="${characterizationForm.map.achar.surface.isHydrophobic eq 'false'}">
-								<option value="0" selected>
+								<option value="0" selected="selected">
 									No
 								</option>
 							</c:when>
