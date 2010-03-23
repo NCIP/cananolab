@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +62,7 @@ public class FindingBean {
 
 		// generate matrix
 		if (data != null && !data.isEmpty()) {
-			// get data matrix column headers in order and generate a map based
+			// get data matrix column headers and generate a map based
 			// on headers.
 			Map<ColumnHeader, List<Datum>> datumMap = new HashMap<ColumnHeader, List<Datum>>();
 			Map<ColumnHeader, List<Condition>> conditionMap = new HashMap<ColumnHeader, List<Condition>>();
@@ -71,6 +70,19 @@ public class FindingBean {
 			List<Datum> datumList = new ArrayList<Datum>();
 			List<Condition> conditionList = new ArrayList<Condition>();
 			for (Datum datum : data) {
+				// add datum column
+				ColumnHeader datumColumn = new ColumnHeader(datum);
+				if (!columnHeaders.contains(datumColumn)) {
+					columnHeaders.add(datumColumn);
+				}
+				if (datumMap.get(datumColumn) != null) {
+					datumList = datumMap.get(datumColumn);
+				} else {
+					datumList = new ArrayList<Datum>();
+					datumMap.put(datumColumn, datumList);
+				}
+				datumList.add(datum);
+				// add condition columns
 				if (datum.getConditionCollection() != null) {
 					List<Condition> conditions = new ArrayList<Condition>(datum
 							.getConditionCollection());
@@ -93,29 +105,11 @@ public class FindingBean {
 						}
 					}
 				}
-				ColumnHeader datumColumn = new ColumnHeader(datum);
-				if (!columnHeaders.contains(datumColumn)) {
-					columnHeaders.add(datumColumn);
-				}
-				if (datumMap.get(datumColumn) != null) {
-					datumList = datumMap.get(datumColumn);
-				} else {
-					datumList = new ArrayList<Datum>();
-					datumMap.put(datumColumn, datumList);
-				}
-				datumList.add(datum);
 			}
+			// sort column headers by created date and set column orders
+			setupColumnOrder();
 
 			int numRows = -1;
-			// iterate through all condition columns and find the biggest list
-			// size as the number of rows
-			for (Map.Entry<ColumnHeader, List<Condition>> entry : conditionMap
-					.entrySet()) {
-				int numConditions = entry.getValue().size();
-				if (numConditions > numRows) {
-					numRows = numConditions;
-				}
-			}
 			// iterate through all datum columns and find the biggest list size
 			// as the number of rows
 			for (Map.Entry<ColumnHeader, List<Datum>> entry : datumMap
@@ -125,44 +119,35 @@ public class FindingBean {
 					numRows = numData;
 				}
 			}
+			// iterate through all condition columns and find the biggest list
+			// size as the number of rows
+			for (Map.Entry<ColumnHeader, List<Condition>> entry : conditionMap
+					.entrySet()) {
+				int numConditions = entry.getValue().size();
+				if (numConditions > numRows) {
+					numRows = numConditions;
+				}
+			}
 			numberOfRows = numRows;
 			numberOfColumns = columnHeaders.size();
 
 			for (int i = 0; i < numberOfRows; i++) {
 				Row row = new Row();
 				for (int j = 0; j < numberOfColumns; j++) {
-					if (!conditionMap.isEmpty()) {
-						ColumnHeader theHeader = columnHeaders.get(j);
-						if (conditionMap.get(theHeader) != null
-								&& !conditionMap.get(theHeader).isEmpty()) {
-							try {
-								Condition condition = conditionMap.get(
-										theHeader).get(i);
-								row.getCells().add(new TableCell(condition));
-							} catch (IndexOutOfBoundsException e) {
-								row.getCells().add(new TableCell());
-							}
-						}
-					}
-				}
-				for (int j = 0; j < numberOfColumns; j++) {
-					if (!datumMap.isEmpty()) {
-						ColumnHeader theHeader = columnHeaders.get(j);
-						if (datumMap.get(theHeader) != null
-								&& !datumMap.get(theHeader).isEmpty()) {
-							try {
-								Datum datum = datumMap.get(theHeader).get(i);
-								row.getCells().add(new TableCell(datum));
-							} catch (IndexOutOfBoundsException e) {
-								row.getCells().add(new TableCell());
-							}
-						}
+					ColumnHeader theHeader = columnHeaders.get(j);
+					if (theHeader.getColumnType()
+							.equals(FindingBean.DATUM_TYPE)) {
+						Datum datum = datumMap.get(theHeader).get(i);
+						row.getCells().add(new TableCell(datum));
+					} else if (theHeader.getColumnType().equals(
+							FindingBean.CONDITION_TYPE)) {
+						Condition condition = conditionMap.get(theHeader)
+								.get(i);
+						row.getCells().add(new TableCell(condition));
 					}
 				}
 				rows.add(row);
 			}
-			// FR# 26194, datum matrix column order.
-			this.updateColumnOrder();
 		}
 	}
 
@@ -249,9 +234,6 @@ public class FindingBean {
 		columnHeaders = new ArrayList<ColumnHeader>(newColumns);
 		rows = new ArrayList<Row>();
 		rows.addAll(newRows);
-		
-		// FR# 26194, datum matrix column order.
-		this.setupColumnOrder();
 	}
 
 	public void removeColumn(int colIndex) {
@@ -261,9 +243,6 @@ public class FindingBean {
 			cells.remove(colIndex);
 		}
 		numberOfColumns--;
-		
-		// FR# 26194, datum matrix column order.
-		this.setupColumnOrder();
 	}
 
 	public void removeRow(int rowIndex) {
@@ -271,16 +250,23 @@ public class FindingBean {
 		numberOfRows--;
 	}
 
-	public void setupDomain(String createdBy) throws Exception {
-		Date currentDate = Calendar.getInstance().getTime();
+	public void setupDomain(String internalFileUriPath, String createdBy)
+			throws Exception {
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
 		}
-		if (domain.getId() == null
-				|| Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(domain
-						.getCreatedBy())) {
+		// updated created_date and created_by if id is null
+		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
-			domain.setCreatedDate(currentDate);
+			domain.setCreatedDate(Calendar.getInstance().getTime());
+		}
+		// updated created_by if created_by contains copy, but keep the original
+		// created_date
+		if (domain.getId() != null
+				|| !StringUtils.isEmpty(domain.getCreatedBy())
+				&& domain.getCreatedBy().contains(
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domain.setCreatedBy(createdBy);
 		}
 		if (domain.getDatumCollection() != null) {
 			domain.getDatumCollection().clear();
@@ -292,16 +278,10 @@ public class FindingBean {
 		} else {
 			domain.setFileCollection(new HashSet<File>());
 		}
-		// Setup uploaded files and add them to file collection.
-		for (FileBean file : files) {
-			File newFile = file.getDomainFile();
-			if (StringUtils.isEmpty(newFile.getCreatedBy())
-					|| Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(newFile
-							.getCreatedBy())) {
-				newFile.setCreatedBy(createdBy); // required field in DB.
-				newFile.setCreatedDate(currentDate);
-			}
-			domain.getFileCollection().add(newFile);
+
+		for (FileBean fileBean : files) {
+			fileBean.setupDomainFile(internalFileUriPath, createdBy);
+			domain.getFileCollection().add(fileBean.getDomainFile());
 		}
 		int rInd = 0;
 		for (Row row : rows) {
@@ -312,9 +292,11 @@ public class FindingBean {
 				ColumnHeader columnHeader = columnHeaders.get(cInd);
 				if (FindingBean.DATUM_TYPE.equals(columnHeader.getColumnType())) {
 					Datum datum = cell.getDatum();
+					// set bogus empty cell
 					if (StringUtils.isEmpty(cell.getValue())) {
 						datum.setValue(Float.valueOf(-1));
-						datum.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
+						datum
+								.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
 						datum.setValue(Float.valueOf(cell.getValue()));
 					}
@@ -322,8 +304,28 @@ public class FindingBean {
 					datum.setValueUnit(columnHeader.getValueUnit());
 					datum.setName(columnHeader.getColumnName());
 					rowData.add(datum);
-					// FR# 26194, datum matrix column order.
-					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(rInd * 100 + cInd));
+					if (datum.getId() != null && datum.getId() <= 0) {
+						datum.setId(null);
+					}
+					// Update createdBy if createdBy is empty or if bogus empty
+					// cell or if copy
+					if (StringUtils.isEmpty(datum.getCreatedBy())
+							|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+									.equals(datum.getCreatedBy())
+							&& datum.getValue() == -1
+							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
+									.equals(datum.getCreatedBy())) {
+						datum.setCreatedBy(createdBy);
+					}
+					// Update createdDate if id is null and created_date is
+					// null.
+					// When user updated order, created_date is reset according
+					// to the order
+					if (datum.getId() == null) {
+						datum.setCreatedDate(DateUtils
+								.addSecondsToCurrentDate(rInd * 100 + cInd));
+					}
+
 				} else if (FindingBean.CONDITION_TYPE.equals(columnHeader
 						.getColumnType())) {
 					Condition condition = cell.getCondition();
@@ -340,68 +342,41 @@ public class FindingBean {
 					condition.setName(columnHeader.getColumnName());
 					condition.setProperty(columnHeader.getConditionProperty());
 					rowConditions.add(condition);
-					// FR# 26194, datum matrix column order.
-					condition.setCreatedDate(DateUtils.addSecondsToCurrentDate(rInd * 100 + cInd));
+					if (condition.getId() != null && condition.getId() <= 0) {
+						condition.setId(null);
+					}
+					// Update createdBy if createdBy is empty or if bogus empty
+					// cell or if copy
+					if (StringUtils.isEmpty(condition.getCreatedBy())
+							|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
+									.equals(condition.getCreatedBy())
+							&& condition
+									.getValue()
+									.equals(
+											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
+							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
+									.equals(condition.getCreatedBy())) {
+						condition.setCreatedBy(createdBy);
+					}
+					// Update createdDate if id is null and created_date is
+					// null.
+					// When user updated order, created_date is reset according
+					// to the order
+					if (condition.getId() == null) {
+						condition.setCreatedDate(DateUtils
+								.addSecondsToCurrentDate(rInd * 100 + cInd));
+					}
 				}
 				cInd++;
 			}
 			// associate conditions to each datum on each row
 			for (Datum datum : rowData) {
-				if (datum.getId() != null && datum.getId() <= 0) {
-					datum.setId(null);
-				}
-				// if new or copy or bogus empty
-				if (datum.getId() == null
-						|| !StringUtils.isEmpty(datum.getCreatedBy())
-						&& Constants.AUTO_COPY_ANNOTATION_PREFIX.equals(datum
-								.getCreatedBy())
-						|| !StringUtils.isEmpty(datum.getCreatedBy())
-						|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-								.equals(datum.getCreatedBy())
-						&& datum.getValue() == -1) {
-					// keep the bogus place holder created by for empty datum
-					// entered
-					if (StringUtils.isEmpty(datum.getCreatedBy())
-							|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-									.equals(datum.getCreatedBy())
-							&& datum.getValue() != -1) {
-						datum.setCreatedBy(createdBy);
-					}
-				}
-
 				if (datum.getConditionCollection() == null) {
 					datum.setConditionCollection(new HashSet<Condition>());
 				} else {
 					datum.getConditionCollection().clear();
 				}
 				for (Condition condition : rowConditions) {
-					if (condition.getId() != null && condition.getId() <= 0) {
-						condition.setId(null);
-					}
-					// if new or copy or bogus empty
-					if (condition.getId() == null
-							|| !StringUtils.isEmpty(condition.getCreatedBy())
-							&& Constants.AUTO_COPY_ANNOTATION_PREFIX
-									.equals(condition.getCreatedBy())
-							|| !StringUtils.isEmpty(condition.getCreatedBy())
-							&& Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-									.equals(condition.getCreatedBy())
-							&& condition
-									.getValue()
-									.equals(
-											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
-						// keep the bogus place holder created by for empty
-						// condition entered
-						if (StringUtils.isEmpty(condition.getCreatedBy())
-								|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-										.equals(condition.getCreatedBy())
-								&& !condition
-										.getValue()
-										.equals(
-												Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
-							condition.setCreatedBy(createdBy);
-						}
-					}
 					datum.getConditionCollection().add(condition);
 				}
 				domain.getDatumCollection().add(datum);
@@ -548,6 +523,9 @@ public class FindingBean {
 
 	// FR# 26194, datum matrix column order.
 	public void setupColumnOrder() {
+		// sort columnHeaders by createdDate and set column orders
+		Collections.sort(columnHeaders,
+				new Comparators.ColumnHeaderCreatedDateComparator());
 		for (int i = 0; i < columnHeaders.size(); i++) {
 			columnHeaders.get(i).setColumnOrder(i + 1);
 		}
@@ -556,8 +534,8 @@ public class FindingBean {
 	// FR# 26194, datum matrix column order.
 	public void updateColumnOrder() {
 		if (!rows.isEmpty()) {
-			Comparators.TableCellComparator cellComparator = 
-				new Comparators.TableCellComparator();
+			Comparators.TableCellComparator cellComparator = new Comparators.TableCellComparator();
+
 			for (Row row : rows) {
 				int cInd = 0;
 				for (TableCell cell : row.getCells()) {
@@ -565,8 +543,34 @@ public class FindingBean {
 					cell.setColumnOrder(columnHeader.getColumnOrder());
 				}
 				Collections.sort(row.getCells(), cellComparator);
+
 			}
-			Collections.sort(columnHeaders, new Comparators.ColumnHeaderComparator());
+			Collections.sort(columnHeaders,
+					new Comparators.ColumnHeaderComparator());
+
+			// update created_date based on column order
+			// update the created date regardless whether created date already
+			// existed
+			int rInd = 0;
+			for (Row row : rows) {
+				int cInd = 0;
+				for (TableCell cell : row.getCells()) {
+					ColumnHeader columnHeader = columnHeaders.get(cInd);
+					if (FindingBean.DATUM_TYPE.equals(columnHeader
+							.getColumnType())) {
+						Datum datum = cell.getDatum();
+						datum.setCreatedDate(DateUtils
+								.addSecondsToCurrentDate(rInd * 100 + cInd));
+					} else if (FindingBean.CONDITION_TYPE.equals(columnHeader
+							.getColumnType())) {
+						Condition condition = cell.getCondition();
+						condition.setCreatedDate(DateUtils
+								.addSecondsToCurrentDate(rInd * 100 + cInd));
+					}
+					cInd++;
+				}
+				rInd++;
+			}
 		}
 	}
 }

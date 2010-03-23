@@ -357,26 +357,6 @@ public class PublicationBean extends FileBean {
 	}
 
 	public void resetDomainCopy(Publication copy) {
-//		//share copied id
-//		//copy.setId(null);
-//		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-//		Collection<Keyword> oldKeywords = copy.getKeywordCollection();
-//		if (oldKeywords == null || oldKeywords.isEmpty()) {
-//			copy.setKeywordCollection(null);
-//		} else {
-//			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
-//			// don't need to set keyword IDs because keywords are shared
-//			// for (Keyword keyword : copy.getKeywordCollection()) {
-//			// keyword.setId(null);
-//			// }
-//		}
-//		
-//		Collection<Author> oldAuthors = copy.getAuthorCollection();
-//		copy.setAuthorCollection(new HashSet<Author>(oldAuthors));
-//		for (Author author : copy.getAuthorCollection()) {
-//			author.setId(null);
-//			author.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-//		}
 		//don't need to reset anything because publications can be shared
 	}
 

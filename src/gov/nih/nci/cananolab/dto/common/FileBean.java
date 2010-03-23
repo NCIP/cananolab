@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -134,12 +135,17 @@ public class FileBean {
 		if (domainFile.getId() != null && domainFile.getId() == 0) {
 			domainFile.setId(null);
 		}
-		if (domainFile.getId() == null
+		//updated created_date and created_by if id is null
+		if (domainFile.getId() == null) {
+			domainFile.setCreatedBy(createdBy);
+			domainFile.setCreatedDate(Calendar.getInstance().getTime());
+		}
+		//updated created_by if created_by contains copy, but keep the original created_date
+		if (domainFile.getId() != null
 				|| !StringUtils.isEmpty(domainFile.getCreatedBy())
-				&& domainFile.getCreatedBy().equals(
+				&& domainFile.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
-			domainFile.setCreatedDate(new Date());
 		}
 		if (uploadedFile != null
 				&& !StringUtils.isEmpty(uploadedFile.getFileName())) {
@@ -241,9 +247,6 @@ public class FileBean {
 		} else {
 			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
 			// don't need to set keyword IDs because keywords are shared
-			// for (Keyword keyword : copy.getKeywordCollection()) {
-			// keyword.setId(null);
-			// }
 		}
 	}
 }

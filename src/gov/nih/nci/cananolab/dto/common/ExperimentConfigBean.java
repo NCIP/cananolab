@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -96,12 +97,17 @@ public class ExperimentConfigBean {
 		if (domain.getId() != null && domain.getId() == 0) {
 			domain.setId(null);
 		}
-		if (domain.getId() == null
+		//updated created_date and created_by if id is null
+		if (domain.getId() == null) {
+			domain.setCreatedBy(createdBy);
+			domain.setCreatedDate(Calendar.getInstance().getTime());
+		}
+		//updated created_by if created_by contains copy, but keep the original created_date
+		if (domain.getId() != null
 				|| !StringUtils.isEmpty(domain.getCreatedBy())
-				&& domain.getCreatedBy().equals(
+				&& domain.getCreatedBy().contains(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domain.setCreatedBy(createdBy);
-			domain.setCreatedDate(new Date());
 		}
 		if (domain.getInstrumentCollection() != null) {
 			domain.getInstrumentCollection().clear();
@@ -171,7 +177,6 @@ public class ExperimentConfigBean {
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		// don't need to set instrument and technique ID's to null
-		// because
-		// they are reused.
+		// because they are reused across different characterizations
 	}
 }

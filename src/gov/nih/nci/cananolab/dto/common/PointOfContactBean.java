@@ -168,17 +168,7 @@ public class PointOfContactBean {
 	}
 
 	public void resetDomainCopy(PointOfContact copy) {
-//		//append original ID to assist with copy
-//		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-//				+ copy.getId());
-		//don't need to set
-//		copy.setId(null);
-
+		// don't need to set point of contact because POCs are shared
 		// don't need to set organization because organizations are shared
-		// if (copy.getOrganization() != null) {
-		// Organization org = copy.getOrganization();
-		// org.setId(null);
-		// org.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		// }
 	}
 }
