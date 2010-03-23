@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import java.util.List;
+
+import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.ServletConfig;
@@ -58,12 +61,18 @@ public class SchedulerPlugin implements PlugIn {
 			scheduler = factory.getScheduler();
 			if (scheduler != null) {
 				scheduler.start();
-				int gridDiscoveryIntervalInMinutes = getIntervalInMinutes(actionServlet
-						.getServletConfig(), "gridDiscoveryIntervalInMinutes");
+				int gridDiscoveryIntervalInMinutes = getIntervalInMinutes(
+						actionServlet.getServletConfig(),
+						"gridDiscoveryIntervalInMinutes");
 				initialiseGridDiscoveryJob(gridDiscoveryIntervalInMinutes);
-
-				int csmCleanupIntervalInMinutes = getIntervalInMinutes(actionServlet
-						.getServletConfig(), "csmCleanupIntervalInMinutes");
+				ServletContext appContext = actionServlet.getServletContext();
+				List<GridNodeBean> gridNodes = (List<GridNodeBean>) appContext
+						.getAttribute("allGridNodes");
+				initialisePublicDataCountJob(gridNodes,
+						gridDiscoveryIntervalInMinutes);
+				int csmCleanupIntervalInMinutes = getIntervalInMinutes(
+						actionServlet.getServletConfig(),
+						"csmCleanupIntervalInMinutes");
 				initialiseCSMCleanupJob(csmCleanupIntervalInMinutes);
 			}
 		} catch (SchedulerException e) {
@@ -77,7 +86,8 @@ public class SchedulerPlugin implements PlugIn {
 		System.out.println("Exiting SchedulerPlugIn.destroy()");
 	}
 
-	private int getIntervalInMinutes(ServletConfig servletConfig, String parameterName) {
+	private int getIntervalInMinutes(ServletConfig servletConfig,
+			String parameterName) {
 		Integer interval = 0;
 		try {
 			interval = new Integer(servletConfig
@@ -101,7 +111,27 @@ public class SchedulerPlugin implements PlugIn {
 			JobDetail jobDetail = new JobDetail("GridDiscoveryServiceJob",
 					null, GridDiscoveryServiceJob.class);
 			scheduler.scheduleJob(jobDetail, trigger);
-			logger.debug("Discover Scheduler started......");
+			logger.debug("Discover scheduler started......");
+		} catch (SchedulerException e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public void initialisePublicDataCountJob(List<GridNodeBean> gridNodes,
+			int intervalInMinutes) {
+		try {
+			if (intervalInMinutes == 0) {
+				// default is 260 minutes
+				intervalInMinutes = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
+			}
+			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
+					"PublicDataStatsServiceJobTrigger", intervalInMinutes,
+					SimpleTrigger.REPEAT_INDEFINITELY);
+			JobDetail jobDetail = new JobDetail("PublicDataCountServiceJob",
+					null, PublicDataCountServiceJob.class);
+			jobDetail.getJobDataMap().put("gridNodes", gridNodes);
+			scheduler.scheduleJob(jobDetail, trigger);
+			logger.debug("Public data count schedular started......");
 		} catch (SchedulerException e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -120,7 +150,7 @@ public class SchedulerPlugin implements PlugIn {
 					"CSMCleanupJobTrigger", intervalInMinutes,
 					SimpleTrigger.REPEAT_INDEFINITELY);
 			scheduler.scheduleJob(jobDetail, trigger);
-			logger.debug("CSM clean up Scheduler started......");
+			logger.debug("CSM clean up scheduler started......");
 		} catch (SchedulerException e) {
 			logger.error(e.getMessage(), e);
 		}
