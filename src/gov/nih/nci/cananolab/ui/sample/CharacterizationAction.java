@@ -141,8 +141,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 */
 	private void setupInputForm(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
-		String sampleId = request.getParameter("sampleId");
+		String sampleId = theForm.getString("sampleId");
 		String charType = request.getParameter("charType");
+		if (charType == null) {
+			charType = (String) request.getAttribute("charType");
+		}
 		InitSampleSetup.getInstance().setSamplePOCs(request, sampleId);
 		if (!StringUtils.isEmpty(charType))
 			InitProtocolSetup.getInstance().getProtocolsByChar(request,
@@ -538,6 +541,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request
 				.setAttribute("charId", achar.getDomainChar().getId()
 						.toString());
+		request.setAttribute("charType", achar.getCharacterizationType());
 		return setupUpdate(mapping, form, request, response);
 	}
 
@@ -609,7 +613,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				+ '/'
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
-		
+
 		findingBean.setupDomain(internalUriPath, user.getLoginName());
 		CharacterizationService service = new CharacterizationServiceLocalImpl();
 		service.saveFinding(findingBean, user);
@@ -625,6 +629,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request
 				.setAttribute("charId", achar.getDomainChar().getId()
 						.toString());
+		request.setAttribute("charType", achar.getCharacterizationType());
 		return setupUpdate(mapping, form, request, response);
 	}
 
