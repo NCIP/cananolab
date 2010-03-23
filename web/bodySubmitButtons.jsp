@@ -32,7 +32,7 @@
 					onclick="${deleteOnclick}">
 			</c:if>
 			<c:if test="${!empty updateId && !empty cloneOnclick }">
-				<input type="button" value="Clone" onclick="${cloneOnclick}">
+				<input type="button" value="Copy" onclick="${cloneOnclick}">
 			</c:if>
 		</td>
 	</tr>
