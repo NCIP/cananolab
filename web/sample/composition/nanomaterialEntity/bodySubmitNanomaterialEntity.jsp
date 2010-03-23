@@ -142,7 +142,7 @@
 						<c:set var="files"
 							value="${compositionForm.map.nanomaterialEntity.files}" />
 						<c:set var="editFile" value="true" />
-						<%@ include file="../bodyFileView.jsp"%>
+						<%@ include file="../../bodyFileEdit.jsp"%>
 					</c:if>
 				</td>
 			</tr>
