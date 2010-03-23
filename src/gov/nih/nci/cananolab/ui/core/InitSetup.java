@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
+import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.GridDownException;
@@ -280,6 +281,17 @@ public class InitSetup {
 		request.getSession().getServletContext().setAttribute("allGridNodes",
 				remoteNodes);
 		return gridNodes;
+	}
+
+	public PublicDataCountBean getPublicDataCountsInContext(
+			HttpServletRequest request) throws Exception {
+		List<GridNodeBean> gridNodes = (List<GridNodeBean>) request
+				.getSession().getServletContext().getAttribute("allGridNodes");
+		PublicDataCountServiceJob dataCountJob = new PublicDataCountServiceJob();
+		PublicDataCountBean dataCounts = dataCountJob.getPublicDataCounts();
+		request.getSession().getServletContext().setAttribute(
+				"allPublicDataCounts", dataCounts);
+		return dataCounts;
 	}
 
 	public void updateCSMCleanupEntriesInContext(
