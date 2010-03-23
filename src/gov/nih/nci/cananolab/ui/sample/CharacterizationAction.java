@@ -559,8 +559,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (findingBean.getFiles().size() == 1) {
 			request.setAttribute("onloadJavascript", "setTheFile(0)");
 		}
-		// FR# [26194], matrix column order.
-		findingBean.setupColumnOrder();
 
 		return mapping.findForward("inputForm");
 	}
@@ -586,6 +584,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE);
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
@@ -602,8 +602,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			findingBean.getDomain().setId(Long.valueOf(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		findingBean.setupDomain(user.getLoginName());
-
+		// setup domainFile uri for fileBeans
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ '/'
+				+ sampleBean.getDomain().getName()
+				+ '/'
+				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
+						.getCharacterizationName());
+		
+		findingBean.setupDomain(internalUriPath, user.getLoginName());
 		CharacterizationService service = new CharacterizationServiceLocalImpl();
 		service.saveFinding(findingBean, user);
 		achar.addFinding(findingBean);
