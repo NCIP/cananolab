@@ -66,6 +66,26 @@
 				<table cellspacing="0" cellpadding="0">
 					<tr>
 						<td class="cellLabel" width="120">
+							Sample Name
+						</td>
+						<td>
+							<html:select property="nameOperand" styleId="nameOperand">
+								<html:options collection="stringOperands" property="value"
+									labelProperty="label" />
+							</html:select>
+						</td>
+						<td>
+							<html:text property="sampleName" size="60" />							
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table cellspacing="0" cellpadding="0">
+					<tr>
+						<td class="cellLabel" width="120">
 							Sample
 							<br>
 							Point of Contact
