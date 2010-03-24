@@ -68,14 +68,16 @@ public class GridNodeBean {
 	public void setNodeType(NodeType nodeType) {
 		this.nodeType = nodeType;
 	}
-	
+
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof GridNodeBean) {
 			GridNodeBean node = (GridNodeBean) obj;
 			String url = node.getAddress();
-
-			if (url.equals(this.getAddress())) {
+			String hostname = node.getHostName();
+			//matching service URL or host name 
+			if (url.equals(this.getAddress())
+					|| hostname.equals(this.getHostName())) {
 				eq = true;
 			}
 		}
