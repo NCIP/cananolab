@@ -71,8 +71,8 @@ public class SampleServiceRemoteImpl implements SampleService {
 		throw new SampleException("Not implemented for grid service");
 	}
 
-	public List<String> findSampleNamesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
+	public List<String> findSampleNamesBy(String sampleName,
+			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -81,6 +81,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 			String[] otherCharacterizationTypes, String[] wordList,
 			UserBean user) throws SampleException {
 		try {
+			//TODO add sample name after modifying grid client
 			String[] sampleNames = gridClient.getSampleNames(
 					samplePointOfContact, nanomaterialEntityClassNames,
 					functionalizingEntityClassNames, functionClassNames,
