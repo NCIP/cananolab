@@ -38,7 +38,9 @@
 								${allPublicDataCounts.numOfPublicPhysicoChemicalCharacterizations}
 								physico-chemical,
 								${allPublicDataCounts.numOfPublicInvitroCharacterizations} in
-								vitro, and
+								vitro,
+								${allPublicDataCounts.numOfPublicInvivoCharacterizations} in
+								vivo, and
 								${allPublicDataCounts.numOfPublicOtherCharacterizations} other
 							</li>
 							<li>
