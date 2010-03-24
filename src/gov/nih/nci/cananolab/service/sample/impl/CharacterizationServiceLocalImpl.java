@@ -490,44 +490,18 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public int getNumberOfPublicCharacterizations()
-			throws CharacterizationException {
-		try {
-			int count = helper.getNumberOfPublicCharacterizations();
-			return count;
-		} catch (Exception e) {
-			String err = "Error finding counts of public characterizations.";
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-
-		}
-	}
-
-	public int getNumberOfPublicPhysicoChemicalCharacterizations()
-			throws CharacterizationException {
+	public int getNumberOfPublicCharacterizations(
+			String characterizationClassName) throws CharacterizationException {
 		try {
 			int count = helper
-					.getNumberOfPublicPhysicoChemicalCharacterizations();
+					.getNumberOfPublicCharacterizations(characterizationClassName);
 			return count;
 		} catch (Exception e) {
-			String err = "Error finding counts of public physico-chemical characterizations.";
+			String err = "Error finding counts of public characterizations of type "
+					+ characterizationClassName;
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 
 		}
 	}
-
-	public int getNumberOfPublicInvitroCharacterizations()
-			throws CharacterizationException {
-		try {
-			int count = helper.getNumberOfPublicInvitroCharacterizations();
-			return count;
-		} catch (Exception e) {
-			String err = "Error finding counts of public invitro characterizations.";
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-
-		}
-	}
-
 }

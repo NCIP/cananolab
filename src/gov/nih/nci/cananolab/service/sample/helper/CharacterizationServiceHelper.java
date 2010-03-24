@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -16,6 +17,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -23,11 +25,11 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 
 /**
@@ -501,48 +503,14 @@ public class CharacterizationServiceHelper {
 		return finding;
 	}
 
-	public int getNumberOfPublicCharacterizations() throws Exception {
+	public int getNumberOfPublicCharacterizations(
+			String characterizationClassName) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getAllPublicData();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.particle.Characterization");
-		List results = appService.query(crit);
-		int count = 0;
-		for (Object obj : results) {
-			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(publicData, id)) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public int getNumberOfPublicPhysicoChemicalCharacterizations()
-			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List<String> publicData = appService.getAllPublicData();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
-		List results = appService.query(crit);
-		int count = 0;
-		for (Object obj : results) {
-			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(publicData, id)) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public int getNumberOfPublicInvitroCharacterizations()
-			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List<String> publicData = appService.getAllPublicData();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				ClassUtils.getFullClass(characterizationClassName))
+				.setProjection(Projections.distinct(Property.forName("id")));
 		List results = appService.query(crit);
 		int count = 0;
 		for (Object obj : results) {

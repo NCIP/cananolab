@@ -372,21 +372,21 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public int getNumberOfPublicCharacterizations()
-			throws CharacterizationException {
+	public int getNumberOfPublicCharacterizations(
+			String characterizationClassName) throws CharacterizationException {
 		try {
+			String fullClassName = ClassUtils.getFullClass(
+					characterizationClassName).getCanonicalName();
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.Characterization");
+			target.setName(fullClassName);
 			query.setTarget(target);
 			QueryModifier modifier = new QueryModifier();
 			modifier.setCountOnly(true);
 			query.setQueryModifier(modifier);
 
 			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Characterization");
+			results.setTargetClassname(fullClassName);
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			int count = 0;
 			while (iter.hasNext()) {
@@ -395,65 +395,8 @@ public class CharacterizationServiceRemoteImpl implements
 			}
 			return count;
 		} catch (Exception e) {
-			String err = "Error finding counts of remote public characterizations.";
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-		}
-	}
-
-	public int getNumberOfPublicPhysicoChemicalCharacterizations()
-			throws CharacterizationException {
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
-			query.setTarget(target);
-			QueryModifier modifier = new QueryModifier();
-			modifier.setCountOnly(true);
-			query.setQueryModifier(modifier);
-
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			int count = 0;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				count = ((Long) obj).intValue();
-			}
-			return count;
-		} catch (Exception e) {
-			String err = "Error finding counts of remote public physico-chemical characterizations.";
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-		}
-	}
-
-	public int getNumberOfPublicInvitroCharacterizations()
-			throws CharacterizationException {
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
-			query.setTarget(target);
-			QueryModifier modifier = new QueryModifier();
-			modifier.setCountOnly(true);
-			query.setQueryModifier(modifier);
-
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			int count = 0;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				count = ((Long) obj).intValue();
-			}
-			return count;
-		} catch (Exception e) {
-			String err = "Error finding counts of remote public in vitro characterizations.";
+			String err = "Error finding counts of remote public characterizations of type "
+					+ characterizationClassName;
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
