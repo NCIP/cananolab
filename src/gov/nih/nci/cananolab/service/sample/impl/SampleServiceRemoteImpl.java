@@ -327,6 +327,33 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
+	public int getNumberOfPublicSampleSources() throws SampleException {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.common.Organization");
+			query.setTarget(target);
+			QueryModifier modifier = new QueryModifier();
+			modifier.setCountOnly(true);
+			query.setQueryModifier(modifier);
+
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Organization");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			int count = 0;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				count = ((Long) obj).intValue();
+			}
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of remote public sample sources.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
 	public SampleBean findSampleByName(String sampleName, UserBean user)
 			throws SampleException {
 		try {

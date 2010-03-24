@@ -271,7 +271,7 @@ public class CharacterizationServiceLocalImpl implements
 							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 						config.setCreatedBy(dbConfig.getCreatedBy());
 					}
-					//reuse original created date
+					// reuse original created date
 					config.setCreatedDate(dbConfig.getCreatedDate());
 				}
 			}
@@ -489,4 +489,45 @@ public class CharacterizationServiceLocalImpl implements
 			throw new CharacterizationException(error, e);
 		}
 	}
+
+	public int getNumberOfPublicCharacterizations()
+			throws CharacterizationException {
+		try {
+			int count = helper.getNumberOfPublicCharacterizations();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public characterizations.";
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
+
+		}
+	}
+
+	public int getNumberOfPublicPhysicoChemicalCharacterizations()
+			throws CharacterizationException {
+		try {
+			int count = helper
+					.getNumberOfPublicPhysicoChemicalCharacterizations();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public physico-chemical characterizations.";
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
+
+		}
+	}
+
+	public int getNumberOfPublicInvitroCharacterizations()
+			throws CharacterizationException {
+		try {
+			int count = helper.getNumberOfPublicInvitroCharacterizations();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public invitro characterizations.";
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
+
+		}
+	}
+
 }

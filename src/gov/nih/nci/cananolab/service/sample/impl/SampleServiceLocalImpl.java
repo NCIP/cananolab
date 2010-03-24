@@ -449,6 +449,18 @@ public class SampleServiceLocalImpl implements SampleService {
 
 		}
 	}
+	
+	public int getNumberOfPublicSampleSources() throws SampleException {
+		try {
+			int count = helper.getNumberOfPublicSampleSources();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public sample sources.";
+			logger.error(err, e);
+			throw new SampleException(err, e);
+
+		}
+	}
 
 	public SortedSet<SortableName> findOtherSamplesFromSamePointOfContact(
 			String sampleId, UserBean user) throws SampleException {
