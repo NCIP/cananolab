@@ -1,13 +1,29 @@
 function getPublicCounts() {
-	getProtocolCounts();
-	getSampleCounts();
-	getPublicationCounts();
+	var sites = dwr.util.getValue("sites");
+	/* test whether selected sites contains 'all' */
+	var isAllSites=false;
+	for (var i=0; i<sites.length; i++) {
+		if (sites[i]=="all") {
+			isAllSites = true;
+			break;
+		}
+	}
+	var allSites=new Array();
+	if (isAllSites) {
+		var options=document.getElementById("sites").options;
+		for(var i=0; i<options.length; i++) {
+			allSites[i]=options[i].value;
+		}
+		sites=allSites;
+	}
+	getProtocolCounts(sites);
+	getSampleCounts(sites);
+	getPublicationCounts(sites);
 }
 
-function getProtocolCounts() {
+function getProtocolCounts(sites) {
 	show("protocolLoaderImg");
-	hide("protocolCount");
-	var sites = dwr.util.getValue("sites");
+	hide("protocolCount");	
 	ProtocolManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
 			hide("protocolLoaderImg");
@@ -23,10 +39,9 @@ function getProtocolCounts() {
 	});
 }
 
-function getSampleCounts() {
+function getSampleCounts(sites) {
 	show("sampleLoaderImg");
 	hide("sampleCount");
-	var sites = dwr.util.getValue("sites");
 	SampleManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
 			hide("sampleLoaderImg");
@@ -42,10 +57,9 @@ function getSampleCounts() {
 	});
 }
 
-function getPublicationCounts() {
+function getPublicationCounts(sites) {
 	show("publicationLoaderImg");
 	hide("publicationCount");
-	var sites = dwr.util.getValue("sites");
 	PublicationManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
 			hide("publicationLoaderImg");
