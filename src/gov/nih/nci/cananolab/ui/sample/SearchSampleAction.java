@@ -82,12 +82,20 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		String samplePointOfContact = (String) theForm
 				.get("samplePointOfContact");
-		//strip wildcards at either end if entered by user
-		samplePointOfContact=StringUtils.stripWildcards(samplePointOfContact);
+		// strip wildcards at either end if entered by user
+		samplePointOfContact = StringUtils.stripWildcards(samplePointOfContact);
 		String pocOperand = (String) theForm.get("pocOperand");
 		if (pocOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(samplePointOfContact)) {
 			samplePointOfContact = "*" + samplePointOfContact + "*";
+		}
+		String sampleName = (String) theForm.get("sampleName");
+		// strip wildcards at either end if entered by user
+		sampleName = StringUtils.stripWildcards(sampleName);
+		String nameOperand = (String) theForm.get("nameOperand");
+		if (pocOperand.equals(Constants.STRING_OPERAND_CONTAINS)
+				&& !StringUtils.isEmpty(sampleName)) {
+			sampleName = "*" + sampleName + "*";
 		}
 		String[] nanomaterialEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
@@ -189,7 +197,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
 			UserBean user = (UserBean) session.getAttribute("user");
-			List<String> sampleNames = service.findSampleNamesBy(
+			List<String> sampleNames = service.findSampleNamesBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames
 							.toArray(new String[0]),
 					otherNanomaterialEntityTypes.toArray(new String[0]),
