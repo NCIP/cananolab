@@ -14,13 +14,15 @@
 		</form-bean>
 		<form-bean name="searchSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="samplePointOfContact" type="java.lang.String" />
+			<form-property name="samplePointOfContact" type="java.lang.String" />			
 			<form-property name="pocOperand" type="java.lang.String" />
 			<form-property name="nanomaterialEntityTypes" type="java.lang.String[]" />
 			<form-property name="functionalizingEntityTypes" type="java.lang.String[]" />
 			<form-property name="functionTypes" type="java.lang.String[]" />
 			<form-property name="characterizationType" type="java.lang.String" />
 			<form-property name="characterizations" type="java.lang.String[]" />
+			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="nameOperand" type="java.lang.String" />
 			<form-property name="text" type="java.lang.String" />
 			<form-property name="searchLocations" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
