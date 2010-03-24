@@ -313,8 +313,8 @@ public class SampleServiceHelper {
 		return samples;
 	}
 
-	public List<String> findSampleNamesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
+	public List<String> findSampleNamesBy(String sampleName,
+			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -328,7 +328,11 @@ public class SampleServiceHelper {
 		// limitations in pagination in SDK
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
 				.setProjection(Projections.distinct(Property.forName("name")));
-
+		if (!StringUtils.isEmpty(sampleName)) {
+			TextMatchMode nameMatchMode = new TextMatchMode(sampleName);
+			crit.add(Restrictions.ilike("name", nameMatchMode.getUpdatedText(),
+					nameMatchMode.getMatchMode()));
+		}
 		if (!StringUtils.isEmpty(samplePointOfContact)) {
 			TextMatchMode pocMatchMode = new TextMatchMode(samplePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
@@ -545,13 +549,13 @@ public class SampleServiceHelper {
 			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
-			String sampleName = obj.toString();
+			String name = obj.toString();
 			if (user == null
-					|| authService.checkReadPermission(user, sampleName)) {
-				sampleNames.add(sampleName);
+					|| authService.checkReadPermission(user, name)) {
+				sampleNames.add(name);
 			} else { // ignore no access exception
 				logger.debug("User doesn't have access to sample with name "
-						+ sampleName);
+						+ name);
 			}
 		}
 		Collections.sort(sampleNames, new Comparators.SortableNameComparator());
@@ -963,6 +967,7 @@ public class SampleServiceHelper {
 		}
 		return publicIds.size();
 	}
+
 	public String[] getSampleViewStrs(Sample sample) {
 		List<String> columns = new ArrayList<String>(7);
 		columns.clear();
