@@ -70,6 +70,7 @@ public class PublicDataCountServiceJob implements Job {
 		Integer charCount = 0;
 		Integer physicoCharCount = 0;
 		Integer invitroCharCount = 0;
+		Integer invivoCharCount = 0;
 		Integer otherCharCount = 0;
 		for (String location : locations) {
 			sampleCount += getPublicSampleCount(location);
@@ -82,6 +83,8 @@ public class PublicDataCountServiceJob implements Job {
 					"PhysicoChemicalCharacterization", location);
 			invitroCharCount += getPublicCharacterizationCount(
 					"InvitroCharacterization", location);
+			invivoCharCount += getPublicCharacterizationCount(
+					"InvivoCharacterization", location);
 			otherCharCount += getPublicCharacterizationCount(
 					"OtherCharacterization", location);
 		}
@@ -94,6 +97,7 @@ public class PublicDataCountServiceJob implements Job {
 		dataCounts
 				.setNumOfPublicPhysicoChemicalCharacterizations(physicoCharCount);
 		dataCounts.setNumOfPublicInvitroCharacterizations(invitroCharCount);
+		dataCounts.setNumOfPublicInvivoCharacterizations(invivoCharCount);
 		dataCounts.setNumOfPublicOtherCharacterizations(otherCharCount);
 	}
 
