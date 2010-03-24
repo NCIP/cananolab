@@ -7,6 +7,7 @@ public class PublicDataCountBean {
 	private Integer numOfPublicCharacterizations;
 	private Integer numOfPublicPhysicoChemicalCharacterizations;
 	private Integer numOfPublicInvitroCharacterizations;
+	private Integer numOfPublicOtherCharacterizations;
 	private Integer numOfPublicPublications;
 
 	public Integer getNumOfPublicProtocols() {
@@ -66,6 +67,15 @@ public class PublicDataCountBean {
 
 	public void setNumOfPublicPublications(Integer numOfPublicPublications) {
 		this.numOfPublicPublications = numOfPublicPublications;
+	}
+
+	public Integer getNumOfPublicOtherCharacterizations() {
+		return numOfPublicOtherCharacterizations;
+	}
+
+	public void setNumOfPublicOtherCharacterizations(
+			Integer numOfPublicOtherCharacterizations) {
+		this.numOfPublicOtherCharacterizations = numOfPublicOtherCharacterizations;
 	}
 
 }
