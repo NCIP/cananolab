@@ -139,7 +139,9 @@ public class ClassUtils {
 		}
 		Collection<Class> classes = getDomainClasses();
 		for (Class clazz : classes) {
-			if (clazz.getCanonicalName().endsWith(shortClassName)) {
+			if (clazz.getCanonicalName().equals(shortClassName)
+					|| clazz.getCanonicalName().matches(
+							"([a-z]+\\.)+" + shortClassName)) {
 				return clazz;
 			}
 		}
@@ -160,10 +162,11 @@ public class ClassUtils {
 	/**
 	 * Returns a copy of the object, or null if the object cannot be serialized.
 	 */
-	
-	/** NOTE: when updating the cloned object, the cloned associated collection in particular,
-	 *  Before persist using Hibernate, need to create a new collection using the cloned collection
-	 *  otherwise Hibernate complains. 
+
+	/**
+	 * NOTE: when updating the cloned object, the cloned associated collection
+	 * in particular, Before persist using Hibernate, need to create a new
+	 * collection using the cloned collection otherwise Hibernate complains.
 	 */
 	public static Object deepCopy(Object orig) {
 		Object obj = null;
@@ -186,38 +189,6 @@ public class ClassUtils {
 			cnfe.printStackTrace();
 		}
 		return obj;
-	}
-
-	public static void main(String[] args) {
-		try {
-			List<String> names = ClassUtils
-					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-			for (String name : names) {
-				System.out.println(name);
-			}
-
-			String displayName = ClassUtils.getDisplayName("SmallMolecule");
-			System.out.println(displayName);
-
-			String className = ClassUtils
-					.getShortClassNameFromDisplayName("other small molecule");
-			System.out.println(className);
-
-			// test, put this to the beginnging of ClassUtils.mapObjects
-			// Report report1 = new Report();
-			// report1.setCategory("myCategory");
-			// report1.setTitle("mytitle");
-			// inputObjects = new Object[1];
-			// inputObjects[0] = report1;
-			//
-			// aTargetClazz = new Report().getClass();
-			// end of test
-
-			// List<Report> reportLists = ClassUtils.mapObjects(null, null);
-			// System.out.println("report ========="+reportLists.get(0).getCategory());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -458,5 +429,40 @@ public class ClassUtils {
 		}
 		String shortClassName = StringUtils.join(newWords, "");
 		return shortClassName;
+	}
+
+	public static void main(String[] args) {
+		try {
+			List<String> names = ClassUtils
+					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+			for (String name : names) {
+				System.out.println(name);
+			}
+
+			String displayName = ClassUtils.getDisplayName("SmallMolecule");
+			System.out.println(displayName);
+
+			String className = ClassUtils
+					.getShortClassNameFromDisplayName("other small molecule");
+			System.out.println(className);
+
+			// test, put this to the beginnging of ClassUtils.mapObjects
+			// Report report1 = new Report();
+			// report1.setCategory("myCategory");
+			// report1.setTitle("mytitle");
+			// inputObjects = new Object[1];
+			// inputObjects[0] = report1;
+			//
+			// aTargetClazz = new Report().getClass();
+			// end of test
+
+			// List<Report> reportLists = ClassUtils.mapObjects(null, null);
+			// System.out.println("report ========="+reportLists.get(0).getCategory());
+			System.out
+					.println(ClassUtils
+							.getFullClass("Characterization"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
