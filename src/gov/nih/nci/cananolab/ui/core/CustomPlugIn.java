@@ -1,11 +1,15 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
+import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SampleConstants;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -19,9 +23,9 @@ import org.apache.struts.config.ModuleConfig;
 /**
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CustomPlugIn implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugIn.class);
@@ -72,7 +76,7 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 
-			setupInitialGridNodes();
+			setupInitialGridNodes(appContext);
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
@@ -92,15 +96,26 @@ public class CustomPlugIn implements PlugIn {
 		}
 	}
 
-	// discover grid nodes during start-up time and populates the grid nodes in
-	// scheduler
-	private void setupInitialGridNodes() {
+	// discover grid nodes and query public data counts during start-up time and
+	// populates the grid nodes and data counts in the scheduler
+	private void setupInitialGridNodes(ServletContext context) {
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		PublicDataCountServiceJob dataCountJob=new PublicDataCountServiceJob();
-		dataCountJob.queryPublicDataCounts(gridNodes);
+		GridNodeBean localGrid = GridService.getGridNodeByHostName(gridNodes,
+				Constants.APP_OWNER);		
+		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>();
+		remoteNodes.addAll(gridNodes);
+		if (localGrid != null) {
+			remoteNodes.remove(localGrid);
+		}
+		Collections.sort(remoteNodes,
+				new Comparators.GridNodeHostNameComparator());
+		logger.info("Found " + remoteNodes.size()
+				+ " remote grid nodes at start up.");
+
+		PublicDataCountServiceJob dataCountJob = new PublicDataCountServiceJob();
+		dataCountJob.queryPublicDataCounts(remoteNodes);
 		dataCountJob.getPublicDataCounts();
-		logger.info("Found " + gridNodes + " grid nodes at start up.");
 	}
 
 	private void cleanUpCSM() throws Exception {
