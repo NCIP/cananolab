@@ -260,15 +260,21 @@ public class InitSetup {
 
 	public List<GridNodeBean> getGridNodesInContext(HttpServletRequest request)
 			throws Exception {
-		URL localURL = new URL(request.getRequestURL().toString());
-		int port = (localURL.getPort() == -1) ? 80 : localURL.getPort();
-		String localGridURL = localURL.getProtocol() + "://"
-				+ localURL.getHost() + ":" + port + "/"
-				+ Constants.GRID_SERVICE_PATH;
+		// URL localURL = new URL(request.getRequestURL().toString());
+		// int port = (localURL.getPort() == -1) ? 80 : localURL.getPort();
+		// String localGridURL = localURL.getProtocol() + "://"
+		// + localURL.getHost() + ":" + port + "/"
+		// + Constants.GRID_SERVICE_PATH;
+		// GridDiscoveryServiceJob gridDiscoveryJob = new
+		// GridDiscoveryServiceJob();
+		// List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
+		// GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
+		// localGridURL);
+		
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
-				localGridURL);
+		GridNodeBean localGrid = GridService.getGridNodeByHostName(gridNodes,
+				Constants.APP_OWNER);
 		// don't remove from original list
 		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>();
 		remoteNodes.addAll(gridNodes);
@@ -285,8 +291,6 @@ public class InitSetup {
 
 	public PublicDataCountBean getPublicDataCountsInContext(
 			HttpServletRequest request) throws Exception {
-		List<GridNodeBean> gridNodes = (List<GridNodeBean>) request
-				.getSession().getServletContext().getAttribute("allGridNodes");
 		PublicDataCountServiceJob dataCountJob = new PublicDataCountServiceJob();
 		PublicDataCountBean dataCounts = dataCountJob.getPublicDataCounts();
 		request.getSession().getServletContext().setAttribute(
