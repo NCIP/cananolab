@@ -66,9 +66,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -80,10 +80,10 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
+	 * 
 	 * @param sample
-	 * @throws SampleException ,
-	 *             DuplicateEntriesException
+	 * @throws SampleException
+	 *             , DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean, UserBean user)
 			throws SampleException, DuplicateEntriesException,
@@ -262,7 +262,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -275,8 +275,8 @@ public class SampleServiceLocalImpl implements SampleService {
 	 * @return
 	 * @throws SampleException
 	 */
-	public List<String> findSampleNamesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
+	public List<String> findSampleNamesBy(String sampleName,
+			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -285,7 +285,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			String[] otherCharacterizationTypes, String[] wordList,
 			UserBean user) throws SampleException {
 		try {
-			return helper.findSampleNamesBy(samplePointOfContact,
+			return helper.findSampleNamesBy(sampleName, samplePointOfContact,
 					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
@@ -449,7 +449,7 @@ public class SampleServiceLocalImpl implements SampleService {
 
 		}
 	}
-	
+
 	public int getNumberOfPublicSampleSources() throws SampleException {
 		try {
 			int count = helper.getNumberOfPublicSampleSources();
