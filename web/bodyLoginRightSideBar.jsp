@@ -26,16 +26,16 @@
 						<em>(update every 4 hours)</em>
 						<ul>
 							<li>
-								# protocols
+								${allPublicDataCounts.numOfPublicProtocols} protocols
 							</li>
 							<li>
-								# samples from # sources
+								${allPublicDataCounts.numOfPublicSamples} samples from ${allPublicDataCounts.numOfPublicSources} sources
 							</li>
 							<li>
-								# characterizations: # physico-chemical, # in vitro, and # other
+								${allPublicDataCounts.numOfPublicCharacterizations} characterizations: ${allPublicDataCounts.numOfPublicPhysicoChemicalCharacterizations} physico-chemical, ${allPublicDataCounts.numOfPublicInvitroCharacterizations} in vitro
 							</li>
 							<li>
-								# publications
+								${allPublicDataCounts.numOfPublicPublications} publications
 							</li>
 						</ul>
 					</td>
