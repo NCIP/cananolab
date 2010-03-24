@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -498,5 +499,58 @@ public class CharacterizationServiceHelper {
 			}
 		}
 		return finding;
+	}
+
+	public int getNumberOfPublicCharacterizations() throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getAllPublicData();
+		HQLCriteria crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.particle.Characterization");
+		List results = appService.query(crit);
+		int count = 0;
+		for (Object obj : results) {
+			String id = (String) obj.toString();
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int getNumberOfPublicPhysicoChemicalCharacterizations()
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getAllPublicData();
+		HQLCriteria crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
+		List results = appService.query(crit);
+		int count = 0;
+		for (Object obj : results) {
+			String id = (String) obj.toString();
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int getNumberOfPublicInvitroCharacterizations()
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getAllPublicData();
+		HQLCriteria crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
+		List results = appService.query(crit);
+		int count = 0;
+		for (Object obj : results) {
+			String id = (String) obj.toString();
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
+				count++;
+			}
+		}
+		return count;
 	}
 }

@@ -947,6 +947,22 @@ public class SampleServiceHelper {
 		return publicNames.size();
 	}
 
+	public int getNumberOfPublicSampleSources() throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getAllPublicData();
+		HQLCriteria crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.common.Organization");
+		List results = appService.query(crit);
+		List<String> publicIds = new ArrayList<String>();
+		for (Object obj : results) {
+			String id = (String) obj.toString();
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
+				publicIds.add(id);
+			}
+		}
+		return publicIds.size();
+	}
 	public String[] getSampleViewStrs(Sample sample) {
 		List<String> columns = new ArrayList<String>(7);
 		columns.clear();

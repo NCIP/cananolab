@@ -32,9 +32,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving composition.
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class CompositionServiceHelper {
 
@@ -106,7 +106,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Get PubChem URL in format of
 	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 *
+	 * 
 	 * @param pubChemDS
 	 * @param pubChemId
 	 * @return PubChem URL
