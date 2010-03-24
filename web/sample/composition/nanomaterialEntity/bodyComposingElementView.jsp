@@ -8,21 +8,10 @@
 <c:forEach var="composingElement" items="${entity.composingElements}">
 	<table class="summaryViewNoGrid" width="99%" align="left">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" colspan="2">
 				${composingElement.displayName}
-			</td>
-			<c:choose>
-				<c:when test="${edit eq 'true'}">
-					<td align="right" width="3%">
-						<a href="#submitComposingElement"
-							onclick="javascript:setTheComposingElement(${composingElement.domain.id});">Edit</a>&nbsp;
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td></td>
-				</c:otherwise>
-			</c:choose>
-		</tr>
+			</td>			
+		</tr>		
 		<c:choose>
 			<c:when test="${!empty composingElement.domain.pubChemId &&
 							composingElement.domain.pubChemId != 0}">
@@ -30,20 +19,19 @@
 					<td>
 						<c:set var="pubChemId" value="${composingElement.domain.pubChemId}"/>
 						<c:set var="pubChemDS" value="${composingElement.domain.pubChemDataSourceName}"/>
-						PubChem ID: 
-						<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>' target="caNanoLab - View PubChem">${pubChemId}</a>
-						&nbsp;(${pubChemDS})
+						PubChem ID
 					</td>
-					<td></td>
+					<td><a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>' target="caNanoLab - View PubChem">${pubChemId}</a>
+						&nbsp;(${pubChemDS})</td>
 				</tr>
 			</c:when>
 			<c:otherwise>
 				<c:if test="${param.dispatch ne 'summaryView'}">
 					<tr>
 						<td>
-							PubChem: N/A
+							PubChem ID
 						</td>
-						<td></td>
+						<td>N/A</td>
 					</tr>
 				</c:if>
 			</c:otherwise>
@@ -54,18 +42,18 @@
 					<td style="word-wrap:break-word;max-width:280px;">
 					--%>
 					<td>
-						Molecular Formula: ${composingElement.molecularFormulaDisplayName}
+						Molecular Formula
 					</td>
-					<td></td>
+					<td>${composingElement.molecularFormulaDisplayName}</td>
 				</tr>
 			</c:when>
 			<c:otherwise>
 				<c:if test="${param.dispatch ne 'summaryView'}">
 					<tr>
 						<td>
-							Molecular Formula: N/A
+							Molecular Formula
 						</td>
-						<td></td>
+						<td>N/A</td>
 					</tr>
 				</c:if>
 			</c:otherwise>
@@ -74,18 +62,20 @@
 			<c:when test="${!empty composingElement.domain.description}">
 				<tr>
 					<td>
-						Description: ${composingElement.domain.description}
+						Description
 					</td>
-					<td></td>
+					<td><c:out
+							value="${fn:replace(composingElement.domain.description, cr, '<br>')}"
+							escapeXml="false" /></td>
 				</tr>
 			</c:when>
 			<c:otherwise>
 				<c:if test="${param.dispatch ne 'summaryView'}">
 					<tr>
 						<td>
-							Description: N/A
+							Description
 						</td>
-						<td></td>
+						<td>N/A</td>
 					</tr>
 				</c:if>
 			</c:otherwise>
@@ -94,30 +84,32 @@
 			<c:when test="${!empty composingElement.functionDisplayNames}">
 				<tr>
 					<td>
-						Function:
+						Function
+					</td>
+					<td>
 						<c:forEach var="function"
 							items="${composingElement.functionDisplayNames}" varStatus="ind">
 				${function}
-				<c:if test="${ind.count !=fn:length(composingElement.functionDisplayNames)}">
+				<c:if
+								test="${ind.count !=fn:length(composingElement.functionDisplayNames)}">
 ;&nbsp;</c:if>
 						</c:forEach>
 					</td>
-					<td></td>
 				</tr>
 			</c:when>
 			<c:otherwise>
 				<c:if test="${param.dispatch ne 'summaryView'}">
 					<tr>
 						<td>
-							Function: N/A
+							Function
 						</td>
-						<td></td>
+						<td>N/A</td>
 					</tr>
 				</c:if>
 			</c:otherwise>
 		</c:choose>
 	</table>
-	<br>
+	<br><br/>
 </c:forEach>
 
 <%-- use this format in export instead
