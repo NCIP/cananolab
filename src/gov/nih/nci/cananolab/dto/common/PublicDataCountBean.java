@@ -1,14 +1,15 @@
 package gov.nih.nci.cananolab.dto.common;
 
 public class PublicDataCountBean {
-	private Integer numOfPublicProtocols;
-	private Integer numOfPublicSamples;
-	private Integer numOfPublicSources;
-	private Integer numOfPublicCharacterizations;
-	private Integer numOfPublicPhysicoChemicalCharacterizations;
-	private Integer numOfPublicInvitroCharacterizations;
-	private Integer numOfPublicOtherCharacterizations;
-	private Integer numOfPublicPublications;
+	private Integer numOfPublicProtocols=0;
+	private Integer numOfPublicSamples=0;
+	private Integer numOfPublicSources=0;
+	private Integer numOfPublicCharacterizations=0;
+	private Integer numOfPublicPhysicoChemicalCharacterizations=0;
+	private Integer numOfPublicInvitroCharacterizations=0;
+	private Integer numOfPublicInvivoCharacterizations=0;
+	private Integer numOfPublicOtherCharacterizations=0;
+	private Integer numOfPublicPublications=0;
 
 	public Integer getNumOfPublicProtocols() {
 		return numOfPublicProtocols;
@@ -76,6 +77,15 @@ public class PublicDataCountBean {
 	public void setNumOfPublicOtherCharacterizations(
 			Integer numOfPublicOtherCharacterizations) {
 		this.numOfPublicOtherCharacterizations = numOfPublicOtherCharacterizations;
+	}
+
+	public Integer getNumOfPublicInvivoCharacterizations() {
+		return numOfPublicInvivoCharacterizations;
+	}
+
+	public void setNumOfPublicInvivoCharacterizations(
+			Integer numOfPublicInvivoCharacterizations) {
+		this.numOfPublicInvivoCharacterizations = numOfPublicInvivoCharacterizations;
 	}
 
 }
