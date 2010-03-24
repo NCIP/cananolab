@@ -33,8 +33,8 @@ public interface SampleService {
 			throws SampleException, DuplicateEntriesException,
 			NoAccessException;
 
-	public List<String> findSampleNamesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
+	public List<String> findSampleNamesBy(String sampleName,
+			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -83,5 +83,5 @@ public interface SampleService {
 			Boolean removeVisibility) throws SampleException,
 			NoAccessException, NotExistException;
 
-	public int getNumberOfPublicSampleSources() throws SampleException; 
+	public int getNumberOfPublicSampleSources() throws SampleException;
 }
