@@ -274,7 +274,7 @@ public class InitSetup {
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		GridNodeBean localGrid = GridService.getGridNodeByHostName(gridNodes,
-				Constants.APP_OWNER);
+				Constants.LOCAL_SITE);
 		// don't remove from original list
 		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>();
 		remoteNodes.addAll(gridNodes);

@@ -102,7 +102,7 @@ public class CustomPlugIn implements PlugIn {
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		GridNodeBean localGrid = GridService.getGridNodeByHostName(gridNodes,
-				Constants.APP_OWNER);		
+				Constants.LOCAL_SITE);		
 		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>();
 		remoteNodes.addAll(gridNodes);
 		if (localGrid != null) {
