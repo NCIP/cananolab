@@ -83,4 +83,5 @@ public interface SampleService {
 			Boolean removeVisibility) throws SampleException,
 			NoAccessException, NotExistException;
 
+	public int getNumberOfPublicSampleSources() throws SampleException; 
 }

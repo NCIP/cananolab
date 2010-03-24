@@ -28,9 +28,9 @@ public interface CharacterizationService {
 	public CharacterizationBean findCharacterizationById(String charId,
 			UserBean user) throws CharacterizationException, NoAccessException;
 
-	public List<String> deleteCharacterization(Characterization chara, UserBean user,
-			Boolean removeVisibility) throws CharacterizationException,
-			NoAccessException;
+	public List<String> deleteCharacterization(Characterization chara,
+			UserBean user, Boolean removeVisibility)
+			throws CharacterizationException, NoAccessException;
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
 			String sampleId, UserBean user) throws CharacterizationException,
@@ -49,9 +49,10 @@ public interface CharacterizationService {
 	public void saveExperimentConfig(ExperimentConfigBean experimentConfigBean,
 			UserBean user) throws ExperimentConfigException, NoAccessException;
 
-	public List<String> deleteExperimentConfig(ExperimentConfig experimentConfig,
-			UserBean user, Boolean removeVisibility)
-			throws ExperimentConfigException, NoAccessException;
+	public List<String> deleteExperimentConfig(
+			ExperimentConfig experimentConfig, UserBean user,
+			Boolean removeVisibility) throws ExperimentConfigException,
+			NoAccessException;
 
 	/**
 	 * Copy and save a characterization from one sample to other samples
@@ -68,4 +69,13 @@ public interface CharacterizationService {
 			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
 			boolean copyData, UserBean user) throws CharacterizationException,
 			NoAccessException;
+
+	public int getNumberOfPublicCharacterizations()
+			throws CharacterizationException;
+
+	public int getNumberOfPublicPhysicoChemicalCharacterizations()
+			throws CharacterizationException;
+
+	public int getNumberOfPublicInvitroCharacterizations()
+			throws CharacterizationException;
 }
