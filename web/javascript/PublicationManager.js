@@ -170,6 +170,7 @@ function populatePubMedInfo(publication) {
 					publication.domainFile.description, {
 						escapeHtml : false
 					});
+			populateAuthors(true);
 			disableAutoFields();
 			waitCursor();
 			// update pubmed record with information from database
