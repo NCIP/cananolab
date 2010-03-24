@@ -1,20 +1,22 @@
 function getPublicCounts() {
 	var sites = dwr.util.getValue("sites");
 	/* test whether selected sites contains 'all' */
-	var isAllSites=false;
-	for (var i=0; i<sites.length; i++) {
-		if (sites[i]=="all") {
+	var isAllSites = false;
+	for ( var i = 0; i < sites.length; i++) {
+		if (sites[i] == "all") {
 			isAllSites = true;
 			break;
 		}
 	}
-	var allSites=new Array();
+	var allSites = new Array();
 	if (isAllSites) {
-		var options=document.getElementById("sites").options;
-		for(var i=0; i<options.length; i++) {
-			allSites[i]=options[i].value;
+		var options = document.getElementById("sites").options;
+		for ( var i = 0; i < options.length; i++) {
+			if (options[i].value != "all") {
+				allSites[i] = options[i].value;
+			}
 		}
-		sites=allSites;
+		sites = allSites;
 	}
 	getProtocolCounts(sites);
 	getSampleCounts(sites);
@@ -23,7 +25,7 @@ function getPublicCounts() {
 
 function getProtocolCounts(sites) {
 	show("protocolLoaderImg");
-	hide("protocolCount");	
+	hide("protocolCount");
 	ProtocolManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
 			hide("protocolLoaderImg");
@@ -49,7 +51,7 @@ function getSampleCounts(sites) {
 					+ "</a>";
 			dwr.util.setValue("sampleCount", link, {
 				escapeHtml : false
-			});			
+			});
 			show("sampleCount");
 		} else {
 			show("sampleLoaderImg");
@@ -67,7 +69,7 @@ function getPublicationCounts(sites) {
 					+ "</a>";
 			dwr.util.setValue("publicationCount", link, {
 				escapeHtml : false
-			});	
+			});
 			show("publicationCount");
 		} else {
 			show("publicationLoaderImg");
