@@ -70,14 +70,20 @@ public class PublicDataCountServiceJob implements Job {
 		Integer charCount = 0;
 		Integer physicoCharCount = 0;
 		Integer invitroCharCount = 0;
+		Integer otherCharCount = 0;
 		for (String location : locations) {
 			sampleCount += getPublicSampleCount(location);
 			sourceCount += getPublicSampleSourceCount(location);
 			protocolCount += getPublicProtocolCount(location);
 			publicationCount += getPublicPublicationCount(location);
-			charCount += getPublicCharacterizationCount(location);
-			physicoCharCount += getPublicPhysicoChemicalCharacterizationCount(location);
-			invitroCharCount += getPublicInvitroCharacterizationCount(location);
+			charCount += getPublicCharacterizationCount("Characterization",
+					location);
+			physicoCharCount += getPublicCharacterizationCount(
+					"PhysicoChemicalCharacterization", location);
+			invitroCharCount += getPublicCharacterizationCount(
+					"InvitroCharacterization", location);
+			otherCharCount += getPublicCharacterizationCount(
+					"OtherCharacterization", location);
 		}
 		dataCounts = new PublicDataCountBean();
 		dataCounts.setNumOfPublicSamples(sampleCount);
@@ -88,6 +94,7 @@ public class PublicDataCountServiceJob implements Job {
 		dataCounts
 				.setNumOfPublicPhysicoChemicalCharacterizations(physicoCharCount);
 		dataCounts.setNumOfPublicInvitroCharacterizations(invitroCharCount);
+		dataCounts.setNumOfPublicOtherCharacterizations(otherCharCount);
 	}
 
 	private Integer getPublicSampleCount(String serviceUrl) {
@@ -186,76 +193,31 @@ public class PublicDataCountServiceJob implements Job {
 		return count;
 	}
 
-	private Integer getPublicCharacterizationCount(String serviceUrl) {
-		Integer count = 0;
-		CharacterizationService service = null;
-		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
-			try {
-				service = new CharacterizationServiceLocalImpl();
-				count += service.getNumberOfPublicCharacterizations();
-			} catch (Exception e) {
-				logger
-						.error("Error obtaining counts of public characterizations from local site.");
-			}
-		} else {
-			try {
-				service = new CharacterizationServiceRemoteImpl(serviceUrl);
-				count = service.getNumberOfPublicCharacterizations();
-			} catch (Exception e) {
-				logger
-						.error("Error obtaining counts of public characterizations from grid service at"
-								+ serviceUrl);
-			}
-		}
-		return count;
-	}
-
-	private Integer getPublicPhysicoChemicalCharacterizationCount(
-			String serviceUrl) {
+	private Integer getPublicCharacterizationCount(
+			String characterizationClassName, String serviceUrl) {
 		Integer count = 0;
 		CharacterizationService service = null;
 		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
 			try {
 				service = new CharacterizationServiceLocalImpl();
 				count += service
-						.getNumberOfPublicPhysicoChemicalCharacterizations();
+						.getNumberOfPublicCharacterizations(characterizationClassName);
 			} catch (Exception e) {
 				logger
-						.error("Error obtaining counts of public physico-chemical characterizations from local site.");
+						.error("Error obtaining counts of public characterizations of type "
+								+ characterizationClassName
+								+ " from local site.");
 			}
 		} else {
 			try {
 				service = new CharacterizationServiceRemoteImpl(serviceUrl);
 				count = service
-						.getNumberOfPublicPhysicoChemicalCharacterizations();
+						.getNumberOfPublicCharacterizations(characterizationClassName);
 			} catch (Exception e) {
 				logger
-						.error("Error obtaining counts of public  physico-chemical characterizations from grid service at"
-								+ serviceUrl);
-			}
-		}
-		return count;
-	}
-
-	private Integer getPublicInvitroCharacterizationCount(String serviceUrl) {
-		Integer count = 0;
-		CharacterizationService service = null;
-		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
-			try {
-				service = new CharacterizationServiceLocalImpl();
-				count += service.getNumberOfPublicInvitroCharacterizations();
-			} catch (Exception e) {
-				logger
-						.error("Error obtaining counts of public in vitro characterizations from local site.");
-			}
-		} else {
-			try {
-				service = new CharacterizationServiceRemoteImpl(serviceUrl);
-				count = service.getNumberOfPublicInvitroCharacterizations();
-			} catch (Exception e) {
-				logger
-						.error("Error obtaining counts of public in vitro characterizations from grid service at"
-								+ serviceUrl);
+						.error("Error obtaining counts of public characterizations of type "
+								+ characterizationClassName
+								+ " from grid service at" + serviceUrl);
 			}
 		}
 		return count;
