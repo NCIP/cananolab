@@ -10,7 +10,7 @@
 			<jsp:include page="/bodyLoginFields.jsp" />
 		</td>
 	</tr>
-	<!-- login ends -->	
+	<!-- login ends -->
 	<tr>
 		<td valign="top">
 			<table class="sidebarSectionNoBottom" width="100%">
@@ -29,10 +29,17 @@
 								${allPublicDataCounts.numOfPublicProtocols} protocols
 							</li>
 							<li>
-								${allPublicDataCounts.numOfPublicSamples} samples from ${allPublicDataCounts.numOfPublicSources} sources
+								${allPublicDataCounts.numOfPublicSamples} samples from
+								${allPublicDataCounts.numOfPublicSources} sources
 							</li>
 							<li>
-								${allPublicDataCounts.numOfPublicCharacterizations} characterizations: ${allPublicDataCounts.numOfPublicPhysicoChemicalCharacterizations} physico-chemical, ${allPublicDataCounts.numOfPublicInvitroCharacterizations} in vitro
+								${allPublicDataCounts.numOfPublicCharacterizations}
+								characterizations:
+								${allPublicDataCounts.numOfPublicPhysicoChemicalCharacterizations}
+								physico-chemical,
+								${allPublicDataCounts.numOfPublicInvitroCharacterizations} in
+								vitro, and
+								${allPublicDataCounts.numOfPublicOtherCharacterizations} other
 							</li>
 							<li>
 								${allPublicDataCounts.numOfPublicPublications} publications
@@ -40,7 +47,7 @@
 						</ul>
 					</td>
 				</tr>
-			</table>			
+			</table>
 			<table class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<td height="20" class="sidebarTitle">
@@ -78,8 +85,9 @@
 						<b>Primary caNanoLab features include:</b>
 						<ul>
 							<li>
-								<a href="sample.do?dispatch=setupNew&page=0">Secure submission</a> of protocols, samples
-								(nanomaterial formulation), and publications
+								<a href="sample.do?dispatch=setupNew&page=0">Secure
+									submission</a> of protocols, samples (nanomaterial formulation),
+								and publications
 							</li>
 							<li>
 								Basic search facilities for searching for
@@ -88,8 +96,8 @@
 								<a href="searchPublication.do?dispatch=setup&page=0">publications</a>
 							</li>
 							<li>
-								<a href="advancedSampleSearch.do?dispatch=setup&page=0">Advanced search</a> facilities for formulating range
-								and nested queries
+								<a href="advancedSampleSearch.do?dispatch=setup&page=0">Advanced
+									search</a> facilities for formulating range and nested queries
 							</li>
 							<li>
 								Tools for managing users via NCI Common Security Module (CSM)
@@ -105,60 +113,75 @@
 						</ul>
 					</td>
 				</tr>
-			</table>	
-				
+			</table>
+
 			<table class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<td height="20" class="sidebarTitle">
 						HOW TO
 					</td>
-				</tr>			
+				</tr>
 				<tr>
 					<td class="sidebarContent">
 						<b>Below are frequently asked questions on caNanoLab:</b>
 						<br />
 						<br />
-						<span class="boldAndUnderlined">Functional</span>						
+						<span class="boldAndUnderlined">Functional</span>
 						<ul>
 							<li>
-								<a href="searchProtocol.do?dispatch=setup&page=0">How do I find nanotechnology protocols?</a>
-							</li>													
-							<li>
-								<a href="searchPublication.do?dispatch=setup&page=0">How do I find Nanotechnology publications?</a>
-							</li>
-							
-							<li>
-								<a href="searchSample.do?dispatch=setup&page=0">How can I search for nanomaterials</a>
+								<a href="searchProtocol.do?dispatch=setup&page=0">How do I
+									find nanotechnology protocols?</a>
 							</li>
 							<li>
-								<a href="#">How can I search for nanomaterial characterizations?</a>
+								<a href="searchPublication.do?dispatch=setup&page=0">How do
+									I find Nanotechnology publications?</a>
+							</li>
+
+							<li>
+								<a href="searchSample.do?dispatch=setup&page=0">How can I
+									search for nanomaterials</a>
 							</li>
 							<li>
-								<a href="#">Where can I get definitions for nanotechnology concepts?</a>
-							</li>													
-						</ul>						
+								<a href="#">How can I search for nanomaterial
+									characterizations?</a>
+							</li>
+							<li>
+								<a href="#">Where can I get definitions for nanotechnology
+									concepts?</a>
+							</li>
+						</ul>
 						<span class="boldAndUnderlined">General</span>
 						<ul>
 
 							<li>
-								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-install">How do I install my own caNanoLab system?</a>
+								<a
+									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-install">How
+									do I install my own caNanoLab system?</a>
 							</li>
 							<li>
-								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-submit">How do I submit data into caNanoLab?</a>
+								<a
+									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-submit">How
+									do I submit data into caNanoLab?</a>
 							</li>
 							<li>
-								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-datatypes">What types of data can I submit into caNanoLab?</a>
+								<a
+									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-datatypes">What
+									types of data can I submit into caNanoLab?</a>
 							</li>
 							<li>
-								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-curator">Who can I contact to submit data into caNanoLab?</a>
+								<a
+									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-curator">Who
+									can I contact to submit data into caNanoLab?</a>
 							</li>
 							<li>
-								<a href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-site">What is a caNanoLab site?</a>
+								<a
+									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-site">What
+									is a caNanoLab site?</a>
 							</li>
-						</ul>						
+						</ul>
 					</td>
-				</tr>				
-			</table>			
+				</tr>
+			</table>
 			<table class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<td height="20" class="sidebarTitle">
@@ -167,12 +190,13 @@
 				</tr>
 				<tr>
 					<td class="sidebarContent">
-						<b>caNanoLab 1.5.1 is now available for </b><a href="http://ncicb.nci.nih.gov/download/downloadcalab.jsp">download</a><b>.
+						<b>caNanoLab 1.5.1 is now available for </b><a
+							href="http://ncicb.nci.nih.gov/download/downloadcalab.jsp">download</a><b>.
 							For information on caNanoLab release, please refer to the </b>
 						<a href="#">caNanoLab Release Notes</a>.
 					</td>
 				</tr>
-			</table>			
+			</table>
 		</td>
 		<td height="30">
 		</td>
