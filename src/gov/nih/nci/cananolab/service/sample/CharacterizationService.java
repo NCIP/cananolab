@@ -70,12 +70,6 @@ public interface CharacterizationService {
 			boolean copyData, UserBean user) throws CharacterizationException,
 			NoAccessException;
 
-	public int getNumberOfPublicCharacterizations()
-			throws CharacterizationException;
-
-	public int getNumberOfPublicPhysicoChemicalCharacterizations()
-			throws CharacterizationException;
-
-	public int getNumberOfPublicInvitroCharacterizations()
-			throws CharacterizationException;
+	public int getNumberOfPublicCharacterizations(
+			String characterizationClassName) throws CharacterizationException;
 }
