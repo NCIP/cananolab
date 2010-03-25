@@ -97,7 +97,7 @@
 					<tr>
 						<th align="left"">
 							<a name="${type}" id="${type}"><span
-								class="summaryViewHeading">${type}</span></a>
+								class="summaryViewHeading">${type}</span> </a>
 						</th>
 					</tr>
 					<tr>
@@ -124,39 +124,45 @@
 														${pubBean.displayName}&nbsp;
 													</td>
 												</tr>
-												<tr>
-													<td class="cellLabel" width="10%">
-														Research Category
-													</td>
-													<td colspan="2">
-														<c:out
-															value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
-															escapeXml="false" />
-														&nbsp;
-													</td>
-												</tr>
-												<tr>
-													<td class="cellLabel" width="10%">
-														Description
-													</td>
-													<td>
-														<c:out
-															value="${fn:replace(pubObj.description, cr, '<br>')}"
-															escapeXml="false" />
-														&nbsp;
-													</td>
-												</tr>
-												<tr>
-													<td class="cellLabel" width="10%">
-														Keywords
-													</td>
-													<td>
-														<c:out
-															value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
-															escapeXml="false" />
-														&nbsp;
-													</td>
-												</tr>
+												<c:if test="${!empty pubObj.researchArea}">
+													<tr>
+														<td class="cellLabel" width="10%">
+															Research Category
+														</td>
+														<td colspan="2">
+															<c:out
+																value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
+																escapeXml="false" />
+															&nbsp;
+														</td>
+													</tr>
+												</c:if>
+												<c:if test="${!empty pubObj.description}">
+													<tr>
+														<td class="cellLabel" width="10%">
+															Description
+														</td>
+														<td>
+															<c:out
+																value="${fn:replace(pubObj.description, cr, '<br>')}"
+																escapeXml="false" />
+															&nbsp;
+														</td>
+													</tr>
+												</c:if>
+												<c:if test="${!empty pubBean.keywordsStr}">
+													<tr>
+														<td class="cellLabel" width="10%">
+															Keywords
+														</td>
+														<td>
+															<c:out
+																value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
+																escapeXml="false" />
+															&nbsp;
+														</td>
+													</tr>
+												</c:if>
 												<tr>
 													<td class="cellLabel" width="10%">
 														Publication Status
