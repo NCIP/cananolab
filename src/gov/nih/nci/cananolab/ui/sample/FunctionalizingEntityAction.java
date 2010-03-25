@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -81,17 +82,17 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 						return false;
 					}
-					if (targetBean.getName() == null
-							|| targetBean.getName().trim().length() == 0) {
-
-						ActionMessages msgs = new ActionMessages();
-						ActionMessage msg = new ActionMessage(
-								"errors.required", "Target name");
-						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-						this.saveErrors(request, msgs);
-
-						return false;
-					}
+					// if (targetBean.getName() == null
+					// || targetBean.getName().trim().length() == 0) {
+					//
+					// ActionMessages msgs = new ActionMessages();
+					// ActionMessage msg = new ActionMessage(
+					// "errors.required", "Target name");
+					// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					// this.saveErrors(request, msgs);
+					//
+					// return false;
+					// }
 				}
 			}
 		}
@@ -162,9 +163,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
-				.get("functionalizingEntity");
-		request.getSession().removeAttribute("compositionForm");
+		FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean();
+		theForm.set("functionalizingEntity", entityBean);
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);

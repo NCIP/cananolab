@@ -162,8 +162,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
-				.get("assoc");
+		ChemicalAssociationBean assocBean = new ChemicalAssociationBean();
+		theForm.set("assoc", assocBean);
 		String sampleId = theForm.getString("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CompositionService service = new CompositionServiceLocalImpl();

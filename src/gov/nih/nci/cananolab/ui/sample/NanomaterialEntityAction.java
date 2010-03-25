@@ -193,9 +193,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
-				.get("nanomaterialEntity");
-		request.getSession().removeAttribute("compositionForm");
+		NanomaterialEntityBean entityBean = new NanomaterialEntityBean();
+		theForm.set("nanomaterialEntity", entityBean);
+		// request.getSession().removeAttribute("compositionForm");
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
