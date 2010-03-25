@@ -82,7 +82,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="assoc.theFile.uploadedFile" page="2" depends="validwhen">
+			<field property="assoc.theFile.uploadedFile" page="3" depends="validwhen">
 				<arg position="0" key="uploadedFile" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -97,7 +97,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="assoc.theFile.externalUrl" page="2" depends="validwhen">
+			<field property="assoc.theFile.externalUrl" page="3" depends="validwhen">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -108,11 +108,11 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="assoc.theFile.domainFile.type" page="2"
+			<field property="assoc.theFile.domainFile.type" page="3"
 				depends="required">
 				<arg position="0" key="file.type" bundle="sample" />
 			</field>
-			<field property="assoc.theFile.domainFile.title" page="2"
+			<field property="assoc.theFile.domainFile.title" page="3"
 				depends="required, mask">
 				<arg position="0" key="file.title" bundle="sample" />
 				<msg name="mask" key="file.title.invalid" />
