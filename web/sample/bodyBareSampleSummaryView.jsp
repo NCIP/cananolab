@@ -5,12 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <%@include file="bodyHideAdvancedSearchDetailView.jsp" %>
-<table width="100%" align="center" class="summaryViewNoGrid">
-	<tr>
-		<th valign="top" align="left" colspan="2" width="100%">
-			Sample Information
-		</th>
-	</tr>
+<table width="99%" align="center" class="summaryViewNoGrid" bgcolor="#F5F5f5">
 	<tr>
 		<td class="cellLabel" width="20%">
 			Sample Name

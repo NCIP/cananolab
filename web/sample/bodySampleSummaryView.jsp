@@ -10,17 +10,18 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
-<table width="100%" align="center" class="summaryViewWithGrid">
+
+<table class="summaryViewNoGrid" width="100%" align="center"
+	bgcolor="#dbdbdb">
+	<tr>
+		<th>
+			Sample Information
+		</th>
+	</tr>
 	<tr>
 		<td>
-			<table class="summaryViewNoGrid" width="99%" align="center"
-				bgcolor="#dbdbdb">
-				<tr>
-					<td>
-						<jsp:include page="bodyBareSampleSummaryView.jsp" />
-					</td>
-				</tr>
-			</table>
+			<jsp:include page="bodyBareSampleSummaryView.jsp" />
+			<br/>
 		</td>
 	</tr>
 </table>
