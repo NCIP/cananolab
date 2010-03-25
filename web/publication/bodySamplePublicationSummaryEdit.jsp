@@ -36,7 +36,8 @@
 				varStatus="ind">
 				<a
 					href="javascript:showSummary(${ind.count}, ${fn:length(publicationCategories)})"
-					title="${type}"><span>${type}</span> </a>
+					title="${type}"><span>${type}</span>
+				</a>
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
@@ -122,7 +123,7 @@
 									<table width="99%" align="center" class="summaryViewNoGrid"
 										bgcolor="#dbdbdb">
 										<tr>
-											<th valign="top" align="left" width="90%">&nbsp;
+											<th valign="top" align="left" height="6">
 											</th>
 										</tr>
 										<tr>
@@ -160,10 +161,15 @@
 																Research Category
 															</td>
 															<td colspan="2">
-																<c:out
-																	value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
-																	escapeXml="false" />
+																<c:choose>
+																	<c:when test="${pubObj.researchArea}">
+																		<c:out
+																			value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
+																			escapeXml="false" />
 																&nbsp;
+																</c:when>
+																	<c:otherwise>N/A</c:otherwise>
+																</c:choose>
 															</td>
 														</tr>
 														<tr>
@@ -171,10 +177,32 @@
 																Description
 															</td>
 															<td>
-																<c:out
-																	value="${fn:replace(pubObj.description, ';', '<br>')}"
-																	escapeXml="false" />
-																&nbsp;
+																<c:choose>
+																	<c:when test="${pubObj.description}">
+																		<c:out
+																			value="${fn:replace(pubObj.description, cr, '<br>')}"
+																			escapeXml="false" />
+																&nbsp;</c:when>
+																	<c:otherwise>N/A</c:otherwise>
+																</c:choose>
+
+															</td>
+															<td></td>
+														</tr>
+														<tr>
+															<td class="cellLabel" width="10%">
+																Keywords
+															</td>
+															<td>
+																<c:choose>
+																	<c:when test="${pubBean.keywordsStr}">
+																		<c:out
+																			value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
+																			escapeXml="false" />
+																&nbsp;</c:when>
+																	<c:otherwise>N/A</c:otherwise>
+																</c:choose>
+
 															</td>
 															<td></td>
 														</tr>
@@ -188,9 +216,16 @@
 															<td></td>
 														</tr>
 													</table>
-													<br>
+													<c:if
+														test="${pubBeanInd.count<fn:length(publicationSummaryView.category2Publications[type])}">
+														<br />
+													</c:if>
 												</c:forEach>
 											</td>
+										</tr>
+										<tr>
+											<th valign="top" align="left" height="6">
+											</th>
 										</tr>
 									</table>
 								</c:when>
