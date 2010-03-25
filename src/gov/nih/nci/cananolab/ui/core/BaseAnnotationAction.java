@@ -42,9 +42,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for all annotation actions
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
@@ -54,7 +54,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
 	 * of sample based on user's privilege. Finally, set the SampleBean in
 	 * request object.
-	 *
+	 * 
 	 * @param theForm
 	 * @param request
 	 * @param location
@@ -76,7 +76,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		SampleService service = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)
+				|| StringUtils.isEmpty(location)) {
 			service = new SampleServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
@@ -108,7 +109,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -122,7 +123,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		FileService fileService = null;
 		FileBean fileBean = null;
 		String serviceUrl = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)
+				|| StringUtils.isEmpty(location)) {
 			fileService = new FileServiceLocalImpl();
 		} else {
 			// CQL2HQL filters out subclasses, disabled the filter
@@ -240,7 +242,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					&& (fileBean.getExternalUrl() == null || fileBean
 							.getExternalUrl().trim().length() == 0)
 					&& (fileBean.getDomainFile() == null || fileBean
-							.getDomainFile().getName() == null)) {
+							.getDomainFile().getTitle() == null)) {
 				ActionMessage msg = new ActionMessage("errors.required",
 						"uploaded file");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -261,19 +263,17 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return noErrors;
 	}
 
-
-
 	/**
 	 * If user entered customized value by selecting [other] option previously,
 	 * then add the value in collection, so user can see it again.
-	 *
+	 * 
 	 * @param request
 	 * @param value
 	 * @param sessionName
 	 * @param attributeName
 	 */
-	public void setOtherValueOption(HttpServletRequest request,
-			String value, String sessionName) {
+	public void setOtherValueOption(HttpServletRequest request, String value,
+			String sessionName) {
 		if (!StringUtils.isEmpty(value)) {
 			Collection<String> otherTypes = (Collection<String>) request
 					.getSession().getAttribute(sessionName);
@@ -285,7 +285,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Returns a partial URL for downloading a file from local/remote host.
-	 *
+	 * 
 	 * @param request
 	 * @param serviceUrl
 	 * @param location
@@ -319,7 +319,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Save uploaded form file in session for later use, avoid upload again.
-	 *
+	 * 
 	 * @param request
 	 * @param theFile
 	 */
@@ -348,7 +348,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	/**
 	 * If FileBean specified using a uploaded file but the file is empty, we
 	 * know we should get the uploaded file from session.
-	 *
+	 * 
 	 * @param request
 	 * @param theFile
 	 */
