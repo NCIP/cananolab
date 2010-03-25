@@ -11,13 +11,15 @@
 			<th align="left">
 				<span class="summaryViewHeading">${type}</span>
 			</th>
-		</tr>	
+		</tr>
 		<tr>
 			<td>
 				<c:forEach var="charName"
-					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
-					<a name="${charName}"></a>					
-					<table width="99%" align="center" class="summaryViewNoGrid" bgcolor="#dbdbdb">
+					items="${characterizationSummaryView.type2CharacterizationNames[type]}"
+					varStatus="ind">
+					<a name="${charName}"></a>
+					<table width="99%" align="center" class="summaryViewNoGrid"
+						bgcolor="#dbdbdb">
 						<tr>
 							<th align="left">
 								${charName}
@@ -26,16 +28,28 @@
 						<tr>
 							<td>
 								<c:forEach var="charBean"
-									items="${characterizationSummaryView.charName2Characterizations[charName]}">
+									items="${characterizationSummaryView.charName2Characterizations[charName]}"
+									varStatus="charBeanInd">
 									<%@ include file="bodySingleCharacterizationSummaryView.jsp"%>
-									<br />
+									<c:if
+										test="${charBeanInd.count<fn:length(characterizationSummaryView.charName2Characterizations[charName])}">
+										<br />
+									</c:if>
 								</c:forEach>
 							</td>
 						</tr>
+						<tr>
+							<th valign="top" align="left" height="6">
+							</th>
+						</tr>
 					</table>
-					<br/>				
+					<br/>					
 				</c:forEach>
 			</td>
+		</tr>
+		<tr>
+			<th valign="top" align="left" height="6">
+			</th>
 		</tr>
 	</table>
 	<div id="summarySeparator${ind.count}">

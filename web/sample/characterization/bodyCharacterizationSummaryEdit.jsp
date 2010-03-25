@@ -158,15 +158,22 @@
 											<tr>
 												<td>
 													<c:forEach var="charBean"
-														items="${characterizationSummaryView.charName2Characterizations[charName]}">
+														items="${characterizationSummaryView.charName2Characterizations[charName]}" varStatus="charBeanInd">
 														<%@ include
 															file="shared/bodySingleCharacterizationSummaryEdit.jsp"%>
-														<br />
+														<c:if
+															test="${charBeanInd.count<fn:length(characterizationSummaryView.charName2Characterizations[charName])}">
+															<br />
+														</c:if>
 													</c:forEach>
 												</td>
 											</tr>
+											<tr>
+												<th valign="top" align="left" height="6">
+												</th>
+											</tr>
 										</table>
-										<br/>
+										<br/>										
 									</c:forEach>
 								</c:when>
 								<c:otherwise>
