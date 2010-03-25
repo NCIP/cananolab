@@ -14,14 +14,16 @@
 <table class="summaryViewNoGrid" width="100%" align="center"
 	bgcolor="#dbdbdb">
 	<tr>
-		<th>
-			Sample Information
+		<th valign="top" align="left" height="6">
 		</th>
 	</tr>
 	<tr>
 		<td>
-			<jsp:include page="bodyBareSampleSummaryView.jsp" />
-			<br/>
+			<jsp:include page="bodyBareSampleSummaryView.jsp" />			
 		</td>
+	</tr>
+	<tr>
+		<th valign="top" align="left" height="6">
+		</th>
 	</tr>
 </table>
