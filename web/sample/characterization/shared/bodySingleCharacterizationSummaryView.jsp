@@ -3,19 +3,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@include file="/sample/bodyHideAdvancedSearchDetailView.jsp" %>
+<%@include file="/sample/bodyHideAdvancedSearchDetailView.jsp"%>
 <c:set var="charObj" value="${charBean.domainChar}" />
 <c:set var="charName" value="${charBean.characterizationName}" />
 <c:set var="charType" value="${charBean.characterizationType}" />
 
-<table class="summaryViewNoGrid" width="99%" align="center" bgcolor="#F5F5f5">
-<%--
-	<tr>
-		<th align="left" colspan="2" width="100%">
-			${charName}
-		</th>
-	</tr>
---%>
+<table class="summaryViewNoGrid" width="99%" align="center"
+	bgcolor="#F5F5f5">
 	<c:choose>
 		<c:when test="${!empty charObj.assayType}">
 			<tr>
@@ -139,5 +133,5 @@
 				${charBean.conclusion}
 			</td>
 		</tr>
-	</c:if>
+	</c:if>	
 </table>
