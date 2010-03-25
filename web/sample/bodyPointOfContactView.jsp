@@ -12,21 +12,20 @@
 	N/A
 	</c:when>
 	<c:otherwise>
-		<table class="summaryViewNoGrid" align="left">
+		<table align="left" cellpadding="0" cellspacing="0">
 			<tr>
-				<th>
+				<td class="cellLabel">
 					Primary Contact?
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Contact Person
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Organization
-				</th>
-				<th>
+				</td>
+				<td class="cellLabel">
 					Role
-				</th>
-				<th></th>
+				</td>
 			</tr>
 			<c:if
 				test="${! empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
@@ -60,13 +59,7 @@
 						</td>
 						<td>
 							${poc.domain.role}
-						</td>
-						<c:if test="${edit eq 'true'}">
-							<td align="right">
-								<a
-									href="javascript:setThePointOfContact(${poc.domain.id}, false);">Edit</a>&nbsp;
-							</td>
-						</c:if>
+						</td>					
 					</tr>
 				</c:forEach>
 			</c:if>
