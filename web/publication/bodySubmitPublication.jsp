@@ -420,7 +420,6 @@
 		<c:set var="deleteOnclick"
 		value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
-		<html:hidden property="location" value="${param.location}" />
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
