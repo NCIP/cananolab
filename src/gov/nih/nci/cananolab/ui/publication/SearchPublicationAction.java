@@ -87,7 +87,8 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < publicationBeans.size()) {
 				String location = publicationBeans.get(i).getLocation();
-				if (location.equals(Constants.LOCAL_SITE)) {
+				if (location.equals(Constants.LOCAL_SITE)
+						|| StringUtils.isEmpty(location)) {
 					service = new PublicationServiceLocalImpl();
 				} else {
 					String serviceUrl = InitSetup.getInstance()
@@ -125,8 +126,8 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		String[] searchLocations = new String[0];
 
 		title = (String) theForm.get("title");
-		//strip wildcards from either end of title if entered
-		title=StringUtils.stripWildcards(title);
+		// strip wildcards from either end of title if entered
+		title = StringUtils.stripWildcards(title);
 		String titleOperand = (String) theForm.get("titleOperand");
 		if (titleOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(title)) {
@@ -147,9 +148,9 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			authors = new String[authorList.size()];
 			authorList.toArray(authors);
 		}
-		
+
 		sampleName = (String) theForm.get("sampleName");
-	
+
 		researchAreas = (String[]) theForm.get("researchArea");
 		// publicationOrReport = (String[]) theForm
 		// .get("publicationOrReport");

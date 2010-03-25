@@ -35,7 +35,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Edit request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -68,7 +68,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary View request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -103,7 +103,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Print request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -138,7 +138,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Export request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -179,8 +179,8 @@ public class CompositionAction extends BaseAnnotationAction {
 					location);
 		}
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
-		CompositionExporter.exportSummary(compBean, sb.toString(),
-				response.getOutputStream());
+		CompositionExporter.exportSummary(compBean, sb.toString(), response
+				.getOutputStream());
 
 		return null;
 	}
@@ -188,7 +188,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView() and summaryPrint(). Prepare
 	 * CompositionBean for displaying based on SampleId and location.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -213,7 +213,8 @@ public class CompositionAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		CompositionService compService = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)
+				|| StringUtils.isEmpty(location)) {
 			compService = new CompositionServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
@@ -248,7 +249,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 *
+	 * 
 	 * @param request
 	 * @param compBean
 	 */

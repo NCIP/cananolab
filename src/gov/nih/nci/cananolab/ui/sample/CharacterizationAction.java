@@ -371,7 +371,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		CharacterizationService service = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)
+				|| StringUtils.isEmpty(location)) {
 			service = new CharacterizationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
