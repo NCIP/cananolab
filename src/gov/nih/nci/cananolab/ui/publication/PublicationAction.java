@@ -98,7 +98,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
 
-		ActionMessage msg = new ActionMessage("message.submitPublication.file",
+		ActionMessage msg = new ActionMessage("message.submitPublication",
 				publicationBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
