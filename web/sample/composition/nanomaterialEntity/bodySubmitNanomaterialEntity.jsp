@@ -165,7 +165,7 @@
 	<br>
 	<jsp:include page="/sample/bodyAnnotationCopy.jsp" />
 	<br>
-
+	<html:hidden property="sampleId" value="${param.sampleId}" />
 	<c:set var="updateId"
 		value="${compositionForm.map.nanomaterialEntity.domainEntity.id}" />
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>

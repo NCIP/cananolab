@@ -25,7 +25,7 @@
 	<c:set var="actionName" value="compositionFile" />
 	<%@include file="../bodySubmitFile.jsp"%>
 	<br>
-
+    <html:hidden property="sampleId" value="${param.sampleId}" />
 	<c:set var="updateId" value="${compositionForm.map.comp.theFile.domainFile.id}"/>
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
 	<c:set var="deleteOnclick" value="deleteData('composition file', compositionForm, 'compositionFile', 'delete')"/>

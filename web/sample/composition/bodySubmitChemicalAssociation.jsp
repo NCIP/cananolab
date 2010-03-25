@@ -197,7 +197,7 @@
 			</tr>
 		</table> </a>
 	<br>
-
+    <html:hidden property="sampleId" value="${param.sampleId}" />   
 	<c:set var="updateId" value="${compositionForm.map.assoc.domainAssociation.id}"/>
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
 	<c:set var="deleteOnclick" value="deleteData('chemical association', compositionForm, 'chemicalAssociation', 'delete')"/>

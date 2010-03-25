@@ -276,6 +276,7 @@
 	<br>
 	<jsp:include page="/sample/bodyAnnotationCopy.jsp" />
 	<br>
+	<html:hidden property="sampleId" value="${param.sampleId}" />
 	<c:set var="updateId"
 		value="${compositionForm.map.functionalizingEntity.domainEntity.id}" />
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
