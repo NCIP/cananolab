@@ -151,11 +151,17 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService service = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
-		String sampleId = (String) theForm.get("sampleId");
+		SampleBean sampleBean = this.setupSample(theForm, request,
+				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		service.removePublicationFromSample(sampleId,
+		service.removePublicationFromSample(sampleBean.getDomain().getName(),
 				(Publication) publicationBean.getDomainFile(), user);
-
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage(
+				"message.removePublicationFromSample", publicationBean
+						.getDomainFile().getTitle());
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
 		return summaryEdit(mapping, form, request, response);
 	}
 
@@ -387,7 +393,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 
 		PublicationService publicationService = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)
+				|| StringUtils.isEmpty(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
@@ -420,7 +427,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter(Constants.LOCATION);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
-		if (location.equals(Constants.LOCAL_SITE)) {
+		if (location.equals(Constants.LOCAL_SITE)
+				|| StringUtils.isEmpty(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		}
 		// else {
@@ -522,7 +530,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter(Constants.LOCATION);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
-		if (location.equals(Constants.LOCAL_SITE)) {
+		if (location.equals(Constants.LOCAL_SITE)
+				|| StringUtils.isEmpty(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		}
 		// else {
