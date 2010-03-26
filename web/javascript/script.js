@@ -29,7 +29,7 @@ function gotoPage(pageURL) {
 	window.location.href = pageURL;
 }
 function openWindow(pageURL, name, width, height) {
-	window.open(pageURL, name, "alwaysRaised,dependent,status,scrollbars,resizable,width=" + width + ",height=" + height);
+	window.open(pageURL, name, "alwaysRaised,dependent,toolbar,status,scrollbars,resizable,width=" + width + ",height=" + height);
 }
 function openHelpWindow(pageURL) {
 	window.open(pageURL, "Help", "alwaysRaised,dependent,status,scrollbars,resizable,width=800,height=500");
