@@ -21,30 +21,28 @@
 				</tr>
 				<tr>
 					<td class="sidebarContent">
-						<b>caNanoLab public data counts across sites:</b>
-						<br />
-						<em>(update every 4 hours)</em>
+						<b>caNanoLab public data counts across sites:</b>						
 						<ul>
 							<li>
-								${allPublicDataCounts.numOfPublicProtocols} protocols
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicProtocols}</span> protocols
 							</li>
 							<li>
-								${allPublicDataCounts.numOfPublicSamples} samples from
-								${allPublicDataCounts.numOfPublicSources} sources
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicSamples}</span> samples from
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicSources}</span> sources
 							</li>
 							<li>
-								${allPublicDataCounts.numOfPublicCharacterizations}
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicCharacterizations}</span>
 								characterizations:
-								${allPublicDataCounts.numOfPublicPhysicoChemicalCharacterizations}
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicPhysicoChemicalCharacterizations}</span>
 								physico-chemical,
-								${allPublicDataCounts.numOfPublicInvitroCharacterizations} in
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicInvitroCharacterizations}</span> in
 								vitro,
-								${allPublicDataCounts.numOfPublicInvivoCharacterizations} in
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicInvivoCharacterizations}</span> in
 								vivo, and
-								${allPublicDataCounts.numOfPublicOtherCharacterizations} other
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicOtherCharacterizations}</span> other
 							</li>
 							<li>
-								${allPublicDataCounts.numOfPublicPublications} publications
+								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicPublications}</span> publications
 							</li>
 						</ul>
 					</td>
@@ -144,7 +142,7 @@
 									search for nanomaterials</a>
 							</li>
 							<li>
-								<a href="#">How can I search for nanomaterial
+								<a href="searchSample.do?dispatch=setup&page=0">How can I search for nanomaterial
 									characterizations?</a>
 							</li>
 							<li>
@@ -157,27 +155,27 @@
 
 							<li>
 								<a
-									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-install">How
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-install', 'caNanoLabFAQ', '800', '800')">How
 									do I install my own caNanoLab system?</a>
 							</li>
 							<li>
 								<a
-									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-submit">How
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How
 									do I submit data into caNanoLab?</a>
 							</li>
 							<li>
 								<a
-									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-datatypes">What
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-datatypes, 'caNanoLabFAQ', '800', '800')">What
 									types of data can I submit into caNanoLab?</a>
 							</li>
 							<li>
 								<a
-									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-curator">Who
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-curator, 'caNanoLabFAQ', '800', '800')">Who
 									can I contact to submit data into caNanoLab?</a>
 							</li>
 							<li>
 								<a
-									href="https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-site">What
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-site, 'caNanoLabFAQ', '800', '800')">What
 									is a caNanoLab site?</a>
 							</li>
 						</ul>
