@@ -3,9 +3,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<table class="editTableWithGrid" width="99%" align="left">
+<table class="editTableWithGrid" width="95%" align="center">
 	<tr>
-		<th colspan="3" height="2"></th>
+		<th colspan="3" height="5"></th>
 	</tr>
 	<c:forEach var="composingElement" items="${entity.composingElements}">
 		<tr>
