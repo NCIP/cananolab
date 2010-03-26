@@ -11,24 +11,25 @@ import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private String molecularFormula;
@@ -64,6 +65,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private boolean withTargetingFunction = false;
 
 	private FunctionBean theFunction = new FunctionBean();
+
+	private String pubChemLink;
 
 	public FunctionalizingEntityBean() {
 	}
@@ -131,7 +134,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	}
 
 	public void resetDomainCopy(FunctionalizingEntity copy) {
-		//append original ID to assist with chemical association copy
+		// append original ID to assist with chemical association copy
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
 				+ copy.getId());
 		// clear Id
@@ -270,12 +273,13 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			domainEntity.setActivationMethod(null);
 		}
 
-		//updated created_date and created_by if id is null
+		// updated created_date and created_by if id is null
 		if (domainEntity.getId() == null) {
 			domainEntity.setCreatedBy(createdBy);
 			domainEntity.setCreatedDate(Calendar.getInstance().getTime());
 		}
-		//updated created_by if created_by contains copy, but keep the original created_date
+		// updated created_by if created_by contains copy, but keep the original
+		// created_date
 		if (domainEntity.getId() != null
 				|| !StringUtils.isEmpty(domainEntity.getCreatedBy())
 				&& domainEntity.getCreatedBy().contains(
@@ -445,5 +449,14 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public void setPubChemId(String pubChemId) {
 		this.pubChemId = pubChemId;
+	}
+
+	public String getPubChemLink() {
+		if (!StringUtils.isEmpty(pubChemId)
+				&& !StringUtils.isEmpty(pubChemDataSourceName)) {
+			pubChemLink = CompositionServiceHelper.getPubChemURL(
+					pubChemDataSourceName, new Long(pubChemId));
+		}
+		return pubChemLink;
 	}
 }

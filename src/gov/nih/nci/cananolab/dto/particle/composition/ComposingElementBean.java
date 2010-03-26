@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -9,15 +10,14 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 /**
  * Represents the view bean for ComposingElement domain object
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ComposingElementBean {
 	private ComposingElement domain = new ComposingElement();
@@ -25,6 +25,8 @@ public class ComposingElementBean {
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 
 	private FunctionBean theFunction = new FunctionBean();
+
+	private String pubChemLink;
 
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.domain = composingElement;
@@ -135,12 +137,13 @@ public class ComposingElementBean {
 		if (domain.getId() != null && domain.getId() == 0) {
 			domain.setId(null);
 		}
-		//updated created_date and created_by if id is null
+		// updated created_date and created_by if id is null
 		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(Calendar.getInstance().getTime());
 		}
-		//updated created_by if created_by contains copy, but keep the original created_date
+		// updated created_by if created_by contains copy, but keep the original
+		// created_date
 		if (domain.getId() != null
 				|| !StringUtils.isEmpty(domain.getCreatedBy())
 				&& domain.getCreatedBy().contains(
@@ -160,7 +163,8 @@ public class ComposingElementBean {
 			domain.setInherentFunctionCollection(new HashSet<Function>());
 		}
 		int i = 0;
-		//inherent functions are saved separated so need to setupDomainFunction here
+		// inherent functions are saved separated so need to setupDomainFunction
+		// here
 		for (FunctionBean functionBean : inherentFunctions) {
 			functionBean.setupDomainFunction(createdBy, i);
 			domain.getInherentFunctionCollection().add(
@@ -191,5 +195,14 @@ public class ComposingElementBean {
 			}
 		}
 		return eq;
+	}
+
+	public String getPubChemLink() {
+		if ((domain.getPubChemId() != null)
+				&& !StringUtils.isEmpty(domain.getPubChemDataSourceName())) {
+			pubChemLink = CompositionServiceHelper.getPubChemURL(domain
+					.getPubChemDataSourceName(), domain.getPubChemId());
+		}
+		return pubChemLink;
 	}
 }
