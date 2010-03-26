@@ -5,8 +5,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
-<c:forEach var="composingElement" items="${entity.composingElements}">
-	<table class="summaryViewNoGrid" width="99%" align="left">
+<table class="summaryViewNoGrid" width="99%" align="left">
+	<c:forEach var="composingElement" items="${entity.composingElements}">
 		<tr>
 			<td class="cellLabel" colspan="2">
 				${composingElement.displayName}
@@ -89,10 +89,10 @@
 					<td>
 						<c:forEach var="function"
 							items="${composingElement.functionDisplayNames}" varStatus="ind">
-				${function}
-				<c:if
+							${function}
+							<c:if
 								test="${ind.count !=fn:length(composingElement.functionDisplayNames)}">
-;&nbsp;</c:if>
+							;&nbsp;</c:if>
 						</c:forEach>
 					</td>
 				</tr>
@@ -108,100 +108,8 @@
 				</c:if>
 			</c:otherwise>
 		</c:choose>
-	</table>
-	<br><br/>
-</c:forEach>
-
-<%-- use this format in export instead
-<table class="editTableWithGrid" width="95%" align="center">
-	<tr>
-		<th>
-			Type
-		</th>
-		<th>
-			Name
-		</th>
-		<th>
-			Amount
-		</th>
-		<th>
-			Molecular Formula
-		</th>
-		<th>
-			Function
-		</th>
-		<th>
-			Description
-		</th>
-		<th></th>
-	</tr>
-	<logic:iterate name="nanomaterialEntity" property="composingElements"
-		id="composingElement" indexId="ind">
 		<tr>
-			<td>
-				${composingElement.domain.type}
-			</td>
-			<td>
-				${composingElement.domain.name}
-			</td>
-			<td>
-				${composingElement.domain.value}
-				${composingElement.domain.valueUnit}
-			</td>
-			<td>
-				<c:choose>
-					<c:when
-						test="${!empty composingElement.molecularFormulaDisplayName}">
-						${composingElement.molecularFormulaDisplayName}
-				</c:when>
-					<c:otherwise>
-						<c:if test="${param.dispatch ne 'summaryView'}">
-								N/A
-						</c:if>
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td>
-				<c:choose>
-					<c:when test="${!empty composingElement.functionDisplayNames}">
-						<c:forEach var="function"
-							items="${composingElement.functionDisplayNames}">
-				${function}
-				<br>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<c:if test="${param.dispatch ne 'summaryView'}">
-							N/A
-					</c:if>
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td>
-				<c:choose>
-					<c:when test="${!empty composingElement.domain.description}">
-										${composingElement.domain.description}
-								</c:when>
-					<c:otherwise>
-						<c:if test="${param.dispatch ne 'summaryView'}">
-											N/A
-									</c:if>
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<c:choose>
-				<c:when test="${edit eq 'true'}">
-					<td align="right" width="3%">
-						<a
-							href="javascript:setTheComposingElement(${composingElement.domain.id});">Edit</a>&nbsp;
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td></td>
-				</c:otherwise>
-			</c:choose>
-		</tr>
-	</logic:iterate>
+			<td class="cellLabel" colspan="2"></td>			
+		</tr>		
+	</c:forEach>
 </table>
-<br>
---%>
