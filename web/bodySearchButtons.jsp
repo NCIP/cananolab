@@ -2,8 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table width="100%" border="0" align="center" cellpadding="0"
-	cellspacing="0">
+<table width="100%" class="invisibleTable">
 	<tr>
 		<td align="center">
 			<span class="formMessage"> <em>Searching without any
@@ -14,7 +13,7 @@
 		<td>
 			<input type="reset" value="Reset"
 				onclick="${resetOnclick}" />
-			&nbsp;&nbsp;
+			&nbsp;
 			<c:choose>
 				<c:when test="${!empty searchOnclick }">
 					<input type="button" value="Search" onclick="${searchOnclick}">

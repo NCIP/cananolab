@@ -12,7 +12,7 @@
 	N/A
 	</c:when>
 	<c:otherwise>
-		<table align="left" cellpadding="0" cellspacing="0">
+		<table align="left" class="invisibleTable">
 			<tr>
 				<td class="cellLabel">
 					Primary Contact?

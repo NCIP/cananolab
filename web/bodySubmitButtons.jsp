@@ -3,13 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<table width="100%" border="0" align="center" cellpadding="0"
-	cellspacing="0">
+<table width="100%" class="invisibleTable">
 	<tr>
 		<td width="600">
 			<input type="reset" value="Reset"
 				onclick="${resetOnclick}" />
-			&nbsp;&nbsp;
+			&nbsp;
 			<c:set var="submitButtonName" value="Submit" />
 			<c:if test="${!empty updateId}">
 				<c:set var="submitButtonName" value="Update" />

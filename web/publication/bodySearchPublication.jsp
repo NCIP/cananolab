@@ -67,7 +67,8 @@
 				PubMed ID
 			</td>
 			<td colspan="2">
-				<html:text styleId="pubMedId" property="pubMedId" size="30" /> <em>exact match</em>
+				<html:text styleId="pubMedId" property="pubMedId" size="30" />
+				<em>exact match</em>
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +76,8 @@
 				Digital Object ID
 			</td>
 			<td colspan="2">
-				<html:text property="digitalObjectId" size="30" /> <em>exact match</em>
+				<html:text property="digitalObjectId" size="30" />
+				<em>exact match</em>
 			</td>
 		</tr>
 		<tr>
@@ -83,13 +85,19 @@
 				Publication Title
 			</td>
 			<td>
-				<html:select property="titleOperand" styleId="titleOperand">
-					<html:options collection="stringOperands" property="value"
-						labelProperty="label" />
-				</html:select>
-			</td>
-			<td>
-				<html:text property="title" size="80" />
+				<table class="invisibleTable">
+					<tr>
+						<td>
+							<html:select property="titleOperand" styleId="titleOperand">
+								<html:options collection="stringOperands" property="value"
+									labelProperty="label" />
+							</html:select>
+						</td>
+						<td align="left">
+							<html:text property="title" size="80" />
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
@@ -97,8 +105,10 @@
 				Authors
 			</td>
 			<td colspan="2">
-				<html:textarea property="authorsStr" cols="77" rows="3" styleId="authorsStr"/>
-				<br/><em>enter one author per line</em>
+				<html:textarea property="authorsStr" cols="77" rows="3"
+					styleId="authorsStr" />
+				<br />
+				<em>enter one author per line</em>
 			</td>
 		</tr>
 		<tr>
@@ -106,19 +116,22 @@
 				Keywords
 			</td>
 			<td colspan="2">
-				<html:textarea property="keywordsStr" cols="77" rows="3" styleId="keywordsStr" />
-				<br/><em>enter one keyword per line</em>
+				<html:textarea property="keywordsStr" cols="77" rows="3"
+					styleId="keywordsStr" />
+				<br />
+				<em>enter one keyword per line</em>
 			</td>
 		</tr>
 	</table>
 	<br>
 	<table width="100%" align="center" class="submissionView">
-	    <tr>
+		<tr>
 			<td class="cellLabel">
 				Sample Name
 			</td>
 			<td valign="top" colspan="4">
-				<html:text property="sampleName" size="80" /> <em>exact match</em>
+				<html:text property="sampleName" size="80" />
+				<em>exact match</em>
 			</td>
 		</tr>
 		<tr>
@@ -156,9 +169,9 @@
 		</tr>
 	</table>
 	<br>
-	<c:set var="dataType" value="publication"/>
-	<c:set var="resetOnclick" value="this.form.reset();"/>
-	<c:set var="searchOnclick" value="searchPublication();"/>
+	<c:set var="dataType" value="publication" />
+	<c:set var="resetOnclick" value="this.form.reset();" />
+	<c:set var="searchOnclick" value="searchPublication();" />
 	<%@include file="../bodySearchButtons.jsp"%>
-	</html:form>
+</html:form>
 <!--_____ main content ends _____-->

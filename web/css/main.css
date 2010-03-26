@@ -827,3 +827,16 @@ ul,ol {
 	font-size: 12px;
 	line-height: 14px;
 }
+
+.invisibleTable {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: 0px;
+	padding: 0px;
+}
+
+.invisibleTable td{
+	border-collapse: collapse;
+	border-spacing: 0px;
+	padding: 0 15 0 0;
+}
