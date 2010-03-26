@@ -25,7 +25,7 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="120">
+			<td class="cellLabel" width="110">
 				Search Site
 			</td>
 			<td>
@@ -46,7 +46,7 @@
 	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="120">
+			<td class="cellLabel" width="110">
 				Keywords
 			</td>
 			<td>
@@ -63,9 +63,9 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td>
-				<table cellspacing="0" cellpadding="0">
+				<table class="invisibleTable">
 					<tr>
-						<td class="cellLabel" width="120">
+						<td class="cellLabel" width="100">
 							Sample Name
 						</td>
 						<td>
@@ -75,7 +75,7 @@
 							</html:select>
 						</td>
 						<td>
-							<html:text property="sampleName" size="60" />							
+							<html:text property="sampleName" size="60" />
 						</td>
 					</tr>
 				</table>
@@ -83,12 +83,10 @@
 		</tr>
 		<tr>
 			<td>
-				<table cellspacing="0" cellpadding="0">
+				<table class="invisibleTable">
 					<tr>
-						<td class="cellLabel" width="120">
-							Sample
-							<br>
-							Point of Contact
+						<td class="cellLabel" width="100">
+							Sample Point of Contact
 						</td>
 						<td>
 							<html:select property="pocOperand" styleId="pocOperand">
@@ -107,11 +105,9 @@
 		</tr>
 		<tr>
 			<td>
-				<table cellspacing="0" cellpadding="0">
+				<table class="invisibleTable">
 					<tr>
-						<td class="cellLabel" width="120">
-							Composition
-							<br>
+						<td class="cellLabel" width="100">
 							Nanomaterial Entity
 						</td>
 						<td>
@@ -121,8 +117,6 @@
 							</html:select>
 						</td>
 						<td class="cellLabel">
-							Composition
-							<br>
 							Functionalizing Entity
 						</td>
 						<td>
@@ -146,12 +140,10 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<table cellspacing="0" cellpadding="0">
+				<table class="invisibleTable">
 					<tr>
-						<td class="cellLabel" width="120">
-							Characterization
-							<br>
-							Type
+						<td class="cellLabel" width="100">
+							Characterization Type
 							<html:hidden styleId="characterizationType"
 								property="characterizationType" />
 						</td>
@@ -181,7 +173,8 @@
 	</table>
 	<br>
 	<c:set var="dataType" value="sample" />
-	<c:set var="resetOnclick" value="javascript: location.href = 'searchSample.do?dispatch=setup&page=0'" />
+	<c:set var="resetOnclick"
+		value="javascript: location.href = 'searchSample.do?dispatch=setup&page=0'" />
 	<c:set var="hiddenDispatch" value="search" />
 	<c:set var="hiddenPage" value="1" />
 	<%@include file="../bodySearchButtons.jsp"%>
