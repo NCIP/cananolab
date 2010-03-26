@@ -25,8 +25,8 @@
 			<td>
 				<table>
 					<tr>
-						<td class="cellLabel">
-							Copy from an Existing Sample *
+						<td class="cellLabel" width="200">
+							Existing Sample *
 						</td>
 						<td width="100">
 							<html:text property="sampleBean.cloningSampleName" size="50" styleId="cloningSampleName"/>
@@ -47,7 +47,7 @@
 				</table>
 			</td>
 			<td width="40%">
-				<table>
+				<table class="invisibleTable">
 					<tr>
 						<td valign="top"><img src="images/ajax-loader.gif" border="0" class="counts"
 								id="loaderImg" style="display: none">							
