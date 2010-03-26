@@ -36,45 +36,51 @@
 	onsubmit="return validateSavingTheData('newAuthor', 'Authors');">
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="100">
 				Publication Type *
 			</td>
 			<td>
-				<div id="categoryPrompt">
-					<html:select property="publication.domainFile.category"
-						onchange="javascript:callPrompt('Publication Type', 'category', 'categoryPrompt');
+				<table class="invisibleTable">
+					<tr>
+						<td>
+							<div id="categoryPrompt">
+								<html:select property="publication.domainFile.category"
+									onchange="javascript:callPrompt('Publication Type', 'category', 'categoryPrompt');
 														clearPublication();updateSubmitFormBasedOnCategory();enableAutoFields();"
-						styleId="category">
-						<option value=""></option>
-						<html:options name="publicationCategories" />
-						<option value="other">
-							[other]
-						</option>
-					</html:select>
-				</div>
-			</td>
-			<td class="cellLabel">
-				Publication Status*
-			</td>
-			<td colspan="3">
-				<div id="statusPrompt">
-					<html:select property="publication.domainFile.status"
-						onchange="javascript:callPrompt('Publication status', 'status', 'statusPrompt');"
-						styleId="status">
-						<option value=""></option>
-						<html:options name="publicationStatuses" />
-						<option value="other">
-							[other]
-						</option>
-					</html:select>
-				</div>
+									styleId="category">
+									<option value=""></option>
+									<html:options name="publicationCategories" />
+									<option value="other">
+										[other]
+									</option>
+								</html:select>
+							</div>
+						</td>
+						<td class="cellLabel">
+							Publication Status*
+						</td>
+						<td colspan="3">
+							<div id="statusPrompt">
+								<html:select property="publication.domainFile.status"
+									onchange="javascript:callPrompt('Publication status', 'status', 'statusPrompt');"
+									styleId="status">
+									<option value=""></option>
+									<html:options name="publicationStatuses" />
+									<option value="other">
+										[other]
+									</option>
+								</html:select>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr id="pubMedRow" style="display: none">
 			<td class="cellLabel">
 				PubMed ID
 			</td>
-			<td colspan="5">
+			<td>
 				<a
 					href="http://www.ncbi.nlm.nih.gov/pubmed/${publicationForm.map.publication.domainFile.pubMedId}"
 					target="_pubmed"> Click to look up PubMed Identifier</a>
@@ -91,7 +97,7 @@
 			<td class="cellLabel">
 				Digital Object ID
 			</td>
-			<td colspan="5">
+			<td>
 				<html:text property="publication.domainFile.digitalObjectId"
 					styleId="domainFile.digitalObjectId" size="30" />
 				&nbsp;
@@ -101,7 +107,7 @@
 			<td class="cellLabel">
 				Title*
 			</td>
-			<td colspan="5">
+			<td>
 				<html:text property="publication.domainFile.title"
 					styleId="domainFile.title" size="120" />
 			</td>
@@ -110,7 +116,7 @@
 			<td class="cellLabel">
 				Journal&nbsp;
 			</td>
-			<td colspan="5">
+			<td>
 				<html:text property="publication.domainFile.journalName"
 					styleId="domainFile.journalName" size="120" />
 				&nbsp;
@@ -120,7 +126,7 @@
 			<td class="cellLabel">
 				Year of Publication
 			</td>
-			<td colspan="5">
+			<td>
 				<html:text property="publication.domainFile.year" size="5"
 					styleId="domainFile.year" onkeydown="return filterInteger(event)" />
 			</td>
@@ -130,32 +136,38 @@
 				Volume
 			</td>
 			<td>
-				<html:text property="publication.domainFile.volume" size="8"
-					styleId="domainFile.volume" />
-				&nbsp;
-			</td>
-			<td class="cellLabel">
-				Start Page
-			</td>
-			<td>
-				<html:text property="publication.domainFile.startPage" size="8"
-					styleId="domainFile.startPage" />
-				&nbsp;
-			</td>
-			<td class="cellLabel">
-				<strong id="epageTitle" style="">End Page&nbsp; </strong>
-			</td>
-			<td>
-				<html:text property="publication.domainFile.endPage" size="8"
-					styleId="domainFile.endPage" />
-				&nbsp;
+				<table class="invisibleTable">
+					<tr>
+						<td>
+							<html:text property="publication.domainFile.volume" size="8"
+								styleId="domainFile.volume" />
+							&nbsp;
+						</td>
+						<td class="cellLabel">
+							Start Page
+						</td>
+						<td>
+							<html:text property="publication.domainFile.startPage" size="8"
+								styleId="domainFile.startPage" />
+							&nbsp;
+						</td>
+						<td class="cellLabel">
+							<strong id="epageTitle" style="">End Page&nbsp; </strong>
+						</td>
+						<td>
+							<html:text property="publication.domainFile.endPage" size="8"
+								styleId="domainFile.endPage" />
+							&nbsp;
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
 				Authors
 			</td>
-			<td colspan="5">
+			<td>
 				<div id="authorSection" style="position: relative;">
 					<a style="display: block" id="addAuthor"
 						href="javascript:clearAuthor();openSubmissionForm('Author');">Add</a>
@@ -226,7 +238,7 @@
 										id="deleteAuthor" type="button" value="Remove"
 										onclick="deleteTheAuthor()" />
 								</td>
-								<td colspan="5">
+								<td>
 									<div align="right">
 										<input class="promptButton" type="button" value="Save"
 											onclick="addAuthor();show('authorTable');closeSubmissionForm('Author');" />
@@ -246,7 +258,7 @@
 				<br>
 				<i>(one keyword per line)</i>
 			</td>
-			<td colspan="5">
+			<td>
 				<html:textarea styleId="keywordsStr"
 					property="publication.keywordsStr" rows="3" cols="80" />
 			</td>
@@ -255,7 +267,7 @@
 			<td class="cellLabel">
 				Description
 			</td>
-			<td colspan="5">
+			<td>
 				<html:textarea styleId="domainFile.description"
 					property="publication.domainFile.description" rows="8" cols="120" />
 			</td>
@@ -264,7 +276,7 @@
 			<td class="cellLabel">
 				Research Category
 			</td>
-			<td colspan="5">
+			<td>
 				<html:select property="publication.researchAreas" multiple="true"
 					size="7" styleId="researchAreas">
 					<html:options name="publicationResearchAreas" />
@@ -288,7 +300,7 @@
 				</c:otherwise>
 			</c:choose>
 			<tr>
-				<td class="cellLabel">
+				<td class="cellLabel" width="110">
 					<html:radio styleId="external0"
 						property="publication.domainFile.uriExternal" value="false"
 						onclick="displayFileRadioButton()" />
@@ -341,36 +353,43 @@
 	<br>
 	<c:choose>
 		<c:when test="${empty publicationForm.map.sampleId}">
+			<a name="sampleNameField"></a>
 			<table width="100%" align="center" class="submissionView">
 				<tr>
-					<td class="cellLabel" width="100">
+					<td class="cellLabel" width="110">
 						Sample Name
 					</td>
 					<td>
-						<html:textarea property="publication.sampleNamesStr" cols="60"
-							rows="5" styleId="associatedSampleNames" />
-						<br>
-						<em>one name per line</em>
-					</td>
-					<td width="5">
-						<a href="#" onclick="showMatchedSampleNameDropdown()"><img
-								src="images/icon_browse.jpg" align="middle"
-								alt="search existing samples" border="0" /> </a>
-					</td>
-					<td width="40%">
-						<table>
+						<table class="invisibleTable">
 							<tr>
 								<td>
-									<img src="images/ajax-loader.gif" border="0" class="counts"
-										id="loaderImg" style="display: none">
-									<html:select property="publication.sampleNamesStr"
-										multiple="true" size="5" styleId="matchedSampleSelect"
-										style="display: none">
-									</html:select>
+									<html:textarea property="publication.sampleNamesStr" cols="60"
+										rows="5" styleId="associatedSampleNames" />
+									<br>
+									<em>one name per line</em>
+								</td>
+								<td width="5">
+									<a href="#sampleNameField" onclick="showMatchedSampleNameDropdown()"><img
+											src="images/icon_browse.jpg" align="middle"
+											alt="search existing samples" border="0" /> </a>
 								</td>
 								<td>
-									<a href="#" onclick="updateAssociatedSamples()"
-										id="selectMatchedSampleButton" style="display: none">select</a>
+									<table class="invisibleTable">
+										<tr>
+											<td>
+												<img src="images/ajax-loader.gif" border="0" class="counts"
+													id="loaderImg" style="display: none">
+												<html:select property="publication.sampleNamesStr"
+													multiple="true" size="5" styleId="matchedSampleSelect"
+													style="display: none">
+												</html:select>
+											</td>
+											<td>
+												<a href="#" onclick="updateAssociatedSamples()"
+													id="selectMatchedSampleButton" style="display: none">select</a>
+											</td>
+										</tr>
+									</table>
 								</td>
 							</tr>
 						</table>
@@ -386,7 +405,7 @@
 	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel">
+			<td class="cellLabel" width="110">
 				Visibility
 			</td>
 			<td>
@@ -418,7 +437,7 @@
 	<c:if test="${!empty param.sampleId}">
 		<c:set var="deleteButtonName" value="Remove from Sample" />
 		<c:set var="deleteOnclick"
-		value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
+			value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
