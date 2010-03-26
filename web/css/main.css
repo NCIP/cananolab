@@ -319,13 +319,15 @@ input.actionButton { /* optional style for form and action buttons */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-left: 1px solid #cccccc; /* constant: medium gray */
 }
+
 input.noBorderButton {
 	font-weight: bold;
 	font-size: 0.8 em;
 	text-decoration: underline;
-	border:0px solid;
+	border: 0px solid;
 	background-color: #FFFFFF;
 }
+
 .formMessage { /* for messages above the form */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
@@ -359,10 +361,13 @@ SIDEBAR BEGINS
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: normal;
 	word-wrap: break-word;
+	margin: 0.5em 2em 0.5em 2em;
+	padding: 0 px;
+	/*text-indent: -1em;*/
 }
 
 .sidebarSectionNoBottom li {
-	padding-bottom: 0.3em;
+	padding: 0 0 0.3em 0;
 }
 
 .sidebarTitle {
@@ -417,7 +422,7 @@ h3,.h3 { /* for title of page */
 }
 
 p,.p { /* for paragraphs */ /* padding-left: 1em; */
-
+	
 }
 
 .bannerHome { /* for the banner area of the home page */
@@ -427,6 +432,11 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 
 .txtHighlight { /* adds emphasis to text */
 	color: #a90101;
+}
+
+.grayTextHighlight { /* adds emphasis to text */
+	color: #5C5C5C;
+	font-weight: bold;
 }
 
 .welcomeTitle { /* for titles of sections inside the content area */
