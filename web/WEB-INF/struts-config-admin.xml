@@ -28,6 +28,7 @@
 			scope="request">
 			<forward name="input" path="admin.sitePreference" />
 			<forward name="cananoHeader" path="/layout/cananoHeader.jsp" />
+			<forward name="cananoSidemenu" path="/layout/cananoSidemenu.jsp" />
 		</action>
 	</action-mappings>
 </struts-config>

@@ -31,7 +31,7 @@
 				&nbsp;
 			</td>
 		</tr>
-		<c:if test="${'true' eq param.showVisitorCount}">
+		<c:if test="${showVisitorCount}">
 			<tr>
 				<td class="subMenuSecondaryTitleFill" height="20">
 					Visitor Count
@@ -50,7 +50,6 @@
 				</c:choose>
 				</td>
 			</tr>
-
 			<tr>
 				<td class="subMenuCommentText" height="20">
 					<em>since ${counterStartDate}</em>

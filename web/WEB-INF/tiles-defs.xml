@@ -9,7 +9,7 @@
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
-		<put name="cananoSidemenu" value="/layout/cananoSidemenu.jsp?showVisitorCount=true" />
+		<put name="cananoSidemenu" value="/admin.do?dispatch=getCaNanoSidemenu" />
 		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
 		<put name="cananoContent" value="/bodyLogin.jsp" />
 		<put name="cananoFooter" value="/html/cananoFooter.html" />

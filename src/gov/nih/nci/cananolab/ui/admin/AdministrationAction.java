@@ -15,12 +15,14 @@ package gov.nih.nci.cananolab.ui.admin;
  * @author houyh
  */
 import gov.nih.nci.cananolab.dto.admin.SitePreferenceBean;
+import gov.nih.nci.cananolab.dto.admin.VisitorCountBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.admin.AdminService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 
@@ -35,8 +37,10 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
@@ -174,7 +178,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Action to setup site preferences for cananoHeader.jsp.
+	 * Action for loading site preferences for cananoHeader.jsp.
 	 *
 	 * @param
 	 * @return
@@ -193,6 +197,43 @@ public class AdministrationAction extends AbstractDispatchAction {
 		}
 		return mapping.findForward("cananoHeader");
 	}
+	
+	/**
+	 * Action for loading Visitor Counter for cananoSidemenu.jsp.
+	 *
+	 * @param
+	 * @return
+	 */
+	public ActionForward getCaNanoSidemenu(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		//1.load counter from application scope, set it if not exists.
+		HttpSession session = request.getSession();
+		ServletContext context = session.getServletContext();
+		Integer counter = (Integer) context.getAttribute("visitorCounter");
+		if (counter == null) {
+			VisitorCountBean counterBean = this.adminService.getVisitorCount();
+			counter = counterBean.getVisitorCount();
+			context.setAttribute("visitorCount", counter);
+			context.setAttribute("countString", counter.toString());
+			context.setAttribute("counterStartDate", 
+				DateUtils.convertDateToString(counterBean.getCounterStartDate(),
+							Constants.DATE_FORMAT));
+		}
+		//2.increase counter if requester's IP is not in session.
+		String visitorIP = (String) session.getAttribute("visitorIP");
+		if ((visitorIP == null || !visitorIP.equals(request.getRemoteAddr()))
+			&& request.getAttribute("justLogout") == null) {
+			session.setAttribute("visitorIP", request.getRemoteAddr());
+			context.setAttribute("visitorCount", ++counter);
+			context.setAttribute("countString", counter.toString());
+			this.adminService.increaseVisitorCount();
+		}
+		request.setAttribute("showVisitorCount", Boolean.TRUE);
+		
+		return mapping.findForward("cananoSidemenu");
+	}
+	
 	/**
 	 * Action to handle site logo file download request.
 	 *

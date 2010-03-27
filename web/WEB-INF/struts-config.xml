@@ -69,7 +69,7 @@
 		</action>
 		<action path="/logout" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.LogoutAction">
-			<forward name="success" path="/welcome.do" />
+			<forward name="success" path="canano.login" />
 		</action>
 		<action path="/welcome"
 			type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
@@ -78,11 +78,6 @@
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.grid.autodiscover" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
-		</action>
-		<action path="/home"
-			type="gov.nih.nci.cananolab.ui.admin.VisitorCounterAction"
-			scope="request">
-			<forward name="welcomePage" path="/welcome.do" />
 		</action>
 		<action path="/publicCount" parameter="dispatch"
 			type="gov.nih.nci.cananolab.ui.core.CountAction">
