@@ -139,7 +139,7 @@ public class PublicDataCountServiceJob implements Job {
 		} else {
 			try {
 				service = new SampleServiceRemoteImpl(serviceUrl);
-				count = service.getNumberOfPublicSamples();
+				count = service.getNumberOfPublicSampleSources();
 			} catch (Exception e) {
 				logger
 						.error("Error obtaining counts of public sample sources from grid service at"
