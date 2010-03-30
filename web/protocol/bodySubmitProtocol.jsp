@@ -53,6 +53,9 @@
 								<html:options collection="protocolsByType"
 									property="domain.name" labelProperty="domain.name" />
 							</c:if>
+							<c:if test="${!empty otherProtocolNamesByType}">
+								<html:options name="otherProtocolNamesByType" />
+							</c:if>
 						<option value="other">
 							[other]
 						</option>
@@ -73,6 +76,9 @@
 							<c:if test="${!empty protocolsByType}">
 								<html:options collection="protocolsByType"
 									property="domain.version" labelProperty="domain.version" />
+							</c:if>
+							<c:if test="${!empty otherProtocolVersionsByType}">
+								<html:options name="otherProtocolVersionsByType" />
 							</c:if>
 						<option value="other">
 							[other]
