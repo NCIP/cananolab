@@ -77,6 +77,10 @@ public class InitProtocolSetup {
 			ProtocolBean protocol) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "protocol", "type",
 				"otherType", protocol.getDomain().getType());
+		InitSetup.getInstance().persistLookup(request, protocol.getDomain().getType()+" protocol type", "name",
+				"otherName", protocol.getDomain().getName());
+		InitSetup.getInstance().persistLookup(request, protocol.getDomain().getType()+" protocol type", "version",
+				"otherVersion", protocol.getDomain().getVersion());
 		setProtocolDropdowns(request);
 	}
 }

@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -24,9 +25,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Create or update protocol file and protocol
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolAction extends AbstractDispatchAction {
 
@@ -67,6 +68,14 @@ public class ProtocolAction extends AbstractDispatchAction {
 		List<ProtocolBean> protocols = service.findProtocolsBy(
 				selectedProtocolType, null, null, null, user);
 		request.getSession().setAttribute("protocolsByType", protocols);
+		
+		//retrieve user entered protocol names and versions
+		InitSetup.getInstance().getOtherTypesByLookup(request,
+				"otherProtocolNamesByType",
+				selectedProtocolType + " protocol type", "otherName", true);
+		InitSetup.getInstance().getOtherTypesByLookup(request,
+				"otherProtocolVersionsByType",
+				selectedProtocolType + " protocol type", "otherVersion", true);	
 
 		return mapping.findForward("inputPage");
 	}
@@ -97,7 +106,7 @@ public class ProtocolAction extends AbstractDispatchAction {
 
 	/**
 	 * Delete a protocol from Protocol update form
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request

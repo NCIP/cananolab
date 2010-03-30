@@ -13,7 +13,6 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -113,6 +112,35 @@ public class InitSetup {
 		if (updateSession) {
 			types = LookupService.getDefaultAndOtherLookupTypes(lookupName,
 					lookupAttribute, otherTypeAttribute);
+			request.getSession().setAttribute(sessionAttribute, types);
+		} else {
+			types = new TreeSet<String>((SortedSet<? extends String>) (request
+					.getSession().getAttribute(sessionAttribute)));
+		}
+		return types;
+	}
+
+	/**
+	 * Retrieve other values from lookup table in the database and store in the
+	 * session
+	 * 
+	 * @param request
+	 * @param sessionAttribute
+	 * @param lookupName
+	 * @param lookupAttribute
+	 * @param otherTypeAttribute
+	 * @aparam updateSession
+	 * @return
+	 * @throws BaseException
+	 */
+	public SortedSet<String> getOtherTypesByLookup(HttpServletRequest request,
+			String sessionAttribute, String lookupName,
+			String otherTypeAttribute, boolean updateSession)
+			throws BaseException {
+		SortedSet<String> types = null;
+		if (updateSession) {
+			types = LookupService.findLookupValues(lookupName,
+					otherTypeAttribute);
 			request.getSession().setAttribute(sessionAttribute, types);
 		} else {
 			types = new TreeSet<String>((SortedSet<? extends String>) (request
@@ -270,7 +298,7 @@ public class InitSetup {
 		// List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		// GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
 		// localGridURL);
-		
+
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		GridNodeBean localGrid = GridService.getGridNodeByHostName(gridNodes,
