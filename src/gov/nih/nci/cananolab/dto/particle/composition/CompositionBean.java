@@ -11,8 +11,12 @@ import gov.nih.nci.cananolab.util.Comparators;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class CompositionBean {
 	public static final String NANOMATERIAL_SELECTION = "nanomaterial entity";
@@ -30,6 +34,10 @@ public class CompositionBean {
 	private SampleComposition domain;
 	private List<String> compositionSections = new ArrayList<String>();
 	protected FileBean theFile = new FileBean();
+	private Map<String, SortedSet<NanomaterialEntityBean>> type2NanoEntities = new HashMap<String, SortedSet<NanomaterialEntityBean>>();
+	private Map<String, SortedSet<FunctionalizingEntityBean>> type2FuncEntities = new HashMap<String, SortedSet<FunctionalizingEntityBean>>();
+	private SortedSet<String> nanoEntityTypes = new TreeSet<String>();
+	private SortedSet<String> funcEntityTypes = new TreeSet<String>();
 
 	public CompositionBean() {
 
@@ -80,6 +88,34 @@ public class CompositionBean {
 		}
 		if (!files.isEmpty()) {
 			compositionSections.add(FILE_SELECTION);
+		}
+
+		SortedSet<NanomaterialEntityBean> typeNanoEntities = null;
+		for (NanomaterialEntityBean entity : nanomaterialEntities) {
+			String type = entity.getType();
+			if (type2NanoEntities.get(type) != null) {
+				typeNanoEntities = type2NanoEntities.get(type);
+			} else {
+				typeNanoEntities = new TreeSet<NanomaterialEntityBean>(
+						new Comparators.NanomaterialEntityBeanTypeDateComparator());
+				type2NanoEntities.put(type, typeNanoEntities);
+			}
+			typeNanoEntities.add(entity);
+			nanoEntityTypes.add(type);
+		}
+
+		SortedSet<FunctionalizingEntityBean> typeFuncEntities = null;
+		for (FunctionalizingEntityBean entity : functionalizingEntities) {
+			String type = entity.getType();
+			if (type2FuncEntities.get(type) != null) {
+				typeFuncEntities = type2FuncEntities.get(type);
+			} else {
+				typeFuncEntities = new TreeSet<FunctionalizingEntityBean>(
+						new Comparators.FunctionalizingEntityBeanTypeDateComparator());
+				type2FuncEntities.put(type, typeFuncEntities);
+			}
+			typeFuncEntities.add(entity);
+			funcEntityTypes.add(type);
 		}
 	}
 
@@ -199,5 +235,21 @@ public class CompositionBean {
 		}
 
 		return copy;
+	}
+
+	public Map<String, SortedSet<NanomaterialEntityBean>> getType2NanoEntities() {
+		return type2NanoEntities;
+	}
+
+	public Map<String, SortedSet<FunctionalizingEntityBean>> getType2FuncEntities() {
+		return type2FuncEntities;
+	}
+
+	public SortedSet<String> getNanoEntityTypes() {
+		return nanoEntityTypes;
+	}
+
+	public SortedSet<String> getFuncEntityTypes() {
+		return funcEntityTypes;
 	}
 }
