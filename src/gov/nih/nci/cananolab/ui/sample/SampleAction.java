@@ -186,7 +186,7 @@ public class SampleAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("sampleForm");
 		request.getSession().removeAttribute("updateSample");
 		setupLookups(request, null);
-		return mapping.getInputForward();
+		return mapping.findForward("createInput");
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class SampleAction extends BaseAnnotationAction {
 		thePOC.setupDomain(user.getLoginName());
 		SampleService service = new SampleServiceLocalImpl();
 		// have to save POC separately because the same organizations can not be
-		// save in the same session
+		// saved in the same session
 		service.savePointOfContact(thePOC, user);
 		sample.addPointOfContact(thePOC);
 		// save sample
@@ -248,7 +248,7 @@ public class SampleAction extends BaseAnnotationAction {
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
 		if (updateSample == null) {
-			forward = mapping.getInputForward();
+			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
 		} else {
@@ -279,7 +279,7 @@ public class SampleAction extends BaseAnnotationAction {
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
 		if (updateSample == null) {
-			forward = mapping.getInputForward();
+			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
 		} else {
