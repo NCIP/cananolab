@@ -15,8 +15,7 @@
 		<tr>
 			<td>
 				<c:forEach var="charName"
-					items="${characterizationSummaryView.type2CharacterizationNames[type]}"
-					varStatus="ind">
+					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
 					<a name="${charName}"></a>
 					<table width="99%" align="center" class="summaryViewNoGrid"
 						bgcolor="#dbdbdb">
