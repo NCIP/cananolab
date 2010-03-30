@@ -17,7 +17,8 @@
 	<jsp:param name="topic" value="submit_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/sample" onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
+<html:form action="/sample"
+	onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -44,8 +45,9 @@
 				</c:if>
 				<a href="#"
 					onclick="javascript:confirmAddNew('PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
-					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img align="top"
-						src="images/btn_add.gif" border="0" /></a>
+					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
+						align="top" src="images/btn_add.gif" border="0" />
+				</a>
 			</td>
 		</tr>
 		<c:if
@@ -96,14 +98,17 @@
 		</tr>
 	</table>
 	<br>
-
-	<c:set var="updateId" value="${param.sampleId}"/>
-	<c:set var="resetOnclick" value="this.form.reset();"/>
-	<c:set var="deleteOnclick" value="deleteData('sample', sampleForm, 'sample', 'delete')"/>
-	<c:set var="deleteButtonName" value="Delete"/>
-	<c:set var="cloneOnclick" value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')"/>
-	<c:set var="hiddenDispatch" value="create"/>
-	<c:set var="hiddenPage" value="2"/>
+	<c:if test="${!empty updateSample}">
+		<c:set var="updateId" value="${sampleForm.map.sampleBean.domain.id}" />
+	</c:if>
+	<c:set var="resetOnclick" value="this.form.reset();" />
+	<c:set var="deleteOnclick"
+		value="deleteData('sample', sampleForm, 'sample', 'delete')" />
+	<c:set var="deleteButtonName" value="Delete" />
+	<c:set var="cloneOnclick"
+		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
+	<c:set var="hiddenDispatch" value="create" />
+	<c:set var="hiddenPage" value="2" />
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 
