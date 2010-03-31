@@ -11,109 +11,40 @@
 			<span class="summaryViewHeading">chemical association</span>
 		</th>
 	</tr>
-	<logic:iterate name="compositionForm"
-		property="comp.chemicalAssociations" id="assoc" indexId="ind">
-		<c:set var="assocType" value="${assoc.type}" />
-		<c:if test="${!empty assocType}">
-			<tr>
-				<td>
-					<table class="summaryViewNoGrid" width="99%" align="center"
-						bgcolor="#dbdbdb">
-						<tr>
-							<th valign="top" align="left" colspan="2">
-								&nbsp;${assocType}
-							</th>
-						</tr>
-						<tr>
-							<td>
-								<table class="summaryViewNoGrid" width="99%" align="center"
-									bgcolor="#F5F5f5">
-									<c:if
-										test="${! empty assoc.attachment.id && ! empty assoc.attachment.bondType}">
-										<tr>
-											<td class="cellLabel" width="10%">
-												Bond Type
-											</td>
-											<td>
-												${assoc.attachment.bondType}
-											</td>
-										</tr>
-									</c:if>
-									<c:if test="${!empty fn:trim(assoc.description)}">
-										<tr>
-											<td class="cellLabel" width="10%">
-												Description
-											</td>
-											<td>
-												<c:out value="${fn:replace(assoc.description, cr, '<br>')}"
-													escapeXml="false" />
-											</td>
-										</tr>
-									</c:if>
-									<tr>
-										<td class="cellLabel" width="10%">
-											Associated Elements
-										</td>
-										<td>
-											<table>
-												<tr>
-													<td>
-														${assoc.associatedElementA.compositionType}
-														${assoc.associatedElementA.entityDisplayName}
-														<c:choose>
-															<c:when
-																test="${! empty assoc.associatedElementA.composingElement.id }">
-											composing element of type ${assoc.associatedElementA.composingElement.type} <br>(name: ${assoc.associatedElementA.composingElement.name})
-														</c:when>
-															<c:otherwise>
-																<br>(name: ${assoc.associatedElementA.domainElement.name})
-															</c:otherwise>
-														</c:choose>
-													</td>
-													<td
-														style="border: 0; vertical-align: top; text-align: center;">
-														<img src="images/arrow_left_right_gray.gif" id="assocImg" />
-														<br>
-														<strong>associated with</strong>
-													</td>
-													<td>
-														${assoc.associatedElementB.compositionType}
-														${assoc.associatedElementB.entityDisplayName}
-														<c:choose>
-															<c:when
-																test="${! empty assoc.associatedElementB.composingElement.id }">
-
-composing element of type ${assoc.associatedElementB.composingElement.type} <br>(name: ${assoc.associatedElementB.composingElement.name})
-														</c:when>
-															<c:otherwise>
-																<br> (name: ${assoc.associatedElementB.domainElement.name})
-															</c:otherwise>
-														</c:choose>
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-									<c:if test="${! empty assoc.files}">
-										<tr>
-											<td class="cellLabel" width="10%">
-												Files
-											</td>
-											<td>
-												<c:set var="files" value="${assoc.files }" />
-												<c:set var="entityType" value="chemical association" />
-												<%@include file="../bodyFileView.jsp"%>
-											</td>
-										</tr>
-									</c:if>
-								</table><br>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</c:if>
-	</logic:iterate>
+	<tr>
+		<td>
+			<c:forEach var="assocType"
+				items="${compositionForm.map.comp.assocTypes}">
+				<a href="#${assocType}"></a>
+				<table width="99%" align="center" class="summaryViewNoGrid"
+					bgcolor="#dbdbdb">
+					<tr>
+						<th align="left">
+							${assocType}
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<c:forEach var="assoc"
+								items="${compositionForm.map.comp.type2Assocs[assocType]}"
+								varStatus="assocInd">
+								<%@include file="bodySingleChemicalAssociationSummaryView.jsp"%>
+								<c:if
+									test="${assocInd.count<fn:length(compositionForm.map.comp.type2Assocs[assocType])}">
+									<br />
+								</c:if>
+							</c:forEach>
+						</td>
+					</tr>
+					<tr>
+						<th valign="top" align="left" height="6">
+						</th>
+					</tr>
+				</table>
+				<br />
+			</c:forEach>
+		</td>
+	</tr>
 </table>
 <div id="summarySeparator${index}">
 	<br>

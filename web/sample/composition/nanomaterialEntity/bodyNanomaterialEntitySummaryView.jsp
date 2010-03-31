@@ -45,14 +45,6 @@
 			</c:forEach>
 		</td>
 	</tr>
-	<%--
-	<logic:iterate name="compositionForm"
-		property="comp.nanomaterialEntities" id="nanomaterialEntity"
-		indexId="ind">
-		<%@include file="bodySingleNanomaterialEntitySummaryView.jsp"%>
-	</logic:iterate>
-	--%>
 </table>
 <div id="summarySeparator${index}">
-	<br>
 </div>
