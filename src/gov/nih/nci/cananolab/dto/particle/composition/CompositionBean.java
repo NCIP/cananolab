@@ -36,8 +36,12 @@ public class CompositionBean {
 	protected FileBean theFile = new FileBean();
 	private Map<String, SortedSet<NanomaterialEntityBean>> type2NanoEntities = new HashMap<String, SortedSet<NanomaterialEntityBean>>();
 	private Map<String, SortedSet<FunctionalizingEntityBean>> type2FuncEntities = new HashMap<String, SortedSet<FunctionalizingEntityBean>>();
+	private Map<String, SortedSet<ChemicalAssociationBean>> type2Assocs = new HashMap<String, SortedSet<ChemicalAssociationBean>>();
+	private Map<String, SortedSet<FileBean>> type2Files = new HashMap<String, SortedSet<FileBean>>();
 	private SortedSet<String> nanoEntityTypes = new TreeSet<String>();
 	private SortedSet<String> funcEntityTypes = new TreeSet<String>();
+	private SortedSet<String> assocTypes = new TreeSet<String>();
+	private SortedSet<String> fileTypes = new TreeSet<String>();
 
 	public CompositionBean() {
 
@@ -90,6 +94,7 @@ public class CompositionBean {
 			compositionSections.add(FILE_SELECTION);
 		}
 
+		// summary view information
 		SortedSet<NanomaterialEntityBean> typeNanoEntities = null;
 		for (NanomaterialEntityBean entity : nanomaterialEntities) {
 			String type = entity.getType();
@@ -116,6 +121,34 @@ public class CompositionBean {
 			}
 			typeFuncEntities.add(entity);
 			funcEntityTypes.add(type);
+		}
+
+		SortedSet<ChemicalAssociationBean> typeAssocs = null;
+		for (ChemicalAssociationBean assoc : chemicalAssociations) {
+			String type = assoc.getType();
+			if (type2Assocs.get(type) != null) {
+				typeAssocs = type2Assocs.get(type);
+			} else {
+				typeAssocs = new TreeSet<ChemicalAssociationBean>(
+						new Comparators.ChemicalAssociationBeanTypeDateComparator());
+				type2Assocs.put(type, typeAssocs);
+			}
+			typeAssocs.add(assoc);
+			assocTypes.add(type);
+		}
+
+		SortedSet<FileBean> typeFiles = null;
+		for (FileBean file : files) {
+			String type = file.getDomainFile().getType();
+			if (type2Files.get(type) != null) {
+				typeFiles = type2Files.get(type);
+			} else {
+				typeFiles = new TreeSet<FileBean>(
+						new Comparators.FileBeanTypeDateComparator());
+				type2Files.put(type, typeFiles);
+			}
+			typeFiles.add(file);
+			fileTypes.add(type);
 		}
 	}
 
@@ -251,5 +284,21 @@ public class CompositionBean {
 
 	public SortedSet<String> getFuncEntityTypes() {
 		return funcEntityTypes;
+	}
+
+	public Map<String, SortedSet<ChemicalAssociationBean>> getType2Assocs() {
+		return type2Assocs;
+	}
+
+	public SortedSet<String> getAssocTypes() {
+		return assocTypes;
+	}
+
+	public Map<String, SortedSet<FileBean>> getType2Files() {
+		return type2Files;
+	}
+
+	public SortedSet<String> getFileTypes() {
+		return fileTypes;
 	}
 }
