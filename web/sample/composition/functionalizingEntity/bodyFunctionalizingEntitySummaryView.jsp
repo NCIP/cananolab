@@ -49,5 +49,4 @@
 	</tr>
 </table>
 <div id="summarySeparator${index}">
-	<br>
 </div>
