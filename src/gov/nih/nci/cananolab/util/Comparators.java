@@ -242,6 +242,20 @@ public class Comparators {
 		}
 	}
 
+	public static class FileBeanTypeDateComparator implements
+			Comparator<FileBean> {
+		public int compare(FileBean file1, FileBean file2) {
+			if (file1.getDomainFile().getType().equals(
+					file2.getDomainFile().getType())) {
+				return file1.getDomainFile().getCreatedDate().compareTo(
+						file2.getDomainFile().getCreatedDate());
+			} else {
+				return file1.getDomainFile().getType().compareTo(
+						file2.getDomainFile().getType());
+			}
+		}
+	}
+
 	// public static class DerivedDatumBeanDateComparator implements
 	// Comparator<DerivedDatumBean> {
 	// public int compare(DerivedDatumBean data1, DerivedDatumBean data2) {
