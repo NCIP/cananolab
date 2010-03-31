@@ -95,9 +95,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			appService.saveOrUpdate(publication);
 			fileService.writeFile(publicationBean, user);
 
-			// update sample associations
-			updateSampleAssociation(appService, publicationBean, user);
-
 			// set visibility
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
@@ -114,6 +111,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					}
 				}
 			}
+			
+			// update sample associations
+			updateSampleAssociation(appService, publicationBean, user);
 		} catch (Exception e) {
 			String err = "Error in saving the publication.";
 			logger.error(err, e);
