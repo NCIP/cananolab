@@ -21,7 +21,10 @@ public class GridClientTest {
 	public GridClientTest(CaNanoLabServiceClient gridClient) {
 		this.gridClient = gridClient;
 	}
-
+	/**
+	 * Test NanoMaterialEntity
+	 * @throws Exception
+	 */
 	public void testNanomaterialEntity() throws Exception {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
