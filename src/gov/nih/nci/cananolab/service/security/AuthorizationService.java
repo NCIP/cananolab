@@ -660,6 +660,21 @@ public class AuthorizationService {
 		}
 	}
 
+	// direct SQL to improve performance
+	public void removeCSMEntryFast(String objectName) {
+		try {
+			String sql = "delete cpp, pe, pg, grp from csm_pg_pe as cpp inner join csm_protection_element as pe "
+					+ "inner join csm_protection_group as pg inner join csm_user_group_role_pg as grp "
+					+ "where cpp.protection_element_id=pe.protection_element_id "
+					+ "and cpp.protection_group_id=pg.protection_group_id "
+					+ "and pg.protection_group_id=grp.protection_group_id "
+					+ "and pe.protection_element_name='" + objectName + "'";
+		} catch (Exception e) {
+			logger.error("Error in removing the CSM entry for " + objectName
+					+ ": " + e);
+		}
+	}
+
 	public void removePGAndPE(String objectName) throws SecurityException {
 		try {
 			ProtectionElement pe = getProtectionElement(objectName);
@@ -684,19 +699,20 @@ public class AuthorizationService {
 	public void assignVisibility(String dataToProtect, String[] visibleGroups,
 			String owningGroup) throws SecurityException {
 		try {
-			// check if there are changes to visibleGroups
 			List<String> groupsToAssign = new ArrayList<String>(Arrays
 					.asList(visibleGroups));
 			if (owningGroup != null) {
 				groupsToAssign.add(owningGroup);
 			}
+			// add default groups if doesn't contain public group
+			if (!groupsToAssign.contains(Constants.CSM_PUBLIC_GROUP)) {
+				for (String group : Constants.VISIBLE_GROUPS) {
+					groupsToAssign.add(group);
+				}
+			}
 			List<String> existingGroups = getAccessibleGroups(dataToProtect,
 					Constants.CSM_READ_PRIVILEGE);
-			// remove the default groups
-			for (String group : Constants.VISIBLE_GROUPS) {
-				existingGroups.remove(group);
-				groupsToAssign.remove(group);
-			}
+
 			Set<String> allGroups = new HashSet<String>(existingGroups);
 			allGroups.addAll(groupsToAssign);
 
@@ -723,12 +739,7 @@ public class AuthorizationService {
 					for (String group : newGroupsToAdd) {
 						secureObject(dataToProtect, group,
 								Constants.CSM_READ_ROLE);
-					}
-					// set default visibilities
-					for (String group : Constants.VISIBLE_GROUPS) {
-						secureObject(dataToProtect, group,
-								Constants.CSM_READ_ROLE);
-					}
+					}					
 				}
 			}
 		} catch (Exception e) {
