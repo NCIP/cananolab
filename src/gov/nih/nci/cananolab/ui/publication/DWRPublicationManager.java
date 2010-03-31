@@ -103,6 +103,8 @@ public class DWRPublicationManager {
 				publication.setResearchArea(dbPub.getResearchArea());
 				publication.setStatus(dbPub.getStatus());
 				publication.setType(dbPub.getType());
+				publication.setAuthorCollection(dbPub.getAuthorCollection());
+				publicationBean.setAuthors(dbPubBean.getAuthors());
 				publicationBean
 						.setSampleNamesStr(dbPubBean.getSampleNamesStr());
 				publicationBean.setVisibilityGroups(dbPubBean.getVisibilityGroups());
