@@ -4,7 +4,7 @@ x.t("available","download");
 x.t("managing","publications");
 x.t("download","publication");
 x.t("field","means");
-x.t("editing","publications");
+x.t("editing","publication");
 x.t("link","available");
 x.t("proper","permissions");
 x.t("publication","managing");
@@ -17,7 +17,6 @@ x.t("publication","uploaded");
 x.t("permissions","download");
 x.t("means","download");
 x.t("publications","editing");
-x.t("publications","downloading");
 x.t("downloading","publication");
 x.t("uploaded","proper");
 }
