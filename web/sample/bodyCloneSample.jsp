@@ -14,7 +14,7 @@
 <c:set var="title" value="Copy" />
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="${title} Sample" />
-	<jsp:param name="topic" value="submit_sample_help" />
+	<jsp:param name="topic" value="copy_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/sample"
