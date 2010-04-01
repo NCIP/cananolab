@@ -87,7 +87,7 @@
 				<br>
 				<html:text property="publication.domainFile.pubMedId" size="50"
 					styleId="domainFile.pubMedId"
-					onchange="javascript:fillPubMedInfo()" />
+					onchange="javascript:fillPubMedInfo('true')" />
 				<br>
 				<i> clicking outside of the text field after entering a valid
 					PubMed ID enables auto-population of PubMed related fields</i>
