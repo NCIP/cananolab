@@ -235,15 +235,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
 
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		Publication domainPub = (Publication) pubBean.getDomainFile();
-		// disable PubMed fields from parsing
-		if (domainPub.getPubMedId() != null) {
-			request.setAttribute("onloadJavascript",
-					"updateSubmitFormBasedOnCategory();disableAutoFields()");
-		} else {
-			request.setAttribute("onloadJavascript",
-					"updateSubmitFormBasedOnCategory();enableAutoFields()");
-		}
+		request.setAttribute("onloadJavascript",
+				"updateSubmitFormBasedOnCategory();fillPubMedInfo('false')");
 		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
