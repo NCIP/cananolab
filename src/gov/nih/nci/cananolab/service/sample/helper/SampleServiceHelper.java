@@ -1216,4 +1216,32 @@ public class SampleServiceHelper {
 		Collections.sort(names);
 		return names;
 	}
+	
+	public List<PointOfContact> findOtherPointOfContactBySampleId(
+			String sampleId, UserBean user) throws Exception {
+		List<PointOfContact> pocs = new ArrayList<PointOfContact>();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select aSample.otherPointOfContactCollection from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
+						+ sampleId);
+		List results = appService.query(crit);
+		List filteredResults = new ArrayList(results);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
+		}
+		for (Object obj : filteredResults) {
+			PointOfContact poc = (PointOfContact) obj;
+			if (user == null
+					|| authService.checkReadPermission(user, poc.getId()
+							.toString())) {
+				pocs.add(poc);
+			} else {
+				logger.debug("User doesn't have access to point of contact of id:"
+						+ poc.getId());
+			}
+		}
+		return pocs;
+	}
+
 }
