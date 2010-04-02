@@ -81,8 +81,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 			String[] otherCharacterizationTypes, String[] wordList,
 			UserBean user) throws SampleException {
 		try {
-			//TODO add sample name after modifying grid client
-			String[] sampleNames = gridClient.getSampleNames(
+			String[] sampleNames = gridClient.getSampleNames(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames,
 					functionalizingEntityClassNames, functionClassNames,
 					characterizationClassNames, wordList);
