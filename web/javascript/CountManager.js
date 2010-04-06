@@ -1,4 +1,11 @@
 function getPublicCounts() {
+	var sites = getSites();
+	getProtocolCounts(sites);
+	getSampleCounts(sites);
+	getPublicationCounts(sites);
+}
+
+function getSites() {
 	var sites = dwr.util.getValue("sites");
 	/* test whether selected sites contains 'all' */
 	var isAllSites = false;
@@ -18,9 +25,7 @@ function getPublicCounts() {
 		}
 		sites = allSites;
 	}
-	getProtocolCounts(sites);
-	getSampleCounts(sites);
-	getPublicationCounts(sites);
+	return sites;
 }
 
 function getProtocolCounts(sites) {
@@ -78,8 +83,7 @@ function getPublicationCounts(sites) {
 }
 
 function gotoSamples(dispatch) {
-	var selectEle = document.getElementById("sites");
-	var gridNodesStr = getSelectedOptions(selectEle);
+	var gridNodesStr = getSitesAsString();
 	var url = "/caNanoLab/searchSample.do?dispatch=" + dispatch
 			+ "&searchLocations=";
 	url += gridNodesStr;
@@ -88,8 +92,7 @@ function gotoSamples(dispatch) {
 }
 
 function gotoPublications(dispatch) {
-	var selectEle = document.getElementById("sites");
-	var gridNodesStr = getSelectedOptions(selectEle);
+	var gridNodesStr = getSitesAsString();
 	var url = "/caNanoLab/searchPublication.do?dispatch=" + dispatch
 			+ "&searchLocations=";
 	url += gridNodesStr;
@@ -98,8 +101,7 @@ function gotoPublications(dispatch) {
 }
 
 function gotoProtocols(dispatch) {
-	var selectEle = document.getElementById("sites");
-	var gridNodesStr = getSelectedOptions(selectEle);
+	var gridNodesStr = getSitesAsString();
 	var url = "/caNanoLab/searchProtocol.do?dispatch=" + dispatch
 			+ "&searchLocations=";
 	url += gridNodesStr;
@@ -107,14 +109,12 @@ function gotoProtocols(dispatch) {
 	return false;
 }
 
-function getSelectedOptions(selectEle) {
-	var options = selectEle.options;
-	var selectedValues = "";
-	for ( var c = 0; c < options.length; c++) {
-		if (options[c].selected) { // true if selected.
-			selectedValues += options[c].value + "~";
-		}
+function getSitesAsString() {
+	var sites=getSites();
+	var sitesStr="";
+	for (var i=0; i<sites.length-1; i++) {
+		sitesStr+=sites[i]+"~";
 	}
-	var cleanStr = selectedValues.substr(0, selectedValues.length - 1);
-	return cleanStr;
+	sitesStr+=sites[i];
+	return sitesStr;
 }
