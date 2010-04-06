@@ -6,14 +6,14 @@
 <%@include file="/sample/bodyHideAdvancedSearchDetailView.jsp"%>
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
-	<c:if test="${!empty fn:trim(nanomaterialEntity.emulsion.description)}">
+	<c:if test="${!empty fn:trim(nanomaterialEntity.description)}">
 		<tr>
 			<td class="cellLabel" width="10%">
 				Description
 			</td>
 			<td>
 				<c:out
-					value="${fn:replace(nanomaterialEntity.emulsion.description, cr, '<br>')}"
+					value="${fn:replace(nanomaterialEntity.description, cr, '<br>')}"
 					escapeXml="false" />
 			</td>
 		</tr>
