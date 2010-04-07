@@ -4,8 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<%@include file="bodyHideAdvancedSearchDetailView.jsp" %>
-<table width="99%" align="center" class="summaryViewNoGrid" bgcolor="#F5F5f5">
+<%@include file="bodyHideAdvancedSearchDetailView.jsp"%>
+<table width="99%" align="center" class="summaryViewNoGrid"
+	bgcolor="#F5F5f5">
 	<tr>
 		<td class="cellLabel" width="20%">
 			Sample Name
@@ -28,13 +29,16 @@
 			</c:forEach>
 		</td>
 	</tr>
-	<tr>
-		<td class="cellLabel">
-			Point of Contact
-		</td>
-		<td>
-			<c:set var="edit" value="false" />
-			<%@ include file="bodyPointOfContactView.jsp"%>
-		</td>
-	</tr>
+	<c:if
+		test="${!empty sampleForm.map.sampleBean.primaryPOCBean.domain.id || ! empty sampleForm.map.sampleBean.otherPOCBeans}">
+		<tr>
+			<td class="cellLabel">
+				Point of Contact
+			</td>
+			<td>
+				<c:set var="edit" value="false" />
+				<%@ include file="bodyPointOfContactView.jsp"%>
+			</td>
+		</tr>
+	</c:if>
 </table>
