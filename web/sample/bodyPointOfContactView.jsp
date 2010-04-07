@@ -3,9 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
-<c:set var="primaryPOC"
-	value="${sampleForm.map.sampleBean.primaryPOCBean}" />
 <table align="left" class="invisibleTable">
 	<tr>
 		<td class="cellLabel">
@@ -23,6 +20,8 @@
 	</tr>
 	<c:if
 		test="${! empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
+		<c:set var="primaryPOC"
+			value="${sampleForm.map.sampleBean.primaryPOCBean}" />
 		<tr>
 			<td>
 				Yes
