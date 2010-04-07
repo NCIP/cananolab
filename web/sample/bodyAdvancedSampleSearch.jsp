@@ -342,13 +342,13 @@
 							</html:select>
 						</td>
 						<td>
-							<div id="datumValueTextBlock" style="display: block">
+							<div id="datumValueTextBlock" style="display:none">
 								<html:text
 									property="searchBean.theCharacterizationQuery.datumValue"
 									styleId="datumValue" size="10" />
 								<%--onkeydown="return filterFloatNumber(event)" /--%>
 							</div>
-							<div id="datumValueSelectBlock" style="display: none">
+							<div id="datumValueSelectBlock" style="display:none">
 								<html:select
 									property="searchBean.theCharacterizationQuery.datumValue"
 									styleId="datumValueSelect">
