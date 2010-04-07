@@ -29,6 +29,7 @@ import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -550,8 +551,7 @@ public class SampleServiceHelper {
 		}
 		for (Object obj : filteredResults) {
 			String name = obj.toString();
-			if (user == null
-					|| authService.checkReadPermission(user, name)) {
+			if (user == null || authService.checkReadPermission(user, name)) {
 				sampleNames.add(name);
 			} else { // ignore no access exception
 				logger.debug("User doesn't have access to sample with name "
@@ -755,16 +755,13 @@ public class SampleServiceHelper {
 			if (authService.checkReadPermission(user, sample.getName())) {
 				// check visibility of POC
 				if (sample.getPrimaryPointOfContact() != null) {
-					Organization org = sample.getPrimaryPointOfContact()
-							.getOrganization();
-					if (org != null) {
-						if (!authService.checkReadPermission(user, org.getId()
-								.toString())) {
-							sample.setPrimaryPointOfContact(null);
-							logger
-									.debug("User can't access primary point of contact:"
-											+ org.getId());
-						}
+					String pocId = sample.getPrimaryPointOfContact().getId()
+							.toString();
+					if (!authService.checkReadPermission(user, pocId)) {
+						sample.setPrimaryPointOfContact(null);
+						logger
+								.debug("User can't access primary point of contact:"
+										+ pocId);
 					}
 				}
 				// remove POC that are not accessible to user
@@ -973,11 +970,18 @@ public class SampleServiceHelper {
 		columns.clear();
 		columns.add(sample.getId().toString());
 		columns.add(sample.getName());
-		PointOfContactBean primaryPOC = new PointOfContactBean(sample
-				.getPrimaryPointOfContact());
-		columns.add(primaryPOC.getDomain().getFirstName());
-		columns.add(primaryPOC.getDomain().getLastName());
-		columns.add(primaryPOC.getDomain().getOrganization().getName());
+		if (sample.getPrimaryPointOfContact() != null) {
+			PointOfContactBean primaryPOC = new PointOfContactBean(sample
+					.getPrimaryPointOfContact());
+			columns.add(primaryPOC.getDomain().getFirstName());
+			columns.add(primaryPOC.getDomain().getLastName());
+			columns.add(primaryPOC.getDomain().getOrganization().getName());
+		}
+		else {
+			columns.add(null);
+			columns.add(null);
+			columns.add(null);
+		}
 		columns.add(StringUtils.join(
 				getStoredNanomaterialEntityClassNames(sample),
 				Constants.VIEW_CLASSNAME_DELIMITER));
@@ -1216,7 +1220,7 @@ public class SampleServiceHelper {
 		Collections.sort(names);
 		return names;
 	}
-	
+
 	public List<PointOfContact> findOtherPointOfContactBySampleId(
 			String sampleId, UserBean user) throws Exception {
 		List<PointOfContact> pocs = new ArrayList<PointOfContact>();
@@ -1237,11 +1241,11 @@ public class SampleServiceHelper {
 							.toString())) {
 				pocs.add(poc);
 			} else {
-				logger.debug("User doesn't have access to point of contact of id:"
-						+ poc.getId());
+				logger
+						.debug("User doesn't have access to point of contact of id:"
+								+ poc.getId());
 			}
 		}
 		return pocs;
 	}
-
 }
