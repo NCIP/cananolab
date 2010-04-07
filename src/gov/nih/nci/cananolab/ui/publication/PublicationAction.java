@@ -158,7 +158,7 @@ public class PublicationAction extends BaseAnnotationAction {
 				(Publication) publicationBean.getDomainFile(), user);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
-				"message.removePublicationFromSample", publicationBean
+				"message.deletePublication", publicationBean
 						.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
