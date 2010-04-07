@@ -22,9 +22,9 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class DWRCharacterizationResultManager {
 	public String[] getConditionOptions() throws Exception {
@@ -81,7 +81,11 @@ public class DWRCharacterizationResultManager {
 							.getDefaultAndOtherTypesByLookupAsOptions(
 									bean.getValue(), "datumName",
 									"otherDatumName");
-					allDatumNames.addAll(datumNamesByAssayTypes);
+					for (LabelValueBean lv : datumNamesByAssayTypes) {
+						if (!allDatumNames.contains(lv)) {
+							allDatumNames.add(lv);
+						}
+					}
 				}
 			}
 		} else {
