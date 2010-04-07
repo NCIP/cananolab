@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<display-name>caNanoLab</display-name>
+	<form-beans>
+		<form-bean name="initSessionForm"
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="forwardPage" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="loginForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="loginId" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="updatePasswordForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="loginId" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+			<form-property name="newPassword" type="java.lang.String" />
+			<form-property name="newPassword2" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.session.expired" path="/welcome.do"
+			type="gov.nih.nci.cananolab.exception.InvalidSessionException" />
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.noaccess" path="/home.jsp"
+			type="gov.nih.nci.cananolab.exception.NoAccessException" />
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.fileException" path="home.error"
+			type="gov.nih.nci.cananolab.exception.FileException" />
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.caNanoLabException" path="home.error"
+			type="java.lang.BaseException" />
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.generalException" path="home.error"
+			type="java.lang.Exception" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="welcome" path="/welcome.do" />
+	</global-forwards>
+	<action-mappings>
+		<action name="loginForm" path="/login" scope="request"
+			type="gov.nih.nci.cananolab.ui.security.LoginAction" input="input">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.securityException" path="/home.jsp"
+				type="gov.nih.nci.cananolab.exception.SecurityException" />
+			<forward name="success" path="canano.welcome" />
+			<forward name="input" path="/welcome.do" />
+			<forward name="changePassword" path="canano.password" />
+		</action>
+		<action name="updatePasswordForm" path="/updatePassword"
+			scope="request"
+			type="gov.nih.nci.cananolab.ui.security.UpdatePasswordAction"
+			input="input">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.securityException" path="canano.password"
+				type="gov.nih.nci.cananolab.exception.SecurityException" />
+			<forward name="success" path="/welcome.do" />
+			<forward name="input" path="canano.password" />
+		</action>
+		<action path="/logout" scope="request"
+			type="gov.nih.nci.cananolab.ui.security.LogoutAction">
+			<forward name="success" path="canano.login" />
+		</action>
+		<action path="/welcome"
+			type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
+			parameter="canano.login" scope="request">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.grid.autodiscover" path="canano.login"
+				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
+		</action>
+		<action path="/publicCount" parameter="dispatch"
+			type="gov.nih.nci.cananolab.ui.core.CountAction">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.grid.down" path="canano.login"
+				type="gov.nih.nci.cananolab.exception.GridDownException" />			
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.grid.document.query" path="canano.login"
+				type="gov.nih.nci.cananolab.exception.PublicationException" />
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.grid.protocol.query" path="canano.login"
+				type="gov.nih.nci.cananolab.exception.ProtocolException" />
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.grid.sample.query" path="canano.login"
+				type="gov.nih.nci.cananolab.exception.SampleException" />
+		</action>
+	</action-mappings>
+	<controller>
+		<set-property value="true" property="inputForward" />
+		<set-property property="processorClass"
+			value="gov.nih.nci.cananolab.ui.core.CustomRequestProcessor" />
+		<set-property property="nocache" value="true" />
+	</controller>
+	<message-resources
+		parameter="gov.nih.nci.cananolab.resources.application" null="false" />
+	<message-resources key="admin"
+		parameter="gov.nih.nci.cananolab.resources.admin" null="false" />
+	<message-resources key="protocol"
+		parameter="gov.nih.nci.cananolab.resources.protocol" null="false" />
+	<message-resources key="publication"
+		parameter="gov.nih.nci.cananolab.resources.publication" null="false" />
+	<message-resources key="sample"
+		parameter="gov.nih.nci.cananolab.resources.sample" null="false" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/tiles-defs.xml,
+                   /WEB-INF/tiles-defs-admin.xml,
+                   /WEB-INF/tiles-defs-protocol.xml,
+                   /WEB-INF/tiles-defs-sample.xml,
+                   /WEB-INF/tiles-defs-publication.xml"/>
+		<set-property property="definitions-debug" value="2" />
+		<set-property property="definitions-parser-details" value="2" />
+		<set-property property="definitions-parser-validate"
+			value="true" />
+	</plug-in>
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="stopOnFirstError" value="false" />
+		<set-property property="pathnames"
+			value="/WEB-INF/validation.xml,
+			      /WEB-INF/validation-sample.xml,
+			      /WEB-INF/validation-publication.xml,
+			      /WEB-INF/validation-protocol.xml,
+                  /WEB-INF/validator-rules.xml" />
+	</plug-in>
+	<plug-in className="gov.nih.nci.cananolab.ui.core.CustomPlugIn" />
+	<plug-in
+		className="gov.nih.nci.cananolab.ui.core.SchedulerPlugin">
+		<set-property property="startOnLoad" value="false" />
+		<set-property property="startupDelay" value="0" />
+	</plug-in>
+	<plug-in
+		className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation" 
+			value="/WEB-INF/classes/application-config-admin.xml" />
+	</plug-in>
+</struts-config>
