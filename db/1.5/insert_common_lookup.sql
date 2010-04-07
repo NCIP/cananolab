@@ -155,7 +155,7 @@ INSERT INTO common_lookup (name,attribute,value) VALUES ('particle quantitation'
 INSERT INTO common_lookup (name,attribute,value) VALUES ('particle quantitation','instrument','hemocytometer');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('polymerase chain reaction','instrument','thermal cycler');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('powder diffraction','instrument','powder diffractometer');
-INSERT INTO common_lookup (name,attribute,value) VALUES ('radioactivity quantiation','instrument','scintillation counter');
+INSERT INTO common_lookup (name,attribute,value) VALUES ('radioactivity quantitation','instrument','scintillation counter');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('refractometry','instrument','refractometer');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('scanning auger spectrometry','instrument','scanning auger spectrometer');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('scanning electron microscopy','instrument','scanning electron microscope');
@@ -368,7 +368,7 @@ INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','mat
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','particle quantitation');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','polymerase chain reaction');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','powder diffraction');
-INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','radioactivity quantiation');
+INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','radioactivity quantitation');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','refractometry');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','scanning auger spectrometry');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('technique','type','scanning electron microscopy');
