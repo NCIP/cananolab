@@ -61,7 +61,10 @@ public class CharacterizationServiceHelper {
 				Property.forName("assayCategory").eq(assayCategory));
 		List result = appService.query(crit);
 		for (Object obj : result) {
-			charNames.add(((OtherCharacterization) obj).getName());
+			String charName = ((OtherCharacterization) obj).getName();
+			if (!charNames.contains(charName)) {
+				charNames.add(charName);
+			}
 		}
 		return charNames;
 	}
