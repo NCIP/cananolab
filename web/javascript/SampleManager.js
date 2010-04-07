@@ -351,7 +351,7 @@ function setDatumNameOptionsByCharName(selectedName, selectedOperand,
 						}
 						setDatumValueOptions();
 						setCharacterizationOperandOptions(selectedOperand);
-						setDatumValueUnitOptions(selectedUnit);
+						setDatumValueUnitOptions(selectedUnit);						
 					});
 }
 
@@ -388,22 +388,28 @@ function setCharacterizationOperandOptions(selectedOperand) {
 	SampleManager.getCharacterizationOperandOptions(datumName, function(data) {
 		dwr.util.removeAllOptions("charOperand");
 		dwr.util.addOptions("charOperand", emptyOption, "value", "label");
-		dwr.util.addOptions("charOperand", data, "value", "label");
-		if (data.length == 1) {
-			dwr.util.setValue("charOperand", data[0].value, {
-				escapeHtml : false
-			});
-		} else {
-			dwr.util.setValue("charOperand", selectedOperand, {
-				escapeHtml : false
-			});
+		if (datumName != "") {
+			dwr.util.addOptions("charOperand", data, "value", "label");
+			if (data.length == 1) {
+				dwr.util.setValue("charOperand", data[0].value, {
+					escapeHtml : false
+				});
+			} else {
+				dwr.util.setValue("charOperand", selectedOperand, {
+					escapeHtml : false
+				});
+			}
 		}
 	});
 }
 
 function setDatumValueOptions() {
 	var datumName = dwr.util.getValue("datumName");
-	if (datumName.match("^is ")) {
+	if (datumName=="") {
+		hide("datumValueTextBlock");
+		hide("datumValueSelectBlock");
+	}
+	else if (datumName.match("^is ")) {
 		hide("datumValueTextBlock");
 		show("datumValueSelectBlock");
 	} else {
@@ -424,7 +430,7 @@ function clearCharacterizationQuery() {
 	dwr.util.setValue("charOperand", "");
 	dwr.util.setValue("datumValue", "");
 	dwr.util.setValue("datumValueUnit", "");
-	show("datumValueTextBlock");
+	hide("datumValueTextBlock");
 	hide("datumValueSelectBlock");
 	hide("deleteCharacterizationQuery");
 }
@@ -657,7 +663,7 @@ function showMatchedSampleNameDropdown() {
 }
 
 function updateCloningSample() {
-	var selected = dwr.util.getValue("matchedSampleSelect");	
+	var selected = dwr.util.getValue("matchedSampleSelect");
 	dwr.util.setValue("cloningSampleName", selected);
 	hide("matchedSampleSelect");
 }
