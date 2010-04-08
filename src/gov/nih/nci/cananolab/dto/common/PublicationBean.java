@@ -294,7 +294,7 @@ public class PublicationBean extends FileBean {
 		if (domain.getYear() != null && domain.getYear() == 0) {
 			domain.setYear(null);
 		}
-		if (!StringUtils.isEmpty(domain.getDigitalObjectId())) {
+		if (StringUtils.isEmpty(domain.getDigitalObjectId())) {
 			domain.setDigitalObjectId(null);
 		}
 		if (researchAreas != null && researchAreas.length > 0) {
