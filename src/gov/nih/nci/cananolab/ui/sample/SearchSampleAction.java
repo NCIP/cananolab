@@ -180,7 +180,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			}
 		}
 
-		List<String> wordList = StringUtils.parseToWords(texts);
+		List<String> wordList = StringUtils.parseToWords(texts, "\r\n");
 		String[] words = null;
 		if (wordList != null) {
 			words = new String[wordList.size()];

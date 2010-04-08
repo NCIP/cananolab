@@ -135,7 +135,7 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		}
 		category = (String) theForm.get("category");
 		String keywordsStr = (String) theForm.get("keywordsStr");
-		List<String> wordList = StringUtils.parseToWords(keywordsStr);
+		List<String> wordList = StringUtils.parseToWords(keywordsStr, "\r\n");
 		if (wordList != null) {
 			keywords = new String[wordList.size()];
 			wordList.toArray(keywords);
@@ -143,7 +143,7 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		pubMedId = (String) theForm.get("pubMedId");
 		digitalObjectId = (String) theForm.get("digitalObjectId");
 		String authorsStr = (String) theForm.get("authorsStr");
-		List<String> authorList = StringUtils.parseToWords(authorsStr);
+		List<String> authorList = StringUtils.parseToWords(authorsStr, "\r\n");
 		if (authorList != null) {
 			authors = new String[authorList.size()];
 			authorList.toArray(authors);
