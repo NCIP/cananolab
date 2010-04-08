@@ -303,6 +303,14 @@ public class StringUtils {
 		return new ArrayList<String>(wordList);
 	}
 
+	public static List<String> parseToWords(String text, String delimiter) {
+		if (isEmpty(text)) {
+			return null;
+		}
+		String[] words = text.split(delimiter);
+		return Arrays.asList(words);
+	}
+
 	public static Boolean containsIgnoreCase(Collection<String> collection,
 			String match) {
 		for (String str : collection) {
@@ -314,13 +322,13 @@ public class StringUtils {
 	}
 
 	public static String stripWildcards(String searchString) {
-		//strip start from either ends of the search string
-		String newString=searchString;
-		newString=newString.replaceAll("^(\\*)(.*)", "$2");
-		newString=newString.replaceAll("(.*)(\\*)$", "$1");
+		// strip start from either ends of the search string
+		String newString = searchString.trim();
+		newString = newString.replaceAll("^(\\*)(.*)", "$2");
+		newString = newString.replaceAll("(.*)(\\*)$", "$1");
 		return newString;
 	}
-	
+
 	/**
 	 * Return true for Null or empty string, false otherwise.
 	 */
@@ -337,10 +345,17 @@ public class StringUtils {
 				System.out.println(word);
 			}
 			
-			String testString="*NCL-100**";
+			String texts2 = "thomas\r\nshukla";
+			System.out.println(texts);
+			List<String> words2 = StringUtils.parseToWords(texts2, "\r\n");
+			for (String word : words2) {
+				System.out.println(word);
+			}
+
+			String testString = "*NCL-100**";
 			System.out.println(stripWildcards(testString));
 		} catch (Exception e) {
 			logger.error(e);
 		}
-	}	
+	}
 }
