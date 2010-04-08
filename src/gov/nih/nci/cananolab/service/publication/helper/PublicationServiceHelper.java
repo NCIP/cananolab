@@ -38,7 +38,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of PublicationService and grid service *
- *
+ * 
  * @author tanq, pansu
  */
 public class PublicationServiceHelper {
@@ -249,7 +249,7 @@ public class PublicationServiceHelper {
 		Set<Publication> allPublications = new HashSet<Publication>();
 
 		// check if sample is accessible
-		if (sampleName != null) {
+		if (!StringUtils.isEmpty(sampleName)) {
 			Sample sample = sampleServiceHelper.findSampleByName(sampleName,
 					user);
 			if (sample != null) {
