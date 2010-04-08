@@ -126,8 +126,6 @@ function addInstrument() {
 			currentExperimentConfig = experimentConfig;
 		});
 		window.setTimeout("populateInstruments()", 200);
-		show('instrumentTable');
-		hide("newInstrument");
 		return true;
 	} else {
 		alert("Please fill in values");
