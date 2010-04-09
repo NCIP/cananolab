@@ -66,9 +66,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -80,10 +80,10 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 * 
+	 *
 	 * @param sample
-	 * @throws SampleException
-	 *             , DuplicateEntriesException
+	 * @throws SampleException ,
+	 *             DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean, UserBean user)
 			throws SampleException, DuplicateEntriesException,
@@ -164,27 +164,9 @@ public class SampleServiceLocalImpl implements SampleService {
 					.getApplicationService();
 			PointOfContact domainPOC = pocBean.getDomain();
 			Organization domainOrg = domainPOC.getOrganization();
-			PointOfContact dbPointOfContact = null;
-			// if update an existing POC
-			if (domainPOC.getId() != null) {
-				dbPointOfContact = helper.findPointOfContactById(domainPOC
-						.getId().toString(), user);
-			} else {
-				dbPointOfContact = helper.findPointOfContactByNameAndOrg(
-						domainPOC.getFirstName(), domainPOC.getLastName(),
-						domainPOC.getOrganization().getName(), user);
-			}
-			// get created by and created date from database
-			if (dbPointOfContact != null) {
-				domainPOC.setId(dbPointOfContact.getId());
-				domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
-				domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
-			}
-			// create a new POC if not an existing one
-			else {
-				domainPOC.setId(null);
-			}
-			// get created by and created date from database
+			// get existing organization from database and reuse ID, created by
+			// and created date
+			// address information will be updated
 			Organization dbOrganization = helper.findOrganizationByName(
 					domainOrg.getName(), user);
 			if (dbOrganization != null) {
@@ -196,8 +178,27 @@ public class SampleServiceLocalImpl implements SampleService {
 			else {
 				domainOrg.setId(null);
 			}
-			appService.saveOrUpdate(domainPOC);
 
+			PointOfContact dbPointOfContact = null;
+			// if POC exists in the database, check if organization is changed
+			if (domainPOC.getId() != null) {
+				dbPointOfContact = helper.findPointOfContactById(domainPOC
+						.getId().toString(), user);
+				Organization dbOrg = dbPointOfContact.getOrganization();
+				// if organization information is changed, create a new POC
+				if (!dbOrg.getName().equals(domainOrg.getName())) {
+					domainPOC.setId(null);
+				} else {
+					domainPOC.setId(dbPointOfContact.getId());
+					domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
+					domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
+				}
+			}
+			// create a new POC if not an existing one
+			else {
+				domainPOC.setId(null);
+			}
+			appService.saveOrUpdate(domainPOC);
 			// assign visibility
 			assignVisibility(pocBean);
 		} catch (Exception e) {
@@ -262,7 +263,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
