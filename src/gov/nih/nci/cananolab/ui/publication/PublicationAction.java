@@ -525,6 +525,8 @@ public class PublicationAction extends BaseAnnotationAction {
 				&& !StringUtils
 						.isEmpty(pubBean.getUploadedFile().getFileName())) {
 			return true;
+		} else if (!StringUtils.isEmpty(publication.getUri())) {
+			return true;
 		}
 		return false;
 	}
