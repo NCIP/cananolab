@@ -30,7 +30,7 @@
 				<td>
 					<input type="text"
 						name="functionalizingEntity.smallMolecule.alternateName" size="90" 
-						value="${functionalizingEntity.smallMolecule.alternateName}" />
+						value="${compositionForm.map.functionalizingEntity.smallMolecule.alternateName}" />
 				</td>
 			</tr>
 		</table>
