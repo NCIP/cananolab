@@ -54,10 +54,7 @@
 				<td>
 					<c:forEach var="function"
 						items="${composingElement.functionDisplayNames}" varStatus="ind">
-							${function}
-							<c:if
-							test="${ind.count !=fn:length(composingElement.functionDisplayNames)}">
-							;&nbsp;</c:if>
+							${function} <br/>							
 					</c:forEach>
 				</td>
 			</tr>
