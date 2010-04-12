@@ -57,6 +57,13 @@ public class PublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = (String) theForm.get("sampleId");
 		ActionMessages msgs = new ActionMessages();
+		// validate publication file
+		if (!validatePublicationFile(publicationBean)) {
+			ActionMessage msg = new ActionMessage("publication.fileRequired");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
+		}
 		// validate associated sample names
 		if (StringUtils.isEmpty(sampleId)
 				&& !validateAssociatedSamples(publicationBean, user)) {
@@ -157,9 +164,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		service.removePublicationFromSample(sampleBean.getDomain().getName(),
 				(Publication) publicationBean.getDomainFile(), user);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.deletePublication", publicationBean
-						.getDomainFile().getTitle());
+		ActionMessage msg = new ActionMessage("message.deletePublication",
+				publicationBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		return summaryEdit(mapping, form, request, response);
@@ -446,6 +452,12 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
+		// set empty year to null instead of the default 0
+		Integer year = ((Publication) publicationBean.getDomainFile())
+				.getYear();
+		if (year != null && year == 0) {
+			((Publication) publicationBean.getDomainFile()).setYear(null);
+		}
 		String selectedPublicationType = ((Publication) publicationBean
 				.getDomainFile()).getCategory();
 		if (selectedPublicationType != null) {
@@ -500,22 +512,39 @@ public class PublicationAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	protected boolean validateResearchAreas(HttpServletRequest request,
-			String[] researchAreas) throws Exception {
-		ActionMessages msgs = new ActionMessages();
-		boolean noErrors = true;
-		if (researchAreas == null || researchAreas.length == 0) {
-			ActionMessage msg = new ActionMessage(
-					"submitPublicationForm.file.researchArea", "researchAreas");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			noErrors = false;
-		} else {
-			System.out.println("validateResearchAreas =="
-					+ Arrays.toString(researchAreas));
+	private boolean validatePublicationFile(PublicationBean pubBean) {
+		Publication publication = (Publication) pubBean.getDomainFile();
+		// don't need the file or url if PubMed ID or DOI is entered
+		if ((publication.getPubMedId() != null && publication.getPubMedId() != 0)
+				|| !StringUtils.isEmpty(publication.getDigitalObjectId())) {
+			return true;
+		} else if (publication.getUriExternal()
+				&& !StringUtils.isEmpty(pubBean.getExternalUrl())) {
+			return true;
+		} else if (!publication.getUriExternal()
+				&& !StringUtils
+						.isEmpty(pubBean.getUploadedFile().getFileName())) {
+			return true;
 		}
-		return noErrors;
+		return false;
 	}
+
+	// private boolean validateResearchAreas(HttpServletRequest request,
+	// String[] researchAreas) throws Exception {
+	// ActionMessages msgs = new ActionMessages();
+	// boolean noErrors = true;
+	// if (researchAreas == null || researchAreas.length == 0) {
+	// ActionMessage msg = new ActionMessage(
+	// "submitPublicationForm.publication.researchArea", "researchAreas");
+	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+	// this.saveErrors(request, msgs);
+	// noErrors = false;
+	// } else {
+	// System.out.println("validateResearchAreas =="
+	// + Arrays.toString(researchAreas));
+	// }
+	// return noErrors;
+	// }
 
 	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
