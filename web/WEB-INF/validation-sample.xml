@@ -87,10 +87,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((assoc.theFile.domainFile.uri!=null)
+					(((assoc.theFile.domainFile.uri!=null)
 						or
-						((*this*!=null)
-						and
+						((*this*!=null) and
 						(assoc.theFile.domainFile.uriExternal=="false")))
 						or
 						(assoc.theFile.domainFile.uriExternal=="true"))
