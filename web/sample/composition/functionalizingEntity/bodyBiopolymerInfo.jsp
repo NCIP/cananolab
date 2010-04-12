@@ -69,7 +69,7 @@
 				</td>
 				<td colspan="2">
 					<textarea name="functionalizingEntity.biopolymer.sequence"
-						cols="80" rows="3"><c:out value="${compositionForm.map.nanomaterialEntity.biopolymer.sequence}" escapeXml="false"/></textarea>
+						cols="80" rows="3"><c:out value="${compositionForm.map.functionalizingEntity.biopolymer.sequence}" escapeXml="false"/></textarea>
 				</td>
 			</tr>
 		</table>
