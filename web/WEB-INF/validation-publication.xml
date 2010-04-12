@@ -19,102 +19,12 @@
 				depends="required">
 				<arg position="0" key="publication.title" bundle="publication" />
 			</field>
-			<field property="publication.domainFile.pubMedId" page="1"
-				depends="validwhen">
-				<arg position="0" key="publication.domainFile.pubMedId" 
-					bundle="publication" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((((((*this*!=null) and (*this*!=0))
-						or
-						(publication.domainFile.digitalObjectId!=null))					
-						or
-						((publication.domainFile.category=="book chapter") or 
-						(publication.domainFile.category=="report")))
-						or
-						(publication.domainFile.uri!=null))  
-						or
-						((publication.uploadedFile!=null) and 
-						(publication.domainFile.uriExternal=="false")))
-						or
-						((publication.externalUrl!=null) and 
-						(publication.domainFile.uriExternal=="true"))) 
-					</var-value>
-				</var>
-			</field>
-			<field property="publication.domainFile.digitalObjectId" page="1"
-				depends="validwhen">
-				<arg position="0" key="publication.domainFile.digitalObjectId" 
-					bundle="publication" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((((((*this*!=null)
-						or
-						((publication.domainFile.pubMedId!=null) and 
-						(publication.domainFile.pubMedId!=0)))
-						or
-						((publication.domainFile.category=="book chapter") or 
-						(publication.domainFile.category=="report")))
-						or
-						(publication.domainFile.uri!=null))  
-						or
-						((publication.uploadedFile!=null) and 
-						(publication.domainFile.uriExternal=="false")))
-						or
-						((publication.externalUrl!=null) and 
-						(publication.domainFile.uriExternal=="true")))
-					</var-value>
-				</var>
-			</field>
-			<field property="publication.uploadedFile" page="1"
-				depends="validwhen">
-				<arg position="0" key="publication.uploadedFile" 
-					bundle="publication" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((((*this*!=null)
-						or
-						(publication.domainFile.uri!=null))  
-						or
-						(((publication.domainFile.pubMedId!=null) and 
-						(publication.domainFile.pubMedId!=0)) or
-						(publication.domainFile.digitalObjectId!=null)))
-						or
-						((publication.externalUrl!=null) and 
-						(publication.domainFile.uriExternal=="true")))
-					</var-value>
-				</var>
-			</field>
-			<field property="publication.externalUrl" page="1"
-				depends="validwhen">
-				<arg position="0" key="publication.externalUrl" 
-					bundle="publication" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((((*this*!=null)
-						or
-						(publication.domainFile.uri!=null))  
-						or
-						(((publication.domainFile.pubMedId!=null) and 
-						(publication.domainFile.pubMedId!=0)) or
-						(publication.domainFile.digitalObjectId!=null)))
-						or
-						((publication.uploadedFile!=null) and 
-						(publication.domainFile.uriExternal=="false")))
-					</var-value>
-				</var>
-			</field>
 		</form>
 
 		<form name="searchPublicationForm">
 			<field property="title" page="1" depends="mask">
 				<arg position="0" key="publication.title" bundle="publication" />
-				<msg name="mask"
-					key="publication.title.invalid" />
+				<msg name="mask" key="publication.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
