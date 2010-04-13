@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -148,7 +149,7 @@ public class SampleBean {
 			}
 		}
 		if (primaryPOCBean != null) {
-			primaryPOCBean.setupDomain(createdBy);
+			//primaryPOCBean.setupDomain(createdBy);
 			domain.setPrimaryPointOfContact(primaryPOCBean.getDomain());
 		} else {
 			domain.setPrimaryPointOfContact(null);
@@ -160,7 +161,7 @@ public class SampleBean {
 					.setOtherPointOfContactCollection(new HashSet<PointOfContact>());
 		}
 		for (PointOfContactBean pocBean : otherPOCBeans) {
-			pocBean.setupDomain(createdBy);
+			//pocBean.setupDomain(createdBy);
 			domain.getOtherPointOfContactCollection().add(pocBean.getDomain());
 		}
 	}
