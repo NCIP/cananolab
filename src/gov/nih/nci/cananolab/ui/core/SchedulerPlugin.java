@@ -121,7 +121,7 @@ public class SchedulerPlugin implements PlugIn {
 			int intervalInMinutes) {
 		try {
 			if (intervalInMinutes == 0) {
-				// default is 260 minutes
+				// default is 240 minutes
 				intervalInMinutes = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
 			}
 			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
