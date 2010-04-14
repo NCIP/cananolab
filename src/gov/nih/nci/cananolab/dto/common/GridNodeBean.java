@@ -20,6 +20,10 @@ public class GridNodeBean {
 
 	public NodeType nodeType = NodeType.REMOTE;
 
+	public GridNodeBean() {
+
+	}
+
 	public GridNodeBean(String hostName, String address) {
 
 		this.hostName = hostName;
@@ -75,9 +79,10 @@ public class GridNodeBean {
 			GridNodeBean node = (GridNodeBean) obj;
 			String url = node.getAddress();
 			String hostname = node.getHostName();
-			//matching service URL or host name 
-			if (url.equals(this.getAddress())
-					|| hostname.equals(this.getHostName())) {
+			// matching service URL or host name
+			if (this.getAddress() != null && url.equals(this.getAddress())
+					|| this.getHostName() != null
+					&& hostname.equals(this.getHostName())) {
 				eq = true;
 			}
 		}
