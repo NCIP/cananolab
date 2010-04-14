@@ -301,13 +301,11 @@ public class InitSetup {
 
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		GridNodeBean localGrid = GridService.getGridNodeByHostName(gridNodes,
-				Constants.LOCAL_SITE);
-		// don't remove from original list
-		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>();
-		remoteNodes.addAll(gridNodes);
-		if (localGrid != null) {
-			remoteNodes.remove(localGrid);
+		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>(gridNodes);
+		for (GridNodeBean gridNode : gridNodes) {
+			if (gridNode.getHostName().equals(Constants.LOCAL_SITE)) {
+				remoteNodes.remove(gridNode);
+			}
 		}
 		Collections.sort(remoteNodes,
 				new Comparators.GridNodeHostNameComparator());
