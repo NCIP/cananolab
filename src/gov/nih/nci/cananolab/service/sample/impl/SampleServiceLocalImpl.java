@@ -66,9 +66,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -80,10 +80,10 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
+	 * 
 	 * @param sample
-	 * @throws SampleException ,
-	 *             DuplicateEntriesException
+	 * @throws SampleException
+	 *             , DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean, UserBean user)
 			throws SampleException, DuplicateEntriesException,
@@ -263,7 +263,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -590,12 +590,19 @@ public class SampleServiceLocalImpl implements SampleService {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			String sampleName = ((String) obj).trim();
-			List<String> visibleGroups = helper.getAuthService()
-					.getAccessibleGroups(sampleName,
-							Constants.CSM_READ_PRIVILEGE);
-			System.out.println(sampleName);
-			assignFullVisibility(visibleGroups.toArray(new String[0]),
-					sampleName, user);
+			try {
+				List<String> visibleGroups = helper.getAuthService()
+						.getAccessibleGroups(sampleName,
+								Constants.CSM_READ_PRIVILEGE);
+				System.out.println(sampleName);
+				assignFullVisibility(visibleGroups.toArray(new String[0]),
+						sampleName, user);
+			} catch (Exception e) {
+				System.out
+						.println("problem setting associated visibility for: "
+								+ sampleName);
+				e.printStackTrace();
+			}
 		}
 	}
 
