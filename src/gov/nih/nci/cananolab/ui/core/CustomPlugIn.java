@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.service.common.GridService;
+import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -101,21 +101,18 @@ public class CustomPlugIn implements PlugIn {
 	private void setupInitialGridNodes(ServletContext context) {
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		GridNodeBean localGrid = GridService.getGridNodeByHostName(gridNodes,
-				Constants.LOCAL_SITE);		
-		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>();
-		remoteNodes.addAll(gridNodes);
-		if (localGrid != null) {
-			remoteNodes.remove(localGrid);
+		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>(gridNodes);
+		for (GridNodeBean gridNode : gridNodes) {
+			if (gridNode.getHostName().equals(Constants.LOCAL_SITE)) {
+				remoteNodes.remove(gridNode);
+			}
 		}
 		Collections.sort(remoteNodes,
 				new Comparators.GridNodeHostNameComparator());
 		logger.info("Found " + remoteNodes.size()
-				+ " remote grid nodes at start up.");
-
+				+ " remote grid node(s) at start up.");
 		PublicDataCountServiceJob dataCountJob = new PublicDataCountServiceJob();
 		dataCountJob.queryPublicDataCounts(remoteNodes);
-		dataCountJob.getPublicDataCounts();
 	}
 
 	private void cleanUpCSM() throws Exception {
