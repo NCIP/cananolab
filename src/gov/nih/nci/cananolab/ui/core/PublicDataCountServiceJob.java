@@ -54,15 +54,7 @@ public class PublicDataCountServiceJob implements Job {
 		queryPublicDataCounts(gridNodes);
 	}
 
-	public void queryPublicDataCounts(List<GridNodeBean> gridNodes) {
-		List<String> locations = new ArrayList<String>();
-		// always queries local site
-		locations.add(Constants.LOCAL_SITE);
-		// add grid service url to locations
-
-		for (GridNodeBean gridNode : gridNodes) {
-			locations.add(gridNode.getAddress());
-		}
+	public PublicDataCountBean queryPublicDataCounts(GridNodeBean gridNode) {
 		Integer sampleCount = 0;
 		Integer sourceCount = 0;
 		Integer publicationCount = 0;
@@ -72,21 +64,71 @@ public class PublicDataCountServiceJob implements Job {
 		Integer invitroCharCount = 0;
 		Integer invivoCharCount = 0;
 		Integer otherCharCount = 0;
-		for (String location : locations) {
-			sampleCount += getPublicSampleCount(location);
-			sourceCount += getPublicSampleSourceCount(location);
-			protocolCount += getPublicProtocolCount(location);
-			publicationCount += getPublicPublicationCount(location);
-			charCount += getPublicCharacterizationCount("Characterization",
-					location);
-			physicoCharCount += getPublicCharacterizationCount(
-					"PhysicoChemicalCharacterization", location);
-			invitroCharCount += getPublicCharacterizationCount(
-					"InvitroCharacterization", location);
-			invivoCharCount += getPublicCharacterizationCount(
-					"InvivoCharacterization", location);
-			otherCharCount += getPublicCharacterizationCount(
-					"OtherCharacterization", location);
+		sampleCount = getPublicSampleCount(gridNode);
+		sourceCount = getPublicSampleSourceCount(gridNode);
+		protocolCount = getPublicProtocolCount(gridNode);
+		publicationCount = getPublicPublicationCount(gridNode);
+		charCount = getPublicCharacterizationCount("Characterization", gridNode);
+		physicoCharCount = getPublicCharacterizationCount(
+				"PhysicoChemicalCharacterization", gridNode);
+		invitroCharCount = getPublicCharacterizationCount(
+				"InvitroCharacterization", gridNode);
+		invivoCharCount = getPublicCharacterizationCount(
+				"InvivoCharacterization", gridNode);
+		otherCharCount = getPublicCharacterizationCount(
+				"OtherCharacterization", gridNode);
+
+		PublicDataCountBean dataCountBean = new PublicDataCountBean();
+		dataCountBean.setNumOfPublicSamples(sampleCount);
+		dataCountBean.setNumOfPublicSources(sourceCount);
+		dataCountBean.setNumOfPublicPublications(publicationCount);
+		dataCountBean.setNumOfPublicProtocols(protocolCount);
+		dataCountBean.setNumOfPublicCharacterizations(charCount);
+		dataCountBean
+				.setNumOfPublicPhysicoChemicalCharacterizations(physicoCharCount);
+		dataCountBean.setNumOfPublicInvitroCharacterizations(invitroCharCount);
+		dataCountBean.setNumOfPublicInvivoCharacterizations(invivoCharCount);
+		dataCountBean.setNumOfPublicOtherCharacterizations(otherCharCount);
+		return dataCountBean;
+	}
+
+	public void queryPublicDataCounts(List<GridNodeBean> gridNodes) {
+		Integer sampleCount = 0;
+		Integer sourceCount = 0;
+		Integer publicationCount = 0;
+		Integer protocolCount = 0;
+		Integer charCount = 0;
+		Integer physicoCharCount = 0;
+		Integer invitroCharCount = 0;
+		Integer invivoCharCount = 0;
+		Integer otherCharCount = 0;
+		// remove local grid node
+		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>(gridNodes);
+		for (GridNodeBean gridNode : gridNodes) {
+			if (gridNode.getHostName().equals(Constants.LOCAL_SITE)) {
+				remoteNodes.remove(gridNode);
+			}
+		}
+		// add local site
+		GridNodeBean localSite = new GridNodeBean();
+		localSite.setHostName(Constants.LOCAL_SITE);
+		remoteNodes.add(localSite);
+		for (GridNodeBean gridNode : remoteNodes) {
+			PublicDataCountBean gridDataCountBean = this
+					.queryPublicDataCounts(gridNode);
+			sampleCount += gridDataCountBean.getNumOfPublicSamples();
+			sourceCount += gridDataCountBean.getNumOfPublicSources();
+			protocolCount += gridDataCountBean.getNumOfPublicProtocols();
+			publicationCount += gridDataCountBean.getNumOfPublicPublications();
+			charCount += gridDataCountBean.getNumOfPublicCharacterizations();
+			physicoCharCount += gridDataCountBean
+					.getNumOfPublicPhysicoChemicalCharacterizations();
+			invitroCharCount += gridDataCountBean
+					.getNumOfPublicInvitroCharacterizations();
+			invivoCharCount += gridDataCountBean
+					.getNumOfPublicInvivoCharacterizations();
+			otherCharCount += gridDataCountBean
+					.getNumOfPublicOtherCharacterizations();
 		}
 		dataCounts = new PublicDataCountBean();
 		dataCounts.setNumOfPublicSamples(sampleCount);
@@ -101,10 +143,12 @@ public class PublicDataCountServiceJob implements Job {
 		dataCounts.setNumOfPublicOtherCharacterizations(otherCharCount);
 	}
 
-	private Integer getPublicSampleCount(String serviceUrl) {
+	private Integer getPublicSampleCount(GridNodeBean gridNode) {
 		Integer count = 0;
 		SampleService service = null;
-		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
+		String hostName = gridNode.getHostName();
+		String serviceUrl = gridNode.getAddress();
+		if (hostName.equals(Constants.LOCAL_SITE)) {
 			try {
 				service = new SampleServiceLocalImpl();
 				count += service.getNumberOfPublicSamples();
@@ -125,10 +169,12 @@ public class PublicDataCountServiceJob implements Job {
 		return count;
 	}
 
-	private Integer getPublicSampleSourceCount(String serviceUrl) {
+	private Integer getPublicSampleSourceCount(GridNodeBean gridNode) {
 		Integer count = 0;
 		SampleService service = null;
-		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
+		String hostName = gridNode.getHostName();
+		String serviceUrl = gridNode.getAddress();
+		if (hostName.equals(Constants.LOCAL_SITE)) {
 			try {
 				service = new SampleServiceLocalImpl();
 				count += service.getNumberOfPublicSampleSources();
@@ -149,10 +195,12 @@ public class PublicDataCountServiceJob implements Job {
 		return count;
 	}
 
-	private Integer getPublicProtocolCount(String serviceUrl) {
+	private Integer getPublicProtocolCount(GridNodeBean gridNode) {
 		Integer count = 0;
 		ProtocolService service = null;
-		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
+		String hostName = gridNode.getHostName();
+		String serviceUrl = gridNode.getAddress();
+		if (hostName.equals(Constants.LOCAL_SITE)) {
 			try {
 				service = new ProtocolServiceLocalImpl();
 				count += service.getNumberOfPublicProtocols();
@@ -173,10 +221,12 @@ public class PublicDataCountServiceJob implements Job {
 		return count;
 	}
 
-	private Integer getPublicPublicationCount(String serviceUrl) {
+	private Integer getPublicPublicationCount(GridNodeBean gridNode) {
 		Integer count = 0;
 		PublicationService service = null;
-		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
+		String hostName = gridNode.getHostName();
+		String serviceUrl = gridNode.getAddress();
+		if (hostName.equals(Constants.LOCAL_SITE)) {
 			try {
 				service = new PublicationServiceLocalImpl();
 				count += service.getNumberOfPublicPublications();
@@ -198,10 +248,12 @@ public class PublicDataCountServiceJob implements Job {
 	}
 
 	private Integer getPublicCharacterizationCount(
-			String characterizationClassName, String serviceUrl) {
+			String characterizationClassName, GridNodeBean gridNode) {
 		Integer count = 0;
 		CharacterizationService service = null;
-		if (serviceUrl.equals(Constants.LOCAL_SITE)) {
+		String hostName = gridNode.getHostName();
+		String serviceUrl = gridNode.getAddress();
+		if (hostName.equals(Constants.LOCAL_SITE)) {
 			try {
 				service = new CharacterizationServiceLocalImpl();
 				count += service
