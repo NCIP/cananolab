@@ -4,4 +4,3 @@ source insert_common_lookup.sql;
 source csm_schema.sql;
 source csm_priming_data.sql;
 source app_csm_priming_data.sql;
-source create_admin_table.sql;
