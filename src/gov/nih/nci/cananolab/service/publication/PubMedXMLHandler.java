@@ -29,6 +29,7 @@ public class PubMedXMLHandler {
 	private StringBuilder volume;
 	private StringBuilder articleTitle;
 	private StringBuilder year;
+	private StringBuilder medlineDate;
 	private StringBuilder abstractText;
 	private StringBuilder pageStr;
 	private String startPage;
@@ -141,6 +142,28 @@ public class PubMedXMLHandler {
 		public void endElement(String uri, String localName, String qname) {
 			if (inPubDate)
 				publication.setYear(Integer.parseInt(year.toString()));
+		}
+	}
+
+	private class MedlineDateHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
+			if (inPubDate)
+				medlineDate = new StringBuilder();
+		}
+
+		public void characters(char[] ch, int start, int length) {
+			if (inPubDate)
+				medlineDate.append(new String(ch, start, length));
+		}
+
+		public void endElement(String uri, String localName, String qname) {
+			if (inPubDate) {
+				String medlineDateStr = medlineDate.toString();
+				String[] strs=medlineDateStr.split(" ");
+				String yearStr=strs[0];
+				publication.setYear(Integer.parseInt(yearStr));
+			}
 		}
 	}
 
@@ -274,12 +297,24 @@ public class PubMedXMLHandler {
 	private class LastNameHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			lastName.append(new String(ch, start, length));
+			String lastNameStr=lastName.toString();
+			String[] strs=lastNameStr.split(" ");
+			if (strs.length>1) {
+				lastNameStr=strs[1];
+			}
+			lastName=new StringBuilder(lastNameStr);
 		}
 	}
 
 	private class ForeNameHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			firstName.append(new String(ch, start, length));
+			String firstNameStr=firstName.toString();
+			String[] strs=firstNameStr.split(" ");
+			if (strs.length>1) {
+				firstNameStr=strs[0];
+			}
+			firstName=new StringBuilder(firstNameStr);
 		}
 	}
 
@@ -360,12 +395,13 @@ public class PubMedXMLHandler {
 		s.setElementHandler("volume", new VolumeHandler());
 		s.setElementHandler("pubdate", new PubDateHandler());
 		s.setElementHandler("year", new YearHandler());
+		s.setElementHandler("medlinedate", new MedlineDateHandler());
 		s.setElementHandler("title", new JournalTitleHandler());
 		s.setElementHandler("articletitle", new ArticleTitleHandler());
 		s.setElementHandler("abstracttext", new AbstractHandler());
 		s.setElementHandler("medlinepgn", new PageHandler());
 		s.setElementHandler("authorlist", new AuthorListHandler());
-		s.setElementHandler("author", new AuthorHandler());		
+		s.setElementHandler("author", new AuthorHandler());
 		s.setElementHandler("lastname", new LastNameHandler());
 		s.setElementHandler("forename", new ForeNameHandler());
 		s.setElementHandler("firstname", new ForeNameHandler());
@@ -387,8 +423,11 @@ public class PubMedXMLHandler {
 	public static void main(String[] args) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		PublicationBean pubBean = new PublicationBean();
-		phandler.parsePubMedXML(Long.valueOf("19420561"), pubBean); // 16642514
-
+		phandler.parsePubMedXML(Long.valueOf("19420561"), pubBean); 
+		// 16642514
+		// 16984117 year information is captured in <MedlineDate>
+		// 19420561
+		// 18642918 author information is not correct in XML
 		Publication pub = (Publication) pubBean.getDomainFile();
 		System.out.println("=========================================");
 		System.out.println("title: " + pub.getTitle());
