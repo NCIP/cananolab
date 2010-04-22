@@ -150,19 +150,9 @@ function fillPubMedInfo(updatePrompt) {
 	updatePubMedPrompt = updatePrompt;
 	if (pubMedId != null && pubMedId != 0) {
 		PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
-		waitCursor();
-		window
-				.setTimeout("updatePubMedWithDatabaseInfo(" + pubMedId + ")",
-						200);
 	} else {
 		PublicationManager.retrieveCurrentPub(populateAuthorInfo);
 	}
-}
-
-function updatePubMedWithDatabaseInfo(pubMedId) {
-	// update pubmed record with information from database
-	PublicationManager.updatePubMedWithExistingPublication(pubMedId,
-			populateUpdatedInformation);
 }
 
 function populatePubMedInfo(publication) {
@@ -187,8 +177,9 @@ function populatePubMedInfo(publication) {
 					});
 			populateAuthors(true);
 			disableAutoFields();
+			waitCursor();
+			PublicationManager.updatePubMedWithExistingPublication(publication.domainFile.pubMedId, populateUpdatedInformation);
 		}
-
 	} else {
 		sessionTimeout();
 	}
