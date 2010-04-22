@@ -685,6 +685,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			throw new NoAccessException();
 		}
 		SampleBean newSampleBean = null;
+		Sample origSample = null;
+		SampleBean origSampleBean = null;
+		Sample newSample0 = new Sample();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -694,14 +697,11 @@ public class SampleServiceLocalImpl implements SampleService {
 				throw new DuplicateEntriesException();
 			}
 			// fully load original sample
-			Sample origSample = findFullyLoadedSampleByName(originalSampleName,
-					user);
-			SampleBean origSampleBean = new SampleBean(origSample);
+			origSample = findFullyLoadedSampleByName(originalSampleName, user);
+			origSampleBean = new SampleBean(origSample);
 			// retrieve visibilities of the original sample,
 			// then copy the visibilities to new sample
 			helper.retrieveVisibility(origSampleBean);
-
-			Sample newSample0 = new Sample();
 			newSample0.setName(newSampleName);
 			newSample0.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 			newSample0.setCreatedDate(new Date());
@@ -713,7 +713,16 @@ public class SampleServiceLocalImpl implements SampleService {
 					.getVisibilityGroups());
 			// save the sample to get an ID before saving associations
 			saveSample(newSampleBean0, user);
-
+		} catch (NotExistException e) {
+			throw e;
+		} catch (DuplicateEntriesException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Error in loading the original sample " + originalSampleName;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+		try {
 			// clone the sample
 			Sample newSample = origSampleBean.getDomainCopy();
 			newSample.setName(newSampleName);
@@ -729,11 +738,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			saveClonedComposition(origSampleBean, newSampleBean, user);
 			saveClonedPublications(origSample.getName(), newSampleBean, user);
 			saveSample(newSampleBean, user);
-		} catch (NotExistException e) {
-			throw e;
-		} catch (DuplicateEntriesException e) {
-			throw e;
 		} catch (Exception e) {
+			//delete the already persisted new sample in case of error
+			deleteSample(newSampleName, user, true);
 			String err = "Error in cloning the sample " + originalSampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
