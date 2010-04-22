@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -32,9 +33,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of PublicationService
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -44,7 +45,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 *
+	 * 
 	 * @param publication
 	 * @param sampleNames
 	 * @param fileData
@@ -111,7 +112,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					}
 				}
 			}
-			
+
 			// update sample associations
 			updateSampleAssociation(appService, publicationBean, user);
 		} catch (Exception e) {
@@ -297,12 +298,12 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Remove sample-publication association for an existing publication.
-	 *
+	 * 
 	 * @param sampleId
 	 * @param publication
 	 * @param user
-	 * @throws PublicationException ,
-	 *             NoAccessException
+	 * @throws PublicationException
+	 *             , NoAccessException
 	 */
 	public void removePublicationFromSample(String sampleName,
 			Publication publication, UserBean user)
@@ -315,8 +316,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					.getApplicationService();
 
 			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService
-					.findSampleByName(sampleName, user);
+			SampleBean sampleBean = sampleService.findSampleByName(sampleName,
+					user);
 			Sample sample = sampleBean.getDomain();
 			Collection<Publication> pubs = sample.getPublicationCollection();
 			if (pubs != null) {
@@ -342,9 +343,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// assume publication is loaded with authors
-			//delete authors since authors were not shared across publications
-			if (publication.getAuthorCollection()!=null) {
-				for(Author author: publication.getAuthorCollection()) {
+			// delete authors since authors were not shared across publications
+			if (publication.getAuthorCollection() != null) {
+				for (Author author : publication.getAuthorCollection()) {
 					appService.delete(author);
 				}
 			}
@@ -365,5 +366,24 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new PublicationException(err, e);
 		}
 		return entries;
+	}
+
+	public PublicationBean getPublicationFromPubMedXML(String pubMedId)
+			throws PublicationException {
+		PublicationBean newPubBean = null;
+		try {
+			Long pubMedIDLong = Long.valueOf(pubMedId.trim());
+			PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
+			newPubBean = new PublicationBean();
+			if (phandler.parsePubMedXML(pubMedIDLong, newPubBean)) {
+				Publication newPub = (Publication) newPubBean.getDomainFile();
+				newPub.setPubMedId(pubMedIDLong);
+			}
+		} catch (Exception e) {
+			String err = "Invalid PubMed ID: " + pubMedId;
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+		return newPubBean;
 	}
 }
