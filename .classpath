@@ -152,5 +152,6 @@
 	<classpathentry kind="lib" path="web/WEB-INF/lib/struts-taglib-1.3.10.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/struts-tiles-1.3.10.jar"/>
 	<classpathentry kind="lib" path="web/WEB-INF/lib/spring-webmvc.jar"/>
+	<classpathentry kind="lib" path="lib/mail-1.3.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
