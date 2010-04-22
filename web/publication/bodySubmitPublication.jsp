@@ -99,7 +99,7 @@
 			</td>
 			<td>
 				<html:text property="publication.domainFile.digitalObjectId"
-					styleId="domainFile.digitalObjectId" size="30" />
+					styleId="domainFile.digitalObjectId" size="30" onchange="javascript:updateWithExistingDOI('true')" />
 				&nbsp;
 			</td>
 		</tr>
