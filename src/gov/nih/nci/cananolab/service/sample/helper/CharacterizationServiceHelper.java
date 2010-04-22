@@ -150,34 +150,6 @@ public class CharacterizationServiceHelper {
 		return configs;
 	}
 
-	public List<File> findFilesByCharacterizationId(String charId, UserBean user)
-			throws Exception {
-		List<File> fileCollection = new ArrayList<File>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select achar.fileCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
-						+ charId);
-		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
-			File file = (File) obj;
-			if (user == null
-					|| authService.checkReadPermission(user, file.getId()
-							.toString())) {
-				fileCollection.add(file);
-			} else {
-				logger.debug("USer doesn't have access to file of id: "
-						+ file.getId());
-			}
-		}
-		return fileCollection;
-	}
-
 	public ExperimentConfig findExperimentConfigById(String id, UserBean user)
 			throws ExperimentConfigException, NoAccessException {
 		ExperimentConfig config = null;

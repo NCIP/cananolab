@@ -1036,33 +1036,6 @@ public class SampleServiceHelper {
 		return org;
 	}
 
-	public PointOfContact findPointOfContactByNameAndOrg(String firstName,
-			String lastName, String orgName, UserBean user) throws Exception {
-		PointOfContact poc = null;
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
-		crit.createAlias("organization", "organization");
-		if (!StringUtils.isEmpty(lastName))
-			crit.add(Restrictions.eq("lastName", lastName));
-		if (!StringUtils.isEmpty(firstName))
-			crit.add(Restrictions.eq("firstName", firstName));
-		if (!StringUtils.isEmpty(orgName))
-			crit.add(Restrictions.eq("organization.name", orgName));
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			poc = (PointOfContact) obj;
-			if (authService.checkReadPermission(user, poc.getId().toString())) {
-				return poc;
-			} else {
-				throw new NoAccessException();
-			}
-		}
-		return poc;
-	}
 
 	public PointOfContact findPointOfContactById(String pocId, UserBean user)
 			throws Exception {
