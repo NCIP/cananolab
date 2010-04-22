@@ -39,5 +39,19 @@
 				</var>
 			</field>
 		</form>
+		<form name="registerUserForm">		
+			<field property="firstName" depends="required">
+				<arg position="0" key="registerUserForm.firstName" />
+			</field>
+			<field property="lastName" depends="required">
+				<arg position="0" key="registerUserForm.lastName" />
+			</field>
+			<field property="email" depends="required">
+				<arg position="0" key="registerUserForm.email" />				
+			</field>
+			<field property="phone" depends="required">
+				<arg position="0" key="registerUserForm.phone" />
+			</field>
+		</form>
 	</formset>
 </form-validation>
