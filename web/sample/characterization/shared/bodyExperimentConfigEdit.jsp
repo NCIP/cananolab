@@ -6,10 +6,10 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table class="editTableWithGrid" align="center" width="95%">
 	<tr>
-		<th width="33%">
+		<th width="20%">
 			Technique
 		</th>
-		<th width="33%">
+		<th width="40%">
 			Instruments
 		</th>
 		<th>

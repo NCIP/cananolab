@@ -6,10 +6,10 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table class="summaryViewNoGrid" align="left">
 	<tr>
-		<td width="33%" class="cellLabel">
+		<td width="20%" class="cellLabel">
 			Technique
 		</td>
-		<td width="33%" class="cellLabel">
+		<td width="40%" class="cellLabel">
 			Instruments
 		</td>
 		<td class="cellLabel">
