@@ -402,5 +402,15 @@ public class InitSetup {
 
 		appContext.setAttribute("allCompositionSections",
 				CompositionBean.ALL_COMPOSITION_SECTIONS);
+		
+		//register page
+		LabelValueBean[] titleOperands = new LabelValueBean[]{
+				new LabelValueBean(" "," "),
+				new LabelValueBean("Dr.","Dr."),
+				new LabelValueBean("Mr.", "Mr.") ,
+				new LabelValueBean("Mrs.", "Mrs."),
+				new LabelValueBean("Miss", "Miss"),
+				new LabelValueBean("Ms.", "Ms.")};
+		appContext.setAttribute("titleOperands", titleOperands);
 	}
 }
