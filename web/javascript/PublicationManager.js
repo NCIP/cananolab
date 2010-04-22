@@ -148,7 +148,7 @@ var updatePubMedPrompt = "false";
 function fillPubMedInfo(updatePrompt) {
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
 	updatePubMedPrompt = updatePrompt;
-	if (pubMedId != null && pubMedId != 0) {
+	if (pubMedId != null) {
 		PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
 	} else {
 		PublicationManager.retrieveCurrentPub(populateAuthorInfo);
@@ -164,10 +164,11 @@ function populatePubMedInfo(publication) {
 		// If PubMedId is null in returned pub -> pubMedId not found.
 		if (publication.domainFile.pubMedId == null) {
 			alert("Invalid PubMed ID entered.");
-			populateAuthors(false);
-			enableAutoFields();
+			clearPublication();
+//			populateAuthors(false);
+//			enableAutoFields();
 		} else {
-			// Set keywordsStr & description again special characters
+			// Set keywordsStr & description again for special characters
 			dwr.util.setValue("keywordsStr", publication.keywordsStr, {
 				escapeHtml : false
 			});
@@ -178,17 +179,16 @@ function populatePubMedInfo(publication) {
 			populateAuthors(true);
 			disableAutoFields();
 			waitCursor();
-			PublicationManager.updatePubMedWithExistingPublication(publication.domainFile.pubMedId, populateUpdatedInformation);
+			PublicationManager.updatePubMedWithExistingPublication(publication.domainFile.pubMedId, populateNonPubMedFields);
 		}
 	} else {
 		sessionTimeout();
 	}
 }
 
-function populateUpdatedInformation(publication) {
+function populateNonPubMedFields(publication) {
 	if (publication != null) {
-		if (updatePubMedPrompt == "false"
-				|| updatePubMedPrompt == "true"
+		if (updatePubMedPrompt == "true"
 				&& confirm("A database record with the same PubMed ID already exists.  Load saved information?")) {
 			dwr.util.setValue("category", publication.domainFile.category);
 			dwr.util.setValue("status", publication.domainFile.status);
@@ -206,10 +206,54 @@ function populateUpdatedInformation(publication) {
 			dwr.util.setValue("visibilityGroups", publication.visibilityGroups);
 			dwr.util.setValue("researchAreas", publication.researchAreas);
 			currentPublication = publication;
-			populateAuthors(true);
+			//populateAuthors(true);
 		}
 	}
 	updatePubMedPrompt = "false";
+	hideCursor();
+}
+
+var updateDOIPrompt="false";
+function updateWithExistingDOI(updatePrompt) {
+	var doi = dwr.util.getValue("domainFile.digitalObjectId");
+	updateDOIPrompt = updatePrompt;
+	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
+	if ((pubMedId == null || pubMedId == 0) && doi!=null) {
+		waitCursor();
+		PublicationManager.updateWithExistingDOIPublication(doi, populateAllFields);
+	} else {
+		PublicationManager.retrieveCurrentPub(populateAuthorInfo);
+	}
+}
+
+function populateAllFields(publication) {
+	if (publication != null) {
+		if (updateDOIPrompt == "true"
+				&& confirm("A database record with the same DOI already exists.  Load saved information?")) {
+			dwr.util.setValue("category", publication.domainFile.category);
+			dwr.util.setValue("status", publication.domainFile.status);
+			dwr.util.setValues(publication, {
+				escapeHtml : false
+			});
+			//load again for special characters
+			dwr.util.setValue("keywordsStr", publication.keywordsStr, {
+				escapeHtml : false
+			});
+			dwr.util.setValue("domainFile.description",
+					publication.domainFile.description, {
+						escapeHtml : false
+					});
+			dwr.util.setValue("associatedSampleNames",
+					publication.sampleNamesStr, {
+						escapeHtml : false
+					});
+//			dwr.util.setValue("visibilityGroups", publication.visibilityGroups);
+//			dwr.util.setValue("researchAreas", publication.researchAreas);
+			currentPublication = publication;
+			populateAuthors(true);
+		}
+	}
+	updateDOIPrompt = "false";
 	hideCursor();
 }
 
