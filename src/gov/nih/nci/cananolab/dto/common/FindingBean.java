@@ -100,8 +100,26 @@ public class FindingBean {
 							conditionList = new ArrayList<Condition>();
 							conditionMap.put(conditionColumn, conditionList);
 						}
-						if (!conditionList.contains(condition)) {
-							conditionList.add(condition);
+						// in case of copied Finding, ids are all null before
+						// persisting
+						if (condition.getId() != null) {
+							if (!conditionList.contains(condition)) {
+								conditionList.add(condition);
+							}
+						}
+						// use created_by field that contains the original ID to
+						// test whether condition is already in the list
+						else {
+							boolean existed = false;
+							for (Condition cond : conditionList) {
+								if (cond.getCreatedBy().equals(condition.getCreatedBy())) {
+									existed = true;
+									break;
+								}
+							}
+							if (!existed) {
+								conditionList.add(condition);
+							}
 						}
 					}
 				}
@@ -456,7 +474,8 @@ public class FindingBean {
 
 	public void resetDomainCopy(Finding copy, Boolean copyData) {
 		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+				+ copy.getId());
 
 		// copy data and condition
 		if (!copyData) {
@@ -468,6 +487,7 @@ public class FindingBean {
 			} else {
 				copy.setDatumCollection(new HashSet<Datum>(oldDatums));
 				for (Datum datum : copy.getDatumCollection()) {
+					String originalDatumId = datum.getId().toString();
 					datum.setId(null);
 					// keep the bogus place holder if empty datum
 					if (StringUtils.isEmpty(datum.getCreatedBy())
@@ -477,7 +497,8 @@ public class FindingBean {
 											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
 							&& datum.getValue() != -1) {
 						datum
-								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX
+										+ ":" + originalDatumId);
 					}
 					// conditions
 					Collection<Condition> oldConditions = datum
@@ -489,6 +510,13 @@ public class FindingBean {
 								oldConditions));
 						for (Condition condition : datum
 								.getConditionCollection()) {
+							String originalCondId = null;
+							// condition ID could have been set to null for the
+							// previous datum if the same condition is
+							// associated with multiple datum
+							if (condition.getId() != null) {
+								originalCondId = condition.getId().toString();
+							}
 							condition.setId(null);
 							// keep the bogus place holder if empty
 							// condition
@@ -499,8 +527,10 @@ public class FindingBean {
 											.getValue()
 											.equals(
 													Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
-								condition
-										.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+								if (originalCondId != null)
+									condition
+											.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX
+													+ ":" + originalCondId);
 							}
 						}
 					}
