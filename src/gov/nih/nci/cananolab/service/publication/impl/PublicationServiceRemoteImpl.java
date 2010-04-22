@@ -27,9 +27,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Remote implementation of PublicationService
- *
+ * 
  * @author tanq
- *
+ * 
  */
 public class PublicationServiceRemoteImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -49,10 +49,13 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 *
-	 * @param publication ,
-	 * @param sampleNames ,
-	 * @param fileData ,
+	 * 
+	 * @param publication
+	 *            ,
+	 * @param sampleNames
+	 *            ,
+	 * @param fileData
+	 *            ,
 	 * @param authors
 	 * @throws Exception
 	 */
@@ -309,6 +312,11 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	public List<String> deletePublication(Publication publication,
 			UserBean user, Boolean removeVisibility)
 			throws PublicationException, NoAccessException {
+		throw new PublicationException("Not implemented for grid service");
+	}
+
+	public PublicationBean getPublicationFromPubMedXML(String pubMedId)
+			throws PublicationException {
 		throw new PublicationException("Not implemented for grid service");
 	}
 }
