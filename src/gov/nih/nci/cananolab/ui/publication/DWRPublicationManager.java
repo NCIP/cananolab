@@ -45,14 +45,10 @@ public class DWRPublicationManager {
 	public PublicationBean searchPubMedById(String pubmedID) {
 		// New a pubBean each time, so we know if parsing is success or not.
 		PublicationBean newPubBean = new PublicationBean();
-		Publication newPub = (Publication) newPubBean.getDomainFile();
 		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
 			try {
-				Long pubMedIDLong = Long.valueOf(pubmedID.trim());
-				PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
-				if (phandler.parsePubMedXML(pubMedIDLong, newPubBean)) {
-					newPub.setPubMedId(pubMedIDLong);
-				}
+				PublicationService service = new PublicationServiceLocalImpl();
+				newPubBean = service.getPublicationFromPubMedXML(pubmedID);
 			} catch (Exception ex) {
 				logger.warn("Invalid PubMed ID: " + pubmedID);
 			}
@@ -77,7 +73,7 @@ public class DWRPublicationManager {
 		// New a pubBean each time, so we know if parsing is success or not.
 		PublicationBean newPubBean = searchPubMedById(pubmedID);
 		// Copy PubMed data into form bean
-		publicationBean.copyPubMedData(newPubBean);
+		publicationBean.copyFromPubMed(newPubBean);
 		return publicationBean;
 	}
 
@@ -85,29 +81,14 @@ public class DWRPublicationManager {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		PublicationBean publicationBean = this.retrievePubMedInfo(pubmedID);
-		Publication publication = (Publication) publicationBean.getDomainFile();
-			// search database record for pubMed ID
+		// search database record for pubMed ID
 		try {
 			PublicationService service = new PublicationServiceLocalImpl();
 			PublicationBean dbPubBean = service.findPublicationByKey(
 					"pubMedId", new Long(pubmedID), user);
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
-				Publication dbPub = (Publication) dbPubBean.getDomainFile();
-				publication.setId(dbPub.getId());
-				publication.setCreatedBy(dbPub.getCreatedBy());
-				publication.setCreatedDate(dbPub.getCreatedDate());
-				publication.setCategory(dbPub.getCategory());
-				publication.setDescription(dbPub.getDescription());
-				publication.setKeywordCollection(dbPub.getKeywordCollection());
-				publication.setResearchArea(dbPub.getResearchArea());
-				publication.setStatus(dbPub.getStatus());
-				publication.setType(dbPub.getType());
-				publication.setAuthorCollection(dbPub.getAuthorCollection());
-				publicationBean.setAuthors(dbPubBean.getAuthors());
-				publicationBean
-						.setSampleNamesStr(dbPubBean.getSampleNamesStr());
-				publicationBean.setVisibilityGroups(dbPubBean.getVisibilityGroups());
+				publicationBean.copyFromDatabase(dbPubBean);
 				return publicationBean;
 			}
 		} catch (NoAccessException ne) {
