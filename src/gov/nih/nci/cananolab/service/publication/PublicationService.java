@@ -10,20 +10,20 @@ import java.util.List;
 
 /**
  * Interface defining methods invovled in submiting and searching publications.
- *
+ * 
  * @author tanq
- *
+ * 
  */
 public interface PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 *
+	 * 
 	 * @param publication
 	 * @param sampleNames
 	 * @param fileData
 	 * @param authors
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	public void savePublication(PublicationBean publicationBean, UserBean user)
@@ -68,4 +68,15 @@ public interface PublicationService {
 	public List<String> deletePublication(Publication publication,
 			UserBean user, Boolean removeVisibility)
 			throws PublicationException, NoAccessException;
+
+	/**
+	 * Parse PubMed XML file and store the information into a PublicationBean
+	 * 
+	 * @param pubMedId
+	 * @return
+	 * @throws PublicationException
+	 */
+	public PublicationBean getPublicationFromPubMedXML(String pubMedId)
+			throws PublicationException;
+
 }
