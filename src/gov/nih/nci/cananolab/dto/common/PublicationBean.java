@@ -78,23 +78,39 @@ public class PublicationBean extends FileBean {
 	 * @param source
 	 * @param taget
 	 */
-	public void copyPubMedData(PublicationBean source) {
+	public void copyFromPubMed(PublicationBean source) {
 		Publication oldPub = (Publication) this.getDomainFile();
-		Publication newPub = (Publication) source.getDomainFile();
+		Publication xmlPub = (Publication) source.getDomainFile();
 
-		oldPub.setPubMedId(newPub.getPubMedId());
-		oldPub.setDescription(newPub.getDescription());
-		oldPub.setDigitalObjectId(newPub.getDigitalObjectId());
-		oldPub.setTitle(newPub.getTitle());
-		oldPub.setJournalName(newPub.getJournalName());
-		oldPub.setStartPage(newPub.getStartPage());
-		oldPub.setEndPage(newPub.getEndPage());
-		oldPub.setVolume(newPub.getVolume());
-		oldPub.setYear(newPub.getYear());
-		oldPub.setKeywordCollection(newPub.getKeywordCollection());
+		oldPub.setPubMedId(xmlPub.getPubMedId());
+		oldPub.setDescription(xmlPub.getDescription());
+		oldPub.setDigitalObjectId(xmlPub.getDigitalObjectId());
+		oldPub.setTitle(xmlPub.getTitle());
+		oldPub.setJournalName(xmlPub.getJournalName());
+		oldPub.setStartPage(xmlPub.getStartPage());
+		oldPub.setEndPage(xmlPub.getEndPage());
+		oldPub.setVolume(xmlPub.getVolume());
+		oldPub.setYear(xmlPub.getYear());
+		oldPub.setKeywordCollection(xmlPub.getKeywordCollection());
 		this.setAuthors(source.getAuthors());
 	}
 
+	public void copyFromDatabase(PublicationBean source) {
+		Publication oldPub = (Publication) this.getDomainFile();
+		Publication dbPub = (Publication) source.getDomainFile();
+		oldPub.setId(dbPub.getId());
+		oldPub.setCreatedBy(dbPub.getCreatedBy());
+		oldPub.setCreatedDate(dbPub.getCreatedDate());
+		oldPub.setCategory(dbPub.getCategory());
+		oldPub.setDescription(dbPub.getDescription());
+		oldPub.setKeywordCollection(dbPub.getKeywordCollection());
+		oldPub.setResearchArea(dbPub.getResearchArea());
+		oldPub.setStatus(dbPub.getStatus());
+		oldPub.setType(dbPub.getType());
+		this.setSampleNamesStr(source.getSampleNamesStr());
+		this.setVisibilityGroups(source.getVisibilityGroups());
+	}
+	
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof PublicationBean) {
