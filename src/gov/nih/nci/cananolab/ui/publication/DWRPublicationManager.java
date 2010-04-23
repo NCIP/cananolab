@@ -1,13 +1,11 @@
 package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
@@ -73,7 +71,7 @@ public class DWRPublicationManager {
 		// New a pubBean each time, so we know if parsing is success or not.
 		PublicationBean newPubBean = searchPubMedById(pubmedID);
 		// Copy PubMed data into form bean
-		publicationBean.copyFromPubMed(newPubBean);
+		publicationBean.copyPubMedFieldsFromPubMedXML(newPubBean);
 		return publicationBean;
 	}
 
@@ -88,7 +86,7 @@ public class DWRPublicationManager {
 					"pubMedId", new Long(pubmedID), user);
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
-				publicationBean.copyFromDatabase(dbPubBean);
+				publicationBean.copyNonPubMedFieldsFromDatabase(dbPubBean);
 				return publicationBean;
 			}
 		} catch (NoAccessException ne) {
@@ -119,6 +117,38 @@ public class DWRPublicationManager {
 			return null;
 		}
 		return (PublicationBean) form.get("publication");
+	}
+
+	public PublicationBean updateWithExistingDOIPublication(String doi) {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+		PublicationForm form = (PublicationForm) wctx.getSession()
+				.getAttribute("publicationForm");
+		if (form == null) {
+			return null;
+		}
+		PublicationBean publicationBean = (PublicationBean) form
+				.get("publication");
+
+		// search database record for DOI
+		try {
+			PublicationService service = new PublicationServiceLocalImpl();
+			PublicationBean dbPubBean = service.findPublicationByKey(
+					"digitalObjectId", doi, user);
+			if (dbPubBean != null) {
+				// update form publication with data stored in the databbase
+				publicationBean.copyFromDatabase(dbPubBean);
+				return publicationBean;
+			}
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication with DOI " + doi);
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication with DOI " + doi);
+		}
+		return null;
 	}
 
 	public String[] getPublicationCategories(String searchLocations) {
