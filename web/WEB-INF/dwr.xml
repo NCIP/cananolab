@@ -116,6 +116,7 @@
 			<include method="getPublicationStatuses" />
 			<include method="getPublicCounts" />
 			<include method="updateWithExistingDOIPublication"/>
+			<include method="updateWithExistingNonPubMedDOIPublication"/>
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
