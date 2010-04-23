@@ -719,7 +719,7 @@ public class SampleServiceHelper {
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(sampleName));
+				Property.forName("name").eq(sampleName).ignoreCase());
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -1020,7 +1020,7 @@ public class SampleServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
-		crit.add(Restrictions.eq("name", orgName));
+		crit.add(Restrictions.eq("name", orgName).ignoreCase());
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List results = appService.query(crit);
