@@ -135,6 +135,8 @@ public class PublicationBean extends FileBean {
 		oldPub.setType(dbPub.getType());
 		this.setSampleNamesStr(source.getSampleNamesStr());
 		this.setVisibilityGroups(source.getVisibilityGroups());
+		oldPub.setUri(dbPub.getUri());
+		oldPub.setUriExternal(dbPub.getUriExternal());
 	}
 	
 	public boolean equals(Object obj) {
