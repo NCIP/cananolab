@@ -248,7 +248,7 @@ public class EndNoteXMLHandler {
 					// update pubBean with information from PubMed XML
 					PublicationBean xmlBean = service
 							.getPublicationFromPubMedXML(pubMedId.toString());
-					pubBean.copyFromPubMed(xmlBean);
+					pubBean.copyPubMedFieldsFromPubMedXML(xmlBean);
 					log
 							.println("updated publication with information from PubMed XML");
 
@@ -266,7 +266,7 @@ public class EndNoteXMLHandler {
 							dbLog.println("Found duplicated PubMedId in DB: "
 									+ pubMedId);
 							this.printLog(pub, dbLog, ++dupCount, true); 
-							pubBean.copyFromDatabase(dbBean);
+							pubBean.copyNonPubMedFieldsFromDatabase(dbBean);
 							continue; // Found duplicated PubMedId, skip this
 							// publication.
 						}
@@ -1128,7 +1128,7 @@ public class EndNoteXMLHandler {
 					&& !StringUtils.isEmpty(oldPub.getDescription())) {
 				oldAbstract = oldPub.getDescription(); // reserve abstract.
 			}
-			oldPubBean.copyFromPubMed(newPubBean);
+			oldPubBean.copyPubMedFieldsFromPubMedXML(newPubBean);
 			oldPubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
 					.getLoginName());
 			if (oldAbstract != null) {
