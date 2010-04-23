@@ -393,7 +393,7 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Technique.class)
-					.add(Property.forName("type").eq(new String(type)));
+					.add(Property.forName("type").eq(new String(type)).ignoreCase());
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				technique = (Technique) obj;
