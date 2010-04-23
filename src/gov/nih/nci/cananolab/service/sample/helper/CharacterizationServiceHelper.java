@@ -58,7 +58,7 @@ public class CharacterizationServiceHelper {
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				OtherCharacterization.class).add(
-				Property.forName("assayCategory").eq(assayCategory));
+				Property.forName("assayCategory").eq(assayCategory).ignoreCase());
 		List result = appService.query(crit);
 		for (Object obj : result) {
 			String charName = ((OtherCharacterization) obj).getName();
