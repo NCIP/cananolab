@@ -413,9 +413,9 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
-			crit.add(Restrictions.eq("type", type));
-			crit.add(Restrictions.eq("manufacturer", manufacturer));
-			crit.add(Restrictions.eq("modelName", modelName));
+			crit.add(Restrictions.eq("type", type).ignoreCase());
+			crit.add(Restrictions.eq("manufacturer", manufacturer).ignoreCase());
+			crit.add(Restrictions.eq("modelName", modelName).ignoreCase());
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				instrument = (Instrument) obj;
