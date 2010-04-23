@@ -78,7 +78,7 @@ public class PublicationBean extends FileBean {
 	 * @param source
 	 * @param taget
 	 */
-	public void copyFromPubMed(PublicationBean source) {
+	public void copyPubMedFieldsFromPubMedXML(PublicationBean source) {
 		Publication oldPub = (Publication) this.getDomainFile();
 		Publication xmlPub = (Publication) source.getDomainFile();
 
@@ -95,7 +95,7 @@ public class PublicationBean extends FileBean {
 		this.setAuthors(source.getAuthors());
 	}
 
-	public void copyFromDatabase(PublicationBean source) {
+	public void copyNonPubMedFieldsFromDatabase(PublicationBean source) {
 		Publication oldPub = (Publication) this.getDomainFile();
 		Publication dbPub = (Publication) source.getDomainFile();
 		oldPub.setId(dbPub.getId());
@@ -104,6 +104,32 @@ public class PublicationBean extends FileBean {
 		oldPub.setCategory(dbPub.getCategory());
 		oldPub.setDescription(dbPub.getDescription());
 		oldPub.setKeywordCollection(dbPub.getKeywordCollection());
+		oldPub.setResearchArea(dbPub.getResearchArea());
+		oldPub.setStatus(dbPub.getStatus());
+		oldPub.setType(dbPub.getType());
+		this.setSampleNamesStr(source.getSampleNamesStr());
+		this.setVisibilityGroups(source.getVisibilityGroups());
+	}
+	
+	public void copyFromDatabase(PublicationBean source) {
+		Publication oldPub = (Publication) this.getDomainFile();
+		Publication dbPub = (Publication) source.getDomainFile();
+
+		oldPub.setPubMedId(dbPub.getPubMedId());
+		oldPub.setDescription(dbPub.getDescription());
+		oldPub.setDigitalObjectId(dbPub.getDigitalObjectId());
+		oldPub.setTitle(dbPub.getTitle());
+		oldPub.setJournalName(dbPub.getJournalName());
+		oldPub.setStartPage(dbPub.getStartPage());
+		oldPub.setEndPage(dbPub.getEndPage());
+		oldPub.setVolume(dbPub.getVolume());
+		oldPub.setYear(dbPub.getYear());
+		oldPub.setKeywordCollection(dbPub.getKeywordCollection());
+		this.setAuthors(source.getAuthors());		
+		oldPub.setId(dbPub.getId());
+		oldPub.setCreatedBy(dbPub.getCreatedBy());
+		oldPub.setCreatedDate(dbPub.getCreatedDate());
+		oldPub.setCategory(dbPub.getCategory());
 		oldPub.setResearchArea(dbPub.getResearchArea());
 		oldPub.setStatus(dbPub.getStatus());
 		oldPub.setType(dbPub.getType());
