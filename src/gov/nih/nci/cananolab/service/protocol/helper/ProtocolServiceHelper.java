@@ -110,9 +110,9 @@ public class ProtocolServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
-				Property.forName("type").eq(protocolType)).add(
-				Property.forName("name").eq(protocolName)).add(
-				Property.forName("version").eq(protocolVersion));
+				Property.forName("type").eq(protocolType).ignoreCase()).add(
+				Property.forName("name").eq(protocolName).ignoreCase()).add(
+				Property.forName("version").eq(protocolVersion).ignoreCase());
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
