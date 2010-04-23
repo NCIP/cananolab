@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -286,5 +287,41 @@ public class DWRPublicationManager {
 			}
 		}
 		return counts.toString();
+	}
+
+	public PublicationBean updateWithExistingNonPubMedDOIPublication(
+			String category, String title, Author firstAuthor) throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+		PublicationForm form = (PublicationForm) wctx.getSession()
+				.getAttribute("publicationForm");
+		if (form == null) {
+			return null;
+		}
+		PublicationBean publicationBean = (PublicationBean) form
+				.get("publication");
+		Publication publication = (Publication) publicationBean.getDomainFile();
+
+		// check whether a publication exists based on the publication type,
+		// title, first author
+		PublicationService service = new PublicationServiceLocalImpl();
+		String firstName = null;
+		String lastName = null;
+		if (firstAuthor!=null) {
+			firstName = firstAuthor.getFirstName();
+			lastName = firstAuthor.getLastName();
+		}
+		PublicationBean dbBean = service.findNonPubMedNonDOIPublication(
+				category, title, lastName,
+				firstName, user);
+		if (dbBean != null) {
+			publicationBean.copyFromDatabase(dbBean);
+			return publicationBean;
+		} else {
+			return null;
+		}
 	}
 }
