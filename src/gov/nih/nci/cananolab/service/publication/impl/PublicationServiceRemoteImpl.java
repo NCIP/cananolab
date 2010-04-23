@@ -319,4 +319,10 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			throws PublicationException {
 		throw new PublicationException("Not implemented for grid service");
 	}
+	
+	public PublicationBean findNonPubMedNonDOIPublication(
+			String publicationType, String title, String firstAuthorLastName,
+			String firstAuthorFirstName, UserBean user) throws PublicationException {
+		throw new PublicationException("Not implemented for grid service");
+	}
 }

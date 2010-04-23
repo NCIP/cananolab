@@ -1,10 +1,13 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -589,5 +592,44 @@ public class PublicationServiceHelper {
 
 	public AuthorizationService getAuthService() {
 		return authService;
+	}
+
+	public Publication findNonPubMedNonDOIPublication(String publicationType,
+			String title, String firstAuthorLastName,
+			String firstAuthorFirstName, UserBean user) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class);
+		// crit.createAlias("authorCollection", "author");
+		crit.add(Restrictions.eq("category", publicationType).ignoreCase());
+		crit.add(Restrictions.eq("title", title).ignoreCase());
+		crit.setFetchMode("authorCollection", FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		// if (firstAuthorLastName != null) {
+		// crit.add(Restrictions.eq("author.lastName", firstAuthorLastName)
+		// .ignoreCase());
+		// } else {
+		// crit.add(Restrictions.isNull("author.lastName"));
+		// }
+		// if (firstAuthorFirstName != null) {
+		// crit.add(Restrictions.eq("author.firstName", firstAuthorFirstName)
+		// .ignoreCase());
+		// } else {
+		// crit.add(Restrictions.isNull("author.firstName"));
+		// }
+		crit.add(Restrictions.isNull("pubMedId"));
+		crit.add(Restrictions.isNull("digitalObjectId"));
+		List results = appService.query(crit);
+		Publication publication = null;
+		for (Object obj : results) {
+			publication = (Publication) obj;
+			if (authService.checkReadPermission(user, publication.getId()
+					.toString())) {
+				return publication;
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return publication;
 	}
 }

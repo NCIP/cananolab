@@ -79,4 +79,8 @@ public interface PublicationService {
 	public PublicationBean getPublicationFromPubMedXML(String pubMedId)
 			throws PublicationException;
 
+	public PublicationBean findNonPubMedNonDOIPublication(
+			String publicationType, String title, String firstAuthorLastName,
+			String firstAuthorFirstName, UserBean user)
+			throws PublicationException;
 }
