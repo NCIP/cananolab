@@ -46,12 +46,21 @@
 			<field property="lastName" depends="required">
 				<arg position="0" key="registerUserForm.lastName" />
 			</field>
-			<field property="email" depends="required">
-				<arg position="0" key="registerUserForm.email" />				
+			<field property="email" depends="required,email" >
+				<arg position="0" key="registerUserForm.email" />								
 			</field>
 			<field property="phone" depends="required">
 				<arg position="0" key="registerUserForm.phone" />
 			</field>
+			<field property="organization" depends="required">
+				<arg position="0" key="registerUserForm.organization" />
+			</field>			
+			<field property="comment" depends="maxlength">
+        		<arg0 key="registerUserForm.comment"/>
+        		<arg1 name="maxlength" key="${var:maxlength}" resource="false"/>
+        		<var><var-name>maxlength</var-name><var-value>4000</var-value></var>
+    		</field>
+			
 		</form>
 	</formset>
 </form-validation>
