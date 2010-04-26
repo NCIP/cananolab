@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.service.security;
 
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Properties;
@@ -17,10 +19,19 @@ public class MailService {
 
 	private static final String CANANOLAB_USER_MAILING_LIST = "CANANOLAB-USERS-L@LIST.NIH.GOV";
 	private static final String MAILING_LIST="LISTSERV@LIST.NIH.GOV";
-	private String host = "mailfwd.nih.gov";
-	private String from = "caNanoLab <do.not.reply@mail.nih.gov>";
+	private String HOST = "mailfwd.nih.gov"; 
+	private String FROM = "caNanoLab <do.not.reply@mail.nih.gov>";
+	private String TO = "ncicbmb@mail.nih.gov";
 
 	public MailService() {
+		HOST = PropertyUtils.getProperty(
+				Constants.CANANOLAB_PROPERTY, "mailServerHost");
+		
+		TO = PropertyUtils.getProperty(
+				Constants.CANANOLAB_PROPERTY, "adminEmail");
+		System.out.println("Admin email: " + TO);
+		FROM = PropertyUtils.getProperty(
+				Constants.CANANOLAB_PROPERTY, "doNoReply");
 	}
 
 	/**
@@ -66,8 +77,10 @@ public class MailService {
 		System.out.println("\n" +message);
 
 		// Send the message
-		sendMail("pansu@mail.nih.gov", emailAddress, message, "caNanoLab User Registration");
-		sendMail("thai.t.le@gmail.com", emailAddress, message, "caNanoLab User Registration");
+		System.out.println("TO: " + TO);
+		sendMail(TO, emailAddress, message, "caNanoLab User Registration");
+		//sendMail("lethai@mail.nih.gov", emailAddress, message, "caNanoLab User Registration");
+		//sendMail("thai.t.le@gmail.com", emailAddress, message, "caNanoLab User Registration");
 	}
 
 	public void sendUsersListRegistration(String emailAddress, String name) {
@@ -81,7 +94,6 @@ public class MailService {
 
 		String message = "subscribe "+CANANOLAB_USER_MAILING_LIST+" "+name;
 		sendMail(MAILING_LIST,  emailAddress, message, "");
-
 	}
 
 	/**
@@ -93,20 +105,20 @@ public class MailService {
 		try {
 			//get system properties
 			Properties props = System.getProperties();
-
+			
 			// Set up mail server
-			props.put("mail.smtp.host", host);
+			props.put("mail.smtp.host", HOST);
 
 			//Get session
 			Session session = Session.getDefaultInstance(props, null);
 
 			//Define Message
 			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
+			message.setFrom(new InternetAddress(FROM));
 			message.addRecipient(Message.RecipientType.TO,
 					new InternetAddress(mailTo));
 			message.setSubject(subject);
-			message.setText(mailBody);
+			message.setText(mailBody);			
 
 			//Send Message
 			Transport.send(message);
@@ -124,7 +136,7 @@ public class MailService {
 			Properties props = System.getProperties();
 
 			// Set up mail server
-			props.put("mail.smtp.host", host);
+			props.put("mail.smtp.host", HOST);
 
 			//Get session
 			Session session = Session.getDefaultInstance(props, null);
