@@ -1,13 +1,10 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
 import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -156,7 +153,7 @@ public class PublicationServiceHelper {
 		// keywords
 		if (keywords != null && keywords.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
-			crit.createCriteria("keywordCollection", "keyword");
+			crit.createAlias("keywordCollection", "keyword");
 			for (String keyword : keywords) {
 				// string wildcards from either end of keyword is entered
 				keyword = StringUtils.stripWildcards(keyword);
@@ -347,7 +344,7 @@ public class PublicationServiceHelper {
 		// keywords
 		if (keywords != null && keywords.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
-			crit.createCriteria("keywordCollection", "keyword");
+			crit.createAlias("keywordCollection", "keyword");
 			for (String keyword : keywords) {
 				Criterion keywordCrit1 = Restrictions.ilike("keyword.name",
 						keyword, MatchMode.ANYWHERE);
@@ -600,23 +597,27 @@ public class PublicationServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class);
-		// crit.createAlias("authorCollection", "author");
 		crit.add(Restrictions.eq("category", publicationType).ignoreCase());
 		crit.add(Restrictions.eq("title", title).ignoreCase());
-		crit.setFetchMode("authorCollection", FetchMode.JOIN);
+		// had to use either createAlias with LEFT_JOIN on authorCollection and
+		// no fetchMode on authorCollection
+		crit.createAlias("authorCollection", "author",
+				CriteriaSpecification.LEFT_JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-		// if (firstAuthorLastName != null) {
-		// crit.add(Restrictions.eq("author.lastName", firstAuthorLastName)
-		// .ignoreCase());
-		// } else {
-		// crit.add(Restrictions.isNull("author.lastName"));
-		// }
-		// if (firstAuthorFirstName != null) {
-		// crit.add(Restrictions.eq("author.firstName", firstAuthorFirstName)
-		// .ignoreCase());
-		// } else {
-		// crit.add(Restrictions.isNull("author.firstName"));
-		// }
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		if (firstAuthorLastName != null) {
+			crit.add(Restrictions.eq("author.lastName", firstAuthorLastName)
+					.ignoreCase());
+		} else {
+			crit.add(Restrictions.isNull("author.lastName"));
+		}
+		if (firstAuthorFirstName != null) {
+			crit.add(Restrictions.eq("author.firstName", firstAuthorFirstName)
+					.ignoreCase());
+		} else {
+			crit.add(Restrictions.isNull("author.firstName"));
+		}
+
 		crit.add(Restrictions.isNull("pubMedId"));
 		crit.add(Restrictions.isNull("digitalObjectId"));
 		List results = appService.query(crit);
