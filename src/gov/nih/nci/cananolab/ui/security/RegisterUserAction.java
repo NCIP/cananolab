@@ -29,7 +29,7 @@ public class RegisterUserAction extends Action {
 		String title = (String) theForm.get("title");
 		String firstName = (String) theForm.get("firstName");
 		String lastName = (String) theForm.get("lastName");
-		String email = (String) theForm.get("lastName");
+		String email = (String) theForm.get("email");
 		String phone = (String) theForm.get("phone");
 		String organization = (String) theForm.get("organization");
 		String fax = (String) theForm.get("fax");
