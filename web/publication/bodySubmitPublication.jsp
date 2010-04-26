@@ -99,7 +99,8 @@
 			</td>
 			<td>
 				<html:text property="publication.domainFile.digitalObjectId"
-					styleId="domainFile.digitalObjectId" size="30" onchange="javascript:updateWithExistingDOI('true')" />
+					styleId="domainFile.digitalObjectId" size="30"
+					onchange="javascript:updateWithExistingDOI('true')" />
 				&nbsp;
 			</td>
 		</tr>
@@ -315,17 +316,29 @@
 				</td>
 				<td colspan="2">
 					<span id="load"> <html:file
-							property="publication.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
+							property="publication.uploadedFile" styleId="uploadedFileField"
+							size="60"
+							onchange="javascript:updateWithExistingNonPubMedDOIPublication('true', '${applicationOwner}', '${publicationForm.map.publication.domainFile.uri}');" />
+						&nbsp;&nbsp; </span>
 					<br>
 					<br>
 					<span id="link" style=""><html:text
-							property="publication.externalUrl" size="60" /> </span>&nbsp;
+							property="publication.externalUrl" styleId="externalUrlField"
+							size="60"
+							onchange="javascript:updateWithExistingNonPubMedDOIPublication('true', '${applicationOwner}', '${publicationForm.map.publication.domainFile.uri}');" />
+					</span>&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<span id="existingFileInfo" style="display: none"></span>
 				</td>
 			</tr>
 			<c:if
 				test="${!empty publicationForm.map.publication.domainFile.uri }">
 				<tr>
 					<td colspan="3">
+						<div id="existingFileInfoFromUpdate" style="display: block">
 						<c:choose>
 							<c:when test="${publicationForm.map.publication.image eq 'true'}">
 						 				${publicationForm.map.publication.domainFile.title}<br>
@@ -345,6 +358,7 @@
 								<br>
 							</c:otherwise>
 						</c:choose>
+						</div>
 					</td>
 				</tr>
 			</c:if>
@@ -369,7 +383,8 @@
 									<em>one name per line</em>
 								</td>
 								<td width="5">
-									<a href="#sampleNameField" onclick="showMatchedSampleNameDropdown()"><img
+									<a href="#sampleNameField"
+										onclick="showMatchedSampleNameDropdown()"><img
 											src="images/icon_browse.jpg" align="middle"
 											alt="search existing samples" border="0" /> </a>
 								</td>
@@ -440,5 +455,6 @@
 			value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
 	</c:if>
+
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
