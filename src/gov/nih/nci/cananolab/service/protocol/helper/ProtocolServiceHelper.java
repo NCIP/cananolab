@@ -31,9 +31,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * This class includes methods involved in searching protocols that can be used
  * in both local and remote searches
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger
@@ -56,7 +56,6 @@ public class ProtocolServiceHelper {
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
 		crit.createAlias("file", "file", CriteriaSpecification.LEFT_JOIN);
-		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		if (!StringUtils.isEmpty(protocolType)) {
 			// case insensitive
