@@ -231,7 +231,7 @@ function updateWithExistingDOI(updatePrompt) {
 }
 
 function updateWithExistingNonPubMedDOIPublication(updatePrompt,
-		applicationOwner) {
+		applicationOwner, uri) {
 	appOwner = applicationOwner;
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
 	var doi = dwr.util.getValue("domainFile.digitalObjectId");
@@ -241,12 +241,12 @@ function updateWithExistingNonPubMedDOIPublication(updatePrompt,
 	if (currentPublication != null) {
 		var authors = currentPublication.authors;
 		if (authors != null) {
-			firstAuthor = authors[0];
+			firstAuthor = authors[0];			
 		}
 	}
 	updateFormPrompt = updatePrompt;
 	confirmMessage = "A database record with the same publication type, title, first author already exists.  Load saved information?";
-	if ((pubMedId == null || pubMedId == 0) && doi == "") {
+	if ((pubMedId == null || pubMedId == 0) && doi == "" && (uri==null||uri=="")) {
 		waitCursor();
 		PublicationManager.updateWithExistingNonPubMedDOIPublication(category,
 				title, firstAuthor, populateAllFields);
@@ -254,7 +254,7 @@ function updateWithExistingNonPubMedDOIPublication(updatePrompt,
 }
 
 function populateAllFields(publication) {
-	if (publication != null) {
+	if (publication != null) {		
 		if (updateFormPrompt == "true" && confirm(confirmMessage)) {
 			dwr.util.setValue("category", publication.domainFile.category);
 			dwr.util.setValue("status", publication.domainFile.status);
@@ -277,7 +277,7 @@ function populateAllFields(publication) {
 			// publication.visibilityGroups);
 			// dwr.util.setValue("researchAreas", publication.researchAreas);
 			currentPublication = publication;
-			//if there's a valid PubMed ID disable PubMed related fields
+			// if there's a valid PubMed ID disable PubMed related fields
 			if (publication.domainFile.pubMedId != null
 					&& publication.domainFile.pubMedId != 0) {
 				populateAuthors(true);
@@ -300,7 +300,7 @@ function showExisitingFileInfo(publication) {
 	dwr.util.setValue("externalUrlField", "");
 	if (publication.domainFile.uri != null) {
 		dwr.util.setValue("existingFileInfo",
-				"Submitted publication: <a href='publication.do?dispatch=download&amp;fileId="
+				"Submitted publication <a href='publication.do?dispatch=download&amp;fileId="
 						+ publication.domainFile.id + "&amp;location="
 						+ appOwner + "' target=" + publication.urlTarget + ">"
 						+ publication.domainFile.uri + "</a>", {
@@ -308,6 +308,7 @@ function showExisitingFileInfo(publication) {
 				});
 	}
 	show("existingFileInfo");
+	hide("existingFileInfoFromUpdate");
 }
 
 function hideExistingFileInfo() {
