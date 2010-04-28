@@ -30,7 +30,7 @@ public class Constants {
 
 	public static final String STRING_OPERAND_EQUALS = "equals";
 	public static final String STRING_OPERAND_CONTAINS = "contains";
-	
+
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
 	public static final String DEFAULT_APP_OWNER = "NCICB";
@@ -168,7 +168,7 @@ public class Constants {
 
 	// default discovery internal for grid index server
 	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 240;
-	
+
 	// default discovery internal for grid index server
 	public static final int DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS = 1;
 
@@ -203,4 +203,12 @@ public class Constants {
 	public static final int DISPLAY_TAG_TABLE_SIZE = 25;
 
 	public static final String PLACEHOLDER_DATUM_CONDITION_CREATED_BY = "place holder";
+
+	public static final String DOI_PREFIX = "http://dx.doi.org/";
+
+	public static final String PUBMED_PREFIX = "http://www.ncbi.nlm.nih.gov/pubmed/";
+	
+	public static final String PUBMED_XML_PREFIX = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
+
+	public static final String ISI_PREFIX = "http://apps.isiknowledge.com/InboundService.do?Func=Frame&product=WOS&action=retrieve&SrcApp=EndNote&Init=Yes&SrcAuth=ResearchSoft&mode=FullRecord&UT=";
 }
