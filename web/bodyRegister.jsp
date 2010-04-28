@@ -41,7 +41,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Organization<br/><html:text property="organization" size="30" />
+				Organization*<br/><html:text property="organization" size="30" />
 			</td>
 			<td class="cellLabel">
 				Fax<br/>
