@@ -134,6 +134,7 @@ public class PublicationBean extends FileBean {
 		oldPub.setStatus(dbPub.getStatus());
 		oldPub.setType(dbPub.getType());
 		this.setSampleNamesStr(source.getSampleNamesStr());
+		this.setSampleNames(source.getSampleNames());
 		this.setVisibilityGroups(source.getVisibilityGroups());
 		oldPub.setUri(dbPub.getUri());
 		oldPub.setUriExternal(dbPub.getUriExternal());
