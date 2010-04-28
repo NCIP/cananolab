@@ -37,7 +37,9 @@ public class DWRPublicationManager {
 		PublicationForm form = (PublicationForm) wctx.getSession()
 				.getAttribute("publicationForm");
 		PublicationBean pbean = new PublicationBean();
-		form.set("publication", pbean);
+		if (form != null) {
+			form.set("publication", pbean);
+		}
 		return pbean;
 	}
 
@@ -310,13 +312,12 @@ public class DWRPublicationManager {
 		PublicationService service = new PublicationServiceLocalImpl();
 		String firstName = null;
 		String lastName = null;
-		if (firstAuthor!=null) {
+		if (firstAuthor != null) {
 			firstName = firstAuthor.getFirstName();
 			lastName = firstAuthor.getLastName();
 		}
 		PublicationBean dbBean = service.findNonPubMedNonDOIPublication(
-				category, title, lastName,
-				firstName, user);
+				category, title, lastName, firstName, user);
 		if (dbBean != null) {
 			publicationBean.copyFromDatabase(dbBean);
 			return publicationBean;
