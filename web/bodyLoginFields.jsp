@@ -17,7 +17,10 @@
 					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=welcome_login')"
 					class="loginText">Help</a>
 			</td>
-		</tr>		
+		</tr>
+		<tr>
+			<td height="20" class="sidebarContent">You do not need an account to search public data.</td>
+		</tr>
 		<tr>
 			<td>
 				<table id="loginBlock" style="display: none">
