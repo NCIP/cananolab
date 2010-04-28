@@ -5,6 +5,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -261,7 +262,7 @@ public class PublicationBean extends FileBean {
 		Publication pub = (Publication) domainFile;
 		if (pub.getPubMedId() != null) {
 			StringBuilder sb = new StringBuilder("<a target='_abstract' href=");
-			sb.append("http://www.ncbi.nlm.nih.gov/pubmed/");
+			sb.append(Constants.PUBMED_PREFIX);
 			sb.append(pub.getPubMedId());
 			sb.append(">");
 			sb.append("PMID: " + pub.getPubMedId());
@@ -276,7 +277,7 @@ public class PublicationBean extends FileBean {
 		Publication pub = (Publication) domainFile;
 		if (!StringUtils.isEmpty(pub.getDigitalObjectId())) {
 			StringBuilder sb = new StringBuilder("<a target='_abstract' href=");
-			sb.append("http://dx.doi.org/");
+			sb.append(Constants.DOI_PREFIX);
 			sb.append(pub.getDigitalObjectId());
 			sb.append(">");
 			sb.append("DOI: " + pub.getDigitalObjectId());
