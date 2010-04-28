@@ -17,9 +17,7 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
@@ -59,6 +57,7 @@ public class EndNoteXMLHandler {
 	private StringBuilder title;
 	private StringBuilder year;
 	private StringBuilder pageStr;
+	private StringBuilder accessionNumber;
 	private String startPage;
 	private String endPage;
 	private List<Author> authorList;
@@ -476,7 +475,11 @@ public class EndNoteXMLHandler {
 							// Thread.sleep(1000);
 							// }
 							// }
-							publication.setPubMedId(pubMedId);
+							// only reset PubMed ID is it's not alreay set by
+							// <accession-num> tag
+							if (publication.getPubMedId() == null) {
+								publication.setPubMedId(pubMedId);
+							}
 						} catch (Exception ex) {
 							log.println("Invalid PubMed ID: " + pmid);
 							printLog(publication, log, -4);
@@ -503,7 +506,28 @@ public class EndNoteXMLHandler {
 								publication.setDigitalObjectId(doi.toString());
 							}
 						}
+						// set all other http based uri
+						else {
+							publication.setUri(url.toString());
+							publication.setUriExternal(true);
+						}
 					}
+				}
+			}
+			// check for ISI accession number
+			else if (!StringUtils.isEmpty(url.toString())) {
+				int index = url.indexOf("<Go to ISI>://");
+				if (index != -1) {
+					int index2 = url.indexOf("//");
+					String isiLink = Constants.ISI_PREFIX
+							+ url.substring(index2 + 2);
+					publication.setUri(isiLink);
+					publication.setUriExternal(true);
+				}
+				// set all other uri
+				else {
+					publication.setUri(url.toString());
+					publication.setUriExternal(true);
 				}
 			}
 		}
@@ -596,6 +620,25 @@ public class EndNoteXMLHandler {
 		}
 	}
 
+	private class AccessionNumberHandler extends SAXElementHandler {
+		public void startElement(String uri, String localName, String qname,
+				Attributes atts) {
+			accessionNumber = new StringBuilder();
+		}
+
+		public void characters(char[] ch, int start, int length) {
+			accessionNumber.append(new String(ch, start, length));
+		}
+
+		public void endElement(String uri, String localName, String qname) {
+			try {
+				publication.setPubMedId(new Long(accessionNumber.toString()));
+			} catch (NumberFormatException ex) {
+				log.println("Invalid PubMed ID: " + accessionNumber.toString());
+			}
+		}
+	}
+
 	private class AbstractHandler extends SAXElementHandler {
 		public void startElement(String uri, String localName, String qname,
 				Attributes atts) {
@@ -623,32 +666,39 @@ public class EndNoteXMLHandler {
 
 		public void endElement(String uri, String localName, String qname) {
 			if (!hasPubMedData && pageStr.toString().trim().length() > 0) {
-				String[] pages = pageStr.toString().split("-");
-				if (pages != null && pages.length > 0) {
-					startPage = pages[0].trim(); // May contain space(s).
-					if (pages.length == 2) {
-						endPage = pages[1].trim(); // May contain space(s).
-						int endPagePrefixLength = startPage.length()
-								- endPage.length();
-						if (endPagePrefixLength > 0) {
-							String endPagePrefix = startPage.substring(0,
-									endPagePrefixLength);
-							endPage = endPagePrefix + endPage;
+				if (pageStr.toString().endsWith(("-+"))) {
+					startPage = pageStr.toString();
+					endPage = "";
+				} else {
+					String[] pages = pageStr.toString().split("-");
+					if (pages != null && pages.length > 0) {
+						startPage = pages[0].trim(); // May contain space(s).
+						if (pages.length == 2) {
+							endPage = pages[1].trim(); // May contain space(s).
+							int endPagePrefixLength = startPage.length()
+									- endPage.length();
+							if (endPagePrefixLength > 0) {
+								String endPagePrefix = startPage.substring(0,
+										endPagePrefixLength);
+								endPage = endPagePrefix + endPage;
+							}
+						} else {
+							endPage = "";
 						}
-					} else {
-						endPage = startPage;
-					}
-					try {
-						publication.setStartPage(Integer.valueOf(startPage)
-								.toString());
-						publication.setEndPage(Integer.valueOf(endPage)
-								.toString());
-					} catch (NumberFormatException ex) {
-						log
-								.println("Warning: Abnormal Page string: "
-										+ pageStr);
-						publication.setStartPage(pageStr.toString().trim());
-						publication.setEndPage(null);
+						publication.setStartPage(startPage);
+						publication.setEndPage(endPage);
+						// try {
+						// publication.setStartPage(Integer.valueOf(startPage)
+						// .toString());
+						// publication.setEndPage(Integer.valueOf(endPage)
+						// .toString());
+						// } catch (NumberFormatException ex) {
+						// log
+						// .println("Warning: Abnormal Page string: "
+						// + pageStr);
+						// publication.setStartPage(pageStr.toString().trim());
+						// publication.setEndPage(null);
+						// }
 					}
 				}
 			}
@@ -776,6 +826,8 @@ public class EndNoteXMLHandler {
 		SAXEventSwitcher s = new SAXEventSwitcher();
 		s.setElementHandler("record", new RecordHandler());
 		s.setElementHandler("title", new TitleHandler());
+		// PUBMED enclosed in <accessionNumber>
+		s.setElementHandler("accession-num", new AccessionNumberHandler());
 		// PUBMED & DOI
 		s.setElementHandler("url", new UrlHandler());
 		// DOI (doi may be parsed in url)
