@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
 import gov.nih.nci.cananolab.util.SAXEventSwitcher;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -19,7 +20,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 
 public class PubMedXMLHandler {
-	private static final String PUBMED_URL = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
+	private static final String PUBMED_URL = Constants.PUBMED_XML_PREFIX;
 	private static PubMedXMLHandler onlyInstance = null;
 
 	private PublicationBean publicationBean = null;
@@ -160,8 +161,8 @@ public class PubMedXMLHandler {
 		public void endElement(String uri, String localName, String qname) {
 			if (inPubDate) {
 				String medlineDateStr = medlineDate.toString();
-				String[] strs=medlineDateStr.split(" ");
-				String yearStr=strs[0];
+				String[] strs = medlineDateStr.split(" ");
+				String yearStr = strs[0];
 				publication.setYear(Integer.parseInt(yearStr));
 			}
 		}
@@ -297,24 +298,24 @@ public class PubMedXMLHandler {
 	private class LastNameHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			lastName.append(new String(ch, start, length));
-			String lastNameStr=lastName.toString();
-			String[] strs=lastNameStr.split(" ");
-			if (strs.length>1) {
-				lastNameStr=strs[1];
+			String lastNameStr = lastName.toString();
+			String[] strs = lastNameStr.split(" ");
+			if (strs.length > 1) {
+				lastNameStr = strs[1];
 			}
-			lastName=new StringBuilder(lastNameStr);
+			lastName = new StringBuilder(lastNameStr);
 		}
 	}
 
 	private class ForeNameHandler extends SAXElementHandler {
 		public void characters(char[] ch, int start, int length) {
 			firstName.append(new String(ch, start, length));
-			String firstNameStr=firstName.toString();
-			String[] strs=firstNameStr.split(" ");
-			if (strs.length>1) {
-				firstNameStr=strs[0];
+			String firstNameStr = firstName.toString();
+			String[] strs = firstNameStr.split(" ");
+			if (strs.length > 1) {
+				firstNameStr = strs[0];
 			}
-			firstName=new StringBuilder(firstNameStr);
+			firstName = new StringBuilder(firstNameStr);
 		}
 	}
 
@@ -423,7 +424,7 @@ public class PubMedXMLHandler {
 	public static void main(String[] args) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		PublicationBean pubBean = new PublicationBean();
-		phandler.parsePubMedXML(Long.valueOf("19420561"), pubBean); 
+		phandler.parsePubMedXML(Long.valueOf("19420561"), pubBean);
 		// 16642514
 		// 16984117 year information is captured in <MedlineDate>
 		// 19420561
