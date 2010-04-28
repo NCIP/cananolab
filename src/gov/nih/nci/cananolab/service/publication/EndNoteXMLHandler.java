@@ -233,188 +233,31 @@ public class EndNoteXMLHandler {
 
 	public int savePublication(UserBean user) {
 		int count = 0, dupCount = 0;
-		AuthorizationService authService = null;
 		PublicationService service = new PublicationServiceLocalImpl();
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-			for (PublicationBean pubBean : uniquePubList) {
-				pubBean.setVisibilityGroups(visibilityGroups);
-				Publication publication = (Publication) pubBean.getDomainFile();
-				publication.setStatus("published");
-				publication.setCategory("peer review article");
-
-				try {
-					Long pubMedId = publication.getPubMedId();
-					// update pubBean with information from PubMed XML
-					PublicationBean xmlBean = service
-							.getPublicationFromPubMedXML(pubMedId.toString());
-					pubBean.copyPubMedFieldsFromPubMedXML(xmlBean);
-					log
-							.println("updated publication with information from PubMed XML");
-
-					// check for duplicated publication in DB by PubMedId.
-					if (pubMedId != null && pubMedId != 0) {
-						PublicationBean dbBean = service.findPublicationByKey(
-								"pubMedId", pubMedId, user);
-						Publication pub = (Publication) dbBean.getDomainFile();
-						if (pub != null && pub.getId() != null
-								&& pub.getId() != 0) {
-							log.println("Found duplicated PubMedId in DB: "
-									+ pubMedId);
-							dbLog
-									.println("==============================================");
-							dbLog.println("Found duplicated PubMedId in DB: "
-									+ pubMedId);
-							this.printLog(pub, dbLog, ++dupCount, true); 
-							pubBean.copyNonPubMedFieldsFromDatabase(dbBean);
-							continue; // Found duplicated PubMedId, skip this
-							// publication.
-						}
-					}
-					// 2.check for duplicated publication in DB by DOI.
-					String doi = publication.getDigitalObjectId();
-					if (!StringUtils.isEmpty(doi)) {
-						PublicationBean pBean = service.findPublicationByKey(
-								"digitalObjectId", doi, user);
-						log.println(">>>>>>:" + pBean.getDomainFile());
-						Publication pub = (Publication) pBean.getDomainFile();
-						if (pub != null && pub.getId() != null
-								&& pub.getId() != 0) {
-							log.println("Found duplicated DOI in DB: " + doi);
-							dbLog
-									.println("==============================================");
-							dbLog.println("Found duplicated DOI in DB: " + doi);
-							this.printLog(pub, dbLog, ++dupCount, true); // No
-							// author
-							// list.
-
-							// Update DB publication with new PubMed data.
-							this.updatePubMedData(service, pub.getId()
-									.toString(), pubBean, user);
-
-							continue; // Found duplicated DOI, skip this
-							// publication.
-						}
-					}
-					// 3.check for duplicated publication in DB by Title + 1st
-					// Author.
-					String title = publication.getTitle().toLowerCase();
-					if (title.endsWith(".")) {
-						title = title.substring(0, title.length() - 1);
-					}
-					List<Publication> publications = service
-							.findPublicationsBy('*' + title + '*', null, null,
-									null, null, null, null, null, null, null,
-									null, null, null, null, user);
-					if (!publications.isEmpty()) {
-						// 3a.filter result by comparing 1st Author.
-						String firstAuthorName = "";
-						if (!pubBean.getAuthors().isEmpty()) {
-							// Get new 1st Author's name for Author comparing
-							// later.
-							Author firstAuthor = pubBean.getAuthors().get(0);
-							firstAuthorName = firstAuthor.getLastName();
-						}
-						List<Publication> pubs = new ArrayList<Publication>(
-								publications);
-						for (int i = 0; i < pubs.size(); i++) {
-							Publication pub = pubs.get(i);
-							PublicationBean oldPubBean = new PublicationBean(
-									pub);
-							List<Author> authors = oldPubBean.getAuthors();
-							if (authors != null && !authors.isEmpty()) {
-								String name = authors.get(0).getLastName();
-								if (!firstAuthorName.equalsIgnoreCase(name)) {
-									pubs.remove(i); // Not a match, remove from
-									// dup-list.
-								}
-							} else {
-								log
-										.println("WARNING: empty Author for following DB publication");
-								this.printLog(oldPubBean, log, -3);
-								continue;
-							}
-						}
-						// 3b.if result set is still not empty now then there is
-						// a match.
-						if (!pubs.isEmpty()) {
-							log.println("Found duplicated Title (" + title
-									+ ") + 1st Author (" + firstAuthorName
-									+ ") in DB.");
-							for (Publication pub : pubs) {
-								dbLog
-										.println("==============================================");
-								dbLog
-										.println("Found duplicated Title + 1st Author in DB.");
-								this.printLog(pub, dbLog, ++dupCount);
-							}
-							// 3c.update old publication only when new PubMed
-							// data exists.
-							for (int i = 0; i < pubs.size(); i++) {
-								Publication pub = pubs.get(i);
-								this.updatePubMedData(service, pub.getId()
-										.toString(), pubBean, user);
-							}
-							continue; // Found duplication, skip this
-							// publication.
-						}
-					}
-					// 4.setup publication object inside publicationBean & save.
-					pubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
-							.getLoginName());
-					service.savePublication(pubBean, user);
-
-					// 5.set publication object visibility.
-					authService.assignVisibility(pubBean.getDomainFile()
-							.getId().toString(), pubBean.getVisibilityGroups(),
-							null);
-
-					// 6.set author visibility.
-					if (publication.getAuthorCollection() != null) {
-						for (Author author : publication.getAuthorCollection()) {
-							if (author != null) {
-								if (author.getId() != null
-										&& author.getId().toString().trim()
-												.length() > 0) {
-									authService.assignVisibility(author.getId()
-											.toString(), pubBean
-											.getVisibilityGroups(), null);
-								}
-							}
-						}
-					}
-					this.printLog(pubBean, savedLog, count++);
-				} catch (Exception ex) {
-					log.println("Exception thrown in saving Publication:");
-					this.printLog(pubBean, log, -2);
-					ex.printStackTrace(log);
-				}
+		for (PublicationBean pubBean : uniquePubList) {
+			pubBean.setVisibilityGroups(visibilityGroups);
+			Publication publication = (Publication) pubBean.getDomainFile();
+			publication.setStatus("published");
+			publication.setCategory("peer review article");
+			Long pubMedId = publication.getPubMedId();
+			String doi = publication.getDigitalObjectId();
+			String title = publication.getTitle().toLowerCase();
+			if (title.endsWith(".")) {
+				title = title.substring(0, title.length() - 1);
 			}
-		} catch (SecurityException e) {
-			log.println("Can not create AuthorizationService:");
-			e.printStackTrace(log);
-		}
-		return count;
-	}
-
-	public int savePublicationTmp(UserBean user) {
-		int count = 0, dupCount = 0;
-		AuthorizationService authService = null;
-		PublicationService service = new PublicationServiceLocalImpl();
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-			for (PublicationBean pubBean : uniquePubList) {
-				pubBean.setVisibilityGroups(visibilityGroups);
-				Publication publication = (Publication) pubBean.getDomainFile();
-				publication.setStatus("published");
-				publication.setCategory("peer review article");
-
-				try {
-					// 1.check for duplicated publication in DB by PubMedId.
-					Long pubMedId = publication.getPubMedId();
-					if (pubMedId != null && pubMedId != 0) {
-						PublicationBean pBean = service.findPublicationByKey(
-								"pubMedId", pubMedId, user);
+			String firstAuthorLastName = null;
+			String firstAuthorFirstName = null;
+			if (!pubBean.getAuthors().isEmpty()) {
+				Author firstAuthor = pubBean.getAuthors().get(0);
+				firstAuthorLastName = firstAuthor.getLastName();
+				firstAuthorFirstName = firstAuthor.getFirstName();
+			}
+			try {
+				// 1.check for duplicated publication in DB by PubMedId.
+				if (pubMedId != null && pubMedId != 0) {
+					PublicationBean pBean = service.findPublicationByKey(
+							"pubMedId", pubMedId, user);
+					if (pBean != null) {
 						Publication pub = (Publication) pBean.getDomainFile();
 						if (pub != null && pub.getId() != null
 								&& pub.getId() != 0) {
@@ -424,24 +267,18 @@ public class EndNoteXMLHandler {
 									.println("==============================================");
 							dbLog.println("Found duplicated PubMedId in DB: "
 									+ pubMedId);
-							this.printLog(pub, dbLog, ++dupCount, true); // No
-							// author
-							// list.
-
-							// Update DB publication with new PubMed data.
-							this.updatePubMedData(service, pub.getId()
-									.toString(), pubBean, user);
-
-							continue; // Found duplicated PubMedId, skip this
-							// publication.
+							this.printLog(pub, dbLog, ++dupCount, true);
+							// copy non PubMed fields that are already curated
+							// in the database.
+							pubBean.copyNonPubMedFieldsFromDatabase(pBean);
 						}
 					}
-					// 2.check for duplicated publication in DB by DOI.
-					String doi = publication.getDigitalObjectId();
-					if (!StringUtils.isEmpty(doi)) {
-						PublicationBean pBean = service.findPublicationByKey(
-								"digitalObjectId", doi, user);
-						log.println(">>>>>>:" + pBean.getDomainFile());
+				}
+				// 2.check for duplicated publication in DB by DOI.
+				else if (!StringUtils.isEmpty(doi)) {
+					PublicationBean pBean = service.findPublicationByKey(
+							"digitalObjectId", doi, user);
+					if (pBean != null) {
 						Publication pub = (Publication) pBean.getDomainFile();
 						if (pub != null && pub.getId() != null
 								&& pub.getId() != 0) {
@@ -449,116 +286,41 @@ public class EndNoteXMLHandler {
 							dbLog
 									.println("==============================================");
 							dbLog.println("Found duplicated DOI in DB: " + doi);
-							this.printLog(pub, dbLog, ++dupCount, true); // No
-							// author
-							// list.
+							this.printLog(pub, dbLog, ++dupCount, true);
 
-							// Update DB publication with new PubMed data.
-							this.updatePubMedData(service, pub.getId()
-									.toString(), pubBean, user);
-
-							continue; // Found duplicated DOI, skip this
-							// publication.
+							// copy all fields already curated in the database
+							pubBean.copyFromDatabase(pBean);
 						}
 					}
-					// 3.check for duplicated publication in DB by Title + 1st
+				} else {
+					// 3.check for duplicated publication in DB by Title +
+					// 1st
 					// Author.
-					String title = publication.getTitle().toLowerCase();
-					if (title.endsWith(".")) {
-						title = title.substring(0, title.length() - 1);
+					PublicationBean pBean = service
+							.findNonPubMedNonDOIPublication(publication
+									.getCategory(), title, firstAuthorLastName,
+									firstAuthorFirstName, user);
+					// found a match, copy all fields already curated in the
+					// database
+					if (pBean != null) {
+						pubBean.copyFromDatabase(pBean);
 					}
-					List<Publication> publications = service
-							.findPublicationsBy('*' + title + '*', null, null,
-									null, null, null, null, null, null, null,
-									null, null, null, null, user);
-					if (!publications.isEmpty()) {
-						// 3a.filter result by comparing 1st Author.
-						String firstAuthorName = "";
-						if (!pubBean.getAuthors().isEmpty()) {
-							// Get new 1st Author's name for Author comparing
-							// later.
-							Author firstAuthor = pubBean.getAuthors().get(0);
-							firstAuthorName = firstAuthor.getLastName();
-						}
-						List<Publication> pubs = new ArrayList<Publication>(
-								publications);
-						for (int i = 0; i < pubs.size(); i++) {
-							Publication pub = pubs.get(i);
-							PublicationBean oldPubBean = new PublicationBean(
-									pub);
-							List<Author> authors = oldPubBean.getAuthors();
-							if (authors != null && !authors.isEmpty()) {
-								String name = authors.get(0).getLastName();
-								if (!firstAuthorName.equalsIgnoreCase(name)) {
-									pubs.remove(i); // Not a match, remove from
-									// dup-list.
-								}
-							} else {
-								log
-										.println("WARNING: empty Author for following DB publication");
-								this.printLog(oldPubBean, log, -3);
-								continue;
-							}
-						}
-						// 3b.if result set is still not empty now then there is
-						// a match.
-						if (!pubs.isEmpty()) {
-							log.println("Found duplicated Title (" + title
-									+ ") + 1st Author (" + firstAuthorName
-									+ ") in DB.");
-							for (Publication pub : pubs) {
-								dbLog
-										.println("==============================================");
-								dbLog
-										.println("Found duplicated Title + 1st Author in DB.");
-								this.printLog(pub, dbLog, ++dupCount);
-							}
-							// 3c.update old publication only when new PubMed
-							// data exists.
-							for (int i = 0; i < pubs.size(); i++) {
-								Publication pub = pubs.get(i);
-								this.updatePubMedData(service, pub.getId()
-										.toString(), pubBean, user);
-							}
-							continue; // Found duplication, skip this
-							// publication.
-						}
-					}
-					// 4.setup publication object inside publicationBean & save.
-					pubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
-							.getLoginName());
-					service.savePublication(pubBean, user);
-
-					// 5.set publication object visibility.
-					authService.assignVisibility(pubBean.getDomainFile()
-							.getId().toString(), pubBean.getVisibilityGroups(),
-							null);
-
-					// 6.set author visibility.
-					if (publication.getAuthorCollection() != null) {
-						for (Author author : publication.getAuthorCollection()) {
-							if (author != null) {
-								if (author.getId() != null
-										&& author.getId().toString().trim()
-												.length() > 0) {
-									authService.assignVisibility(author.getId()
-											.toString(), pubBean
-											.getVisibilityGroups(), null);
-								}
-							}
-						}
-					}
-					this.printLog(pubBean, savedLog, count++);
-				} catch (Exception ex) {
-					log.println("Exception thrown in saving Publication:");
-					this.printLog(pubBean, log, -2);
-					ex.printStackTrace(log);
 				}
+
+				// 4.setup publication object inside publicationBean & save.
+				pubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
+						.getLoginName());
+				System.out.println(">>>>>>" + count);
+				service.savePublication(pubBean, user);
+				this.printLog(pubBean, savedLog, count++);
+			} catch (Exception ex) {
+				log.println("Exception thrown in saving Publication:");
+				this.printLog(pubBean, log, -2);
+				ex.printStackTrace(log);
+				System.out.println(">>>>>: " + ex);
 			}
-		} catch (SecurityException e) {
-			log.println("Can not create AuthorizationService:");
-			e.printStackTrace(log);
 		}
+
 		return count;
 	}
 
@@ -1101,55 +863,6 @@ public class EndNoteXMLHandler {
 			log.println("           keyword: "
 					+ publicationBean.getKeywordsStr());
 		}
-	}
-
-	/**
-	 * Update DB with new PubMed data for matched PubMedId result.
-	 * 
-	 * @param service
-	 * @param oldPubId
-	 * @param newPubBean
-	 * @param user
-	 * @return
-	 */
-	private boolean updatePubMedData(PublicationService service,
-			String oldPubId, PublicationBean newPubBean, UserBean user) {
-		boolean result = true;
-		try {
-			// 1.load PublicationBean from database by Id.
-			PublicationBean oldPubBean = service.findPublicationById(oldPubId,
-					user);
-
-			// 2.copy PubMed data from new bean to old bean.
-			String oldAbstract = null;
-			Publication oldPub = (Publication) oldPubBean.getDomainFile();
-			Publication newPub = (Publication) newPubBean.getDomainFile();
-			if (StringUtils.isEmpty(newPub.getDescription())
-					&& !StringUtils.isEmpty(oldPub.getDescription())) {
-				oldAbstract = oldPub.getDescription(); // reserve abstract.
-			}
-			oldPubBean.copyPubMedFieldsFromPubMedXML(newPubBean);
-			oldPubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
-					.getLoginName());
-			if (oldAbstract != null) {
-				oldPub.setDescription(oldAbstract);
-			}
-
-			// 3.update old bean.
-			service.savePublication(oldPubBean, user);
-
-			log
-					.println("Finished updating DB publication with new publication.");
-			dbLog
-					.println("Finished updating DB publication with new publication.");
-			this.printLog(oldPubBean, dbLog, 0);
-		} catch (Exception e) {
-			log.println("Error updating DB Publication with bean below:");
-			this.printLog(newPubBean, log, -1);
-			e.printStackTrace(log);
-			result = false;
-		}
-		return result;
 	}
 
 	public static void main(String[] args) {
