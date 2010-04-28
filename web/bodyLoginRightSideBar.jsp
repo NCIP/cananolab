@@ -146,7 +146,7 @@
 									characterizations?</a>
 							</li>
 							<li>
-								<a href="#">Where can I get definitions for nanotechnology
+								<a href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-concepts', 'caNanoLabFAQ', '800', '800')">Where can I get definitions for nanotechnology
 									concepts?</a>
 							</li>
 						</ul>
@@ -155,27 +155,27 @@
 
 							<li>
 								<a
-									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-install', 'caNanoLabFAQ', '800', '800')">How
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-install', 'caNanoLabFAQ', '800', '800')">How
 									do I install my own caNanoLab system?</a>
 							</li>
 							<li>
 								<a
-									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How
 									do I submit data into caNanoLab?</a>
 							</li>
 							<li>
 								<a
-									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-datatypes, 'caNanoLabFAQ', '800', '800')">What
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-datatypes', 'caNanoLabFAQ', '800', '800')">What
 									types of data can I submit into caNanoLab?</a>
 							</li>
 							<li>
 								<a
-									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-curator, 'caNanoLabFAQ', '800', '800')">Who
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-curator', 'caNanoLabFAQ', '800', '800')">Who
 									can I contact to submit data into caNanoLab?</a>
 							</li>
 							<li>
 								<a
-									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab+FAQ#caNanoLabFAQ-site, 'caNanoLabFAQ', '800', '800')">What
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-site', 'caNanoLabFAQ', '800', '800')">What
 									is a caNanoLab site?</a>
 							</li>
 						</ul>
