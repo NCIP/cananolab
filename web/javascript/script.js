@@ -294,9 +294,9 @@ function hide(layer_ref) {
 }
 function showSummary(layer_ref, totalLayers) {
 	var printLink = document.getElementById("printLink");
-	//var printUrl = document.getElementById("printUrlAll");
+	// var printUrl = document.getElementById("printUrlAll");
 	var exportLink = document.getElementById("exportLink");
-	//var exportUrl = document.getElementById("exportUrlAll");
+	// var exportUrl = document.getElementById("exportUrlAll");
 	if (layer_ref == "ALL") {
 		document.getElementById("summaryTabALL").style.display = "block";
 		for (var i = 1; i <= totalLayers; i++) {
@@ -311,6 +311,7 @@ function showSummary(layer_ref, totalLayers) {
 		exportLink.href = exportUrl.href;
 		return;
 	}
+	else {
 	document.getElementById("summaryTabALL").style.display = "none";
 	for (var i = 1; i <= totalLayers; i++) {
 		if (layer_ref == i) {
@@ -330,6 +331,7 @@ function showSummary(layer_ref, totalLayers) {
 			document.getElementById("summarySection" + i).style.display = "none";
 			document.getElementById("summarySeparator" + i).style.display = "none";
 		}
+	}
 	}
 	printLink.href = printUrl.href;
 	exportLink.href = exportUrl.href;
@@ -450,7 +452,7 @@ function validateSavingTheData(dataStyleId, dataName) {
 		return true;
 	}
 }
-//Feature request [26487] Deeper Edit Links.
+// Feature request [26487] Deeper Edit Links.
 function confirmAddNew(styleId, newObjectName, cleanupFunction) {
 	var form = document.getElementById("new" + styleId);
 	if (form != null) {
