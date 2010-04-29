@@ -18,14 +18,14 @@ import java.util.List;
 
 /**
  * Publication view bean
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
 
-	private String[] sampleNames=new String[]{""};
+	private String[] sampleNames = new String[] { "" };
 	private String[] researchAreas;
 	private List<Author> authors = new ArrayList<Author>();
 	private Author theAuthor = new Author();
@@ -75,7 +75,7 @@ public class PublicationBean extends FileBean {
 
 	/**
 	 * Copy PubMed data from source PublicationBean to this PublicationBean.
-	 * 
+	 *
 	 * @param source
 	 * @param taget
 	 */
@@ -109,9 +109,10 @@ public class PublicationBean extends FileBean {
 		oldPub.setStatus(dbPub.getStatus());
 		oldPub.setType(dbPub.getType());
 		this.setSampleNamesStr(source.getSampleNamesStr());
+		this.setSampleNames(source.getSampleNames());
 		this.setVisibilityGroups(source.getVisibilityGroups());
 	}
-	
+
 	public void copyFromDatabase(PublicationBean source) {
 		Publication oldPub = (Publication) this.getDomainFile();
 		Publication dbPub = (Publication) source.getDomainFile();
@@ -126,7 +127,7 @@ public class PublicationBean extends FileBean {
 		oldPub.setVolume(dbPub.getVolume());
 		oldPub.setYear(dbPub.getYear());
 		oldPub.setKeywordCollection(dbPub.getKeywordCollection());
-		this.setAuthors(source.getAuthors());		
+		this.setAuthors(source.getAuthors());
 		oldPub.setId(dbPub.getId());
 		oldPub.setCreatedBy(dbPub.getCreatedBy());
 		oldPub.setCreatedDate(dbPub.getCreatedDate());
@@ -140,7 +141,7 @@ public class PublicationBean extends FileBean {
 		oldPub.setUri(dbPub.getUri());
 		oldPub.setUriExternal(dbPub.getUriExternal());
 	}
-	
+
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof PublicationBean) {
@@ -324,9 +325,18 @@ public class PublicationBean extends FileBean {
 		strs.add(pub.getJournalName());
 		strs.add(getPublishInfoDisplayName());
 		strs.add(getPubMedDisplayName());
-		strs.add(getDOIDisplayName());
-		strs.add(getUriDisplayName());
+
+		if (pub.getPubMedId() == null) {
+			System.out.println("here");
+			strs.add(getDOIDisplayName());
+		}
+		if (pub.getPubMedId() == null
+				&& StringUtils.isEmpty(pub.getDigitalObjectId())) {
+			strs.add(getUriDisplayName());
+		}
+
 		displayName = StringUtils.join(strs, ". ") + ".";
+
 		return displayName;
 	}
 
@@ -403,7 +413,7 @@ public class PublicationBean extends FileBean {
 	}
 
 	public void resetDomainCopy(Publication copy) {
-		//don't need to reset anything because publications can be shared
+		// don't need to reset anything because publications can be shared
 	}
 
 	public String getSampleNamesStr() {
