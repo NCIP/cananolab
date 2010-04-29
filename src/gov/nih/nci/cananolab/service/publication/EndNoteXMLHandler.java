@@ -180,9 +180,9 @@ public class EndNoteXMLHandler {
 				uniqueLog
 						.println("==============================================");
 			}
-			log.println("Start saving publication.");
+			log.println("Start saving publications.");
 			log.println("==============================================");
-			int pubUpdated = this.savePublication(user);
+			int pubUpdated = this.savePublications(user);
 			isSuccess = pubUpdated > 0;
 			log.println("Saving done, total Publication saved to database: "
 					+ pubUpdated);
@@ -230,14 +230,27 @@ public class EndNoteXMLHandler {
 		return isSuccess;
 	}
 
-	public int savePublication(UserBean user) {
+	public int savePublications(UserBean user) {
 		int count = 0, dupCount = 0;
 		PublicationService service = new PublicationServiceLocalImpl();
 		for (PublicationBean pubBean : uniquePubList) {
-			pubBean.setVisibilityGroups(visibilityGroups);
 			Publication publication = (Publication) pubBean.getDomainFile();
-			publication.setStatus("published");
-			publication.setCategory("peer review article");
+			pubBean.setVisibilityGroups(visibilityGroups);				
+			// exclude the ones that have <volume> as accepted
+			if (publication.getStatus() == null) {
+				publication.setStatus("published");
+			}
+			if (publication.getJournalName() != null
+					&& publication.getJournalName().toLowerCase().contains(
+							"proceedings")
+					|| publication.getJournalName() != null
+					&& publication.getJournalName().toLowerCase().contains(
+							"proc ")) {
+				publication.setCategory("proceedings");
+			} else {
+				publication.setCategory("peer review article");
+			}
+
 			Long pubMedId = publication.getPubMedId();
 			String doi = publication.getDigitalObjectId();
 			String title = publication.getTitle().toLowerCase();
@@ -254,6 +267,10 @@ public class EndNoteXMLHandler {
 			try {
 				// 1.check for duplicated publication in DB by PubMedId.
 				if (pubMedId != null && pubMedId != 0) {
+					// replace publicationBean with parsed XML record
+					PublicationBean xmlPubBean = service.getPublicationFromPubMedXML(pubMedId
+							.toString());
+					pubBean.copyPubMedFieldsFromPubMedXML(xmlPubBean);
 					PublicationBean pBean = service.findPublicationByKey(
 							"pubMedId", pubMedId, user);
 					if (pBean != null) {
@@ -305,7 +322,6 @@ public class EndNoteXMLHandler {
 						pubBean.copyFromDatabase(pBean);
 					}
 				}
-
 				// 4.setup publication object inside publicationBean & save.
 				pubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
 						.getLoginName());
@@ -319,7 +335,6 @@ public class EndNoteXMLHandler {
 				System.out.println(">>>>>: " + ex);
 			}
 		}
-
 		return count;
 	}
 
@@ -346,68 +361,80 @@ public class EndNoteXMLHandler {
 			// 1.filter duplicated publication by PubMedId.
 			Long pubMedId = publication.getPubMedId();
 			if (pubMedId != null && pubMedId != 0) {
-				if (pubMedSet.contains(pmid)) {
+				if (pubMedSet.contains(pubMedId)) {
 					log.println("PubMedId is duplicated: " + pmid);
 					duplicatedPub = true;
 				} else {
-					pubMedSet.add(pmid);
+					pubMedSet.add(pubMedId.toString());
 				}
-			}
-			// 2.filter duplicated publication by DOI.
-			String doi = publication.getDigitalObjectId();
-			if (!StringUtils.isEmpty(doi)) {
-				if (doiSet.contains(doi)) {
-					log.println("DOI is duplicated: " + doi);
-					duplicatedPub = true;
-				} else {
-					doiSet.add(doi);
-				}
-			}
-			// 3.filter duplicated publication by Title + 1st Author's last
-			// name.
-			String title = publication.getTitle().toLowerCase();
-			if (title.endsWith(".")) {
-				title = title.substring(0, title.length() - 1);
-			}
-			if (!StringUtils.isEmpty(title)) {
-				if (titleMap.containsKey(title)) {
-					log.println("Title is duplicated: " + title);
-
-					PublicationBean pubBean = titleMap.get(title);
-					List<Author> oldAuthors = pubBean.getAuthors();
-					List<Author> newAuthors = publicationBean.getAuthors();
-					if (oldAuthors != null && !oldAuthors.isEmpty()
-							&& newAuthors != null && !newAuthors.isEmpty()) {
-						Author oldAuthor = oldAuthors.get(0);
-						Author newAuthor = newAuthors.get(0);
-						String oldName = oldAuthor.getLastName();
-						String newName = newAuthor.getLastName();
-						// Duplicated if both 1st Author's last name are the
-						// same.
-						if (oldName != null
-								&& oldName.equalsIgnoreCase(newName)) {
-							// Don't replace old pubBean if new pubMedId is
-							// empty.
-							Publication pub = (Publication) publicationBean
-									.getDomainFile();
-							if (pub.getPubMedId() == null
-									|| pub.getPubMedId() == 0) {
-								log.println("Title (" + title
-										+ ") + 1st Author (" + oldName
-										+ ") is duplicated: ");
-								duplicatedPub = true;
-							}
-						} else {
-							log.println("1st Author not match, oldName="
-									+ oldName + ", newName=" + newName);
-						}
+			} else {
+				String doi = publication.getDigitalObjectId();
+				// 2.filter duplicated publication by DOI.
+				if (!StringUtils.isEmpty(doi)) {
+					if (doiSet.contains(doi)) {
+						log.println("DOI is duplicated: " + doi);
+						duplicatedPub = true;
 					} else {
-						log.println("Author list not match, oldAuthors.size()="
-								+ oldAuthors.size() + ", newAuthors.size()="
-								+ newAuthors.size());
+						doiSet.add(doi);
 					}
 				} else {
-					titleMap.put(title, publicationBean);
+					// 3.filter duplicated publication by Title + 1st Author's
+					// last
+					// name.
+					String title = publication.getTitle().toLowerCase();
+					if (title.endsWith(".")) {
+						title = title.substring(0, title.length() - 1);
+					}
+					if (!StringUtils.isEmpty(title)) {
+						if (titleMap.containsKey(title)) {
+							log.println("Title is duplicated: " + title);
+
+							PublicationBean pubBean = titleMap.get(title);
+							List<Author> oldAuthors = pubBean.getAuthors();
+							List<Author> newAuthors = publicationBean
+									.getAuthors();
+							if (oldAuthors != null && !oldAuthors.isEmpty()
+									&& newAuthors != null
+									&& !newAuthors.isEmpty()) {
+								Author oldAuthor = oldAuthors.get(0);
+								Author newAuthor = newAuthors.get(0);
+								String oldName = oldAuthor.getLastName();
+								String newName = newAuthor.getLastName();
+								// Duplicated if both 1st Author's last name are
+								// the
+								// same.
+								if (oldName != null
+										&& oldName.equalsIgnoreCase(newName)) {
+									// Don't replace old pubBean if new pubMedId
+									// is
+									// empty.
+									Publication pub = (Publication) publicationBean
+											.getDomainFile();
+									if (pub.getPubMedId() == null
+											|| pub.getPubMedId() == 0) {
+										log.println("Title (" + title
+												+ ") + 1st Author (" + oldName
+												+ ") is duplicated: ");
+										duplicatedPub = true;
+									}
+								} else {
+									log
+											.println("1st Author not match, oldName="
+													+ oldName
+													+ ", newName="
+													+ newName);
+								}
+							} else {
+								log
+										.println("Author list not match, oldAuthors.size()="
+												+ oldAuthors.size()
+												+ ", newAuthors.size()="
+												+ newAuthors.size());
+							}
+						} else {
+							titleMap.put(title, publicationBean);
+						}
+					}
 				}
 			}
 			if (duplicatedPub) {
@@ -508,8 +535,10 @@ public class EndNoteXMLHandler {
 						}
 						// set all other http based uri
 						else {
-							publication.setUri(url.toString());
-							publication.setUriExternal(true);
+							if (publication.getUri() == null) {
+								publication.setUri(url.toString());
+								publication.setUriExternal(true);
+							}
 						}
 					}
 				}
@@ -577,6 +606,10 @@ public class EndNoteXMLHandler {
 
 		public void endElement(String uri, String localName, String qname) {
 			if (!hasPubMedData) {
+				if (volume.toString().toLowerCase().contains("accepted")
+						|| volume.toString().toLowerCase().contains("in press")) {
+					publication.setStatus("in press");
+				}
 				publication.setVolume(volume.toString());
 			}
 		}
@@ -631,10 +664,21 @@ public class EndNoteXMLHandler {
 		}
 
 		public void endElement(String uri, String localName, String qname) {
-			try {
-				publication.setPubMedId(new Long(accessionNumber.toString()));
-			} catch (NumberFormatException ex) {
-				log.println("Invalid PubMed ID: " + accessionNumber.toString());
+			int index = accessionNumber.toString().indexOf("ISI:");
+			if (index == -1) {
+				try {
+					publication
+							.setPubMedId(new Long(accessionNumber.toString()));
+					hasPubMedData = true;
+				} catch (NumberFormatException ex) {
+					log.println("Invalid PubMed ID: "
+							+ accessionNumber.toString());
+				}
+			} else {
+				int index2 = accessionNumber.toString().indexOf(":");
+				String isiNumber = accessionNumber.substring(index2 + 1);
+				publication.setUri(Constants.ISI_PREFIX + isiNumber);
+				publication.setUriExternal(true);
 			}
 		}
 	}
