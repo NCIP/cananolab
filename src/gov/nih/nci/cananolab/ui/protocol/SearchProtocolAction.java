@@ -74,6 +74,10 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		if (theForm.get("searchLocations") != null) {
 			searchLocations = (String[]) theForm.getStrings("searchLocations");
 		}
+		if(searchLocations.length == 0){
+			searchLocations = new String[1];
+			searchLocations[0] = Constants.APP_OWNER;
+		}
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
