@@ -261,7 +261,9 @@ public class DWRPublicationManager {
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		request.getSession().removeAttribute("publicationSearchResults");
 		if (locations.length == 0) {
-			return null;
+			locations = new String[1];
+			locations[0]= Constants.APP_OWNER;
+			//return null;
 		}
 		Integer counts = 0;
 		PublicationService service = null;
