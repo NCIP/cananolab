@@ -162,10 +162,14 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		searchLocations = (String[]) theForm.get("searchLocations");
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
+		if(searchLocations.length == 0){
+			searchLocations = new String[1];
+			searchLocations[0] = Constants.APP_OWNER;
+		}
 		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
 				&& gridNodeHostStr.trim().length() > 0) {
 			searchLocations = gridNodeHostStr.split("~");
-		}
+		}		
 
 		List<String> nanomaterialEntityClassNames = new ArrayList<String>();
 		List<String> otherNanomaterialEntityTypes = new ArrayList<String>();
