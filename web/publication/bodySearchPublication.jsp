@@ -15,28 +15,7 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="searchPublication">
-	<jsp:include page="/bodyMessage.jsp?bundle=publication" />
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<td class="cellLabel" width="20%">
-				Search Site
-			</td>
-			<td>
-				<html:select property="searchLocations" styleId="searchLocations"
-					onchange="javascript:setPublicationDropdowns()" multiple="true"
-					size="4">
-					<html:option value="${applicationOwner}">
-										${applicationOwner}
-									</html:option>
-					<c:if test="${! empty allGridNodes}">
-						<html:options collection="allGridNodes" property="hostName"
-							labelProperty="hostName" />
-					</c:if>
-				</html:select>
-			</td>
-		</tr>
-	</table>
-	<br>
+	<jsp:include page="/bodyMessage.jsp?bundle=publication" />	
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="15%">
