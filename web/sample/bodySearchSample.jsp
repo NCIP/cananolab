@@ -23,27 +23,7 @@
 </jsp:include>
 <html:form action="searchSample">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<td class="cellLabel" width="110">
-				Search Site
-			</td>
-			<td>
-				<html:select property="searchLocations" styleId="searchLocations"
-					multiple="true" size="4"
-					onchange="javascript:setSampleDropdowns();">
-					<html:option value="${applicationOwner}">
-										${applicationOwner}
-									</html:option>
-					<c:if test="${! empty allGridNodes}">
-						<html:options collection="allGridNodes" property="hostName"
-							labelProperty="hostName" />
-					</c:if>
-				</html:select>
-			</td>
-		</tr>
-	</table>
-	<br>
+	
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="110">
