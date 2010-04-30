@@ -121,11 +121,17 @@ public class DWRProtocolManager {
 	public String getPublicCounts(String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
+		System.out.println("location: " + locations);
+		
 		if (locations.length == 0) {
-			return null;
+			locations = new String[1];
+			locations[0]= Constants.APP_OWNER;
+			
+			//return null;
 		}
 		Integer counts = 0;
 		ProtocolService service = null;
+		
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
