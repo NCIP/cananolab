@@ -5,9 +5,6 @@
 <table class="gridtable" width="98%" align="center">
 	<tr>
 		<th>
-			Site
-		</th>
-		<th>
 			Data Type
 		</th>
 		<th id="results">
@@ -15,29 +12,14 @@
 		</th>
 	</tr>
 	<tr align="left">
-		<td rowspan="3">
-			<select name="searchLocations" id="sites" multiple="true" size="15"
-				onchange="getPublicCounts();">
-				<option value="${applicationOwner}" selected="selected">
-					${applicationOwner}
-				</option>
-				<c:forEach var="location" items="${allGridNodes}">
-					<option value="${location.hostName}">
-						${location.hostName}
-					</option>
-				</c:forEach>
-				<option value="all">
-					ALL
-				</option>
-			</select>
-		</td>
+		
 		<td>
 			<table class="gridtableNoBorder">
 				<tr>
 					<td rowspan="2">
 						<a href="#" onclick="gotoProtocols('setup')"> <img
 								src="images/icon_protocol_48x.jpg" style="border-style: none;"
-								alt="Search Protocals" /> </a>
+								alt="Search Protocols" /> </a>
 					</td>
 					<td>
 						<a href="#" onclick="gotoProtocols('setup')"><b>Search
