@@ -114,6 +114,10 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			texts = ((String) theForm.get("text")).trim();
 			searchLocations = (String[]) theForm.get("searchLocations");
 		}
+		if(searchLocations.length == 0){
+			searchLocations = new String[1];
+			searchLocations[0] = Constants.APP_OWNER;
+		}
 
 		// convert nanomaterial entity display names into short class names
 		// and
