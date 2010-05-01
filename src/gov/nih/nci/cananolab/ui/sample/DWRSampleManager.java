@@ -220,7 +220,7 @@ public class DWRSampleManager {
 				}
 			}
 		}
-		return counts.toString();
+		return counts.toString()+" samples";
 	}
 
 	public AdvancedSampleSearchBean addSampleQuery(SampleQueryBean theQuery) {

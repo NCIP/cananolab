@@ -28,9 +28,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Search protocol file and protocol
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -53,7 +53,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		String protocolName = (String) theForm.get("protocolName");
 		//strip wildcards if entered by user
 		protocolName=StringUtils.stripWildcards(protocolName);
-		
+
 		String nameOperand = (String) theForm.get("nameOperand");
 		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(protocolName)) {
@@ -122,7 +122,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitSetup.getInstance().getGridNodesInContext(request);
+//		InitSetup.getInstance().getGridNodesInContext(request);
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");

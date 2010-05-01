@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -23,9 +22,9 @@ import org.apache.struts.config.ModuleConfig;
 /**
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CustomPlugIn implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugIn.class);
@@ -76,7 +75,7 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 
-			setupInitialGridNodes(appContext);
+//			setupInitialGridNodes(appContext);
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}

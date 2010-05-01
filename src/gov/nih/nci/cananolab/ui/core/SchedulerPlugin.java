@@ -25,9 +25,9 @@ import org.quartz.impl.StdSchedulerFactory;
 /**
  * Create a scheduler using Quartz when container starts. Borrowed concepts from
  * LSD browser application.
- * 
+ *
  * @author pansu, sahnih
- * 
+ *
  */
 public class SchedulerPlugin implements PlugIn {
 	Logger logger = Logger.getLogger(SchedulerPlugin.class);
@@ -61,15 +61,15 @@ public class SchedulerPlugin implements PlugIn {
 			scheduler = factory.getScheduler();
 			if (scheduler != null) {
 				scheduler.start();
-				int gridDiscoveryIntervalInMinutes = getIntervalInMinutes(
-						actionServlet.getServletConfig(),
-						"gridDiscoveryIntervalInMinutes");
-				initialiseGridDiscoveryJob(gridDiscoveryIntervalInMinutes);
-				ServletContext appContext = actionServlet.getServletContext();
-				List<GridNodeBean> gridNodes = (List<GridNodeBean>) appContext
-						.getAttribute("allGridNodes");
-				initialisePublicDataCountJob(gridNodes,
-						gridDiscoveryIntervalInMinutes);
+//				int gridDiscoveryIntervalInMinutes = getIntervalInMinutes(
+//						actionServlet.getServletConfig(),
+//						"gridDiscoveryIntervalInMinutes");
+//				initialiseGridDiscoveryJob(gridDiscoveryIntervalInMinutes);
+//				ServletContext appContext = actionServlet.getServletContext();
+//				List<GridNodeBean> gridNodes = (List<GridNodeBean>) appContext
+//						.getAttribute("allGridNodes");
+//				initialisePublicDataCountJob(gridNodes,
+//						gridDiscoveryIntervalInMinutes);
 				int csmCleanupIntervalInMinutes = getIntervalInMinutes(
 						actionServlet.getServletConfig(),
 						"csmCleanupIntervalInMinutes");

@@ -255,7 +255,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		InitSetup.getInstance().getGridNodesInContext(request);
+//		InitSetup.getInstance().getGridNodesInContext(request);
 
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request

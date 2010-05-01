@@ -105,7 +105,7 @@ public class DWRPublicationManager {
 	/**
 	 * Return current PublicationBean for displaying Author list on page when no
 	 * PubMedId exists.
-	 * 
+	 *
 	 * @return PublicationBean
 	 */
 	public PublicationBean retrieveCurrentPub() {
@@ -290,7 +290,7 @@ public class DWRPublicationManager {
 				}
 			}
 		}
-		return counts.toString();
+		return counts.toString()+" publications";
 	}
 
 	public PublicationBean updateWithExistingNonPubMedDOIPublication(

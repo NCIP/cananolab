@@ -30,7 +30,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class searches canano publication based on user supplied criteria
- * 
+ *
  * @author tanq
  */
 
@@ -169,7 +169,7 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
 				&& gridNodeHostStr.trim().length() > 0) {
 			searchLocations = gridNodeHostStr.split("~");
-		}		
+		}
 
 		List<String> nanomaterialEntityClassNames = new ArrayList<String>();
 		List<String> otherNanomaterialEntityTypes = new ArrayList<String>();
@@ -252,7 +252,7 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		InitSetup.getInstance().getGridNodesInContext(request);
+//		InitSetup.getInstance().getGridNodesInContext(request);
 
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
