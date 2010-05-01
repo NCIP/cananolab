@@ -23,6 +23,8 @@
 			src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
 		<script type='text/javascript'
 			src='/caNanoLab/dwr/interface/SampleManager.js'></script>
+		<script type='text/javascript'
+			src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
 		<script type='text/javascript' src='javascript/CountManager.js'></script>
 	</head>
 	<tiles:importAttribute scope="session" />
