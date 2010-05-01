@@ -48,7 +48,7 @@ function getProtocolCounts(sites) {
 
 function getSampleCounts(sites) {
 	show("sampleLoaderImg");
-	hide("sampleCount");
+	hide("sampleRelatedCounts");
 	SampleManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
 			hide("sampleLoaderImg");
@@ -57,11 +57,40 @@ function getSampleCounts(sites) {
 			dwr.util.setValue("sampleCount", link, {
 				escapeHtml : false
 			});
+			show("sampleRelatedCounts");
 			show("sampleCount");
 		} else {
 			show("sampleLoaderImg");
 		}
 	});
+
+	getSampleSourceCounts(sites);
+	getCharacterizationCounts("Characterization", sites);
+	getCharacterizationCounts("PhysicoChemicalCharacterization", sites);
+	getCharacterizationCounts("InvitroCharacterization", sites);
+	getCharacterizationCounts("InvivoCharacterization", sites);
+	getCharacterizationCounts("OtherCharacterization", sites);
+}
+
+function getSampleSourceCounts(sites) {
+	hide("sampleSourceCount");
+	SampleManager.getPublicSourceCounts(sites, function(data) {
+		if (data != null) {
+			dwr.util.setValue("sampleSourceCount", data);
+			show("sampleSourceCount");
+		}
+	});
+}
+
+function getCharacterizationCounts(charType, sites) {
+	hide(charType + "Count");
+	CharacterizationManager.getPublicCharacterizationCounts(charType, sites,
+			function(data) {
+				if (data != null) {
+					dwr.util.setValue(charType + "Count", data);
+					show(charType + "Count");
+				}
+			});
 }
 
 function getPublicationCounts(sites) {
@@ -114,7 +143,7 @@ function gotoProtocols(dispatch) {
 
 function getSitesAsString() {
 	var sites = getSites();
-	if (sites.length==0) {
+	if (sites.length == 0) {
 		return null;
 	}
 	var sitesStr = "";
