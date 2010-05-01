@@ -22,17 +22,9 @@
 						community to expedite and validate the use of nanotechnology in
 						biomedicine. caNanoLab provides support for the annotation of
 						nanomaterials with characterizations resulting from
-						physico-chemical and in vitro assays and the sharing of these
+						physico-chemical and <i>in vitro</i> assays and the sharing of these
 						characterizations and associated nanotechnology protocols in a
 						secure fashion.
-						<br />
-						<br />
-						caNanoLab is installed at a variety of sites performing
-						nanotechnology characterizations and/or literature curation. To
-						view publically available data from a specific caNanoLab site,
-						select the Site of interest when performing a search. Multiple
-						sites or All sites can be selected for querying across multiple
-						caNanoLab sites.
 					</td>
 				</tr>
 			</table>
@@ -53,7 +45,7 @@
 		</td>
 		<td valign="top">
 			<!-- right sidebar begins -->
-			<jsp:include page="/bodyLoginRightSideBar.jsp" />			
+			<jsp:include page="/bodyLoginRightSideBar.jsp" />
 		</td>
 	</tr>
 </table>
