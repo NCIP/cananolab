@@ -19,7 +19,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td height="20" class="sidebarContent">You do not need an account to search public data.</td>
+			<td height="20" class="sidebarContent">No account is required to browse publicly available data.</td>
 		</tr>
 		<tr>
 			<td>
@@ -50,6 +50,6 @@
 					</tr>
 				</table>
 			</td>
-		</tr>				
-	</table>		
+		</tr>
+	</table>
 </html:form>
