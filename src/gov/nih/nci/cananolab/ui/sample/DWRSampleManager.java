@@ -192,8 +192,8 @@ public class DWRSampleManager {
 		request.getSession().removeAttribute("sampleSearchResults");
 		if (locations.length == 0) {
 			locations = new String[1];
-			locations[0]= Constants.APP_OWNER;
-			//return null;
+			locations[0] = Constants.APP_OWNER;
+			// return null;
 		}
 		Integer counts = 0;
 		SampleService service = null;
@@ -220,7 +220,43 @@ public class DWRSampleManager {
 				}
 			}
 		}
-		return counts.toString()+" samples";
+		return counts.toString() + " samples";
+	}
+
+	public String getPublicSourceCounts(String[] locations) {
+		WebContext wctx = WebContextFactory.get();
+		HttpServletRequest request = wctx.getHttpServletRequest();
+		if (locations.length == 0) {
+			locations = new String[1];
+			locations[0] = Constants.APP_OWNER;
+			// return null;
+		}
+		Integer counts = 0;
+		SampleService service = null;
+		for (String location : locations) {
+			if (location.equals(Constants.LOCAL_SITE)) {
+				try {
+					service = new SampleServiceLocalImpl();
+					counts += service.getNumberOfPublicSampleSources();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public sample sources from local site.");
+				}
+			} else {
+				try {
+					String serviceUrl = InitSetup.getInstance()
+							.getGridServiceUrl(request, location);
+
+					service = new SampleServiceRemoteImpl(serviceUrl);
+					counts += service.getNumberOfPublicSampleSources();
+				} catch (Exception e) {
+					logger
+							.error("Error obtaining counts of public sample sources from "
+									+ location);
+				}
+			}
+		}
+		return counts.toString() + " sample sources";
 	}
 
 	public AdvancedSampleSearchBean addSampleQuery(SampleQueryBean theQuery) {
@@ -334,13 +370,10 @@ public class DWRSampleManager {
 		try {
 			List<String> names = helper.findSampleNamesBy(searchStr, user);
 			if (!names.isEmpty()) {
-				nameArray=names.toArray(new String[names.size()]);
+				nameArray = names.toArray(new String[names.size()]);
 			}
 		} catch (Exception e) {
-			logger
-					.error(
-							"Problem getting matched sample names",
-							e);
+			logger.error("Problem getting matched sample names", e);
 		}
 		return nameArray;
 	}
