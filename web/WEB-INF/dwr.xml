@@ -63,6 +63,7 @@
 			<include method="getDecoratedCharacterizationOptions" />
 			<include method="getAssayTypeOptions" />
 			<include method="getCharacterizationDetailPage" />
+			<include method="getPublicCharacterizationCounts" />
 		</create>
 		<create creator="new" javascript="SampleManager" scope="session">
 			<param name="class" value="gov.nih.nci.cananolab.ui.sample.DWRSampleManager" />
@@ -71,15 +72,16 @@
 			<include method="getDecoratedEntityTypes" />
 			<include method="getFunctionTypes" />
 			<include method="getPublicCounts" />
+			<include method="getPublicSourceCounts" />
 			<include method="addSampleQuery" />
 			<include method="addCompositionQuery" />
 			<include method="addCharacterizationQuery" />
-			<include method="deleteSampleQuery"/>
+			<include method="deleteSampleQuery" />
 			<include method="deleteCompositionQuery" />
 			<include method="deleteCharacterizationQuery" />
 			<include method="getCharacterizationOperandOptions" />
-			<include method="getAdvancedSearchDetailContent"/>
-			<include method="getMatchedSampleNames"/>
+			<include method="getAdvancedSearchDetailContent" />
+			<include method="getMatchedSampleNames" />
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
@@ -96,7 +98,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
 			<include method="getProtocols" />
-			<include method="getProtocolsByTypeAndName"/>
+			<include method="getProtocolsByTypeAndName" />
 			<include method="getProtocol" />
 			<include method="getProtocolTypes" />
 			<include method="getPublicCounts" />
@@ -106,7 +108,7 @@
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
 			<include method="searchPubMedById" />
 			<include method="retrievePubMedInfo" />
-			<include method="updatePubMedWithExistingPublication"/>
+			<include method="updatePubMedWithExistingPublication" />
 			<include method="retrieveCurrentPub" />
 			<include method="addAuthor" />
 			<include method="deleteAuthor" />
@@ -115,8 +117,8 @@
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />
 			<include method="getPublicCounts" />
-			<include method="updateWithExistingDOIPublication"/>
-			<include method="updateWithExistingNonPubMedDOIPublication"/>
+			<include method="updateWithExistingDOIPublication" />
+			<include method="updateWithExistingNonPubMedDOIPublication" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
@@ -173,7 +175,8 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
-			<param name="include" value="authors, domainFile, keywordsStr, sampleNamesStr, visibilityGroups, researchAreas" />
+			<param name="include"
+				value="authors, domainFile, keywordsStr, sampleNamesStr, visibilityGroups, researchAreas" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Publication">
