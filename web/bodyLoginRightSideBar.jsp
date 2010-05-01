@@ -16,41 +16,6 @@
 			<table class="sidebarSectionNoBottom" width="100%">
 				<tr>
 					<td height="20" class="sidebarTitle">
-						STATS
-					</td>
-				</tr>
-				<tr>
-					<td class="sidebarContent">
-						<b>caNanoLab public data counts across sites:</b>						
-						<ul>
-							<li>
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicProtocols}</span> protocols
-							</li>
-							<li>
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicSamples}</span> samples from
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicSources}</span> sources
-							</li>
-							<li>
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicCharacterizations}</span>
-								characterizations:
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicPhysicoChemicalCharacterizations}</span>
-								physico-chemical,
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicInvitroCharacterizations}</span> in
-								vitro,
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicInvivoCharacterizations}</span> in
-								vivo, and
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicOtherCharacterizations}</span> other
-							</li>
-							<li>
-								<span class="grayTextHighlight">${allPublicDataCounts.numOfPublicPublications}</span> publications
-							</li>
-						</ul>
-					</td>
-				</tr>
-			</table>
-			<table class="sidebarSectionNoBottom" width="100%">
-				<tr>
-					<td height="20" class="sidebarTitle">
 						FEATURES
 					</td>
 				</tr>
@@ -172,11 +137,6 @@
 								<a
 									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-curator', 'caNanoLabFAQ', '800', '800')">Who
 									can I contact to submit data into caNanoLab?</a>
-							</li>
-							<li>
-								<a
-									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-site', 'caNanoLabFAQ', '800', '800')">What
-									is a caNanoLab site?</a>
 							</li>
 						</ul>
 					</td>
