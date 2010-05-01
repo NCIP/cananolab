@@ -33,15 +33,17 @@ public class Constants {
 
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
-	public static final String DEFAULT_APP_OWNER = "NCICB";
+	public static final String DEFAULT_APP_OWNER = "NCICBIIT";
+
+	public static final String DEFAULT_GRID_INDEX_SERVER_URL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
 
 	public static final String APP_OWNER;
 	static {
 		String appOwner = PropertyUtils.getProperty(CANANOLAB_PROPERTY,
-				"applicationOwner").trim();
+				"applicationOwner");
 		if (appOwner == null || appOwner.length() == 0)
 			appOwner = DEFAULT_APP_OWNER;
-		APP_OWNER = appOwner;
+		APP_OWNER = appOwner.trim();
 	}
 
 	public static final String VIEW_COL_DELIMITER = "~~~";
@@ -54,14 +56,16 @@ public class Constants {
 				"samplePrefix");
 		if (samplePrefix == null || samplePrefix.length() == 0)
 			samplePrefix = DEFAULT_SAMPLE_PREFIX;
-		SAMPLE_PREFIX = samplePrefix;
+		SAMPLE_PREFIX = samplePrefix.trim();
 	}
 
 	public static final String GRID_INDEX_SERVICE_URL;
 	static {
 		String gridIndexServiceURL = PropertyUtils.getProperty(
-				CANANOLAB_PROPERTY, "gridIndexServiceURL").trim();
-		GRID_INDEX_SERVICE_URL = gridIndexServiceURL;
+				CANANOLAB_PROPERTY, "gridIndexServiceURL");
+		if (gridIndexServiceURL == null || gridIndexServiceURL.length() == 0)
+			gridIndexServiceURL = DEFAULT_GRID_INDEX_SERVER_URL;
+		GRID_INDEX_SERVICE_URL = gridIndexServiceURL.trim();
 	}
 
 	/*
@@ -207,7 +211,7 @@ public class Constants {
 	public static final String DOI_PREFIX = "http://dx.doi.org/";
 
 	public static final String PUBMED_PREFIX = "http://www.ncbi.nlm.nih.gov/pubmed/";
-	
+
 	public static final String PUBMED_XML_PREFIX = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
 
 	public static final String ISI_PREFIX = "http://apps.isiknowledge.com/InboundService.do?Func=Frame&product=WOS&action=retrieve&SrcApp=EndNote&Init=Yes&SrcAuth=ResearchSoft&mode=FullRecord&UT=";
