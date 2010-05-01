@@ -28,10 +28,6 @@
 			<param-value>3</param-value>
 		</init-param>
 		<init-param>
-			<param-name>gridDiscoveryIntervalInMinutes</param-name>
-			<param-value>240</param-value>
-		</init-param>
-		<init-param>
 			<param-name>csmCleanupIntervalInMinutes</param-name>
 			<param-value>60</param-value>
 		</init-param>
