@@ -15,22 +15,21 @@
 	<tr>
 		<td class="welcomeContent" valign="top">
 			Welcome to the
-			<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong>
-			portal. caNanoLab is a data sharing portal designed to facilitate
-			information sharing in the biomedical nanotechnology research
-			community to expedite and validate the use of nanotechnology in
-			biomedicine. caNanoLab allows researchers to share information on
-			nanoparticles including the composition of the particle,the
-			functions (e.g. therapeutic,targeting,diagnostic imaging) of the
-			particle,the characterizations of the particle from
-			physico-chemical (e.g. size,molecular weight,surface) and in
-			vitro (e.g. cytotoxicity,blood contact) nanoparticle assays,and
-			the protocols of these characterization. The diagram
-			below illustrates the caNanoLab functionality and workflow. Active
-			links are provided on the diagram to allow a user to directly
-			navigate to the appropriate function based on the authorization level
-			of the user. Function navigation is also available through the menus
-			above.
+			<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong> portal.
+			caNanoLab is a data sharing portal designed to facilitate information
+			sharing in the biomedical nanotechnology research community to
+			expedite and validate the use of nanotechnology in biomedicine.
+			caNanoLab allows researchers to share information on nanomaterials
+			including the composition of the nanomaterial, the functions (e.g.
+			therapeutic, targeting, diagnostic imaging) of the nanomaterial, the
+			characterizations of the nanomaterial from physico-chemical (e.g.
+			size, molecular weight, surface) and
+			<i>in vitro</i> (e.g. cytotoxicity, blood contact) nanomaterial
+			assays, and the protocols of these assays. The diagram below
+			illustrates the caNanoLab functionality and workflow. Active links
+			are provided on the diagram to allow a user to directly navigate to
+			the appropriate function based on the authorization level of the
+			user. Function navigation is also available through the menus above.
 			<br>
 			<br>
 			<map name="funcMap" id="funcMap">
@@ -55,8 +54,9 @@
 					coords="60,259,156,297" alt="rectangle" />
 
 				<%-- Search Sample --%>
-				<area href="searchSample.do?dispatch=setup&searchLocations=${param.location}" shape="rect"
-					coords="60,311,156,363" alt="rectangle" />
+				<area
+					href="searchSample.do?dispatch=setup&searchLocations=${param.location}"
+					shape="rect" coords="60,311,156,363" alt="rectangle" />
 
 				<%-- Search Publication --%>
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
@@ -68,24 +68,24 @@
 						coords="272,36,368,74" alt="rectangle" />
 
 					<%-- Submit Samples --%>
-					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="272,88,368,141" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
+						coords="272,88,368,141" alt="rectangle" />
 
 					<%-- Submit Publication --%>
 					<area href="publication.do?dispatch=setupNew&page=0" shape="rect"
 						coords="332,412,428,450" alt="rectangle" />
 
 					<%-- Submit Samples (Others) --%>
-					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="332,152,428,189" alt="rectangle" />
-					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="332,333,428,371" alt="rectangle" />
-					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="459,245,554,305" alt="rectangle" />
-					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="459,368,554,409" alt="rectangle" />
-					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="459,449,554,490" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
+						coords="332,152,428,189" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
+						coords="332,333,428,371" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
+						coords="459,245,554,305" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
+						coords="459,368,554,409" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
+						coords="459,449,554,490" alt="rectangle" />
 				</c:if>
 			</map>
 			<img align="middle" src="images/Home_Page_Workflow.png"

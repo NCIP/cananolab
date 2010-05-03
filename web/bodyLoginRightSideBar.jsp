@@ -27,7 +27,7 @@
 								Nanotechnology protocols in biomedicine
 							</li>
 							<li>
-								Composition of nanomaterial formulations
+								Composition of nanomaterials
 							</li>
 							<li>
 								Physico-chemical characterizations including size, molecular
@@ -35,11 +35,11 @@
 								solubility, and relaxivity
 							</li>
 							<li>
-								In Vitro characterizations such as cytotoxicity, blood contact
+								<i>In Vitro</i> characterizations such as cytotoxicity, blood contact
 								properties, oxidative stress, immune cell functions, and other
 							</li>
 							<li>
-								In Vivo characterizations supporting pharmacokinetics and
+								<i>In Vivo</i> characterizations supporting pharmacokinetics and
 								toxicology (coming soon!)
 							</li>
 							<li>
@@ -51,7 +51,7 @@
 						<ul>
 							<li>
 								<a href="sample.do?dispatch=setupNew&page=0">Secure
-									submission</a> of protocols, samples (nanomaterial formulation),
+									submission</a> of protocols, samples (nanomaterials),
 								and publications
 							</li>
 							<li>
@@ -68,8 +68,7 @@
 								Tools for managing users via NCI Common Security Module (CSM)
 							</li>
 							<li>
-								Ability to operate as a stand-alone system or as a site in a
-								federated system using caBIG
+								Data services available through the caBIG
 								<sup>
 									&reg;
 								</sup>
@@ -104,7 +103,7 @@
 
 							<li>
 								<a href="searchSample.do?dispatch=setup&page=0">How can I
-									search for nanomaterials</a>
+									search for nanomaterials?</a>
 							</li>
 							<li>
 								<a href="searchSample.do?dispatch=setup&page=0">How can I search for nanomaterial
@@ -117,12 +116,6 @@
 						</ul>
 						<span class="boldAndUnderlined">General</span>
 						<ul>
-
-							<li>
-								<a
-									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-install', 'caNanoLabFAQ', '800', '800')">How
-									do I install my own caNanoLab system?</a>
-							</li>
 							<li>
 								<a
 									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How
@@ -137,6 +130,11 @@
 								<a
 									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-curator', 'caNanoLabFAQ', '800', '800')">Who
 									can I contact to submit data into caNanoLab?</a>
+							</li>
+							<li>
+								<a
+									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-install', 'caNanoLabFAQ', '800', '800')">How
+									do I install my own caNanoLab system?</a>
 							</li>
 						</ul>
 					</td>
