@@ -31,19 +31,19 @@
 									<tr>
 										<td class="sidebarContent">
 											<a href="${createLink}"> Submit a New <c:out
-													value="${item}" /> </a>
+													value="${item}" /></a>
 											<br>
-											Click to submit a new
-											<c:out value="${fn:toLowerCase(item)}" />
+											Select to submit a new
+											<c:out value="${fn:toLowerCase(item)}" />.
 										</td>
 									</tr>
 									<c:if test="${item eq 'Sample'}">
 										<tr>
 											<td class="sidebarContent">
-												<a href="sample.do?dispatch=setupClone&page=0">Copy 
+												<a href="sample.do?dispatch=setupClone&page=0">Copy
 													an Existing Sample</a>
 												<br>
-												Click to copy a sample
+												Select to copy information from an existing sample to a new sample.
 											</td>
 										</tr>
 									</c:if>
@@ -64,7 +64,7 @@
 										<a href="advancedSampleSearch.do?dispatch=setup&page=0">Advanced
 											Sample Search</a>
 										<br>
-										Enter advanced search criteria to obtain meta information on
+										Enter advanced search criteria based on caNanoLab metadata to obtain information on
 										samples of interest.
 									</td>
 								</tr>
