@@ -46,6 +46,7 @@ function getProtocolCounts(sites) {
 	});
 }
 
+var currentSites=null;
 function getSampleCounts(sites) {
 	show("sampleLoaderImg");
 	hide("sampleRelatedCounts");
@@ -66,10 +67,8 @@ function getSampleCounts(sites) {
 
 	getSampleSourceCounts(sites);
 	getCharacterizationCounts("Characterization", sites);
-	getCharacterizationCounts("PhysicoChemicalCharacterization", sites);
-	getCharacterizationCounts("InvitroCharacterization", sites);
-	getCharacterizationCounts("InvivoCharacterization", sites);
-	getCharacterizationCounts("OtherCharacterization", sites);
+	currentSites=sites;
+	window.setTimeout("getIndividualCharaCounts()", 500);
 }
 
 function getSampleSourceCounts(sites) {
@@ -80,6 +79,13 @@ function getSampleSourceCounts(sites) {
 			show("sampleSourceCount");
 		}
 	});
+}
+
+function getIndividualCharaCounts() {
+	getCharacterizationCounts("PhysicoChemicalCharacterization", currentSites);
+	getCharacterizationCounts("InvitroCharacterization", currentSites);
+	getCharacterizationCounts("InvivoCharacterization", currentSites);
+	getCharacterizationCounts("OtherCharacterization", currentSites);
 }
 
 function getCharacterizationCounts(charType, sites) {
