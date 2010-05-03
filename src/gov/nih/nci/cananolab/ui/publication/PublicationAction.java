@@ -143,7 +143,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle delete request from Sample -> Publication -> Edit page.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -173,7 +173,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Delete a publication from Publication update form
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -254,7 +254,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -285,7 +285,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -304,7 +304,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -327,7 +327,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -366,7 +366,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -528,6 +528,10 @@ public class PublicationAction extends BaseAnnotationAction {
 		} else if (!StringUtils.isEmpty(publication.getUri())) {
 			return true;
 		}
+		// doesn't require file if publication status is not "published"
+		if (!publication.getStatus().equalsIgnoreCase("published")) {
+			return true;
+		}
 		return false;
 	}
 
@@ -594,7 +598,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 * 
+	 *
 	 * @param request
 	 * @param compBean
 	 */
