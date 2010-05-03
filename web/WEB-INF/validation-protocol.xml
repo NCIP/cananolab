@@ -27,7 +27,7 @@
 				<msg name="mask" key="protocol.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9:\-\_\s\(\)]*$</var-value>
+					<var-value>^[a-zA-Z0-9\.:\-\_\s\(\)]*$</var-value>
 				</var>
 			</field>
 		</form>
@@ -54,7 +54,7 @@
 				<msg name="mask" key="protocol.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9:\-\_\*\s\(\)]*$</var-value>
+					<var-value>^[a-zA-Z0-9\.:\-\_\*\s\(\)]*$</var-value>
 				</var>
 			</field>
 		</form>
