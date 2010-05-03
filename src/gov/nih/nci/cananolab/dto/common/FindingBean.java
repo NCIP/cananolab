@@ -20,9 +20,9 @@ import java.util.Map;
 
 /**
  * View bean for Datum
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class FindingBean {
 	public static final String DATUM_TYPE = "datum";
@@ -41,7 +41,7 @@ public class FindingBean {
 
 	/**
 	 * Constructor for CharBean copying & "findFindingById()".
-	 * 
+	 *
 	 * @param finding
 	 */
 	public FindingBean(Finding finding) {
@@ -112,7 +112,8 @@ public class FindingBean {
 						else {
 							boolean existed = false;
 							for (Condition cond : conditionList) {
-								if (cond.getCreatedBy().equals(condition.getCreatedBy())) {
+								if (cond.getCreatedBy().equals(
+										condition.getCreatedBy())) {
 									existed = true;
 									break;
 								}
@@ -325,14 +326,14 @@ public class FindingBean {
 					if (datum.getId() != null && datum.getId() <= 0) {
 						datum.setId(null);
 					}
-					// Update createdBy if createdBy is empty or if bogus empty
-					// cell or if copy
+					// Update createdBy if createdBy is empty or if copy
+					// or if bogus empty when the cell is not empty
 					if (StringUtils.isEmpty(datum.getCreatedBy())
+							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
+									.equals(datum.getCreatedBy())
 							|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
 									.equals(datum.getCreatedBy())
-							&& datum.getValue() == -1
-							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
-									.equals(datum.getCreatedBy())) {
+							&& !StringUtils.isEmpty(cell.getValue())) {
 						datum.setCreatedBy(createdBy);
 					}
 					// Update createdDate if id is null and created_date is
@@ -363,17 +364,13 @@ public class FindingBean {
 					if (condition.getId() != null && condition.getId() <= 0) {
 						condition.setId(null);
 					}
-					// Update createdBy if createdBy is empty or if bogus empty
-					// cell or if copy
+					// Update createdBy if createdBy is empty or if copy
 					if (StringUtils.isEmpty(condition.getCreatedBy())
+							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
+									.equals(condition.getCreatedBy())
 							|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
 									.equals(condition.getCreatedBy())
-							&& condition
-									.getValue()
-									.equals(
-											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
-							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
-									.equals(condition.getCreatedBy())) {
+							&& !StringUtils.isEmpty(cell.getValue())) {
 						condition.setCreatedBy(createdBy);
 					}
 					// Update createdDate if id is null and created_date is
@@ -407,7 +404,7 @@ public class FindingBean {
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
-	 * 
+	 *
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {
@@ -473,9 +470,9 @@ public class FindingBean {
 	}
 
 	public void resetDomainCopy(Finding copy, Boolean copyData) {
-		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
 				+ copy.getId());
+		copy.setId(null);
 
 		// copy data and condition
 		if (!copyData) {
