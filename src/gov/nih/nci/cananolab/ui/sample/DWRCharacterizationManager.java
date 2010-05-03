@@ -113,7 +113,7 @@ public class DWRCharacterizationManager {
 			String characterizationClassName, String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
-		if (locations.length == 0) {
+		if (locations==null || locations.length == 0) {
 			locations = new String[1];
 			locations[0] = Constants.APP_OWNER;
 			// return null;
