@@ -836,6 +836,13 @@ ul,ol {
 	padding: 0px;
 }
 
+.invisibleTable th{
+	border-collapse: collapse;
+	border-spacing: 0px;
+	padding: 0 3 0 0;
+	border:0px;
+}
+
 .invisibleTable td{
 	border-collapse: collapse;
 	border-spacing: 0px;
