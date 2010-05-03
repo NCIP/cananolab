@@ -45,7 +45,6 @@
 			<filterset>
 				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
 				<filter token="APP_OWNER" value="${application.owner}" />
-				<filter token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
 			</filterset>
 		</copy>
 		<delete file="${tmp.dir}/utils/caNanoLab.properties.template" quiet="true"/>

@@ -64,7 +64,6 @@
 			<filterset>
 				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
 				<filter token="APP_OWNER" value="${application.owner}" />
-				<filter token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
 				<filter token="ADMIN_EMAIL" value="${admin.email}" />
 			</filterset>
 		</copy>
