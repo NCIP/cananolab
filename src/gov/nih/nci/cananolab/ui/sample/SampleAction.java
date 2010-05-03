@@ -40,7 +40,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -82,7 +82,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -130,7 +130,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -172,7 +172,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -190,7 +190,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -216,7 +216,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 * 
+	 *
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception
@@ -237,11 +237,12 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		PointOfContactBean thePOC = sample.getThePOC();
 		thePOC.setupDomain(user.getLoginName());
+		Long oldPOCId=thePOC.getDomain().getId();
 		SampleService service = new SampleServiceLocalImpl();
 		// have to save POC separately because the same organizations can not be
 		// saved in the same session
 		service.savePointOfContact(thePOC, user);
-		sample.addPointOfContact(thePOC);
+		sample.addPointOfContact(thePOC, oldPOCId);
 		// save sample
 		saveSample(request, sample);
 		ActionForward forward = null;
