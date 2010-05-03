@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="gridtable" width="98%" align="center">
 	<tr>
-		<th>
+		<th width="60%">
 			Data Type
 		</th>
 		<th id="results">
@@ -12,7 +12,7 @@
 		</th>
 	</tr>
 	<tr align="left">
-		
+
 		<td>
 			<table class="gridtableNoBorder">
 				<tr>
@@ -29,7 +29,7 @@
 				<tr>
 					<td>
 						Search for nanotechnology protocols leveraged in performing
-						nanoparticle characterization assays.
+						nanomaterial characterization assays.
 					</td>
 				</tr>
 			</table>
@@ -59,10 +59,12 @@
 						<c:param name="dispatch" value="setup" />
 					</c:url>
 					<td>
-						Search for information on nanoparticle formulations including the
-						composition of the particle, results of nanoparticle
-						physico-chemical, in vitro, and other characterizations, and
-						associated publications. See also
+						Search for information on nanomaterials including the composition
+						of the nanomaterial, results of physico-chemical,
+						<i>in vitro</i>, and other characterizations, and associated
+						publications.
+						<br>
+						See also
 						<a href="${advanceSearchUrl}" id="advanceSearch">Advanced
 							Sample Search</a>.
 					</td>
@@ -72,7 +74,67 @@
 		<td style="padding-left: 22px">
 			<img src="images/ajax-loader.gif" border="0" class="counts"
 				id="sampleLoaderImg" style="display: block">
-			<span id="sampleCount"></span>
+			<div id="sampleRelatedCounts">
+				<span id="sampleCount"></span>
+				<br />
+				<table class="invisibleTable">
+					<tr>
+						<th width="10">
+							<img src="images/diamond_list_item.gif" />
+						</th>
+						<td>
+							<span id="sampleSourceCount"></span>
+						</td>
+					</tr>
+					<tr>
+						<th width="10">
+							<img src="images/diamond_list_item.gif" />
+						</th>
+						<td>
+							<span id="CharacterizationCount"></span>
+						</td>
+					</tr>
+					<tr>
+						<th></th>
+						<td>
+							<table class="invisibleTable">
+								<tr>
+									<th width="10">
+										<img src="images/diamond_list_item.gif" />
+									</th>
+									<td>
+										<span id="PhysicoChemicalCharacterizationCount"></span>
+									</td>
+								</tr>
+								<tr>
+									<th width="10">
+										<img src="images/diamond_list_item.gif" />
+									</th>
+									<td>
+										<span id="InvitroCharacterizationCount"></span>
+									</td>
+								</tr>
+								<tr>
+									<th width="10">
+										<img src="images/diamond_list_item.gif" />
+									</th>
+									<td>
+										<span id="InvivoCharacterizationCount"></span>
+									</td>
+								</tr>
+								<tr>
+									<th width="10">
+										<img src="images/diamond_list_item.gif" />
+									</th>
+									<td>
+										<span id="OtherCharacterizationCount"></span>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</td>
 	</tr>
 	<tr>
@@ -85,8 +147,7 @@
 								alt="Search Publications" /> </a>
 					</td>
 					<td>
-						<a href="#" onclick=gotoPublications('setup');
-><b>Search
+						<a href="#" onclick=gotoPublications('setup');><b>Search
 								Publications</b> </a>
 					</td>
 				</tr>
