@@ -25,9 +25,9 @@ import java.util.TreeSet;
 /**
  * This class represents shared properties of samples to be shown in the view
  * pages.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleBean {
 	private String keywordsStr;
@@ -149,7 +149,7 @@ public class SampleBean {
 			}
 		}
 		if (primaryPOCBean != null) {
-			//primaryPOCBean.setupDomain(createdBy);
+			// primaryPOCBean.setupDomain(createdBy);
 			domain.setPrimaryPointOfContact(primaryPOCBean.getDomain());
 		} else {
 			domain.setPrimaryPointOfContact(null);
@@ -161,7 +161,7 @@ public class SampleBean {
 					.setOtherPointOfContactCollection(new HashSet<PointOfContact>());
 		}
 		for (PointOfContactBean pocBean : otherPOCBeans) {
-			//pocBean.setupDomain(createdBy);
+			// pocBean.setupDomain(createdBy);
 			domain.getOtherPointOfContactCollection().add(pocBean.getDomain());
 		}
 	}
@@ -278,10 +278,16 @@ public class SampleBean {
 		this.thePOC = thePOC;
 	}
 
-	public void addPointOfContact(PointOfContactBean poc) {
+	public void addPointOfContact(PointOfContactBean poc, Long oldId) {
 		if (poc.getPrimaryStatus()) {
 			primaryPOCBean = poc;
 		} else {
+			// the poc had a previous ID, remove it first
+			if (oldId != null) {
+				PointOfContact domainPOC = new PointOfContact();
+				domainPOC.setId(oldId);
+				otherPOCBeans.remove(new PointOfContactBean(domainPOC));
+			}
 			// if an old one exists, remove it first
 			int index = otherPOCBeans.indexOf(poc);
 			if (index != -1) {
@@ -330,7 +336,7 @@ public class SampleBean {
 
 		// copy composition
 		if (copy.getSampleComposition() != null) {
-			//correctly set the other end of the association
+			// correctly set the other end of the association
 			copy.getSampleComposition().setSample(copy);
 			CompositionBean compBean = new CompositionBean(copy
 					.getSampleComposition());
@@ -342,8 +348,8 @@ public class SampleBean {
 		if (oldKeywords == null || oldKeywords.isEmpty()) {
 			copy.setKeywordCollection(null);
 		} else {
-			//reuse keywords
-			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));			
+			// reuse keywords
+			copy.setKeywordCollection(new HashSet<Keyword>(oldKeywords));
 		}
 
 		// copy POC
@@ -366,18 +372,18 @@ public class SampleBean {
 		}
 
 		// copy publications
-//		Collection<Publication> oldPublications = copy
-//				.getPublicationCollection();
-//		if (oldPublications == null || oldPublications.isEmpty()) {
-//			copy.setPublicationCollection(null);
-//		} else {
-//			copy.setPublicationCollection(new HashSet<Publication>(
-//					oldPublications));
-//			for (Publication pub : copy.getPublicationCollection()) {
-//				PublicationBean pubBean = new PublicationBean(pub);
-//				pubBean.resetDomainCopy(pub);
-//			}
-//		}
+		// Collection<Publication> oldPublications = copy
+		// .getPublicationCollection();
+		// if (oldPublications == null || oldPublications.isEmpty()) {
+		// copy.setPublicationCollection(null);
+		// } else {
+		// copy.setPublicationCollection(new HashSet<Publication>(
+		// oldPublications));
+		// for (Publication pub : copy.getPublicationCollection()) {
+		// PublicationBean pubBean = new PublicationBean(pub);
+		// pubBean.resetDomainCopy(pub);
+		// }
+		// }
 		return copy;
 	}
 }
