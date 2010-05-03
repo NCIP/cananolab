@@ -10,9 +10,9 @@
 <tr>
 	<td colspan="2" class="welcomeContent">
 		This is the manage protocols section. A protocol is a predefined
-		procedural method in the design and implementation of experiments. For
+		procedural method used in the design and implementation of assays. For
 		example, a protocol could describe the steps a laboratory used for
-		characterizing nanoparticles. In this section, depending on your
+		characterizing nanomaterials. In this section, depending on your
 		authorization level, you may submit a new protocol, or search for an
 		existing protocol.
 		<br>
