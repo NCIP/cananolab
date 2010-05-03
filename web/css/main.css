@@ -423,7 +423,7 @@ h3,.h3 { /* for title of page */
 }
 
 p,.p { /* for paragraphs */ /* padding-left: 1em; */
-	
+
 }
 
 .bannerHome { /* for the banner area of the home page */
@@ -840,4 +840,5 @@ ul,ol {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0 15 0 0;
+	border:0px;
 }
