@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="User Registration" />
-	<jsp:param name="topic" value="update_password_help" />
+	<jsp:param name="topic" value="register_user" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/register">
