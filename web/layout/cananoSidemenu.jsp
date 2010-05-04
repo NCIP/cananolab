@@ -52,7 +52,7 @@
 			</tr>
 			<tr>
 				<td class="subMenuCommentText" height="20">
-					<em>since ${counterStartDate}</em>
+					<em>Since ${counterStartDate}</em>
 				</td>
 			</tr>
 		</c:if>
