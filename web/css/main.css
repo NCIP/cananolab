@@ -346,6 +346,11 @@ SIDEBAR BEGINS
 	border-collapse: collapse;
 	border-width: 1px;
 }
+.sidebarSectionNoBorder { /* for the individual sidebar sections */
+	font-family: arial, helvetica, verdana, sans-serif;
+	background-color: #f4f4f5; /* constant: light gray */
+	border-collapse: collapse;
+}
 
 .sidebarSectionNoBottom { /* for the individual sidebar sections */
 	font-family: arial, helvetica, verdana, sans-serif;
