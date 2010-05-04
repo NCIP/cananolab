@@ -18,9 +18,13 @@
 					class="loginText">Help</a>
 			</td>
 		</tr>
-		<tr>
+	</table>
+	<table width="100%">
+		<tr >
 			<td height="20" class="sidebarContent">No account is required to browse publicly available data.</td>
 		</tr>
+	</table>
+	<table class="sidebarSectionNoBorder" width="100%">
 		<tr>
 			<td>
 				<table id="loginBlock" style="display: none">
