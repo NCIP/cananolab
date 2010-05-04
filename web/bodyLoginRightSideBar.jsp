@@ -148,10 +148,10 @@
 				</tr>
 				<tr>
 					<td class="sidebarContent">
-						<b>caNanoLab 1.5.1 is now available for </b><a
+						<b>caNanoLab 1.5.1 is now available for </b><a target="_blank"
 							href="http://ncicb.nci.nih.gov/download/downloadcalab.jsp">download</a><b>.
 							For information on caNanoLab release, please refer to the </b>
-						<a href="#">caNanoLab Release Notes</a>.
+						<a target="_blank" href="https://gforge.nci.nih.gov/frs/?group_id=69">caNanoLab Release Notes</a>.
 					</td>
 				</tr>
 			</table>
