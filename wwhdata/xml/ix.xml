@@ -121,9 +121,6 @@
       <i t="logo or banner">
         <j l="103#1178419" />
       </i>
-      <i t="new user">
-        <j l="8#1180628" />
-      </i>
       <i t="physico-chemical characterization data and conditions">
         <j l="65#1598877" />
       </i>
@@ -139,9 +136,6 @@
       <i t="physico-chemical characterization results and findings">
         <j l="63#1567245" />
       </i>
-    </i>
-    <i t="administrator, registering new user">
-      <j l="8#1180628" />
     </i>
     <i t="animal study">
       <j l="104#1075305" />
@@ -1202,14 +1196,8 @@
         <j l="25#1184104" />
       </i>
     </i>
-    <i t="UPT, using to register new user">
-      <j l="8#1180628" />
-    </i>
     <i t="user account">
       <j l="6#1180690" />
-    </i>
-    <i t="user, adding">
-      <j l="8#1180628" />
     </i>
   </g>
   <g t="V" o="002">
