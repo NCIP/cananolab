@@ -152,6 +152,6 @@ public class DWRProtocolManager {
 				}
 			}
 		}
-		return counts.toString()+ " protocols";
+		return counts.toString()+ " Protocols";
 	}
 }
