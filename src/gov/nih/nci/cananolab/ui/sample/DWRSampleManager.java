@@ -220,7 +220,7 @@ public class DWRSampleManager {
 				}
 			}
 		}
-		return counts.toString() + " samples";
+		return counts.toString() + " Samples";
 	}
 
 	public String getPublicSourceCounts(String[] locations) {
@@ -256,7 +256,7 @@ public class DWRSampleManager {
 				}
 			}
 		}
-		return counts.toString() + " sample sources";
+		return counts.toString() + " Sample sources";
 	}
 
 	public AdvancedSampleSearchBean addSampleQuery(SampleQueryBean theQuery) {
