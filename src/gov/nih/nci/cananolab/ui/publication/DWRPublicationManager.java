@@ -290,7 +290,7 @@ public class DWRPublicationManager {
 				}
 			}
 		}
-		return counts.toString()+" publications";
+		return counts.toString()+" Publications";
 	}
 
 	public PublicationBean updateWithExistingNonPubMedDOIPublication(
