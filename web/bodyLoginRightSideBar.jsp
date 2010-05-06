@@ -21,8 +21,8 @@
 				</tr>
 				<tr>
 					<td class="sidebarContent">
-						<b>caNanoLab provides access to information on:</b>
-						<ul>
+						<b>caNanoLab provides access to information on:</b>						
+						<ul class="indented0">
 							<li>
 								Nanotechnology protocols in biomedicine
 							</li>
@@ -48,7 +48,7 @@
 							</li>
 						</ul>
 						<b>Primary caNanoLab features include:</b>
-						<ul>
+						<ul class="indented0">
 							<li>
 								<a href="sample.do?dispatch=setupNew&page=0">Secure
 									submission</a> of protocols, samples (nanomaterials),
@@ -91,7 +91,7 @@
 						<br />
 						<br />
 						<span class="boldAndUnderlined">Functional</span>
-						<ul>
+						<ul class="indented0">
 							<li>
 								<a href="searchProtocol.do?dispatch=setup&page=0">How do I
 									find nanotechnology protocols?</a>
@@ -115,7 +115,7 @@
 							</li>
 						</ul>
 						<span class="boldAndUnderlined">General</span>
-						<ul>
+						<ul class="indented0">
 							<li>
 								<a
 									href="#" onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How
