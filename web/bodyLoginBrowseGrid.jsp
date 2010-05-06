@@ -74,15 +74,18 @@
 		<td style="padding-left: 22px">
 			<img src="images/ajax-loader.gif" border="0" class="counts"
 				id="sampleLoaderImg" style="display: block">
-			<div id="sampleRelatedCounts">
-				<span id="sampleCount"></span>
-				<br />
-				<table class="invisibleTable">
+				<div id="sampleCounts">
+				<span id="sampleCount"></span> <br/>
+				<a id="moreStats" href="#" onclick="getMoreSamplesStats()">More Stats</a>				
+				<div id="sampleRelatedCounts" style="display: none">					
+				<table class="invisibleTable">					
 					<tr>
 						<th width="10">
 							<img src="images/diamond_list_item.gif" />
 						</th>
 						<td>
+							<img src="images/ajax-loader.gif" border="0" class="counts"
+								id="sampleSourceCountLoaderImg" style="display: block">
 							<span id="sampleSourceCount"></span>
 						</td>
 					</tr>
@@ -91,6 +94,8 @@
 							<img src="images/diamond_list_item.gif" />
 						</th>
 						<td>
+							<img src="images/ajax-loader.gif" border="0" class="counts"
+								id="sampleCharacterizationLoaderImg" style="display: block">
 							<span id="CharacterizationCount"></span>
 						</td>
 					</tr>
@@ -103,6 +108,8 @@
 										<img src="images/diamond_list_item.gif" />
 									</th>
 									<td>
+										<img src="images/ajax-loader.gif" border="0" class="counts"
+											id="samplePhysicoChemicalCharacterizationLoaderImg" style="display: block">
 										<span id="PhysicoChemicalCharacterizationCount"></span>
 									</td>
 								</tr>
@@ -111,6 +118,8 @@
 										<img src="images/diamond_list_item.gif" />
 									</th>
 									<td>
+										<img src="images/ajax-loader.gif" border="0" class="counts"
+											id="sampleInvitroCharacterizationLoaderImg" style="display: block">
 										<span id="InvitroCharacterizationCount"></span>
 									</td>
 								</tr>
@@ -119,6 +128,8 @@
 										<img src="images/diamond_list_item.gif" />
 									</th>
 									<td>
+										<img src="images/ajax-loader.gif" border="0" class="counts"
+											id="sampleInvivoCharacterizationLoaderImg" style="display: block">
 										<span id="InvivoCharacterizationCount"></span>
 									</td>
 								</tr>
@@ -127,6 +138,8 @@
 										<img src="images/diamond_list_item.gif" />
 									</th>
 									<td>
+										<img src="images/ajax-loader.gif" border="0" class="counts"
+											id="sampleOtherCharacterizationLoaderImg" style="display: block">
 										<span id="OtherCharacterizationCount"></span>
 									</td>
 								</tr>
@@ -134,6 +147,7 @@
 						</td>
 					</tr>
 				</table>
+				</div>
 			</div>
 		</td>
 	</tr>
