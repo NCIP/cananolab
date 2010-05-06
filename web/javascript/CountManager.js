@@ -50,6 +50,8 @@ var currentSites=null;
 function getSampleCounts(sites) {
 	show("sampleLoaderImg");
 	hide("sampleRelatedCounts");
+	hide("sampleCounts");
+	hide("moreStats");
 	SampleManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
 			hide("sampleLoaderImg");
@@ -58,25 +60,49 @@ function getSampleCounts(sites) {
 			dwr.util.setValue("sampleCount", link, {
 				escapeHtml : false
 			});
-			show("sampleRelatedCounts");
+			show("sampleCounts");
 			show("sampleCount");
+			show("moreStats");
 		} else {
 			show("sampleLoaderImg");
+			hide("moreStats");
+			
 		}
 	});
-
-	getSampleSourceCounts(sites);
-	getCharacterizationCounts("Characterization", sites);
 	currentSites=sites;
-	window.setTimeout("getIndividualCharaCounts()", 500);
+	//getSampleSourceCounts(sites);
+	//getCharacterizationCounts("Characterization", sites);
+	//window.setTimeout("getIndividualCharaCounts()", 500);
+}
+
+function getMoreSamplesStats(){
+	var sampleRelatedCounts = document.getElementById("sampleRelatedCounts");
+	if (sampleRelatedCounts == null) {
+		return;
+	}else if(sampleRelatedCounts.style.display == "none"){	
+		getSampleSourceCounts(currentSites);
+		getCharacterizationCounts("Characterization", currentSites);
+		//window.setTimeout("getIndividualCharaCounts()", 500);
+		getCharacterizationCounts("PhysicoChemicalCharacterization", currentSites);
+		getCharacterizationCounts("InvitroCharacterization", currentSites);
+		getCharacterizationCounts("InvivoCharacterization", currentSites);
+		getCharacterizationCounts("OtherCharacterization", currentSites);				
+		show("sampleRelatedCounts");		
+	}else{
+		hide("sampleRelatedCounts");
+	}
 }
 
 function getSampleSourceCounts(sites) {
 	hide("sampleSourceCount");
+	show("sampleSourceCountLoaderImg");
 	SampleManager.getPublicSourceCounts(sites, function(data) {
 		if (data != null) {
 			dwr.util.setValue("sampleSourceCount", data);
 			show("sampleSourceCount");
+			hide("sampleSourceCountLoaderImg");
+		}else{
+			show("sampleSourceCountLoaderImg");
 		}
 	});
 }
@@ -90,11 +116,15 @@ function getIndividualCharaCounts() {
 
 function getCharacterizationCounts(charType, sites) {
 	hide(charType + "Count");
+	show("sample"+charType +"LoaderImg");
 	CharacterizationManager.getPublicCharacterizationCounts(charType, sites,
 			function(data) {
 				if (data != null) {
 					dwr.util.setValue(charType + "Count", data);
 					show(charType + "Count");
+					hide("sample"+charType +"LoaderImg");
+				}else{
+					show("sample"+charType +"LoaderImg");
 				}
 			});
 }
