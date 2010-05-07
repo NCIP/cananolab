@@ -21,14 +21,14 @@ import java.util.jar.JarFile;
 
 /**
  * Utilility class to handle domain class manipulations
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ClassUtils {
 	/**
 	 * Get all caNanoLab domain classes
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -65,7 +65,7 @@ public class ClassUtils {
 
 	/**
 	 * Get child classes of a parent class in caNanoLab
-	 * 
+	 *
 	 * @param parentClassName
 	 * @return
 	 * @throws Exception
@@ -84,7 +84,7 @@ public class ClassUtils {
 
 	/**
 	 * Get child class names of a parent class in caNanoLab
-	 * 
+	 *
 	 * @param parentClassName
 	 * @return
 	 * @throws Exception
@@ -101,7 +101,7 @@ public class ClassUtils {
 
 	/**
 	 * get the short class name without fully qualified path
-	 * 
+	 *
 	 * @param className
 	 * @return
 	 */
@@ -112,7 +112,7 @@ public class ClassUtils {
 
 	/**
 	 * check if a class has children classes
-	 * 
+	 *
 	 * @param parent
 	 *            class name
 	 * @return
@@ -156,7 +156,7 @@ public class ClassUtils {
 	 * serialized) an error is printed to System.err and null is returned.
 	 * Depending on your specific application, it might make more sense to have
 	 * copy(...) re-throw the exception.
-	 * 
+	 *
 	 * A later version of this class includes some minor optimizations.
 	 */
 	/**
@@ -195,7 +195,7 @@ public class ClassUtils {
 	 * Utility for making deep copies (vs. clone()'s shallow copies) of objects
 	 * in a memory efficient way. Objects are serialized in the calling thread
 	 * and de-serialized in another thread.
-	 * 
+	 *
 	 * Error checking is fairly minimal in this implementation. If an object is
 	 * encountered that cannot be serialized (or that references an object that
 	 * cannot be serialized) an error is printed to System.err and null is
@@ -247,7 +247,7 @@ public class ClassUtils {
 
 	/**
 	 * copy attributes of one object to another
-	 * 
+	 *
 	 * mapping attribute criteria: - use setter and getter to copy value -
 	 * getter method have no parameter types,
 	 * method.getParameterTypes().length==0 - setter method have one and only
@@ -416,10 +416,21 @@ public class ClassUtils {
 	}
 
 	public static String getDisplayName(String shortClassName) {
-		return shortClassName.replaceAll("([A-Z])", " $1").trim().toLowerCase();
+		String displayName = shortClassName.replaceAll("([A-Z])", " $1").trim()
+				.toLowerCase();
+		// replace invivo with in vivo, invitro with in vitro, physico chemical
+		// with physico-chemical
+		displayName = displayName.replaceAll("invivo", "in vivo").replaceAll(
+				"invitro", "in vitro").replaceAll("physico ", "physico-");
+		return displayName;
 	}
 
 	public static String getShortClassNameFromDisplayName(String displayName) {
+		// replace physico-chemical with physico chemical, in vivo with invivo,
+		// In vitro with invitro
+		displayName=displayName.replaceAll("physico-chemical",
+				"physico chemical").replaceAll("in vivo", "invivo").replaceAll(
+				"in vitro", "invitro");
 		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
@@ -458,9 +469,7 @@ public class ClassUtils {
 
 			// List<Report> reportLists = ClassUtils.mapObjects(null, null);
 			// System.out.println("report ========="+reportLists.get(0).getCategory());
-			System.out
-					.println(ClassUtils
-							.getFullClass("Characterization"));
+			System.out.println(ClassUtils.getFullClass("Characterization"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
