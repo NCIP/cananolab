@@ -3,7 +3,7 @@ use canano;
 -- fix created_date column type
 ALTER TABLE canano.point_of_contact
  CHANGE created_date created_date DATETIME NOT NULL;
- 
+
 ALTER TABLE canano.organization
  CHANGE created_date created_date DATETIME NOT NULL;
 
@@ -25,7 +25,7 @@ update common_lookup
 set name='radioactivity quantitation'
 where name='radioactivity quantiation';
 
--- create and initialize admin table 
+-- create and initialize admin table
 CREATE TABLE administration
 (
 	administration_id BIGINT NOT NULL,
@@ -42,14 +42,32 @@ CREATE TABLE administration
 ;
 
 insert into administration(
-	administration_id, 
-	visitor_count, 
-	counter_start_date, 
-	created_by, 
-	created_date) 
+	administration_id,
+	visitor_count,
+	counter_start_date,
+	created_by,
+	created_date)
 values (0,0,CURDATE(),'admin',CURDATE());
 
 -- drop unused columns
 ALTER TABLE canano.file
  DROP file_extension,
  DROP comments;
+
+-- update other characterization
+update
+characterization
+set other_char_assay_category='physico-chemical characterization'
+where other_char_assay_category='physico chemical characterization';
+
+update
+characterization
+set other_char_assay_category='in vitro characterization'
+where other_char_assay_category='invitro characterization';
+
+update
+characterization
+set other_char_assay_category='in vivo characterization'
+where other_char_assay_category='invivo characterization';
+
+
