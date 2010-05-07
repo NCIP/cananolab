@@ -669,6 +669,12 @@ img.img { /* for images that need a border */
 	font-weight: bold;
 }
 
+.moreLink {
+	color: #5F7C7C; /* constant: red */
+	font-weight: bold;
+	text-decoration: underline;
+	font-size: 0.8em;
+}
 .addLink {
 	color: #a90101; /* constant: red */
 	font-weight: bold;
