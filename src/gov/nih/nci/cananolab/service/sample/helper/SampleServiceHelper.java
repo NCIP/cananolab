@@ -52,9 +52,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of SampleService and grid service *
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class SampleServiceHelper {
 	private AuthorizationService authService;
@@ -481,23 +481,41 @@ public class SampleServiceHelper {
 
 		// join characterization
 		if (characterizationClassNames != null
-				&& characterizationClassNames.length > 0 || wordList != null
+				&& characterizationClassNames.length > 0
+				|| otherCharacterizationTypes != null
+				&& otherCharacterizationTypes.length > 0 || wordList != null
 				&& wordList.length > 0) {
 			crit.createAlias("characterizationCollection", "chara",
 					CriteriaSpecification.LEFT_JOIN);
 		}
-
 		// characterization
 		if (characterizationClassNames != null
-				&& characterizationClassNames.length > 0) {
-			crit
-					.add(Restrictions.in("chara.class",
-							characterizationClassNames));
+				&& characterizationClassNames.length > 0
+				|| otherCharacterizationTypes != null
+				&& otherCharacterizationTypes.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			if (characterizationClassNames != null
+					&& characterizationClassNames.length > 0) {
+				Criterion charCrit = Restrictions.in("chara.class",
+						characterizationClassNames);
+				disjunction.add(charCrit);
+			}
+			if (otherCharacterizationTypes != null
+					&& otherCharacterizationTypes.length > 0) {
+				Criterion otherCharCrit1 = Restrictions.eq("chara.class",
+						"OtherCharacterization");
+				Criterion otherCharCrit2 = Restrictions.in("chara.name",
+						otherCharacterizationTypes);
+				Criterion otherCharCrit = Restrictions.and(otherCharCrit1,
+						otherCharCrit2);
+				disjunction.add(otherCharCrit);
+			}
+			crit.add(disjunction);
 		}
-
 		// join keyword, finding, publication
 		if (wordList != null && wordList.length > 0) {
-			crit.createAlias("keywordCollection", "keyword1");
+			crit.createAlias("keywordCollection", "keyword1",
+					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("chara.findingCollection", "finding",
 					CriteriaSpecification.LEFT_JOIN).createAlias(
 					"finding.fileCollection", "charFile",
@@ -564,7 +582,7 @@ public class SampleServiceHelper {
 	/**
 	 * Return all stored functionalizing entity class names. In case of
 	 * OtherFunctionalizingEntity, store the OtherFunctionalizingEntity type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -592,7 +610,7 @@ public class SampleServiceHelper {
 	/**
 	 * Return all stored function class names. In case of OtherFunction, store
 	 * the otherFunction type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -651,7 +669,7 @@ public class SampleServiceHelper {
 	/**
 	 * Return all stored nanomaterial entity class names. In case of
 	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -975,8 +993,7 @@ public class SampleServiceHelper {
 			columns.add(primaryPOC.getDomain().getFirstName());
 			columns.add(primaryPOC.getDomain().getLastName());
 			columns.add(primaryPOC.getDomain().getOrganization().getName());
-		}
-		else {
+		} else {
 			columns.add(null);
 			columns.add(null);
 			columns.add(null);
@@ -1034,7 +1051,6 @@ public class SampleServiceHelper {
 		}
 		return org;
 	}
-
 
 	public PointOfContact findPointOfContactById(String pocId, UserBean user)
 			throws Exception {
@@ -1145,7 +1161,7 @@ public class SampleServiceHelper {
 	/**
 	 * search sampleNames based on sample name str. The str can contain just a
 	 * partial sample name or multiple partial names one per line
-	 * 
+	 *
 	 * @param nameStr
 	 * @param user
 	 * @return
