@@ -74,79 +74,81 @@
 		<td style="padding-left: 22px">
 			<img src="images/ajax-loader.gif" border="0" class="counts"
 				id="sampleLoaderImg" style="display: block">
-				<div id="sampleCounts">
-				<span id="sampleCount"></span> <br/>
-				<a id="moreStats" href="#" onclick="getMoreSamplesStats()">More Stats</a>				
-				<div id="sampleRelatedCounts" style="display: none">					
-				<table class="invisibleTable">					
+			<div id="sampleCounts">
+				<table class="invisibleTable">
 					<tr>
-						<th width="10">
-							<img src="images/diamond_list_item.gif" />
-						</th>
 						<td>
-							<img src="images/ajax-loader.gif" border="0" class="counts"
-								id="sampleSourceCountLoaderImg" style="display: block">
-							<span id="sampleSourceCount"></span>
+							<span id="sampleCount"></span>
 						</td>
-					</tr>
-					<tr>
-						<th width="10">
-							<img src="images/diamond_list_item.gif" />
-						</th>
+						<td width="30"></td>
 						<td>
-							<img src="images/ajax-loader.gif" border="0" class="counts"
-								id="sampleCharacterizationLoaderImg" style="display: block">
-							<span id="CharacterizationCount"></span>
-						</td>
-					</tr>
-					<tr>
-						<th></th>
-						<td>
-							<table class="invisibleTable">
-								<tr>
-									<th width="10">
-										<img src="images/diamond_list_item.gif" />
-									</th>
-									<td>
-										<img src="images/ajax-loader.gif" border="0" class="counts"
-											id="samplePhysicoChemicalCharacterizationLoaderImg" style="display: block">
-										<span id="PhysicoChemicalCharacterizationCount"></span>
-									</td>
-								</tr>
-								<tr>
-									<th width="10">
-										<img src="images/diamond_list_item.gif" />
-									</th>
-									<td>
-										<img src="images/ajax-loader.gif" border="0" class="counts"
-											id="sampleInvitroCharacterizationLoaderImg" style="display: block">
-										<span id="InvitroCharacterizationCount"></span>
-									</td>
-								</tr>
-								<tr>
-									<th width="10">
-										<img src="images/diamond_list_item.gif" />
-									</th>
-									<td>
-										<img src="images/ajax-loader.gif" border="0" class="counts"
-											id="sampleInvivoCharacterizationLoaderImg" style="display: block">
-										<span id="InvivoCharacterizationCount"></span>
-									</td>
-								</tr>
-								<tr>
-									<th width="10">
-										<img src="images/diamond_list_item.gif" />
-									</th>
-									<td>
-										<img src="images/ajax-loader.gif" border="0" class="counts"
-											id="sampleOtherCharacterizationLoaderImg" style="display: block">
-										<span id="OtherCharacterizationCount"></span>
-									</td>
-								</tr>
-							</table>
+							<a id="moreStats" onclick="getMoreSamplesStats()"
+								onmouseOver="showCursor();" onmouseOut="hideCursor()"><span
+								class="moreLink">More Stats</span> </a>
 						</td>
 					</tr>
 				</table>
+				<br />
+				<img src="images/ajax-loader.gif" border="0" class="counts"
+					id="sampleRelatedLoaderImg" style="display: none">
+				<div id="sampleRelatedCounts" style="display: none">
+					<table class="invisibleTable" style="color: #5F7C7C">
+						<tr>
+							<th width="10">
+								<img src="images/diamond_list_item.gif" />
+							</th>
+							<td>
+								<span id="sampleSourceCount"></span>
+							</td>
+						</tr>
+						<tr>
+							<th width="10">
+								<img src="images/diamond_list_item.gif" />
+							</th>
+							<td>
+								<span id="CharacterizationCount"></span>
+							</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td>
+								<table class="invisibleTable" style="color: #5F7C7C">
+									<tr>
+										<th width="10">
+											-
+										</th>
+										<td>
+											<span id="PhysicoChemicalCharacterizationCount"></span>
+										</td>
+									</tr>
+									<tr>
+										<th width="10">
+											-
+										</th>
+										<td>
+											<span id="InvitroCharacterizationCount"></span>
+										</td>
+									</tr>
+									<tr>
+										<th width="10">
+											-
+										</th>
+										<td>
+											<span id="InvivoCharacterizationCount"></span>
+										</td>
+									</tr>
+									<tr>
+										<th width="10">
+											-
+										</th>
+										<td>
+											<span id="OtherCharacterizationCount"></span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</td>
