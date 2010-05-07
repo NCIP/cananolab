@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="caNanoLab-grid" basedir=".">
+	<property file="grid.properties" />
+	<property name="grid.service.name" value="CaNanoLabService" />
+	<import file="build-grid-deploy.xml" />
+
+	<target name="init-grid">
+		<!-- create the necessary folders -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${tmp.dir}" />
+		<mkdir dir="${tmp.dir}/orm" />
+	</target>
+
+	<target name="build-grid" depends="clean, init-grid">
+		<!-- unpack default wsrf.war -->
+		<unzip dest="${tmp.dir}" src="conf/gridservice/wsrf-canano.war" />
+
+		<!-- unpack caNanoLabSDK-orm.jar -->
+		<unzip dest="${tmp.dir}/orm" src="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" />
+		<!-- replace database connection info -->
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_PASSWORD" value="${database.password}" />
+		<!-- repackage caNanoLabSDK-orm.jar -->
+		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" basedir="${tmp.dir}/orm" />
+		<delete dir="${tmp.dir}/orm" quiet="true" />
+
+		<!-- unpack caNanoLabSDK-customConfig.jar -->
+		<unzip dest="${tmp.dir}/customConfig" src="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" />
+		<!-- replace database connection info -->
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/customConfig/caNanoLab.csm.new.hibernate.cfg.xml" token="DATABASE_PASSWORD" value="${database.password}" />
+		<!-- repackage caNanoLabSDK-customConfig.jar -->
+		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" basedir="${tmp.dir}/customConfig" />
+		<delete dir="${tmp.dir}/customConfig" quiet="true" />
+
+		<!-- unpack caNanoLab-utils.jar -->
+		<unzip dest="${tmp.dir}/utils" src="${tmp.dir}/WEB-INF/lib/caNanoLab-utils.jar" />
+		<!-- replace cananolab properties tokens with values from build properties -->
+		<copy file="${tmp.dir}/utils/caNanoLab.properties.template" toFile="${tmp.dir}/utils/caNanoLab.properties" filtering="true" >
+			<!-- replace tokens with values from build properties -->
+			<filterset>
+				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
+				<filter token="APP_OWNER" value="${application.owner}" />
+			</filterset>
+		</copy>
+		<delete file="${tmp.dir}/utils/caNanoLab.properties.template" quiet="true"/>
+		<!-- repackage caNanoLab-utils.jar -->
+		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLab-utils.jar" basedir="${tmp.dir}/utils" />
+		<delete dir="${tmp.dir}/utils" quiet="true" />
+
+		<!-- replace grid service hostname -->
+		<replace file="${tmp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
+
+		<!-- replace grid service port -->
+		<replace file="${tmp.dir}/WEB-INF/web.xml" token="DEFAULT_PORT" value="${grid.service.port}" />
+
+		<!-- replace grid index service URL -->
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/${grid.service.name}_registration.xml" token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
+
+		<!-- replace grid service metadata -->
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="APPOWNER" value="${application.owner}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_COUNTRY" value="${country}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_STATE" value="${state}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_CITY" value="${city}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_ZIP" value="${zipcode}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_STREET1" value="${street1}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_STREET2" value="${street2}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_AFFLIATION" value="${affliation}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_EMAIL" value="${email}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_PHONE" value="${phone}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="FIRSTNAME" value="${first.name}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="LASTNAME" value="${last.name}" />
+
+		<!-- repackage WAR file -->
+		<jar destfile="${build.dir}/wsrf-canano.war" basedir="${tmp.dir}" />
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" quiet="true" />
+	</target>
+</project>
