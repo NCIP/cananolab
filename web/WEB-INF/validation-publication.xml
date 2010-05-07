@@ -27,7 +27,7 @@
 				<msg name="mask" key="publication.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\.,:\-\_\*\s]*$</var-value>
+					<var-value>^[a-zA-Z0-9\./,:\-\_\*\s]*$</var-value>
 				</var>
 			</field>
 			<field property="authorsStr" page="1" depends="mask">
