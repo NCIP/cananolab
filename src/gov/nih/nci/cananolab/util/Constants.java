@@ -162,9 +162,9 @@ public class Constants {
 			"delete", "setupNew", "setupUpdate", "summaryEdit", "add",
 			"remove", "save", "resetFinding", "getFinding", "drawMatrix" };
 
-	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico chemical characterization";
-	public static final String INVIVO_CHARACTERIZATION = "invivo characterization";
-	public static final String INVITRO_CHARACTERIZATION = "invitro characterization";
+	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico-chemical characterization";
+	public static final String INVIVO_CHARACTERIZATION = "in vivo characterization";
+	public static final String INVITRO_CHARACTERIZATION = "in vitro characterization";
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
 
