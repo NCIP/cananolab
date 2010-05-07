@@ -46,7 +46,7 @@ function getProtocolCounts(sites) {
 	});
 }
 
-var currentSites=null;
+var currentSites = null;
 function getSampleCounts(sites) {
 	show("sampleLoaderImg");
 	hide("sampleRelatedCounts");
@@ -66,65 +66,57 @@ function getSampleCounts(sites) {
 		} else {
 			show("sampleLoaderImg");
 			hide("moreStats");
-			
+
 		}
 	});
-	currentSites=sites;
-	//getSampleSourceCounts(sites);
-	//getCharacterizationCounts("Characterization", sites);
-	//window.setTimeout("getIndividualCharaCounts()", 500);
+	currentSites = sites;
+	// getSampleSourceCounts(sites);
+	// getCharacterizationCounts("Characterization", sites);
+	// window.setTimeout("getIndividualCharaCounts()", 500);
 }
 
-function getMoreSamplesStats(){
+function getMoreSamplesStats() {
+	show("sampleRelatedLoaderImg");
 	var sampleRelatedCounts = document.getElementById("sampleRelatedCounts");
 	if (sampleRelatedCounts == null) {
 		return;
-	}else if(sampleRelatedCounts.style.display == "none"){	
+	} else if (sampleRelatedCounts.style.display == "none") {
+		dwr.engine.beginBatch();
 		getSampleSourceCounts(currentSites);
 		getCharacterizationCounts("Characterization", currentSites);
-		//window.setTimeout("getIndividualCharaCounts()", 500);
-		getCharacterizationCounts("PhysicoChemicalCharacterization", currentSites);
+		getCharacterizationCounts("PhysicoChemicalCharacterization",
+				currentSites);
 		getCharacterizationCounts("InvitroCharacterization", currentSites);
 		getCharacterizationCounts("InvivoCharacterization", currentSites);
-		getCharacterizationCounts("OtherCharacterization", currentSites);				
-		show("sampleRelatedCounts");		
-	}else{
+		getCharacterizationCounts("OtherCharacterization", currentSites);
+		dwr.engine.endBatch({
+			  async:false
+			});
+
+		hide("sampleRelatedLoaderImg");
+		show("sampleRelatedCounts");
+	} else {
 		hide("sampleRelatedCounts");
 	}
 }
 
 function getSampleSourceCounts(sites) {
 	hide("sampleSourceCount");
-	show("sampleSourceCountLoaderImg");
 	SampleManager.getPublicSourceCounts(sites, function(data) {
 		if (data != null) {
 			dwr.util.setValue("sampleSourceCount", data);
 			show("sampleSourceCount");
-			hide("sampleSourceCountLoaderImg");
-		}else{
-			show("sampleSourceCountLoaderImg");
 		}
 	});
 }
 
-function getIndividualCharaCounts() {
-	getCharacterizationCounts("PhysicoChemicalCharacterization", currentSites);
-	getCharacterizationCounts("InvitroCharacterization", currentSites);
-	getCharacterizationCounts("InvivoCharacterization", currentSites);
-	getCharacterizationCounts("OtherCharacterization", currentSites);
-}
-
 function getCharacterizationCounts(charType, sites) {
 	hide(charType + "Count");
-	show("sample"+charType +"LoaderImg");
 	CharacterizationManager.getPublicCharacterizationCounts(charType, sites,
 			function(data) {
 				if (data != null) {
 					dwr.util.setValue(charType + "Count", data);
 					show(charType + "Count");
-					hide("sample"+charType +"LoaderImg");
-				}else{
-					show("sample"+charType +"LoaderImg");
 				}
 			});
 }
