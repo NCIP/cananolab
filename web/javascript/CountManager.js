@@ -51,7 +51,6 @@ function getSampleCounts(sites) {
 	show("sampleLoaderImg");
 	hide("sampleRelatedCounts");
 	hide("sampleCounts");
-	hide("moreStats");
 	SampleManager.getPublicCounts(sites, function(data) {
 		if (data != null) {
 			hide("sampleLoaderImg");
@@ -61,64 +60,53 @@ function getSampleCounts(sites) {
 				escapeHtml : false
 			});
 			show("sampleCounts");
-			show("sampleCount");
 			show("moreStats");
 		} else {
 			show("sampleLoaderImg");
 			hide("moreStats");
-
 		}
 	});
 	currentSites = sites;
-	// getSampleSourceCounts(sites);
-	// getCharacterizationCounts("Characterization", sites);
-	// window.setTimeout("getIndividualCharaCounts()", 500);
 }
 
 function getMoreSamplesStats() {
+	hide("sampleRelatedCounts");
 	show("sampleRelatedLoaderImg");
 	var sampleRelatedCounts = document.getElementById("sampleRelatedCounts");
-	if (sampleRelatedCounts == null) {
-		return;
-	} else if (sampleRelatedCounts.style.display == "none") {
-		dwr.engine.beginBatch();
-		getSampleSourceCounts(currentSites);
-		getCharacterizationCounts("Characterization", currentSites);
-		getCharacterizationCounts("PhysicoChemicalCharacterization",
-				currentSites);
-		getCharacterizationCounts("InvitroCharacterization", currentSites);
-		getCharacterizationCounts("InvivoCharacterization", currentSites);
-		getCharacterizationCounts("OtherCharacterization", currentSites);
-		dwr.engine.endBatch({
-			  async:false
-			});
-
-		hide("sampleRelatedLoaderImg");
-		show("sampleRelatedCounts");
-	} else {
-		hide("sampleRelatedCounts");
-	}
+	// dwr.engine.beginBatch(); //doesn't work properly in IE7
+	getSampleSourceCounts(currentSites);
+	getCharacterizationCounts("Characterization", currentSites);
+	getCharacterizationCounts("PhysicoChemicalCharacterization", currentSites);
+	getCharacterizationCounts("InvitroCharacterization", currentSites);
+	getCharacterizationCounts("InvivoCharacterization", currentSites);
+	getCharacterizationCounts("OtherCharacterization", currentSites);
+	/*
+	 * dwr.engine.endBatch( { async : false });
+	 */
 }
 
 function getSampleSourceCounts(sites) {
-	hide("sampleSourceCount");
 	SampleManager.getPublicSourceCounts(sites, function(data) {
 		if (data != null) {
 			dwr.util.setValue("sampleSourceCount", data);
-			show("sampleSourceCount");
+			show("sampleRelatedCounts");
+			hide("sampleRelatedLoaderImg");
 		}
 	});
 }
 
 function getCharacterizationCounts(charType, sites) {
-	hide(charType + "Count");
-	CharacterizationManager.getPublicCharacterizationCounts(charType, sites,
-			function(data) {
-				if (data != null) {
-					dwr.util.setValue(charType + "Count", data);
-					show(charType + "Count");
-				}
-			});
+	//show an example of how to set async for individual call back
+	CharacterizationManager.getPublicCharacterizationCounts(charType, sites, {
+		callback : function(data) {
+			if (data != null) {
+				dwr.util.setValue(charType + "Count", data);
+				show("sampleRelatedCounts");
+				hide("sampleRelatedLoaderImg");
+			}
+		},
+		async : true
+	});
 }
 
 function getPublicationCounts(sites) {
