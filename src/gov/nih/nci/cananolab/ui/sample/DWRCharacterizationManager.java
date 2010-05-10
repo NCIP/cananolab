@@ -150,6 +150,9 @@ public class DWRCharacterizationManager {
 		if (!charDisplayName.equals("characterization")) {
 			charDisplayName=charDisplayName.replaceAll("(.+) characterization", "$1");
 		}
+		else {
+			charDisplayName="Characterizations";
+		}
 		return counts.toString() + " "+charDisplayName;
 	}
 }
