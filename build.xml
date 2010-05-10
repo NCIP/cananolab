@@ -37,7 +37,7 @@
 		<mkdir dir="${build.dir}/WEB-INF/lib" />
 	</target>
 
-	<target name="compile" depends="init">
+	<target name="compile" depends="pre-clean, init">
 		<echo message="*****************************************************" />
 		<echo message="**   Compiling Java Classes ...          		  **" />
 		<echo message="*****************************************************" />
