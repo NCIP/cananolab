@@ -33,7 +33,7 @@
 		<copy overwrite="true" todir="${jboss.server.dir}/lib" file="${conf.dir}/mysql-connector-java-5.0.7-bin.jar" />
 	</target>
 
-	<target name="deploy-application" depends="war">
+	<target name="deploy-application" depends="run">
 		<!-- package WAR file -->
 		<copy todir="${jboss.deploy.dir}" overwrite="true">
 			<fileset dir="${target.dir}">
