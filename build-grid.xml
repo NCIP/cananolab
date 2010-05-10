@@ -11,7 +11,7 @@
 		<mkdir dir="${tmp.dir}/orm" />
 	</target>
 
-	<target name="build-grid" depends="clean, init-grid">
+	<target name="build-grid" depends="pre-clean, init-grid">
 		<!-- unpack default wsrf.war -->
 		<unzip dest="${tmp.dir}" src="conf/gridservice/wsrf-canano.war" />
 

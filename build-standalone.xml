@@ -10,7 +10,7 @@
 		<mkdir dir="${tmp.dir}/classes" />
 	</target>
 	<target name="compile-standalone"
-		depends="clean, init-standalone">
+		depends="pre-clean, init-standalone">
 		<echo
 			message="*****************************************************" />
 		<echo message="**   Compiling Java Classes ...          		  **" />

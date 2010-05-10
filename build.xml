@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="caNanoLab" default="build-application" basedir=".">
+<project name="caNanoLab" default="war" basedir=".">
 	<property file="build.properties" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -7,11 +7,11 @@
 	<property name="webroot.dir" value="${basedir}/web" />
 	<property name="webapp.lib.dir" value="${webroot.dir}/WEB-INF/lib" />
 	<property name="build.dir" value="${basedir}/build" />
-	<property name="tmp.dir" value="${build.dir}/tmp" />
+	<property name="target.dir" value="${basedir}/target" />
 
 	<import file="build-deploy.xml" />
 	<import file="build-grid.xml" />
-	<import file="build-standalone.xml"/>
+	<import file="build-standalone.xml" />
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>
@@ -19,20 +19,25 @@
 		</classpath>
 	</taskdef>
 
-	<target name="clean">
+	<target name="pre-clean">
+		<delete dir="${target.dir}" />
 		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="init-application">
-		<!-- create the necessary folders -->
-		<mkdir dir="${build.dir}" />
-		<mkdir dir="${tmp.dir}" />
-		<mkdir dir="${tmp.dir}/WEB-INF" />
-		<mkdir dir="${tmp.dir}/WEB-INF/classes" />
-		<mkdir dir="${tmp.dir}/WEB-INF/lib" />
+	<target name="post-clean">
+		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="compile" depends="clean, init-application">
+	<target name="init">
+		<!-- create the necessary folders -->
+		<mkdir dir="${build.dir}" />
+
+		<mkdir dir="${build.dir}/WEB-INF" />
+		<mkdir dir="${build.dir}/WEB-INF/classes" />
+		<mkdir dir="${build.dir}/WEB-INF/lib" />
+	</target>
+
+	<target name="compile" depends="init">
 		<echo message="*****************************************************" />
 		<echo message="**   Compiling Java Classes ...          		  **" />
 		<echo message="*****************************************************" />
@@ -44,12 +49,12 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</path>
-		<javac srcdir="${src.dir}" destdir="${tmp.dir}/WEB-INF/classes" debug="true">
+		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true">
 			<classpath refid="cp" />
 		</javac>
 
 		<!--copy properties files -->
-		<copy todir="${tmp.dir}/WEB-INF/classes">
+		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}">
 				<include name="**/*.properties" />
 				<exclude name="caNanoLab.properties" />
@@ -57,9 +62,9 @@
 		</copy>
 
 		<!--copy wsdd file -->
-		<copy todir="${tmp.dir}/WEB-INF/classes" file="${src.dir}/client-config.wsdd" />
+		<copy todir="${build.dir}/WEB-INF/classes" file="${src.dir}/client-config.wsdd" />
 
-		<copy overwrite="true" todir="${tmp.dir}/WEB-INF/classes" file="${src.dir}/caNanoLab.properties.template">
+		<copy overwrite="true" todir="${build.dir}/WEB-INF/classes" file="${src.dir}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset>
 				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
@@ -67,17 +72,17 @@
 				<filter token="ADMIN_EMAIL" value="${admin.email}" />
 			</filterset>
 		</copy>
-		<move file="${tmp.dir}/WEB-INF/classes/caNanoLab.properties.template" tofile="${tmp.dir}/WEB-INF/classes/caNanoLab.properties" />
+		<move file="${build.dir}/WEB-INF/classes/caNanoLab.properties.template" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" />
 
 		<!--copy xml files -->
-		<copy todir="${tmp.dir}/WEB-INF/classes">
+		<copy todir="${build.dir}/WEB-INF/classes">
 			<fileset dir="${src.dir}">
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
 
 		<!-- copy web files and lib files -->
-		<copy todir="${tmp.dir}">
+		<copy todir="${build.dir}">
 			<fileset dir="${webroot.dir}">
 				<exclude name="**/*.mex" />
 				<exclude name="**/WEB-INF/classes/**" />
@@ -85,7 +90,7 @@
 		</copy>
 
 		<!-- copy lib files from ${lib.dir} -->
-		<copy todir="${tmp.dir}/WEB-INF/lib">
+		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset dir="${lib.dir}/cagrid">
 				<include name="*.jar" />
 			</fileset>
@@ -95,24 +100,22 @@
 		</copy>
 	</target>
 
-	<target name="build-application" depends="compile">
+	<target name="war" depends="compile">
 		<!-- tag footer with release version and build tag -->
-		<property file="${tmp.dir}/WEB-INF/classes/version.properties" />
+		<property file="${build.dir}/WEB-INF/classes/version.properties" />
 		<property name="build_tag" value="dev" />
 		<propertyregex override="true" property="build_tag" input="${build.tag}" regexp="\$HeadURL\: .*/calab/cananolab/tags/([^/]*)/.*" select="\1" />
 
-		<replaceregexp file="${tmp.dir}/html/nciFooter.html" match="\{CANANOLAB_RELEASE_VERSION\}" replace="${release.version}" flags="g" />
-		<replaceregexp file="${tmp.dir}/html/nciFooter.html" match="\{CANANOLAB_BUILD_TAG\}" replace="${build_tag}" flags="g" />
+		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_RELEASE_VERSION\}" replace="${release.version}" flags="g" />
+		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_BUILD_TAG\}" replace="${build_tag}" flags="g" />
 
 		<!-- package WAR file -->
-		<jar destfile="${build.dir}/caNanoLab.war" basedir="${tmp.dir}" />
-		<copy todir="${build.dir}">
+		<mkdir dir="${target.dir}" />
+		<jar destfile="${target.dir}/caNanoLab.war" basedir="${build.dir}" />
+		<copy todir="${target.dir}">
 			<fileset dir="${conf.dir}/csm/">
 				<include name="*.war" />
 			</fileset>
 		</copy>
-
-		<!-- remove tmp directory -->
-		<delete dir="${tmp.dir}" quiet="true" />
 	</target>
 </project>
