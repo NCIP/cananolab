@@ -53,13 +53,12 @@
 					<tr>
 						<td>
 							<div align="right">
-								<input type="button" value="Reset"
-									onclick="javascript:location.href='updatePassword.do?'">
+								<input type="button" value="Reset" onclick="this.form.reset()">
 								<html:submit value="Update" />
 							</div>
 						</td>
 					</tr>
-				</table>				
+				</table>
 			</td>
 		</tr>
 	</table>
