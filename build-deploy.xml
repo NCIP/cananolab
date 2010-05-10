@@ -12,12 +12,12 @@
 		<!-- remove old CSM configuration files from JBOSS -->
 		<delete file="${jboss.conf.dir}/ApplicationSecurityConfig.xml" quiet="true" />
 		<delete file="${jboss.conf.dir}/caNanoLab.csm.hibernate.cfg.xml" quiet="true" />
-		
+
 		<!--copy csm related configuration files -->
 		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/login-config.xml" />
 		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/csm/properties-service.xml" />
 		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/${database}-ds.xml" />
-		
+
 		<!--replace database connection info -->
 		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_HOST" value="${database.host}" />
 		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_PORT" value="${database.port}" />
@@ -36,7 +36,7 @@
 	<target name="deploy-application" depends="war">
 		<!-- package WAR file -->
 		<copy todir="${jboss.deploy.dir}" overwrite="true">
-			<fileset dir="${build.dir}">
+			<fileset dir="${target.dir}">
 				<include name="*.war" />
 			</fileset>
 		</copy>
