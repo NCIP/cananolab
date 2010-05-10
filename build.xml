@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="caNanoLab" default="war" basedir=".">
+<project name="caNanoLab" default="run" basedir=".">
 	<property file="build.properties" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -37,7 +37,7 @@
 		<mkdir dir="${build.dir}/WEB-INF/lib" />
 	</target>
 
-	<target name="compile" depends="pre-clean, init">
+	<target name="compile" depends="init">
 		<echo message="*****************************************************" />
 		<echo message="**   Compiling Java Classes ...          		  **" />
 		<echo message="*****************************************************" />
@@ -118,4 +118,5 @@
 			</fileset>
 		</copy>
 	</target>
+	<target name="run" depends="pre-clean, init, war, post-clean" />
 </project>
