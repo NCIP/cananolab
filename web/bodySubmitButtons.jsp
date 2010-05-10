@@ -5,27 +5,7 @@
 
 <table width="100%" class="invisibleTable">
 	<tr>
-		<td width="600">
-			<input type="reset" value="Reset"
-				onclick="${resetOnclick}" />
-			&nbsp;
-			<c:set var="submitButtonName" value="Submit" />
-			<c:if test="${!empty updateId}">
-				<c:set var="submitButtonName" value="Update" />
-			</c:if>
-			<c:choose>
-				<c:when test="${!empty submitOnclick }">
-					<input type="button" value="${submitButtonName}" onclick="${submitOnclick}">
-				</c:when>
-				<c:otherwise>
-					<html:submit value="${submitButtonName}" />
-					<input type="hidden" name="dispatch" value="${hiddenDispatch}">
-					<input type="hidden" name="page" value="${hiddenPage}">
-				</c:otherwise>
-			</c:choose>
-
-		</td>
-		<td align="right" width="200">
+		<td align="left" width="600">
 			<c:if test="${!empty user && !empty updateId && user.admin}">
 				<input type="button" value="${deleteButtonName}"
 					onclick="${deleteOnclick}">
@@ -33,6 +13,25 @@
 			<c:if test="${!empty updateId && !empty cloneOnclick }">
 				<input type="button" value="Copy" onclick="${cloneOnclick}">
 			</c:if>
+		</td>
+		<td align="right" width="200">
+			<input type="reset" value="Reset" onclick="${resetOnclick}" />
+			&nbsp;
+			<c:set var="submitButtonName" value="Submit" />
+			<c:if test="${!empty updateId}">
+				<c:set var="submitButtonName" value="Update" />
+			</c:if>
+			<c:choose>
+				<c:when test="${!empty submitOnclick }">
+					<input type="button" value="${submitButtonName}"
+						onclick="${submitOnclick}">
+				</c:when>
+				<c:otherwise>
+					<html:submit value="${submitButtonName}" />
+					<input type="hidden" name="dispatch" value="${hiddenDispatch}">
+					<input type="hidden" name="page" value="${hiddenPage}">
+				</c:otherwise>
+			</c:choose>
 		</td>
 	</tr>
 </table>

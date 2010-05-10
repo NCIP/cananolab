@@ -10,7 +10,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td align="right">
 			<input type="reset" value="Reset"
 				onclick="${resetOnclick}" />
 			&nbsp;
