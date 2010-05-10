@@ -30,8 +30,8 @@
 
 	<target name="init">
 		<!-- create the necessary folders -->
+		<mkdir dir="${target.dir}" />
 		<mkdir dir="${build.dir}" />
-
 		<mkdir dir="${build.dir}/WEB-INF" />
 		<mkdir dir="${build.dir}/WEB-INF/classes" />
 		<mkdir dir="${build.dir}/WEB-INF/lib" />
