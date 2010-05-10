@@ -41,7 +41,7 @@
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
-					style="display: none;"></a>	
+					style="display: none;"></a>
 			</li>
 		</c:forEach>
 		<li>
@@ -110,7 +110,7 @@
 								<c:forEach var="charName"
 									items="${characterizationSummaryView.type2CharacterizationNames[type]}">
 									<a href="#${charName}">${charName}
-										(${characterizationSummaryView.charName2Counts[charName]})</a> &nbsp;				
+										(${characterizationSummaryView.charName2Counts[charName]})</a> &nbsp;
 	            </c:forEach>
 							</td>
 						</c:if>
@@ -130,8 +130,7 @@
 							<a
 								href="characterization.do?dispatch=setupNew&sampleId=${sampleId}&charType=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
-									border="0" />
-							</a>
+									border="0" /></a>
 							<%--
 							<c:if
 								test="${!empty characterizationSummaryView.type2Characterizations[type]}">
@@ -173,7 +172,7 @@
 												</th>
 											</tr>
 										</table>
-										<br/>										
+										<br/>
 									</c:forEach>
 								</c:when>
 								<c:otherwise>
@@ -181,9 +180,9 @@
 										N/A
 									</div>
 								</c:otherwise>
-							</c:choose>							
+							</c:choose>
 						</td>
-					</tr>				
+					</tr>
 				</table>
 				<div id="summarySeparator${ind.count}">
 					<br>
