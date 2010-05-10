@@ -71,18 +71,17 @@
 			</td>
 		</tr>
 	</table>
-	
+	<br/>
 	<table width="100%" border="0" align="center" cellpadding="3"
 		cellspacing="0">
 		<tr>
 			<td width="30%">
-				<table border="0" align="left" cellpadding="4" cellspacing="0">
+				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td>
-							<div align="left">
-								<input type="button" value="Cancel"
-									onclick="javascript:location.href='register.do?'">
-								<html:submit value="Register" />
+							<div align="right">
+								<input type="button" value="Reset" onclick="this.form.reset()">
+								<html:submit value="Register" onclick="javascript:location.href='register.do?'"/>
 							</div>
 						</td>
 					</tr>
