@@ -34,30 +34,14 @@
 					</tr>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-						<td width="30%">
-							<table width="498" height="15" border="0" align="right"
-								cellpadding="4" cellspacing="0">
-								<tr>
-									<td width="490" height="15">
-										<div align="right">
-											<div align="right">
-												<input type="hidden" name="dispatch" value="update">
-												<input type="reset" value="Reset"
-													onclick="javascript:location.href='admin.do?dispatch=setupNew'">
-												<input type="button" value="Delete"
-													onclick="javascript:location.href='admin.do?dispatch=remove'">
-												<html:submit />
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
+				<c:set var="updateId" value="bogus"/>
+				<c:set var="hiddenDispatch" value="update" />
+				<c:set var="resetOnclick"
+					value="javascript:location.href='admin.do?dispatch=setupNew'" />
+				<c:set var="deleteOnclick"
+					value="javascript:location.href='admin.do?dispatch=remove'" />
+				<c:set var="deleteButtonName" value="Delete" />
+				<%@include file="../bodySubmitButtons.jsp"%>
 			</td>
 		</tr>
 	</table>
