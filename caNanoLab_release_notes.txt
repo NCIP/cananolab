@@ -1,8 +1,8 @@
                            Release Notes
 
 		   cancer Nanotechnology Laboratory (caNanoLab)
-                          Version 1.5
-                          October 12, 2009
+                          Version 1.5.1
+                          May 2010
 
        National Cancer Institute Center for Bioinformatics
 
@@ -24,16 +24,29 @@
 ================================================================
                 1.0 caNanoLab Introduction and background
 ================================================================
-caNanoLab is a data sharing portal designed to facilitate information sharing in the biomedical
-nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine.
-caNanoLab allows researchers to share information on nanoparticles including the composition of the particle,
-the functions (e.g. therapeutic, targeting, diagnostic imaging) of the particle, the characterizations of the
-particle from physico-chemical (e.g. size, molecular weight, surface) and in vitro (e.g. cytotoxicity, blood
-contact) nanoparticle assays, and the protocols of these characterization.
+Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
+a data sharing portal designed to facilitate information sharing in the biomedical
+nanotechnology research community to expedite and validate the use of nanotechnology
+in biomedicine. caNanoLab provides support for the annotation of nanomaterials with
+characterizations resulting from physico-chemical and in vitro assays and the sharing
+of these characterizations and associated nanotechnology protocols in a secure fashion.
 
 ================================================================
                            2.0 Features
 ================================================================
+    ======================
+    1.5.1 Functionalities:
+    ======================
+     * Migration to a central caNanoLab repository at NCI CBIIT and disabled remote search
+       functions within the web application
+     * Support for copying an existing sample into a new sample
+     * Enhanced home page with visitor count and statistics on public protocols, samples,
+       sample sources, characterizations and publications
+     * Support for data matrix column ordering
+     * Enhanced summary views with enhanced navigation for nanomaterial characterizations,
+       composition and publications
+     * Fixed defects reported in GForge
+
     ======================
     1.5 Functionalities:
     ======================
@@ -52,14 +65,13 @@ contact) nanoparticle assays, and the protocols of these characterization.
     1.4.1.2 Functionalities:
     ======================
      * Support for grid service discovery caching such that remote grid locations are discovered at server start
-        up time and being refreshed at a pre-defined interval of four hours in the background.
+       up time and being refreshed at a pre-defined interval of four hours in the background.
 
     ======================
     1.4.1 Functionalities:
     ======================
      * Support for submitting and searching publications associated with nanoparticle
        characterizations
-
 
     ======================
     1.4 Functionalities:
@@ -71,7 +83,6 @@ contact) nanoparticle assays, and the protocols of these characterization.
      * Disabled sample management functionality and combined with nanoparticle submission
      * New glossary of terms
      * Product upgrades to the caCORE SDK 4.0 and caGrid 1.2
-
 
     ======================
     1.3 Functionalities:
@@ -93,92 +104,92 @@ contact) nanoparticle assays, and the protocols of these characterization.
     =====================
     1.2 Functionalities:
     =====================
-     *  Implemented Submit Protocol and Search Protocol.
-     *  Enhanced usability for submit/update nanoparticle characterization annotation
-	 o  Copy characterization from one particle to other particles
-            from the same source.
-	 o  Add or remove characterization files and associated derived data.
-         o  Associate submitted protocols to characterizations.
-     *  Added characterization deletion for authorized users.
-     *  Enhanced usability for Submit Function.
+     * Implemented Submit Protocol and Search Protocol.
+     * Enhanced usability for submit/update nanoparticle characterization annotation
+	 * Copy characterization from one particle to other particles
+       from the same source.
+	 * Add or remove characterization files and associated derived data.
+        o  Associate submitted protocols to characterizations.
+     * Added characterization deletion for authorized users.
+     * Enhanced usability for Submit Function.
 
     =====================
     1.1.1 Functionalities:
     =====================
-     *  Converted dropdown lists that have "Other" as an option
-        to be editable dropdown lists.
-     *  1.1.1 release is a bug fix release, please refer to bug
-        fixes section.
+     * Converted dropdown lists that have "Other" as an option
+       to be editable dropdown lists.
+     * 1.1.1 release is a bug fix release, please refer to bug
+       fixes section.
 
     =====================
     1.1 Functionalities:
     =====================
-     *  Grid-enabled caNanoLab domain model and custom operations.
-     *  Implemented auto-discovery of caGrid data services hosting
-        caNanoLab domain models
-     *  Implemented remote nanoparticle search, remote report search,
-        and remote physical composition characterization data search
-        against auto-discovered caNanoLab grid services
+     * Grid-enabled caNanoLab domain model and custom operations.
+     * Implemented auto-discovery of caGrid data services hosting
+       caNanoLab domain models
+     * Implemented remote nanoparticle search, remote report search,
+       and remote physical composition characterization data search
+       against auto-discovered caNanoLab grid services
 
     =====================
     1.0 Functionalities:
     =====================
-     *  Implemented Run Tree based on the Sample Source to improve
-        the performance
-     *  Implemented Nano-OM
-     *  Implemented nanoparticle physical characterization annotation
-         o  Physical Composition
-         o  Size
-         o  Molecular Weight
-         o  Shape
-         o  Morphology
-         o  Solubility
-         o  Surface
-         o  Purity
-     *  Implemented nanoparticle In Vitro characterization annotation
-         o  Coagulation
-         o  Plasma Protein Binding
-         o  Hemolysis
-         o  Platelet Aggregation
-         o  Complement Activation
-         o  Chemotaxis
-         o  CFU-GM
-         o  Cytotoxic Activity of NK Cells
-         o  Cytokine Induction
-         o  Leukocyte Proliferation
-         o  Oxidative Burst
-         o  Phagocytosis
-         o  Cell Viability
-         o  Caspase 3 Activation
-         o  Enzyme Induction
-         o  Oxidative Stress
-     *  Implemented nanoparticle function annotation
-         o  Targeting
-         o  Therapeutic
-         o  Diagnostic Imaging
-         o  Diagnostic Reporting
-     *  Implemented Search nanoparticles
-     *  Implemented Search Reports
-     *  Implemented role-based security for submission and retrieval
+     * Implemented Run Tree based on the Sample Source to improve
+       the performance
+     * Implemented Nano-OM
+     * Implemented nanoparticle physical characterization annotation
+        o  Physical Composition
+        o  Size
+        o  Molecular Weight
+        o  Shape
+        o  Morphology
+        o  Solubility
+        o  Surface
+        o  Purity
+     * Implemented nanoparticle In Vitro characterization annotation
+        o  Coagulation
+        o  Plasma Protein Binding
+        o  Hemolysis
+        o  Platelet Aggregation
+        o  Complement Activation
+        o  Chemotaxis
+        o  CFU-GM
+        o  Cytotoxic Activity of NK Cells
+        o  Cytokine Induction
+        o  Leukocyte Proliferation
+        o  Oxidative Burst
+        o  Phagocytosis
+        o  Cell Viability
+        o  Caspase 3 Activation
+        o  Enzyme Induction
+        o  Oxidative Stress
+     * Implemented nanoparticle function annotation
+        o  Targeting
+        o  Therapeutic
+        o  Diagnostic Imaging
+        o  Diagnostic Reporting
+     * Implemented Search nanoparticles
+     * Implemented Search Reports
+     * Implemented role-based security for submission and retrieval
 
     =====================
     0.5 Functionalities:
     =====================
 
-     *  Initial creation
-     *  Implemented User Login/Logout
-     *  Implemented Sample and Aliquot Creation
-     *  Implemented Execute Workflow components included:
-         o  Create Assay Run
-         o  Upload Input Files
-         o  Use Aliquots
-         o  Mask Aliquots
-         o  Upload Output Files
-         o  Mask Files
-         o  Download Files
-     *  Implemented Search Workflow
-     *  Implemented Search Samples and Aliquots
-     *  Implemented View Search Results
+     * Initial creation
+     * Implemented User Login/Logout
+     * Implemented Sample and Aliquot Creation
+     * Implemented Execute Workflow components included:
+        o  Create Assay Run
+        o  Upload Input Files
+        o  Use Aliquots
+        o  Mask Aliquots
+        o  Upload Output Files
+        o  Mask Files
+        o  Download Files
+     * Implemented Search Workflow
+     * Implemented Search Samples and Aliquots
+     * Implemented View Search Results
 
 
 ================================================================
@@ -208,7 +219,6 @@ contact) nanoparticle assays, and the protocols of these characterization.
         data and to remove the functionality that filters manufacturers
         based on Instrument Type.
 
-
 ================================================================
                   5.0 Bug Reports and Support
 ================================================================
@@ -222,7 +232,7 @@ contact) nanoparticle assays, and the protocols of these characterization.
 
     caNanoLab wiki
 
-    --  https://wiki.nci.nih.gov/display/ICR/caNanoLab
+    --  https://wiki.nci.nih.gov/display/caNanoLab
 
     caNanoLab Gforge Site
 
