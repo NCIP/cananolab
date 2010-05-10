@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+	<!-- definition for the manage protocol page -->
+	<definition name="protocol.manageProtocol" extends="canano.home">
+		<put name="cananoContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="protocols" />
+		<put name="item" value="Protocol" />
+		<put name="itemDescription"
+			value="/protocol/bodyProtocolDescription.jsp" />
+		<put name="createLink"
+			value="protocol.do?dispatch=setup&amp;page=0" />
+		<put name="searchLink" value="searchProtocol.do?dispatch=setup" />
+	</definition>
+
+	<!-- definition for the submit protocol page -->
+	<definition name="protocol.submitProtocol" extends="canano.home">
+		<put name="cananoContent"
+			value="/protocol/bodySubmitProtocol.jsp" />
+		<put name="menu" value="protocols" />
+	</definition>
+
+	<definition name="protocol.message" extends="canano.home">
+		<put name="cananoContent"
+			value="/bodyMessage.jsp?bundle=protocol" />
+		<put name="menu" value="protocols" />
+	</definition>
+
+	<!-- definition for the search protocol page -->
+	<definition name="protocol.searchProtocol" extends="canano.home">
+		<put name="cananoContent"
+			value="/protocol/bodySearchProtocol.jsp" />
+		<put name="menu" value="protocols" />
+	</definition>
+
+	<!-- definition for the search protocol result page -->
+	<definition name="protocol.searchProtocolResult"
+		extends="canano.home">
+		<put name="cananoContent"
+			value="/protocol/bodySearchProtocolResult.jsp" />
+		<put name="menu" value="protocols" />
+	</definition>
+</tiles-definitions>
