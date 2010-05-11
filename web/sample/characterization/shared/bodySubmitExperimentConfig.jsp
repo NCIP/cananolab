@@ -41,16 +41,6 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Description
-		</td>
-		<td>
-			<html:textarea styleId="configDescription"
-				property="achar.theExperimentConfig.domain.description" rows="5"
-				cols="70" />
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel" width="15%">
 			Instrument
 		</td>
 		<td>
@@ -160,6 +150,16 @@
 					</tr>
 				</table>
 			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel" width="15%">
+			Description
+		</td>
+		<td>
+			<html:textarea styleId="configDescription"
+				property="achar.theExperimentConfig.domain.description" rows="5"
+				cols="70" />
 		</td>
 	</tr>
 	<tr>
