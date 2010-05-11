@@ -135,7 +135,7 @@
 							<div id="instrumentTypePrompt">
 								<html:select property="achar.theInstrument.type"
 									styleId="type"
-									onchange="javascript:callPrompt('Instrment Type', 'type', 'instrumentTypePrompt');">
+									onchange="javascript:callPrompt('Instrument Type', 'type', 'instrumentTypePrompt');">
 									<option value=""></option>
 									<option value="other">
 										[other]
