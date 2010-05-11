@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService" xmlns:wsrp="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.xsd" xmlns:wsrlw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceLifetime-1.2-draft-01.wsdl" xmlns:wsdlpp="http://www.globus.org/namespaces/2004/10/WSDLPreprocessor" xmlns:gtwsdl1="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ServiceGroup-1.2-draft-01.wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsntw="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" xmlns:wsrbfw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" xmlns:wsrpw="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns2="http://gov.nih.nci.cagrid.data/DataService" xmlns:wns0="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" xmlns:wns1="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" xmlns:ns15="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" xmlns:ns19="http://gov.nih.nci.cagrid.data/DataServiceExceptions" xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice" xmlns:ns7="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" xmlns:ns2="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" xmlns:ns8="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" xmlns:ns10="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" xmlns:ns16="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" xmlns:ns4="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" xmlns:ns5="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" xmlns:ns17="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/CQLResultTypes" xmlns:ns3="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" xmlns:ns9="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" xmlns:ns11="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" xmlns:ns6="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" xmlns:ns0="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/types" name="CaNanoLabService" targetNamespace="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService">
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.wsdl" location="../wsrf/faults/WS-BaseFaults.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsn/2004/06/wsn-WS-BaseNotification-1.2-draft-01.wsdl" location="../wsrf/notification/WS-BaseN.wsdl" />
+  <import namespace="http://gov.nih.nci.cagrid.data/DataService" location="./DataService.wsdl" />
+  <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl" location="./../wsrf/properties/WS-ResourceProperties.wsdl" />
+  <import namespace="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity" location="./ServiceSecurity.wsdl" />
+  <!--============================================================
+
+                      T Y P E S
+
+  ============================================================-->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" targetNamespace="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService" elementFormDefault="qualified" attributeFormDefault="unqualified">
+      <import namespace="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd" schemaLocation="../wsrf/faults/WS-BaseFaults.xsd" />
+      <import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery" schemaLocation="./1_gov.nih.nci.cagrid.CQLQuery.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata" schemaLocation="./xsd/cagrid/types/caGridMetadata.xsd" />
+      <import namespace="http://gov.nih.nci.cagrid.data/DataServiceExceptions" schemaLocation="./DataServiceExceptions.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice" schemaLocation="./xsd/cagrid/types/data/data.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" schemaLocation="gov.nih.nci.cananolab.domain.characterization.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" schemaLocation="gov.nih.nci.cananolab.domain.linkage.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" schemaLocation="./xsd/cagrid/types/security/security.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common" schemaLocation="./xsd/cagrid/types/common/common.xsd" />
+      <import namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service" schemaLocation="./xsd/cagrid/types/service/servicemodel.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" schemaLocation="gov.nih.nci.cananolab.domain.agentmaterial.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invivo.xsd" />
+      <import namespace="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet" schemaLocation="./1_gov.nih.nci.cagrid.CQLResultSet.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" schemaLocation="gov.nih.nci.cananolab.domain.characterization.physical.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invitro.xsd" />
+      <import namespace="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/CQLResultTypes" schemaLocation="./CaNanoLabService_CQLResultTypes.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" schemaLocation="gov.nih.nci.cananolab.domain.nanomaterial.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" schemaLocation="gov.nih.nci.cananolab.domain.particle.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" schemaLocation="gov.nih.nci.cananolab.domain.common.xsd" />
+      <import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" schemaLocation="gov.nih.nci.cananolab.domain.function.xsd" />
+      <import namespace="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/types" schemaLocation="./CaNanoLabServiceTypes.xsd" />
+      <element name="GetFindingsByCharacterizationIdRequest">
+        <complexType>
+          <sequence>
+            <element name="charId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetFindingsByCharacterizationIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:Finding" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetExperimentConfigsByCharacterizationIdRequest">
+        <complexType>
+          <sequence>
+            <element name="charId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetExperimentConfigsByCharacterizationIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:ExperimentConfig" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetKeywordsBySampleIdRequest">
+        <complexType>
+          <sequence>
+            <element name="sampleId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetKeywordsBySampleIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:Keyword" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetFilesByCompositionInfoIdRequest">
+        <complexType>
+          <sequence>
+            <element name="id" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="className" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetFilesByCompositionInfoIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:File" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetProtocolByCharacterizationIdRequest">
+        <complexType>
+          <sequence>
+            <element name="charId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetProtocolByCharacterizationIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:Protocol" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSampleNamesRequest">
+        <complexType>
+          <sequence>
+            <element name="sampleName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="samplePointOfContact" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="nanomaterialEntityClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="functionalizingEntityClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="functionClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="characterizationClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="words" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSampleNamesResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetPublicationIdsByRequest">
+        <complexType>
+          <sequence>
+            <element name="publicationTitle" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="publicationCategory" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="sampleName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="researchAreas" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="keywords" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="pubMedId" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="digitalObjectId" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <element name="authors" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="nanomaterialEntityClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="functionalizingEntityClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            <element name="functionClassNames" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetPublicationIdsByResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetOtherPointOfContactsBySampleIdRequest">
+        <complexType>
+          <sequence>
+            <element name="sampleId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetOtherPointOfContactsBySampleIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:PointOfContact" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSampleNamesByPublicationIdRequest">
+        <complexType>
+          <sequence>
+            <element name="publicationId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSampleNamesByPublicationIdResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetPublicationsBySampleIdRequest">
+        <complexType>
+          <sequence>
+            <element name="sampleId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetPublicationsBySampleIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:Publication" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetPrimaryPointOfContactBySampleIdRequest">
+        <complexType>
+          <sequence>
+            <element name="sampleId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetPrimaryPointOfContactBySampleIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:PointOfContact" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSampleViewStrsRequest">
+        <complexType>
+          <sequence>
+            <element name="sampleName" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetSampleViewStrsResponse">
+        <complexType>
+          <sequence>
+            <element name="response" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetFileByProtocolIdRequest">
+        <complexType>
+          <sequence>
+            <element name="protocolId" type="xs:string" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetFileByProtocolIdResponse">
+        <complexType>
+          <sequence>
+            <element ref="ns11:File" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CaNanoLabServiceResourceProperties">
+        <complexType>
+          <sequence>
+            <element ref="ns18:DomainModel" />
+            <element ref="ns12:ServiceMetadata" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <!--  place service messages here -->
+  <message name="GetFindingsByCharacterizationIdRequest">
+    <part name="parameters" element="tns:GetFindingsByCharacterizationIdRequest" />
+  </message>
+  <message name="GetFindingsByCharacterizationIdResponse">
+    <part name="parameters" element="tns:GetFindingsByCharacterizationIdResponse" />
+  </message>
+  <message name="GetExperimentConfigsByCharacterizationIdRequest">
+    <part name="parameters" element="tns:GetExperimentConfigsByCharacterizationIdRequest" />
+  </message>
+  <message name="GetExperimentConfigsByCharacterizationIdResponse">
+    <part name="parameters" element="tns:GetExperimentConfigsByCharacterizationIdResponse" />
+  </message>
+  <message name="GetKeywordsBySampleIdRequest">
+    <part name="parameters" element="tns:GetKeywordsBySampleIdRequest" />
+  </message>
+  <message name="GetKeywordsBySampleIdResponse">
+    <part name="parameters" element="tns:GetKeywordsBySampleIdResponse" />
+  </message>
+  <message name="GetFilesByCompositionInfoIdRequest">
+    <part name="parameters" element="tns:GetFilesByCompositionInfoIdRequest" />
+  </message>
+  <message name="GetFilesByCompositionInfoIdResponse">
+    <part name="parameters" element="tns:GetFilesByCompositionInfoIdResponse" />
+  </message>
+  <message name="GetProtocolByCharacterizationIdRequest">
+    <part name="parameters" element="tns:GetProtocolByCharacterizationIdRequest" />
+  </message>
+  <message name="GetProtocolByCharacterizationIdResponse">
+    <part name="parameters" element="tns:GetProtocolByCharacterizationIdResponse" />
+  </message>
+  <message name="GetSampleNamesRequest">
+    <part name="parameters" element="tns:GetSampleNamesRequest" />
+  </message>
+  <message name="GetSampleNamesResponse">
+    <part name="parameters" element="tns:GetSampleNamesResponse" />
+  </message>
+  <message name="GetPublicationIdsByRequest">
+    <part name="parameters" element="tns:GetPublicationIdsByRequest" />
+  </message>
+  <message name="GetPublicationIdsByResponse">
+    <part name="parameters" element="tns:GetPublicationIdsByResponse" />
+  </message>
+  <message name="GetOtherPointOfContactsBySampleIdRequest">
+    <part name="parameters" element="tns:GetOtherPointOfContactsBySampleIdRequest" />
+  </message>
+  <message name="GetOtherPointOfContactsBySampleIdResponse">
+    <part name="parameters" element="tns:GetOtherPointOfContactsBySampleIdResponse" />
+  </message>
+  <message name="GetSampleNamesByPublicationIdRequest">
+    <part name="parameters" element="tns:GetSampleNamesByPublicationIdRequest" />
+  </message>
+  <message name="GetSampleNamesByPublicationIdResponse">
+    <part name="parameters" element="tns:GetSampleNamesByPublicationIdResponse" />
+  </message>
+  <message name="GetPublicationsBySampleIdRequest">
+    <part name="parameters" element="tns:GetPublicationsBySampleIdRequest" />
+  </message>
+  <message name="GetPublicationsBySampleIdResponse">
+    <part name="parameters" element="tns:GetPublicationsBySampleIdResponse" />
+  </message>
+  <message name="GetPrimaryPointOfContactBySampleIdRequest">
+    <part name="parameters" element="tns:GetPrimaryPointOfContactBySampleIdRequest" />
+  </message>
+  <message name="GetPrimaryPointOfContactBySampleIdResponse">
+    <part name="parameters" element="tns:GetPrimaryPointOfContactBySampleIdResponse" />
+  </message>
+  <message name="GetSampleViewStrsRequest">
+    <part name="parameters" element="tns:GetSampleViewStrsRequest" />
+  </message>
+  <message name="GetSampleViewStrsResponse">
+    <part name="parameters" element="tns:GetSampleViewStrsResponse" />
+  </message>
+  <message name="GetFileByProtocolIdRequest">
+    <part name="parameters" element="tns:GetFileByProtocolIdRequest" />
+  </message>
+  <message name="GetFileByProtocolIdResponse">
+    <part name="parameters" element="tns:GetFileByProtocolIdResponse" />
+  </message>
+  <!--============================================================
+
+                       P O R T T Y P E
+
+  ============================================================-->
+  <portType name="CaNanoLabServicePortType" wsrp:ResourceProperties="tns:CaNanoLabServiceResourceProperties">
+    <operation name="getFindingsByCharacterizationId">
+      <input message="tns:GetFindingsByCharacterizationIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetFindingsByCharacterizationIdRequest" />
+      <output message="tns:GetFindingsByCharacterizationIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetFindingsByCharacterizationIdResponse" />
+    </operation>
+    <operation name="getExperimentConfigsByCharacterizationId">
+      <input message="tns:GetExperimentConfigsByCharacterizationIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetExperimentConfigsByCharacterizationIdRequest" />
+      <output message="tns:GetExperimentConfigsByCharacterizationIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetExperimentConfigsByCharacterizationIdResponse" />
+    </operation>
+    <operation name="getKeywordsBySampleId">
+      <input message="tns:GetKeywordsBySampleIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetKeywordsBySampleIdRequest" />
+      <output message="tns:GetKeywordsBySampleIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetKeywordsBySampleIdResponse" />
+    </operation>
+    <operation name="getFilesByCompositionInfoId">
+      <input message="tns:GetFilesByCompositionInfoIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetFilesByCompositionInfoIdRequest" />
+      <output message="tns:GetFilesByCompositionInfoIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetFilesByCompositionInfoIdResponse" />
+    </operation>
+    <operation name="getProtocolByCharacterizationId">
+      <input message="tns:GetProtocolByCharacterizationIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetProtocolByCharacterizationIdRequest" />
+      <output message="tns:GetProtocolByCharacterizationIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetProtocolByCharacterizationIdResponse" />
+    </operation>
+    <operation name="getSampleNames">
+      <input message="tns:GetSampleNamesRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleNamesRequest" />
+      <output message="tns:GetSampleNamesResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleNamesResponse" />
+    </operation>
+    <operation name="getPublicationIdsBy">
+      <input message="tns:GetPublicationIdsByRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetPublicationIdsByRequest" />
+      <output message="tns:GetPublicationIdsByResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetPublicationIdsByResponse" />
+    </operation>
+    <operation name="getOtherPointOfContactsBySampleId">
+      <input message="tns:GetOtherPointOfContactsBySampleIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetOtherPointOfContactsBySampleIdRequest" />
+      <output message="tns:GetOtherPointOfContactsBySampleIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetOtherPointOfContactsBySampleIdResponse" />
+    </operation>
+    <operation name="getSampleNamesByPublicationId">
+      <input message="tns:GetSampleNamesByPublicationIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleNamesByPublicationIdRequest" />
+      <output message="tns:GetSampleNamesByPublicationIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleNamesByPublicationIdResponse" />
+    </operation>
+    <operation name="getPublicationsBySampleId">
+      <input message="tns:GetPublicationsBySampleIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetPublicationsBySampleIdRequest" />
+      <output message="tns:GetPublicationsBySampleIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetPublicationsBySampleIdResponse" />
+    </operation>
+    <operation name="getPrimaryPointOfContactBySampleId">
+      <input message="tns:GetPrimaryPointOfContactBySampleIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetPrimaryPointOfContactBySampleIdRequest" />
+      <output message="tns:GetPrimaryPointOfContactBySampleIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetPrimaryPointOfContactBySampleIdResponse" />
+    </operation>
+    <operation name="getSampleViewStrs">
+      <input message="tns:GetSampleViewStrsRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleViewStrsRequest" />
+      <output message="tns:GetSampleViewStrsResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleViewStrsResponse" />
+    </operation>
+    <operation name="getFileByProtocolId">
+      <input message="tns:GetFileByProtocolIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetFileByProtocolIdRequest" />
+      <output message="tns:GetFileByProtocolIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetFileByProtocolIdResponse" />
+    </operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
+      <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />
+      <wsdl:output name="GetMultipleResourcePropertiesResponse" message="wsrpw:GetMultipleResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetResourceProperty">
+      <wsdl:input name="GetResourcePropertyRequest" message="wsrpw:GetResourcePropertyRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourceProperty" />
+      <wsdl:output name="GetResourcePropertyResponse" message="wsrpw:GetResourcePropertyResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetResourcePropertyResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+    </wsdl:operation>
+    <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="QueryResourceProperties">
+      <wsdl:input name="QueryResourcePropertiesRequest" message="wsrpw:QueryResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourceProperties" />
+      <wsdl:output name="QueryResourcePropertiesResponse" message="wsrpw:QueryResourcePropertiesResponse" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/QueryResourcePropertiesResponse" />
+      <wsdl:fault name="ResourceUnknownFault" message="wsrpw:ResourceUnknownFault" />
+      <wsdl:fault name="InvalidResourcePropertyQNameFault" message="wsrpw:InvalidResourcePropertyQNameFault" />
+      <wsdl:fault name="UnknownQueryExpressionDialectFault" message="wsrpw:UnknownQueryExpressionDialectFault" />
+      <wsdl:fault name="InvalidQueryExpressionFault" message="wsrpw:InvalidQueryExpressionFault" />
+      <wsdl:fault name="QueryEvaluationErrorFault" message="wsrpw:QueryEvaluationErrorFault" />
+    </wsdl:operation>
+    <operation name="getServiceSecurityMetadata">
+      <input message="wns1:GetServiceSecurityMetadataRequest" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataRequest" />
+      <output message="wns1:GetServiceSecurityMetadataResponse" wsa:Action="http://security.introduce.cagrid.nci.nih.gov/ServiceSecurity/GetServiceSecurityMetadataResponse" />
+    </operation>
+    <operation name="query">
+      <input message="wns2:QueryRequest" wsa:Action="http://data.cagrid.nci.nih.gov/DataService/QueryRequest" />
+      <output message="wns2:QueryResponse" wsa:Action="http://data.cagrid.nci.nih.gov/DataService/QueryResponse" />
+      <fault name="QueryProcessingException" message="wns2:QueryProcessingExceptionFaultMessage" wsa:Action="http://gov.nih.nci.cagrid.data/DataService/QueryProcessingExceptionFaultMessage" />
+      <fault name="MalformedQueryException" message="wns2:MalformedQueryExceptionFaultMessage" wsa:Action="http://gov.nih.nci.cagrid.data/DataService/MalformedQueryExceptionFaultMessage" />
+    </operation>
+  </portType>
+</definitions>
+

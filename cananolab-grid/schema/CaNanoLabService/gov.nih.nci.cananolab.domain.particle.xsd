@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" xmlns:gov.nih.nci.cananolab.domain.agentmaterial="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" xmlns:gov.nih.nci.cananolab.domain.characterization="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" xmlns:gov.nih.nci.cananolab.domain.characterization.invitro="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" xmlns:gov.nih.nci.cananolab.domain.characterization.invivo="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" xmlns:gov.nih.nci.cananolab.domain.characterization.physical="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" xmlns:gov.nih.nci.cananolab.domain.common="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" xmlns:gov.nih.nci.cananolab.domain.function="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" xmlns:gov.nih.nci.cananolab.domain.linkage="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" xmlns:gov.nih.nci.cananolab.domain.nanomaterial="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" targetNamespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" elementFormDefault="qualified">
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" schemaLocation="gov.nih.nci.cananolab.domain.agentmaterial.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invitro.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invivo.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" schemaLocation="gov.nih.nci.cananolab.domain.characterization.physical.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" schemaLocation="gov.nih.nci.cananolab.domain.characterization.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" schemaLocation="gov.nih.nci.cananolab.domain.common.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" schemaLocation="gov.nih.nci.cananolab.domain.function.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" schemaLocation="gov.nih.nci.cananolab.domain.linkage.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" schemaLocation="gov.nih.nci.cananolab.domain.nanomaterial.xsd" />
+  <xs:element name="AssociatedElement" type="AssociatedElement" />
+  <xs:complexType name="AssociatedElement">
+    <xs:sequence>
+      <xs:element name="chemicalAssociationBCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ChemicalAssociation" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="chemicalAssociationACollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ChemicalAssociation" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="molecularFormula" type="xs:string" />
+    <xs:attribute name="molecularFormulaType" type="xs:string" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="pubChemDataSourceName" type="xs:string" />
+    <xs:attribute name="pubChemId" type="xs:long" />
+    <xs:attribute name="value" type="xs:float" />
+    <xs:attribute name="valueUnit" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Sample" type="Sample" />
+  <xs:complexType name="Sample">
+    <xs:sequence>
+      <xs:element name="sampleComposition" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="SampleComposition" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="keywordCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:Keyword" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="characterizationCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Characterization" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="otherPointOfContactCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:PointOfContact" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="publicationCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:Publication" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="primaryPointOfContact" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:PointOfContact" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="SampleComposition" type="SampleComposition" />
+  <xs:complexType name="SampleComposition">
+    <xs:sequence>
+      <xs:element name="sample" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Sample" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="nanomaterialEntityCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="NanomaterialEntity" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="functionalizingEntityCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="FunctionalizingEntity" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="chemicalAssociationCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ChemicalAssociation" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fileCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:File" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="ActivationMethod" type="ActivationMethod" />
+  <xs:complexType name="ActivationMethod">
+    <xs:sequence>
+      <xs:element name="functionalizingEntity" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="FunctionalizingEntity" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="activationEffect" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="type" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Characterization" type="Characterization" />
+  <xs:complexType name="Characterization">
+    <xs:sequence>
+      <xs:element name="experimentConfigCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:ExperimentConfig" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="protocol" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:Protocol" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="sample" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Sample" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="pointOfContact" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:PointOfContact" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="findingCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:Finding" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="analysisConclusion" type="xs:string" />
+    <xs:attribute name="assayType" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="date" type="xs:dateTime" />
+    <xs:attribute name="designMethodsDescription" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="FunctionalizingEntity" type="FunctionalizingEntity" />
+  <xs:complexType name="FunctionalizingEntity">
+    <xs:complexContent>
+      <xs:extension base="AssociatedElement">
+        <xs:sequence>
+          <xs:element name="functionCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="Function" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="sampleComposition" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="SampleComposition" minOccurs="0" maxOccurs="1" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="fileCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="gov.nih.nci.cananolab.domain.common:File" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="activationMethod" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="ActivationMethod" minOccurs="0" maxOccurs="1" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NanomaterialEntity" type="NanomaterialEntity" />
+  <xs:complexType name="NanomaterialEntity">
+    <xs:sequence>
+      <xs:element name="sampleComposition" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="SampleComposition" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="composingElementCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ComposingElement" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fileCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:File" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="Function" type="Function" />
+  <xs:complexType name="Function">
+    <xs:sequence>
+      <xs:element name="functionalizingEntity" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="FunctionalizingEntity" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="composingElement" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ComposingElement" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="ComposingElement" type="ComposingElement" />
+  <xs:complexType name="ComposingElement">
+    <xs:complexContent>
+      <xs:extension base="AssociatedElement">
+        <xs:sequence>
+          <xs:element name="inherentFunctionCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="Function" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="nanomaterialEntity" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="NanomaterialEntity" minOccurs="0" maxOccurs="1" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ChemicalAssociation" type="ChemicalAssociation" />
+  <xs:complexType name="ChemicalAssociation">
+    <xs:sequence>
+      <xs:element name="sampleComposition" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="SampleComposition" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="associatedElementB" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="AssociatedElement" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="associatedElementA" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="AssociatedElement" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fileCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="gov.nih.nci.cananolab.domain.common:File" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+</xs:schema>
+

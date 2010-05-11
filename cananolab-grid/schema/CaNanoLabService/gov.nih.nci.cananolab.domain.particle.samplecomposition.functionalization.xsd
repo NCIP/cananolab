@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization" xmlns:gov.nih.nci.cananolab.domain.common="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.common" xmlns:gov.nih.nci.cananolab.domain.particle="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle" xmlns:gov.nih.nci.cananolab.domain.particle.characterization="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization" xmlns:gov.nih.nci.cananolab.domain.particle.characterization.invitro="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.invitro" xmlns:gov.nih.nci.cananolab.domain.particle.characterization.physical="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.physical" xmlns:gov.nih.nci.cananolab.domain.particle.samplecomposition="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition" xmlns:gov.nih.nci.cananolab.domain.particle.samplecomposition.base="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.base" xmlns:gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation" targetNamespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization" elementFormDefault="qualified">
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.common" schemaLocation="gov.nih.nci.cananolab.domain.common.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.invitro" schemaLocation="gov.nih.nci.cananolab.domain.particle.characterization.invitro.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.physical" schemaLocation="gov.nih.nci.cananolab.domain.particle.characterization.physical.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization" schemaLocation="gov.nih.nci.cananolab.domain.particle.characterization.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.base" schemaLocation="gov.nih.nci.cananolab.domain.particle.samplecomposition.base.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation" schemaLocation="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition" schemaLocation="gov.nih.nci.cananolab.domain.particle.samplecomposition.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle" schemaLocation="gov.nih.nci.cananolab.domain.particle.xsd" />
+  <xs:element name="Biopolymer" type="Biopolymer" />
+  <xs:complexType name="Biopolymer">
+    <xs:complexContent>
+      <xs:extension base="FunctionalizingEntity">
+        <xs:sequence />
+        <xs:attribute name="sequence" type="xs:string" />
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ActivationMethod" type="ActivationMethod" />
+  <xs:complexType name="ActivationMethod">
+    <xs:sequence />
+    <xs:attribute name="activationEffect" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="type" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="OtherFunctionalizingEntity" type="OtherFunctionalizingEntity" />
+  <xs:complexType name="OtherFunctionalizingEntity">
+    <xs:complexContent>
+      <xs:extension base="FunctionalizingEntity">
+        <xs:sequence />
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FunctionalizingEntity" type="FunctionalizingEntity" />
+  <xs:complexType name="FunctionalizingEntity">
+    <xs:complexContent>
+      <xs:extension base="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation:AssociatedElement">
+        <xs:sequence>
+          <xs:element name="labFileCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="gov.nih.nci.cananolab.domain.common:LabFile" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="sampleComposition" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="gov.nih.nci.cananolab.domain.particle.samplecomposition:SampleComposition" minOccurs="0" maxOccurs="1" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="functionCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="gov.nih.nci.cananolab.domain.particle.samplecomposition:Function" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="activationMethod" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="ActivationMethod" minOccurs="0" maxOccurs="1" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Antibody" type="Antibody" />
+  <xs:complexType name="Antibody">
+    <xs:complexContent>
+      <xs:extension base="FunctionalizingEntity">
+        <xs:sequence />
+        <xs:attribute name="isotype" type="xs:string" />
+        <xs:attribute name="species" type="xs:string" />
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SmallMolecule" type="SmallMolecule" />
+  <xs:complexType name="SmallMolecule">
+    <xs:complexContent>
+      <xs:extension base="FunctionalizingEntity">
+        <xs:sequence />
+        <xs:attribute name="alternateName" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+
