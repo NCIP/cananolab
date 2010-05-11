@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" xmlns:gov.nih.nci.cananolab.domain.agentmaterial="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" xmlns:gov.nih.nci.cananolab.domain.characterization="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" xmlns:gov.nih.nci.cananolab.domain.characterization.invitro="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" xmlns:gov.nih.nci.cananolab.domain.characterization.invivo="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" xmlns:gov.nih.nci.cananolab.domain.characterization.physical="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" xmlns:gov.nih.nci.cananolab.domain.function="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" xmlns:gov.nih.nci.cananolab.domain.linkage="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" xmlns:gov.nih.nci.cananolab.domain.nanomaterial="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" xmlns:gov.nih.nci.cananolab.domain.particle="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" targetNamespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" elementFormDefault="qualified">
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" schemaLocation="gov.nih.nci.cananolab.domain.agentmaterial.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invitro.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invivo.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" schemaLocation="gov.nih.nci.cananolab.domain.characterization.physical.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" schemaLocation="gov.nih.nci.cananolab.domain.characterization.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" schemaLocation="gov.nih.nci.cananolab.domain.function.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" schemaLocation="gov.nih.nci.cananolab.domain.linkage.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" schemaLocation="gov.nih.nci.cananolab.domain.nanomaterial.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" schemaLocation="gov.nih.nci.cananolab.domain.particle.xsd" />
+  <xs:element name="Finding" type="Finding" />
+  <xs:complexType name="Finding">
+    <xs:sequence>
+      <xs:element name="datumCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Datum" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="fileCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="File" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="Keyword" type="Keyword" />
+  <xs:complexType name="Keyword">
+    <xs:sequence>
+      <xs:element name="fileCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="File" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Instrument" type="Instrument" />
+  <xs:complexType name="Instrument">
+    <xs:sequence>
+      <xs:element name="experimentConfigCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ExperimentConfig" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="manufacturer" type="xs:string" />
+    <xs:attribute name="modelName" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Condition" type="Condition" />
+  <xs:complexType name="Condition">
+    <xs:sequence>
+      <xs:element name="datumCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Datum" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="property" type="xs:string" />
+    <xs:attribute name="value" type="xs:string" />
+    <xs:attribute name="valueType" type="xs:string" />
+    <xs:attribute name="valueUnit" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Technique" type="Technique" />
+  <xs:complexType name="Technique">
+    <xs:sequence>
+      <xs:element name="experimentConfigCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ExperimentConfig" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="abbreviation" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="type" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Datum" type="Datum" />
+  <xs:complexType name="Datum">
+    <xs:sequence>
+      <xs:element name="finding" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Finding" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="conditionCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Condition" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="file" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="File" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="value" type="xs:float" />
+    <xs:attribute name="valueType" type="xs:string" />
+    <xs:attribute name="valueUnit" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Author" type="Author" />
+  <xs:complexType name="Author">
+    <xs:sequence>
+      <xs:element name="publicationCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Publication" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="firstName" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="initial" type="xs:string" />
+    <xs:attribute name="lastName" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Organization" type="Organization" />
+  <xs:complexType name="Organization">
+    <xs:sequence>
+      <xs:element name="pointOfContactCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="PointOfContact" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="city" type="xs:string" />
+    <xs:attribute name="country" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="postalCode" type="xs:string" />
+    <xs:attribute name="state" type="xs:string" />
+    <xs:attribute name="streetAddress1" type="xs:string" />
+    <xs:attribute name="streetAddress2" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Publication" type="Publication" />
+  <xs:complexType name="Publication">
+    <xs:complexContent>
+      <xs:extension base="File">
+        <xs:sequence>
+          <xs:element name="authorCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="Author" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="category" type="xs:string" />
+        <xs:attribute name="digitalObjectId" type="xs:string" />
+        <xs:attribute name="endPage" type="xs:string" />
+        <xs:attribute name="journalName" type="xs:string" />
+        <xs:attribute name="pubMedId" type="xs:long" />
+        <xs:attribute name="researchArea" type="xs:string" />
+        <xs:attribute name="startPage" type="xs:string" />
+        <xs:attribute name="status" type="xs:string" />
+        <xs:attribute name="volume" type="xs:string" />
+        <xs:attribute name="year" type="xs:integer" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommonLookup" type="CommonLookup" />
+  <xs:complexType name="CommonLookup">
+    <xs:sequence />
+    <xs:attribute name="attribute" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="value" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="PointOfContact" type="PointOfContact" />
+  <xs:complexType name="PointOfContact">
+    <xs:sequence>
+      <xs:element name="organization" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Organization" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="email" type="xs:string" />
+    <xs:attribute name="firstName" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="lastName" type="xs:string" />
+    <xs:attribute name="middleInitial" type="xs:string" />
+    <xs:attribute name="phone" type="xs:string" />
+    <xs:attribute name="role" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="Protocol" type="Protocol" />
+  <xs:complexType name="Protocol">
+    <xs:sequence>
+      <xs:element name="file" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="File" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="abbreviation" type="xs:string" />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="version" type="xs:string" />
+  </xs:complexType>
+  <xs:element name="ExperimentConfig" type="ExperimentConfig" />
+  <xs:complexType name="ExperimentConfig">
+    <xs:sequence>
+      <xs:element name="instrumentCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Instrument" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="technique" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Technique" minOccurs="0" maxOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+  </xs:complexType>
+  <xs:element name="File" type="File" />
+  <xs:complexType name="File">
+    <xs:sequence>
+      <xs:element name="datumCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Datum" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="findingCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Finding" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="keywordCollection" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="Keyword" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="description" type="xs:string" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="title" type="xs:string" />
+    <xs:attribute name="type" type="xs:string" />
+    <xs:attribute name="uri" type="xs:string" />
+    <xs:attribute name="uriExternal" type="xs:boolean" />
+  </xs:complexType>
+</xs:schema>
+
