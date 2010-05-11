@@ -40,6 +40,7 @@ of these characterizations and associated nanotechnology protocols in a secure f
      * Migration to a central caNanoLab repository at NCI CBIIT and disabled remote search
        functions within the web application
      * Support for copying an existing sample into a new sample
+     * Support for sample deletion, publication deletion and protocol deletion
      * Enhanced home page with visitor count and statistics on public protocols, samples,
        sample sources, characterizations and publications
      * Support for data matrix column ordering
