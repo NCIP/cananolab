@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.publication.helper;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -38,7 +39,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of PublicationService and grid service *
- * 
+ *
  * @author tanq, pansu
  */
 public class PublicationServiceHelper {
@@ -585,6 +586,25 @@ public class PublicationServiceHelper {
 			}
 		}
 		return entries;
+	}
+
+	public void assignVisibility(PublicationBean publicationBean, UserBean user)
+			throws Exception {
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		authService.assignVisibility(publicationBean.getDomainFile().getId()
+				.toString(), publicationBean.getVisibilityGroups(), null);
+		// set author visibility as well because didn't share authors
+		// between publications
+		Publication publication = (Publication) publicationBean.getDomainFile();
+		if (publication.getAuthorCollection() != null) {
+			for (Author author : publication.getAuthorCollection()) {
+				if (author != null) {
+					authService.assignVisibility(author.getId().toString(),
+							publicationBean.getVisibilityGroups(), null);
+				}
+			}
+		}
 	}
 
 	public AuthorizationService getAuthService() {

@@ -16,9 +16,7 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -33,9 +31,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of PublicationService
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -45,7 +43,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication
 	 * @param sampleNames
 	 * @param fileData
@@ -97,21 +95,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			fileService.writeFile(publicationBean, user);
 
 			// set visibility
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			authService.assignVisibility(publicationBean.getDomainFile()
-					.getId().toString(), publicationBean.getVisibilityGroups(),
-					null);
-			// set author visibility as well because didn't share authors
-			// between publications
-			if (publication.getAuthorCollection() != null) {
-				for (Author author : publication.getAuthorCollection()) {
-					if (author != null) {
-						authService.assignVisibility(author.getId().toString(),
-								publicationBean.getVisibilityGroups(), null);
-					}
-				}
-			}
+			helper.assignVisibility(publicationBean, user);
 
 			// update sample associations
 			updateSampleAssociation(appService, publicationBean, user);
@@ -298,7 +282,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Remove sample-publication association for an existing publication.
-	 * 
+	 *
 	 * @param sampleId
 	 * @param publication
 	 * @param user
