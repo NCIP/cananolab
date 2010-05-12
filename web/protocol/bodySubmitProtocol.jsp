@@ -30,12 +30,12 @@
 			<td colspan="3">
 				<div id="protocolTypePrompt">
 					<html:select styleId="protocolType" property="protocol.domain.type"
-						onchange="javascript:callPrompt('Protocol Type', 'protocolType', 'protocolTypePrompt'); retrieveProtocols();">
+						onchange="javascript:callPrompt('Protocol Type', 'protocolType', 'protocolTypePrompt'); retrieveProtocolNames();">
 						<option value="" />
 							<html:options name="protocolTypes" />
-						<option value="other">
-							[other]
-						</option>
+							<option value="other">
+								[other]
+							</option>
 					</html:select>
 				</div>
 			</td>
@@ -49,16 +49,12 @@
 					<html:select styleId="protocolName" property="protocol.domain.name"
 						onchange="javascript:callPrompt('Protocol Name', 'protocolName', 'protocolNamePrompt'); retrieveProtocolVersions()">
 						<option value="" />
-							<c:if test="${!empty protocolsByType}">
-								<html:options collection="protocolsByType"
-									property="domain.name" labelProperty="domain.name" />
+							<c:if test="${!empty protocolNamesByType}">
+								<html:options name="protocolNamesByType" />
 							</c:if>
-							<c:if test="${!empty otherProtocolNamesByType}">
-								<html:options name="otherProtocolNamesByType" />
-							</c:if>
-						<option value="other">
-							[other]
-						</option>
+							<option value="other">
+								[other]
+							</option>
 					</html:select>
 				</div>
 			</td>
@@ -73,16 +69,12 @@
 						property="protocol.domain.version"
 						onchange="javascript:callPrompt('Protocol Version', 'protocolVersion', 'protocolVersionPrompt');retrieveProtocol('${applicationOwner}');">
 						<option value="" />
-							<c:if test="${!empty protocolsByType}">
-								<html:options collection="protocolsByType"
-									property="domain.version" labelProperty="domain.version" />
+							<c:if test="${!empty protocolVersionsByTypeName}">
+								<html:options name="protocolVersionsByTypeName" />
 							</c:if>
-							<c:if test="${!empty otherProtocolVersionsByType}">
-								<html:options name="otherProtocolVersionsByType" />
-							</c:if>
-						<option value="other">
-							[other]
-						</option>
+							<option value="other">
+								[other]
+							</option>
 					</html:select>
 				</div>
 			</td>
@@ -110,9 +102,12 @@
 					</c:if> </span>&nbsp;
 			</td>
 			<html:hidden property="protocol.domain.id" styleId="protocolId" />
-			<html:hidden property="protocol.fileBean.domainFile.id" styleId="fileId"/>
-			<html:hidden property="protocol.fileBean.domainFile.uri" styleId="fileUri"/>
-			<html:hidden property="protocol.fileBean.domainFile.name" styleId="fileName"/>
+			<html:hidden property="protocol.fileBean.domainFile.id"
+				styleId="fileId" />
+			<html:hidden property="protocol.fileBean.domainFile.uri"
+				styleId="fileUri" />
+			<html:hidden property="protocol.fileBean.domainFile.name"
+				styleId="fileName" />
 		</tr>
 		<tr>
 			<td class="cellLabel">
@@ -149,12 +144,12 @@
 		</tr>
 	</table>
 	<br>
-	<c:set var="updateId" value="${param.protocolId}"/>
-	<c:set var="resetOnclick" value="this.form.reset();"/>
-	<c:set var="deleteButtonName" value="Delete"/>
+	<c:set var="updateId" value="${param.protocolId}" />
+	<c:set var="resetOnclick" value="this.form.reset();" />
+	<c:set var="deleteButtonName" value="Delete" />
 	<c:set var="deleteOnclick"
 		value="deleteData('protocol', protocolForm, 'protocol', 'delete')" />
-	<c:set var="hiddenDispatch" value="create"/>
-	<c:set var="hiddenPage" value="2"/>
+	<c:set var="hiddenDispatch" value="create" />
+	<c:set var="hiddenPage" value="2" />
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
