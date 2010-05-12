@@ -103,7 +103,8 @@ public class FileServiceLocalImpl implements FileService {
 						+ fileBean.getDomainFile().getUri();
 				writeFile(fileBean.getNewFileData(), fullFileName);
 			}
-			helper.assignVisibility(fileBean);
+			helper.assignVisibility(fileBean.getDomainFile(), fileBean
+					.getVisibilityGroups());
 		} catch (Exception e) {
 			logger.error("Problem writing file "
 					+ fileBean.getDomainFile().getUri()

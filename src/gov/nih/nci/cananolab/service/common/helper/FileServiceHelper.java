@@ -206,23 +206,22 @@ public class FileServiceHelper {
 		}
 	}
 
-	public void assignVisibility(FileBean fileBean) throws FileException {
+	public void assignVisibility(File file, String[] visibilityGroups)
+			throws FileException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			authService.assignVisibility(fileBean.getDomainFile().getId()
-					.toString(), fileBean.getVisibilityGroups(), null);
+			authService.assignVisibility(file.getId().toString(),
+					visibilityGroups, null);
 			// assign keyword to public visibility
-			if (fileBean.getDomainFile().getKeywordCollection() != null) {
-				for (Keyword keyword : fileBean.getDomainFile()
-						.getKeywordCollection()) {
+			if (file.getKeywordCollection() != null) {
+				for (Keyword keyword : file.getKeywordCollection()) {
 					authService.assignVisibility(keyword.getId().toString(),
-							new String[] { Constants.CSM_PUBLIC_GROUP}, null);
+							new String[] { Constants.CSM_PUBLIC_GROUP }, null);
 				}
 			}
 		} catch (Exception e) {
-			String err = "Error in setting file visibility for "
-					+ fileBean.getDisplayName();
+			String err = "Error in setting file visibility for " + file.getId();
 			logger.error(err, e);
 			throw new FileException(err, e);
 		}
