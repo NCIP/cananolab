@@ -233,15 +233,14 @@ public class ProtocolServiceHelper {
 		return entries;
 	}
 
-	public void assignVisibility(ProtocolBean protocolBean, UserBean user)
+	public void assignVisibility(Protocol protocol, String[] visibilityGroups)
 			throws Exception {
-		authService.assignVisibility(protocolBean.getDomain().getId()
-				.toString(), protocolBean.getVisibilityGroups(), null);
+		authService.assignVisibility(protocol.getId().toString(),
+				visibilityGroups, null);
 		// set file visibility as well
-		if (protocolBean.getFileBean() != null) {
-			authService.assignVisibility(protocolBean.getFileBean()
-					.getDomainFile().getId().toString(), protocolBean
-					.getVisibilityGroups(), null);
+		if (protocol.getFile() != null) {
+			authService.assignVisibility(protocol.getFile().getId().toString(),
+					visibilityGroups, null);
 		}
 	}
 
