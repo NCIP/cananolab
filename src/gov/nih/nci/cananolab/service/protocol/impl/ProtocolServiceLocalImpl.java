@@ -17,6 +17,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -74,10 +75,20 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 					.getDomain().getType(), protocolBean.getDomain().getName(),
 					protocolBean.getDomain().getVersion(), user);
 			if (dbProtocol != null) {
+				if (dbProtocol.getId() != protocolBean.getDomain().getId()) {
+					protocolBean.getDomain().setId(dbProtocol.getId());
+				}
 				protocolBean.getDomain()
 						.setCreatedBy(dbProtocol.getCreatedBy());
 				protocolBean.getDomain().setCreatedDate(
 						dbProtocol.getCreatedDate());
+			}
+			// protocol type, name or version has been updated but protocol ID
+			// was kept
+			else if (protocolBean.getDomain().getId() != null) {
+				protocolBean.getDomain().setId(null);
+				protocolBean.getDomain().setCreatedBy(user.getLoginName());
+				protocolBean.getDomain().setCreatedDate(new Date());
 			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
