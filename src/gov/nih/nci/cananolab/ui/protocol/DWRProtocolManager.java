@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,9 +102,9 @@ public class DWRProtocolManager {
 	public ProtocolBean getProtocol(String protocolType, String protocolName,
 			String protocolVersion) {
 		// all three have to be present
-		if (protocolType == null || protocolType.length() == 0
-				|| protocolName == null || protocolName.length() == 0
-				|| protocolVersion == null || protocolVersion.length() == 0) {
+		if (StringUtils.isEmpty(protocolType)
+				|| StringUtils.isEmpty(protocolName)
+				|| StringUtils.isEmpty(protocolVersion)) {
 			return null;
 		}
 		try {
