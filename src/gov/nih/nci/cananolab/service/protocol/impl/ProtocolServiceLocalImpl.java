@@ -101,16 +101,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			}
 
 			// set visibility
-			helper.getAuthService().assignVisibility(
-					protocolBean.getDomain().getId().toString(),
-					protocolBean.getVisibilityGroups(), null);
-			// set file visibility as well
-			if (protocolBean.getFileBean() != null) {
-				helper.getAuthService().assignVisibility(
-						protocolBean.getFileBean().getDomainFile().getId()
-								.toString(),
-						protocolBean.getVisibilityGroups(), null);
-			}
+			helper.assignVisibility(protocolBean, user);
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
 			logger.error(err, e);

@@ -233,6 +233,18 @@ public class ProtocolServiceHelper {
 		return entries;
 	}
 
+	public void assignVisibility(ProtocolBean protocolBean, UserBean user)
+			throws Exception {
+		authService.assignVisibility(protocolBean.getDomain().getId()
+				.toString(), protocolBean.getVisibilityGroups(), null);
+		// set file visibility as well
+		if (protocolBean.getFileBean() != null) {
+			authService.assignVisibility(protocolBean.getFileBean()
+					.getDomainFile().getId().toString(), protocolBean
+					.getVisibilityGroups(), null);
+		}
+	}
+
 	public SortedSet<String> getProtocolNamesBy(String protocolType,
 			UserBean user) throws Exception {
 		SortedSet<String> protocolNames = new TreeSet<String>();
