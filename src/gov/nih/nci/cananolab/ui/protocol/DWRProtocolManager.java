@@ -3,10 +3,12 @@ package gov.nih.nci.cananolab.ui.protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -28,6 +30,7 @@ public class DWRProtocolManager {
 
 	Logger logger = Logger.getLogger(DWRProtocolManager.class);
 	ProtocolService service = new ProtocolServiceLocalImpl();
+	ProtocolServiceHelper helper = new ProtocolServiceHelper();
 
 	public DWRProtocolManager() {
 	}
@@ -62,6 +65,41 @@ public class DWRProtocolManager {
 		return new String[] { "" };
 	}
 
+	public SortedSet<String> getProtocolNames(String protocolType) {
+		try {
+			if (StringUtils.isEmpty(protocolType)) {
+				return null;
+			}
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			UserBean user = (UserBean) webContext.getHttpServletRequest()
+					.getSession().getAttribute("user");
+			SortedSet<String> protocolNames = helper.getProtocolNamesBy(
+					protocolType, user);
+			return protocolNames;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public SortedSet<String> getProtocolVersions(String protocolType,
+			String protocolName) {
+		try {
+			if (StringUtils.isEmpty(protocolName)) {
+				return null;
+			}
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			UserBean user = (UserBean) webContext.getHttpServletRequest()
+					.getSession().getAttribute("user");
+			SortedSet<String> protocolVersions = helper.getProtocolVersionsBy(
+					protocolType, protocolName, user);
+			return protocolVersions;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public ProtocolBean getProtocol(String protocolType, String protocolName,
 			String protocolVersion) {
 		// all three have to be present
@@ -83,48 +121,13 @@ public class DWRProtocolManager {
 		}
 	}
 
-	public List<ProtocolBean> getProtocols(String protocolType) {
-		try {
-			if (protocolType == null || protocolType.length() == 0) {
-				return null;
-			}
-			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-			org.directwebremoting.WebContext webContext = dwcb.get();
-			UserBean user = (UserBean) webContext.getHttpServletRequest()
-					.getSession().getAttribute("user");
-			List<ProtocolBean> protocols = service.findProtocolsBy(
-					protocolType, null, null, null, user);
-			return protocols;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public List<ProtocolBean> getProtocolsByTypeAndName(String protocolType,
-			String protocolName) {
-		try {
-			if (protocolType == null || protocolType.length() == 0) {
-				return null;
-			}
-			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-			org.directwebremoting.WebContext webContext = dwcb.get();
-			UserBean user = (UserBean) webContext.getHttpServletRequest()
-					.getSession().getAttribute("user");
-			List<ProtocolBean> protocols = service.findProtocolsBy(
-					protocolType, protocolName, null, null, user);
-			return protocols;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
 	public String getPublicCounts(String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		if (locations.length == 0) {
 			locations = new String[1];
-			locations[0]= Constants.APP_OWNER;
-			//return null;
+			locations[0] = Constants.APP_OWNER;
+			// return null;
 		}
 		Integer counts = 0;
 		ProtocolService service = null;
@@ -152,6 +155,6 @@ public class DWRProtocolManager {
 				}
 			}
 		}
-		return counts.toString()+ " Protocols";
+		return counts.toString() + " Protocols";
 	}
 }

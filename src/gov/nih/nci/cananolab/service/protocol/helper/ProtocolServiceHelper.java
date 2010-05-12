@@ -18,6 +18,8 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -31,9 +33,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * This class includes methods involved in searching protocols that can be used
  * in both local and remote searches
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger
@@ -231,4 +233,25 @@ public class ProtocolServiceHelper {
 		return entries;
 	}
 
+	public SortedSet<String> getProtocolNamesBy(String protocolType,
+			UserBean user) throws Exception {
+		SortedSet<String> protocolNames = new TreeSet<String>();
+		List<Protocol> protocols = this.findProtocolsBy(protocolType, null,
+				null, null, user);
+		for (Protocol protocol : protocols) {
+			protocolNames.add(protocol.getName());
+		}
+		return protocolNames;
+	}
+
+	public SortedSet<String> getProtocolVersionsBy(String protocolType,
+			String protocolName, UserBean user) throws Exception {
+		SortedSet<String> protocolVersions = new TreeSet<String>();
+		List<Protocol> protocols = this.findProtocolsBy(protocolType,
+				protocolName, null, null, user);
+		for (Protocol protocol : protocols) {
+			protocolVersions.add(protocol.getVersion());
+		}
+		return protocolVersions;
+	}
 }
