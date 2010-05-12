@@ -52,6 +52,10 @@ function retrieveProtocol(applicationOwner) {
 function populateProtocol(protocol) {
 	if (protocol == null) {
 		writeLink(null);
+		dwr.util.setValue("protocolId", null);
+		dwr.util.setValue("fileId", null);
+		dwr.util.setValue("fileUri", null);
+		dwr.util.setValue("fileName", null);
 		dwr.util.setValue("fileTitle", "");
 		dwr.util.setValue("fileDescription", "");
 		dwr.util.setValue("visibility", [ "" ]);
