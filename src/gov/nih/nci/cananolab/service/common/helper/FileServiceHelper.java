@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.common.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
@@ -200,6 +201,28 @@ public class FileServiceHelper {
 			}
 		} catch (Exception e) {
 			String err = "Error checking access permission for files ";
+			logger.error(err, e);
+			throw new FileException(err, e);
+		}
+	}
+
+	public void assignVisibility(FileBean fileBean) throws FileException {
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			authService.assignVisibility(fileBean.getDomainFile().getId()
+					.toString(), fileBean.getVisibilityGroups(), null);
+			// assign keyword to public visibility
+			if (fileBean.getDomainFile().getKeywordCollection() != null) {
+				for (Keyword keyword : fileBean.getDomainFile()
+						.getKeywordCollection()) {
+					authService.assignVisibility(keyword.getId().toString(),
+							new String[] { Constants.CSM_PUBLIC_GROUP}, null);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in setting file visibility for "
+					+ fileBean.getDisplayName();
 			logger.error(err, e);
 			throw new FileException(err, e);
 		}

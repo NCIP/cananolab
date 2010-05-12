@@ -79,12 +79,12 @@ public class FileServiceLocalImpl implements FileService {
 			oStream = new BufferedOutputStream(new FileOutputStream(file));
 			oStream.write(fileContent);
 			oStream.flush();
-		}
-		finally {
+		} finally {
 			if (oStream != null) {
 				try {
 					oStream.close();
-				} catch (Exception e) {}	
+				} catch (Exception e) {
+				}
 			}
 		}
 	}
@@ -103,7 +103,7 @@ public class FileServiceLocalImpl implements FileService {
 						+ fileBean.getDomainFile().getUri();
 				writeFile(fileBean.getNewFileData(), fullFileName);
 			}
-			assignVisibility(fileBean);
+			helper.assignVisibility(fileBean);
 		} catch (Exception e) {
 			logger.error("Problem writing file "
 					+ fileBean.getDomainFile().getUri()
@@ -128,7 +128,7 @@ public class FileServiceLocalImpl implements FileService {
 					.getApplicationService();
 			if (file.getId() != null) {
 				File dbFile = (File) appService.get(File.class, file.getId());
-				if (dbFile != null) {					
+				if (dbFile != null) {
 					// use original createdBy if it is not COPY
 					if (!dbFile.getCreatedBy().equals(
 							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
@@ -151,8 +151,7 @@ public class FileServiceLocalImpl implements FileService {
 							Keyword.class, "name", keyword.getName());
 					if (dbKeyword != null) {
 						keyword.setId(dbKeyword.getId());
-					}
-					else {
+					} else {
 						keyword.setId(null);
 					}
 					appService.saveOrUpdate(keyword);
@@ -162,28 +161,6 @@ public class FileServiceLocalImpl implements FileService {
 		} catch (Exception e) {
 			logger.error("Problem in preparing saving a file: ", e);
 			throw new FileException();
-		}
-	}
-
-	private void assignVisibility(FileBean fileBean) throws FileException {
-		try {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			authService.assignVisibility(fileBean.getDomainFile().getId()
-					.toString(), fileBean.getVisibilityGroups(), null);
-			// assign keyword to public visibility
-			if (fileBean.getDomainFile().getKeywordCollection() != null) {
-				for (Keyword keyword : fileBean.getDomainFile()
-						.getKeywordCollection()) {
-					authService.assignVisibility(keyword.getId().toString(),
-							new String[] { Constants.CSM_PUBLIC_GROUP}, null);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Error in setting file visibility for "
-					+ fileBean.getDisplayName();
-			logger.error(err, e);
-			throw new FileException(err, e);
 		}
 	}
 }
