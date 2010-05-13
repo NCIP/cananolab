@@ -90,7 +90,7 @@ public class PublicationExporter {
 		headerStyle.setFont(headerFont);
 
 		Set<String> categories = summaryBean.getPublicationCategories();
-		if (categories != null & !categories.isEmpty()) {
+		if (categories != null && !categories.isEmpty()) {
 			for (String category : categories) {
 				int rowIndex = 0;
 
