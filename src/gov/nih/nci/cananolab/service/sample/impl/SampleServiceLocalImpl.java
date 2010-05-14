@@ -748,7 +748,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			throws Exception {
 		// retrieve visibility
 		PointOfContactBean primaryPOCBean = sampleBean.getPrimaryPOCBean();
-		if (primaryPOCBean.getDomain() != null) {
+		if (primaryPOCBean.getDomain().getId() != null) {
 			primaryPOCBean.setVisibilityGroups(helper
 					.retrieveVisibility(primaryPOCBean.getDomain()));
 		}
