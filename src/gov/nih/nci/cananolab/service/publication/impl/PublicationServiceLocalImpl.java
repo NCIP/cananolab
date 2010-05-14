@@ -195,7 +195,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					sampleId, user);
 			List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 			if (publications != null) {
-				SampleService sampleService = new SampleServiceLocalImpl();
 				for (Publication publication : publications) {
 					// retrieve sampleNames
 					String[] sampleNames = helper
