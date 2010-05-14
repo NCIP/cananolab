@@ -344,8 +344,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				removePublicationFromSample(name, publication, user);
 			}
 			appService.delete(publication);
-			entries.addAll(helper.removeVisibility(publication,
-					removeVisibility));
+			entries.addAll(removeVisibility(publication, removeVisibility));
 		} catch (Exception e) {
 			String err = "Error in deleting the publication.";
 			logger.error(err, e);
@@ -419,6 +418,26 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				}
 			}
 		}
+	}
+
+	private List<String> removeVisibility(Publication publication,
+			Boolean remove) throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (publication != null) {
+			if (remove == null || remove)
+				helper.getAuthService().removeCSMEntry(
+						publication.getId().toString());
+			entries.add(publication.getId().toString());
+			if (publication.getAuthorCollection() != null) {
+				for (Author author : publication.getAuthorCollection()) {
+					if (remove == null || remove)
+						helper.getAuthService().removeCSMEntry(
+								author.getId().toString());
+					entries.add(author.getId().toString());
+				}
+			}
+		}
+		return entries;
 	}
 
 }

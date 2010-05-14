@@ -569,24 +569,6 @@ public class PublicationServiceHelper {
 		return publications;
 	}
 
-	public List<String> removeVisibility(Publication publication, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (publication != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(publication.getId().toString());
-			entries.add(publication.getId().toString());
-			if (publication.getAuthorCollection() != null) {
-				for (Author author : publication.getAuthorCollection()) {
-					if (remove == null || remove)
-						authService.removeCSMEntry(author.getId().toString());
-					entries.add(author.getId().toString());
-				}
-			}
-		}
-		return entries;
-	}
-
 	public AuthorizationService getAuthService() {
 		return authService;
 	}
