@@ -22,6 +22,7 @@ import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -36,9 +37,9 @@ import org.hibernate.Hibernate;
 
 /**
  * This class takes care of authentication and authorization of a user and group
- * 
+ *
  * @author Pansu
- * 
+ *
  */
 public class AuthorizationService {
 	private Logger logger = Logger.getLogger(AuthorizationService.class);
@@ -73,7 +74,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user is the admin of the application.
-	 * 
+	 *
 	 * @param user
 	 * @return
 	 */
@@ -85,7 +86,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user belongs to the given group.
-	 * 
+	 *
 	 * @param user
 	 * @param groupName
 	 * @return
@@ -112,7 +113,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has the given privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @param privilege
@@ -145,7 +146,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has execute privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -160,7 +161,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has read privilege on the given protection
 	 * element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -213,7 +214,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has delete privilege on the given protection
 	 * element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -227,7 +228,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get all user groups in the application
-	 * 
+	 *
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -270,7 +271,7 @@ public class AuthorizationService {
 	/**
 	 * Get all user visiblity groups in the application (filtering out all
 	 * groups starting with APP_OWNER).
-	 * 
+	 *
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -314,7 +315,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Group object for the given groupName.
-	 * 
+	 *
 	 * @param groupName
 	 * @return
 	 */
@@ -333,7 +334,7 @@ public class AuthorizationService {
 
 	/**
 	 * Create a user group in the CSM database if it's not already created
-	 * 
+	 *
 	 * @param groupName
 	 * @throws SecurityException
 	 */
@@ -353,7 +354,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Role object for the given roleName.
-	 * 
+	 *
 	 * @param roleName
 	 * @return
 	 */
@@ -372,7 +373,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionElement object for the given objectId.
-	 * 
+	 *
 	 * @param objectId
 	 * @return
 	 * @throws SecurityException
@@ -404,7 +405,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionGroup object for the given protectionGroupName.
-	 * 
+	 *
 	 * @param protectionGroupName
 	 * @return
 	 * @throws SecurityException
@@ -435,7 +436,7 @@ public class AuthorizationService {
 
 	/**
 	 * Assign a ProtectionElement to a ProtectionGroup if not already assigned.
-	 * 
+	 *
 	 * @param pe
 	 * @param pg
 	 * @throws SecurityException
@@ -473,7 +474,7 @@ public class AuthorizationService {
 	/**
 	 * Direct CSM schema query to improve performance. Get the existing role IDs
 	 * from database
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -508,7 +509,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get the existing role IDs from database
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -545,7 +546,7 @@ public class AuthorizationService {
 	/**
 	 * Assign the given objectName to the given groupName with the given
 	 * roleName. Add to existing roles the object has for the group.
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
@@ -739,7 +740,7 @@ public class AuthorizationService {
 					for (String group : newGroupsToAdd) {
 						secureObject(dataToProtect, group,
 								Constants.CSM_READ_ROLE);
-					}					
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -794,7 +795,7 @@ public class AuthorizationService {
 
 	/**
 	 * Return only the public data
-	 * 
+	 *
 	 * @param rawObjects
 	 * @return
 	 * @throws Exception
@@ -858,6 +859,47 @@ public class AuthorizationService {
 			logger.error(err);
 			throw new SecurityException(err, e);
 		}
+	}
+
+	/**
+	 * Return a list of data (csm protected_group_name) accessible to user in
+	 * the database
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public Set<String> getAllUserAccessibleData(UserBean user)
+			throws ApplicationException {
+		Set<String> data = new HashSet<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			if (user == null) {
+				return new HashSet<String>(appService.getAllPublicData());
+			}
+			String query = "select pg.protection_group_name "
+					+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_group g, csm_user_group ug, csm_role r "
+					+ "where ugrp.protection_group_id=pg.protection_group_id "
+					+ "and ugrp.group_id=g.group_id "
+					+ "and ugrp.role_id=r.role_id "
+					+ "and ug.user_id=u.user_id "
+					+ "and ug.group_id=g.group_id " + "and u.login_name='"
+					+ user.getLoginName() + "' " + "and r.role_name='"
+					+ Constants.CSM_READ_ROLE + "'";
+			String[] columns = new String[] { "protection_group_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				if (obj != null) {
+					data.add(((String) obj));
+				}
+			}
+		} catch (Exception e) {
+			String err = "Could not execute direct sql query to find all user accessible data";
+			logger.error(err);
+			throw new ApplicationException(err, e);
+		}
+		return data;
 	}
 
 	public static void main(String[] args) {
