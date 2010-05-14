@@ -967,17 +967,23 @@ public class SampleServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getAllPublicData();
-		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.common.Organization");
+		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
+		crit.setFetchMode("organization", FetchMode.JOIN);
 		List results = appService.query(crit);
-		List<String> publicIds = new ArrayList<String>();
+		// get organizations associated with public point of contacts
+		List<PointOfContact> publicPOCs = new ArrayList<PointOfContact>();
 		for (Object obj : results) {
-			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(publicData, id)) {
-				publicIds.add(id);
+			PointOfContact poc = (PointOfContact) obj;
+			if (StringUtils.containsIgnoreCase(publicData, poc.getId()
+					.toString())) {
+				publicPOCs.add(poc);
 			}
 		}
-		return publicIds.size();
+		Set<Organization> publicOrgs = new HashSet<Organization>();
+		for (PointOfContact poc : publicPOCs) {
+			publicOrgs.add(poc.getOrganization());
+		}
+		return publicOrgs.size();
 	}
 
 	public String[] getSampleViewStrs(Sample sample) {
