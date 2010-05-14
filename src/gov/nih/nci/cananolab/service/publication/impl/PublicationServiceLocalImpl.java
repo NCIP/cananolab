@@ -205,7 +205,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 							sampleNames);
 					// retrieve visibility
 					if (user != null)
-						fileHelper.retrieveVisibility(pubBean);
+						pubBean.setVisibilityGroups(fileHelper
+								.retrieveVisibility(publication));
 					publicationBeans.add(pubBean);
 				}
 			}
@@ -234,7 +235,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 						publication.getId().toString(), user);
 				publicationBean = new PublicationBean(publication, sampleNames);
 				if (user != null)
-					fileHelper.retrieveVisibility(publicationBean);
+					publicationBean.setVisibilityGroups(fileHelper
+							.retrieveVisibility(publication));
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -386,7 +388,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 						publication.getId().toString(), user);
 				pubBean = new PublicationBean(publication, sampleNames);
 				if (user != null)
-					fileHelper.retrieveVisibility(pubBean);
+					pubBean.setVisibilityGroups(fileHelper
+							.retrieveVisibility(publication));
 			}
 		} catch (Exception e) {
 			String err = "trouble finding non PubMed/DOI publication based on type: "

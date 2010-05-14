@@ -1,22 +1,18 @@
 package gov.nih.nci.cananolab.service.common.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -73,49 +69,6 @@ public class FileServiceHelper {
 
 	public AuthorizationService getAuthService() {
 		return authService;
-	}
-
-	// retrieve file visibility
-	public void retrieveVisibility(FileBean fileBean) throws Exception {
-		if (fileBean != null) {
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			// get assigned visible groups
-			List<String> accessibleGroups = auth.getAccessibleGroups(fileBean
-					.getDomainFile().getId().toString(),
-					Constants.CSM_READ_PRIVILEGE);
-			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-			fileBean.setVisibilityGroups(visibilityGroups);
-		}
-	}
-
-	private void retrieveVisibilityAndContentForCopiedFile(FileBean copy,
-			UserBean user) throws Exception {
-		// obtain original id from created by
-		String origId = copy.getDomainFile().getCreatedBy().substring(5);
-		List<String> accessibleGroups = authService.getAccessibleGroups(origId,
-				Constants.CSM_READ_PRIVILEGE);
-		if (accessibleGroups != null) {
-			copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
-		}
-		if (origId != null) {
-			byte[] content = this.getFileContent(new Long(origId), user);
-			copy.setNewFileData(content);
-		}
-	}
-
-	// update cloned file with existing visibility and file content, and new
-	// file path
-	public void updateClonedFileInfo(FileBean copy, String origSampleName,
-			String newSampleName, UserBean user) throws Exception {
-		// copy file visibility and file content
-		retrieveVisibilityAndContentForCopiedFile(copy, user);
-		// replace file URI with new sample name
-		if (copy.getDomainFile().getUri() != null) {
-			String newUri = copy.getDomainFile().getUri().replace(
-					origSampleName, newSampleName);
-			copy.getDomainFile().setUri(newUri);
-		}
 	}
 
 	/**

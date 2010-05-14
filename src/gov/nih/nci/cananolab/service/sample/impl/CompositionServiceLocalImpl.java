@@ -47,6 +47,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 	private CompositionServiceHelper helper = new CompositionServiceHelper();
 	private FileServiceHelper fileHelper = new FileServiceHelper();
+	private FileServiceLocalImpl fileService = new FileServiceLocalImpl();
 
 	public CompositionServiceLocalImpl() {
 	}
@@ -122,7 +123,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				entityBean = new NanomaterialEntityBean(entity);
 				if (entityBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean);
+						fileBean.setVisibilityGroups(fileHelper
+								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
 			}
@@ -324,7 +326,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				entityBean = new FunctionalizingEntityBean(entity);
 				if (entityBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean);
+						fileBean.setVisibilityGroups(fileHelper
+								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
 			} else {
@@ -352,7 +355,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				assocBean = new ChemicalAssociationBean(assoc);
 				if (assocBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : assocBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean);
+						fileBean.setVisibilityGroups(fileHelper
+								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
 			} else {
@@ -522,7 +526,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				comp = new CompositionBean(composition);
 				if (comp.getFiles() != null && user != null) {
 					for (FileBean fileBean : comp.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean);
+						fileBean.setVisibilityGroups(fileHelper
+								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
 				if (comp.getNanomaterialEntities() != null) {
@@ -530,7 +535,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 							.getNanomaterialEntities()) {
 						if (entity.getFiles() != null && user != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean);
+								fileBean.setVisibilityGroups(fileHelper
+										.retrieveVisibility(fileBean
+												.getDomainFile()));
 							}
 						}
 					}
@@ -540,7 +547,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 							.getFunctionalizingEntities()) {
 						if (entity.getFiles() != null && user != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean);
+								fileBean.setVisibilityGroups(fileHelper
+										.retrieveVisibility(fileBean
+												.getDomainFile()));
 							}
 						}
 					}
@@ -550,7 +559,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 							.getChemicalAssociations()) {
 						if (assoc.getFiles() != null && user != null) {
 							for (FileBean fileBean : assoc.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean);
+								fileBean.setVisibilityGroups(fileHelper
+										.retrieveVisibility(fileBean
+												.getDomainFile()));
 							}
 						}
 					}
@@ -576,9 +587,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					copyBean = new NanomaterialEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileHelper.updateClonedFileInfo(fileBean, oldSampleBean
-								.getDomain().getName(), sampleBean.getDomain()
-								.getName(), user);
+						fileService.updateClonedFileInfo(fileBean,
+								oldSampleBean.getDomain().getName(), sampleBean
+										.getDomain().getName(), user);
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the nanomaterial entity.";
@@ -607,9 +618,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					copyBean = new FunctionalizingEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileHelper.updateClonedFileInfo(fileBean, oldSampleBean
-								.getDomain().getName(), sampleBean.getDomain()
-								.getName(), user);
+						fileService.updateClonedFileInfo(fileBean,
+								oldSampleBean.getDomain().getName(), sampleBean
+										.getDomain().getName(), user);
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the functionalizing entity.";

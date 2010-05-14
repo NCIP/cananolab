@@ -54,6 +54,7 @@ public class CharacterizationServiceLocalImpl implements
 	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 	private FileServiceHelper fileHelper = new FileServiceHelper();
 	private ProtocolServiceHelper protocolHelper = new ProtocolServiceHelper();
+	private FileServiceLocalImpl fileService = new FileServiceLocalImpl();
 
 	public CharacterizationServiceLocalImpl() {
 	}
@@ -139,7 +140,7 @@ public class CharacterizationServiceLocalImpl implements
 		CharacterizationBean charBean = new CharacterizationBean(achar);
 		ProtocolBean protocolBean = charBean.getProtocolBean();
 		// retrieve protocol visibility
-		if (protocolBean.getDomain() != null) {
+		if (protocolBean.getDomain().getId() != null) {
 			protocolBean.setVisibilityGroups(protocolHelper
 					.retrieveVisibility(protocolBean.getDomain()));
 		}
@@ -203,7 +204,8 @@ public class CharacterizationServiceLocalImpl implements
 				findingBean = new FindingBean(finding);
 				if (findingBean.getFiles() != null && user != null) {
 					for (FileBean fileBean : findingBean.getFiles()) {
-						fileHelper.retrieveVisibility(fileBean);
+						fileBean.setVisibilityGroups(fileHelper
+								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
 			}
@@ -482,7 +484,7 @@ public class CharacterizationServiceLocalImpl implements
 				if (findings != null && !findings.isEmpty()) {
 					for (FindingBean findingBean : findings) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							fileHelper.updateClonedFileInfo(fileBean,
+							fileService.updateClonedFileInfo(fileBean,
 									oldSampleBean.getDomain().getName(),
 									sampleBean.getDomain().getName(), user);
 						}
