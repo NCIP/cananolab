@@ -1,15 +1,10 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
-import gov.nih.nci.cananolab.domain.common.Condition;
-import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
-import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -25,6 +20,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -34,7 +30,7 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving characterizations
- * 
+ *
  * @author tanq, pansu
  */
 public class CharacterizationServiceHelper {
@@ -183,154 +179,6 @@ public class CharacterizationServiceHelper {
 
 	public AuthorizationService getAuthService() {
 		return authService;
-	}
-
-	public void assignVisibility(Characterization aChar,
-			String[] visibleGroups, String owningGroup) throws Exception {
-		// characterization
-		if (aChar != null && aChar.getId() != null) {
-			authService.assignVisibility(aChar.getId().toString(),
-					visibleGroups, owningGroup);
-			if (aChar.getFindingCollection() != null) {
-				for (Finding finding : aChar.getFindingCollection()) {
-					if (finding != null) {
-						authService.assignVisibility(
-								finding.getId().toString(), visibleGroups,
-								owningGroup);
-					}
-					// datum, need to check for null for copy bean.
-					if (finding.getDatumCollection() != null) {
-						for (Datum datum : finding.getDatumCollection()) {
-							if (datum != null && datum.getId() != null) {
-								authService
-										.assignVisibility(datum.getId()
-												.toString(), visibleGroups,
-												owningGroup);
-							}
-							// condition
-							if (datum.getConditionCollection() != null) {
-								for (Condition condition : datum
-										.getConditionCollection()) {
-									authService.assignVisibility(condition
-											.getId().toString(), visibleGroups,
-											owningGroup);
-								}
-							}
-						}
-					}
-				}
-			}
-			// ExperimentConfiguration
-			if (aChar.getExperimentConfigCollection() != null) {
-				for (ExperimentConfig config : aChar
-						.getExperimentConfigCollection()) {
-					authService.assignVisibility(config.getId().toString(),
-							visibleGroups, owningGroup);
-					// assign instruments and technique to public visibility
-					if (config.getTechnique() != null) {
-						authService.assignVisibility(config.getTechnique()
-								.getId().toString(),
-								new String[] { Constants.CSM_PUBLIC_GROUP },
-								null);
-					}
-					if (config.getInstrumentCollection() != null) {
-						for (Instrument instrument : config
-								.getInstrumentCollection()) {
-							authService
-									.assignVisibility(
-											instrument.getId().toString(),
-											new String[] { Constants.CSM_PUBLIC_GROUP },
-											null);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public List<String> removeVisibility(Characterization aChar, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		// characterization
-		if (aChar != null) {
-			if (remove == null || remove) {
-				authService.removeCSMEntry(aChar.getId().toString());
-			}
-			entries.add(aChar.getId().toString());
-			for (Finding finding : aChar.getFindingCollection()) {
-				if (finding != null) {
-					entries.addAll(removeVisibility(finding, remove));
-				}
-			}
-
-			// ExperimentConfiguration
-			for (ExperimentConfig config : aChar
-					.getExperimentConfigCollection()) {
-				entries.addAll(removeVisibility(config, remove));
-			}
-		}
-		return entries;
-	}
-
-	public List<String> removeVisibility(ExperimentConfig config, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (remove == null || remove) {
-			authService.removeCSMEntry(config.getId().toString());
-			authService
-					.removeCSMEntry(config.getTechnique().getId().toString());
-		}
-		entries.add(config.getId().toString());
-		entries.add(config.getTechnique().getId().toString());
-		if (config.getInstrumentCollection() != null) {
-			for (Instrument instrument : config.getInstrumentCollection()) {
-				if (remove == null || remove) {
-					authService.removeCSMEntry(instrument.getId().toString());
-				}
-				entries.add(instrument.getId().toString());
-			}
-		}
-		return entries;
-	}
-
-	public List<String> removeVisibility(Finding finding, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (remove == null || remove) {
-			authService.removeCSMEntry(finding.getId().toString());
-		}
-		entries.add(finding.getId().toString());
-
-		// datum
-		if (finding.getDatumCollection() != null) {
-			for (Datum datum : finding.getDatumCollection()) {
-				if (datum != null) {
-					if (remove == null || remove) {
-						authService.removeCSMEntry(datum.getId().toString());
-					}
-					entries.add(datum.getId().toString());
-				}
-				if (datum.getConditionCollection() != null) {
-					for (Condition condition : datum.getConditionCollection()) {
-						if (remove == null || remove) {
-							authService.removeCSMEntry(condition.getId()
-									.toString());
-						}
-						entries.add(condition.getId().toString());
-					}
-				}
-			}
-		}
-		// file
-		if (finding.getFileCollection() != null) {
-			for (File file : finding.getFileCollection()) {
-				if (remove == null || remove) {
-					authService.removeCSMEntry(file.getId().toString());
-				}
-				entries.add(file.getId().toString());
-			}
-		}
-		return entries;
 	}
 
 	public List<Characterization> findCharacterizationsBySampleId(

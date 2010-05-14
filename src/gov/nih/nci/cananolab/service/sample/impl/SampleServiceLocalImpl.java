@@ -31,7 +31,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -66,9 +66,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -76,11 +76,13 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private SampleServiceHelper helper = new SampleServiceHelper();
 	private AdvancedSampleServiceHelper advancedHelper = new AdvancedSampleServiceHelper();
-	private FileServiceHelper fileHelper = new FileServiceHelper();
+	private FileServiceLocalImpl fileService = new FileServiceLocalImpl();
+	private CharacterizationServiceLocalImpl charService = new CharacterizationServiceLocalImpl();
+	private CompositionServiceLocalImpl compService = new CompositionServiceLocalImpl();
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 * 
+	 *
 	 * @param sample
 	 * @throws SampleException
 	 *             , DuplicateEntriesException
@@ -222,19 +224,17 @@ public class SampleServiceLocalImpl implements SampleService {
 				sampleBean.getDomain().getName(), visibleGroups, owningGroup);
 		// assign associated visibilities
 		Sample sample = sampleBean.getDomain();
-		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
-		CompositionServiceHelper compHelper = new CompositionServiceHelper();
 		Collection<Characterization> characterizationCollection = sample
 				.getCharacterizationCollection();
 		// characterizations
 		if (characterizationCollection != null) {
 			for (Characterization aChar : characterizationCollection) {
-				charHelper.assignVisibility(aChar, visibleGroups, owningGroup);
+				charService.assignVisibility(aChar, visibleGroups, owningGroup);
 			}
 		}
 		// sampleComposition
 		if (sample.getSampleComposition() != null) {
-			compHelper.assignVisibility(sample.getSampleComposition(),
+			compService.assignVisibility(sample.getSampleComposition(),
 					visibleGroups, owningGroup);
 		}
 
@@ -263,7 +263,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanomaterialEntityTypes
@@ -304,19 +304,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		SampleBean sampleBean = null;
 		try {
 			Sample sample = helper.findSampleById(sampleId, user);
-			sampleBean = new SampleBean(sample);
-			// set visibility of POC
-			if (user != null) {
-				helper.retrieveVisibility(sampleBean.getPrimaryPOCBean());
-			}
-			if (sampleBean.getOtherPOCBeans() != null && user != null) {
-				for (PointOfContactBean poc : sampleBean.getOtherPOCBeans()) {
-					helper.retrieveVisibility(poc);
-				}
-			}
-			if (user != null) {
-				helper.retrieveVisibility(sampleBean);
-			}
+			sampleBean = loadSampleBean(sample, user);
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -397,22 +385,35 @@ public class SampleServiceLocalImpl implements SampleService {
 		return sample;
 	}
 
+	private SampleBean loadSampleBean(Sample sample, UserBean user)
+			throws Exception {
+		SampleBean sampleBean = new SampleBean(sample);
+		// set visibility of POC
+		if (user != null && sample.getPrimaryPointOfContact() != null) {
+			PointOfContactBean pocBean = sampleBean.getPrimaryPOCBean();
+			pocBean.setVisibilityGroups(helper.retrieveVisibility(sample
+					.getPrimaryPointOfContact()));
+		}
+		if (sample.getOtherPointOfContactCollection() != null && user != null) {
+			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
+				pocBean.setVisibilityGroups(helper.retrieveVisibility(pocBean
+						.getDomain()));
+			}
+		}
+		if (user != null) {
+			String[] visibleGroups = helper.retrieveVisibility(sample);
+			sampleBean.setVisibilityGroups(visibleGroups);
+		}
+		return sampleBean;
+	}
+
 	public SampleBean findSampleByName(String sampleName, UserBean user)
 			throws SampleException, NoAccessException {
 		try {
 			Sample sample = helper.findSampleByName(sampleName, user);
 			SampleBean sampleBean = null;
 			if (sample != null) {
-				sampleBean = new SampleBean(sample);
-				// set visibility of POC
-				if (user != null) {
-					helper.retrieveVisibility(sampleBean.getPrimaryPOCBean());
-				}
-				if (sampleBean.getOtherPOCBeans() != null && user != null) {
-					for (PointOfContactBean poc : sampleBean.getOtherPOCBeans()) {
-						helper.retrieveVisibility(poc);
-					}
-				}
+				sampleBean = loadSampleBean(sample, user);
 				// load summary information
 				sampleBean.setCharacterizationClassNames(helper
 						.getStoredCharacterizationClassNames(sample).toArray(
@@ -426,8 +427,6 @@ public class SampleServiceLocalImpl implements SampleService {
 				sampleBean.setFunctionClassNames(helper
 						.getStoredFunctionClassNames(sample).toArray(
 								new String[0]));
-				if (user != null)
-					helper.retrieveVisibility(sampleBean);
 			}
 			return sampleBean;
 		} catch (NoAccessException e) {
@@ -509,7 +508,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (poc != null) {
 				pocBean = new PointOfContactBean(poc);
 				if (user != null) {
-					helper.retrieveVisibility(pocBean);
+					pocBean.setVisibilityGroups(helper.retrieveVisibility(poc));
 				}
 			}
 		} catch (NoAccessException e) {
@@ -701,7 +700,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			origSampleBean = new SampleBean(origSample);
 			// retrieve visibilities of the original sample,
 			// then copy the visibilities to new sample
-			helper.retrieveVisibility(origSampleBean);
+			origSampleBean.setVisibilityGroups(helper
+					.retrieveVisibility(origSample));
 			newSample0.setName(newSampleName);
 			newSample0.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 			newSample0.setCreatedDate(new Date());
@@ -718,7 +718,8 @@ public class SampleServiceLocalImpl implements SampleService {
 		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in loading the original sample " + originalSampleName;
+			String err = "Error in loading the original sample "
+					+ originalSampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
@@ -739,7 +740,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			saveClonedPublications(origSample.getName(), newSampleBean, user);
 			saveSample(newSampleBean, user);
 		} catch (Exception e) {
-			//delete the already persisted new sample in case of error
+			// delete the already persisted new sample in case of error
 			deleteSample(newSampleName, user, true);
 			String err = "Error in cloning the sample " + originalSampleName;
 			logger.error(err, e);
@@ -751,12 +752,17 @@ public class SampleServiceLocalImpl implements SampleService {
 	private void saveClonedPOCs(SampleBean sampleBean, UserBean user)
 			throws Exception {
 		// retrieve visibility
-		helper.retrieveVisibility(sampleBean.getPrimaryPOCBean());
+		PointOfContactBean primaryPOCBean = sampleBean.getPrimaryPOCBean();
+		if (primaryPOCBean.getDomain() != null) {
+			primaryPOCBean.setVisibilityGroups(helper
+					.retrieveVisibility(primaryPOCBean.getDomain()));
+		}
 		savePointOfContact(sampleBean.getPrimaryPOCBean(), user);
 		if (sampleBean.getOtherPOCBeans() != null
 				&& !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
-				helper.retrieveVisibility(pocBean);
+				pocBean.setVisibilityGroups(helper.retrieveVisibility(pocBean
+						.getDomain()));
 				savePointOfContact(pocBean, user);
 			}
 		}
@@ -779,7 +785,7 @@ public class SampleServiceLocalImpl implements SampleService {
 				if (charBean.getFindings() != null) {
 					for (FindingBean findingBean : charBean.getFindings()) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							fileHelper.updateClonedFileInfo(fileBean,
+							fileService.updateClonedFileInfo(fileBean,
 									origSampleName, newSampleName, user);
 						}
 						charService.saveFinding(findingBean, user);
@@ -806,7 +812,7 @@ public class SampleServiceLocalImpl implements SampleService {
 					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
 							entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileHelper.updateClonedFileInfo(fileBean,
+						fileService.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName, user);
 					}
 					compService.saveNanomaterialEntity(sampleBean, entityBean,
@@ -822,7 +828,7 @@ public class SampleServiceLocalImpl implements SampleService {
 					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 							entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileHelper.updateClonedFileInfo(fileBean,
+						fileService.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName, user);
 					}
 					compService.saveFunctionalizingEntity(sampleBean,
@@ -835,7 +841,7 @@ public class SampleServiceLocalImpl implements SampleService {
 				for (File file : sampleBean.getDomain().getSampleComposition()
 						.getFileCollection()) {
 					FileBean fileBean = new FileBean(file);
-					fileHelper.updateClonedFileInfo(fileBean, origSampleName,
+					fileService.updateClonedFileInfo(fileBean, origSampleName,
 							newSampleName, user);
 					compService.saveCompositionFile(sampleBean, fileBean, user);
 				}
@@ -856,7 +862,7 @@ public class SampleServiceLocalImpl implements SampleService {
 							.getSampleComposition(), assoc
 							.getAssociatedElementB());
 					for (FileBean fileBean : assocBean.getFiles()) {
-						fileHelper.updateClonedFileInfo(fileBean,
+						fileService.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName, user);
 					}
 					compService.saveChemicalAssociation(sampleBean, assocBean,
@@ -963,7 +969,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			}
 			appService.saveOrUpdate(sample);
 			appService.delete(sample);
-			helper.removeVisibility(sample, removeVisibility);
+			removeVisibility(sample, removeVisibility);
 			entries.add(sample.getName());
 		} catch (NotExistException e) {
 			throw e;
@@ -971,6 +977,39 @@ public class SampleServiceLocalImpl implements SampleService {
 			String err = "Error in deleting the sample " + sampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
+		}
+		return entries;
+	}
+
+	private List<String> removeVisibility(PointOfContact poc, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove)
+			helper.getAuthService().removeCSMEntry(poc.getId().toString());
+		entries.add(poc.getId().toString());
+		return entries;
+	}
+
+	private List<String> removeVisibility(Sample sample, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove)
+			helper.getAuthService().removeCSMEntry(sample.getName());
+		entries.add(sample.getName());
+		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
+		CompositionServiceHelper compHelper = new CompositionServiceHelper();
+		Collection<Characterization> characterizationCollection = sample
+				.getCharacterizationCollection();
+		// characterizations
+		if (characterizationCollection != null) {
+			for (Characterization aChar : characterizationCollection) {
+				entries.addAll(charService.removeVisibility(aChar, remove));
+			}
+		}
+		// sampleComposition
+		if (sample.getSampleComposition() != null) {
+			entries.addAll(compService.removeVisibility(sample
+					.getSampleComposition(), remove));
 		}
 		return entries;
 	}

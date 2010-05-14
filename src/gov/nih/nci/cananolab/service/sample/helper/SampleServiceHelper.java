@@ -15,9 +15,7 @@ import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -988,11 +986,10 @@ public class SampleServiceHelper {
 		columns.add(sample.getId().toString());
 		columns.add(sample.getName());
 		if (sample.getPrimaryPointOfContact() != null) {
-			PointOfContactBean primaryPOC = new PointOfContactBean(sample
-					.getPrimaryPointOfContact());
-			columns.add(primaryPOC.getDomain().getFirstName());
-			columns.add(primaryPOC.getDomain().getLastName());
-			columns.add(primaryPOC.getDomain().getOrganization().getName());
+			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
+			columns.add(primaryPOC.getFirstName());
+			columns.add(primaryPOC.getLastName());
+			columns.add(primaryPOC.getOrganization().getName());
 		} else {
 			columns.add(null);
 			columns.add(null);
@@ -1115,47 +1112,20 @@ public class SampleServiceHelper {
 	}
 
 	// retrieve point of contact accessibility
-	public void retrieveVisibility(PointOfContactBean pocBean) throws Exception {
-		if (!StringUtils.isEmpty(pocBean.getDisplayName())) {
-			// get assigned visible groups
-			List<String> accessibleGroups = authService.getAccessibleGroups(
-					pocBean.getDomain().getId().toString(),
-					Constants.CSM_READ_PRIVILEGE);
-			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-			pocBean.setVisibilityGroups(visibilityGroups);
-		}
-	}
-
-	public void retrieveVisibility(SampleBean sampleBean) throws Exception {
+	public String[] retrieveVisibility(PointOfContact poc) throws Exception {
 		// get assigned visible groups
-		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
+		List<String> accessibleGroups = authService.getAccessibleGroups(poc
+				.getId().toString(), Constants.CSM_READ_PRIVILEGE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		sampleBean.setVisibilityGroups(visibilityGroups);
+		return visibilityGroups;
 	}
 
-	public List<String> removeVisibility(Sample sample, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (remove == null || remove)
-			authService.removeCSMEntry(sample.getName());
-		entries.add(sample.getName());
-		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
-		CompositionServiceHelper compHelper = new CompositionServiceHelper();
-		Collection<Characterization> characterizationCollection = sample
-				.getCharacterizationCollection();
-		// characterizations
-		if (characterizationCollection != null) {
-			for (Characterization aChar : characterizationCollection) {
-				entries.addAll(charHelper.removeVisibility(aChar, remove));
-			}
-		}
-		// sampleComposition
-		if (sample.getSampleComposition() != null) {
-			entries.addAll(compHelper.removeVisibility(sample
-					.getSampleComposition(), remove));
-		}
-		return entries;
+	public String[] retrieveVisibility(Sample sample) throws Exception {
+		// get assigned visible groups
+		List<String> accessibleGroups = authService.getAccessibleGroups(sample
+				.getName(), Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		return visibilityGroups;
 	}
 
 	/**

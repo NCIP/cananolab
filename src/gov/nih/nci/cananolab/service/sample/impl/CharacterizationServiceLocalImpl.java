@@ -1,6 +1,9 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
@@ -9,6 +12,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -18,12 +22,12 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
-import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -39,9 +43,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class CharacterizationServiceLocalImpl implements
 		CharacterizationService {
@@ -49,6 +53,7 @@ public class CharacterizationServiceLocalImpl implements
 			.getLogger(CharacterizationServiceLocalImpl.class);
 	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 	private FileServiceHelper fileHelper = new FileServiceHelper();
+	private ProtocolServiceHelper protocolHelper = new ProtocolServiceHelper();
 
 	public CharacterizationServiceLocalImpl() {
 	}
@@ -100,7 +105,7 @@ public class CharacterizationServiceLocalImpl implements
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
 			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName();
-			helper.assignVisibility(charBean.getDomainChar(), visibleGroups,
+			assignVisibility(charBean.getDomainChar(), visibleGroups,
 					owningGroup);
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
@@ -117,15 +122,7 @@ public class CharacterizationServiceLocalImpl implements
 					user);
 			if (achar != null) {
 				charBean = new CharacterizationBean(achar);
-				if (charBean.getFindings() != null) {
-					for (FindingBean findingBean : charBean.getFindings()) {
-						if (findingBean.getFiles() != null && user != null) {
-							for (FileBean fileBean : findingBean.getFiles()) {
-								fileHelper.retrieveVisibility(fileBean);
-							}
-						}
-					}
-				}
+				loadCharacterizationBean(achar, user);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -133,6 +130,26 @@ public class CharacterizationServiceLocalImpl implements
 			logger.error("Problem finding the characterization by id: "
 					+ charId, e);
 			throw new CharacterizationException();
+		}
+		return charBean;
+	}
+
+	private CharacterizationBean loadCharacterizationBean(
+			Characterization achar, UserBean user) throws Exception {
+		CharacterizationBean charBean = new CharacterizationBean(achar);
+		ProtocolBean protocolBean = charBean.getProtocolBean();
+		// retrieve protocol visibility
+		if (protocolBean.getDomain() != null) {
+			protocolBean.setVisibilityGroups(protocolHelper
+					.retrieveVisibility(protocolBean.getDomain()));
+		}
+		for (FindingBean findingBean : charBean.getFindings()) {
+			if (findingBean.getFiles() != null && user != null) {
+				for (FileBean fileBean : findingBean.getFiles()) {
+					fileBean.setVisibilityGroups(fileHelper
+							.retrieveVisibility(fileBean.getDomainFile()));
+				}
+			}
 		}
 		return charBean;
 	}
@@ -148,7 +165,7 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(chara);
-			entries = helper.removeVisibility(chara, removeVisibility);
+			entries = removeVisibility(chara, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
 			logger.error(err, e);
@@ -164,14 +181,8 @@ public class CharacterizationServiceLocalImpl implements
 			List<Characterization> chars = helper
 					.findCharacterizationsBySampleId(sampleId, user);
 			for (Characterization achar : chars) {
-				CharacterizationBean charBean = new CharacterizationBean(achar);
-				for (FindingBean findingBean : charBean.getFindings()) {
-					if (findingBean.getFiles() != null && user != null) {
-						for (FileBean fileBean : findingBean.getFiles()) {
-							fileHelper.retrieveVisibility(fileBean);
-						}
-					}
-				}
+				CharacterizationBean charBean = loadCharacterizationBean(achar,
+						user);
 				charBeans.add(charBean);
 			}
 			return charBeans;
@@ -243,7 +254,7 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(finding);
-			entries = helper.removeVisibility(finding, removeVisibility);
+			entries = removeVisibility(finding, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting finding " + finding.getId();
 			logger.error(err, e);
@@ -377,7 +388,7 @@ public class CharacterizationServiceLocalImpl implements
 				}
 			}
 			appService.delete(config);
-			entries = helper.removeVisibility(config, removeVisibility);
+			entries = removeVisibility(config, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error in deleting the technique and associated instruments";
 			logger.error(err, e);
@@ -393,7 +404,9 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Technique.class)
-					.add(Property.forName("type").eq(new String(type)).ignoreCase());
+					.add(
+							Property.forName("type").eq(new String(type))
+									.ignoreCase());
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				technique = (Technique) obj;
@@ -414,7 +427,9 @@ public class CharacterizationServiceLocalImpl implements
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
 			crit.add(Restrictions.eq("type", type).ignoreCase());
-			crit.add(Restrictions.eq("manufacturer", manufacturer).ignoreCase());
+			crit
+					.add(Restrictions.eq("manufacturer", manufacturer)
+							.ignoreCase());
 			crit.add(Restrictions.eq("modelName", modelName).ignoreCase());
 			List results = appService.query(crit);
 			for (Object obj : results) {
@@ -497,5 +512,158 @@ public class CharacterizationServiceLocalImpl implements
 			throw new CharacterizationException(err, e);
 
 		}
+	}
+
+	protected void assignVisibility(Characterization aChar,
+			String[] visibleGroups, String owningGroup) throws Exception {
+		// characterization
+		if (aChar != null && aChar.getId() != null) {
+			helper.getAuthService().assignVisibility(aChar.getId().toString(),
+					visibleGroups, owningGroup);
+			if (aChar.getFindingCollection() != null) {
+				for (Finding finding : aChar.getFindingCollection()) {
+					if (finding != null) {
+						helper.getAuthService().assignVisibility(
+								finding.getId().toString(), visibleGroups,
+								owningGroup);
+					}
+					// datum, need to check for null for copy bean.
+					if (finding.getDatumCollection() != null) {
+						for (Datum datum : finding.getDatumCollection()) {
+							if (datum != null && datum.getId() != null) {
+								helper.getAuthService().assignVisibility(
+										datum.getId().toString(),
+										visibleGroups, owningGroup);
+							}
+							// condition
+							if (datum.getConditionCollection() != null) {
+								for (Condition condition : datum
+										.getConditionCollection()) {
+									helper.getAuthService().assignVisibility(
+											condition.getId().toString(),
+											visibleGroups, owningGroup);
+								}
+							}
+						}
+					}
+				}
+			}
+			// ExperimentConfiguration
+			if (aChar.getExperimentConfigCollection() != null) {
+				for (ExperimentConfig config : aChar
+						.getExperimentConfigCollection()) {
+					helper.getAuthService().assignVisibility(
+							config.getId().toString(), visibleGroups,
+							owningGroup);
+					// assign instruments and technique to public visibility
+					if (config.getTechnique() != null) {
+						helper.getAuthService().assignVisibility(
+								config.getTechnique().getId().toString(),
+								new String[] { Constants.CSM_PUBLIC_GROUP },
+								null);
+					}
+					if (config.getInstrumentCollection() != null) {
+						for (Instrument instrument : config
+								.getInstrumentCollection()) {
+							helper
+									.getAuthService()
+									.assignVisibility(
+											instrument.getId().toString(),
+											new String[] { Constants.CSM_PUBLIC_GROUP },
+											null);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected List<String> removeVisibility(Characterization aChar,
+			Boolean remove) throws Exception {
+		List<String> entries = new ArrayList<String>();
+		// characterization
+		if (aChar != null) {
+			if (remove == null || remove) {
+				helper.getAuthService()
+						.removeCSMEntry(aChar.getId().toString());
+			}
+			entries.add(aChar.getId().toString());
+			for (Finding finding : aChar.getFindingCollection()) {
+				if (finding != null) {
+					entries.addAll(removeVisibility(finding, remove));
+				}
+			}
+
+			// ExperimentConfiguration
+			for (ExperimentConfig config : aChar
+					.getExperimentConfigCollection()) {
+				entries.addAll(removeVisibility(config, remove));
+			}
+		}
+		return entries;
+	}
+
+	private List<String> removeVisibility(ExperimentConfig config,
+			Boolean remove) throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove) {
+			helper.getAuthService().removeCSMEntry(config.getId().toString());
+			helper.getAuthService().removeCSMEntry(
+					config.getTechnique().getId().toString());
+		}
+		entries.add(config.getId().toString());
+		entries.add(config.getTechnique().getId().toString());
+		if (config.getInstrumentCollection() != null) {
+			for (Instrument instrument : config.getInstrumentCollection()) {
+				if (remove == null || remove) {
+					helper.getAuthService().removeCSMEntry(
+							instrument.getId().toString());
+				}
+				entries.add(instrument.getId().toString());
+			}
+		}
+		return entries;
+	}
+
+	private List<String> removeVisibility(Finding finding, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (remove == null || remove) {
+			helper.getAuthService().removeCSMEntry(finding.getId().toString());
+		}
+		entries.add(finding.getId().toString());
+
+		// datum
+		if (finding.getDatumCollection() != null) {
+			for (Datum datum : finding.getDatumCollection()) {
+				if (datum != null) {
+					if (remove == null || remove) {
+						helper.getAuthService().removeCSMEntry(
+								datum.getId().toString());
+					}
+					entries.add(datum.getId().toString());
+				}
+				if (datum.getConditionCollection() != null) {
+					for (Condition condition : datum.getConditionCollection()) {
+						if (remove == null || remove) {
+							helper.getAuthService().removeCSMEntry(
+									condition.getId().toString());
+						}
+						entries.add(condition.getId().toString());
+					}
+				}
+			}
+		}
+		// file
+		if (finding.getFileCollection() != null) {
+			for (File file : finding.getFileCollection()) {
+				if (remove == null || remove) {
+					helper.getAuthService().removeCSMEntry(
+							file.getId().toString());
+				}
+				entries.add(file.getId().toString());
+			}
+		}
+		return entries;
 	}
 }

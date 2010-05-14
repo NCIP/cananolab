@@ -1,8 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.function.Target;
-import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -21,7 +19,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -32,9 +29,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving composition.
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class CompositionServiceHelper {
 
@@ -106,7 +103,7 @@ public class CompositionServiceHelper {
 	/**
 	 * Get PubChem URL in format of
 	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 * 
+	 *
 	 * @param pubChemDS
 	 * @param pubChemId
 	 * @return PubChem URL
@@ -164,269 +161,6 @@ public class CompositionServiceHelper {
 
 	public AuthorizationService getAuthService() {
 		return authService;
-	}
-
-	public void assignVisibility(NanomaterialEntity entity,
-			String[] visibleGroups, String owningGroup) throws Exception {
-		if (entity != null) {
-			authService.assignVisibility(entity.getId().toString(),
-					visibleGroups, owningGroup);
-			// nanomaterialEntityCollection.composingElementCollection,
-			Collection<ComposingElement> composingElementCollection = entity
-					.getComposingElementCollection();
-			if (composingElementCollection != null) {
-				for (ComposingElement composingElement : composingElementCollection) {
-					if (composingElement != null) {
-						authService.assignVisibility(composingElement.getId()
-								.toString(), visibleGroups, owningGroup);
-					}
-					// composingElementCollection.inherentFucntionCollection
-					Collection<Function> inherentFunctionCollection = composingElement
-							.getInherentFunctionCollection();
-					if (inherentFunctionCollection != null) {
-						for (Function function : inherentFunctionCollection) {
-							if (function != null) {
-								authService
-										.assignVisibility(function.getId()
-												.toString(), visibleGroups,
-												owningGroup);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void assignVisibility(FunctionalizingEntity functionalizingEntity,
-			String[] visibleGroups, String owningGroup) throws Exception {
-		if (functionalizingEntity != null) {
-			authService.assignVisibility(functionalizingEntity.getId()
-					.toString(), visibleGroups, owningGroup);
-			// activation method
-			if (functionalizingEntity.getActivationMethod() != null) {
-				authService.assignVisibility(functionalizingEntity
-						.getActivationMethod().getId().toString(),
-						visibleGroups, owningGroup);
-			}
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						authService.assignVisibility(function.getId()
-								.toString(), visibleGroups, owningGroup);
-						if (function instanceof TargetingFunction) {
-							for (Target target : ((TargetingFunction) function)
-									.getTargetCollection()) {
-								authService
-										.assignVisibility(target.getId()
-												.toString(), visibleGroups,
-												owningGroup);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void assignVisibility(SampleComposition comp,
-			String[] visibleGroups, String owningGroup) throws Exception {
-		authService.assignVisibility(comp.getId().toString(), visibleGroups,
-				owningGroup);
-		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
-			assignVisibility(entity, visibleGroups, owningGroup);
-		}
-		for (FunctionalizingEntity entity : comp
-				.getFunctionalizingEntityCollection()) {
-			assignVisibility(entity, visibleGroups, owningGroup);
-		}
-		for (ChemicalAssociation assoc : comp
-				.getChemicalAssociationCollection()) {
-			assignVisibility(assoc, visibleGroups, owningGroup);
-		}
-	}
-
-	public void assignVisibility(ChemicalAssociation chemicalAssociation,
-			String[] visibleGroups, String owningGroup) throws Exception {
-		if (chemicalAssociation != null) {
-			authService.assignVisibility(
-					chemicalAssociation.getId().toString(), visibleGroups,
-					owningGroup);
-			// visibility of the associated elements should already be assigned
-			// when creating the entities
-			// chemicalAssociation.associatedElementA
-			// if (chemicalAssociation.getAssociatedElementA() != null) {
-			// authService.assignVisibility(chemicalAssociation
-			// .getAssociatedElementA().getId().toString(),
-			// visibleGroups, owningGroup);
-			// }
-			// // chemicalAssociation.associatedElementB
-			// if (chemicalAssociation.getAssociatedElementB() != null) {
-			// authService.assignVisibility(chemicalAssociation
-			// .getAssociatedElementB().getId().toString(),
-			// visibleGroups, owningGroup);
-			// }
-		}
-	}
-
-	public List<String> removeVisibility(SampleComposition comp, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (remove == null || remove)
-			authService.removeCSMEntry(comp.getId().toString());
-		entries.add(comp.getId().toString());
-		if (comp.getNanomaterialEntityCollection() != null)
-			for (NanomaterialEntity entity : comp
-					.getNanomaterialEntityCollection()) {
-				entries.addAll(removeVisibility(entity, remove));
-			}
-		if (comp.getFunctionalizingEntityCollection() != null)
-			for (FunctionalizingEntity entity : comp
-					.getFunctionalizingEntityCollection()) {
-				entries.addAll(removeVisibility(entity, remove));
-			}
-		if (comp.getChemicalAssociationCollection() != null)
-			for (ChemicalAssociation assoc : comp
-					.getChemicalAssociationCollection()) {
-				entries.addAll(removeVisibility(assoc, remove));
-			}
-		if (comp.getFileCollection() != null) {
-			for (File file : comp.getFileCollection()) {
-				if (remove == null || remove)
-					authService.removeCSMEntry(file.getId().toString());
-				entries.add(file.getId().toString());
-			}
-		}
-		return entries;
-	}
-
-	public List<String> removeVisibility(
-			ChemicalAssociation chemicalAssociation, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (chemicalAssociation != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(chemicalAssociation.getId()
-						.toString());
-			entries.add(chemicalAssociation.getId().toString());
-			// // chemicalAssociation.associatedElementA
-			// if (chemicalAssociation.getAssociatedElementA() != null) {
-			// if (remove == null || remove)
-			// authService.removeCSMEntry(chemicalAssociation
-			// .getAssociatedElementA().getId().toString());
-			// }
-			// // chemicalAssociation.associatedElementB
-			// if (chemicalAssociation.getAssociatedElementB() != null) {
-			// if (remove == null || remove)
-			// authService.removeCSMEntry(chemicalAssociation
-			// .getAssociatedElementB().getId().toString());
-			// entries.add(chemicalAssociation.getAssociatedElementB().getId()
-			// .toString());
-			// }
-			if (chemicalAssociation.getFileCollection() != null) {
-				for (File file : chemicalAssociation.getFileCollection()) {
-					if (remove == null || remove)
-						authService.removeCSMEntry(file.getId().toString());
-					entries.add(file.getId().toString());
-				}
-			}
-		}
-		return entries;
-	}
-
-	public List<String> removeVisibility(
-			FunctionalizingEntity functionalizingEntity, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (functionalizingEntity != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(functionalizingEntity.getId()
-						.toString());
-			entries.add(functionalizingEntity.getId().toString());
-			if (functionalizingEntity.getActivationMethod() != null) {
-				if (remove == null || remove)
-					authService.removeCSMEntry(functionalizingEntity
-							.getActivationMethod().getId().toString());
-				entries.add(functionalizingEntity.getActivationMethod().getId()
-						.toString());
-			}
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						if (remove == null || remove)
-							authService.removeCSMEntry(function.getId()
-									.toString());
-						entries.add(function.getId().toString());
-						if (function instanceof TargetingFunction) {
-							for (Target target : ((TargetingFunction) function)
-									.getTargetCollection()) {
-								if (remove == null || remove)
-									authService.removeCSMEntry(target.getId()
-											.toString());
-								entries.add(target.getId().toString());
-							}
-						}
-					}
-				}
-			}
-			if (functionalizingEntity.getFileCollection() != null) {
-				for (File file : functionalizingEntity.getFileCollection()) {
-					if (remove == null || remove)
-						authService.removeCSMEntry(file.getId().toString());
-					entries.add(file.getId().toString());
-				}
-			}
-		}
-		return entries;
-	}
-
-	public List<String> removeVisibility(NanomaterialEntity entity,
-			Boolean remove) throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (entity != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(entity.getId().toString());
-			entries.add(entity.getId().toString());
-			// nanomaterialEntityCollection.composingElementCollection,
-			Collection<ComposingElement> composingElementCollection = entity
-					.getComposingElementCollection();
-			if (composingElementCollection != null) {
-				for (ComposingElement composingElement : composingElementCollection) {
-					if (composingElement != null) {
-						if (remove == null || remove)
-							authService.removeCSMEntry(composingElement.getId()
-									.toString());
-						entries.add(composingElement.getId().toString());
-					}
-					// composingElementCollection.inherentFucntionCollection
-					Collection<Function> inherentFunctionCollection = composingElement
-							.getInherentFunctionCollection();
-					if (inherentFunctionCollection != null) {
-						for (Function function : inherentFunctionCollection) {
-							if (function != null) {
-								if (remove == null || remove)
-									authService.removeCSMEntry(function.getId()
-											.toString());
-								entries.add(function.getId().toString());
-							}
-						}
-					}
-				}
-			}
-			if (entity.getFileCollection() != null) {
-				for (File file : entity.getFileCollection()) {
-					if (remove == null || remove)
-						authService.removeCSMEntry(file.getId().toString());
-				}
-			}
-		}
-		return entries;
 	}
 
 	public SampleComposition findCompositionBySampleId(String sampleId,
