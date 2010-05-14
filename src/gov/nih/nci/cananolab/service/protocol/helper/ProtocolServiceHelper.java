@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -148,34 +149,22 @@ public class ProtocolServiceHelper {
 		return file;
 	}
 
-	public List<Long> findCharacterizationIdsByProtocolId(String protocolId,
-			UserBean user) throws Exception {
-		if (authService.checkReadPermission(user, protocolId)) {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Characterization.class).setProjection(
-					Projections.distinct(Property.forName("id")));
-			crit.createAlias("protocol", "protocol");
-			crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
-			List results = appService.query(crit);
-			List<Long> ids = new ArrayList<Long>();
-			for (Object obj : results) {
-				Long charId = (Long) obj;
-				if (authService.checkReadPermission(user, charId.toString())) {
-					ids.add(charId);
-				} else {
-					logger
-							.debug("User doesn't have access to characterization "
-									+ charId);
-				}
+	public int getNumberOfPublicProtocols() throws Exception {
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getAllPublicData();
+		HQLCriteria crit = new HQLCriteria(
+				"select id from gov.nih.nci.cananolab.domain.common.Protocol");
+		List results = appService.query(crit);
+		List<String> publicIds = new ArrayList<String>();
+		for (Object obj : results) {
+			String id = (String) obj.toString();
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
+				publicIds.add(id);
 			}
-			return ids;
-		} else {
-			throw new NoAccessException(
-					"User doesn't have acess to the protocol of id: "
-							+ protocolId);
 		}
+		return publicIds.size();
 	}
 
 	public Protocol findProtocolById(String protocolId, UserBean user)
@@ -209,24 +198,6 @@ public class ProtocolServiceHelper {
 				protocol.getId().toString(), Constants.CSM_READ_PRIVILEGE);
 		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		return visibilityGroups;
-	}
-
-	public List<String> removeVisibility(Protocol protocol, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (protocol != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(protocol.getId().toString());
-			entries.add(protocol.getId().toString());
-			if (protocol.getFile() != null) {
-				if (remove == null || remove) {
-					authService.removeCSMEntry(protocol.getFile().getId()
-							.toString());
-				}
-				entries.add(protocol.getFile().getId().toString());
-			}
-		}
-		return entries;
 	}
 
 	public SortedSet<String> getProtocolNamesBy(String protocolType,

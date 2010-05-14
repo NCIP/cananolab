@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of ProtocolService
@@ -160,20 +163,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 	public int getNumberOfPublicProtocols() throws ProtocolException {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			List<String> publicData = appService.getAllPublicData();
-			HQLCriteria crit = new HQLCriteria(
-					"select id from gov.nih.nci.cananolab.domain.common.Protocol");
-			List results = appService.query(crit);
-			List<String> publicIds = new ArrayList<String>();
-			for (Object obj : results) {
-				String id = (String) obj.toString();
-				if (StringUtils.containsIgnoreCase(publicData, id)) {
-					publicIds.add(id);
-				}
-			}
-			return publicIds.size();
+			int count = helper.getNumberOfPublicProtocols();
+			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of public protocols.";
 			logger.error(err, e);
@@ -193,8 +184,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 					.getApplicationService();
 			// assume protocol is loaded with protocol file
 			// find associated characterizations
-			List<Long> charIds = helper.findCharacterizationIdsByProtocolId(
-					protocol.getId().toString(), user);
+			List<Long> charIds = findCharacterizationIdsByProtocolId(protocol
+					.getId().toString(), user);
 			CharacterizationServiceHelper charServiceHelper = new CharacterizationServiceHelper();
 			for (Long id : charIds) {
 				Characterization achar = charServiceHelper
@@ -203,13 +194,44 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 				appService.saveOrUpdate(achar);
 			}
 			appService.delete(protocol);
-			entries.addAll(helper.removeVisibility(protocol, removeVisibility));
+			entries.addAll(removeVisibility(protocol, removeVisibility));
 		} catch (Exception e) {
 			String err = "Error in deleting the protocol.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
 		return entries;
+	}
+
+	private List<Long> findCharacterizationIdsByProtocolId(String protocolId,
+			UserBean user) throws Exception {
+		if (helper.getAuthService().checkReadPermission(user, protocolId)) {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					Characterization.class).setProjection(
+					Projections.distinct(Property.forName("id")));
+			crit.createAlias("protocol", "protocol");
+			crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
+			List results = appService.query(crit);
+			List<Long> ids = new ArrayList<Long>();
+			for (Object obj : results) {
+				Long charId = (Long) obj;
+				if (helper.getAuthService().checkReadPermission(user,
+						charId.toString())) {
+					ids.add(charId);
+				} else {
+					logger
+							.debug("User doesn't have access to characterization "
+									+ charId);
+				}
+			}
+			return ids;
+		} else {
+			throw new NoAccessException(
+					"User doesn't have acess to the protocol of id: "
+							+ protocolId);
+		}
 	}
 
 	private void assignVisibility(Protocol protocol, String[] visibilityGroups)
@@ -222,6 +244,25 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 					protocol.getFile().getId().toString(), visibilityGroups,
 					null);
 		}
+	}
+
+	private List<String> removeVisibility(Protocol protocol, Boolean remove)
+			throws Exception {
+		List<String> entries = new ArrayList<String>();
+		if (protocol != null) {
+			if (remove == null || remove)
+				helper.getAuthService().removeCSMEntry(
+						protocol.getId().toString());
+			entries.add(protocol.getId().toString());
+			if (protocol.getFile() != null) {
+				if (remove == null || remove) {
+					helper.getAuthService().removeCSMEntry(
+							protocol.getFile().getId().toString());
+				}
+				entries.add(protocol.getFile().getId().toString());
+			}
+		}
+		return entries;
 	}
 
 }
