@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.common.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
@@ -9,12 +8,15 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -123,7 +125,7 @@ public class FileServiceHelper {
 	 * @return
 	 * @throws FileException
 	 */
-	private byte[] getFileContent(Long fileId, UserBean user) throws Exception {
+	public byte[] getFileContent(Long fileId, UserBean user) throws Exception {
 		File file = findFileById(fileId.toString(), user);
 		if (file == null || file.getUri() == null) {
 			return null;
@@ -206,24 +208,14 @@ public class FileServiceHelper {
 		}
 	}
 
-	public void assignVisibility(File file, String[] visibilityGroups)
-			throws FileException {
-		try {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			authService.assignVisibility(file.getId().toString(),
-					visibilityGroups, null);
-			// assign keyword to public visibility
-			if (file.getKeywordCollection() != null) {
-				for (Keyword keyword : file.getKeywordCollection()) {
-					authService.assignVisibility(keyword.getId().toString(),
-							new String[] { Constants.CSM_PUBLIC_GROUP }, null);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Error in setting file visibility for " + file.getId();
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
+	// retrieve file visibility
+	public String[] retrieveVisibility(File file) throws Exception {
+		AuthorizationService auth = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		// get assigned visible groups
+		List<String> accessibleGroups = auth.getAccessibleGroups(file.getId()
+				.toString(), Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		return visibilityGroups;
 	}
 }

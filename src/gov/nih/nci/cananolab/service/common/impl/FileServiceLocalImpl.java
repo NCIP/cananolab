@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -20,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -103,13 +103,33 @@ public class FileServiceLocalImpl implements FileService {
 						+ fileBean.getDomainFile().getUri();
 				writeFile(fileBean.getNewFileData(), fullFileName);
 			}
-			helper.assignVisibility(fileBean.getDomainFile(), fileBean
+			assignVisibility(fileBean.getDomainFile(), fileBean
 					.getVisibilityGroups());
 		} catch (Exception e) {
 			logger.error("Problem writing file "
 					+ fileBean.getDomainFile().getUri()
 					+ " to the file system.");
 			throw new FileException();
+		}
+	}
+
+	private void assignVisibility(File file, String[] visibilityGroups)
+			throws FileException {
+		try {
+			helper.getAuthService().assignVisibility(file.getId().toString(),
+					visibilityGroups, null);
+			// assign keyword to public visibility
+			if (file.getKeywordCollection() != null) {
+				for (Keyword keyword : file.getKeywordCollection()) {
+					helper.getAuthService().assignVisibility(
+							keyword.getId().toString(),
+							new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in setting file visibility for " + file.getId();
+			logger.error(err, e);
+			throw new FileException(err, e);
 		}
 	}
 
@@ -162,6 +182,30 @@ public class FileServiceLocalImpl implements FileService {
 		} catch (Exception e) {
 			logger.error("Problem in preparing saving a file: ", e);
 			throw new FileException();
+		}
+	}
+
+	// update cloned file with existing visibility and file content, and new
+	// file path
+	public void updateClonedFileInfo(FileBean copy, String origSampleName,
+			String newSampleName, UserBean user) throws Exception {
+		// copy file visibility and file content obtain original id from created
+		// by
+		String origId = copy.getDomainFile().getCreatedBy().substring(5);
+		List<String> accessibleGroups = helper.getAuthService()
+				.getAccessibleGroups(origId, Constants.CSM_READ_PRIVILEGE);
+		if (accessibleGroups != null) {
+			copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
+		}
+		if (origId != null) {
+			byte[] content = helper.getFileContent(new Long(origId), user);
+			copy.setNewFileData(content);
+		}
+		// replace file URI with new sample name
+		if (copy.getDomainFile().getUri() != null) {
+			String newUri = copy.getDomainFile().getUri().replace(
+					origSampleName, newSampleName);
+			copy.getDomainFile().setUri(newUri);
 		}
 	}
 }
