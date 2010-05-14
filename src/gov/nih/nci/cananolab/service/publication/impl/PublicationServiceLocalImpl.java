@@ -95,7 +95,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			fileService.writeFile(publicationBean, user);
 
 			// set visibility
-			helper.assignVisibility(publicationBean, user);
+			assignVisibility(publication,
+					publicationBean.getVisibilityGroups(), user);
 
 			// update sample associations
 			updateSampleAssociation(appService, publicationBean, user);
@@ -401,4 +402,21 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 		return pubBean;
 	}
+
+	private void assignVisibility(Publication publication,
+			String[] visibleGroups, UserBean user) throws Exception {
+		helper.getAuthService().assignVisibility(
+				publication.getId().toString(), visibleGroups, null);
+		// set author visibility as well because didn't share authors
+		// between publications
+		if (publication.getAuthorCollection() != null) {
+			for (Author author : publication.getAuthorCollection()) {
+				if (author != null) {
+					helper.getAuthService().assignVisibility(
+							author.getId().toString(), visibleGroups, null);
+				}
+			}
+		}
+	}
+
 }
