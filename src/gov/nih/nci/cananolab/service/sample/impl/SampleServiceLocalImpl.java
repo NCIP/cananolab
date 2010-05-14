@@ -46,7 +46,6 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
-import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -140,7 +139,8 @@ public class SampleServiceLocalImpl implements SampleService {
 				assignFullVisibility(sampleBean.getVisibilityGroups(),
 						sampleBean.getDomain().getName().toString(), user);
 			} else {
-				assignVisibility(sampleBean);
+				assignVisibility(sampleBean.getDomain(), sampleBean
+						.getVisibilityGroups());
 			}
 		} catch (Exception e) {
 			throw new SampleException(
@@ -151,9 +151,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	private void assignFullVisibility(String[] visibilityGroups,
 			String sampleName, UserBean user) throws Exception {
 		Sample fullyLoadedSample = findFullyLoadedSampleByName(sampleName, user);
-		SampleBean fullyLoadedSampleBean = new SampleBean(fullyLoadedSample);
-		fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
-		assignVisibility(fullyLoadedSampleBean);
+		assignVisibility(fullyLoadedSample, visibilityGroups);
 	}
 
 	public void savePointOfContact(PointOfContactBean pocBean, UserBean user)
@@ -202,7 +200,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			}
 			appService.saveOrUpdate(domainPOC);
 			// assign visibility
-			assignVisibility(pocBean);
+			assignVisibility(domainPOC, pocBean.getVisibilityGroups());
 		} catch (Exception e) {
 			String err = "Error in saving the PointOfContact.";
 			logger.error(err, e);
@@ -210,20 +208,18 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void assignVisibility(SampleBean sampleBean) throws Exception {
-		String[] visibleGroups = sampleBean.getVisibilityGroups();
+	private void assignVisibility(Sample sample, String[] visibleGroups)
+			throws Exception {
 		String owningGroup = null;
-		if (!StringUtils.isEmpty(sampleBean.getPrimaryPOCBean()
-				.getDisplayName())) {
-			owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName();
+		if (sample.getPrimaryPointOfContact() != null) {
+			owningGroup = sample.getPrimaryPointOfContact().getOrganization()
+					.getName();
 		}
 		// assign visibility for sample
 		// visibility for POC is handled by POC separately
-		helper.getAuthService().assignVisibility(
-				sampleBean.getDomain().getName(), visibleGroups, owningGroup);
+		helper.getAuthService().assignVisibility(sample.getName(),
+				visibleGroups, owningGroup);
 		// assign associated visibilities
-		Sample sample = sampleBean.getDomain();
 		Collection<Characterization> characterizationCollection = sample
 				.getCharacterizationCollection();
 		// characterizations
@@ -249,17 +245,16 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void assignVisibility(PointOfContactBean pocBean) throws Exception {
-		String[] visibleGroups = pocBean.getVisibilityGroups();
-		String owningGroup = pocBean.getDomain().getOrganization().getName();
+	private void assignVisibility(PointOfContact poc, String[] visibleGroups)
+			throws Exception {
+		String owningGroup = poc.getOrganization().getName();
 		// poc
-		helper.getAuthService().assignVisibility(
-				pocBean.getDomain().getId().toString(), visibleGroups,
-				owningGroup);
-		// org
-		helper.getAuthService().assignVisibility(
-				pocBean.getDomain().getOrganization().getId().toString(),
+		helper.getAuthService().assignVisibility(poc.getId().toString(),
 				visibleGroups, owningGroup);
+		// assign organization to public for it's shared by multiple poc
+		helper.getAuthService().assignVisibility(
+				poc.getOrganization().getId().toString(),
+				new String[] { Constants.CSM_PUBLIC_GROUP }, null);
 	}
 
 	/**
