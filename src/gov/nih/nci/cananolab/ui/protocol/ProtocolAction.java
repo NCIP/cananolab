@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
-import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
