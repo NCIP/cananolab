@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.service.protocol.helper;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -204,15 +203,12 @@ public class ProtocolServiceHelper {
 		return authService;
 	}
 
-	public void retrieveVisibility(ProtocolBean protocolBean) throws Exception {
-		if (protocolBean != null) {
-			// get assigned visible groups
-			List<String> accessibleGroups = authService.getAccessibleGroups(
-					protocolBean.getDomain().getId().toString(),
-					Constants.CSM_READ_PRIVILEGE);
-			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-			protocolBean.setVisibilityGroups(visibilityGroups);
-		}
+	public String[] retrieveVisibility(Protocol protocol) throws Exception {
+		// get assigned visible groups
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				protocol.getId().toString(), Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		return visibilityGroups;
 	}
 
 	public List<String> removeVisibility(Protocol protocol, Boolean remove)
@@ -231,17 +227,6 @@ public class ProtocolServiceHelper {
 			}
 		}
 		return entries;
-	}
-
-	public void assignVisibility(Protocol protocol, String[] visibilityGroups)
-			throws Exception {
-		authService.assignVisibility(protocol.getId().toString(),
-				visibilityGroups, null);
-		// set file visibility as well
-		if (protocol.getFile() != null) {
-			authService.assignVisibility(protocol.getFile().getId().toString(),
-					visibilityGroups, null);
-		}
 	}
 
 	public SortedSet<String> getProtocolNamesBy(String protocolType,

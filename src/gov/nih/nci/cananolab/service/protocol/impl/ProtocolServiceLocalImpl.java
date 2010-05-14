@@ -41,7 +41,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			if (protocol != null) {
 				protocolBean = new ProtocolBean(protocol);
 				if (user != null)
-					helper.retrieveVisibility(protocolBean);
+					protocolBean.setVisibilityGroups(helper
+							.retrieveVisibility(protocol));
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -101,7 +102,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			}
 
 			// set visibility
-			helper.assignVisibility(protocolBean.getDomain(), protocolBean
+			assignVisibility(protocolBean.getDomain(), protocolBean
 					.getVisibilityGroups());
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
@@ -119,7 +120,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			if (protocol != null) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				if (user != null)
-					helper.retrieveVisibility(protocolBean);
+					protocolBean.setVisibilityGroups(helper
+							.retrieveVisibility(protocol));
 				return protocolBean;
 			} else {
 				return null;
@@ -144,7 +146,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				if (user != null)
-					helper.retrieveVisibility(protocolBean);
+					protocolBean.setVisibilityGroups(helper
+							.retrieveVisibility(protocol));
 				protocolBeans.add(protocolBean);
 			}
 			return protocolBeans;
@@ -208,4 +211,17 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 		return entries;
 	}
+
+	private void assignVisibility(Protocol protocol, String[] visibilityGroups)
+			throws Exception {
+		helper.getAuthService().assignVisibility(protocol.getId().toString(),
+				visibilityGroups, null);
+		// set file visibility as well
+		if (protocol.getFile() != null) {
+			helper.getAuthService().assignVisibility(
+					protocol.getFile().getId().toString(), visibilityGroups,
+					null);
+		}
+	}
+
 }
