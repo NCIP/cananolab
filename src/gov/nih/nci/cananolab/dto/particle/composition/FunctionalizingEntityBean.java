@@ -15,7 +15,6 @@ import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;

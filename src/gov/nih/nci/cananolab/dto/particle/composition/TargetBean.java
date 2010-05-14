@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import java.util.Calendar;
-
 import gov.nih.nci.cananolab.domain.function.Antigen;
 import gov.nih.nci.cananolab.domain.function.OtherTarget;
 import gov.nih.nci.cananolab.domain.function.Target;
