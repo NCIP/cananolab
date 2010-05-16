@@ -64,7 +64,7 @@
 
 				<c:if test="${!empty user && user.curator}">
 					<%-- Submit Protocols --%>
-					<area href="protocol.do?dispatch=setup&page=0" shape="rect"
+					<area href="protocol.do?dispatch=setupNew&page=0" shape="rect"
 						coords="272,36,368,74" alt="rectangle" />
 
 					<%-- Submit Samples --%>
