@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.SampleConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -300,5 +301,29 @@ public class CompositionBean {
 
 	public SortedSet<String> getFileTypes() {
 		return fileTypes;
+	}
+
+	/**
+	 * Get PubChem URL in format of
+	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
+	 *
+	 * @param pubChemDS
+	 * @param pubChemId
+	 * @return PubChem URL
+	 */
+	public static String getPubChemURL(String pubChemDS, Long pubChemId) {
+		StringBuffer sb = new StringBuffer(SampleConstants.PUBCHEM_URL);
+
+		if (SampleConstants.BIOASSAY.equals(pubChemDS)) {
+			sb.append(SampleConstants.BIOASSAY_ID);
+		} else if (SampleConstants.COMPOUND.equals(pubChemDS)) {
+			sb.append(SampleConstants.COMPOUND_ID);
+		} else if (SampleConstants.SUBSTANCE.equals(pubChemDS)) {
+			sb.append(SampleConstants.SUBSTANCE_ID);
+		}
+
+		sb.append('=').append(pubChemId);
+
+		return sb.toString();
 	}
 }

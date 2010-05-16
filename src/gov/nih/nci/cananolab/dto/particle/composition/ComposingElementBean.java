@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -15,9 +14,9 @@ import java.util.List;
 
 /**
  * Represents the view bean for ComposingElement domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ComposingElementBean {
 	private ComposingElement domain = new ComposingElement();
@@ -200,7 +199,7 @@ public class ComposingElementBean {
 	public String getPubChemLink() {
 		if ((domain.getPubChemId() != null)
 				&& !StringUtils.isEmpty(domain.getPubChemDataSourceName())) {
-			pubChemLink = CompositionServiceHelper.getPubChemURL(domain
+			pubChemLink = CompositionBean.getPubChemURL(domain
 					.getPubChemDataSourceName(), domain.getPubChemId());
 		}
 		return pubChemLink;

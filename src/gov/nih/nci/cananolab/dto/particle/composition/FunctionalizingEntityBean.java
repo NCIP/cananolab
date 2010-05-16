@@ -11,10 +11,10 @@ import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -26,9 +26,9 @@ import java.util.List;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private String molecularFormula;
@@ -453,9 +453,34 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public String getPubChemLink() {
 		if (!StringUtils.isEmpty(pubChemId)
 				&& !StringUtils.isEmpty(pubChemDataSourceName)) {
-			pubChemLink = CompositionServiceHelper.getPubChemURL(
+			pubChemLink = CompositionBean.getPubChemURL(
 					pubChemDataSourceName, new Long(pubChemId));
 		}
 		return pubChemLink;
 	}
+
+	/**
+	 * Get PubChem URL in format of
+	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
+	 *
+	 * @param pubChemDS
+	 * @param pubChemId
+	 * @return PubChem URL
+	 */
+	public static String getPubChemURL(String pubChemDS, Long pubChemId) {
+		StringBuffer sb = new StringBuffer(SampleConstants.PUBCHEM_URL);
+
+		if (SampleConstants.BIOASSAY.equals(pubChemDS)) {
+			sb.append(SampleConstants.BIOASSAY_ID);
+		} else if (SampleConstants.COMPOUND.equals(pubChemDS)) {
+			sb.append(SampleConstants.COMPOUND_ID);
+		} else if (SampleConstants.SUBSTANCE.equals(pubChemDS)) {
+			sb.append(SampleConstants.SUBSTANCE_ID);
+		}
+
+		sb.append('=').append(pubChemId);
+
+		return sb.toString();
+	}
+
 }

@@ -19,11 +19,13 @@ public class BaseCompositionEntityBean {
 
 	protected FileBean theFile = new FileBean();
 
-	protected  String className;
+	protected String className;
 
 	protected List<FileBean> files = new ArrayList<FileBean>();
 
-	protected String domainId, displayName; //used for DWR ajax in bodySubmitChemicalAssociation.jsp
+	protected String domainId, displayName; // used for DWR ajax in
+
+	// bodySubmitChemicalAssociation.jsp
 
 	public BaseCompositionEntityBean() {
 	}
