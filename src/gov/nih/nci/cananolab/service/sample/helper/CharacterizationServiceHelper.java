@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -29,7 +28,7 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving characterizations
- *
+ * 
  * @author tanq, pansu
  */
 public class CharacterizationServiceHelper extends BaseServiceHelper {
@@ -290,7 +289,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		int count = 0;
 		for (Object obj : results) {
 			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+			if (getAccessibleData().contains(id)) {
 				count++;
 			}
 		}
