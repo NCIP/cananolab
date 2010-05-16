@@ -77,7 +77,7 @@ public interface SampleService {
 
 	public int getNumberOfPublicSampleSources() throws SampleException;
 
-	public List<String> findOtherSampleNamesFromSamePointOfContact(
+	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
 			String sampleId) throws SampleException;
 
 
