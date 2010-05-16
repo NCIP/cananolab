@@ -15,8 +15,10 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -112,7 +114,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	private void saveEntity(HttpServletRequest request,
 			DynaValidatorForm theForm, FunctionalizingEntityBean entityBean)
 			throws Exception {
-		CompositionService compositionService = new CompositionServiceLocalImpl();
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -134,23 +138,22 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			this.saveErrors(request, msgs);
 		}
 
-		compositionService.saveFunctionalizingEntity(sampleBean, entityBean,
-				user);
+		compService.saveFunctionalizingEntity(sampleBean, entityBean);
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
 			SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
 					sampleBean);
 			if (otherSampleBeans != null) {
-				compositionService.copyAndSaveFunctionalizingEntity(entityBean,
-						sampleBean, otherSampleBeans, user);
+				compService.copyAndSaveFunctionalizingEntity(entityBean,
+						sampleBean, otherSampleBeans);
 			}
 		}
 	}
 
 	/**
 	 * Set up the input form for adding new nanomaterial entity
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -186,14 +189,12 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
 		String location = theForm.getString(Constants.LOCATION);
 		if (entityId == null) {
 			entityId = (String) request.getAttribute("dataId");
 		}
-		CompositionService compService = new CompositionServiceLocalImpl();
+		CompositionService compService = this.setServicesInSession(request);
 		if (Constants.LOCAL_SITE.equals(location)) {
 			compService = new CompositionServiceLocalImpl();
 		} else {
@@ -202,7 +203,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			compService = new CompositionServiceRemoteImpl(serviceUrl);
 		}
 		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(entityId, user);
+				.findFunctionalizingEntityById(entityId);
 		request.setAttribute("functionalizingEntity", entityBean);
 		String detailPage = null;
 		if (entityBean.isWithProperties()) {
@@ -219,18 +220,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
 		String sampleId = theForm.getString("sampleId");
+		CompositionService compService = this.setServicesInSession(request);
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-
 		String entityId = request.getParameter("dataId");
 		if (entityId == null) {
 			entityId = (String) request.getAttribute("dataId");
 		}
-
-		UserBean user = (UserBean) session.getAttribute("user");
-		CompositionService compService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(entityId, user);
+				.findFunctionalizingEntityById(entityId);
 		theForm.set("functionalizingEntity", entityBean);
 		this.setLookups(request);
 		// clear copy to otherSamples
@@ -275,6 +273,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
+		this.setServicesInSession(request);
 		FileBean theFile = entity.getTheFile();
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
@@ -333,14 +332,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CompositionService compositionService = new CompositionServiceLocalImpl();
+		CompositionService compositionService = this
+				.setServicesInSession(request);
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		entityBean.setupDomainEntity(user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
-				.getDomainEntity(), user, true);
+				.getDomainEntity(), true);
 		ActionMessage msg = new ActionMessage(
 				"message.deleteFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -389,5 +389,16 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 					entity.getType(), "functionalizingEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
+	}
+
+	private CompositionService setServicesInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		CompositionService compService = new CompositionServiceLocalImpl(user);
+		request.getSession().setAttribute("compositionService", compService);
+		SampleService sampleService = new SampleServiceLocalImpl(user);
+		request.getSession().setAttribute("sampleService", sampleService);
+		return compService;
 	}
 }

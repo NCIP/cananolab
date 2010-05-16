@@ -4,9 +4,11 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -31,6 +33,15 @@ import org.apache.struts.util.LabelValueBean;
 public class InitCharacterizationSetup {
 	public static InitCharacterizationSetup getInstance() {
 		return new InitCharacterizationSetup();
+	}
+
+	public void setPOCDropdown(HttpServletRequest request, String sampleId)
+			throws Exception {
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("SampleService");
+		List<PointOfContactBean> pocs = service
+				.findPointOfContactsBySampleId(sampleId);
+		request.getSession().setAttribute("samplePointOfContacts", pocs);
 	}
 
 	public List<String> getCharacterizationTypes(HttpServletRequest request)
@@ -200,8 +211,9 @@ public class InitCharacterizationSetup {
 					request.getSession().getServletContext(),
 					"defaultCharTypeChars", clazz.getName());
 		}
-		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
-		List<String> otherCharNames = helper
+		CharacterizationService service = (CharacterizationService) request
+				.getSession().getAttribute("characterizationService");
+		List<String> otherCharNames = service
 				.findOtherCharacterizationByAssayCategory(charType);
 		if (!otherCharNames.isEmpty()) {
 			charNames.addAll(otherCharNames);
@@ -232,8 +244,10 @@ public class InitCharacterizationSetup {
 				}
 			}
 		}
-		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
-		List<String> otherCharNames = helper
+		CharacterizationService service = (CharacterizationService) request
+				.getSession().getAttribute("characterizationService");
+
+		List<String> otherCharNames = service
 				.findOtherCharacterizationByAssayCategory(charType);
 		if (!otherCharNames.isEmpty()) {
 			for (String name : otherCharNames) {

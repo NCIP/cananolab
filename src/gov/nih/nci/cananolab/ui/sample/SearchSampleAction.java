@@ -44,6 +44,9 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
 
+		// use one local impl to improve performance
+		this.setServiceInSession(request);
+
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
 		// retrieve from session if it's not null and not first page
 		if (session.getAttribute("sampleSearchResults") != null
@@ -79,7 +82,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			HttpServletRequest request) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
-		HttpSession session = request.getSession();
 		String samplePointOfContact = (String) theForm
 				.get("samplePointOfContact");
 		// strip wildcards at either end if entered by user
@@ -114,7 +116,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			texts = ((String) theForm.get("text")).trim();
 			searchLocations = (String[]) theForm.get("searchLocations");
 		}
-		if(searchLocations.length == 0){
+		if (searchLocations.length == 0) {
 			searchLocations = new String[1];
 			searchLocations[0] = Constants.APP_OWNER;
 		}
@@ -190,17 +192,17 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			words = new String[wordList.size()];
 			wordList.toArray(words);
 		}
-
+		SampleService service = null;
 		for (String location : searchLocations) {
-			SampleService service = null;
 			if (location.equals(Constants.LOCAL_SITE)) {
-				service = new SampleServiceLocalImpl();
+				service = (SampleService) request.getSession().getAttribute(
+						"sampleService");
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
 				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
-			UserBean user = (UserBean) session.getAttribute("user");
+
 			List<String> sampleNames = service.findSampleNamesBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames
 							.toArray(new String[0]),
@@ -210,7 +212,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					functionClassNames.toArray(new String[0]),
 					otherFunctionTypes.toArray(new String[0]), charaClassNames
 							.toArray(new String[0]), otherCharacterizationTypes
-							.toArray(new String[0]), words, user);
+							.toArray(new String[0]), words);
 			for (String name : sampleNames) {
 				// empty sampleBean that only has name and location
 				SampleBean sampleBean = new SampleBean(name, location);
@@ -225,13 +227,12 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			throws Exception {
 		List<SampleBean> loadedSampleBeans = new ArrayList<SampleBean>();
 		SampleService service = null;
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
 				if (location.equals(Constants.LOCAL_SITE)) {
-					service = new SampleServiceLocalImpl();
+					service =  (SampleService) request.getSession()
+					.getAttribute("sampleService");
 				} else {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
@@ -242,8 +243,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				// "http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
 
 				String sampleName = sampleBeans.get(i).getDomain().getName();
-				SampleBean sampleBean = service.findSampleByName(sampleName,
-						user);
+				SampleBean sampleBean = service.findSampleByName(sampleName);
 				sampleBean.setLocation(location);
 				loadedSampleBeans.add(sampleBean);
 			}
@@ -255,7 +255,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-//		InitSetup.getInstance().getGridNodesInContext(request);
+		// InitSetup.getInstance().getGridNodesInContext(request);
 
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
@@ -274,6 +274,13 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 		request.getSession().removeAttribute("sampleSearchResults");
 		return mapping.getInputForward();
+	}
+
+	private void setServiceInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleService sampleService = new SampleServiceLocalImpl(user);
+		request.getSession().setAttribute("sampleService", sampleService);
 	}
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)

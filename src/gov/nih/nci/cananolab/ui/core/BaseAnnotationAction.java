@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -26,7 +25,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,9 +40,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for all annotation actions
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
@@ -54,7 +52,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
 	 * of sample based on user's privilege. Finally, set the SampleBean in
 	 * request object.
-	 * 
+	 *
 	 * @param theForm
 	 * @param request
 	 * @param location
@@ -73,32 +71,21 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				sampleId = theForm.getString("sampleId");
 			}
 		}
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		SampleService service = null;
-		if (Constants.LOCAL_SITE.equals(location)
-				|| StringUtils.isEmpty(location)) {
-			service = new SampleServiceLocalImpl();
-		} else {
+		// sample service has been created earlier
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+		if (!StringUtils.isEmpty(location)
+				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new SampleServiceRemoteImpl(serviceUrl);
 		}
-		SampleBean sampleBean = service.findSampleById(sampleId, user);
+		SampleBean sampleBean = service.findSampleById(sampleId);
 		if (sampleBean != null) {
 			sampleBean.setLocation(location);
 		}
 		request.setAttribute("theSample", sampleBean);
 		return sampleBean;
-	}
-
-	protected void saveFilesToFileSystem(List<FileBean> files, UserBean user)
-			throws Exception {
-		// save file data to file system and set visibility
-		FileService fileService = new FileServiceLocalImpl();
-		for (FileBean fileBean : files) {
-			fileService.writeFile(fileBean, user);
-		}
 	}
 
 	// check for cases where delete can't happen
@@ -109,7 +96,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -125,14 +112,14 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String serviceUrl = null;
 		if (Constants.LOCAL_SITE.equals(location)
 				|| StringUtils.isEmpty(location)) {
-			fileService = new FileServiceLocalImpl();
+			fileService = new FileServiceLocalImpl(user);
 		} else {
 			// CQL2HQL filters out subclasses, disabled the filter
 			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
 					location);
 			fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
-		fileBean = fileService.findFileById(fileId, user);
+		fileBean = fileService.findFileById(fileId);
 		if (fileBean != null) {
 			if (fileBean.getDomainFile().getUriExternal()) {
 				response.sendRedirect(fileBean.getDomainFile().getUri());
@@ -190,11 +177,11 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			return null;
 		}
 		SampleBean[] sampleBeans = new SampleBean[otherSamples.length];
-		SampleService sampleService = new SampleServiceLocalImpl();
+		SampleService sampleService = (SampleService) request.getSession()
+				.getAttribute("sampleService");
 		int i = 0;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (String other : otherSamples) {
-			SampleBean sampleBean = sampleService.findSampleByName(other, user);
+			SampleBean sampleBean = sampleService.findSampleByName(other);
 			sampleBean.setVisibilityGroups(oldSampleBean.getVisibilityGroups());
 			sampleBeans[i] = sampleBean;
 			i++;
@@ -266,7 +253,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	/**
 	 * If user entered customized value by selecting [other] option previously,
 	 * then add the value in collection, so user can see it again.
-	 * 
+	 *
 	 * @param request
 	 * @param value
 	 * @param sessionName
@@ -285,7 +272,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Returns a partial URL for downloading a file from local/remote host.
-	 * 
+	 *
 	 * @param request
 	 * @param serviceUrl
 	 * @param location
@@ -319,7 +306,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Save uploaded form file in session for later use, avoid upload again.
-	 * 
+	 *
 	 * @param request
 	 * @param theFile
 	 */
@@ -348,7 +335,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	/**
 	 * If FileBean specified using a uploaded file but the file is empty, we
 	 * know we should get the uploaded file from session.
-	 * 
+	 *
 	 * @param request
 	 * @param theFile
 	 */

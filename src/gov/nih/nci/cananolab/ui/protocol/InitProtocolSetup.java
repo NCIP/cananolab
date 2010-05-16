@@ -19,9 +19,9 @@ import org.apache.log4j.Logger;
 /**
  * This class sets up session level or servlet context level variables to be
  * used in various actions during the setup of query forms.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class InitProtocolSetup {
 	Logger logger = Logger.getLogger(InitProtocolSetup.class);
@@ -48,8 +48,9 @@ public class InitProtocolSetup {
 	public void setRemoteSearchDropdowns(HttpServletRequest request)
 			throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> types = InitSetup.getInstance().getDefaultTypesByLookup(
-				appContext, "defaultProtocolTypes", "protocol", "type");
+		SortedSet<String> types = InitSetup.getInstance()
+				.getDefaultTypesByLookup(appContext, "defaultProtocolTypes",
+						"protocol", "type");
 		request.getSession().setAttribute("protocolTypes", types);
 	}
 
@@ -64,10 +65,9 @@ public class InitProtocolSetup {
 		} else {
 			protocolType = null; // update if in vivo is implemented
 		}
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ProtocolService service = new ProtocolServiceLocalImpl();
+		ProtocolService service = this.getServiceFromSession(request);
 		List<ProtocolBean> protocols = service.findProtocolsBy(protocolType,
-				null, null, null, user);
+				null, null, null);
 		request.getSession().setAttribute("characterizationProtocols",
 				protocols);
 		return protocols;
@@ -77,10 +77,23 @@ public class InitProtocolSetup {
 			ProtocolBean protocol) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "protocol", "type",
 				"otherType", protocol.getDomain().getType());
-		InitSetup.getInstance().persistLookup(request, protocol.getDomain().getType()+" protocol type", "name",
+		InitSetup.getInstance().persistLookup(request,
+				protocol.getDomain().getType() + " protocol type", "name",
 				"otherName", protocol.getDomain().getName());
-		InitSetup.getInstance().persistLookup(request, protocol.getDomain().getType()+" protocol type", "version",
+		InitSetup.getInstance().persistLookup(request,
+				protocol.getDomain().getType() + " protocol type", "version",
 				"otherVersion", protocol.getDomain().getVersion());
 		setProtocolDropdowns(request);
+	}
+
+	private ProtocolService getServiceFromSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (request.getSession().getAttribute("protocolService") != null) {
+			return (ProtocolService) request.getSession().getAttribute(
+					"protocolService");
+		} else {
+			return new ProtocolServiceLocalImpl(user);
+		}
 	}
 }

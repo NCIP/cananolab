@@ -1,12 +1,10 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -23,8 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 public class InitSampleSetup {
 	private InitSampleSetup() {
 	}
-
-	private SampleService sampleService = new SampleServiceLocalImpl();
 
 	public static InitSampleSetup getInstance() {
 		return new InitSampleSetup();
@@ -87,11 +83,11 @@ public class InitSampleSetup {
 		request.getSession().setAttribute("characterizationTypes", charTypes);
 	}
 
-	public SortedSet<SortableName> getOtherSampleNames(
-			HttpServletRequest request, String sampleId) throws Exception {
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		SortedSet<SortableName> names = sampleService
-				.findOtherSamplesFromSamePointOfContact(sampleId, user);
+	public List<String> getOtherSampleNames(HttpServletRequest request,
+			String sampleId) throws Exception {
+		SampleService service = getServiceFromSession(request);
+		List<String> names = service
+				.findOtherSampleNamesFromSamePointOfContact(sampleId);
 		request.getSession().setAttribute("otherSampleNames", names);
 		return names;
 	}
@@ -103,8 +99,8 @@ public class InitSampleSetup {
 
 	public SortedSet<String> getAllOrganizationNames(
 			HttpServletRequest request, UserBean user) throws Exception {
-		SortedSet<String> organizationNames = sampleService
-				.getAllOrganizationNames(user);
+		SampleService service = getServiceFromSession(request);
+		SortedSet<String> organizationNames = service.getAllOrganizationNames();
 		request.getSession().setAttribute("allOrganizationNames",
 				organizationNames);
 		return organizationNames;
@@ -125,12 +121,14 @@ public class InitSampleSetup {
 		setPOCDropdowns(request);
 	}
 
-	public void setSamplePOCs(HttpServletRequest request,
-			String sampleId) throws Exception {
-		// set point of contacts
-		SampleService service = new SampleServiceLocalImpl();
-		List<PointOfContactBean> pocs = service
-				.findPointOfContactsBySampleId(sampleId);
-		request.getSession().setAttribute("samplePointOfContacts", pocs);
+	private SampleService getServiceFromSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (request.getSession().getAttribute("sampleService") != null) {
+			return (SampleService) request.getSession().getAttribute(
+					"sampleService");
+		} else {
+			return new SampleServiceLocalImpl(user);
+		}
 	}
 }

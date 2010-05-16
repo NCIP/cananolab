@@ -37,14 +37,14 @@ public class ProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		ProtocolService service = this.setServiceInSession(request);
 		protocolBean
 				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				protocolBean);
-		ProtocolService service = new ProtocolServiceLocalImpl();
-		service.saveProtocol(protocolBean, user);
+		service.saveProtocol(protocolBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitProtocol",
 				protocolBean.getDisplayName());
@@ -61,6 +61,7 @@ public class ProtocolAction extends AbstractDispatchAction {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
+		this.setServiceInSession(request);
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				protocolBean);
 		setupDynamicDropdowns(request, protocolBean);
@@ -71,15 +72,16 @@ public class ProtocolAction extends AbstractDispatchAction {
 			ProtocolBean protocolBean) throws Exception {
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		String selectedProtocolName = protocolBean.getDomain().getName();
-		ProtocolServiceHelper helper = new ProtocolServiceHelper();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		ProtocolServiceLocalImpl protocolService = (ProtocolServiceLocalImpl) (ProtocolService) request
+				.getSession().getAttribute("protocolService");
+		ProtocolServiceHelper helper = protocolService.getHelper();
 		// retrieve user entered protocol names that haven't been saved as
 		// protocols
 		SortedSet<String> otherNames = LookupService.findLookupValues(
 				selectedProtocolType + " protocol type", "otherName");
 		if (!StringUtils.isEmpty(selectedProtocolType)) {
-			SortedSet<String> protocolNames = helper.getProtocolNamesBy(
-					selectedProtocolType, user);
+			SortedSet<String> protocolNames = helper
+					.getProtocolNamesBy(selectedProtocolType);
 			protocolNames.addAll(otherNames);
 			request.getSession().setAttribute("protocolNamesByType",
 					protocolNames);
@@ -94,7 +96,7 @@ public class ProtocolAction extends AbstractDispatchAction {
 				selectedProtocolType + " protocol type", "otherVersion");
 		if (!StringUtils.isEmpty(selectedProtocolName)) {
 			SortedSet<String> protocolVersions = helper.getProtocolVersionsBy(
-					selectedProtocolType, selectedProtocolName, user);
+					selectedProtocolType, selectedProtocolName);
 			protocolVersions.addAll(otherVersions);
 			request.getSession().setAttribute("protocolVersionsByTypeName",
 					protocolVersions);
@@ -104,9 +106,10 @@ public class ProtocolAction extends AbstractDispatchAction {
 		}
 	}
 
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		setServiceInSession(request);
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		request.getSession().removeAttribute("protocolNamesByType");
 		request.getSession().removeAttribute("protocolVersionsByTypeName");
@@ -118,10 +121,9 @@ public class ProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String protocolId = request.getParameter("protocolId");
-		ProtocolService service = new ProtocolServiceLocalImpl();
-		ProtocolBean protocolBean = service.findProtocolById(protocolId, user);
+		ProtocolService service = this.setServiceInSession(request);
+		ProtocolBean protocolBean = service.findProtocolById(protocolId);
 		theForm.set("protocol", protocolBean);
 		setupDynamicDropdowns(request, protocolBean);
 		return mapping.findForward("inputPage");
@@ -142,10 +144,8 @@ public class ProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
-		ProtocolService service = new ProtocolServiceLocalImpl();
-		service.deleteProtocol(protocolBean.getDomain(), user, true);
+		ProtocolService service = this.setServiceInSession(request);
+		service.deleteProtocol(protocolBean.getDomain(), true);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteProtocol",
 				protocolBean.getDisplayName());
@@ -158,5 +158,13 @@ public class ProtocolAction extends AbstractDispatchAction {
 			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PROTOCOL);
+	}
+
+	private ProtocolService setServiceInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		ProtocolService protocolService = new ProtocolServiceLocalImpl(user);
+		request.getSession().setAttribute("protocolService", protocolService);
+		return protocolService;
 	}
 }

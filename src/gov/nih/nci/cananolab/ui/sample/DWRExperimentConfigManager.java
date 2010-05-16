@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -20,12 +19,18 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class DWRExperimentConfigManager {
-	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
+	private CharacterizationServiceHelper helper;
+
+	public DWRExperimentConfigManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		helper = new CharacterizationServiceHelper(user);
+	}
 
 	public ExperimentConfigBean resetTheExperimentConfig() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
@@ -41,13 +46,13 @@ public class DWRExperimentConfigManager {
 	}
 
 	public ExperimentConfigBean getExperimentConfigById(String id)
-			throws ExperimentConfigException, NoAccessException {
+			throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		if (user == null) {
 			return null;
 		}
-		ExperimentConfig config = helper.findExperimentConfigById(id, user);
+		ExperimentConfig config = helper.findExperimentConfigById(id);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
@@ -60,9 +65,9 @@ public class DWRExperimentConfigManager {
 	public String getTechniqueAbbreviation(String techniqueType)
 			throws Exception {
 		WebContext wctx = WebContextFactory.get();
-		SortedSet<String> abbrevs = InitSetup.getInstance().getDefaultTypesByLookup(
-				wctx.getServletContext(), "defaultAbbreviations",
-				techniqueType, "abbreviation");
+		SortedSet<String> abbrevs = InitSetup.getInstance()
+				.getDefaultTypesByLookup(wctx.getServletContext(),
+						"defaultAbbreviations", techniqueType, "abbreviation");
 		String abbreviation = "";
 		if (abbrevs != null && !abbrevs.isEmpty()) {
 			abbreviation = abbrevs.first();
@@ -88,7 +93,7 @@ public class DWRExperimentConfigManager {
 	}
 
 	public String[] getInstrumentTypesByConfigId(String configId)
-			throws ExperimentConfigException, BaseException {
+			throws Exception {
 		String techniqueType = null;
 		SortedSet<String> types = null;
 		WebContext wctx = WebContextFactory.get();

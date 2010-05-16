@@ -22,9 +22,9 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class DWRCharacterizationResultManager {
 	public String[] getConditionOptions() throws Exception {
@@ -143,9 +143,8 @@ public class DWRCharacterizationResultManager {
 			return null;
 		}
 
-		List<String> accessibleGroups = authService.getAccessibleGroups(
+		String[] visibilityGroups = authService.getAccessibleGroups(
 				sampleName, Constants.CSM_READ_PRIVILEGE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		fileBean.setVisibilityGroups(visibilityGroups);
 		charBean.getTheFinding().setTheFile(fileBean);
 		return fileBean;

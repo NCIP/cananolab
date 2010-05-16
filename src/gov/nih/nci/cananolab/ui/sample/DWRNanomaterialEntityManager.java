@@ -18,15 +18,18 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRNanomaterialEntityManager {
-	private CompositionServiceHelper helper = new CompositionServiceHelper();
+	private CompositionServiceHelper helper;
 
 	public DWRNanomaterialEntityManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		helper = new CompositionServiceHelper(user);
 	}
 
 	public ComposingElementBean addInherentFunction(FunctionBean function) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
@@ -38,7 +41,7 @@ public class DWRNanomaterialEntityManager {
 	public ComposingElementBean deleteInherentFunction(FunctionBean function) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
@@ -51,14 +54,14 @@ public class DWRNanomaterialEntityManager {
 			throws Exception {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 				.get("nanomaterialEntity");
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		ComposingElement composingElement = helper.findComposingElementById(id, user);
+		ComposingElement composingElement = helper.findComposingElementById(id);
 		ComposingElementBean composingElementBean = new ComposingElementBean(
 				composingElement);
 		entity.setTheComposingElement(composingElementBean);
@@ -68,7 +71,7 @@ public class DWRNanomaterialEntityManager {
 	public ComposingElementBean resetTheComposingElement() {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm

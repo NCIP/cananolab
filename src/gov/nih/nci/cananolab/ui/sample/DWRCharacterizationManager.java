@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
@@ -24,6 +25,13 @@ import org.directwebremoting.WebContextFactory;
 
 public class DWRCharacterizationManager {
 	Logger logger = Logger.getLogger(DWRCharacterizationManager.class);
+	private CharacterizationService service;
+
+	public DWRCharacterizationManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		service = new CharacterizationServiceLocalImpl(user);
+	}
 
 	public String[] getCharacterizationOptions(String characterizationType)
 			throws Exception {
@@ -109,17 +117,15 @@ public class DWRCharacterizationManager {
 			String characterizationClassName, String[] locations) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
-		if (locations==null || locations.length == 0) {
+		if (locations == null || locations.length == 0) {
 			locations = new String[1];
 			locations[0] = Constants.APP_OWNER;
 			// return null;
 		}
 		Integer counts = 0;
-		CharacterizationService service = null;
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					service = new CharacterizationServiceLocalImpl();
 					counts += service
 							.getNumberOfPublicCharacterizations(characterizationClassName);
 				} catch (Exception e) {
@@ -145,14 +151,15 @@ public class DWRCharacterizationManager {
 				}
 			}
 		}
-		String charDisplayName=ClassUtils.getDisplayName(characterizationClassName);
-		//remove word characterization from the display name
+		String charDisplayName = ClassUtils
+				.getDisplayName(characterizationClassName);
+		// remove word characterization from the display name
 		if (!charDisplayName.equals("characterization")) {
-			charDisplayName=charDisplayName.replaceAll("(.+) characterization", "$1");
+			charDisplayName = charDisplayName.replaceAll(
+					"(.+) characterization", "$1");
+		} else {
+			charDisplayName = "Characterizations";
 		}
-		else {
-			charDisplayName="Characterizations";
-		}
-		return counts.toString() + " "+charDisplayName;
+		return counts.toString() + " " + charDisplayName;
 	}
 }

@@ -53,7 +53,8 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		this.saveSample(request, sampleBean);
+		setServiceInSession(request);
+		saveSample(request, sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		sampleBean.setLocation(Constants.LOCAL_SITE);
 		request.setAttribute("theSample", sampleBean);
@@ -66,8 +67,9 @@ public class SampleAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		sampleBean.setupDomain(user.getLoginName());
 		// persist in the database
-		SampleService service = new SampleServiceLocalImpl();
-		service.saveSample(sampleBean, user);
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("SampleService");
+		service.saveSample(sampleBean);
 
 		ActionMessages messages = new ActionMessages();
 		ActionMessage msg = null;
@@ -94,6 +96,7 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.setServiceInSession(request);
 		String location = (String) getValueFromRequest(request,
 				Constants.LOCATION);
 
@@ -121,7 +124,7 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = (String) getValueFromRequest(request,
 				Constants.LOCATION);
-
+		this.setServiceInSession(request);
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		theForm.set("sampleBean", sampleBean);
@@ -142,6 +145,7 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.setServiceInSession(request);
 		String location = theForm.getString(Constants.LOCATION);
 		if (StringUtils.isEmpty(location)) {
 			location = Constants.LOCAL_SITE;
@@ -237,11 +241,12 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		PointOfContactBean thePOC = sample.getThePOC();
 		thePOC.setupDomain(user.getLoginName());
-		Long oldPOCId=thePOC.getDomain().getId();
-		SampleService service = new SampleServiceLocalImpl();
+		Long oldPOCId = thePOC.getDomain().getId();
+		// set up one sampleService
+		SampleService servic = setServiceInSession(request);
 		// have to save POC separately because the same organizations can not be
 		// saved in the same session
-		service.savePointOfContact(thePOC, user);
+		servic.savePointOfContact(thePOC);
 		sample.addPointOfContact(thePOC, oldPOCId);
 		// save sample
 		saveSample(request, sample);
@@ -275,6 +280,7 @@ public class SampleAction extends BaseAnnotationAction {
 		}
 		sample.removePointOfContact(thePOC);
 		// save sample
+		setServiceInSession(request);
 		saveSample(request, sample);
 		ActionForward forward = null;
 		String updateSample = (String) request.getSession().getAttribute(
@@ -295,15 +301,13 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		ActionMessages messages = new ActionMessages();
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SampleBean clonedSampleBean = null;
-		SampleService service = new SampleServiceLocalImpl();
+		SampleService service = this.setServiceInSession(request);
 		try {
 			clonedSampleBean = service.cloneSample(sampleBean
-					.getCloningSampleName(), sampleBean.getDomain().getName(),
-					user);
+					.getCloningSampleName(), sampleBean.getDomain().getName());
 		} catch (NotExistException e) {
 			ActionMessage err = new ActionMessage(
 					"error.cloneSample.noOriginalSample", sampleBean
@@ -340,10 +344,9 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleService service = new SampleServiceLocalImpl();
+		SampleService service = this.setServiceInSession(request);
 		List<String> csmEntriesToRemove = service.deleteSample(sampleBean
-				.getDomain().getName(), user, false);
+				.getDomain().getName(), false);
 		InitSetup.getInstance().updateCSMCleanupEntriesInContext(
 				csmEntriesToRemove, request);
 		ActionMessages msgs = new ActionMessages();
@@ -354,5 +357,13 @@ public class SampleAction extends BaseAnnotationAction {
 		sampleBean = new SampleBean();
 		ActionForward forward = mapping.findForward("sampleMessage");
 		return forward;
+	}
+
+	private SampleService setServiceInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleService sampleService = new SampleServiceLocalImpl(user);
+		request.getSession().setAttribute("sampleService", sampleService);
+		return sampleService;
 	}
 }

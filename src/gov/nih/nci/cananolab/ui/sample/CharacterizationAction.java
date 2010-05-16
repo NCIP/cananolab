@@ -8,10 +8,14 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
@@ -60,6 +64,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		this.setServicesInSession(request);
 		// Copy "isSoluble" property from char bean to mapping bean.
 		this.copyIsSoluble(charBean);
 
@@ -114,6 +119,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.setServicesInSession(request);
 		setupInputForm(request, theForm);
 		// reset characterizationBean
 		CharacterizationBean charBean = new CharacterizationBean();
@@ -146,10 +152,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (charType == null) {
 			charType = (String) request.getAttribute("charType");
 		}
-		InitSampleSetup.getInstance().setSamplePOCs(request, sampleId);
 		if (!StringUtils.isEmpty(charType))
 			InitProtocolSetup.getInstance().getProtocolsByChar(request,
 					charType);
+		InitCharacterizationSetup.getInstance().setPOCDropdown(request,
+				sampleId);
 		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
 				request);
 		// String detailPage = setupDetailPage(charBean);
@@ -175,11 +182,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CharacterizationService charService = new CharacterizationServiceLocalImpl();
+		CharacterizationService charService = this
+				.setServicesInSession(request);
 		String charId = (String) getValueFromRequest(request, "charId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		CharacterizationBean charBean = charService.findCharacterizationById(
-				charId, user);
+		CharacterizationBean charBean = charService
+				.findCharacterizationById(charId);
 		// setup Characterization Name drop down.
 		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
 				charBean.getCharacterizationType());
@@ -226,8 +233,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				Constants.LOCAL_SITE);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		charBean.setupDomain(user.getLoginName());
-		CharacterizationService charService = new CharacterizationServiceLocalImpl();
-		charService.saveCharacterization(sampleBean, charBean, user);
+		// reuse the existing char service
+		CharacterizationService charService = (CharacterizationService) request
+				.getSession().getAttribute("characterizationService");
+		charService.saveCharacterization(sampleBean, charBean);
 
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
@@ -237,7 +246,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			if (otherSampleBeans != null) {
 				Boolean copyData = (Boolean) theForm.get("copyData");
 				charService.copyAndSaveCharacterization(charBean, sampleBean,
-						otherSampleBeans, copyData, user);
+						otherSampleBeans, copyData);
 			}
 		}
 		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
@@ -250,10 +259,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean,
 			String createdBy) throws Exception {
 		charBean.setupDomain(createdBy);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		CharacterizationService charService = new CharacterizationServiceLocalImpl();
-		charService
-				.deleteCharacterization(charBean.getDomainChar(), user, true);
+		CharacterizationService service = this.setServicesInSession(request);
+		service.deleteCharacterization(charBean.getDomainChar(), true);
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
@@ -330,20 +337,18 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = theForm.getString(Constants.LOCATION);
+		CharacterizationService service = this.setServicesInSession(request);
 		String charId = theForm.getString("charId");
 		setupSample(theForm, request, location);
-		CharacterizationService service = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
-			service = new CharacterizationServiceLocalImpl();
-		} else {
+		if (!StringUtils.isEmpty(location)
+				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
 		}
-		CharacterizationBean charBean = service.findCharacterizationById(
-				charId, user);
+		CharacterizationBean charBean = service
+				.findCharacterizationById(charId);
 		request.setAttribute("charBean", charBean);
 		return mapping.findForward("singleSummaryView");
 	}
@@ -367,22 +372,18 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("theSample");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
 		String location = theForm.getString(Constants.LOCATION);
+		CharacterizationService service = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request, location);
-		CharacterizationService service = null;
-		if (Constants.LOCAL_SITE.equals(location)
-				|| StringUtils.isEmpty(location)) {
-			service = new CharacterizationServiceLocalImpl();
-		} else {
+		if (!StringUtils.isEmpty(location)
+				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
 		}
-
 		List<CharacterizationBean> charBeans = service
-				.findCharacterizationsBySampleId(sampleId, user);
+				.findCharacterizationsBySampleId(sampleId);
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
 		// Save result bean in session for later use - export/print.
@@ -531,8 +532,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveExperimentConfig(configBean, user);
+		CharacterizationService service = this.setServicesInSession(request);
+		service.saveExperimentConfig(configBean);
 		achar.addExperimentConfig(configBean);
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
@@ -551,10 +552,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String theFindingId = request.getParameter("findingId");
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		FindingBean findingBean = service.findFindingById(theFindingId, user);
+		CharacterizationService service = this.setServicesInSession(request);
+		FindingBean findingBean = service.findFindingById(theFindingId);
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.setTheFinding(findingBean);
@@ -590,6 +590,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationService service = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 		CharacterizationBean achar = (CharacterizationBean) theForm
@@ -617,8 +618,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 						.getCharacterizationName());
 
 		findingBean.setupDomain(internalUriPath, user.getLoginName());
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveFinding(findingBean, user);
+		service.saveFinding(findingBean);
 		achar.addFinding(findingBean);
 
 		// also save characterization
@@ -647,6 +647,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
+		this.setServicesInSession(request);
 
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
@@ -737,12 +738,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean dataSetBean = achar.getTheFinding();
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.deleteFinding(dataSetBean.getDomain(), user, true);
+		CharacterizationService service = this.setServicesInSession(request);
+		service.deleteFinding(dataSetBean.getDomain(), true);
 		achar.removeFinding(dataSetBean);
 		request.setAttribute("anchor", "result");
 		this.checkOpenForms(achar, theForm, request);
@@ -753,12 +753,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.deleteExperimentConfig(configBean.getDomain(), user, true);
+		CharacterizationService service = this.setServicesInSession(request);
+		service.deleteExperimentConfig(configBean.getDomain(), true);
 		achar.removeExperimentConfig(configBean);
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
@@ -902,5 +901,20 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_SAMPLE);
+	}
+
+	private CharacterizationService setServicesInSession(
+			HttpServletRequest request) throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		CharacterizationService charService = new CharacterizationServiceLocalImpl(
+				user);
+		request.getSession().setAttribute("characterizationService",
+				charService);
+		ProtocolService protocolService = new ProtocolServiceLocalImpl(user);
+		request.getSession().setAttribute("protocolService", protocolService);
+		SampleService sampleService = new SampleServiceLocalImpl(user);
+		request.getSession().setAttribute("sampleService", sampleService);
+		return charService;
 	}
 }

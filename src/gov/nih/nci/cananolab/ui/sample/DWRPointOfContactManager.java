@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -15,14 +14,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.validator.DynaValidatorForm;
+import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 public class DWRPointOfContactManager {
-	private SampleService service = new SampleServiceLocalImpl();
-	private SampleServiceHelper helper = new SampleServiceHelper();
+	private SampleService service;
 
 	public DWRPointOfContactManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		service = new SampleServiceLocalImpl(user);
 	}
 
 	public PointOfContactBean getPointOfContactById(String id,
@@ -34,7 +36,7 @@ public class DWRPointOfContactManager {
 		if (user == null) {
 			return null;
 		}
-		PointOfContactBean poc = service.findPointOfContactById(id, user);
+		PointOfContactBean poc = service.findPointOfContactById(id);
 		poc.setPrimaryStatus(primaryStatus);
 		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("sampleForm"));
@@ -60,11 +62,8 @@ public class DWRPointOfContactManager {
 	}
 
 	public Organization getOrganizationByName(String name) throws Exception {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Organization org = helper.findOrganizationByName(name, user);
+		Organization org = ((SampleServiceLocalImpl) service).getHelper()
+				.findOrganizationByName(name);
 		return org;
 	}
 

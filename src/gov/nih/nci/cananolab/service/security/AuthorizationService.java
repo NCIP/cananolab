@@ -595,8 +595,8 @@ public class AuthorizationService {
 		}
 	}
 
-	public List<String> getAccessibleGroups(String objectName,
-			String privilegeName) throws SecurityException {
+	public String[] getAccessibleGroups(String objectName, String privilegeName)
+			throws SecurityException {
 		List<String> groupNames = new ArrayList<String>();
 		try {
 			List groups = authorizationManager.getAccessibleGroups(objectName,
@@ -610,7 +610,7 @@ public class AuthorizationService {
 			logger.error("Error in getting accessible groups", e);
 			throw new SecurityException();
 		}
-		return groupNames;
+		return groupNames.toArray(new String[0]);
 	}
 
 	public void removeExistingVisibleGroups(String objectName)
@@ -711,15 +711,16 @@ public class AuthorizationService {
 					groupsToAssign.add(group);
 				}
 			}
-			List<String> existingGroups = getAccessibleGroups(dataToProtect,
+			String[] existingGroups = getAccessibleGroups(dataToProtect,
 					Constants.CSM_READ_PRIVILEGE);
 
-			Set<String> allGroups = new HashSet<String>(existingGroups);
+			Set<String> allGroups = new HashSet<String>(Arrays
+					.asList(existingGroups));
 			allGroups.addAll(groupsToAssign);
 
 			List<String> newGroupsToAdd = new ArrayList<String>(allGroups);
 			List<String> groupsToRemove = new ArrayList<String>(allGroups);
-			newGroupsToAdd.removeAll(existingGroups);
+			newGroupsToAdd.removeAll(Arrays.asList(existingGroups));
 			groupsToRemove.removeAll(groupsToAssign);
 			// no change
 			if (newGroupsToAdd.isEmpty() && groupsToRemove.isEmpty()) {
@@ -868,16 +869,16 @@ public class AuthorizationService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Set<String> getAllUserAccessibleData(UserBean user)
+	public List<String> getAllUserAccessibleData(UserBean user)
 			throws ApplicationException {
-		Set<String> data = new HashSet<String>();
+		List<String> data = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (user == null) {
-				return new HashSet<String>(appService.getAllPublicData());
+				return new ArrayList<String>(appService.getAllPublicData());
 			}
-			String query = "select pg.protection_group_name "
+			String query = "select distinct pg.protection_group_name "
 					+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_group g, csm_user_group ug, csm_role r "
 					+ "where ugrp.protection_group_id=pg.protection_group_id "
 					+ "and ugrp.group_id=g.group_id "

@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -31,9 +30,12 @@ import org.directwebremoting.WebContextFactory;
 public class DWRSampleManager {
 
 	private Logger logger = Logger.getLogger(DWRSampleManager.class);
-	private SampleServiceHelper helper = new SampleServiceHelper();
+	private SampleService service;
 
 	public DWRSampleManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		service = new SampleServiceLocalImpl(user);
 	}
 
 	public List<LabelValueBean> getDecoratedEntityTypes(String compType) {
@@ -196,11 +198,9 @@ public class DWRSampleManager {
 			// return null;
 		}
 		Integer counts = 0;
-		SampleService service = null;
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					service = new SampleServiceLocalImpl();
 					counts += service.getNumberOfPublicSamples();
 				} catch (Exception e) {
 					logger
@@ -210,7 +210,6 @@ public class DWRSampleManager {
 				try {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
-
 					service = new SampleServiceRemoteImpl(serviceUrl);
 					counts += service.getNumberOfPublicSamples();
 				} catch (Exception e) {
@@ -232,11 +231,9 @@ public class DWRSampleManager {
 			// return null;
 		}
 		Integer counts = 0;
-		SampleService service = null;
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					service = new SampleServiceLocalImpl();
 					counts += service.getNumberOfPublicSampleSources();
 				} catch (Exception e) {
 					logger
@@ -368,7 +365,8 @@ public class DWRSampleManager {
 		}
 		String[] nameArray = new String[] { "" };
 		try {
-			List<String> names = helper.findSampleNamesBy(searchStr, user);
+			List<String> names = ((SampleServiceLocalImpl) service).getHelper()
+					.findSampleNamesBy(searchStr);
 			if (!names.isEmpty()) {
 				nameArray = names.toArray(new String[names.size()]);
 			}

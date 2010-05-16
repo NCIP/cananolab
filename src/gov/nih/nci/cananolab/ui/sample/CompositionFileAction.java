@@ -7,13 +7,13 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class allows users to submit composition files under sample composition.
- * 
+ *
  * @author pansu
  */
 public class CompositionFileAction extends BaseAnnotationAction {
@@ -39,6 +39,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
 
+		CompositionService service = this.setServicesInSession(request);
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
 
@@ -49,8 +50,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 				+ sampleBean.getDomain().getName() + "/" + "compositionFile";
 
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
-		CompositionService service = new CompositionServiceLocalImpl();
-		service.saveCompositionFile(sampleBean, theFile, user);
+
+		service.saveCompositionFile(sampleBean, theFile);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
@@ -68,12 +69,11 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean fileBean = comp.getTheFile();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		CompositionService compService = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request,
 				Constants.LOCAL_SITE);
-		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteCompositionFile(sampleBean.getDomain()
-				.getSampleComposition(), fileBean.getDomainFile(), user, true);
+				.getSampleComposition(), fileBean.getDomainFile(), true);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -88,15 +88,15 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.setServicesInSession(request);
 		SampleBean sample = this.setupSample(theForm, request,
 				Constants.LOCAL_SITE);
 
 		// set file default visibilities
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
-		List<String> accessibleGroups = authService.getAccessibleGroups(sample
+		String[] visibilityGroups = authService.getAccessibleGroups(sample
 				.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
 		CompositionBean compBean = new CompositionBean();
 		compBean.getTheFile().setVisibilityGroups(visibilityGroups);
 		theForm.set("comp", compBean);
@@ -109,8 +109,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileId = request.getParameter("dataId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService fileService = new FileServiceLocalImpl();
-		FileBean fileBean = fileService.findFileById(fileId, user);
+		FileService fileService = new FileServiceLocalImpl(user);
+		FileBean fileBean = fileService.findFileById(fileId);
 		CompositionBean compBean = (CompositionBean) theForm.get("comp");
 		compBean.setTheFile(fileBean);
 		ActionForward forward = mapping.getInputForward();
@@ -120,7 +120,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	/**
 	 * Handle input request, when validation failed this handler will be called
 	 * too.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -132,6 +132,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.setServicesInSession(request);
 		setupSample(theForm, request, Constants.LOCAL_SITE);
 		this.setLookups(request);
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
@@ -148,5 +149,16 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	private void setLookups(HttpServletRequest request) throws Exception {
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
+	}
+
+	private CompositionService setServicesInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		CompositionService compService = new CompositionServiceLocalImpl(user);
+		request.getSession().setAttribute("compositionService", compService);
+		SampleService sampleService = new SampleServiceLocalImpl(user);
+		request.getSession().setAttribute("sampleService", sampleService);
+		return compService;
 	}
 }

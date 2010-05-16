@@ -8,9 +8,11 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -35,7 +37,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Edit request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -68,7 +70,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary View request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -103,7 +105,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Print request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -138,7 +140,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary Export request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -188,7 +190,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView() and summaryPrint(). Prepare
 	 * CompositionBean for displaying based on SampleId and location.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -211,18 +213,15 @@ public class CompositionAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
 		String location = theForm.getString(Constants.LOCATION);
+		CompositionService service = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request, location);
-		CompositionService compService = null;
-		if (Constants.LOCAL_SITE.equals(location)
-				|| StringUtils.isEmpty(location)) {
-			compService = new CompositionServiceLocalImpl();
-		} else {
+		if (!StringUtils.isEmpty(location)
+				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			compService = new CompositionServiceRemoteImpl(serviceUrl);
+			service = new CompositionServiceRemoteImpl(serviceUrl);
 		}
-		CompositionBean compBean = compService.findCompositionBySampleId(
-				sampleId, user);
+		CompositionBean compBean = service.findCompositionBySampleId(sampleId);
 		theForm.set("comp", compBean);
 
 		// Save result bean in session for later use - export/print.
@@ -249,7 +248,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 * 
+	 *
 	 * @param request
 	 * @param compBean
 	 */
@@ -285,5 +284,16 @@ public class CompositionAction extends BaseAnnotationAction {
 				compBean.setNanomaterialEntities(Collections.EMPTY_LIST);
 			}
 		}
+	}
+
+	private CompositionService setServicesInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		CompositionService compService = new CompositionServiceLocalImpl(user);
+		request.getSession().setAttribute("compositionService", compService);
+		SampleService sampleService = new SampleServiceLocalImpl(user);
+		request.getSession().setAttribute("sampleService", sampleService);
+		return compService;
 	}
 }

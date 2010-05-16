@@ -42,8 +42,8 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileTitle = (String) theForm.get("fileTitle");
-		//strip wildcards if entered by user
-		fileTitle=StringUtils.stripWildcards(fileTitle);
+		// strip wildcards if entered by user
+		fileTitle = StringUtils.stripWildcards(fileTitle);
 		String titleOperand = (String) theForm.get("titleOperand");
 		if (titleOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(fileTitle)) {
@@ -51,8 +51,8 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		}
 		String protocolType = (String) theForm.get("protocolType");
 		String protocolName = (String) theForm.get("protocolName");
-		//strip wildcards if entered by user
-		protocolName=StringUtils.stripWildcards(protocolName);
+		// strip wildcards if entered by user
+		protocolName = StringUtils.stripWildcards(protocolName);
 
 		String nameOperand = (String) theForm.get("nameOperand");
 		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
@@ -61,8 +61,8 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		}
 		String protocolAbbreviation = (String) theForm
 				.get("protocolAbbreviation");
-		//strip wildcards if entered by user
-		protocolAbbreviation=StringUtils.stripWildcards(protocolAbbreviation);
+		// strip wildcards if entered by user
+		protocolAbbreviation = StringUtils.stripWildcards(protocolAbbreviation);
 
 		String abbreviationOperand = (String) theForm
 				.get("abbreviationOperand");
@@ -74,7 +74,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		if (theForm.get("searchLocations") != null) {
 			searchLocations = (String[]) theForm.getStrings("searchLocations");
 		}
-		if(searchLocations.length == 0){
+		if (searchLocations.length == 0) {
 			searchLocations = new String[1];
 			searchLocations[0] = Constants.APP_OWNER;
 		}
@@ -88,15 +88,15 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		ProtocolService service = null;
 		for (String location : searchLocations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
-				service = new ProtocolServiceLocalImpl();
+				service = new ProtocolServiceLocalImpl(user);
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
 				service = new ProtocolServiceRemoteImpl(serviceUrl);
 			}
-			List<ProtocolBean> protocols = service.findProtocolsBy(
-					protocolType, protocolName, protocolAbbreviation,
-					fileTitle, user);
+			List<ProtocolBean> protocols = service
+					.findProtocolsBy(protocolType, protocolName,
+							protocolAbbreviation, fileTitle);
 			for (ProtocolBean protocol : protocols) {
 				protocol.setLocation(location);
 				if (protocol.getFileBean() != null) {
@@ -122,7 +122,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-//		InitSetup.getInstance().getGridNodesInContext(request);
+		// InitSetup.getInstance().getGridNodesInContext(request);
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");

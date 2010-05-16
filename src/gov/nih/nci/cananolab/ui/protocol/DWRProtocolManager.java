@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -28,10 +28,12 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 public class DWRProtocolManager {
 
 	Logger logger = Logger.getLogger(DWRProtocolManager.class);
-	ProtocolService service = new ProtocolServiceLocalImpl();
-	ProtocolServiceHelper helper = new ProtocolServiceHelper();
+	ProtocolServiceLocalImpl service;
 
 	public DWRProtocolManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		service = new ProtocolServiceLocalImpl(user);
 	}
 
 	public String[] getProtocolTypes(String searchLocations) {
@@ -69,12 +71,8 @@ public class DWRProtocolManager {
 			if (StringUtils.isEmpty(protocolType)) {
 				return null;
 			}
-			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-			org.directwebremoting.WebContext webContext = dwcb.get();
-			UserBean user = (UserBean) webContext.getHttpServletRequest()
-					.getSession().getAttribute("user");
-			SortedSet<String> protocolNames = helper.getProtocolNamesBy(
-					protocolType, user);
+			SortedSet<String> protocolNames = service.getHelper()
+					.getProtocolNamesBy(protocolType);
 			return protocolNames;
 		} catch (Exception e) {
 			return null;
@@ -87,12 +85,8 @@ public class DWRProtocolManager {
 			if (StringUtils.isEmpty(protocolName)) {
 				return null;
 			}
-			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-			org.directwebremoting.WebContext webContext = dwcb.get();
-			UserBean user = (UserBean) webContext.getHttpServletRequest()
-					.getSession().getAttribute("user");
-			SortedSet<String> protocolVersions = helper.getProtocolVersionsBy(
-					protocolType, protocolName, user);
+			SortedSet<String> protocolVersions = service.getHelper()
+					.getProtocolVersionsBy(protocolType, protocolName);
 			return protocolVersions;
 		} catch (Exception e) {
 			return null;
@@ -108,13 +102,9 @@ public class DWRProtocolManager {
 			return null;
 		}
 		try {
-			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-			org.directwebremoting.WebContext webContext = dwcb.get();
-			UserBean user = (UserBean) webContext.getHttpServletRequest()
-					.getSession().getAttribute("user");
-			ProtocolBean protocolBean = service.findProtocolBy(protocolType,
-					protocolName, protocolVersion, user);
-			return protocolBean;
+			Protocol protocol = service.getHelper().findProtocolBy(
+					protocolType, protocolName, protocolVersion);
+			return new ProtocolBean(protocol);
 		} catch (Exception e) {
 			return null;
 		}
@@ -129,13 +119,10 @@ public class DWRProtocolManager {
 			// return null;
 		}
 		Integer counts = 0;
-		ProtocolService service = null;
-
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					service = new ProtocolServiceLocalImpl();
-					counts += service.getNumberOfPublicProtocols();
+					counts += service.getHelper().getNumberOfPublicProtocols();
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public protocols from local site.");
@@ -144,8 +131,8 @@ public class DWRProtocolManager {
 				try {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
-
-					service = new ProtocolServiceRemoteImpl(serviceUrl);
+					ProtocolService service = new ProtocolServiceRemoteImpl(
+							serviceUrl);
 					counts += service.getNumberOfPublicProtocols();
 				} catch (Exception e) {
 					logger

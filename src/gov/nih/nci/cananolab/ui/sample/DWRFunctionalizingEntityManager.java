@@ -19,15 +19,18 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRFunctionalizingEntityManager {
-	private CompositionServiceHelper helper = new CompositionServiceHelper();
+	private CompositionServiceHelper helper;
 
 	public DWRFunctionalizingEntityManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		helper = new CompositionServiceHelper(user);
 	}
 
 	public FunctionBean addTarget(TargetBean target) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
@@ -39,7 +42,7 @@ public class DWRFunctionalizingEntityManager {
 	public FunctionBean deleteTarget(TargetBean target) {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
@@ -53,12 +56,12 @@ public class DWRFunctionalizingEntityManager {
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (wctx
 				.getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 				.get("functionalizingEntity");
-		Function function = helper.findFunctionById(id, user);
+		Function function = helper.findFunctionById(id);
 		FunctionBean functionBean = new FunctionBean(function);
 		entity.setTheFunction(functionBean);
 		return functionBean;
@@ -67,7 +70,7 @@ public class DWRFunctionalizingEntityManager {
 	public FunctionBean resetTheFunction() {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (compositionForm==null) {
+		if (compositionForm == null) {
 			return null;
 		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm

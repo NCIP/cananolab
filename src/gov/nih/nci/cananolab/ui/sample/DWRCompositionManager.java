@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -35,7 +34,12 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRCompositionManager {
+	CompositionService compService;
+
 	public DWRCompositionManager() {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		compService = new CompositionServiceLocalImpl(user);
 	}
 
 	public String getEntityIncludePage(String entityType, String parent)
@@ -57,8 +61,9 @@ public class DWRCompositionManager {
 		if (user == null) {
 			return null;
 		}
-		FileService service = new FileServiceLocalImpl();
-		FileBean fileBean = service.findFileById(id, user);
+		FileService fileService = ((CompositionServiceLocalImpl) compService)
+				.getFileService();
+		FileBean fileBean = fileService.findFileById(id);
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
 		if (type.equals("nanomaterialEntity")) {
@@ -99,10 +104,8 @@ public class DWRCompositionManager {
 		if (sampleName == null) {
 			return null;
 		}
-
-		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleName, Constants.CSM_READ_PRIVILEGE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		String[] visibilityGroups = authService.getAccessibleGroups(sampleName,
+				Constants.CSM_READ_PRIVILEGE);
 		fileBean.setVisibilityGroups(visibilityGroups);
 
 		if (type.equals("nanomaterialEntity")) {
@@ -159,9 +162,8 @@ public class DWRCompositionManager {
 		if (StringUtils.isEmpty(id)) {
 			return null;
 		}
-		CompositionService compService = new CompositionServiceLocalImpl();
 		NanomaterialEntityBean entityBean = compService
-				.findNanomaterialEntityById(id, user);
+				.findNanomaterialEntityById(id);
 		List<ComposingElementBean> composingElements = entityBean
 				.getComposingElements();
 		return composingElements;

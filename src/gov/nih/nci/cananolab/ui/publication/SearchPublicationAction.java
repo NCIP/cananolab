@@ -42,7 +42,8 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
-
+		// only on local service to improve performance
+		this.setServiceInSession(request);
 		List<PublicationBean> publicationBeans = null;
 		// retrieve from session if it's not null and not the first page
 		if (session.getAttribute("publicationSearchResults") != null
@@ -82,14 +83,13 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			HttpServletRequest request) throws Exception {
 		List<PublicationBean> loadedPublicationBeans = new ArrayList<PublicationBean>();
 		PublicationService service = null;
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < publicationBeans.size()) {
 				String location = publicationBeans.get(i).getLocation();
 				if (location.equals(Constants.LOCAL_SITE)
 						|| StringUtils.isEmpty(location)) {
-					service = new PublicationServiceLocalImpl();
+					service = (PublicationService) (request.getSession()
+							.getAttribute("publicationService"));
 				} else {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
@@ -97,8 +97,8 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 				}
 				String publicationId = publicationBeans.get(i).getDomainFile()
 						.getId().toString();
-				PublicationBean pubBean = service.findPublicationById(
-						publicationId, user);
+				PublicationBean pubBean = service
+						.findPublicationById(publicationId);
 				pubBean.setLocation(location);
 				loadedPublicationBeans.add(pubBean);
 			}
@@ -162,7 +162,7 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		searchLocations = (String[]) theForm.get("searchLocations");
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
-		if(searchLocations.length == 0){
+		if (searchLocations.length == 0) {
 			searchLocations = new String[1];
 			searchLocations[0] = Constants.APP_OWNER;
 		}
@@ -216,7 +216,8 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		PublicationService publicationService = null;
 		for (String location : searchLocations) {
 			if (Constants.LOCAL_SITE.equals(location)) {
-				publicationService = new PublicationServiceLocalImpl();
+				publicationService = (PublicationService) (request.getSession()
+						.getAttribute("publicationService"));
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
@@ -239,7 +240,7 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 									.toArray(new String[0]),
 							otherFunctionalizingTypes.toArray(new String[0]),
 							functionClassNames.toArray(new String[0]),
-							otherFunctionTypes.toArray(new String[0]), user);
+							otherFunctionTypes.toArray(new String[0]));
 			for (String id : publicationIds) {
 				PublicationBean pubBean = new PublicationBean(id, location);
 				publications.add(pubBean);
@@ -252,7 +253,7 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-//		InitSetup.getInstance().getGridNodesInContext(request);
+		// InitSetup.getInstance().getGridNodesInContext(request);
 
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
@@ -281,5 +282,14 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PUBLICATION);
+	}
+
+	private void setServiceInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		PublicationService publicationService = new PublicationServiceLocalImpl(
+				user);
+		request.getSession().setAttribute("publicationService",
+				publicationService);
 	}
 }

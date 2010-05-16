@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,6 +53,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) theForm
 				.get("searchBean");
+		this.setServiceInSession(request);
 		searchBean.updateQueries();
 		// retrieve from session if it's not null
 		List<AdvancedSampleBean> sampleBeans = (List<AdvancedSampleBean>) session
@@ -90,7 +92,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Export full advance sample search report in excel file.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -105,6 +107,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		DynaValidatorForm searchForm = (DynaValidatorForm) session
 				.getAttribute("advancedSampleSearchForm");
+
 		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) searchForm
 				.get("searchBean");
 
@@ -121,31 +124,20 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 			if (samplesFullList == null) {
 				samplesFullList = new ArrayList<AdvancedSampleBean>(
 						sampleSearchResult.size());
-				UserBean user = (UserBean) session.getAttribute("user");
-				SampleService localService = null;
-				SampleService remoteService = null;
+				SampleService service = this.setServiceInSession(request);
 				for (AdvancedSampleBean sample : sampleSearchResult) {
 					String location = sample.getLocation();
 					String sampleName = sample.getSampleName();
 					AdvancedSampleBean loadedAdvancedSample = null;
-					if (Constants.LOCAL_SITE.equals(location)) {
-						if (localService == null) {
-							localService = new SampleServiceLocalImpl();
-						}
-						loadedAdvancedSample = localService
-								.findAdvancedSampleByAdvancedSearch(sampleName,
-										searchBean, user);
-					} else {
-						if (remoteService == null) {
-							String serviceUrl = InitSetup.getInstance()
-									.getGridServiceUrl(request, location);
-							remoteService = new SampleServiceRemoteImpl(
-									serviceUrl);
-						}
-						loadedAdvancedSample = remoteService
-								.findAdvancedSampleByAdvancedSearch(sampleName,
-										searchBean, user);
+					if (!StringUtils.isEmpty(location)
+							&& !Constants.LOCAL_SITE.equals(location)) {
+						String serviceUrl = InitSetup.getInstance()
+								.getGridServiceUrl(request, location);
+						service = new SampleServiceRemoteImpl(serviceUrl);
 					}
+					loadedAdvancedSample = service
+							.findAdvancedSampleByAdvancedSearch(sampleName,
+									searchBean);
 					loadedAdvancedSample.setLocation(location);
 					samplesFullList.add(loadedAdvancedSample);
 				}
@@ -170,7 +162,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Print current page advance sample search report.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -210,14 +202,13 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	private List<AdvancedSampleBean> querySamples(ActionForm form,
 			HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) session.getAttribute("user");
 		AdvancedSampleSearchBean searchBean = (AdvancedSampleSearchBean) theForm
 				.get("searchBean");
-		SampleService service = new SampleServiceLocalImpl();
-		List<String> sampleNames = service.findSampleNamesByAdvancedSearch(
-				searchBean, user);
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+		List<String> sampleNames = service
+				.findSampleNamesByAdvancedSearch(searchBean);
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
 		for (String name : sampleNames) {
 			AdvancedSampleBean sampleBean = new AdvancedSampleBean(name,
@@ -233,14 +224,13 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 			throws Exception {
 		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
 		SampleService service = null;
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
 				String sampleName = sampleBeans.get(i).getSampleName();
 				if (location.equals(Constants.LOCAL_SITE)) {
-					service = new SampleServiceLocalImpl();
+					service = (SampleService) request.getSession()
+							.getAttribute("sampleService");
 				} else {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
@@ -248,7 +238,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 				}
 				AdvancedSampleBean loadedAdvancedSample = service
 						.findAdvancedSampleByAdvancedSearch(sampleName,
-								searchBean, user);
+								searchBean);
 				loadedAdvancedSample.setLocation(location);
 				loadedSampleBeans.add(loadedAdvancedSample);
 			}
@@ -284,7 +274,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Get file name for exporting report as an Excel file.
-	 * 
+	 *
 	 * @param sampleName
 	 * @param viewType
 	 * @param subType
@@ -299,7 +289,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	/**
 	 * Get view sample URL.
-	 * 
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -311,5 +301,13 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		sb.append(VIEW_SAMPLE_URL);
 
 		return sb.toString();
+	}
+
+	private SampleService setServiceInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleService sampleService = new SampleServiceLocalImpl(user);
+		request.getSession().setAttribute("sampleService", sampleService);
+		return sampleService;
 	}
 }
