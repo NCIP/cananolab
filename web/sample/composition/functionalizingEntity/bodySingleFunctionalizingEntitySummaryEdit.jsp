@@ -3,8 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page
-	import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
 	<tr>
@@ -36,24 +34,14 @@
 			PubChem ID
 		</td>
 		<td colspan="2">
-			<c:choose>
-				<c:when
-					test="${!empty functionalizingEntity.domainEntity.pubChemId &&
-																functionalizingEntity.domainEntity.pubChemId != 0}">
-					<c:set var="pubChemId"
-						value="${functionalizingEntity.domainEntity.pubChemId}" />
-					<c:set var="pubChemDS"
-						value="${functionalizingEntity.domainEntity.pubChemDataSourceName}" />
-					<a
-						href='<%=CompositionServiceHelper.getPubChemURL(
-							(String) pageContext.getAttribute("pubChemDS"),
-							(Long) pageContext.getAttribute("pubChemId"))%>'
-						target="caNanoLab - View PubChem">${pubChemId}</a>
-													&nbsp;(${pubChemDS})
-												</c:when>
-				<c:otherwise>
-													N/A
-												</c:otherwise>
+		    <c:choose>
+					<c:when test="${!empty functionalizingEntity.pubChemLink}">
+						<a href="${functionalizingEntity.pubChemLink}"
+							target="caNanoLab - View PubChem">${functionalizingEntity.domainEntity.pubChemId}</a>
+						&nbsp;(${functionalizingEntity.domainEntity.pubChemDataSourceName})
+				</c:when>
+					<c:otherwise>N/A
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>

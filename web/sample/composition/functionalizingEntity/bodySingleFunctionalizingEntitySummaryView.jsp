@@ -3,8 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page
-	import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;"%>
 <%@include file="/sample/bodyHideAdvancedSearchDetailView.jsp"%>
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">

@@ -13,8 +13,7 @@
 					</td>
 					<td width="20%">
 						<html:select property="otherSamples" size="10" multiple="true">
-							<html:options collection="otherSampleNames" property="name"
-								labelProperty="name" />
+							<html:options name="otherSampleNames"/>
 						</html:select>
 					</td>
 					<td>
