@@ -25,7 +25,7 @@ public class TestConnectionPool {
 			PublicationService service = new PublicationServiceLocalImpl();
 			List<String> publicationIds = service.findPublicationIdsBy(null,
 					publicationType, null, null, null, null, null, null, null,
-					null, null, null, null, null, null);
+					null, null, null, null, null);
 			for (String id : publicationIds) {
 				System.out.println("Publication: " + id);
 				logger.info("Publication: " + id);
@@ -42,13 +42,12 @@ public class TestConnectionPool {
 			PublicationService service = new PublicationServiceLocalImpl();
 			List<String> publicationIds = service.findPublicationIdsBy(null,
 					publicationType, null, null, null, null, null, null, null,
-					null, null, null, null, null, null);
+					null, null, null, null, null);
 			for (String id : publicationIds) {
 				// System.out.println("Publication: "
 				// + publication.getDisplayName());
 				// logger.info("Publication: " + publication.getDisplayName());
-				PublicationBean publication = service.findPublicationById(id,
-						null);
+				PublicationBean publication = service.findPublicationById(id);
 				if (!StringUtils.isEmpty(publication.getDomainFile().getUri())) {
 					p.println(publication.getDomainFile().getUri());
 					URL yahoo = new URL(publication.getDomainFile().getUri());
