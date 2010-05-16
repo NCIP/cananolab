@@ -20,7 +20,6 @@ import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
@@ -40,9 +39,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Service methods involving local characterizations
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class CharacterizationServiceRemoteImpl implements
 		CharacterizationService {
@@ -63,24 +62,24 @@ public class CharacterizationServiceRemoteImpl implements
 	}
 
 	public void saveCharacterization(SampleBean sample,
-			CharacterizationBean charBean, UserBean user)
-			throws CharacterizationException, NoAccessException {
+			CharacterizationBean charBean) throws CharacterizationException,
+			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public CharacterizationBean findCharacterizationById(String charId,
-			UserBean user) throws CharacterizationException {
+	public CharacterizationBean findCharacterizationById(String charId)
+			throws CharacterizationException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
 	public List<String> deleteCharacterization(Characterization chara,
-			UserBean user, Boolean removeVisibility)
-			throws CharacterizationException, NoAccessException {
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
-			String sampleId, UserBean user) throws CharacterizationException {
+			String sampleId) throws CharacterizationException {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		try {
 			// find all characterization class names first
@@ -145,7 +144,7 @@ public class CharacterizationServiceRemoteImpl implements
 
 	/**
 	 * Get all the associated data of a Characterization
-	 * 
+	 *
 	 * @param particleSample
 	 * @throws Exception
 	 */
@@ -337,36 +336,35 @@ public class CharacterizationServiceRemoteImpl implements
 		}
 	}
 
-	public FindingBean findFindingById(String findingId, UserBean user)
+	public FindingBean findFindingById(String findingId)
 			throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void saveFinding(FindingBean finding, UserBean user)
+	public void saveFinding(FindingBean finding)
 			throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public List<String> deleteFinding(Finding finding, UserBean user,
-			Boolean removeVisibility) throws CharacterizationException,
-			NoAccessException {
+	public List<String> deleteFinding(Finding finding, Boolean removeVisibility)
+			throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void saveExperimentConfig(ExperimentConfigBean configBean,
-			UserBean user) throws ExperimentConfigException, NoAccessException {
+	public void saveExperimentConfig(ExperimentConfigBean configBean)
+			throws ExperimentConfigException, NoAccessException {
 		throw new ExperimentConfigException("Not implemented for grid service");
 	}
 
 	public List<String> deleteExperimentConfig(ExperimentConfig config,
-			UserBean user, Boolean removeVisibility)
-			throws ExperimentConfigException, NoAccessException {
+			Boolean removeVisibility) throws ExperimentConfigException,
+			NoAccessException {
 		throw new ExperimentConfigException("Not implemented for grid service");
 	}
 
 	public void copyAndSaveCharacterization(CharacterizationBean charBean,
 			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
-			boolean copyData, UserBean user) throws CharacterizationException,
+			boolean copyData) throws CharacterizationException,
 			NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
@@ -399,5 +397,10 @@ public class CharacterizationServiceRemoteImpl implements
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
+	}
+
+	public List<String> findOtherCharacterizationByAssayCategory(
+			String assayCategory) throws CharacterizationException {
+		throw new CharacterizationException("Not implemented for grid service");
 	}
 }

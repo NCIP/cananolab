@@ -24,9 +24,7 @@ import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.rmi.RemoteException;
@@ -41,15 +39,14 @@ import org.apache.log4j.Logger;
 
 /**
  * Service methods involving samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SampleServiceRemoteImpl implements SampleService {
 	private static Logger logger = Logger
 			.getLogger(SampleServiceRemoteImpl.class);
 	private CaNanoLabServiceClient gridClient;
-	private SampleServiceHelper helper = new SampleServiceHelper();
 
 	public SampleServiceRemoteImpl(String serviceUrl) throws SampleException {
 		try {
@@ -61,12 +58,12 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 * 
 	 * @param sample
+	 *
 	 * @throws SampleException
 	 *             , DuplicateEntriesException
 	 */
-	public void saveSample(SampleBean sample, UserBean user)
+	public void saveSample(SampleBean sample)
 			throws SampleException, DuplicateEntriesException {
 		throw new SampleException("Not implemented for grid service");
 	}
@@ -78,8 +75,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList,
-			UserBean user) throws SampleException {
+			String[] otherCharacterizationTypes, String[] wordList) throws SampleException {
 		try {
 			String[] sampleNames = gridClient.getSampleNames(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames,
@@ -97,7 +93,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
-	public SampleBean findSampleById(String sampleId, UserBean user)
+	public SampleBean findSampleById(String sampleId)
 			throws SampleException {
 		try {
 			CQLQuery query = new CQLQuery();
@@ -142,7 +138,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * Get all the associated data of a sample
-	 * 
+	 *
 	 * @param particleSample
 	 * @throws Exception
 	 */
@@ -155,11 +151,11 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * load the source for an associated Sample
-	 * 
+	 *
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
-	 * 
+	 *
 	 */
 	private void loadPointOfContactsForSample(Sample sample) throws Exception {
 		PointOfContact primaryPOC = gridClient
@@ -210,7 +206,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 
 	/**
 	 * load all keywords for an associated Sample equal to particleId
-	 * 
+	 *
 	 */
 	private void loadKeywordsForSample(Sample sample) throws Exception {
 		Keyword[] keywords = gridClient.getKeywordsBySampleId(sample.getId()
@@ -354,7 +350,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
-	public SampleBean findSampleByName(String sampleName, UserBean user)
+	public SampleBean findSampleByName(String sampleName)
 			throws SampleException {
 		try {
 			String[] columns = gridClient.getSampleViewStrs(sampleName);
@@ -445,12 +441,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 		throw new SampleException("Not implemented for grid service");
 	}
 
-	public SortedSet<SortableName> findOtherSamplesFromSamePointOfContact(
-			String sampleId, UserBean user) throws SampleException {
-		throw new SampleException("Not implemented for grid service");
-	}
-
-	public PointOfContactBean findPointOfContactById(String pocId, UserBean user)
+	public PointOfContactBean findPointOfContactById(String pocId)
 			throws PointOfContactException, NoAccessException {
 		throw new PointOfContactException("Not implemented for grid service");
 	}
@@ -460,37 +451,39 @@ public class SampleServiceRemoteImpl implements SampleService {
 		throw new PointOfContactException("Not implemented for grid service");
 	}
 
-	public SortedSet<String> getAllOrganizationNames(UserBean user)
+	public SortedSet<String> getAllOrganizationNames()
 			throws PointOfContactException {
 		throw new PointOfContactException("Not implemented for grid service");
 	}
 
-	public void savePointOfContact(PointOfContactBean pointOfContactBean,
-			UserBean User) throws PointOfContactException, NoAccessException {
+	public void savePointOfContact(PointOfContactBean pointOfContactBean) throws PointOfContactException, NoAccessException {
 		throw new PointOfContactException("Not implemented for grid service");
 	}
 
 	public List<String> findSampleNamesByAdvancedSearch(
-			AdvancedSampleSearchBean searchBean, UserBean user)
+			AdvancedSampleSearchBean searchBean)
 			throws SampleException {
 		throw new SampleException("Not implemented for grid service");
 	}
 
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleName, AdvancedSampleSearchBean searchBean,
-			UserBean user) throws SampleException {
+			String sampleName, AdvancedSampleSearchBean searchBean) throws SampleException {
 		throw new SampleException("Not implemented for grid service");
 	}
 
 	public SampleBean cloneSample(String originalSampleName,
-			String newSampleName, UserBean user) throws SampleException,
+			String newSampleName) throws SampleException,
 			NoAccessException, DuplicateEntriesException, NotExistException {
 		throw new SampleException("Not implemented for grid service");
 	}
 
-	public List<String> deleteSample(String sampleName, UserBean user,
-			Boolean removeVisibility) throws SampleException,
+	public List<String> deleteSample(String sampleName, Boolean removeVisibility) throws SampleException,
 			NoAccessException, NotExistException {
+		throw new SampleException("Not implemented for grid service");
+	}
+
+	public List<String> findOtherSampleNamesFromSamePointOfContact(
+			String sampleId) throws SampleException {
 		throw new SampleException("Not implemented for grid service");
 	}
 }

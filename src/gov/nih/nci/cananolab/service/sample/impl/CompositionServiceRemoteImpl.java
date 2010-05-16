@@ -21,7 +21,6 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
@@ -66,13 +65,12 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	}
 
 	public void saveNanomaterialEntity(SampleBean sampleBean,
-			NanomaterialEntityBean entityBean, UserBean user)
+			NanomaterialEntityBean entityBean)
 			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
-	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
-			UserBean user) throws CompositionException, NoAccessException {
+	public NanomaterialEntityBean findNanomaterialEntityById(String entityId) throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
@@ -171,24 +169,23 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	}
 
 	public void saveFunctionalizingEntity(SampleBean sampleBean,
-			FunctionalizingEntityBean entityBean, UserBean user)
+			FunctionalizingEntityBean entityBean)
 			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public void saveChemicalAssociation(SampleBean sample,
-			ChemicalAssociationBean assocBean, UserBean user)
+			ChemicalAssociationBean assocBean)
 			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
-	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean,
-			UserBean user) throws CompositionException, NoAccessException {
+	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean) throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
-			String entityId, UserBean user) throws CompositionException,
+			String entityId) throws CompositionException,
 			NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
@@ -274,39 +271,36 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 		}
 	}
 
-	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
-			UserBean user) throws CompositionException, NoAccessException {
+	public ChemicalAssociationBean findChemicalAssociationById(String assocId) throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public List<String> deleteNanomaterialEntity(NanomaterialEntity entity,
-			UserBean user, Boolean removeVisibility)
+			Boolean removeVisibility)
 			throws CompositionException, ChemicalAssociationViolationException,
 			NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public List<String> deleteFunctionalizingEntity(
-			FunctionalizingEntity entity, UserBean user,
-			Boolean removeVisibility) throws CompositionException,
+			FunctionalizingEntity entity, Boolean removeVisibility) throws CompositionException,
 			ChemicalAssociationViolationException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public List<String> deleteChemicalAssociation(ChemicalAssociation assoc,
-			UserBean user, Boolean removeVisibility)
+			Boolean removeVisibility)
 			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public List<String> deleteCompositionFile(SampleComposition comp,
-			File file, UserBean user, Boolean removeVisibility)
+			File file, Boolean removeVisibility)
 			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
-	public CompositionBean findCompositionBySampleId(String sampleId,
-			UserBean user) throws CompositionException {
+	public CompositionBean findCompositionBySampleId(String sampleId) throws CompositionException {
 		CompositionBean compositionBean = null;
 		try {
 			// find all nanomaterial entity class names, functionalizing entity
@@ -587,20 +581,20 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 
 	public void copyAndSaveNanomaterialEntity(
 			NanomaterialEntityBean entityBean, SampleBean oldSampleBean,
-			SampleBean[] newSampleBeans, UserBean user)
+			SampleBean[] newSampleBeans)
 			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public void copyAndSaveFunctionalizingEntity(
 			FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
-			SampleBean[] newSampleBeans, UserBean user)
+			SampleBean[] newSampleBeans)
 			throws CompositionException, NoAccessException {
 		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public List<String> deleteComposition(SampleComposition comp,
-			UserBean user, Boolean removeVisibility)
+			Boolean removeVisibility)
 			throws ChemicalAssociationViolationException, CompositionException,
 			NoAccessException {
 		throw new CompositionException("Not implemented for grid service");

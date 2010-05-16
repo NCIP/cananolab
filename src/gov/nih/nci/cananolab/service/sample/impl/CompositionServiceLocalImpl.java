@@ -20,8 +20,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
@@ -45,17 +43,23 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
 			.getLogger(CompositionServiceLocalImpl.class);
 
-	private CompositionServiceHelper helper = new CompositionServiceHelper();
-	private FileServiceHelper fileHelper = new FileServiceHelper();
-	private FileServiceLocalImpl fileService = new FileServiceLocalImpl();
+	private CompositionServiceHelper helper;
+	private FileServiceLocalImpl fileService;
 
 	public CompositionServiceLocalImpl() {
+		helper = new CompositionServiceHelper();
+		fileService = new FileServiceLocalImpl();
+	}
+
+	public CompositionServiceLocalImpl(UserBean user) {
+		helper = new CompositionServiceHelper(user);
+		fileService = new FileServiceLocalImpl(user);
 	}
 
 	public void saveNanomaterialEntity(SampleBean sampleBean,
-			NanomaterialEntityBean entityBean, UserBean user)
-			throws CompositionException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+			NanomaterialEntityBean entityBean) throws CompositionException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -87,14 +91,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			// .getNanomaterialEntityCollection().add(entity);
 
 			// save file and keyword
-			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+				fileService.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(entity);
 			// save file to the file system and assign visibility
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.writeFile(fileBean, user);
+				fileService.writeFile(fileBean);
 			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
@@ -113,17 +116,17 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		}
 	}
 
-	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
-			UserBean user) throws CompositionException, NoAccessException {
+	public NanomaterialEntityBean findNanomaterialEntityById(String entityId)
+			throws CompositionException, NoAccessException {
 		NanomaterialEntityBean entityBean = null;
 		try {
-			NanomaterialEntity entity = helper.findNanomaterialEntityById(
-					entityId, user);
+			NanomaterialEntity entity = helper
+					.findNanomaterialEntityById(entityId);
 			if (entity != null) {
 				entityBean = new NanomaterialEntityBean(entity);
-				if (entityBean.getFiles() != null && user != null) {
+				if (entityBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileHelper
+						fileBean.setVisibilityGroups(fileService.getHelper()
 								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
@@ -140,9 +143,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public void saveFunctionalizingEntity(SampleBean sampleBean,
-			FunctionalizingEntityBean entityBean, UserBean user)
-			throws CompositionException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+			FunctionalizingEntityBean entityBean) throws CompositionException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -174,14 +177,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			// .getFunctionalizingEntityCollection().add(entity);
 
 			// save file and keyword
-			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+				fileService.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(entity);
 			// save file to the file system and assign visibility
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.writeFile(fileBean, user);
+				fileService.writeFile(fileBean);
 			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
@@ -202,9 +204,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public void saveChemicalAssociation(SampleBean sampleBean,
-			ChemicalAssociationBean assocBean, UserBean user)
-			throws CompositionException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+			ChemicalAssociationBean assocBean) throws CompositionException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -233,14 +235,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			// composition.getChemicalAssociationCollection().add(assoc);
 			assoc.setSampleComposition(sample.getSampleComposition());
 			// save file and keyword
-			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : assocBean.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+				fileService.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(assoc);
 			// save file to the file system and assign visibility
 			for (FileBean fileBean : assocBean.getFiles()) {
-				fileService.writeFile(fileBean, user);
+				fileService.writeFile(fileBean);
 			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
@@ -259,16 +260,15 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		}
 	}
 
-	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean,
-			UserBean user) throws CompositionException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean)
+			throws CompositionException, NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
 			Sample sample = sampleBean.getDomain();
 			File file = fileBean.getDomainFile();
-			FileService fileService = new FileServiceLocalImpl();
-			fileService.prepareSaveFile(file, user);
+			fileService.prepareSaveFile(file);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
@@ -284,7 +284,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			else {
 				List<File> fileList = helper.findFilesByCompositionInfoId(
 						sample.getSampleComposition().getId().toString(),
-						"SampleComposition", user);
+						"SampleComposition");
 				sample.getSampleComposition().setFileCollection(
 						new HashSet<File>(fileList));
 			}
@@ -297,7 +297,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				appService.saveOrUpdate(file);
 			}
 			// write file to file system and assign visibility
-			fileService.writeFile(fileBean, user);
+			fileService.writeFile(fileBean);
 			// assign visibility for composition
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
@@ -316,17 +316,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
-			String entityId, UserBean user) throws CompositionException,
-			NoAccessException {
+			String entityId) throws CompositionException, NoAccessException {
 		FunctionalizingEntityBean entityBean = null;
 		try {
 			FunctionalizingEntity entity = helper
-					.findFunctionalizingEntityById(entityId, user);
+					.findFunctionalizingEntityById(entityId);
 			if (entity != null) {
 				entityBean = new FunctionalizingEntityBean(entity);
-				if (entityBean.getFiles() != null && user != null) {
+				if (entityBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileHelper
+						fileBean.setVisibilityGroups(fileService.getHelper()
 								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
@@ -345,17 +344,17 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		return entityBean;
 	}
 
-	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
-			UserBean user) throws CompositionException, NoAccessException {
+	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
+			throws CompositionException, NoAccessException {
 		ChemicalAssociationBean assocBean = null;
 		try {
-			ChemicalAssociation assoc = helper.findChemicalAssociationById(
-					assocId, user);
+			ChemicalAssociation assoc = helper
+					.findChemicalAssociationById(assocId);
 			if (assoc != null) {
 				assocBean = new ChemicalAssociationBean(assoc);
-				if (assocBean.getFiles() != null && user != null) {
+				if (assocBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : assocBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileHelper
+						fileBean.setVisibilityGroups(fileService.getHelper()
 								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
@@ -374,10 +373,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public List<String> deleteNanomaterialEntity(NanomaterialEntity entity,
-			UserBean user, Boolean removeVisibility)
-			throws CompositionException, ChemicalAssociationViolationException,
-			NoAccessException {
-		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			Boolean removeVisibility) throws CompositionException,
+			ChemicalAssociationViolationException, NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -400,10 +398,10 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public List<String> deleteFunctionalizingEntity(
-			FunctionalizingEntity entity, UserBean user,
-			Boolean removeVisibility) throws CompositionException,
-			ChemicalAssociationViolationException, NoAccessException {
-		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			FunctionalizingEntity entity, Boolean removeVisibility)
+			throws CompositionException, ChemicalAssociationViolationException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -429,9 +427,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public List<String> deleteChemicalAssociation(ChemicalAssociation assoc,
-			UserBean user, Boolean removeVisibility)
-			throws CompositionException, NoAccessException {
-		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			Boolean removeVisibility) throws CompositionException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -449,9 +447,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public List<String> deleteCompositionFile(SampleComposition comp,
-			File file, UserBean user, Boolean removeVisibility)
-			throws CompositionException, NoAccessException {
-		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			File file, Boolean removeVisibility) throws CompositionException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -460,12 +458,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					.getApplicationService();
 			// load files first
 			List<File> fileList = helper.findFilesByCompositionInfoId(comp
-					.getId().toString(), "SampleComposition", user);
+					.getId().toString(), "SampleComposition");
 			comp.setFileCollection(new HashSet<File>(fileList));
 			comp.getFileCollection().remove(file);
 			appService.saveOrUpdate(comp);
 			if (removeVisibility == null || removeVisibility)
-				fileHelper.getAuthService().removeCSMEntry(
+				fileService.getHelper().getAuthService().removeCSMEntry(
 						file.getId().toString());
 			entries.add(file.getId().toString());
 		} catch (Exception e) {
@@ -516,28 +514,29 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		return true;
 	}
 
-	public CompositionBean findCompositionBySampleId(String sampleId,
-			UserBean user) throws CompositionException {
+	public CompositionBean findCompositionBySampleId(String sampleId)
+			throws CompositionException {
 		CompositionBean comp = null;
 		try {
-			SampleComposition composition = helper.findCompositionBySampleId(
-					sampleId, user);
+			SampleComposition composition = helper
+					.findCompositionBySampleId(sampleId);
 			if (composition != null) {
 				comp = new CompositionBean(composition);
-				if (comp.getFiles() != null && user != null) {
+				if (comp.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : comp.getFiles()) {
-						fileBean.setVisibilityGroups(fileHelper
+						fileBean.setVisibilityGroups(fileService.getHelper()
 								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
 				if (comp.getNanomaterialEntities() != null) {
 					for (NanomaterialEntityBean entity : comp
 							.getNanomaterialEntities()) {
-						if (entity.getFiles() != null && user != null) {
+						if (entity.getFiles() != null
+								&& helper.getUser() != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileBean.setVisibilityGroups(fileHelper
-										.retrieveVisibility(fileBean
-												.getDomainFile()));
+								fileBean.setVisibilityGroups(fileService
+										.getHelper().retrieveVisibility(
+												fileBean.getDomainFile()));
 							}
 						}
 					}
@@ -545,11 +544,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				if (comp.getFunctionalizingEntities() != null) {
 					for (FunctionalizingEntityBean entity : comp
 							.getFunctionalizingEntities()) {
-						if (entity.getFiles() != null && user != null) {
+						if (entity.getFiles() != null
+								&& helper.getUser() != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileBean.setVisibilityGroups(fileHelper
-										.retrieveVisibility(fileBean
-												.getDomainFile()));
+								fileBean.setVisibilityGroups(fileService
+										.getHelper().retrieveVisibility(
+												fileBean.getDomainFile()));
 							}
 						}
 					}
@@ -557,11 +557,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				if (comp.getChemicalAssociations() != null) {
 					for (ChemicalAssociationBean assoc : comp
 							.getChemicalAssociations()) {
-						if (assoc.getFiles() != null && user != null) {
+						if (assoc.getFiles() != null
+								&& helper.getUser() != null) {
 							for (FileBean fileBean : assoc.getFiles()) {
-								fileBean.setVisibilityGroups(fileHelper
-										.retrieveVisibility(fileBean
-												.getDomainFile()));
+								fileBean.setVisibilityGroups(fileService
+										.getHelper().retrieveVisibility(
+												fileBean.getDomainFile()));
 							}
 						}
 					}
@@ -576,8 +577,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 	public void copyAndSaveNanomaterialEntity(
 			NanomaterialEntityBean entityBean, SampleBean oldSampleBean,
-			SampleBean[] newSampleBeans, UserBean user)
-			throws CompositionException, NoAccessException {
+			SampleBean[] newSampleBeans) throws CompositionException,
+			NoAccessException {
 
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
@@ -589,14 +590,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					for (FileBean fileBean : copyBean.getFiles()) {
 						fileService.updateClonedFileInfo(fileBean,
 								oldSampleBean.getDomain().getName(), sampleBean
-										.getDomain().getName(), user);
+										.getDomain().getName());
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the nanomaterial entity.";
 					throw new CompositionException(error, e);
 				}
 				if (copyBean != null)
-					saveNanomaterialEntity(sampleBean, copyBean, user);
+					saveNanomaterialEntity(sampleBean, copyBean);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -608,8 +609,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 	public void copyAndSaveFunctionalizingEntity(
 			FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
-			SampleBean[] newSampleBeans, UserBean user)
-			throws CompositionException, NoAccessException {
+			SampleBean[] newSampleBeans) throws CompositionException,
+			NoAccessException {
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				FunctionalizingEntityBean copyBean = null;
@@ -620,14 +621,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					for (FileBean fileBean : copyBean.getFiles()) {
 						fileService.updateClonedFileInfo(fileBean,
 								oldSampleBean.getDomain().getName(), sampleBean
-										.getDomain().getName(), user);
+										.getDomain().getName());
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the functionalizing entity.";
 					throw new CompositionException(error, e);
 				}
 				if (copyBean != null)
-					saveFunctionalizingEntity(sampleBean, copyBean, user);
+					saveFunctionalizingEntity(sampleBean, copyBean);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -638,14 +639,17 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	public List<String> deleteComposition(SampleComposition comp,
-			UserBean user, Boolean removeVisibility)
+			Boolean removeVisibility)
 			throws ChemicalAssociationViolationException, CompositionException,
 			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
+			throw new NoAccessException();
+		}
 		List<String> entries = new ArrayList<String>();
 		// delete composition files
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
-				entries.addAll(deleteCompositionFile(comp, file, user,
+				entries.addAll(deleteCompositionFile(comp, file,
 						removeVisibility));
 			}
 		}
@@ -653,7 +657,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		if (comp.getChemicalAssociationCollection() != null) {
 			for (ChemicalAssociation assoc : comp
 					.getChemicalAssociationCollection()) {
-				entries.addAll(deleteChemicalAssociation(assoc, user,
+				entries.addAll(deleteChemicalAssociation(assoc,
 						removeVisibility));
 			}
 		}
@@ -663,7 +667,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		if (comp.getNanomaterialEntityCollection() != null) {
 			for (NanomaterialEntity entity : comp
 					.getNanomaterialEntityCollection()) {
-				entries.addAll(deleteNanomaterialEntity(entity, user,
+				entries.addAll(deleteNanomaterialEntity(entity,
 						removeVisibility));
 			}
 		}
@@ -671,14 +675,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		if (comp.getFunctionalizingEntityCollection() != null) {
 			for (FunctionalizingEntity entity : comp
 					.getFunctionalizingEntityCollection()) {
-				entries.addAll(deleteFunctionalizingEntity(entity, user,
+				entries.addAll(deleteFunctionalizingEntity(entity,
 						removeVisibility));
 			}
 		}
 		// delete composition files
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
-				entries.addAll(deleteCompositionFile(comp, file, user,
+				entries.addAll(deleteCompositionFile(comp, file,
 						removeVisibility));
 			}
 		}
@@ -964,4 +968,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		}
 	}
 
+	public CompositionServiceHelper getHelper() {
+		return helper;
+	}
+
+	public FileServiceLocalImpl getFileService() {
+		return fileService;
+	}
 }

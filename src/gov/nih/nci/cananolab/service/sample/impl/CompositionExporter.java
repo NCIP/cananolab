@@ -22,7 +22,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -48,9 +47,8 @@ import org.apache.poi.hssf.util.HSSFColor;
  * @author houy, pansu
  *
  */
-public class CompositionExporter  {
-	private static Logger logger = Logger
-			.getLogger(CompositionExporter.class);
+public class CompositionExporter {
+	private static Logger logger = Logger.getLogger(CompositionExporter.class);
 
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.CANANOLAB_PROPERTY, Constants.FILE_REPOSITORY_DIR);
@@ -517,7 +515,7 @@ public class CompositionExporter  {
 						sb.append(pubChemId).append(' ');
 						sb.append('(').append(pubChemDs).append(')');
 						ExportUtils.createCell(row, 1, hlinkStyle, sb
-								.toString(), CompositionServiceHelper
+								.toString(), CompositionBean
 								.getPubChemURL(pubChemDs, pubChemId));
 					}
 
@@ -805,7 +803,7 @@ public class CompositionExporter  {
 								sb.append(pubChemId).append(' ');
 								sb.append('(').append(pubChemDs).append(')');
 								ExportUtils.createCell(row, 1, hlinkStyle, sb
-										.toString(), CompositionServiceHelper
+										.toString(), CompositionBean
 										.getPubChemURL(pubChemDs, pubChemId));
 							}
 

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
@@ -19,10 +20,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -51,18 +49,23 @@ public class CharacterizationServiceLocalImpl implements
 		CharacterizationService {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceLocalImpl.class);
-	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
-	private FileServiceHelper fileHelper = new FileServiceHelper();
-	private ProtocolServiceHelper protocolHelper = new ProtocolServiceHelper();
-	private FileServiceLocalImpl fileService = new FileServiceLocalImpl();
+	private CharacterizationServiceHelper helper;
+	private FileServiceLocalImpl fileService;
 
 	public CharacterizationServiceLocalImpl() {
+		helper = new CharacterizationServiceHelper();
+		fileService = new FileServiceLocalImpl();
+	}
+
+	public CharacterizationServiceLocalImpl(UserBean user) {
+		helper = new CharacterizationServiceHelper(user);
+		fileService = new FileServiceLocalImpl(user);
 	}
 
 	public void saveCharacterization(SampleBean sampleBean,
-			CharacterizationBean charBean, UserBean user)
-			throws CharacterizationException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+			CharacterizationBean charBean) throws CharacterizationException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -91,12 +94,10 @@ public class CharacterizationServiceLocalImpl implements
 			// save file data to file system and assign visibility
 			List<FindingBean> findingBeans = charBean.getFindings();
 			if (findingBeans != null && !findingBeans.isEmpty()) {
-				FileService fileService = new FileServiceLocalImpl();
 				for (FindingBean findingBean : findingBeans) {
 					for (FileBean fileBean : findingBean.getFiles()) {
-						fileService.prepareSaveFile(fileBean.getDomainFile(),
-								user);
-						fileService.writeFile(fileBean, user);
+						fileService.prepareSaveFile(fileBean.getDomainFile());
+						fileService.writeFile(fileBean);
 					}
 				}
 			}
@@ -115,15 +116,14 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public CharacterizationBean findCharacterizationById(String charId,
-			UserBean user) throws CharacterizationException, NoAccessException {
+	public CharacterizationBean findCharacterizationById(String charId)
+			throws CharacterizationException, NoAccessException {
 		CharacterizationBean charBean = null;
 		try {
-			Characterization achar = helper.findCharacterizationById(charId,
-					user);
+			Characterization achar = helper.findCharacterizationById(charId);
 			if (achar != null) {
 				charBean = new CharacterizationBean(achar);
-				loadCharacterizationBean(achar, user);
+				loadCharacterizationBean(achar);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -135,19 +135,22 @@ public class CharacterizationServiceLocalImpl implements
 		return charBean;
 	}
 
-	private CharacterizationBean loadCharacterizationBean(
-			Characterization achar, UserBean user) throws Exception {
+	private CharacterizationBean loadCharacterizationBean(Characterization achar)
+			throws Exception {
 		CharacterizationBean charBean = new CharacterizationBean(achar);
 		ProtocolBean protocolBean = charBean.getProtocolBean();
 		// retrieve protocol visibility
-		if (protocolBean.getDomain().getId() != null) {
-			protocolBean.setVisibilityGroups(protocolHelper
-					.retrieveVisibility(protocolBean.getDomain()));
+		if (protocolBean.getDomain().getId() != null
+				&& helper.getUser() != null) {
+			protocolBean.setVisibilityGroups(helper.getAuthService()
+					.getAccessibleGroups(
+							protocolBean.getDomain().getId().toString(),
+							Constants.CSM_READ_PRIVILEGE));
 		}
 		for (FindingBean findingBean : charBean.getFindings()) {
-			if (findingBean.getFiles() != null && user != null) {
+			if (findingBean.getFiles() != null && helper.getUser() != null) {
 				for (FileBean fileBean : findingBean.getFiles()) {
-					fileBean.setVisibilityGroups(fileHelper
+					fileBean.setVisibilityGroups(fileService.getHelper()
 							.retrieveVisibility(fileBean.getDomainFile()));
 				}
 			}
@@ -156,9 +159,9 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	public List<String> deleteCharacterization(Characterization chara,
-			UserBean user, Boolean removeVisibility)
-			throws CharacterizationException, NoAccessException {
-		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			Boolean removeVisibility) throws CharacterizationException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -176,14 +179,13 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
-			String sampleId, UserBean user) throws CharacterizationException {
+			String sampleId) throws CharacterizationException {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 		try {
 			List<Characterization> chars = helper
-					.findCharacterizationsBySampleId(sampleId, user);
+					.findCharacterizationsBySampleId(sampleId);
 			for (Characterization achar : chars) {
-				CharacterizationBean charBean = loadCharacterizationBean(achar,
-						user);
+				CharacterizationBean charBean = loadCharacterizationBean(achar);
 				charBeans.add(charBean);
 			}
 			return charBeans;
@@ -195,16 +197,16 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public FindingBean findFindingById(String findingId, UserBean user)
+	public FindingBean findFindingById(String findingId)
 			throws CharacterizationException, NoAccessException {
 		FindingBean findingBean = null;
 		try {
-			Finding finding = helper.findFindingById(findingId, user);
+			Finding finding = helper.findFindingById(findingId);
 			if (finding != null) {
 				findingBean = new FindingBean(finding);
-				if (findingBean.getFiles() != null && user != null) {
+				if (findingBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : findingBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileHelper
+						fileBean.setVisibilityGroups(fileService.getHelper()
 								.retrieveVisibility(fileBean.getDomainFile()));
 					}
 				}
@@ -219,23 +221,21 @@ public class CharacterizationServiceLocalImpl implements
 		return findingBean;
 	}
 
-	public void saveFinding(FindingBean finding, UserBean user)
+	public void saveFinding(FindingBean finding)
 			throws CharacterizationException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-
-			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean fileBean : finding.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+				fileService.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(finding.getDomain());
 			// save file data to file system and assign visibility
 			for (FileBean fileBean : finding.getFiles()) {
-				fileService.writeFile(fileBean, user);
+				fileService.writeFile(fileBean);
 			}
 			// visibility assignment is handled by saving characterization
 		} catch (Exception e) {
@@ -245,10 +245,9 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public List<String> deleteFinding(Finding finding, UserBean user,
-			Boolean removeVisibility) throws CharacterizationException,
-			NoAccessException {
-		if (user == null || !(user.isCurator() && user.isAdmin())) {
+	public List<String> deleteFinding(Finding finding, Boolean removeVisibility)
+			throws CharacterizationException, NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -265,9 +264,9 @@ public class CharacterizationServiceLocalImpl implements
 		return entries;
 	}
 
-	public void saveExperimentConfig(ExperimentConfigBean configBean,
-			UserBean user) throws ExperimentConfigException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+	public void saveExperimentConfig(ExperimentConfigBean configBean)
+			throws ExperimentConfigException, NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -276,8 +275,8 @@ public class CharacterizationServiceLocalImpl implements
 					.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
-				ExperimentConfig dbConfig = helper.findExperimentConfigById(
-						config.getId().toString(), user);
+				ExperimentConfig dbConfig = helper
+						.findExperimentConfigById(config.getId().toString());
 				if (dbConfig != null) {
 					// reuse original createdBy if it is not COPY
 					if (!dbConfig.getCreatedBy().equals(
@@ -331,9 +330,9 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	public List<String> deleteExperimentConfig(ExperimentConfig config,
-			UserBean user, Boolean removeVisibility)
-			throws ExperimentConfigException, NoAccessException {
-		if (user == null || !(user.isCurator() && user.isAdmin())) {
+			Boolean removeVisibility) throws ExperimentConfigException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -342,8 +341,8 @@ public class CharacterizationServiceLocalImpl implements
 					.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
-				ExperimentConfig dbConfig = helper.findExperimentConfigById(
-						config.getId().toString(), user);
+				ExperimentConfig dbConfig = helper
+						.findExperimentConfigById(config.getId().toString());
 				if (dbConfig != null) {
 					config.setCreatedBy(dbConfig.getCreatedBy());
 					config.setCreatedDate(dbConfig.getCreatedDate());
@@ -422,32 +421,25 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	private Instrument findInstrumentBy(String type, String manufacturer,
-			String modelName) throws ExperimentConfigException {
+			String modelName) throws Exception {
 		Instrument instrument = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
-			crit.add(Restrictions.eq("type", type).ignoreCase());
-			crit
-					.add(Restrictions.eq("manufacturer", manufacturer)
-							.ignoreCase());
-			crit.add(Restrictions.eq("modelName", modelName).ignoreCase());
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				instrument = (Instrument) obj;
-			}
-		} catch (Exception e) {
-			String err = "Problem to retrieve instrument by type, manufacturer, and model name.";
-			logger.error(err, e);
-			throw new ExperimentConfigException(err);
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
+		crit.add(Restrictions.eq("type", type).ignoreCase());
+		crit.add(Restrictions.eq("manufacturer", manufacturer).ignoreCase());
+		crit.add(Restrictions.eq("modelName", modelName).ignoreCase());
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			instrument = (Instrument) obj;
 		}
 		return instrument;
 	}
 
 	public void copyAndSaveCharacterization(CharacterizationBean charBean,
 			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
-			boolean copyData, UserBean user) throws CharacterizationException,
+			boolean copyData) throws CharacterizationException,
 			NoAccessException {
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
@@ -475,7 +467,7 @@ public class CharacterizationServiceLocalImpl implements
 						.getExperimentConfigs();
 				if (expConfigs != null && !expConfigs.isEmpty()) {
 					for (ExperimentConfigBean configBean : expConfigs) {
-						this.saveExperimentConfig(configBean, user);
+						this.saveExperimentConfig(configBean);
 					}
 				}
 				List<FindingBean> findings = copyBean.getFindings();
@@ -486,12 +478,12 @@ public class CharacterizationServiceLocalImpl implements
 						for (FileBean fileBean : findingBean.getFiles()) {
 							fileService.updateClonedFileInfo(fileBean,
 									oldSampleBean.getDomain().getName(),
-									sampleBean.getDomain().getName(), user);
+									sampleBean.getDomain().getName());
 						}
-						this.saveFinding(findingBean, user);
+						this.saveFinding(findingBean);
 					}
 				}
-				this.saveCharacterization(sampleBean, copyBean, user);
+				this.saveCharacterization(sampleBean, copyBean);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -667,5 +659,35 @@ public class CharacterizationServiceLocalImpl implements
 			}
 		}
 		return entries;
+	}
+
+	public List<String> findOtherCharacterizationByAssayCategory(
+			String assayCategory) throws CharacterizationException {
+		List<String> charNames = new ArrayList<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					OtherCharacterization.class).add(
+					Property.forName("assayCategory").eq(assayCategory)
+							.ignoreCase());
+			List result = appService.query(crit);
+			for (Object obj : result) {
+				String charName = ((OtherCharacterization) obj).getName();
+				if (!charNames.contains(charName)) {
+					charNames.add(charName);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error finding other characterizations by assay cateogry "
+					+ assayCategory;
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
+		}
+		return charNames;
+	}
+
+	public CharacterizationServiceHelper getHelper() {
+		return helper;
 	}
 }
