@@ -482,7 +482,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 		throw new SampleException("Not implemented for grid service");
 	}
 
-	public List<String> findOtherSampleNamesFromSamePointOfContact(
+	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
 			String sampleId) throws SampleException {
 		throw new SampleException("Not implemented for grid service");
 	}

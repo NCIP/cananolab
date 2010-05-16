@@ -911,8 +911,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		return sampleNames;
 	}
 
-	public Set<String> findOtherSamplesFromSamePointOfContact(String sampleId)
-			throws Exception {
+	public Set<String> findOtherSamplesFromSamePPrimaryOrganization(
+			String sampleId) throws Exception {
 		Set<String> otherSamples = new TreeSet<String>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -926,7 +926,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			String name = (String) obj.toString();
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
 				otherSamples.add(name);
 			} else {
 				logger.debug("User doesn't have access to sample of name: "

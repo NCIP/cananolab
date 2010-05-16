@@ -87,7 +87,7 @@ public class InitSampleSetup {
 			String sampleId) throws Exception {
 		SampleService service = getServiceFromSession(request);
 		List<String> names = service
-				.findOtherSampleNamesFromSamePointOfContact(sampleId);
+				.findOtherSampleNamesFromSamePrimaryOrganization(sampleId);
 		request.getSession().setAttribute("otherSampleNames", names);
 		return names;
 	}

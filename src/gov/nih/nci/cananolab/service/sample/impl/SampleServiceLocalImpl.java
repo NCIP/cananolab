@@ -997,12 +997,12 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public List<String> findOtherSampleNamesFromSamePointOfContact(
+	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
 			String sampleId) throws SampleException {
 		List<String> sortedNames = null;
 		try {
 			Set<String> names = helper
-					.findOtherSamplesFromSamePointOfContact(sampleId);
+					.findOtherSamplesFromSamePPrimaryOrganization(sampleId);
 			sortedNames = new ArrayList<String>(names);
 			Collections.sort(sortedNames,
 					new Comparators.SortableNameComparator());
