@@ -143,7 +143,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {
 			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+			if (getAccessibleData().contains(id)) {
 				publicIds.add(id);
 			}
 		}

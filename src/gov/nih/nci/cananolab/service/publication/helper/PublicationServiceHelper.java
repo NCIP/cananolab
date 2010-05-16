@@ -311,7 +311,7 @@ public class PublicationServiceHelper extends FileServiceHelper {
 		int count = 0;
 		for (Object obj : results) {
 			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+			if (getAccessibleData().contains(id)) {
 				count++;
 			}
 		}
