@@ -6,15 +6,12 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
-import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.StringUtils;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,18 +31,30 @@ import org.hibernate.criterion.Property;
 public class ProtocolServiceLocalImpl implements ProtocolService {
 	private static Logger logger = Logger
 			.getLogger(ProtocolServiceLocalImpl.class);
-	private ProtocolServiceHelper helper = new ProtocolServiceHelper();
+	private ProtocolServiceHelper helper;
+	private FileServiceLocalImpl fileService;
 
-	public ProtocolBean findProtocolById(String protocolId, UserBean user)
+	public ProtocolServiceLocalImpl() {
+		helper = new ProtocolServiceHelper();
+		fileService = new FileServiceLocalImpl();
+	}
+
+	public ProtocolServiceLocalImpl(UserBean user) {
+		helper = new ProtocolServiceHelper(user);
+		fileService = new FileServiceLocalImpl(user);
+	}
+
+	public ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException {
 		ProtocolBean protocolBean = null;
 		try {
-			Protocol protocol = helper.findProtocolById(protocolId, user);
+			Protocol protocol = helper.findProtocolById(protocolId);
 			if (protocol != null) {
 				protocolBean = new ProtocolBean(protocol);
-				if (user != null)
-					protocolBean.setVisibilityGroups(helper
-							.retrieveVisibility(protocol));
+				if (helper.getUser() != null)
+					protocolBean.setVisibilityGroups(helper.getAuthService()
+							.getAccessibleGroups(protocol.getId().toString(),
+									Constants.CSM_READ_PRIVILEGE));
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -63,21 +72,19 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	 * @param protocolBean
 	 * @throws Exception
 	 */
-	public void saveProtocol(ProtocolBean protocolBean, UserBean user)
+	public void saveProtocol(ProtocolBean protocolBean)
 			throws ProtocolException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
-			FileService fileService = new FileServiceLocalImpl();
-
 			if (protocolBean.getFileBean() != null) {
 				fileService.prepareSaveFile(protocolBean.getFileBean()
-						.getDomainFile(), user);
+						.getDomainFile());
 			}
 			Protocol dbProtocol = helper.findProtocolBy(protocolBean
 					.getDomain().getType(), protocolBean.getDomain().getName(),
-					protocolBean.getDomain().getVersion(), user);
+					protocolBean.getDomain().getVersion());
 			if (dbProtocol != null) {
 				if (dbProtocol.getId() != protocolBean.getDomain().getId()) {
 					protocolBean.getDomain().setId(dbProtocol.getId());
@@ -91,7 +98,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			// was kept
 			else if (protocolBean.getDomain().getId() != null) {
 				protocolBean.getDomain().setId(null);
-				protocolBean.getDomain().setCreatedBy(user.getLoginName());
+				protocolBean.getDomain().setCreatedBy(
+						helper.getUser().getLoginName());
 				protocolBean.getDomain().setCreatedDate(new Date());
 			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -101,7 +109,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 			// save to the file system fileData is not empty
 			if (protocolBean.getFileBean() != null) {
-				fileService.writeFile(protocolBean.getFileBean(), user);
+				fileService.writeFile(protocolBean.getFileBean());
 			}
 
 			// set visibility
@@ -115,16 +123,17 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	}
 
 	public ProtocolBean findProtocolBy(String protocolType,
-			String protocolName, String protocolVersion, UserBean user)
+			String protocolName, String protocolVersion)
 			throws ProtocolException, NoAccessException {
 		try {
 			Protocol protocol = helper.findProtocolBy(protocolType,
-					protocolName, protocolVersion, user);
+					protocolName, protocolVersion);
 			if (protocol != null) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
-				if (user != null)
-					protocolBean.setVisibilityGroups(helper
-							.retrieveVisibility(protocol));
+				if (helper.getUser() != null)
+					protocolBean.setVisibilityGroups(helper.getAuthService()
+							.getAccessibleGroups(protocol.getId().toString(),
+									Constants.CSM_READ_PRIVILEGE));
 				return protocolBean;
 			} else {
 				return null;
@@ -139,18 +148,19 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	}
 
 	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle,
-			UserBean user) throws ProtocolException {
+			String protocolName, String protocolAbbreviation, String fileTitle)
+			throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
-					protocolName, protocolAbbreviation, fileTitle, user);
+					protocolName, protocolAbbreviation, fileTitle);
 
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
-				if (user != null)
-					protocolBean.setVisibilityGroups(helper
-							.retrieveVisibility(protocol));
+				if (helper.getUser() != null)
+					protocolBean.setVisibilityGroups(helper.getAuthService()
+							.getAccessibleGroups(protocol.getId().toString(),
+									Constants.CSM_READ_PRIVILEGE));
 				protocolBeans.add(protocolBean);
 			}
 			return protocolBeans;
@@ -172,10 +182,10 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	public List<String> deleteProtocol(Protocol protocol, UserBean user,
+	public List<String> deleteProtocol(Protocol protocol,
 			Boolean removeVisibility) throws ProtocolException,
 			NoAccessException {
-		if (user == null || !user.isCurator()) {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -184,12 +194,20 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 					.getApplicationService();
 			// assume protocol is loaded with protocol file
 			// find associated characterizations
-			List<Long> charIds = findCharacterizationIdsByProtocolId(protocol
-					.getId().toString(), user);
-			CharacterizationServiceHelper charServiceHelper = new CharacterizationServiceHelper();
-			for (Long id : charIds) {
-				Characterization achar = charServiceHelper
-						.findCharacterizationById(id.toString(), user);
+			// List<Long> charIds = findCharacterizationIdsByProtocolId(protocol
+			// .getId().toString());
+			// CharacterizationServiceHelper charServiceHelper = new
+			// CharacterizationServiceHelper();
+			// for (Long id : charIds) {
+			// Characterization achar = charServiceHelper
+			// .findCharacterizationById(id.toString());
+			// achar.setProtocol(null);
+			// appService.saveOrUpdate(achar);
+			// }
+			List<Characterization> chars = this
+					.findCharacterizationsByProtocolId(protocol.getId()
+							.toString());
+			for (Characterization achar : chars) {
 				achar.setProtocol(null);
 				appService.saveOrUpdate(achar);
 			}
@@ -203,35 +221,39 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		return entries;
 	}
 
-	private List<Long> findCharacterizationIdsByProtocolId(String protocolId,
-			UserBean user) throws Exception {
-		if (helper.getAuthService().checkReadPermission(user, protocolId)) {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Characterization.class).setProjection(
-					Projections.distinct(Property.forName("id")));
-			crit.createAlias("protocol", "protocol");
-			crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
-			List results = appService.query(crit);
-			List<Long> ids = new ArrayList<Long>();
-			for (Object obj : results) {
-				Long charId = (Long) obj;
-				if (helper.getAuthService().checkReadPermission(user,
-						charId.toString())) {
-					ids.add(charId);
-				} else {
-					logger
-							.debug("User doesn't have access to characterization "
-									+ charId);
-				}
-			}
-			return ids;
-		} else {
-			throw new NoAccessException(
-					"User doesn't have acess to the protocol of id: "
-							+ protocolId);
+	private List<Long> findCharacterizationIdsByProtocolId(String protocolId)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Characterization.class).setProjection(
+				Projections.distinct(Property.forName("id")));
+		crit.createAlias("protocol", "protocol");
+		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
+		List results = appService.query(crit);
+		List<Long> ids = new ArrayList<Long>();
+		for (Object obj : results) {
+			Long charId = (Long) obj;
+			ids.add(charId);
 		}
+		return ids;
+	}
+
+	private List<Characterization> findCharacterizationsByProtocolId(
+			String protocolId) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(Characterization.class);
+		crit.createAlias("protocol", "protocol");
+		crit.add(Property.forName("protocol.id").eq(new Long(protocolId)));
+		List results = appService.query(crit);
+		List<Characterization> chars = new ArrayList<Characterization>();
+		for (Object obj : results) {
+			Characterization achar = (Characterization) obj;
+			chars.add(achar);
+		}
+		return chars;
 	}
 
 	private void assignVisibility(Protocol protocol, String[] visibilityGroups)
@@ -265,4 +287,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		return entries;
 	}
 
+	public ProtocolServiceHelper getHelper() {
+		return helper;
+	}
 }

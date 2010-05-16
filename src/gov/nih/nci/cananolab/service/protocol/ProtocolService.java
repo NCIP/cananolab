@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.service.protocol;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public interface ProtocolService {
 
-	public ProtocolBean findProtocolById(String protocolId, UserBean user)
+	public ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;
 
 	/**
@@ -25,20 +24,20 @@ public interface ProtocolService {
 	 * @param protocol
 	 * @throws Exception
 	 */
-	public void saveProtocol(ProtocolBean protocolBean, UserBean user)
+	public void saveProtocol(ProtocolBean protocolBean)
 			throws ProtocolException, NoAccessException;
 
 	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle,
-			UserBean user) throws ProtocolException;
+			String protocolName, String protocolAbbreviation, String fileTite)
+			throws ProtocolException;
 
 	public ProtocolBean findProtocolBy(String protocolType,
-			String protocolName, String protocolVersion, UserBean user)
+			String protocolName, String protocolVersion)
 			throws ProtocolException, NoAccessException;
 
 	public int getNumberOfPublicProtocols() throws ProtocolException;
 
-	public List<String> deleteProtocol(Protocol protocol, UserBean user,
+	public List<String> deleteProtocol(Protocol protocol,
 			Boolean removeVisibility) throws ProtocolException,
 			NoAccessException;
 }

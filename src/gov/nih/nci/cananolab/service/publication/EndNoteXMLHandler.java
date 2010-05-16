@@ -232,7 +232,7 @@ public class EndNoteXMLHandler {
 
 	public int savePublications(UserBean user) {
 		int count = 0, dupCount = 0;
-		PublicationService service = new PublicationServiceLocalImpl();
+		PublicationService service = new PublicationServiceLocalImpl(user);
 		for (PublicationBean pubBean : uniquePubList) {
 			Publication publication = (Publication) pubBean.getDomainFile();
 			pubBean.setVisibilityGroups(visibilityGroups);
@@ -268,11 +268,11 @@ public class EndNoteXMLHandler {
 				// 1.check for duplicated publication in DB by PubMedId.
 				if (pubMedId != null && pubMedId != 0) {
 					// replace publicationBean with parsed XML record
-					PublicationBean xmlPubBean = service.getPublicationFromPubMedXML(pubMedId
-							.toString());
+					PublicationBean xmlPubBean = service
+							.getPublicationFromPubMedXML(pubMedId.toString());
 					pubBean.copyPubMedFieldsFromPubMedXML(xmlPubBean);
 					PublicationBean pBean = service.findPublicationByKey(
-							"pubMedId", pubMedId, user);
+							"pubMedId", pubMedId);
 					if (pBean != null) {
 						Publication pub = (Publication) pBean.getDomainFile();
 						if (pub != null && pub.getId() != null
@@ -293,7 +293,7 @@ public class EndNoteXMLHandler {
 				// 2.check for duplicated publication in DB by DOI.
 				else if (!StringUtils.isEmpty(doi)) {
 					PublicationBean pBean = service.findPublicationByKey(
-							"digitalObjectId", doi, user);
+							"digitalObjectId", doi);
 					if (pBean != null) {
 						Publication pub = (Publication) pBean.getDomainFile();
 						if (pub != null && pub.getId() != null
@@ -315,7 +315,7 @@ public class EndNoteXMLHandler {
 					PublicationBean pBean = service
 							.findNonPubMedNonDOIPublication(publication
 									.getCategory(), title, firstAuthorLastName,
-									firstAuthorFirstName, user);
+									firstAuthorFirstName);
 					// found a match, copy all fields already curated in the
 					// database
 					if (pBean != null) {
@@ -326,7 +326,7 @@ public class EndNoteXMLHandler {
 				pubBean.setupDomain(Constants.FOLDER_PUBLICATION, user
 						.getLoginName());
 				System.out.println(">>>>>>" + count);
-				service.savePublication(pubBean, user);
+				service.savePublication(pubBean);
 				this.printLog(pubBean, savedLog, count++);
 			} catch (Exception ex) {
 				log.println("Exception thrown in saving Publication:");

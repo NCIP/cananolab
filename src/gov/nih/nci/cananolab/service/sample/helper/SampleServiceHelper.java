@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -54,16 +55,16 @@ import org.hibernate.criterion.Restrictions;
  * @author pansu, tanq
  *
  */
-public class SampleServiceHelper {
+public class SampleServiceHelper extends BaseServiceHelper {
 	private AuthorizationService authService;
 	private static Logger logger = Logger.getLogger(SampleServiceHelper.class);
 
 	public SampleServiceHelper() {
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-		} catch (Exception e) {
-			logger.error("Can't create authorization service: " + e);
-		}
+		super();
+	}
+
+	public SampleServiceHelper(UserBean user) {
+		super(user);
 	}
 
 	public List<Sample> findSamplesBy(String samplePointOfContact,
@@ -73,233 +74,19 @@ public class SampleServiceHelper {
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList,
-			UserBean user) throws Exception {
+			String[] otherCharacterizationTypes, String[] wordList)
+			throws Exception {
+		List<String> sampleNames = this.findSampleNamesBy(null,
+				samplePointOfContact, nanomaterialEntityClassNames,
+				otherNanomaterialEntityTypes, functionalizingEntityClassNames,
+				otherFunctionalizingEntityTypes, functionClassNames,
+				otherFunctionTypes, characterizationClassNames,
+				otherCharacterizationTypes, wordList);
 		List<Sample> samples = new ArrayList<Sample>();
 
-		// can't query for the entire Sample object due to
-		// limitations in pagination in SDK
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-				.setProjection(Projections.distinct(Property.forName("name")));
-		if (!StringUtils.isEmpty(samplePointOfContact)) {
-			TextMatchMode pocMatchMode = new TextMatchMode(samplePointOfContact);
-			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias("primaryPointOfContact", "pointOfContact");
-			crit.createAlias("pointOfContact.organization", "organization");
-			crit.createAlias("otherPointOfContactCollection", "otherPoc",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("otherPoc.organization", "otherOrg",
-					CriteriaSpecification.LEFT_JOIN);
-			String critStrs[] = { "pointOfContact.lastName",
-					"pointOfContact.firstName", "pointOfContact.role",
-					"organization.name", "otherPoc.lastName",
-					"otherPoc.firstName", "otherOrg.name" };
-			for (String critStr : critStrs) {
-				Criterion pocCrit = Restrictions.ilike(critStr, pocMatchMode
-						.getUpdatedText(), pocMatchMode.getMatchMode());
-				disjunction.add(pocCrit);
-			}
-			crit.add(disjunction);
-		}
-
-		// join composition
-		if (nanomaterialEntityClassNames != null
-				&& nanomaterialEntityClassNames.length > 0
-				|| otherNanomaterialEntityTypes != null
-				&& otherNanomaterialEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0
-				|| functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| otherFunctionalizingEntityTypes != null
-				&& otherFunctionalizingEntityTypes.length > 0) {
-			crit.createAlias("sampleComposition", "comp",
-					CriteriaSpecification.LEFT_JOIN);
-		}
-		// join nanomaterial entity
-		if (nanomaterialEntityClassNames != null
-				&& nanomaterialEntityClassNames.length > 0
-				|| otherNanomaterialEntityTypes != null
-				&& otherNanomaterialEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity",
-					CriteriaSpecification.LEFT_JOIN);
-		}
-
-		// join functionalizing entity
-		if (functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| otherFunctionalizingEntityTypes != null
-				&& otherFunctionalizingEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			crit.createAlias("comp.functionalizingEntityCollection",
-					"funcEntity", CriteriaSpecification.LEFT_JOIN);
-		}
-
-		// nanomaterial entity
-		if (nanomaterialEntityClassNames != null
-				&& nanomaterialEntityClassNames.length > 0
-				|| otherNanomaterialEntityTypes != null
-				&& otherNanomaterialEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			if (nanomaterialEntityClassNames != null
-					&& nanomaterialEntityClassNames.length > 0) {
-				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanomaterialEntityClassNames);
-				disjunction.add(nanoEntityCrit);
-			}
-			if (otherNanomaterialEntityTypes != null
-					&& otherNanomaterialEntityTypes.length > 0) {
-				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
-						"OtherNanomaterialEntity");
-				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanomaterialEntityTypes);
-				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
-						otherNanoCrit2);
-				disjunction.add(otherNanoCrit);
-			}
-			crit.add(disjunction);
-		}
-
-		// functionalizing entity
-		// need to turn class names into integers in order for the .class
-		// clause to work
-		if (functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| otherFunctionalizingEntityTypes != null
-				&& otherFunctionalizingEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			if (functionalizingEntityClassNames != null
-					&& functionalizingEntityClassNames.length > 0) {
-				Integer[] functionalizingEntityClassNameIntegers = this
-						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
-				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
-						functionalizingEntityClassNameIntegers);
-				disjunction.add(funcEntityCrit);
-			}
-			if (otherFunctionalizingEntityTypes != null
-					&& otherFunctionalizingEntityTypes.length > 0) {
-				Integer classOrderNumber = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
-						.get("otherFunctionalizingEntity");
-				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
-						classOrderNumber);
-				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
-						otherNanomaterialEntityTypes);
-				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
-						otherFuncCrit2);
-				disjunction.add(otherFuncCrit);
-			}
-			crit.add(disjunction);
-		}
-
-		// function
-		if (functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias("nanoEntity.composingElementCollection",
-					"compElement", CriteriaSpecification.LEFT_JOIN)
-					.createAlias("compElement.inherentFunctionCollection",
-							"inFunc", CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("funcEntity.functionCollection", "func",
-					CriteriaSpecification.LEFT_JOIN);
-			if (functionClassNames != null && functionClassNames.length > 0) {
-				Criterion funcCrit1 = Restrictions.in("inFunc.class",
-						functionClassNames);
-				Criterion funcCrit2 = Restrictions.in("func.class",
-						functionClassNames);
-				disjunction.add(funcCrit1).add(funcCrit2);
-			}
-			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-				Criterion otherFuncCrit1 = Restrictions.and(Restrictions.eq(
-						"inFunc.class", "OtherFunction"), Restrictions.in(
-						"inFunc.type", otherFunctionTypes));
-				Criterion otherFuncCrit2 = Restrictions.and(Restrictions.eq(
-						"func.class", "OtherFunction"), Restrictions.in(
-						"func.type", otherFunctionTypes));
-				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
-			}
-			crit.add(disjunction);
-		}
-
-		// join characterization
-		if (characterizationClassNames != null
-				&& characterizationClassNames.length > 0 || wordList != null
-				&& wordList.length > 0) {
-			crit.createAlias("characterizationCollection", "chara",
-					CriteriaSpecification.LEFT_JOIN);
-		}
-
-		// characterization
-		if (characterizationClassNames != null
-				&& characterizationClassNames.length > 0) {
-			crit
-					.add(Restrictions.in("chara.class",
-							characterizationClassNames));
-		}
-
-		// join keyword, finding, publication
-		if (wordList != null && wordList.length > 0) {
-			crit.createAlias("keywordCollection", "keyword1");
-			crit.createAlias("chara.findingCollection", "finding",
-					CriteriaSpecification.LEFT_JOIN).createAlias(
-					"finding.fileCollection", "charFile",
-					CriteriaSpecification.LEFT_JOIN).createAlias(
-					"charFile.keywordCollection", "keyword2",
-					CriteriaSpecification.LEFT_JOIN);
-			// publication keywords
-			crit.createAlias("publicationCollection", "pub1",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("pub1.keywordCollection", "keyword3",
-					CriteriaSpecification.LEFT_JOIN);
-		}
-
-		// keyword
-		if (wordList != null && wordList.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			for (String keyword : wordList) {
-				// strip wildcards from either ends of keyword
-				keyword = StringUtils.stripWildcards(keyword);
-				Criterion keywordCrit1 = Restrictions.ilike("keyword1.name",
-						keyword, MatchMode.ANYWHERE);
-				Criterion keywordCrit2 = Restrictions.ilike("keyword2.name",
-						keyword, MatchMode.ANYWHERE);
-				Criterion keywordCrit3 = Restrictions.ilike("keyword3.name",
-						keyword, MatchMode.ANYWHERE);
-				disjunction.add(keywordCrit1);
-				disjunction.add(keywordCrit2);
-				disjunction.add(keywordCrit3);
-			}
-			for (String word : wordList) {
-				Criterion summaryCrit1 = Restrictions.ilike(
-						"chara.designMethodsDescription", word,
-						MatchMode.ANYWHERE);
-				Criterion summaryCrit2 = Restrictions.ilike(
-						"charFile.description", word, MatchMode.ANYWHERE);
-				Criterion summaryCrit = Restrictions.or(summaryCrit1,
-						summaryCrit2);
-				disjunction.add(summaryCrit);
-			}
-			crit.add(disjunction);
-		}
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		// get public data
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
-			String sampleName = obj.toString();
+		for (String sampleName : sampleNames) {
 			try {
-				Sample sample = findSampleByName(sampleName, user);
+				Sample sample = findSampleByName(sampleName);
 				samples.add(sample);
 			} catch (NoAccessException e) {
 				// ignore no access exception
@@ -318,8 +105,8 @@ public class SampleServiceHelper {
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList,
-			UserBean user) throws Exception {
+			String[] otherCharacterizationTypes, String[] wordList)
+			throws Exception {
 		List<String> sampleNames = new ArrayList<String>();
 
 		// can't query for the entire Sample object due to
@@ -559,17 +346,12 @@ public class SampleServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		// get public data
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
-			String name = obj.toString();
-			if (user == null || authService.checkReadPermission(user, name)) {
+		for (Object obj : results) {
+			String name = ((String) obj).trim();
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
 				sampleNames.add(name);
-			} else { // ignore no access exception
-				logger.debug("User doesn't have access to sample with name "
+			} else {
+				logger.debug("User doesn't have access to sample of name: "
 						+ name);
 			}
 		}
@@ -727,8 +509,11 @@ public class SampleServiceHelper {
 		return storedChars;
 	}
 
-	public Sample findSampleByName(String sampleName, UserBean user)
-			throws Exception {
+	public Sample findSampleByName(String sampleName) throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleName);
+		}
 		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -767,46 +552,12 @@ public class SampleServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			if (authService.checkReadPermission(user, sample.getName())) {
-				// check visibility of POC
-				if (sample.getPrimaryPointOfContact() != null) {
-					String pocId = sample.getPrimaryPointOfContact().getId()
-							.toString();
-					if (!authService.checkReadPermission(user, pocId)) {
-						sample.setPrimaryPointOfContact(null);
-						logger
-								.debug("User can't access primary point of contact:"
-										+ pocId);
-					}
-				}
-				// remove POC that are not accessible to user
-				Set<PointOfContact> otherPOCs = new HashSet<PointOfContact>();
-				if (sample.getOtherPointOfContactCollection() != null) {
-					for (PointOfContact poc : sample
-							.getOtherPointOfContactCollection()) {
-						Organization org = poc.getOrganization();
-						if (org != null) {
-							if (authService.checkReadPermission(user, org
-									.getId().toString())) {
-								otherPOCs.add(poc);
-							} else {
-								logger
-										.debug("User can't access point of contact:"
-												+ poc.getId());
-							}
-						}
-					}
-					sample.setOtherPointOfContactCollection(otherPOCs);
-				}
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
-			}
+			checkAssociatedVisibility(sample);
 		}
 		return sample;
 	}
 
-	public List<Keyword> findKeywordsBySampleId(String sampleId, UserBean user)
+	public List<Keyword> findKeywordsBySampleId(String sampleId)
 			throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
@@ -820,7 +571,8 @@ public class SampleServiceHelper {
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 			// check whether user has access to the sample
-			if (authService.checkReadPermission(user, sample.getName())) {
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
 				keywords.addAll(sample.getKeywordCollection());
 			} else {
 				throw new NoAccessException(
@@ -830,8 +582,33 @@ public class SampleServiceHelper {
 		return keywords;
 	}
 
-	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId,
-			UserBean user) throws Exception {
+	private void checkAssociatedVisibility(Sample sample) throws Exception {
+		// check visibility of POC
+		if (sample.getPrimaryPointOfContact() != null) {
+			String pocId = sample.getPrimaryPointOfContact().getId().toString();
+			if (!getAccessibleData().contains(pocId)) {
+				sample.setPrimaryPointOfContact(null);
+				logger.debug("User can't access primary point of contact:"
+						+ pocId);
+			}
+		}
+		// remove POC that are not accessible to user
+		Set<PointOfContact> otherPOCs = new HashSet<PointOfContact>();
+		if (sample.getOtherPointOfContactCollection() != null) {
+			for (PointOfContact poc : sample.getOtherPointOfContactCollection()) {
+				if (getAccessibleData().contains(poc.getId().toString())) {
+					otherPOCs.add(poc);
+				} else {
+					logger.debug("User can't access point of contact:"
+							+ poc.getId());
+				}
+			}
+			sample.setOtherPointOfContactCollection(otherPOCs);
+		}
+	}
+
+	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId)
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -842,23 +619,26 @@ public class SampleServiceHelper {
 		List results = appService.query(crit);
 		PointOfContact poc = null;
 		for (Object obj : results) {
-			Sample particle = (Sample) obj;
-			poc = particle.getPrimaryPointOfContact();
-			if (poc != null) {
-				if (authService.checkReadPermission(user, poc.getId()
-						.toString())) {
-					return poc;
-				} else {
-					logger.debug("Don't have access to point of contact "
-							+ poc.getId());
-				}
+			Sample sample = (Sample) obj;
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sample.getName());
+			}
+			poc = sample.getPrimaryPointOfContact();
+		}
+		if (poc != null) {
+			if (!getAccessibleData().contains(poc.getId().toString())) {
+				throw new NoAccessException(
+						"User has no access to the point of contact "
+								+ poc.getId());
 			}
 		}
 		return poc;
 	}
 
 	public List<PointOfContact> findOtherPointOfContactsBySampleId(
-			String sampleId, UserBean user) throws Exception {
+			String sampleId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -870,12 +650,16 @@ public class SampleServiceHelper {
 		List results = appService.query(crit);
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
 		for (Object obj : results) {
-			Sample particle = (Sample) obj;
-			Collection<PointOfContact> otherPOCs = particle
+			Sample sample = (Sample) obj;
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sample.getName());
+			}
+			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
 			for (PointOfContact poc : otherPOCs) {
-				if (authService.checkReadPermission(user, poc.getId()
-						.toString())) {
+				if (getAccessibleData().contains(poc.getId().toString())) {
 					pointOfContacts.add(poc);
 				} else { // ignore no access exception
 					logger
@@ -887,8 +671,7 @@ public class SampleServiceHelper {
 		return pointOfContacts;
 	}
 
-	public Sample findSampleById(String sampleId, UserBean user)
-			throws Exception {
+	public Sample findSampleById(String sampleId) throws Exception {
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
 
@@ -911,37 +694,12 @@ public class SampleServiceHelper {
 		Sample sample = null;
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			if (authService.checkReadPermission(user, sample.getName())) {
-				// check visibility of POC
-				if (sample.getPrimaryPointOfContact() != null) {
-					String pocId = sample.getPrimaryPointOfContact().getId()
-							.toString();
-					if (!authService.checkReadPermission(user, pocId)) {
-						sample.setPrimaryPointOfContact(null);
-						logger
-								.debug("User can't access primary point of contact:"
-										+ pocId);
-					}
-				}
-				// remove POC that are not accessible to user
-				Set<PointOfContact> otherPOCs = new HashSet<PointOfContact>();
-				if (sample.getOtherPointOfContactCollection() != null) {
-					for (PointOfContact poc : sample
-							.getOtherPointOfContactCollection()) {
-						if (authService.checkReadPermission(user, poc.getId()
-								.toString())) {
-							otherPOCs.add(poc);
-						} else {
-							logger.debug("User can't access point of contact:"
-									+ poc.getId());
-						}
-					}
-					sample.setOtherPointOfContactCollection(otherPOCs);
-				}
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sample.getName());
 			}
+			checkAssociatedVisibility(sample);
 		}
 		return sample;
 	}
@@ -1018,10 +776,6 @@ public class SampleServiceHelper {
 		return columns.toArray(new String[0]);
 	}
 
-	public AuthorizationService getAuthService() {
-		return authService;
-	}
-
 	public Integer[] convertToFunctionalizingEntityClassOrderNumber(
 			String[] classNames) {
 		Integer[] orderNumbers = new Integer[classNames.length];
@@ -1034,8 +788,7 @@ public class SampleServiceHelper {
 		return orderNumbers;
 	}
 
-	public Organization findOrganizationByName(String orgName, UserBean user)
-			throws Exception {
+	public Organization findOrganizationByName(String orgName) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
@@ -1046,17 +799,15 @@ public class SampleServiceHelper {
 		Organization org = null;
 		for (Object obj : results) {
 			org = (Organization) obj;
-			if (authService.checkReadPermission(user, org.getId().toString())) {
-				return org;
-			} else {
-				throw new NoAccessException();
-			}
 		}
 		return org;
 	}
 
-	public PointOfContact findPointOfContactById(String pocId, UserBean user)
-			throws Exception {
+	public PointOfContact findPointOfContactById(String pocId) throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), pocId)) {
+			throw new NoAccessException(
+					"User has no access to the point of contact " + pocId);
+		}
 		PointOfContact poc = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -1067,17 +818,12 @@ public class SampleServiceHelper {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			poc = (PointOfContact) obj;
-			if (authService.checkReadPermission(user, poc.getId().toString())) {
-				return poc;
-			} else {
-				throw new NoAccessException();
-			}
 		}
 		return poc;
 	}
 
-	public List<PointOfContact> findPointOfContactsBySampleId(String sampleId,
-			UserBean user) throws Exception {
+	public List<PointOfContact> findPointOfContactsBySampleId(String sampleId)
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -1091,21 +837,24 @@ public class SampleServiceHelper {
 		List results = appService.query(crit);
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
 		for (Object obj : results) {
-			Sample particle = (Sample) obj;
-			PointOfContact primaryPOC = particle.getPrimaryPointOfContact();
-			if (authService.checkReadPermission(user, primaryPOC.getId()
-					.toString())) {
+			Sample sample = (Sample) obj;
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sample.getName());
+			}
+			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
+			if (getAccessibleData().contains(primaryPOC.getId().toString())) {
 				pointOfContacts.add(primaryPOC);
 			} else { // ignore no access exception
 				logger
 						.debug("User doesn't have access to the primary POC with org name "
 								+ primaryPOC.getOrganization().getName());
 			}
-			Collection<PointOfContact> otherPOCs = particle
+			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
 			for (PointOfContact poc : otherPOCs) {
-				if (authService.checkReadPermission(user, primaryPOC.getId()
-						.toString())) {
+				if (getAccessibleData().contains(poc.getId().toString())) {
 					pointOfContacts.add(poc);
 				} else { // ignore no access exception
 					logger
@@ -1117,34 +866,15 @@ public class SampleServiceHelper {
 		return pointOfContacts;
 	}
 
-	// retrieve point of contact accessibility
-	public String[] retrieveVisibility(PointOfContact poc) throws Exception {
-		// get assigned visible groups
-		List<String> accessibleGroups = authService.getAccessibleGroups(poc
-				.getId().toString(), Constants.CSM_READ_PRIVILEGE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		return visibilityGroups;
-	}
-
-	public String[] retrieveVisibility(Sample sample) throws Exception {
-		// get assigned visible groups
-		List<String> accessibleGroups = authService.getAccessibleGroups(sample
-				.getName(), Constants.CSM_READ_PRIVILEGE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		return visibilityGroups;
-	}
-
 	/**
 	 * search sampleNames based on sample name str. The str can contain just a
 	 * partial sample name or multiple partial names one per line
 	 *
 	 * @param nameStr
-	 * @param user
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> findSampleNamesBy(String nameStr, UserBean user)
-			throws Exception {
+	public List<String> findSampleNamesBy(String nameStr) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -1167,49 +897,42 @@ public class SampleServiceHelper {
 			}
 		}
 		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		List<String> names = new ArrayList<String>();
-		for (Object obj : filteredResults) {
+		List<String> sampleNames = new ArrayList<String>();
+		for (Object obj : results) {
 			String name = ((String) obj).trim();
-			if (user == null || authService.checkReadPermission(user, name)) {
-				names.add(name);
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
+				sampleNames.add(name);
 			} else {
 				logger.debug("User doesn't have access to sample of name: "
 						+ name);
 			}
 		}
-		Collections.sort(names);
-		return names;
+		Collections.sort(sampleNames, new Comparators.SortableNameComparator());
+		return sampleNames;
 	}
 
-	public List<PointOfContact> findOtherPointOfContactBySampleId(
-			String sampleId, UserBean user) throws Exception {
-		List<PointOfContact> pocs = new ArrayList<PointOfContact>();
+	public Set<String> findOtherSamplesFromSamePointOfContact(String sampleId)
+			throws Exception {
+		Set<String> otherSamples = new TreeSet<String>();
+
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select aSample.otherPointOfContactCollection from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
-						+ sampleId);
+				"select other.name from gov.nih.nci.cananolab.domain.particle.Sample as other "
+						+ "where exists ("
+						+ "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample "
+						+ "where sample.primaryPointOfContact.organization.name=other.primaryPointOfContact.organization.name and sample.id="
+						+ sampleId + " and other.name!=sample.name)");
 		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
-			PointOfContact poc = (PointOfContact) obj;
-			if (user == null
-					|| authService.checkReadPermission(user, poc.getId()
-							.toString())) {
-				pocs.add(poc);
+		for (Object obj : results) {
+			String name = (String) obj.toString();
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
+				otherSamples.add(name);
 			} else {
-				logger
-						.debug("User doesn't have access to point of contact of id:"
-								+ poc.getId());
+				logger.debug("User doesn't have access to sample of name: "
+						+ name);
 			}
 		}
-		return pocs;
+		return otherSamples;
 	}
 }

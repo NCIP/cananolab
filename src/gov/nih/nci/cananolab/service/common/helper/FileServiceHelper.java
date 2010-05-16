@@ -2,10 +2,9 @@ package gov.nih.nci.cananolab.service.common.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -13,10 +12,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -29,16 +25,15 @@ import org.hibernate.criterion.Property;
  * @author pansu, tanq
  *
  */
-public class FileServiceHelper {
+public class FileServiceHelper extends BaseServiceHelper {
 	private Logger logger = Logger.getLogger(FileServiceHelper.class);
-	private AuthorizationService authService;
 
 	public FileServiceHelper() {
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-		} catch (Exception e) {
-			logger.error("Can't create authorization service: " + e);
-		}
+		super();
+	}
+
+	public FileServiceHelper(UserBean user) {
+		super(user);
 	}
 
 	/**
@@ -47,7 +42,7 @@ public class FileServiceHelper {
 	 * @param fileId
 	 * @return
 	 */
-	public File findFileById(String fileId, UserBean user) throws Exception {
+	public File findFileById(String fileId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -58,7 +53,7 @@ public class FileServiceHelper {
 		File file = null;
 		if (!result.isEmpty()) {
 			file = (File) result.get(0);
-			if (authService.checkReadPermission(user, file.getId().toString())) {
+			if (getAccessibleData().contains(file.getId().toString())) {
 				return file;
 			} else {
 				throw new NoAccessException();
@@ -67,8 +62,12 @@ public class FileServiceHelper {
 		return file;
 	}
 
-	public AuthorizationService getAuthService() {
-		return authService;
+	// retrieve file visibility
+	public String[] retrieveVisibility(File file) throws Exception {
+		// get assigned visible groups
+		String[] visibilityGroups = getAuthService().getAccessibleGroups(
+				file.getId().toString(), Constants.CSM_READ_PRIVILEGE);
+		return visibilityGroups;
 	}
 
 	/**
@@ -78,8 +77,8 @@ public class FileServiceHelper {
 	 * @return
 	 * @throws FileException
 	 */
-	public byte[] getFileContent(Long fileId, UserBean user) throws Exception {
-		File file = findFileById(fileId.toString(), user);
+	public byte[] getFileContent(Long fileId) throws Exception {
+		File file = findFileById(fileId.toString());
 		if (file == null || file.getUri() == null) {
 			return null;
 		}
@@ -128,47 +127,5 @@ public class FileServiceHelper {
 		is.close();
 
 		return fileData;
-	}
-
-	/**
-	 * Check if file is accessible first. If so, retrieve visibility for files.
-	 * If no, remove the file from the list.
-	 *
-	 * @param fileBeans
-	 * @param user
-	 * @throws CompositionException
-	 */
-	public void removeUnaccessibleFiles(Collection<File> files, UserBean user)
-			throws FileException {
-		try {
-			Set<File> copiedFiles = new HashSet<File>(files);
-			for (File file : copiedFiles) {
-				// check whether user can access the file, if not remove from
-				// the
-				// list
-				if (!authService.checkReadPermission(user, file.getId()
-						.toString())) {
-					files.remove(file);
-					logger
-							.debug("User can't access file of id:"
-									+ file.getId());
-				}
-			}
-		} catch (Exception e) {
-			String err = "Error checking access permission for files ";
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
-	}
-
-	// retrieve file visibility
-	public String[] retrieveVisibility(File file) throws Exception {
-		AuthorizationService auth = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		// get assigned visible groups
-		List<String> accessibleGroups = auth.getAccessibleGroups(file.getId()
-				.toString(), Constants.CSM_READ_PRIVILEGE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		return visibilityGroups;
 	}
 }

@@ -10,11 +10,9 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 
 import java.util.HashSet;
 
@@ -28,8 +26,6 @@ import org.apache.log4j.Logger;
  */
 public class FileServiceRemoteImpl implements FileService {
 	private Logger logger = Logger.getLogger(FileServiceRemoteImpl.class);
-
-	private FileServiceHelper helper = new FileServiceHelper();
 
 	private CaNanoLabServiceClient gridClient;
 
@@ -47,8 +43,8 @@ public class FileServiceRemoteImpl implements FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public FileBean findFileById(String fileId, UserBean user)
-			throws FileException, NoAccessException {
+	public FileBean findFileById(String fileId) throws FileException,
+			NoAccessException {
 		FileBean fileBean = null;
 		try {
 			CQLQuery query = new CQLQuery();
@@ -61,7 +57,8 @@ public class FileServiceRemoteImpl implements FileService {
 			target.setAttribute(attribute);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
-			results.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			File file = null;
 			while (iter.hasNext()) {
@@ -84,8 +81,7 @@ public class FileServiceRemoteImpl implements FileService {
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Keyword");
 		Association association = new Association();
-		association
-				.setName("gov.nih.nci.cananolab.domain.common.File");
+		association.setName("gov.nih.nci.cananolab.domain.common.File");
 		association.setRoleName("fileCollection");
 
 		Attribute attribute = new Attribute();
@@ -107,8 +103,8 @@ public class FileServiceRemoteImpl implements FileService {
 		}
 	}
 
-	public void writeFile(FileBean fileBean, UserBean user)
-			throws FileException, NoAccessException {
+	public void writeFile(FileBean fileBean) throws FileException,
+			NoAccessException {
 		throw new FileException("Not implemented for grid service");
 	}
 
@@ -118,7 +114,7 @@ public class FileServiceRemoteImpl implements FileService {
 	 * @param file
 	 * @throws FileException
 	 */
-	public void prepareSaveFile(File file, UserBean user) throws FileException,
+	public void prepareSaveFile(File file) throws FileException,
 			NoAccessException {
 		throw new FileException("Not implemented for grid service");
 	}

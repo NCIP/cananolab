@@ -1,12 +1,10 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
-import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -41,16 +39,15 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author tanq, pansu
  */
-public class PublicationServiceHelper {
-	private AuthorizationService authService;
+public class PublicationServiceHelper extends FileServiceHelper {
 	private Logger logger = Logger.getLogger(PublicationServiceHelper.class);
 
 	public PublicationServiceHelper() {
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-		} catch (Exception e) {
-			logger.error("Can't create authorization service: " + e);
-		}
+		super();
+	}
+
+	public PublicationServiceHelper(UserBean user) {
+		super(user);
 	}
 
 	public List<Publication> findPublicationsBy(String title, String category,
@@ -60,167 +57,18 @@ public class PublicationServiceHelper {
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			UserBean user) throws Exception {
-
-		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
-
-		Set<String> samplePublicationIds = new HashSet<String>();
-		Set<String> compositionPublicationIds = new HashSet<String>();
-		Set<String> otherPublicationIds = new HashSet<String>();
-		Set<String> allPublicationIds = new HashSet<String>();
-
-		// check if sample is accessible
-		if (!StringUtils.isEmpty(sampleName)) {
-			Sample sample = sampleServiceHelper.findSampleByName(sampleName,
-					user);
-			if (sample != null) {
-				for (Publication publication : sample
-						.getPublicationCollection()) {
-					samplePublicationIds.add(publication.getId().toString());
-				}
-				allPublicationIds.addAll(samplePublicationIds);
-			}
-		}
-
-		if (nanomaterialEntityClassNames != null
-				&& nanomaterialEntityClassNames.length > 0
-				|| otherNanomaterialEntityTypes != null
-				&& otherNanomaterialEntityTypes.length > 0
-				|| functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0) {
-			List<Sample> samples = sampleServiceHelper.findSamplesBy(null,
-					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
-					functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, null, null, null, user);
-			for (Sample sample : samples) {
-				for (Publication publication : sample
-						.getPublicationCollection()) {
-					compositionPublicationIds.add(publication.getId()
-							.toString());
-				}
-			}
-			allPublicationIds.addAll(compositionPublicationIds);
-		}
-
-		// can't query for the entire Publication object due to limitations in
-		// pagination in SDK
-		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-				.setProjection(Projections.distinct(Property.forName("id")));
-
-		if (!StringUtils.isEmpty(title)) {
-			TextMatchMode titleMatchMode = new TextMatchMode(title);
-			// case insensitive
-			crit.add(Restrictions.ilike("title", titleMatchMode
-					.getUpdatedText(), titleMatchMode.getMatchMode()));
-		}
-		if (!StringUtils.isEmpty(category)) {
-			// case insensitive
-			crit.add(Restrictions.ilike("category", category, MatchMode.EXACT));
-		}
-
-		// pubMedId
-		if (!StringUtils.isEmpty(pubMedId)) {
-			Long pubMedIdLong = null;
-			try {
-				pubMedIdLong = new Long(pubMedId);
-			} catch (Exception ex) {
-				// ignore
-				pubMedIdLong = new Long(0);
-			}
-			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
-		}
-		if (!StringUtils.isEmpty(digitalObjectId)) {
-			// case insensitive
-			crit.add(Restrictions.ilike("digitalObjectId", digitalObjectId,
-					MatchMode.EXACT));
-		}
-
-		// researchArea
-		if (researchArea != null && researchArea.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			for (String research : researchArea) {
-				// case insensitive
-				Criterion crit1 = Restrictions.ilike("researchArea", research,
-						MatchMode.EXACT);
-				disjunction.add(crit1);
-			}
-			crit.add(disjunction);
-		}
-
-		// keywords
-		if (keywords != null && keywords.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias("keywordCollection", "keyword");
-			for (String keyword : keywords) {
-				// string wildcards from either end of keyword is entered
-				keyword = StringUtils.stripWildcards(keyword);
-				// case insensitive
-				Criterion keywordCrit1 = Restrictions.ilike("keyword.name",
-						keyword, MatchMode.ANYWHERE);
-				disjunction.add(keywordCrit1);
-			}
-			crit.add(disjunction);
-		}
-
-		// authors
-		if (authors != null && authors.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias("authorCollection", "author");
-			for (String author : authors) {
-				// string wildcards from either end of author is entered
-				author = StringUtils.stripWildcards(author);
-				// case insensitive
-				Criterion crit1 = Restrictions.ilike("author.lastName", author,
-						MatchMode.ANYWHERE);
-				disjunction.add(crit1);
-				Criterion crit2 = Restrictions.ilike("author.firstName",
-						author, MatchMode.ANYWHERE);
-				disjunction.add(crit2);
-				Criterion crit3 = Restrictions.ilike("author.initial", author,
-						MatchMode.ANYWHERE);
-				disjunction.add(crit3);
-			}
-			crit.add(disjunction);
-		}
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			otherPublicationIds.add(obj.toString());
-		}
-		allPublicationIds.addAll(otherPublicationIds);
-
-		// find the union of all publication Ids
-		if (!samplePublicationIds.isEmpty()) {
-			allPublicationIds.retainAll(samplePublicationIds);
-		}
-		if (!compositionPublicationIds.isEmpty()) {
-			allPublicationIds.retainAll(compositionPublicationIds);
-		}
-		if (!otherPublicationIds.isEmpty()) {
-			allPublicationIds.retainAll(otherPublicationIds);
-		}
-
-		List filteredResults = new ArrayList(allPublicationIds);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(new ArrayList(
-					allPublicationIds));
-		}
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws Exception {
+		List<String> publicationIds = this.findPublicationIdsBy(title,
+				category, sampleName, researchArea, keywords, pubMedId,
+				digitalObjectId, authors, nanomaterialEntityClassNames,
+				otherNanomaterialEntityTypes, functionalizingEntityClassNames,
+				otherFunctionalizingEntityTypes, functionClassNames,
+				otherFunctionTypes);
 		List<Publication> publications = new ArrayList<Publication>();
-		for (Object obj : filteredResults) {
-			try {
-				Publication publication = findPublicationById(obj.toString(),
-						user);
-				publications.add(publication);
-			} catch (NoAccessException e) {
-				// ignore no access exception
-				logger.debug("User doesn't have access to publication with id "
-						+ obj.toString());
-			}
+		for (Object obj : publicationIds) {
+			Publication publication = findPublicationById(obj.toString());
+			publications.add(publication);
 		}
 		Collections.sort(publications,
 				new Comparators.PublicationCategoryTitleComparator());
@@ -234,10 +82,8 @@ public class PublicationServiceHelper {
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			UserBean user) throws Exception {
-
-		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws Exception {
 
 		// Set<String> samplePublicationIds = new HashSet<String>();
 		// Set<String> compositionPublicationIds = new HashSet<String>();
@@ -250,17 +96,11 @@ public class PublicationServiceHelper {
 
 		// check if sample is accessible
 		if (!StringUtils.isEmpty(sampleName)) {
-			Sample sample = sampleServiceHelper.findSampleByName(sampleName,
-					user);
-			if (sample != null) {
-				for (Publication publication : sample
-						.getPublicationCollection()) {
-					// samplePublicationIds.add(publication.getId().toString());
-					samplePublications.add(publication);
-				}
-				// allPublicationIds.addAll(samplePublicationIds);
-				allPublications.addAll(samplePublications);
-			}
+			List<Publication> publications = this
+					.findPublicationsBySampleName(sampleName);
+			samplePublications.addAll(publications);
+			// allPublicationIds.addAll(samplePublicationIds);
+			allPublications.addAll(samplePublications);
 		}
 
 		if (nanomaterialEntityClassNames != null
@@ -270,19 +110,12 @@ public class PublicationServiceHelper {
 				|| functionalizingEntityClassNames != null
 				&& functionalizingEntityClassNames.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0) {
-			List<Sample> samples = sampleServiceHelper.findSamplesBy(null,
-					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
+			compositionPublications = this.findPublicationsBySampleComposition(
+					sampleName, nanomaterialEntityClassNames,
+					otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, null, null, null, user);
-			for (Sample sample : samples) {
-				for (Publication publication : sample
-						.getPublicationCollection()) {
-					// compositionPublicationIds.add(publication.getId()
-					// .toString());
-					compositionPublications.add(publication);
-				}
-			}
+					otherFunctionTypes);
 			// allPublicationIds.addAll(compositionPublicationIds);
 			allPublications.addAll(compositionPublications);
 		}
@@ -413,31 +246,23 @@ public class PublicationServiceHelper {
 		// get ordered ids
 		List<String> orderedPubIds = new ArrayList<String>();
 		for (Publication pub : orderedPubs) {
-			orderedPubIds.add(pub.getId().toString());
-		}
-		// List filteredResults = new ArrayList(allPublicationIds);
-		List filteredResults = new ArrayList(orderedPubIds);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(new ArrayList(
-					orderedPubIds));
-		}
-		List<String> publicationIds = new ArrayList<String>();
-		for (Object obj : filteredResults) {
-			String publicationId = obj.toString();
-			if (user == null
-					|| authService.checkReadPermission(user, publicationId)) {
-				publicationIds.add(publicationId);
+			if (getAccessibleData().contains(pub.getId().toString())) {
+				orderedPubIds.add(pub.getId().toString());
 			} else {
 				// ignore no access exception
 				logger.debug("User doesn't have access to publication with id "
-						+ obj.toString());
+						+ pub.getId());
 			}
 		}
-		return publicationIds;
+		return orderedPubIds;
 	}
 
-	public Publication findPublicationById(String publicationId, UserBean user)
+	public Publication findPublicationById(String publicationId)
 			throws Exception {
+		if (!getAccessibleData().contains(publicationId)) {
+			throw new NoAccessException(
+					"User has no access to the publication " + publicationId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -450,18 +275,12 @@ public class PublicationServiceHelper {
 		Publication publication = null;
 		if (!result.isEmpty()) {
 			publication = (Publication) result.get(0);
-			if (authService.checkReadPermission(user, publication.getId()
-					.toString())) {
-				return publication;
-			} else {
-				throw new NoAccessException();
-			}
 		}
 		return publication;
 	}
 
-	public Publication findPublicationByKey(String keyName, Object keyValue,
-			UserBean user) throws Exception {
+	public Publication findPublicationByKey(String keyName, Object keyValue)
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -474,8 +293,7 @@ public class PublicationServiceHelper {
 		Publication publication = null;
 		if (!result.isEmpty()) {
 			publication = (Publication) result.get(0);
-			if (authService.checkReadPermission(user, publication.getId()
-					.toString())) {
+			if (getAccessibleData().contains(publication.getId().toString())) {
 				return publication;
 			} else {
 				throw new NoAccessException();
@@ -487,50 +305,49 @@ public class PublicationServiceHelper {
 	public int getNumberOfPublicPublications() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		List<String> publicData = appService.getAllPublicData();
 		HQLCriteria crit = new HQLCriteria(
 				"select id from gov.nih.nci.cananolab.domain.common.Publication");
 		List results = appService.query(crit);
 		int count = 0;
 		for (Object obj : results) {
 			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(publicData, id)) {
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
 				count++;
 			}
 		}
 		return count;
 	}
 
-	public String[] findSampleNamesByPublicationId(String publicationId,
-			UserBean user) throws Exception {
-		// check if user have access to publication first
-		if (authService.checkReadPermission(user, publicationId)) {
-			String query = "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
-					+ publicationId + "'";
-			HQLCriteria crit = new HQLCriteria(query);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			List results = appService.query(crit);
-			SortedSet<String> names = new TreeSet<String>();
-			for (Object obj : results) {
-				String sampleName = obj.toString();
-				if (authService.checkReadPermission(user, sampleName)) {
-					names.add(sampleName);
-				} else {
-					logger.debug("User doesn't have access to sample "
-							+ sampleName);
-				}
-			}
-			return names.toArray(new String[0]);
-		} else {
+	public String[] findSampleNamesByPublicationId(String publicationId)
+			throws Exception {
+		if (!getAccessibleData().contains(publicationId)) {
 			throw new NoAccessException(
-					"User doesn't have acess to the publication of id: "
-							+ publicationId);
+					"User has no access to the publication " + publicationId);
 		}
+		// check if user have access to publication first
+
+		String query = "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
+				+ publicationId + "'";
+		HQLCriteria crit = new HQLCriteria(query);
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List results = appService.query(crit);
+		SortedSet<String> names = new TreeSet<String>();
+		for (Object obj : results) {
+			String sampleName = obj.toString();
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
+				names.add(sampleName);
+			} else {
+				logger
+						.debug("User doesn't have access to sample "
+								+ sampleName);
+			}
+		}
+		return names.toArray(new String[0]);
 	}
 
-	public List<Publication> findPublicationsBySampleId(String sampleId,
-			UserBean user) throws Exception {
+	public List<Publication> findPublicationsBySampleId(String sampleId)
+			throws Exception {
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -546,18 +363,15 @@ public class PublicationServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sample.getName());
+			}
 		}
-		List filteredResults = new ArrayList(new ArrayList(sample
-				.getPublicationCollection()));
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(new ArrayList(sample
-					.getPublicationCollection()));
-		}
-		for (Object obj : filteredResults) {
+		for (Object obj : sample.getPublicationCollection()) {
 			Publication pub = (Publication) obj;
-			if (user == null
-					|| authService.checkReadPermission(user, pub.getId()
-							.toString())) {
+			if (getAccessibleData().contains(pub.getId().toString())) {
 				publications.add(pub);
 			} else {
 				logger.debug("User doesn't have access ot publication with id "
@@ -569,13 +383,213 @@ public class PublicationServiceHelper {
 		return publications;
 	}
 
-	public AuthorizationService getAuthService() {
-		return authService;
+	private List<Publication> findPublicationsBySampleName(String sampleName)
+			throws Exception {
+		List<Publication> publications = new ArrayList<Publication>();
+		Sample sample = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("name").eq(new Long(sampleName)));
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sample.getName());
+			}
+		}
+		for (Object obj : sample.getPublicationCollection()) {
+			Publication pub = (Publication) obj;
+			if (getAccessibleData().contains(pub.getId().toString())) {
+				publications.add(pub);
+			} else {
+				logger.debug("User doesn't have access ot publication with id "
+						+ pub.getId());
+			}
+		}
+		return publications;
+	}
+
+	private Set<Publication> findPublicationsBySampleComposition(
+			String sampleName, String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws Exception {
+		Set<Publication> publications = new HashSet<Publication>();
+		Sample sample = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("name").eq(new Long(sampleName)));
+		// join composition
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0
+				|| functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| otherFunctionalizingEntityTypes != null
+				&& otherFunctionalizingEntityTypes.length > 0) {
+			crit.createAlias("sampleComposition", "comp",
+					CriteriaSpecification.LEFT_JOIN);
+		}
+		// join nanomaterial entity
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity",
+					CriteriaSpecification.LEFT_JOIN);
+		}
+
+		// join functionalizing entity
+		if (functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| otherFunctionalizingEntityTypes != null
+				&& otherFunctionalizingEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+			crit.createAlias("comp.functionalizingEntityCollection",
+					"funcEntity", CriteriaSpecification.LEFT_JOIN);
+		}
+
+		// nanomaterial entity
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			if (nanomaterialEntityClassNames != null
+					&& nanomaterialEntityClassNames.length > 0) {
+				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
+						nanomaterialEntityClassNames);
+				disjunction.add(nanoEntityCrit);
+			}
+			if (otherNanomaterialEntityTypes != null
+					&& otherNanomaterialEntityTypes.length > 0) {
+				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
+						"OtherNanomaterialEntity");
+				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
+						otherNanomaterialEntityTypes);
+				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
+						otherNanoCrit2);
+				disjunction.add(otherNanoCrit);
+			}
+			crit.add(disjunction);
+		}
+
+		// functionalizing entity
+		// need to turn class names into integers in order for the .class
+		// clause to work
+		if (functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| otherFunctionalizingEntityTypes != null
+				&& otherFunctionalizingEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			if (functionalizingEntityClassNames != null
+					&& functionalizingEntityClassNames.length > 0) {
+				Integer[] functionalizingEntityClassNameIntegers = this
+						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
+				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
+						functionalizingEntityClassNameIntegers);
+				disjunction.add(funcEntityCrit);
+			}
+			if (otherFunctionalizingEntityTypes != null
+					&& otherFunctionalizingEntityTypes.length > 0) {
+				Integer classOrderNumber = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+						.get("OtherFunctionalizingEntity");
+				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
+						classOrderNumber);
+				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
+						otherFunctionalizingEntityTypes);
+				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
+						otherFuncCrit2);
+				disjunction.add(otherFuncCrit);
+			}
+			crit.add(disjunction);
+		}
+
+		// function
+		if (functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias("nanoEntity.composingElementCollection",
+					"compElement", CriteriaSpecification.LEFT_JOIN)
+					.createAlias("compElement.inherentFunctionCollection",
+							"inFunc", CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("funcEntity.functionCollection", "func",
+					CriteriaSpecification.LEFT_JOIN);
+			if (functionClassNames != null && functionClassNames.length > 0) {
+				Criterion funcCrit1 = Restrictions.in("inFunc.class",
+						functionClassNames);
+				Criterion funcCrit2 = Restrictions.in("func.class",
+						functionClassNames);
+				disjunction.add(funcCrit1).add(funcCrit2);
+			}
+			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+				Criterion otherFuncCrit1 = Restrictions.and(Restrictions.eq(
+						"inFunc.class", "OtherFunction"), Restrictions.in(
+						"inFunc.type", otherFunctionTypes));
+				Criterion otherFuncCrit2 = Restrictions.and(Restrictions.eq(
+						"func.class", "OtherFunction"), Restrictions.in(
+						"func.type", otherFunctionTypes));
+				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
+			}
+			crit.add(disjunction);
+		}
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getName())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sample.getName());
+			}
+			for (Object obj : sample.getPublicationCollection()) {
+				Publication pub = (Publication) obj;
+				if (getAccessibleData().contains(pub.getId().toString())) {
+					publications.add(pub);
+				} else {
+					logger
+							.debug("User doesn't have access ot publication with id "
+									+ pub.getId());
+				}
+			}
+		}
+		return publications;
+	}
+
+	public Integer[] convertToFunctionalizingEntityClassOrderNumber(
+			String[] classNames) {
+		Integer[] orderNumbers = new Integer[classNames.length];
+		int i = 0;
+		for (String name : classNames) {
+			orderNumbers[i] = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+					.get(name);
+			i++;
+		}
+		return orderNumbers;
 	}
 
 	public Publication findNonPubMedNonDOIPublication(String publicationType,
 			String title, String firstAuthorLastName,
-			String firstAuthorFirstName, UserBean user) throws Exception {
+			String firstAuthorFirstName) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class);
@@ -606,8 +620,7 @@ public class PublicationServiceHelper {
 		Publication publication = null;
 		for (Object obj : results) {
 			publication = (Publication) obj;
-			if (authService.checkReadPermission(user, publication.getId()
-					.toString())) {
+			if (getAccessibleData().contains(publication.getId().toString())) {
 				return publication;
 			} else {
 				throw new NoAccessException();
@@ -615,4 +628,5 @@ public class PublicationServiceHelper {
 		}
 		return publication;
 	}
+
 }

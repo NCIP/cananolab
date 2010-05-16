@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -47,7 +46,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 		}
 	}
 
-	public ProtocolBean findProtocolById(String protocolId, UserBean user)
+	public ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException {
 		try {
 			CQLQuery query = new CQLQuery();
@@ -123,13 +122,13 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 	 * @param protocolBean
 	 * @throws Exception
 	 */
-	public void saveProtocol(ProtocolBean protocolBean, UserBean user)
+	public void saveProtocol(ProtocolBean protocolBean)
 			throws ProtocolException {
 		throw new ProtocolException("Not implemented for grid service");
 	}
 
 	public ProtocolBean findProtocolBy(String protocolType,
-			String protocolName, String protocolVersion, UserBean user)
+			String protocolName, String protocolVersion)
 			throws ProtocolException {
 		try {
 			CQLQuery query = new CQLQuery();
@@ -173,8 +172,8 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 	}
 
 	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle,
-			UserBean user) throws ProtocolException {
+			String protocolName, String protocolAbbreviation, String fileTitle)
+			throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
 			CQLQuery query = new CQLQuery();
@@ -298,7 +297,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 		}
 	}
 
-	public List<String> deleteProtocol(Protocol protocol, UserBean user,
+	public List<String> deleteProtocol(Protocol protocol,
 			Boolean removeVisibility) throws ProtocolException,
 			NoAccessException {
 		throw new ProtocolException("Not implemented for grid service");

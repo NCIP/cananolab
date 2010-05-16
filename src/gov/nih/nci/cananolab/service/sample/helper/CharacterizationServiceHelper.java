@@ -1,25 +1,24 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
-import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CharacterizationException;
-import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -33,43 +32,25 @@ import org.hibernate.criterion.Property;
  *
  * @author tanq, pansu
  */
-public class CharacterizationServiceHelper {
+public class CharacterizationServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceHelper.class);
-	private AuthorizationService authService;
-	private FileServiceHelper fileHelper = new FileServiceHelper();
 
 	public CharacterizationServiceHelper() {
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-		} catch (Exception e) {
-			logger.error("Can't create authorization service: " + e);
-		}
+		super();
 	}
 
-	public List<String> findOtherCharacterizationByAssayCategory(
-			String assayCategory) throws Exception {
-		List<String> charNames = new ArrayList<String>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				OtherCharacterization.class).add(
-				Property.forName("assayCategory").eq(assayCategory).ignoreCase());
-		List result = appService.query(crit);
-		for (Object obj : result) {
-			String charName = ((OtherCharacterization) obj).getName();
-			if (!charNames.contains(charName)) {
-				charNames.add(charName);
-			}
-		}
-		return charNames;
+	public CharacterizationServiceHelper(UserBean user) {
+		super(user);
 	}
 
 	public Protocol findProtocolByCharacterizationId(
-			java.lang.String characterizationId, UserBean user)
-			throws Exception {
+			java.lang.String characterizationId) throws Exception {
+		if (!getAccessibleData().contains(characterizationId)) {
+			new NoAccessException("User has no access to the characterization "
+					+ characterizationId);
+		}
 		Protocol protocol = null;
-
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.particle.Characterization aChar where aChar.id="
@@ -78,18 +59,22 @@ public class CharacterizationServiceHelper {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			protocol = (Protocol) obj;
-			if (authService.checkReadPermission(user, protocol.getId()
-					.toString())) {
+			if (getAccessibleData().contains(protocol.getId().toString())) {
 				return protocol;
 			} else {
-				logger.debug("User doesn't have access to the protocol.");
+				logger.debug("User doesn't have access to the protocol "
+						+ protocol.getId());
 			}
 		}
 		return protocol;
 	}
 
-	public List<Finding> findFindingsByCharacterizationId(String charId,
-			UserBean user) throws Exception {
+	public List<Finding> findFindingsByCharacterizationId(String charId)
+			throws Exception {
+		if (!getAccessibleData().contains(charId)) {
+			new NoAccessException("User has no access to the characterization "
+					+ charId);
+		}
 		List<Finding> findings = new ArrayList<Finding>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -108,19 +93,17 @@ public class CharacterizationServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			Characterization achar = (Characterization) result.get(0);
-			// check whether user has access to the characterization
-			if (authService.checkReadPermission(user, achar.getId().toString())) {
-				findings.addAll(achar.getFindingCollection());
-				return findings;
-			} else {
-				logger.debug("USer doesn't have access to the sample");
-			}
+			findings.addAll(achar.getFindingCollection());
 		}
 		return findings;
 	}
 
 	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(
-			String charId, UserBean user) throws Exception {
+			String charId) throws Exception {
+		if (!getAccessibleData().contains(charId)) {
+			new NoAccessException("User has no access to the characterization "
+					+ charId);
+		}
 		List<ExperimentConfig> configs = new ArrayList<ExperimentConfig>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -135,120 +118,85 @@ public class CharacterizationServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			Characterization achar = (Characterization) result.get(0);
-			// check whether user has access to the characterization
-			if (authService.checkReadPermission(user, achar.getId().toString())) {
-				configs.addAll(achar.getExperimentConfigCollection());
-				return configs;
-			} else {
-				logger.debug("USer doesn't have access to the sample");
-			}
+			configs.addAll(achar.getExperimentConfigCollection());
 		}
 		return configs;
 	}
 
-	public ExperimentConfig findExperimentConfigById(String id, UserBean user)
-			throws ExperimentConfigException, NoAccessException {
+	public ExperimentConfig findExperimentConfigById(String id)
+			throws Exception {
+		if (!getAccessibleData().contains(id)) {
+			new NoAccessException(
+					"User has no access to the experiment config " + id);
+		}
 		ExperimentConfig config = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					ExperimentConfig.class).add(
-					Property.forName("id").eq(new Long(id)));
-			crit.setFetchMode("technique", FetchMode.JOIN);
-			crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
-			List result = appService.query(crit);
-			if (!result.isEmpty()) {
-				config = (ExperimentConfig) result.get(0);
-				if (authService.checkReadPermission(user, config.getId()
-						.toString())) {
-					return config;
-				} else {
-					throw new NoAccessException();
-				}
-			}
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (Exception e) {
-			String err = "Problem to retrieve experiment config by id.";
-			logger.error(err, e);
-			throw new ExperimentConfigException(err);
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				ExperimentConfig.class).add(
+				Property.forName("id").eq(new Long(id)));
+		crit.setFetchMode("technique", FetchMode.JOIN);
+		crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			config = (ExperimentConfig) result.get(0);
 		}
 		return config;
 	}
 
-	public AuthorizationService getAuthService() {
-		return authService;
-	}
-
 	public List<Characterization> findCharacterizationsBySampleId(
-			String sampleId, UserBean user) throws CharacterizationException {
+			String sampleId) throws Exception {
 		List<Characterization> chars = new ArrayList<Characterization>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(Characterization.class);
-			crit.createAlias("sample", "sample");
-			crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
-			// fully load characterization
-			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-			crit.setFetchMode("protocol", FetchMode.JOIN);
-			crit.setFetchMode("protocol.file", FetchMode.JOIN);
-			crit
-					.setFetchMode("protocol.file.keywordCollection",
-							FetchMode.JOIN);
-			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-			crit.setFetchMode("experimentConfigCollection.technique",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"experimentConfigCollection.instrumentCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("findingCollection", FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.datumCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"findingCollection.datumCollection.conditionCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.fileCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode(
-					"findingCollection.fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
 
-			for (Object obj : results) {
-				Characterization achar = (Characterization) obj;
-				if (authService.checkReadPermission(user, achar.getId()
-						.toString())) {
-					if (achar.getProtocol() != null) {
-						if (!authService.checkReadPermission(user, achar
-								.getProtocol().getId().toString())) {
-							achar.setProtocol(null);
-						}
-					}
-					for (Finding finding : achar.getFindingCollection()) {
-						fileHelper.removeUnaccessibleFiles(finding
-								.getFileCollection(), user);
-					}
-					chars.add(achar);
-				}
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(Characterization.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		// fully load characterization
+		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
+
+		for (Object obj : results) {
+			Characterization achar = (Characterization) obj;
+			if (getAccessibleData().contains(achar.getId().toString())) {
+				checkAssociatedVisibility(achar);
+				chars.add(achar);
+			} else {
+				logger
+						.debug("User doesn't have access ot characterization with id "
+								+ achar.getId());
 			}
-			return chars;
-		} catch (Exception e) {
-			String err = "Error finding characterization by sample ID "
-					+ sampleId;
-			logger.error(err, e);
-			throw new CharacterizationException(err);
 		}
+		return chars;
 	}
 
-	public Characterization findCharacterizationById(String charId,
-			UserBean user) throws Exception {
-
+	public Characterization findCharacterizationById(String charId)
+			throws Exception {
+		if (!getAccessibleData().contains(charId)) {
+			new NoAccessException("User has no access to the characterization "
+					+ charId);
+		}
 		Characterization achar = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -279,25 +227,37 @@ public class CharacterizationServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			achar = (Characterization) result.get(0);
-			if (authService.checkReadPermission(user, achar.getId().toString())) {
-				if (achar.getFindingCollection() != null) {
-					for (Finding finding : achar.getFindingCollection()) {
-						if (achar.getFindingCollection() != null) {
-							fileHelper.removeUnaccessibleFiles(finding
-									.getFileCollection(), user);
-						}
-					}
-				}
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
-			}
+			checkAssociatedVisibility(achar);
 		}
 		return achar;
 	}
 
-	public Finding findFindingById(String findingId, UserBean user)
+	private void checkAssociatedVisibility(Characterization achar)
 			throws Exception {
+		if (getAccessibleData().contains(achar.getId().toString())) {
+			if (achar.getProtocol() != null) {
+				if (!getAccessibleData().contains(
+						achar.getProtocol().getId().toString())) {
+					achar.setProtocol(null);
+				}
+			}
+			if (achar.getPointOfContact() != null) {
+				if (!getAccessibleData().contains(
+						achar.getPointOfContact().getId().toString())) {
+					achar.setPointOfContact(null);
+				}
+			}
+		}
+		for (Finding finding : achar.getFindingCollection()) {
+			removeUnaccessibleFiles(finding.getFileCollection());
+		}
+	}
+
+	public Finding findFindingById(String findingId) throws Exception {
+		if (!getAccessibleData().contains(findingId)) {
+			new NoAccessException("User has no access to the finding "
+					+ findingId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Finding.class).add(
@@ -312,15 +272,8 @@ public class CharacterizationServiceHelper {
 		Finding finding = null;
 		if (!result.isEmpty()) {
 			finding = (Finding) result.get(0);
-			if (authService.checkReadPermission(user, finding.getId()
-					.toString())) {
-				if (finding.getFileCollection() != null) {
-					fileHelper.removeUnaccessibleFiles(finding
-							.getFileCollection(), user);
-				}
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
+			if (finding.getFileCollection() != null) {
+				removeUnaccessibleFiles(finding.getFileCollection());
 			}
 		}
 		return finding;
@@ -330,7 +283,6 @@ public class CharacterizationServiceHelper {
 			String characterizationClassName) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		List<String> publicData = appService.getAllPublicData();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				ClassUtils.getFullClass(characterizationClassName))
 				.setProjection(Projections.distinct(Property.forName("id")));
@@ -338,10 +290,24 @@ public class CharacterizationServiceHelper {
 		int count = 0;
 		for (Object obj : results) {
 			String id = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(publicData, id)) {
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
 				count++;
 			}
 		}
 		return count;
+	}
+
+	private void removeUnaccessibleFiles(Collection<File> files)
+			throws Exception {
+		Set<File> copiedFiles = new HashSet<File>(files);
+		for (File file : copiedFiles) {
+			// check whether user can access the file, if not remove from
+			// the
+			// list
+			if (!getAccessibleData().contains(file.getId().toString())) {
+				files.remove(file);
+				logger.debug("User can't access file of id:" + file.getId());
+			}
+		}
 	}
 }

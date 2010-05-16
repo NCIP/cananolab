@@ -9,17 +9,17 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -33,25 +33,25 @@ import org.hibernate.criterion.Property;
  * @author pansu, tanq
  *
  */
-public class CompositionServiceHelper {
+public class CompositionServiceHelper extends BaseServiceHelper {
 
 	private static Logger logger = Logger
 			.getLogger(CompositionServiceHelper.class);
 
-	private AuthorizationService authService;
-	private FileServiceHelper fileHelper = new FileServiceHelper();
-
 	public CompositionServiceHelper() {
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-		} catch (Exception e) {
-			logger.error("Can't create authorization service: " + e);
-		}
+		super();
+	}
+
+	public CompositionServiceHelper(UserBean user) {
+		super(user);
 	}
 
 	// for DWR Ajax
-	public Function findFunctionById(String funcId, UserBean user)
-			throws Exception {
+	public Function findFunctionById(String funcId) throws Exception {
+		if (!getAccessibleData().contains(funcId)) {
+			new NoAccessException("User has no access to the function "
+					+ funcId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -63,19 +63,17 @@ public class CompositionServiceHelper {
 		Function func = null;
 		if (!result.isEmpty()) {
 			func = (Function) result.get(0);
-			if (authService.checkReadPermission(user, func.getId().toString())) {
-				return func;
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
-			}
 		}
 		return func;
 	}
 
 	// for DWR Ajax
-	public ComposingElement findComposingElementById(String ceId, UserBean user)
+	public ComposingElement findComposingElementById(String ceId)
 			throws Exception {
+		if (!getAccessibleData().contains(ceId)) {
+			new NoAccessException(
+					"User has no access to the composing element " + ceId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -90,42 +88,13 @@ public class CompositionServiceHelper {
 		ComposingElement ce = null;
 		if (!result.isEmpty()) {
 			ce = (ComposingElement) result.get(0);
-			if (authService.checkReadPermission(user, ce.getId().toString())) {
-				return ce;
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
-			}
 		}
 		return ce;
 	}
 
-	/**
-	 * Get PubChem URL in format of
-	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 *
-	 * @param pubChemDS
-	 * @param pubChemId
-	 * @return PubChem URL
-	 */
-	public static String getPubChemURL(String pubChemDS, Long pubChemId) {
-		StringBuffer sb = new StringBuffer(SampleConstants.PUBCHEM_URL);
 
-		if (SampleConstants.BIOASSAY.equals(pubChemDS)) {
-			sb.append(SampleConstants.BIOASSAY_ID);
-		} else if (SampleConstants.COMPOUND.equals(pubChemDS)) {
-			sb.append(SampleConstants.COMPOUND_ID);
-		} else if (SampleConstants.SUBSTANCE.equals(pubChemDS)) {
-			sb.append(SampleConstants.SUBSTANCE_ID);
-		}
-
-		sb.append('=').append(pubChemId);
-
-		return sb.toString();
-	}
-
-	public List<File> findFilesByCompositionInfoId(String id, String className,
-			UserBean user) throws Exception {
+	public List<File> findFilesByCompositionInfoId(String id, String className)
+			throws Exception {
 		List<File> fileCollection = new ArrayList<File>();
 		String fullClassName = null;
 		if (ClassUtils.getFullClass(className) != null) {
@@ -140,31 +109,20 @@ public class CompositionServiceHelper {
 
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
+		for (Object obj : results) {
 			File file = (File) obj;
-			if (user == null
-					|| authService.checkReadPermission(user, file.getId()
-							.toString())) {
+			if (getAccessibleData().contains(file.getId().toString())) {
 				fileCollection.add(file);
 			} else {
 				logger.debug("User doesn't have access to file of id:"
 						+ file.getId());
 			}
-
 		}
 		return fileCollection;
 	}
 
-	public AuthorizationService getAuthService() {
-		return authService;
-	}
-
-	public SampleComposition findCompositionBySampleId(String sampleId,
-			UserBean user) throws Exception {
+	public SampleComposition findCompositionBySampleId(String sampleId)
+			throws Exception {
 		SampleComposition composition = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -224,18 +182,15 @@ public class CompositionServiceHelper {
 
 		if (!result.isEmpty()) {
 			composition = (SampleComposition) result.get(0);
-			if (authService.checkReadPermission(user, composition.getId()
-					.toString())) {
+			if (getAccessibleData().contains(composition.getId().toString())) {
 				if (composition.getFileCollection() != null) {
-					fileHelper.removeUnaccessibleFiles(composition
-							.getFileCollection(), user);
+					removeUnaccessibleFiles(composition.getFileCollection());
 				}
 				if (composition.getNanomaterialEntityCollection() != null) {
 					for (NanomaterialEntity entity : composition
 							.getNanomaterialEntityCollection()) {
 						if (entity.getFileCollection() != null) {
-							fileHelper.removeUnaccessibleFiles(entity
-									.getFileCollection(), user);
+							removeUnaccessibleFiles(entity.getFileCollection());
 						}
 					}
 				}
@@ -243,8 +198,7 @@ public class CompositionServiceHelper {
 					for (FunctionalizingEntity entity : composition
 							.getFunctionalizingEntityCollection()) {
 						if (entity.getFileCollection() != null) {
-							fileHelper.removeUnaccessibleFiles(entity
-									.getFileCollection(), user);
+							removeUnaccessibleFiles(entity.getFileCollection());
 						}
 					}
 				}
@@ -252,23 +206,26 @@ public class CompositionServiceHelper {
 					for (ChemicalAssociation assoc : composition
 							.getChemicalAssociationCollection()) {
 						if (assoc.getFileCollection() != null) {
-							fileHelper.removeUnaccessibleFiles(assoc
-									.getFileCollection(), user);
+							removeUnaccessibleFiles(assoc.getFileCollection());
 						}
 					}
 				}
 			} else {
 				throw new NoAccessException(
-						"User doesn't have access to the sample");
+						"User doesn't have access to the composition "
+								+ composition.getId());
 			}
 		}
 		return composition;
 	}
 
-	public NanomaterialEntity findNanomaterialEntityById(String entityId,
-			UserBean user) throws Exception {
+	public NanomaterialEntity findNanomaterialEntityById(String entityId)
+			throws Exception {
 		NanomaterialEntity entity = null;
-
+		if (!getAccessibleData().contains(entityId)) {
+			new NoAccessException(
+					"User has no access to the nanomaterial entity " + entityId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -300,22 +257,20 @@ public class CompositionServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			entity = (NanomaterialEntity) result.get(0);
-			if (authService
-					.checkReadPermission(user, entity.getId().toString())) {
-				if (entity.getFileCollection() != null) {
-					fileHelper.removeUnaccessibleFiles(entity
-							.getFileCollection(), user);
-				}
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
+			if (entity.getFileCollection() != null) {
+				removeUnaccessibleFiles(entity.getFileCollection());
 			}
 		}
 		return entity;
 	}
 
-	public FunctionalizingEntity findFunctionalizingEntityById(String entityId,
-			UserBean user) throws Exception {
+	public FunctionalizingEntity findFunctionalizingEntityById(String entityId)
+			throws Exception {
+		if (!getAccessibleData().contains(entityId)) {
+			new NoAccessException(
+					"User has no access to the functionalizing entity "
+							+ entityId);
+		}
 		FunctionalizingEntity entity = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -347,22 +302,19 @@ public class CompositionServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			entity = (FunctionalizingEntity) result.get(0);
-			if (authService
-					.checkReadPermission(user, entity.getId().toString())) {
-				if (entity.getFileCollection() != null) {
-					fileHelper.removeUnaccessibleFiles(entity
-							.getFileCollection(), user);
-				}
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
+			if (entity.getFileCollection() != null) {
+				removeUnaccessibleFiles(entity.getFileCollection());
 			}
 		}
 		return entity;
 	}
 
-	public ChemicalAssociation findChemicalAssociationById(String assocId,
-			UserBean user) throws Exception {
+	public ChemicalAssociation findChemicalAssociationById(String assocId)
+			throws Exception {
+		if (!getAccessibleData().contains(assocId)) {
+			new NoAccessException(
+					"User has no access to the chemical association " + assocId);
+		}
 		ChemicalAssociation assoc = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -384,16 +336,24 @@ public class CompositionServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			assoc = (ChemicalAssociation) result.get(0);
-			if (authService.checkReadPermission(user, assoc.getId().toString())) {
-				if (assoc.getFileCollection() != null) {
-					fileHelper.removeUnaccessibleFiles(assoc
-							.getFileCollection(), user);
-				}
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample");
+			if (assoc.getFileCollection() != null) {
+				removeUnaccessibleFiles(assoc.getFileCollection());
 			}
 		}
 		return assoc;
+	}
+
+	private void removeUnaccessibleFiles(Collection<File> files)
+			throws Exception {
+		Set<File> copiedFiles = new HashSet<File>(files);
+		for (File file : copiedFiles) {
+			// check whether user can access the file, if not remove from
+			// the
+			// list
+			if (!getAccessibleData().contains(file.getId().toString())) {
+				files.remove(file);
+				logger.debug("User can't access file of id:" + file.getId());
+			}
+		}
 	}
 }

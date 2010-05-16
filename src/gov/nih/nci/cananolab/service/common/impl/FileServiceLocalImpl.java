@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -31,10 +30,14 @@ import org.apache.log4j.Logger;
  */
 public class FileServiceLocalImpl implements FileService {
 	private static Logger logger = Logger.getLogger(FileServiceLocalImpl.class);
-
-	private FileServiceHelper helper = new FileServiceHelper();
+	private FileServiceHelper helper;
 
 	public FileServiceLocalImpl() {
+		helper = new FileServiceHelper();
+	}
+
+	public FileServiceLocalImpl(UserBean user) {
+		helper = new FileServiceHelper(user);
 	}
 
 	/**
@@ -43,14 +46,14 @@ public class FileServiceLocalImpl implements FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public FileBean findFileById(String fileId, UserBean user)
-			throws FileException, NoAccessException {
+	public FileBean findFileById(String fileId) throws FileException,
+			NoAccessException {
 		FileBean fileBean = null;
 		try {
-			File file = helper.findFileById(fileId, user);
+			File file = helper.findFileById(fileId);
 			if (file != null) {
 				fileBean = new FileBean(file);
-				if (user != null) {
+				if (helper.getUser() != null) {
 					fileBean.setVisibilityGroups(helper
 							.retrieveVisibility(file));
 				}
@@ -91,9 +94,9 @@ public class FileServiceLocalImpl implements FileService {
 	}
 
 	// save to the file system if fileData is not empty
-	public void writeFile(FileBean fileBean, UserBean user)
-			throws FileException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+	public void writeFile(FileBean fileBean) throws FileException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -114,35 +117,15 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
-	private void assignVisibility(File file, String[] visibilityGroups)
-			throws FileException {
-		try {
-			helper.getAuthService().assignVisibility(file.getId().toString(),
-					visibilityGroups, null);
-			// assign keyword to public visibility
-			if (file.getKeywordCollection() != null) {
-				for (Keyword keyword : file.getKeywordCollection()) {
-					helper.getAuthService().assignVisibility(
-							keyword.getId().toString(),
-							new String[] { Constants.CSM_PUBLIC_GROUP }, null);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Error in setting file visibility for " + file.getId();
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
-	}
-
 	/**
 	 * Preparing keywords and other information prior to saving a file
 	 *
 	 * @param file
 	 * @throws FileException
 	 */
-	public void prepareSaveFile(File file, UserBean user) throws FileException,
+	public void prepareSaveFile(File file) throws FileException,
 			NoAccessException {
-		if (user == null || !user.isCurator()) {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -186,20 +169,40 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
+	private void assignVisibility(File file, String[] visibilityGroups)
+			throws FileException, NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
+			throw new NoAccessException();
+		}
+		try {
+			helper.getAuthService().assignVisibility(file.getId().toString(),
+					visibilityGroups, null);
+			// assign keyword to public visibility
+			if (file.getKeywordCollection() != null) {
+				for (Keyword keyword : file.getKeywordCollection()) {
+					helper.getAuthService().assignVisibility(
+							keyword.getId().toString(),
+							new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in setting file visibility for " + file.getId();
+			logger.error(err, e);
+			throw new FileException(err, e);
+		}
+	}
+
 	// update cloned file with existing visibility and file content, and new
 	// file path
 	public void updateClonedFileInfo(FileBean copy, String origSampleName,
-			String newSampleName, UserBean user) throws Exception {
+			String newSampleName) throws Exception {
 		// copy file visibility and file content obtain original id from created
 		// by
 		String origId = copy.getDomainFile().getCreatedBy().substring(5);
-		List<String> accessibleGroups = helper.getAuthService()
-				.getAccessibleGroups(origId, Constants.CSM_READ_PRIVILEGE);
-		if (accessibleGroups != null) {
-			copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
-		}
+		copy.setVisibilityGroups(helper.getAuthService().getAccessibleGroups(
+				origId, Constants.CSM_READ_PRIVILEGE));
 		if (origId != null) {
-			byte[] content = helper.getFileContent(new Long(origId), user);
+			byte[] content = helper.getFileContent(new Long(origId));
 			copy.setNewFileData(content);
 		}
 		// replace file URI with new sample name
@@ -208,5 +211,13 @@ public class FileServiceLocalImpl implements FileService {
 					origSampleName, newSampleName);
 			copy.getDomainFile().setUri(newUri);
 		}
+	}
+
+	public FileServiceHelper getHelper() {
+		return helper;
+	}
+
+	public void setHelper(FileServiceHelper helper) {
+		this.helper = helper;
 	}
 }

@@ -15,7 +15,7 @@ import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -47,38 +47,31 @@ import org.hibernate.criterion.Subqueries;
 /**
  * Helper class providing implementations of advanced sample search methods
  * needed for both local implementation of SampleService and grid service *
- * 
+ *
  * @author pansu
- * 
+ *
  */
-public class AdvancedSampleServiceHelper {
-	private AuthorizationService authService;
+public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(AdvancedSampleServiceHelper.class);
 
 	public AdvancedSampleServiceHelper() {
-		try {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-		} catch (Exception e) {
-			logger.error("Can't create authorization service: " + e);
-		}
+		super();
 	}
 
-	public AuthorizationService getAuthService() {
-		return authService;
+	public AdvancedSampleServiceHelper(UserBean user) {
+		super(user);
 	}
 
 	/**
 	 * Find sample names based on advanced search parameters
-	 * 
+	 *
 	 * @param searchBean
-	 * @param user
 	 * @return
 	 * @throws Exception
 	 */
 	public List<String> findSampleNamesByAdvancedSearch(
-			AdvancedSampleSearchBean searchBean, UserBean user)
-			throws Exception {
+			AdvancedSampleSearchBean searchBean) throws Exception {
 		List<String> sampleNames = new ArrayList<String>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -124,16 +117,12 @@ public class AdvancedSampleServiceHelper {
 				results.addAll(appService.query(crit));
 			}
 		}
-		List filteredResults = new ArrayList(results);
-		// get public data
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
+		for (Object obj : results) {
 			String sampleName = obj.toString();
 			// remove redundancy
 			if (!sampleNames.contains(sampleName)
-					&& authService.checkReadPermission(user, sampleName)) {
+					&& StringUtils.containsIgnoreCase(getAccessibleData(),
+							sampleName)) {
 				sampleNames.add(sampleName);
 			} else { // ignore no access exception
 				logger.debug("User doesn't have access to sample with name "
@@ -147,17 +136,16 @@ public class AdvancedSampleServiceHelper {
 	/**
 	 * Find sample details as an AdvancedSampleBean for the given sample name
 	 * and advanced search parameters
-	 * 
+	 *
 	 * @param sampleName
 	 * @param searchBean
-	 * @param user
 	 * @return
 	 * @throws Exception
 	 */
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleName, AdvancedSampleSearchBean searchBean,
-			UserBean user) throws Exception {
-		if (!getAuthService().checkReadPermission(user, sampleName)) {
+			String sampleName, AdvancedSampleSearchBean searchBean)
+			throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
 			throw new NoAccessException();
 		}
 		// load sample first with point of contact info and function info and
@@ -780,7 +768,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in composition queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -851,7 +839,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in function queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -891,7 +879,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in nanomaterial entity queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -932,7 +920,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the junction used in functionalizing entity queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -978,7 +966,8 @@ public class AdvancedSampleServiceHelper {
 		if (compQuery.getOperand().equals("equals")) {
 			chemicalNameMatchMode = new TextMatchMode(compQuery
 					.getChemicalName());
-		} else if (compQuery.getOperand().equals(Constants.STRING_OPERAND_CONTAINS)) {
+		} else if (compQuery.getOperand().equals(
+				Constants.STRING_OPERAND_CONTAINS)) {
 			chemicalNameMatchMode = new TextMatchMode("*"
 					+ compQuery.getChemicalName() + "*");
 		}
@@ -1096,7 +1085,8 @@ public class AdvancedSampleServiceHelper {
 		if (compQuery.getOperand().equals("equals")) {
 			chemicalNameMatchMode = new TextMatchMode(compQuery
 					.getChemicalName());
-		} else if (compQuery.getOperand().equals(Constants.STRING_OPERAND_CONTAINS)) {
+		} else if (compQuery.getOperand().equals(
+				Constants.STRING_OPERAND_CONTAINS)) {
 			chemicalNameMatchMode = new TextMatchMode("*"
 					+ compQuery.getChemicalName() + "*");
 		}
@@ -1128,7 +1118,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Set the disjunction used in point of contact queries
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -1176,7 +1166,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the sample name junction used in sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1203,7 +1193,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the sample disjunction used in sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1245,7 +1235,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Get the criterion used for sample name query
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -1254,7 +1244,8 @@ public class AdvancedSampleServiceHelper {
 			TextMatchMode nameMatchMode = null;
 			if (query.getOperand().equals("equals")) {
 				nameMatchMode = new TextMatchMode(query.getName());
-			} else if (query.getOperand().equals(Constants.STRING_OPERAND_CONTAINS)) {
+			} else if (query.getOperand().equals(
+					Constants.STRING_OPERAND_CONTAINS)) {
 				nameMatchMode = new TextMatchMode("*" + query.getName() + "*");
 			}
 			Criterion sampleNameCrit = Restrictions.ilike("name", nameMatchMode
@@ -1308,7 +1299,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria used for composition queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception
@@ -1442,7 +1433,7 @@ public class AdvancedSampleServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria for sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception

@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -27,9 +26,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Remote implementation of PublicationService
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PublicationServiceRemoteImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -49,7 +48,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication
 	 *            ,
 	 * @param sampleNames
@@ -59,7 +58,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	 * @param authors
 	 * @throws Exception
 	 */
-	public void savePublication(PublicationBean publicationBean, UserBean user)
+	public void savePublication(PublicationBean publicationBean)
 			throws PublicationException, NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}
@@ -104,8 +103,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		return pubBean;
 	}
 
-	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
-			UserBean user) throws PublicationException {
+	public List<PublicationBean> findPublicationsBySampleId(String sampleId)
+			throws PublicationException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
 			Publication[] publications = gridClient
@@ -124,8 +123,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	public PublicationBean findPublicationById(String publicationId,
-			UserBean user) throws PublicationException, NoAccessException {
+	public PublicationBean findPublicationById(String publicationId)
+			throws PublicationException, NoAccessException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -254,17 +253,6 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	/**
-	 * if publication associates with multiple particle remove the entry from
-	 * sample_publication otherwise, remove publicVisibility and delete
-	 * publication
-	 */
-	public void removePublicationFromSample(String sampleName,
-			Publication publication, UserBean user)
-			throws PublicationException, NoAccessException {
-		throw new PublicationException("Not implemented for grid service");
-	}
-
 	public List<String> findPublicationIdsBy(String title, String category,
 			String sampleName, String[] researchAreas, String[] keywords,
 			String pubMedId, String digitalObjectId, String[] authors,
@@ -272,8 +260,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			UserBean user) throws PublicationException {
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws PublicationException {
 		try {
 			String[] publicationIds = gridClient.getPublicationIdsBy(title,
 					category, sampleName, researchAreas, keywords, pubMedId,
@@ -291,9 +279,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	public PublicationBean findPublicationByKey(String keyName,
-			Object keyValue, UserBean user) throws PublicationException,
-			NoAccessException {
+	public PublicationBean findPublicationByKey(String keyName, Object keyValue)
+			throws PublicationException, NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}
 
@@ -304,14 +291,14 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			UserBean user) throws PublicationException {
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws PublicationException {
 		throw new PublicationException("Not implemented for grid service");
 	}
 
 	public List<String> deletePublication(Publication publication,
-			UserBean user, Boolean removeVisibility)
-			throws PublicationException, NoAccessException {
+			Boolean removeVisibility) throws PublicationException,
+			NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}
 
@@ -319,10 +306,16 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			throws PublicationException {
 		throw new PublicationException("Not implemented for grid service");
 	}
-	
+
 	public PublicationBean findNonPubMedNonDOIPublication(
 			String publicationType, String title, String firstAuthorLastName,
-			String firstAuthorFirstName, UserBean user) throws PublicationException {
+			String firstAuthorFirstName) throws PublicationException {
+		throw new PublicationException("Not implemented for grid service");
+	}
+
+	public void removePublicationFromSample(String sampleName,
+			Publication publication) throws PublicationException,
+			NoAccessException {
 		throw new PublicationException("Not implemented for grid service");
 	}
 }

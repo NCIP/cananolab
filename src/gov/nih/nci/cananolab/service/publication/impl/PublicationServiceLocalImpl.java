@@ -8,8 +8,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -35,11 +33,21 @@ import org.apache.log4j.Logger;
  * @author tanq, pansu
  *
  */
-public class PublicationServiceLocalImpl implements PublicationService {
+public class PublicationServiceLocalImpl extends FileServiceLocalImpl implements
+		PublicationService {
 	private static Logger logger = Logger
 			.getLogger(PublicationServiceLocalImpl.class);
-	private PublicationServiceHelper helper = new PublicationServiceHelper();
-	private FileServiceHelper fileHelper = new FileServiceHelper();
+	private PublicationServiceHelper helper;
+	private SampleService sampleService;
+
+	public PublicationServiceLocalImpl() {
+		helper = new PublicationServiceHelper();
+		sampleService = new SampleServiceLocalImpl();
+	}
+
+	public PublicationServiceLocalImpl(UserBean user) {
+		helper = new PublicationServiceHelper(user);
+	}
 
 	/**
 	 * Persist a new publication or update an existing publication
@@ -50,9 +58,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @param authors
 	 * @throws Exception
 	 */
-	public void savePublication(PublicationBean publicationBean, UserBean user)
+	public void savePublication(PublicationBean publicationBean)
 			throws PublicationException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -89,17 +97,15 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					publication.setId(dbPublication.getId());
 				}
 			}
-			FileService fileService = new FileServiceLocalImpl();
-			fileService.prepareSaveFile(publication, user);
+			prepareSaveFile(publication);
 			appService.saveOrUpdate(publication);
-			fileService.writeFile(publicationBean, user);
+			writeFile(publicationBean);
 
 			// set visibility
-			assignVisibility(publication,
-					publicationBean.getVisibilityGroups(), user);
+			assignVisibility(publication, publicationBean.getVisibilityGroups());
 
 			// update sample associations
-			updateSampleAssociation(appService, publicationBean, user);
+			updateSampleAssociation(appService, publicationBean);
 		} catch (Exception e) {
 			String err = "Error in saving the publication.";
 			logger.error(err, e);
@@ -109,16 +115,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	private void updateSampleAssociation(
 			CustomizedApplicationService appService,
-			PublicationBean publicationBean, UserBean user) throws Exception {
+			PublicationBean publicationBean) throws Exception {
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		// if has associated sample, save sample to update the relationship
 		// between sample and publication
 		String[] newAssociatedSamples = publicationBean.getSampleNames();
-		SampleService sampleService = new SampleServiceLocalImpl();
-
 		String[] existingAssociatedSamples = helper
-				.findSampleNamesByPublicationId(publication.getId().toString(),
-						user);
+				.findSampleNamesByPublicationId(publication.getId().toString());
 		// when saving from publication from, find existing associated samples,
 		// remove publications from samples that are no longer associated
 		// with the publication
@@ -136,8 +139,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				&& sampleNamesToRemove.size() > 0) {
 			Set<Sample> samplesToRemove = new HashSet<Sample>();
 			for (String name : sampleNamesToRemove) {
-				SampleBean sampleBean = sampleService.findSampleByName(name,
-						user);
+				SampleBean sampleBean = sampleService.findSampleByName(name);
 				if (sampleBean != null) {
 					samplesToRemove.add(sampleBean.getDomain());
 				}
@@ -151,8 +153,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		Set<Sample> samplesToAdd = new HashSet<Sample>();
 		if (sampeNamesToAdd != null && sampeNamesToAdd.size() > 0) {
 			for (String name : sampeNamesToAdd) {
-				SampleBean sampleBean = sampleService.findSampleByName(name,
-						user);
+				SampleBean sampleBean = sampleService.findSampleByName(name);
 				if (sampleBean != null) {
 					samplesToAdd.add(sampleBean.getDomain());
 				}
@@ -171,8 +172,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			UserBean user) throws PublicationException {
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws PublicationException {
 		try {
 			return helper.findPublicationIdsBy(title, category, sampleName,
 					researchAreas, keywords, pubMedId, digitalObjectId,
@@ -180,7 +181,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, user);
+					otherFunctionTypes);
 		} catch (Exception e) {
 			String err = "Problem finding publication info.";
 			logger.error(err, e);
@@ -188,23 +189,23 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
-			UserBean user) throws PublicationException {
+	public List<PublicationBean> findPublicationsBySampleId(String sampleId)
+			throws PublicationException {
 		try {
-			List<Publication> publications = helper.findPublicationsBySampleId(
-					sampleId, user);
+			List<Publication> publications = helper
+					.findPublicationsBySampleId(sampleId);
 			List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 			if (publications != null) {
 				for (Publication publication : publications) {
 					// retrieve sampleNames
 					String[] sampleNames = helper
 							.findSampleNamesByPublicationId(publication.getId()
-									.toString(), user);
+									.toString());
 					PublicationBean pubBean = new PublicationBean(publication,
 							sampleNames);
 					// retrieve visibility
-					if (user != null)
-						pubBean.setVisibilityGroups(fileHelper
+					if (helper.getUser() != null)
+						pubBean.setVisibilityGroups(helper
 								.retrieveVisibility(publication));
 					publicationBeans.add(pubBean);
 				}
@@ -217,24 +218,24 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	public PublicationBean findPublicationById(String publicationId,
-			UserBean user) throws PublicationException, NoAccessException {
-		return findPublicationByKey("id", new Long(publicationId), user);
+	public PublicationBean findPublicationById(String publicationId)
+			throws PublicationException, NoAccessException {
+		return findPublicationByKey("id", new Long(publicationId));
 	}
 
-	public PublicationBean findPublicationByKey(String keyName,
-			Object keyValue, UserBean user) throws PublicationException,
-			NoAccessException {
+	public PublicationBean findPublicationByKey(String keyName, Object keyValue)
+			throws PublicationException, NoAccessException {
 		PublicationBean publicationBean = null;
 		try {
 			Publication publication = helper.findPublicationByKey(keyName,
-					keyValue, user);
+					keyValue);
 			if (publication != null) {
-				String[] sampleNames = helper.findSampleNamesByPublicationId(
-						publication.getId().toString(), user);
+				String[] sampleNames = helper
+						.findSampleNamesByPublicationId(publication.getId()
+								.toString());
 				publicationBean = new PublicationBean(publication, sampleNames);
-				if (user != null)
-					publicationBean.setVisibilityGroups(fileHelper
+				if (helper.getUser() != null)
+					publicationBean.setVisibilityGroups(helper
 							.retrieveVisibility(publication));
 			}
 		} catch (NoAccessException e) {
@@ -254,8 +255,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			UserBean user) throws PublicationException {
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws PublicationException {
 		try {
 			return helper.findPublicationsBy(title, category, sampleName,
 					researchAreas, keywords, pubMedId, digitalObjectId,
@@ -263,7 +264,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, user);
+					otherFunctionTypes);
 		} catch (Exception e) {
 			String err = "Problem finding publication info.";
 			logger.error(err, e);
@@ -292,36 +293,32 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 *             , NoAccessException
 	 */
 	public void removePublicationFromSample(String sampleName,
-			Publication publication, UserBean user)
-			throws PublicationException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+			Publication publication) throws PublicationException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-
-			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService.findSampleByName(sampleName,
-					user);
+			SampleBean sampleBean = sampleService.findSampleByName(sampleName);
 			Sample sample = sampleBean.getDomain();
 			Collection<Publication> pubs = sample.getPublicationCollection();
 			if (pubs != null) {
 				pubs.remove(publication);
 			}
 			appService.saveOrUpdate(sample);
-
 		} catch (Exception e) {
-			String err = "Error in removing the sample publication association.";
+			String err = "Error removing publication from the sample";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
 	}
 
 	public List<String> deletePublication(Publication publication,
-			UserBean user, Boolean removeVisibility)
-			throws PublicationException, NoAccessException {
-		if (user == null || !user.isCurator()) {
+			Boolean removeVisibility) throws PublicationException,
+			NoAccessException {
+		if (helper.getUser() == null || !helper.getUser().isCurator()) {
 			throw new NoAccessException();
 		}
 		List<String> entries = new ArrayList<String>();
@@ -338,10 +335,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			publication.setAuthorCollection(null);
 
 			// find associated samples and remove publication association
-			String[] sampleNames = helper.findSampleNamesByPublicationId(
-					publication.getId().toString(), user);
+			String[] sampleNames = helper
+					.findSampleNamesByPublicationId(publication.getId()
+							.toString());
 			for (String name : sampleNames) {
-				removePublicationFromSample(name, publication, user);
+				removePublicationFromSample(name, publication);
 			}
 			appService.delete(publication);
 			entries.addAll(removeVisibility(publication, removeVisibility));
@@ -374,19 +372,19 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	public PublicationBean findNonPubMedNonDOIPublication(
 			String publicationType, String title, String firstAuthorLastName,
-			String firstAuthorFirstName, UserBean user)
-			throws PublicationException {
+			String firstAuthorFirstName) throws PublicationException {
 		PublicationBean pubBean = null;
 		try {
 			Publication publication = helper.findNonPubMedNonDOIPublication(
 					publicationType, title, firstAuthorLastName,
-					firstAuthorFirstName, user);
+					firstAuthorFirstName);
 			if (publication != null) {
-				String[] sampleNames = helper.findSampleNamesByPublicationId(
-						publication.getId().toString(), user);
+				String[] sampleNames = helper
+						.findSampleNamesByPublicationId(publication.getId()
+								.toString());
 				pubBean = new PublicationBean(publication, sampleNames);
-				if (user != null)
-					pubBean.setVisibilityGroups(fileHelper
+				if (helper.getUser() != null)
+					pubBean.setVisibilityGroups(helper
 							.retrieveVisibility(publication));
 			}
 		} catch (Exception e) {
@@ -405,7 +403,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	}
 
 	private void assignVisibility(Publication publication,
-			String[] visibleGroups, UserBean user) throws Exception {
+			String[] visibleGroups) throws Exception {
 		helper.getAuthService().assignVisibility(
 				publication.getId().toString(), visibleGroups, null);
 		// set author visibility as well because didn't share authors
@@ -440,4 +438,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		return entries;
 	}
 
+	public PublicationServiceHelper getHelper() {
+		return helper;
+	}
+
+	public SampleService getSampleService() {
+		return sampleService;
+	}
 }
