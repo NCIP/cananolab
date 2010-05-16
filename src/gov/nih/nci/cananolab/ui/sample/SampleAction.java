@@ -68,7 +68,7 @@ public class SampleAction extends BaseAnnotationAction {
 		sampleBean.setupDomain(user.getLoginName());
 		// persist in the database
 		SampleService service = (SampleService) request.getSession()
-				.getAttribute("SampleService");
+				.getAttribute("sampleService");
 		service.saveSample(sampleBean);
 
 		ActionMessages messages = new ActionMessages();

@@ -38,7 +38,7 @@ public class InitCharacterizationSetup {
 	public void setPOCDropdown(HttpServletRequest request, String sampleId)
 			throws Exception {
 		SampleService service = (SampleService) request.getSession()
-				.getAttribute("SampleService");
+				.getAttribute("sampleService");
 		List<PointOfContactBean> pocs = service
 				.findPointOfContactsBySampleId(sampleId);
 		request.getSession().setAttribute("samplePointOfContacts", pocs);
