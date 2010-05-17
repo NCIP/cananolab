@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -143,9 +142,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				&& sampleNamesToRemove.size() > 0) {
 			Set<Sample> samplesToRemove = new HashSet<Sample>();
 			for (String name : sampleNamesToRemove) {
-				Sample sample = sampleHelper.findSampleByName(name);
-				if (sample != null) {
-					samplesToRemove.add(sample);
+				if (!StringUtils.isEmpty(name)) {
+					Sample sample = sampleHelper.findSampleByName(name);
+					if (sample != null) {
+						samplesToRemove.add(sample);
+					}
 				}
 			}
 			for (Sample sample : samplesToRemove) {
@@ -157,9 +158,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		Set<Sample> samplesToAdd = new HashSet<Sample>();
 		if (sampeNamesToAdd != null && sampeNamesToAdd.size() > 0) {
 			for (String name : sampeNamesToAdd) {
-				Sample sample = sampleHelper.findSampleByName(name);
-				if (sample != null) {
-					samplesToAdd.add(sample);
+				if (!StringUtils.isEmpty(name)) {
+					Sample sample = sampleHelper.findSampleByName(name);
+					if (sample != null) {
+						samplesToAdd.add(sample);
+					}
 				}
 			}
 		}
