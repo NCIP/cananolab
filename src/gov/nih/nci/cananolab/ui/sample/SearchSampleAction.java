@@ -8,10 +8,12 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SearchSampleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
@@ -231,8 +233,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
 				if (location.equals(Constants.LOCAL_SITE)) {
-					service =  (SampleService) request.getSession()
-					.getAttribute("sampleService");
+					service = (SampleService) request.getSession()
+							.getAttribute("sampleService");
 				} else {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
@@ -244,6 +246,22 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 				String sampleName = sampleBeans.get(i).getDomain().getName();
 				SampleBean sampleBean = service.findSampleByName(sampleName);
+				Sample sample = sampleBean.getDomain();
+				SampleServiceHelper helper = ((SampleServiceLocalImpl) service)
+						.getHelper();
+				// load summary information
+				sampleBean.setCharacterizationClassNames(helper
+						.getStoredCharacterizationClassNames(sample).toArray(
+								new String[0]));
+				sampleBean.setFunctionalizingEntityClassNames(helper
+						.getStoredFunctionalizingEntityClassNames(sample)
+						.toArray(new String[0]));
+				sampleBean.setNanomaterialEntityClassNames(helper
+						.getStoredNanomaterialEntityClassNames(sample).toArray(
+								new String[0]));
+				sampleBean.setFunctionClassNames(helper
+						.getStoredFunctionClassNames(sample).toArray(
+								new String[0]));
 				sampleBean.setLocation(location);
 				loadedSampleBeans.add(sampleBean);
 			}
