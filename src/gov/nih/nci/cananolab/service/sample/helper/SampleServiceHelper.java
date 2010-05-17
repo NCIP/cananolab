@@ -18,10 +18,8 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -30,7 +28,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +53,6 @@ import org.hibernate.criterion.Restrictions;
  *
  */
 public class SampleServiceHelper extends BaseServiceHelper {
-	private AuthorizationService authService;
 	private static Logger logger = Logger.getLogger(SampleServiceHelper.class);
 
 	public SampleServiceHelper() {
@@ -65,37 +61,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 	public SampleServiceHelper(UserBean user) {
 		super(user);
-	}
-
-	public List<Sample> findSamplesBy(String samplePointOfContact,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList)
-			throws Exception {
-		List<String> sampleNames = this.findSampleNamesBy(null,
-				samplePointOfContact, nanomaterialEntityClassNames,
-				otherNanomaterialEntityTypes, functionalizingEntityClassNames,
-				otherFunctionalizingEntityTypes, functionClassNames,
-				otherFunctionTypes, characterizationClassNames,
-				otherCharacterizationTypes, wordList);
-		List<Sample> samples = new ArrayList<Sample>();
-
-		for (String sampleName : sampleNames) {
-			try {
-				Sample sample = findSampleByName(sampleName);
-				samples.add(sample);
-			} catch (NoAccessException e) {
-				// ignore no access exception
-				logger.debug("User doesn't have access to sample with name "
-						+ sampleName);
-			}
-		}
-		Collections.sort(samples, new Comparators.SampleNameComparator());
-		return samples;
 	}
 
 	public List<String> findSampleNamesBy(String sampleName,
@@ -355,7 +320,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 						+ name);
 			}
 		}
-		Collections.sort(sampleNames, new Comparators.SortableNameComparator());
 		return sampleNames;
 	}
 
@@ -907,7 +871,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 						+ name);
 			}
 		}
-		Collections.sort(sampleNames, new Comparators.SortableNameComparator());
 		return sampleNames;
 	}
 

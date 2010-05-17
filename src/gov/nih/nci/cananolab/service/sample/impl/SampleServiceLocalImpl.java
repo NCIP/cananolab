@@ -99,8 +99,8 @@ public class SampleServiceLocalImpl implements SampleService {
 	 *
 	 * @param sample
 	 *
-	 * @throws SampleException ,
-	 *             DuplicateEntriesException
+	 * @throws SampleException
+	 *             , DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean) throws SampleException,
 			DuplicateEntriesException, NoAccessException {
@@ -385,12 +385,16 @@ public class SampleServiceLocalImpl implements SampleService {
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException {
 		try {
-			return helper.findSampleNamesBy(sampleName, samplePointOfContact,
-					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
+			List<String> sampleNames = helper.findSampleNamesBy(sampleName,
+					samplePointOfContact, nanomaterialEntityClassNames,
+					otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes, characterizationClassNames,
 					otherCharacterizationTypes, wordList);
+			Collections.sort(sampleNames,
+					new Comparators.SortableNameComparator());
+			return sampleNames;
 		} catch (Exception e) {
 			String err = "Problem finding samples with the given search parameters.";
 			logger.error(err, e);
