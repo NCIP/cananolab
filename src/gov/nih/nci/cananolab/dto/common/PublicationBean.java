@@ -327,7 +327,6 @@ public class PublicationBean extends FileBean {
 		strs.add(getPubMedDisplayName());
 
 		if (pub.getPubMedId() == null) {
-			System.out.println("here");
 			strs.add(getDOIDisplayName());
 		}
 		if (pub.getPubMedId() == null
