@@ -259,30 +259,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		return publicationBean;
 	}
 
-	public List<Publication> findPublicationsBy(String title, String category,
-			String sampleName, String[] researchAreas, String[] keywords,
-			String pubMedId, String digitalObjectId, String[] authors,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
-			throws PublicationException {
-		try {
-			return helper.findPublicationsBy(title, category, sampleName,
-					researchAreas, keywords, pubMedId, digitalObjectId,
-					authors, nanomaterialEntityClassNames,
-					otherNanomaterialEntityTypes,
-					functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes);
-		} catch (Exception e) {
-			String err = "Problem finding publication info.";
-			logger.error(err, e);
-			throw new PublicationException(err, e);
-		}
-	}
-
 	public int getNumberOfPublicPublications() throws PublicationException {
 		try {
 			int count = helper.getNumberOfPublicPublications();

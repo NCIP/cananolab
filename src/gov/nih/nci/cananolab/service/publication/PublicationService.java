@@ -39,16 +39,6 @@ public interface PublicationService {
 
 	public int getNumberOfPublicPublications() throws PublicationException;
 
-	public List<Publication> findPublicationsBy(String title, String category,
-			String sampleName, String[] researchAreas, String[] keywords,
-			String pubMedId, String digitalObjectId, String[] authors,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
-			throws PublicationException;
-
 	public List<String> findPublicationIdsBy(String title, String category,
 			String sampleName, String[] researchAreas, String[] keywords,
 			String pubMedId, String digitalObjectId, String[] authors,

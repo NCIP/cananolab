@@ -15,6 +15,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -48,31 +49,6 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 
 	public PublicationServiceHelper(UserBean user) {
 		super(user);
-	}
-
-	public List<Publication> findPublicationsBy(String title, String category,
-			String sampleName, String[] researchArea, String[] keywords,
-			String pubMedId, String digitalObjectId, String[] authors,
-			String[] nanomaterialEntityClassNames,
-			String[] otherNanomaterialEntityTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
-			throws Exception {
-		List<String> publicationIds = this.findPublicationIdsBy(title,
-				category, sampleName, researchArea, keywords, pubMedId,
-				digitalObjectId, authors, nanomaterialEntityClassNames,
-				otherNanomaterialEntityTypes, functionalizingEntityClassNames,
-				otherFunctionalizingEntityTypes, functionClassNames,
-				otherFunctionTypes);
-		List<Publication> publications = new ArrayList<Publication>();
-		for (Object obj : publicationIds) {
-			Publication publication = findPublicationById(obj.toString());
-			publications.add(publication);
-		}
-		Collections.sort(publications,
-				new Comparators.PublicationCategoryTitleComparator());
-		return publications;
 	}
 
 	public List<String> findPublicationIdsBy(String title, String category,
@@ -241,8 +217,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		// order publications by createdDate
 		List<Publication> orderedPubs = new ArrayList<Publication>(
 				allPublications);
-		Collections.sort(orderedPubs,
-				new Comparators.PublicationDateComparator());
+		Collections.sort(orderedPubs, new PublicationDateComparator());
 		// get ordered ids
 		List<String> orderedPubIds = new ArrayList<String>();
 		for (Publication pub : orderedPubs) {
@@ -627,6 +602,13 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			}
 		}
 		return publication;
+	}
+
+	private static class PublicationDateComparator implements
+			Comparator<Publication> {
+		public int compare(Publication pub1, Publication pub2) {
+			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
+		}
 	}
 
 }
