@@ -6,14 +6,12 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -87,8 +85,6 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 						+ protocol.getId());
 			}
 		}
-		Collections.sort(protocols,
-				new Comparators.ProtocolNameVersionComparator());
 		return protocols;
 	}
 

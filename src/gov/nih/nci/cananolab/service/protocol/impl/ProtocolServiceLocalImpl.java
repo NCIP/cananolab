@@ -10,10 +10,12 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -154,7 +156,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
 					protocolName, protocolAbbreviation, fileTitle);
-
+			Collections.sort(protocols,
+					new Comparators.ProtocolNameVersionComparator());
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				if (helper.getUser() != null)
