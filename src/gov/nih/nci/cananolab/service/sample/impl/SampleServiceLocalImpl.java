@@ -88,6 +88,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			compService = new CompositionServiceLocalImpl(authService);
 			publicationService = new PublicationServiceLocalImpl(authService);
 			fileService = new FileServiceLocalImpl(authService);
+			advancedHelper = new AdvancedSampleServiceHelper();
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
 		}
@@ -100,6 +101,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		compService = new CompositionServiceLocalImpl(user);
 		publicationService = new PublicationServiceLocalImpl(user);
 		fileService = new FileServiceLocalImpl(user);
+		advancedHelper = new AdvancedSampleServiceHelper(user);
 	}
 
 	public SampleServiceLocalImpl(AuthorizationService authService) {
@@ -108,15 +110,17 @@ public class SampleServiceLocalImpl implements SampleService {
 		compService = new CompositionServiceLocalImpl(authService);
 		publicationService = new PublicationServiceLocalImpl(authService);
 		fileService = new FileServiceLocalImpl(authService);
+		advancedHelper = new AdvancedSampleServiceHelper(authService);
 	}
 
 	public SampleServiceLocalImpl(AuthorizationService authService,
 			UserBean user) {
-		helper = new SampleServiceHelper(user);
-		charService = new CharacterizationServiceLocalImpl(user);
-		compService = new CompositionServiceLocalImpl(user);
-		publicationService = new PublicationServiceLocalImpl(user);
-		fileService = new FileServiceLocalImpl(user);
+		helper = new SampleServiceHelper(authService, user);
+		charService = new CharacterizationServiceLocalImpl(authService, user);
+		compService = new CompositionServiceLocalImpl(authService, user);
+		publicationService = new PublicationServiceLocalImpl(authService, user);
+		fileService = new FileServiceLocalImpl(authService, user);
+		advancedHelper = new AdvancedSampleServiceHelper(authService, user);
 	}
 
 	/**
