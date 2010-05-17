@@ -10,10 +10,12 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -367,6 +369,8 @@ public class DWRSampleManager {
 		try {
 			List<String> names = ((SampleServiceLocalImpl) service).getHelper()
 					.findSampleNamesBy(searchStr);
+			Collections.sort(names, new Comparators.SortableNameComparator());
+
 			if (!names.isEmpty()) {
 				nameArray = names.toArray(new String[names.size()]);
 			}
