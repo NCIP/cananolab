@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -49,6 +50,15 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 
 	public PublicationServiceHelper(UserBean user) {
 		super(user);
+	}
+
+	public PublicationServiceHelper(AuthorizationService authService) {
+		super(authService);
+	}
+
+	public PublicationServiceHelper(AuthorizationService authService,
+			UserBean user) {
+		super(authService, user);
 	}
 
 	public List<String> findPublicationIdsBy(String title, String category,

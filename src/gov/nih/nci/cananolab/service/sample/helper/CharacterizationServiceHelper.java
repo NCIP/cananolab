@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -28,7 +29,7 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving characterizations
- * 
+ *
  * @author tanq, pansu
  */
 public class CharacterizationServiceHelper extends BaseServiceHelper {
@@ -41,6 +42,15 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 
 	public CharacterizationServiceHelper(UserBean user) {
 		super(user);
+	}
+
+	public CharacterizationServiceHelper(AuthorizationService authService) {
+		super(authService);
+	}
+
+	public CharacterizationServiceHelper(AuthorizationService authService,
+			UserBean user) {
+		super(authService, user);
 	}
 
 	public Protocol findProtocolByCharacterizationId(

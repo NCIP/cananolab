@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -63,6 +64,14 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		super(user);
 	}
 
+	public AdvancedSampleServiceHelper(AuthorizationService authService) {
+		super(authService);
+	}
+
+	public AdvancedSampleServiceHelper(AuthorizationService authService,
+			UserBean user) {
+		super(authService, user);
+	}
 	/**
 	 * Find sample names based on advanced search parameters
 	 *

@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -44,6 +45,15 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 
 	public CompositionServiceHelper(UserBean user) {
 		super(user);
+	}
+
+	public CompositionServiceHelper(AuthorizationService authService) {
+		super(authService);
+	}
+
+	public CompositionServiceHelper(AuthorizationService authService,
+			UserBean user) {
+		super(authService, user);
 	}
 
 	// for DWR Ajax
@@ -91,7 +101,6 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		}
 		return ce;
 	}
-
 
 	public List<File> findFilesByCompositionInfoId(String id, String className)
 			throws Exception {

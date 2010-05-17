@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -41,6 +42,14 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 
 	public ProtocolServiceHelper(UserBean user) {
 		super(user);
+	}
+
+	public ProtocolServiceHelper(AuthorizationService authService) {
+		super(authService);
+	}
+
+	public ProtocolServiceHelper(AuthorizationService authService, UserBean user) {
+		super(authService, user);
 	}
 
 	public List<Protocol> findProtocolsBy(String protocolType,
