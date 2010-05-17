@@ -31,6 +31,20 @@ public class BaseServiceHelper {
 		}
 	}
 
+	public BaseServiceHelper(AuthorizationService authService) {
+		this.authService = authService;
+	}
+
+	public BaseServiceHelper(AuthorizationService authService, UserBean user) {
+		this.authService = authService;
+		this.user = user;
+		try {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
+
 	public AuthorizationService getAuthService() {
 		return authService;
 	}
