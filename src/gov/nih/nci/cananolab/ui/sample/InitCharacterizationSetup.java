@@ -5,10 +5,13 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -37,8 +40,7 @@ public class InitCharacterizationSetup {
 
 	public void setPOCDropdown(HttpServletRequest request, String sampleId)
 			throws Exception {
-		SampleService service = (SampleService) request.getSession()
-				.getAttribute("sampleService");
+		SampleService service = this.getSampleServiceFromSession(request);
 		List<PointOfContactBean> pocs = service
 				.findPointOfContactsBySampleId(sampleId);
 		request.getSession().setAttribute("samplePointOfContacts", pocs);
@@ -211,8 +213,8 @@ public class InitCharacterizationSetup {
 					request.getSession().getServletContext(),
 					"defaultCharTypeChars", clazz.getName());
 		}
-		CharacterizationService service = (CharacterizationService) request
-				.getSession().getAttribute("characterizationService");
+		CharacterizationService service = this
+				.getCharacterizationServiceFromSession(request);
 		List<String> otherCharNames = service
 				.findOtherCharacterizationByAssayCategory(charType);
 		if (!otherCharNames.isEmpty()) {
@@ -244,9 +246,8 @@ public class InitCharacterizationSetup {
 				}
 			}
 		}
-		CharacterizationService service = (CharacterizationService) request
-				.getSession().getAttribute("characterizationService");
-
+		CharacterizationService service = this
+				.getCharacterizationServiceFromSession(request);
 		List<String> otherCharNames = service
 				.findOtherCharacterizationByAssayCategory(charType);
 		if (!otherCharNames.isEmpty()) {
@@ -337,5 +338,27 @@ public class InitCharacterizationSetup {
 					instrument.getManufacturer());
 		}
 		setExperimentConfigDropDowns(request);
+	}
+
+	private SampleService getSampleServiceFromSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (request.getSession().getAttribute("sampleService") != null) {
+			return (SampleService) request.getSession().getAttribute(
+					"sampleService");
+		} else {
+			return new SampleServiceLocalImpl(user);
+		}
+	}
+
+	private CharacterizationService getCharacterizationServiceFromSession(
+			HttpServletRequest request) throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (request.getSession().getAttribute("characterizationService") != null) {
+			return (CharacterizationService) request.getSession().getAttribute(
+					"characterizationService");
+		} else {
+			return new CharacterizationServiceLocalImpl(user);
+		}
 	}
 }

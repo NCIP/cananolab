@@ -20,14 +20,11 @@ import javax.servlet.http.HttpSession;
 
 /**
  * This class sets up information required for composition forms.
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class InitCompositionSetup {
-
-	// private CompositionService compService = new
-	// CompositionServiceLocalImpl();
 
 	public static InitCompositionSetup getInstance() {
 		return new InitCompositionSetup();
