@@ -32,8 +32,8 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			java.lang.String charId) throws RemoteException {
 		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 		try {
-			List<Finding> findings = helper.findFindingsByCharacterizationId(
-					charId, null);
+			List<Finding> findings = helper
+					.findFindingsByCharacterizationId(charId);
 			return findings.toArray(new Finding[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -46,7 +46,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 		try {
 			List<ExperimentConfig> configs = helper
-					.findExperimentConfigsByCharacterizationId(charId, null);
+					.findExperimentConfigsByCharacterizationId(charId);
 			return configs.toArray(new ExperimentConfig[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -58,8 +58,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			java.lang.String sampleId) throws RemoteException {
 		SampleServiceHelper helper = new SampleServiceHelper();
 		try {
-			List<Keyword> keywords = helper.findKeywordsBySampleId(sampleId,
-					null);
+			List<Keyword> keywords = helper.findKeywordsBySampleId(sampleId);
 			return keywords.toArray(new Keyword[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -73,7 +72,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		CompositionServiceHelper helper = new CompositionServiceHelper();
 		try {
 			List<File> files = helper.findFilesByCompositionInfoId(id,
-					className, null);
+					className);
 			return files.toArray(new File[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -85,8 +84,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			java.lang.String charId) throws RemoteException {
 		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 		try {
-			Protocol protocol = helper.findProtocolByCharacterizationId(charId,
-					null);
+			Protocol protocol = helper.findProtocolByCharacterizationId(charId);
 			return protocol;
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -99,7 +97,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		try {
 			SampleServiceHelper helper = new SampleServiceHelper();
 			PointOfContact primaryPOC = helper
-					.findPrimaryPointOfContactBySampleId(sampleId, null);
+					.findPrimaryPointOfContactBySampleId(sampleId);
 			return primaryPOC;
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -112,7 +110,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		try {
 			SampleServiceHelper helper = new SampleServiceHelper();
 			List<PointOfContact> pocList = helper
-					.findOtherPointOfContactBySampleId(sampleId, null);
+					.findOtherPointOfContactsBySampleId(sampleId);
 			return pocList.toArray(new PointOfContact[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -124,8 +122,8 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			java.lang.String publicationId) throws RemoteException {
 		try {
 			PublicationServiceHelper helper = new PublicationServiceHelper();
-			String[] sampleNames = helper.findSampleNamesByPublicationId(
-					publicationId, null);
+			String[] sampleNames = helper
+					.findSampleNamesByPublicationId(publicationId);
 			return sampleNames;
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -138,7 +136,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		try {
 			PublicationServiceHelper helper = new PublicationServiceHelper();
 			List<Publication> publicationList = helper
-					.findPublicationsBySampleId(sampleId, null);
+					.findPublicationsBySampleId(sampleId);
 			return publicationList.toArray(new Publication[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -146,8 +144,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		}
 	}
 
-	public java.lang.String[] getSampleNames(
-			java.lang.String sampleName,
+	public java.lang.String[] getSampleNames(java.lang.String sampleName,
 			java.lang.String samplePointOfContact,
 			java.lang.String[] nanomaterialEntityClassNames,
 			java.lang.String[] functionalizingEntityClassNames,
@@ -159,7 +156,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			List<String> sampleNames = helper.findSampleNamesBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames, null,
 					functionalizingEntityClassNames, null, functionClassNames,
-					null, characterizationClassNames, null, words, null);
+					null, characterizationClassNames, null, words);
 			return sampleNames.toArray(new String[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -167,16 +164,16 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		}
 	}
 
-	public java.lang.String[] getSampleViewStrs(
-			java.lang.String sampleName) throws RemoteException {
+	public java.lang.String[] getSampleViewStrs(java.lang.String sampleName)
+			throws RemoteException {
 		try {
 			SampleServiceHelper helper = new SampleServiceHelper();
 			Sample sample = null;
-			//if matches numbers assume to be an ID
+			// if matches numbers assume to be an ID
 			if (sampleName.matches("\\d+")) {
-				sample = helper.findSampleById(sampleName, null);
+				sample = helper.findSampleById(sampleName);
 			} else {
-				sample = helper.findSampleByName(sampleName, null);
+				sample = helper.findSampleByName(sampleName);
 			}
 			if (sample != null) {
 				String[] columns = helper.getSampleViewStrs(sample);
@@ -186,7 +183,8 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			}
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get sample view columns for the given sample name or sample ID: "+e);
+					"Can't get sample view columns for the given sample name or sample ID: "
+							+ e);
 		}
 	}
 
@@ -206,7 +204,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 					researchAreas, keywords, pubMedId, digitalObjectId,
 					authors, nanomaterialEntityClassNames, null,
 					functionalizingEntityClassNames, null, functionClassNames,
-					null, null);
+					null);
 			return publicationIds.toArray(new String[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
@@ -218,7 +216,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			java.lang.String protocolId) throws RemoteException {
 		try {
 			ProtocolServiceHelper helper = new ProtocolServiceHelper();
-			File file = helper.findFileByProtocolId(protocolId, null);
+			File file = helper.findFileByProtocolId(protocolId);
 			return file;
 		} catch (Exception e) {
 			throw new RemoteException("Can't get file by the given protocolId");
