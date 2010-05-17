@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="caNanoLab" default="run" basedir=".">
+	<property file="build.properties" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="conf.dir" value="${basedir}/conf" />
+	<property name="webroot.dir" value="${basedir}/web" />
+	<property name="webapp.lib.dir" value="${webroot.dir}/WEB-INF/lib" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="target.dir" value="${basedir}/target" />
+
+	<import file="build-deploy.xml" />
+	<import file="build-grid.xml" />
+	<import file="build-standalone.xml" />
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${lib.dir}/cagrid/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
+	<target name="pre-clean">
+		<delete dir="${target.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="post-clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="init">
+		<!-- create the necessary folders -->
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/WEB-INF" />
+		<mkdir dir="${build.dir}/WEB-INF/classes" />
+		<mkdir dir="${build.dir}/WEB-INF/lib" />
+	</target>
+
+	<target name="compile" depends="init">
+		<echo message="*****************************************************" />
+		<echo message="**   Compiling Java Classes ...          		  **" />
+		<echo message="*****************************************************" />
+		<path id="cp">
+			<fileset dir="${webapp.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true">
+			<classpath refid="cp" />
+		</javac>
+
+		<!--copy properties files -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties" />
+				<exclude name="caNanoLab.properties" />
+			</fileset>
+		</copy>
+
+		<!--copy wsdd file -->
+		<copy todir="${build.dir}/WEB-INF/classes" file="${src.dir}/client-config.wsdd" />
+
+		<copy overwrite="true" todir="${build.dir}/WEB-INF/classes" file="${src.dir}/caNanoLab.properties.template">
+			<!-- replace tokens with values from build properties -->
+			<filterset>
+				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
+				<filter token="APP_OWNER" value="${application.owner}" />
+				<filter token="ADMIN_EMAIL" value="${admin.email}" />
+			</filterset>
+		</copy>
+		<move file="${build.dir}/WEB-INF/classes/caNanoLab.properties.template" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" />
+
+		<!--copy xml files -->
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+
+		<!-- copy web files and lib files -->
+		<copy todir="${build.dir}">
+			<fileset dir="${webroot.dir}">
+				<exclude name="**/*.mex" />
+				<exclude name="**/WEB-INF/classes/**" />
+			</fileset>
+		</copy>
+
+		<!-- copy lib files from ${lib.dir} -->
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}/cagrid">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/globus">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="war" depends="compile">
+		<!-- tag footer with release version and build tag -->
+		<property file="${build.dir}/WEB-INF/classes/version.properties" />
+		<property name="build_tag" value="dev" />
+		<propertyregex override="true" property="build_tag" input="${build.tag}" regexp="\$HeadURL\: .*/calab/cananolab/tags/([^/]*)/.*" select="\1" />
+
+		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_RELEASE_VERSION\}" replace="${release.version}" flags="g" />
+		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_BUILD_TAG\}" replace="${build_tag}" flags="g" />
+
+		<!-- package WAR file -->
+		<mkdir dir="${target.dir}" />
+		<jar destfile="${target.dir}/caNanoLab.war" basedir="${build.dir}" />
+		<copy todir="${target.dir}">
+			<fileset dir="${conf.dir}/csm/">
+				<include name="*.war" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="run" depends="pre-clean, init, war, post-clean" />
+</project>
