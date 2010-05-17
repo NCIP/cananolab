@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
+import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -39,7 +39,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author tanq, pansu
  */
-public class PublicationServiceHelper extends FileServiceHelper {
+public class PublicationServiceHelper extends BaseServiceHelper {
 	private Logger logger = Logger.getLogger(PublicationServiceHelper.class);
 
 	public PublicationServiceHelper() {

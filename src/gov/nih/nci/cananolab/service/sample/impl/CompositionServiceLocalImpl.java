@@ -24,6 +24,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -126,8 +127,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				entityBean = new NanomaterialEntityBean(entity);
 				if (entityBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileService.getHelper()
-								.retrieveVisibility(fileBean.getDomainFile()));
+						fileBean.setVisibilityGroups(helper.getAuthService()
+								.getAccessibleGroups(
+										fileBean.getDomainFile().getId()
+												.toString(),
+										Constants.CSM_READ_PRIVILEGE));
 					}
 				}
 			}
@@ -325,8 +329,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				entityBean = new FunctionalizingEntityBean(entity);
 				if (entityBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileService.getHelper()
-								.retrieveVisibility(fileBean.getDomainFile()));
+						fileBean.setVisibilityGroups(helper.getAuthService()
+								.getAccessibleGroups(
+										fileBean.getDomainFile().getId()
+												.toString(),
+										Constants.CSM_READ_PRIVILEGE));
 					}
 				}
 			} else {
@@ -354,8 +361,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				assocBean = new ChemicalAssociationBean(assoc);
 				if (assocBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : assocBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileService.getHelper()
-								.retrieveVisibility(fileBean.getDomainFile()));
+						fileBean.setVisibilityGroups(helper.getAuthService()
+								.getAccessibleGroups(
+										fileBean.getDomainFile().getId()
+												.toString(),
+										Constants.CSM_READ_PRIVILEGE));
 					}
 				}
 			} else {
@@ -524,8 +534,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				comp = new CompositionBean(composition);
 				if (comp.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : comp.getFiles()) {
-						fileBean.setVisibilityGroups(fileService.getHelper()
-								.retrieveVisibility(fileBean.getDomainFile()));
+						fileBean.setVisibilityGroups(helper.getAuthService()
+								.getAccessibleGroups(
+										fileBean.getDomainFile().getId()
+												.toString(),
+										Constants.CSM_READ_PRIVILEGE));
 					}
 				}
 				if (comp.getNanomaterialEntities() != null) {
@@ -534,9 +547,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						if (entity.getFiles() != null
 								&& helper.getUser() != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileBean.setVisibilityGroups(fileService
-										.getHelper().retrieveVisibility(
-												fileBean.getDomainFile()));
+								fileBean.setVisibilityGroups(helper
+										.getAuthService().getAccessibleGroups(
+												fileBean.getDomainFile()
+														.getId().toString(),
+												Constants.CSM_READ_PRIVILEGE));
 							}
 						}
 					}
@@ -547,9 +562,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						if (entity.getFiles() != null
 								&& helper.getUser() != null) {
 							for (FileBean fileBean : entity.getFiles()) {
-								fileBean.setVisibilityGroups(fileService
-										.getHelper().retrieveVisibility(
-												fileBean.getDomainFile()));
+								fileBean.setVisibilityGroups(helper
+										.getAuthService().getAccessibleGroups(
+												fileBean.getDomainFile()
+														.getId().toString(),
+												Constants.CSM_READ_PRIVILEGE));
 							}
 						}
 					}
@@ -560,9 +577,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						if (assoc.getFiles() != null
 								&& helper.getUser() != null) {
 							for (FileBean fileBean : assoc.getFiles()) {
-								fileBean.setVisibilityGroups(fileService
-										.getHelper().retrieveVisibility(
-												fileBean.getDomainFile()));
+								fileBean.setVisibilityGroups(helper
+										.getAuthService().getAccessibleGroups(
+												fileBean.getDomainFile()
+														.getId().toString(),
+												Constants.CSM_READ_PRIVILEGE));
 							}
 						}
 					}

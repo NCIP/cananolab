@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -15,6 +16,7 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -33,16 +35,17 @@ import org.apache.log4j.Logger;
  * @author tanq, pansu
  *
  */
-public class PublicationServiceLocalImpl extends FileServiceLocalImpl implements
-		PublicationService {
+public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
 			.getLogger(PublicationServiceLocalImpl.class);
 	private PublicationServiceHelper helper;
+	private FileService fileService;
 	private SampleService sampleService;
 
 	public PublicationServiceLocalImpl() {
 		helper = new PublicationServiceHelper();
 		sampleService = new SampleServiceLocalImpl();
+		fileService = new FileServiceLocalImpl();
 	}
 
 	public PublicationServiceLocalImpl(UserBean user) {
@@ -97,9 +100,9 @@ public class PublicationServiceLocalImpl extends FileServiceLocalImpl implements
 					publication.setId(dbPublication.getId());
 				}
 			}
-			prepareSaveFile(publication);
+			fileService.prepareSaveFile(publication);
 			appService.saveOrUpdate(publication);
-			writeFile(publicationBean);
+			fileService.writeFile(publicationBean);
 
 			// set visibility
 			assignVisibility(publication, publicationBean.getVisibilityGroups());
@@ -205,8 +208,10 @@ public class PublicationServiceLocalImpl extends FileServiceLocalImpl implements
 							sampleNames);
 					// retrieve visibility
 					if (helper.getUser() != null)
-						pubBean.setVisibilityGroups(helper
-								.retrieveVisibility(publication));
+						pubBean.setVisibilityGroups(helper.getAuthService()
+								.getAccessibleGroups(
+										publication.getId().toString(),
+										Constants.CSM_READ_PRIVILEGE));
 					publicationBeans.add(pubBean);
 				}
 			}
@@ -235,8 +240,10 @@ public class PublicationServiceLocalImpl extends FileServiceLocalImpl implements
 								.toString());
 				publicationBean = new PublicationBean(publication, sampleNames);
 				if (helper.getUser() != null)
-					publicationBean.setVisibilityGroups(helper
-							.retrieveVisibility(publication));
+					publicationBean.setVisibilityGroups(helper.getAuthService()
+							.getAccessibleGroups(
+									publication.getId().toString(),
+									Constants.CSM_READ_PRIVILEGE));
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -289,8 +296,8 @@ public class PublicationServiceLocalImpl extends FileServiceLocalImpl implements
 	 * @param sampleId
 	 * @param publication
 	 * @param user
-	 * @throws PublicationException
-	 *             , NoAccessException
+	 * @throws PublicationException ,
+	 *             NoAccessException
 	 */
 	public void removePublicationFromSample(String sampleName,
 			Publication publication) throws PublicationException,
@@ -384,8 +391,10 @@ public class PublicationServiceLocalImpl extends FileServiceLocalImpl implements
 								.toString());
 				pubBean = new PublicationBean(publication, sampleNames);
 				if (helper.getUser() != null)
-					pubBean.setVisibilityGroups(helper
-							.retrieveVisibility(publication));
+					pubBean.setVisibilityGroups(helper.getAuthService()
+							.getAccessibleGroups(
+									publication.getId().toString(),
+									Constants.CSM_READ_PRIVILEGE));
 			}
 		} catch (Exception e) {
 			String err = "trouble finding non PubMed/DOI publication based on type: "

@@ -150,8 +150,12 @@ public class CharacterizationServiceLocalImpl implements
 		for (FindingBean findingBean : charBean.getFindings()) {
 			if (findingBean.getFiles() != null && helper.getUser() != null) {
 				for (FileBean fileBean : findingBean.getFiles()) {
-					fileBean.setVisibilityGroups(fileService.getHelper()
-							.retrieveVisibility(fileBean.getDomainFile()));
+					fileBean
+							.setVisibilityGroups(helper.getAuthService()
+									.getAccessibleGroups(
+											fileBean.getDomainFile().getId()
+													.toString(),
+											Constants.CSM_READ_PRIVILEGE));
 				}
 			}
 		}
@@ -206,8 +210,11 @@ public class CharacterizationServiceLocalImpl implements
 				findingBean = new FindingBean(finding);
 				if (findingBean.getFiles() != null && helper.getUser() != null) {
 					for (FileBean fileBean : findingBean.getFiles()) {
-						fileBean.setVisibilityGroups(fileService.getHelper()
-								.retrieveVisibility(fileBean.getDomainFile()));
+						fileBean.setVisibilityGroups(helper.getAuthService()
+								.getAccessibleGroups(
+										fileBean.getDomainFile().getId()
+												.toString(),
+										Constants.CSM_READ_PRIVILEGE));
 					}
 				}
 			}

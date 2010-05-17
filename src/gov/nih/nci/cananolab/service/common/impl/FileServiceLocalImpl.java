@@ -54,8 +54,9 @@ public class FileServiceLocalImpl implements FileService {
 			if (file != null) {
 				fileBean = new FileBean(file);
 				if (helper.getUser() != null) {
-					fileBean.setVisibilityGroups(helper
-							.retrieveVisibility(file));
+					fileBean.setVisibilityGroups(helper.getAuthService()
+							.getAccessibleGroups(file.getId().toString(),
+									Constants.CSM_READ_PRIVILEGE));
 				}
 				return fileBean;
 			}

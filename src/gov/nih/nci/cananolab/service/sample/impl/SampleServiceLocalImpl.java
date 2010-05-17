@@ -31,6 +31,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
@@ -75,12 +76,14 @@ public class SampleServiceLocalImpl implements SampleService {
 	private CharacterizationServiceLocalImpl charService;
 	private CompositionServiceLocalImpl compService;
 	private PublicationServiceLocalImpl publicationService;
+	private FileServiceLocalImpl fileService;
 
 	public SampleServiceLocalImpl() {
 		helper = new SampleServiceHelper();
 		charService = new CharacterizationServiceLocalImpl();
 		compService = new CompositionServiceLocalImpl();
 		publicationService = new PublicationServiceLocalImpl();
+		fileService = new FileServiceLocalImpl();
 	}
 
 	public SampleServiceLocalImpl(UserBean user) {
@@ -207,12 +210,6 @@ public class SampleServiceLocalImpl implements SampleService {
 					visibleGroups, owningGroup);
 		}
 		// don't need to reset keywords
-	}
-
-	private void assignFullVisibility(String[] visibilityGroups,
-			String sampleName) throws Exception {
-		Sample fullyLoadedSample = findFullyLoadedSampleByName(sampleName);
-		assignVisibility(fullyLoadedSample, visibilityGroups);
 	}
 
 	private Sample findLoadedSampleForAssociatedVisibility(String sampleName)
@@ -420,34 +417,29 @@ public class SampleServiceLocalImpl implements SampleService {
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		// lazily load sample
-		Sample sample = (Sample) appService.getObject(Sample.class, "name",
-				sampleName);
+		// load composition and characterization separate because of Hibernate
+		// join limitation
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("name").eq(sampleName).ignoreCase());
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		Sample sample = null;
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
 		if (sample == null) {
 			throw new NotExistException("Sample doesn't exist in the database");
-		}
-		String sampleId = sample.getId().toString();
-		// fully load keywords
-		List<Keyword> keywords = helper.findKeywordsBySampleId(sampleId);
-		if (keywords != null && !keywords.isEmpty()) {
-			sample.setKeywordCollection(new HashSet<Keyword>(keywords));
-		} else {
-			sample.setKeywordCollection(null);
-		}
-
-		// fully load POCs
-		PointOfContact primaryPOC = helper
-				.findPrimaryPointOfContactBySampleId(sampleId);
-		sample.setPrimaryPointOfContact(primaryPOC);
-
-		List<PointOfContact> otherPOCs = helper
-				.findOtherPointOfContactsBySampleId(sampleId);
-		if (otherPOCs != null) {
-			sample
-					.setOtherPointOfContactCollection(new HashSet<PointOfContact>(
-							otherPOCs));
-		} else {
-			sample.setOtherPointOfContactCollection(null);
 		}
 
 		// fully load composition
@@ -463,19 +455,6 @@ public class SampleServiceLocalImpl implements SampleService {
 					chars));
 		} else {
 			sample.setCharacterizationCollection(null);
-		}
-
-		// fully load publications
-		List<PublicationBean> pubBeans = publicationService
-				.findPublicationsBySampleId(sample.getId().toString());
-		if (pubBeans != null) {
-			Collection<Publication> publications = new HashSet<Publication>();
-			for (PublicationBean pubBean : pubBeans) {
-				publications.add((Publication) pubBean.getDomainFile());
-			}
-			sample.setPublicationCollection(publications);
-		} else {
-			sample.setPublicationCollection(null);
 		}
 		return sample;
 	}
@@ -515,20 +494,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			Sample sample = helper.findSampleByName(sampleName);
 			SampleBean sampleBean = null;
 			if (sample != null) {
-				sampleBean = loadSampleBean(sample);
-				// load summary information
-				sampleBean.setCharacterizationClassNames(helper
-						.getStoredCharacterizationClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionalizingEntityClassNames(helper
-						.getStoredFunctionalizingEntityClassNames(sample)
-						.toArray(new String[0]));
-				sampleBean.setNanomaterialEntityClassNames(helper
-						.getStoredNanomaterialEntityClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionClassNames(helper
-						.getStoredFunctionClassNames(sample).toArray(
-								new String[0]));
+				// sampleBean = loadSampleBean(sample);
+				sampleBean = new SampleBean(sample);
 			}
 			return sampleBean;
 		} catch (NoAccessException e) {
@@ -660,7 +627,9 @@ public class SampleServiceLocalImpl implements SampleService {
 						.getAccessibleGroups(sampleName,
 								Constants.CSM_READ_PRIVILEGE);
 				System.out.println(sampleName);
-				assignFullVisibility(visibleGroups, sampleName);
+				Sample fullyLoadedSample = this
+						.findLoadedSampleForAssociatedVisibility(sampleName);
+				this.assignVisibility(fullyLoadedSample, visibleGroups);
 			} catch (Exception e) {
 				System.out
 						.println("problem setting associated visibility for: "
@@ -850,7 +819,7 @@ public class SampleServiceLocalImpl implements SampleService {
 				if (charBean.getFindings() != null) {
 					for (FindingBean findingBean : charBean.getFindings()) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							publicationService.updateClonedFileInfo(fileBean,
+							fileService.updateClonedFileInfo(fileBean,
 									origSampleName, newSampleName);
 						}
 						charService.saveFinding(findingBean);
@@ -876,7 +845,7 @@ public class SampleServiceLocalImpl implements SampleService {
 					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
 							entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
-						publicationService.updateClonedFileInfo(fileBean,
+						fileService.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
 					}
 					compService.saveNanomaterialEntity(sampleBean, entityBean);
@@ -891,7 +860,7 @@ public class SampleServiceLocalImpl implements SampleService {
 					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 							entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
-						publicationService.updateClonedFileInfo(fileBean,
+						fileService.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
 					}
 					compService.saveFunctionalizingEntity(sampleBean,
@@ -904,8 +873,8 @@ public class SampleServiceLocalImpl implements SampleService {
 				for (File file : sampleBean.getDomain().getSampleComposition()
 						.getFileCollection()) {
 					FileBean fileBean = new FileBean(file);
-					publicationService.updateClonedFileInfo(fileBean,
-							origSampleName, newSampleName);
+					fileService.updateClonedFileInfo(fileBean, origSampleName,
+							newSampleName);
 					compService.saveCompositionFile(sampleBean, fileBean);
 				}
 			}
@@ -925,7 +894,7 @@ public class SampleServiceLocalImpl implements SampleService {
 							.getSampleComposition(), assoc
 							.getAssociatedElementB());
 					for (FileBean fileBean : assocBean.getFiles()) {
-						publicationService.updateClonedFileInfo(fileBean,
+						fileService.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
 					}
 					compService.saveChemicalAssociation(sampleBean, assocBean);

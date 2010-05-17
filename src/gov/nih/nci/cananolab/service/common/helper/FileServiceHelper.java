@@ -62,14 +62,6 @@ public class FileServiceHelper extends BaseServiceHelper {
 		return file;
 	}
 
-	// retrieve file visibility
-	public String[] retrieveVisibility(File file) throws Exception {
-		// get assigned visible groups
-		String[] visibilityGroups = getAuthService().getAccessibleGroups(
-				file.getId().toString(), Constants.CSM_READ_PRIVILEGE);
-		return visibilityGroups;
-	}
-
 	/**
 	 * Get the content of the file into a byte array.
 	 *
