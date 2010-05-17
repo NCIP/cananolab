@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -38,6 +39,14 @@ public class FileServiceLocalImpl implements FileService {
 
 	public FileServiceLocalImpl(UserBean user) {
 		helper = new FileServiceHelper(user);
+	}
+
+	public FileServiceLocalImpl(AuthorizationService authService) {
+		helper = new FileServiceHelper(authService);
+	}
+
+	public FileServiceLocalImpl(AuthorizationService authService, UserBean user) {
+		helper = new FileServiceHelper(authService, user);
 	}
 
 	/**

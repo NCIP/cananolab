@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -53,13 +54,36 @@ public class CharacterizationServiceLocalImpl implements
 	private FileServiceLocalImpl fileService;
 
 	public CharacterizationServiceLocalImpl() {
-		helper = new CharacterizationServiceHelper();
-		fileService = new FileServiceLocalImpl();
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			helper = new CharacterizationServiceHelper(authService);
+			fileService = new FileServiceLocalImpl(authService);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
 	}
 
 	public CharacterizationServiceLocalImpl(UserBean user) {
-		helper = new CharacterizationServiceHelper(user);
-		fileService = new FileServiceLocalImpl(user);
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			helper = new CharacterizationServiceHelper(authService, user);
+			fileService = new FileServiceLocalImpl(authService, user);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
+
+	public CharacterizationServiceLocalImpl(AuthorizationService authService) {
+		helper = new CharacterizationServiceHelper(authService);
+		fileService = new FileServiceLocalImpl(authService);
+	}
+
+	public CharacterizationServiceLocalImpl(AuthorizationService authService,
+			UserBean user) {
+		helper = new CharacterizationServiceHelper(authService, user);
+		fileService = new FileServiceLocalImpl(authService, user);
 	}
 
 	public void saveCharacterization(SampleBean sampleBean,

@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -48,13 +49,36 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	private FileServiceLocalImpl fileService;
 
 	public CompositionServiceLocalImpl() {
-		helper = new CompositionServiceHelper();
-		fileService = new FileServiceLocalImpl();
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			helper = new CompositionServiceHelper(authService);
+			fileService = new FileServiceLocalImpl(authService);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
 	}
 
 	public CompositionServiceLocalImpl(UserBean user) {
-		helper = new CompositionServiceHelper(user);
-		fileService = new FileServiceLocalImpl(user);
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			helper = new CompositionServiceHelper(authService, user);
+			fileService = new FileServiceLocalImpl(authService, user);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
+
+	public CompositionServiceLocalImpl(AuthorizationService authService) {
+		helper = new CompositionServiceHelper(authService);
+		fileService = new FileServiceLocalImpl(authService);
+	}
+
+	public CompositionServiceLocalImpl(AuthorizationService authService,
+			UserBean user) {
+		helper = new CompositionServiceHelper(authService, user);
+		fileService = new FileServiceLocalImpl(authService, user);
 	}
 
 	public void saveNanomaterialEntity(SampleBean sampleBean,

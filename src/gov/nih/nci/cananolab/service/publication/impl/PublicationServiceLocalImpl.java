@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -50,6 +51,19 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		helper = new PublicationServiceHelper(user);
 		fileService = new FileServiceLocalImpl(user);
 		sampleHelper = new SampleServiceHelper(user);
+	}
+
+	public PublicationServiceLocalImpl(AuthorizationService authService) {
+		helper = new PublicationServiceHelper(authService);
+		fileService = new FileServiceLocalImpl(authService);
+		sampleHelper = new SampleServiceHelper(authService);
+	}
+
+	public PublicationServiceLocalImpl(AuthorizationService authService,
+			UserBean user) {
+		helper = new PublicationServiceHelper(authService, user);
+		fileService = new FileServiceLocalImpl(authService, user);
+		sampleHelper = new SampleServiceHelper(authService, user);
 	}
 
 	/**
@@ -276,8 +290,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @param sampleId
 	 * @param publication
 	 * @param user
-	 * @throws PublicationException ,
-	 *             NoAccessException
+	 * @throws PublicationException
+	 *             , NoAccessException
 	 */
 	public void removePublicationFromSample(String sampleName,
 			Publication publication) throws PublicationException,

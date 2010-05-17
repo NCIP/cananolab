@@ -38,6 +38,7 @@ import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -79,14 +80,38 @@ public class SampleServiceLocalImpl implements SampleService {
 	private FileServiceLocalImpl fileService;
 
 	public SampleServiceLocalImpl() {
-		helper = new SampleServiceHelper();
-		charService = new CharacterizationServiceLocalImpl();
-		compService = new CompositionServiceLocalImpl();
-		publicationService = new PublicationServiceLocalImpl();
-		fileService = new FileServiceLocalImpl();
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			helper = new SampleServiceHelper(authService);
+			charService = new CharacterizationServiceLocalImpl(authService);
+			compService = new CompositionServiceLocalImpl(authService);
+			publicationService = new PublicationServiceLocalImpl(authService);
+			fileService = new FileServiceLocalImpl(authService);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+
 	}
 
 	public SampleServiceLocalImpl(UserBean user) {
+		helper = new SampleServiceHelper(user);
+		charService = new CharacterizationServiceLocalImpl(user);
+		compService = new CompositionServiceLocalImpl(user);
+		publicationService = new PublicationServiceLocalImpl(user);
+		fileService = new FileServiceLocalImpl(user);
+	}
+
+	public SampleServiceLocalImpl(AuthorizationService authService) {
+		helper = new SampleServiceHelper(authService);
+		charService = new CharacterizationServiceLocalImpl(authService);
+		compService = new CompositionServiceLocalImpl(authService);
+		publicationService = new PublicationServiceLocalImpl(authService);
+		fileService = new FileServiceLocalImpl(authService);
+	}
+
+	public SampleServiceLocalImpl(AuthorizationService authService,
+			UserBean user) {
 		helper = new SampleServiceHelper(user);
 		charService = new CharacterizationServiceLocalImpl(user);
 		compService = new CompositionServiceLocalImpl(user);

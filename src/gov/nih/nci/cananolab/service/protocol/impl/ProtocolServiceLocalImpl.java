@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -37,13 +38,36 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	private FileServiceLocalImpl fileService;
 
 	public ProtocolServiceLocalImpl() {
-		helper = new ProtocolServiceHelper();
-		fileService = new FileServiceLocalImpl();
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			helper = new ProtocolServiceHelper(authService);
+			fileService = new FileServiceLocalImpl(authService);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
 	}
 
 	public ProtocolServiceLocalImpl(UserBean user) {
-		helper = new ProtocolServiceHelper(user);
-		fileService = new FileServiceLocalImpl(user);
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			helper = new ProtocolServiceHelper(authService, user);
+			fileService = new FileServiceLocalImpl(authService, user);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
+
+	public ProtocolServiceLocalImpl(AuthorizationService authService) {
+		helper = new ProtocolServiceHelper(authService);
+		fileService = new FileServiceLocalImpl(authService);
+	}
+
+	public ProtocolServiceLocalImpl(AuthorizationService authService,
+			UserBean user) {
+		helper = new ProtocolServiceHelper(authService, user);
+		fileService = new FileServiceLocalImpl(authService, user);
 	}
 
 	public ProtocolBean findProtocolById(String protocolId)
