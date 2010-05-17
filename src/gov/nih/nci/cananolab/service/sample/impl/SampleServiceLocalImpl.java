@@ -95,8 +95,8 @@ public class SampleServiceLocalImpl implements SampleService {
 	 *
 	 * @param sample
 	 *
-	 * @throws SampleException
-	 *             , DuplicateEntriesException
+	 * @throws SampleException ,
+	 *             DuplicateEntriesException
 	 */
 	public void saveSample(SampleBean sampleBean) throws SampleException,
 			DuplicateEntriesException, NoAccessException {
@@ -107,10 +107,10 @@ public class SampleServiceLocalImpl implements SampleService {
 		if (sampleBean.getDomain().getId() != null) {
 			newSample = false;
 		}
+		Sample sample = sampleBean.getDomain();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			Sample sample = sampleBean.getDomain();
 			Sample dbSample = (Sample) appService.getObject(Sample.class,
 					"name", sample.getName());
 			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
@@ -145,12 +145,17 @@ public class SampleServiceLocalImpl implements SampleService {
 
 		// assign CSM visibility and associated visibility
 		// requires fully loaded sample if it's an existing sample)
+		// assign CSM visibility and associated visibility
+		// requires fully loaded sample if it's an existing sample)
 		try {
 			if (!newSample) {
-				assignFullVisibility(sampleBean.getVisibilityGroups(),
-						sampleBean.getDomain().getName().toString());
+				Sample fullyLoadedSample = this
+						.findLoadedSampleForAssociatedVisibility(sample
+								.getName());
+				assignVisibility(fullyLoadedSample, sampleBean
+						.getVisibilityGroups());
 			} else {
-				assignVisibility(sampleBean.getDomain(), sampleBean
+				assignVisibilityToSampleOnly(sample, sampleBean
 						.getVisibilityGroups());
 			}
 		} catch (Exception e) {
@@ -159,10 +164,137 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
+	private void assignVisibility(Sample sample, String[] visibleGroups)
+			throws Exception {
+		assignVisibilityToSampleOnly(sample, visibleGroups);
+		assignAssociatedVisibility(sample, visibleGroups);
+	}
+
+	private void assignVisibilityToSampleOnly(Sample sample,
+			String[] visibleGroups) throws Exception {
+		String owningGroup = null;
+		if (sample.getPrimaryPointOfContact() != null
+				&& sample.getPrimaryPointOfContact().getOrganization() != null) {
+			owningGroup = sample.getPrimaryPointOfContact().getOrganization()
+					.getName();
+		}
+		// visibility for sample, visibility for POC is handled by POC
+		// separately
+		helper.getAuthService().assignVisibility(sample.getName(),
+				visibleGroups, owningGroup);
+	}
+
+	private void assignAssociatedVisibility(Sample sample,
+			String[] visibleGroups) throws Exception {
+		String owningGroup = null;
+		if (sample.getPrimaryPointOfContact() != null
+				&& sample.getPrimaryPointOfContact().getOrganization() != null) {
+			owningGroup = sample.getPrimaryPointOfContact().getOrganization()
+					.getName();
+		}
+		// assign associated visibilities
+		Collection<Characterization> characterizationCollection = sample
+				.getCharacterizationCollection();
+		// characterizations
+		if (characterizationCollection != null) {
+			for (Characterization aChar : characterizationCollection) {
+				charService.assignVisibility(aChar, visibleGroups, owningGroup);
+			}
+		}
+		// sampleComposition
+		if (sample.getSampleComposition() != null) {
+			compService.assignVisibility(sample.getSampleComposition(),
+					visibleGroups, owningGroup);
+		}
+		// don't need to reset keywords
+	}
+
 	private void assignFullVisibility(String[] visibilityGroups,
 			String sampleName) throws Exception {
 		Sample fullyLoadedSample = findFullyLoadedSampleByName(sampleName);
 		assignVisibility(fullyLoadedSample, visibilityGroups);
+	}
+
+	private Sample findLoadedSampleForAssociatedVisibility(String sampleName)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		// don't load fields that have separate visibility
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("name").eq(sampleName).ignoreCase());
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"characterizationCollection.experimentConfigCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"characterizationCollection.experimentConfigCollection.technique",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"characterizationCollection.experimentConfigCollection.instrumentCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection.findingCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode(
+				"characterizationCollection.findingCollection.datumCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"characterizationCollection.findingCollection.datumCollection.conditionCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.activationMethod",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementA",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementB",
+						FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection",
+				FetchMode.JOIN);
+		List result = appService.query(crit);
+		Sample sample = null;
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		if (sample == null) {
+			throw new NotExistException("Sample doesn't exist in the database");
+		}
+		return sample;
 	}
 
 	public void savePointOfContact(PointOfContactBean pocBean)
@@ -216,43 +348,6 @@ public class SampleServiceLocalImpl implements SampleService {
 			String err = "Error in saving the PointOfContact.";
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
-		}
-	}
-
-	private void assignVisibility(Sample sample, String[] visibleGroups)
-			throws Exception {
-		String owningGroup = null;
-		if (sample.getPrimaryPointOfContact() != null) {
-			owningGroup = sample.getPrimaryPointOfContact().getOrganization()
-					.getName();
-		}
-		// assign visibility for sample
-		// visibility for POC is handled by POC separately
-		helper.getAuthService().assignVisibility(sample.getName(),
-				visibleGroups, owningGroup);
-		// assign associated visibilities
-		Collection<Characterization> characterizationCollection = sample
-				.getCharacterizationCollection();
-		// characterizations
-		if (characterizationCollection != null) {
-			for (Characterization aChar : characterizationCollection) {
-				charService.assignVisibility(aChar, visibleGroups, owningGroup);
-			}
-		}
-		// sampleComposition
-		if (sample.getSampleComposition() != null) {
-			compService.assignVisibility(sample.getSampleComposition(),
-					visibleGroups, owningGroup);
-		}
-
-		// keywords to public
-		if (sample.getKeywordCollection() != null) {
-			for (Keyword keyword : sample.getKeywordCollection()) {
-				helper.getAuthService().assignVisibility(
-						keyword.getId().toString(),
-						new String[] { Constants.CSM_PUBLIC_GROUP }, null);
-
-			}
 		}
 	}
 
