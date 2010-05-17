@@ -91,6 +91,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		charService = new CharacterizationServiceLocalImpl(user);
 		compService = new CompositionServiceLocalImpl(user);
 		publicationService = new PublicationServiceLocalImpl(user);
+		fileService = new FileServiceLocalImpl(user);
 	}
 
 	/**
