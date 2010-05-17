@@ -13,8 +13,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -39,20 +38,19 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
 			.getLogger(PublicationServiceLocalImpl.class);
 	private PublicationServiceHelper helper;
+	private SampleServiceHelper sampleHelper;
 	private FileService fileService;
-	private SampleService sampleService;
 
 	public PublicationServiceLocalImpl() {
 		helper = new PublicationServiceHelper();
-		sampleService = new SampleServiceLocalImpl();
 		fileService = new FileServiceLocalImpl();
+		sampleHelper = new SampleServiceHelper();
 	}
 
 	public PublicationServiceLocalImpl(UserBean user) {
 		helper = new PublicationServiceHelper(user);
-		sampleService = new SampleServiceLocalImpl(user);
 		fileService = new FileServiceLocalImpl(user);
-
+		sampleHelper = new SampleServiceHelper(user);
 	}
 
 	/**
@@ -145,9 +143,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				&& sampleNamesToRemove.size() > 0) {
 			Set<Sample> samplesToRemove = new HashSet<Sample>();
 			for (String name : sampleNamesToRemove) {
-				SampleBean sampleBean = sampleService.findSampleByName(name);
-				if (sampleBean != null) {
-					samplesToRemove.add(sampleBean.getDomain());
+				Sample sample = sampleHelper.findSampleByName(name);
+				if (sample != null) {
+					samplesToRemove.add(sample);
 				}
 			}
 			for (Sample sample : samplesToRemove) {
@@ -159,9 +157,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		Set<Sample> samplesToAdd = new HashSet<Sample>();
 		if (sampeNamesToAdd != null && sampeNamesToAdd.size() > 0) {
 			for (String name : sampeNamesToAdd) {
-				SampleBean sampleBean = sampleService.findSampleByName(name);
-				if (sampleBean != null) {
-					samplesToAdd.add(sampleBean.getDomain());
+				Sample sample = sampleHelper.findSampleByName(name);
+				if (sample != null) {
+					samplesToAdd.add(sample);
 				}
 			}
 		}
@@ -311,8 +309,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			SampleBean sampleBean = sampleService.findSampleByName(sampleName);
-			Sample sample = sampleBean.getDomain();
+			Sample sample = sampleHelper.findSampleByName(sampleName);
 			Collection<Publication> pubs = sample.getPublicationCollection();
 			if (pubs != null) {
 				pubs.remove(publication);
@@ -454,7 +451,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		return helper;
 	}
 
-	public SampleService getSampleService() {
-		return sampleService;
+	public SampleServiceHelper getSampleHelper() {
+		return sampleHelper;
 	}
 }

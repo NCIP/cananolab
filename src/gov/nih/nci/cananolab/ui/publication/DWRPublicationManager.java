@@ -10,7 +10,7 @@ import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -219,9 +219,9 @@ public class DWRPublicationManager {
 			return null;
 		}
 		try {
-			SampleServiceLocalImpl sampleService = (SampleServiceLocalImpl) (((PublicationServiceLocalImpl) service)
-					.getSampleService());
-			List<String> sampleNames = sampleService.getHelper()
+			SampleServiceHelper sampleHelper = (SampleServiceHelper) (((PublicationServiceLocalImpl) service)
+					.getSampleHelper());
+			List<String> sampleNames = sampleHelper
 					.findSampleNamesBy(searchStr);
 			return sampleNames.toArray(new String[sampleNames.size()]);
 		} catch (Exception e) {

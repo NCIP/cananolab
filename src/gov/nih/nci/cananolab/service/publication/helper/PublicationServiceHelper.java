@@ -383,8 +383,13 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		return publications;
 	}
 
-	private List<Publication> findPublicationsBySampleName(String sampleName)
+	public List<Publication> findPublicationsBySampleName(String sampleName)
 			throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleName);
+		}
+
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -396,11 +401,6 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sample.getName());
-			}
 		}
 		for (Object obj : sample.getPublicationCollection()) {
 			Publication pub = (Publication) obj;
