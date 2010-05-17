@@ -50,6 +50,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	public PublicationServiceLocalImpl(UserBean user) {
 		helper = new PublicationServiceHelper(user);
+		sampleService = new SampleServiceLocalImpl(user);
+		fileService = new FileServiceLocalImpl(user);
+
 	}
 
 	/**
