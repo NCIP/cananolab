@@ -855,7 +855,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.setProjection(Projections.distinct(Property.forName("name")));
 		if (!StringUtils.isEmpty(nameStr)) {
 			// split nameStr to multiple words if needed
-			List<String> nameStrs = StringUtils.parseToWords(nameStr, "\r\n");
+			List<String> nameStrs = StringUtils.parseToWords(nameStr, "\n");
 			if (nameStrs.size() == 1) {
 				crit.add(Restrictions
 						.ilike("name", nameStr, MatchMode.ANYWHERE));
