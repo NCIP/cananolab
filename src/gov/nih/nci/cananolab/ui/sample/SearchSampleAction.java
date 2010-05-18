@@ -229,13 +229,17 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			throws Exception {
 		List<SampleBean> loadedSampleBeans = new ArrayList<SampleBean>();
 		SampleService service = null;
+		if (request.getSession().getAttribute("sampleService") != null) {
+			service = (SampleService) request.getSession().getAttribute(
+					"sampleService");
+		} else {
+			service = this.setServiceInSession(request);
+		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
-				if (location.equals(Constants.LOCAL_SITE)) {
-					service = (SampleService) request.getSession()
-							.getAttribute("sampleService");
-				} else {
+				if (!StringUtils.isEmpty(location)
+						&& !location.equals(Constants.LOCAL_SITE)) {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 					service = new SampleServiceRemoteImpl(serviceUrl);
@@ -294,11 +298,12 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		return mapping.getInputForward();
 	}
 
-	private void setServiceInSession(HttpServletRequest request)
+	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleService sampleService = new SampleServiceLocalImpl(user);
 		request.getSession().setAttribute("sampleService", sampleService);
+		return sampleService;
 	}
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
