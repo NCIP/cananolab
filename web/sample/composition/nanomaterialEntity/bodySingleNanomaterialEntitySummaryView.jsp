@@ -18,28 +18,46 @@
 			</td>
 		</tr>
 	</c:if>
-	<c:if test="${nanomaterialEntity.withProperties }">
-		<tr>
-			<td class="cellLabel" width="10%">
-				Properties
-			</td>
-			<td>
-				<%
-					String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
-								.getInstance()
-								.getDetailPage(
-										(String) pageContext.getAttribute("entityType"),
-										"nanomaterialEntity");
-						pageContext.setAttribute("detailPage", detailPage);
-				%>
-				<c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
-					scope="session" />
-				<jsp:include page="${detailPage}">
-					<jsp:param name="summary" value="true" />
-				</jsp:include>
-			</td>
-		</tr>
-	</c:if>
+		<c:choose>
+		<c:when test="${!empty entityDetailPage}">
+			<tr>
+				<td class="cellLabel" width="10%">
+					Properties
+				</td>
+				<td>
+					<c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
+						scope="session" />
+					<jsp:include page="${entityDetailPage}">
+						<jsp:param name="summary" value="true" />
+					</jsp:include>
+				</td>
+			</tr>
+		</c:when>
+		<c:otherwise>
+			<c:if test="${nanomaterialEntity.withProperties }">
+				<tr>
+					<td class="cellLabel" width="10%">
+						Properties
+					</td>
+					<td colspan="2">
+						<%
+							String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
+												.getInstance().getDetailPage(
+														(String) pageContext
+																.getAttribute("entityType"),
+														"nanomaterialEntity");
+										pageContext.setAttribute("detailPage", detailPage);
+						%>
+						<c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
+							scope="session" />
+						<jsp:include page="${detailPage}">
+							<jsp:param name="summary" value="true" />
+						</jsp:include>
+					</td>
+				</tr>
+			</c:if>
+		</c:otherwise>
+	</c:choose>
 	<c:if test="${! empty nanomaterialEntity.composingElements }">
 		<tr>
 			<td class="cellLabel" width="10%">
