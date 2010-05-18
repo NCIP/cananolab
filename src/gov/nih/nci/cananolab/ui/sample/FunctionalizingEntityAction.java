@@ -195,9 +195,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			entityId = (String) request.getAttribute("dataId");
 		}
 		CompositionService compService = this.setServicesInSession(request);
-		if (Constants.LOCAL_SITE.equals(location)) {
-			compService = new CompositionServiceLocalImpl();
-		} else {
+		if (!StringUtils.isEmpty(location)
+				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			compService = new CompositionServiceRemoteImpl(serviceUrl);
@@ -208,7 +207,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String detailPage = null;
 		if (entityBean.isWithProperties()) {
 			detailPage = InitCompositionSetup.getInstance().getDetailPage(
-					entityBean.getClassName(), "FunctionalizingEntity");
+					entityBean.getClassName(), "functionalizingEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
 		return mapping.findForward("singleSummaryView");
