@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
@@ -83,14 +84,17 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			HttpServletRequest request) throws Exception {
 		List<PublicationBean> loadedPublicationBeans = new ArrayList<PublicationBean>();
 		PublicationService service = null;
+		if (request.getSession().getAttribute("publicationService") != null) {
+			service = (PublicationService) request.getSession().getAttribute(
+					"publicationService");
+		} else {
+			service = this.setServiceInSession(request);
+		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < publicationBeans.size()) {
 				String location = publicationBeans.get(i).getLocation();
-				if (location.equals(Constants.LOCAL_SITE)
-						|| StringUtils.isEmpty(location)) {
-					service = (PublicationService) (request.getSession()
-							.getAttribute("publicationService"));
-				} else {
+				if (!location.equals(Constants.LOCAL_SITE)
+						&& !StringUtils.isEmpty(location)) {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 					service = new PublicationServiceRemoteImpl(serviceUrl);
@@ -284,12 +288,13 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 				Constants.CSM_PG_PUBLICATION);
 	}
 
-	private void setServiceInSession(HttpServletRequest request)
+	private PublicationService setServiceInSession(HttpServletRequest request)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = new PublicationServiceLocalImpl(
 				user);
 		request.getSession().setAttribute("publicationService",
 				publicationService);
+		return publicationService;
 	}
 }
