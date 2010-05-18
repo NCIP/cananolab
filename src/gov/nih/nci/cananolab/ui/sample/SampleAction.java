@@ -307,7 +307,7 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleService service = this.setServiceInSession(request);
 		try {
 			clonedSampleBean = service.cloneSample(sampleBean
-					.getCloningSampleName(), sampleBean.getDomain().getName());
+					.getCloningSampleName(), sampleBean.getDomain().getName().trim());
 		} catch (NotExistException e) {
 			ActionMessage err = new ActionMessage(
 					"error.cloneSample.noOriginalSample", sampleBean
