@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 /**
  * This class contains a set of utilities for converting Strings to other
  * formats or converting other formats to String.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 /* CVS $Id: StringUtils.java,v 1.9 2008-08-26 22:27:30 tanq Exp $ */
 
@@ -237,7 +237,7 @@ public class StringUtils {
 	/**
 	 * Convert a string with multiple words separated by space to one word, with
 	 * first letter as lower case.
-	 * 
+	 *
 	 * @param words
 	 * @return
 	 */
@@ -256,7 +256,7 @@ public class StringUtils {
 	/**
 	 * Convert a string with multiple words separated by space to one word, with
 	 * first letter as upper case.
-	 * 
+	 *
 	 * @param words
 	 * @return
 	 */
@@ -271,7 +271,7 @@ public class StringUtils {
 	/**
 	 * Parse the text into an array of words using white space as delimiter.
 	 * Keeping words in quotes together.
-	 * 
+	 *
 	 * @param texts
 	 * @return
 	 */
@@ -307,8 +307,14 @@ public class StringUtils {
 		if (isEmpty(text)) {
 			return null;
 		}
-		String[] words = text.split(delimiter);
-		return Arrays.asList(words);
+		String[] words = text.trim().split(delimiter);
+		List<String> wordList = new ArrayList<String>();
+		for (String word : words) {
+			if (!isEmpty(word)) {
+				wordList.add(word.trim());
+			}
+		}
+		return wordList;
 	}
 
 	public static Boolean containsIgnoreCase(Collection<String> collection,
@@ -344,7 +350,7 @@ public class StringUtils {
 			for (String word : words) {
 				System.out.println(word);
 			}
-			
+
 			String texts2 = "thomas\r\nshukla";
 			System.out.println(texts);
 			List<String> words2 = StringUtils.parseToWords(texts2, "\r\n");
