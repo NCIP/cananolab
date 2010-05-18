@@ -103,8 +103,10 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 						.getId().toString();
 				PublicationBean pubBean = service
 						.findPublicationById(publicationId);
-				pubBean.setLocation(location);
-				loadedPublicationBeans.add(pubBean);
+				if (pubBean != null) {
+					pubBean.setLocation(location);
+					loadedPublicationBeans.add(pubBean);
+				}
 			}
 		}
 		return loadedPublicationBeans;
