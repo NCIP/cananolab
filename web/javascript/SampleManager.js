@@ -351,7 +351,7 @@ function setDatumNameOptionsByCharName(selectedName, selectedOperand,
 						}
 						setDatumValueOptions();
 						setCharacterizationOperandOptions(selectedOperand);
-						setDatumValueUnitOptions(selectedUnit);						
+						setDatumValueUnitOptions(selectedUnit);
 					});
 }
 
@@ -405,11 +405,10 @@ function setCharacterizationOperandOptions(selectedOperand) {
 
 function setDatumValueOptions() {
 	var datumName = dwr.util.getValue("datumName");
-	if (datumName=="") {
+	if (datumName == "") {
 		hide("datumValueTextBlock");
 		hide("datumValueSelectBlock");
-	}
-	else if (datumName.match("^is ")) {
+	} else if (datumName.match("^is ")) {
 		hide("datumValueTextBlock");
 		show("datumValueSelectBlock");
 	} else {
@@ -579,7 +578,10 @@ function deleteTheCharacterizationQuery() {
 }
 
 function showDetailView(styleId, url) {
+	hideOtherLinksAndViews(styleId);
 	url = url + "&advancedSearch=" + styleId;
+	hide("detailLink" + styleId);
+	show("loaderImg" + styleId);
 	SampleManager.getAdvancedSearchDetailContent(url, function(pageData) {
 		var contentElement = document.getElementById("content" + styleId);
 		if (pageData == "") {
@@ -588,9 +590,11 @@ function showDetailView(styleId, url) {
 			dwr.util.setValue("content" + styleId, pageData, {
 				escapeHtml : false
 			});
-			hideOtherLinksAndViews(styleId);
+
 			show("detailView" + styleId);
 		}
+		hide("loaderImg" + styleId);
+		show("detailLink" + styleId);
 	});
 }
 
