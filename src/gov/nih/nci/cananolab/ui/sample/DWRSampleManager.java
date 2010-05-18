@@ -32,12 +32,13 @@ import org.directwebremoting.WebContextFactory;
 public class DWRSampleManager {
 
 	private Logger logger = Logger.getLogger(DWRSampleManager.class);
-	private SampleService service;
+	private SampleServiceLocalImpl service;
 
-	public DWRSampleManager() {
+	private SampleServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		service = new SampleServiceLocalImpl(user);
+		return service;
 	}
 
 	public List<LabelValueBean> getDecoratedEntityTypes(String compType) {
@@ -203,7 +204,7 @@ public class DWRSampleManager {
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					counts += service.getNumberOfPublicSamples();
+					counts += getService().getNumberOfPublicSamples();
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public samples from local site.");
@@ -212,7 +213,8 @@ public class DWRSampleManager {
 				try {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
-					service = new SampleServiceRemoteImpl(serviceUrl);
+					SampleService service = new SampleServiceRemoteImpl(
+							serviceUrl);
 					counts += service.getNumberOfPublicSamples();
 				} catch (Exception e) {
 					logger
@@ -236,7 +238,7 @@ public class DWRSampleManager {
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					counts += service.getNumberOfPublicSampleSources();
+					counts += getService().getNumberOfPublicSampleSources();
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public sample sources from local site.");
@@ -246,7 +248,8 @@ public class DWRSampleManager {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 
-					service = new SampleServiceRemoteImpl(serviceUrl);
+					SampleService service = new SampleServiceRemoteImpl(
+							serviceUrl);
 					counts += service.getNumberOfPublicSampleSources();
 				} catch (Exception e) {
 					logger
@@ -367,8 +370,8 @@ public class DWRSampleManager {
 		}
 		String[] nameArray = new String[] { "" };
 		try {
-			List<String> names = ((SampleServiceLocalImpl) service).getHelper()
-					.findSampleNamesBy(searchStr);
+			List<String> names = ((SampleServiceLocalImpl) getService())
+					.getHelper().findSampleNamesBy(searchStr);
 			Collections.sort(names, new Comparators.SortableNameComparator());
 
 			if (!names.isEmpty()) {

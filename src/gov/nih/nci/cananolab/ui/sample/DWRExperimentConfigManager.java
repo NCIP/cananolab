@@ -26,10 +26,11 @@ import org.directwebremoting.WebContextFactory;
 public class DWRExperimentConfigManager {
 	private CharacterizationServiceHelper helper;
 
-	public DWRExperimentConfigManager() {
+	private CharacterizationServiceHelper getHelper() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		helper = new CharacterizationServiceHelper(user);
+		return helper;
 	}
 
 	public ExperimentConfigBean resetTheExperimentConfig() {
@@ -52,7 +53,7 @@ public class DWRExperimentConfigManager {
 		if (user == null) {
 			return null;
 		}
-		ExperimentConfig config = helper.findExperimentConfigById(id);
+		ExperimentConfig config = getHelper().findExperimentConfigById(id);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm

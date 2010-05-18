@@ -20,10 +20,11 @@ import org.directwebremoting.WebContextFactory;
 public class DWRNanomaterialEntityManager {
 	private CompositionServiceHelper helper;
 
-	public DWRNanomaterialEntityManager() {
+	private CompositionServiceHelper getHelper() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		helper = new CompositionServiceHelper(user);
+		return helper;
 	}
 
 	public ComposingElementBean addInherentFunction(FunctionBean function) {
@@ -61,7 +62,7 @@ public class DWRNanomaterialEntityManager {
 				.get("nanomaterialEntity");
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		ComposingElement composingElement = helper.findComposingElementById(id);
+		ComposingElement composingElement = getHelper().findComposingElementById(id);
 		ComposingElementBean composingElementBean = new ComposingElementBean(
 				composingElement);
 		entity.setTheComposingElement(composingElementBean);

@@ -25,12 +25,13 @@ import org.directwebremoting.WebContextFactory;
 
 public class DWRCharacterizationManager {
 	Logger logger = Logger.getLogger(DWRCharacterizationManager.class);
-	private CharacterizationService service;
+	private CharacterizationServiceLocalImpl service;
 
-	public DWRCharacterizationManager() {
+	private CharacterizationServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		service = new CharacterizationServiceLocalImpl(user);
+		return service;
 	}
 
 	public String[] getCharacterizationOptions(String characterizationType)
@@ -126,8 +127,8 @@ public class DWRCharacterizationManager {
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					counts += service
-							.getNumberOfPublicCharacterizations(characterizationClassName);
+					counts += getService().getNumberOfPublicCharacterizations(
+							characterizationClassName);
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public characterizations of type "
@@ -139,7 +140,8 @@ public class DWRCharacterizationManager {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 
-					service = new CharacterizationServiceRemoteImpl(serviceUrl);
+					CharacterizationService service = new CharacterizationServiceRemoteImpl(
+							serviceUrl);
 					counts += service
 							.getNumberOfPublicCharacterizations(characterizationClassName);
 				} catch (Exception e) {

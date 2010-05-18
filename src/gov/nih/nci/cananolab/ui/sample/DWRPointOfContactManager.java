@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -19,12 +18,13 @@ import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 public class DWRPointOfContactManager {
-	private SampleService service;
+	private SampleServiceLocalImpl service;
 
-	public DWRPointOfContactManager() {
+	private SampleServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		service = new SampleServiceLocalImpl(user);
+		return service;
 	}
 
 	public PointOfContactBean getPointOfContactById(String id,
@@ -36,7 +36,7 @@ public class DWRPointOfContactManager {
 		if (user == null) {
 			return null;
 		}
-		PointOfContactBean poc = service.findPointOfContactById(id);
+		PointOfContactBean poc = getService().findPointOfContactById(id);
 		poc.setPrimaryStatus(primaryStatus);
 		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("sampleForm"));

@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -30,12 +29,13 @@ import org.directwebremoting.WebContextFactory;
 public class DWRPublicationManager {
 
 	Logger logger = Logger.getLogger(DWRPublicationManager.class);
-	PublicationService service;
+	PublicationServiceLocalImpl service;
 
-	public DWRPublicationManager() {
+	private PublicationServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		service = new PublicationServiceLocalImpl(user);
+		return service;
 	}
 
 	public PublicationBean clearPublication() {
@@ -54,7 +54,7 @@ public class DWRPublicationManager {
 		PublicationBean newPubBean = new PublicationBean();
 		if (!StringUtils.isEmpty(pubmedID) && !pubmedID.equals("0")) {
 			try {
-				newPubBean = service.getPublicationFromPubMedXML(pubmedID);
+				newPubBean = getService().getPublicationFromPubMedXML(pubmedID);
 			} catch (Exception ex) {
 				logger.warn("Invalid PubMed ID: " + pubmedID);
 			}
@@ -87,7 +87,7 @@ public class DWRPublicationManager {
 		PublicationBean publicationBean = this.retrievePubMedInfo(pubmedID);
 		// search database record for pubMed ID
 		try {
-			PublicationBean dbPubBean = service.findPublicationByKey(
+			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"pubMedId", new Long(pubmedID));
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
@@ -140,7 +140,7 @@ public class DWRPublicationManager {
 
 		// search database record for DOI
 		try {
-			PublicationBean dbPubBean = service.findPublicationByKey(
+			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"digitalObjectId", doi);
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
@@ -221,11 +221,12 @@ public class DWRPublicationManager {
 			return null;
 		}
 		try {
-			SampleServiceHelper sampleHelper = (SampleServiceHelper) (((PublicationServiceLocalImpl) service)
+			SampleServiceHelper sampleHelper = (SampleServiceHelper) (getService()
 					.getSampleHelper());
 			List<String> sampleNames = sampleHelper
 					.findSampleNamesBy(searchStr);
-			Collections.sort(sampleNames, new Comparators.SortableNameComparator());
+			Collections.sort(sampleNames,
+					new Comparators.SortableNameComparator());
 			return sampleNames.toArray(new String[sampleNames.size()]);
 		} catch (Exception e) {
 			logger
@@ -272,7 +273,7 @@ public class DWRPublicationManager {
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					counts += service.getNumberOfPublicPublications();
+					counts += getService().getNumberOfPublicPublications();
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public publications from local site.");
@@ -282,7 +283,8 @@ public class DWRPublicationManager {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 
-					service = new PublicationServiceRemoteImpl(serviceUrl);
+					PublicationService service = new PublicationServiceRemoteImpl(
+							serviceUrl);
 					counts += service.getNumberOfPublicPublications();
 				} catch (Exception e) {
 					logger
@@ -308,7 +310,6 @@ public class DWRPublicationManager {
 		}
 		PublicationBean publicationBean = (PublicationBean) form
 				.get("publication");
-		Publication publication = (Publication) publicationBean.getDomainFile();
 
 		// check whether a publication exists based on the publication type,
 		// title, first author
@@ -318,7 +319,7 @@ public class DWRPublicationManager {
 			firstName = firstAuthor.getFirstName();
 			lastName = firstAuthor.getLastName();
 		}
-		PublicationBean dbBean = service.findNonPubMedNonDOIPublication(
+		PublicationBean dbBean = getService().findNonPubMedNonDOIPublication(
 				category, title, lastName, firstName);
 		if (dbBean != null) {
 			publicationBean.copyFromDatabase(dbBean);

@@ -30,10 +30,11 @@ public class DWRProtocolManager {
 	Logger logger = Logger.getLogger(DWRProtocolManager.class);
 	ProtocolServiceLocalImpl service;
 
-	public DWRProtocolManager() {
+	private ProtocolServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		service = new ProtocolServiceLocalImpl(user);
+		return service;
 	}
 
 	public String[] getProtocolTypes(String searchLocations) {
@@ -71,7 +72,7 @@ public class DWRProtocolManager {
 			if (StringUtils.isEmpty(protocolType)) {
 				return null;
 			}
-			SortedSet<String> protocolNames = service.getHelper()
+			SortedSet<String> protocolNames = getService().getHelper()
 					.getProtocolNamesBy(protocolType);
 			return protocolNames;
 		} catch (Exception e) {
@@ -85,7 +86,7 @@ public class DWRProtocolManager {
 			if (StringUtils.isEmpty(protocolName)) {
 				return null;
 			}
-			SortedSet<String> protocolVersions = service.getHelper()
+			SortedSet<String> protocolVersions = getService().getHelper()
 					.getProtocolVersionsBy(protocolType, protocolName);
 			return protocolVersions;
 		} catch (Exception e) {
@@ -102,7 +103,7 @@ public class DWRProtocolManager {
 			return null;
 		}
 		try {
-			Protocol protocol = service.getHelper().findProtocolBy(
+			Protocol protocol = getService().getHelper().findProtocolBy(
 					protocolType, protocolName, protocolVersion);
 			return new ProtocolBean(protocol);
 		} catch (Exception e) {
@@ -122,7 +123,7 @@ public class DWRProtocolManager {
 		for (String location : locations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				try {
-					counts += service.getHelper().getNumberOfPublicProtocols();
+					counts += getService().getHelper().getNumberOfPublicProtocols();
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public protocols from local site.");

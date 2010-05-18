@@ -21,10 +21,11 @@ import org.directwebremoting.WebContextFactory;
 public class DWRFunctionalizingEntityManager {
 	private CompositionServiceHelper helper;
 
-	public DWRFunctionalizingEntityManager() {
+	private CompositionServiceHelper getHelper() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		helper = new CompositionServiceHelper(user);
+		return helper;
 	}
 
 	public FunctionBean addTarget(TargetBean target) {
@@ -61,7 +62,7 @@ public class DWRFunctionalizingEntityManager {
 		}
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 				.get("functionalizingEntity");
-		Function function = helper.findFunctionById(id);
+		Function function = getHelper().findFunctionById(id);
 		FunctionBean functionBean = new FunctionBean(function);
 		entity.setTheFunction(functionBean);
 		return functionBean;

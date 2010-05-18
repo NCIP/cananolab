@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -34,12 +33,13 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRCompositionManager {
-	CompositionService compService;
+	private CompositionServiceLocalImpl compService;
 
-	public DWRCompositionManager() {
+	private CompositionServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		compService = new CompositionServiceLocalImpl(user);
+		return compService;
 	}
 
 	public String getEntityIncludePage(String entityType, String parent)
@@ -61,7 +61,7 @@ public class DWRCompositionManager {
 		if (user == null) {
 			return null;
 		}
-		FileService fileService = ((CompositionServiceLocalImpl) compService)
+		FileService fileService = ((CompositionServiceLocalImpl) getService())
 				.getFileService();
 		FileBean fileBean = fileService.findFileById(id);
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
@@ -162,7 +162,7 @@ public class DWRCompositionManager {
 		if (StringUtils.isEmpty(id)) {
 			return null;
 		}
-		NanomaterialEntityBean entityBean = compService
+		NanomaterialEntityBean entityBean = getService()
 				.findNanomaterialEntityById(id);
 		List<ComposingElementBean> composingElements = entityBean
 				.getComposingElements();
