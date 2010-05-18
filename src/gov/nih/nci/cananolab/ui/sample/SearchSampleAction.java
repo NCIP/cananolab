@@ -250,24 +250,26 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 				String sampleName = sampleBeans.get(i).getDomain().getName();
 				SampleBean sampleBean = service.findSampleByName(sampleName);
-				Sample sample = sampleBean.getDomain();
-				SampleServiceHelper helper = ((SampleServiceLocalImpl) service)
-						.getHelper();
-				// load summary information
-				sampleBean.setCharacterizationClassNames(helper
-						.getStoredCharacterizationClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionalizingEntityClassNames(helper
-						.getStoredFunctionalizingEntityClassNames(sample)
-						.toArray(new String[0]));
-				sampleBean.setNanomaterialEntityClassNames(helper
-						.getStoredNanomaterialEntityClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setFunctionClassNames(helper
-						.getStoredFunctionClassNames(sample).toArray(
-								new String[0]));
-				sampleBean.setLocation(location);
-				loadedSampleBeans.add(sampleBean);
+				if (sampleBean != null) {
+					Sample sample = sampleBean.getDomain();
+					SampleServiceHelper helper = ((SampleServiceLocalImpl) service)
+							.getHelper();
+					// load summary information
+					sampleBean.setCharacterizationClassNames(helper
+							.getStoredCharacterizationClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionalizingEntityClassNames(helper
+							.getStoredFunctionalizingEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setNanomaterialEntityClassNames(helper
+							.getStoredNanomaterialEntityClassNames(sample)
+							.toArray(new String[0]));
+					sampleBean.setFunctionClassNames(helper
+							.getStoredFunctionClassNames(sample).toArray(
+									new String[0]));
+					sampleBean.setLocation(location);
+					loadedSampleBeans.add(sampleBean);
+				}
 			}
 		}
 		return loadedSampleBeans;
