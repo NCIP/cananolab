@@ -16,7 +16,7 @@
 			</td>
 		</c:if>
 		<c:if test="${entity.withTargetingFunction eq 'true'}">
-			<td class="cellLabel">
+			<td class="cellLabel" width="30%">
 				Targets
 			</td>
 		</c:if>
