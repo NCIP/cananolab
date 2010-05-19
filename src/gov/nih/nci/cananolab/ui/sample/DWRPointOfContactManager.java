@@ -62,7 +62,7 @@ public class DWRPointOfContactManager {
 	}
 
 	public Organization getOrganizationByName(String name) throws Exception {
-		Organization org = ((SampleServiceLocalImpl) service).getHelper()
+		Organization org = ((SampleServiceLocalImpl) getService()).getHelper()
 				.findOrganizationByName(name);
 		return org;
 	}
