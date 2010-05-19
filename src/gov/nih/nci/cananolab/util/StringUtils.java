@@ -360,8 +360,19 @@ public class StringUtils {
 
 			String testString = "*NCL-100**";
 			System.out.println(stripWildcards(testString));
+
+			String[] testArray = new String[] { "test", "test2" };
+			String[] newArray=StringUtils.removeFromArray(testArray, "test");
+			System.out.println(newArray.length);
 		} catch (Exception e) {
 			logger.error(e);
 		}
+	}
+
+	public static String[] removeFromArray(String[] oldArray,
+			String stringToRemove) {
+		List<String> list = new ArrayList<String>(Arrays.asList(oldArray));
+		list.remove(stringToRemove);
+		return list.toArray(new String[0]);
 	}
 }
