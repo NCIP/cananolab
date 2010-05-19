@@ -636,12 +636,12 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		if (!searchBean.getHasPOC()) {
 			return null;
 		}
-		List<PointOfContact> pocs = new ArrayList<PointOfContact>();
 
 		// get POCs associated with the sample
 		List<PointOfContact> samplePOCs = new ArrayList<PointOfContact>();
 		samplePOCs.add(sample.getPrimaryPointOfContact());
 		samplePOCs.addAll(sample.getOtherPointOfContactCollection());
+		List<PointOfContact> pocs = new ArrayList<PointOfContact>(samplePOCs);
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -656,8 +656,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			for (Object obj : results) {
 				PointOfContact poc = (PointOfContact) obj;
 				// check if in sample POCs
-				if (samplePOCs.contains(poc)) {
-					pocs.add(poc);
+				if (!samplePOCs.contains(poc)) {
+					pocs.remove(poc);
 				}
 			}
 		} else {
@@ -674,8 +674,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					for (Object obj : results) {
 						PointOfContact poc = (PointOfContact) obj;
 						// check if in sample POCs
-						if (samplePOCs.contains(poc) && !pocs.contains(poc)) {
-							pocs.add(poc);
+						if (!samplePOCs.contains(poc)) {
+							pocs.remove(poc);
 						}
 					}
 				}
