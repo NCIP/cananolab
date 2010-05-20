@@ -329,12 +329,16 @@ public class SampleServiceLocalImpl implements SampleService {
 			throw new NoAccessException();
 		}
 		try {
+			PointOfContact dbPointOfContact = null;
+			Long oldPOCId = null;
+			String oldOrgName = null;
+
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			PointOfContact domainPOC = pocBean.getDomain();
 			Organization domainOrg = domainPOC.getOrganization();
-			// get existing organization from database and reuse ID, created by
-			// and created date
+			// get existing organization from database and reuse ID,
+			// created by and created date
 			// address information will be updated
 			Organization dbOrganization = helper
 					.findOrganizationByName(domainOrg.getName());
@@ -347,12 +351,21 @@ public class SampleServiceLocalImpl implements SampleService {
 			else {
 				domainOrg.setId(null);
 			}
-
-			PointOfContact dbPointOfContact = null;
-			Long oldPOCId = null;
-			String oldOrgName = null;
-			// if POC exists in the database, check if organization is changed
-			if (domainPOC.getId() != null) {
+			// if point of contact has no ID
+			if (domainPOC.getId() == null) {
+				// check if org name, first name and last name matches existing
+				// one
+				dbPointOfContact = helper.findPointOfContactByNameAndOrg(
+						domainPOC.getFirstName(), domainPOC.getLastName(),
+						domainPOC.getOrganization().getName());
+				// if found, reuse ID, created_date and created_by
+				if (dbPointOfContact != null) {
+					domainPOC.setId(dbPointOfContact.getId());
+					domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
+					domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
+				}
+			} else {
+				// check if organization is changed
 				dbPointOfContact = helper.findPointOfContactById(domainPOC
 						.getId().toString());
 				Organization dbOrg = dbPointOfContact.getOrganization();
@@ -361,15 +374,17 @@ public class SampleServiceLocalImpl implements SampleService {
 					oldPOCId = domainPOC.getId();
 					oldOrgName = dbOrg.getName();
 					domainPOC.setId(null);
+				}
+				// if name information is changed, create a new POC
+				else if (domainPOC.getFirstName().equalsIgnoreCase(
+						dbPointOfContact.getFirstName())
+						|| domainPOC.getLastName().equalsIgnoreCase(
+								dbPointOfContact.getLastName())) {
 				} else {
 					domainPOC.setId(dbPointOfContact.getId());
 					domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
 					domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
 				}
-			}
-			// create a new POC if not an existing one
-			else {
-				domainPOC.setId(null);
 			}
 			appService.saveOrUpdate(domainPOC);
 			// update visibility group
@@ -1155,7 +1170,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		List<String> sortedNames = null;
 		try {
 			Set<String> names = helper
-					.findOtherSamplesFromSamePPrimaryOrganization(sampleId);
+					.findOtherSamplesFromSamePrimaryOrganization(sampleId);
 			sortedNames = new ArrayList<String>(names);
 			Collections.sort(sortedNames,
 					new Comparators.SortableNameComparator());
