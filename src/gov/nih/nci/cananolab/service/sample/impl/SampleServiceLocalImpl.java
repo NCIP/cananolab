@@ -35,14 +35,13 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
-import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -350,6 +349,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			}
 
 			PointOfContact dbPointOfContact = null;
+			Long oldPOCId = null;
+			String oldOrgName = null;
 			// if POC exists in the database, check if organization is changed
 			if (domainPOC.getId() != null) {
 				dbPointOfContact = helper.findPointOfContactById(domainPOC
@@ -357,6 +358,8 @@ public class SampleServiceLocalImpl implements SampleService {
 				Organization dbOrg = dbPointOfContact.getOrganization();
 				// if organization information is changed, create a new POC
 				if (!dbOrg.getName().equals(domainOrg.getName())) {
+					oldPOCId = domainPOC.getId();
+					oldOrgName = dbOrg.getName();
 					domainPOC.setId(null);
 				} else {
 					domainPOC.setId(dbPointOfContact.getId());
@@ -369,6 +372,13 @@ public class SampleServiceLocalImpl implements SampleService {
 				domainPOC.setId(null);
 			}
 			appService.saveOrUpdate(domainPOC);
+			// update visibility group
+			if (oldPOCId != null && !oldPOCId.equals(domainPOC.getId())) {
+				// remove oldOrg from POC visibility
+				String[] pocVisGroups = pocBean.getVisibilityGroups();
+				pocBean.setVisibilityGroups(StringUtils.removeFromArray(
+						pocVisGroups, oldOrgName));
+			}
 			// assign visibility
 			assignVisibility(domainPOC, pocBean.getVisibilityGroups());
 		} catch (Exception e) {
@@ -1056,8 +1066,6 @@ public class SampleServiceLocalImpl implements SampleService {
 		if (remove == null || remove)
 			helper.getAuthService().removeCSMEntry(sample.getName());
 		entries.add(sample.getName());
-		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
-		CompositionServiceHelper compHelper = new CompositionServiceHelper();
 		Collection<Characterization> characterizationCollection = sample
 				.getCharacterizationCollection();
 		// characterizations
@@ -1072,6 +1080,53 @@ public class SampleServiceLocalImpl implements SampleService {
 					.getSampleComposition(), remove));
 		}
 		return entries;
+	}
+
+	public void updatePOCAssociatedWithCharacterizations(String sampleName,
+			Long oldPOCId, Long newPOCId) throws SampleException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(Characterization.class);
+			crit.createAlias("sample", "sample");
+			crit.createAlias("pointOfContact", "poc");
+			crit.add(Property.forName("poc.id").eq(oldPOCId));
+			crit.add(Property.forName("sample.name").eq(sampleName));
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				Characterization achar = (Characterization) obj;
+				// update POC to the new ID
+				achar.getPointOfContact().setId(newPOCId);
+				appService.saveOrUpdate(achar);
+			}
+		} catch (Exception e) {
+			String err = "Error in updating POC associated sample characterizations "
+					+ sampleName;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
+	public void updateSampleVisibilityWithPOCChange(SampleBean sampleBean,
+			String oldPOCId) throws SampleException {
+		try {
+			// remove oldOrg from sample visibility
+			PointOfContact oldPOC = getHelper()
+					.findPointOfContactById(oldPOCId);
+			String oldOrgName = oldPOC.getOrganization().getName();
+			String[] sampleVisGroups = sampleBean.getVisibilityGroups();
+			String[] updatedGroups = StringUtils.removeFromArray(
+					sampleVisGroups, oldOrgName);
+			sampleBean.setVisibilityGroups(updatedGroups);
+		} catch (Exception e) {
+			String err = "Error in updating sample visibility with POC change for "
+					+ sampleBean.getDomain().getName();
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
 	}
 
 	public static void main(String[] args) {
@@ -1116,4 +1171,5 @@ public class SampleServiceLocalImpl implements SampleService {
 	public SampleServiceHelper getHelper() {
 		return helper;
 	}
+
 }
