@@ -224,14 +224,18 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 			throws Exception {
 		List<AdvancedSampleBean> loadedSampleBeans = new ArrayList<AdvancedSampleBean>();
 		SampleService service = null;
+		if (request.getSession().getAttribute("sampleService") != null) {
+			service = (SampleService) request.getSession().getAttribute(
+					"sampleService");
+		} else {
+			service = this.setServiceInSession(request);
+		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
 				String sampleName = sampleBeans.get(i).getSampleName();
-				if (location.equals(Constants.LOCAL_SITE)) {
-					service = (SampleService) request.getSession()
-							.getAttribute("sampleService");
-				} else {
+				if (!StringUtils.isEmpty(location)
+						&& !location.equals(Constants.LOCAL_SITE)) {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 					service = new SampleServiceRemoteImpl(serviceUrl);
