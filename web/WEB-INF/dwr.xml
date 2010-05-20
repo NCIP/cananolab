@@ -93,6 +93,7 @@
 			<include method="getPointOfContactById" />
 			<include method="resetThePointOfContact" />
 			<include method="getOrganizationByName" />
+			<include method="getPointOfContactByNameAndOrg"/>
 		</create>
 		<create creator="new" javascript="ProtocolManager" scope="session">
 			<param name="class"
