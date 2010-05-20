@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="caNanoLab-grid-deploy" default="deploy-grid" basedir=".">
+	<property environment="env" />
+	<property name="target.dir" value="${basedir}/grid-build" />
+
+	<target name="prepare-globus-lib">
+		<!-- unpack required globus libraries for jboss to JBoss -->
+		<unzip dest="${jboss.server.dir}/lib" src="conf/gridservice/globus_jboss_lib.zip" />
+	</target>
+	<target name="deploy-grid" depends="run-grid">
+		<copy todir="${jboss.deploy.dir}" overwrite="true" file="${target.dir}/wsrf-canano.war" />
+	</target>
+</project>

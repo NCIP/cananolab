@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="sitePreferenceForm"
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="siteName" type="java.lang.String" />
+			<form-property name="siteLogo" type="org.apache.struts.upload.FormFile"	/>
+			<form-property name="siteBean"
+				type="gov.nih.nci.cananolab.dto.admin.SitePreferenceBean" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+	</global-exceptions>
+	<global-forwards>
+	</global-forwards>
+	<action-mappings>
+		<action path="/adminHome"
+			type="org.apache.struts.actions.ForwardAction"
+			parameter="admin.home" scope="request">
+		</action>
+
+		<action path="/admin"
+			name="sitePreferenceForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			parameter="dispatch" input="input" validate="false"
+			scope="request">
+			<forward name="input" path="admin.sitePreference" />
+			<forward name="cananoHeader" path="/layout/cananoHeader.jsp" />
+			<forward name="cananoSidemenu" path="/layout/cananoSidemenu.jsp" />
+		</action>
+	</action-mappings>
+</struts-config>
