@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -65,6 +66,18 @@ public class DWRPointOfContactManager {
 		Organization org = ((SampleServiceLocalImpl) getService()).getHelper()
 				.findOrganizationByName(name);
 		return org;
+	}
+
+	public PointOfContactBean getPointOfContactByNameAndOrg(String firstName,
+			String lastName, String orgName) throws Exception {
+		PointOfContact poc = ((SampleServiceLocalImpl) getService())
+				.getHelper().findPointOfContactByNameAndOrg(firstName,
+						lastName, orgName);
+		if (poc != null) {
+			return new PointOfContactBean(poc);
+		} else {
+			return null;
+		}
 	}
 
 	public String[] removeOrgFromVisibilityGroupsByPocId(String id,
