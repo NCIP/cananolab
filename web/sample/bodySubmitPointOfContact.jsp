@@ -156,7 +156,7 @@
 					</td>
 					<td valign="top">
 						<html:text property="sampleBean.thePOC.domain.lastName" size="15"
-							styleId="domain.lastName" />
+							styleId="domain.lastName" onchange="updatePersonInfo()" />
 					</td>
 				</tr>
 			</table>
