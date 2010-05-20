@@ -8,6 +8,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -243,11 +244,24 @@ public class SampleAction extends BaseAnnotationAction {
 		thePOC.setupDomain(user.getLoginName());
 		Long oldPOCId = thePOC.getDomain().getId();
 		// set up one sampleService
-		SampleService servic = setServiceInSession(request);
+		SampleService service = setServiceInSession(request);
 		// have to save POC separately because the same organizations can not be
 		// saved in the same session
-		servic.savePointOfContact(thePOC);
+		service.savePointOfContact(thePOC);
 		sample.addPointOfContact(thePOC, oldPOCId);
+
+		// if the oldPOCId is different from the one after POC save
+		if (oldPOCId != null && !oldPOCId.equals(thePOC.getDomain().getId())) {
+			// update characterization POC associations
+			((SampleServiceLocalImpl) service)
+					.updatePOCAssociatedWithCharacterizations(sample
+							.getDomain().getName(), oldPOCId, thePOC
+							.getDomain().getId());
+			// remove oldOrg from sample visibility
+			((SampleServiceLocalImpl) service)
+					.updateSampleVisibilityWithPOCChange(sample, oldPOCId
+							.toString());
+		}
 		// save sample
 		saveSample(request, sample);
 		ActionForward forward = null;
@@ -307,7 +321,8 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleService service = this.setServiceInSession(request);
 		try {
 			clonedSampleBean = service.cloneSample(sampleBean
-					.getCloningSampleName(), sampleBean.getDomain().getName().trim());
+					.getCloningSampleName(), sampleBean.getDomain().getName()
+					.trim());
 		} catch (NotExistException e) {
 			ActionMessage err = new ActionMessage(
 					"error.cloneSample.noOriginalSample", sampleBean
