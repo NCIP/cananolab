@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/CQLResultTypes" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    
+    <!-- Exposed Objects' schemas are imported here -->
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" schemaLocation="gov.nih.nci.cananolab.domain.linkage.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" schemaLocation="gov.nih.nci.cananolab.domain.nanomaterial.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" schemaLocation="gov.nih.nci.cananolab.domain.characterization.physical.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invitro.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" schemaLocation="gov.nih.nci.cananolab.domain.function.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" schemaLocation="gov.nih.nci.cananolab.domain.characterization.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" schemaLocation="gov.nih.nci.cananolab.domain.agentmaterial.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" schemaLocation="gov.nih.nci.cananolab.domain.particle.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invivo.xsd"/>
+	<xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" schemaLocation="gov.nih.nci.cananolab.domain.common.xsd"/>
+
+
+
+    <xs:group name="PermissibleCQLObjectResults">
+        <xs:choice>        
+        <!-- element references to exposed objects -->
+		<xs:element ref="ns0:OtherFunctionalizingEntity" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial"/>
+		<xs:element ref="ns0:Biopolymer" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial"/>
+		<xs:element ref="ns0:Antibody" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial"/>
+		<xs:element ref="ns0:SmallMolecule" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial"/>
+		<xs:element ref="ns0:OtherCharacterization" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization"/>
+		<xs:element ref="ns0:Targeting" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:BloodContact" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:MetabolicStability" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:Transfection" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:OxidativeStress" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:EnzymeInduction" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:Sterility" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:ImmuneCellFunction" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:InvitroCharacterization" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:Cytotoxicity" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"/>
+		<xs:element ref="ns0:Pharmacokinetics" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo"/>
+		<xs:element ref="ns0:Toxicology" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo"/>
+		<xs:element ref="ns0:InvivoCharacterization" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo"/>
+		<xs:element ref="ns0:PhysicalState" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:Size" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:Surface" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:Shape" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:Solubility" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:MolecularWeight" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:Relaxivity" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:PhysicoChemicalCharacterization" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:Purity" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"/>
+		<xs:element ref="ns0:Organization" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:PointOfContact" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Protocol" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:File" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Finding" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Keyword" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Instrument" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Condition" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Technique" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Datum" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Author" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Organization" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:Publication" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:CommonLookup" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:ExperimentConfig" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
+		<xs:element ref="ns0:OtherTarget" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:TargetingFunction" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:OtherFunction" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:Gene" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:TherapeuticFunction" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:ImagingFunction" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:Antigen" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:Target" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:Receptor" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"/>
+		<xs:element ref="ns0:Entrapment" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage"/>
+		<xs:element ref="ns0:OtherChemicalAssociation" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage"/>
+		<xs:element ref="ns0:Encapsulation" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage"/>
+		<xs:element ref="ns0:Attachment" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage"/>
+		<xs:element ref="ns0:OtherNanomaterialEntity" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:Polymer" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:Fullerene" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:Dendrimer" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:QuantumDot" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:CarbonNanotube" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:Liposome" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:Biopolymer" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:Emulsion" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:MetalParticle" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"/>
+		<xs:element ref="ns0:NanomaterialEntity" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:ComposingElement" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:ChemicalAssociation" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:Sample" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:AssociatedElement" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:SampleComposition" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:ActivationMethod" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:Characterization" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:FunctionalizingEntity" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+		<xs:element ref="ns0:Function" xmlns:ns0="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"/>
+ 
+        </xs:choice>
+    </xs:group>
+</xs:schema>

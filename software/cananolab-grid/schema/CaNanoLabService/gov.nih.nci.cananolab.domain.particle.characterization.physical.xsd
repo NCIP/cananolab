@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.physical" xmlns:gov.nih.nci.cananolab.domain.common="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.common" xmlns:gov.nih.nci.cananolab.domain.particle="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle" xmlns:gov.nih.nci.cananolab.domain.particle.characterization="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization" xmlns:gov.nih.nci.cananolab.domain.particle.characterization.invitro="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.invitro" xmlns:gov.nih.nci.cananolab.domain.particle.samplecomposition="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition" xmlns:gov.nih.nci.cananolab.domain.particle.samplecomposition.base="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.base" xmlns:gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation" xmlns:gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization" targetNamespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.physical" elementFormDefault="qualified">
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.common" schemaLocation="gov.nih.nci.cananolab.domain.common.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization.invitro" schemaLocation="gov.nih.nci.cananolab.domain.particle.characterization.invitro.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.characterization" schemaLocation="gov.nih.nci.cananolab.domain.particle.characterization.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.base" schemaLocation="gov.nih.nci.cananolab.domain.particle.samplecomposition.base.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation" schemaLocation="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization" schemaLocation="gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle.samplecomposition" schemaLocation="gov.nih.nci.cananolab.domain.particle.samplecomposition.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.4/gov.nih.nci.cananolab.domain.particle" schemaLocation="gov.nih.nci.cananolab.domain.particle.xsd" />
+  <xs:element name="SurfaceChemistry" type="SurfaceChemistry" />
+  <xs:complexType name="SurfaceChemistry">
+    <xs:sequence />
+    <xs:attribute name="createdBy" type="xs:string" />
+    <xs:attribute name="createdDate" type="xs:dateTime" />
+    <xs:attribute name="id" type="xs:long" />
+    <xs:attribute name="molecularFormula" type="xs:string" />
+    <xs:attribute name="molecularFormulaType" type="xs:string" />
+    <xs:attribute name="moleculeName" type="xs:string" />
+    <xs:attribute name="numberOfMolecule" type="xs:integer" />
+  </xs:complexType>
+  <xs:element name="PhysicalCharacterization" type="PhysicalCharacterization" />
+  <xs:complexType name="PhysicalCharacterization">
+    <xs:complexContent>
+      <xs:extension base="gov.nih.nci.cananolab.domain.particle.characterization:Characterization">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Purity" type="Purity" />
+  <xs:complexType name="Purity">
+    <xs:complexContent>
+      <xs:extension base="PhysicalCharacterization">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysicalState" type="PhysicalState" />
+  <xs:complexType name="PhysicalState">
+    <xs:complexContent>
+      <xs:extension base="PhysicalCharacterization">
+        <xs:sequence />
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Size" type="Size" />
+  <xs:complexType name="Size">
+    <xs:complexContent>
+      <xs:extension base="PhysicalCharacterization">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Surface" type="Surface" />
+  <xs:complexType name="Surface">
+    <xs:complexContent>
+      <xs:extension base="PhysicalCharacterization">
+        <xs:sequence>
+          <xs:element name="surfaceChemistryCollection" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="SurfaceChemistry" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="isHydrophobic" type="xs:boolean" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Shape" type="Shape" />
+  <xs:complexType name="Shape">
+    <xs:complexContent>
+      <xs:extension base="PhysicalCharacterization">
+        <xs:sequence />
+        <xs:attribute name="aspectRatio" type="xs:float" />
+        <xs:attribute name="maxDimension" type="xs:float" />
+        <xs:attribute name="maxDimensionUnit" type="xs:string" />
+        <xs:attribute name="minDimension" type="xs:float" />
+        <xs:attribute name="minDimensionUnit" type="xs:string" />
+        <xs:attribute name="type" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MolecularWeight" type="MolecularWeight" />
+  <xs:complexType name="MolecularWeight">
+    <xs:complexContent>
+      <xs:extension base="PhysicalCharacterization">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Solubility" type="Solubility" />
+  <xs:complexType name="Solubility">
+    <xs:complexContent>
+      <xs:extension base="PhysicalCharacterization">
+        <xs:sequence />
+        <xs:attribute name="criticalConcentration" type="xs:float" />
+        <xs:attribute name="criticalConcentrationUnit" type="xs:string" />
+        <xs:attribute name="isSoluble" type="xs:boolean" />
+        <xs:attribute name="solvent" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+

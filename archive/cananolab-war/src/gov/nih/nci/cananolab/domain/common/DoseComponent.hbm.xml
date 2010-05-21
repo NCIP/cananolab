@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="DoseComponent" table="dose_component" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="dose_component_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the DoseComponent class -->
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="description" type="string" column="description"/>
+		<property name="name" type="string" column="name"/>
+		<!-- Associations mapping for the DoseComponent class -->
+		<many-to-one name="dose" class="gov.nih.nci.cananolab.domain.common.Dose" column="dose_pk_id" unique="true" lazy="proxy" />
+	</class>
+</hibernate-mapping>

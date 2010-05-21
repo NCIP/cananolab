@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="Function" table="nano_function" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="function_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<discriminator column="discriminator" type="string"/>
+		<!-- Attributes mapping for the Function class -->
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="description" type="string" column="description"/>
+		<!-- Associations mapping for the Function class -->
+		<many-to-one name="materialCollection" class="gov.nih.nci.cananolab.domain.common.Material" column="material_pk_id" lazy="proxy" />
+		<subclass name="gov.nih.nci.cananolab.domain.function.TherapeuticFunction" discriminator-value="TherapeuticFunction">
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.function.TargetingFunction" discriminator-value="TargetingFunction">
+			<!-- Associations mapping for the TargetingFunction class -->
+			<set name="targetCollection" lazy="true" cascade="all-delete-orphan">
+				<cache usage="read-write" />
+				<key column="targeting_function_pk_id" />
+				<one-to-many class="gov.nih.nci.cananolab.domain.function.Target"/>
+			</set>
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.function.OtherFunction" discriminator-value="OtherFunction">
+			<!-- Attributes mapping for the OtherFunction class -->
+			<property name="type" type="string" column="other_function_type"/>
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.function.ImagingFunction" discriminator-value="ImagingFunction">
+			<!-- Attributes mapping for the ImagingFunction class -->
+			<property name="modality" type="string" column="imaging_function_modality"/>
+
+		</subclass>
+	</class>
+</hibernate-mapping>
