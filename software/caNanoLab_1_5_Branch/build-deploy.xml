@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="caNanoLab-deploy" basedir=".">
+	<property environment="env" />
+	<property file="deploy.properties" />
+	<property name="database" value="mysql" />
+	<property name="jboss.server.name" value="default" />
+	<property name="jboss.server.dir" value="${env.JBOSS_HOME}/server/${jboss.server.name}" />
+	<property name="jboss.conf.dir" value="${jboss.server.dir}/conf" />
+	<property name="jboss.deploy.dir" value="${jboss.server.dir}/deploy" />
+
+	<target name="prepare-csm-conf">
+		<!-- remove old CSM configuration files from JBOSS -->
+		<delete file="${jboss.conf.dir}/ApplicationSecurityConfig.xml" quiet="true" />
+		<delete file="${jboss.conf.dir}/caNanoLab.csm.hibernate.cfg.xml" quiet="true" />
+
+		<!--copy csm related configuration files -->
+		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/login-config.xml" />
+		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/csm/properties-service.xml" />
+		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/${database}-ds.xml" />
+
+		<!--replace database connection info -->
+		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_USER" value="${database.user}" />
+		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_PASSWORD" value="${database.password}" />
+
+		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_USER" value="${database.user}" />
+		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_PASSWORD" value="${database.password}" />
+
+		<!-- copy database jdbc driver -->
+		<copy overwrite="true" todir="${jboss.server.dir}/lib" file="${conf.dir}/mysql-connector-java-5.0.7-bin.jar" />
+	</target>
+
+	<target name="deploy-application" depends="run">
+		<!-- package WAR file -->
+		<copy todir="${jboss.deploy.dir}" overwrite="true">
+			<fileset dir="${target.dir}">
+				<include name="*.war" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>
