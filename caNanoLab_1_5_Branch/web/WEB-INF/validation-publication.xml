@@ -1,0 +1,51 @@
+<!DOCTYPE form-validation PUBLIC
+"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<formset>
+		<form name="publicationForm">
+			<field property="publication.domainFile.category" page="1"
+				depends="required">
+				<arg position="0" key="submitPublicationForm.publication.category"
+					bundle="publication" />
+			</field>
+			<field property="publication.domainFile.status" page="1"
+				depends="required">
+				<arg position="0" key="submitPublicationForm.publication.status"
+					bundle="publication" />
+			</field>
+			<field property="publication.domainFile.title" page="1"
+				depends="required">
+				<arg position="0" key="publication.title" bundle="publication" />
+			</field>
+		</form>
+
+		<form name="searchPublicationForm">
+			<field property="title" page="1" depends="mask">
+				<arg position="0" key="publication.title" bundle="publication" />
+				<msg name="mask" key="publication.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\./,:\-\_\*\s]*$</var-value>
+				</var>
+			</field>
+			<field property="authorsStr" page="1" depends="mask">
+				<arg position="0" key="authorsStr" bundle="publication" />
+				<msg name="mask" key="authorsStr.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
+				</var>
+			</field>
+			<field property="keywordsStr" page="1" depends="mask">
+				<arg position="0" key="keywordsStr" bundle="publication" />
+				<msg name="mask" key="keywordsStr.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
+				</var>
+			</field>
+		</form>
+	</formset>
+</form-validation>

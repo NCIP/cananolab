@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+<dwr>
+	<allow>
+		<create creator="new" javascript="CompositionManager" scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRCompositionManager" />
+			<include method="getEntityIncludePage" />
+			<include method="getFileById" />
+			<include method="resetTheFile" />
+			<include method="getAssociatedElementOptions" />
+			<include method="getComposingElementsByNanomaterialEntityId" />
+		</create>
+		<create creator="new" javascript="NanomaterialEntityManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRNanomaterialEntityManager" />
+			<include method="getComposingElementById" />
+			<include method="resetTheComposingElement" />
+			<include method="addInherentFunction" />
+			<include method="deleteInherentFunction" />
+		</create>
+		<create creator="new" javascript="FunctionalizingEntityManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRFunctionalizingEntityManager" />
+			<include method="getFunctionById" />
+			<include method="resetTheFunction" />
+			<include method="addTarget" />
+			<include method="deleteTarget" />
+		</create>
+		<create creator="new" javascript="ExperimentConfigManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRExperimentConfigManager" />
+			<include method="getExperimentConfigById" />
+			<include method="resetTheExperimentConfig" />
+			<include method="addInstrument" />
+			<include method="deleteInstrument" />
+			<include method="getTechniqueAbbreviation" />
+			<include method="getInstrumentTypesByTechniqueType" />
+			<include method="getInstrumentTypesByConfigId" />
+			<include method="getAllManufacturers" />
+		</create>
+		<create creator="new" javascript="FindingManager" scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager" />
+			<include method="getSubmitColumnPage" />
+			<include method="addColumnHeader" />
+			<include method="getFileFromList" />
+			<include method="getConditionOptions" />
+			<include method="getConditionPropertyOptions" />
+			<include method="getDatumNameOptions" />
+			<include method="getDecoratedDatumNameOptions" />
+			<include method="getColumnValueUnitOptions" />
+			<include method="resetTheFile" />
+		</create>
+		<create creator="new" javascript="CharacterizationManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationManager" />
+			<include method="getCharacterizationOptions" />
+			<include method="getDecoratedCharacterizationOptions" />
+			<include method="getAssayTypeOptions" />
+			<include method="getCharacterizationDetailPage" />
+			<include method="getPublicCharacterizationCounts" />
+		</create>
+		<create creator="new" javascript="SampleManager" scope="session">
+			<param name="class" value="gov.nih.nci.cananolab.ui.sample.DWRSampleManager" />
+			<include method="getNanomaterialEntityTypes" />
+			<include method="getFunctionalizingEntityTypes" />
+			<include method="getDecoratedEntityTypes" />
+			<include method="getFunctionTypes" />
+			<include method="getPublicCounts" />
+			<include method="getPublicSourceCounts" />
+			<include method="addSampleQuery" />
+			<include method="addCompositionQuery" />
+			<include method="addCharacterizationQuery" />
+			<include method="deleteSampleQuery" />
+			<include method="deleteCompositionQuery" />
+			<include method="deleteCharacterizationQuery" />
+			<include method="getCharacterizationOperandOptions" />
+			<include method="getAdvancedSearchDetailContent" />
+			<include method="getMatchedSampleNames" />
+		</create>
+		<create creator="new" javascript="POCManager" scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRPointOfContactManager" />
+			<include method="removeOrgFromVisibilityGroupsByPocId" />
+			<include method="removeOrgFromVisibilityGroupsByOrgName" />
+			<include method="resetVisibilityGroups" />
+			<include method="resetSampleVisibilityGroups" />
+			<include method="getPointOfContactById" />
+			<include method="resetThePointOfContact" />
+			<include method="getOrganizationByName" />
+			<include method="getPointOfContactByNameAndOrg"/>
+		</create>
+		<create creator="new" javascript="ProtocolManager" scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
+			<include method="getProtocolTypes" />
+			<include method="getProtocolNames" />
+			<include method="getProtocolVersions" />
+			<include method="getProtocol" />
+			<include method="getPublicCounts" />
+		</create>
+		<create creator="new" javascript="PublicationManager" scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
+			<include method="searchPubMedById" />
+			<include method="retrievePubMedInfo" />
+			<include method="updatePubMedWithExistingPublication" />
+			<include method="retrieveCurrentPub" />
+			<include method="addAuthor" />
+			<include method="deleteAuthor" />
+			<include method="clearPublication" />
+			<include method="getMatchedSampleNames" />
+			<include method="getPublicationCategories" />
+			<include method="getPublicationStatuses" />
+			<include method="getPublicCounts" />
+			<include method="updateWithExistingDOIPublication" />
+			<include method="updateWithExistingNonPubMedDOIPublication" />
+		</create>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
+			<param name="include" value="displayName, domainId" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
+			<param name="include" value="domain, inherentFunctions, displayName, domainId" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
+			<param name="include"
+				value="id, type, name, pubChemDataSourceName, pubChemId, value, valueUnit, molecularFormula, molecularFormulaType, description" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.composition.FunctionBean">
+			<param name="include" value="id, description, type, imagingFunction, targets" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.function.ImagingFunction">
+			<param name="include" value="modality" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.composition.TargetBean">
+			<param name="include" value="id, description, type, name, antigen" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.function.Antigen">
+			<param name="include" value="species" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.PointOfContactBean">
+			<param name="include" value="domain, primaryStatus, visibilityGroups" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.PointOfContact">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Organization">
+			<param name="exclude" value="pointOfContactCollection" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Protocol">
+		</convert>
+		<convert converter="bean" match="gov.nih.nci.cananolab.dto.common.FileBean">
+			<param name="include" value="keywordsStr, visibilityGroups, domainFile" />
+		</convert>
+		<convert converter="bean" match="gov.nih.nci.cananolab.domain.common.File">
+			<param name="exclude"
+				value="keywordCollection, findingCollection, datumCollection" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
+			<param name="include"
+				value="authors, domainFile, keywordsStr, sampleNamesStr, visibilityGroups, researchAreas" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Publication">
+			<param name="exclude"
+				value="keywordCollection, findingCollection, datumCollection, protocol" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Author">
+			<param name="include" value="id, firstName, lastName, initial" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
+			<param name="include" value="domain, instruments" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
+			<param name="include" value="id, description, technique, instrumentCollection" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Technique">
+			<param name="include" value="type, abbreviation" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Instrument">
+			<param name="include" value="id, type, manufacturer, modelName" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.ColumnHeader">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.FindingBean">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Finding">
+		</convert>
+		<convert converter="bean" match="gov.nih.nci.cananolab.dto.common.Row">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.TableCell">
+		</convert>
+		<convert converter="bean" match="gov.nih.nci.cananolab.domain.common.Datum">
+		</convert>
+		<convert converter="bean" match="gov.nih.nci.cananolab.dto.BaseQueryBean"></convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.CompositionQueryBean">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.SampleQueryBean">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean"></convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean"></convert>
+		<convert converter="bean" match="org.apache.struts.util.LabelValueBean"></convert>
+	</allow>
+</dwr>
