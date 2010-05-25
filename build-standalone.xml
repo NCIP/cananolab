@@ -3,10 +3,9 @@
 	basedir=".">
 	<property name="file.separator" value="/" />
 	<property file="deploy.properties" />
+	<property name="tmp.dir" value="${basedir}/tmp" />
 	<target name="init-standalone">
 		<!-- create the necessary folders -->
-		<mkdir dir="${build.dir}" />
-		<mkdir dir="${tmp.dir}" />
 		<mkdir dir="${tmp.dir}/classes" />
 	</target>
 	<target name="compile-standalone"
