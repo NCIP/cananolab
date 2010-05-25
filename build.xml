@@ -104,7 +104,7 @@
 		<!-- tag footer with release version and build tag -->
 		<property file="${build.dir}/WEB-INF/classes/version.properties" />
 		<property name="build_tag" value="dev" />
-		<propertyregex override="true" property="build_tag" input="${build.tag}" regexp="\$HeadURL\: .*/calab/cananolab/tags/([^/]*)/.*" select="\1" />
+		<propertyregex override="true" property="build_tag" input="${build.tag}" regexp="\$HeadURL\: .*/cananolab/tags/([^/]*)/.*" select="\1" />
 
 		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_RELEASE_VERSION\}" replace="${release.version}" flags="g" />
 		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_BUILD_TAG\}" replace="${build_tag}" flags="g" />
