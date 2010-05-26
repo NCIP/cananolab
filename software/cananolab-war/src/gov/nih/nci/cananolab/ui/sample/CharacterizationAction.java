@@ -511,10 +511,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		String serviceUrl = null;
 		String location = request.getParameter(Constants.LOCATION);
-		if (!Constants.LOCAL_SITE.equals(location)) {
-			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
-					location);
-		}
+		
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
 		CharacterizationExporter.exportSummary(charTypes, charSummaryBean, sb
 				.toString(), response.getOutputStream());
