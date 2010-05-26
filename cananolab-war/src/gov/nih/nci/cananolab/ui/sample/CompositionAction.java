@@ -175,10 +175,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		ExportUtils.prepareReponseForExcel(response, fileName);
 
 		String serviceUrl = null;
-		if (!Constants.LOCAL_SITE.equals(location)) {
-			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
-					location);
-		}
+		
 		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
 		CompositionExporter.exportSummary(compBean, sb.toString(), response
 				.getOutputStream());
@@ -214,12 +211,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		CompositionService service = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request, location);
-		/*if (!StringUtils.isEmpty(location)
-				&& !Constants.LOCAL_SITE.equals(location)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new CompositionServiceRemoteImpl(serviceUrl);
-		}*/
+		
 		CompositionBean compBean = service.findCompositionBySampleId(sampleId);
 		theForm.set("comp", compBean);
 
