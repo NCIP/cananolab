@@ -15,7 +15,6 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -391,12 +390,12 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"publicationCategories", "publication", "category",
 				"otherCategory", true);
-		if (!StringUtils.isEmpty(location)
+		/*if (!StringUtils.isEmpty(location)
 				&& !location.equals(Constants.LOCAL_SITE)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}
+		}*/
 		List<PublicationBean> publications = publicationService
 				.findPublicationsBySampleId(sampleId);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
@@ -423,12 +422,12 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter(Constants.LOCATION);
 		PublicationService publicationService = this
 				.setServicesInSession(request);
-		if (!StringUtils.isEmpty(location)
+		/*if (!StringUtils.isEmpty(location)
 				&& !location.equals(Constants.LOCAL_SITE)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}
+		}*/
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
 				.findPublicationById(publicationId);
@@ -552,12 +551,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter(Constants.LOCATION);
 		PublicationService publicationService = this
 				.setServicesInSession(request);
-		if (!StringUtils.isEmpty(location)
-				&& !location.equals(Constants.LOCAL_SITE)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}
+		
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
 				.findPublicationById(publicationId);

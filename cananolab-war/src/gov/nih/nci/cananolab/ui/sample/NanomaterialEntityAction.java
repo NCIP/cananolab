@@ -18,10 +18,8 @@ import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -248,12 +246,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		}
 		CompositionService compService = this.setServicesInSession(request);
 
-		if (!StringUtils.isEmpty(location)
-				&& !Constants.LOCAL_SITE.equals(location)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			compService = new CompositionServiceRemoteImpl(serviceUrl);
-		}
 		NanomaterialEntityBean entityBean = compService
 				.findNanomaterialEntityById(entityId);
 		request.setAttribute("nanomaterialEntity", entityBean);

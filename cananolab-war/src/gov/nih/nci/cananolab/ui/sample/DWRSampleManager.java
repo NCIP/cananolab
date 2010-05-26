@@ -6,9 +6,7 @@ import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
 import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -209,7 +207,7 @@ public class DWRSampleManager {
 					logger
 							.error("Error obtaining counts of public samples from local site.");
 				}
-			} else {
+			} /*else {
 				try {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
@@ -221,7 +219,7 @@ public class DWRSampleManager {
 							.error("Error obtaining counts of public samples from "
 									+ location);
 				}
-			}
+			}*/
 		}
 		return counts.toString() + " Samples";
 	}
@@ -242,19 +240,6 @@ public class DWRSampleManager {
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public sample sources from local site.");
-				}
-			} else {
-				try {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-
-					SampleService service = new SampleServiceRemoteImpl(
-							serviceUrl);
-					counts += service.getNumberOfPublicSampleSources();
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public sample sources from "
-									+ location);
 				}
 			}
 		}

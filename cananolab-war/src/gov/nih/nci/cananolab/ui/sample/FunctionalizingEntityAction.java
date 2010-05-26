@@ -17,10 +17,8 @@ import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -195,12 +193,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			entityId = (String) request.getAttribute("dataId");
 		}
 		CompositionService compService = this.setServicesInSession(request);
-		if (!StringUtils.isEmpty(location)
-				&& !Constants.LOCAL_SITE.equals(location)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			compService = new CompositionServiceRemoteImpl(serviceUrl);
-		}
+		
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId);
 		request.setAttribute("functionalizingEntity", entityBean);

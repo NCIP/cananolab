@@ -5,9 +5,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -89,10 +87,6 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		for (String location : searchLocations) {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				service = new ProtocolServiceLocalImpl(user);
-			} else {
-				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-				service = new ProtocolServiceRemoteImpl(serviceUrl);
 			}
 			List<ProtocolBean> protocols = service
 					.findProtocolsBy(protocolType, protocolName,

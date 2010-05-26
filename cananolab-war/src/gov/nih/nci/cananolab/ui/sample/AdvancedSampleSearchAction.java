@@ -14,13 +14,10 @@ import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -129,12 +126,6 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 					String location = sample.getLocation();
 					String sampleName = sample.getSampleName();
 					AdvancedSampleBean loadedAdvancedSample = null;
-					if (!StringUtils.isEmpty(location)
-							&& !Constants.LOCAL_SITE.equals(location)) {
-						String serviceUrl = InitSetup.getInstance()
-								.getGridServiceUrl(request, location);
-						service = new SampleServiceRemoteImpl(serviceUrl);
-					}
 					loadedAdvancedSample = service
 							.findAdvancedSampleByAdvancedSearch(sampleName,
 									searchBean);
@@ -234,12 +225,6 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
 				String sampleName = sampleBeans.get(i).getSampleName();
-				if (!StringUtils.isEmpty(location)
-						&& !location.equals(Constants.LOCAL_SITE)) {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-					service = new SampleServiceRemoteImpl(serviceUrl);
-				}
 				AdvancedSampleBean loadedAdvancedSample = service
 						.findAdvancedSampleByAdvancedSearch(sampleName,
 								searchBean);

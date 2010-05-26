@@ -6,9 +6,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -277,19 +275,6 @@ public class DWRPublicationManager {
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public publications from local site.");
-				}
-			} else {
-				try {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-
-					PublicationService service = new PublicationServiceRemoteImpl(
-							serviceUrl);
-					counts += service.getNumberOfPublicPublications();
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public publications from "
-									+ location);
 				}
 			}
 		}

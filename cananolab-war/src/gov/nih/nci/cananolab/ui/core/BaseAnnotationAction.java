@@ -8,9 +8,7 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -74,12 +72,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		// sample service has been created earlier
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
-		if (!StringUtils.isEmpty(location)
-				&& !Constants.LOCAL_SITE.equals(location)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new SampleServiceRemoteImpl(serviceUrl);
-		}
+		
 		SampleBean sampleBean = service.findSampleById(sampleId);
 		if (sampleBean != null) {
 			sampleBean.setLocation(location);
@@ -113,11 +106,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (Constants.LOCAL_SITE.equals(location)
 				|| StringUtils.isEmpty(location)) {
 			fileService = new FileServiceLocalImpl(user);
-		} else {
-			// CQL2HQL filters out subclasses, disabled the filter
-			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
-					location);
-			fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
 		fileBean = fileService.findFileById(fileId);
 		if (fileBean != null) {

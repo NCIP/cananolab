@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -215,12 +214,12 @@ public class CompositionAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		CompositionService service = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request, location);
-		if (!StringUtils.isEmpty(location)
+		/*if (!StringUtils.isEmpty(location)
 				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new CompositionServiceRemoteImpl(serviceUrl);
-		}
+		}*/
 		CompositionBean compBean = service.findCompositionBySampleId(sampleId);
 		theForm.set("comp", compBean);
 
