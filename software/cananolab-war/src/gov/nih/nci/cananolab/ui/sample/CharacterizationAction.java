@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -341,12 +340,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationService service = this.setServicesInSession(request);
 		String charId = theForm.getString("charId");
 		setupSample(theForm, request, location);
-		if (!StringUtils.isEmpty(location)
+		/*if (!StringUtils.isEmpty(location)
 				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
-		}
+		}*/
 		CharacterizationBean charBean = service
 				.findCharacterizationById(charId);
 		request.setAttribute("charBean", charBean);
@@ -376,12 +375,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String location = theForm.getString(Constants.LOCATION);
 		CharacterizationService service = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request, location);
-		if (!StringUtils.isEmpty(location)
+		/*if (!StringUtils.isEmpty(location)
 				&& !Constants.LOCAL_SITE.equals(location)) {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
-		}
+		}*/
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId);
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(

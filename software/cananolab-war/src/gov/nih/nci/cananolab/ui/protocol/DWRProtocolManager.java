@@ -3,9 +3,7 @@ package gov.nih.nci.cananolab.ui.protocol;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -127,18 +125,6 @@ public class DWRProtocolManager {
 				} catch (Exception e) {
 					logger
 							.error("Error obtaining counts of public protocols from local site.");
-				}
-			} else {
-				try {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-					ProtocolService service = new ProtocolServiceRemoteImpl(
-							serviceUrl);
-					counts += service.getNumberOfPublicProtocols();
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public protocols from "
-									+ location);
 				}
 			}
 		}

@@ -48,36 +48,9 @@ public class GridDiscoveryServiceJob implements Job {
 	}
 
 	public void populateAllServices() {
-		Set<String> extantURLs = new HashSet<String>();
-		if (gridNodes.isEmpty()) {
-			// populate remote services but eliminate local duplicates
-			gridNodes = populateNewServices(extantURLs);
-		} else { // just update service
-			// 1. extract existing grid addresses
-			for (GridNodeBean grid : gridNodes) {
-				extantURLs.add(grid.getAddress());
-			}
-			// 2. populate remote services but eliminate existing duplicate
-			// addresses
-			List<GridNodeBean> remoteNodes = populateNewServices(extantURLs);
-			if (remoteNodes.size()>0) {
-				System.out.println("Found "+remoteNodes.size()+ " new grid service(s).");
-			}
-			gridNodes.addAll(remoteNodes);
-		}
+		//Set<String> extantURLs = new HashSet<String>();
+		
 	}
 
-	/**
-	 * @return a list of all new grid services since last discovery
-	 */
-	private List<GridNodeBean> populateNewServices(Set<String> extantURLs) {
-		logger.info("Discovering new grid nodes via scheduler...");
-
-		List<GridNodeBean> nodes = GridService.discoverNewServices(
-				Constants.GRID_INDEX_SERVICE_URL,
-				Constants.DOMAIN_MODEL_NAME,
-				Constants.DOMAIN_MODEL_VERSION, extantURLs);
-		logger.info("Found " + nodes.size() + " new services.");
-		return nodes;
-	}
+	
 }

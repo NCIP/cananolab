@@ -5,9 +5,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -92,12 +90,12 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < publicationBeans.size()) {
 				String location = publicationBeans.get(i).getLocation();
-				if (!location.equals(Constants.LOCAL_SITE)
+				/*if (!location.equals(Constants.LOCAL_SITE)
 						&& !StringUtils.isEmpty(location)) {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 					service = new PublicationServiceRemoteImpl(serviceUrl);
-				}
+				}*/
 				String publicationId = publicationBeans.get(i).getDomainFile()
 						.getId().toString();
 				PublicationBean pubBean = service
@@ -223,11 +221,6 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			if (Constants.LOCAL_SITE.equals(location)) {
 				publicationService = (PublicationService) (request.getSession()
 						.getAttribute("publicationService"));
-			} else {
-				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-				publicationService = new PublicationServiceRemoteImpl(
-						serviceUrl);
 			}
 			List<String> publicationIds = publicationService
 					.findPublicationIdsBy(

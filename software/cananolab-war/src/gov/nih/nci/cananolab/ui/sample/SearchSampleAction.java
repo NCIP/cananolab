@@ -15,9 +15,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -199,12 +197,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			if (location.equals(Constants.LOCAL_SITE)) {
 				service = (SampleService) request.getSession().getAttribute(
 						"sampleService");
-			} else {
-				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
-
 			List<String> sampleNames = service.findSampleNamesBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames
 							.toArray(new String[0]),
@@ -238,12 +231,12 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String location = sampleBeans.get(i).getLocation();
-				if (!StringUtils.isEmpty(location)
+				/*if (!StringUtils.isEmpty(location)
 						&& !location.equals(Constants.LOCAL_SITE)) {
 					String serviceUrl = InitSetup.getInstance()
 							.getGridServiceUrl(request, location);
 					service = new SampleServiceRemoteImpl(serviceUrl);
-				}
+				}*/
 				// TODO remove this
 				// service = new SampleServiceRemoteImpl(
 				// "http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");

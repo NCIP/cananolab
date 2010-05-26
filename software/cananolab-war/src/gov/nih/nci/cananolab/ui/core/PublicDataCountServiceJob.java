@@ -4,16 +4,12 @@ import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
@@ -156,7 +152,7 @@ public class PublicDataCountServiceJob implements Job {
 				logger
 						.error("Error obtaining counts of public samples from local site.");
 			}
-		} else {
+		} /*else {
 			try {
 				service = new SampleServiceRemoteImpl(serviceUrl);
 				count = service.getNumberOfPublicSamples();
@@ -165,7 +161,7 @@ public class PublicDataCountServiceJob implements Job {
 						.error("Error obtaining counts of public samples from grid service at"
 								+ serviceUrl);
 			}
-		}
+		}*/
 		return count;
 	}
 
@@ -182,7 +178,7 @@ public class PublicDataCountServiceJob implements Job {
 				logger
 						.error("Error obtaining counts of public sample sources from local site.");
 			}
-		} else {
+		} /*else {
 			try {
 				service = new SampleServiceRemoteImpl(serviceUrl);
 				count = service.getNumberOfPublicSampleSources();
@@ -191,7 +187,7 @@ public class PublicDataCountServiceJob implements Job {
 						.error("Error obtaining counts of public sample sources from grid service at"
 								+ serviceUrl);
 			}
-		}
+		}*/
 		return count;
 	}
 
@@ -208,7 +204,7 @@ public class PublicDataCountServiceJob implements Job {
 				logger
 						.error("Error obtaining counts of public protocols from local site.");
 			}
-		} else {
+		} /*else {
 			try {
 				service = new ProtocolServiceRemoteImpl(serviceUrl);
 				count = service.getNumberOfPublicProtocols();
@@ -217,7 +213,7 @@ public class PublicDataCountServiceJob implements Job {
 						.error("Error obtaining counts of public protocols from grid service at"
 								+ serviceUrl);
 			}
-		}
+		}*/
 		return count;
 	}
 
@@ -234,7 +230,7 @@ public class PublicDataCountServiceJob implements Job {
 				logger
 						.error("Error obtaining counts of public publications from local site.");
 			}
-		} else {
+		} /*else {
 			try {
 				service = new PublicationServiceRemoteImpl(serviceUrl);
 				count = service.getNumberOfPublicPublications();
@@ -243,7 +239,7 @@ public class PublicDataCountServiceJob implements Job {
 						.error("Error obtaining counts of public publications from grid service at"
 								+ serviceUrl);
 			}
-		}
+		}*/
 		return count;
 	}
 
@@ -264,7 +260,7 @@ public class PublicDataCountServiceJob implements Job {
 								+ characterizationClassName
 								+ " from local site.");
 			}
-		} else {
+		} /*else {
 			try {
 				service = new CharacterizationServiceRemoteImpl(serviceUrl);
 				count = service
@@ -275,7 +271,7 @@ public class PublicDataCountServiceJob implements Job {
 								+ characterizationClassName
 								+ " from grid service at" + serviceUrl);
 			}
-		}
+		}*/
 		return count;
 	}
 

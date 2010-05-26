@@ -2,9 +2,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -134,22 +132,6 @@ public class DWRCharacterizationManager {
 							.error("Error obtaining counts of public characterizations of type "
 									+ characterizationClassName
 									+ " from local site.");
-				}
-			} else {
-				try {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-
-					CharacterizationService service = new CharacterizationServiceRemoteImpl(
-							serviceUrl);
-					counts += service
-							.getNumberOfPublicCharacterizations(characterizationClassName);
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public characterizations of type "
-									+ characterizationClassName
-									+ " from "
-									+ location);
 				}
 			}
 		}
