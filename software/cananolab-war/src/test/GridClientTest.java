@@ -1,30 +1,16 @@
 package test;
 
-import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
-import gov.nih.nci.cagrid.cqlquery.Association;
-import gov.nih.nci.cagrid.cqlquery.Attribute;
-import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.cqlquery.Predicate;
-import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
-import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.service.common.GridService;
-
-import java.io.FileReader;
-import java.util.List;
 
 public class GridClientTest {
-	CaNanoLabServiceClient gridClient;
+	/*CaNanoLabServiceClient gridClient;
 
 	public GridClientTest(CaNanoLabServiceClient gridClient) {
 		this.gridClient = gridClient;
 	}
-	/**
+	*//**
 	 * Test NanoMaterialEntity
 	 * @throws Exception
-	 */
+	 *//*
 	public void testNanomaterialEntity() throws Exception {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -175,5 +161,5 @@ public class GridClientTest {
 			e.printStackTrace();
 			System.exit(1);
 		}
-	}
+	}*/
 }
