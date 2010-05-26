@@ -15,7 +15,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>
-			<pathelement location="${lib.dir}/cagrid/ant-contrib-1.0b3.jar" />
+			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
 
@@ -91,10 +91,7 @@
 
 		<!-- copy lib files from ${lib.dir} -->
 		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset dir="${lib.dir}/cagrid">
-				<include name="*.jar" />
-			</fileset>
-			<fileset dir="${lib.dir}/globus">
+			<fileset dir="${lib.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
