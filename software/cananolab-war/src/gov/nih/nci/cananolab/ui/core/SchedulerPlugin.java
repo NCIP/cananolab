@@ -99,44 +99,6 @@ public class SchedulerPlugin implements PlugIn {
 		return interval;
 	}
 
-	public void initialiseGridDiscoveryJob(int intervalInMinutes) {
-		try {
-			if (intervalInMinutes == 0) {
-				// default is 240 minutes
-				intervalInMinutes = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
-			}
-			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
-					"GridDiscoveryServiceJobTrigger", intervalInMinutes,
-					SimpleTrigger.REPEAT_INDEFINITELY);
-			JobDetail jobDetail = new JobDetail("GridDiscoveryServiceJob",
-					null, GridDiscoveryServiceJob.class);
-			scheduler.scheduleJob(jobDetail, trigger);
-			logger.debug("Discover scheduler started......");
-		} catch (SchedulerException e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
-
-	public void initialisePublicDataCountJob(List<GridNodeBean> gridNodes,
-			int intervalInMinutes) {
-		try {
-			if (intervalInMinutes == 0) {
-				// default is 240 minutes
-				intervalInMinutes = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
-			}
-			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
-					"PublicDataStatsServiceJobTrigger", intervalInMinutes,
-					SimpleTrigger.REPEAT_INDEFINITELY);
-			JobDetail jobDetail = new JobDetail("PublicDataCountServiceJob",
-					null, PublicDataCountServiceJob.class);
-			jobDetail.getJobDataMap().put("gridNodes", gridNodes);
-			scheduler.scheduleJob(jobDetail, trigger);
-			logger.debug("Public data count schedular started......");
-		} catch (SchedulerException e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
-
 	public void initialiseCSMCleanupJob(int intervalInMinutes) {
 		try {
 			if (intervalInMinutes == 0) {

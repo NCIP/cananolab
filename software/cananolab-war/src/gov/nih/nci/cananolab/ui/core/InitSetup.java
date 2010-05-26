@@ -1,20 +1,14 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.exception.GridDownException;
-import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -274,7 +268,7 @@ public class InitSetup {
 		}
 	}
 
-	public String getGridServiceUrl(HttpServletRequest request,
+	/*public String getGridServiceUrl(HttpServletRequest request,
 			String gridHostName) throws Exception {
 		List<GridNodeBean> remoteNodes = getGridNodesInContext(request);
 		GridNodeBean theNode = GridService.getGridNodeByHostName(remoteNodes,
@@ -284,9 +278,9 @@ public class InitSetup {
 					+ " is not available at this time.");
 		}
 		return theNode.getAddress();
-	}
+	}*/
 
-	public List<GridNodeBean> getGridNodesInContext(HttpServletRequest request)
+	/*public List<GridNodeBean> getGridNodesInContext(HttpServletRequest request)
 			throws Exception {
 		// URL localURL = new URL(request.getRequestURL().toString());
 		// int port = (localURL.getPort() == -1) ? 80 : localURL.getPort();
@@ -313,16 +307,16 @@ public class InitSetup {
 		request.getSession().getServletContext().setAttribute("allGridNodes",
 				remoteNodes);
 		return gridNodes;
-	}
+	}*/
 
-	public PublicDataCountBean getPublicDataCountsInContext(
+	/*public PublicDataCountBean getPublicDataCountsInContext(
 			HttpServletRequest request) throws Exception {
 		PublicDataCountServiceJob dataCountJob = new PublicDataCountServiceJob();
 		PublicDataCountBean dataCounts = dataCountJob.getPublicDataCounts();
 		request.getSession().getServletContext().setAttribute(
 				"allPublicDataCounts", dataCounts);
 		return dataCounts;
-	}
+	}*/
 
 	public void updateCSMCleanupEntriesInContext(
 			List<String> csmEntriesToRemove, HttpServletRequest request)

@@ -95,25 +95,6 @@ public class CustomPlugIn implements PlugIn {
 		}
 	}
 
-	// discover grid nodes and query public data counts during start-up time and
-	// populates the grid nodes and data counts in the scheduler
-	private void setupInitialGridNodes(ServletContext context) {
-		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>(gridNodes);
-		for (GridNodeBean gridNode : gridNodes) {
-			if (gridNode.getHostName().equals(Constants.LOCAL_SITE)) {
-				remoteNodes.remove(gridNode);
-			}
-		}
-		Collections.sort(remoteNodes,
-				new Comparators.GridNodeHostNameComparator());
-		logger.info("Found " + remoteNodes.size()
-				+ " remote grid node(s) at start up.");
-		PublicDataCountServiceJob dataCountJob = new PublicDataCountServiceJob();
-		dataCountJob.queryPublicDataCounts(remoteNodes);
-	}
-
 	private void cleanUpCSM() throws Exception {
 		CSMCleanupJob csmCleanJob = new CSMCleanupJob();
 		csmCleanJob.cleanUpCSM();
