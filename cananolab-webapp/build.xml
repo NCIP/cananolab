@@ -107,7 +107,6 @@
 		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_BUILD_TAG\}" replace="${build_tag}" flags="g" />
 
 		<!-- package WAR file -->
-		<mkdir dir="${target.dir}" />
 		<jar destfile="${target.dir}/caNanoLab.war" basedir="${build.dir}" />
 		<copy todir="${target.dir}">
 			<fileset dir="${conf.dir}/csm/">
@@ -115,5 +114,11 @@
 			</fileset>
 		</copy>
 	</target>
-	<target name="run" depends="pre-clean, init, war, post-clean" />
+	<target name="helpers-jar" depends="compile">
+		<!-- package jar file -->
+		<copy todir="${build.dir}/WEB-INF/classes" file="${src.dir}/caNanoLab.properties.template" />
+		<jar destfile="${target.dir}/caNanoLab-helpers.jar" basedir="${build.dir}/WEB-INF/classes" includes="**/UserBean.class, **/*Exception.class, **/AuthorizationService.class, **/*Helper.class, **/ClassUtils.class, **/StringUtils.class, **/TextMatchMode.class, **/Constants.class, **/PropertyUtils.class, caNanoLab.properties.template" excludes="**/AdvancedSampleServiceHelper.class" />
+	</target>
+
+	<target name="run" depends="pre-clean, init, war, helpers-jar, post-clean" />
 </project>
