@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
-import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -28,9 +27,9 @@ import java.util.Date;
 
 /**
  * Contains a list of static comparators for use in caNanoLab
- * 
+ *
  * @author pansu
- * 
+ *
  */
 
 /* CVS $Id: Comparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
@@ -411,13 +410,6 @@ public class Comparators {
 			Comparator<Publication> {
 		public int compare(Publication pub1, Publication pub2) {
 			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
-		}
-	}
-
-	public static class GridNodeHostNameComparator implements
-			Comparator<GridNodeBean> {
-		public int compare(GridNodeBean node1, GridNodeBean node2) {
-			return node1.getHostName().compareTo(node2.getHostName());
 		}
 	}
 
