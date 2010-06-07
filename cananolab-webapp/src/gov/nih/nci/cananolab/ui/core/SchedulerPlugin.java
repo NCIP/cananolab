@@ -1,9 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.util.Constants;
-
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
