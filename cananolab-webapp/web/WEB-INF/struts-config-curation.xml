@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="reviewDataForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+	</global-exceptions>
+	<global-forwards>
+	</global-forwards>
+	<action-mappings>
+		<action path="/manageCuration" type="org.apache.struts.actions.ForwardAction"
+			parameter="curation.manageCuration" scope="request" />
+		<action name="reviewDataForm" parameter="dispatch"
+			path="/reviewData" type="gov.nih.nci.cananolab.ui.curation.ReviewDataAction"
+			input="input">
+			<forward name="setup" path="curation.reviewData" />
+			<forward name="input"
+				path="/reviewData.do?dispatch=input&amp;page=0" />
+		</action>
+	</action-mappings>
+</struts-config>

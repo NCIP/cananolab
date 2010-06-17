@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="collaboratorGroupForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="group"
+				type="gov.nih.nci.cananolab.dto.common.CollaboratorGroupBean" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+	</global-exceptions>
+	<global-forwards>
+	</global-forwards>
+	<action-mappings>
+		<action path="/manageCommunity" type="org.apache.struts.actions.ForwardAction"
+			parameter="community.manageCommunity" scope="request" />
+		<action name="collaboratorGroupForm" parameter="dispatch"
+			path="/collaboratorGroup" type="gov.nih.nci.cananolab.ui.community.CollaboratorGroupAction"
+			input="input">
+			<forward name="setup" path="community.manageCollaboratorGroup" />
+			<forward name="input"
+				path="/collaboratorGroup.do?dispatch=input&amp;page=0" />
+		</action>
+	</action-mappings>
+</struts-config>
