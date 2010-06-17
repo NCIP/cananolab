@@ -4,8 +4,7 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<!--  Main layout definition for the login page of caNanoLab -->
-	<definition name="canano.login"
-		path="/layout/mainLayoutNoContentSpace.jsp">
+	<definition name="canano.login" path="/layout/mainLayoutNoContentSpace.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
@@ -16,9 +15,8 @@
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />
 		<putList name="items">
-			<item value="HELP"
-				link="openHelpWindow('webHelp/index.html')" />
-				<item value="GLOSSARY"
+			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
+			<item value="GLOSSARY"
 				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
 			<item value="LOGOUT" link="logout.do" />
 		</putList>
@@ -35,14 +33,13 @@
 		<put name="menu" value="home" />
 		<putList name="items">
 			<item value="HOME" link="gotoPage('home.jsp')" />
-			<item value="PROTOCOLS"
-				link="gotoPage('manageProtocol.do')" />
-			<item value="SAMPLES"
-				link="gotoPage('manageSample.do')" />
+			<item value="PROTOCOLS" link="gotoPage('manageProtocol.do')" />
+			<item value="SAMPLES" link="gotoPage('manageSample.do')" />
 			<item value="PUBLICATIONS" link="gotoPage('managePublication.do')" />
+			<item value="COMMUNITY" link="gotoPage('manageCommunity.do')" />
+			<item value="CURATION" link="gotoPage('manageCuration.do')" />
 			<item value="ADMINISTRATION" link="gotoPage('adminHome.do')" />
-			<item value="HELP"
-				link="openHelpWindow('webHelp/index.html')" />
+			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
 			<item value="GLOSSARY"
 				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
@@ -68,8 +65,7 @@
 		<put name="cananoContent" value="/bodyRegister.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="canano.disclaimer"
-		path="/layout/disclaimerLayout.jsp">
+	<definition name="canano.disclaimer" path="/layout/disclaimerLayout.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
