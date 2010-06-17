@@ -14,12 +14,15 @@
 				<input type="button" value="Copy" onclick="${cloneOnclick}">
 			</c:if>
 		</td>
-		<td align="right" width="200">
-			<input type="reset" value="Reset" onclick="${resetOnclick}" />
-			&nbsp;
+		<td align="right" width="300">
 			<c:set var="submitButtonName" value="Submit" />
 			<c:if test="${!empty updateId}">
 				<c:set var="submitButtonName" value="Update" />
+			</c:if>
+			<input type="reset" value="Reset" onclick="${resetOnclick}" />
+			&nbsp;
+			<c:if test="${!empty review && review eq 'true'}">
+				<input type="button" value="Submit for Review" />
 			</c:if>
 			<c:choose>
 				<c:when test="${!empty submitOnclick }">
