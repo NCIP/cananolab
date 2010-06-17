@@ -64,9 +64,13 @@ public class UserBean {
 
 	private boolean curator;
 
+	public UserBean() {
+
+	}
+
 	public UserBean(String loginName, String password) {
 		this.loginName = loginName;
-		this.password=password;
+		this.password = password;
 	}
 
 	public UserBean(User user) {
