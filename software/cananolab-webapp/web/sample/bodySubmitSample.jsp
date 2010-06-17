@@ -46,8 +46,7 @@
 				<a href="#"
 					onclick="javascript:confirmAddNew('PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" />
-				</a>
+						align="top" src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
 		<c:if
@@ -81,21 +80,7 @@
 				<html:textarea property="sampleBean.keywordsStr" rows="6" cols="80" />
 			</td>
 		</tr>
-		<tr>
-			<td class="cellLabel">
-				Visibility
-			</td>
-			<td>
-				<html:select property="sampleBean.visibilityGroups"
-					styleId="sampleVisibilityGroups" multiple="true" size="6">
-					<html:options name="allVisibilityGroupsNoOrg" />
-				</html:select>
-				<br>
-				<i>(${applicationOwner}_Researcher,
-					${applicationOwner}_DataCurator, and the organization name for the
-					primary point of contact are always selected by default.)</i>
-			</td>
-		</tr>
+		<%@include file="../community/bodyManageAccessibility.jsp" %>
 	</table>
 	<br>
 	<c:if test="${!empty updateSample}">
@@ -109,6 +94,7 @@
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="2" />
+	<c:set var="review" value="false"/>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 
