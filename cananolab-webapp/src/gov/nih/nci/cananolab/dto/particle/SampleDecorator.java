@@ -118,4 +118,18 @@ public class SampleDecorator extends TableDecorator {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		return sample.getPrimaryPOCBean().getDisplayName();
 	}
+	public String getDataAvailabilityMatricsStr() throws BaseException{
+		//need to compute this value
+		Integer completeness=39;
+		SampleBean sample = (SampleBean) getCurrentRowObject();
+		String sampleId = sample.getDomain().getId().toString();
+		
+		StringBuilder sb = new StringBuilder("<a href=");
+		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
+		sb.append(sampleId).append("&location=");
+		sb.append(sample.getLocation()).append('>');
+		sb.append("caNanoLab: 67%; MINChar: 33%").append("</a>");
+		String link = sb.toString();
+		return link;		
+	}
 }
