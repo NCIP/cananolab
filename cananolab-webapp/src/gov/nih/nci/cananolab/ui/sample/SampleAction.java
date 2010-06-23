@@ -23,7 +23,9 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
+import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -172,7 +174,21 @@ public class SampleAction extends BaseAnnotationAction {
 			}
 		}
 
+		InitSetup charsService = InitSetup.getInstance();
+		ServletContext appContext = request.getSession().getServletContext();
+		SortedSet<String> physicoChars = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
+		SortedSet<String> invitroChars = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
+		SortedSet<String> invivoChars = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
+		SortedSet<String> chemicalAssocs = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+		
+		request.setAttribute("physicoChars", physicoChars);
+		request.setAttribute("invitroChars", invitroChars);
+		request.setAttribute("invivoChars", invivoChars);
+		request.setAttribute("chemicalAssocs", chemicalAssocs);
+		
+		System.out.println("chemical associations size: " + chemicalAssocs.size());
 		return mapping.findForward("summaryEdit");
+		//return mapping.findForward("summaryEdit");
 	}
 
 	/**
