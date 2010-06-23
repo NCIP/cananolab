@@ -58,6 +58,8 @@ public class SampleBean {
 	private Boolean hasCharacterizations = false;
 
 	private Boolean hasPublications = false;
+	
+	private Boolean hasDataAvailability = true;
 
 	private PointOfContactBean thePOC = new PointOfContactBean();
 
@@ -267,6 +269,14 @@ public class SampleBean {
 
 	public void setHasPublications(Boolean hasPublications) {
 		this.hasPublications = hasPublications;
+	}
+
+	public Boolean getHasDataAvailability() {
+		return hasDataAvailability;
+	}
+
+	public void setHasDataAvailability(Boolean hasDataAvailability) {
+		this.hasDataAvailability = hasDataAvailability;
 	}
 
 	public PointOfContactBean getThePOC() {
