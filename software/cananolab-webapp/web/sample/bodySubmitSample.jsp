@@ -81,6 +81,33 @@
 			</td>
 		</tr>
 		<%@include file="../community/bodyManageAccessibility.jsp" %>
+		<tr>
+			<td class="cellLabel">
+				Data Availability Metrics
+			</td>
+			<td>
+			<c:set var="updateAvailabilityOnclick"
+		value="updateDataAvailability('dataAvailability');"/>
+			<c:if test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability && user.admin}">
+				<input type="button" value="Generate"
+					onclick="${generateDataAvailabilityOnclick}">
+			</c:if>	
+			<c:if test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability && user.admin}">
+				<input type="button" value="Edit"
+					onclick="javascript:showhide('dataAvailability');" >
+				
+			</c:if>				
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<c:set var="dataAvailabilityStyle" value="display:none" />				
+				<div style="${dataAvailabilityStyle}" id="dataAvailability">
+					<a name="viewDataAvailability"><%@ include
+							file="bodyDataAvailability.jsp"%></a>
+				</div>
+			</td>
+		</tr>
 	</table>
 	<br>
 	<c:if test="${!empty updateSample}">

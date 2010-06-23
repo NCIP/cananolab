@@ -37,6 +37,7 @@
 				<display:column title="Characterizations"
 					property="characterizationStr" />
 				<display:column title="Site" property="location" sortable="true" />
+				<display:column title="Data Availability"  property="dataAvailabilityMatricsStr"/>
 			</display:table>
 		</td>
 	</tr>
