@@ -39,9 +39,8 @@ public class PublicationBean extends FileBean {
 		domainFile.setUriExternal(false);
 	}
 
-	public PublicationBean(String id, String location) {
+	public PublicationBean(String id) {
 		domainFile.setId(new Long(id));
-		setLocation(location);
 	}
 
 	public PublicationBean(Publication publication) {
@@ -295,8 +294,6 @@ public class PublicationBean extends FileBean {
 			StringBuilder sb = new StringBuilder("<a href=");
 			sb.append("publication.do?dispatch=download&fileId=");
 			sb.append(pub.getId());
-			sb.append("&location=");
-			sb.append(getLocation());
 			sb.append(" target='");
 			sb.append(getUrlTarget());
 			sb.append("'>");

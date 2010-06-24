@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -20,7 +19,6 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.Collection;
 
@@ -53,13 +51,12 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 *
 	 * @param theForm
 	 * @param request
-	 * @param location
 	 * @return SampleBean
 	 * @throws Exception
 	 *             if user is not allowed to access the sample
 	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
-			HttpServletRequest request, String location) throws Exception {
+			HttpServletRequest request) throws Exception {
 		String sampleId = request.getParameter("sampleId");
 		if (!StringUtils.isEmpty(sampleId)) {
 			theForm.set("sampleId", sampleId);
@@ -72,11 +69,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		// sample service has been created earlier
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
-		
+
 		SampleBean sampleBean = service.findSampleById(sampleId);
-		if (sampleBean != null) {
-			sampleBean.setLocation(location);
-		}
 		request.setAttribute("theSample", sampleBean);
 		return sampleBean;
 	}
@@ -99,14 +93,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 		String fileId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String location = request.getParameter(Constants.LOCATION);
 		FileService fileService = null;
 		FileBean fileBean = null;
-		String serviceUrl = null;
-		if (Constants.LOCAL_SITE.equals(location)
-				|| StringUtils.isEmpty(location)) {
-			fileService = new FileServiceLocalImpl(user);
-		}
+		fileService = new FileServiceLocalImpl(user);
+
 		fileBean = fileService.findFileById(fileId);
 		if (fileBean != null) {
 			if (fileBean.getDomainFile().getUriExternal()) {
@@ -114,14 +104,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				return null;
 			}
 		}
-		if (!Constants.LOCAL_SITE.equals(location)) {
-			StringBuilder remoteUrl = getDownloadUrl(request, serviceUrl,
-					location);
-			remoteUrl.append(fileId);
-			response.sendRedirect(remoteUrl.toString());
-			return null;
-		}
-
 		String fileRoot = PropertyUtils.getProperty(
 				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
@@ -263,31 +245,15 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 *
 	 * @param request
 	 * @param serviceUrl
-	 * @param location
 	 * @return
 	 * @throws Exception
 	 */
-	protected StringBuilder getDownloadUrl(HttpServletRequest request,
-			String serviceUrl, String location) throws Exception {
+	protected StringBuilder getDownloadUrl(HttpServletRequest request)
+			throws Exception {
 		StringBuilder sb = new StringBuilder();
+		sb.append(request.getRequestURL().toString());
 
-		// Return local Url if serviceUrl is empty.
-		if (StringUtils.isEmpty(serviceUrl)) {
-			sb.append(request.getRequestURL().toString());
-		} else {
-			// assume grid service is located on the same server and port as
-			// webapp
-			URL remoteUrl = new URL(serviceUrl);
-			URL localURL = new URL(request.getRequestURL().toString());
-			String actionPath = localURL.getPath();
-
-			sb.append(remoteUrl.getProtocol()).append("://");
-			sb.append(remoteUrl.getHost()).append(':');
-			sb.append(remoteUrl.getPort());
-			sb.append(actionPath);
-		}
-		sb.append(ExportUtils.DOWNLOAD_URL);
-		sb.append(location).append("&fileId=");
+		sb.append(ExportUtils.DOWNLOAD_URL).append("&fileId=");
 
 		return sb;
 	}
@@ -341,7 +307,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_SAMPLE);
+		if (user == null) {
+			return false;
+		}
+		return true;
 	}
 }

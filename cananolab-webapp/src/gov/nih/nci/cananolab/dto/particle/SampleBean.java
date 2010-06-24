@@ -37,8 +37,6 @@ public class SampleBean {
 
 	private SortedSet<String> keywordSet = new TreeSet<String>();
 
-	private String location; // e.g. NCICB, NCL, WUSTL, etc.
-
 	private String[] nanomaterialEntityClassNames = new String[0];
 
 	private String[] functionalizingEntityClassNames = new String[0];
@@ -58,7 +56,7 @@ public class SampleBean {
 	private Boolean hasCharacterizations = false;
 
 	private Boolean hasPublications = false;
-	
+
 	private Boolean hasDataAvailability = true;
 
 	private PointOfContactBean thePOC = new PointOfContactBean();
@@ -68,9 +66,8 @@ public class SampleBean {
 	public SampleBean() {
 	}
 
-	public SampleBean(String sampleName, String location) {
+	public SampleBean(String sampleName) {
 		domain.setName(sampleName);
-		this.location = location;
 	}
 
 	public SampleBean(Sample sample) {
@@ -173,14 +170,6 @@ public class SampleBean {
 
 	public SortedSet<String> getKeywordSet() {
 		return keywordSet;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public void setDomain(Sample domainSample) {

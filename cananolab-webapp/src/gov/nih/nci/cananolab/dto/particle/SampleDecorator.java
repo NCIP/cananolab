@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -20,37 +19,32 @@ import org.displaytag.decorator.TableDecorator;
  */
 public class SampleDecorator extends TableDecorator {
 
-	public SortableName getEditSampleURL() {
+	public String getEditSampleURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
-		if (!Constants.LOCAL_SITE.equals(sample.getLocation())) {
-			return this.getViewSampleURL();
-		}
 		String sampleId = sample.getDomain().getId().toString();
-		String sampleName = sample.getDomain().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryEdit&page=0&sampleId=");
-		sb.append(sampleId).append("&location=");
-		sb.append(sample.getLocation()).append('>');
-		sb.append(sampleName).append("</a>");
+		sb.append(sampleId).append('>');
+		sb.append("Edit").append("</a>");
 		String link = sb.toString();
-
-		SortableName sortableLink = new SortableName(sampleName, link);
-		return sortableLink;
+		return link;
 	}
 
-	public SortableName getViewSampleURL() {
+	public String getViewSampleURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
-		String sampleName = sample.getDomain().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
-		sb.append(sampleId).append("&location=");
-		sb.append(sample.getLocation()).append('>');
-		sb.append(sampleName).append("</a>");
+		sb.append(sampleId).append('>');
+		sb.append("View").append("</a>");
 		String link = sb.toString();
+		return link;
+	}
 
-		SortableName sortableLink = new SortableName(sampleName, link);
-		return sortableLink;
+	public SortableName getSampleName() {
+		SampleBean sample = (SampleBean) getCurrentRowObject();
+		String sampleName = sample.getDomain().getName();
+		return new SortableName(sampleName);
 	}
 
 	public String getKeywordStr() {
@@ -118,18 +112,18 @@ public class SampleDecorator extends TableDecorator {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		return sample.getPrimaryPOCBean().getDisplayName();
 	}
-	public String getDataAvailabilityMatricsStr() throws BaseException{
-		//need to compute this value
-		Integer completeness=39;
+
+	public String getDataAvailabilityMatricsStr() throws BaseException {
+		// need to compute this value
+		Integer completeness = 39;
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
-		
+
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
-		sb.append(sampleId).append("&location=");
-		sb.append(sample.getLocation()).append('>');
+		sb.append(sampleId).append('>');
 		sb.append("caNanoLab: 67%; MINChar: 33%").append("</a>");
 		String link = sb.toString();
-		return link;		
+		return link;
 	}
 }

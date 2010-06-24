@@ -18,7 +18,6 @@ public class ProtocolBean {
 	private FileBean fileBean = new FileBean();
 	private Protocol domain = new Protocol();
 	private String[] visibilityGroups = new String[0];
-	private String location;
 
 	public ProtocolBean() {
 		if (fileBean.getDomainFile() != null)
@@ -88,14 +87,6 @@ public class ProtocolBean {
 
 	public Protocol getDomain() {
 		return domain;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public String[] getVisibilityGroups() {

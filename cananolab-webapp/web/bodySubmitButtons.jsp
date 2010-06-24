@@ -24,6 +24,9 @@
 			<c:if test="${!empty review && review eq 'true'}">
 				<input type="button" value="Submit for Review" />
 			</c:if>
+			<c:if test="${!empty assignPublic && assignPublic eq 'true'}">
+				<input type="button" value="Submit to Public" />
+			</c:if>
 			<c:choose>
 				<c:when test="${!empty submitOnclick }">
 					<input type="button" value="${submitButtonName}"

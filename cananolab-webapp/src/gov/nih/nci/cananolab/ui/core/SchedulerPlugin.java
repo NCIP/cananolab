@@ -91,7 +91,7 @@ public class SchedulerPlugin implements PlugIn {
 					.getInitParameter(parameterName));
 		} catch (NumberFormatException e) {
 			// use default
-			interval = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
+			interval = Constants.DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
 		}
 		return interval;
 	}

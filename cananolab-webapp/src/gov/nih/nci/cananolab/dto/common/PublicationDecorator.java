@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -14,9 +13,9 @@ import org.displaytag.decorator.TableDecorator;
 /**
  * This decorator is used to for decorate different properties of a publication
  * to be shown properly in the view page using display tag lib.
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class PublicationDecorator extends TableDecorator {
 
@@ -48,9 +47,6 @@ public class PublicationDecorator extends TableDecorator {
 	public SortableName getEditPublicationURL()
 			throws UnsupportedEncodingException {
 		PublicationBean publication = (PublicationBean) getCurrentRowObject();
-		if (!publication.getLocation().equals(Constants.LOCAL_SITE)) {
-			return null;
-		}
 		String fileId = publication.getDomainFile().getId().toString();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("publication.do?page=0&dispatch=setupUpdate&publicationId=");
