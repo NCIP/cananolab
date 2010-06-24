@@ -16,10 +16,10 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty user && user.curator}">
-					<c:set var="sampleURL" value="editSampleURL" />
+					<c:set var="link" value="editURL" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="sampleURL" value="viewSampleURL" />
+					<c:set var="link" value="viewURL" />
 				</c:otherwise>
 			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
@@ -27,7 +27,7 @@
 				requestURI="searchSample.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
     			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-				<display:column title="" property="${sampleURL}" />
+				<display:column title="" property="${link}" />
 				<display:column title="Sample Name" property="sampleName"
 					sortable="true" />
 				<display:column title="Primary<br>Point Of Contact"
