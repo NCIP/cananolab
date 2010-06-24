@@ -21,16 +21,16 @@ import org.apache.poi.hssf.util.HSSFColor;
 
 /**
  * Service methods involving exporting samples
- * 
+ *
  * @author pansu, houy
- * 
+ *
  */
 public class SampleExporter {
 	private static Logger logger = Logger.getLogger(SampleExporter.class);
 
 	/**
 	 * Export advance sample summary report as Excel spread sheet.
-	 * 
+	 *
 	 * @param searchBean
 	 * @param out
 	 * @throws CompositionException
@@ -50,7 +50,7 @@ public class SampleExporter {
 	/**
 	 * Output advance sample summary report, representing,
 	 * bodyAdvancedSampleSearchResult.jsp
-	 * 
+	 *
 	 * @param searchBean
 	 * @param wb
 	 */
@@ -87,13 +87,13 @@ public class SampleExporter {
 
 	/**
 	 * Output Search Criteria for advance sample search work sheet.
-	 * 
+	 *
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
 	 * @param headerStyle
 	 * @param rowIndex
-	 * 
+	 *
 	 *            private static int outputCriteria(AdvancedSampleSearchBean
 	 *            searchBean, HSSFSheet sheet, HSSFCellStyle headerStyle, int
 	 *            rowIndex) { // 1. Output "Selected Criteria" at (0, 0).
@@ -108,7 +108,7 @@ public class SampleExporter {
 
 	/**
 	 * Output headers for work sheet.
-	 * 
+	 *
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
@@ -139,7 +139,7 @@ public class SampleExporter {
 
 	/**
 	 * Output one table row for work sheet.
-	 * 
+	 *
 	 * @param compType
 	 * @param entityType
 	 * @param sheet
@@ -170,15 +170,12 @@ public class SampleExporter {
 			}
 		}
 
-		// 3. Output last column - Location.
-		ExportUtils.createCell(row, columnIndex, sampleBean.getLocation());
-
 		return rowIndex;
 	}
 
 	/**
-	 * Return complete view sample URL including sample id & location.
-	 * 
+	 * Return complete view sample URL including sample id.
+	 *
 	 * @param sample
 	 * @return
 	 */
@@ -186,7 +183,6 @@ public class SampleExporter {
 			String viewSampleUrl) {
 		StringBuilder sb = new StringBuilder(viewSampleUrl);
 		sb.append("&sampleId=").append(sample.getSampleId());
-		sb.append("&location=").append(sample.getLocation());
 
 		return sb.toString();
 	}

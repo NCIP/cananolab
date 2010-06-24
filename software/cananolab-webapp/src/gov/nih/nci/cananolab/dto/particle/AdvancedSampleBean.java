@@ -26,9 +26,9 @@ import java.util.Map;
 /**
  * This class represents shared properties of samples resulted from advanced
  * sample search.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class AdvancedSampleBean {
 	public static String SAMPLE_DETAIL_URL = "sample.do?page=0&dispatch=setupView";
@@ -37,7 +37,6 @@ public class AdvancedSampleBean {
 	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
 	private Sample domainSample;
 	private String sampleName;
-	private String location; // e.g. NCICB, NCL, WUSTL, etc.
 	private String sampleId;
 	private List<PointOfContact> pointOfContacts;
 	private List<Function> functions;
@@ -53,11 +52,6 @@ public class AdvancedSampleBean {
 	public AdvancedSampleBean(String sampleName) {
 		super();
 		this.sampleName = sampleName;
-	}
-
-	public AdvancedSampleBean(String sampleName, String location) {
-		this(sampleName);
-		this.location = location;
 	}
 
 	public AdvancedSampleBean(String sampleName, String sampleId,
@@ -104,7 +98,7 @@ public class AdvancedSampleBean {
 	}
 
 	public Map<String, List<LinkableItem>> getAttributeMap() {
-		String linkSuffix = "&sampleId=" + sampleId + "&location=" + location;
+		String linkSuffix = "&sampleId=" + sampleId;
 		Map<String, List<LinkableItem>> attributeMap = new LinkedHashMap<String, List<LinkableItem>>();
 		for (String columnName : advancedSearchBean.getQueryAsColumnNames()) {
 			List<LinkableItem> items = new ArrayList<LinkableItem>();
@@ -200,10 +194,9 @@ public class AdvancedSampleBean {
 							for (Function function : ce
 									.getInherentFunctionCollection()) {
 								if (func.equals(function)) {
-									item
-											.setAction(NANOMATERIAL_DETAIL_URL
-													+ linkSuffix + "&dataId="
-													+ entity.getId());
+									item.setAction(NANOMATERIAL_DETAIL_URL
+											+ linkSuffix + "&dataId="
+											+ entity.getId());
 									break;
 								}
 							}
@@ -217,7 +210,8 @@ public class AdvancedSampleBean {
 						for (Function function : entity.getFunctionCollection()) {
 							if (func.equals(function)) {
 								item.setAction(AGENTMATERIAL_DETAIL_URL
-										+ linkSuffix + "&dataId=" + entity.getId());
+										+ linkSuffix + "&dataId="
+										+ entity.getId());
 								break;
 							}
 						}
@@ -239,7 +233,8 @@ public class AdvancedSampleBean {
 									if (datum.equals(datum0)) {
 										item
 												.setAction(CHARACTERIZATION_DETAIL_URL
-														+ linkSuffix+"&charId="
+														+ linkSuffix
+														+ "&charId="
 														+ chara.getId());
 										break;
 									}
@@ -280,14 +275,6 @@ public class AdvancedSampleBean {
 			attributeMap.put(columnName, items);
 		}
 		return attributeMap;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public List<PointOfContact> getPointOfContacts() {

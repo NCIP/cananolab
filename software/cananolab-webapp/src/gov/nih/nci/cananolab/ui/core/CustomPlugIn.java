@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SampleConstants;
 
 import javax.servlet.ServletContext;
@@ -51,9 +50,6 @@ public class CustomPlugIn implements PlugIn {
 							"defaultChemicalAssociationTypes",
 							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
-			actionServlet.getServletContext().setAttribute("applicationOwner",
-					Constants.APP_OWNER);
-
 			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
 					"speciesTypes", "species", "type");
 			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
@@ -67,7 +63,7 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSetup.getInstance().setStaticOptions(appContext);
 
-			InitSecuritySetup.getInstance().createDefaultCSMGroups();
+			InitSecuritySetup.getInstance().setupDefaultCSM();
 
 //			setupInitialGridNodes(appContext);
 		} catch (Exception e) {

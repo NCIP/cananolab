@@ -27,7 +27,7 @@
 								</td>
 							</tr>
 							<c:choose>
-								<c:when test="${!empty user && user.curator}">
+								<c:when test="${!empty user}">
 									<tr>
 										<td class="sidebarContent">
 											<a href="${createLink}"> Submit a New <c:out
