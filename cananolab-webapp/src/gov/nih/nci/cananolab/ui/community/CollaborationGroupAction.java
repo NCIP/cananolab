@@ -18,7 +18,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class CollaboratorGroupAction extends BaseAnnotationAction {
+public class CollaborationGroupAction extends BaseAnnotationAction {
 	// logger
 	// private static Logger logger =
 	// Logger.getLogger(ReviewDataAction.class);
@@ -33,7 +33,7 @@ public class CollaboratorGroupAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;

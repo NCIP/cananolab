@@ -14,8 +14,8 @@
 		<put name="menu" value="community" />
 	</definition>
 	<!-- definition for the manage sample page -->
-	<definition name="community.manageCollaboratorGroup" extends="canano.home">
-		<put name="cananoContent" value="/community/bodyManageCollaboratorGroup.jsp" />
+	<definition name="community.manageCollaborationGroup" extends="canano.home">
+		<put name="cananoContent" value="/community/bodyManageCollaborationGroup.jsp" />
 		<put name="menu" value="community" />
 	</definition>
 </tiles-definitions>

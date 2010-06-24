@@ -171,6 +171,6 @@
 	<plug-in
 		className="org.springframework.web.struts.ContextLoaderPlugIn">
 		<set-property property="contextConfigLocation"
-			value="/WEB-INF/classes/application-config-admin.xml" />
+			value="/WEB-INF/classes/application-config-jdbc-client.xml" />
 	</plug-in>
 </struts-config>

@@ -36,7 +36,7 @@
 				<a style="display: block" id="addUser" href="javascript:show('newUser')">Add</a>
 				<br />
 				<table id="userTable" class="editTableWithGrid" width="85%"
-					style="display: none;">
+					style="display: block;">
 					<tbody id="userRows">
 						<tr id="patternHeader">
 							<td width="30%" class="cellLabel">
@@ -74,17 +74,37 @@
 			<div id="newUser" style="display: none">
 				<table class="promptbox" width="85%">
 					<tr>
-						<td class="cellLabel" width="15%">
+						<td class="cellLabel" width="30%">
 							User Login Name
 						</td>
 						<td>
 							<html:text property="group.theUserAccessibility.userLoginName"
 								styleId="userLoginName" onchange=""/>
 						</td>
-						<td class="cellLabel" width="20%">
+						<td width="5">
+									<a href="#userNameField"
+										onclick=""><img
+											src="images/icon_browse.jpg" align="middle"
+											alt="search existing users" border="0" /> </a>
+						</td>
+						<td width="50%">
+							<table class="invisibleTable">
+								<tr>
+									<td>
+										<img src="images/ajax-loader.gif" border="0" class="counts"
+											id="loaderImg" style="display: none">
+									</td>
+									<td>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel" width="30%">
 							Access to the Group
 						</td>
-						<td>
+						<td colspan="2">
 							<html:select property="group.theUserAccessibility.roleName"
 								styleId="roleName" onchange="">
 								<option></option>
@@ -120,7 +140,7 @@
 		<td align="right" colspan="3">
 			<div align="right">
 				<input type="button" value="Save" />
-				<input type="reset" value="Cancel" onclick="javascript:hide('newCollaboratorGroup');show('newCollaboratorGroupLabel'); show('addCollaboratorGroup');">
+				<input type="reset" value="Cancel" onclick="javascript:hide('newCollaborationGroup');show('newCollaborationGroupLabel'); show('addCollaborationGroup');">
 			</div>
 		</td>
 	</tr>

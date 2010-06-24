@@ -3,13 +3,13 @@ package gov.nih.nci.cananolab.dto.common;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollaboratorGroupBean {
+public class CollaborationGroupBean {
 	private String name;
 	private String description;
 	private List<AccessibilityBean> userAccessibilities = new ArrayList<AccessibilityBean>();
 	private AccessibilityBean theUserAccessibility =new AccessibilityBean();
 
-	public CollaboratorGroupBean() {
+	public CollaborationGroupBean() {
 	}
 
 	public String getName() {
