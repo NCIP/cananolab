@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -89,19 +88,11 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < publicationBeans.size()) {
-				String location = publicationBeans.get(i).getLocation();
-				/*if (!location.equals(Constants.LOCAL_SITE)
-						&& !StringUtils.isEmpty(location)) {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-					service = new PublicationServiceRemoteImpl(serviceUrl);
-				}*/
 				String publicationId = publicationBeans.get(i).getDomainFile()
 						.getId().toString();
 				PublicationBean pubBean = service
 						.findPublicationById(publicationId);
 				if (pubBean != null) {
-					pubBean.setLocation(location);
 					loadedPublicationBeans.add(pubBean);
 				}
 			}
@@ -126,7 +117,6 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		String[] nanomaterialEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
-		String[] searchLocations = new String[0];
 
 		title = (String) theForm.get("title");
 		// strip wildcards from either end of title if entered
@@ -162,18 +152,6 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		functionalizingEntityTypes = (String[]) theForm
 				.get("functionalizingEntityTypes");
 		functionTypes = (String[]) theForm.get("functionTypes");
-		searchLocations = (String[]) theForm.get("searchLocations");
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (searchLocations.length == 0) {
-			searchLocations = new String[1];
-			searchLocations[0] = Constants.APP_OWNER;
-		}
-		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
-				&& gridNodeHostStr.trim().length() > 0) {
-			searchLocations = gridNodeHostStr.split("~");
-		}
-
 		List<String> nanomaterialEntityClassNames = new ArrayList<String>();
 		List<String> otherNanomaterialEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanomaterialEntityTypes.length; i++) {
@@ -217,32 +195,21 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		// Publication
 		List<PublicationBean> publications = new ArrayList<PublicationBean>();
 		PublicationService publicationService = null;
-		for (String location : searchLocations) {
-			if (Constants.LOCAL_SITE.equals(location)) {
-				publicationService = (PublicationService) (request.getSession()
-						.getAttribute("publicationService"));
-			}
-			List<String> publicationIds = publicationService
-					.findPublicationIdsBy(
-							title,
-							category,
-							sampleName,
-							researchAreas,
-							keywords,
-							pubMedId,
-							digitalObjectId,
-							authors,
-							nanomaterialEntityClassNames.toArray(new String[0]),
-							otherNanomaterialEntityTypes.toArray(new String[0]),
-							functionalizingEntityClassNames
-									.toArray(new String[0]),
-							otherFunctionalizingTypes.toArray(new String[0]),
-							functionClassNames.toArray(new String[0]),
-							otherFunctionTypes.toArray(new String[0]));
-			for (String id : publicationIds) {
-				PublicationBean pubBean = new PublicationBean(id, location);
-				publications.add(pubBean);
-			}
+		publicationService = (PublicationService) (request.getSession()
+				.getAttribute("publicationService"));
+
+		List<String> publicationIds = publicationService.findPublicationIdsBy(
+				title, category, sampleName, researchAreas, keywords, pubMedId,
+				digitalObjectId, authors, nanomaterialEntityClassNames
+						.toArray(new String[0]), otherNanomaterialEntityTypes
+						.toArray(new String[0]),
+				functionalizingEntityClassNames.toArray(new String[0]),
+				otherFunctionalizingTypes.toArray(new String[0]),
+				functionClassNames.toArray(new String[0]), otherFunctionTypes
+						.toArray(new String[0]));
+		for (String id : publicationIds) {
+			PublicationBean pubBean = new PublicationBean(id);
+			publications.add(pubBean);
 		}
 		return publications;
 	}
@@ -251,26 +218,9 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		// InitSetup.getInstance().getGridNodesInContext(request);
-
-		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (!StringUtils.isEmpty(gridNodeHostStr)) {
-			selectedLocations = gridNodeHostStr.split("~");
-		}
-
-		if (Constants.LOCAL_SITE.equals(selectedLocations[0])
-				&& selectedLocations.length == 1) {
-			InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
-		} else {
-			InitSampleSetup.getInstance().setRemoteSearchDropdowns(request);
-		}
+		InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
 
 		InitPublicationSetup.getInstance().setDefaultResearchAreas(request);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("searchLocations", selectedLocations);
-
 		HttpSession session = request.getSession();
 		session.removeAttribute("publicationSearchResults");
 		return mapping.getInputForward();
@@ -278,8 +228,10 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PUBLICATION);
+		if (user == null) {
+			return false;
+		}
+		return true;
 	}
 
 	private PublicationService setServiceInSession(HttpServletRequest request)

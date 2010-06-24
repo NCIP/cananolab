@@ -23,8 +23,7 @@ public class InitSecuritySetup {
 		authorizationService = new AuthorizationService(Constants.CSM_APP_NAME);
 	}
 
-	public static InitSecuritySetup getInstance()
-			throws SecurityException {
+	public static InitSecuritySetup getInstance() throws SecurityException {
 		return new InitSecuritySetup();
 	}
 
@@ -40,9 +39,10 @@ public class InitSecuritySetup {
 		return status;
 	}
 
-	public boolean userHasAdminPrivilege(UserBean user) throws SecurityException {
-		boolean status=false;
-		status=authorizationService.isAdmin(user);
+	public boolean userHasAdminPrivilege(UserBean user)
+			throws SecurityException {
+		boolean status = false;
+		status = authorizationService.isAdmin(user);
 		return status;
 	}
 
@@ -56,8 +56,7 @@ public class InitSecuritySetup {
 
 	public List<String> getAllVisibilityGroups(HttpServletRequest request)
 			throws SecurityException {
-		List<String> groupNames = authorizationService
-				.getAllVisibilityGroups();
+		List<String> groupNames = authorizationService.getAllVisibilityGroups();
 		request.getSession().setAttribute("allVisibilityGroups", groupNames);
 		return groupNames;
 	}
@@ -74,25 +73,11 @@ public class InitSecuritySetup {
 	}
 
 	/**
-	 * Create default CSM groups for default visible groups, and
-	 * assign them with default protection groups and roles
+	 * Assign curator CURD role to curation
 	 */
-	public void createDefaultCSMGroups() throws SecurityException {
-		// create default groups
-		for (String groupName : Constants.VISIBLE_GROUPS) {
-			authorizationService.createAGroup(groupName);
-		}
-
-		// assign Curator group to role CURD on protocol, sample and
-		// publication
-		authorizationService.assignGroupToProtectionGroupWithRole(
-				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PROTOCOL,
-				Constants.CSM_CURD_ROLE);
-		authorizationService.assignGroupToProtectionGroupWithRole(
-				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PUBLICATION,
-				Constants.CSM_CURD_ROLE);
-		authorizationService.assignGroupToProtectionGroupWithRole(
-				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_SAMPLE,
-				Constants.CSM_CURD_ROLE);
+	public void setupDefaultCSM() throws SecurityException {
+		// assign Curator group to role CURD on curation
+		authorizationService.secureObject(Constants.CSM_PG_CURATION,
+				Constants.CSM_DATA_CURATOR, Constants.CSM_CURD_ROLE);
 	}
 }

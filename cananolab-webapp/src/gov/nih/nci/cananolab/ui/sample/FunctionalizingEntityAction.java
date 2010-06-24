@@ -115,8 +115,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		try {
 			entityBean.setupDomainEntity(user.getLoginName());
@@ -188,12 +187,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String entityId = request.getParameter("dataId");
-		String location = theForm.getString(Constants.LOCATION);
 		if (entityId == null) {
 			entityId = (String) request.getAttribute("dataId");
 		}
 		CompositionService compService = this.setServicesInSession(request);
-		
+
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId);
 		request.setAttribute("functionalizingEntity", entityBean);
@@ -267,8 +265,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.get("functionalizingEntity");
 		this.setServicesInSession(request);
 		FileBean theFile = entity.getTheFile();
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"

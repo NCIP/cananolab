@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
@@ -113,27 +112,18 @@ public class DWRCharacterizationManager {
 	}
 
 	public String getPublicCharacterizationCounts(
-			String characterizationClassName, String[] locations) {
+			String characterizationClassName) {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
-		if (locations == null || locations.length == 0) {
-			locations = new String[1];
-			locations[0] = Constants.APP_OWNER;
-			// return null;
-		}
+
 		Integer counts = 0;
-		for (String location : locations) {
-			if (location.equals(Constants.LOCAL_SITE)) {
-				try {
-					counts += getService().getNumberOfPublicCharacterizations(
-							characterizationClassName);
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public characterizations of type "
-									+ characterizationClassName
-									+ " from local site.");
-				}
-			}
+		try {
+			counts += getService().getNumberOfPublicCharacterizations(
+					characterizationClassName);
+		} catch (Exception e) {
+			logger
+					.error("Error obtaining counts of public characterizations of type "
+							+ characterizationClassName + " from local site.");
 		}
 		String charDisplayName = ClassUtils
 				.getDisplayName(characterizationClassName);

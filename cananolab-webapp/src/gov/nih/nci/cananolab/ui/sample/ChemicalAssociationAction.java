@@ -121,8 +121,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	public void saveAssociation(HttpServletRequest request,
 			DynaValidatorForm theForm, ChemicalAssociationBean assocBean)
 			throws Exception {
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		try {
 			assocBean.setupDomainAssociation(user.getLoginName());
@@ -366,8 +365,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		FileBean theFile = assoc.getTheFile();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		this.setServicesInSession(request);
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
 				+ sampleBean.getDomain().getName() + "/"

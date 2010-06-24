@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
@@ -20,7 +19,6 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -79,8 +77,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		 */
 		if (!StringUtils.isEmpty(sampleId)) {
 			Set<String> sampleNames = new HashSet<String>();
-			SampleBean sampleBean = setupSample(theForm, request,
-					Constants.LOCAL_SITE);
+			SampleBean sampleBean = setupSample(theForm, request);
 			sampleNames.add(sampleBean.getDomain().getName());
 			/**
 			 * If user chosen other samples, need to add this pub to those
@@ -159,8 +156,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService service = this.setServicesInSession(request);
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
-		SampleBean sampleBean = this.setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = this.setupSample(theForm, request);
 		service.removePublicationFromSample(sampleBean.getDomain().getName(),
 				(Publication) publicationBean.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
@@ -383,30 +379,23 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
-		String location = theForm.getString(Constants.LOCATION);
 		PublicationService publicationService = this
 				.setServicesInSession(request);
-		SampleBean sampleBean = setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request);
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"publicationCategories", "publication", "category",
 				"otherCategory", true);
-		/*if (!StringUtils.isEmpty(location)
-				&& !location.equals(Constants.LOCAL_SITE)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}*/
+		/*
+		 * if (!StringUtils.isEmpty(location) &&
+		 * !location.equals(Constants.LOCAL_SITE)) { String serviceUrl =
+		 * InitSetup.getInstance().getGridServiceUrl( request, location);
+		 * publicationService = new PublicationServiceRemoteImpl(serviceUrl); }
+		 */
 		List<PublicationBean> publications = publicationService
 				.findPublicationsBySampleId(sampleId);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
-		/**
-		 * Set location for display name where location is needed for making
-		 * URL.
-		 */
-		for (PublicationBean pubBean : publications) {
-			pubBean.setLocation(location);
-		}
+
 		// Save sample & publication bean in session for printing/exporting.
 		session.setAttribute("publicationSummaryView", summaryView);
 		session.setAttribute("theSample", sampleBean);
@@ -419,15 +408,14 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String location = request.getParameter(Constants.LOCATION);
 		PublicationService publicationService = this
 				.setServicesInSession(request);
-		/*if (!StringUtils.isEmpty(location)
-				&& !location.equals(Constants.LOCAL_SITE)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}*/
+		/*
+		 * if (!StringUtils.isEmpty(location) &&
+		 * !location.equals(Constants.LOCAL_SITE)) { String serviceUrl =
+		 * InitSetup.getInstance().getGridServiceUrl( request, location);
+		 * publicationService = new PublicationServiceRemoteImpl(serviceUrl); }
+		 */
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
 				.findPublicationById(publicationId);
@@ -548,10 +536,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String location = request.getParameter(Constants.LOCATION);
 		PublicationService publicationService = this
 				.setServicesInSession(request);
-		
+
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
 				.findPublicationById(publicationId);
@@ -601,12 +588,6 @@ public class PublicationAction extends BaseAnnotationAction {
 			cats.add(type);
 			summaryBean.setPublicationCategories(cats);
 		}
-	}
-
-	public Boolean canUserExecutePrivateDispatch(UserBean user)
-			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PUBLICATION);
 	}
 
 	private PublicationService setServicesInSession(HttpServletRequest request)

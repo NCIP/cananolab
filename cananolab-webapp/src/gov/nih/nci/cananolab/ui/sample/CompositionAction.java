@@ -13,8 +13,6 @@ import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -169,14 +167,11 @@ public class CompositionAction extends BaseAnnotationAction {
 
 		// Get sample name for constructing file name.
 		String type = request.getParameter("type");
-		String location = request.getParameter(Constants.LOCATION);
 		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
 				.getName(), "CompositionSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
 
-		String serviceUrl = null;
-		
-		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
+		StringBuilder sb = getDownloadUrl(request);
 		CompositionExporter.exportSummary(compBean, sb.toString(), response
 				.getOutputStream());
 
@@ -208,10 +203,9 @@ public class CompositionAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
-		String location = theForm.getString(Constants.LOCATION);
 		CompositionService service = this.setServicesInSession(request);
-		SampleBean sampleBean = setupSample(theForm, request, location);
-		
+		SampleBean sampleBean = setupSample(theForm, request);
+
 		CompositionBean compBean = service.findCompositionBySampleId(sampleId);
 		theForm.set("comp", compBean);
 

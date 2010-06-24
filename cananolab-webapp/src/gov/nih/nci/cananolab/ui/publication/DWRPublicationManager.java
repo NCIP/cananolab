@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Collections;
@@ -157,22 +156,10 @@ public class DWRPublicationManager {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		try {
-			boolean isLocal = false;
-			if (Constants.LOCAL_SITE.equals(searchLocations)) {
-				isLocal = true;
-			}
-			SortedSet<String> types = null;
-			if (isLocal) {
-				types = InitSetup.getInstance()
-						.getDefaultAndOtherTypesByLookup(request,
-								"publicationCategories", "publication",
-								"category", "otherCategory", true);
-			} else {
-				types = InitSetup.getInstance().getDefaultTypesByLookup(
-						wctx.getServletContext(),
-						"defaultPublicationCategories", "publication",
-						"category");
-			}
+			SortedSet<String> types = InitSetup.getInstance()
+					.getDefaultAndOtherTypesByLookup(request,
+							"publicationCategories", "publication", "category",
+							"otherCategory", true);
 			types.add("");
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
@@ -183,25 +170,14 @@ public class DWRPublicationManager {
 		return new String[] { "" };
 	}
 
-	public String[] getPublicationStatuses(String searchLocations) {
+	public String[] getPublicationStatuses() {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		try {
-			boolean isLocal = false;
-			if (Constants.LOCAL_SITE.equals(searchLocations)) {
-				isLocal = true;
-			}
-			SortedSet<String> types = null;
-			if (isLocal) {
-				types = InitSetup.getInstance()
-						.getDefaultAndOtherTypesByLookup(request,
-								"publicationStatuses", "publication", "status",
-								"otherStatus", true);
-			} else {
-				types = InitSetup.getInstance().getDefaultTypesByLookup(
-						wctx.getServletContext(), "defaultPublicationStatuses",
-						"publication", "status");
-			}
+			SortedSet<String> types = InitSetup.getInstance()
+					.getDefaultAndOtherTypesByLookup(request,
+							"publicationStatuses", "publication", "status",
+							"otherStatus", true);
 			types.add("");
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
@@ -258,25 +234,18 @@ public class DWRPublicationManager {
 		return pubBean;
 	}
 
-	public String getPublicCounts(String[] locations) {
+	public String getPublicCounts() {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		request.getSession().removeAttribute("publicationSearchResults");
-		if (locations.length == 0) {
-			locations = new String[1];
-			locations[0] = Constants.APP_OWNER;
-			// return null;
-		}
+
 		Integer counts = 0;
-		for (String location : locations) {
-			if (location.equals(Constants.LOCAL_SITE)) {
-				try {
-					counts += getService().getNumberOfPublicPublications();
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public publications from local site.");
-				}
-			}
+
+		try {
+			counts = getService().getNumberOfPublicPublications();
+		} catch (Exception e) {
+			logger
+					.error("Error obtaining counts of public publications from local site.");
 		}
 		return counts.toString() + " Publications";
 	}

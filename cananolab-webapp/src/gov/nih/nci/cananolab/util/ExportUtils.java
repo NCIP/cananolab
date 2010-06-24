@@ -23,12 +23,12 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class ExportUtils {
-	
+
 	// Partial URL for downloading an image file.
-	public static final String DOWNLOAD_URL = "?dispatch=download&location=";
-	
+	public static final String DOWNLOAD_URL = "?dispatch=download";
+
 	/**
-	 * Constant for setting response header. 
+	 * Constant for setting response header.
 	 */
 	public static final String IMAGE_CONTENT_TYPE = "application/octet-stream";
 	public static final String EXCEL_CONTENT_TYPE = "application/vnd.ms-execel";
@@ -37,7 +37,7 @@ public class ExportUtils {
 	public static final String CONTENT_DISPOSITION = "Content-disposition";
 	public static final String ATTACHMENT = "attachment;filename=\"";
 	public static final String EXCEL_EXTENTION = ".xls\"";
-	
+
 	/**
 	 * Get file name for exporting report as an Excel file.
 	 *
@@ -57,7 +57,7 @@ public class ExportUtils {
 		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
 				.getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
-		
+
 		return exportFileName;
 	}
 
@@ -70,12 +70,12 @@ public class ExportUtils {
 	public static void prepareReponseForExcel(HttpServletResponse response, String fileName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(ATTACHMENT).append(fileName).append(EXCEL_EXTENTION);
-		
+
 		response.setContentType(EXCEL_CONTENT_TYPE);
 		response.setHeader(CACHE_CONTROL, PRIVATE);
 		response.setHeader(CONTENT_DISPOSITION, sb.toString());
 	}
-	
+
 	/**
 	 * Set content type and header in response for image file download.
 	 *
@@ -85,29 +85,29 @@ public class ExportUtils {
 	public static void prepareReponseForImage(HttpServletResponse response, String fileName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(ATTACHMENT).append(fileName).append("\"");
-		
+
 		response.setContentType(IMAGE_CONTENT_TYPE);
 		response.setHeader(CACHE_CONTROL, PRIVATE);
 		response.setHeader(CONTENT_DISPOSITION, sb.toString());
 	}
-	
+
 	public static int loadPicture(String path, HSSFWorkbook wb) throws IOException {
 		int pictureIndex;
 		InputStream fis = null;
 		ByteArrayOutputStream bos = null;
 		if (path.startsWith("http:")){
 			URL url = new URL(path);
-			fis = url.openStream();  
+			fis = url.openStream();
 		}else{
 			fis = new BufferedInputStream(new FileInputStream(path));
 		}
-		try {			
+		try {
 			int c;
 			bos = new ByteArrayOutputStream();
 			while ((c = fis.read()) != -1) {
 				bos.write(c);
 			}
-			pictureIndex = 
+			pictureIndex =
 				wb.addPicture(bos.toByteArray(), HSSFWorkbook.PICTURE_TYPE_PNG);
 		} finally {
 			if (fis != null)
@@ -138,7 +138,7 @@ public class ExportUtils {
 		anchor.setAnchorType(2); // 2 = Move but don't size with cells
 		patriarch.createPicture(anchor, loadPicture(filePath, wb));
 		rowIndex = bottomRightRow + 3;
-		
+
 		return rowIndex;
 	}
 
@@ -183,13 +183,13 @@ public class ExportUtils {
 	public static HSSFCell createCell(HSSFRow row, int index,
 			HSSFCellStyle cellStyle, String value, String url) {
 		HSSFCell cell = createCell(row, index, value);
-		
+
 	    HSSFHyperlink link = new HSSFHyperlink(HSSFHyperlink.LINK_URL);
 	    link.setAddress(url);
 	    cell.setHyperlink(link);
-		
+
 		cell.setCellStyle(cellStyle);
-		
+
 		return cell;
 	}
 }

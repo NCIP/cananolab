@@ -19,7 +19,6 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
@@ -38,7 +37,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class SampleAction extends BaseAnnotationAction {
 	// logger
-	// private static Logger logger = Logger.getLogger(SampleAction.class);
+	// private static Logger logger = Logger.getLogger(ReviewDataAction.class);
 
 	/**
 	 * Save or update POC data.
@@ -58,7 +57,6 @@ public class SampleAction extends BaseAnnotationAction {
 		setServiceInSession(request);
 		saveSample(request, sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
-		sampleBean.setLocation(Constants.LOCAL_SITE);
 		request.setAttribute("theSample", sampleBean);
 
 		return mapping.findForward("summaryEdit");
@@ -99,11 +97,9 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServiceInSession(request);
-		String location = (String) getValueFromRequest(request,
-				Constants.LOCATION);
 
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request);
 		theForm.set("sampleBean", sampleBean);
 		return mapping.findForward("summaryView");
 	}
@@ -124,11 +120,9 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = (String) getValueFromRequest(request,
-				Constants.LOCATION);
 		this.setServiceInSession(request);
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request);
 		theForm.set("sampleBean", sampleBean);
 		return mapping.findForward("bareSummaryView");
 	}
@@ -148,47 +142,59 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServiceInSession(request);
-		String location = theForm.getString(Constants.LOCATION);
-		if (StringUtils.isEmpty(location)) {
-			location = Constants.LOCAL_SITE;
-		}
+
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request);
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
 				.getOrganization().getName());
 
 		// Feature request [26487] Deeper Edit Links.
-		String dispatch = request.getParameter("dispatch"); // as the function
-		// is shared.
-		if ("summaryEdit".equals(dispatch)
-				|| "removePointOfContact".equals(dispatch)) {
-			if (sampleBean.getPrimaryPOCBean() != null
-					&& sampleBean.getOtherPOCBeans().isEmpty()) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("openOnePointOfContact(");
-				sb.append(sampleBean.getPrimaryPOCBean().getDomain().getId());
-				sb.append(", true)");
-				request.setAttribute("onloadJavascript", sb.toString());
-			}
-		}
+		// String dispatch = request.getParameter("dispatch"); // as the
+		// function
+		// // is shared.
+		// if ("summaryEdit".equals(dispatch)
+		// || "removePointOfContact".equals(dispatch)) {
+		// if (sampleBean.getPrimaryPOCBean() != null
+		// && sampleBean.getOtherPOCBeans().isEmpty()) {
+		// StringBuilder sb = new StringBuilder();
+		// sb.append("openOnePointOfContact(");
+		// sb.append(sampleBean.getPrimaryPOCBean().getDomain().getId());
+		// sb.append(", true)");
+		// request.setAttribute("onloadJavascript", sb.toString());
+		// }
+		// }
 
 		InitSetup charsService = InitSetup.getInstance();
 		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> physicoChars = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
-		SortedSet<String> invitroChars = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
-		SortedSet<String> invivoChars = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
-		SortedSet<String> chemicalAssocs = charsService.getDefaultTypesByReflection(appContext, "defaultCharTypeChars", "gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
-		
+		SortedSet<String> physicoChars = charsService
+				.getDefaultTypesByReflection(
+						appContext,
+						"defaultCharTypeChars",
+						"gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
+		SortedSet<String> invitroChars = charsService
+				.getDefaultTypesByReflection(appContext,
+						"defaultCharTypeChars",
+						"gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
+		SortedSet<String> invivoChars = charsService
+				.getDefaultTypesByReflection(appContext,
+						"defaultCharTypeChars",
+						"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
+		SortedSet<String> chemicalAssocs = charsService
+				.getDefaultTypesByReflection(appContext,
+						"defaultCharTypeChars",
+						"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+
 		request.setAttribute("physicoChars", physicoChars);
 		request.setAttribute("invitroChars", invitroChars);
 		request.setAttribute("invivoChars", invivoChars);
 		request.setAttribute("chemicalAssocs", chemicalAssocs);
-		
-		System.out.println("chemical associations size: " + chemicalAssocs.size());
+
+		System.out.println("chemical associations size: "
+				+ chemicalAssocs.size());
 		return mapping.findForward("summaryEdit");
-		//return mapping.findForward("summaryEdit");
+		// return mapping.findForward("summaryEdit");
 	}
 
 	/**

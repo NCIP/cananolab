@@ -43,8 +43,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
 
-		String location = theForm.getString(Constants.LOCATION);
-		SampleBean sampleBean = setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE + "/"
 				+ sampleBean.getDomain().getName() + "/" + "compositionFile";
@@ -70,8 +69,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean fileBean = comp.getTheFile();
 		CompositionService compService = this.setServicesInSession(request);
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		compService.deleteCompositionFile(sampleBean.getDomain()
 				.getSampleComposition(), fileBean.getDomainFile(), true);
 		ActionMessages msgs = new ActionMessages();
@@ -89,8 +87,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServicesInSession(request);
-		SampleBean sample = this.setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sample = this.setupSample(theForm, request);
 
 		// set file default visibilities
 		AuthorizationService authService = new AuthorizationService(
@@ -133,7 +130,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServicesInSession(request);
-		setupSample(theForm, request, Constants.LOCAL_SITE);
+		setupSample(theForm, request);
 		this.setLookups(request);
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		InitCompositionSetup.getInstance().persistCompositionFileDropdowns(
