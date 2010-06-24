@@ -19,7 +19,7 @@ import org.displaytag.decorator.TableDecorator;
  */
 public class SampleDecorator extends TableDecorator {
 
-	public String getEditSampleURL() {
+	public String getEditURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
 		StringBuilder sb = new StringBuilder("<a href=");
@@ -30,7 +30,7 @@ public class SampleDecorator extends TableDecorator {
 		return link;
 	}
 
-	public String getViewSampleURL() {
+	public String getViewURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
 		StringBuilder sb = new StringBuilder("<a href=");
