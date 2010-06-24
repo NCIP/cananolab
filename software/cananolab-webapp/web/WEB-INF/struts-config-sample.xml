@@ -10,11 +10,10 @@
 			<form-property name="sampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="searchSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="samplePointOfContact" type="java.lang.String" />			
+			<form-property name="samplePointOfContact" type="java.lang.String" />
 			<form-property name="pocOperand" type="java.lang.String" />
 			<form-property name="nanomaterialEntityTypes" type="java.lang.String[]" />
 			<form-property name="functionalizingEntityTypes" type="java.lang.String[]" />
@@ -24,7 +23,6 @@
 			<form-property name="sampleName" type="java.lang.String" />
 			<form-property name="nameOperand" type="java.lang.String" />
 			<form-property name="text" type="java.lang.String" />
-			<form-property name="searchLocations" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
@@ -47,7 +45,6 @@
 			<form-property name="assoc"
 				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" />
 			<form-property name="dataId" type="java.lang.String" />
 			<form-property name="otherSamples" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
@@ -59,7 +56,6 @@
 			<form-property name="achar"
 				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" />
 			<form-property name="otherSamples" type="java.lang.String[]" />
 			<form-property name="charId" type="java.lang.String" />
 			<form-property name="copyData" type="java.lang.Boolean"

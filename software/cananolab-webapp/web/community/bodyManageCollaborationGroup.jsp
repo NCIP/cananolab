@@ -9,16 +9,16 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Manage Collaborator Groups" />
+	<jsp:param name="pageTitle" value="Manage Collaboration Groups" />
 	<jsp:param name="topic" value="manage_collaborator_groups_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/collaboratorGroup">
+<html:form action="/collaborationGroup">
 	<jsp:include page="/bodyMessage.jsp?bundle=community" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" colspan="2">
-				Existing Collaborator Groups
+				Existing Collaboration Groups
 			</td>
 		</tr>
 		<tr>
@@ -49,7 +49,7 @@
 						</td>
 						<td align="right">
 							<a
-								href="javascript:show('newCollaboratorGroup');hide('newCollaboratorGroupLabel'); hide('addCollaboratorGroup');">Edit</a>&nbsp;
+								href="javascript:show('newCollaborationGroup');hide('newCollaborationGroupLabel'); hide('addCollaborationGroup');">Edit</a>&nbsp;
 						</td>
 					</tr>
 				</table>
@@ -57,23 +57,23 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel" width="20%" id="newCollaboratorGroupLabel"
+			<td class="cellLabel" width="20%" id="newCollaborationGroupLabel"
 				style="display: block">
-				New Collaborator Group
+				New Collaboration Group
 			</td>
 			<td>
 				<c:set var="newAddCGButtonStyle" value="display:block" />
-				<a href="#" onclick="javascript:show('newCollaboratorGroup')"
-					id="addCollaboratorGroup" style="${newAddCGButtonStyle}"><img
+				<a href="#" onclick="javascript:show('newCollaborationGroup')"
+					id="addCollaborationGroup" style="${newAddCGButtonStyle}"><img
 						align="top" src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<c:set var="newCGStyle" value="display:none" />
-				<div style="${newCGStyle}" id="newCollaboratorGroup">
-					<a name="submitCollaboratorGroup"><%@ include
-							file="bodySubmitCollaboratorGroup.jsp"%></a>
+				<div style="${newCGStyle}" id="newCollaborationGroup">
+					<a name="submitCollaborationGroup"><%@ include
+							file="bodySubmitCollaborationGroup.jsp"%></a>
 				</div>
 			</td>
 		</tr>

@@ -11,7 +11,6 @@
 				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
 			<form-property name="otherSamples" type="java.lang.String[]" />
-			<form-property name="location" type="java.lang.String" />
 		</form-bean>
 
 		<form-bean name="searchPublicationForm"
@@ -24,7 +23,6 @@
 			<form-property name="functionTypes" type="java.lang.String[]" />
 			<form-property name="title" type="java.lang.String" />
 			<form-property name="category" type="java.lang.String" />
-			<form-property name="searchLocations" type="java.lang.String[]" />
 			<form-property name="authorsStr" type="java.lang.String" />
 			<form-property name="pubMedId" type="java.lang.String" />
 			<form-property name="digitalObjectId" type="java.lang.String" />
