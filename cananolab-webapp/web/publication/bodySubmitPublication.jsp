@@ -19,11 +19,11 @@
 <c:choose>
 	<c:when test="${!empty publicationForm.map.publication.domainFile.id}">
 		<c:set var="publicationTitle"
-			value="${fn:toUpperCase(param.location)} ${sampleName} ${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}" />
+			value="${sampleName} ${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="publicationTitle"
-			value="${fn:toUpperCase(param.location)} ${sampleName} Publication" />
+			value="${sampleName} Publication" />
 	</c:otherwise>
 </c:choose>
 <jsp:include page="/bodyTitle.jsp">
@@ -344,15 +344,15 @@
 						 				${publicationForm.map.publication.domainFile.title}<br>
 								<br>
 								<a href="#"
-									onclick="popImage(event, 'publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}',
+									onclick="popImage(event, 'publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}',
 														${publicationForm.map.publication.domainFile.id})"><img
-										src="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}"
+										src="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
 										border="0" width="150"> </a>
 							</c:when>
 							<c:otherwise>
 											Submitted Publication &nbsp;&nbsp;
 										<a
-									href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}&amp;location=${applicationOwner}"
+									href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
 									target="${publicationForm.map.publication.urlTarget}">
 									${publicationForm.map.publication.domainFile.uri}</a>
 								<br>
@@ -440,10 +440,10 @@
 	<c:set var="hiddenPage" value="2" />
 
 	<c:set var="resetOnclick"
-		value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}&location=${applicationOwner}'" />
+		value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}'" />
 	<c:if test="${!empty param.publicationId }">
 		<c:set var="resetOnclick"
-			value="javascript: location.href = 'publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${param.publicationId}&location=${applicationOwner}'" />
+			value="javascript: location.href = 'publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${param.publicationId}'" />
 	</c:if>
 	<c:set var="deleteOnclick"
 		value="deleteData('publication', publicationForm, 'publication', 'delete')" />

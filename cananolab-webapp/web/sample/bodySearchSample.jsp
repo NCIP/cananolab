@@ -19,11 +19,11 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Advanced Search" />
 	<jsp:param name="otherLink"
-		value="advancedSampleSearch.do?dispatch=setup&searchLocations=${param.location}" />
+		value="advancedSampleSearch.do?dispatch=setup" />
 </jsp:include>
 <html:form action="searchSample">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	
+
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="110">

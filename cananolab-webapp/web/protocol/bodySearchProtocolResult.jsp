@@ -35,7 +35,6 @@
 				<display:column title="Protocol Created Date"
 					property="domain.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
-				<display:column title="Location" property="location" sortable="true" />
 			</display:table>
 		</td>
 	</tr>

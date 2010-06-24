@@ -14,13 +14,12 @@
 		<c:set var="sampleName" value="${theSample.domain.name}"
 			scope="session" />
 		<c:set var="sampleId" value="${theSample.domain.id}" scope="session" />
-		<c:set var="location" value="${theSample.location}" scope="session" />
 	</c:when>
 </c:choose>
 
 <c:choose>
 	<c:when
-		test="${!empty user && user.curator && location eq applicationOwner}">
+		test="${!empty user && user.curator}">
 		<c:set var="dispatch" value="summaryEdit" />
 	</c:when>
 	<c:otherwise>
@@ -37,7 +36,6 @@
 		<c:url var="sampleUrl" value="sample.do">
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="sampleId" value="${sampleId}" />
-			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 		</c:url>
 		<c:choose>
@@ -46,7 +44,7 @@
 					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
 					onclick="gotoPage('${sampleUrl}')" height="20">
-					<a class="subMenuSecondary">${location} Sample</a>
+					<a class="subMenuSecondary">GENERAL INFO</a>
 				</td>
 			</c:when>
 			<c:otherwise>
@@ -54,7 +52,7 @@
 					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 					onclick="gotoPage('${sampleUrl}')" height="20">
-					<a class="subMenuSecondary">${location} Sample</a>
+					<a class="subMenuSecondary">Sample</a>
 				</td>
 			</c:otherwise>
 		</c:choose>
@@ -66,7 +64,6 @@
 				<c:url var="compUrl" value="composition.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
-					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
 					<c:param name="tab" value="ALL" />
 				</c:url>
@@ -104,7 +101,6 @@
 				<c:url var="charUrl" value="characterization.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
-					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
 					<c:param name="tab" value="ALL" />
 				</c:url>
@@ -141,7 +137,6 @@
 				<c:url var="pubUrl" value="publication.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
-					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
 					<c:param name="tab" value="ALL" />
 				</c:url>

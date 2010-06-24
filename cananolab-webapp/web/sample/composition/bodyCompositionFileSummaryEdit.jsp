@@ -51,7 +51,7 @@
 													<c:choose>
 														<c:when test="${file.domainFile.uriExternal}">
 															<a
-																href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+																href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
 																${file.domainFile.uri}</a>
 														</c:when>
 														<c:otherwise>
@@ -60,13 +60,13 @@
 						 				${file.domainFile.title}
 										<br>
 																	<a href="#"
-																		onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id})"><img
-																			src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+																		onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
+																			src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}"
 																			border="0" width="150"> </a>
 																</c:when>
 																<c:otherwise>
 																	<a
-																		href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+																		href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
 																		${file.domainFile.title}</a>
 																</c:otherwise>
 															</c:choose>

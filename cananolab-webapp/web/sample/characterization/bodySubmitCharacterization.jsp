@@ -26,12 +26,12 @@
 <c:choose>
 	<c:when	test="${!empty characterizationForm.map.achar.domainChar.id}">
 		<c:set var="charTitle"
-			value="${fn:toUpperCase(param.location)} ${sampleName} ${characterizationForm.map.achar.characterizationType} -
+			value="${sampleName} ${characterizationForm.map.achar.characterizationType} -
 			${characterizationForm.map.achar.characterizationName}"/>
 	</c:when>
 	<c:otherwise>
 		<c:set var="charTitle"
-			value="${fn:toUpperCase(param.location)} ${sampleName} Characterization"/>
+			value="${sampleName} Characterization"/>
 	</c:otherwise>
 </c:choose>
 <c:choose>
@@ -78,12 +78,12 @@
 	<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
 	<jsp:include
 		page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
-	<br/>		
+	<br/>
 	<c:set var="updateId" value="${characterizationForm.map.achar.domainChar.id}"/>
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
 	<c:set var="deleteOnclick" value="deleteData('characterization', characterizationForm, 'characterization', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
-	<c:set var="hiddenPage" value="2"/>	
+	<c:set var="hiddenPage" value="2"/>
 	<%@include file="../../bodySubmitButtons.jsp"%>
 </html:form>

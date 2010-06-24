@@ -26,8 +26,9 @@
 			<display:table name="samples" id="sample"
 				requestURI="searchSample.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
-				decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-				<display:column title="Sample Name" property="${sampleURL}"
+    			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
+				<display:column title="" property="${sampleURL}" />
+				<display:column title="Sample Name" property="sampleName"
 					sortable="true" />
 				<display:column title="Primary<br>Point Of Contact"
 					property="pointOfContactName" sortable="true" />
@@ -36,8 +37,8 @@
 				<display:column title="Functions" property="functionStr" />
 				<display:column title="Characterizations"
 					property="characterizationStr" />
-				<display:column title="Site" property="location" sortable="true" />
-				<display:column title="Data Availability"  property="dataAvailabilityMatricsStr"/>
+				<display:column title="Data Availability"
+					property="dataAvailabilityMatricsStr" />
 			</display:table>
 		</td>
 	</tr>

@@ -91,17 +91,17 @@
 			<c:if test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability && user.admin}">
 				<input type="button" value="Generate"
 					onclick="${generateDataAvailabilityOnclick}">
-			</c:if>	
+			</c:if>
 			<c:if test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability && user.admin}">
 				<input type="button" value="Edit"
 					onclick="javascript:showhide('dataAvailability');" >
-				
-			</c:if>				
+
+			</c:if>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<c:set var="dataAvailabilityStyle" value="display:none" />				
+				<c:set var="dataAvailabilityStyle" value="display:none" />
 				<div style="${dataAvailabilityStyle}" id="dataAvailability">
 					<a name="viewDataAvailability"><%@ include
 							file="bodyDataAvailability.jsp"%></a>
@@ -122,6 +122,7 @@
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="2" />
 	<c:set var="review" value="false"/>
+	<c:set var="assignPublic" value="true"/>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 

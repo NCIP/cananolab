@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle"
-		value="${fn:toUpperCase(location)} Sample ${sampleForm.map.sampleBean.domain.name}" />
+		value="Sample ${sampleForm.map.sampleBean.domain.name}" />
 	<jsp:param name="topic" value="submit_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -19,7 +19,7 @@
 	</tr>
 	<tr>
 		<td>
-			<jsp:include page="bodyBareSampleSummaryView.jsp" />			
+			<jsp:include page="bodyBareSampleSummaryView.jsp" />
 		</td>
 	</tr>
 	<tr>
