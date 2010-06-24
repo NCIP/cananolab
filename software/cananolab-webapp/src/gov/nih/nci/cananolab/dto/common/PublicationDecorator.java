@@ -44,8 +44,7 @@ public class PublicationDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getEditPublicationURL()
-			throws UnsupportedEncodingException {
+	public String getEditURL() throws UnsupportedEncodingException {
 		PublicationBean publication = (PublicationBean) getCurrentRowObject();
 		String fileId = publication.getDomainFile().getId().toString();
 		StringBuilder sb = new StringBuilder("<a href=");
@@ -55,9 +54,7 @@ public class PublicationDecorator extends TableDecorator {
 		sb.append("Edit");
 		sb.append("</a>");
 		String link = sb.toString();
-		SortableName sortableLink = new SortableName(publication
-				.getDomainFile().getTitle(), link);
-		return sortableLink;
+		return link;
 	}
 
 	public String getSampleNames() {

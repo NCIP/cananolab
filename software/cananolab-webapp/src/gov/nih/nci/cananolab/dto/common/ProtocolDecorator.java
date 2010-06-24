@@ -15,16 +15,14 @@ import org.displaytag.decorator.TableDecorator;
  *
  */
 public class ProtocolDecorator extends TableDecorator {
-	public SortableName getEditURL() {
+	public String getEditURL() {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("protocol.do?dispatch=setupUpdate&protocolId=");
 		sb.append(protocol.getDomain().getId()).append('>');
 		sb.append("Edit").append("</a>");
 		String link = sb.toString();
-		SortableName sortableLink = new SortableName(protocol.getDomain()
-				.getName(), link);
-		return sortableLink;
+		return link;
 	}
 
 	public SortableName getViewName() {
