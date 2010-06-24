@@ -278,11 +278,11 @@ public class AuthorizationService {
 	public List<String> getAllVisibilityGroups() throws SecurityException {
 		List<String> groups = getAllGroups();
 		List<String> filteredGroups = new ArrayList<String>();
-		// filter out the ones starting with APP_OWNER
+		// filter out curator
 		List<String> notShownGroups = Arrays.asList(Constants.VISIBLE_GROUPS);
 		for (String groupName : groups) {
 			if (!notShownGroups.contains(groupName)
-					&& !groupName.equals(Constants.CSM_ADMIN)) {
+					&& !groupName.equals(Constants.CSM_DATA_CURATOR)) {
 				if (!filteredGroups.contains(groupName)) {
 					filteredGroups.add(groupName);
 				}
@@ -750,25 +750,6 @@ public class AuthorizationService {
 		}
 	}
 
-	public void assignGroupToProtectionGroupWithRole(String groupName,
-			String protectionGroupName, String roleName)
-			throws SecurityException {
-		try {
-			Role role = getRole(roleName);
-			ProtectionGroup pg = getProtectionGroup(protectionGroupName);
-			Group group = getGroup(groupName);
-			this.userManager.assignGroupRoleToProtectionGroup(pg
-					.getProtectionGroupId().toString(), group.getGroupId()
-					.toString(), new String[] { role.getId().toString() });
-		} catch (Exception e) {
-			logger
-					.error(
-							"Error in assigning group to protection group with role",
-							e);
-			throw new SecurityException();
-		}
-	}
-
 	public void updateDatabaseConnectionForCSMApplications(String dbDialect,
 			String dbDriver, String dbURL, String dbUserName, String dbPassword) {
 		try {
@@ -863,8 +844,8 @@ public class AuthorizationService {
 	}
 
 	/**
-	 * Return a list of data (csm protected_group_name) accessible to user in
-	 * the database
+	 * Return a list of data (csm protected_group_name) accessible to the user
+	 * in the database (R, CUR and CURD roles)
 	 *
 	 * @return
 	 * @throws Exception
@@ -878,15 +859,34 @@ public class AuthorizationService {
 			if (user == null) {
 				return new ArrayList<String>(appService.getAllPublicData());
 			}
-			String query = "select distinct pg.protection_group_name "
+			String query1 = "SELECT DISTINCT pg.protection_group_name "
+					+ "FROM csm_user_group_role_pg ugrp, "
+					+ "csm_protection_group pg, "
+					+ "csm_user u, "
+					+ "csm_role r "
+					+ "WHERE     ugrp.protection_group_id = pg.protection_group_id "
+					+ "AND ugrp.role_id = r.role_id "
+					+ "AND ugrp.user_id = u.user_id "
+					+ "AND u.login_name = '"
+					+ user.getLoginName()
+					+ "' "
+					+ "AND r.role_name IN ('"
+					+ Constants.CSM_READ_ROLE
+					+ "', '"
+					+ Constants.CSM_CUR_ROLE
+					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+
+			String query2 = "select distinct pg.protection_group_name  "
 					+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_group g, csm_user_group ug, csm_role r "
 					+ "where ugrp.protection_group_id=pg.protection_group_id "
 					+ "and ugrp.group_id=g.group_id "
 					+ "and ugrp.role_id=r.role_id "
 					+ "and ug.user_id=u.user_id "
 					+ "and ug.group_id=g.group_id " + "and u.login_name='"
-					+ user.getLoginName() + "' " + "and r.role_name='"
-					+ Constants.CSM_READ_ROLE + "'";
+					+ user.getLoginName() + "' " + "and r.role_name in ('"
+					+ Constants.CSM_READ_ROLE + "', '" + Constants.CSM_CUR_ROLE
+					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+			String query = query1 + " union " + query2;
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
