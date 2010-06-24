@@ -13,14 +13,6 @@
 <table width="100%" align="center">
 	<tr>
 		<td colspan="2">
-			<c:choose>
-				<c:when test="${!empty user && user.curator}">
-					<c:set var="link" value="editPublicationURL" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="link" value="displayName" />
-				</c:otherwise>
-			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 			<c:set var="defaultSortColumn" value="6" />
 			<c:if test="${!empty user && user.curator}">
@@ -32,7 +24,7 @@
 				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator"
 				defaultsort="${defaultSortColumn}">
 				<c:if test="${!empty user && user.curator}">
-					<display:column title="" property="editPublicationURL" />
+					<display:column title="" property="editURL" />
 				</c:if>
 				<display:column title="Bibliography Info" property="displayName"
 					sortable="true" />
