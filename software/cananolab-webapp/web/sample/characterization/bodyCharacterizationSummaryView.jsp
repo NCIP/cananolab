@@ -6,18 +6,16 @@
 <c:url var="printUrl" value="characterization.do" scope="session">
 	<c:param name="dispatch" value="summaryPrint" />
 	<c:param name="sampleId" value="${sampleId}" />
-	<c:param name="location" value="${location}" />
 </c:url>
 <c:url var="exportUrl" value="characterization.do" scope="session">
 	<c:param name="dispatch" value="summaryExport" />
 	<c:param name="sampleId" value="${sampleId}" />
-	<c:param name="location" value="${location}" />
 </c:url>
 
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" 
-			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Characterization" />
+		<jsp:param name="pageTitle"
+			value="Sample ${theSample.domain.name} Characterization" />
 		<jsp:param name="topic" value="char_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 		<jsp:param name="printLink"	value="${printUrl}" />
@@ -40,7 +38,7 @@
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
-					style="display: none;"></a>								
+					style="display: none;"></a>
 			</li>
 		</c:forEach>
 	</ul>
@@ -94,7 +92,7 @@
 							<c:forEach var="charName"
 								items="${characterizationSummaryView.type2CharacterizationNames[type]}">
 								<a href="#${charName}">${charName}
-									(${characterizationSummaryView.charName2Counts[charName]})</a> &nbsp;				
+									(${characterizationSummaryView.charName2Counts[charName]})</a> &nbsp;
 	            </c:forEach>
 						</td>
 					</tr>

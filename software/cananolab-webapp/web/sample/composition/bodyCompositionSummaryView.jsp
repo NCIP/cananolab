@@ -6,17 +6,15 @@
 <c:url var="printUrl" value="composition.do">
 	<c:param name="dispatch" value="summaryPrint" />
 	<c:param name="sampleId" value="${sampleId}" />
-	<c:param name="location" value="${location}" />
 </c:url>
 <c:url var="exportUrl" value="composition.do">
 	<c:param name="dispatch" value="summaryExport" />
 	<c:param name="sampleId" value="${sampleId}" />
-	<c:param name="location" value="${location}" />
 </c:url>
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle" 
-			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Composition" />
+		<jsp:param name="pageTitle"
+			value="Sample ${theSample.domain.name} Composition" />
 		<jsp:param name="topic" value="composition_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 		<jsp:param name="printLink" value="${printUrl}" />

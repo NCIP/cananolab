@@ -23,7 +23,7 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Basic Search" />
 	<jsp:param name="otherLink"
-		value="searchSample.do?dispatch=setup&searchLocations=${param.location}" />
+		value="searchSample.do?dispatch=setup" />
 </jsp:include>
 <html:form action="/advancedSampleSearch" enctype="multipart/form-data"
 	onsubmit="return validateDatumValue()">

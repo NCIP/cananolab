@@ -6,17 +6,15 @@
 <c:url var="printUrl" value="publication.do">
 	<c:param name="dispatch" value="summaryPrint" />
 	<c:param name="sampleId" value="${sampleId}" />
-	<c:param name="location" value="${location}" />
 </c:url>
 <c:url var="exportUrl" value="publication.do">
 	<c:param name="dispatch" value="summaryExport" />
 	<c:param name="sampleId" value="${sampleId}" />
-	<c:param name="location" value="${location}" />
 </c:url>
 <c:if test="${not empty theSample}">
 	<jsp:include page="/bodyTitle.jsp">
 		<jsp:param name="pageTitle"
-			value="${fn:toUpperCase(location)} Sample ${theSample.domain.name} Publication" />
+			value="Sample ${theSample.domain.name} Publication" />
 		<jsp:param name="topic" value="publications_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 		<jsp:param name="printLink" value="${printUrl}" />
@@ -142,7 +140,6 @@
 																	<c:param name="sampleId" value="${sampleId}" />
 																	<c:param name="dispatch" value="setupUpdate" />
 																	<c:param name="publicationId" value="${pubObj.id}" />
-																	<c:param name="location" value="${location}" />
 																</c:url>
 																<a href="${pubUrl}">Edit</a>
 															</td>

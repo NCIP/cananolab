@@ -95,7 +95,6 @@
 						</c:forEach>
 					</display:column>
 				</c:forEach>
-				<display:column title="Site" property="location" sortable="true" />
 			</display:table>
 		</td>
 	</tr>
