@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -52,35 +51,6 @@ public class InitSampleSetup {
 						true);
 		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
 				request);
-	}
-
-	public void setRemoteSearchDropdowns(HttpServletRequest request)
-			throws Exception {
-		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> funcEntityTypes = InitSetup
-				.getInstance()
-				.getDefaultTypesByReflection(appContext,
-						"defaultFunctionalizingEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-		request.getSession().setAttribute("functionalizingEntityTypes",
-				funcEntityTypes);
-
-		SortedSet<String> nanoEntityTypes = InitSetup
-				.getInstance()
-				.getDefaultTypesByReflection(appContext,
-						"defaultNanomaterialEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-		request.getSession().setAttribute("nanomaterialEntityTypes",
-				nanoEntityTypes);
-		SortedSet<String> funcTypes = InitSetup.getInstance()
-				.getDefaultTypesByReflection(appContext,
-						"defaultFunctionTypes",
-						"gov.nih.nci.cananolab.domain.particle.Function");
-		request.getSession().setAttribute("functionTypes", funcTypes);
-		List<String> charTypes = InitCharacterizationSetup.getInstance()
-				.getDefaultCharacterizationTypes(
-						request.getSession().getServletContext());
-		request.getSession().setAttribute("characterizationTypes", charTypes);
 	}
 
 	public List<String> getOtherSampleNames(HttpServletRequest request,

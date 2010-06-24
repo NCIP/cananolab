@@ -2,15 +2,12 @@ package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,37 +65,14 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 				&& !StringUtils.isEmpty(protocolAbbreviation)) {
 			protocolAbbreviation = "*" + protocolAbbreviation + "*";
 		}
-		String[] searchLocations = new String[0];
-		if (theForm.get("searchLocations") != null) {
-			searchLocations = (String[]) theForm.getStrings("searchLocations");
-		}
-		if (searchLocations.length == 0) {
-			searchLocations = new String[1];
-			searchLocations[0] = Constants.APP_OWNER;
-		}
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
-				&& gridNodeHostStr.trim().length() > 0) {
-			searchLocations = gridNodeHostStr.split("~");
-		}
-		List<ProtocolBean> allProtocols = new ArrayList<ProtocolBean>();
+
 		ProtocolService service = null;
-		for (String location : searchLocations) {
-			if (location.equals(Constants.LOCAL_SITE)) {
-				service = new ProtocolServiceLocalImpl(user);
-			}
-			List<ProtocolBean> protocols = service
-					.findProtocolsBy(protocolType, protocolName,
-							protocolAbbreviation, fileTitle);
-			for (ProtocolBean protocol : protocols) {
-				protocol.setLocation(location);
-				if (protocol.getFileBean() != null) {
-					protocol.getFileBean().setLocation(location);
-				}
-				allProtocols.add(protocol);
-			}
-		}
+
+		service = new ProtocolServiceLocalImpl(user);
+
+		List<ProtocolBean> allProtocols = service.findProtocolsBy(protocolType,
+				protocolName, protocolAbbreviation, fileTitle);
+
 		if (allProtocols != null && !allProtocols.isEmpty()) {
 			request.getSession().setAttribute("protocols", allProtocols);
 			forward = mapping.findForward("success");
@@ -116,27 +90,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// InitSetup.getInstance().getGridNodesInContext(request);
-		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (!StringUtils.isEmpty(gridNodeHostStr)) {
-			selectedLocations = gridNodeHostStr.split("~");
-		}
-		if (Constants.LOCAL_SITE.equals(selectedLocations[0])
-				&& selectedLocations.length == 1) {
-			InitProtocolSetup.getInstance().setLocalSearchDropdowns(request);
-		} else {
-			InitProtocolSetup.getInstance().setRemoteSearchDropdowns(request);
-		}
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("searchLocations", selectedLocations);
+		InitProtocolSetup.getInstance().setLocalSearchDropdowns(request);
 		return mapping.getInputForward();
-	}
-
-	public Boolean canUserExecutePrivateDispatch(UserBean user)
-			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PROTOCOL);
 	}
 }

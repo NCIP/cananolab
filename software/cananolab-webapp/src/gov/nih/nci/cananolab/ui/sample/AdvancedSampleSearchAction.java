@@ -123,13 +123,11 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 						sampleSearchResult.size());
 				SampleService service = this.setServiceInSession(request);
 				for (AdvancedSampleBean sample : sampleSearchResult) {
-					String location = sample.getLocation();
 					String sampleName = sample.getSampleName();
 					AdvancedSampleBean loadedAdvancedSample = null;
 					loadedAdvancedSample = service
 							.findAdvancedSampleByAdvancedSearch(sampleName,
 									searchBean);
-					loadedAdvancedSample.setLocation(location);
 					samplesFullList.add(loadedAdvancedSample);
 				}
 				// save full sample result set in session for later use.
@@ -202,8 +200,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 				.findSampleNamesByAdvancedSearch(searchBean);
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
 		for (String name : sampleNames) {
-			AdvancedSampleBean sampleBean = new AdvancedSampleBean(name,
-					Constants.APP_OWNER);
+			AdvancedSampleBean sampleBean = new AdvancedSampleBean(name);
 			sampleBeans.add(sampleBean);
 		}
 		return sampleBeans;
@@ -223,12 +220,10 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
-				String location = sampleBeans.get(i).getLocation();
 				String sampleName = sampleBeans.get(i).getSampleName();
 				AdvancedSampleBean loadedAdvancedSample = service
 						.findAdvancedSampleByAdvancedSearch(sampleName,
 								searchBean);
-				loadedAdvancedSample.setLocation(location);
 				loadedSampleBeans.add(loadedAdvancedSample);
 			}
 		}

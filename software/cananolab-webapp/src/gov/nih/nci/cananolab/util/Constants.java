@@ -33,19 +33,6 @@ public class Constants {
 
 	public static final String DEFAULT_SAMPLE_PREFIX = "NANO-";
 
-	public static final String DEFAULT_APP_OWNER = "NCICBIIT";
-
-	public static final String DEFAULT_GRID_INDEX_SERVER_URL = "http://cagrid-index.nci.nih.gov:8080/wsrf/services/DefaultIndexService";
-
-	public static final String APP_OWNER;
-	static {
-		String appOwner = PropertyUtils.getProperty(CANANOLAB_PROPERTY,
-				"applicationOwner");
-		if (appOwner == null || appOwner.length() == 0)
-			appOwner = DEFAULT_APP_OWNER;
-		APP_OWNER = appOwner.trim();
-	}
-
 	public static final String VIEW_COL_DELIMITER = "~~~";
 
 	public static final String VIEW_CLASSNAME_DELIMITER = "!!!";
@@ -58,20 +45,6 @@ public class Constants {
 			samplePrefix = DEFAULT_SAMPLE_PREFIX;
 		SAMPLE_PREFIX = samplePrefix.trim();
 	}
-
-	public static final String GRID_INDEX_SERVICE_URL;
-	static {
-		String gridIndexServiceURL = PropertyUtils.getProperty(
-				CANANOLAB_PROPERTY, "gridIndexServiceURL");
-		if (gridIndexServiceURL == null || gridIndexServiceURL.length() == 0)
-			gridIndexServiceURL = DEFAULT_GRID_INDEX_SERVER_URL;
-		GRID_INDEX_SERVICE_URL = gridIndexServiceURL.trim();
-	}
-
-	/*
-	 * The following Strings are nano specific
-	 */
-	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
 	public static final String ASSOCIATED_FILE = "Other Associated File";
 
@@ -92,16 +65,12 @@ public class Constants {
 
 	public static final int MAX_VIEW_TITLE_LENGTH = 23;
 
-	public static final String CSM_DATA_CURATOR = APP_OWNER + "_DataCurator";
-
-	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
-
-	public static final String CSM_ADMIN = APP_OWNER + "_Administrator";
+	public static final String CSM_DATA_CURATOR = "Curator";
 
 	public static final String CSM_PUBLIC_GROUP = "Public";
 
 	public static final String[] VISIBLE_GROUPS = new String[] {
-			CSM_DATA_CURATOR, CSM_RESEARCHER };
+			CSM_DATA_CURATOR};
 
 	public static final String AUTO_COPY_ANNOTATION_PREFIX = "COPY";
 
@@ -125,11 +94,7 @@ public class Constants {
 
 	public static final String CSM_CREATE_PRIVILEGE = "CREATE";
 
-	public static final String CSM_PG_PROTOCOL = "protocol";
-
-	public static final String CSM_PG_SAMPLE = "sample";
-
-	public static final String CSM_PG_PUBLICATION = "publication";
+	public static final String CSM_PG_CURATION = "curation";
 
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
 
@@ -168,23 +133,13 @@ public class Constants {
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
 
-	public static final String NODE_UNAVAILABLE = "Unable to connect to the grid location that you selected";
-
-	// default discovery internal for grid index server
-	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 240;
-
 	// default discovery internal for grid index server
 	public static final int DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS = 1;
 
 	public static final String DOMAIN_MODEL_VERSION = "1.5";
 
-	public static final String GRID_SERVICE_PATH = "wsrf-canano/services/cagrid/CaNanoLabService";
-
 	// Default date format for exported file name.
 	public static final String EXPORT_FILE_DATE_FORMAT = "yyyyMMdd_HH-mm-ss-SSS";
-
-	// String for local search.
-	public static final String LOCAL_SITE = APP_OWNER;
 
 	// String for file repository entry in property file.
 	public static final String FILE_REPOSITORY_DIR = "fileRepositoryDir";
@@ -200,9 +155,6 @@ public class Constants {
 
 	// Maximum file size of site logo.
 	public static final int MAX_LOGO_SIZE = 65536;
-
-	// LOCATION
-	public static final String LOCATION = "location";
 
 	public static final int DISPLAY_TAG_TABLE_SIZE = 25;
 

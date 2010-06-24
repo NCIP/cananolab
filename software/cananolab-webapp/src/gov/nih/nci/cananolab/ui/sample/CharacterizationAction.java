@@ -228,8 +228,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		charBean.setupDomain(user.getLoginName());
 		// reuse the existing char service
@@ -248,10 +247,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 						otherSampleBeans, copyData);
 			}
 		}
-		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE);
+		sampleBean = setupSample(theForm, request);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId()
 				.toString());
-		request.setAttribute(Constants.LOCATION, Constants.LOCAL_SITE);
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,
@@ -336,16 +334,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = theForm.getString(Constants.LOCATION);
 		CharacterizationService service = this.setServicesInSession(request);
 		String charId = theForm.getString("charId");
-		setupSample(theForm, request, location);
-		/*if (!StringUtils.isEmpty(location)
-				&& !Constants.LOCAL_SITE.equals(location)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new CharacterizationServiceRemoteImpl(serviceUrl);
-		}*/
+		setupSample(theForm, request);
 		CharacterizationBean charBean = service
 				.findCharacterizationById(charId);
 		request.setAttribute("charBean", charBean);
@@ -372,15 +363,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
-		String location = theForm.getString(Constants.LOCATION);
 		CharacterizationService service = this.setServicesInSession(request);
-		SampleBean sampleBean = setupSample(theForm, request, location);
-		/*if (!StringUtils.isEmpty(location)
-				&& !Constants.LOCAL_SITE.equals(location)) {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new CharacterizationServiceRemoteImpl(serviceUrl);
-		}*/
+		SampleBean sampleBean = setupSample(theForm, request);
 		List<CharacterizationBean> charBeans = service
 				.findCharacterizationsBySampleId(sampleId);
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
@@ -509,10 +493,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				"CharacterizationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
 
-		String serviceUrl = null;
-		String location = request.getParameter(Constants.LOCATION);
-		
-		StringBuilder sb = getDownloadUrl(request, serviceUrl, location);
+		StringBuilder sb = getDownloadUrl(request);
 		CharacterizationExporter.exportSummary(charTypes, charSummaryBean, sb
 				.toString(), response.getOutputStream());
 
@@ -587,8 +568,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationService service = this.setServicesInSession(request);
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
@@ -647,8 +627,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ '/'
@@ -895,8 +874,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_SAMPLE);
+		if (user == null) {
+			return false;
+		}
+		return true;
 	}
 
 	private CharacterizationService setServicesInSession(

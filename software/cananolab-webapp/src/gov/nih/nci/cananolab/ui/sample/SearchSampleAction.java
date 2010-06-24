@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -104,7 +103,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		String[] functionTypes = new String[0];
 		String[] characterizations = new String[0];
 		String texts = "";
-		String[] searchLocations = new String[0];
 
 		if (theForm != null) {
 			nanomaterialEntityTypes = (String[]) theForm
@@ -114,11 +112,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			functionTypes = (String[]) theForm.get("functionTypes");
 			characterizations = (String[]) theForm.get("characterizations");
 			texts = ((String) theForm.get("text")).trim();
-			searchLocations = (String[]) theForm.get("searchLocations");
-		}
-		if (searchLocations.length == 0) {
-			searchLocations = new String[1];
-			searchLocations[0] = Constants.APP_OWNER;
+
 		}
 
 		// convert nanomaterial entity display names into short class names
@@ -192,28 +186,24 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			words = new String[wordList.size()];
 			wordList.toArray(words);
 		}
-		SampleService service = null;
-		for (String location : searchLocations) {
-			if (location.equals(Constants.LOCAL_SITE)) {
-				service = (SampleService) request.getSession().getAttribute(
-						"sampleService");
-			}
-			List<String> sampleNames = service.findSampleNamesBy(sampleName,
-					samplePointOfContact, nanomaterialEntityClassNames
-							.toArray(new String[0]),
-					otherNanomaterialEntityTypes.toArray(new String[0]),
-					functionalizingEntityClassNames.toArray(new String[0]),
-					otherFunctionalizingTypes.toArray(new String[0]),
-					functionClassNames.toArray(new String[0]),
-					otherFunctionTypes.toArray(new String[0]), charaClassNames
-							.toArray(new String[0]), otherCharacterizationTypes
-							.toArray(new String[0]), words);
-			for (String name : sampleNames) {
-				// empty sampleBean that only has name and location
-				SampleBean sampleBean = new SampleBean(name, location);
-				sampleBeans.add(sampleBean);
-			}
+		SampleService service = service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+		List<String> sampleNames = service.findSampleNamesBy(sampleName,
+				samplePointOfContact, nanomaterialEntityClassNames
+						.toArray(new String[0]), otherNanomaterialEntityTypes
+						.toArray(new String[0]),
+				functionalizingEntityClassNames.toArray(new String[0]),
+				otherFunctionalizingTypes.toArray(new String[0]),
+				functionClassNames.toArray(new String[0]), otherFunctionTypes
+						.toArray(new String[0]), charaClassNames
+						.toArray(new String[0]), otherCharacterizationTypes
+						.toArray(new String[0]), words);
+		for (String name : sampleNames) {
+			// empty sampleBean that only has name and location
+			SampleBean sampleBean = new SampleBean(name);
+			sampleBeans.add(sampleBean);
 		}
+
 		return sampleBeans;
 	}
 
@@ -230,13 +220,13 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
-				String location = sampleBeans.get(i).getLocation();
-				/*if (!StringUtils.isEmpty(location)
-						&& !location.equals(Constants.LOCAL_SITE)) {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-					service = new SampleServiceRemoteImpl(serviceUrl);
-				}*/
+				/*
+				 * if (!StringUtils.isEmpty(location) &&
+				 * !location.equals(Constants.LOCAL_SITE)) { String serviceUrl =
+				 * InitSetup.getInstance() .getGridServiceUrl(request,
+				 * location); service = new SampleServiceRemoteImpl(serviceUrl);
+				 * }
+				 */
 				// TODO remove this
 				// service = new SampleServiceRemoteImpl(
 				// "http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
@@ -260,7 +250,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					sampleBean.setFunctionClassNames(helper
 							.getStoredFunctionClassNames(sample).toArray(
 									new String[0]));
-					sampleBean.setLocation(location);
 					loadedSampleBeans.add(sampleBean);
 				}
 			}
@@ -274,21 +263,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 		// InitSetup.getInstance().getGridNodesInContext(request);
 
-		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (!StringUtils.isEmpty(gridNodeHostStr)) {
-			selectedLocations = gridNodeHostStr.split("~");
-		}
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("searchLocations", selectedLocations);
+		InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
 
-		if (Constants.LOCAL_SITE.equals(selectedLocations[0])
-				&& selectedLocations.length == 1) {
-			InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
-		} else {
-			InitSampleSetup.getInstance().setRemoteSearchDropdowns(request);
-		}
 		request.getSession().removeAttribute("sampleSearchResults");
 		return mapping.getInputForward();
 	}
@@ -303,7 +279,9 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_SAMPLE);
+		if (user == null) {
+			return false;
+		}
+		return true;
 	}
 }

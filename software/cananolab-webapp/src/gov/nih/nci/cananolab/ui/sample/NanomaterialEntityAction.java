@@ -104,8 +104,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 	private void saveEntity(HttpServletRequest request,
 			DynaValidatorForm theForm, NanomaterialEntityBean entityBean)
 			throws Exception {
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		try {
 			entityBean.setupDomainEntity(user.getLoginName());
@@ -140,7 +139,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 						sampleBean, otherSampleBeans);
 			}
 		}
-		request.setAttribute(Constants.LOCATION, Constants.LOCAL_SITE);
 	}
 
 	private boolean validateInherentFunctionType(HttpServletRequest request,
@@ -238,9 +236,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
-		String location = theForm.getString(Constants.LOCATION);
 		if (entityId == null) {
 			entityId = (String) request.getAttribute("dataId");
 		}
@@ -306,8 +302,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.get("nanomaterialEntity");
 		FileBean theFile = entity.getTheFile();
 		this.setServicesInSession(request);
-		SampleBean sampleBean = setupSample(theForm, request,
-				Constants.LOCAL_SITE);
+		SampleBean sampleBean = setupSample(theForm, request);
 		// setup domainFile uri for fileBean
 		String internalUriPath = Constants.FOLDER_PARTICLE + '/'
 				+ sampleBean.getDomain().getName() + '/' + "nanomaterialEntity";

@@ -9,9 +9,7 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
-import java.util.SortedSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -43,15 +41,6 @@ public class InitProtocolSetup {
 			throws Exception {
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"protocolTypes", "protocol", "type", "otherType", true);
-	}
-
-	public void setRemoteSearchDropdowns(HttpServletRequest request)
-			throws Exception {
-		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> types = InitSetup.getInstance()
-				.getDefaultTypesByLookup(appContext, "defaultProtocolTypes",
-						"protocol", "type");
-		request.getSession().setAttribute("protocolTypes", types);
 	}
 
 	public List<ProtocolBean> getProtocolsByChar(HttpServletRequest request,

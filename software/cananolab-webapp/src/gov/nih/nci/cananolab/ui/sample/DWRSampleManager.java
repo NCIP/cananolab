@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
-import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,30 +80,15 @@ public class DWRSampleManager {
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
-			boolean isLocal = false;
-			if (searchLocations == null) {
-				isLocal = true;
-			} else if (Constants.LOCAL_SITE.equals(searchLocations)) {
-				isLocal = true;
-			}
-			SortedSet<String> types = null;
-			if (isLocal) {
-				types = InitSetup
-						.getInstance()
-						.getDefaultAndOtherTypesByReflection(
-								request,
-								"defaultNanomaterialEntityTypes",
-								"nanomaterialEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
-								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
-								true);
-			} else {
-				types = InitSetup
-						.getInstance()
-						.getDefaultTypesByReflection(appContext,
-								"defaultNanomaterialEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-			}
+			SortedSet<String> types = InitSetup
+					.getInstance()
+					.getDefaultAndOtherTypesByReflection(
+							request,
+							"defaultNanomaterialEntityTypes",
+							"nanomaterialEntityTypes",
+							"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
+							"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
+							true);
 
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
@@ -115,35 +99,20 @@ public class DWRSampleManager {
 		return new String[] { "" };
 	}
 
-	public String[] getFunctionalizingEntityTypes(String searchLocations) {
+	public String[] getFunctionalizingEntityTypes() {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
-			boolean isLocal = false;
-			if (searchLocations == null) {
-				isLocal = true;
-			} else if (Constants.LOCAL_SITE.equals(searchLocations)) {
-				isLocal = true;
-			}
-			SortedSet<String> types = null;
-			if (isLocal) {
-				types = InitSetup
-						.getInstance()
-						.getDefaultAndOtherTypesByReflection(
-								request,
-								"defaultFunctionalizingEntityTypes",
-								"functionalizingEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
-								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
-								true);
-			} else {
-				types = InitSetup
-						.getInstance()
-						.getDefaultTypesByReflection(appContext,
-								"defaultFunctionalizingEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-			}
+			SortedSet<String> types = InitSetup
+					.getInstance()
+					.getDefaultAndOtherTypesByReflection(
+							request,
+							"defaultFunctionalizingEntityTypes",
+							"functionalizingEntityTypes",
+							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
+							"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+							true);
 
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
@@ -160,26 +129,16 @@ public class DWRSampleManager {
 		ServletContext appContext = request.getSession().getServletContext();
 
 		try {
-			boolean isLocal = false;
-			if (Constants.LOCAL_SITE.equals(searchLocations)) {
-				isLocal = true;
-			}
-			SortedSet<String> types = null;
-			if (isLocal) {
-				types = InitSetup
-						.getInstance()
-						.getDefaultAndOtherTypesByReflection(
-								request,
-								"defaultFunctionTypes",
-								"functionTypes",
-								"gov.nih.nci.cananolab.domain.particle.Function",
-								"gov.nih.nci.cananolab.domain.function.OtherFunction",
-								true);
-			} else {
-				types = InitSetup.getInstance().getDefaultTypesByReflection(
-						appContext, "defaultFunctionTypes",
-						"gov.nih.nci.cananolab.domain.particle.Function");
-			}
+			SortedSet<String> types = InitSetup
+					.getInstance()
+					.getDefaultAndOtherTypesByReflection(
+							request,
+							"defaultFunctionTypes",
+							"functionTypes",
+							"gov.nih.nci.cananolab.domain.particle.Function",
+							"gov.nih.nci.cananolab.domain.function.OtherFunction",
+							true);
+
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
 		} catch (Exception e) {
@@ -189,60 +148,32 @@ public class DWRSampleManager {
 		return new String[] { "" };
 	}
 
-	public String getPublicCounts(String[] locations) {
+	public String getPublicCounts() {
 		WebContext wctx = WebContextFactory.get();
 		HttpServletRequest request = wctx.getHttpServletRequest();
 		request.getSession().removeAttribute("sampleSearchResults");
-		if (locations.length == 0) {
-			locations = new String[1];
-			locations[0] = Constants.APP_OWNER;
-			// return null;
-		}
+
 		Integer counts = 0;
-		for (String location : locations) {
-			if (location.equals(Constants.LOCAL_SITE)) {
-				try {
-					counts += getService().getNumberOfPublicSamples();
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public samples from local site.");
-				}
-			} /*else {
-				try {
-					String serviceUrl = InitSetup.getInstance()
-							.getGridServiceUrl(request, location);
-					SampleService service = new SampleServiceRemoteImpl(
-							serviceUrl);
-					counts += service.getNumberOfPublicSamples();
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public samples from "
-									+ location);
-				}
-			}*/
+		try {
+			counts += getService().getNumberOfPublicSamples();
+		} catch (Exception e) {
+			logger
+					.error("Error obtaining counts of public samples from local site.");
+
 		}
 		return counts.toString() + " Samples";
 	}
 
-	public String getPublicSourceCounts(String[] locations) {
+	public String getPublicSourceCounts() {
 		WebContext wctx = WebContextFactory.get();
-		HttpServletRequest request = wctx.getHttpServletRequest();
-		if (locations.length == 0) {
-			locations = new String[1];
-			locations[0] = Constants.APP_OWNER;
-			// return null;
-		}
 		Integer counts = 0;
-		for (String location : locations) {
-			if (location.equals(Constants.LOCAL_SITE)) {
-				try {
-					counts += getService().getNumberOfPublicSampleSources();
-				} catch (Exception e) {
-					logger
-							.error("Error obtaining counts of public sample sources from local site.");
-				}
-			}
+		try {
+			counts += getService().getNumberOfPublicSampleSources();
+		} catch (Exception e) {
+			logger
+					.error("Error obtaining counts of public sample sources from local site.");
 		}
+
 		return counts.toString() + " Sample sources";
 	}
 
