@@ -42,7 +42,7 @@
 							</tr>
 							<tr>
 								<td class="sidebarContent">
-									<a href="reviewData.do?dispatch=setup">Review
+									<a href="reviewData.do?dispatch=setupNew">Review
 										Data Pending Release to Public</a>
 									<br>
 									Review samples, publications and protocols submitted by
