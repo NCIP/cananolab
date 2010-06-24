@@ -8,7 +8,11 @@ package gov.nih.nci.cananolab.ui.curation;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +37,7 @@ public class ReviewDataAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -45,5 +49,11 @@ public class ReviewDataAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		return mapping.findForward("setup");
+	}
+
+	public Boolean canUserExecutePrivateDispatch(UserBean user)
+			throws SecurityException {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				Constants.CSM_PG_CURATION);
 	}
 }
