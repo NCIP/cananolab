@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	<changeSet id="1.5.1-1" author="pansu">
+	        <comment>schema objects for caNanoLab release 1.5.1</comment>
+		<sqlFile path="db-upgrade/mysql/1.5.1/app_schema.sql" />
+	</changeSet>
+	<changeSet id="1.5.1-2" author="pansu">
+	        <comment>schema objects for CSM 4.1</comment>
+		<sqlFile path="db-upgrade/mysql/1.5.1/csm_schema.sql" />
+	</changeSet>
+	<changeSet id="1.5.1-3" author="pansu">
+	        <comment>CSM 4.1. priming data</comment>
+		<sqlFile path="db-upgrade/mysql/1.5.1/csm_priming_schema.sql" />
+	</changeSet>
+	<changeSet id="1.5.1-4" author="pansu">
+	        <comment>caNanoLab speficic priming data for CSM</comment>
+		<sqlFile path="db-upgrade/mysql/1.5.1/app_csm_priming_data.sql" />
+	</changeSet>
+	<changeSet id="1.5.1-5" author="pansu">
+	        <comment>priming lookup table data for caNanoLab 1.5.1</comment>
+		<sqlFile path="db-upgrade/mysql/1.5.1/insert_common_lookup.sql" />
+	</changeSet>
+</databaseChangeLog>
