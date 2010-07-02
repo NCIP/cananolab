@@ -3,15 +3,11 @@
 	<property file="build.properties" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="lib.dir" value="${basedir}/lib" />
-	<property name="conf.dir" value="${basedir}/conf" />
 	<property name="webroot.dir" value="${basedir}/web" />
 	<property name="webapp.lib.dir" value="${webroot.dir}/WEB-INF/lib" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="target.dir" value="${basedir}/target" />
-
-	<import file="build-deploy.xml" />
-	<import file="build-grid.xml" />
-	<import file="build-standalone.xml" />
+	<property name="dist.dir" value="${target.dir}/dist" />
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>
@@ -20,7 +16,7 @@
 	</taskdef>
 
 	<target name="pre-clean">
-		<delete dir="${target.dir}" />
+		<delete dir="${dist.dir}" />
 		<delete dir="${build.dir}" />
 	</target>
 
@@ -31,6 +27,7 @@
 	<target name="init">
 		<!-- create the necessary folders -->
 		<mkdir dir="${target.dir}" />
+		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${build.dir}/WEB-INF" />
 		<mkdir dir="${build.dir}/WEB-INF/classes" />
@@ -107,18 +104,7 @@
 		<replaceregexp file="${build.dir}/html/nciFooter.html" match="\{CANANOLAB_BUILD_TAG\}" replace="${build_tag}" flags="g" />
 
 		<!-- package WAR file -->
-		<jar destfile="${target.dir}/caNanoLab.war" basedir="${build.dir}" />
-		<copy todir="${target.dir}">
-			<fileset dir="${conf.dir}/csm/">
-				<include name="*.war" />
-			</fileset>
-		</copy>
+		<jar destfile="${dist.dir}/caNanoLab.war" basedir="${build.dir}" />
 	</target>
-	<target name="helpers-jar" depends="compile">
-		<!-- package jar file -->
-		<copy todir="${build.dir}/WEB-INF/classes" file="${src.dir}/caNanoLab.properties.template" />
-		<jar destfile="${target.dir}/caNanoLab-helpers.jar" basedir="${build.dir}/WEB-INF/classes" includes="**/UserBean.class, **/*Exception.class, **/AuthorizationService.class, **/*Helper.class, **/ClassUtils.class, **/StringUtils.class, **/TextMatchMode.class, **/Constants.class, **/PropertyUtils.class, caNanoLab.properties.template" excludes="**/AdvancedSampleServiceHelper.class" />
-	</target>
-
-	<target name="run" depends="pre-clean, init, war, helpers-jar, post-clean" />
+	<target name="run" depends="pre-clean, init, war, post-clean" />
 </project>
