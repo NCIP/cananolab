@@ -6,14 +6,13 @@
 	<!-- file. DO NOT REMOVE ANY TARGETS                                -->
 	<!-- ============================================================== -->
 
-
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Tomcat                                              -->
 	<!-- ============================================================== -->
 	<target name="preDeployTomcat">
 
 	</target>
-	
+
 
 	<!-- ============================================================== -->
 	<!-- Pre Deploy Globus                                              -->
@@ -21,16 +20,14 @@
 	<target name="preDeployGlobus">
 
 	</target>
-	
-	
+
+
 	<!-- ============================================================== -->
 	<!-- Pre Deploy JBOSS                                               -->
 	<!-- ============================================================== -->
 	<target name="preDeployJBoss">
-
 	</target>
-	
-	
+
 	<!-- ============================================================== -->
 	<!-- Post UnDeploy Tomcat                                              -->
 	<!-- ============================================================== -->
@@ -45,8 +42,8 @@
 	<target name="postUndeployGlobus">
 
 	</target>
-	
-	
+
+
 	<!-- ============================================================== -->
 	<!-- Post UnDeploy JBOSS                                               -->
 	<!-- ============================================================== -->
@@ -54,6 +51,27 @@
 
 	</target>
 
+	<!-- deploy service to dist directory -->
+	<target name="dist:cananolab-grid" depends="all,deploymentValidator,setDeploymentProperties" description="Deploys to JBOSS_HOME (to set the services properties file set the ant command line variable -Dservice.properties.file)">
+		<property name="target.dir" value="${basedir}/target" />
+		<property name="dist.dir" value="${target.dir}/dist" />
+		<property name="webapp.deploy.dir" value="${dist.dir}/${globus.webapp}.war" />
+		<property name="webapp.deploy.lib.dir" value="${webapp.deploy.dir}/WEB-INF/lib" />
+		<property name="webapp.deploy.schema.dir" value="${webapp.deploy.dir}/share/schema" />
+	    <property name="webapp.deploy.etc.dir" value="${webapp.deploy.dir}/WEB-INF/etc" />
+		<property name="service.deployment.dir" value="${webapp.deploy.etc.dir}/${service.deployment.dir.name}" />
 
+		<echo message="Deploying service ${service.deployment.path} under dist at ${webapp.deploy.dir}" />
+
+		<property name="service.deployment.dir" value="${webapp.deploy.etc.dir}/${service.deployment.dir.name}" />
+		<!-- prepare the deployment directory -->
+		<mkdir dir="${service.deployment.dir}" />
+		<!-- prepare the server-config file -->
+
+		<mkdir dir="tmp" />
+
+		<runtarget target="preDeployJBoss" />
+		<runtarget target="deployWebApp" />
+	</target>
 
 </project>
