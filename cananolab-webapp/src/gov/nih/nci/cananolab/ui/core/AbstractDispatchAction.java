@@ -31,14 +31,21 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		if (session.isNew() && (dispatch == null || privateDispatch)) {
 			throw new InvalidSessionException();
 		}
-		boolean executeStatus = canUserExecute(user, dispatch);
+		String protectedData = request.getParameter("sampleId");
+		if (protectedData == null) {
+			protectedData = request.getParameter("publicationId");
+		}
+		if (protectedData == null) {
+			protectedData = request.getParameter("protocolId");
+		}
+		boolean executeStatus = canUserExecute(user, dispatch, protectedData);
 		if (executeStatus) {
 			return super.execute(mapping, form, request, response);
 		} else {
-			if (user==null) {
+			if (user == null) {
 				throw new NoAccessException("Log in is required");
 			}
-			request.getSession().removeAttribute("user");			
+			request.getSession().removeAttribute("user");
 			throw new NoAccessException();
 		}
 	}
@@ -46,13 +53,13 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	/**
 	 * Check whether the current user can execute the action with the specified
 	 * dispatch
-	 * 
+	 *
 	 * @param user
 	 * @return
 	 * @throws SecurityException
 	 */
-	public boolean canUserExecute(UserBean user, String dispatch)
-			throws SecurityException {
+	public boolean canUserExecute(UserBean user, String dispatch,
+			String protectedData) throws SecurityException {
 		// private dispatch in public actions
 		boolean privateDispatch = isDispatchPublic(dispatch);
 		if (!privateDispatch) {
@@ -60,12 +67,17 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		} else if (user == null && privateDispatch) {
 			return false;
 		} else {
-			return canUserExecutePrivateDispatch(user);
+			return canUserExecutePrivateDispatch(user, protectedData);
 		}
 	}
 
-	public abstract Boolean canUserExecutePrivateDispatch(UserBean user)
-			throws SecurityException;
+	public Boolean canUserExecutePrivateDispatch(UserBean user,
+			String protectedData) throws SecurityException {
+		if (user == null) {
+			return false;
+		}
+		return true;
+	}
 
 	public boolean isDispatchPublic(String dispatch) {
 		if (dispatch != null) {
@@ -80,7 +92,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 
 	/**
 	 * Get the page number used in display tag library pagination
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -119,7 +131,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	/**
 	 * Retrieve a value from request by name in the order of Parameter - Request
 	 * Attribute - Session Attribute
-	 * 
+	 *
 	 * @param request
 	 * @param name
 	 * @return

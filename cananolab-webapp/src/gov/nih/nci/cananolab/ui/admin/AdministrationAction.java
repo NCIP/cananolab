@@ -11,7 +11,7 @@ package gov.nih.nci.cananolab.ui.admin;
 
 /**
  * Action class for Administration section.
- * 
+ *
  * @author houyh
  */
 import gov.nih.nci.cananolab.dto.admin.SitePreferenceBean;
@@ -74,7 +74,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action to clear site preferences: remove site and site logo.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -101,7 +101,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action to update site preference settings.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -181,7 +181,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action for loading site preferences for cananoHeader.jsp.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -203,7 +203,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action for loading Visitor Counter for cananoSidemenu.jsp.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -239,7 +239,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action to handle site logo file download request.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -297,7 +297,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Retrieve site preference bean from database.
-	 * 
+	 *
 	 * @return SitePreferenceBean.
 	 */
 	private SitePreferenceBean getSiteBean() {
@@ -317,7 +317,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Save site preference bean to database.
-	 * 
+	 *
 	 * @param user
 	 * @return SitePreferenceBean.
 	 */
@@ -338,7 +338,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Create a new site preference bean for save/update.
-	 * 
+	 *
 	 * @param user
 	 * @return SitePreferenceBean.
 	 */
@@ -356,7 +356,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Get an unique file name for logo in format of "fileName_{timestamp}.ext".
-	 * 
+	 *
 	 * @param fileName
 	 * @return an unique file name of site logo.
 	 */
@@ -381,7 +381,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Getter for Srping dependency injection.
-	 * 
+	 *
 	 * @return
 	 */
 	public AdminService getAdminService() {
@@ -390,10 +390,18 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Setter for Srping dependency injection.
-	 * 
+	 *
 	 * @param adminService
 	 */
 	public void setAdminService(AdminService adminService) {
 		this.adminService = adminService;
+	}
+
+	public Boolean canUserExecutePrivateDispatch(UserBean user,
+			String protectedData) throws SecurityException {
+		if (user == null) {
+			return false;
+		}
+		return true;
 	}
 }
