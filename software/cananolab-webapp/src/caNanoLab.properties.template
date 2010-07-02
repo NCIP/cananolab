@@ -1,5 +1,4 @@
 fileRepositoryDir=@FILE_REPOSITORY_DIR@
-applicationOwner=@APP_OWNER@
 adminEmail=@ADMIN_EMAIL@
 mailServerHost=mailfwd.nih.gov
 doNotReply=caNanoLab <do.not.reply@mail.nih.gov>
