@@ -11,8 +11,10 @@ import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.security.authorization.ObjectPrivilegeMap;
 import gov.nih.nci.security.authorization.domainobjects.Application;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.Privilege;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
@@ -27,9 +29,12 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -866,14 +871,9 @@ public class AuthorizationService {
 					+ "csm_role r "
 					+ "WHERE     ugrp.protection_group_id = pg.protection_group_id "
 					+ "AND ugrp.role_id = r.role_id "
-					+ "AND ugrp.user_id = u.user_id "
-					+ "AND u.login_name = '"
-					+ user.getLoginName()
-					+ "' "
-					+ "AND r.role_name IN ('"
-					+ Constants.CSM_READ_ROLE
-					+ "', '"
-					+ Constants.CSM_CUR_ROLE
+					+ "AND ugrp.user_id = u.user_id " + "AND u.login_name = '"
+					+ user.getLoginName() + "' " + "AND r.role_name IN ('"
+					+ Constants.CSM_READ_ROLE + "', '" + Constants.CSM_CUR_ROLE
 					+ "', '" + Constants.CSM_CURD_ROLE + "')";
 
 			String query2 = "select distinct pg.protection_group_name  "
@@ -901,6 +901,101 @@ public class AuthorizationService {
 			throw new ApplicationException(err, e);
 		}
 		return data;
+	}
+
+	/**
+	 * Return a map of data (csm protected_group_name) against roles accessible
+	 * to the user in the database
+	 *
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String, String> getAllUserAccessibleDataAndRole(UserBean user)
+			throws ApplicationException {
+		Map<String, String> data2role = new HashMap<String, String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			if (user == null) {
+				for (String data : appService.getAllPublicData()) {
+					data2role.put(data, Constants.CSM_READ_ROLE);
+				}
+				return data2role;
+			}
+			String query1 = "SELECT DISTINCT pg.protection_group_name, r.role_name "
+					+ "FROM csm_user_group_role_pg ugrp, "
+					+ "csm_protection_group pg, "
+					+ "csm_user u, "
+					+ "csm_role r "
+					+ "WHERE     ugrp.protection_group_id = pg.protection_group_id "
+					+ "AND ugrp.role_id = r.role_id "
+					+ "AND ugrp.user_id = u.user_id "
+					+ "AND u.login_name = '"
+					+ user.getLoginName()
+					+ "' "
+					+ "AND r.role_name IN ('"
+					+ Constants.CSM_READ_ROLE
+					+ "', '"
+					+ Constants.CSM_CUR_ROLE
+					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+
+			String query2 = "select distinct pg.protection_group_name, r.role_name  "
+					+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_group g, csm_user_group ug, csm_role r "
+					+ "where ugrp.protection_group_id=pg.protection_group_id "
+					+ "and ugrp.group_id=g.group_id "
+					+ "and ugrp.role_id=r.role_id "
+					+ "and ug.user_id=u.user_id "
+					+ "and ug.group_id=g.group_id "
+					+ "and u.login_name='"
+					+ user.getLoginName()
+					+ "' "
+					+ "and r.role_name in ('"
+					+ Constants.CSM_READ_ROLE
+					+ "', '"
+					+ Constants.CSM_CUR_ROLE
+					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+			String query = query1 + " union " + query2;
+			String[] columns = new String[] { "protection_group_name",
+					"role_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING,
+					Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				if (obj != null) {
+					String[] row = (String[]) obj;
+					String data = row[0];
+					String role = row[1];
+					data2role.put(data, role);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Could not execute direct sql query to find all user accessible data";
+			logger.error(err);
+			throw new ApplicationException(err, e);
+		}
+		return data2role;
+	}
+
+	public Map<String, List<String>> getPriviledeMap(String userName,
+			List<String> protectedData) throws Exception {
+		List<ProtectionElement> pes = new ArrayList<ProtectionElement>();
+		for (String item : protectedData) {
+			ProtectionElement pe = getProtectionElement(item);
+			pes.add(pe);
+		}
+		Collection<ObjectPrivilegeMap> opms = authorizationManager
+				.getPrivilegeMap(userName, pes);
+		Map<String, List<String>> privilegeMap = new HashMap<String, List<String>>();
+		List<String> privileges = null;
+		for (ObjectPrivilegeMap pm : opms) {
+			String pe = pm.getProtectionElement().getProtectionElementName();
+			privileges = new ArrayList<String>();
+			for (Object priv : pm.getPrivileges()) {
+				privileges.add(((Privilege) priv).getName());
+			}
+			privilegeMap.put(pe, privileges);
+		}
+		return privilegeMap;
 	}
 
 	public static void main(String[] args) {
