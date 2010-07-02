@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<project name="cananolab" default="build:all" basedir="." >
+	<description>
+	This is the master build file for the caNanoLab project.  caNanoLab web application and caNanoLab grid service are two sub-projects
+	</description>
+
+	<!-- Property file related properties and tasks -->
+	<property environment="env" />
+	<!-- The project.properties stores properties that are shared between both build.xml and install.xml. Typically properties that are related to the distribution directories, or files. -->
+	<property file="local.properties" />
+	<property file="deploy.properties"/>
+	
+	<property name="build.dir" location="." />
+	<property name="software.dir" location=".." />
+	<property name="common.dir" location="${software.dir}/common" />
+	<property name="target.dir" location="${software.dir}/target" />
+	<property name="lib.dir" location="${target.dir}/lib" />
+	<property name="temp.dir" location="${target.dir}/temp" />
+	<property name="log.dir" location="${target.dir}/logs" />
+	<property name="dist.dir" location="${target.dir}/dist" />
+	<property name="download.dir" location="${target.dir}/download" />
+	<property name="working.dir" location="${target.dir}/working" />
+
+	<!-- Properties that relate to how to call build targets from sub-projects-->
+	<!-- Working directory passed to Ant tasks -->
+	<property name="cananolab-webapp.base.dir" value="${software.dir}/cananolab-webapp" />
+	<property name="cananolab-db.base.dir" value="${software.dir}/cananolab-db" />
+
+	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
+	<property name="cananolab-webapp.build.file" value="build.xml" />
+
+	<!-- The target name that should be called from the sub-project build file -->
+	<property name="cananolab-webapp.build.target" value="run" />
+
+	<!-- Distribution Structure properties, used to copy files into the distribution area.
+       		Use project.propertie relative dir names becasue they are used by install also-->
+	<property name="dist.exploded.dir" value="${dist.dir}/exploded" />
+	<property name="cananolab-webapp.dist.dir" value="${dist.exploded.dir}/cananolab-webapp" />
+	<property name="common.dist.dir" value="${dist.exploded.dir}/common" />
+	<property name="jboss-conf.dist.dir" value="${dist.exploded.dir}/jboss-conf" />
+
+	<!-- Start logging -->
+	<mkdir dir="${log.dir}" />
+	<tstamp>
+		<format property="install.time" pattern="yyyy-MM-dd-HH-mm-ss" />
+	</tstamp>
+	<record name="${log.dir}/install-${install.time}.log" action="start" />
+
+	<!-- Targets -->
+	<target name="clean">
+		<delete dir="${dist.dir}" />
+		<delete dir="${temp.dir}" />
+	</target>
+
+	<target name="init" description="Sets up build are and initalizes variables">
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${dist.exploded.dir}" />
+		<mkdir dir="${cananolab-webapp.dist.dir}" />
+		<mkdir dir="${common.dist.dir}" />
+		<mkdir dir="${temp.dir}" />
+		<mkdir dir="${download.dir}" />
+	</target>
+
+	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends=" clean, init, build:cananolab-webapp " >
+	</target>
+
+	<target name="build:cananolab-webapp" depends="init" description="Call webapp sub-project build target to produce artifiacts">
+		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
+			<property name="dist.dir" value="${cananolab-webapp.dist.dir}" />
+			<property name="commonlibrary.dir" value="${commonlibrary.dir}"/>
+		</ant>
+	</target>
+
+	<target name="dist:cananolab-webapp" depends="build:cananolab-webapp">
+		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="dist:common:resources" dir="${build.dir}">			
+			<property name="common.dir" value="${common.dir}"/>
+			<property name="common.dist.dir" value="${common.dist.dir}" />
+		</ant>
+        </target>
+        <target name="deploy:cananolab-webapp" depends="dist:cananolab-webapp">
+        	<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-webapp" dir="${build.dir}">			
+			<property name="cananolab-webapp.dist.dir" value="${cananolab-webapp.dist.dir}"/>
+			<property name="common.dir" value="${common.dir}"/>
+			<property name="common.dist.dir" value="${common.dist.dir}" />
+		</ant>
+        </target>
+</project>

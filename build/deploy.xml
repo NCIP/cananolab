@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<project name="cananolab-deployer" default="deploy:cananolab-webapp" basedir=".">
+	<description>
+		This script contains tasks related to cananolab distribution and installation
+	</description>
+
+	<!-- Properties file related properties and tasks -->
+	<property environment="env" />
+	<property file="local.properties" />
+	<property file="deploy.properties"/>
+
+	<!-- Generic properties -->
+	<property name="database.type" value="mysql"/>
+        <property name="jboss.server.dir" value="${jboss.server.dir}" />
+	<property name="jboss.conf.dir" value="${jboss.server.dir}/conf" />
+	<property name="jboss.deploy.dir" value="${jboss.server.dir}/deploy" />
+	<property name="jboss.lib.dir" value="${jboss.server.dir}/lib" />
+
+	<property name="env.name" value="local"/>
+	<property name="log.dir" location="${basedir}/logs" />
+
+	<target name="dist:common:resources">
+		<!--copy csm related configuration files and replace database connection info-->
+        	<copy overwrite="true" todir="${common.dist.dir}" filtering="true">
+        		<fileset dir="${common.dir}/resources/jboss-conf">
+				<include name="*.xml"/>
+			</fileset>
+			<filterset id="embedded.filterset">
+				<filter token="database.url" value="${database.url}"/>
+				<filter token="database.user" value="${database.user}"/>
+				<filter token="database.password" value="${database.password}"/>
+			</filterset>
+		</copy>
+		
+		<!--copy upt.war -->
+        	<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/upt.war" />
+
+		<!-- copy database jdbc driver -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/mysql-connector-java-5.0.7-bin.jar" />
+	</target>
+	
+	<target name="deploy:cananolab-webapp">
+		<!-- deploy WAR to JBOSS deploy location-->
+		<copy todir="${jboss.deploy.dir}" overwrite="true">
+			<fileset dir="${common.dist.dir}">
+				<include name="upt.war" />
+				<include name="${database.type}-ds.xml"/>
+			</fileset>
+			<fileset dir="${cananolab-webapp.dist.dir}">
+				<include name="*.war" />
+			</fileset>
+		</copy>
+		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml"/>
+		<copy todir="${jboss.lib.dir}" overwrite="true" file="${common.dist.dir}/mysql-connector-java-5.0.7-bin.jar"/>		
+	</target>
+</project>
