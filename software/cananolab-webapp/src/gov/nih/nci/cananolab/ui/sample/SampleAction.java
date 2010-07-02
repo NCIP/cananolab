@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -401,5 +402,11 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleService sampleService = new SampleServiceLocalImpl(user);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return sampleService;
+	}
+
+	public Boolean canUserExecutePrivateLink(UserBean user, String protectedData)
+			throws SecurityException {
+
+		return false;
 	}
 }

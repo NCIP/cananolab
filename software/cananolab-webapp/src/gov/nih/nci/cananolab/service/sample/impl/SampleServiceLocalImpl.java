@@ -429,7 +429,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	 * @return
 	 * @throws SampleException
 	 */
-	public List<String> findSampleNamesBy(String sampleName,
+	public List<String> findSampleIdsBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
@@ -439,16 +439,14 @@ public class SampleServiceLocalImpl implements SampleService {
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException {
 		try {
-			List<String> sampleNames = helper.findSampleNamesBy(sampleName,
+			List<String> sampleIds = helper.findSampleIdsBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames,
 					otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes, characterizationClassNames,
 					otherCharacterizationTypes, wordList);
-			Collections.sort(sampleNames,
-					new Comparators.SortableNameComparator());
-			return sampleNames;
+			return sampleIds;
 		} catch (Exception e) {
 			String err = "Problem finding samples with the given search parameters.";
 			logger.error(err, e);
@@ -461,7 +459,10 @@ public class SampleServiceLocalImpl implements SampleService {
 		SampleBean sampleBean = null;
 		try {
 			Sample sample = helper.findSampleById(sampleId);
-			sampleBean = loadSampleBean(sample);
+			if (sample != null) {
+				sampleBean = loadSampleBean(sample);
+				sampleBean = new SampleBean(sample);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -553,7 +554,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			Sample sample = helper.findSampleByName(sampleName);
 			SampleBean sampleBean = null;
 			if (sample != null) {
-				// sampleBean = loadSampleBean(sample);
+				sampleBean = loadSampleBean(sample);
 				sampleBean = new SampleBean(sample);
 			}
 			return sampleBean;
@@ -1186,5 +1187,4 @@ public class SampleServiceLocalImpl implements SampleService {
 	public SampleServiceHelper getHelper() {
 		return helper;
 	}
-
 }

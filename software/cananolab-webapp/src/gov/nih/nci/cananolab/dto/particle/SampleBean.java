@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
@@ -63,11 +64,15 @@ public class SampleBean {
 
 	private String cloningSampleName;
 
+	private List<AccessibilityBean> accessibilities = new ArrayList<AccessibilityBean>();
+
+	private Boolean userUpdatable = false;
+
 	public SampleBean() {
 	}
 
-	public SampleBean(String sampleName) {
-		domain.setName(sampleName);
+	public SampleBean(String sampleId) {
+		domain.setId(new Long(sampleId));
 	}
 
 	public SampleBean(Sample sample) {
@@ -383,5 +388,21 @@ public class SampleBean {
 		// }
 		// }
 		return copy;
+	}
+
+	public List<AccessibilityBean> getAccessibilities() {
+		return accessibilities;
+	}
+
+	public void setAccessibilities(List<AccessibilityBean> accessibilities) {
+		this.accessibilities = accessibilities;
+	}
+
+	public Boolean getUserUpdatable() {
+		return userUpdatable;
+	}
+
+	public void setUserUpdatable(Boolean userUpdatable) {
+		this.userUpdatable = userUpdatable;
 	}
 }

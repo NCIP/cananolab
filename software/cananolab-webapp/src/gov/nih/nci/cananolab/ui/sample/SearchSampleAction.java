@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -22,6 +23,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,6 +72,10 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		// pass in page and size
 		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans,
 				displayPage, Constants.DISPLAY_TAG_TABLE_SIZE, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user != null) {
+			loadUserAccess(user, sampleBeansPerPage);
+		}
 		request.setAttribute("samples", sampleBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
@@ -188,7 +194,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 		SampleService service = service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
-		List<String> sampleNames = service.findSampleNamesBy(sampleName,
+		List<String> sampleIds = service.findSampleIdsBy(sampleName,
 				samplePointOfContact, nanomaterialEntityClassNames
 						.toArray(new String[0]), otherNanomaterialEntityTypes
 						.toArray(new String[0]),
@@ -198,12 +204,11 @@ public class SearchSampleAction extends AbstractDispatchAction {
 						.toArray(new String[0]), charaClassNames
 						.toArray(new String[0]), otherCharacterizationTypes
 						.toArray(new String[0]), words);
-		for (String name : sampleNames) {
-			// empty sampleBean that only has name and location
-			SampleBean sampleBean = new SampleBean(name);
+		for (String id : sampleIds) {
+			// empty sampleBean that only has id;
+			SampleBean sampleBean = new SampleBean(id);
 			sampleBeans.add(sampleBean);
 		}
-
 		return sampleBeans;
 	}
 
@@ -220,19 +225,9 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
-				/*
-				 * if (!StringUtils.isEmpty(location) &&
-				 * !location.equals(Constants.LOCAL_SITE)) { String serviceUrl =
-				 * InitSetup.getInstance() .getGridServiceUrl(request,
-				 * location); service = new SampleServiceRemoteImpl(serviceUrl);
-				 * }
-				 */
-				// TODO remove this
-				// service = new SampleServiceRemoteImpl(
-				// "http://NCI-01738843.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
-
-				String sampleName = sampleBeans.get(i).getDomain().getName();
-				SampleBean sampleBean = service.findSampleByName(sampleName);
+				String sampleId = sampleBeans.get(i).getDomain().getId()
+						.toString();
+				SampleBean sampleBean = service.findSampleById(sampleId);
 				if (sampleBean != null) {
 					Sample sample = sampleBean.getDomain();
 					SampleServiceHelper helper = ((SampleServiceLocalImpl) service)
@@ -257,6 +252,27 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		return loadedSampleBeans;
 	}
 
+	private void loadUserAccess(UserBean user, List<SampleBean> sampleBeans)
+			throws Exception {
+		List<String> sampleIds = new ArrayList<String>();
+		for (SampleBean sampleBean : sampleBeans) {
+			sampleIds.add(sampleBean.getDomain().getId().toString());
+		}
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		Map<String, List<String>> privilegeMap = authService.getPriviledeMap(
+				user.getLoginName(), sampleIds);
+		for (SampleBean sampleBean : sampleBeans) {
+			List<String> privileges = privilegeMap.get(sampleBean.getDomain()
+					.getId().toString());
+			if (privileges.contains(Constants.CSM_UPDATE_PRIVILEGE)) {
+				sampleBean.setUserUpdatable(true);
+			} else {
+				sampleBean.setUserUpdatable(false);
+			}
+		}
+	}
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -275,13 +291,5 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		SampleService sampleService = new SampleServiceLocalImpl(user);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return sampleService;
-	}
-
-	public Boolean canUserExecutePrivateDispatch(UserBean user)
-			throws SecurityException {
-		if (user == null) {
-			return false;
-		}
-		return true;
 	}
 }

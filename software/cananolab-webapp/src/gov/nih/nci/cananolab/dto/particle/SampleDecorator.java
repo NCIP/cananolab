@@ -19,24 +19,20 @@ import org.displaytag.decorator.TableDecorator;
  */
 public class SampleDecorator extends TableDecorator {
 
-	public String getEditURL() {
+	public String getDetailURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
+		String dispatch = "summaryView";
+		String linkLabel="View";
+		if (sample.getUserUpdatable()) {
+			dispatch = "summaryEdit";
+			linkLabel="Edit";
+		}
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("sample.do?dispatch=summaryEdit&page=0&sampleId=");
+		sb.append("sample.do?dispatch=").append(dispatch).append(
+				"&page=0&sampleId=");
 		sb.append(sampleId).append('>');
-		sb.append("Edit").append("</a>");
-		String link = sb.toString();
-		return link;
-	}
-
-	public String getViewURL() {
-		SampleBean sample = (SampleBean) getCurrentRowObject();
-		String sampleId = sample.getDomain().getId().toString();
-		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
-		sb.append(sampleId).append('>');
-		sb.append("View").append("</a>");
+		sb.append(linkLabel).append("</a>");
 		String link = sb.toString();
 		return link;
 	}

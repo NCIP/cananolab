@@ -14,20 +14,12 @@
 <table width="100%" align="center">
 	<tr>
 		<td colspan="2">
-			<c:choose>
-				<c:when test="${!empty user && user.curator}">
-					<c:set var="link" value="editURL" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="link" value="viewURL" />
-				</c:otherwise>
-			</c:choose>
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 			<display:table name="samples" id="sample"
 				requestURI="searchSample.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
     			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-				<display:column title="" property="${link}" />
+				<display:column title="" property="detailURL" />
 				<display:column title="Sample Name" property="sampleName"
 					sortable="true" />
 				<display:column title="Primary<br>Point Of Contact"

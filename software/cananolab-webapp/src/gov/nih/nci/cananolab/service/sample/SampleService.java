@@ -31,7 +31,7 @@ public interface SampleService {
 	public void saveSample(SampleBean sampleBean) throws SampleException,
 			DuplicateEntriesException, NoAccessException;
 
-	public List<String> findSampleNamesBy(String sampleName,
+	public List<String> findSampleIdsBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,

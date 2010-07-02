@@ -72,7 +72,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		super(authService, user);
 	}
 
-	public List<String> findSampleNamesBy(String sampleName,
+	public List<String> findSampleIdsBy(String sampleName,
 			String samplePointOfContact, String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
@@ -81,12 +81,12 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws Exception {
-		List<String> sampleNames = new ArrayList<String>();
+		List<String> sampleIds = new ArrayList<String>();
 
 		// can't query for the entire Sample object due to
 		// limitations in pagination in SDK
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-				.setProjection(Projections.distinct(Property.forName("name")));
+				.setProjection(Projections.distinct(Property.forName("id")));
 		if (!StringUtils.isEmpty(sampleName)) {
 			TextMatchMode nameMatchMode = new TextMatchMode(sampleName);
 			crit.add(Restrictions.ilike("name", nameMatchMode.getUpdatedText(),
@@ -321,15 +321,14 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			String name = ((String) obj).trim();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
-				sampleNames.add(name);
+			String id = (obj.toString()).trim();
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+				sampleIds.add(id);
 			} else {
-				logger.debug("User doesn't have access to sample of name: "
-						+ name);
+				logger.debug("User doesn't have access to sample of ID: " + id);
 			}
 		}
-		return sampleNames;
+		return sampleIds;
 	}
 
 	/**
@@ -645,33 +644,48 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	}
 
 	public Sample findSampleById(String sampleId) throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
+		Sample sample = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
-
-		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection.organization",
 				FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-		// used for delete check
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection",
+						FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
 		List result = appService.query(crit);
-		Sample sample = null;
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sample.getName());
-			}
 			checkAssociatedVisibility(sample);
 		}
 		return sample;

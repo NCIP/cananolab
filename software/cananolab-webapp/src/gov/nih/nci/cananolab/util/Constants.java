@@ -94,6 +94,8 @@ public class Constants {
 
 	public static final String CSM_CREATE_PRIVILEGE = "CREATE";
 
+	public static final String CSM_UPDATE_PRIVILEGE = "UPDATE";
+
 	public static final String CSM_PG_CURATION = "curation";
 
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;

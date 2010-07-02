@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -12,6 +13,7 @@ public class BaseServiceHelper {
 	private AuthorizationService authService;
 	protected Logger logger = Logger.getLogger(BaseServiceHelper.class);
 	protected List<String> accessibleData;
+	protected Map<String, String> accessibleDataRole;
 	private UserBean user;
 
 	public BaseServiceHelper() {
@@ -63,5 +65,13 @@ public class BaseServiceHelper {
 			accessibleData = authService.getAllUserAccessibleData(user);
 		}
 		return accessibleData;
+	}
+
+	public Map<String, String> getAccessibleDataRole() throws Exception {
+		if (accessibleDataRole == null) {
+			accessibleDataRole = authService
+					.getAllUserAccessibleDataAndRole(user);
+		}
+		return accessibleDataRole;
 	}
 }

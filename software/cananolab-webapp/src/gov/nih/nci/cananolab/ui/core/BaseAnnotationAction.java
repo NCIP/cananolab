@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -305,11 +306,17 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 	}
 
-	public Boolean canUserExecutePrivateDispatch(UserBean user)
+	public Boolean canUserExecutePrivateDispatch(UserBean user, String protectedData)
 			throws SecurityException {
 		if (user == null) {
 			return false;
 		}
-		return true;
+		if (protectedData == null) {
+			return true;
+		}
+		else {
+			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
+			return authService.checkCreatePermission(user, protectedData);
+		}
 	}
 }
