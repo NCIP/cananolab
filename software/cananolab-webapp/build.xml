@@ -116,6 +116,6 @@
 
 	<target name="jar:orm">
 		<!-- package jar file -->
-		<jar destfile="${dist.dir}/caNanoLab-orm.jar" basedir="${src.dir}" includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml" />
+		<jar destfile="${dist.dir}/caNanoLabSDK-orm.jar" basedir="${src.dir}" includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml" />
 	</target>
 </project>
