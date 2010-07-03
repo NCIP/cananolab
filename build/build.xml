@@ -108,7 +108,7 @@
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:helpers" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
 		</ant>
-		<!-- build the caNanoLab-orm.jar -->
+		<!-- build the caNanoLabSDK-orm.jar -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:orm" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
 		</ant>
