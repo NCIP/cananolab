@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<project name="cananolab" default="build:all" basedir="." >
+<project name="cananolab" default="dist:all" basedir=".">
 	<description>
 	This is the master build file for the caNanoLab project.  caNanoLab web application and caNanoLab grid service are two sub-projects
 	</description>
 
 	<!-- Property file related properties and tasks -->
 	<property environment="env" />
-	<!-- The project.properties stores properties that are shared between both build.xml and install.xml. Typically properties that are related to the distribution directories, or files. -->
+	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. Typically properties that are related to the distribution directories, or files. -->
 	<property file="local.properties" />
-	<property file="deploy.properties"/>
-	
+	<property file="deploy.properties" />
+
 	<property name="build.dir" location="." />
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
 	<property name="target.dir" location="${software.dir}/target" />
 	<property name="lib.dir" location="${target.dir}/lib" />
-	<property name="temp.dir" location="${target.dir}/temp" />
 	<property name="log.dir" location="${target.dir}/logs" />
 	<property name="dist.dir" location="${target.dir}/dist" />
+	<property name="temp.dir" location="${target.dir}/temp" />
 	<property name="download.dir" location="${target.dir}/download" />
-	<property name="working.dir" location="${target.dir}/working" />
+	<property name="grid.service.name" value="CaNanoLabService" />
 
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
 	<property name="cananolab-webapp.base.dir" value="${software.dir}/cananolab-webapp" />
+	<property name="cananolab-grid.base.dir" value="${software.dir}/cananolab-grid" />
 	<property name="cananolab-db.base.dir" value="${software.dir}/cananolab-db" />
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="cananolab-webapp.build.file" value="build.xml" />
+	<property name="cananolab-grid.build.file" value="build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
 	<property name="cananolab-webapp.build.target" value="run" />
+	<property name="cananolab-grid.build.target" value="distWebApp" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
 	<property name="dist.exploded.dir" value="${dist.dir}/exploded" />
 	<property name="cananolab-webapp.dist.dir" value="${dist.exploded.dir}/cananolab-webapp" />
+	<property name="cananolab-grid.dist.dir" value="${dist.exploded.dir}/cananolab-grid" />
 	<property name="common.dist.dir" value="${dist.exploded.dir}/common" />
 	<property name="jboss-conf.dist.dir" value="${dist.exploded.dir}/jboss-conf" />
-
+	<property name="cananolab-grid.temp.dir" value="${temp.dir}/cananolab-grid" />
 	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
 	<tstamp>
@@ -56,35 +60,129 @@
 	<target name="init" description="Sets up build are and initalizes variables">
 		<mkdir dir="${target.dir}" />
 		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${temp.dir}" />
 		<mkdir dir="${dist.exploded.dir}" />
 		<mkdir dir="${cananolab-webapp.dist.dir}" />
+		<mkdir dir="${cananolab-grid.dist.dir}" />
 		<mkdir dir="${common.dist.dir}" />
-		<mkdir dir="${temp.dir}" />
 		<mkdir dir="${download.dir}" />
+		<filterset id="db.filterset">
+			<filter token="database.url" value="${database.url}" />
+			<filter token="database.user" value="${database.user}" />
+			<filter token="database.password" value="${database.password}" />
+		</filterset>
 	</target>
 
-	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends=" clean, init, build:cananolab-webapp " >
+	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="build:cananolab-webapp, build:cananolab-grid">
 	</target>
 
-	<target name="build:cananolab-webapp" depends="init" description="Call webapp sub-project build target to produce artifiacts">
+	<target name="build:cananolab-webapp" depends="clean, init" description="Call webapp sub-project build target to produce artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" value="${cananolab-webapp.dist.dir}" />
-			<property name="commonlibrary.dir" value="${commonlibrary.dir}"/>
 		</ant>
 	</target>
 
 	<target name="dist:cananolab-webapp" depends="build:cananolab-webapp">
-		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="dist:common:resources" dir="${build.dir}">			
-			<property name="common.dir" value="${common.dir}"/>
+		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="dist:cananolab-webapp:resources" dir="${build.dir}">
+			<property name="common.dir" value="${common.dir}" />
 			<property name="common.dist.dir" value="${common.dist.dir}" />
 		</ant>
-        </target>
-        <target name="deploy:cananolab-webapp" depends="dist:cananolab-webapp">
-        	<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-webapp" dir="${build.dir}">			
-			<property name="cananolab-webapp.dist.dir" value="${cananolab-webapp.dist.dir}"/>
-			<property name="common.dir" value="${common.dir}"/>
+	</target>
+
+	<target name="deploy:cananolab-webapp" depends="dist:cananolab-webapp">
+		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-webapp" dir="${build.dir}">
+			<property name="cananolab-webapp.dist.dir" value="${cananolab-webapp.dist.dir}" />
 			<property name="common.dist.dir" value="${common.dist.dir}" />
 		</ant>
-        </target>
+	</target>
+
+	<target name="deploy:cananolab-grid" depends="dist:cananolab-grid">
+		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-grid" dir="${build.dir}">
+			<property name="cananolab-grid.dist.dir" value="${cananolab-grid.dist.dir}" />
+		</ant>
+	</target>
+
+	<target name="build:cananolab-grid:webapp:jars">
+		<!-- build the caNanoLab-helpers.jar -->
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:helpers" dir="${cananolab-webapp.base.dir}">
+			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
+		</ant>
+		<!-- build the caNanoLab-orm.jar -->
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:orm" dir="${cananolab-webapp.base.dir}">
+			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
+		</ant>
+	</target>
+
+	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars" description="Call grid sub-project build target to produce artifiacts">
+		<!--unpack globus wsrf war into wsrf-canano.war directory -->
+		<unzip dest="${cananolab-grid.temp.dir}" src="${common.dir}/resources/grid/globus_wsrf-canano.war.zip" />
+		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="${cananolab-grid.build.target}" dir="${cananolab-grid.base.dir}">
+			<property name="dist.dir" value="${cananolab-grid.temp.dir}" />
+		</ant>
+		<antcall target="build:cananolab-grid:properties" />
+		<!-- repackage grid WAR file -->
+		<jar destfile="${cananolab-grid.dist.dir}/wsrf-canano.war" basedir="${cananolab-grid.temp.dir}" />
+	</target>
+
+	<!-- replace generic tokens with properties -->
+	<target name="build:cananolab-grid:properties">
+		<copy overwrite="true" todir="${temp.dir}" filtering="true">
+			<fileset dir="${common.dir}/resources/hibernate">
+				<include name="*.xml" />
+			</fileset>
+			<filterset refid="db.filterset" />
+		</copy>
+
+		<!-- replace hibernate.cfg.xml in caNanoLabSDK-orm.jar -->
+		<jar update="true" destfile="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar">
+			<zipfileset src="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" excludes="hibernate.cfg.xml" />
+			<fileset dir="${temp.dir}">
+				<include name="hibernate.cfg.xml" />
+			</fileset>
+		</jar>
+
+		<!-- replace caNanoLab.csm.new.hibernate.cfg.xml in caNanoLabSDK-customConfig.jar -->
+		<jar update="true" destfile="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar">
+			<zipfileset src="${cananolab-grid.temp.dir}/WEB-INF/lib/caNanoLabSDK-customConfig.jar" excludes="caNanoLab.csm.new.hibernate.cfg.xml" />
+			<fileset dir="${temp.dir}">
+				<include name="caNanoLab.csm.new.hibernate.cfg.xml" />
+			</fileset>
+		</jar>
+
+		<!-- replace grid service hostname -->
+		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
+
+		<!-- replace grid service port -->
+		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token="DEFAULT_PORT" value="${grid.service.port}" />
+
+		<!-- replace grid index service URL -->
+		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/${grid.service.name}_registration.xml" token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
+
+		<!-- replace grid service metadata -->
+		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml">
+			<replacefilter token="APPOWNER" value="${application.owner}" />
+			<replacefilter token="YOUR_COUNTRY" value="${country}" />
+			<replacefilter token="YOUR_STATE" value="${state}" />
+			<replacefilter token="YOUR_CITY" value="${city}" />
+			<replacefilter token="YOUR_ZIP" value="${zipcode}" />
+			<replacefilter token="YOUR_STREET1" value="${street1}" />
+			<replacefilter token="YOUR_STREET2" value="${street2}" />
+			<replacefilter token="YOUR_AFFLIATION" value="${affliation}" />
+			<replacefilter token="YOUR_EMAIL" value="${email}" />
+			<replacefilter token="YOUR_PHONE" value="${phone}" />
+			<replacefilter token="FIRSTNAME" value="${first.name}" />
+			<replacefilter token="LASTNAME" value="${last.name}" />
+		</replace>
+	</target>
+
+	<target name="dist:cananolab-grid" depends="build:cananolab-grid">
+		<!-- unpack required globus libraries for JBoss -->
+		<unzip dest="${cananolab-grid.dist.dir}" src="${common.dir}/resources/grid/globus_jboss_lib.zip" />
+	</target>
+
+	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
+	</target>
+
 </project>
