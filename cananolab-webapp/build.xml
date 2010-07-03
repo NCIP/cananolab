@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="caNanoLab" default="run" basedir=".">
+<project name="cananolab-webapp" default="run" basedir=".">
 	<property file="build.properties" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="lib.dir" value="${basedir}/lib" />
@@ -32,6 +32,10 @@
 		<mkdir dir="${build.dir}/WEB-INF" />
 		<mkdir dir="${build.dir}/WEB-INF/classes" />
 		<mkdir dir="${build.dir}/WEB-INF/lib" />
+		<filterset id="properties.filterset">
+			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
+			<filter token="ADMIN_EMAIL" value="${admin.email}" />
+		</filterset>
 	</target>
 
 	<target name="compile" depends="init">
@@ -58,18 +62,10 @@
 			</fileset>
 		</copy>
 
-		<!--copy wsdd file -->
-		<copy todir="${build.dir}/WEB-INF/classes" file="${src.dir}/client-config.wsdd" />
-
-		<copy overwrite="true" todir="${build.dir}/WEB-INF/classes" file="${src.dir}/caNanoLab.properties.template">
+		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" file="${src.dir}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
-			<filterset>
-				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
-				<filter token="APP_OWNER" value="${application.owner}" />
-				<filter token="ADMIN_EMAIL" value="${admin.email}" />
-			</filterset>
+			<filterset refid="properties.filterset" />
 		</copy>
-		<move file="${build.dir}/WEB-INF/classes/caNanoLab.properties.template" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" />
 
 		<!--copy xml files -->
 		<copy todir="${build.dir}/WEB-INF/classes">
@@ -107,4 +103,19 @@
 		<jar destfile="${dist.dir}/caNanoLab.war" basedir="${build.dir}" />
 	</target>
 	<target name="run" depends="pre-clean, init, war, post-clean" />
+
+	<target name="jar:helpers" depends="compile">
+		<!-- caNanoLab.properties -->
+		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" file="${src.dir}/caNanoLab.properties.template">
+			<!-- replace tokens with values from build properties -->
+			<filterset refid="properties.filterset" />
+		</copy>
+		<!-- package jar file -->
+		<jar destfile="${dist.dir}/caNanoLab-helpers.jar" basedir="${build.dir}/WEB-INF/classes" includes="**/UserBean.class, **/*Exception.class, **/AuthorizationService.class, **/*Helper.class, **/ClassUtils.class, **/StringUtils.class, **/TextMatchMode.class, **/Constants.class, **/PropertyUtils.class, caNanoLab.properties.template" excludes="**/AdvancedSampleServiceHelper.class" />
+	</target>
+
+	<target name="jar:orm">
+		<!-- package jar file -->
+		<jar destfile="${dist.dir}/caNanoLab-orm.jar" basedir="${src.dir}" includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml" />
+	</target>
 </project>
