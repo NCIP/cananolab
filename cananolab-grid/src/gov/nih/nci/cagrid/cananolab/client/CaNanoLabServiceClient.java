@@ -160,10 +160,10 @@ public class CaNanoLabServiceClient extends CaNanoLabServiceClientBase implement
     }
   }
 
-  public java.lang.String[] getSampleNames(java.lang.String sampleName, java.lang.String samplePointOfContact,java.lang.String[] nanomaterialEntityClassNames,java.lang.String[] functionalizingEntityClassNames,java.lang.String[] functionClassNames,java.lang.String[] characterizationClassNames,java.lang.String[] words) throws RemoteException {
+  public java.lang.String[] getSampleIds(java.lang.String sampleName, java.lang.String samplePointOfContact,java.lang.String[] nanomaterialEntityClassNames,java.lang.String[] functionalizingEntityClassNames,java.lang.String[] functionClassNames,java.lang.String[] characterizationClassNames,java.lang.String[] words) throws RemoteException {
     synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"getSampleNames");
-    gov.nih.nci.cagrid.cananolab.stubs.GetSampleNamesRequest params = new gov.nih.nci.cagrid.cananolab.stubs.GetSampleNamesRequest();
+      configureStubSecurity((Stub)portType,"getSampleIds");
+    gov.nih.nci.cagrid.cananolab.stubs.GetSampleIdsRequest params = new gov.nih.nci.cagrid.cananolab.stubs.GetSampleIdsRequest();
     params.setSampleName(sampleName);
     params.setSamplePointOfContact(samplePointOfContact);
     params.setNanomaterialEntityClassNames(nanomaterialEntityClassNames);
@@ -171,7 +171,7 @@ public class CaNanoLabServiceClient extends CaNanoLabServiceClientBase implement
     params.setFunctionClassNames(functionClassNames);
     params.setCharacterizationClassNames(characterizationClassNames);
     params.setWords(words);
-    gov.nih.nci.cagrid.cananolab.stubs.GetSampleNamesResponse boxedResult = portType.getSampleNames(params);
+    gov.nih.nci.cagrid.cananolab.stubs.GetSampleIdsResponse boxedResult = portType.getSampleIds(params);
     return boxedResult.getResponse();
     }
   }

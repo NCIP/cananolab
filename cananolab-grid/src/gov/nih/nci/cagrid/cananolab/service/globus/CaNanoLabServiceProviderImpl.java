@@ -56,9 +56,9 @@ public class CaNanoLabServiceProviderImpl{
     return boxedResult;
   }
 
-    public gov.nih.nci.cagrid.cananolab.stubs.GetSampleNamesResponse getSampleNames(gov.nih.nci.cagrid.cananolab.stubs.GetSampleNamesRequest params) throws RemoteException {
-    gov.nih.nci.cagrid.cananolab.stubs.GetSampleNamesResponse boxedResult = new gov.nih.nci.cagrid.cananolab.stubs.GetSampleNamesResponse();
-    boxedResult.setResponse(impl.getSampleNames(params.getSampleName(), params.getSamplePointOfContact(),params.getNanomaterialEntityClassNames(),params.getFunctionalizingEntityClassNames(),params.getFunctionClassNames(),params.getCharacterizationClassNames(),params.getWords()));
+    public gov.nih.nci.cagrid.cananolab.stubs.GetSampleIdsResponse getSampleIds(gov.nih.nci.cagrid.cananolab.stubs.GetSampleIdsRequest params) throws RemoteException {
+    gov.nih.nci.cagrid.cananolab.stubs.GetSampleIdsResponse boxedResult = new gov.nih.nci.cagrid.cananolab.stubs.GetSampleIdsResponse();
+    boxedResult.setResponse(impl.getSampleIds(params.getSampleName(), params.getSamplePointOfContact(),params.getNanomaterialEntityClassNames(),params.getFunctionalizingEntityClassNames(),params.getFunctionClassNames(),params.getCharacterizationClassNames(),params.getWords()));
     return boxedResult;
   }
 

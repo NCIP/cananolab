@@ -95,7 +95,7 @@ public class CaNanoLabServiceAuthorization implements PDP {
 
 	}
 
-	public void authorizeGetSampleNames(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
+	public void authorizeGetSampleIds(Subject peerSubject, MessageContext context, QName operation) throws AuthorizationException {
 
 	}
 
@@ -163,8 +163,8 @@ public class CaNanoLabServiceAuthorization implements PDP {
 		} else if(operation.getLocalPart().equals("getProtocolByCharacterizationId")){
 			authorizeGetProtocolByCharacterizationId(peerSubject, context, operation);
 			return true;
-		} else if(operation.getLocalPart().equals("getSampleNames")){
-			authorizeGetSampleNames(peerSubject, context, operation);
+		} else if(operation.getLocalPart().equals("getSampleIds")){
+			authorizeGetSampleIds(peerSubject, context, operation);
 			return true;
 		} else if(operation.getLocalPart().equals("getPublicationIdsBy")){
 			authorizeGetPublicationIdsBy(peerSubject, context, operation);
