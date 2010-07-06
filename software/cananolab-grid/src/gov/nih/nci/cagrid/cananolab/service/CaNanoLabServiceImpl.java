@@ -144,7 +144,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		}
 	}
 
-	public java.lang.String[] getSampleNames(java.lang.String sampleName,
+	public java.lang.String[] getSampleIds(java.lang.String sampleName,
 			java.lang.String samplePointOfContact,
 			java.lang.String[] nanomaterialEntityClassNames,
 			java.lang.String[] functionalizingEntityClassNames,
@@ -153,14 +153,14 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			java.lang.String[] words) throws RemoteException {
 		try {
 			SampleServiceHelper helper = new SampleServiceHelper();
-			List<String> sampleNames = helper.findSampleNamesBy(sampleName,
+			List<String> sampleIds = helper.findSampleIdsBy(sampleName,
 					samplePointOfContact, nanomaterialEntityClassNames, null,
 					functionalizingEntityClassNames, null, functionClassNames,
 					null, characterizationClassNames, null, words);
-			return sampleNames.toArray(new String[0]);
+			return sampleIds.toArray(new String[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get sample names by the given criteria");
+					"Can't get sample IDs by the given criteria");
 		}
 	}
 

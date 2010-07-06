@@ -70,7 +70,7 @@
        <ns2:Output qName="ns11:Protocol" dimensionality="1" isArray="false" xmlns:ns11="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"/>
        <ns2:faultCollection/>
       </ns2:Operation>
-      <ns2:Operation description="" name="getSampleNames">
+      <ns2:Operation description="" name="getSampleIds">
        <ns2:inputParameterCollection>
         <ns2:InputParameter qName="xsd:string" dimensionality="1" index="0" isArray="false" isRequired="false" name="samplePointOfContact" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
         <ns2:InputParameter qName="xsd:string" dimensionality="1" index="1" isArray="true" isRequired="false" name="nanomaterialEntityClassNames" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>

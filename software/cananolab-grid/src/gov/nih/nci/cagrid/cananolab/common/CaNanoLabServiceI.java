@@ -41,7 +41,7 @@ public interface CaNanoLabServiceI {
 
   public gov.nih.nci.cananolab.domain.common.Protocol getProtocolByCharacterizationId(java.lang.String charId) throws RemoteException ;
 
-  public java.lang.String[] getSampleNames(java.lang.String sampleName, java.lang.String samplePointOfContact,java.lang.String[] nanomaterialEntityClassNames,java.lang.String[] functionalizingEntityClassNames,java.lang.String[] functionClassNames,java.lang.String[] characterizationClassNames,java.lang.String[] words) throws RemoteException ;
+  public java.lang.String[] getSampleIds(java.lang.String sampleName, java.lang.String samplePointOfContact,java.lang.String[] nanomaterialEntityClassNames,java.lang.String[] functionalizingEntityClassNames,java.lang.String[] functionClassNames,java.lang.String[] characterizationClassNames,java.lang.String[] words) throws RemoteException ;
 
   public java.lang.String[] getPublicationIdsBy(java.lang.String publicationTitle,java.lang.String publicationCategory,java.lang.String sampleName,java.lang.String[] researchAreas,java.lang.String[] keywords,java.lang.String pubMedId,java.lang.String digitalObjectId,java.lang.String[] authors,java.lang.String[] nanomaterialEntityClassNames,java.lang.String[] functionalizingEntityClassNames,java.lang.String[] functionClassNames) throws RemoteException ;
 

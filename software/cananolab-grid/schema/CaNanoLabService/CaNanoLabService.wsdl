@@ -105,7 +105,7 @@
           </sequence>
         </complexType>
       </element>
-      <element name="GetSampleNamesRequest">
+      <element name="GetSampleIdsRequest">
         <complexType>
           <sequence>
             <element name="sampleName" type="xs:string" minOccurs="1" maxOccurs="1" />
@@ -118,7 +118,7 @@
           </sequence>
         </complexType>
       </element>
-      <element name="GetSampleNamesResponse">
+      <element name="GetSampleIdsResponse">
         <complexType>
           <sequence>
             <element name="response" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
@@ -274,11 +274,11 @@
   <message name="GetProtocolByCharacterizationIdResponse">
     <part name="parameters" element="tns:GetProtocolByCharacterizationIdResponse" />
   </message>
-  <message name="GetSampleNamesRequest">
-    <part name="parameters" element="tns:GetSampleNamesRequest" />
+  <message name="GetSampleIdsRequest">
+    <part name="parameters" element="tns:GetSampleIdsRequest" />
   </message>
-  <message name="GetSampleNamesResponse">
-    <part name="parameters" element="tns:GetSampleNamesResponse" />
+  <message name="GetSampleIdsResponse">
+    <part name="parameters" element="tns:GetSampleIdsResponse" />
   </message>
   <message name="GetPublicationIdsByRequest">
     <part name="parameters" element="tns:GetPublicationIdsByRequest" />
@@ -348,9 +348,9 @@
       <input message="tns:GetProtocolByCharacterizationIdRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetProtocolByCharacterizationIdRequest" />
       <output message="tns:GetProtocolByCharacterizationIdResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetProtocolByCharacterizationIdResponse" />
     </operation>
-    <operation name="getSampleNames">
-      <input message="tns:GetSampleNamesRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleNamesRequest" />
-      <output message="tns:GetSampleNamesResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleNamesResponse" />
+    <operation name="getSampleIds">
+      <input message="tns:GetSampleIdsRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleIdsRequest" />
+      <output message="tns:GetSampleIdsResponse" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetSampleIdsResponse" />
     </operation>
     <operation name="getPublicationIdsBy">
       <input message="tns:GetPublicationIdsByRequest" wsa:Action="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/GetPublicationIdsByRequest" />
