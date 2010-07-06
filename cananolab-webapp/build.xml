@@ -2,7 +2,8 @@
 <project name="cananolab-webapp" default="run" basedir=".">
 	<property file="build.properties" />
 	<property name="src.dir" value="${basedir}/src" />
-	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="common.dir" value="${basedir}/../common"/>
+	<property name="common.lib.dir" value="${common.dir}/lib" />
 	<property name="webroot.dir" value="${basedir}/web" />
 	<property name="webapp.lib.dir" value="${webroot.dir}/WEB-INF/lib" />
 	<property name="build.dir" value="${basedir}/build" />
@@ -11,7 +12,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>
-			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+			<pathelement location="${common.lib.dir}/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
 
@@ -46,8 +47,9 @@
 			<fileset dir="${webapp.lib.dir}">
 				<include name="*.jar" />
 			</fileset>
-			<fileset dir="${lib.dir}">
-				<include name="**/*.jar" />
+			<fileset dir="${common.lib.dir}">
+				<include name="servlet.jar" />
+				<include name="log4j.jar" />
 			</fileset>
 		</path>
 		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" debug="true">
@@ -82,10 +84,11 @@
 			</fileset>
 		</copy>
 
-		<!-- copy lib files from ${lib.dir} -->
+		<!-- copy lib files from ${common.lib.dir} -->
 		<copy todir="${build.dir}/WEB-INF/lib">
-			<fileset dir="${lib.dir}">
-				<include name="*.jar" />
+			<fileset dir="${common.lib.dir}">
+				<include name="servlet.jar" />
+				<include name="log4j.jar" />
 			</fileset>
 		</copy>
 	</target>
