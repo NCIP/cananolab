@@ -9,6 +9,8 @@
 	<property environment="env" />
 	<property file="local.properties" />
 	<property file="deploy.properties" />
+	<!-- Default properties if not in local.properties and deploy.properties-->
+	<property file="default.properties" />
 
 	<!-- Generic properties -->
 	<property name="database.type" value="mysql" />
