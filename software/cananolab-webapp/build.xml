@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="cananolab-webapp" default="run" basedir=".">
+	<description>
+	This is the build file for the caNanoLab webapp project.
+	</description>
+
 	<property file="build.properties" />
-	<property name="src.dir" value="${basedir}/src" />
-	<property name="common.dir" value="${basedir}/../common"/>
-	<property name="common.lib.dir" value="${common.dir}/lib" />
-	<property name="webroot.dir" value="${basedir}/web" />
-	<property name="webapp.lib.dir" value="${webroot.dir}/WEB-INF/lib" />
-	<property name="build.dir" value="${basedir}/build" />
-	<property name="target.dir" value="${basedir}/target" />
-	<property name="dist.dir" value="${target.dir}/dist" />
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="common.dir" location="${basedir}/../common" />
+	<property name="common.lib.dir" location="${common.dir}/lib" />
+	<property name="webroot.dir" location="${basedir}/web" />
+	<property name="webapp.lib.dir" location="${webroot.dir}/WEB-INF/lib" />
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="target.dir" location="${basedir}/target" />
+	<property name="dist.dir" location="${target.dir}/dist" />
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>
@@ -84,13 +88,14 @@
 			</fileset>
 		</copy>
 
-		<!-- copy lib files from ${common.lib.dir} -->
+		<!-- copy lib files from ${common.lib.dir}
 		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset dir="${common.lib.dir}">
 				<include name="servlet.jar" />
 				<include name="log4j.jar" />
 			</fileset>
 		</copy>
+		-->
 	</target>
 
 	<target name="war" depends="compile">
