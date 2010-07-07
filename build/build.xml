@@ -10,6 +10,8 @@
 	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. Typically properties that are related to the distribution directories, or files. -->
 	<property file="local.properties" />
 	<property file="deploy.properties" />
+	<!-- Default properties if not in local.properties and deploy.properties-->
+	<property file="default.properties" />
 
 	<property name="build.dir" location="." />
 	<property name="software.dir" location=".." />
@@ -20,13 +22,12 @@
 	<property name="dist.dir" location="${target.dir}/dist" />
 	<property name="temp.dir" location="${target.dir}/temp" />
 	<property name="download.dir" location="${target.dir}/download" />
-	<property name="grid.service.name" value="CaNanoLabService" />
 
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
-	<property name="cananolab-webapp.base.dir" value="${software.dir}/cananolab-webapp" />
-	<property name="cananolab-grid.base.dir" value="${software.dir}/cananolab-grid" />
-	<property name="cananolab-db.base.dir" value="${software.dir}/cananolab-db" />
+	<property name="cananolab-webapp.base.dir" location="${software.dir}/cananolab-webapp" />
+	<property name="cananolab-grid.base.dir" location="${software.dir}/cananolab-grid" />
+	<property name="cananolab-db.base.dir" location="${software.dir}/cananolab-db" />
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="cananolab-webapp.build.file" value="build.xml" />
@@ -38,13 +39,13 @@
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
-	<property name="dist.exploded.dir" value="${dist.dir}/exploded" />
-	<property name="cananolab-webapp.dist.dir" value="${dist.exploded.dir}/cananolab-webapp" />
-	<property name="cananolab-grid.dist.dir" value="${dist.exploded.dir}/cananolab-grid" />
-	<property name="cananolab-db.dist.dir" value="${dist.exploded.dir}/cananolab-db" />
-	<property name="common.dist.dir" value="${dist.exploded.dir}/common" />
-	<property name="jboss-conf.dist.dir" value="${dist.exploded.dir}/jboss-conf" />
-	<property name="cananolab-grid.temp.dir" value="${temp.dir}/cananolab-grid" />
+	<property name="dist.exploded.dir" location="${dist.dir}/exploded" />
+	<property name="cananolab-webapp.dist.dir" location="${dist.exploded.dir}/cananolab-webapp" />
+	<property name="cananolab-grid.dist.dir" location="${dist.exploded.dir}/cananolab-grid" />
+	<property name="cananolab-db.dist.dir" location="${dist.exploded.dir}/cananolab-db" />
+	<property name="common.dist.dir" location="${dist.exploded.dir}/common" />
+	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
+	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
 
 	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
@@ -82,27 +83,27 @@
 	<target name="build:cananolab-webapp" depends="clean, init" description="Call webapp sub-project build target to produce artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" value="${cananolab-webapp.dist.dir}" />
+			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 		</ant>
 	</target>
 
 	<target name="dist:cananolab-webapp" depends="build:cananolab-webapp">
 		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="dist:cananolab-webapp:resources" dir="${build.dir}">
-			<property name="common.dir" value="${common.dir}" />
-			<property name="common.dist.dir" value="${common.dist.dir}" />
+			<property name="common.dir" location="${common.dir}" />
+			<property name="common.dist.dir" location="${common.dist.dir}" />
 		</ant>
 	</target>
 
 	<target name="deploy:cananolab-webapp" depends="dist:cananolab-webapp">
 		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-webapp" dir="${build.dir}">
-			<property name="cananolab-webapp.dist.dir" value="${cananolab-webapp.dist.dir}" />
-			<property name="common.dist.dir" value="${common.dist.dir}" />
+			<property name="cananolab-webapp.dist.dir" location="${cananolab-webapp.dist.dir}" />
+			<property name="common.dist.dir" location="${common.dist.dir}" />
 		</ant>
 	</target>
 
 	<target name="deploy:cananolab-grid" depends="dist:cananolab-grid">
 		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-grid" dir="${build.dir}">
-			<property name="cananolab-grid.dist.dir" value="${cananolab-grid.dist.dir}" />
+			<property name="cananolab-grid.dist.dir" location="${cananolab-grid.dist.dir}" />
 		</ant>
 	</target>
 
@@ -172,7 +173,7 @@
 			<replacefilter token="YOUR_ZIP" value="${zipcode}" />
 			<replacefilter token="YOUR_STREET1" value="${street1}" />
 			<replacefilter token="YOUR_STREET2" value="${street2}" />
-			<replacefilter token="YOUR_AFFLIATION" value="${affliation}" />
+			<replacefilter token="YOUR_AFFILIATION" value="${affiliation}" />
 			<replacefilter token="YOUR_EMAIL" value="${email}" />
 			<replacefilter token="YOUR_PHONE" value="${phone}" />
 			<replacefilter token="FIRSTNAME" value="${first.name}" />
@@ -183,44 +184,6 @@
 	<target name="dist:cananolab-grid" depends="build:cananolab-grid">
 		<!-- unpack required globus libraries for JBoss -->
 		<unzip dest="${cananolab-grid.dist.dir}" src="${common.dir}/resources/grid/globus_jboss_lib.zip" />
-	</target>
-
-	<target name="prepare:cananolab-db" depends="clean, init">
-		<!--set up liquibase required jars -->
-		<path id="liquibase.dependencies.path">
-			<fileset dir="${common.dir}/lib">
-				<include name="liquibase-*.jar" />
-				<include name="mysql-connector*.jar" />
-				<include name="ant-contrib-1.0b3.jar" />
-			</fileset>
-			<pathelement path="${cananolab-db.base.dir}/changelog" />
-		</path>
-
-		<taskdef resource="liquibasetasks.properties">
-			<classpath refid="liquibase.dependencies.path" />
-		</taskdef>
-
-		<!-- replace tokens with user info -->
-		<property name="database.driver" value="com.mysql.jdbc.Driver" />
-		<copy overwrite="true" todir="${cananolab-db.dist.dir}" filtering="true">
-			<fileset dir="${cananolab-db.base.dir}">
-				<include name="create_database_and_user.sql" />
-			</fileset>
-			<filterset refid="db.filterset" />
-		</copy>
-	</target>
-
-	<target name="update:cananolab-db" depends="prepare:cananolab-db">
-		<updateDatabase changeLogFile="db-upgrade.xml" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
-	</target>
-
-	<target name="drop:cananolab-db" depends="prepare:cananolab-db" description="Drop all database tables and other objects">
-		<dropAllDatabaseObjects driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" />
-	</target>
-
-	<target name="install:new:cananolab-db" depends="prepare:cananolab-db">
-		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${cananolab-db.dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
-		<antcall target="update:cananolab-db" />
 	</target>
 
 	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
