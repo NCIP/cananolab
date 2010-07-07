@@ -6,9 +6,6 @@
 	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 	<preConditions>
 		<dbms type="mysql" />
-		<not>
-			<tableExists tableName="hibernate_unique_key" />
-		</not>
 	</preConditions>
 	<changeSet id="1.5.1-1" author="pansu">
 		<comment>schema objects for caNanoLab release 1.5.1</comment>
