@@ -41,9 +41,11 @@
 	<property name="dist.exploded.dir" value="${dist.dir}/exploded" />
 	<property name="cananolab-webapp.dist.dir" value="${dist.exploded.dir}/cananolab-webapp" />
 	<property name="cananolab-grid.dist.dir" value="${dist.exploded.dir}/cananolab-grid" />
+	<property name="cananolab-db.dist.dir" value="${dist.exploded.dir}/cananolab-db" />
 	<property name="common.dist.dir" value="${dist.exploded.dir}/common" />
 	<property name="jboss-conf.dist.dir" value="${dist.exploded.dir}/jboss-conf" />
 	<property name="cananolab-grid.temp.dir" value="${temp.dir}/cananolab-grid" />
+
 	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
 	<tstamp>
@@ -64,6 +66,7 @@
 		<mkdir dir="${dist.exploded.dir}" />
 		<mkdir dir="${cananolab-webapp.dist.dir}" />
 		<mkdir dir="${cananolab-grid.dist.dir}" />
+		<mkdir dir="${cananolab-db.dist.dir}" />
 		<mkdir dir="${common.dist.dir}" />
 		<mkdir dir="${download.dir}" />
 		<filterset id="db.filterset">
@@ -180,6 +183,44 @@
 	<target name="dist:cananolab-grid" depends="build:cananolab-grid">
 		<!-- unpack required globus libraries for JBoss -->
 		<unzip dest="${cananolab-grid.dist.dir}" src="${common.dir}/resources/grid/globus_jboss_lib.zip" />
+	</target>
+
+	<target name="prepare:cananolab-db" depends="clean, init">
+		<!--set up liquibase required jars -->
+		<path id="liquibase.dependencies.path">
+			<fileset dir="${common.dir}/lib">
+				<include name="liquibase-*.jar" />
+				<include name="mysql-connector*.jar" />
+				<include name="ant-contrib-1.0b3.jar" />
+			</fileset>
+			<pathelement path="${cananolab-db.base.dir}/changelog" />
+		</path>
+
+		<taskdef resource="liquibasetasks.properties">
+			<classpath refid="liquibase.dependencies.path" />
+		</taskdef>
+
+		<!-- replace tokens with user info -->
+		<property name="database.driver" value="com.mysql.jdbc.Driver" />
+		<copy overwrite="true" todir="${cananolab-db.dist.dir}" filtering="true">
+			<fileset dir="${cananolab-db.base.dir}">
+				<include name="create_database_and_user.sql" />
+			</fileset>
+			<filterset refid="db.filterset" />
+		</copy>
+	</target>
+
+	<target name="update:cananolab-db" depends="prepare:cananolab-db">
+		<updateDatabase changeLogFile="db-upgrade.xml" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+	</target>
+
+	<target name="drop:cananolab-db" depends="prepare:cananolab-db" description="Drop all database tables and other objects">
+		<dropAllDatabaseObjects driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" />
+	</target>
+
+	<target name="install:new:cananolab-db" depends="prepare:cananolab-db">
+		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${cananolab-db.dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
+		<antcall target="update:cananolab-db" />
 	</target>
 
 	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
