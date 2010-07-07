@@ -7,34 +7,53 @@ USE canano;
 -- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
-INSERT INTO csm_group(group_name, group_desc, update_date, application_id)
-VALUES ('Public', 'caBIG and public', sysdate(), 2);
-VALUES ('Curator', 'Curator for the caNanoLab Data', sysdate(), 2);
+INSERT INTO csm_group(group_id, group_name, group_desc, update_date, application_id)
+VALUES (1, 'Public', 'caBIG and public', sysdate(), 2);
 
-INSERT INTO csm_role(role_name, role_description, application_id, active_flag, update_date)
-VALUES ('R', 'read only', 2, 1, sysdate()),
-  ('E', 'execute only', 2, 1, sysdate()),
-  ('D', 'delete only', 2, 1, sysdate()),
-  ('CUR', 'create, update, read', 2, 1, sysdate()),
-  ('CURD', 'create, update, read, delete', 2, 1, sysdate());
+INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date)
+VALUES (1,1,3,sysdate()),
+  (2,2,4,sysdate()),
+  (3,3,5,sysdate());
 
-INSERT INTO csm_role_privilege(role_id, privilege_id)
-VALUES (2,7),
-  (1,3),
-  (3,6),
-  (4,5),
-  (4,1),
-  (4,3),
-  (5,1),
-  (5,6),
-  (5,3),
-  (5,5);
+INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, attribute, protection_element_type, application_id, update_date)
+VALUES  (3, 'protocol', '', 'protocol', '', NULL, 2, sysdate()),
+  (4, 'sample', '', 'sample', '', NULL, 2, sysdate()),
+  (5, 'publication', '', 'publication', '', NULL, 2, sysdate());
+
+INSERT INTO csm_protection_group(protection_group_id, protection_group_name, protection_group_description, application_id, large_element_count_flag, update_date, parent_protection_group_id)
+VALUES  (1, 'protocol', '', 2, 0, sysdate(), NULL),
+  (2, 'sample', '', 2, 0, sysdate(), NULL),
+  (3, 'publication', '', 2, 0, sysdate(), NULL);
+
+INSERT INTO csm_role(role_id, role_name, role_description, application_id, active_flag, update_date)
+VALUES (1, 'R', 'read only', 2, 1, sysdate()),
+  (2, 'E', 'execute only', 2, 1, sysdate()),
+  (3, 'D', 'delete only', 2, 1, sysdate()),
+  (4, 'CUR', 'create, update, read', 2, 1, sysdate()),
+  (5, 'CURD', 'create, update, read, delete', 2, 1, sysdate());
+
+INSERT INTO csm_role_privilege(role_privilege_id, role_id, privilege_id)
+VALUES (1,2,7),
+  (2,1,3),
+  (3,3,6),
+  (4,4,5),
+  (5,4,1),
+  (6,4,3),
+  (7,5,1),
+  (8,5,6),
+  (9,5,3),
+  (10,5,5);
 
 INSERT INTO csm_user_pe(user_protection_element_id, protection_element_id, user_id)
 VALUES (2, 2, 1);
 
 INSERT INTO csm_user_group(user_group_id, user_id, group_id)
 VALUES (1, 1, 1);
+
+INSERT INTO csm_user_group_role_pg(user_group_role_pg_id, user_id, group_id, role_id, protection_group_id, update_date)
+VALUES (1, NULL, 1, 1, 1, sysdate()),
+ (2, NULL, 1, 1, 2, sysdate()),
+  (3, NULL, 1, 1, 3, sysdate());
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
