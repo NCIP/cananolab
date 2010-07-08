@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<project name="cananolab-db" default="update:cananolab-db" basedir=".">
+	<description>
+	This is the build file for the caNanoLab database project.
+	</description>
+
+	<!-- Property file related properties and tasks -->
+	<property file="build.properties" />
+	<property file="default.properties" />
+
+	<property name="src.dir" location="${basedir}/sql/mysql" />
+	<property name="changelog.dir" location="${basedir}/changelog" />
+	<property name="common.dir" location="${basedir}/../common" />
+	<property name="common.lib.dir" location="${common.dir}/lib" />
+	<property name="target.dir" location="${basedir}/target" />
+	<property name="dist.dir" location="${target.dir}/dist" />
+
+	<!-- Targets -->
+	<target name="clean">
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="init" description="initialize target and dist directories">
+		<mkdir dir="${target.dir}" />
+		<mkdir dir="${dist.dir}" />
+	</target>
+
+	<filterset id="db.filterset">
+		<filter token="database.url" value="${database.url}" />
+		<filter token="database.user" value="${database.user}" />
+		<filter token="database.password" value="${database.password}" />
+	</filterset>
+
+	<target name="prepare:changelog:cananolab-db" depends="clean, init">
+		<!--set up liquibase required jars -->
+		<path id="liquibase.dependencies.path">
+			<fileset dir="${common.dir}/lib">
+				<include name="liquibase-*.jar" />
+				<include name="mysql-connector*.jar" />
+				<include name="ant-contrib-1.0b3.jar" />
+			</fileset>
+			<pathelement path="${base.dir}" />
+		</path>
+		<taskdef resource="liquibasetasks.properties">
+			<classpath refid="liquibase.dependencies.path" />
+		</taskdef>
+	</target>
+
+	<target name="sync:changelog:cananolab-db" depends="prepare:changelog:cananolab-db">
+		<changeLogSync changeLogFile="${changelog.dir}/${db.changelog-to-sync.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path">
+		</changeLogSync>
+	</target>
+
+	<target name="update:cananolab-db" depends="prepare:changelog:cananolab-db, sync:changelog:cananolab-db">
+		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+		<antcall target="tag:cananolab-db" />
+	</target>
+
+	<target name="tag:cananolab-db" depends="prepare:changelog:cananolab-db">
+		<tagDatabase driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" tag="${app.version}">
+		</tagDatabase>
+	</target>
+
+	<target name="install:new:cananolab-db" depends="prepare:changelog:cananolab-db">
+		<!-- replace tokens in create_database_and_user.sql with user info -->
+		<copy overwrite="true" todir="${dist.dir}" filtering="true">
+			<fileset dir="${src.dir}">
+				<include name="create_database_and_user.sql" />
+			</fileset>
+			<filterset refid="db.filterset" />
+		</copy>
+		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
+		<antcall target="update:cananolab-db" />
+	</target>
+</project>
