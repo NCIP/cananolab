@@ -9,6 +9,6 @@
 	</preConditions>
 	<changeSet id="1.5.2-1" author="pansu">
 		<comment>data changes related to curation account management</comment>
-		<sqlFile path="db-upgrade/mysql/1.5.2/update_curation_management.sql" />
+		<sqlFile path="sql/mysql/1.5.2/update_curation_management.sql" />
 	</changeSet>
 </databaseChangeLog>

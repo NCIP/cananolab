@@ -7,6 +7,6 @@
 	<preConditions>
 		<dbms type="mysql" />
 	</preConditions>
-	<include file="db-1.5.1.xml" />
-	<include file="db-1.5.2.xml" />
+	<include file="changelog/db-1.5.1.xml" />
+    <include file="changelog/db-1.5.2.xml" />
 </databaseChangeLog>
