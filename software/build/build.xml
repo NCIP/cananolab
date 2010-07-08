@@ -47,6 +47,14 @@
 	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
 	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
 
+	<!-- tools needed for cagrid -->
+	<property name="cagrid-base-war.dest.file" value="${download.dir}/${cagrid-base-war.binaries.file}" />
+	<property name="cagrid-libs.dest.file" value="${download.dir}/${cagrid-libs.binaries.file}" />
+	<property name="ws-core.dest.file" value="${download.dir}/${ws-core.binaries.file}" />
+	<available file="${cagrid-libs.dest.file}" property="cagrid-libs.tools.exists" />
+	<available file="${cagrid-base-war.dest.file}" property="cagrid-base-war.tools.exists" />
+	<available file="${ws-core.dest.file}" property="ws-core.tools.exists" />
+
 	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
 	<tstamp>
@@ -107,6 +115,33 @@
 		</ant>
 	</target>
 
+	<!-- retrieve cagrid required tools from tech stack -->
+	<target name="dist:tools:retrieve:cagrid-libs" unless="cagrid-libs.tools.exists" description="Downloads caGrid ws-core 4.0.3 libs from binary repository">
+		<get src="${cagrid-libs.src.url}" dest="${cagrid-libs.dest.file}" />
+		<get src="${cagrid-base-war.src.url}" dest="${cagrid-base-war.dest.file}" />
+	</target>
+
+	<target name="dist:tools:retrieve:cagrid-base-war" unless="cagrid-base-war.tools.exists" description="Downloads caGrid base war">
+		<get src="${cagrid-base-war.src.url}" dest="${cagrid-base-war.dest.file}" />
+	</target>
+
+	<target name="dist:tools:retrieve:ws-core" unless="ws-core.tools.exists">
+		<get src="${ws-core.src.url}" dest="${ws-core.dest.file}" />
+		<!--
+		<get src="${ws-core.src.url}.MD5" dest="${ws-core.dest.file}.MD5" />
+		<checksum file="${ws-core.dest.file}" verifyProperty="ws-core.cksum.ok" />
+		<if>
+			<equals arg1="${ws-core.cksum.ok}" arg2="true" />
+			<then>
+				<echo message="Downloaded ws-core sucessfully" />
+			</then>
+			<else>
+				<fail message="Failed to download ws-core file sucessfully." />
+			</else>
+		</if>
+		-->
+	</target>
+
 	<target name="build:cananolab-grid:webapp:jars">
 		<!-- build the caNanoLab-helpers.jar -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:helpers" dir="${cananolab-webapp.base.dir}">
@@ -118,9 +153,9 @@
 		</ant>
 	</target>
 
-	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars" description="Call grid sub-project build target to produce artifiacts">
-		<!--unpack globus wsrf war into wsrf-canano.war directory -->
-		<unzip dest="${cananolab-grid.temp.dir}" src="${common.dir}/resources/grid/globus_wsrf-canano.war.zip" />
+	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war" description="Call grid sub-project build target to produce artifiacts">
+		<!--unpack base globus wsrf war into wsrf-canano.war directory -->
+		<unzip dest="${cananolab-grid.temp.dir}" src="${cagrid-base-war.dest.file}" />
 		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="${cananolab-grid.build.target}" dir="${cananolab-grid.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.temp.dir}" />
@@ -183,7 +218,7 @@
 
 	<target name="dist:cananolab-grid" depends="build:cananolab-grid">
 		<!-- unpack required globus libraries for JBoss -->
-		<unzip dest="${cananolab-grid.dist.dir}" src="${common.dir}/resources/grid/globus_jboss_lib.zip" />
+		<unzip dest="${cananolab-grid.dist.dir}" src="${cagrid-libs.dest.file}" />
 	</target>
 
 	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
