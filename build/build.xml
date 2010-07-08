@@ -47,6 +47,24 @@
 	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
 	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
 
+	<condition property="application.base.path" value="${application.base.path.linux}">
+		<or>
+			<os family="unix" />
+			<os family="mac" />
+		</or>
+	</condition>
+
+	<condition property="application.base.path" value="${application.base.path.windows}">
+		<os family="windows" />
+	</condition>
+	<echo message="application.base.path=${application.base.path}" />
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${common.dir}/lib/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
 	<!-- tools needed for cagrid -->
 	<property name="cagrid-base-war.dest.file" value="${download.dir}/${cagrid-base-war.binaries.file}" />
 	<property name="cagrid-libs.dest.file" value="${download.dir}/${cagrid-libs.binaries.file}" />
@@ -54,16 +72,7 @@
 	<available file="${cagrid-libs.dest.file}" property="cagrid-libs.tools.exists" />
 	<available file="${cagrid-base-war.dest.file}" property="cagrid-base-war.tools.exists" />
 	<available file="${ws-core.dest.file}" property="ws-core.tools.exists" />
-
-	<condition property="ws-core.dir" value="${env.GLOBUS_LOCATION}">
-		<isset property="env.GLOBUS_LOCATION" />
-	</condition>
-
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath>
-			<pathelement location="${common.dir}/lib/ant-contrib-1.0b3.jar" />
-		</classpath>
-	</taskdef>
+	<available file="${application.base.path}/${ws-core.relative.dir}" property="ws-core.install.exists" />
 
 	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
@@ -136,10 +145,18 @@
 	</target>
 
 	<target name="install:ws-core" unless="env.GLOBUS_LOCATION">
-		<echo message="GLOBUS_LOCATION not set, downloading and installing ${ws-core.src.url}" />
-		<antcall target="dist:tools:retrieve:ws-core" />
-		<unzip dest="${temp.dir}" src="${ws-core.dest.file}" />
-		<property name="ws-core.dir" value="${temp.dir}/${ws-core.relative.dir}" />
+		<echo message="environment variable GLOBUS_LOCATION not set, downloading and installing from ${ws-core.src.url}" />
+		<if>
+			<equals arg1="${ws-core.install.exists}" arg2="true" />
+			<then>
+				<echo message="${ws-core.relative.dir} has been installed at ${application.base.path}" />
+			</then>
+			<else>
+				<antcall target="dist:tools:retrieve:ws-core" />
+				<unzip dest="${application.base.path}" src="${ws-core.dest.file}" />
+			</else>
+		</if>
+		<property name="env.GLOBUS_LOCATION" value="${application.base.path}/${ws-core.relative.dir}" />
 	</target>
 
 	<target name="dist:tools:retrieve:ws-core" unless="ws-core.tools.exists">
@@ -174,7 +191,7 @@
 		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="${cananolab-grid.build.target}" dir="${cananolab-grid.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.temp.dir}" />
-			<property name="env.GLOBUS_LOCATION" value="${ws-core.dir}" />
+			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}" />
 		</ant>
 		<antcall target="build:cananolab-grid:properties" />
 		<!-- repackage grid WAR file -->
