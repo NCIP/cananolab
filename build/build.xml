@@ -55,6 +55,16 @@
 	<available file="${cagrid-base-war.dest.file}" property="cagrid-base-war.tools.exists" />
 	<available file="${ws-core.dest.file}" property="ws-core.tools.exists" />
 
+	<condition property="ws-core.dir" value="${env.GLOBUS_LOCATION}">
+		<isset property="env.GLOBUS_LOCATION" />
+	</condition>
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${common.dir}/lib/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
 	<!-- Start logging -->
 	<mkdir dir="${log.dir}" />
 	<tstamp>
@@ -125,21 +135,26 @@
 		<get src="${cagrid-base-war.src.url}" dest="${cagrid-base-war.dest.file}" />
 	</target>
 
+	<target name="install:ws-core" unless="env.GLOBUS_LOCATION">
+		<echo message="GLOBUS_LOCATION not set, downloading and installing ${ws-core.src.url}" />
+		<antcall target="dist:tools:retrieve:ws-core" />
+		<unzip dest="${temp.dir}" src="${ws-core.dest.file}" />
+		<property name="ws-core.dir" value="${temp.dir}/${ws-core.relative.dir}" />
+	</target>
+
 	<target name="dist:tools:retrieve:ws-core" unless="ws-core.tools.exists">
 		<get src="${ws-core.src.url}" dest="${ws-core.dest.file}" />
-		<!--
 		<get src="${ws-core.src.url}.MD5" dest="${ws-core.dest.file}.MD5" />
 		<checksum file="${ws-core.dest.file}" verifyProperty="ws-core.cksum.ok" />
 		<if>
 			<equals arg1="${ws-core.cksum.ok}" arg2="true" />
 			<then>
-				<echo message="Downloaded ws-core sucessfully" />
+				<echo message="Downloaded wscore sucessfully" />
 			</then>
 			<else>
-				<fail message="Failed to download ws-core file sucessfully." />
+				<fail message="Failed to download wscore file sucessfully." />
 			</else>
 		</if>
-		-->
 	</target>
 
 	<target name="build:cananolab-grid:webapp:jars">
@@ -153,12 +168,13 @@
 		</ant>
 	</target>
 
-	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war" description="Call grid sub-project build target to produce artifiacts">
+	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war, install:ws-core" description="Call grid sub-project build target to produce artifiacts">
 		<!--unpack base globus wsrf war into wsrf-canano.war directory -->
 		<unzip dest="${cananolab-grid.temp.dir}" src="${cagrid-base-war.dest.file}" />
 		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="${cananolab-grid.build.target}" dir="${cananolab-grid.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.temp.dir}" />
+			<property name="env.GLOBUS_LOCATION" value="${ws-core.dir}" />
 		</ant>
 		<antcall target="build:cananolab-grid:properties" />
 		<!-- repackage grid WAR file -->
