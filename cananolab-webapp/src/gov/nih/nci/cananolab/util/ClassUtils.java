@@ -36,7 +36,7 @@ public class ClassUtils {
 		Collection<Class> list = new ArrayList<Class>();
 		JarFile file = null;
 		URL url = Thread.currentThread().getContextClassLoader().getResource(
-				"client-config.wsdd");
+				"hibernate.cfg.xml");
 
 		File webInfDirectory = (new File(url.getPath())).getParentFile()
 				.getParentFile();
