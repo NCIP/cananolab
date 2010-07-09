@@ -32,6 +32,7 @@
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="cananolab-webapp.build.file" value="build.xml" />
 	<property name="cananolab-grid.build.file" value="build.xml" />
+	<property name="cananolab-db.build.file" value="build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
 	<property name="cananolab-webapp.build.target" value="run" />
@@ -254,7 +255,17 @@
 		<unzip dest="${cananolab-grid.dist.dir}" src="${cagrid-libs.dest.file}" />
 	</target>
 
-	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
+	<target name="install:new:cananolab-db">
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
+			<property name="dist.dir" value="${cananolab-db.dist.dir}" />
+		</ant>
 	</target>
 
+	<target name="update:cananolab-db">
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}" />
+		<property name="dist.dir" value="${cananolab-db.dist.dir}" />
+	</target>
+
+	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
+	</target>
 </project>
