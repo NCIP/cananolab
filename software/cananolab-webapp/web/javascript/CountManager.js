@@ -1,37 +1,13 @@
 function getPublicCounts() {
-	var sites = getSites();
-	getProtocolCounts(sites);
-	getSampleCounts(sites);
-	getPublicationCounts(sites);
+	getProtocolCounts();
+	getSampleCounts();
+	getPublicationCounts();
 }
 
-function getSites() {
-	var sites = dwr.util.getValue("sites");
-	/* test whether selected sites contains 'all' */
-	var isAllSites = false;
-	for ( var i = 0; i < sites.length; i++) {
-		if (sites[i] == "all") {
-			isAllSites = true;
-			break;
-		}
-	}
-	var allSites = new Array();
-	if (isAllSites) {
-		var options = document.getElementById("sites").options;
-		for ( var i = 0; i < options.length; i++) {
-			if (options[i].value != "all") {
-				allSites[i] = options[i].value;
-			}
-		}
-		sites = allSites;
-	}
-	return sites;
-}
-
-function getProtocolCounts(sites) {
+function getProtocolCounts() {
 	show("protocolLoaderImg");
 	hide("protocolCount");
-	ProtocolManager.getPublicCounts(sites, function(data) {
+	ProtocolManager.getPublicCounts(function(data) {
 		if (data != null) {
 			hide("protocolLoaderImg");
 			var link = "<a href=javascript:gotoProtocols('search')>" + data
@@ -46,12 +22,11 @@ function getProtocolCounts(sites) {
 	});
 }
 
-var currentSites = null;
-function getSampleCounts(sites) {
+function getSampleCounts() {
 	show("sampleLoaderImg");
 	hide("sampleRelatedCounts");
 	hide("sampleCounts");
-	SampleManager.getPublicCounts(sites, function(data) {
+	SampleManager.getPublicCounts(function(data) {
 		if (data != null) {
 			hide("sampleLoaderImg");
 			var link = "<a href=javascript:gotoSamples('search')>" + data
@@ -66,7 +41,6 @@ function getSampleCounts(sites) {
 			hide("moreStats");
 		}
 	});
-	currentSites = sites;
 }
 
 function getMoreSamplesStats() {
@@ -74,19 +48,19 @@ function getMoreSamplesStats() {
 	show("sampleRelatedLoaderImg");
 	var sampleRelatedCounts = document.getElementById("sampleRelatedCounts");
 	// dwr.engine.beginBatch(); //doesn't work properly in IE7
-	getSampleSourceCounts(currentSites);
-	getCharacterizationCounts("Characterization", currentSites);
-	getCharacterizationCounts("PhysicoChemicalCharacterization", currentSites);
-	getCharacterizationCounts("InvitroCharacterization", currentSites);
-	getCharacterizationCounts("InvivoCharacterization", currentSites);
-	getCharacterizationCounts("OtherCharacterization", currentSites);
+	getSampleSourceCounts();
+	getCharacterizationCounts("Characterization");
+	getCharacterizationCounts("PhysicoChemicalCharacterization");
+	getCharacterizationCounts("InvitroCharacterization");
+	getCharacterizationCounts("InvivoCharacterization");
+	getCharacterizationCounts("OtherCharacterization");
 	/*
 	 * dwr.engine.endBatch( { async : false });
 	 */
 }
 
-function getSampleSourceCounts(sites) {
-	SampleManager.getPublicSourceCounts(sites, function(data) {
+function getSampleSourceCounts() {
+	SampleManager.getPublicSourceCounts(function(data) {
 		if (data != null) {
 			dwr.util.setValue("sampleSourceCount", data);
 			show("sampleRelatedCounts");
@@ -95,9 +69,9 @@ function getSampleSourceCounts(sites) {
 	});
 }
 
-function getCharacterizationCounts(charType, sites) {
+function getCharacterizationCounts(charType) {
 	//show an example of how to set async for individual call back
-	CharacterizationManager.getPublicCharacterizationCounts(charType, sites, {
+	CharacterizationManager.getPublicCharacterizationCounts(charType, {
 		callback : function(data) {
 			if (data != null) {
 				dwr.util.setValue(charType + "Count", data);
@@ -109,10 +83,10 @@ function getCharacterizationCounts(charType, sites) {
 	});
 }
 
-function getPublicationCounts(sites) {
+function getPublicationCounts() {
 	show("publicationLoaderImg");
 	hide("publicationCount");
-	PublicationManager.getPublicCounts(sites, function(data) {
+	PublicationManager.getPublicCounts(function(data) {
 		if (data != null) {
 			hide("publicationLoaderImg");
 			var link = "<a href=javascript:gotoPublications('search')>" + data
