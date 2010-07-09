@@ -70,7 +70,7 @@ function getSampleSourceCounts() {
 }
 
 function getCharacterizationCounts(charType) {
-	//show an example of how to set async for individual call back
+	// show an example of how to set async for individual call back
 	CharacterizationManager.getPublicCharacterizationCounts(charType, {
 		callback : function(data) {
 			if (data != null) {
@@ -102,44 +102,19 @@ function getPublicationCounts() {
 }
 
 function gotoSamples(dispatch) {
-	var gridNodesStr = getSitesAsString();
 	var url = "/caNanoLab/searchSample.do?dispatch=" + dispatch;
-	if (gridNodesStr != null) {
-		url += "&searchLocations=" + gridNodesStr;
-	}
 	gotoPage(url);
 	return false;
 }
 
 function gotoPublications(dispatch) {
-	var gridNodesStr = getSitesAsString();
 	var url = "/caNanoLab/searchPublication.do?dispatch=" + dispatch;
-	if (gridNodesStr != null) {
-		url += "&searchLocations=" + gridNodesStr;
-	}
 	gotoPage(url);
 	return false;
 }
 
 function gotoProtocols(dispatch) {
-	var gridNodesStr = getSitesAsString();
 	var url = "/caNanoLab/searchProtocol.do?dispatch=" + dispatch;
-	if (gridNodesStr != null) {
-		url += "&searchLocations=" + gridNodesStr;
-	}
 	gotoPage(url);
 	return false;
-}
-
-function getSitesAsString() {
-	var sites = getSites();
-	if (sites.length == 0) {
-		return null;
-	}
-	var sitesStr = "";
-	for ( var i = 0; i < sites.length - 1; i++) {
-		sitesStr += sites[i] + "~";
-	}
-	sitesStr += sites[i];
-	return sitesStr;
 }
