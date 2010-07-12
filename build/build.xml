@@ -98,6 +98,20 @@
 			<filter token="database.user" value="${database.user}" />
 			<filter token="database.password" value="${database.password}" />
 		</filterset>
+
+		<!-- copy lib into lib.dir -->
+		<!-- replace with ivy in the future -->
+		<copy todir="${lib.dir}">
+			<fileset dir="${common.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<classpath>
+				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+			</classpath>
+		</taskdef>
 	</target>
 
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="build:cananolab-webapp, build:cananolab-grid">
@@ -186,12 +200,6 @@
 	</target>
 
 	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war, install:ws-core" description="Call grid sub-project build target to produce artifiacts">
-		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-			<classpath>
-				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
-			</classpath>
-		</taskdef>
-
 		<!--unpack base globus wsrf war into wsrf-canano.war directory -->
 		<unzip dest="${cananolab-grid.temp.dir}" src="${cagrid-base-war.dest.file}" />
 		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
