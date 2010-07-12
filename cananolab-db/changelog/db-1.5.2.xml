@@ -8,7 +8,7 @@
 		<dbms type="mysql" />
 	</preConditions>
 	<changeSet id="1.5.2-1" author="pansu">
-		<comment>data changes related to curation account management</comment>
-		<sqlFile path="sql/mysql/1.5.2/update_curation_management.sql" />
+		<comment>CSM data changes related to curation account management</comment>
+		<sqlFile path="sql/mysql/1.5.2/update_app_csm.sql" />
 	</changeSet>
 </databaseChangeLog>
