@@ -39,7 +39,7 @@
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/upt.war" />
 
 		<!-- copy database jdbc driver -->
-		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/lib/mysql-connector-java-5.0.7-bin.jar" />
+		<copy overwrite="true" todir="${common.dist.dir}" file="${lib.dir}/mysql-connector-java-5.0.7-bin.jar" />
 	</target>
 
 	<target name="deploy:cananolab-webapp">
