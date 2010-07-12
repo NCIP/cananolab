@@ -15,7 +15,6 @@
 	<target name="pre-clean">
 		<delete dir="${dist.dir}" />
 		<delete dir="${lib.dir}" />
-		<delete dir="${temp.dir}" />
 	</target>
 
 	<target name="post-clean">
@@ -116,7 +115,7 @@
 		<!-- package WAR file -->
 		<jar destfile="${dist.dir}/caNanoLab.war" basedir="${build.dir}" />
 	</target>
-	<target name="run" depends="pre-clean, init, war, post-clean" />
+	<target name="run" depends="pre-clean, war, post-clean" />
 
 	<target name="jar:helpers" depends="compile">
 		<!-- caNanoLab.properties -->
