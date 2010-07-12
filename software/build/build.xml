@@ -256,17 +256,13 @@
 	</target>
 
 	<target name="install:new:cananolab-db">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
+		<ant inheritAll="true" inheritRefs="false" antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
 			<property name="dist.dir" value="${cananolab-db.dist.dir}" />
-			<property name="database.server" value="${database.server}"/>
-			<property name="database.port" value="${database.port}"/>
-			<property name="database.user" value="${database.user}"/>
-			<property name="database.password" value="${database.password}"/>
 		</ant>
 	</target>
 
 	<target name="update:cananolab-db">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}" />
+		<ant inheritAll="true" inheritRefs="false" antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}" />
 		<property name="dist.dir" value="${cananolab-db.dist.dir}" />
 	</target>
 
