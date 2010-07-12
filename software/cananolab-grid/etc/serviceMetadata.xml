@@ -157,7 +157,7 @@
    <ns18:Address country="YOUR_COUNTRY" locality="YOUR_CITY" postalCode="YOUR_ZIP" stateProvince="YOUR_STATE" street1="YOUR_STREET1" street2="YOUR_STREET2"/>
    <ns18:ResearchCenterDescription description="" homepageURL="" imageURL="" rssNewsURL=""/>
    <ns18:pointOfContactCollection>
-    <ns18:PointOfContact affiliation="YOUR_AFFLIATION" email="YOUR_EMAIL" firstName="FIRSTNAME" lastName="LASTNAME" phoneNumber="YOUR_PHONE" role="Maintainer"/>
+    <ns18:PointOfContact affiliation="YOUR_AFFILIATION" email="YOUR_EMAIL" firstName="FIRSTNAME" lastName="LASTNAME" phoneNumber="YOUR_PHONE" role="Maintainer"/>
    </ns18:pointOfContactCollection>
   </ns18:ResearchCenter>
  </ns1:hostingResearchCenter>
