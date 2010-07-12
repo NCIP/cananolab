@@ -176,16 +176,22 @@
 		<!-- build the caNanoLab-helpers.jar -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:helpers" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
-			<property name="lib.dir" value="${lib.dir}"/>
+			<property name="lib.dir" value="${lib.dir}" />
 		</ant>
 		<!-- build the caNanoLabSDK-orm.jar -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:orm" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
-			<property name="lib.dir" value="${lib.dir}"/>
+			<property name="lib.dir" value="${lib.dir}" />
 		</ant>
 	</target>
 
 	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war, install:ws-core" description="Call grid sub-project build target to produce artifiacts">
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<classpath>
+				<pathelement location="${lib.dir}/lib/ant-contrib-1.0b3.jar" />
+			</classpath>
+		</taskdef>
+
 		<!--unpack base globus wsrf war into wsrf-canano.war directory -->
 		<unzip dest="${cananolab-grid.temp.dir}" src="${cagrid-base-war.dest.file}" />
 		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
