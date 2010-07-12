@@ -696,16 +696,16 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 		List<String> publicData = appService.getAllPublicData();
 		HQLCriteria crit = new HQLCriteria(
-				"select name from gov.nih.nci.cananolab.domain.particle.Sample");
+				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
 		List results = appService.query(crit);
-		List<String> publicNames = new ArrayList<String>();
+		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {
-			String name = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(publicData, name)) {
-				publicNames.add(name);
+			String id = (String) obj.toString();
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
+				publicIds.add(id);
 			}
 		}
-		return publicNames.size();
+		return publicIds.size();
 	}
 
 	public int getNumberOfPublicSampleSources() throws Exception {
