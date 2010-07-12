@@ -28,8 +28,6 @@
 
 		<!-- copy libs to lib.dir -->
 		<!-- replace by ivy in the future -->
-		<!-- copy jars to lib.dir -->
-		<!-- replace with ivy in the future -->
 		<copy todir="${lib.dir}">
 			<fileset dir="${basedir}/lib">
 				<include name="**/*.jar" />
