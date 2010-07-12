@@ -188,7 +188,7 @@
 	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war, install:ws-core" description="Call grid sub-project build target to produce artifiacts">
 		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 			<classpath>
-				<pathelement location="${lib.dir}/lib/ant-contrib-1.0b3.jar" />
+				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
 			</classpath>
 		</taskdef>
 
