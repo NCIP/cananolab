@@ -5,6 +5,7 @@
 	This is the build file for the caNanoLab database project.
 	</description>
 
+
 	<!-- Property file related properties and tasks -->
 	<property file="local.properties" />
 	<property file="deploy.properties" />
@@ -16,23 +17,24 @@
 	<property name="dist.dir" location="${target.dir}/dist" />
 	<property name="lib.dir" location="${target.dir}/lib" />
 
+	<!-- declare again to allow overwrite by the master build file -->
+
+	<property name="database.server" value="${database.server}" />
+	<property name="database.port" value="${database.port}" />
+	<property name="database.user" value="${database.user}" />
+	<property name="database.password" value="${database.port}" />
+	<property name="database.system.user" value="${database.system.user}" />
+	<property name="database.system.password" value="${database.system.password}" />
+
 	<!-- Targets -->
 	<target name="clean">
 		<delete dir="${dist.dir}" />
+		<delete dir="${lib.dir}" />
 	</target>
 
 	<target name="init" description="initialize target and dist directories">
-		<mkdir dir="${target.dir}" />
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${lib.dir}" />
-
-		<!-- copy libs to lib.dir -->
-		<!-- replace by ivy in the future -->
-		<copy todir="${lib.dir}">
-			<fileset dir="${basedir}/lib">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
 	</target>
 
 	<filterset id="db.filterset">
@@ -42,6 +44,14 @@
 	</filterset>
 
 	<target name="prepare:changelog" depends="clean, init">
+		<!-- copy libs to lib.dir -->
+		<!-- replace by ivy in the future -->
+		<copy todir="${lib.dir}">
+			<fileset dir="${basedir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
 		<!--set up liquibase required jars -->
 		<path id="liquibase.dependencies.path">
 			<fileset dir="${lib.dir}">
@@ -51,22 +61,21 @@
 			</fileset>
 			<pathelement path="${basedir}" />
 		</path>
+
 		<taskdef resource="liquibasetasks.properties">
 			<classpath refid="liquibase.dependencies.path" />
 		</taskdef>
 	</target>
 
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath>
-			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
-		</classpath>
-	</taskdef>
-
 	<target name="sync:changelog" depends="prepare:changelog">
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<classpath>
+				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+			</classpath>
+		</taskdef>
 		<copy overwrite="true" tofile="${dist.dir}/db-changelog-sync.xml" file="${changelog.dir}/db-upgrade.xml" />
 		<replaceregexp file="${dist.dir}/db-changelog-sync.xml" match=".+changelog/db-${caNanoLab.version}.xml.+" replace="" byline="false" />
-		<changeLogSync changeLogFile="${dist.dir}/db-changelog-sync.xml" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path">
-		</changeLogSync>
+		<changeLogSync changeLogFile="${dist.dir}/db-changelog-sync.xml" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" />
 	</target>
 
 	<target name="update" depends="prepare:changelog">
@@ -74,9 +83,19 @@
 	</target>
 
 	<target name="sync:update" depends="prepare:changelog">
-		<antcall target="sync:changelog" />
-		<antcall target="update" />
-		<antcall target="tag" />
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<classpath>
+				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+			</classpath>
+		</taskdef>
+		<copy overwrite="true" tofile="${dist.dir}/db-changelog-sync.xml" file="${changelog.dir}/db-upgrade.xml" />
+		<replaceregexp file="${dist.dir}/db-changelog-sync.xml" match=".+changelog/db-${caNanoLab.version}.xml.+" replace="" byline="false" />
+		<!-- sync change log -->
+		<changeLogSync changeLogFile="${dist.dir}/db-changelog-sync.xml" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" />
+		<!-- update database -->
+		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+		<!-- tag database -->
+		<tagDatabase driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" tag="${caNanoLab.version}" />
 	</target>
 
 	<target name="tag" depends="prepare:changelog">
@@ -93,6 +112,6 @@
 			<filterset refid="db.filterset" />
 		</copy>
 		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
-		<antcall target="update" />
+		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
 	</target>
 </project>
