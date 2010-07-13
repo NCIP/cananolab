@@ -33,9 +33,3 @@ where pe.protection_element_name=s.sample_name;
 update csm_protection_group pg, sample s
 set pg.protection_group_name=s.sample_pk_id
 where pg.protection_group_name=s.sample_name;
-
-/* update data to be CURD by curator */
-update csm_user_group_role_pg
-set role_id=5
-where role_id=1
-and group_id=2;
