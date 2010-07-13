@@ -122,6 +122,9 @@
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 			<property name="lib.dir" location="${lib.dir}" />
+			<property name="admin.email" value="${admin.email}"/>
+			<property name="release.version" value="${release.version}" />
+			<property name="file.repository.dir" value="${file.repository.dir}" />
 		</ant>
 	</target>
 
@@ -291,6 +294,7 @@
 		<property name="database.port" value="${database.port}" />
 		<property name="database.system.user" value="${database.system.user}" />
 		<property name="database.system.password" value="${database.system.password}" />
+		<property name="release.version" value="${release.version}" />
 	</target>
 
 	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
