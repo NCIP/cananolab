@@ -265,7 +265,11 @@
 
 	<target name="dist:cananolab-grid" depends="build:cananolab-grid">
 		<!-- unpack required globus libraries for JBoss -->
-		<unzip dest="${common.dist.dir}" src="${cagrid-libs.dest.file}" />
+		<unzip dest="${common.dist.dir}" src="${cagrid-libs.dest.file}">
+			<patternset>
+				<exclude name="log4j*.jar" />
+			</patternset>
+		</unzip>
 	</target>
 
 	<target name="install:new:cananolab-db">
