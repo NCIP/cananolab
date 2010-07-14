@@ -10,6 +10,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -226,6 +227,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			if (i < sampleBeans.size()) {
 				String sampleId = sampleBeans.get(i).getDomain().getId()
 						.toString();
+				
 				SampleBean sampleBean = service.findSampleById(sampleId);
 				if (sampleBean != null) {
 					Sample sample = sampleBean.getDomain();
@@ -244,6 +246,12 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					sampleBean.setFunctionClassNames(helper
 							.getStoredFunctionClassNames(sample).toArray(
 									new String[0]));
+					//get data availability for the sample
+					List<DataAvailabilityBean> dataAvailability = service.findDataAvailabilityBySampleId(sampleId);
+					if(!dataAvailability.isEmpty() && dataAvailability.size() > 0){
+						sampleBean.setDataAvailability(dataAvailability);
+						sampleBean.setHasDataAvailability(true);
+					}
 					loadedSampleBeans.add(sampleBean);
 				}
 			}
