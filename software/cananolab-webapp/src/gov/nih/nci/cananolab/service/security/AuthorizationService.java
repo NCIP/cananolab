@@ -343,9 +343,10 @@ public class AuthorizationService {
 	 * @param groupName
 	 * @throws SecurityException
 	 */
-	public void createAGroup(String groupName) throws SecurityException {
+	public Group createAGroup(String groupName) throws SecurityException {
+		Group doGroup = null;
 		try {
-			Group doGroup = getGroup(groupName);
+			doGroup = getGroup(groupName);
 			if (doGroup == null) {
 				doGroup = new Group();
 				doGroup.setGroupName(groupName);
@@ -355,6 +356,7 @@ public class AuthorizationService {
 			logger.error("Error in creating a group.", e);
 			throw new SecurityException();
 		}
+		return doGroup;
 	}
 
 	/**
