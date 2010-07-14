@@ -58,7 +58,7 @@ public class SampleBean {
 
 	private Boolean hasPublications = false;
 
-	private Boolean hasDataAvailability = true;
+	private Boolean hasDataAvailability = false;
 
 	private PointOfContactBean thePOC = new PointOfContactBean();
 
@@ -67,6 +67,8 @@ public class SampleBean {
 	private List<AccessibilityBean> accessibilities = new ArrayList<AccessibilityBean>();
 
 	private Boolean userUpdatable = false;
+	
+	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 
 	public SampleBean() {
 	}
@@ -271,6 +273,14 @@ public class SampleBean {
 
 	public void setHasDataAvailability(Boolean hasDataAvailability) {
 		this.hasDataAvailability = hasDataAvailability;
+	}
+
+	public List<DataAvailabilityBean> getDataAvailability() {
+		return dataAvailability;
+	}
+
+	public void setDataAvailability(List<DataAvailabilityBean> dataAvailability) {
+		this.dataAvailability = dataAvailability;
 	}
 
 	public PointOfContactBean getThePOC() {
