@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -77,6 +78,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	private CompositionServiceLocalImpl compService;
 	private PublicationServiceLocalImpl publicationService;
 	private FileServiceLocalImpl fileService;
+	private DataAvailabilityServiceJDBCImpl dataAvailabilityService;
 
 	public SampleServiceLocalImpl() {
 		try {
@@ -88,6 +90,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			publicationService = new PublicationServiceLocalImpl(authService);
 			fileService = new FileServiceLocalImpl(authService);
 			advancedHelper = new AdvancedSampleServiceHelper();
+			dataAvailabilityService = new DataAvailabilityServiceJDBCImpl();
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
 		}
@@ -101,6 +104,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		publicationService = new PublicationServiceLocalImpl(user);
 		fileService = new FileServiceLocalImpl(user);
 		advancedHelper = new AdvancedSampleServiceHelper(user);
+		dataAvailabilityService = new DataAvailabilityServiceJDBCImpl(user);
 	}
 
 	public SampleServiceLocalImpl(AuthorizationService authService) {
@@ -110,6 +114,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		publicationService = new PublicationServiceLocalImpl(authService);
 		fileService = new FileServiceLocalImpl(authService);
 		advancedHelper = new AdvancedSampleServiceHelper(authService);
+		dataAvailabilityService = new DataAvailabilityServiceJDBCImpl();
 	}
 
 	public SampleServiceLocalImpl(AuthorizationService authService,
@@ -120,6 +125,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		publicationService = new PublicationServiceLocalImpl(authService, user);
 		fileService = new FileServiceLocalImpl(authService, user);
 		advancedHelper = new AdvancedSampleServiceHelper(authService, user);
+		dataAvailabilityService = new DataAvailabilityServiceJDBCImpl();
 	}
 
 	/**
@@ -1182,6 +1188,25 @@ public class SampleServiceLocalImpl implements SampleService {
 			throw new SampleException(err, e);
 		}
 		return sortedNames;
+	}
+	//data availability
+	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws Exception{
+		return dataAvailabilityService.findDataAvailabilityBySampleId(sampleId);
+	}
+	
+	public void generateDataAvailability(SampleBean sampleBean) throws Exception{
+		Sample fullyLoadedSample = findFullyLoadedSampleByName(sampleBean.getDomain().getName());
+		sampleBean.setDomain(fullyLoadedSample);
+		
+		//dataAvailabilityService.generateDataAvailability(sampleBean, user);
+	}
+
+	public void saveDataAvailability(SampleBean sampleBean){
+		dataAvailabilityService.saveDataAvailability(sampleBean);
+	}
+	
+	public void deleteDataAvailability(String sampleId){
+		dataAvailabilityService.deleteDataAvailability(sampleId);
 	}
 
 	public SampleServiceHelper getHelper() {
