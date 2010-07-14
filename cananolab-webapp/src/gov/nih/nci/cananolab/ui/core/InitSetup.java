@@ -11,11 +11,13 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +59,54 @@ public class InitSetup {
 							.getAttribute("defaultLookupTable"));
 		}
 		return defaultLookupTable;
+	}
+	
+	/**
+	 * Retrieve lookup Map from lookup table and store in the application context
+	 * @param appContext
+	 * @param contextAttribute
+	 * @param attributeName
+	 * @return
+	 * @throws BaseException
+	 */
+	public Map<String,Map<String, SortedSet<String>>> getLookupByAttribute(
+			ServletContext appContext, String contextAttribute,String attributeName) throws BaseException{
+		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
+		Map<String, Map<String, SortedSet<String>>> lookupByAttributeMap = new HashMap<String, Map<String, SortedSet<String>>>();
+		System.out.println("retrieving lookup by attribute");
+		Set<String> keySet = defaultLookupTable.keySet();
+		Iterator<String> key = keySet.iterator();
+		while(key.hasNext()){
+			String keyName = (String)key.next();
+			Map<String, SortedSet<String>> attributeMap = defaultLookupTable.get(keyName);
+			Set<String> keySet2 = attributeMap.keySet();
+			Iterator<String> iterator = keySet2.iterator();
+			while(iterator.hasNext()){
+				String attribute = (String)iterator.next();
+				if(attribute.equalsIgnoreCase(attributeName)){
+					String value = attributeMap.get(attribute).toString();
+					System.out.println("keyName: " + keyName + " attribute: " + attribute + " value: " + value);
+					Map<String, SortedSet<String>> nameLookup = null;
+					if (lookupByAttributeMap.get(keyName) != null) {
+						nameLookup = lookupByAttributeMap.get(keyName);
+					} else {
+						nameLookup = new HashMap<String, SortedSet<String>>();
+						lookupByAttributeMap.put(keyName, nameLookup);
+					}
+					SortedSet<String> values = null;
+					if (nameLookup.get(attribute) != null) {
+						values = nameLookup.get(attribute);
+					} else {
+						values = new TreeSet<String>();
+						nameLookup.put(attribute, values);
+					}
+					values.add(value);
+				}
+			}
+		}
+		appContext.setAttribute(contextAttribute, lookupByAttributeMap);
+		return lookupByAttributeMap;
+		
 	}
 
 	/**
