@@ -11,7 +11,6 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -260,7 +259,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
-		Map<String, List<String>> privilegeMap = authService.getPriviledeMap(
+		Map<String, List<String>> privilegeMap = authService.getPrivilegeMap(
 				user.getLoginName(), sampleIds);
 		for (SampleBean sampleBean : sampleBeans) {
 			List<String> privileges = privilegeMap.get(sampleBean.getDomain()
