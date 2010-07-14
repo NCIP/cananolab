@@ -51,4 +51,24 @@
 			<ref bean="adminServiceDAO" />
 		</property>
 	</bean>
+	
+	
+	<bean name="DataAvailabilityServiceJDBCImpl"
+		class="gov.nih.nci.cananolab.service.sample.impl.DataAvailabilityServiceJDBCImpl">
+		<property name="dataSource">
+			<ref bean="caNanoLabDataSource" />
+		</property>
+	</bean>
+
+    <bean id="dataAvailabilityServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target">
+            <ref bean="DataAvailabilityServiceJDBCImpl"/>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>caNanoLabTxInterceptor</value>
+            </list>
+        </property>
+    </bean>
+	
 </beans>
