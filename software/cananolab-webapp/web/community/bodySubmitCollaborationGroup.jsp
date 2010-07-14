@@ -78,7 +78,7 @@
 							User Login Name
 						</td>
 						<td>
-							<html:text property="group.theUserAccessibility.userLoginName"
+							<html:text property="group.theUserAccessibility.user.loginName"
 								styleId="userLoginName" onchange=""/>
 						</td>
 						<td width="5">
