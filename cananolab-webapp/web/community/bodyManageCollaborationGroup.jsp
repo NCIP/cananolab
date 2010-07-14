@@ -15,47 +15,55 @@
 </jsp:include>
 <html:form action="/collaborationGroup">
 	<jsp:include page="/bodyMessage.jsp?bundle=community" />
+
 	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<td class="cellLabel" colspan="2">
-				Existing Collaboration Groups
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<c:set var="edit" value="true" />
-				<table class="editTableWithGrid" width="95%" align="center">
-					<tr>
-						<th>
-							Group Name
-						</th>
-						<th>
-							Group Description
-						</th>
-						<th>
-							Users (Access)
-						</th>
-						<th></th>
-					</tr>
-					<tr valign="top">
-						<td>
-							NCL_DNT_Collaboration
-						</td>
-						<td>
-							NCL's collaboration with DNT
-						</td>
-						<td>
-							janedoe (READ)
-						</td>
-						<td align="right">
-							<a
-								href="javascript:show('newCollaborationGroup');hide('newCollaborationGroupLabel'); hide('addCollaborationGroup');">Edit</a>&nbsp;
-						</td>
-					</tr>
-				</table>
-				<br />
-			</td>
-		</tr>
+		<c:if test="${!existingCollaborationGroups empty }">
+			<tr>
+				<td class="cellLabel" colspan="2">
+					Existing Collaboration Groups
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<c:set var="edit" value="true" />
+					<table class="editTableWithGrid" width="95%" align="center">
+						<tr>
+							<th>
+								Group Name
+							</th>
+							<th>
+								Group Description
+							</th>
+							<th>
+								Users (Access)
+							</th>
+							<th></th>
+						</tr>
+						<c:forEach var="group" items="${existingCollaborationGroups}">
+							<tr valign="top">
+								<td>
+									${group.name}
+								</td>
+								<td>
+									${group.description}
+								</td>
+								<td>
+									<c:forEach var="userAccess"
+										items="${group.userAccessibilities}">
+									${userAccess.user.loginName}(${userAccess.roleName})<br />
+									</c:forEach>
+								</td>
+								<td align="right">
+									<a
+										href="javascript:show('newCollaborationGroup');hide('newCollaborationGroupLabel'); hide('addCollaborationGroup');">Edit</a>&nbsp;
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+					<br />
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td class="cellLabel" width="20%" id="newCollaborationGroupLabel"
 				style="display: block">
