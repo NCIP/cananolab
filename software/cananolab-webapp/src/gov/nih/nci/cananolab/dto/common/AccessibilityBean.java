@@ -1,19 +1,19 @@
 package gov.nih.nci.cananolab.dto.common;
 
 public class AccessibilityBean {
-	private String userLoginName;
+	private UserBean user;
 	private String groupName;
 	private String roleName;
 
 	public AccessibilityBean() {
 	}
 
-	public String getUserLoginName() {
-		return userLoginName;
+	public UserBean getUser() {
+		return user;
 	}
 
-	public void setUserLoginName(String userLoginName) {
-		this.userLoginName = userLoginName;
+	public void setUser(UserBean user) {
+		this.user = user;
 	}
 
 	public String getGroupName() {
