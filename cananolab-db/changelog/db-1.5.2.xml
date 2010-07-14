@@ -7,11 +7,19 @@
 	<preConditions>
 		<dbms type="mysql" />
 	</preConditions>
-	<changeSet id="1.5.2-1" author="pansu">
+	<changeSet id="1.5.2-1" author="lethai">
+		<comment>common lookup changes related to data availability</comment>
+		<sqlFile path="sql/mysql/1.5.2/update_common_lookup.sql" />
+	</changeSet>
+	<changeSet id="1.5.2-2" author="lethai">
+		<comment>schema changes related to data availability</comment>
+		<sqlFile path="sql/mysql/1.5.2/data_availability.sql" />
+	</changeSet>
+	<changeSet id="1.5.2-3" author="pansu">
 		<comment>CSM data changes related to curation account management</comment>
 		<sqlFile path="sql/mysql/1.5.2/update_app_csm.sql" />
 	</changeSet>
-	<changeSet id="1.5.2-2" author="pansu">
+	<changeSet id="1.5.2-4" author="pansu">
 		<comment>changes related to curator access</comment>
 		<sqlFile path="sql/mysql/1.5.2/update_curator_access.sql" />
 	</changeSet>
