@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -113,13 +114,30 @@ public class SampleDecorator extends TableDecorator {
 		// need to compute this value
 		Integer completeness = 39;
 		SampleBean sample = (SampleBean) getCurrentRowObject();
-		String sampleId = sample.getDomain().getId().toString();
-
-		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
-		sb.append(sampleId).append('>');
-		sb.append("caNanoLab: 67%; MINChar: 33%").append("</a>");
+		List<DataAvailabilityBean> dataAvailability = sample.getDataAvailability();
+		//calculate percentage for caNanoLab and MINChar
+		StringBuilder sb = new StringBuilder();
+		if(!sample.getHasDataAvailability()){
+			sb.append("NA");
+		}else{
+			sb.append("<a href=");
+			sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
+			String sampleId = sample.getDomain().getId().toString();
+			sb.append(sampleId).append('>');
+			sb.append(calculateDataAvailabilityScore(dataAvailability)).append("</a>");
+		}		
+		
 		String link = sb.toString();
 		return link;
 	}
+	
+	private String calculateDataAvailabilityScore(List<DataAvailabilityBean> dataAvailability){
+		int size = dataAvailability.size();
+		
+		int caNanoLabScore = size/29;
+		int minCharScore = size/8;
+		
+		String s = "caNanoLab: " + caNanoLabScore + "%; MINChar: " + minCharScore + "%";
+		return s;
+ 	}
 }
