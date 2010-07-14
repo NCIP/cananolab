@@ -22,7 +22,10 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -145,11 +148,12 @@ public class SampleAction extends BaseAnnotationAction {
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request);
+		SampleBean sampleBean = setupSample(theForm, request);		
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
 				.getOrganization().getName());
+		//
 
 		// Feature request [26487] Deeper Edit Links.
 		// String dispatch = request.getParameter("dispatch"); // as the
@@ -167,33 +171,24 @@ public class SampleAction extends BaseAnnotationAction {
 		// }
 		// }
 
-		InitSetup charsService = InitSetup.getInstance();
+		/*InitSetup charsService = InitSetup.getInstance();
 		ServletContext appContext = request.getSession().getServletContext();
-		SortedSet<String> physicoChars = charsService
-				.getDefaultTypesByReflection(
-						appContext,
-						"defaultCharTypeChars",
-						"gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
-		SortedSet<String> invitroChars = charsService
-				.getDefaultTypesByReflection(appContext,
-						"defaultCharTypeChars",
-						"gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
-		SortedSet<String> invivoChars = charsService
-				.getDefaultTypesByReflection(appContext,
-						"defaultCharTypeChars",
-						"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
-		SortedSet<String> chemicalAssocs = charsService
-				.getDefaultTypesByReflection(appContext,
-						"defaultCharTypeChars",
-						"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
-
+		
+		Map<String, Map<String, SortedSet<String>>> defaultLookup = (HashMap<String, Map<String, SortedSet<String>>>)appContext.getAttribute("defaultLookupTable");
+		if(defaultLookup != null){
+			Map<String, SortedSet<String>> map = defaultLookup.get("MINChar");
+			Collection<Map<String, SortedSet<String>>> lookupValues  = defaultLookup.values();
+			//lookupValues.
+		}*/
+		
+/*
 		request.setAttribute("physicoChars", physicoChars);
 		request.setAttribute("invitroChars", invitroChars);
 		request.setAttribute("invivoChars", invivoChars);
 		request.setAttribute("chemicalAssocs", chemicalAssocs);
 
 		System.out.println("chemical associations size: "
-				+ chemicalAssocs.size());
+				+ chemicalAssocs.size());*/
 		return mapping.findForward("summaryEdit");
 		// return mapping.findForward("summaryEdit");
 	}
