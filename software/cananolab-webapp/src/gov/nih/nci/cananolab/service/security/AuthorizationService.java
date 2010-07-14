@@ -976,7 +976,7 @@ public class AuthorizationService {
 		return data2role;
 	}
 
-	public Map<String, List<String>> getPriviledeMap(String userName,
+	public Map<String, List<String>> getPrivilegeMap(String userName,
 			List<String> protectedData) throws Exception {
 		List<ProtectionElement> pes = new ArrayList<ProtectionElement>();
 		for (String item : protectedData) {
@@ -996,6 +996,59 @@ public class AuthorizationService {
 			privilegeMap.put(pe, privileges);
 		}
 		return privilegeMap;
+	}
+
+	public String getRoleForUser(String userName, String protectedData)
+			throws Exception {
+		String query = "select distinct r.role_name "
+				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_role r "
+				+ "where ugrp.protection_group_id=pg.protection_group_id  "
+				+ "ugrp.user_id=u.user_id " + "and ugrp.role_id=r.role_id "
+				+ "and pg.protection_group_name='" + protectedData
+				+ "' and u.login_name='" + userName + "'";
+		String roleName = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "role_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				roleName = (String) obj;
+			}
+		} catch (Exception e) {
+			logger.error("Error in getting existing role from CSM database", e);
+			throw new SecurityException();
+		}
+		return roleName;
+	}
+
+	public Map<String, String> getUserRoles(String protectedData)
+			throws Exception {
+		String query = "select distinct u.login_name, r.role_name "
+				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_role r "
+				+ "where ugrp.protection_group_id=pg.protection_group_id  "
+				+ "ugrp.user_id=u.user_id " + "and ugrp.role_id=r.role_id "
+				+ "and pg.protection_group_name='" + protectedData + "'";
+		Map<String, String> user2Role = new HashMap<String, String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "login_name", "role_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING,
+					Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				String[] row = (String[]) obj;
+				String user = row[0];
+				String role = row[1];
+				user2Role.put(user, role);
+			}
+		} catch (Exception e) {
+			logger.error("Error in getting existing role from CSM database", e);
+			throw new SecurityException();
+		}
+		return user2Role;
 	}
 
 	public static void main(String[] args) {
