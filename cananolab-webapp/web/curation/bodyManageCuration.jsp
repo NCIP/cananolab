@@ -42,19 +42,12 @@
 							</tr>
 							<tr>
 								<td class="sidebarContent">
-									<a href="reviewData.do?dispatch=setupNew">Review
-										Data Pending Release to Public</a>
+									<a href="reviewData.do?dispatch=setupNew">Review Data
+										Pending Release to Public</a>
 									<br>
 									Review samples, publications and protocols submitted by
 									researchers and assign them to be readable by Public when
 									appropriate.
-								</td>
-							</tr>
-							<tr>
-								<td class="sidebarContent">
-									<a href="${createLink}">Review Data Pending Data Availability Metrics Generation</a>
-									<br>
-									Review samples that don't yet have data availability metrics and generate the metrics.
 								</td>
 							</tr>
 						</table>
