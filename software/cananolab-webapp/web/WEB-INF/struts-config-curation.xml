@@ -17,7 +17,7 @@
 		<action path="/manageCuration" type="org.apache.struts.actions.ForwardAction"
 			parameter="curation.manageCuration" scope="request" />
 		<action name="reviewDataForm" parameter="dispatch"
-			path="/reviewData" type="gov.nih.nci.cananolab.ui.curation.ReviewDataAction"
+			path="/reviewData" type="org.springframework.web.struts.DelegatingActionProxy"
 			input="input">
 			<forward name="setup" path="curation.reviewData" />
 			<forward name="input"
