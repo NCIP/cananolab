@@ -17,7 +17,7 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=community" />
 
 	<table width="100%" align="center" class="submissionView">
-		<c:if test="${!existingCollaborationGroups empty }">
+		<c:if test="${!empty existingCollaborationGroups}">
 			<tr>
 				<td class="cellLabel" colspan="2">
 					Existing Collaboration Groups
