@@ -8,11 +8,15 @@ package gov.nih.nci.cananolab.ui.curation;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.service.curation.CurationService;
+import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,25 +26,24 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class ReviewDataAction extends BaseAnnotationAction {
-	// logger
-	// private static Logger logger =
-	// Logger.getLogger(ReviewDataAction.class);
+public class ReviewDataAction extends AbstractDispatchAction {
+	private CurationService curationService;
 
-	/**
-	 * Handle edit sample request on sample search result page (curator view).
-	 *
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
+	public CurationService getCurationService() {
+		return curationService;
+	}
+
+	public void setCurationService(CurationService curationService) {
+		this.curationService = curationService;
+	}
+
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		List<DataReviewStatusBean> dataPendingReview = curationService
+				.findDataPendingReview();
+		request.setAttribute("dataPendingReview", dataPendingReview);
 		return mapping.findForward("setup");
 	}
 
