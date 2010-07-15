@@ -4,28 +4,30 @@
 	default-autowire="no">
 
 	<!-- Bean Definitions for Admin Services -->
-    <bean id="caNanoLabDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName">
-            <value>java:/caNanoLab</value>
-        </property>
-    </bean>
+	<bean id="caNanoLabDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:/caNanoLab</value>
+		</property>
+	</bean>
 
-    <bean id="caNanoLabTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="caNanoLabTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource">
 			<ref bean="caNanoLabDataSource" />
 		</property>
-    </bean>
+	</bean>
 
-    <bean id="caNanoLabTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<bean id="caNanoLabTxInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
 		<property name="transactionManager">
 			<ref bean="caNanoLabTransactionManager" />
 		</property>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
 
 	<bean name="AdminServiceJDBCImpl"
 		class="gov.nih.nci.cananolab.service.admin.impl.AdminServiceJDBCImpl">
@@ -34,25 +36,24 @@
 		</property>
 	</bean>
 
-    <bean id="adminServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target">
-            <ref bean="AdminServiceJDBCImpl"/>
-        </property>
-        <property name="interceptorNames">
-            <list>
-                <value>caNanoLabTxInterceptor</value>
-            </list>
-        </property>
-    </bean>
+	<bean id="adminServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="AdminServiceJDBCImpl" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>caNanoLabTxInterceptor</value>
+			</list>
+		</property>
+	</bean>
 
-	<bean name="/admin"
-		class="gov.nih.nci.cananolab.ui.admin.AdministrationAction">
+	<bean name="/admin" class="gov.nih.nci.cananolab.ui.admin.AdministrationAction">
 		<property name="adminService">
 			<ref bean="adminServiceDAO" />
 		</property>
 	</bean>
-	
-	
+
+
 	<bean name="DataAvailabilityServiceJDBCImpl"
 		class="gov.nih.nci.cananolab.service.sample.impl.DataAvailabilityServiceJDBCImpl">
 		<property name="dataSource">
@@ -60,15 +61,39 @@
 		</property>
 	</bean>
 
-    <bean id="dataAvailabilityServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target">
-            <ref bean="DataAvailabilityServiceJDBCImpl"/>
-        </property>
-        <property name="interceptorNames">
-            <list>
-                <value>caNanoLabTxInterceptor</value>
-            </list>
-        </property>
-    </bean>
-	
+	<bean id="dataAvailabilityServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="DataAvailabilityServiceJDBCImpl" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>caNanoLabTxInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="curationServiceJDBCImpl"
+		class="gov.nih.nci.cananolab.service.curation.impl.CurationServiceJDBCImpl">
+		<property name="dataSource">
+			<ref bean="caNanoLabDataSource" />
+		</property>
+	</bean>
+
+	<bean id="curationServiceDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="curationServiceJDBCImpl" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>caNanoLabTxInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="/reviewData" class="gov.nih.nci.cananolab.ui.curation.ReviewDataAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
 </beans>
