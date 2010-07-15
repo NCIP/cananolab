@@ -6,7 +6,8 @@ import gov.nih.nci.cananolab.exception.CurationException;
 import java.util.List;
 
 public interface CurationService {
-	public void submitDataForReview() throws CurationException;
+	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean)
+			throws CurationException;
 
 	public List<DataReviewStatusBean> findDataPendingReview()
 			throws CurationException;
