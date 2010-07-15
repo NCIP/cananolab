@@ -13,53 +13,39 @@
 			Data Pending Review
 		</td>
 	</tr>
+	<c:if test="${!empty dataPendingReview}">
+		<tr>
+			<td>
+				<table class="editTableWithGrid" width="95%" align="center">
+					<tr>
+						<th>
+							Data Type
+						</th>
+						<th>
+							Data ID
+						</th>
+						<th></th>
+					</tr>
+					<c:forEach var="data" items="dataPendingReview">
+						<tr valign="top">
+							<td>
+								${data.dataType}
+							</td>
+							<td>
+								${data.dataName}
+							</td>
+							<td align="right">
+								<a href="${data.reviewLink}">Edit</a>&nbsp;
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<td>
-			<table class="editTableWithGrid" width="95%" align="center">
-				<tr>
-					<th>
-						Data Type
-					</th>
-					<th>
-						Data ID
-					</th>
-					<th></th>
-				</tr>
-				<tr valign="top">
-					<td>
-						Sample
-					</td>
-					<td>
-						NCL-23
-					</td>
-					<td align="right">
-						<a href="sample.do?dispatch=summaryEdit&page=0&sampleId=20917507">Edit</a>&nbsp;
-					</td>
-				</tr>
-				<tr valign="top">
-					<td>
-						Publication
-					</td>
-					<td>
-						publication title
-					</td>
-					<td align="right">
-						<a href="publication.do?page=0&dispatch=setupUpdate&publicationId=23178496">Edit</a>&nbsp;
-					</td>
-				</tr>
-				<tr valign="top">
-					<td>
-						Protocol
-					</td>
-					<td>
-						Protocol Name
-					</td>
-					<td align="right">
-						<a href="protocol.do?dispatch=setupUpdate&protocolId=24390913">Edit</a>&nbsp;
-					</td>
-				</tr>
-			</table>
+			&nbsp;
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td></tr>
 </table>
