@@ -26,16 +26,16 @@
 						</th>
 						<th></th>
 					</tr>
-					<c:forEach var="data" items="dataPendingReview">
+					<c:forEach var="dataReview" items="${dataPendingReview}">
 						<tr valign="top">
 							<td>
-								${data.dataType}
+								${dataReview.dataType}
 							</td>
 							<td>
-								${data.dataName}
+								${dataReview.dataName}
 							</td>
 							<td align="right">
-								<a href="${data.reviewLink}">Edit</a>&nbsp;
+								<a href="${dataReview.reviewLink}">Edit</a>&nbsp;
 							</td>
 						</tr>
 					</c:forEach>
