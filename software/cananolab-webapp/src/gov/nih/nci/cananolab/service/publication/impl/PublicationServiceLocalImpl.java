@@ -407,14 +407,14 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	private void assignVisibility(Publication publication,
 			String[] visibleGroups) throws Exception {
 		helper.getAuthService().assignVisibility(
-				publication.getId().toString(), visibleGroups, null);
+				publication.getId().toString(), visibleGroups);
 		// set author visibility as well because didn't share authors
 		// between publications
 		if (publication.getAuthorCollection() != null) {
 			for (Author author : publication.getAuthorCollection()) {
 				if (author != null) {
 					helper.getAuthService().assignVisibility(
-							author.getId().toString(), visibleGroups, null);
+							author.getId().toString(), visibleGroups);
 				}
 			}
 		}

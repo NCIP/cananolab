@@ -126,14 +126,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName();
 			// assign visibility for composition
 			helper.getAuthService().assignVisibility(
 					sample.getSampleComposition().getId().toString(),
-					visibleGroups, owningGroup);
+					visibleGroups);
 			// assign visibility for nanomaterial entity
-			assignVisibility(entity, visibleGroups, owningGroup);
+			assignVisibility(entity, visibleGroups);
 		} catch (Exception e) {
 			String err = "Error in saving a nanomaterial entity.";
 			logger.error(err, e);
@@ -215,14 +213,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName();
 			// assign visibility for composition
 			helper.getAuthService().assignVisibility(
 					sample.getSampleComposition().getId().toString(),
-					visibleGroups, owningGroup);
+					visibleGroups);
 			// assign visibility for chemical association
-			assignVisibility(entity, visibleGroups, owningGroup);
+			assignVisibility(entity, visibleGroups);
 
 		} catch (Exception e) {
 			String err = "Problem saving the functionalizing entity.";
@@ -273,14 +269,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			}
 
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName();
 			// assign visibility for composition
 			helper.getAuthService().assignVisibility(
 					sample.getSampleComposition().getId().toString(),
-					visibleGroups, owningGroup);
+					visibleGroups);
 			// assign visibility for chemical association
-			assignVisibility(assoc, visibleGroups, owningGroup);
+			assignVisibility(assoc, visibleGroups);
 		} catch (Exception e) {
 			String err = "Problem saving the chemical assocation.";
 			logger.error(err, e);
@@ -334,7 +328,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 			helper.getAuthService().assignVisibility(
 					sample.getSampleComposition().getId().toString(),
-					visibleGroups, owningGroup);
+					visibleGroups);
 
 		} catch (Exception e) {
 			String err = "Error in saving the composition file.";
@@ -905,10 +899,10 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	private void assignVisibility(NanomaterialEntity entity,
-			String[] visibleGroups, String owningGroup) throws Exception {
+			String[] visibleGroups) throws Exception {
 		if (entity != null) {
 			helper.getAuthService().assignVisibility(entity.getId().toString(),
-					visibleGroups, owningGroup);
+					visibleGroups);
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = entity
 					.getComposingElementCollection();
@@ -917,7 +911,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					if (composingElement != null) {
 						helper.getAuthService().assignVisibility(
 								composingElement.getId().toString(),
-								visibleGroups, owningGroup);
+								visibleGroups);
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -927,7 +921,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 							if (function != null) {
 								helper.getAuthService().assignVisibility(
 										function.getId().toString(),
-										visibleGroups, owningGroup);
+										visibleGroups);
 							}
 						}
 					}
@@ -937,16 +931,15 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	private void assignVisibility(FunctionalizingEntity functionalizingEntity,
-			String[] visibleGroups, String owningGroup) throws Exception {
+			String[] visibleGroups) throws Exception {
 		if (functionalizingEntity != null) {
 			helper.getAuthService().assignVisibility(
-					functionalizingEntity.getId().toString(), visibleGroups,
-					owningGroup);
+					functionalizingEntity.getId().toString(), visibleGroups);
 			// activation method
 			if (functionalizingEntity.getActivationMethod() != null) {
 				helper.getAuthService().assignVisibility(
 						functionalizingEntity.getActivationMethod().getId()
-								.toString(), visibleGroups, owningGroup);
+								.toString(), visibleGroups);
 			}
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
@@ -955,14 +948,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				for (Function function : functionCollection) {
 					if (function != null) {
 						helper.getAuthService().assignVisibility(
-								function.getId().toString(), visibleGroups,
-								owningGroup);
+								function.getId().toString(), visibleGroups);
 						if (function instanceof TargetingFunction) {
 							for (Target target : ((TargetingFunction) function)
 									.getTargetCollection()) {
 								helper.getAuthService().assignVisibility(
 										target.getId().toString(),
-										visibleGroups, owningGroup);
+										visibleGroups);
 							}
 						}
 					}
@@ -972,28 +964,27 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	}
 
 	protected void assignVisibility(SampleComposition comp,
-			String[] visibleGroups, String owningGroup) throws Exception {
+			String[] visibleGroups) throws Exception {
 		helper.getAuthService().assignVisibility(comp.getId().toString(),
-				visibleGroups, owningGroup);
+				visibleGroups);
 		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
-			assignVisibility(entity, visibleGroups, owningGroup);
+			assignVisibility(entity, visibleGroups);
 		}
 		for (FunctionalizingEntity entity : comp
 				.getFunctionalizingEntityCollection()) {
-			assignVisibility(entity, visibleGroups, owningGroup);
+			assignVisibility(entity, visibleGroups);
 		}
 		for (ChemicalAssociation assoc : comp
 				.getChemicalAssociationCollection()) {
-			assignVisibility(assoc, visibleGroups, owningGroup);
+			assignVisibility(assoc, visibleGroups);
 		}
 	}
 
 	private void assignVisibility(ChemicalAssociation chemicalAssociation,
-			String[] visibleGroups, String owningGroup) throws Exception {
+			String[] visibleGroups) throws Exception {
 		if (chemicalAssociation != null) {
 			helper.getAuthService().assignVisibility(
-					chemicalAssociation.getId().toString(), visibleGroups,
-					owningGroup);
+					chemicalAssociation.getId().toString(), visibleGroups);
 			// visibility of the associated elements should already be assigned
 			// when creating the entities
 			// chemicalAssociation.associatedElementA

@@ -704,14 +704,10 @@ public class AuthorizationService {
 
 	}
 
-	public void assignVisibility(String dataToProtect, String[] visibleGroups,
-			String owningGroup) throws SecurityException {
+	public void assignVisibility(String dataToProtect, String[] visibleGroups) throws SecurityException {
 		try {
 			List<String> groupsToAssign = new ArrayList<String>(Arrays
 					.asList(visibleGroups));
-			if (owningGroup != null) {
-				groupsToAssign.add(owningGroup);
-			}
 			// add default groups if doesn't contain public group
 			if (!groupsToAssign.contains(Constants.CSM_PUBLIC_GROUP)) {
 				for (String group : Constants.VISIBLE_GROUPS) {

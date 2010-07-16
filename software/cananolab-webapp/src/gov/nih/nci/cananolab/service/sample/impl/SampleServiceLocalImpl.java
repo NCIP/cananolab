@@ -138,7 +138,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	 */
 	public void saveSample(SampleBean sampleBean) throws SampleException,
 			DuplicateEntriesException, NoAccessException {
-		if (helper.getUser() == null || !helper.getUser().isCurator()) {
+		if (helper.getUser() == null) {
 			throw new NoAccessException();
 		}
 		Boolean newSample = true;
@@ -219,30 +219,24 @@ public class SampleServiceLocalImpl implements SampleService {
 		// visibility for sample, visibility for POC is handled by POC
 		// separately
 		helper.getAuthService().assignVisibility(sample.getName(),
-				visibleGroups, owningGroup);
+				visibleGroups);
 	}
 
 	private void assignAssociatedVisibility(Sample sample,
 			String[] visibleGroups) throws Exception {
-		String owningGroup = null;
-		if (sample.getPrimaryPointOfContact() != null
-				&& sample.getPrimaryPointOfContact().getOrganization() != null) {
-			owningGroup = sample.getPrimaryPointOfContact().getOrganization()
-					.getName();
-		}
 		// assign associated visibilities
 		Collection<Characterization> characterizationCollection = sample
 				.getCharacterizationCollection();
 		// characterizations
 		if (characterizationCollection != null) {
 			for (Characterization aChar : characterizationCollection) {
-				charService.assignVisibility(aChar, visibleGroups, owningGroup);
+				charService.assignVisibility(aChar, visibleGroups);
 			}
 		}
 		// sampleComposition
 		if (sample.getSampleComposition() != null) {
 			compService.assignVisibility(sample.getSampleComposition(),
-					visibleGroups, owningGroup);
+					visibleGroups);
 		}
 		// don't need to reset keywords
 	}
@@ -411,14 +405,13 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	private void assignVisibility(PointOfContact poc, String[] visibleGroups)
 			throws Exception {
-		String owningGroup = poc.getOrganization().getName();
 		// poc
 		helper.getAuthService().assignVisibility(poc.getId().toString(),
-				visibleGroups, owningGroup);
+				visibleGroups);
 		// assign organization to public for it's shared by multiple poc
 		helper.getAuthService().assignVisibility(
 				poc.getOrganization().getId().toString(),
-				new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+				new String[] { Constants.CSM_PUBLIC_GROUP });
 	}
 
 	/**
@@ -716,7 +709,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		for (Object obj : results) {
 			String id = obj.toString();
 			helper.getAuthService().assignVisibility(id,
-					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+					new String[] { Constants.CSM_PUBLIC_GROUP });
 		}
 
 		// assign Public visibility for instrument
@@ -726,7 +719,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		for (Object obj : results) {
 			String id = obj.toString();
 			helper.getAuthService().assignVisibility(id,
-					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+					new String[] { Constants.CSM_PUBLIC_GROUP });
 		}
 
 		// assign Public visibility for technique
@@ -736,7 +729,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		for (Object obj : results) {
 			String id = obj.toString();
 			helper.getAuthService().assignVisibility(id,
-					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+					new String[] { Constants.CSM_PUBLIC_GROUP });
 		}
 
 		// assign Public visibility for organization
@@ -746,7 +739,7 @@ public class SampleServiceLocalImpl implements SampleService {
 		for (Object obj : results) {
 			String id = obj.toString();
 			helper.getAuthService().assignVisibility(id,
-					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+					new String[] { Constants.CSM_PUBLIC_GROUP });
 		}
 
 	}
@@ -1189,23 +1182,27 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 		return sortedNames;
 	}
-	//data availability
-	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws Exception{
+
+	// data availability
+	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(
+			String sampleId) throws Exception {
 		return dataAvailabilityService.findDataAvailabilityBySampleId(sampleId);
 	}
-	
-	public void generateDataAvailability(SampleBean sampleBean) throws Exception{
-		Sample fullyLoadedSample = findFullyLoadedSampleByName(sampleBean.getDomain().getName());
+
+	public void generateDataAvailability(SampleBean sampleBean)
+			throws Exception {
+		Sample fullyLoadedSample = findFullyLoadedSampleByName(sampleBean
+				.getDomain().getName());
 		sampleBean.setDomain(fullyLoadedSample);
-		
-		//dataAvailabilityService.generateDataAvailability(sampleBean, user);
+
+		// dataAvailabilityService.generateDataAvailability(sampleBean, user);
 	}
 
-	public void saveDataAvailability(SampleBean sampleBean){
+	public void saveDataAvailability(SampleBean sampleBean) {
 		dataAvailabilityService.saveDataAvailability(sampleBean);
 	}
-	
-	public void deleteDataAvailability(String sampleId){
+
+	public void deleteDataAvailability(String sampleId) {
 		dataAvailabilityService.deleteDataAvailability(sampleId);
 	}
 

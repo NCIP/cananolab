@@ -286,12 +286,11 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	private void assignVisibility(Protocol protocol, String[] visibilityGroups)
 			throws Exception {
 		helper.getAuthService().assignVisibility(protocol.getId().toString(),
-				visibilityGroups, null);
+				visibilityGroups);
 		// set file visibility as well
 		if (protocol.getFile() != null) {
 			helper.getAuthService().assignVisibility(
-					protocol.getFile().getId().toString(), visibilityGroups,
-					null);
+					protocol.getFile().getId().toString(), visibilityGroups);
 		}
 	}
 
