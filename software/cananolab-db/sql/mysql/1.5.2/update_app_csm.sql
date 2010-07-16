@@ -25,11 +25,27 @@ UPDATE csm_group
  WHERE group_name = 'NCICBIIT_DataCurator';
 
 /* update pe to use sample ID */
-update csm_protection_element pe, sample s
-set pe.protection_element_name=s.sample_pk_id, pe.object_id=s.sample_pk_id
-where pe.protection_element_name=s.sample_name;
+UPDATE csm_protection_element pe,
+       sample s
+   SET pe.protection_element_name = s.sample_pk_id,
+       pe.object_id = s.sample_pk_id
+ WHERE pe.protection_element_name = s.sample_name;
 
 /* update pg to use sample ID */
 update csm_protection_group pg, sample s
 set pg.protection_group_name=s.sample_pk_id
 where pg.protection_group_name=s.sample_name;
+
+/* delete groups that are not Curator or Public */
+DELETE FROM csm_user_group_role_pg
+ WHERE group_id IN (SELECT group_id
+                      FROM csm_group
+                     WHERE group_name NOT IN ('Curator', 'Public'));
+
+DELETE FROM csm_user_group
+ WHERE group_id IN (SELECT group_id
+                      FROM csm_group
+                     WHERE group_name NOT IN ('Curator', 'Public'));
+
+DELETE FROM csm_group
+ WHERE group_name NOT IN ('Curator', 'Public');
