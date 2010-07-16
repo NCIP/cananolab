@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
 public class AccessibilityBean {
-	private UserBean user;
+	private UserBean user = new UserBean();
 	private String groupName;
 	private String roleName;
 
