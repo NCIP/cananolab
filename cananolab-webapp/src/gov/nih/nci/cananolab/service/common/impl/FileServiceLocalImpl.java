@@ -186,13 +186,13 @@ public class FileServiceLocalImpl implements FileService {
 		}
 		try {
 			helper.getAuthService().assignVisibility(file.getId().toString(),
-					visibilityGroups, null);
+					visibilityGroups);
 			// assign keyword to public visibility
 			if (file.getKeywordCollection() != null) {
 				for (Keyword keyword : file.getKeywordCollection()) {
 					helper.getAuthService().assignVisibility(
 							keyword.getId().toString(),
-							new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+							new String[] { Constants.CSM_PUBLIC_GROUP });
 				}
 			}
 		} catch (Exception e) {

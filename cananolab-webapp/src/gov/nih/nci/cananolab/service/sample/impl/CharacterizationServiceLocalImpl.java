@@ -129,10 +129,7 @@ public class CharacterizationServiceLocalImpl implements
 
 			// set visibility
 			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName();
-			assignVisibility(charBean.getDomainChar(), visibleGroups,
-					owningGroup);
+			assignVisibility(charBean.getDomainChar(), visibleGroups);
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
 			logger.error(err, e);
@@ -540,25 +537,25 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	protected void assignVisibility(Characterization aChar,
-			String[] visibleGroups, String owningGroup) throws Exception {
+			String[] visibleGroups) throws Exception {
 		// characterization
 		if (aChar != null && aChar.getId() != null) {
 			helper.getAuthService().assignVisibility(aChar.getId().toString(),
-					visibleGroups, owningGroup);
+					visibleGroups);
 			if (aChar.getFindingCollection() != null) {
 				for (Finding finding : aChar.getFindingCollection()) {
 					if (finding != null) {
 						helper.getAuthService().assignVisibility(
-								finding.getId().toString(), visibleGroups,
-								owningGroup);
+								finding.getId().toString(), visibleGroups);
 					}
 					// datum, need to check for null for copy bean.
 					if (finding.getDatumCollection() != null) {
 						for (Datum datum : finding.getDatumCollection()) {
 							if (datum != null && datum.getId() != null) {
-								helper.getAuthService().assignVisibility(
-										datum.getId().toString(),
-										visibleGroups, owningGroup);
+								helper.getAuthService()
+										.assignVisibility(
+												datum.getId().toString(),
+												visibleGroups);
 							}
 							// condition
 							if (datum.getConditionCollection() != null) {
@@ -566,7 +563,7 @@ public class CharacterizationServiceLocalImpl implements
 										.getConditionCollection()) {
 									helper.getAuthService().assignVisibility(
 											condition.getId().toString(),
-											visibleGroups, owningGroup);
+											visibleGroups);
 								}
 							}
 						}
@@ -578,14 +575,12 @@ public class CharacterizationServiceLocalImpl implements
 				for (ExperimentConfig config : aChar
 						.getExperimentConfigCollection()) {
 					helper.getAuthService().assignVisibility(
-							config.getId().toString(), visibleGroups,
-							owningGroup);
+							config.getId().toString(), visibleGroups);
 					// assign instruments and technique to public visibility
 					if (config.getTechnique() != null) {
 						helper.getAuthService().assignVisibility(
 								config.getTechnique().getId().toString(),
-								new String[] { Constants.CSM_PUBLIC_GROUP },
-								null);
+								new String[] { Constants.CSM_PUBLIC_GROUP });
 					}
 					if (config.getInstrumentCollection() != null) {
 						for (Instrument instrument : config
@@ -594,8 +589,7 @@ public class CharacterizationServiceLocalImpl implements
 									.getAuthService()
 									.assignVisibility(
 											instrument.getId().toString(),
-											new String[] { Constants.CSM_PUBLIC_GROUP },
-											null);
+											new String[] { Constants.CSM_PUBLIC_GROUP });
 						}
 					}
 				}
