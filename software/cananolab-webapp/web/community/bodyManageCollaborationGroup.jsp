@@ -73,7 +73,7 @@
 				<c:set var="newAddCGButtonStyle" value="display:block" />
 				<a href="#" onclick="javascript:show('newCollaborationGroup')"
 					id="addCollaborationGroup" style="${newAddCGButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" /> </a>
+						align="top" src="images/btn_add.gif" border="0" /></a>
 			</td>
 		</tr>
 		<tr>
