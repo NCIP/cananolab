@@ -71,7 +71,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			AuthorizationManager authManager = authService
 					.getAuthorizationManager();
 			Group dummy = new Group();
-			dummy.setGroupName("*");
+			dummy.setGroupName("CollaborationGroup_*");
 			SearchCriteria sc = new GroupSearchCriteria(dummy);
 			List results = authManager.getObjects(sc);
 			for (Object obj : results) {
