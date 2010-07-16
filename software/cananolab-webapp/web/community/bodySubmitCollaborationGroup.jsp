@@ -15,7 +15,7 @@
 			Group Name*
 		</td>
 		<td>
-			<html:text styleId="groupName" property="group.name" size="30" value="NCL_DNT_Collaboration"/>
+			<html:text styleId="groupName" property="group.name" size="30"/>
 		</td>
 	</tr>
 	<tr>
@@ -24,7 +24,7 @@
 		</td>
 		<td>
 			<html:textarea styleId="groupDescription"
-				property="group.description" rows="5" cols="70" value="NCL's collaboration with DNT"/>
+				property="group.description" rows="5" cols="70"/>
 		</td>
 	</tr>
 	<tr>
@@ -36,7 +36,7 @@
 				<a style="display: block" id="addUser" href="javascript:show('newUser')">Add</a>
 				<br />
 				<table id="userTable" class="editTableWithGrid" width="85%"
-					style="display: block;">
+					style="display: none;">
 					<tbody id="userRows">
 						<tr id="patternHeader">
 							<td width="30%" class="cellLabel">
@@ -105,15 +105,10 @@
 							Access to the Group
 						</td>
 						<td colspan="2">
-							<html:select property="group.theUserAccessibility.roleName"
+							<html:select property="group.theUserAccessibility.roleDisplayName"
 								styleId="roleName" onchange="">
 								<option></option>
-								<option value="">
-									READ
-								</option>
-								<option value="">
-									READ, UPDATE, DELETE
-								</option>
+								<html:options collection="csmRoleNames" labelProperty="label" property="value"/>
 							</html:select>
 						</td>
 					</tr>
