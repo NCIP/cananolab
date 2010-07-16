@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -27,9 +28,9 @@ import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for all forms.
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class InitSetup {
 
@@ -42,7 +43,7 @@ public class InitSetup {
 
 	/**
 	 * Queries and common_lookup table and creates a map in application context
-	 * 
+	 *
 	 * @param appContext
 	 * @return
 	 * @throws BaseException
@@ -60,32 +61,37 @@ public class InitSetup {
 		}
 		return defaultLookupTable;
 	}
-	
+
 	/**
-	 * Retrieve lookup Map from lookup table and store in the application context
+	 * Retrieve lookup Map from lookup table and store in the application
+	 * context
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param attributeName
 	 * @return
 	 * @throws BaseException
 	 */
-	public Map<String,Map<String, SortedSet<String>>> getLookupByAttribute(
-			ServletContext appContext, String contextAttribute,String attributeName) throws BaseException{
+	public Map<String, Map<String, SortedSet<String>>> getLookupByAttribute(
+			ServletContext appContext, String contextAttribute,
+			String attributeName) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
 		Map<String, Map<String, SortedSet<String>>> lookupByAttributeMap = new HashMap<String, Map<String, SortedSet<String>>>();
 		System.out.println("retrieving lookup by attribute");
 		Set<String> keySet = defaultLookupTable.keySet();
 		Iterator<String> key = keySet.iterator();
-		while(key.hasNext()){
-			String keyName = (String)key.next();
-			Map<String, SortedSet<String>> attributeMap = defaultLookupTable.get(keyName);
+		while (key.hasNext()) {
+			String keyName = (String) key.next();
+			Map<String, SortedSet<String>> attributeMap = defaultLookupTable
+					.get(keyName);
 			Set<String> keySet2 = attributeMap.keySet();
 			Iterator<String> iterator = keySet2.iterator();
-			while(iterator.hasNext()){
-				String attribute = (String)iterator.next();
-				if(attribute.equalsIgnoreCase(attributeName)){
+			while (iterator.hasNext()) {
+				String attribute = (String) iterator.next();
+				if (attribute.equalsIgnoreCase(attributeName)) {
 					String value = attributeMap.get(attribute).toString();
-					System.out.println("keyName: " + keyName + " attribute: " + attribute + " value: " + value);
+					System.out.println("keyName: " + keyName + " attribute: "
+							+ attribute + " value: " + value);
 					Map<String, SortedSet<String>> nameLookup = null;
 					if (lookupByAttributeMap.get(keyName) != null) {
 						nameLookup = lookupByAttributeMap.get(keyName);
@@ -106,13 +112,13 @@ public class InitSetup {
 		}
 		appContext.setAttribute(contextAttribute, lookupByAttributeMap);
 		return lookupByAttributeMap;
-		
+
 	}
 
 	/**
 	 * Retrieve default lookup values from lookup table in the database and
 	 * store in the application context
-	 * 
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -137,7 +143,7 @@ public class InitSetup {
 	/**
 	 * Retrieve default lookup and other values from lookup table in the
 	 * database and store in the session
-	 * 
+	 *
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
@@ -167,7 +173,7 @@ public class InitSetup {
 	/**
 	 * Retrieve other values from lookup table in the database and store in the
 	 * session
-	 * 
+	 *
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
@@ -195,7 +201,7 @@ public class InitSetup {
 
 	/**
 	 * Retrieve default lookup values by reflection and store in the app context
-	 * 
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -223,7 +229,7 @@ public class InitSetup {
 	/**
 	 * Retrieve default lookup and other values by reflection and store in the
 	 * session
-	 * 
+	 *
 	 * @param request
 	 * @param contextAttributeForDefaults
 	 * @param sessionAttribute
@@ -318,55 +324,47 @@ public class InitSetup {
 		}
 	}
 
-	/*public String getGridServiceUrl(HttpServletRequest request,
-			String gridHostName) throws Exception {
-		List<GridNodeBean> remoteNodes = getGridNodesInContext(request);
-		GridNodeBean theNode = GridService.getGridNodeByHostName(remoteNodes,
-				gridHostName);
-		if (theNode == null) {
-			throw new GridDownException("Grid node " + gridHostName
-					+ " is not available at this time.");
-		}
-		return theNode.getAddress();
-	}*/
+	/*
+	 * public String getGridServiceUrl(HttpServletRequest request, String
+	 * gridHostName) throws Exception { List<GridNodeBean> remoteNodes =
+	 * getGridNodesInContext(request); GridNodeBean theNode =
+	 * GridService.getGridNodeByHostName(remoteNodes, gridHostName); if (theNode
+	 * == null) { throw new GridDownException("Grid node " + gridHostName +
+	 * " is not available at this time."); } return theNode.getAddress(); }
+	 */
 
-	/*public List<GridNodeBean> getGridNodesInContext(HttpServletRequest request)
-			throws Exception {
-		// URL localURL = new URL(request.getRequestURL().toString());
-		// int port = (localURL.getPort() == -1) ? 80 : localURL.getPort();
-		// String localGridURL = localURL.getProtocol() + "://"
-		// + localURL.getHost() + ":" + port + "/"
-		// + Constants.GRID_SERVICE_PATH;
-		// GridDiscoveryServiceJob gridDiscoveryJob = new
-		// GridDiscoveryServiceJob();
-		// List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		// GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
-		// localGridURL);
+	/*
+	 * public List<GridNodeBean> getGridNodesInContext(HttpServletRequest
+	 * request) throws Exception { // URL localURL = new
+	 * URL(request.getRequestURL().toString()); // int port =
+	 * (localURL.getPort() == -1) ? 80 : localURL.getPort(); // String
+	 * localGridURL = localURL.getProtocol() + "://" // + localURL.getHost() +
+	 * ":" + port + "/" // + Constants.GRID_SERVICE_PATH; //
+	 * GridDiscoveryServiceJob gridDiscoveryJob = new //
+	 * GridDiscoveryServiceJob(); // List<GridNodeBean> gridNodes =
+	 * gridDiscoveryJob.getAllGridNodes(); // GridNodeBean localGrid =
+	 * GridService.getGridNodeByURL(gridNodes, // localGridURL);
+	 *
+	 * GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
+	 * List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
+	 * List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>(gridNodes);
+	 * for (GridNodeBean gridNode : gridNodes) { if
+	 * (gridNode.getHostName().equals(Constants.LOCAL_SITE)) {
+	 * remoteNodes.remove(gridNode); } } Collections.sort(remoteNodes, new
+	 * Comparators.GridNodeHostNameComparator());
+	 *
+	 * request.getSession().getServletContext().setAttribute("allGridNodes",
+	 * remoteNodes); return gridNodes; }
+	 */
 
-		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>(gridNodes);
-		for (GridNodeBean gridNode : gridNodes) {
-			if (gridNode.getHostName().equals(Constants.LOCAL_SITE)) {
-				remoteNodes.remove(gridNode);
-			}
-		}
-		Collections.sort(remoteNodes,
-				new Comparators.GridNodeHostNameComparator());
-
-		request.getSession().getServletContext().setAttribute("allGridNodes",
-				remoteNodes);
-		return gridNodes;
-	}*/
-
-	/*public PublicDataCountBean getPublicDataCountsInContext(
-			HttpServletRequest request) throws Exception {
-		PublicDataCountServiceJob dataCountJob = new PublicDataCountServiceJob();
-		PublicDataCountBean dataCounts = dataCountJob.getPublicDataCounts();
-		request.getSession().getServletContext().setAttribute(
-				"allPublicDataCounts", dataCounts);
-		return dataCounts;
-	}*/
+	/*
+	 * public PublicDataCountBean getPublicDataCountsInContext(
+	 * HttpServletRequest request) throws Exception { PublicDataCountServiceJob
+	 * dataCountJob = new PublicDataCountServiceJob(); PublicDataCountBean
+	 * dataCounts = dataCountJob.getPublicDataCounts();
+	 * request.getSession().getServletContext().setAttribute(
+	 * "allPublicDataCounts", dataCounts); return dataCounts; }
+	 */
 
 	public void updateCSMCleanupEntriesInContext(
 			List<String> csmEntriesToRemove, HttpServletRequest request)
@@ -446,15 +444,21 @@ public class InitSetup {
 
 		appContext.setAttribute("allCompositionSections",
 				CompositionBean.ALL_COMPOSITION_SECTIONS);
-		
-		//register page
-		LabelValueBean[] titleOperands = new LabelValueBean[]{
-				new LabelValueBean(" "," "),
-				new LabelValueBean("Dr.","Dr."),
-				new LabelValueBean("Mr.", "Mr.") ,
+
+		// register page
+		LabelValueBean[] titleOperands = new LabelValueBean[] {
+				new LabelValueBean(" ", " "), new LabelValueBean("Dr.", "Dr."),
+				new LabelValueBean("Mr.", "Mr."),
 				new LabelValueBean("Mrs.", "Mrs."),
 				new LabelValueBean("Miss", "Miss"),
-				new LabelValueBean("Ms.", "Ms.")};
+				new LabelValueBean("Ms.", "Ms.") };
 		appContext.setAttribute("titleOperands", titleOperands);
+
+		LabelValueBean[] csmRoleNames = new LabelValueBean[] {
+				new LabelValueBean(AccessibilityBean.R_ROLE_DISPLAY_NAME,
+						Constants.CSM_READ_ROLE),
+				new LabelValueBean(AccessibilityBean.CURD_ROLE_DISPLAY_NAME,
+						Constants.CSM_CURD_ROLE) };
+		appContext.setAttribute("csmRoleNames", csmRoleNames);
 	}
 }
