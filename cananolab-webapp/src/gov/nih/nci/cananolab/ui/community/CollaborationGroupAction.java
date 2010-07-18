@@ -18,7 +18,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -43,10 +42,7 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		CommunityService service = new CommunityServiceLocalImpl(user);
+		CommunityService service = setServiceInSession(request);
 		List<CollaborationGroupBean> existingCollaborationGroups = service
 				.findCollaborationGroups();
 		request.setAttribute("existingCollaborationGroups",
@@ -59,5 +55,34 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		return mapping.findForward("setup");
+	}
+
+	/**
+	 * Save or update POC data.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward create(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CollaborationGroupBean group = (CollaborationGroupBean) theForm
+				.get("group");
+		CommunityService service = setServiceInSession(request);
+		service.saveCollaborationGroup(group);
+		return setupNew(mapping, form, request, response);
+	}
+
+	private CommunityService setServiceInSession(HttpServletRequest request)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		CommunityService service = new CommunityServiceLocalImpl(user);
+		request.getSession().setAttribute("communityService", service);
+		return service;
 	}
 }

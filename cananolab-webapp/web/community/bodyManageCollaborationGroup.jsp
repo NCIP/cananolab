@@ -54,8 +54,7 @@
 									</c:forEach>
 								</td>
 								<td align="right">
-									<a
-										href="javascript:show('newCollaborationGroup');hide('newCollaborationGroupLabel'); hide('addCollaborationGroup');">Edit</a>&nbsp;
+									<a href="javascript:setTheCollaborationGroup(${group.id});">Edit</a>&nbsp;
 								</td>
 							</tr>
 						</c:forEach>

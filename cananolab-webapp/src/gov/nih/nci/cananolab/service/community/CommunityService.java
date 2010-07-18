@@ -11,4 +11,7 @@ public interface CommunityService {
 
 	public List<CollaborationGroupBean> findCollaborationGroups()
 			throws CommunityException;
+
+	public CollaborationGroupBean findCollaborationGroupById(String id)
+			throws CommunityException;
 }
