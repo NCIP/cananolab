@@ -93,7 +93,7 @@
 			<include method="getPointOfContactById" />
 			<include method="resetThePointOfContact" />
 			<include method="getOrganizationByName" />
-			<include method="getPointOfContactByNameAndOrg"/>
+			<include method="getPointOfContactByNameAndOrg" />
 		</create>
 		<create creator="new" javascript="ProtocolManager" scope="session">
 			<param name="class"
@@ -120,6 +120,14 @@
 			<include method="getPublicCounts" />
 			<include method="updateWithExistingDOIPublication" />
 			<include method="updateWithExistingNonPubMedDOIPublication" />
+		</create>
+		<create creator="new" javascript="CollaborationGroupManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.community.DWRCollaborationGroupManager" />
+			<include method="getCollaborationGroupById" />
+			<include method="addUserAccess" />
+			<include method="deleteUserAccess" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
@@ -231,6 +239,13 @@
 			match="gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean"></convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean"></convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.AccessibilityBean"></convert>
+		<convert converter="bean" match="gov.nih.nci.cananolab.dto.common.UserBean">
+			<param name="include" value="loginName" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.CollaborationGroupBean"></convert>
 		<convert converter="bean" match="org.apache.struts.util.LabelValueBean"></convert>
 	</allow>
 </dwr>
