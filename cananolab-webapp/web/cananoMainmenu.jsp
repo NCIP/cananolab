@@ -27,9 +27,7 @@
 						</c:when>
 						<c:otherwise>
 							<td class="${style}" onclick="${item.link}"
-								onmouseover=changeMenuStyle(this,
-								'mainMenuItemOver');
-onmouseout="changeMenuStyle(this,'${style}')"
+								onmouseover="changeMenuStyle(this,'mainMenuItemOver');" onmouseout="changeMenuStyle(this,'${style}')"
 								height="20">
 								<a class="mainMenuLink" href="#">${item.value}</a>
 							</td>
