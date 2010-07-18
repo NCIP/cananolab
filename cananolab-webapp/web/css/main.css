@@ -322,7 +322,7 @@ input.actionButton { /* optional style for form and action buttons */
 
 input.noBorderButton {
 	font-weight: bold;
-	font-size: 0.8 em;
+	font-size: 0.8em;
 	text-decoration: underline;
 	border: 0px solid;
 	color: #5C5C5C;
@@ -368,7 +368,7 @@ SIDEBAR BEGINS
 	font-weight: normal;
 	word-wrap: break-word;
 	margin: 0.5em 2em 0.5em 2em;
-	padding: 0 px;
+	padding: 0px;
 	/*text-indent: -1em;*/
 }
 
