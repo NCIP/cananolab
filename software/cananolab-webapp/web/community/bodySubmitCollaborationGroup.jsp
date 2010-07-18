@@ -4,10 +4,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<script type="text/javascript"
+	src="javascript/CollaborationGroupManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/CollaborationGroupManager.js'></script>
+
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
 		<th colspan="2">
-			Collaborator Group Information
+			Collaboration Group Information
 		</th>
 	</tr>
 	<tr>
@@ -50,15 +55,14 @@
 						</tr>
 						<tr id="pattern" style="display: block;">
 							<td>
-								<span id="userLoginName">janedoe</span>
+								<span id="rowUserLoginName">login name</span>
 							</td>
 							<td>
-								<span id="userRole">READ</span>
+								<span id="rowRoleName">role name</span>
 							</td>
-
 							<td>
 								<input type="button" class="noBorderButton" id="edit"
-									value="Edit" onclick="">
+									value="Edit" onclick="editUserAccess(this.id);">
 							</td>
 						</tr>
 					</tbody>
@@ -85,7 +89,7 @@
 									<a href="#userNameField"
 										onclick=""><img
 											src="images/icon_browse.jpg" align="middle"
-											alt="search existing users" border="0" /> </a>
+											alt="search existing users" border="0" /></a>
 						</td>
 						<td width="50%">
 							<table class="invisibleTable">
@@ -115,12 +119,12 @@
 					<tr>
 						<td>
 							<input style="display: none;" id="deleteUser" type="button"
-								value="Remove">
+								value="Remove" onclick="deleteTheUserAccess()">
 						</td>
 						<td align="right" colspan="3">
 							<div align="right">
-								<input class="promptButton" type="button" value="Save" />
-								<input class="promptButton" type="reset" value="Cancel">
+								<input class="promptButton" type="button" value="Save" onclick="javascript:addUserAccess();show('userTable');closeSubmissionForm('User');" />
+								<input class="promptButton" type="reset" value="Cancel" onclick="clearUserAccess();closeSubmissionForm('User');">
 							</div>
 						</td>
 					</tr>
@@ -129,12 +133,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td><input style="display: none;" id="deleteUser" type="button"
+		<td><input style="display: none;" id="deleteCollaborationGroup" type="button"
 				value="Remove">
 		<br></td>
 		<td align="right" colspan="3">
 			<div align="right">
-				<input type="button" value="Save" />
+				<html:submit/>
 				<input type="reset" value="Cancel" onclick="javascript:hide('newCollaborationGroup');show('newCollaborationGroupLabel'); show('addCollaborationGroup');">
 			</div>
 		</td>

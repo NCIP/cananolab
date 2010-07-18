@@ -76,32 +76,16 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			List results = authManager.getObjects(sc);
 			for (Object obj : results) {
 				Group doGroup = (Group) obj;
-				String pe = "CollaborationGroup_" + doGroup.getGroupId();
-				if (authService.checkCreatePermission(getUser(), pe)) {
-					CollaborationGroupBean cGroup = new CollaborationGroupBean();
-					cGroup.setName(doGroup.getName());
-					cGroup.setDescription(doGroup.getGroupDesc());
-
-					// set user accessibilities
-					Set<User> users = authManager.getUsers(doGroup.getGroupId()
-							.toString());
-					List<String> userNames = new ArrayList<String>(users.size());
-					for (User user : users) {
-						userNames.add(user.getLoginName());
-					}
-					Map<String, String> userRoles = authService
-							.getUserRoles(pe);
-					List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
-					for (User user : users) {
-						AccessibilityBean accessibility = new AccessibilityBean();
-						accessibility.setGroupName(doGroup.getGroupName());
-						accessibility.setRoleName(userRoles.get(user
-								.getLoginName()));
-						accessibility.setUser(new UserBean(user));
-						access.add(accessibility);
-					}
-					cGroup.setUserAccessibilities(access);
+				CollaborationGroupBean cGroup = new CollaborationGroupBean(
+						doGroup);
+				if (authService.checkCreatePermission(getUser(),
+						"CollaborationGroup_" + cGroup.getId())) {
+					setUserAccesses(cGroup);
 					collaborationGroups.add(cGroup);
+				} else {
+					String error = "User has no access to the collaboration group "
+							+ cGroup.getName();
+					throw new CommunityException(error);
 				}
 			}
 		} catch (Exception e) {
@@ -109,5 +93,52 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			throw new CommunityException(error, e);
 		}
 		return collaborationGroups;
+	}
+
+	// set user accessibilities
+	private void setUserAccesses(CollaborationGroupBean cGroup)
+			throws Exception {
+		AuthorizationService authService = super.getAuthService();
+		AuthorizationManager authManager = authService
+				.getAuthorizationManager();
+		// set user accessibilities
+		Set<User> users = authManager.getUsers(cGroup.getId().toString());
+		List<String> userNames = new ArrayList<String>(users.size());
+		for (User user : users) {
+			userNames.add(user.getLoginName());
+		}
+		Map<String, String> userRoles = authService
+				.getUserRoles("CollaborationGroup_" + cGroup.getId());
+		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
+		for (User user : users) {
+			AccessibilityBean accessibility = new AccessibilityBean();
+			accessibility.setGroupName(cGroup.getName());
+			accessibility.setRoleName(userRoles.get(user.getLoginName()));
+			accessibility.setUser(new UserBean(user));
+			access.add(accessibility);
+		}
+		cGroup.setUserAccessibilities(access);
+	}
+
+	public CollaborationGroupBean findCollaborationGroupById(String id)
+			throws CommunityException {
+		CollaborationGroupBean collaborationGroup = null;
+		try {
+			AuthorizationService authService = super.getAuthService();
+			Group group = authService.getUserManager().getGroupById(id);
+			collaborationGroup = new CollaborationGroupBean(group);
+			String pe = "CollaborationGroup_" + collaborationGroup.getId();
+			if (authService.checkCreatePermission(getUser(), pe)) {
+				setUserAccesses(collaborationGroup);
+			} else {
+				String error = "User has no access to the collaboration group "
+						+ collaborationGroup.getName();
+				return null;
+			}
+		} catch (Exception e) {
+			String error = "Error retrieving the collaboration group by name";
+			throw new CommunityException(error, e);
+		}
+		return collaborationGroup;
 	}
 }
