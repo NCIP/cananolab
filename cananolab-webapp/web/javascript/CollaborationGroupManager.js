@@ -1,5 +1,5 @@
-var userAccessCache = null;
-var currentGroup = null;
+var userAccessCache = {};
+var currentGroup = {};
 var numberOfUserAccesses = 0; // number of user accesses in the cache,
 
 function setTheCollaborationGroup(groupId) {
@@ -45,19 +45,19 @@ function populateUserAccesses() {
 		}
 	});
 	var userAccess, id;
-	if (userAccess.length > 0) {
+	if (userAccesses.length > 0) {
 		show("userTable");
 	} else {
 		hide("userTable");
 	}
 	for ( var i = 0; i < userAccesses.length; i++) {
 		userAccess = userAccesses[i];
-		id = userAccess.user.loginName;
+		id = userAccess.userBean.loginName;
 		dwr.util.cloneNode("pattern", {
 			idSuffix : id
 		});
-		dwr.util.setValue("userLoginName" + id, userAccess.user.loginName);
-		dwr.util.setValue("roleName" + id, userAccess.roleName);
+		dwr.util.setValue("rowUserLoginName" + id, userAccess.userBean.loginName);
+		dwr.util.setValue("rowRoleName" + id, userAccess.roleDisplayName);
 		$("pattern" + id).style.display = "";
 		if (userAccessCache[id] == null) {
 			numberOfUserAccesses++;
@@ -84,18 +84,19 @@ function deleteTheCollaborationGroup() {
 }
 
 function addUserAccess() {
-	var user = {
-		loginName : dwr.util.getValue("userLoginName")
+	var userBean = {
+		loginName : null
 	};
 	var userAccess = {
-		user : user,
-		roleName : dwr.util.getValue("roleName")
+		userBean : userBean,
+		roleName : null
 	};
-//	dwr.util.getValues(userAccess);
-	if (userAccess.user.loginName != "" || userAccess.roleName != "") {
+
+	dwr.util.getValues(userAccess);
+	if (userAccess.userBean.loginName != "" || userAccess.roleName != "") {
 		CollaborationGroupManager.addUserAccess(userAccess, function(group) {
 			if (group == null) {
-				// sessionTimeout();
+				sessionTimeout();
 			}
 			currentGroup = group;
 		});
@@ -107,12 +108,12 @@ function addUserAccess() {
 	}
 }
 function clearUserAccess() {
-	dwr.util.setValue("userLoginName") = "";
-	dwr.util.setValue("roleName") = "";
+	dwr.util.setValue("userBean.loginName", "");
+	dwr.util.setValue("roleName", "");
 	hide("deleteUser");
 }
 function editUserAccess(userLoginName) {
-	var userAccess = userAccessCache[userLoginName];
+	var userAccess = userAccessCache[userLoginName.substring(4)];
 	populateUserAccessForm(userAccess);
 }
 function populateUserAccessForm(userAccess) {
@@ -121,12 +122,12 @@ function populateUserAccessForm(userAccess) {
 	show("newUser");
 }
 function deleteTheUserAccess() {
-	var userLoginName = dwr.util.getValue("userLoginName");
+	var userLoginName = dwr.util.getValue("userBean.loginName");
 	if (userLoginName != "") {
 		var userAccess = userAccessCache[userLoginName];
 		if (confirm("Are you sure you want to delete access for '"
 				+ userLoginName + "'?")) {
-			CollaborationGroupManager.deleteUserAccess(user, function(group) {
+			CollaborationGroupManager.deleteUserAccess(userAccess, function(group) {
 				if (group == null) {
 					sessionTimeout();
 				}
