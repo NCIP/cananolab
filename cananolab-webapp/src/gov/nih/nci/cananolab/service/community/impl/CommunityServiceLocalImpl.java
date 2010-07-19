@@ -43,18 +43,24 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 					.createAGroup(collaborationGroup.getName());
 			List<AccessibilityBean> accessibilities = collaborationGroup
 					.getUserAccessibilities();
-			String[] userIds = new String[accessibilities.size()];
+			String[] userIds = new String[accessibilities.size()+1];
 			int i = 0;
 			for (AccessibilityBean access : accessibilities) {
-				UserBean user = access.getUserBean();
-				userIds[i] = user.getUserId();
+				UserBean userBean = access.getUserBean();
+				User user = authManager.getUser(userBean.getLoginName());
+				userBean.setUserId(user.getUserId().toString());
+				String userId = userBean.getUserId();
+				userIds[i] = userId;
 				// assign user accessibility to the collaboration group
 				Role role = authService.getRole(access.getRoleName());
-				authManager.assignUserRoleToProtectionGroup(user.getUserId(),
+				authManager.assignUserRoleToProtectionGroup(userId,
 						new String[] { role.getId().toString() },
 						"CollaborationGroup_" + group.getGroupId());
 				i++;
 			}
+			//assign user created the collaboration group CURD access
+			userIds[i]=super.getUser().getUserId();
+			authManager.assignUserRoleToProtectionGroup(super.getUser(), rolesId, protectionGroupId)
 			authManager.addUsersToGroup(group.getGroupId().toString(), userIds);
 		} catch (Exception e) {
 			String error = "Error finding existing collaboration groups accessible by the user";
