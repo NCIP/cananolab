@@ -16,8 +16,8 @@
 	<global-forwards>
 	</global-forwards>
 	<action-mappings>
-		<action path="/manageCommunity" type="org.apache.struts.actions.ForwardAction"
-			parameter="community.manageCommunity" scope="request" />
+		<action path="/manageCommunity" type="gov.nih.nci.cananolab.ui.community.ManageCommunityAction"
+			parameter="community.manageCommunity" scope="request"/>
 		<action name="collaborationGroupForm" parameter="dispatch"
 			path="/collaborationGroup" type="gov.nih.nci.cananolab.ui.community.CollaborationGroupAction"
 			input="input">
