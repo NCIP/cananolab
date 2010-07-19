@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.util.Constants;
 
 public class AccessibilityBean {
-	private UserBean user = new UserBean();
+	private UserBean userBean = new UserBean();
 	private String groupName;
 	private String roleName;
 	private String roleDisplayName;
@@ -14,12 +14,12 @@ public class AccessibilityBean {
 	public AccessibilityBean() {
 	}
 
-	public UserBean getUser() {
-		return user;
+	public UserBean getUserBean() {
+		return userBean;
 	}
 
-	public void setUser(UserBean user) {
-		this.user = user;
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
 	}
 
 	public String getGroupName() {
@@ -41,12 +41,31 @@ public class AccessibilityBean {
 	public String getRoleDisplayName() {
 		if (roleName == null) {
 			return null;
-		}
-		else if (roleName.equals(Constants.CSM_CURD_ROLE)) {
+		} else if (roleName.equals(Constants.CSM_CURD_ROLE)) {
 			roleDisplayName = this.CURD_ROLE_DISPLAY_NAME;
 		} else if (roleName.equals(Constants.CSM_READ_ROLE)) {
 			roleDisplayName = this.R_ROLE_DISPLAY_NAME;
 		}
 		return roleDisplayName;
 	}
+
+	public boolean equals(Object obj) {
+		if (obj instanceof AccessibilityBean) {
+			AccessibilityBean access = (AccessibilityBean) obj;
+			if (access.getUserBean().getLoginName().equals(
+					getUserBean().getLoginName()))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns hash code for the primary key of the object
+	 */
+	public int hashCode() {
+		if (getUserBean().getLoginName() != null)
+			return getUserBean().getLoginName().hashCode();
+		return 0;
+	}
+
 }
