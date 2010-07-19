@@ -16,7 +16,7 @@ public class UserBean {
 	/**
 	 * This string is used for login into the application.
 	 */
-	private String loginName;
+	private String loginName = "";
 
 	/**
 	 * The first name of the user
@@ -107,6 +107,10 @@ public class UserBean {
 		return this.loginName;
 	}
 
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
 	public String getOrganization() {
 		return this.organization;
 	}
@@ -137,6 +141,46 @@ public class UserBean {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 
 	public boolean isCurator() {
