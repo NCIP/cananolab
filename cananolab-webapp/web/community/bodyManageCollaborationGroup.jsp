@@ -5,6 +5,10 @@
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
+<script type="text/javascript"
+	src="javascript/CollaborationGroupManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/CollaborationGroupManager.js'></script>
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
@@ -70,7 +74,7 @@
 			</td>
 			<td>
 				<c:set var="newAddCGButtonStyle" value="display:block" />
-				<a href="#" onclick="javascript:show('newCollaborationGroup')"
+				<a href="#" onclick="javascript:clearCollaborationGroup();openSubmissionForm('CollaborationGroup');"
 					id="addCollaborationGroup" style="${newAddCGButtonStyle}"><img
 						align="top" src="images/btn_add.gif" border="0" /></a>
 			</td>
