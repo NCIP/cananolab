@@ -46,7 +46,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			String[] userIds = new String[accessibilities.size()];
 			int i = 0;
 			for (AccessibilityBean access : accessibilities) {
-				UserBean user = access.getUser();
+				UserBean user = access.getUserBean();
 				userIds[i] = user.getUserId();
 				// assign user accessibility to the collaboration group
 				Role role = authService.getRole(access.getRoleName());
@@ -114,7 +114,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			AccessibilityBean accessibility = new AccessibilityBean();
 			accessibility.setGroupName(cGroup.getName());
 			accessibility.setRoleName(userRoles.get(user.getLoginName()));
-			accessibility.setUser(new UserBean(user));
+			accessibility.setUserBean(new UserBean(user));
 			access.add(accessibility);
 		}
 		cGroup.setUserAccessibilities(access);
