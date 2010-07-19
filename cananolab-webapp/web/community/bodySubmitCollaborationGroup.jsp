@@ -4,11 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type="text/javascript"
-	src="javascript/CollaborationGroupManager.js"></script>
-<script type='text/javascript'
-	src='/caNanoLab/dwr/interface/CollaborationGroupManager.js'></script>
-
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
 		<th colspan="2">
@@ -38,7 +33,7 @@
 		</td>
 		<td>
 			<div id="userSection">
-				<a style="display: block" id="addUser" href="javascript:show('newUser')">Add</a>
+				<a style="display: block" id="addUser" href="javascript:show('newUser');clearUserAccess();">Add</a>
 				<br />
 				<table id="userTable" class="editTableWithGrid" width="85%"
 					style="display: none;">
@@ -53,7 +48,7 @@
 							<td>
 							</td>
 						</tr>
-						<tr id="pattern" style="display: block;">
+						<tr id="pattern" style="display: none;">
 							<td>
 								<span id="rowUserLoginName">login name</span>
 							</td>
@@ -82,8 +77,8 @@
 							User Login Name
 						</td>
 						<td>
-							<html:text property="group.theUserAccessibility.user.loginName"
-								styleId="userLoginName" onchange=""/>
+							<html:text property="group.theUserAccessibility.userBean.loginName"
+								styleId="userBean.loginName" onchange=""/>
 						</td>
 						<td width="5">
 									<a href="#userNameField"
@@ -118,7 +113,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input style="display: none;" id="deleteUser" type="button"
+							<input class="promptButton" style="display: none;" id="deleteUser" type="button"
 								value="Remove" onclick="deleteTheUserAccess()">
 						</td>
 						<td align="right" colspan="3">
