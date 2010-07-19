@@ -128,6 +128,7 @@
 			<include method="getCollaborationGroupById" />
 			<include method="addUserAccess" />
 			<include method="deleteUserAccess" />
+			<include method="resetTheCollaborationGroup" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
@@ -242,7 +243,6 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.AccessibilityBean"></convert>
 		<convert converter="bean" match="gov.nih.nci.cananolab.dto.common.UserBean">
-			<param name="include" value="loginName" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.CollaborationGroupBean"></convert>
