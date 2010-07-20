@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -42,19 +43,41 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("group", new CollaborationGroupBean());
+		request.getSession().removeAttribute("openCollaborationGroup");
+		setExistingGroups(request);
+		return mapping.findForward("setup");
+	}
+
+	private void setExistingGroups(HttpServletRequest request) throws Exception {
 		CommunityService service = setServiceInSession(request);
 		List<CollaborationGroupBean> existingCollaborationGroups = service
 				.findCollaborationGroups();
 		request.setAttribute("existingCollaborationGroups",
 				existingCollaborationGroups);
-		return mapping.findForward("setup");
 	}
 
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		checkOpenForms(theForm, request);
+		setExistingGroups(request);
 		return mapping.findForward("setup");
+	}
+
+	private void checkOpenForms(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openCollaborationGroup = false;
+		if (dispatch.equals("input")) {
+			openCollaborationGroup = true;
+			session.setAttribute("openCollaborationGroup",
+					openCollaborationGroup);
+		}
 	}
 
 	/**
