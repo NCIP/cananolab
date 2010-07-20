@@ -74,14 +74,19 @@
 			</td>
 			<td>
 				<c:set var="newAddCGButtonStyle" value="display:block" />
-				<a href="#" onclick="javascript:clearCollaborationGroup();openSubmissionForm('CollaborationGroup');"
+				<a href="#"
+					onclick="javascript:clearCollaborationGroup();openSubmissionForm('CollaborationGroup');"
 					id="addCollaborationGroup" style="${newAddCGButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" /></a>
+						align="top" src="images/btn_add.gif" border="0" />
+				</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<c:set var="newCGStyle" value="display:none" />
+				<c:if test="${openCollaborationGroup}">
+					<c:set var="newCGStyle" value="display:block" />
+				</c:if>
 				<div style="${newCGStyle}" id="newCollaborationGroup">
 					<a name="submitCollaborationGroup"><%@ include
 							file="bodySubmitCollaborationGroup.jsp"%></a>

@@ -74,7 +74,7 @@
 				<table class="promptbox" width="85%">
 					<tr>
 						<td class="cellLabel" width="30%">
-							User Login Name
+							User Login Name *
 						</td>
 						<td>
 							<html:text property="group.theUserAccessibility.userBean.loginName"
@@ -101,7 +101,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" width="30%">
-							Access to the Group
+							Access to the Group *
 						</td>
 						<td colspan="2">
 							<html:select property="group.theUserAccessibility.roleDisplayName"
@@ -118,7 +118,7 @@
 						</td>
 						<td align="right" colspan="3">
 							<div align="right">
-								<input class="promptButton" type="button" value="Save" onclick="javascript:addUserAccess();show('userTable');closeSubmissionForm('User');" />
+								<input class="promptButton" type="button" value="Save" onclick="javascript:addUserAccess();" />
 								<input class="promptButton" type="reset" value="Cancel" onclick="clearUserAccess();closeSubmissionForm('User');">
 							</div>
 						</td>
