@@ -116,7 +116,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport{
 
 	private static final class DataAvailabilityMapper implements RowMapper {
 
-		@Override
+		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 			DataAvailabilityBean dataBean = new DataAvailabilityBean();
 			dataBean.setSampleId(rs.getLong(SAMPLE_ID));
