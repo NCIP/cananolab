@@ -81,7 +81,7 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Save or update POC data.
+	 * Save or update collaboration group.
 	 *
 	 * @param mapping
 	 * @param form
@@ -107,5 +107,16 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 		CommunityService service = new CommunityServiceLocalImpl(user);
 		request.getSession().setAttribute("communityService", service);
 		return service;
+	}
+
+	public ActionForward delete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CollaborationGroupBean group = (CollaborationGroupBean) theForm
+				.get("group");
+		CommunityService service = setServiceInSession(request);
+		service.deleteCollaborationGroup(group);
+		return setupNew(mapping, form, request, response);
 	}
 }
