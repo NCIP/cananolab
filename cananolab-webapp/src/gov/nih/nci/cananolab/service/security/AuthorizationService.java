@@ -604,11 +604,53 @@ public class AuthorizationService {
 	}
 
 	/**
-	 * Assign the given objectName to the given groupName with the given
-	 * roleName. Add to existing roles the object has for the group.
+	 * Remove the given objectName from the given groupName with the given
+	 * roleName.
 	 *
 	 * @param objectName
 	 * @param groupName
+	 * @param roleName
+	 * @throws SecurityException
+	 */
+	public void RemoveSecureObject(String objectName, String groupName,
+			String roleName) throws SecurityException {
+		try {
+			// trim spaces in objectName
+			objectName = objectName.trim();
+
+			// create protection group
+			ProtectionGroup pg = getProtectionGroup(objectName);
+
+			// get group and role
+			Group group = getGroup(groupName);
+			Role role = getRole(roleName);
+
+			// this will remove exising roles assigned. In caNanoLab, this is
+			// not an
+			// issue since
+			// only the R role has been assigned from the application.
+
+			if (group == null) {
+				throw new SecurityException("No such group exists.");
+			}
+			if (role == null) {
+				throw new SecurityException("No such role exists.");
+			}
+			this.userManager.removeGroupRoleFromProtectionGroup(pg
+					.getProtectionGroupId().toString(), group.getGroupId()
+					.toString(), new String[] { role.getId().toString() });
+		} catch (Exception e) {
+			logger.error("Error in removing secured objects from group", e);
+			throw new SecurityException();
+		}
+	}
+
+	/**
+	 * Assign the given objectName to the given userName with the given
+	 * roleName. Add to existing roles the object has for the user.
+	 *
+	 * @param objectName
+	 * @param userLoginName
 	 * @param roleName
 	 * @throws SecurityException
 	 */
@@ -641,6 +683,40 @@ public class AuthorizationService {
 					.getProtectionGroupId().toString());
 		} catch (Exception e) {
 			logger.error("Error in securing objects for user", e);
+			throw new SecurityException();
+		}
+	}
+
+	/**
+	 * remove the given objectName from the given userName with the given
+	 * roleName.
+	 *
+	 * @param objectName
+	 * @param groupName
+	 * @param roleName
+	 * @throws SecurityException
+	 */
+	public void removeSecureObjectForUser(String objectName,
+			String userLoginName, String roleName) throws SecurityException {
+		try {
+			// trim spaces in objectName
+			objectName = objectName.trim();
+			// create protection group
+			ProtectionGroup pg = getProtectionGroup(objectName);
+			// get group and role
+			User user = userManager.getUser(userLoginName);
+			if (user == null) {
+				throw new SecurityException("User doesn't exist");
+			}
+			Role role = getRole(roleName);
+			if (role == null) {
+				throw new SecurityException("Role doesn't exist");
+			}
+			userManager.removeUserRoleFromProtectionGroup(pg
+					.getProtectionGroupId().toString(), user.getUserId()
+					.toString(), new String[] { role.getId().toString() });
+		} catch (Exception e) {
+			logger.error("Error in removing secured objects for user", e);
 			throw new SecurityException();
 		}
 	}
