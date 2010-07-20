@@ -19,6 +19,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.authorization.domainobjects.Role;
+import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
@@ -602,6 +603,48 @@ public class AuthorizationService {
 		}
 	}
 
+	/**
+	 * Assign the given objectName to the given groupName with the given
+	 * roleName. Add to existing roles the object has for the group.
+	 *
+	 * @param objectName
+	 * @param groupName
+	 * @param roleName
+	 * @throws SecurityException
+	 */
+	public void secureObjectForUser(String objectName, String userLoginName,
+			String roleName) throws SecurityException {
+		try {
+			// trim spaces in objectName
+			objectName = objectName.trim();
+			// create protection element
+			ProtectionElement pe = getProtectionElement(objectName);
+
+			// create protection group
+			ProtectionGroup pg = getProtectionGroup(objectName);
+
+			// assign protection element to protection group if not already
+			// exists
+			assignProtectionElementToProtectionGroup(pe, pg);
+
+			// get group and role
+			User user = userManager.getUser(userLoginName);
+			if (user == null) {
+				throw new SecurityException("User doesn't exist");
+			}
+			Role role = getRole(roleName);
+			if (role == null) {
+				throw new SecurityException("Role doesn't exist");
+			}
+			this.userManager.assignUserRoleToProtectionGroup(user.getUserId()
+					.toString(), new String[] { role.getId().toString() }, pg
+					.getProtectionGroupId().toString());
+		} catch (Exception e) {
+			logger.error("Error in securing objects for user", e);
+			throw new SecurityException();
+		}
+	}
+
 	public String[] getAccessibleGroups(String objectName, String privilegeName)
 			throws SecurityException {
 		List<String> groupNames = new ArrayList<String>();
@@ -704,7 +747,8 @@ public class AuthorizationService {
 
 	}
 
-	public void assignVisibility(String dataToProtect, String[] visibleGroups) throws SecurityException {
+	public void assignVisibility(String dataToProtect, String[] visibleGroups)
+			throws SecurityException {
 		try {
 			List<String> groupsToAssign = new ArrayList<String>(Arrays
 					.asList(visibleGroups));
@@ -997,7 +1041,7 @@ public class AuthorizationService {
 	}
 
 	public String getRoleForUser(String userName, String protectedData)
-			throws Exception {
+			throws SecurityException {
 		String query = "select distinct r.role_name "
 				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_role r "
 				+ "where ugrp.protection_group_id=pg.protection_group_id  "
@@ -1022,11 +1066,11 @@ public class AuthorizationService {
 	}
 
 	public Map<String, String> getUserRoles(String protectedData)
-			throws Exception {
+			throws SecurityException {
 		String query = "select distinct u.login_name, r.role_name "
 				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_role r "
 				+ "where ugrp.protection_group_id=pg.protection_group_id  "
-				+ "ugrp.user_id=u.user_id " + "and ugrp.role_id=r.role_id "
+				+ "and ugrp.user_id=u.user_id " + "and ugrp.role_id=r.role_id "
 				+ "and pg.protection_group_name='" + protectedData + "'";
 		Map<String, String> user2Role = new HashMap<String, String>();
 		try {
@@ -1037,9 +1081,9 @@ public class AuthorizationService {
 					Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
-				String[] row = (String[]) obj;
-				String user = row[0];
-				String role = row[1];
+				Object[] row = (Object[]) obj;
+				String user = row[0].toString();
+				String role = row[1].toString();
 				user2Role.put(user, role);
 			}
 		} catch (Exception e) {
