@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.Role;
@@ -43,7 +44,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 					.createAGroup(collaborationGroup.getName());
 			List<AccessibilityBean> accessibilities = collaborationGroup
 					.getUserAccessibilities();
-			String[] userIds = new String[accessibilities.size()+1];
+			String[] userIds = new String[accessibilities.size() + 1];
 			int i = 0;
 			for (AccessibilityBean access : accessibilities) {
 				UserBean userBean = access.getUserBean();
@@ -58,9 +59,12 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 						"CollaborationGroup_" + group.getGroupId());
 				i++;
 			}
-			//assign user created the collaboration group CURD access
-			userIds[i]=super.getUser().getUserId();
-			authManager.assignUserRoleToProtectionGroup(super.getUser(), rolesId, protectionGroupId)
+			// assign user who created the collaboration group CURD access to the group
+			userIds[i] = super.getUser().getUserId();
+			Role role = authService.getRole(Constants.CSM_CURD_ROLE);
+			authManager.assignUserRoleToProtectionGroup(super.getUser()
+					.getUserId(), new String[] { role.getId().toString() },
+					"CollaborationGroup_" + group.getGroupId());
 			authManager.addUsersToGroup(group.getGroupId().toString(), userIds);
 		} catch (Exception e) {
 			String error = "Error finding existing collaboration groups accessible by the user";
