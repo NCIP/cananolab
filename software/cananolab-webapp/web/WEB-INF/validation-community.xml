@@ -9,11 +9,11 @@
 				<arg position="0" key="group.name" bundle="community" />
 			</field>
 			<field property="group.theUserAccessibility.userBean.loginName"
-				page="2" depends="required">
+				page="3" depends="required">
 				<arg position="0" key="group.theUserAccessibility.userBean.loginName"
 					bundle="community" />
 			</field>
-			<field property="group.theUserAccessibility.roleName" page="2"
+			<field property="group.theUserAccessibility.roleName" page="3"
 				depends="required">
 				<arg position="0" key="group.theUserAccessibility.roleName"
 					bundle="community" />
