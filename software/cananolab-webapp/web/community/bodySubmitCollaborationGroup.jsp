@@ -134,6 +134,8 @@
 		<td align="right" colspan="3">
 			<div align="right">
 				<html:submit/>
+					<input type="hidden" name="dispatch" value="create">
+					<input type="hidden" name="page" value="1">
 				<input type="reset" value="Cancel" onclick="javascript:hide('newCollaborationGroup');show('newCollaborationGroupLabel'); show('addCollaborationGroup');">
 			</div>
 		</td>
