@@ -7,6 +7,7 @@ function setTheCollaborationGroup(groupId) {
 	CollaborationGroupManager.getCollaborationGroupById(groupId,
 			populateCollaborationGroup);
 	show("deleteCollaborationGroup");
+	hide("newCollaborationGroupLabel");
 	openSubmissionForm("CollaborationGroup");
 	// Feature request [26487] Deeper Edit Links.
 	window.setTimeout("openOneUserAccess()", 500);
@@ -28,6 +29,7 @@ function populateCollaborationGroup(group) {
 		if (group.name != null) {
 			dwr.util.setValue("groupName", group.name);
 			dwr.util.setValue("groupDescription", group.description);
+			dwr.util.setValue("groupId", group.id);
 		}
 		// clear the cache for each new collaborationGroup
 		userAccessCache = {};
@@ -64,6 +66,7 @@ function populateUserAccesses() {
 		}
 		userAccessCache[id] = userAccess;
 	}
+	closeSubmissionForm('User');
 }
 
 function clearCollaborationGroup() {
@@ -93,7 +96,7 @@ function addUserAccess() {
 	};
 
 	dwr.util.getValues(userAccess);
-	if (userAccess.userBean.loginName != "" || userAccess.roleName != "") {
+	if (userAccess.userBean.loginName != "" && userAccess.roleName != "") {
 		CollaborationGroupManager.addUserAccess(userAccess, function(group) {
 			if (group == null) {
 				sessionTimeout();
@@ -103,7 +106,7 @@ function addUserAccess() {
 		window.setTimeout("populateUserAccesses()", 200);
 		return true;
 	} else {
-		alert("Please fill in values");
+		alert("Please fill in both fields.");
 		return false;
 	}
 }
