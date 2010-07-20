@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
@@ -36,14 +37,18 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			throw new NoAccessException();
 		}
 		try {
+			List<AccessibilityBean> accessibilities = collaborationGroup
+					.getUserAccessibilities();
 			AuthorizationService authService = super.getAuthService();
 			AuthorizationManager authManager = authService
 					.getAuthorizationManager();
-			Group group = authService.getGroup(collaborationGroup.getName());
+
+			Group group = null;
 			// create a new group if none exists.
-			if (group == null) {
+			if (collaborationGroup.getId() == null) {
 				group = new Group();
 				group.setGroupName(collaborationGroup.getName());
+				group.setGroupDesc(collaborationGroup.getDescription());
 				authManager.createGroup(group);
 				// assign CURD access to user who created the group
 				authService.secureObjectForUser(
@@ -56,12 +61,34 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 								+ group.getGroupId(),
 						Constants.CSM_DATA_CURATOR, Constants.CSM_CURD_ROLE);
 			}
+			// update existing group
+			else {
+				group = authService.getGroup(collaborationGroup.getName());
+				// update group description
+				group.setGroupDesc(collaborationGroup.getDescription());
+				authManager.modifyGroup(group);
+
+				// update user access
+				CollaborationGroupBean existingGroup = findCollaborationGroupById(collaborationGroup
+						.getId());
+				List<AccessibilityBean> existingAccess = existingGroup
+						.getUserAccessibilities();
+				List<AccessibilityBean> accessToRemove = new ArrayList<AccessibilityBean>(
+						existingAccess);
+				accessToRemove.removeAll(accessibilities);
+				for (AccessibilityBean access : accessToRemove) {
+					authManager.removeUserFromGroup(group.getGroupId()
+							.toString(), access.getUserBean().getUserId());
+					authService.removeSecureObjectForUser(
+							Constants.CSM_COLLABORATION_GROUP_PREFIX
+									+ group.getGroupId(), access.getUserBean()
+									.getLoginName(), Constants.CSM_CURD_ROLE);
+				}
+			}
 			// check if user has access to update the group
 			if (authService.checkCreatePermission(getUser(),
 					Constants.CSM_COLLABORATION_GROUP_PREFIX
 							+ group.getGroupId())) {
-				List<AccessibilityBean> accessibilities = collaborationGroup
-						.getUserAccessibilities();
 				String[] userIds = new String[accessibilities.size() + 1];
 				int i = 0;
 				for (AccessibilityBean access : accessibilities) {
@@ -145,7 +172,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 						+ cGroup.getId());
 		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
 		for (User user : users) {
-			//remove the group owner from the list
+			// remove the group owner from the list
 			if (!user.getLoginName().equalsIgnoreCase(getUser().getLoginName())) {
 				AccessibilityBean accessibility = new AccessibilityBean();
 				accessibility.setGroupName(cGroup.getName());
