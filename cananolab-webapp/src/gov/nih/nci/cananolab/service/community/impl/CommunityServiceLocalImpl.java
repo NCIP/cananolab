@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 		CommunityService {
 	public CommunityServiceLocalImpl() {
@@ -45,7 +47,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 
 			Group group = null;
 			// create a new group if none exists.
-			if (collaborationGroup.getId() == null) {
+			if (StringUtils.isEmpty(collaborationGroup.getId())) {
 				group = new Group();
 				group.setGroupName(collaborationGroup.getName());
 				group.setGroupDesc(collaborationGroup.getDescription());
@@ -205,5 +207,32 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			throw new CommunityException(error, e);
 		}
 		return collaborationGroup;
+	}
+
+	public void deleteCollaborationGroup(
+			CollaborationGroupBean collaborationGroup)
+			throws CommunityException, NoAccessException {
+		if (getUser() == null) {
+			throw new NoAccessException();
+		}
+		try {
+			AuthorizationService authService = super.getAuthService();
+			// check if user has access to delete the group
+			if (!authService.checkPermission(getUser(),
+					Constants.CSM_COLLABORATION_GROUP_PREFIX
+							+ collaborationGroup.getId(),
+					Constants.CSM_DELETE_PRIVILEGE)) {
+				throw new NoAccessException();
+			} else {
+				authService
+						.removeCSMEntry(Constants.CSM_COLLABORATION_GROUP_PREFIX
+								+ collaborationGroup.getId());
+				authService.getAuthorizationManager().removeGroup(
+						collaborationGroup.getId());
+			}
+		} catch (Exception e) {
+			String error = "Error deleting the collaboration group";
+			throw new CommunityException(error, e);
+		}
 	}
 }

@@ -15,4 +15,7 @@ public interface CommunityService {
 
 	public CollaborationGroupBean findCollaborationGroupById(String id)
 			throws CommunityException;
+
+	public void deleteCollaborationGroup(CollaborationGroupBean collaborationGroup)
+			throws CommunityException, NoAccessException;
 }
