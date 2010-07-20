@@ -82,7 +82,7 @@ function deleteTheCollaborationGroup() {
 	var answer = confirmDelete("collaboration group");
 	if (answer != 0) {
 		submitAction(document.forms[0], "collaborationGroup",
-				"deleteCollaborationGroup", 2);
+				"delete", 2);
 	}
 }
 

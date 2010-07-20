@@ -129,7 +129,7 @@
 	</tr>
 	<tr>
 		<td><input style="display: none;" id="deleteCollaborationGroup" type="button"
-				value="Remove">
+				value="Remove" onclick="javascript:deleteTheCollaborationGroup()">
 		<br></td>
 		<td align="right" colspan="3">
 			<div align="right">
