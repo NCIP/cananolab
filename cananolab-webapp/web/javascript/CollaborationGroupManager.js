@@ -7,16 +7,16 @@ function setTheCollaborationGroup(groupId) {
 	CollaborationGroupManager.getCollaborationGroupById(groupId,
 			populateCollaborationGroup);
 	show("deleteCollaborationGroup");
-	openSubmissionForm("CollaborationGroups");
+	openSubmissionForm("CollaborationGroup");
 	// Feature request [26487] Deeper Edit Links.
-	window.setTimeout("openOneUserAccess()", 200);
+	window.setTimeout("openOneUserAccess()", 500);
 }
-// Populate Instrument submission form and auto open it for user.
+// Populate user submission form and auto open it for user.
 function openOneUserAccess() {
-	if (currentExperimentConfig != null
-			&& currentExperimentConfig.instruments.length == 1) {
-		var instrument = currentExperimentConfig.instruments[0];
-		populateInstrumentForm(instrument);
+	if (currentGroup != null
+			&& currentGroup.userAccessibilities.length == 1) {
+		var userAccess = currentGroup.userAccessibilities[0];
+		populateUserAccessForm(userAccess);
 	} else {
 		hide("newUser");
 	}
