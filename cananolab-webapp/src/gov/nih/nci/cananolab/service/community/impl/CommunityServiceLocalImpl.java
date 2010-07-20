@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
@@ -32,40 +31,62 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 	}
 
 	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
-			throws CommunityException {
+			throws CommunityException, NoAccessException {
+		if (getUser() == null) {
+			throw new NoAccessException();
+		}
 		try {
-			if (getUser() == null) {
-				throw new NoAccessException();
-			}
 			AuthorizationService authService = super.getAuthService();
 			AuthorizationManager authManager = authService
 					.getAuthorizationManager();
-			Group group = authService
-					.createAGroup(collaborationGroup.getName());
-			List<AccessibilityBean> accessibilities = collaborationGroup
-					.getUserAccessibilities();
-			String[] userIds = new String[accessibilities.size() + 1];
-			int i = 0;
-			for (AccessibilityBean access : accessibilities) {
-				UserBean userBean = access.getUserBean();
-				User user = authManager.getUser(userBean.getLoginName());
-				userBean.setUserId(user.getUserId().toString());
-				String userId = userBean.getUserId();
-				userIds[i] = userId;
-				// assign user accessibility to the collaboration group
-				Role role = authService.getRole(access.getRoleName());
-				authManager.assignUserRoleToProtectionGroup(userId,
-						new String[] { role.getId().toString() },
-						"CollaborationGroup_" + group.getGroupId());
-				i++;
+			Group group = authService.getGroup(collaborationGroup.getName());
+			// create a new group if none exists.
+			if (group == null) {
+				group = new Group();
+				group.setGroupName(collaborationGroup.getName());
+				authManager.createGroup(group);
+				// assign CURD access to user who created the group
+				authService.secureObjectForUser(
+						Constants.CSM_COLLABORATION_GROUP_PREFIX
+								+ group.getGroupId(), getUser().getLoginName(),
+						Constants.CSM_CURD_ROLE);
+				// assign CURD access to Curator group
+				authService.secureObject(
+						Constants.CSM_COLLABORATION_GROUP_PREFIX
+								+ group.getGroupId(),
+						Constants.CSM_DATA_CURATOR, Constants.CSM_CURD_ROLE);
 			}
-			// assign user who created the collaboration group CURD access to the group
-			userIds[i] = super.getUser().getUserId();
-			Role role = authService.getRole(Constants.CSM_CURD_ROLE);
-			authManager.assignUserRoleToProtectionGroup(super.getUser()
-					.getUserId(), new String[] { role.getId().toString() },
-					"CollaborationGroup_" + group.getGroupId());
-			authManager.addUsersToGroup(group.getGroupId().toString(), userIds);
+			// check if user has access to update the group
+			if (authService.checkCreatePermission(getUser(),
+					Constants.CSM_COLLABORATION_GROUP_PREFIX
+							+ group.getGroupId())) {
+				List<AccessibilityBean> accessibilities = collaborationGroup
+						.getUserAccessibilities();
+				String[] userIds = new String[accessibilities.size() + 1];
+				int i = 0;
+				for (AccessibilityBean access : accessibilities) {
+					UserBean userBean = access.getUserBean();
+					User user = authManager.getUser(userBean.getLoginName());
+					userBean.setUserId(user.getUserId().toString());
+					String userId = userBean.getUserId();
+					userIds[i] = userId;
+					// assign user accessibility to the collaboration group
+					authService.secureObjectForUser(
+							Constants.CSM_COLLABORATION_GROUP_PREFIX
+									+ group.getGroupId(), user.getLoginName(),
+							access.getRoleName());
+					i++;
+				}
+				// add current user to the group
+				userIds[i] = getUser().getUserId();
+				authManager.addUsersToGroup(group.getGroupId().toString(),
+						userIds);
+			} else {
+				throw new NoAccessException(
+						"Collaboration Group already exists and you don't have access to update it");
+			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String error = "Error finding existing collaboration groups accessible by the user";
 			throw new CommunityException(error, e);
@@ -81,7 +102,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			AuthorizationManager authManager = authService
 					.getAuthorizationManager();
 			Group dummy = new Group();
-			dummy.setGroupName("CollaborationGroup_*");
+			dummy.setGroupName("*");
 			SearchCriteria sc = new GroupSearchCriteria(dummy);
 			List results = authManager.getObjects(sc);
 			for (Object obj : results) {
@@ -89,15 +110,17 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 				CollaborationGroupBean cGroup = new CollaborationGroupBean(
 						doGroup);
 				if (authService.checkCreatePermission(getUser(),
-						"CollaborationGroup_" + cGroup.getId())) {
+						Constants.CSM_COLLABORATION_GROUP_PREFIX
+								+ cGroup.getId())) {
 					setUserAccesses(cGroup);
 					collaborationGroups.add(cGroup);
 				} else {
 					String error = "User has no access to the collaboration group "
 							+ cGroup.getName();
-					throw new CommunityException(error);
+					logger.info(error);
 				}
 			}
+
 		} catch (Exception e) {
 			String error = "Error finding existing collaboration groups accessible by the user";
 			throw new CommunityException(error, e);
@@ -118,14 +141,18 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			userNames.add(user.getLoginName());
 		}
 		Map<String, String> userRoles = authService
-				.getUserRoles("CollaborationGroup_" + cGroup.getId());
+				.getUserRoles(Constants.CSM_COLLABORATION_GROUP_PREFIX
+						+ cGroup.getId());
 		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
 		for (User user : users) {
-			AccessibilityBean accessibility = new AccessibilityBean();
-			accessibility.setGroupName(cGroup.getName());
-			accessibility.setRoleName(userRoles.get(user.getLoginName()));
-			accessibility.setUserBean(new UserBean(user));
-			access.add(accessibility);
+			//remove the group owner from the list
+			if (!user.getLoginName().equalsIgnoreCase(getUser().getLoginName())) {
+				AccessibilityBean accessibility = new AccessibilityBean();
+				accessibility.setGroupName(cGroup.getName());
+				accessibility.setRoleName(userRoles.get(user.getLoginName()));
+				accessibility.setUserBean(new UserBean(user));
+				access.add(accessibility);
+			}
 		}
 		cGroup.setUserAccessibilities(access);
 	}
@@ -137,13 +164,14 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			AuthorizationService authService = super.getAuthService();
 			Group group = authService.getUserManager().getGroupById(id);
 			collaborationGroup = new CollaborationGroupBean(group);
-			String pe = "CollaborationGroup_" + collaborationGroup.getId();
+			String pe = Constants.CSM_COLLABORATION_GROUP_PREFIX
+					+ collaborationGroup.getId();
 			if (authService.checkCreatePermission(getUser(), pe)) {
 				setUserAccesses(collaborationGroup);
 			} else {
 				String error = "User has no access to the collaboration group "
 						+ collaborationGroup.getName();
-				return null;
+				logger.info(error);
 			}
 		} catch (Exception e) {
 			String error = "Error retrieving the collaboration group by name";
