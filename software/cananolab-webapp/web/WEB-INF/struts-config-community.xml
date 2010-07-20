@@ -16,11 +16,15 @@
 	<global-forwards>
 	</global-forwards>
 	<action-mappings>
-		<action path="/manageCommunity" type="gov.nih.nci.cananolab.ui.community.ManageCommunityAction"
-			parameter="community.manageCommunity" scope="request"/>
+		<action path="/manageCommunity"
+			type="gov.nih.nci.cananolab.ui.community.ManageCommunityAction"
+			parameter="community.manageCommunity" scope="request" />
 		<action name="collaborationGroupForm" parameter="dispatch"
 			path="/collaborationGroup" type="gov.nih.nci.cananolab.ui.community.CollaborationGroupAction"
 			input="input">
+			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.collobrationGroup.noaccess" path="community.manageCollaborationGroup"
+				type="gov.nih.nci.cananolab.exception.NoAccessException" />
 			<forward name="setup" path="community.manageCollaborationGroup" />
 			<forward name="input"
 				path="/collaborationGroup.do?dispatch=input&amp;page=0" />
