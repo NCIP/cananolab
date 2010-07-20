@@ -69,8 +69,7 @@ public class Constants {
 
 	public static final String CSM_PUBLIC_GROUP = "Public";
 
-	public static final String[] VISIBLE_GROUPS = new String[] {
-			CSM_DATA_CURATOR};
+	public static final String[] VISIBLE_GROUPS = new String[] { CSM_DATA_CURATOR };
 
 	public static final String AUTO_COPY_ANNOTATION_PREFIX = "COPY";
 
@@ -100,6 +99,7 @@ public class Constants {
 
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
 
+	public static final String CSM_COLLABORATION_GROUP_PREFIX = "CollaborationGroup_";
 	// This is a hack to querying based on .class to work in case of multi-level
 	// inheritance with joined-subclass
 	// TODO check the order generated in the hibernate mapping file for each
