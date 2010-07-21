@@ -10,11 +10,13 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -22,13 +24,10 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,6 +42,7 @@ public class SampleAction extends BaseAnnotationAction {
 	// logger
 	// private static Logger logger = Logger.getLogger(ReviewDataAction.class);
 
+	private DataAvailabilityService dataAvailabilityService;
 	/**
 	 * Save or update POC data.
 	 *
@@ -148,7 +148,17 @@ public class SampleAction extends BaseAnnotationAction {
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request);		
+		SampleBean sampleBean = setupSample(theForm, request);	
+		
+		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>)
+			request.getSession().getAttribute("dataAvailabilityMapPerPage");
+		
+		List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage.get(sampleBean.getDomain().getId().toString());
+		
+		if(!selectedSampleDataAvailability.isEmpty() && selectedSampleDataAvailability.size()> 0){
+			sampleBean.setHasDataAvailability(true);
+			sampleBean.setDataAvailability(selectedSampleDataAvailability);
+		}		
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
@@ -171,26 +181,8 @@ public class SampleAction extends BaseAnnotationAction {
 		// }
 		// }
 
-		/*InitSetup charsService = InitSetup.getInstance();
-		ServletContext appContext = request.getSession().getServletContext();
 		
-		Map<String, Map<String, SortedSet<String>>> defaultLookup = (HashMap<String, Map<String, SortedSet<String>>>)appContext.getAttribute("defaultLookupTable");
-		if(defaultLookup != null){
-			Map<String, SortedSet<String>> map = defaultLookup.get("MINChar");
-			Collection<Map<String, SortedSet<String>>> lookupValues  = defaultLookup.values();
-			//lookupValues.
-		}*/
-		
-/*
-		request.setAttribute("physicoChars", physicoChars);
-		request.setAttribute("invitroChars", invitroChars);
-		request.setAttribute("invivoChars", invivoChars);
-		request.setAttribute("chemicalAssocs", chemicalAssocs);
-
-		System.out.println("chemical associations size: "
-				+ chemicalAssocs.size());*/
 		return mapping.findForward("summaryEdit");
-		// return mapping.findForward("summaryEdit");
 	}
 
 	/**
@@ -389,6 +381,75 @@ public class SampleAction extends BaseAnnotationAction {
 		sampleBean = new SampleBean();
 		ActionForward forward = mapping.findForward("sampleMessage");
 		return forward;
+	}
+	
+	public DataAvailabilityService getDataAvailabilityService() {
+		return dataAvailabilityService;
+	}
+
+	public void setDataAvailabilityService(
+			DataAvailabilityService dataAvailabilityService) {
+		this.dataAvailabilityService = dataAvailabilityService;
+	}
+
+	/**
+	 * generate data availability for the sample
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward generateDataAvailability(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.generateDataAvailability(sampleBean, user);
+		sampleBean.setDataAvailability(dataAvailability);
+		sampleBean.setHasDataAvailability(true);
+		return mapping.findForward("summaryEdit");
+	}
+	/**
+	 * update data availability for the sample
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward updateDataAvailability(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.saveDataAvailability(sampleBean, user);
+		sampleBean.setDataAvailability(dataAvailability);
+		return mapping.findForward("summaryEdit");
+	}
+	
+	/**
+	 * delete data availability for the sample
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward deleteDataAvailability(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain().getId().toString());
+		sampleBean.setHasDataAvailability(false);
+		sampleBean.setDataAvailability(new ArrayList<DataAvailabilityBean>());
+		return mapping.findForward("summaryEdit");
 	}
 
 	private SampleService setServiceInSession(HttpServletRequest request)
