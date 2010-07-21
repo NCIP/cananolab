@@ -39,10 +39,12 @@
 			</td>
 			<td>
 				<c:set var="newAddPOCButtonStyle" value="display:block" />
+				<%--
 				<c:if
 					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
 					<c:set var="newAddPOCButtonStyle" value="display:none" />
 				</c:if>
+				--%>
 				<a href="#"
 					onclick="javascript:confirmAddNew('PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
@@ -61,10 +63,12 @@
 		<tr>
 			<td colspan="2">
 				<c:set var="newPOCStyle" value="display:none" />
+				<%--
 				<c:if
 					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
 					<c:set var="newPOCStyle" value="display:block" />
 				</c:if>
+				--%>
 				<div style="${newPOCStyle}" id="newPointOfContact">
 					<a name="submitPointOfContact"><%@ include
 							file="bodySubmitPointOfContact.jsp"%></a>
@@ -80,26 +84,32 @@
 				<html:textarea property="sampleBean.keywordsStr" rows="6" cols="80" />
 			</td>
 		</tr>
-		<%@include file="../community/bodyManageAccessibility.jsp" %>
-		<tr>
-			<td class="cellLabel">
-				Data Availability Metrics
-			</td>
-			<td>
-			<c:set var="updateAvailabilityOnclick"
-		value="updateDataAvailability('dataAvailability');"/>
-			<c:if test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability  && user.admin}">
-				<input type="button" value="Generate"
-					onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
-			</c:if>
-			<c:if test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true' && user.admin}">
-				<input type="button" value="Edit"
-					onclick="javascript:showhide('dataAvailability');" >
+		<c:set var="groupAccesses" value="${sampleForm.map.sampleBean.groupAccesses}"/>
+		<c:set var="userAccesses" value="${sampleForm.map.sampleBean.userAccesses}"/>
+		<c:set var="accessParent" value="sampleBean"/>
+		<%@include file="../bodyManageAccessibility.jsp" %>
+		<c:if test="${!empty updateSample}">
+			<tr>
+				<td class="cellLabel">
+					Data Availability Metrics
+				</td>
+				<td>
+					<c:set var="updateAvailabilityOnclick"
+						value="updateDataAvailability('dataAvailability');" />
+					<c:if
+						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability  && user.admin}">
+						<input type="button" value="Generate"
+							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
+					</c:if>
+					<c:if
+						test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true' && user.admin}">
+						<input type="button" value="Edit"
+							onclick="javascript:showhide('dataAvailability');">
 
-			</c:if>
-			</td>
-		</tr>
-		<tr>
+					</c:if>
+				</td>
+			</tr>
+			<tr>
 			<td colspan="2">
 				<c:set var="dataAvailabilityStyle" value="display:none" />
 				<div style="${dataAvailabilityStyle}" id="dataAvailability">
@@ -108,6 +118,7 @@
 				</div>
 			</td>
 		</tr>
+		</c:if>
 	</table>
 	<br>
 	<c:if test="${!empty updateSample}">
@@ -117,14 +128,16 @@
 	<c:set var="deleteOnclick"
 		value="deleteData('sample', sampleForm, 'sample', 'delete')" />
 	<c:set var="deleteButtonName" value="Delete" />
-	<c:set var="generateDataAvailabilityOnclick" 
+	<c:set var="generateDataAvailabilityOnclick"
 		value="generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability')" />
 	<c:set var="cloneOnclick"
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="2" />
 	<c:set var="review" value="false"/>
-	<c:set var="assignPublic" value="true"/>
+	<c:if test="${user.curator && !empty updateSample}">
+		<c:set var="assignPublic" value="true" />
+	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 
