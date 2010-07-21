@@ -91,6 +91,8 @@ function submitAction(form, actionName, dispatchName, page) {
 	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=" + page;
 	form.submit();
 }
+
+
 function getElement(form, elementName) {
 	var element;
 	for (var i = 0; i < form.elements.length; ) {
@@ -467,5 +469,20 @@ function confirmAddNew(styleId, newObjectName, cleanupFunction) {
 			eval(cleanupFunction);
 			openSubmissionForm(styleId);
 		}
+	}
+}
+
+function generateDataAvailability(form, actionName, dispatch){	
+	submitAction(form, actionName, dispatch, 0);
+}
+
+function updateDataAvailability(form, actionName, dispatch){
+	submitAction(form, actionName, dispatch, 0);
+}
+
+function deleteDataAvailability(type, form, actionName, dispatch){
+	var answer = confirmDelete(type);
+	if (answer) {
+		submitAction(form, actionName, dispatch, 0);
 	}
 }
