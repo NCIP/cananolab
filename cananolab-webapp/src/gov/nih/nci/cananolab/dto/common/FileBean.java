@@ -21,7 +21,7 @@ import org.apache.struts.upload.FormFile;
  * @author pansu
  *
  */
-public class FileBean {
+public class FileBean extends SecuredDataBean {
 	protected File domainFile = new File();
 
 	private String[] visibilityGroups = new String[0];
@@ -133,12 +133,13 @@ public class FileBean {
 		if (domainFile.getId() != null && domainFile.getId() == 0) {
 			domainFile.setId(null);
 		}
-		//updated created_date and created_by if id is null
+		// updated created_date and created_by if id is null
 		if (domainFile.getId() == null) {
 			domainFile.setCreatedBy(createdBy);
 			domainFile.setCreatedDate(Calendar.getInstance().getTime());
 		}
-		//updated created_by if created_by contains copy, but keep the original created_date
+		// updated created_by if created_by contains copy, but keep the original
+		// created_date
 		if (domainFile.getId() != null
 				|| !StringUtils.isEmpty(domainFile.getCreatedBy())
 				&& domainFile.getCreatedBy().contains(
@@ -228,8 +229,9 @@ public class FileBean {
 	}
 
 	public void resetDomainCopy(File copy) {
-		//append original ID to assist in copy
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX+":"+copy.getId());
+		// append original ID to assist in copy
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+				+ copy.getId());
 		copy.setId(null);
 		Collection<Keyword> oldKeywords = copy.getKeywordCollection();
 		if (oldKeywords == null || oldKeywords.isEmpty()) {

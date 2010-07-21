@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -29,7 +30,7 @@ import java.util.TreeSet;
  * @author pansu
  *
  */
-public class SampleBean {
+public class SampleBean extends SecuredDataBean {
 	private String keywordsStr;
 
 	private String[] visibilityGroups = new String[0];
@@ -67,7 +68,7 @@ public class SampleBean {
 	private List<AccessibilityBean> accessibilities = new ArrayList<AccessibilityBean>();
 
 	private Boolean userUpdatable = false;
-	
+
 	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 
 	public SampleBean() {
