@@ -1,4 +1,4 @@
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%><?asdzfwxcvbnjnhjjuuoppppppppl;kl,m../';l';'/'[]\]]target data?>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -30,7 +30,7 @@
 				<display:column title="Characterizations"
 					property="characterizationStr" />
 				<display:column title="Data Availability"
-					property="dataAvailabilityMatricsStr" />
+					property="dataAvailabilityMetricsStr" />
 			</display:table>
 		</td>
 	</tr>
