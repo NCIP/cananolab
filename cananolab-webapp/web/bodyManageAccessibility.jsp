@@ -36,7 +36,7 @@
 					</th>
 					<th></th>
 				</tr>
-				<c:forEach var="access" items="groupAccesses">
+				<c:forEach var="access" items="${groupAccesses}">
 					<tr valign="top">
 						<td>
 							${access.groupName}
@@ -69,7 +69,7 @@
 					</th>
 					<th></th>
 				</tr>
-				<c:forEach var="access" items="userAccesses">
+				<c:forEach var="access" items="${userAccesses}">
 				<tr valign="top">
 					<td>
 						${access.userBean.loginName}
