@@ -14,7 +14,7 @@ import java.util.Date;
  * @author pansu
  *
  */
-public class ProtocolBean {
+public class ProtocolBean extends SecuredDataBean {
 	private FileBean fileBean = new FileBean();
 	private Protocol domain = new Protocol();
 	private String[] visibilityGroups = new String[0];
