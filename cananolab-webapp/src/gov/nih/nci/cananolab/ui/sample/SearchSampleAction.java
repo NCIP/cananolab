@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -22,6 +23,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchSampleAction extends AbstractDispatchAction {
 
+	private DataAvailabilityService dataAvailabilityService;
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -223,6 +226,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		} else {
 			service = this.setServiceInSession(request);
 		}
+		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = new HashMap<String, List<DataAvailabilityBean>>();
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String sampleId = sampleBeans.get(i).getDomain().getId()
@@ -246,8 +250,9 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					sampleBean.setFunctionClassNames(helper
 							.getStoredFunctionClassNames(sample).toArray(
 									new String[0]));
-					//get data availability for the sample
-					List<DataAvailabilityBean> dataAvailability = service.findDataAvailabilityBySampleId(sampleId);
+					//get data availability for the samples
+					List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleId);
+					dataAvailabilityMapPerPage.put(sampleId, dataAvailability);
 					if(!dataAvailability.isEmpty() && dataAvailability.size() > 0){
 						sampleBean.setDataAvailability(dataAvailability);
 						sampleBean.setHasDataAvailability(true);
@@ -256,6 +261,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				}
 			}
 		}
+		request.getSession().setAttribute("dataAvailabilityMapPerPage", dataAvailabilityMapPerPage);
 		return loadedSampleBeans;
 	}
 
@@ -290,6 +296,15 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 		request.getSession().removeAttribute("sampleSearchResults");
 		return mapping.getInputForward();
+	}
+
+	public DataAvailabilityService getDataAvailabilityService() {
+		return dataAvailabilityService;
+	}
+
+	public void setDataAvailabilityService(
+			DataAvailabilityService dataAvailabilityService) {
+		this.dataAvailabilityService = dataAvailabilityService;
 	}
 
 	private SampleService setServiceInSession(HttpServletRequest request)
