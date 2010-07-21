@@ -88,11 +88,11 @@
 			<td>
 			<c:set var="updateAvailabilityOnclick"
 		value="updateDataAvailability('dataAvailability');"/>
-			<c:if test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability && user.admin}">
+			<c:if test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability  && user.admin}">
 				<input type="button" value="Generate"
-					onclick="${generateDataAvailabilityOnclick}">
+					onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 			</c:if>
-			<c:if test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability && user.admin}">
+			<c:if test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true' && user.admin}">
 				<input type="button" value="Edit"
 					onclick="javascript:showhide('dataAvailability');" >
 
@@ -117,6 +117,8 @@
 	<c:set var="deleteOnclick"
 		value="deleteData('sample', sampleForm, 'sample', 'delete')" />
 	<c:set var="deleteButtonName" value="Delete" />
+	<c:set var="generateDataAvailabilityOnclick" 
+		value="generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability')" />
 	<c:set var="cloneOnclick"
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
