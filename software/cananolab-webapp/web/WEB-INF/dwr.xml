@@ -130,6 +130,14 @@
 			<include method="deleteUserAccess" />
 			<include method="resetTheCollaborationGroup" />
 		</create>
+		<create creator="new" javascript="AccessibilityManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.core.DWRAccessibilityManager" />
+			<include method="getGroupAccess" />
+			<include method="getUserAccess" />
+			<include method="resetTheAccess" />
+		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
 			<param name="include" value="displayName, domainId" />
