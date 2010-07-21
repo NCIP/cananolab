@@ -180,16 +180,7 @@
 				</c:if>
 			</td>
 		</tr>
-	</c:forEach>
-	<tr>
-		<td>
-			Protocols
-		</td>
-		<td></td>
-		<td align="center">
-			<img src="images/icon_check.png" />
-		</td>
-	</tr>
+	</c:forEach>	
 	<tr>
 		<td>
 			Publications
@@ -202,12 +193,12 @@
 </table>
 <table class="invisibleTable" width="95%" align="center">
 	<tr><td width="650" align="left"><input type="button" value="Delete"
-					onclick="removeDataAvailability('sample')"
-					id="deleteDataAvailability"  /></td>
+					onclick="javascript:deleteDataAvailability('Data Availability for the sample', sampleForm, 'sample', 'deleteDataAvailability');" />
+		</td>
 		<td colspan="2" width="600" align="right"> 
 			<div>			
 				<input type="button" value="Update"
-					onclick="updateDataAvailability('sample')" />	
+					onclick="javascript:updateDataAvailability(sampleForm, 'sample', 'updateDataAvailability');" />
 				<input type="button" value="Cancel"
 					onclick="javascript:hide('dataAvailability');" />	
 			</div>		
