@@ -8,6 +8,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
@@ -16,6 +17,8 @@ import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.common.AccessService;
+import gov.nih.nci.cananolab.service.common.impl.AccessServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -43,6 +46,7 @@ public class SampleAction extends BaseAnnotationAction {
 	// private static Logger logger = Logger.getLogger(ReviewDataAction.class);
 
 	private DataAvailabilityService dataAvailabilityService;
+
 	/**
 	 * Save or update POC data.
 	 *
@@ -148,17 +152,20 @@ public class SampleAction extends BaseAnnotationAction {
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
-		SampleBean sampleBean = setupSample(theForm, request);	
-		
-		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>)
-			request.getSession().getAttribute("dataAvailabilityMapPerPage");
-		
-		List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage.get(sampleBean.getDomain().getId().toString());
-		
-		if(!selectedSampleDataAvailability.isEmpty() && selectedSampleDataAvailability.size()> 0){
+		SampleBean sampleBean = setupSample(theForm, request);
+		// set existing sample accessibility
+		this.setSampleAccesses(sampleBean);
+		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
+				.getSession().getAttribute("dataAvailabilityMapPerPage");
+
+		List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage
+				.get(sampleBean.getDomain().getId().toString());
+
+		if (!selectedSampleDataAvailability.isEmpty()
+				&& selectedSampleDataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
 			sampleBean.setDataAvailability(selectedSampleDataAvailability);
-		}		
+		}
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
@@ -181,8 +188,19 @@ public class SampleAction extends BaseAnnotationAction {
 		// }
 		// }
 
-		
 		return mapping.findForward("summaryEdit");
+	}
+
+	private void setSampleAccesses(SampleBean sampleBean) throws Exception {
+		AccessService service = new AccessServiceLocalImpl();
+		List<AccessibilityBean> groupAccesses = service
+				.findGroupAccessibilities(sampleBean.getDomain().getId()
+						.toString());
+		List<AccessibilityBean> userAccesses = service
+				.findUserAccessibilities(sampleBean.getDomain().getId()
+						.toString());
+		sampleBean.setUserAccesses(userAccesses);
+		sampleBean.setGroupAccesses(groupAccesses);
 	}
 
 	/**
@@ -382,7 +400,7 @@ public class SampleAction extends BaseAnnotationAction {
 		ActionForward forward = mapping.findForward("sampleMessage");
 		return forward;
 	}
-	
+
 	public DataAvailabilityService getDataAvailabilityService() {
 		return dataAvailabilityService;
 	}
@@ -394,6 +412,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * generate data availability for the sample
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -401,19 +420,23 @@ public class SampleAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward generateDataAvailability(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward generateDataAvailability(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.generateDataAvailability(sampleBean, user);
+
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+				.generateDataAvailability(sampleBean, user);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
 		return mapping.findForward("summaryEdit");
 	}
+
 	/**
 	 * update data availability for the sample
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -421,19 +444,22 @@ public class SampleAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward updateDataAvailability(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
+	public ActionForward updateDataAvailability(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.saveDataAvailability(sampleBean, user);
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+				.saveDataAvailability(sampleBean, user);
 		sampleBean.setDataAvailability(dataAvailability);
 		return mapping.findForward("summaryEdit");
 	}
-	
+
 	/**
 	 * delete data availability for the sample
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -441,12 +467,14 @@ public class SampleAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward deleteDataAvailability(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
+	public ActionForward deleteDataAvailability(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain().getId().toString());
+		dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain()
+				.getId().toString());
 		sampleBean.setHasDataAvailability(false);
 		sampleBean.setDataAvailability(new ArrayList<DataAvailabilityBean>());
 		return mapping.findForward("summaryEdit");
