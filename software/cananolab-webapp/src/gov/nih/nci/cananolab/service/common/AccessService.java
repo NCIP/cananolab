@@ -13,4 +13,10 @@ public interface AccessService {
 
 	public void saveAccessibility(AccessibilityBean access, String protectedData)
 			throws SecurityException;
+
+	public AccessibilityBean findAccessibilityByGroupName(String groupName,
+			String protectedData) throws SecurityException;
+
+	public AccessibilityBean findAccessibilityByUserLoginName(String userLoginName,
+			String protectedData) throws SecurityException;
 }
