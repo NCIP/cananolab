@@ -14,8 +14,7 @@ function setTheCollaborationGroup(groupId) {
 }
 // Populate user submission form and auto open it for user.
 function openOneUserAccess() {
-	if (currentGroup != null
-			&& currentGroup.userAccessibilities.length == 1) {
+	if (currentGroup != null && currentGroup.userAccessibilities.length == 1) {
 		var userAccess = currentGroup.userAccessibilities[0];
 		populateUserAccessForm(userAccess);
 	} else {
@@ -58,7 +57,8 @@ function populateUserAccesses() {
 		dwr.util.cloneNode("pattern", {
 			idSuffix : id
 		});
-		dwr.util.setValue("rowUserLoginName" + id, userAccess.userBean.loginName);
+		dwr.util.setValue("rowUserLoginName" + id,
+				userAccess.userBean.loginName);
 		dwr.util.setValue("rowRoleName" + id, userAccess.roleDisplayName);
 		$("pattern" + id).style.display = "";
 		if (userAccessCache[id] == null) {
@@ -81,8 +81,7 @@ function clearCollaborationGroup() {
 function deleteTheCollaborationGroup() {
 	var answer = confirmDelete("collaboration group");
 	if (answer != 0) {
-		submitAction(document.forms[0], "collaborationGroup",
-				"delete", 2);
+		submitAction(document.forms[0], "collaborationGroup", "delete", 2);
 	}
 }
 
@@ -110,15 +109,20 @@ function addUserAccess() {
 		return false;
 	}
 }
+
 function clearUserAccess() {
 	dwr.util.setValue("userBean.loginName", "");
 	dwr.util.setValue("roleName", "");
 	hide("deleteUser");
+	enableButtons( [ "submitButton", "resetButton", "deleteCollaborationGroup" ]);
 }
+
 function editUserAccess(userLoginName) {
 	var userAccess = userAccessCache[userLoginName.substring(4)];
 	populateUserAccessForm(userAccess);
+	disableButtons( [ "submitButton", "resetButton", "deleteCollaborationGroup" ]);
 }
+
 function populateUserAccessForm(userAccess) {
 	dwr.util.setValues(userAccess);
 	show("deleteUser");
@@ -130,7 +134,8 @@ function deleteTheUserAccess() {
 		var userAccess = userAccessCache[userLoginName];
 		if (confirm("Are you sure you want to delete access for '"
 				+ userLoginName + "'?")) {
-			CollaborationGroupManager.deleteUserAccess(userAccess, function(group) {
+			CollaborationGroupManager.deleteUserAccess(userAccess, function(
+					group) {
 				if (group == null) {
 					sessionTimeout();
 				}
