@@ -133,11 +133,11 @@
 		<br></td>
 		<td align="right" colspan="3">
 			<div align="right">
-				<html:submit/>
+				<html:submit styleId="submitButton"/>
 					<input type="hidden" name="dispatch" value="create">
 					<input type="hidden" name="page" value="1">
 					<html:hidden styleId="groupId"	property="group.id" />
-				<input type="reset" value="Cancel" onclick="javascript:hide('newCollaborationGroup');show('newCollaborationGroupLabel'); show('addCollaborationGroup');">
+				<input type="reset" value="Cancel" onclick="javascript:hide('newCollaborationGroup');show('newCollaborationGroupLabel'); show('addCollaborationGroup');" id="resetButton">
 			</div>
 		</td>
 	</tr>
