@@ -1163,10 +1163,105 @@ public class AuthorizationService {
 				user2Role.put(user, role);
 			}
 		} catch (Exception e) {
-			logger.error("Error in getting existing role from CSM database", e);
+			logger
+					.error(
+							"Error in getting existing user access for the given data from CSM database",
+							e);
 			throw new SecurityException();
 		}
 		return user2Role;
+	}
+
+	public Map<String, String> getGroupRoles(String protectedData)
+			throws SecurityException {
+		String query = "select distinct g.group_name, r.role_name "
+				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_group g, csm_role r "
+				+ "where ugrp.protection_group_id=pg.protection_group_id  "
+				+ "and ugrp.group_id=g.group_id "
+				+ "and ugrp.role_id=r.role_id "
+				+ "and pg.protection_group_name='" + protectedData + "'";
+		Map<String, String> group2Role = new HashMap<String, String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "group_name", "role_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING,
+					Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				Object[] row = (Object[]) obj;
+				String group = row[0].toString();
+				String role = row[1].toString();
+				group2Role.put(group, role);
+			}
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in getting existing group access for the given data from CSM database",
+							e);
+			throw new SecurityException();
+		}
+		return group2Role;
+	}
+
+	public String getUserRole(String protectedData,
+			String userLoginName) throws SecurityException {
+		String query = "select distinct r.role_name "
+				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_role r "
+				+ "where ugrp.protection_group_id=pg.protection_group_id  "
+				+ "and ugrp.user_id=u.user_id " + "and ugrp.role_id=r.role_id "
+				+ "and u.login_name="+userLoginName+"' "
+				+ "and pg.protection_group_name='" + protectedData + "'";
+		String roleName = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "role_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				Object[] row = (Object[]) obj;
+				roleName = row[0].toString();
+			}
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in getting existing role for the given data and given user name from CSM database",
+							e);
+			throw new SecurityException();
+		}
+		return roleName;
+	}
+
+	public String getGroupRole(String protectedData, String groupName)
+			throws SecurityException {
+		String query = "select distinct r.role_name "
+				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_group g, csm_role r "
+				+ "where ugrp.protection_group_id=pg.protection_group_id  "
+				+ "and ugrp.group_id=g.group_id "
+				+ "and ugrp.role_id=r.role_id " + "and g.group_name='"
+				+ groupName + "' " + "and pg.protection_group_name='"
+				+ protectedData + "'";
+		String roleName = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "role_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				Object[] row = (Object[]) obj;
+				roleName = row[0].toString();
+			}
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in getting existing role for the given data and given group name from CSM database",
+							e);
+			throw new SecurityException();
+		}
+
+		return roleName;
 	}
 
 	public static void main(String[] args) {
