@@ -5,9 +5,14 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import javax.servlet.ServletContext;
 
 import org.displaytag.decorator.TableDecorator;
 
@@ -110,7 +115,7 @@ public class SampleDecorator extends TableDecorator {
 		return sample.getPrimaryPOCBean().getDisplayName();
 	}
 
-	public String getDataAvailabilityMatricsStr() throws BaseException {
+	public String getDataAvailabilityMetricsStr() throws BaseException {
 		// need to compute this value
 		Integer completeness = 39;
 		SampleBean sample = (SampleBean) getCurrentRowObject();
@@ -133,11 +138,36 @@ public class SampleDecorator extends TableDecorator {
 	
 	private String calculateDataAvailabilityScore(List<DataAvailabilityBean> dataAvailability){
 		int size = dataAvailability.size();
+		int minCharSize=0;
+		ServletContext appContext = super.getPageContext().getServletContext();
+		SortedSet<String> minchar = (SortedSet<String>)appContext.getAttribute("MINChar");
+		Map<String , SortedSet<String>> attributes = (Map<String,SortedSet<String>>)appContext.getAttribute("caNano2MINChar");
+		int totalMinCharSize = minchar.size();
+		List<String> caNanoForMincharEntities = new ArrayList<String>();
+		Set<String> keySet = attributes.keySet();
+		for(String key: keySet){
+			//System.out.println("key: " + key);
+			SortedSet<String> values = attributes.get(key);
+			String value = values.first();
+			//System.out.println("first value: "+values.first() + " tostring: " + values.toString()+ ", size: " + values.size());
+			for(String minCharEntity: minchar){
+				if(minCharEntity.equalsIgnoreCase(value)){
+					caNanoForMincharEntities.add(key);
+				}
+			}
+		}
+		for(DataAvailabilityBean bean: dataAvailability){
+			String availableEntityName = bean.getAvailableEntityName();
+			for(String s : caNanoForMincharEntities){				
+				if(s.equalsIgnoreCase(availableEntityName)){
+					minCharSize++;
+				}
+			}
+		}
+		Double caNanoLabScore = new Double(size*100/30);
+		Double minCharScore = new Double(minCharSize*100/totalMinCharSize);
 		
-		int caNanoLabScore = size/29;
-		int minCharScore = size/8;
-		
-		String s = "caNanoLab: " + caNanoLabScore + "%; MINChar: " + minCharScore + "%";
+		String s = "caNanoLab: " + caNanoLabScore.intValue() + "%; MINChar: " + minCharScore.intValue() + "%";
 		return s;
  	}
 }
