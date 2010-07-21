@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.service.sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -79,14 +78,5 @@ public interface SampleService {
 	public int getNumberOfPublicSampleSources() throws SampleException;
 
 	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
-			String sampleId) throws SampleException;
-
-	// data availability 
-	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws Exception;
-	
-	public void generateDataAvailability(SampleBean sampleBean) throws Exception;
-	
-	public void saveDataAvailability(SampleBean sampleBean);
-	
-	public void deleteDataAvailability(String sampleId);
+			String sampleId) throws SampleException;	
 }
