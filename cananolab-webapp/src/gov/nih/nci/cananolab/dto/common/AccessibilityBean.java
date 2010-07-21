@@ -7,6 +7,7 @@ public class AccessibilityBean {
 	private String groupName;
 	private String roleName;
 	private String roleDisplayName;
+	private String accessBy = "group";
 
 	public static final String CURD_ROLE_DISPLAY_NAME = "read update delete";
 	public static final String R_ROLE_DISPLAY_NAME = "read";
@@ -66,6 +67,14 @@ public class AccessibilityBean {
 		if (getUserBean().getLoginName() != null)
 			return getUserBean().getLoginName().hashCode();
 		return 0;
+	}
+
+	public String getAccessBy() {
+		return accessBy;
+	}
+
+	public void setAccessBy(String accessBy) {
+		this.accessBy = accessBy;
 	}
 
 }
