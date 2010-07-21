@@ -64,12 +64,11 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSetup.getInstance().setStaticOptions(appContext);
 
-			InitSecuritySetup.getInstance().setupDefaultCSM();
+			//InitSecuritySetup.getInstance().setupDefaultCSM();
 			
 			//load mapping for data availability
 			InitSetup.getInstance().getDefaultTypesByLookup(appContext, "MINChar", "MINChar", "entity");
-			InitSetup.getInstance().getLookupByAttribute(appContext, "caNano2MINChar", "caNano2MINChar");
-			
+			InitSetup.getInstance().getLookupByName(appContext, "caNano2MINChar", "caNano2MINChar");
 			InitSetup.getInstance().getDefaultTypesByReflection(
 					appContext,
 					"physicoChars",
