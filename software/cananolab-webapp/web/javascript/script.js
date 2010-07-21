@@ -346,16 +346,16 @@ function addFile(actionName, form) {
 		dispatch = "addFile";
 	} else {
 		dispatch = "saveFile";
-		if (actionName == "functionalizingEntity" && 
+		if (actionName == "functionalizingEntity" &&
 			(!validateAmountValue() ||
 			 !validateSavingTheData('newFunction', 'function'))) {
 			return false;
 		}
-		if (actionName == "nanomaterialEntity" && 
-			(!validateTubeInfo() || 
-			!validateFullereneInfo() || 
+		if (actionName == "nanomaterialEntity" &&
+			(!validateTubeInfo() ||
+			!validateFullereneInfo() ||
 			!validatePolymerInfo() ||
-			!validateSavingTheData('newComposingElement', 'Composing Element') 
+			!validateSavingTheData('newComposingElement', 'Composing Element')
 			)) {
 			return false;
 		}
@@ -445,6 +445,23 @@ function closeSubmissionForm(styleId) {
 	hide("new" + styleId);
 	show("add" + styleId);
 }
+
+function enableButtons(buttons) {
+	for(var i=0; i<buttons.length;i++) {
+		var button=buttons[i];
+		document.getElementById(button).disabled=false;
+		document.getElementById(button).disabled=false;
+	}
+}
+
+function disableButtons(buttons) {
+	for(var i=0; i<buttons.length;i++) {
+		var button=buttons[i];
+		document.getElementById(button).disabled=true;
+		document.getElementById(button).disabled=true;
+	}
+}
+
 function validateSavingTheData(dataStyleId, dataName) {
 	var displayStatus = document.getElementById(dataStyleId).style.display;
 	if (displayStatus == "block" || displayStatus == canSeeTableRow) {
