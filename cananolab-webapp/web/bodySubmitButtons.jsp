@@ -8,10 +8,10 @@
 		<td align="left" width="600">
 			<c:if test="${!empty user && !empty updateId && user.admin}">
 				<input type="button" value="${deleteButtonName}"
-					onclick="${deleteOnclick}">
+					onclick="${deleteOnclick}" id="deleteButton">
 			</c:if>
 			<c:if test="${!empty updateId && !empty cloneOnclick }">
-				<input type="button" value="Copy" onclick="${cloneOnclick}">
+				<input type="button" value="Copy" onclick="${cloneOnclick}" id="copyButton">
 			</c:if>
 		</td>
 		<td align="right" width="300">
@@ -19,21 +19,21 @@
 			<c:if test="${!empty updateId}">
 				<c:set var="submitButtonName" value="Update" />
 			</c:if>
-			<input type="reset" value="Reset" onclick="${resetOnclick}" />
+			<input type="reset" value="Reset" onclick="${resetOnclick}" id="resetButton"/>
 			&nbsp;
 			<c:if test="${!empty review && review eq 'true'}">
-				<input type="button" value="Submit for Review" />
+				<input type="button" value="Submit for Review" id="reviewButton"/>
 			</c:if>
 			<c:if test="${!empty assignPublic && assignPublic eq 'true'}">
-				<input type="button" value="Submit to Public" />
+				<input type="button" value="Submit to Public" id="publicButton"/>
 			</c:if>
 			<c:choose>
 				<c:when test="${!empty submitOnclick }">
 					<input type="button" value="${submitButtonName}"
-						onclick="${submitOnclick}">
+						onclick="${submitOnclick}" styleId="submitButton">
 				</c:when>
 				<c:otherwise>
-					<html:submit value="${submitButtonName}" />
+					<html:submit value="${submitButtonName}" styleId="submitButton" disabled="false"/>
 					<input type="hidden" name="dispatch" value="${hiddenDispatch}">
 					<input type="hidden" name="page" value="${hiddenPage}">
 				</c:otherwise>
