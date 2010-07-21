@@ -1,30 +1,40 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
-import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.DataAvailabilityException;
+import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
 
-import javax.sql.DataSource;
-
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport{
+/**
+ * Service methods for data availability
+ * @author lethai
+ *
+ */
+public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements DataAvailabilityService{
 	
 	//[sample-data_availability] table columns.
 	private static final String SAMPLE_ID = "sample_id";
@@ -34,10 +44,12 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport{
 	private static final String CREATED_DATE = "created_date";
 	private static final String UPDATED_BY = "updated_by";
 	private static final String UPDATED_DATE = "updated_date";
-	private SampleService helper;
-	private UserBean user;
+	
 	private static String SELECT_DATA_AVAILABILITY = 
-		"select from data_availability where sample_id=" ;
+		"select * from data_availability where sample_id=" ;
+	
+	private static String INSERT_SQL = "INSERT INTO DATA_AVAILABILITY ";
+	private static String UPDATE_SQL = "UPDATE DATA_AVAILABILITY ";
 	
 	//DATA_MAPPER
 	private static DataAvailabilityMapper DATA_MAPPER = new DataAvailabilityMapper();
@@ -45,73 +57,111 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport{
 	public DataAvailabilityServiceJDBCImpl(){
 		
 	}
-	public DataAvailabilityServiceJDBCImpl(UserBean user) {
-		this.user = user;		
-	}
-	public DataAvailabilityServiceJDBCImpl(UserBean user, SampleService sampleService){
-		this.user = user;
-	}
 	
-	//data availability
-	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws Exception{
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#findDataAvailabilityBySampleId(java.lang.String)
+	 */
+	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws DataAvailabilityException{
 		List<DataAvailabilityBean> result = new ArrayList<DataAvailabilityBean>();
+		
 		JdbcTemplate data = this.getJdbcTemplate();
 		
 		result = (List<DataAvailabilityBean>) data.query(
 				SELECT_DATA_AVAILABILITY + sampleId, DATA_MAPPER);
-		//return result;
-		System.out.println("result size: " + result.size());
+		
 		return result;
 	}
 	
-	public void generateDataAvailability(SampleBean sampleBean, UserBean user){
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#generateDataAvailability(gov.nih.nci.cananolab.dto.particle.SampleBean, gov.nih.nci.cananolab.dto.common.UserBean)
+	 */
+	public List<DataAvailabilityBean> generateDataAvailability(SampleBean sampleBean, UserBean user) throws DataAvailabilityException{
 		Long sampleId = sampleBean.getDomain().getId();
-		//sampleBean.getDomain()
-		boolean hasComposition = sampleBean.getHasComposition();
-		boolean hasCharacterization = sampleBean.getHasCharacterizations();
-		boolean hasPublication = sampleBean.getHasPublications();
-		boolean hasProtocol = false;
-		
-		System.out.println("hasComposition: " + hasComposition);
-		System.out.println("hasChars: " + hasCharacterization);
-		Sample domain = sampleBean.getDomain();
-		SampleComposition comp = domain.getSampleComposition();
-		Collection<Characterization> chars = domain.getCharacterizationCollection();
-		Iterator<Characterization> iterator = chars.iterator();
-		while(iterator.hasNext()){
-			Characterization characterization = iterator.next();
-			Protocol protocol = characterization.getProtocol();
 			
-			if(protocol != null){
-				System.out.println("protocol for characterization: " + characterization.getAssayType() + 
-						", protocol name:  " + protocol.getName() + ", protocol type: " + protocol.getType());
-				hasProtocol = true;
-			}
+		List<String> clazNames = null;
+		try{
+			clazNames = generate(sampleBean);
+		}catch(Exception e){
+			throw new DataAvailabilityException();
+		}		
+		
+		System.out.println("total : " + clazNames.size());
+		
+		List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
+		
+		for(String claz : clazNames){
+			DataAvailabilityBean bean = new DataAvailabilityBean();
+			bean.setSampleId(sampleId.longValue());
+			bean.setAvailableEntityName(claz);
+			bean.setDatasourceName("caNanoLab");
+			bean.setCreatedDate(new Date());
+			bean.setCreatedBy(user.getLoginName());
+			dataAvailability.add(bean);
 		}
 		
-		Collection<Keyword> keywordCollection = domain.getKeywordCollection();
-		Collection<Publication> publicationCollection = domain.getPublicationCollection();
+		insertBatch(dataAvailability);
 		
-		String[] characterizationClassNames = sampleBean.getCharacterizationClassNames();
-		String[] chemicalAssociationClassNames = sampleBean.getChemicalAssociationClassNames();
-		String[] functionalizingEntityClassNames = sampleBean.getFunctionalizingEntityClassNames();
-		String[] functionClassNames = sampleBean.getFunctionClassNames();
-		String[] nanomaterialEntityClassNames = sampleBean.getNanomaterialEntityClassNames();
-		
-		
-		
-		
+		return dataAvailability;
 		
 	}
 
-	public void saveDataAvailability(SampleBean sampleBean){
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#saveDataAvailability(gov.nih.nci.cananolab.dto.particle.SampleBean, gov.nih.nci.cananolab.dto.common.UserBean)
+	 */
+	public List<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean, UserBean user) throws DataAvailabilityException{
+		Long sampleId = sampleBean.getDomain().getId();
+		List<DataAvailabilityBean> currentDataAvailability = sampleBean.getDataAvailability();
 		
+		List<String> newGenernatedDataAvailability = null;
+		try {
+			newGenernatedDataAvailability = generate(sampleBean);
+		} catch (Exception e) {
+			throw new DataAvailabilityException();
+		}
+		List<DataAvailabilityBean> newDataAvailability = new ArrayList<DataAvailabilityBean>();
+		for(DataAvailabilityBean bean: currentDataAvailability){
+			String availableEntityName = bean.getAvailableEntityName();
+			if(newGenernatedDataAvailability.contains(availableEntityName)){
+				//this is an update
+				bean.setUpdatedBy(user.getLoginName());
+				bean.setUpdatedDate(new Date());
+			}else{
+				//this is an insert
+				DataAvailabilityBean newBean = new DataAvailabilityBean();
+				newBean.setSampleId(sampleId);
+				newBean.setAvailableEntityName(availableEntityName);
+				newBean.setDatasourceName("caNanoLab");
+				newBean.setUpdatedBy(user.getLoginName());
+				newBean.setUpdatedDate(new Date());
+				newDataAvailability.add(newBean);
+			}
+		}
+		
+		System.out.println("Current size: " + currentDataAvailability.size());
+		//update the currentDataAvailability
+		updateBatch(currentDataAvailability);
+		
+		//insert the newDataAvailability
+		if(newDataAvailability.size() > 0 ){
+			insertBatch(newDataAvailability);
+			currentDataAvailability.addAll(newDataAvailability);
+		}
+		
+		System.out.println("new size: " + newDataAvailability.size());
+		//return new list that contains both of them.
+		//currentDataAvailability.addAll(newDataAvailability);
+		System.out.println("currentDataAvailabitliy total size: " + currentDataAvailability.size());
+		
+		return currentDataAvailability;
 	}
 	
-	public void deleteDataAvailability(String sampleId){
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#deleteDataAvailability(java.lang.String)
+	 */
+	public void deleteDataAvailability(String sampleId) throws DataAvailabilityException{
 		
 		String sql = "delete from data_availability where sample_id = " + sampleId;
-		
+		this.getJdbcTemplate().execute(sql);		
 	}
 
 	private static final class DataAvailabilityMapper implements RowMapper {
@@ -129,5 +179,145 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport{
 			return dataBean;
 		}
 		
+	}
+
+	/**
+	 * generate the data availability information for the sample
+	 * @param sampleBean
+	 * @return
+	 */
+	private List<String> generate(SampleBean sampleBean) throws Exception{
+		
+		boolean hasComposition = sampleBean.getHasComposition();
+		boolean hasCharacterization = sampleBean.getHasCharacterizations();
+		boolean hasPublication = sampleBean.getHasPublications();
+		
+		SampleServiceLocalImpl serviceImpl = new SampleServiceLocalImpl();
+		SampleService sampleService = serviceImpl;
+		Sample fullyLoadedSample = null;
+		
+		fullyLoadedSample = serviceImpl.findFullyLoadedSampleByName(sampleBean.getDomain().getName());
+		
+		sampleBean.setDomain(fullyLoadedSample);
+		Sample domain = sampleBean.getDomain();
+		SampleComposition comp = domain.getSampleComposition();
+		
+		System.out.println("Sample Composition: id " + comp.getId() + "; toString: " + comp.toString());
+		
+		SampleServiceHelper helper = ((SampleServiceLocalImpl) sampleService).getHelper();
+		
+		SortedSet<String> storedChemicalAssociationClassNames = helper.getStoredChemicalAssociationClassNames(domain);
+		
+		SortedSet<String> storedFunctionalizingEntityClassNames = helper.getStoredFunctionalizingEntityClassNames(domain);
+		SortedSet<String> storedFunctionClassNames = helper.getStoredFunctionClassNames(domain);
+		SortedSet<String> storedNanomaterialEntityClassNames = helper.getStoredNanomaterialEntityClassNames(domain);
+		
+		List<String> clazzNames = new ArrayList<String>();	
+		
+		Collection<Characterization> characterizationCollection = domain.getCharacterizationCollection() ;
+		if (characterizationCollection != null) {
+			for (Characterization achar : characterizationCollection) {
+				if (achar instanceof OtherCharacterization) {
+				} else {
+					String shortClassName = ClassUtils.getShortClassName(achar
+							.getClass().getCanonicalName());					
+					if(shortClassName.equalsIgnoreCase("surface")){
+						Collection<Finding> findingCollection = achar.getFindingCollection();
+						if(!findingCollection.isEmpty()){
+							for(Finding finding: findingCollection){						
+								Collection<Datum> datumCollection = finding.getDatumCollection();
+								for(Datum datum:datumCollection){
+									System.out.println("datum: " + datum.getName() );
+									clazzNames.add(datum.getName());
+								}
+							}
+						}else{
+							clazzNames.add(shortClassName);
+						}
+					}else{
+						clazzNames.add(shortClassName);
+					}
+				}
+			}
+		}
+		
+		for(String s: storedChemicalAssociationClassNames){
+			System.out.println("chemicalAssociation classname: " + s);
+			clazzNames.add(s);
+		}
+		if(storedFunctionalizingEntityClassNames.size() > 0){
+			clazzNames.add("functionalizing entities");
+		}
+		if(storedNanomaterialEntityClassNames.size()> 0){
+			//System.out.println("characterization classname: " + s);
+			clazzNames.add("nanomaterial entities");
+		}
+		
+		if(storedFunctionClassNames.size()> 0){
+			clazzNames.add("sample function");
+		}
+		if(hasComposition){
+			clazzNames.add("Sample Composition");
+		}
+		if(hasPublication){
+			clazzNames.add("Publications");
+		}
+		return clazzNames;
+	}
+	
+	/**
+	 * insert data availability into database table
+	 * @param data
+	 */
+	private void insertBatch(final List<DataAvailabilityBean> data){
+		 
+		  String sql = "INSERT INTO DATA_AVAILABILITY " +
+			"(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY) VALUES (?, ?, ?, ?, ?)";
+		 
+		  getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		 
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				DataAvailabilityBean bean = data.get(i);
+				ps.setLong(1, bean.getSampleId());
+				ps.setString(2, bean.getDatasourceName());
+				ps.setString(3, bean.getAvailableEntityName() );
+				ps.setDate(4, new java.sql.Date( bean.getCreatedDate().getTime()));
+				ps.setString(5, bean.getCreatedBy());
+			}
+		 
+			@Override
+			public int getBatchSize() {
+				return data.size();
+			}
+		  });
+	}
+	
+	/**
+	 * update data availability to database table
+	 * @param data
+	 */
+	private void updateBatch(final List<DataAvailabilityBean> data){
+		String sql = "UPDATE DATA_AVAILABILITY SET AVAILABLE_ENTITY_NAME=?, UPDATED_DATE=?, UPDATED_BY=? WHERE SAMPLE_ID=? and AVAILABLE_ENTITY_NAME=?";
+		
+		getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+			 
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				DataAvailabilityBean bean = data.get(i);
+				
+				//ps.setString(2, bean.getDatasourceName());
+				ps.setString(1, bean.getAvailableEntityName() );
+				ps.setDate(2, new java.sql.Date( bean.getUpdatedDate().getTime()));
+				ps.setString(3, bean.getUpdatedBy());
+				ps.setLong(4, bean.getSampleId());
+				ps.setString(5, bean.getAvailableEntityName() );
+			}
+		 
+			@Override
+			public int getBatchSize() {
+				return data.size();
+			}
+		  });
 	}
 }
