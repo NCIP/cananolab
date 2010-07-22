@@ -30,6 +30,7 @@ function setThePointOfContact(id, isPrimary) {
 	});
 	// add a timeout to allow correct refresh order
 	window.setTimeout("fillPointOfContact(" + id + ", " + isPrimary + ")", 100);
+	disableButtons(["submitButton", "resetButton"]);
 }
 
 function fillPointOfContact(id, isPrimary) {
@@ -64,6 +65,7 @@ function populatePointOfContact(poc) {
 	}
 }
 function addPointOfContact(actionName) {
+	enableButtons(["submitButton", "resetButton"]);
 	submitAction(document.forms[0], actionName, "savePointOfContact", 3);
 }
 function removePointOfContact(actionName) {
