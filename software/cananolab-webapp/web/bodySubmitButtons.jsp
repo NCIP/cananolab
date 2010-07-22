@@ -19,7 +19,10 @@
 			<c:if test="${!empty updateId}">
 				<c:set var="submitButtonName" value="Update" />
 			</c:if>
-			<input type="reset" value="Reset" onclick="${resetOnclick}" id="resetButton"/>
+			<c:if test="${disableButtons}">
+			    <c:set var="disableButtonStr" value="disabled"/>
+			</c:if>
+			<input type="reset" value="Reset" onclick="${resetOnclick}" id="resetButton" ${disableButtonStr}/>
 			&nbsp;
 			<c:if test="${!empty review && review eq 'true'}">
 				<input type="button" value="Submit for Review" id="reviewButton"/>
@@ -33,7 +36,7 @@
 						onclick="${submitOnclick}" styleId="submitButton">
 				</c:when>
 				<c:otherwise>
-					<html:submit value="${submitButtonName}" styleId="submitButton" disabled="false"/>
+					<html:submit value="${submitButtonName}" styleId="submitButton" disabled="${disableButtons}"/>
 					<input type="hidden" name="dispatch" value="${hiddenDispatch}">
 					<input type="hidden" name="page" value="${hiddenPage}">
 				</c:otherwise>
