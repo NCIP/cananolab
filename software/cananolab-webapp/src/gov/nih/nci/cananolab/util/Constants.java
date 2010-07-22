@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.util;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +48,14 @@ public class Constants {
 		SAMPLE_PREFIX = samplePrefix.trim();
 	}
 
+	public static final AccessibilityBean CSM_DEFAULT_ACCESS;
+	static {
+		AccessibilityBean defaultAccess = new AccessibilityBean();
+		defaultAccess.setGroupName(Constants.CSM_DATA_CURATOR);
+		defaultAccess.setRoleName(Constants.CSM_CURD_ROLE);
+		CSM_DEFAULT_ACCESS = defaultAccess;
+
+	}
 	public static final String ASSOCIATED_FILE = "Other Associated File";
 
 	public static final String PROTOCOL_FILE = "Protocol File";
