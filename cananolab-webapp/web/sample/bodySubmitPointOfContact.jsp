@@ -198,9 +198,7 @@
 							<html:options name="allVisibilityGroups" />
 						</html:select>
 						<br>
-						<i>(${applicationOwner}_Researcher,
-							${applicationOwner}_DataCurator, and the organization name are
-							always selected by default.)</i>
+						<i>(Curator is always selected by default.)</i>
 					</td>
 				</tr>
 			</table>
@@ -222,7 +220,7 @@
 							<input type="button" value="Save"
 								onclick="addPointOfContact('sample')" />
 							<input type="button" value="Cancel"
-								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');" />
+								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');enableButtons(['submitButton', 'resetButton']);" />
 							<html:hidden styleId="domain.id"
 								property="sampleBean.thePOC.domain.id" />
 							<html:hidden styleId="primaryStatus"
