@@ -480,6 +480,31 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryEdit");
 	}
 
+	public ActionForward saveAccess(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		SampleBean sample = (SampleBean) theForm.get("sampleBean");
+		AccessibilityBean theAccess = sample.getTheAccess();
+		AccessService service=new AccessServiceLocalImpl(user);
+		service.saveAccessibility(theAccess, sample.getDomain().getId().toString());
+
+		ActionForward forward = null;
+		String updateSample = (String) request.getSession().getAttribute(
+				"updateSample");
+		if (updateSample == null) {
+			forward = mapping.findForward("createInput");
+			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName());
+		} else {
+			request.setAttribute("sampleId", sample.getDomain().getId()
+					.toString());
+			forward = summaryEdit(mapping, form, request, response);
+		}
+		return forward;
+	}
+
 	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
