@@ -97,7 +97,7 @@
 		<action path="/manageSample" type="org.apache.struts.actions.ForwardAction"
 			parameter="sample.manageSample" scope="request" />
 		<action name="sampleForm" parameter="dispatch" path="/sample"
-			type="gov.nih.nci.cananolab.ui.sample.SampleAction" input="input">
+			type="org.springframework.web.struts.DelegatingActionProxy" input="input">
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateSample" path="sample.submitSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
@@ -109,11 +109,11 @@
 			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />
 		</action>
 		<action input="input" name="searchSampleForm" parameter="dispatch"
-			path="/searchSample" type="gov.nih.nci.cananolab.ui.sample.SearchSampleAction"
+			path="/searchSample" type="org.springframework.web.struts.DelegatingActionProxy"
 			scope="request">
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
-		</action>
+		</action>		
 		<action input="input" name="advancedSampleSearchForm"
 			parameter="dispatch" path="/advancedSampleSearch"
 			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">
