@@ -7,12 +7,16 @@ public class AccessibilityBean {
 	private String groupName;
 	private String roleName;
 	private String roleDisplayName;
-	private boolean groupAccess=true;
+	private boolean groupAccess = true;
 
 	public static final String CURD_ROLE_DISPLAY_NAME = "read update delete";
 	public static final String R_ROLE_DISPLAY_NAME = "read";
 
 	public AccessibilityBean() {
+	}
+
+	public AccessibilityBean(boolean groupAccess) {
+		this.groupAccess = groupAccess;
 	}
 
 	public UserBean getUserBean() {
