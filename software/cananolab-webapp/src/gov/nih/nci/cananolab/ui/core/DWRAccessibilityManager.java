@@ -36,14 +36,14 @@ public class DWRAccessibilityManager {
 			return null;
 		}
 		AccessibilityBean access = new AccessibilityBean();
-		if (parentType.equals("sample")) {
+		if (parentType.equalsIgnoreCase("sample")) {
 			SampleBean sampleBean = (SampleBean) accessForm.get("sampleBean");
 			sampleBean.setTheAccess(access);
-		} else if (parentType.equals("protocol")) {
+		} else if (parentType.equalsIgnoreCase("protocol")) {
 			ProtocolBean protocolBean = (ProtocolBean) accessForm
 					.get("protocol");
 			protocolBean.setTheAccess(access);
-		} else if (parentType.equals("publication")) {
+		} else if (parentType.equalsIgnoreCase("publication")) {
 			PublicationBean publicationBean = (PublicationBean) accessForm
 					.get("publication");
 			publicationBean.setTheAccess(access);
@@ -66,14 +66,14 @@ public class DWRAccessibilityManager {
 		if (accessForm == null) {
 			return null;
 		}
-		if (parentType.equals("sample")) {
+		if (parentType.equalsIgnoreCase("sample")) {
 			SampleBean sampleBean = (SampleBean) accessForm.get("sampleBean");
 			sampleBean.setTheAccess(access);
-		} else if (parentType.equals("protocol")) {
+		} else if (parentType.equalsIgnoreCase("protocol")) {
 			ProtocolBean protocolBean = (ProtocolBean) accessForm
 					.get("protocol");
 			protocolBean.setTheAccess(access);
-		} else if (parentType.equals("publication")) {
+		} else if (parentType.equalsIgnoreCase("publication")) {
 			PublicationBean publicationBean = (PublicationBean) accessForm
 					.get("publication");
 			publicationBean.setTheAccess(access);
@@ -96,14 +96,14 @@ public class DWRAccessibilityManager {
 		if (accessForm == null) {
 			return null;
 		}
-		if (parentType.equals("sample")) {
+		if (parentType.equalsIgnoreCase("sample")) {
 			SampleBean sampleBean = (SampleBean) accessForm.get("sampleBean");
 			sampleBean.setTheAccess(access);
-		} else if (parentType.equals("protocol")) {
+		} else if (parentType.equalsIgnoreCase("protocol")) {
 			ProtocolBean protocolBean = (ProtocolBean) accessForm
 					.get("protocol");
 			protocolBean.setTheAccess(access);
-		} else if (parentType.equals("publication")) {
+		} else if (parentType.equalsIgnoreCase("publication")) {
 			PublicationBean publicationBean = (PublicationBean) accessForm
 					.get("publication");
 			publicationBean.setTheAccess(access);
