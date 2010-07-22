@@ -1210,7 +1210,7 @@ public class AuthorizationService {
 				+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_role r "
 				+ "where ugrp.protection_group_id=pg.protection_group_id  "
 				+ "and ugrp.user_id=u.user_id " + "and ugrp.role_id=r.role_id "
-				+ "and u.login_name="+userLoginName+"' "
+				+ "and u.login_name='"+userLoginName+"' "
 				+ "and pg.protection_group_name='" + protectedData + "'";
 		String roleName = null;
 		try {
@@ -1220,8 +1220,7 @@ public class AuthorizationService {
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
-				Object[] row = (Object[]) obj;
-				roleName = row[0].toString();
+				roleName = obj.toString();
 			}
 		} catch (Exception e) {
 			logger
@@ -1250,8 +1249,7 @@ public class AuthorizationService {
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
-				Object[] row = (Object[]) obj;
-				roleName = row[0].toString();
+				roleName = obj.toString();
 			}
 		} catch (Exception e) {
 			logger
