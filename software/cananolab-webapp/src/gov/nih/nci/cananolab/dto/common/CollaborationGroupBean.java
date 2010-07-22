@@ -14,6 +14,9 @@ public class CollaborationGroupBean {
 			false);
 
 	public CollaborationGroupBean() {
+		for (AccessibilityBean access : userAccessibilities) {
+			access.setGroupAccess(false);
+		}
 	}
 
 	public CollaborationGroupBean(Group group) {
