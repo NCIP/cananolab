@@ -276,7 +276,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		 
 		  getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 		 
-			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				DataAvailabilityBean bean = data.get(i);
 				ps.setLong(1, bean.getSampleId());
@@ -286,7 +285,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				ps.setString(5, bean.getCreatedBy());
 			}
 		 
-			@Override
 			public int getBatchSize() {
 				return data.size();
 			}
@@ -302,7 +300,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		
 		getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
 			 
-			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				DataAvailabilityBean bean = data.get(i);
 				
@@ -313,8 +310,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				ps.setLong(4, bean.getSampleId());
 				ps.setString(5, bean.getAvailableEntityName() );
 			}
-		 
-			@Override
+
 			public int getBatchSize() {
 				return data.size();
 			}
