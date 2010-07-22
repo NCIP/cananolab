@@ -72,13 +72,13 @@ public class AccessServiceLocalImpl extends BaseServiceHelper implements
 		try {
 			AuthorizationService authService = super.getAuthService();
 			String roleName = access.getRoleName();
-			if (access.getAccessBy().equals("user")) {
+			if (access.isGroupAccess()) {
+				String groupName = access.getGroupName();
+				authService.secureObject(protectedData, groupName, roleName);
+			} else {
 				UserBean user = access.getUserBean();
 				authService.secureObjectForUser(protectedData, user
 						.getLoginName(), roleName);
-			} else {
-				String groupName = access.getGroupName();
-				authService.secureObject(protectedData, groupName, roleName);
 			}
 		} catch (Exception e) {
 			String error = "Error saving access for the protected data";
@@ -96,7 +96,7 @@ public class AccessServiceLocalImpl extends BaseServiceHelper implements
 			access = new AccessibilityBean();
 			access.setRoleName(roleName);
 			access.setGroupName(groupName);
-			access.setAccessBy("group");
+			access.setGroupAccess(true);
 		} catch (Exception e) {
 			String error = "Error saving access for the protected data";
 			throw new SecurityException(error, e);
@@ -117,7 +117,7 @@ public class AccessServiceLocalImpl extends BaseServiceHelper implements
 			User user = authService.getAuthorizationManager().getUser(
 					userLoginName);
 			access.setUserBean(new UserBean(user));
-			access.setAccessBy("user");
+			access.setGroupAccess(false);
 		} catch (Exception e) {
 			String error = "Error saving access for the protected data";
 			throw new SecurityException(error, e);
