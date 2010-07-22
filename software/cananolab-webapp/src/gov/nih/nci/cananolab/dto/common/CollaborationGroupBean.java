@@ -10,7 +10,8 @@ public class CollaborationGroupBean {
 	private String name;
 	private String description;
 	private List<AccessibilityBean> userAccessibilities = new ArrayList<AccessibilityBean>();
-	private AccessibilityBean theUserAccessibility = new AccessibilityBean();
+	private AccessibilityBean theUserAccessibility = new AccessibilityBean(
+			false);
 
 	public CollaborationGroupBean() {
 	}
