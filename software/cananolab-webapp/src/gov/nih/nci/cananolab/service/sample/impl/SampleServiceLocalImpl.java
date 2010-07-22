@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -21,7 +22,6 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
-import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -32,6 +32,8 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.service.common.AccessService;
+import gov.nih.nci.cananolab.service.common.impl.AccessServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -188,8 +190,9 @@ public class SampleServiceLocalImpl implements SampleService {
 				assignVisibility(fullyLoadedSample, sampleBean
 						.getVisibilityGroups());
 			} else {
-				assignVisibilityToSampleOnly(sample, sampleBean
-						.getVisibilityGroups());
+//				assignVisibilityToSampleOnly(sample, sampleBean
+//						.getVisibilityGroups());
+				this.assignAccessibilityToSampleOnly(sampleBean);
 			}
 		} catch (Exception e) {
 			throw new SampleException(
@@ -215,6 +218,28 @@ public class SampleServiceLocalImpl implements SampleService {
 		// separately
 		helper.getAuthService().assignVisibility(sample.getName(),
 				visibleGroups);
+	}
+
+	private void assignAccessibilityToSampleOnly(SampleBean sampleBean)
+			throws Exception {
+		List<AccessibilityBean> accesses = sampleBean.getAccessibilities();
+		// add default Curator CURD access
+		if (accesses.isEmpty()) {
+			accesses.add(Constants.CSM_DEFAULT_ACCESS);
+		}
+		// add default user CURD access if user is not curator
+		if (!helper.getUser().isCurator()) {
+			AccessibilityBean userAccess=new AccessibilityBean();
+			userAccess.setUserBean(helper.getUser());
+			userAccess.setRoleName(Constants.CSM_CURD_ROLE);
+			accesses.add(userAccess);
+		}
+		AccessService accessService = new AccessServiceLocalImpl(helper
+				.getUser());
+		for (AccessibilityBean access : accesses) {
+			accessService.saveAccessibility(access, sampleBean.getDomain()
+					.getId().toString());
+		}
 	}
 
 	private void assignAssociatedVisibility(Sample sample,
@@ -1177,7 +1202,6 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 		return sortedNames;
 	}
-
 
 	public SampleServiceHelper getHelper() {
 		return helper;
