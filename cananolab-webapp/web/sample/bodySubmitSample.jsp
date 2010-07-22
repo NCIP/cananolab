@@ -39,16 +39,15 @@
 			</td>
 			<td>
 				<c:set var="newAddPOCButtonStyle" value="display:block" />
-				<%--
 				<c:if
 					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
 					<c:set var="newAddPOCButtonStyle" value="display:none" />
+					<c:set var="disableButtons" value="true"/>
 				</c:if>
-				--%>
 				<a href="#"
-					onclick="javascript:confirmAddNew('PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
+					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()'); disableButtons(['submitButton', 'resetButton'])"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" /> </a>
+						align="top" src="images/btn_add.gif" border="0" /></a>
 			</td>
 		</tr>
 		<c:if
@@ -63,12 +62,10 @@
 		<tr>
 			<td colspan="2">
 				<c:set var="newPOCStyle" value="display:none" />
-				<%--
 				<c:if
 					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
 					<c:set var="newPOCStyle" value="display:block" />
 				</c:if>
-				--%>
 				<div style="${newPOCStyle}" id="newPointOfContact">
 					<a name="submitPointOfContact"><%@ include
 							file="bodySubmitPointOfContact.jsp"%></a>
@@ -87,6 +84,9 @@
 		<c:set var="groupAccesses" value="${sampleForm.map.sampleBean.groupAccesses}"/>
 		<c:set var="userAccesses" value="${sampleForm.map.sampleBean.userAccesses}"/>
 		<c:set var="accessParent" value="sampleBean"/>
+		<c:set var="dataType" value="Sample"/>
+		<c:set var="parentForm" value="sampleForm"/>
+		<c:set var="protectedData" value="${sampleForm.map.sampleBean.domain.id}"/>
 		<%@include file="../bodyManageAccessibility.jsp" %>
 		<c:if test="${!empty updateSample}">
 			<tr>
@@ -133,7 +133,7 @@
 	<c:set var="cloneOnclick"
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
-	<c:set var="hiddenPage" value="2" />
+	<c:set var="hiddenPage" value="5" />
 	<c:set var="review" value="false"/>
 	<c:if test="${user.curator && !empty updateSample}">
 		<c:set var="assignPublic" value="true" />
