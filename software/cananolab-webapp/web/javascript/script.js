@@ -472,8 +472,20 @@ function validateSavingTheData(dataStyleId, dataName) {
 	}
 }
 // Feature request [26487] Deeper Edit Links.
-function confirmAddNew(styleId, newObjectName, cleanupFunction) {
-	var form = document.getElementById("new" + styleId);
+function confirmAddNew(otherStyleIds, styleId, newObjectName, cleanupFunction) {
+	if (otherStyleIds!=null) {
+		for(var i=0; i<otherStyleIds.length; i++) {
+			var element=document.getElementById("new"+otherStyleIds[i]);
+			if (element!=null) {
+				if (element.style.display=="block") {
+					alert("Please close the form for "+otherStyleIds[i]+" Information first.");
+					return;
+				}
+			}
+		}
+	}
+
+    var form = document.getElementById("new" + styleId);
 	if (form != null) {
 		var answer = true;
 		if (form.style.display == "block") {
@@ -489,7 +501,7 @@ function confirmAddNew(styleId, newObjectName, cleanupFunction) {
 	}
 }
 
-function generateDataAvailability(form, actionName, dispatch){	
+function generateDataAvailability(form, actionName, dispatch){
 	submitAction(form, actionName, dispatch, 0);
 }
 
