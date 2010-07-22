@@ -13,11 +13,11 @@
 
 <tr>
 	<td class="cellLabel" width="15%">
-		Access to the Sample
+		Access to the ${dataType}
 	</td>
 	<td>
 		<c:set var="newAddAccessButtonStyle" value="display:block" />
-		<a href="#" onclick="javascript:openSubmissionForm('Access');" id="addAccess"
+		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess()'); disableButtons(['submitButton', 'resetButton']);" id="addAccess"
 			style="${newAddAccessButtonStyle}"><img align="top"
 				src="images/btn_add.gif" border="0" /> </a>
 	</td>
@@ -46,7 +46,7 @@
 						</td>
 						<td align="right">
 							<a
-								href="javascript:show('newAccess');show('deleteAccess');hide('accessByLabel'); hide('accessByType');">Edit</a>&nbsp;
+								href="javascript:setTheAccess('${parentForm}', 'group', '${access.groupName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
 						</td>
 					</tr>
 				</c:forEach>
@@ -79,7 +79,7 @@
 					</td>
 					<td align="right">
 						<a
-							href="javascript:show('newAccess');show('deleteAccess');hide('accessByLabel'); hide('accessByType');">Edit</a>&nbsp;
+							href="javascript:setTheAccess('${parentForm}', 'user', '${access.userBean.loginName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
 					</td>
 				</tr>
 				</c:forEach>
@@ -102,16 +102,17 @@
 					<td class="cellLabel" width="25%">
 						Access by *
 					</td>
-					<td colspan="2" id="accessByType">
-						<html:radio styleId="accessByGroup"
-							property="${accessParent}.theAccess.accessBy" value="group" onclick="displayAccessNameLabel();"  />
-						Collaboration Group &nbsp;&nbsp;<html:radio styleId="accessByUser" property="${accessParent}.theAccess.accessBy" value="user"  onclick="displayAccessNameLabel();"/>User
+					<td colspan="2">
+						<html:radio styleId="byGroup"
+							property="${accessParent}.theAccess.groupAccess" value="true" onclick="displayAccessNameLabel();"  />
+						Collaboration Group &nbsp;&nbsp;<html:radio styleId="byUser" property="${accessParent}.theAccess.groupAccess" value="false"  onclick="displayAccessNameLabel();"/>User
 					</td>
 					<td></td>
 				</tr>
 				<tr>
+					<c:set var="accessNameLabelValue" value="Collaboration Group Name *"/>
 					<td class="cellLabel" id="accessNameLabel">
-						Collaboration Group Name
+						${accessNameLabelValue}
 					</td>
 					<td>
 						<html:text styleId="groupName" property="${accessParent}.theAccess.groupName"/>
@@ -151,13 +152,13 @@
 				</tr>
 				<tr>
 					<td>
-						<input class="promptButton"
+						<input
 							id="deleteAccess" type="button" value="Remove">
 					</td>
 					<td align="right" colspan="3">
 						<div align="right">
-							<input class="promptButton" type="button" value="Save" />
-							<input class="promptButton" type="reset" value="Cancel"
+							<input type="button" value="Save" onclick="javascript:addAccess('sample');" />
+							<input type="reset" value="Cancel"
 								onclick="javascript:closeSubmissionForm('Access');">
 						</div>
 					</td>
