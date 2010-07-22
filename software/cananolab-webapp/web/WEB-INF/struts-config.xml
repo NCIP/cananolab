@@ -77,7 +77,7 @@
 		</action>
 		<action path="/logout" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.LogoutAction">
-			<forward name="success" path="canano.login" />
+			<forward name="success" path="/welcome.do" />
 		</action>
 		<action path="/welcome" type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
 			parameter="canano.login" scope="request">
