@@ -45,8 +45,17 @@
 							${access.roleDisplayName}
 						</td>
 						<td align="right">
-							<a
-								href="javascript:setTheAccess('${parentForm}', 'group', '${access.groupName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
+							<c:choose>
+								<c:when test="${access.groupName eq 'Public'}">
+									<c:if test="${user.curator}">
+									    <a href="#">remove</a>
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="javascript:setTheAccess('${parentForm}', 'group', '${access.groupName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
+							    </c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 				</c:forEach>
@@ -70,18 +79,24 @@
 					<th></th>
 				</tr>
 				<c:forEach var="access" items="${userAccesses}">
-				<tr valign="top">
-					<td>
-						${access.userBean.loginName}
-					</td>
-					<td>
-						${access.roleDisplayName}
-					</td>
-					<td align="right">
-						<a
-							href="javascript:setTheAccess('${parentForm}', 'user', '${access.userBean.loginName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
-					</td>
-				</tr>
+					<tr valign="top">
+						<td>
+							${access.userBean.loginName}
+						</td>
+						<td>
+							${access.roleDisplayName}
+						</td>
+						<td align="right">
+							<c:choose>
+								<c:when test="${access.userBean.loginName eq user.loginName}">
+								</c:when>
+								<c:otherwise>
+									<a
+										href="javascript:setTheAccess('${parentForm}', 'user', '${access.userBean.loginName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
+							    </c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
 				</c:forEach>
 			</table>
 			<br />
@@ -153,7 +168,7 @@
 				<tr>
 					<td>
 						<input
-							id="deleteAccess" type="button" value="Remove">
+							id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sample');">
 					</td>
 					<td align="right" colspan="3">
 						<div align="right">

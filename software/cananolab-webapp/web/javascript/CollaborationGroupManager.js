@@ -8,6 +8,7 @@ function setTheCollaborationGroup(groupId) {
 			populateCollaborationGroup);
 	show("deleteCollaborationGroup");
 	hide("newCollaborationGroupLabel");
+	document.getElementById("")
 	openSubmissionForm("CollaborationGroup");
 	// Feature request [26487] Deeper Edit Links.
 	window.setTimeout("openOneUserAccess()", 500);
@@ -91,7 +92,8 @@ function addUserAccess() {
 	};
 	var userAccess = {
 		userBean : userBean,
-		roleName : null
+		roleName : null,
+		groupAccess: false
 	};
 
 	dwr.util.getValues(userAccess);
