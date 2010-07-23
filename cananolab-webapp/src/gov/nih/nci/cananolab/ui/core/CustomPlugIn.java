@@ -54,7 +54,6 @@ public class CustomPlugIn implements PlugIn {
 					"speciesTypes", "species", "type");
 			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
 					"wallTypes", "carbon nanotube", "wallType");
-			
 
 			InitCharacterizationSetup.getInstance()
 					.getDefaultCharacterizationTypes(appContext);
@@ -64,29 +63,35 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSetup.getInstance().setStaticOptions(appContext);
 
-			//InitSecuritySetup.getInstance().setupDefaultCSM();
-			
-			//load mapping for data availability
-			InitSetup.getInstance().getDefaultTypesByLookup(appContext, "MINChar", "MINChar", "entity");
-			InitSetup.getInstance().getLookupByName(appContext, "caNano2MINChar", "caNano2MINChar");
-			InitSetup.getInstance().getDefaultTypesByReflection(
-					appContext,
-					"physicoChars",
-					"gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
-					"invitroChars",
-					"gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
-	
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
-					"invivoChars",
-					"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
-	
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
-					"chemicalAssocs",
-					"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
-			
-			
-//			setupInitialGridNodes(appContext);
+			// InitSecuritySetup.getInstance().setupDefaultCSM();
+
+			// load mapping for data availability
+			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+					"MINChar", "MINChar", "entity");
+			InitSetup.getInstance().getLookupByName(appContext,
+					"caNano2MINChar", "caNano2MINChar");
+			InitSetup
+					.getInstance()
+					.getDefaultTypesByReflection(
+							appContext,
+							"physicoChars",
+							"gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization");
+			InitSetup
+					.getInstance()
+					.getDefaultTypesByReflection(appContext, "invitroChars",
+							"gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization");
+
+			InitSetup
+					.getInstance()
+					.getDefaultTypesByReflection(appContext, "invivoChars",
+							"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
+
+			InitSetup
+					.getInstance()
+					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
+							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+
+			InitSecuritySetup.getInstance().setupDefaultCSM();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
