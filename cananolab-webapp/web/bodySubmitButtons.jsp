@@ -11,24 +11,30 @@
 					onclick="${deleteOnclick}" id="deleteButton">
 			</c:if>
 			<c:if test="${!empty updateId && !empty cloneOnclick }">
-				<input type="button" value="Copy" onclick="${cloneOnclick}" id="copyButton">
+				<input type="button" value="Copy" onclick="${cloneOnclick}"
+					id="copyButton">
 			</c:if>
 		</td>
 		<td align="right" width="300">
 			<c:set var="submitButtonName" value="Submit" />
 			<c:if test="${!empty updateId}">
 				<c:set var="submitButtonName" value="Update" />
+				<c:set var="validate" value="false" />
+				<c:if test="${!user.curator}">
+					<c:set var="validate" value="true" />
+				</c:if>
 			</c:if>
 			<c:if test="${disableButtons}">
-			    <c:set var="disableButtonStr" value="disabled"/>
+				<c:set var="disableButtonStr" value="disabled" />
 			</c:if>
-			<input type="reset" value="Reset" onclick="${resetOnclick}" id="resetButton" ${disableButtonStr}/>
+			<input type="reset" value="Reset" onclick="${resetOnclick}"
+				id="resetButton" ${disableButtonStr}/>
 			&nbsp;
 			<c:if test="${!empty review && review eq 'true'}">
-				<input type="button" value="Submit for Review" id="reviewButton"/>
+				<input type="button" value="Submit for Review" id="reviewButton" />
 			</c:if>
 			<c:if test="${!empty assignPublic && assignPublic eq 'true'}">
-				<input type="button" value="Submit to Public" id="publicButton"/>
+				<input type="button" value="Submit to Public" id="publicButton" />
 			</c:if>
 			<c:choose>
 				<c:when test="${!empty submitOnclick }">
@@ -36,7 +42,17 @@
 						onclick="${submitOnclick}" styleId="submitButton">
 				</c:when>
 				<c:otherwise>
-					<html:submit value="${submitButtonName}" styleId="submitButton" disabled="${disableButtons}"/>
+					<c:choose>
+						<c:when test="${validate eq 'true'}">
+							<html:submit value="${submitButtonName}" styleId="submitButton"
+								disabled="${disableButtons}"
+								onclick="javascript:confirmRemovePublic();" />
+						</c:when>
+						<c:otherwise>
+							<html:submit value="${submitButtonName}" styleId="submitButton"
+								disabled="${disableButtons}" />
+						</c:otherwise>
+					</c:choose>
 					<input type="hidden" name="dispatch" value="${hiddenDispatch}">
 					<input type="hidden" name="page" value="${hiddenPage}">
 				</c:otherwise>

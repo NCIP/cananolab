@@ -515,3 +515,11 @@ function deleteDataAvailability(type, form, actionName, dispatch){
 		submitAction(form, actionName, dispatch, 0);
 	}
 }
+
+function confirmRemovePublic() {
+	if (confirm("The data has been assigned to Public.  Updating it would retract it from Public.  Are you sure to continue?")) {
+		return true;
+	} else {
+		return false;
+	}
+}
