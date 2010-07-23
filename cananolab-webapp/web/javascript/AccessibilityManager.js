@@ -35,7 +35,9 @@ function populateAccess(access) {
 		} else {
 			dwr.util.setValue("byUser", true);
 			dwr.util.setValue("userName", access.userBean.loginName);
+			dwr.util.setValue("accessNameLabel", "User Login Name *");
 		}
+		displayAccessNameLabel();
 		dwr.util.setValue("roleName", access.roleName);
 	} else {
 		sessionTimeout();
@@ -57,6 +59,6 @@ function clearAccess() {
 function deleteTheAccess() {
 	var answer = confirmDelete("access");
 	if (answer != 0) {
-		submitAction(document.forms[0], "access", "delete", 2);
+		submitAction(document.forms[0], "sample", "deleteAccess", 2);
 	}
 }

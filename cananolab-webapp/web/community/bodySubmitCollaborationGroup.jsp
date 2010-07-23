@@ -104,6 +104,7 @@
 							Access to the Group *
 						</td>
 						<td colspan="2">
+							<html:hidden property="group.theUserAccessibility.groupAccess" value="false"/>
 							<html:select property="group.theUserAccessibility.roleDisplayName"
 								styleId="roleName" onchange="">
 								<option></option>
