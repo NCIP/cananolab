@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 
 import java.util.List;
 
@@ -73,11 +74,20 @@ public class InitSecuritySetup {
 	}
 
 	/**
-	 * Assign curator CURD role to curation
+	 * Assign curator CURD role to curation and R role to Public group
 	 */
 	public void setupDefaultCSM() throws SecurityException {
 		// assign Curator group to role CURD on curation
 		authorizationService.secureObject(Constants.CSM_PG_CURATION,
 				Constants.CSM_DATA_CURATOR, Constants.CSM_CURD_ROLE);
+
+		// create a collaboration group for Public group and assign Curator R
+		// role
+		Group publicGroup = authorizationService
+				.getGroup(Constants.CSM_PUBLIC_GROUP);
+		authorizationService.secureObject(
+				Constants.CSM_COLLABORATION_GROUP_PREFIX
+						+ publicGroup.getGroupId(), Constants.CSM_DATA_CURATOR,
+				Constants.CSM_READ_ROLE);
 	}
 }
