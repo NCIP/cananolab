@@ -612,7 +612,7 @@ public class AuthorizationService {
 	 * @param roleName
 	 * @throws SecurityException
 	 */
-	public void RemoveSecureObject(String objectName, String groupName,
+	public void removeSecureObject(String objectName, String groupName,
 			String roleName) throws SecurityException {
 		try {
 			// trim spaces in objectName
