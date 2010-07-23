@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.service.sample;
 
+import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
@@ -9,6 +11,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -19,7 +22,7 @@ import java.util.SortedSet;
  * @author pansu
  *
  */
-public interface SampleService {
+public interface SampleService extends BaseService {
 	/**
 	 * Persist a new sample or update an existing sample
 	 *
@@ -78,5 +81,11 @@ public interface SampleService {
 	public int getNumberOfPublicSampleSources() throws SampleException;
 
 	public List<String> findOtherSampleNamesFromSamePrimaryOrganization(
-			String sampleId) throws SampleException;	
+			String sampleId) throws SampleException;
+
+	public void assignAccessibility(AccessibilityBean access, Sample sample)
+			throws SampleException, NoAccessException;
+
+	public void removeAccessibility(AccessibilityBean access, Sample sample)
+			throws SampleException, NoAccessException;
 }

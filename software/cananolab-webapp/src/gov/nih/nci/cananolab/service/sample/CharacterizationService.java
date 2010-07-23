@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.sample;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -10,6 +11,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
  * @author pansu, tanq
  *
  */
-public interface CharacterizationService {
+public interface CharacterizationService extends BaseService {
 
 	public void saveCharacterization(SampleBean sampleBean,
 			CharacterizationBean achar) throws Exception;
@@ -71,4 +73,12 @@ public interface CharacterizationService {
 
 	public List<String> findOtherCharacterizationByAssayCategory(
 			String assayCategory) throws CharacterizationException;
+
+	public void assignAccessibility(AccessibilityBean access,
+			Characterization achar) throws CharacterizationException,
+			NoAccessException;
+
+	public void removeAccessibility(AccessibilityBean access,
+			Characterization achar) throws CharacterizationException,
+			NoAccessException;
 }

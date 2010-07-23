@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-public class BaseServiceLocalImpl {
+public class BaseServiceLocalImpl implements BaseService {
 	protected AuthorizationService authService;
 	protected Logger logger = Logger.getLogger(BaseServiceLocalImpl.class);
 	protected UserBean user;
@@ -65,10 +65,11 @@ public class BaseServiceLocalImpl {
 			for (Map.Entry<String, String> entry : groupRoles.entrySet()) {
 				String groupName = entry.getKey();
 				Group group = authService.getGroup(groupName);
-				// exclude groups that user has no access to
-				if (authService.checkReadPermission(user,
-						Constants.CSM_COLLABORATION_GROUP_PREFIX
-								+ group.getGroupId())) {
+				// include Public group and groups that user has access to
+				if (group.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+						|| authService.checkReadPermission(user,
+								Constants.CSM_COLLABORATION_GROUP_PREFIX
+										+ group.getGroupId())) {
 					String roleName = entry.getValue();
 					AccessibilityBean access = new AccessibilityBean();
 					access.setRoleName(roleName);
