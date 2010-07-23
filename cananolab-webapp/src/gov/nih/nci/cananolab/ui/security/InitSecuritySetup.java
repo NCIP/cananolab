@@ -80,14 +80,5 @@ public class InitSecuritySetup {
 		// assign Curator group to role CURD on curation
 		authorizationService.secureObject(Constants.CSM_PG_CURATION,
 				Constants.CSM_DATA_CURATOR, Constants.CSM_CURD_ROLE);
-
-		// create a collaboration group for Public group and assign Curator R
-		// role
-		Group publicGroup = authorizationService
-				.getGroup(Constants.CSM_PUBLIC_GROUP);
-		authorizationService.secureObject(
-				Constants.CSM_COLLABORATION_GROUP_PREFIX
-						+ publicGroup.getGroupId(), Constants.CSM_DATA_CURATOR,
-				Constants.CSM_READ_ROLE);
 	}
 }
