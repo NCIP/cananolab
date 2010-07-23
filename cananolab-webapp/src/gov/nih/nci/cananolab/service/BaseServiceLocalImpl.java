@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.ArrayList;
@@ -63,11 +64,17 @@ public class BaseServiceLocalImpl {
 					.getGroupRoles(protectedData);
 			for (Map.Entry<String, String> entry : groupRoles.entrySet()) {
 				String groupName = entry.getKey();
-				String roleName = entry.getValue();
-				AccessibilityBean access = new AccessibilityBean();
-				access.setRoleName(roleName);
-				access.setGroupName(groupName);
-				groupAccesses.add(access);
+				Group group = authService.getGroup(groupName);
+				// exclude groups that user has no access to
+				if (authService.checkReadPermission(user,
+						Constants.CSM_COLLABORATION_GROUP_PREFIX
+								+ group.getGroupId())) {
+					String roleName = entry.getValue();
+					AccessibilityBean access = new AccessibilityBean();
+					access.setRoleName(roleName);
+					access.setGroupName(groupName);
+					groupAccesses.add(access);
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -119,12 +126,20 @@ public class BaseServiceLocalImpl {
 			if (!authService.checkCreatePermission(user, protectedData)) {
 				throw new NoAccessException();
 			}
-			String roleName = authService
-					.getGroupRole(protectedData, groupName);
-			access = new AccessibilityBean();
-			access.setRoleName(roleName);
-			access.setGroupName(groupName);
-			access.setGroupAccess(true);
+			Group group = authService.getGroup(groupName);
+			// exclude groups that user has no access to
+			if (authService.checkReadPermission(user,
+					Constants.CSM_COLLABORATION_GROUP_PREFIX
+							+ group.getGroupId())) {
+				String roleName = authService.getGroupRole(protectedData,
+						groupName);
+				access = new AccessibilityBean();
+				access.setRoleName(roleName);
+				access.setGroupName(groupName);
+				access.setGroupAccess(true);
+			} else {
+				throw new NoAccessException();
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
