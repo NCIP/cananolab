@@ -17,8 +17,6 @@ import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.common.AccessService;
-import gov.nih.nci.cananolab.service.common.impl.AccessServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -154,7 +152,7 @@ public class SampleAction extends BaseAnnotationAction {
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request);
 		// set existing sample accessibility
-		this.setSampleAccesses(sampleBean);
+		this.setSampleAccesses(request, sampleBean);
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
@@ -191,14 +189,16 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryEdit");
 	}
 
-	private void setSampleAccesses(SampleBean sampleBean) throws Exception {
-		AccessService service = new AccessServiceLocalImpl();
+	private void setSampleAccesses(HttpServletRequest request,
+			SampleBean sampleBean) throws Exception {
+		SampleService service = this.setServiceInSession(request);
 		List<AccessibilityBean> groupAccesses = service
 				.findGroupAccessibilities(sampleBean.getDomain().getId()
 						.toString());
 		List<AccessibilityBean> userAccesses = service
 				.findUserAccessibilities(sampleBean.getDomain().getId()
 						.toString());
+		// exclude user who own the sample
 		sampleBean.setUserAccesses(userAccesses);
 		sampleBean.setGroupAccesses(groupAccesses);
 	}
@@ -480,15 +480,38 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryEdit");
 	}
 
-	public ActionForward saveAccess(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		AccessibilityBean theAccess = sample.getTheAccess();
-		AccessService service=new AccessServiceLocalImpl(user);
-		service.saveAccessibility(theAccess, sample.getDomain().getId().toString());
+		SampleService service = this.setServiceInSession(request);
+		service.assignAccessibility(theAccess, sample.getDomain());
+		this.setSampleAccesses(request, sample);
+		ActionForward forward = null;
+		String updateSample = (String) request.getSession().getAttribute(
+				"updateSample");
+		if (updateSample == null) {
+			forward = mapping.findForward("createInput");
+			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName());
+		} else {
+			request.setAttribute("sampleId", sample.getDomain().getId()
+					.toString());
+			forward = summaryEdit(mapping, form, request, response);
+		}
+		return forward;
+	}
+
+	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sample = (SampleBean) theForm.get("sampleBean");
+		AccessibilityBean theAccess = sample.getTheAccess();
+		SampleService service = this.setServiceInSession(request);
+		service.removeAccessibility(theAccess, sample.getDomain());
 
 		ActionForward forward = null;
 		String updateSample = (String) request.getSession().getAttribute(
