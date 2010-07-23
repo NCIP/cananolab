@@ -181,7 +181,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 						+ cGroup.getId());
 		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
 		for (User aUser : users) {
-			AccessibilityBean accessibility = new AccessibilityBean();
+			AccessibilityBean accessibility = new AccessibilityBean(false);
 			accessibility.setGroupName(cGroup.getName());
 			accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
 			accessibility.setUserBean(new UserBean(aUser));

@@ -32,8 +32,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
-import gov.nih.nci.cananolab.service.common.AccessService;
-import gov.nih.nci.cananolab.service.common.impl.AccessServiceLocalImpl;
+import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -70,7 +69,8 @@ import org.hibernate.criterion.Property;
  * @author pansu
  *
  */
-public class SampleServiceLocalImpl implements SampleService {
+public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
+		SampleService {
 	private static Logger logger = Logger
 			.getLogger(SampleServiceLocalImpl.class);
 
@@ -82,22 +82,17 @@ public class SampleServiceLocalImpl implements SampleService {
 	private FileServiceLocalImpl fileService;
 
 	public SampleServiceLocalImpl() {
-		try {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			helper = new SampleServiceHelper(authService);
-			charService = new CharacterizationServiceLocalImpl(authService);
-			compService = new CompositionServiceLocalImpl(authService);
-			publicationService = new PublicationServiceLocalImpl(authService);
-			fileService = new FileServiceLocalImpl(authService);
-			advancedHelper = new AdvancedSampleServiceHelper();
-		} catch (Exception e) {
-			logger.error("Can't create authorization service: " + e);
-		}
-
+		super();
+		helper = new SampleServiceHelper(authService);
+		charService = new CharacterizationServiceLocalImpl(authService);
+		compService = new CompositionServiceLocalImpl(authService);
+		publicationService = new PublicationServiceLocalImpl(authService);
+		fileService = new FileServiceLocalImpl(authService);
+		advancedHelper = new AdvancedSampleServiceHelper();
 	}
 
 	public SampleServiceLocalImpl(UserBean user) {
+		super(user);
 		helper = new SampleServiceHelper(user);
 		charService = new CharacterizationServiceLocalImpl(user);
 		compService = new CompositionServiceLocalImpl(user);
@@ -107,6 +102,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	public SampleServiceLocalImpl(AuthorizationService authService) {
+		super(authService);
 		helper = new SampleServiceHelper(authService);
 		charService = new CharacterizationServiceLocalImpl(authService);
 		compService = new CompositionServiceLocalImpl(authService);
@@ -190,9 +186,13 @@ public class SampleServiceLocalImpl implements SampleService {
 				assignVisibility(fullyLoadedSample, sampleBean
 						.getVisibilityGroups());
 			} else {
-//				assignVisibilityToSampleOnly(sample, sampleBean
-//						.getVisibilityGroups());
-				this.assignAccessibilityToSampleOnly(sampleBean);
+				if (sampleBean.getAccessibilities().isEmpty()) {
+					this.saveDefaultAccessibility(sampleBean.getDomain()
+							.getId().toString());
+				}
+				// assignVisibilityToSampleOnly(sample, sampleBean
+				// .getVisibilityGroups());
+				// this.assignAccessibilityToSampleOnly(sampleBean);
 			}
 		} catch (Exception e) {
 			throw new SampleException(
@@ -204,6 +204,11 @@ public class SampleServiceLocalImpl implements SampleService {
 			throws Exception {
 		assignVisibilityToSampleOnly(sample, visibleGroups);
 		assignAssociatedVisibility(sample, visibleGroups);
+	}
+
+	private void assignAccessibility(SampleBean sampleBean) throws Exception {
+		assignAccessibilityToSampleOnly(sampleBean);
+		assignAssociatedAccessibility(sampleBean);
 	}
 
 	private void assignVisibilityToSampleOnly(Sample sample,
@@ -223,27 +228,32 @@ public class SampleServiceLocalImpl implements SampleService {
 	private void assignAccessibilityToSampleOnly(SampleBean sampleBean)
 			throws Exception {
 		List<AccessibilityBean> accesses = sampleBean.getAccessibilities();
-		// add default Curator CURD access
-		if (accesses.isEmpty()) {
-			accesses.add(Constants.CSM_DEFAULT_ACCESS);
-		}
-		// add default user CURD access if user is not curator
-		if (!helper.getUser().isCurator()) {
-			AccessibilityBean userAccess=new AccessibilityBean();
-			userAccess.setUserBean(helper.getUser());
-			userAccess.setRoleName(Constants.CSM_CURD_ROLE);
-			accesses.add(userAccess);
-		}
-		AccessService accessService = new AccessServiceLocalImpl(helper
-				.getUser());
-		for (AccessibilityBean access : accesses) {
-			accessService.saveAccessibility(access, sampleBean.getDomain()
-					.getId().toString());
-		}
+		assignAccessibility(accesses, sampleBean.getDomain().getId().toString());
 	}
 
 	private void assignAssociatedVisibility(Sample sample,
 			String[] visibleGroups) throws Exception {
+		// assign associated visibilities
+		Collection<Characterization> characterizationCollection = sample
+				.getCharacterizationCollection();
+		// characterizations
+		if (characterizationCollection != null) {
+			for (Characterization aChar : characterizationCollection) {
+				charService.assignVisibility(aChar, visibleGroups);
+			}
+		}
+		// sampleComposition
+		if (sample.getSampleComposition() != null) {
+			compService.assignVisibility(sample.getSampleComposition(),
+					visibleGroups);
+		}
+		// don't need to reset keywords
+	}
+
+	private void assignAssociatedAccessibility(SampleBean sampleBean)
+			throws Exception {
+		Sample sample = sampleBean.getDomain();
+		String[] visibleGroups = sampleBean.getVisibilityGroups();
 		// assign associated visibilities
 		Collection<Characterization> characterizationCollection = sample
 				.getCharacterizationCollection();
@@ -1205,5 +1215,84 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	public SampleServiceHelper getHelper() {
 		return helper;
+	}
+
+	public void assignAccessibility(AccessibilityBean access, Sample sample)
+			throws SampleException, NoAccessException {
+		String sampleId = sample.getId().toString();
+		try {
+			if (!authService.checkCreatePermission(user, sampleId)) {
+				throw new NoAccessException();
+			}
+			super.saveDefaultAccessibility(sampleId);
+			super.saveAccessibility(access, sampleId);
+
+			// fully load sample
+			sample = this.findFullyLoadedSampleByName(sample.getName());
+			// assign POC to public
+			// TODO check this logic when working with COPPA on organization
+			if (sample.getPrimaryPointOfContact() != null) {
+				super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, sample
+						.getPrimaryPointOfContact().getId().toString());
+			}
+			if (sample.getOtherPointOfContactCollection() != null) {
+				for (PointOfContact poc : sample
+						.getOtherPointOfContactCollection()) {
+					super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, poc
+							.getId().toString());
+				}
+			}
+			// assign characterization accessibility
+			if (sample.getCharacterizationCollection() != null) {
+				for (Characterization achar : sample
+						.getCharacterizationCollection()) {
+					charService.assignAccessibility(access, achar);
+				}
+			}
+			// assign composition accessibility
+			if (sample.getSampleComposition() != null) {
+				compService.assignAccessibility(access, sample
+						.getSampleComposition());
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Error in assigning accessibility to the sample "
+					+ sampleId;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
+	public void removeAccessibility(AccessibilityBean access, Sample sample)
+			throws SampleException, NoAccessException {
+		String sampleId = sample.getId().toString();
+		try {
+			if (!authService.checkCreatePermission(user, sampleId)) {
+				throw new NoAccessException();
+			}
+			super.deleteAccessibility(access, sampleId);
+			// fully load sample
+			sample = this.findFullyLoadedSampleByName(sample.getName());
+			// keep POC public
+			// assign characterization accessibility
+			if (sample.getCharacterizationCollection() != null) {
+				for (Characterization achar : sample
+						.getCharacterizationCollection()) {
+					charService.removeAccessibility(access, achar);
+				}
+			}
+			// assign composition accessibility
+			if (sample.getSampleComposition() != null) {
+				compService.removeAccessibility(access, sample
+						.getSampleComposition());
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Error in deleting the access for sample " + sampleId;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
 	}
 }

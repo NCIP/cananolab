@@ -5,8 +5,8 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.service.common.AccessService;
-import gov.nih.nci.cananolab.service.common.impl.AccessServiceLocalImpl;
+import gov.nih.nci.cananolab.service.BaseService;
+import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
@@ -19,12 +19,12 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRAccessibilityManager {
-	private AccessService service;
+	private BaseService service;
 
-	private AccessService getService() {
+	private BaseService getService() {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		service = new AccessServiceLocalImpl(user);
+		service = new BaseServiceLocalImpl(user);
 		return service;
 	}
 
