@@ -50,7 +50,7 @@ public class Constants {
 
 	public static final AccessibilityBean CSM_DEFAULT_ACCESS;
 	static {
-		AccessibilityBean defaultAccess = new AccessibilityBean();
+		AccessibilityBean defaultAccess = new AccessibilityBean(true);
 		defaultAccess.setGroupName(Constants.CSM_DATA_CURATOR);
 		defaultAccess.setRoleName(Constants.CSM_CURD_ROLE);
 		CSM_DEFAULT_ACCESS = defaultAccess;
