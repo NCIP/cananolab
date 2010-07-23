@@ -23,8 +23,11 @@
 			path="/collaborationGroup" type="gov.nih.nci.cananolab.ui.community.CollaborationGroupAction"
 			input="input">
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.collobrationGroup.noaccess" path="community.manageCollaborationGroup"
+				key="error.collobrationGroup.noaccess" path="/collaborationGroup.do?dispatch=input&amp;page=0"
 				type="gov.nih.nci.cananolab.exception.NoAccessException" />
+			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.collobrationGroup.duplicate" path="/collaborationGroup.do?dispatch=input&amp;page=0"
+				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="setup" path="community.manageCollaborationGroup" />
 			<forward name="input"
 				path="/collaborationGroup.do?dispatch=input&amp;page=0" />
