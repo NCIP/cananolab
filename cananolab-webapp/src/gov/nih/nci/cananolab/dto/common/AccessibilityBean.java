@@ -57,9 +57,16 @@ public class AccessibilityBean {
 	public boolean equals(Object obj) {
 		if (obj instanceof AccessibilityBean) {
 			AccessibilityBean access = (AccessibilityBean) obj;
-			if (access.getUserBean().getLoginName().equals(
-					getUserBean().getLoginName()))
-				return true;
+			if (isGroupAccess()) {
+				if (access.getGroupName().equals(getGroupName())) {
+					return true;
+				}
+			} else {
+				if (access.getUserBean().getLoginName().equals(
+						getUserBean().getLoginName())) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -68,9 +75,15 @@ public class AccessibilityBean {
 	 * Returns hash code for the primary key of the object
 	 */
 	public int hashCode() {
-		if (getUserBean().getLoginName() != null)
-			return getUserBean().getLoginName().hashCode();
-		return 0;
+		if (isGroupAccess()) {
+			if (getUserBean().getLoginName() != null)
+				return getUserBean().getLoginName().hashCode();
+			return 0;
+		} else {
+			if (getGroupName() != null)
+				return getGroupName().hashCode();
+			return 0;
+		}
 	}
 
 	public boolean isGroupAccess() {
