@@ -4,10 +4,10 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CommunityException;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.BaseServiceHelper;
+import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -22,10 +22,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-public class CommunityServiceLocalImpl extends BaseServiceHelper implements
+public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		CommunityService {
 	public CommunityServiceLocalImpl() {
-
+		super();
 	}
 
 	public CommunityServiceLocalImpl(UserBean user) {
@@ -33,87 +33,96 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 	}
 
 	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
-			throws CommunityException, NoAccessException {
-		if (getUser() == null) {
+			throws CommunityException, NoAccessException,
+			DuplicateEntriesException {
+		if (user == null) {
 			throw new NoAccessException();
 		}
 		try {
 			List<AccessibilityBean> accessibilities = collaborationGroup
 					.getUserAccessibilities();
-			AuthorizationService authService = super.getAuthService();
 			AuthorizationManager authManager = authService
 					.getAuthorizationManager();
-
-			Group group = null;
+			Group doGroup = authService.getGroup(collaborationGroup.getName());
+			// group name already exists by another id
+			if (doGroup != null
+					&& !doGroup.getGroupId().toString().equals(
+							collaborationGroup.getId())) {
+				throw new DuplicateEntriesException("Group name is already in use.");
+			}
 			// create a new group if none exists.
 			if (StringUtils.isEmpty(collaborationGroup.getId())) {
-				group = new Group();
-				group.setGroupName(collaborationGroup.getName());
-				group.setGroupDesc(collaborationGroup.getDescription());
-				authManager.createGroup(group);
+				doGroup = new Group();
+				doGroup.setGroupName(collaborationGroup.getName());
+				doGroup.setGroupDesc(collaborationGroup.getDescription());
+				authManager.createGroup(doGroup);
+
 				// assign CURD access to user who created the group
-				authService.secureObjectForUser(
+				AccessibilityBean ownerAccess = new AccessibilityBean(false);
+				ownerAccess.setUserBean(user);
+				ownerAccess.setRoleName(Constants.CSM_CURD_ROLE);
+				saveAccessibility(ownerAccess,
 						Constants.CSM_COLLABORATION_GROUP_PREFIX
-								+ group.getGroupId(), getUser().getLoginName(),
-						Constants.CSM_CURD_ROLE);
+								+ doGroup.getGroupId());
 				// assign CURD access to Curator group
-				authService.secureObject(
+				saveAccessibility(Constants.CSM_DEFAULT_ACCESS,
 						Constants.CSM_COLLABORATION_GROUP_PREFIX
-								+ group.getGroupId(),
-						Constants.CSM_DATA_CURATOR, Constants.CSM_CURD_ROLE);
+								+ doGroup.getGroupId());
 			}
 			// update existing group
 			else {
-				group = authService.getGroup(collaborationGroup.getName());
-				// update group description
-				group.setGroupDesc(collaborationGroup.getDescription());
-				authManager.modifyGroup(group);
-
-				// update user access
+				if (doGroup == null) {
+					doGroup = authService.getAuthorizationManager()
+							.getGroupById(collaborationGroup.getId());
+					doGroup.setGroupName(collaborationGroup.getName());
+				}
+				doGroup.setGroupDesc(collaborationGroup.getDescription());
+				authManager.modifyGroup(doGroup);
 				CollaborationGroupBean existingGroup = findCollaborationGroupById(collaborationGroup
 						.getId());
+				// update user access
 				List<AccessibilityBean> existingAccess = existingGroup
 						.getUserAccessibilities();
 				List<AccessibilityBean> accessToRemove = new ArrayList<AccessibilityBean>(
 						existingAccess);
 				accessToRemove.removeAll(accessibilities);
 				for (AccessibilityBean access : accessToRemove) {
-					authManager.removeUserFromGroup(group.getGroupId()
+					authManager.removeUserFromGroup(doGroup.getGroupId()
 							.toString(), access.getUserBean().getUserId());
 					authService.removeSecureObjectForUser(
 							Constants.CSM_COLLABORATION_GROUP_PREFIX
-									+ group.getGroupId(), access.getUserBean()
-									.getLoginName(), Constants.CSM_CURD_ROLE);
+									+ doGroup.getGroupId(), access
+									.getUserBean().getLoginName(),
+							Constants.CSM_CURD_ROLE);
 				}
 			}
 			// check if user has access to update the group
-			if (authService.checkCreatePermission(getUser(),
+			if (authService.checkCreatePermission(user,
 					Constants.CSM_COLLABORATION_GROUP_PREFIX
-							+ group.getGroupId())) {
+							+ doGroup.getGroupId())) {
 				String[] userIds = new String[accessibilities.size() + 1];
 				int i = 0;
 				for (AccessibilityBean access : accessibilities) {
-					UserBean userBean = access.getUserBean();
-					User user = authManager.getUser(userBean.getLoginName());
-					userBean.setUserId(user.getUserId().toString());
-					String userId = userBean.getUserId();
-					userIds[i] = userId;
-					// assign user accessibility to the collaboration group
-					authService.secureObjectForUser(
+					saveAccessibility(access,
 							Constants.CSM_COLLABORATION_GROUP_PREFIX
-									+ group.getGroupId(), user.getLoginName(),
-							access.getRoleName());
+									+ doGroup.getGroupId());
+					User user = authManager.getUser(access.getUserBean()
+							.getLoginName());
+					String userId = user.getUserId().toString();
+					userIds[i] = userId;
 					i++;
 				}
 				// add current user to the group
-				userIds[i] = getUser().getUserId();
-				authManager.addUsersToGroup(group.getGroupId().toString(),
+				userIds[i] = user.getUserId();
+				authManager.addUsersToGroup(doGroup.getGroupId().toString(),
 						userIds);
 			} else {
 				throw new NoAccessException(
 						"Collaboration Group already exists and you don't have access to update it");
 			}
 		} catch (NoAccessException e) {
+			throw e;
+		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
 			String error = "Error finding existing collaboration groups accessible by the user";
@@ -126,7 +135,6 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 
 		List<CollaborationGroupBean> collaborationGroups = new ArrayList<CollaborationGroupBean>();
 		try {
-			AuthorizationService authService = super.getAuthService();
 			AuthorizationManager authManager = authService
 					.getAuthorizationManager();
 			Group dummy = new Group();
@@ -137,7 +145,7 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 				Group doGroup = (Group) obj;
 				CollaborationGroupBean cGroup = new CollaborationGroupBean(
 						doGroup);
-				if (authService.checkCreatePermission(getUser(),
+				if (authService.checkCreatePermission(user,
 						Constants.CSM_COLLABORATION_GROUP_PREFIX
 								+ cGroup.getId())) {
 					setUserAccesses(cGroup);
@@ -159,7 +167,6 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 	// set user accessibilities
 	private void setUserAccesses(CollaborationGroupBean cGroup)
 			throws Exception {
-		AuthorizationService authService = super.getAuthService();
 		AuthorizationManager authManager = authService
 				.getAuthorizationManager();
 		// set user accessibilities
@@ -172,13 +179,13 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 				.getUserRoles(Constants.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
 		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
-		for (User user : users) {
+		for (User aUser : users) {
 			// remove the group owner from the list
-			if (!user.getLoginName().equalsIgnoreCase(getUser().getLoginName())) {
+			if (!aUser.getLoginName().equalsIgnoreCase(user.getLoginName())) {
 				AccessibilityBean accessibility = new AccessibilityBean();
 				accessibility.setGroupName(cGroup.getName());
-				accessibility.setRoleName(userRoles.get(user.getLoginName()));
-				accessibility.setUserBean(new UserBean(user));
+				accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
+				accessibility.setUserBean(new UserBean(aUser));
 				access.add(accessibility);
 			}
 		}
@@ -189,12 +196,11 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 			throws CommunityException {
 		CollaborationGroupBean collaborationGroup = null;
 		try {
-			AuthorizationService authService = super.getAuthService();
 			Group group = authService.getUserManager().getGroupById(id);
 			collaborationGroup = new CollaborationGroupBean(group);
 			String pe = Constants.CSM_COLLABORATION_GROUP_PREFIX
 					+ collaborationGroup.getId();
-			if (authService.checkCreatePermission(getUser(), pe)) {
+			if (authService.checkCreatePermission(user, pe)) {
 				setUserAccesses(collaborationGroup);
 			} else {
 				String error = "User has no access to the collaboration group "
@@ -211,13 +217,12 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 	public void deleteCollaborationGroup(
 			CollaborationGroupBean collaborationGroup)
 			throws CommunityException, NoAccessException {
-		if (getUser() == null) {
+		if (user == null) {
 			throw new NoAccessException();
 		}
 		try {
-			AuthorizationService authService = super.getAuthService();
 			// check if user has access to delete the group
-			if (!authService.checkPermission(getUser(),
+			if (!authService.checkPermission(user,
 					Constants.CSM_COLLABORATION_GROUP_PREFIX
 							+ collaborationGroup.getId(),
 					Constants.CSM_DELETE_PRIVILEGE)) {
@@ -229,6 +234,8 @@ public class CommunityServiceLocalImpl extends BaseServiceHelper implements
 				authService.getAuthorizationManager().removeGroup(
 						collaborationGroup.getId());
 			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String error = "Error deleting the collaboration group";
 			throw new CommunityException(error, e);
