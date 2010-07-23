@@ -48,7 +48,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (doGroup != null
 					&& !doGroup.getGroupId().toString().equals(
 							collaborationGroup.getId())) {
-				throw new DuplicateEntriesException("Group name is already in use.");
+				throw new DuplicateEntriesException(
+						"Group name is already in use.");
 			}
 			// create a new group if none exists.
 			if (StringUtils.isEmpty(collaborationGroup.getId())) {
@@ -180,14 +181,11 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 						+ cGroup.getId());
 		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
 		for (User aUser : users) {
-			// remove the group owner from the list
-			if (!aUser.getLoginName().equalsIgnoreCase(user.getLoginName())) {
-				AccessibilityBean accessibility = new AccessibilityBean();
-				accessibility.setGroupName(cGroup.getName());
-				accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
-				accessibility.setUserBean(new UserBean(aUser));
-				access.add(accessibility);
-			}
+			AccessibilityBean accessibility = new AccessibilityBean();
+			accessibility.setGroupName(cGroup.getName());
+			accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
+			accessibility.setUserBean(new UserBean(aUser));
+			access.add(accessibility);
 		}
 		cGroup.setUserAccessibilities(access);
 	}
