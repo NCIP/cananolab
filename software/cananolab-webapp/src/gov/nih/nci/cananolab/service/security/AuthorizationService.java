@@ -579,21 +579,13 @@ public class AuthorizationService {
 			Group group = getGroup(groupName);
 			Role role = getRole(roleName);
 
-			// this will remove exising roles assigned. In caNanoLab, this is
-			// not an
-			// issue since
-			// only the R role has been assigned from the application.
-
 			if (group == null) {
-				group = new Group();
-				group.setGroupName(groupName);
-				userManager.createGroup(group);
+				throw new SecurityException("No such group exists.");
 			}
 			if (role == null) {
-				role = new Role();
-				role.setName(roleName);
-				userManager.createRole(role);
+				throw new SecurityException("No such role exists.");
 			}
+			//this will remove existing roles assigned
 			this.userManager.assignGroupRoleToProtectionGroup(pg
 					.getProtectionGroupId().toString(), group.getGroupId()
 					.toString(), new String[] { role.getId().toString() });
