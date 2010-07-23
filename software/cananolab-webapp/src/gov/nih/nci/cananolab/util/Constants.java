@@ -56,6 +56,15 @@ public class Constants {
 		CSM_DEFAULT_ACCESS = defaultAccess;
 
 	}
+
+	public static final AccessibilityBean CSM_PUBLIC_ACCESS;
+	static {
+		AccessibilityBean publicAccess = new AccessibilityBean(true);
+		publicAccess.setGroupName(Constants.CSM_PUBLIC_GROUP);
+		publicAccess.setRoleName(Constants.CSM_READ_ROLE);
+		CSM_PUBLIC_ACCESS = publicAccess;
+
+	}
 	public static final String ASSOCIATED_FILE = "Other Associated File";
 
 	public static final String PROTOCOL_FILE = "Protocol File";
