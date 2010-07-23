@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,10 +71,10 @@ public class InitSetup {
 	public Map<String, SortedSet<String>> getLookupByName(
 			ServletContext appContext, String contextAttribute,String name) throws BaseException{
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
-		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable.get(name);		
+		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable.get(name);
 		appContext.setAttribute(contextAttribute, lookupByNameMap);
 		return lookupByNameMap;
-		
+
 	}
 
 	/**
@@ -286,48 +285,6 @@ public class InitSetup {
 			LookupService.saveOtherType(lookupName, otherAttribute, value);
 		}
 	}
-
-	/*
-	 * public String getGridServiceUrl(HttpServletRequest request, String
-	 * gridHostName) throws Exception { List<GridNodeBean> remoteNodes =
-	 * getGridNodesInContext(request); GridNodeBean theNode =
-	 * GridService.getGridNodeByHostName(remoteNodes, gridHostName); if (theNode
-	 * == null) { throw new GridDownException("Grid node " + gridHostName +
-	 * " is not available at this time."); } return theNode.getAddress(); }
-	 */
-
-	/*
-	 * public List<GridNodeBean> getGridNodesInContext(HttpServletRequest
-	 * request) throws Exception { // URL localURL = new
-	 * URL(request.getRequestURL().toString()); // int port =
-	 * (localURL.getPort() == -1) ? 80 : localURL.getPort(); // String
-	 * localGridURL = localURL.getProtocol() + "://" // + localURL.getHost() +
-	 * ":" + port + "/" // + Constants.GRID_SERVICE_PATH; //
-	 * GridDiscoveryServiceJob gridDiscoveryJob = new //
-	 * GridDiscoveryServiceJob(); // List<GridNodeBean> gridNodes =
-	 * gridDiscoveryJob.getAllGridNodes(); // GridNodeBean localGrid =
-	 * GridService.getGridNodeByURL(gridNodes, // localGridURL);
-	 *
-	 * GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-	 * List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-	 * List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>(gridNodes);
-	 * for (GridNodeBean gridNode : gridNodes) { if
-	 * (gridNode.getHostName().equals(Constants.LOCAL_SITE)) {
-	 * remoteNodes.remove(gridNode); } } Collections.sort(remoteNodes, new
-	 * Comparators.GridNodeHostNameComparator());
-	 *
-	 * request.getSession().getServletContext().setAttribute("allGridNodes",
-	 * remoteNodes); return gridNodes; }
-	 */
-
-	/*
-	 * public PublicDataCountBean getPublicDataCountsInContext(
-	 * HttpServletRequest request) throws Exception { PublicDataCountServiceJob
-	 * dataCountJob = new PublicDataCountServiceJob(); PublicDataCountBean
-	 * dataCounts = dataCountJob.getPublicDataCounts();
-	 * request.getSession().getServletContext().setAttribute(
-	 * "allPublicDataCounts", dataCounts); return dataCounts; }
-	 */
 
 	public void updateCSMCleanupEntriesInContext(
 			List<String> csmEntriesToRemove, HttpServletRequest request)
