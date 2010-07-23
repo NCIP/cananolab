@@ -41,7 +41,7 @@
 							</tr>
 							<tr>
 								<td class="sidebarContent">
-									<a href="collaborationGroup.do?dispatch=setupNew">Manage
+									<a href="collaborationGroup.do?dispatch=setupNew&page=0">Manage
 										Collaboration Groups</a>
 									<br>
 									Select to create, update, delete collaboration groups and
