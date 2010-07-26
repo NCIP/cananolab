@@ -5,10 +5,16 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.dao.GroupSearchCriteria;
+import gov.nih.nci.security.dao.SearchCriteria;
+import gov.nih.nci.security.dao.UserSearchCriteria;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -258,5 +264,66 @@ public class BaseServiceLocalImpl implements BaseService {
 			String error = "Error assigning accessibility for the protected data";
 			throw new SecurityException(error, e);
 		}
+	}
+
+	public List<UserBean> findUserLoginNames(String loginNameSearchStr)
+			throws SecurityException {
+		List<UserBean> matchedUsers = new ArrayList<UserBean>();
+		try {
+			User user = new User();
+			user.setLoginName("*");
+			SearchCriteria sc = new UserSearchCriteria(user);
+			List result = authService.getAuthorizationManager().getObjects(sc);
+			for (Object obj : result) {
+				User aUser = (User) obj;
+				if (StringUtils.isEmpty(loginNameSearchStr)
+						|| aUser.getLoginName().toLowerCase().contains(
+								loginNameSearchStr.toLowerCase())
+						|| aUser.getFirstName().toLowerCase().contains(
+								loginNameSearchStr.toLowerCase())
+						|| aUser.getLastName().toLowerCase().contains(
+								loginNameSearchStr.toLowerCase())) {
+					matchedUsers.add(new UserBean(aUser));
+				}
+			}
+		} catch (Exception e) {
+			String error = "Error finding users based on login name search string";
+			throw new SecurityException(error, e);
+		}
+		Collections.sort(matchedUsers, new Comparator<UserBean>() {
+			public int compare(UserBean u1, UserBean u2) {
+				return u1.compareTo(u2);
+			}
+		});
+
+		return matchedUsers;
+	}
+
+	public List<String> findGroupNames(String groupNameSearchStr)
+			throws SecurityException {
+		List<String> matchedGroupNames = new ArrayList<String>();
+		try {
+			Group group = new Group();
+			group.setGroupName("*");
+			SearchCriteria sc = new GroupSearchCriteria(group);
+			List result = authService.getAuthorizationManager().getObjects(sc);
+			for (Object obj : result) {
+				Group aGroup = (Group) obj;
+				if (StringUtils.isEmpty(groupNameSearchStr)
+						|| aGroup.getGroupName().toLowerCase().contains(
+								groupNameSearchStr.toLowerCase())) {
+					matchedGroupNames.add(aGroup.getGroupName());
+				}
+			}
+		} catch (Exception e) {
+			String error = "Error finding groups based on group name search string";
+			throw new SecurityException(error, e);
+		}
+		Collections.sort(matchedGroupNames);
+		return matchedGroupNames;
+	}
+
+	public AuthorizationService getAuthService() {
+		return authService;
 	}
 }
