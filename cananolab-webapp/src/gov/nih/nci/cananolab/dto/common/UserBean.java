@@ -84,7 +84,7 @@ public class UserBean {
 		this.phoneNumber = user.getPhoneNumber();
 		this.title = user.getTitle();
 		this.userId = user.getUserId().toString();
-		this.fullName = this.firstName + " " + this.lastName;
+		this.fullName = this.lastName + ", " + this.firstName;
 	}
 
 	public String getDepartment() {
@@ -189,5 +189,32 @@ public class UserBean {
 
 	public void setCurator(boolean curator) {
 		this.curator = curator;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof UserBean) {
+			UserBean u = (UserBean) obj;
+			String thisId = this.getUserId();
+			if (thisId != null && thisId.equals(u.getUserId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+
+	public int compareTo(Object obj) {
+		int diff = 0;
+		if (obj instanceof UserBean) {
+			UserBean u = (UserBean) obj;
+			if (u.getLastName().equals(this.getLastName())) {
+				return u.getFirstName().toLowerCase().compareTo(
+						this.getFirstName().toLowerCase());
+			} else {
+				return u.getLastName().toLowerCase().compareTo(
+						this.getLastName().toLowerCase());
+			}
+		}
+		return diff;
 	}
 }
