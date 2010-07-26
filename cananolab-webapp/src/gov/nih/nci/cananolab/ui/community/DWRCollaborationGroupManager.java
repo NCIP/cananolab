@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
-import gov.nih.nci.cananolab.ui.publication.DWRPublicationManager;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ import org.directwebremoting.WebContextFactory;
  */
 public class DWRCollaborationGroupManager {
 	private CommunityService service;
-	private Logger logger = Logger.getLogger(DWRPublicationManager.class);
+	private Logger logger = Logger.getLogger(DWRCollaborationGroupManager.class);
 
 	private CommunityService getService() {
 		WebContext wctx = WebContextFactory.get();
