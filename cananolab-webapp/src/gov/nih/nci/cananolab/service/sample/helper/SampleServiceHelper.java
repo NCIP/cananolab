@@ -865,8 +865,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-				.setProjection(Projections.distinct(Property.forName("name")));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		if (!StringUtils.isEmpty(nameStr)) {
 			// split nameStr to multiple words if needed
 			List<String> nameStrs = StringUtils.parseToWords(nameStr, "\n");
@@ -886,12 +885,12 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		List<String> sampleNames = new ArrayList<String>();
 		for (Object obj : results) {
-			String name = ((String) obj).trim();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
-				sampleNames.add(name);
+			Sample sample=(Sample)obj;
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), sample.getId().toString())) {
+				sampleNames.add(sample.getName());
 			} else {
 				logger.debug("User doesn't have access to sample of name: "
-						+ name);
+						+ sample.getName());
 			}
 		}
 		return sampleNames;
