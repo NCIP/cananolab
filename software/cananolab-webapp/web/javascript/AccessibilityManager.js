@@ -62,3 +62,11 @@ function deleteTheAccess() {
 		submitAction(document.forms[0], "sample", "deleteAccess", 2);
 	}
 }
+
+function confirmRemovePublicAccess() {
+	var answer = confirm("Are you sure you want to remove the data from Public access?");
+	if (answer != 0) {
+		submitAction(document.forms[0], "sample", "deletePublicAccess", 2);
+	}
+}
+
