@@ -516,7 +516,7 @@ function deleteDataAvailability(type, form, actionName, dispatch){
 	}
 }
 
-function confirmRemovePublic() {
+function confirmPublicDataUpdate() {
 	if (confirm("The data has been assigned to Public.  Updating it would retract it from Public.  You will need to resubmit to the curator for review again before the curator assigns it to Public again.  Are you sure to continue?")) {
 		return true;
 	} else {
