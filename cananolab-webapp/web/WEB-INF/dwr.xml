@@ -138,6 +138,8 @@
 			<include method="getGroupAccess" />
 			<include method="getUserAccess" />
 			<include method="resetTheAccess" />
+			<include method="getMatchedUsers"/>
+			<include method="getMatchedGroupNames"/>
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
