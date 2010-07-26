@@ -37,4 +37,14 @@ public class SecuredDataBean {
 	public List<AccessibilityBean> getUserAccesses() {
 		return userAccesses;
 	}
+
+	private Boolean userUpdatable = false;
+
+	public Boolean getUserUpdatable() {
+		return userUpdatable;
+	}
+
+	public void setUserUpdatable(Boolean userUpdatable) {
+		this.userUpdatable = userUpdatable;
+	}
 }
