@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -23,6 +24,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -512,6 +514,35 @@ public class SampleAction extends BaseAnnotationAction {
 		AccessibilityBean theAccess = sample.getTheAccess();
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, sample.getDomain());
+
+		ActionForward forward = null;
+		String updateSample = (String) request.getSession().getAttribute(
+				"updateSample");
+		if (updateSample == null) {
+			forward = mapping.findForward("createInput");
+			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName());
+		} else {
+			request.setAttribute("sampleId", sample.getDomain().getId()
+					.toString());
+			forward = summaryEdit(mapping, form, request, response);
+		}
+		return forward;
+	}
+
+	public ActionForward deletePublicAccess(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (!user.isCurator()) {
+			throw new NoAccessException(
+					"You must be a Curator to be able to peform this function");
+		}
+		SampleBean sample = (SampleBean) theForm.get("sampleBean");
+		SampleService service = this.setServiceInSession(request);
+		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS, sample
+				.getDomain());
 
 		ActionForward forward = null;
 		String updateSample = (String) request.getSession().getAttribute(
