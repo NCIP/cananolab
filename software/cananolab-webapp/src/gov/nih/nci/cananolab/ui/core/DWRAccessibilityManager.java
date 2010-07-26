@@ -8,6 +8,9 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
@@ -20,6 +23,7 @@ import org.directwebremoting.WebContextFactory;
  */
 public class DWRAccessibilityManager {
 	private BaseService service;
+	private Logger logger = Logger.getLogger(DWRAccessibilityManager.class);
 
 	private BaseService getService() {
 		WebContext wctx = WebContextFactory.get();
@@ -89,8 +93,8 @@ public class DWRAccessibilityManager {
 		if (user == null) {
 			return null;
 		}
-		AccessibilityBean access = getService().findAccessibilityByUserLoginName(
-				userLoginName, protectedData);
+		AccessibilityBean access = getService()
+				.findAccessibilityByUserLoginName(userLoginName, protectedData);
 		DynaValidatorForm accessForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute(parentFormName));
 		if (accessForm == null) {
@@ -109,5 +113,27 @@ public class DWRAccessibilityManager {
 			publicationBean.setTheAccess(access);
 		}
 		return access;
+	}
+
+	public UserBean[] getMatchedUsers(String searchStr) throws Exception {
+		try {
+			List<UserBean> matchedUsers = getService().findUserLoginNames(
+					searchStr);
+			return matchedUsers.toArray(new UserBean[matchedUsers.size()]);
+		} catch (Exception e) {
+			logger.error("Problem getting matched user login names", e);
+			return null;
+		}
+	}
+
+	public String[] getMatchedGroupNames(String searchStr) throws Exception {
+		try {
+			List<String> matchGroupNames = getService().findGroupNames(
+					searchStr);
+			return matchGroupNames.toArray(new String[matchGroupNames.size()]);
+		} catch (Exception e) {
+			logger.error("Problem getting matched group names", e);
+			return null;
+		}
 	}
 }
