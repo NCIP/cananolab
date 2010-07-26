@@ -82,7 +82,7 @@
 						</td>
 						<td width="5">
 									<a href="#userNameField"
-										onclick=""><img
+										onclick="javascript:showMatchedUserDropdown()"><img
 											src="images/icon_browse.jpg" align="middle"
 											alt="search existing users" border="0" /></a>
 						</td>
@@ -94,6 +94,10 @@
 											id="loaderImg" style="display: none">
 									</td>
 									<td>
+										<html:select
+											property="group.theUserAccessibility.userBean.loginName"
+											size="10" styleId="matchedUserNameSelect" style="display: none" onclick="updateUserLoginName()">
+										</html:select>
 									</td>
 								</tr>
 							</table>

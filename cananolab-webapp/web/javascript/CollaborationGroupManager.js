@@ -93,7 +93,7 @@ function addUserAccess() {
 	var userAccess = {
 		userBean : userBean,
 		roleName : null,
-		groupAccess: false
+		groupAccess : false
 	};
 
 	dwr.util.getValues(userAccess);
@@ -147,4 +147,25 @@ function deleteTheUserAccess() {
 			hide("newUser");
 		}
 	}
+}
+
+function showMatchedUserDropdown() {
+	// display progress.gif while waiting for the response.
+	show("loaderImg");
+	hide("matchedUserNameSelect");
+	var selected = dwr.util.getValue("matchedUserNameSelect");
+	var loginName = dwr.util.getValue("userBean.loginName");
+	CollaborationGroupManager.getMatchedUsers(loginName, function(data) {
+		dwr.util.removeAllOptions("matchedUserNameSelect");
+		dwr.util.addOptions("matchedUserNameSelect", data, "loginName", "fullName");
+		dwr.util.setValue("matchedUserNameSelect", selected);
+		hide("loaderImg");
+		show("matchedUserNameSelect");
+	});
+}
+
+function updateUserLoginName() {
+	var selected = dwr.util.getValue("matchedUserNameSelect");
+	dwr.util.setValue("userBean.loginName", selected);
+	hide("matchedUserNameSelect");
 }
