@@ -70,3 +70,45 @@ function confirmRemovePublicAccess() {
 	}
 }
 
+function showMatchedGroupOrUserDropdown() {
+	// display progress.gif while waiting for the response.
+	show("loaderImg");
+	hide("matchedUserNameSelect");
+	hide("matchedGroupNameSelect");
+	var byGroup = dwr.util.getValue("byGroup");
+	var byUser = dwr.util.getValue("byUser");
+	if (byGroup == true && byUser == false) {
+		var selectedGroup = dwr.util.getValue("matchedGroupNameSelect");
+		var groupName = dwr.util.getValue("groupName");
+		AccessibilityManager.getMatchedGroupNames(loginName, function(data) {
+			dwr.util.removeAllOptions("matchedGroupNameSelect");
+			dwr.util.addOptions("matchedGroupNameSelect", data);
+			dwr.util.setValue("matchedGroupNameSelect", selectedGroup);
+			hide("loaderImg");
+			show("matchedGroupNameSelect");
+		});
+	} else {
+		var selectedUser = dwr.util.getValue("matchedUserNameSelect");
+		var loginName = dwr.util.getValue("userName");
+		AccessibilityManager.getMatchedUsers(loginName, function(data) {
+			dwr.util.removeAllOptions("matchedUserNameSelect");
+			dwr.util.addOptions("matchedUserNameSelect", data, "loginName",
+					"fullName");
+			dwr.util.setValue("matchedUserNameSelect", selectedUser);
+			hide("loaderImg");
+			show("matchedUserNameSelect");
+		});
+	}
+}
+
+function updateUserLoginName() {
+	var selected = dwr.util.getValue("matchedUserNameSelect");
+	dwr.util.setValue("userName", selected);
+	hide("matchedUserNameSelect");
+}
+
+function updateGroupName() {
+	var selected = dwr.util.getValue("matchedGroupNameSelect");
+	dwr.util.setValue("groupName", selected);
+	hide("matchedGroupNameSelect");
+}
