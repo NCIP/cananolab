@@ -134,7 +134,7 @@
 						<html:text styleId="userName" property="${accessParent}.theAccess.userBean.loginName" style="display:none"/>
 					</td>
 					<td>
-						<a href="#userNameField" onclick=""><img
+						<a href="#userNameField" onclick="javascript:showMatchedGroupOrUserDropdown()""><img
 								src="images/icon_browse.jpg" align="middle"
 								alt="search existing collaboration groups" border="0" /> </a>
 					</td>
@@ -146,6 +146,16 @@
 										id="loaderImg" style="display: none">
 								</td>
 								<td>
+									<html:select
+										property="${accessParent}.theAccess.userBean.loginName"
+										size="10" styleId="matchedUserNameSelect"
+										style="display: none" onclick="updateUserLoginName()">
+									</html:select>
+									<html:select
+										property="${accessParent}.theAccess.groupName"
+										size="10" styleId="matchedGroupNameSelect"
+										style="display: none" onclick="updateGroupName()">
+									</html:select>
 								</td>
 							</tr>
 						</table>
