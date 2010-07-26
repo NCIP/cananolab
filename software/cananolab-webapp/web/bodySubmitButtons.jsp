@@ -46,7 +46,7 @@
 						<c:when test="${validate eq 'true'}">
 							<html:submit value="${submitButtonName}" styleId="submitButton"
 								disabled="${disableButtons}"
-								onclick="javascript:confirmRemovePublic();" />
+								onclick="javascript:confirmPublicDataUpdate;" />
 						</c:when>
 						<c:otherwise>
 							<html:submit value="${submitButtonName}" styleId="submitButton"

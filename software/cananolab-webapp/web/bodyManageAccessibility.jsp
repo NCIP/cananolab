@@ -48,7 +48,7 @@
 							<c:choose>
 								<c:when test="${access.groupName eq 'Public'}">
 									<c:if test="${user.curator}">
-									    <a href="#">remove</a>
+									    <a href="javascript:confirmRemovePublicAccess()">remove</a>
 									</c:if>
 								</c:when>
 								<c:otherwise>
