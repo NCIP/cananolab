@@ -129,6 +129,7 @@
 			<include method="addUserAccess" />
 			<include method="deleteUserAccess" />
 			<include method="resetTheCollaborationGroup" />
+			<include method="getMatchedUsers"/>
 		</create>
 		<create creator="new" javascript="AccessibilityManager"
 			scope="session">
