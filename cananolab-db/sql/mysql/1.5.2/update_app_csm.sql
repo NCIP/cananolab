@@ -49,3 +49,7 @@ DELETE FROM csm_user_group
 
 DELETE FROM csm_group
  WHERE group_name NOT IN ('Curator', 'Public');
+
+UPDATE csm_user
+   SET first_name = 'superadmin', last_name = 'superadmin'
+ WHERE user_login_name = 'superadmin';
