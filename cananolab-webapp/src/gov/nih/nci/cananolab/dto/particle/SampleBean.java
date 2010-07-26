@@ -67,8 +67,6 @@ public class SampleBean extends SecuredDataBean {
 
 	private List<AccessibilityBean> accessibilities = new ArrayList<AccessibilityBean>();
 
-	private Boolean userUpdatable = false;
-
 	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 
 	public SampleBean() {
@@ -407,13 +405,5 @@ public class SampleBean extends SecuredDataBean {
 
 	public void setAccessibilities(List<AccessibilityBean> accessibilities) {
 		this.accessibilities = accessibilities;
-	}
-
-	public Boolean getUserUpdatable() {
-		return userUpdatable;
-	}
-
-	public void setUserUpdatable(Boolean userUpdatable) {
-		this.userUpdatable = userUpdatable;
 	}
 }
