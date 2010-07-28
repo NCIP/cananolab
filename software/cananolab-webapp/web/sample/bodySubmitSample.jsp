@@ -5,7 +5,9 @@
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-
+<script type='text/javascript' src='javascript/SampleManager.js'></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <c:set var="title" value="Submit" />
 <c:if test="${!empty updateSample}">
@@ -94,28 +96,22 @@
 					Data Availability Metrics
 				</td>
 				<td>
-					<c:set var="updateAvailabilityOnclick"
-						value="updateDataAvailability('dataAvailability');" />
 					<c:if
-						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability  && user.admin}">
+						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability}">
 						<input type="button" value="Generate"
 							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 					</c:if>
 					<c:if
 						test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true' && user.admin}">
-						<input type="button" value="Edit"
-							onclick="javascript:showhide('dataAvailability');">
-
+						<input type="button" value="Edit" id="editDataAvailability"
+							onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView');" >
 					</c:if>
 				</td>
 			</tr>
 			<tr>
-			<td colspan="2">
+			<td colspan="2" align="center">
 				<c:set var="dataAvailabilityStyle" value="display:none" />
-				<div style="${dataAvailabilityStyle}" id="dataAvailability">
-					<a name="viewDataAvailability"><%@ include
-							file="bodyDataAvailability.jsp"%></a>
-				</div>
+				<div style="${dataAvailabilityStyle}" id="dataAvailability" ></div>					
 			</td>
 		</tr>
 		</c:if>
@@ -127,9 +123,7 @@
 	<c:set var="resetOnclick" value="this.form.reset();" />
 	<c:set var="deleteOnclick"
 		value="deleteData('sample', sampleForm, 'sample', 'delete')" />
-	<c:set var="deleteButtonName" value="Delete" />
-	<c:set var="generateDataAvailabilityOnclick"
-		value="generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability')" />
+	<c:set var="deleteButtonName" value="Delete" />	
 	<c:set var="cloneOnclick"
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
