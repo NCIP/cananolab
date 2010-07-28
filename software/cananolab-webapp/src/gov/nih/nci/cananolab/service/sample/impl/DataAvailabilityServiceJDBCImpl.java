@@ -21,7 +21,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -78,7 +80,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	public List<DataAvailabilityBean> generateDataAvailability(SampleBean sampleBean, UserBean user) throws DataAvailabilityException{
 		Long sampleId = sampleBean.getDomain().getId();
 			
-		List<String> clazNames = null;
+		Set<String> clazNames = null;
 		try{
 			clazNames = generate(sampleBean);
 		}catch(Exception e){
@@ -112,7 +114,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		Long sampleId = sampleBean.getDomain().getId();
 		List<DataAvailabilityBean> currentDataAvailability = sampleBean.getDataAvailability();
 		
-		List<String> newGenernatedDataAvailability = null;
+		Set<String> newGenernatedDataAvailability = null;
 		try {
 			newGenernatedDataAvailability = generate(sampleBean);
 		} catch (Exception e) {
@@ -186,7 +188,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * @param sampleBean
 	 * @return
 	 */
-	private List<String> generate(SampleBean sampleBean) throws Exception{
+	private Set<String> generate(SampleBean sampleBean) throws Exception{
 		
 		boolean hasComposition = sampleBean.getHasComposition();
 		boolean hasCharacterization = sampleBean.getHasCharacterizations();
@@ -212,7 +214,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		SortedSet<String> storedFunctionClassNames = helper.getStoredFunctionClassNames(domain);
 		SortedSet<String> storedNanomaterialEntityClassNames = helper.getStoredNanomaterialEntityClassNames(domain);
 		
-		List<String> clazzNames = new ArrayList<String>();	
+		
+		Set<String> clazzNames = new HashSet<String>();	
 		
 		Collection<Characterization> characterizationCollection = domain.getCharacterizationCollection() ;
 		if (characterizationCollection != null) {
@@ -220,7 +223,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				if (achar instanceof OtherCharacterization) {
 				} else {
 					String shortClassName = ClassUtils.getShortClassName(achar
-							.getClass().getCanonicalName());					
+							.getClass().getCanonicalName());
+					String displayName = ClassUtils.getDisplayName(shortClassName);
 					if(shortClassName.equalsIgnoreCase("surface")){
 						Collection<Finding> findingCollection = achar.getFindingCollection();
 						if(!findingCollection.isEmpty()){
@@ -232,10 +236,10 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 								}
 							}
 						}else{
-							clazzNames.add(shortClassName);
+							clazzNames.add(displayName);
 						}
 					}else{
-						clazzNames.add(shortClassName);
+						clazzNames.add(displayName);
 					}
 				}
 			}
