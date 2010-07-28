@@ -80,8 +80,8 @@
 			<include method="deleteCompositionQuery" />
 			<include method="deleteCharacterizationQuery" />
 			<include method="getCharacterizationOperandOptions" />
-			<include method="getAdvancedSearchDetailContent" />
 			<include method="getMatchedSampleNames" />
+			<include method="getDetailContent" />
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
