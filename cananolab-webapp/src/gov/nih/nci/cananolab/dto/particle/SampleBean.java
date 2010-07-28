@@ -441,19 +441,14 @@ public class SampleBean extends SecuredDataBean {
 	
 	public void calculateDataAvailabilityScore(List<DataAvailabilityBean> dataAvailability,
 			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap){
-		int size = dataAvailability.size();
+		//add 1 for the General Sample Information
+		int size = dataAvailability.size() + 1;
 		int minCharSize=0;
-		//ServletContext appContext = this..getServletContext();
-		//SortedSet<String> minchar = (SortedSet<String>)appContext.getAttribute("MINChar");
-	//	Map<String , SortedSet<String>> attributes = (Map<String,SortedSet<String>>)appContext.getAttribute("caNano2MINChar");
 		int totalMinCharSize = minchar.size();
 		List<String> caNanoForMincharEntities = new ArrayList<String>();
 		Set<String> keySet = caNanoLab2MinCharMap.keySet();
 		for(String key: keySet){
-			//System.out.println("key: " + key);
-		//	SortedSet<String> values = caNanoLab2MinCharMap.get(key);
-			String value = caNanoLab2MinCharMap.get(key); //values.first();
-			//System.out.println("first value: "+values.first() + " tostring: " + values.toString()+ ", size: " + values.size());
+			String value = caNanoLab2MinCharMap.get(key); 
 			for(String minCharEntity: minchar){
 				if(minCharEntity.equalsIgnoreCase(value)){
 					caNanoForMincharEntities.add(key);
@@ -471,8 +466,7 @@ public class SampleBean extends SecuredDataBean {
 		Double caNanoLabScore = new Double(size*100/30); // this value needs to go to constant class.
 		Double minCharScore = new Double(minCharSize*100/totalMinCharSize);
 		
-		String s = "caNanoLab: " + caNanoLabScore.intValue() + "%; MINChar: " + minCharScore.intValue() + "%";
-		this.dataAvailabilityMetricsScore = s;
+		this.dataAvailabilityMetricsScore = "caNanoLab: " + caNanoLabScore.intValue() + "%; MINChar: " + minCharScore.intValue() + "%";
 		this.caNanoLabScore = caNanoLabScore.toString() + "% ("+size + " out of 30)";
 		this.mincharScore = minCharScore.toString() + "% (" + minCharSize + " out of " + totalMinCharSize + ")"; 
 	}
