@@ -2,145 +2,223 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-
+<%@include file="/sample/bodyHideSearchDetailView.jsp"%>
 <link rel="StyleSheet" type="text/css" href="css/main.css">
+<link rel="StyleSheet" type="text/css" href="css/summaryView.css">
 
 <table class="gridtable" width="95%" align="center">
-<tr><th class="editTableWithGrid"><b>caNanoLab Availability Score: 67% (19 out of 29)</b>
-		<b>&nbsp;&nbsp;&nbsp;MINChar Availability Score: 33% (3 out of 9)</b><br/></th></tr>
-<tr><td><table class="gridtable" width="95%" align="center">
+<tr><th class="editTableWithGrid" align="center" ><b>caNanoLab Availability Score: ${sampleBean.caNanoLabScore}</b><br/>
+		<b>MINChar Availability Score: ${sampleBean.mincharScore}</b><br/></th></tr>
+<tr><td><table class="gridtable" width="100%" align="center">
 	<tr>
-		<td class="cellLabel" align="center">
+		<td width="40%" class="cellLabel" align="center">
 			caNanoLab
 		</td>
-		<td class="cellLabel" align="center">
+		<td width="30%" class="cellLabel" align="center">
 			MINChar
 		</td>
-		<td class="cellLabel" align="center">
-			<bean:write name="sampleForm" property="sampleBean.domain.name" />
+		<td width="30%"class="cellLabel" align="center">
+			${sampleBean.domain.name}
 		</td>
 	</tr>
 	<tr>
-		<td></td>
-		<td>agglomeration and/or aggregation </td>
-		<td></td>
+		<td width="40%"></td>
+		<td width="30%">agglomeration and/or aggregation </td>
+		<td width="30%"></td>
 	</tr>
 	<tr>
-		<td></td>
-		<td>crystal structure/crystallinity</td>
-		<td></td>
-	</tr>
+		<td width="40%"></td>
+		<td width="30%">crystal structure/crystallinity</td>
+		<td width="30%"></td>
+	</tr>	
 	<tr>
-		<td>
+		<td width="70%" colspan="2">
 			General Sample Information
 		</td>
-		<td></td>
-		<td align="center">
+		<td width="30%" align="center">
 			<img src="images/icon_check.png" />
 		</td>
 	</tr>
 	<tr>
-		<td >
+		<td width="40%">
 			Sample Composition
 		</td>
-		<td align="center">
+		<td width="30%">
 			chemical composition
 		</td>
-		<td><img src="images/icon_check.png" /></td>
+		<td width="30%" align="center">
+		<c:forEach var="data" items="${availableEntityNames}">
+		<c:if test="${data eq 'sample composition'}" >
+		<img src="images/icon_check.png" /></c:if>
+		</c:forEach>
+		</td>
 	</tr>
 	<tr>
-		<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nanomaterial entities
+		<td width="40%">
+			&nbsp;&nbsp;nanomaterial entities
 		</td>		
-		<td align="center">
-			
+		<td width="30%">			
 		</td>
-		<td></td>
+		<td width="30%" align="center">
+		<c:forEach var="data" items="${availableEntityNames}">
+		<c:if test="${data eq 'nanomaterial entities'}" >
+		<img src="images/icon_check.png" /></c:if>
+		</c:forEach>
+		</td>
 	</tr>
 	<tr>
-		<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;functionalizing entities
+		<td width="40%">
+			&nbsp;&nbsp;functionalizing entities
 		</td>		
-		<td align="center">
-			
+		<td width="30%" >			
 		</td>
-		<td></td>
+		<td width="30%" align="center">
+		<c:forEach var="data" items="${availableEntityNames}">
+		<c:if test="${data eq 'functionalizing entities'}" >
+		<img src="images/icon_check.png" /></c:if>
+		</c:forEach>
+		</td>
 	</tr>
 	<tr>		
-		<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chemical associations
+		<td width="40%" >
+			&nbsp;&nbsp;chemical associations
 		</td>		
-		<td align="center">			
+		<td width="30%">			
 		</td>
-		<td></td>
+		<td width="30%" align="center">
+		<c:forEach var="data" items="${availableEntityNames}">
+		<c:if test="${data eq 'chemical associations'}" >
+		<img src="images/icon_check.png" /></c:if>
+		</c:forEach>
+		</td>
 	</tr>
 	<c:forEach var="chem" items="${chemicalAssocs}">
-	<tr>
-		
-		<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${chem }
+	<tr>		
+		<td width="40%">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${chem}
 		</td>		
-		<td align="center">
-			<c:if test="${chem != 'encapsulation'}" >surface chemistry</c:if>			
+		<td width="30%">
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${nano eq chem}">${minchar}</c:if>
+			</c:forEach>					
 		</td>
-		<td></td>
+		<td width="30%" align="center">
+		<c:forEach var="data" items="${availableEntityNames}">
+		<c:if test="${data eq chem}" >
+		<img src="images/icon_check.png" /></c:if>
+		</c:forEach>
+		</td>
 	</tr>
 	</c:forEach>
 	<tr>
-		<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sample function
+		<td width="40%">
+			&nbsp;&nbsp;sample function
 		</td>		
-		<td align="center">
+		<td width="30%">
 			
 		</td>
-		<td></td>
+		<td width="30%" align="center">
+		<c:forEach var="data" items="${availableEntityNames}">
+		<c:if test="${data eq 'sample function'}" >
+		<img src="images/icon_check.png" /></c:if>
+		</c:forEach>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="3">
 			Physico-Chemical Characterization
 		</td>
 	</tr>
+	
 	<c:forEach var="char" items="${physicoChars}">
-		<c:if test="${char eq 'surface'}">
+	<c:choose>
+	<c:when test="${char eq 'surface'}">
 		<tr>
-			<td>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${char}
+			<td width="40">
+				&nbsp;&nbsp;${char}
 			</td>
-			<td ></td>
-			<td></td>
+			<td width="30" ></td>
+			<td width="30%" align="center">
+				<c:forEach var="data" items="${availableEntityNames}">
+					<c:if test="${data eq char}">
+						<img src="images/icon_check.png" />
+					</c:if>									
+				</c:forEach>
+			</td>
 		</tr>
-		<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;surface area</td><td>surface area</td><td></td></tr>
-		<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;surface charge</td><td>surface charge</td><td></td></tr>
-		<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zeta potential</td><td>surface charge</td><td></td>
-		</c:if>
-		<tr>
-			<td>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${char}				
-			</td>
-			<td align="center">				
-				<c:choose> 
-				<c:when test="${char eq 'size'}">
-					partical ${char}/size distribution
-				</c:when>
-				<c:when test="${char eq 'purity'}">
-					${char}
-				</c:when>
-				<c:when test="${char eq 'shape'}">
-					${char}
-				</c:when>				
-				</c:choose>
-			</td>
-			<td align="center">
-				<c:if
-					test="${char eq 'size' ||char eq 'shape' || char eq 'physical state' || char eq 'molecular weight' || char eq '[other]'}">
+		<tr><td width="40%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;surface area</td>
+		<td width="30%">
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${nano eq 'surface area '}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  width="30%" align="center">
+			<c:forEach var="data" items="${availableEntityNames}">
+				<c:if test="${data eq 'surface area'}"> 
 					<img src="images/icon_check.png" />
-				</c:if>
-			</td>
+				</c:if>			
+		</c:forEach>
+		</td>	
 		</tr>
-	</c:forEach>
+		<tr><td width="40%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;surface charge</td>
+		<td width="30%">
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${'surface charge' == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  width="30%" align="center">
+			<c:forEach var="data" items="${availableEntityNames}">			
+				<c:if test="${data == 'surface charge'}">
+					<img src="images/icon_check.png" />
+				</c:if>			
+		</c:forEach>
+		</td>	
+		</tr>
+		<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zeta potential</td>
+		<td width="30%">
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${'zeta potential' == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  width="30%" align="center">
+			<c:forEach var="data" items="${availableEntityNames}">			
+				<c:if test="${data == 'zeta potential'}">
+					<img src="images/icon_check.png" />
+				</c:if>			
+		</c:forEach>
+		</td>	
+		</tr>
+	</c:when>
+		<c:otherwise>
+		<tr>
+		<td width="40%">&nbsp;&nbsp;${char}</td>
+		<td width="30%">
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${char == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  width="30%" align="center">
+			<c:forEach var="data" items="${availableEntityNames}">
+				<c:if test="${data == char}">
+					<img src="images/icon_check.png" />
+				</c:if>			
+		</c:forEach>
+		</td>	
+		</tr>			
+		</c:otherwise>
+		</c:choose>
+	</c:forEach>	
+	
 	<tr>
 		<td colspan="3">
 			In Vitro Characterization
@@ -148,18 +226,22 @@
 	</tr>
 	<c:forEach var="char" items="${invitroChars}">
 		<tr>
-			<td>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${char}
-			</td>
-			<td >				
-			</td>
-			<td align="center">
-				<c:if
-					test="${char eq 'cytotoxicity' || char eq 'blood contact' || char eq 'targeting'|| char eq 'sterility' || char eq '[other]'}">
+		<td width="40%">&nbsp;&nbsp;${char}</td>
+		<td width="30%">
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${char == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  width="30%" align="center">
+			<c:forEach var="data" items="${availableEntityNames}">
+				<c:if test="${data == char}">
 					<img src="images/icon_check.png" />
-				</c:if>
-			</td>
-		</tr>
+				</c:if>			
+		</c:forEach>
+		</td>	
+		</tr>		
 	</c:forEach>
 	<tr>
 		<td colspan="3">
@@ -168,29 +250,38 @@
 	</tr>
 	<c:forEach var="char" items="${invivoChars}">
 		<tr>
-			<td>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${char}
-			</td>
-			<td align="center">				
-			</td>
-			<td align="center">
-				<c:if
-					test="${char eq 'pharmacokinetics' || char eq 'toxicology'}">
+		<td width="40%">&nbsp;&nbsp;${char}</td>
+		<td width="30%">
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${char == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  width="30%" align="center">
+			<c:forEach var="data" items="${availableEntityNames}">
+				<c:if test="${data == char}">
 					<img src="images/icon_check.png" />
-				</c:if>
-			</td>
-		</tr>
+				</c:if>			
+		</c:forEach>
+		</td>	
+		</tr>	
 	</c:forEach>	
 	<tr>
-		<td>
+		<td width="40%">
 			Publications
 		</td>
-		<td></td>
-		<td align="center">
-			<img src="images/icon_check.png" />
+		<td width="30%"></td>
+		<td width="30%" align="center">
+			<c:forEach var="data" items="${availableEntityNames}">
+				<c:if test="${data == 'publications'}">
+					<img src="images/icon_check.png" />
+				</c:if>			
+		</c:forEach>
 		</td>
 	</tr>	
 </table>
+<c:if test="${!empty updateSample}">	
 <table class="invisibleTable" width="95%" align="center">
 	<tr><td width="650" align="left"><input type="button" value="Delete"
 					onclick="javascript:deleteDataAvailability('Data Availability for the sample', sampleForm, 'sample', 'deleteDataAvailability');" />
@@ -200,11 +291,12 @@
 				<input type="button" value="Update"
 					onclick="javascript:updateDataAvailability(sampleForm, 'sample', 'updateDataAvailability');" />
 				<input type="button" value="Cancel"
-					onclick="javascript:hide('dataAvailability');" />	
+					onclick="javascript:hide('dataAvailability');show('editDataAvailability');" />	
 			</div>		
 		</td>				
 	</tr>
 </table>
+</c:if>
 </td>
 </tr>
 </table>
