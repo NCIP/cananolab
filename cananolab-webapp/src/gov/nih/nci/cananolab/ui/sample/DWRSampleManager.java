@@ -267,7 +267,7 @@ public class DWRSampleManager {
 		}
 	}
 
-	public String getAdvancedSearchDetailContent(String url)
+	public String getDetailContent(String url)
 			throws ServletException, IOException, BaseException {
 		try {
 			WebContext wctx = WebContextFactory.get();
