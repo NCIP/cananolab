@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -256,6 +258,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					if(!dataAvailability.isEmpty() && dataAvailability.size() > 0){
 						sampleBean.setDataAvailability(dataAvailability);
 						sampleBean.setHasDataAvailability(true);
+						calculateDataAvailabilityScore(sampleBean, dataAvailability);
 					}
 					loadedSampleBeans.add(sampleBean);
 				}
@@ -307,6 +310,14 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		this.dataAvailabilityService = dataAvailabilityService;
 	}
 
+	
+	private void calculateDataAvailabilityScore(SampleBean sampleBean, List<DataAvailabilityBean> dataAvailability){
+		
+		ServletContext appContext = this.getServlet().getServletContext();
+		SortedSet<String> minchar = (SortedSet<String>)appContext.getAttribute("MINChar");
+		Map<String , String> attributes = (Map<String,String>)appContext.getAttribute("caNano2MINChar");
+		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar, attributes);
+	}
 	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
