@@ -106,7 +106,8 @@
 			<forward name="summaryView" path="sample.summaryView" />
 			<forward name="summaryEdit" path="sample.summaryEdit" />
 			<forward name="input" path="/sample.do?dispatch=input&amp;page=0" />
-			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />
+			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />			
+			<forward name="dataAvailabilityView" path="/sample/bodyDataAvailability.jsp" />
 		</action>
 		<action input="input" name="searchSampleForm" parameter="dispatch"
 			path="/searchSample" type="org.springframework.web.struts.DelegatingActionProxy"
