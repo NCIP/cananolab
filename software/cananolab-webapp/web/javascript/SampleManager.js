@@ -579,10 +579,10 @@ function deleteTheCharacterizationQuery() {
 
 function showDetailView(styleId, url) {
 	hideOtherLinksAndViews(styleId);
-	url = url + "&advancedSearch=" + styleId;
+	url = url + "&styleId=" + styleId;
 	hide("detailLink" + styleId);
 	show("loaderImg" + styleId);
-	SampleManager.getAdvancedSearchDetailContent(url, function(pageData) {
+	SampleManager.getDetailContent(url, function(pageData) {
 		var contentElement = document.getElementById("content" + styleId);
 		if (pageData == "") {
 			hide("detailView" + styleId);
@@ -670,4 +670,19 @@ function updateCloningSample() {
 	var selected = dwr.util.getValue("matchedSampleSelect");
 	dwr.util.setValue("cloningSampleName", selected);
 	hide("matchedSampleSelect");
+}
+
+function editDataAvailability(url){
+	SampleManager.getDetailContent(url, function(pageData){
+		if (pageData == "") {
+			hide('dataAvailability');
+			show('editDataAvailability');
+		} else {
+			dwr.util.setValue("dataAvailability", pageData, {
+				escapeHtml : false
+			});
+			show('dataAvailability' );
+			hide('editDataAvailability');
+		}		
+	});
 }
