@@ -30,7 +30,9 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -479,6 +481,54 @@ public class SampleAction extends BaseAnnotationAction {
 				.getId().toString());
 		sampleBean.setHasDataAvailability(false);
 		sampleBean.setDataAvailability(new ArrayList<DataAvailabilityBean>());
+		return mapping.findForward("summaryEdit");
+	}
+	
+	public ActionForward dataAvailabilityView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = setupSample(theForm, request);
+		
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleBean.getDomain().getId().toString());
+		
+		sampleBean.setDataAvailability(dataAvailability);
+		if(! dataAvailability.isEmpty() && dataAvailability.size() > 0){
+			sampleBean.setHasDataAvailability(true);
+			calculateDataAvailabilityScore(sampleBean, dataAvailability);
+			String[] availableEntityNames = new String[dataAvailability.size()];
+			int i=0;
+			for(DataAvailabilityBean bean:dataAvailability){
+				//bean.getAvailableEntityName();
+				availableEntityNames[i++]= bean.getAvailableEntityName().toLowerCase();
+			}
+			request.setAttribute("availableEntityNames", availableEntityNames);
+		}
+		request.setAttribute("sampleBean", sampleBean);
+		
+		return mapping.findForward("dataAvailabilityView");
+	}
+	
+	private void calculateDataAvailabilityScore(SampleBean sampleBean, List<DataAvailabilityBean> dataAvailability){
+		
+		ServletContext appContext = this.getServlet().getServletContext();
+		SortedSet<String> minchar = (SortedSet<String>)appContext.getAttribute("MINChar");
+		Map<String , String> attributes = (Map<String,String>)appContext.getAttribute("caNano2MINChar");
+		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar, attributes);
+	}
+	
+	public ActionForward manageDataAvailability(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = setupSample(theForm, request);
+		
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleBean.getDomain().getId().toString());
+		
+		sampleBean.setDataAvailability(dataAvailability);
+		if(! dataAvailability.isEmpty() && dataAvailability.size() > 0){
+			sampleBean.setHasDataAvailability(true);
+		}
 		return mapping.findForward("summaryEdit");
 	}
 
