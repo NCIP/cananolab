@@ -52,4 +52,4 @@ DELETE FROM csm_group
 
 UPDATE csm_user
    SET first_name = 'superadmin', last_name = 'superadmin'
- WHERE user_login_name = 'superadmin';
+ WHERE login_name = 'superadmin';
