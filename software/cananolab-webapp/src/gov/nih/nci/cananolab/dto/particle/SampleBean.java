@@ -20,8 +20,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import javax.servlet.ServletContext;
 
 /**
  * This class represents shared properties of samples to be shown in the view
@@ -69,6 +73,10 @@ public class SampleBean extends SecuredDataBean {
 
 	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 
+	private String dataAvailabilityMetricsScore="NA";
+	private String caNanoLabScore;
+	private String mincharScore;
+	
 	public SampleBean() {
 	}
 
@@ -282,6 +290,30 @@ public class SampleBean extends SecuredDataBean {
 		this.dataAvailability = dataAvailability;
 	}
 
+	public String getDataAvailabilityMetricsScore() {
+		return dataAvailabilityMetricsScore;
+	}
+
+	public void setDataAvailabilityMetricsScore(String dataAvailabilityMetricsScore) {
+		this.dataAvailabilityMetricsScore = dataAvailabilityMetricsScore;
+	}
+
+	public String getCaNanoLabScore() {
+		return caNanoLabScore;
+	}
+
+	public void setCaNanoLabScore(String caNanoLabScore) {
+		this.caNanoLabScore = caNanoLabScore;
+	}
+
+	public String getMincharScore() {
+		return mincharScore;
+	}
+
+	public void setMincharScore(String mincharScore) {
+		this.mincharScore = mincharScore;
+	}
+
 	public PointOfContactBean getThePOC() {
 		return thePOC;
 	}
@@ -405,5 +437,43 @@ public class SampleBean extends SecuredDataBean {
 
 	public void setAccessibilities(List<AccessibilityBean> accessibilities) {
 		this.accessibilities = accessibilities;
+	}
+	
+	public void calculateDataAvailabilityScore(List<DataAvailabilityBean> dataAvailability,
+			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap){
+		int size = dataAvailability.size();
+		int minCharSize=0;
+		//ServletContext appContext = this..getServletContext();
+		//SortedSet<String> minchar = (SortedSet<String>)appContext.getAttribute("MINChar");
+	//	Map<String , SortedSet<String>> attributes = (Map<String,SortedSet<String>>)appContext.getAttribute("caNano2MINChar");
+		int totalMinCharSize = minchar.size();
+		List<String> caNanoForMincharEntities = new ArrayList<String>();
+		Set<String> keySet = caNanoLab2MinCharMap.keySet();
+		for(String key: keySet){
+			//System.out.println("key: " + key);
+		//	SortedSet<String> values = caNanoLab2MinCharMap.get(key);
+			String value = caNanoLab2MinCharMap.get(key); //values.first();
+			//System.out.println("first value: "+values.first() + " tostring: " + values.toString()+ ", size: " + values.size());
+			for(String minCharEntity: minchar){
+				if(minCharEntity.equalsIgnoreCase(value)){
+					caNanoForMincharEntities.add(key);
+				}
+			}
+		}
+		for(DataAvailabilityBean bean: dataAvailability){
+			String availableEntityName = bean.getAvailableEntityName();
+			for(String s : caNanoForMincharEntities){				
+				if(s.equalsIgnoreCase(availableEntityName)){
+					minCharSize++;
+				}
+			}
+		}
+		Double caNanoLabScore = new Double(size*100/30); // this value needs to go to constant class.
+		Double minCharScore = new Double(minCharSize*100/totalMinCharSize);
+		
+		String s = "caNanoLab: " + caNanoLabScore.intValue() + "%; MINChar: " + minCharScore.intValue() + "%";
+		this.dataAvailabilityMetricsScore = s;
+		this.caNanoLabScore = caNanoLabScore.toString() + "% ("+size + " out of 30)";
+		this.mincharScore = minCharScore.toString() + "% (" + minCharSize + " out of " + totalMinCharSize + ")"; 
 	}
 }
