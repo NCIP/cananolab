@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@include file="/sample/bodyHideAdvancedSearchDetailView.jsp"%>
+<%@include file="/sample/bodyHideSearchDetailView.jsp"%>
 <c:set var="charObj" value="${charBean.domainChar}" />
 <c:set var="charName" value="${charBean.characterizationName}" />
 <c:set var="charType" value="${charBean.characterizationType}" />
