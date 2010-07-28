@@ -15,7 +15,7 @@ INSERT INTO common_lookup (name,attribute,value) VALUES ('MINChar','entity','che
 
 INSERT INTO common_lookup (name,attribute,value) VALUES ('caNano2MINChar','purity','purity');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('caNano2MINChar','shape', 'shape');
-INSERT INTO common_lookup (name,attribute,value) VALUES ('caNano2MINChar','surface area ', 'surface area');
+INSERT INTO common_lookup (name,attribute,value) VALUES ('caNano2MINChar','surface area', 'surface area');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('caNano2MINChar','surface charge', 'surface charge');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('caNano2MINChar','zeta potential', 'surface charge');
 INSERT INTO common_lookup (name,attribute,value) VALUES ('caNano2MINChar','attachment','surface chemistry');
