@@ -30,10 +30,11 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="sampleBean.theAccess.groupAccess" page="4"
+			<field property="sampleBean.theAccess.accessBy" page="4"
 				depends="required">
 				<arg position="0" key="access.accessBy" bundle="sample" />
 			</field>
+			<!--
 			<field property="sampleBean.theAccess.roleName" page="4"
 				depends="required">
 				<arg position="0" key="access.roleName" bundle="sample" />
@@ -44,18 +45,20 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((sampleBean.theAccess.groupAccess=="false") or
+						(((sampleBean.theAccess.accessBy!='group') and
+						(sampleBean.theAccess.accessBy!='public')) or
 						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
+			 -->
 			<field property="sampleBean.theAccess.userBean.loginName" page="4"
 				depends="validwhen">
 				<arg position="0" key="access.userName" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((sampleBean.theAccess.groupAccess=="true") or
+						((sampleBean.theAccess.accessBy!='user') or
 						(*this*!=null))
 					</var-value>
 				</var>
