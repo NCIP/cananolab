@@ -99,6 +99,7 @@
 											size="10" styleId="matchedUserNameSelect" style="display: none" onclick="updateUserLoginName()">
 										</html:select>
 									</td>
+									<td><a id="cancelBrowse" style="display:none" href="javascript:cancelBrowseSelect()">Cancel</a></td>
 								</tr>
 							</table>
 						</td>

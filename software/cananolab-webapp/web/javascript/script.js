@@ -378,7 +378,6 @@ function populateFile(file) {
 		dwr.util.setValue("fileTitle", file.domainFile.title);
 		dwr.util.setValue("fileKeywords", file.keywordsStr);
 		dwr.util.setValue("fileDescription", file.domainFile.description);
-		dwr.util.setValue("fileVisibility", file.visibilityGroups);
 		if (file.domainFile.uriExternal) {
 			dwr.util.setValue("external1", 1);
 			dwr.util.setValue("external0", 0);

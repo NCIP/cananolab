@@ -28,7 +28,7 @@
 							<html:select
 								property="sampleBean.thePOC.domain.organization.name"
 								styleId="domain.organization.name"
-								onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();removeOrgFromVisibilityGroups('domain.organization.name'); removeOrgFromSampleVisibilityGroups('domain.organization.name');">
+								onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();">
 								<option value="" />
 									<html:options name="allOrganizationNames" />
 								<option value="other">
@@ -179,26 +179,6 @@
 					<td valign="top" colspan="4">
 						<html:text property="sampleBean.thePOC.domain.email" size="30"
 							styleId="domain.email" />
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table>
-				<tr>
-					<td class="cellLabel">
-						Visibility
-					</td>
-					<td colspan="5">
-						<html:select styleId="visibilityGroups"
-							property="sampleBean.thePOC.visibilityGroups" multiple="true"
-							size="6">
-							<html:options name="allVisibilityGroups" />
-						</html:select>
-						<br>
-						<i>(Curator is always selected by default.)</i>
 					</td>
 				</tr>
 			</table>

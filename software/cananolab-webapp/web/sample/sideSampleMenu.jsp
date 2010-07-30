@@ -52,7 +52,7 @@
 					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 					onclick="gotoPage('${sampleUrl}')" height="20">
-					<a class="subMenuSecondary">Sample</a>
+					<a class="subMenuSecondary">GENERAL INFO</a>
 				</td>
 			</c:otherwise>
 		</c:choose>

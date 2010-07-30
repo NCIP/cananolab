@@ -58,13 +58,11 @@ function populateProtocol(protocol) {
 		dwr.util.setValue("fileName", null);
 		dwr.util.setValue("fileTitle", "");
 		dwr.util.setValue("fileDescription", "");
-		dwr.util.setValue("visibility", [ "" ]);
 		dwr.util.setValue("protocolAbbreviation", "");
 		return;
 	}
 	dwr.util.setValue("protocolId", protocol.domain.id);
 	dwr.util.setValue("protocolAbbreviation", protocol.domain.abbreviation);
-	dwr.util.setValue("visibility", protocol.visibilityGroups);
 	if (protocol.fileBean != null) {
 		dwr.util.setValue("fileTitle", protocol.fileBean.domainFile.title);
 		dwr.util.setValue("fileDescription",

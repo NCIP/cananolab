@@ -207,7 +207,6 @@ function populateNonPubMedFields(publication) {
 					publication.sampleNamesStr, {
 						escapeHtml : false
 					});
-			dwr.util.setValue("visibilityGroups", publication.visibilityGroups);
 			dwr.util.setValue("researchAreas", publication.researchAreas);
 			currentPublication = publication;
 			// populateAuthors(true);
@@ -241,7 +240,7 @@ function updateWithExistingNonPubMedDOIPublication(updatePrompt,
 	if (currentPublication != null) {
 		var authors = currentPublication.authors;
 		if (authors != null) {
-			firstAuthor = authors[0];			
+			firstAuthor = authors[0];
 		}
 	}
 	updateFormPrompt = updatePrompt;
@@ -254,7 +253,7 @@ function updateWithExistingNonPubMedDOIPublication(updatePrompt,
 }
 
 function populateAllFields(publication) {
-	if (publication != null) {		
+	if (publication != null) {
 		if (updateFormPrompt == "true" && confirm(confirmMessage)) {
 			dwr.util.setValue("category", publication.domainFile.category);
 			dwr.util.setValue("status", publication.domainFile.status);
