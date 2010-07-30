@@ -86,10 +86,6 @@
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRPointOfContactManager" />
-			<include method="removeOrgFromVisibilityGroupsByPocId" />
-			<include method="removeOrgFromVisibilityGroupsByOrgName" />
-			<include method="resetVisibilityGroups" />
-			<include method="resetSampleVisibilityGroups" />
 			<include method="getPointOfContactById" />
 			<include method="resetThePointOfContact" />
 			<include method="getOrganizationByName" />
@@ -172,7 +168,7 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PointOfContactBean">
-			<param name="include" value="domain, primaryStatus, visibilityGroups" />
+			<param name="include" value="domain, primaryStatus" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.PointOfContact">
@@ -188,7 +184,7 @@
 			match="gov.nih.nci.cananolab.domain.common.Protocol">
 		</convert>
 		<convert converter="bean" match="gov.nih.nci.cananolab.dto.common.FileBean">
-			<param name="include" value="keywordsStr, visibilityGroups, domainFile" />
+			<param name="include" value="keywordsStr, domainFile" />
 		</convert>
 		<convert converter="bean" match="gov.nih.nci.cananolab.domain.common.File">
 			<param name="exclude"
@@ -197,7 +193,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.PublicationBean">
 			<param name="include"
-				value="authors, domainFile, keywordsStr, sampleNamesStr, visibilityGroups, researchAreas" />
+				value="authors, domainFile, keywordsStr, sampleNamesStr, accessibilities, researchAreas" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Publication">

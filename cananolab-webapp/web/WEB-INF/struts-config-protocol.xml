@@ -40,7 +40,7 @@
 		<action name="protocolForm" parameter="dispatch"
 			path="/protocol"
 			type="gov.nih.nci.cananolab.ui.protocol.ProtocolAction"
-			input="input" scope="request">
+			input="input">
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
 				path="/protocol.do?dispatch=input&amp;page=0" />
