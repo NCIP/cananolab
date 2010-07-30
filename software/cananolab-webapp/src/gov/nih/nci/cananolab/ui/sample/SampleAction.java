@@ -195,6 +195,15 @@ public class SampleAction extends BaseAnnotationAction {
 		if (super.isUserOwner(request, sampleBean.getDomain().getCreatedBy())) {
 			request.getSession().setAttribute("isOwner", true);
 		}
+
+		// show 'submit for review' button is sample is not public and user is
+		// not curator
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user.isCurator() || sampleBean.getPublicStatus()) {
+			request.setAttribute("review", false);
+		} else {
+			request.setAttribute("review", true);
+		}
 		return mapping.findForward("summaryEdit");
 	}
 
