@@ -281,7 +281,7 @@
 		</td>
 	</tr>	
 </table>
-<c:if test="${!empty updateSample}">	
+<c:if test="${!empty updateSample && empty param.styleId}">	
 <table class="invisibleTable" width="95%" align="center">
 	<tr><td width="650" align="left"><input type="button" value="Delete"
 					onclick="javascript:deleteDataAvailability('Data Availability for the sample', sampleForm, 'sample', 'deleteDataAvailability');" />
