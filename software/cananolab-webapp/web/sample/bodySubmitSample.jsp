@@ -132,7 +132,6 @@
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="5" />
-	<c:set var="review" value="false"/>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 
