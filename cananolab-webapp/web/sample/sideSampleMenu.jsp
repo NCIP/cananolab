@@ -19,7 +19,7 @@
 
 <c:choose>
 	<c:when
-		test="${!empty user && user.curator}">
+		test="${!empty user}">
 		<c:set var="dispatch" value="summaryEdit" />
 	</c:when>
 	<c:otherwise>
@@ -60,7 +60,7 @@
 	<tr>
 		<c:choose>
 			<c:when
-				test="${theSample.hasComposition|| !empty user && user.curator}">
+				test="${theSample.hasComposition|| !empty user}">
 				<c:url var="compUrl" value="composition.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -97,7 +97,7 @@
 	<tr>
 		<c:choose>
 			<c:when
-				test="${theSample.hasCharacterizations || !empty user && user.curator}">
+				test="${theSample.hasCharacterizations || !empty user}">
 				<c:url var="charUrl" value="characterization.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -133,7 +133,7 @@
 	<tr>
 		<c:choose>
 			<c:when
-				test="${theSample.hasPublications || !empty user && user.curator}">
+				test="${theSample.hasPublications || !empty user}">
 				<c:url var="pubUrl" value="publication.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
