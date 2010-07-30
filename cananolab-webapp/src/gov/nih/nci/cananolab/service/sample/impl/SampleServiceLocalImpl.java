@@ -186,7 +186,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			PointOfContact dbPointOfContact = null;
 			Long oldPOCId = null;
 			String oldOrgName = null;
-
+			Boolean newPOC = true;
+			Boolean newOrg = true;
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			PointOfContact domainPOC = pocBean.getDomain();
@@ -200,6 +201,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				domainOrg.setId(dbOrganization.getId());
 				domainOrg.setCreatedBy(dbOrganization.getCreatedBy());
 				domainOrg.setCreatedDate(dbOrganization.getCreatedDate());
+				newOrg = false;
 			}
 			// create a new org if not an existing one
 			else {
@@ -217,6 +219,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					domainPOC.setId(dbPointOfContact.getId());
 					domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
 					domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
+					newPOC = false;
 				}
 			} else {
 				// check if organization is changed
@@ -228,19 +231,31 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					oldPOCId = domainPOC.getId();
 					oldOrgName = dbOrg.getName();
 					domainPOC.setId(null);
+					newPOC = true;
 				}
 				// if name information is changed, create a new POC
 				else if (domainPOC.getFirstName().equalsIgnoreCase(
 						dbPointOfContact.getFirstName())
 						|| domainPOC.getLastName().equalsIgnoreCase(
 								dbPointOfContact.getLastName())) {
+					newPOC = true;
 				} else {
 					domainPOC.setId(dbPointOfContact.getId());
 					domainPOC.setCreatedBy(dbPointOfContact.getCreatedBy());
 					domainPOC.setCreatedDate(dbPointOfContact.getCreatedDate());
+					newPOC = false;
 				}
 			}
 			appService.saveOrUpdate(domainPOC);
+
+			if (newPOC) {
+				this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, domainPOC
+						.getId().toString());
+			}
+			if (newOrg) {
+				this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, domainPOC
+						.getOrganization().getId().toString());
+			}
 		} catch (Exception e) {
 			String err = "Error in saving the PointOfContact.";
 			logger.error(err, e);
@@ -874,19 +889,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// fully load sample
 			sample = this.findFullyLoadedSampleByName(sample.getName());
-			// assign POC to public
+			// assign POC to public is handled when adding POC
 			// TODO check this logic when working with COPPA on organization
-			if (sample.getPrimaryPointOfContact() != null) {
-				super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, sample
-						.getPrimaryPointOfContact().getId().toString());
-			}
-			if (sample.getOtherPointOfContactCollection() != null) {
-				for (PointOfContact poc : sample
-						.getOtherPointOfContactCollection()) {
-					super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, poc
-							.getId().toString());
-				}
-			}
+
 			// assign characterization accessibility
 			if (sample.getCharacterizationCollection() != null) {
 				for (Characterization achar : sample
