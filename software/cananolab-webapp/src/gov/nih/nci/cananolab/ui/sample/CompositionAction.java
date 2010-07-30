@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
@@ -273,11 +274,14 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	private CompositionService setServicesInSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
 
-		CompositionService compService = new CompositionServiceLocalImpl(user);
+		CompositionService compService = new CompositionServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}

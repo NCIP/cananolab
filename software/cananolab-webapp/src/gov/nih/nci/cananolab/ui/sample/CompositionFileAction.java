@@ -10,9 +10,8 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +50,11 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
 
 		service.saveCompositionFile(sampleBean, theFile);
+
+		// save accessibility based on sample accessibility
+		service.assignCompositionFileAccessibility(comp.getDomain(), theFile
+				.getDomainFile());
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
@@ -71,7 +75,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionService compService = this.setServicesInSession(request);
 		SampleBean sampleBean = setupSample(theForm, request);
 		compService.deleteCompositionFile(sampleBean.getDomain()
-				.getSampleComposition(), fileBean.getDomainFile(), true);
+				.getSampleComposition(), fileBean.getDomainFile());
+		// TODO remove accessibility
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -87,15 +92,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServicesInSession(request);
-		SampleBean sample = this.setupSample(theForm, request);
-
-		// set file default visibilities
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		String[] visibilityGroups = authService.getAccessibleGroups(sample
-				.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
 		CompositionBean compBean = new CompositionBean();
-		compBean.getTheFile().setVisibilityGroups(visibilityGroups);
 		theForm.set("comp", compBean);
 		return mapping.getInputForward();
 	}
@@ -145,16 +142,17 @@ public class CompositionFileAction extends BaseAnnotationAction {
 
 	private void setLookups(HttpServletRequest request) throws Exception {
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	private CompositionService setServicesInSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
-		CompositionService compService = new CompositionServiceLocalImpl(user);
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+		CompositionService compService = new CompositionServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}

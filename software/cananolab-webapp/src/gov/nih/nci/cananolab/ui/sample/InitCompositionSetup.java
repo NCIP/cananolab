@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
@@ -64,7 +63,6 @@ public class InitCompositionSetup {
 				"otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistNanomaterialEntityDropdowns(HttpServletRequest request,
@@ -155,7 +153,6 @@ public class InitCompositionSetup {
 				"otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"biopolymerTypes", "biopolymer", "type", "otherType", true);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistFunctionalizingEntityDropdowns(
@@ -207,8 +204,6 @@ public class InitCompositionSetup {
 						"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation",
 						"gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation",
 						true);
-
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistChemicalAssociationDropdowns(HttpServletRequest request,

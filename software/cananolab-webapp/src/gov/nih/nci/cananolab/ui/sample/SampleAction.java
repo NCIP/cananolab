@@ -14,17 +14,14 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -80,7 +77,6 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		service.saveSample(sampleBean);
-
 		ActionMessages messages = new ActionMessages();
 		ActionMessage msg = null;
 		String updateSample = (String) request.getSession().getAttribute(
@@ -122,7 +118,13 @@ public class SampleAction extends BaseAnnotationAction {
 		if (browserDispatch.equals("clone")) {
 			return mapping.findForward("cloneInput");
 		} else {
-			return mapping.findForward("createInput");
+			String updateSample = (String) request.getSession().getAttribute(
+					"updateSample");
+			if (updateSample == null) {
+				return mapping.findForward("createInput");
+			} else {
+				return mapping.findForward("summaryEdit");
+			}
 		}
 	}
 
@@ -160,14 +162,15 @@ public class SampleAction extends BaseAnnotationAction {
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
-		List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage
-				.get(sampleBean.getDomain().getId().toString());
-
-		if (!selectedSampleDataAvailability.isEmpty()
-				&& selectedSampleDataAvailability.size() > 0) {
-			sampleBean.setHasDataAvailability(true);
-			sampleBean.setDataAvailability(selectedSampleDataAvailability);
-		}
+		// List<DataAvailabilityBean> selectedSampleDataAvailability =
+		// dataAvailabilityMapPerPage
+		// .get(sampleBean.getDomain().getId().toString());
+		//
+		// if (!selectedSampleDataAvailability.isEmpty()
+		// && selectedSampleDataAvailability.size() > 0) {
+		// sampleBean.setHasDataAvailability(true);
+		// sampleBean.setDataAvailability(selectedSampleDataAvailability);
+		// }
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
@@ -189,7 +192,9 @@ public class SampleAction extends BaseAnnotationAction {
 		// request.setAttribute("onloadJavascript", sb.toString());
 		// }
 		// }
-
+		if (super.isUserOwner(request, sampleBean.getDomain().getCreatedBy())) {
+			request.getSession().setAttribute("isOwner", true);
+		}
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -202,7 +207,6 @@ public class SampleAction extends BaseAnnotationAction {
 		List<AccessibilityBean> userAccesses = service
 				.findUserAccessibilities(sampleBean.getDomain().getId()
 						.toString());
-		// exclude user who own the sample
 		sampleBean.setUserAccesses(userAccesses);
 		sampleBean.setGroupAccesses(groupAccesses);
 	}
@@ -219,6 +223,7 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+
 		request.getSession().removeAttribute("sampleForm");
 		request.getSession().removeAttribute("updateSample");
 		setupLookups(request, null);
@@ -259,9 +264,6 @@ public class SampleAction extends BaseAnnotationAction {
 	 */
 	private void setupLookups(HttpServletRequest request, String sampleOrg)
 			throws Exception {
-		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
-				request, sampleOrg);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		InitSampleSetup.getInstance().setPOCDropdowns(request);
 	}
 
@@ -271,6 +273,7 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
+
 		PointOfContactBean thePOC = sample.getThePOC();
 		thePOC.setupDomain(user.getLoginName());
 		Long oldPOCId = thePOC.getDomain().getId();
@@ -289,9 +292,9 @@ public class SampleAction extends BaseAnnotationAction {
 							.getDomain().getName(), oldPOCId, thePOC
 							.getDomain().getId());
 			// remove oldOrg from sample visibility
-			((SampleServiceLocalImpl) service)
-					.updateSampleVisibilityWithPOCChange(sample, oldPOCId
-							.toString());
+			// ((SampleServiceLocalImpl) service)
+			// .updateSampleVisibilityWithPOCChange(sample, oldPOCId
+			// .toString());
 		}
 		// save sample
 		saveSample(request, sample);
@@ -302,6 +305,7 @@ public class SampleAction extends BaseAnnotationAction {
 			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
+			this.setSampleAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -391,10 +395,11 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SampleService service = this.setServiceInSession(request);
-		List<String> csmEntriesToRemove = service.deleteSample(sampleBean
-				.getDomain().getName(), false);
-		InitSetup.getInstance().updateCSMCleanupEntriesInContext(
-				csmEntriesToRemove, request);
+		service.deleteSample(sampleBean.getDomain().getName());
+		// TODO remove accessibility
+
+		// InitSetup.getInstance().updateCSMCleanupEntriesInContext(
+		// csmEntriesToRemove, request);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
 				sampleBean.getDomain().getName());
@@ -483,50 +488,61 @@ public class SampleAction extends BaseAnnotationAction {
 		sampleBean.setDataAvailability(new ArrayList<DataAvailabilityBean>());
 		return mapping.findForward("summaryEdit");
 	}
-	
-	public ActionForward dataAvailabilityView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
+
+	public ActionForward dataAvailabilityView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request);
-		
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleBean.getDomain().getId().toString());
-		
+
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
+						.toString());
+
 		sampleBean.setDataAvailability(dataAvailability);
-		if(! dataAvailability.isEmpty() && dataAvailability.size() > 0){
+		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
 			calculateDataAvailabilityScore(sampleBean, dataAvailability);
 			String[] availableEntityNames = new String[dataAvailability.size()];
-			int i=0;
-			for(DataAvailabilityBean bean:dataAvailability){
-				//bean.getAvailableEntityName();
-				availableEntityNames[i++]= bean.getAvailableEntityName().toLowerCase();
+			int i = 0;
+			for (DataAvailabilityBean bean : dataAvailability) {
+				// bean.getAvailableEntityName();
+				availableEntityNames[i++] = bean.getAvailableEntityName()
+						.toLowerCase();
 			}
 			request.setAttribute("availableEntityNames", availableEntityNames);
 		}
 		request.setAttribute("sampleBean", sampleBean);
-		
+
 		return mapping.findForward("dataAvailabilityView");
 	}
-	
-	private void calculateDataAvailabilityScore(SampleBean sampleBean, List<DataAvailabilityBean> dataAvailability){
-		
+
+	private void calculateDataAvailabilityScore(SampleBean sampleBean,
+			List<DataAvailabilityBean> dataAvailability) {
+
 		ServletContext appContext = this.getServlet().getServletContext();
-		SortedSet<String> minchar = (SortedSet<String>)appContext.getAttribute("MINChar");
-		Map<String , String> attributes = (Map<String,String>)appContext.getAttribute("caNano2MINChar");
-		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar, attributes);
+		SortedSet<String> minchar = (SortedSet<String>) appContext
+				.getAttribute("MINChar");
+		Map<String, String> attributes = (Map<String, String>) appContext
+				.getAttribute("caNano2MINChar");
+		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar,
+				attributes);
 	}
-	
-	public ActionForward manageDataAvailability(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
+
+	public ActionForward manageDataAvailability(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request);
-		
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleBean.getDomain().getId().toString());
-		
+
+		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
+						.toString());
+
 		sampleBean.setDataAvailability(dataAvailability);
-		if(! dataAvailability.isEmpty() && dataAvailability.size() > 0){
+		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
 		}
 		return mapping.findForward("summaryEdit");
@@ -540,7 +556,6 @@ public class SampleAction extends BaseAnnotationAction {
 		AccessibilityBean theAccess = sample.getTheAccess();
 		SampleService service = this.setServiceInSession(request);
 		service.assignAccessibility(theAccess, sample.getDomain());
-		this.setSampleAccesses(request, sample);
 		ActionForward forward = null;
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
@@ -548,6 +563,7 @@ public class SampleAction extends BaseAnnotationAction {
 			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
+			this.setSampleAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -572,35 +588,7 @@ public class SampleAction extends BaseAnnotationAction {
 			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
-		} else {
-			request.setAttribute("sampleId", sample.getDomain().getId()
-					.toString());
-			forward = summaryEdit(mapping, form, request, response);
-		}
-		return forward;
-	}
-
-	public ActionForward deletePublicAccess(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (!user.isCurator()) {
-			throw new NoAccessException(
-					"You must be a Curator to be able to peform this function");
-		}
-		SampleBean sample = (SampleBean) theForm.get("sampleBean");
-		SampleService service = this.setServiceInSession(request);
-		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS, sample
-				.getDomain());
-
-		ActionForward forward = null;
-		String updateSample = (String) request.getSession().getAttribute(
-				"updateSample");
-		if (updateSample == null) {
-			forward = mapping.findForward("createInput");
-			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName());
+			this.setSampleAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -611,8 +599,11 @@ public class SampleAction extends BaseAnnotationAction {
 
 	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return sampleService;
 	}

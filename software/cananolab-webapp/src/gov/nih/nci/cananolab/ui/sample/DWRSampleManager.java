@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
 
@@ -33,8 +34,10 @@ public class DWRSampleManager {
 
 	private SampleServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		service = new SampleServiceLocalImpl(user);
+		SecurityService securityService = (SecurityService) wctx.getSession()
+				.getAttribute("securityService");
+
+		service = new SampleServiceLocalImpl(securityService);
 		return service;
 	}
 
@@ -267,8 +270,8 @@ public class DWRSampleManager {
 		}
 	}
 
-	public String getDetailContent(String url)
-			throws ServletException, IOException, BaseException {
+	public String getDetailContent(String url) throws ServletException,
+			IOException, BaseException {
 		try {
 			WebContext wctx = WebContextFactory.get();
 			String content = wctx.forwardToString("/" + url);

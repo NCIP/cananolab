@@ -1,11 +1,8 @@
 package test;
 
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.BufferedReader;
@@ -75,22 +72,9 @@ public class TestConnectionPool {
 		}
 	}
 
-	public void testCSM() {
-		try {
-			LoginService service = new LoginService(Constants.CSM_APP_NAME);
-			List<UserBean> users = service.getAllUsers();
-			for (UserBean user : users) {
-				System.out.println("USer: " + user.getFullName());
-			}
-		} catch (Exception e) {
-			logger.error(e);
-		}
-	}
-
 	public static void main(String[] args) {
 		TestConnectionPool test = new TestConnectionPool();
 		test.testPublicationService("peer review article");
-		// test.testCSM();
 		// test.testPublicationURLService("peer review article");
 		System.out.println("COMPLETED");
 

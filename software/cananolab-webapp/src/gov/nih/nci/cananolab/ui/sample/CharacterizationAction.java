@@ -15,10 +15,10 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationExporter;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
@@ -162,7 +162,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// request.getSession().setAttribute("characterizationDetailPage",
 		// detailPage);
 
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		// set up other samples with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 	}
@@ -236,6 +235,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.getSession().getAttribute("characterizationService");
 		charService.saveCharacterization(sampleBean, charBean);
 
+		// save accessibility based on sample accesses
+		charService.assignAccesses(charBean.getDomainChar());
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
@@ -257,7 +258,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			String createdBy) throws Exception {
 		charBean.setupDomain(createdBy);
 		CharacterizationService service = this.setServicesInSession(request);
-		service.deleteCharacterization(charBean.getDomainChar(), true);
+		service.deleteCharacterization(charBean.getDomainChar());
+		service.removeAccess(charBean.getDomainChar());
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
@@ -717,7 +719,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		FindingBean dataSetBean = achar.getTheFinding();
 		CharacterizationService service = this.setServicesInSession(request);
-		service.deleteFinding(dataSetBean.getDomain(), true);
+		service.deleteFinding(dataSetBean.getDomain());
+		// TODO remove accessibility
 		achar.removeFinding(dataSetBean);
 		request.setAttribute("anchor", "result");
 		this.checkOpenForms(achar, theForm, request);
@@ -732,7 +735,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		CharacterizationService service = this.setServicesInSession(request);
-		service.deleteExperimentConfig(configBean.getDomain(), true);
+		service.deleteExperimentConfig(configBean.getDomain());
+		// TODO remove accessibility
+
 		achar.removeExperimentConfig(configBean);
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
@@ -882,15 +887,17 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	private CharacterizationService setServicesInSession(
 			HttpServletRequest request) throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl(
-				user);
+				securityService);
 		request.getSession().setAttribute("characterizationService",
 				charService);
-		ProtocolService protocolService = new ProtocolServiceLocalImpl(user);
+		ProtocolService protocolService = new ProtocolServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("protocolService", protocolService);
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return charService;
 	}

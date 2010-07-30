@@ -50,7 +50,8 @@ public class Constants {
 
 	public static final AccessibilityBean CSM_DEFAULT_ACCESS;
 	static {
-		AccessibilityBean defaultAccess = new AccessibilityBean(true);
+		AccessibilityBean defaultAccess = new AccessibilityBean(
+				AccessibilityBean.ACCESS_BY_GROUP);
 		defaultAccess.setGroupName(Constants.CSM_DATA_CURATOR);
 		defaultAccess.setRoleName(Constants.CSM_CURD_ROLE);
 		CSM_DEFAULT_ACCESS = defaultAccess;
@@ -59,7 +60,8 @@ public class Constants {
 
 	public static final AccessibilityBean CSM_PUBLIC_ACCESS;
 	static {
-		AccessibilityBean publicAccess = new AccessibilityBean(true);
+		AccessibilityBean publicAccess = new AccessibilityBean(
+				AccessibilityBean.ACCESS_BY_PUBLIC);
 		publicAccess.setGroupName(Constants.CSM_PUBLIC_GROUP);
 		publicAccess.setRoleName(Constants.CSM_READ_ROLE);
 		CSM_PUBLIC_ACCESS = publicAccess;
@@ -153,9 +155,6 @@ public class Constants {
 	public static final String INVITRO_CHARACTERIZATION = "in vitro characterization";
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
-
-	// default discovery internal for grid index server
-	public static final int DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS = 1;
 
 	public static final String DOMAIN_MODEL_VERSION = "1.5";
 
