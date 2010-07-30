@@ -16,7 +16,7 @@ public class AdvancedSampleDecorator extends TableDecorator {
 
 	public SortableName getEditSampleURL() {
 		AdvancedSampleBean sample = (AdvancedSampleBean) getCurrentRowObject();
-		String sampleName = sample.getSampleName();
+		String sampleName = sample.getDomainSample().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryEdit&page=0&sampleId=");
 		sb.append(sample.getSampleId()).append('>');
@@ -29,7 +29,7 @@ public class AdvancedSampleDecorator extends TableDecorator {
 
 	public SortableName getViewSampleURL() {
 		AdvancedSampleBean sample = (AdvancedSampleBean) getCurrentRowObject();
-		String sampleName = sample.getSampleName();
+		String sampleName = sample.getDomainSample().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
 		sb.append(sample.getSampleId()).append('>');

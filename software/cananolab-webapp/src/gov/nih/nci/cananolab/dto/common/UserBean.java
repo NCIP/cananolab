@@ -64,9 +64,7 @@ public class UserBean {
 
 	private boolean curator;
 
-	public UserBean() {
-
-	}
+	private User domain;
 
 	public UserBean(String loginName, String password) {
 		this.loginName = loginName;
@@ -85,6 +83,7 @@ public class UserBean {
 		this.title = user.getTitle();
 		this.userId = user.getUserId().toString();
 		this.fullName = this.lastName + ", " + this.firstName;
+		this.domain = user;
 	}
 
 	public String getDepartment() {
@@ -216,5 +215,9 @@ public class UserBean {
 			}
 		}
 		return diff;
+	}
+
+	public User getDomain() {
+		return domain;
 	}
 }

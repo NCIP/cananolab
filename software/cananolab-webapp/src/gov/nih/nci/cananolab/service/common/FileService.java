@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.BaseService;
 
 /**
  * Interface defining methods for file retrieving and writing.
@@ -11,7 +12,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
  * @author pansu
  *
  */
-public interface FileService {
+public interface FileService extends BaseService {
 	/**
 	 * Load the file for the given fileId from the database. Also check whether
 	 * user can do it.

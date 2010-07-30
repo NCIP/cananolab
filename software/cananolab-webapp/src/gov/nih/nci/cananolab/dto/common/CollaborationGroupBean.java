@@ -11,11 +11,11 @@ public class CollaborationGroupBean {
 	private String description;
 	private List<AccessibilityBean> userAccessibilities = new ArrayList<AccessibilityBean>();
 	private AccessibilityBean theUserAccessibility = new AccessibilityBean(
-			false);
+			AccessibilityBean.ACCESS_BY_USER);
 
 	public CollaborationGroupBean() {
 		for (AccessibilityBean access : userAccessibilities) {
-			access.setGroupAccess(false);
+			access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 		}
 	}
 

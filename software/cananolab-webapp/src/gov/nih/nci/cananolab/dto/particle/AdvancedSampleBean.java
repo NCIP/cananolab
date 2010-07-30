@@ -36,7 +36,6 @@ public class AdvancedSampleBean {
 	public static String AGENTMATERIAL_DETAIL_URL = "functionalizingEntity.do?page=0&dispatch=setupView";
 	public static String CHARACTERIZATION_DETAIL_URL = "characterization.do?page=0&dispatch=setupView";
 	private Sample domainSample;
-	private String sampleName;
 	private String sampleId;
 	private List<PointOfContact> pointOfContacts;
 	private List<Function> functions;
@@ -49,19 +48,18 @@ public class AdvancedSampleBean {
 	public AdvancedSampleBean() {
 	}
 
-	public AdvancedSampleBean(String sampleName) {
+	public AdvancedSampleBean(String sampleId) {
 		super();
-		this.sampleName = sampleName;
+		this.sampleId = sampleId;
 	}
 
-	public AdvancedSampleBean(String sampleName, String sampleId,
+	public AdvancedSampleBean(String sampleId,
 			List<PointOfContact> pointOfContacts, List<Function> functions,
 			List<NanomaterialEntity> nanomaterialEntities,
 			List<FunctionalizingEntity> functionalizingEntities,
 			List<Characterization> characterizations, List<Datum> data,
 			AdvancedSampleSearchBean searchBean, Sample sample) {
-		this(sampleName);
-		this.sampleId = sampleId;
+		this(sampleId);
 		this.pointOfContacts = pointOfContacts;
 		this.functions = functions;
 		this.nanomaterialEntities = nanomaterialEntities;
@@ -79,14 +77,6 @@ public class AdvancedSampleBean {
 	public void setAdvancedSearchBean(
 			AdvancedSampleSearchBean advancedSearchBean) {
 		this.advancedSearchBean = advancedSearchBean;
-	}
-
-	public String getSampleName() {
-		return sampleName;
-	}
-
-	public void setSampleName(String sampleName) {
-		this.sampleName = sampleName;
 	}
 
 	public String getSampleId() {

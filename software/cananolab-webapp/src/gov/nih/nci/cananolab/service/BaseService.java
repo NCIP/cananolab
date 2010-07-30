@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 
 import java.util.List;
 
@@ -25,4 +26,7 @@ public interface BaseService {
 
 	public List<String> findGroupNames(String groupNameSearchStr)
 			throws SecurityException;
+
+	public void removeAllAccesses(String protectedData)
+			throws SecurityException, NoAccessException;
 }

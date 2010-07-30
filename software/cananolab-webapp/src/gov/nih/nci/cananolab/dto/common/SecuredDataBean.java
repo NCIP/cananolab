@@ -8,7 +8,9 @@ public class SecuredDataBean {
 
 	private List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
 
-	private AccessibilityBean theAccess=new AccessibilityBean();
+	private AccessibilityBean theAccess = new AccessibilityBean();
+
+	private List<AccessibilityBean> allAccesses = new ArrayList<AccessibilityBean>();
 
 	public List<AccessibilityBean> getUserAccess() {
 		return userAccesses;
@@ -46,5 +48,11 @@ public class SecuredDataBean {
 
 	public void setUserUpdatable(Boolean userUpdatable) {
 		this.userUpdatable = userUpdatable;
+	}
+
+	public List<AccessibilityBean> getAllAccesses() {
+		allAccesses.addAll(getGroupAccesses());
+		allAccesses.addAll(getUserAccesses());
+		return allAccesses;
 	}
 }

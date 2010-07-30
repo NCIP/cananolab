@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -33,11 +34,11 @@ import java.util.List;
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
- * 
+ *
  * @author pansu
- * 
+ *
  */
-public class CharacterizationBean {
+public class CharacterizationBean extends SecuredDataBean{
 	private PointOfContactBean pocBean = new PointOfContactBean();
 
 	private String conclusion;
@@ -166,7 +167,7 @@ public class CharacterizationBean {
 		// clear Ids, reset createdBy add prefix to
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-		
+
 		//copy experiment config
 		Collection<ExperimentConfig> oldConfigs = copy
 				.getExperimentConfigCollection();
@@ -182,7 +183,7 @@ public class CharacterizationBean {
 			}
 
 		}
-		
+
 		//copy finding
 		Collection<Finding> oldFindings = copy.getFindingCollection();
 		if (oldFindings == null || oldFindings.isEmpty()) {

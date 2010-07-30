@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -25,8 +24,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.servlet.ServletContext;
-
 /**
  * This class represents shared properties of samples to be shown in the view
  * pages.
@@ -36,8 +33,6 @@ import javax.servlet.ServletContext;
  */
 public class SampleBean extends SecuredDataBean {
 	private String keywordsStr;
-
-	private String[] visibilityGroups = new String[0];
 
 	private Sample domain = new Sample();
 
@@ -69,14 +64,12 @@ public class SampleBean extends SecuredDataBean {
 
 	private String cloningSampleName;
 
-	private List<AccessibilityBean> accessibilities = new ArrayList<AccessibilityBean>();
-
 	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 
 	private String dataAvailabilityMetricsScore="NA";
 	private String caNanoLabScore;
 	private String mincharScore;
-	
+
 	public SampleBean() {
 	}
 
@@ -120,14 +113,6 @@ public class SampleBean extends SecuredDataBean {
 				&& !sample.getPublicationCollection().isEmpty()) {
 			hasPublications = true;
 		}
-	}
-
-	public String[] getVisibilityGroups() {
-		return this.visibilityGroups;
-	}
-
-	public void setVisibilityGroups(String[] visibilityGroups) {
-		this.visibilityGroups = visibilityGroups;
 	}
 
 	public String getKeywordsStr() {
@@ -431,14 +416,6 @@ public class SampleBean extends SecuredDataBean {
 		return copy;
 	}
 
-	public List<AccessibilityBean> getAccessibilities() {
-		return accessibilities;
-	}
-
-	public void setAccessibilities(List<AccessibilityBean> accessibilities) {
-		this.accessibilities = accessibilities;
-	}
-	
 	public void calculateDataAvailabilityScore(List<DataAvailabilityBean> dataAvailability,
 			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap){
 		//add 1 for the General Sample Information
@@ -448,7 +425,7 @@ public class SampleBean extends SecuredDataBean {
 		List<String> caNanoForMincharEntities = new ArrayList<String>();
 		Set<String> keySet = caNanoLab2MinCharMap.keySet();
 		for(String key: keySet){
-			String value = caNanoLab2MinCharMap.get(key); 
+			String value = caNanoLab2MinCharMap.get(key);
 			for(String minCharEntity: minchar){
 				if(minCharEntity.equalsIgnoreCase(value)){
 					caNanoForMincharEntities.add(key);
@@ -457,7 +434,7 @@ public class SampleBean extends SecuredDataBean {
 		}
 		for(DataAvailabilityBean bean: dataAvailability){
 			String availableEntityName = bean.getAvailableEntityName();
-			for(String s : caNanoForMincharEntities){				
+			for(String s : caNanoForMincharEntities){
 				if(s.equalsIgnoreCase(availableEntityName)){
 					minCharSize++;
 				}
@@ -465,9 +442,9 @@ public class SampleBean extends SecuredDataBean {
 		}
 		Double caNanoLabScore = new Double(size*100/30); // this value needs to go to constant class.
 		Double minCharScore = new Double(minCharSize*100/totalMinCharSize);
-		
+
 		this.dataAvailabilityMetricsScore = "caNanoLab: " + caNanoLabScore.intValue() + "%; MINChar: " + minCharScore.intValue() + "%";
 		this.caNanoLabScore = caNanoLabScore.toString() + "% ("+size + " out of 30)";
-		this.mincharScore = minCharScore.toString() + "% (" + minCharSize + " out of " + totalMinCharSize + ")"; 
+		this.mincharScore = minCharScore.toString() + "% (" + minCharSize + " out of " + totalMinCharSize + ")";
 	}
 }

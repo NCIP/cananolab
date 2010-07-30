@@ -21,7 +21,6 @@ import java.util.List;
 public class PointOfContactBean {
 	private PointOfContact domain = new PointOfContact();
 	private String displayName = "";
-	private String[] visibilityGroups = new String[0];
 	private Boolean primaryStatus = true;
 
 	public PointOfContactBean() {
@@ -45,21 +44,6 @@ public class PointOfContactBean {
 	 */
 	public void setDomain(PointOfContact domain) {
 		this.domain = domain;
-	}
-
-	/**
-	 * @return the visibilityGroups
-	 */
-	public String[] getVisibilityGroups() {
-		return visibilityGroups;
-	}
-
-	/**
-	 * @param visibilityGroups
-	 *            the visibilityGroups to set
-	 */
-	public void setVisibilityGroups(String[] visibilityGroups) {
-		this.visibilityGroups = visibilityGroups;
 	}
 
 	/**
