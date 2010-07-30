@@ -3,19 +3,20 @@ package gov.nih.nci.cananolab.service.publication.impl;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -34,7 +35,8 @@ import org.apache.log4j.Logger;
  * @author tanq, pansu
  *
  */
-public class PublicationServiceLocalImpl implements PublicationService {
+public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
+		PublicationService {
 	private static Logger logger = Logger
 			.getLogger(PublicationServiceLocalImpl.class);
 	private PublicationServiceHelper helper;
@@ -42,28 +44,24 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	private FileService fileService;
 
 	public PublicationServiceLocalImpl() {
-		helper = new PublicationServiceHelper();
-		fileService = new FileServiceLocalImpl();
-		sampleHelper = new SampleServiceHelper();
+		super();
+		helper = new PublicationServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
+		sampleHelper = new SampleServiceHelper(this.securityService);
 	}
 
 	public PublicationServiceLocalImpl(UserBean user) {
-		helper = new PublicationServiceHelper(user);
-		fileService = new FileServiceLocalImpl(user);
-		sampleHelper = new SampleServiceHelper(user);
+		super(user);
+		helper = new PublicationServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
+		sampleHelper = new SampleServiceHelper(this.securityService);
 	}
 
-	public PublicationServiceLocalImpl(AuthorizationService authService) {
-		helper = new PublicationServiceHelper(authService);
-		fileService = new FileServiceLocalImpl(authService);
-		sampleHelper = new SampleServiceHelper(authService);
-	}
-
-	public PublicationServiceLocalImpl(AuthorizationService authService,
-			UserBean user) {
-		helper = new PublicationServiceHelper(authService, user);
-		fileService = new FileServiceLocalImpl(authService, user);
-		sampleHelper = new SampleServiceHelper(authService, user);
+	public PublicationServiceLocalImpl(SecurityService securityService) {
+		super(securityService);
+		helper = new PublicationServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
+		sampleHelper = new SampleServiceHelper(this.securityService);
 	}
 
 	/**
@@ -77,7 +75,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 */
 	public void savePublication(PublicationBean publicationBean)
 			throws PublicationException, NoAccessException {
-		if (helper.getUser() == null || !helper.getUser().isCurator()) {
+		if (user == null) {
 			throw new NoAccessException();
 		}
 		try {
@@ -117,9 +115,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			fileService.prepareSaveFile(publication);
 			appService.saveOrUpdate(publication);
 			fileService.writeFile(publicationBean);
-
-			// set visibility
-			assignVisibility(publication, publicationBean.getVisibilityGroups());
 
 			// update sample associations
 			updateSampleAssociation(appService, publicationBean);
@@ -224,12 +219,18 @@ public class PublicationServiceLocalImpl implements PublicationService {
 									.toString());
 					PublicationBean pubBean = new PublicationBean(publication,
 							sampleNames);
-					// retrieve visibility
-					if (helper.getUser() != null)
-						pubBean.setVisibilityGroups(helper.getAuthService()
-								.getAccessibleGroups(
-										publication.getId().toString(),
-										Constants.CSM_READ_PRIVILEGE));
+
+					// retrieve accessibility
+					if (user != null) {
+						List<AccessibilityBean> groupAccesses = super
+								.findGroupAccessibilities(publication.getId()
+										.toString());
+						List<AccessibilityBean> userAccesses = super
+								.findUserAccessibilities(publication.getId()
+										.toString());
+						pubBean.setUserAccesses(userAccesses);
+						pubBean.setGroupAccesses(groupAccesses);
+					}
 					publicationBeans.add(pubBean);
 				}
 			}
@@ -257,11 +258,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 						.findSampleNamesByPublicationId(publication.getId()
 								.toString());
 				publicationBean = new PublicationBean(publication, sampleNames);
-				if (helper.getUser() != null)
-					publicationBean.setVisibilityGroups(helper.getAuthService()
-							.getAccessibleGroups(
-									publication.getId().toString(),
-									Constants.CSM_READ_PRIVILEGE));
+				if (helper.getUser() != null) {
+					// publicationBean.setVisibilityGroups(helper.getAuthService()
+					// .getAccessibleGroups(
+					// publication.getId().toString(),
+					// Constants.CSM_READ_PRIVILEGE));
+					// TODO set accessibility
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -296,7 +299,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	public void removePublicationFromSample(String sampleName,
 			Publication publication) throws PublicationException,
 			NoAccessException {
-		if (helper.getUser() == null || !helper.getUser().isCurator()) {
+		if (user == null) {
 			throw new NoAccessException();
 		}
 		try {
@@ -315,13 +318,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	public List<String> deletePublication(Publication publication,
-			Boolean removeVisibility) throws PublicationException,
-			NoAccessException {
-		if (helper.getUser() == null || !helper.getUser().isCurator()) {
+	public void deletePublication(Publication publication)
+			throws PublicationException, NoAccessException {
+		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -342,13 +343,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				removePublicationFromSample(name, publication);
 			}
 			appService.delete(publication);
-			entries.addAll(removeVisibility(publication, removeVisibility));
 		} catch (Exception e) {
 			String err = "Error in deleting the publication.";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
-		return entries;
 	}
 
 	public PublicationBean getPublicationFromPubMedXML(String pubMedId)
@@ -383,11 +382,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 						.findSampleNamesByPublicationId(publication.getId()
 								.toString());
 				pubBean = new PublicationBean(publication, sampleNames);
-				if (helper.getUser() != null)
-					pubBean.setVisibilityGroups(helper.getAuthService()
-							.getAccessibleGroups(
-									publication.getId().toString(),
-									Constants.CSM_READ_PRIVILEGE));
+				if (helper.getUser() != null) {
+					// pubBean.setVisibilityGroups(helper.getAuthService()
+					// .getAccessibleGroups(
+					// publication.getId().toString(),
+					// Constants.CSM_READ_PRIVILEGE));
+					// TODO set accessibility
+				}
 			}
 		} catch (Exception e) {
 			String err = "trouble finding non PubMed/DOI publication based on type: "
@@ -404,40 +405,51 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		return pubBean;
 	}
 
-	private void assignVisibility(Publication publication,
-			String[] visibleGroups) throws Exception {
-		helper.getAuthService().assignVisibility(
-				publication.getId().toString(), visibleGroups);
-		// set author visibility as well because didn't share authors
-		// between publications
-		if (publication.getAuthorCollection() != null) {
-			for (Author author : publication.getAuthorCollection()) {
-				if (author != null) {
-					helper.getAuthService().assignVisibility(
-							author.getId().toString(), visibleGroups);
+	public void assignAccessibility(AccessibilityBean access,
+			Publication publication) throws PublicationException,
+			NoAccessException {
+		if (!isUserOwner(publication.getCreatedBy())) {
+			throw new NoAccessException();
+		}
+		try {
+			super.saveAccessibility(access, publication.getId().toString());
+			// set author accessibility as well because didn't share authors
+			// between publications
+			if (publication.getAuthorCollection() != null) {
+				for (Author author : publication.getAuthorCollection()) {
+					if (author != null) {
+						super.saveAccessibility(access, author.getId()
+								.toString());
+					}
 				}
 			}
+		} catch (Exception e) {
+			String error = "Error in assigning access to publication";
+			throw new PublicationException(error, e);
 		}
 	}
 
-	private List<String> removeVisibility(Publication publication,
-			Boolean remove) throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (publication != null) {
-			if (remove == null || remove)
-				helper.getAuthService().removeCSMEntry(
-						publication.getId().toString());
-			entries.add(publication.getId().toString());
-			if (publication.getAuthorCollection() != null) {
-				for (Author author : publication.getAuthorCollection()) {
-					if (remove == null || remove)
-						helper.getAuthService().removeCSMEntry(
-								author.getId().toString());
-					entries.add(author.getId().toString());
+	public void removeAccessibility(AccessibilityBean access,
+			Publication publication) throws PublicationException,
+			NoAccessException {
+		if (!isUserOwner(publication.getCreatedBy())) {
+			throw new NoAccessException();
+		}
+		try {
+			if (publication != null) {
+				super.deleteAccessibility(access, publication.getId()
+						.toString());
+				if (publication.getAuthorCollection() != null) {
+					for (Author author : publication.getAuthorCollection()) {
+						super.deleteAccessibility(access, author.getId()
+								.toString());
+					}
 				}
 			}
+		} catch (Exception e) {
+			String error = "Error in assigning access to publication";
+			throw new PublicationException(error, e);
 		}
-		return entries;
 	}
 
 	public PublicationServiceHelper getHelper() {

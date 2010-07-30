@@ -151,7 +151,7 @@ public class SampleExporter {
 			int rowIndex) {
 		// 1. Output first column - Sample Name at index 0.
 		HSSFRow row = sheet.createRow(rowIndex++);
-		ExportUtils.createCell(row, 0, hlinkStyle, sampleBean.getSampleName(),
+		ExportUtils.createCell(row, 0, hlinkStyle, sampleBean.getDomainSample().getName(),
 				getViewSampleURL(sampleBean, viewSampleUrl));
 
 		// 2. Output selected column(s) starting from index 1.

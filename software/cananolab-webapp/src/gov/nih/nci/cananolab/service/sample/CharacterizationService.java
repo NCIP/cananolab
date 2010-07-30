@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.service.sample;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -29,9 +28,8 @@ public interface CharacterizationService extends BaseService {
 	public CharacterizationBean findCharacterizationById(String charId)
 			throws CharacterizationException, NoAccessException;
 
-	public List<String> deleteCharacterization(Characterization chara,
-			Boolean removeVisibility) throws CharacterizationException,
-			NoAccessException;
+	public void deleteCharacterization(Characterization chara)
+			throws CharacterizationException, NoAccessException;
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
 			String sampleId) throws CharacterizationException,
@@ -43,14 +41,13 @@ public interface CharacterizationService extends BaseService {
 	public FindingBean findFindingById(String findingId)
 			throws CharacterizationException, NoAccessException;
 
-	public List<String> deleteFinding(Finding finding, Boolean removeVisibility)
+	public void deleteFinding(Finding finding)
 			throws CharacterizationException, NoAccessException;
 
 	public void saveExperimentConfig(ExperimentConfigBean experimentConfigBean)
 			throws ExperimentConfigException, NoAccessException;
 
-	public List<String> deleteExperimentConfig(
-			ExperimentConfig experimentConfig, Boolean removeVisibility)
+	public void deleteExperimentConfig(ExperimentConfig experimentConfig)
 			throws ExperimentConfigException, NoAccessException;
 
 	/**
@@ -74,11 +71,10 @@ public interface CharacterizationService extends BaseService {
 	public List<String> findOtherCharacterizationByAssayCategory(
 			String assayCategory) throws CharacterizationException;
 
-	public void assignAccessibility(AccessibilityBean access,
-			Characterization achar) throws CharacterizationException,
-			NoAccessException;
+	public void assignAccesses(Characterization achar)
+			throws CharacterizationException, NoAccessException;
 
-	public void removeAccessibility(AccessibilityBean access,
-			Characterization achar) throws CharacterizationException,
-			NoAccessException;
+	public void removeAccess(Characterization achar)
+			throws CharacterizationException, NoAccessException;
+
 }

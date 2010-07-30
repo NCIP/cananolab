@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -30,8 +31,9 @@ public class DWRPublicationManager {
 
 	private PublicationServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		service = new PublicationServiceLocalImpl(user);
+		SecurityService securityService = (SecurityService) wctx.getSession()
+				.getAttribute("securityService");
+		service = new PublicationServiceLocalImpl(securityService);
 		return service;
 	}
 

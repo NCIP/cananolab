@@ -53,7 +53,7 @@ public interface SampleService extends BaseService {
 	public int getNumberOfPublicSamples() throws SampleException;
 
 	public PointOfContactBean findPointOfContactById(String pocId)
-			throws PointOfContactException, NoAccessException;
+			throws PointOfContactException;
 
 	public List<PointOfContactBean> findPointOfContactsBySampleId(
 			String sampleId) throws PointOfContactException;
@@ -64,7 +64,7 @@ public interface SampleService extends BaseService {
 	public void savePointOfContact(PointOfContactBean pointOfContactBean)
 			throws PointOfContactException, NoAccessException;
 
-	public List<String> findSampleNamesByAdvancedSearch(
+	public List<String> findSampleIdsByAdvancedSearch(
 			AdvancedSampleSearchBean searchBean) throws SampleException;
 
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
@@ -75,8 +75,8 @@ public interface SampleService extends BaseService {
 			String newSampleName) throws SampleException, NoAccessException,
 			DuplicateEntriesException, NotExistException;
 
-	public List<String> deleteSample(String sampleName, Boolean removeVisibility)
-			throws SampleException, NoAccessException, NotExistException;
+	public void deleteSample(String sampleName) throws SampleException,
+			NoAccessException, NotExistException;
 
 	public int getNumberOfPublicSampleSources() throws SampleException;
 

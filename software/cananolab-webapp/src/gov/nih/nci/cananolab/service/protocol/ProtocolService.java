@@ -1,9 +1,11 @@
 package gov.nih.nci.cananolab.service.protocol;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
+import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * @author pansu
  *
  */
-public interface ProtocolService {
+public interface ProtocolService extends BaseService {
 
 	public ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;
@@ -37,7 +39,12 @@ public interface ProtocolService {
 
 	public int getNumberOfPublicProtocols() throws ProtocolException;
 
-	public List<String> deleteProtocol(Protocol protocol,
-			Boolean removeVisibility) throws ProtocolException,
+	public void deleteProtocol(Protocol protocol) throws ProtocolException,
 			NoAccessException;
+
+	public void assignAccessibility(AccessibilityBean access, Protocol protocol)
+			throws ProtocolException, NoAccessException;
+
+	public void removeAccessibility(AccessibilityBean access, Protocol protocol)
+			throws ProtocolException, NoAccessException;
 }

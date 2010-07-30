@@ -1,11 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.function.Target;
-import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -25,12 +21,10 @@ import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -53,27 +47,20 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public CompositionServiceLocalImpl() {
 		super();
-		helper = new CompositionServiceHelper(authService);
-		fileService = new FileServiceLocalImpl(authService);
+		helper = new CompositionServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public CompositionServiceLocalImpl(UserBean user) {
 		super(user);
-		helper = new CompositionServiceHelper(authService, user);
-		fileService = new FileServiceLocalImpl(authService, user);
+		helper = new CompositionServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
-	public CompositionServiceLocalImpl(AuthorizationService authService) {
-		super(authService);
-		helper = new CompositionServiceHelper(authService);
-		fileService = new FileServiceLocalImpl(authService);
-	}
-
-	public CompositionServiceLocalImpl(AuthorizationService authService,
-			UserBean user) {
-		super(authService, user);
-		helper = new CompositionServiceHelper(authService, user);
-		fileService = new FileServiceLocalImpl(authService, user);
+	public CompositionServiceLocalImpl(SecurityService securityService) {
+		super(securityService);
+		helper = new CompositionServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public void saveNanomaterialEntity(SampleBean sampleBean,
@@ -87,8 +74,15 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			NanomaterialEntity entity = entityBean.getDomainEntity();
+			Boolean newEntity = true;
+			Boolean newComp = true;
 			if (entity.getId() != null) {
+				newEntity = false;
 				try {
+					if (!securityService.checkCreatePermission(entityBean
+							.getDomainEntity().getId().toString())) {
+						throw new NoAccessException();
+					}
 					NanomaterialEntity dbEntity = (NanomaterialEntity) appService
 							.load(NanomaterialEntity.class, entity.getId());
 				} catch (Exception e) {
@@ -106,6 +100,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				// new HashSet<NanomaterialEntity>());
 
 			}
+			if (sample.getSampleComposition().getId() != null) {
+				newComp = false;
+			}
 			entity.setSampleComposition(sample.getSampleComposition());
 			// particleSample.getSampleComposition()
 			// .getNanomaterialEntityCollection().add(entity);
@@ -119,13 +116,19 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileService.writeFile(fileBean);
 			}
-
-			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			// assign visibility for composition
-			authService.assignVisibility(sample.getSampleComposition().getId()
-					.toString(), visibleGroups);
-			// assign visibility for nanomaterial entity
-			assignVisibility(entity, visibleGroups);
+			// save default access
+			if (newComp) {
+				this.saveDefaultAccessibility(sample.getSampleComposition()
+						.getId().toString());
+			}
+			if (newEntity) {
+				for (AccessibilityBean access : this.getDefaultAccesses()) {
+					accessUtils.assignAccessibility(access, entityBean
+							.getDomainEntity());
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Error in saving a nanomaterial entity.";
 			logger.error(err, e);
@@ -141,14 +144,6 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findNanomaterialEntityById(entityId);
 			if (entity != null) {
 				entityBean = new NanomaterialEntityBean(entity);
-				if (entityBean.getFiles() != null && user != null) {
-					for (FileBean fileBean : entityBean.getFiles()) {
-						fileBean.setVisibilityGroups(authService
-								.getAccessibleGroups(fileBean.getDomainFile()
-										.getId().toString(),
-										Constants.CSM_READ_PRIVILEGE));
-					}
-				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -172,8 +167,15 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			FunctionalizingEntity entity = entityBean.getDomainEntity();
+			Boolean newEntity = true;
+			Boolean newComp = true;
 			if (entity.getId() != null) {
+				newEntity = false;
 				try {
+					if (!securityService.checkCreatePermission(entityBean
+							.getDomainEntity().getId().toString())) {
+						throw new NoAccessException();
+					}
 					FunctionalizingEntity dbEntity = (FunctionalizingEntity) appService
 							.load(FunctionalizingEntity.class, entity.getId());
 				} catch (Exception e) {
@@ -191,6 +193,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				// new HashSet<FunctionalizingEntity>());
 
 			}
+			if (sample.getSampleComposition().getId() != null) {
+				newComp = false;
+			}
 			entity.setSampleComposition(sample.getSampleComposition());
 			// particleSample.getSampleComposition()
 			// .getFunctionalizingEntityCollection().add(entity);
@@ -200,18 +205,24 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				fileService.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(entity);
-			// save file to the file system and assign visibility
+			// save file to the file system
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileService.writeFile(fileBean);
 			}
-
-			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			// assign visibility for composition
-			authService.assignVisibility(sample.getSampleComposition().getId()
-					.toString(), visibleGroups);
-			// assign visibility for chemical association
-			assignVisibility(entity, visibleGroups);
-
+			// save default access
+			// save default access
+			if (newComp) {
+				this.saveDefaultAccessibility(sample.getSampleComposition()
+						.getId().toString());
+			}
+			if (newEntity) {
+				for (AccessibilityBean access : this.getDefaultAccesses()) {
+					accessUtils.assignAccessibility(access, entityBean
+							.getDomainEntity());
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Problem saving the functionalizing entity.";
 			logger.error(err, e);
@@ -230,7 +241,14 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.getApplicationService();
 			ChemicalAssociation assoc = assocBean.getDomainAssociation();
 			Sample sample = sampleBean.getDomain();
+			Boolean newAssoc = true;
+			Boolean newComp = true;
 			if (assoc.getId() != null) {
+				newAssoc = false;
+				if (!securityService.checkCreatePermission(assocBean
+						.getDomainAssociation().getId().toString())) {
+					throw new NoAccessException();
+				}
 				try {
 					ChemicalAssociation dbAssoc = (ChemicalAssociation) appService
 							.load(ChemicalAssociation.class, assoc.getId());
@@ -248,6 +266,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				// new HashSet<FunctionalizingEntity>());
 
 			}
+			if (sample.getSampleComposition().getId() != null) {
+				newComp = false;
+			}
 			// composition.getChemicalAssociationCollection().add(assoc);
 			assoc.setSampleComposition(sample.getSampleComposition());
 			// save file and keyword
@@ -255,17 +276,24 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				fileService.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(assoc);
-			// save file to the file system and assign visibility
+			// save file to the file system
 			for (FileBean fileBean : assocBean.getFiles()) {
 				fileService.writeFile(fileBean);
 			}
-
-			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			// assign visibility for composition
-			authService.assignVisibility(sample.getSampleComposition().getId()
-					.toString(), visibleGroups);
-			// assign visibility for chemical association
-			assignVisibility(assoc, visibleGroups);
+			// save default access
+			if (newComp) {
+				this.saveDefaultAccessibility(sample.getSampleComposition()
+						.getId().toString());
+			}
+			// save default access
+			if (newAssoc) {
+				for (AccessibilityBean access : this.getDefaultAccesses()) {
+					accessUtils.assignAccessibility(access, assocBean
+							.getDomainAssociation());
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Problem saving the chemical assocation.";
 			logger.error(err, e);
@@ -281,6 +309,16 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			Sample sample = sampleBean.getDomain();
 			File file = fileBean.getDomainFile();
+			Boolean newFile = true;
+			Boolean newComp = true;
+			if (file.getId() != null) {
+				newFile = false;
+			}
+			if (!newFile
+					&& !securityService.checkCreatePermission(file.getId()
+							.toString())) {
+				throw new NoAccessException();
+			}
 			fileService.prepareSaveFile(file);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -290,6 +328,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				sample.getSampleComposition().setSample(sampleBean.getDomain());
 				sample.getSampleComposition().setFileCollection(
 						new HashSet<File>());
+			}
+			if (sample.getSampleComposition().getId() != null) {
+				newComp = false;
 			}
 			// need to load the composition file collection to save composition
 			// because of
@@ -309,17 +350,20 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			} else {
 				appService.saveOrUpdate(file);
 			}
-			// write file to file system and assign visibility
+			// write file to file system
 			fileService.writeFile(fileBean);
-			// assign visibility for composition
-
-			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName();
-
-			authService.assignVisibility(sample.getSampleComposition().getId()
-					.toString(), visibleGroups);
-
+			// save default access
+			// save default access
+			if (newComp) {
+				this.saveDefaultAccessibility(sample.getSampleComposition()
+						.getId().toString());
+			}
+			if (newFile) {
+				this.saveDefaultAccessibility(fileBean.getDomainFile().getId()
+						.toString());
+			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Error in saving the composition file.";
 			logger.error(err, e);
@@ -335,14 +379,6 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findFunctionalizingEntityById(entityId);
 			if (entity != null) {
 				entityBean = new FunctionalizingEntityBean(entity);
-				if (entityBean.getFiles() != null && user != null) {
-					for (FileBean fileBean : entityBean.getFiles()) {
-						fileBean.setVisibilityGroups(authService
-								.getAccessibleGroups(fileBean.getDomainFile()
-										.getId().toString(),
-										Constants.CSM_READ_PRIVILEGE));
-					}
-				}
 			} else {
 				throw new NoAccessException(
 						"User doesn't have access to the sample");
@@ -366,14 +402,6 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findChemicalAssociationById(assocId);
 			if (assoc != null) {
 				assocBean = new ChemicalAssociationBean(assoc);
-				if (assocBean.getFiles() != null && user != null) {
-					for (FileBean fileBean : assocBean.getFiles()) {
-						fileBean.setVisibilityGroups(authService
-								.getAccessibleGroups(fileBean.getDomainFile()
-										.getId().toString(),
-										Constants.CSM_READ_PRIVILEGE));
-					}
-				}
 			} else {
 				throw new NoAccessException();
 			}
@@ -388,13 +416,12 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return assocBean;
 	}
 
-	public List<String> deleteNanomaterialEntity(NanomaterialEntity entity,
-			Boolean removeVisibility) throws CompositionException,
-			ChemicalAssociationViolationException, NoAccessException {
+	public void deleteNanomaterialEntity(NanomaterialEntity entity)
+			throws CompositionException, ChemicalAssociationViolationException,
+			NoAccessException {
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException(
@@ -404,23 +431,19 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
-			entries = removeVisibility(entity, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting nanomaterial entity " + entity.getId();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
-		return entries;
 	}
 
-	public List<String> deleteFunctionalizingEntity(
-			FunctionalizingEntity entity, Boolean removeVisibility)
+	public void deleteFunctionalizingEntity(FunctionalizingEntity entity)
 			throws CompositionException, ChemicalAssociationViolationException,
 			NoAccessException {
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException(
@@ -432,43 +455,35 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
-			entries = removeVisibility(entity, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting functionalizing entity "
 					+ entity.getId();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
-		return entries;
 	}
 
-	public List<String> deleteChemicalAssociation(ChemicalAssociation assoc,
-			Boolean removeVisibility) throws CompositionException,
-			NoAccessException {
+	public void deleteChemicalAssociation(ChemicalAssociation assoc)
+			throws CompositionException, NoAccessException {
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(assoc);
-			entries = removeVisibility(assoc, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting chemical association " + assoc.getId();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
-		return entries;
 	}
 
-	public List<String> deleteCompositionFile(SampleComposition comp,
-			File file, Boolean removeVisibility) throws CompositionException,
-			NoAccessException {
+	public void deleteCompositionFile(SampleComposition comp, File file)
+			throws CompositionException, NoAccessException {
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -478,16 +493,11 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			comp.setFileCollection(new HashSet<File>(fileList));
 			comp.getFileCollection().remove(file);
 			appService.saveOrUpdate(comp);
-			if (removeVisibility == null || removeVisibility)
-				fileService.getHelper().getAuthService().removeCSMEntry(
-						file.getId().toString());
-			entries.add(file.getId().toString());
 		} catch (Exception e) {
 			String err = "Error deleting composition file " + file.getUri();
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
-		return entries;
 	}
 
 	// check if any composing elements of the nanomaterial entity is invovled in
@@ -538,56 +548,6 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findCompositionBySampleId(sampleId);
 			if (composition != null) {
 				comp = new CompositionBean(composition);
-				if (comp.getFiles() != null && user != null) {
-					for (FileBean fileBean : comp.getFiles()) {
-						fileBean.setVisibilityGroups(authService
-								.getAccessibleGroups(fileBean.getDomainFile()
-										.getId().toString(),
-										Constants.CSM_READ_PRIVILEGE));
-					}
-				}
-				if (comp.getNanomaterialEntities() != null) {
-					for (NanomaterialEntityBean entity : comp
-							.getNanomaterialEntities()) {
-						if (entity.getFiles() != null && user != null) {
-							for (FileBean fileBean : entity.getFiles()) {
-								fileBean.setVisibilityGroups(helper
-										.getAuthService().getAccessibleGroups(
-												fileBean.getDomainFile()
-														.getId().toString(),
-												Constants.CSM_READ_PRIVILEGE));
-							}
-						}
-					}
-				}
-				if (comp.getFunctionalizingEntities() != null) {
-					for (FunctionalizingEntityBean entity : comp
-							.getFunctionalizingEntities()) {
-						if (entity.getFiles() != null && user != null) {
-							for (FileBean fileBean : entity.getFiles()) {
-								fileBean.setVisibilityGroups(helper
-										.getAuthService().getAccessibleGroups(
-												fileBean.getDomainFile()
-														.getId().toString(),
-												Constants.CSM_READ_PRIVILEGE));
-							}
-						}
-					}
-				}
-				if (comp.getChemicalAssociations() != null) {
-					for (ChemicalAssociationBean assoc : comp
-							.getChemicalAssociations()) {
-						if (assoc.getFiles() != null && user != null) {
-							for (FileBean fileBean : assoc.getFiles()) {
-								fileBean.setVisibilityGroups(helper
-										.getAuthService().getAccessibleGroups(
-												fileBean.getDomainFile()
-														.getId().toString(),
-												Constants.CSM_READ_PRIVILEGE));
-							}
-						}
-					}
-				}
 			}
 		} catch (Exception e) {
 			String err = "Error finding composition by sample ID: " + sampleId;
@@ -659,27 +619,23 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public List<String> deleteComposition(SampleComposition comp,
-			Boolean removeVisibility)
+	public void deleteComposition(SampleComposition comp)
 			throws ChemicalAssociationViolationException, CompositionException,
 			NoAccessException {
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		// delete composition files
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
-				entries.addAll(deleteCompositionFile(comp, file,
-						removeVisibility));
+				deleteCompositionFile(comp, file);
 			}
 		}
 		// delete chemical association
 		if (comp.getChemicalAssociationCollection() != null) {
 			for (ChemicalAssociation assoc : comp
 					.getChemicalAssociationCollection()) {
-				entries.addAll(deleteChemicalAssociation(assoc,
-						removeVisibility));
+				deleteChemicalAssociation(assoc);
 			}
 		}
 		comp.setChemicalAssociationCollection(null);
@@ -688,23 +644,20 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		if (comp.getNanomaterialEntityCollection() != null) {
 			for (NanomaterialEntity entity : comp
 					.getNanomaterialEntityCollection()) {
-				entries.addAll(deleteNanomaterialEntity(entity,
-						removeVisibility));
+				deleteNanomaterialEntity(entity);
 			}
 		}
 		// delete functionalizing entities
 		if (comp.getFunctionalizingEntityCollection() != null) {
 			for (FunctionalizingEntity entity : comp
 					.getFunctionalizingEntityCollection()) {
-				entries.addAll(deleteFunctionalizingEntity(entity,
-						removeVisibility));
+				deleteFunctionalizingEntity(entity);
 			}
 		}
 		// delete composition files
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
-				entries.addAll(deleteCompositionFile(comp, file,
-						removeVisibility));
+				deleteCompositionFile(comp, file);
 			}
 		}
 		try {
@@ -716,264 +669,6 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
-		return entries;
-	}
-
-	protected List<String> removeVisibility(SampleComposition comp,
-			Boolean remove) throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (remove == null || remove)
-			authService.removeCSMEntry(comp.getId().toString());
-		entries.add(comp.getId().toString());
-		if (comp.getNanomaterialEntityCollection() != null)
-			for (NanomaterialEntity entity : comp
-					.getNanomaterialEntityCollection()) {
-				entries.addAll(removeVisibility(entity, remove));
-			}
-		if (comp.getFunctionalizingEntityCollection() != null)
-			for (FunctionalizingEntity entity : comp
-					.getFunctionalizingEntityCollection()) {
-				entries.addAll(removeVisibility(entity, remove));
-			}
-		if (comp.getChemicalAssociationCollection() != null)
-			for (ChemicalAssociation assoc : comp
-					.getChemicalAssociationCollection()) {
-				entries.addAll(removeVisibility(assoc, remove));
-			}
-		if (comp.getFileCollection() != null) {
-			for (File file : comp.getFileCollection()) {
-				if (remove == null || remove)
-					authService.removeCSMEntry(file.getId().toString());
-				entries.add(file.getId().toString());
-			}
-		}
-		return entries;
-	}
-
-	private List<String> removeVisibility(
-			ChemicalAssociation chemicalAssociation, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (chemicalAssociation != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(chemicalAssociation.getId()
-						.toString());
-			entries.add(chemicalAssociation.getId().toString());
-			// // chemicalAssociation.associatedElementA
-			// if (chemicalAssociation.getAssociatedElementA() != null) {
-			// if (remove == null || remove)
-			// authService.removeCSMEntry(chemicalAssociation
-			// .getAssociatedElementA().getId().toString());
-			// }
-			// // chemicalAssociation.associatedElementB
-			// if (chemicalAssociation.getAssociatedElementB() != null) {
-			// if (remove == null || remove)
-			// authService.removeCSMEntry(chemicalAssociation
-			// .getAssociatedElementB().getId().toString());
-			// entries.add(chemicalAssociation.getAssociatedElementB().getId()
-			// .toString());
-			// }
-			if (chemicalAssociation.getFileCollection() != null) {
-				for (File file : chemicalAssociation.getFileCollection()) {
-					if (remove == null || remove)
-						authService.removeCSMEntry(file.getId().toString());
-					entries.add(file.getId().toString());
-				}
-			}
-		}
-		return entries;
-	}
-
-	private List<String> removeVisibility(
-			FunctionalizingEntity functionalizingEntity, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (functionalizingEntity != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(functionalizingEntity.getId()
-						.toString());
-			entries.add(functionalizingEntity.getId().toString());
-			if (functionalizingEntity.getActivationMethod() != null) {
-				if (remove == null || remove)
-					authService.removeCSMEntry(functionalizingEntity
-							.getActivationMethod().getId().toString());
-				entries.add(functionalizingEntity.getActivationMethod().getId()
-						.toString());
-			}
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						if (remove == null || remove)
-							authService.removeCSMEntry(function.getId()
-									.toString());
-						entries.add(function.getId().toString());
-						if (function instanceof TargetingFunction) {
-							for (Target target : ((TargetingFunction) function)
-									.getTargetCollection()) {
-								if (remove == null || remove)
-									authService.removeCSMEntry(target.getId()
-											.toString());
-								entries.add(target.getId().toString());
-							}
-						}
-					}
-				}
-			}
-			if (functionalizingEntity.getFileCollection() != null) {
-				for (File file : functionalizingEntity.getFileCollection()) {
-					if (remove == null || remove)
-						authService.removeCSMEntry(file.getId().toString());
-					entries.add(file.getId().toString());
-				}
-			}
-		}
-		return entries;
-	}
-
-	private List<String> removeVisibility(NanomaterialEntity entity,
-			Boolean remove) throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (entity != null) {
-			if (remove == null || remove)
-				authService.removeCSMEntry(entity.getId().toString());
-			entries.add(entity.getId().toString());
-			// nanomaterialEntityCollection.composingElementCollection,
-			Collection<ComposingElement> composingElementCollection = entity
-					.getComposingElementCollection();
-			if (composingElementCollection != null) {
-				for (ComposingElement composingElement : composingElementCollection) {
-					if (composingElement != null) {
-						if (remove == null || remove)
-							authService.removeCSMEntry(composingElement.getId()
-									.toString());
-						entries.add(composingElement.getId().toString());
-					}
-					// composingElementCollection.inherentFucntionCollection
-					Collection<Function> inherentFunctionCollection = composingElement
-							.getInherentFunctionCollection();
-					if (inherentFunctionCollection != null) {
-						for (Function function : inherentFunctionCollection) {
-							if (function != null) {
-								if (remove == null || remove)
-									authService.removeCSMEntry(function.getId()
-											.toString());
-								entries.add(function.getId().toString());
-							}
-						}
-					}
-				}
-			}
-			if (entity.getFileCollection() != null) {
-				for (File file : entity.getFileCollection()) {
-					if (remove == null || remove)
-						authService.removeCSMEntry(file.getId().toString());
-				}
-			}
-		}
-		return entries;
-	}
-
-	private void assignVisibility(NanomaterialEntity entity,
-			String[] visibleGroups) throws Exception {
-		if (entity != null) {
-			authService.assignVisibility(entity.getId().toString(),
-					visibleGroups);
-			// nanomaterialEntityCollection.composingElementCollection,
-			Collection<ComposingElement> composingElementCollection = entity
-					.getComposingElementCollection();
-			if (composingElementCollection != null) {
-				for (ComposingElement composingElement : composingElementCollection) {
-					if (composingElement != null) {
-						authService.assignVisibility(composingElement.getId()
-								.toString(), visibleGroups);
-					}
-					// composingElementCollection.inherentFucntionCollection
-					Collection<Function> inherentFunctionCollection = composingElement
-							.getInherentFunctionCollection();
-					if (inherentFunctionCollection != null) {
-						for (Function function : inherentFunctionCollection) {
-							if (function != null) {
-								authService.assignVisibility(function.getId()
-										.toString(), visibleGroups);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void assignVisibility(FunctionalizingEntity functionalizingEntity,
-			String[] visibleGroups) throws Exception {
-		if (functionalizingEntity != null) {
-			authService.assignVisibility(functionalizingEntity.getId()
-					.toString(), visibleGroups);
-			// activation method
-			if (functionalizingEntity.getActivationMethod() != null) {
-				authService.assignVisibility(functionalizingEntity
-						.getActivationMethod().getId().toString(),
-						visibleGroups);
-			}
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						authService.assignVisibility(function.getId()
-								.toString(), visibleGroups);
-						if (function instanceof TargetingFunction) {
-							for (Target target : ((TargetingFunction) function)
-									.getTargetCollection()) {
-								authService.assignVisibility(target.getId()
-										.toString(), visibleGroups);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	protected void assignVisibility(SampleComposition comp,
-			String[] visibleGroups) throws Exception {
-		authService.assignVisibility(comp.getId().toString(), visibleGroups);
-		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
-			assignVisibility(entity, visibleGroups);
-		}
-		for (FunctionalizingEntity entity : comp
-				.getFunctionalizingEntityCollection()) {
-			assignVisibility(entity, visibleGroups);
-		}
-		for (ChemicalAssociation assoc : comp
-				.getChemicalAssociationCollection()) {
-			assignVisibility(assoc, visibleGroups);
-		}
-	}
-
-	private void assignVisibility(ChemicalAssociation chemicalAssociation,
-			String[] visibleGroups) throws Exception {
-		if (chemicalAssociation != null) {
-			authService.assignVisibility(
-					chemicalAssociation.getId().toString(), visibleGroups);
-			// visibility of the associated elements should already be assigned
-			// when creating the entities
-			// chemicalAssociation.associatedElementA
-			// if (chemicalAssociation.getAssociatedElementA() != null) {
-			// helper.getAuthService().assignVisibility(chemicalAssociation
-			// .getAssociatedElementA().getId().toString(),
-			// visibleGroups, owningGroup);
-			// }
-			// // chemicalAssociation.associatedElementB
-			// if (chemicalAssociation.getAssociatedElementB() != null) {
-			// helper.getAuthService().assignVisibility(chemicalAssociation
-			// .getAssociatedElementB().getId().toString(),
-			// visibleGroups, owningGroup);
-			// }
-		}
 	}
 
 	public CompositionServiceHelper getHelper() {
@@ -984,231 +679,187 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return fileService;
 	}
 
-	public void assignAccessibility(AccessibilityBean access,
-			SampleComposition comp) throws CompositionException,
-			NoAccessException {
+	public void assignAccessibility(NanomaterialEntity entity)
+			throws CompositionException, NoAccessException {
 		try {
-			super.saveDefaultAccessibility(comp.getId().toString());
-			super.saveAccessibility(access, comp.getId().toString());
-			for (NanomaterialEntity entity : comp
-					.getNanomaterialEntityCollection()) {
-				this.assignAccessibility(entity, access);
+			if (!securityService.checkCreatePermission(entity.getId()
+					.toString())) {
+				throw new NoAccessException();
 			}
-			for (FunctionalizingEntity entity : comp
-					.getFunctionalizingEntityCollection()) {
-				this.assignAccessibility(entity, access);
-			}
-			for (ChemicalAssociation assoc : comp
-					.getChemicalAssociationCollection()) {
-				this.assignAccessibility(assoc, access);
-			}
-			for (File file : comp.getFileCollection()) {
-				super.saveDefaultAccessibility(file.getId().toString());
-				super.saveAccessibility(access, file.getId().toString());
-			}
-		} catch (Exception e) {
-
-		}
-	}
-
-	private void assignAccessibility(NanomaterialEntity entity,
-			AccessibilityBean access) throws Exception {
-		if (entity != null) {
-			super.saveDefaultAccessibility(entity.getId().toString());
-			super.saveAccessibility(access, entity.getId().toString());
-			// nanomaterialEntityCollection.composingElementCollection,
-			Collection<ComposingElement> composingElementCollection = entity
-					.getComposingElementCollection();
-			if (composingElementCollection != null) {
-				for (ComposingElement composingElement : composingElementCollection) {
-					if (composingElement != null) {
-						super.saveDefaultAccessibility(composingElement.getId()
-								.toString());
-						super.saveAccessibility(access, composingElement
-								.getId().toString());
-					}
-					// composingElementCollection.inherentFucntionCollection
-					Collection<Function> inherentFunctionCollection = composingElement
-							.getInherentFunctionCollection();
-					if (inherentFunctionCollection != null) {
-						for (Function function : inherentFunctionCollection) {
-							if (function != null) {
-								super.saveDefaultAccessibility(function.getId()
-										.toString());
-								super.saveAccessibility(access, function
-										.getId().toString());
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void assignAccessibility(
-			FunctionalizingEntity functionalizingEntity,
-			AccessibilityBean access) throws Exception {
-		if (functionalizingEntity != null) {
-			super.saveDefaultAccessibility(functionalizingEntity.getId()
-					.toString());
-			super.saveAccessibility(access, functionalizingEntity.getId()
-					.toString());
-			// activation method
-			if (functionalizingEntity.getActivationMethod() != null) {
-				super.saveDefaultAccessibility(functionalizingEntity
-						.getActivationMethod().getId().toString());
-				super.saveAccessibility(access, functionalizingEntity
-						.getActivationMethod().getId().toString());
-			}
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						super.saveDefaultAccessibility(function.getId()
-								.toString());
-						super.saveAccessibility(access, function.getId()
-								.toString());
-						if (function instanceof TargetingFunction) {
-							for (Target target : ((TargetingFunction) function)
-									.getTargetCollection()) {
-								super.saveDefaultAccessibility(target.getId()
-										.toString());
-								super.saveAccessibility(access, target.getId()
-										.toString());
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void assignAccessibility(ChemicalAssociation assoc,
-			AccessibilityBean access) throws Exception {
-		if (assoc != null) {
-			// accessibility of the associated elements should already be
-			// assigned when creating the entities
-			super.saveDefaultAccessibility(assoc.getId().toString());
-			super.saveAccessibility(access, assoc.getId().toString());
-			for (File file : assoc.getFileCollection()) {
-				super.saveDefaultAccessibility(file.getId().toString());
-				super.saveAccessibility(access, file.getId().toString());
-			}
-		}
-	}
-
-	public void removeAccessibility(AccessibilityBean access,
-			SampleComposition comp) throws CompositionException,
-			NoAccessException {
-		try {
-			super.deleteAccessibility(access, comp.getId().toString());
-			if (comp.getNanomaterialEntityCollection() != null)
-				for (NanomaterialEntity entity : comp
-						.getNanomaterialEntityCollection()) {
-					this.removeAccessibility(entity, access);
-				}
-			if (comp.getFunctionalizingEntityCollection() != null)
-				for (FunctionalizingEntity entity : comp
-						.getFunctionalizingEntityCollection()) {
-					this.removeAccessibility(entity, access);
-				}
-			if (comp.getChemicalAssociationCollection() != null)
-				for (ChemicalAssociation assoc : comp
-						.getChemicalAssociationCollection()) {
-					this.removeAccessibility(assoc, access);
-				}
-			if (comp.getFileCollection() != null) {
-				for (File file : comp.getFileCollection()) {
-					super.deleteAccessibility(access, file.getId().toString());
-				}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(entity.getSampleComposition()
+							.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				this.saveAccessibility(access, entity.getSampleComposition()
+						.getId().toString());
+				accessUtils.assignAccessibility(access, entity);
 			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Error in deleting the access for composition "
-					+ comp.getId();
-			logger.error(err, e);
-			throw new CompositionException(err, e);
+			String error = "Error in assigning nanomaterial entity accessibility";
+			throw new CompositionException(error, e);
 		}
 	}
 
-	private void removeAccessibility(ChemicalAssociation chemicalAssociation,
-			AccessibilityBean access) throws Exception {
-		super.deleteAccessibility(access, chemicalAssociation.getId()
-				.toString());
-		for (File file : chemicalAssociation.getFileCollection()) {
-			super.deleteAccessibility(access, file.getId().toString());
+	public void assignAccessibility(FunctionalizingEntity entity)
+			throws CompositionException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(entity.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(entity.getSampleComposition()
+							.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				this.saveAccessibility(access, entity.getSampleComposition()
+						.getId().toString());
+				accessUtils.assignAccessibility(access, entity);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning functionalizing entity accessibility";
+			throw new CompositionException(error, e);
 		}
 	}
 
-	private void removeAccessibility(
-			FunctionalizingEntity functionalizingEntity,
-			AccessibilityBean access) throws Exception {
-		if (functionalizingEntity != null) {
-			super.deleteAccessibility(access, functionalizingEntity.getId()
-					.toString());
-			if (functionalizingEntity.getActivationMethod() != null) {
-				super.deleteAccessibility(access, functionalizingEntity
-						.getActivationMethod().getId().toString());
+	public void assignAccessibility(ChemicalAssociation assoc)
+			throws CompositionException, NoAccessException {
+		try {
+			if (!securityService
+					.checkCreatePermission(assoc.getId().toString())) {
+				throw new NoAccessException();
 			}
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						super.deleteAccessibility(access, function.getId()
-								.toString());
-						if (function instanceof TargetingFunction) {
-							for (Target target : ((TargetingFunction) function)
-									.getTargetCollection()) {
-								super.deleteAccessibility(access, target
-										.getId().toString());
-							}
-						}
-					}
-				}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(assoc.getSampleComposition()
+							.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				this.saveAccessibility(access, assoc.getSampleComposition()
+						.getId().toString());
+				accessUtils.assignAccessibility(access, assoc);
 			}
-			if (functionalizingEntity.getFileCollection() != null) {
-				for (File file : functionalizingEntity.getFileCollection()) {
-					super.deleteAccessibility(access, file.getId().toString());
-				}
-			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning chemical association accessibility";
+			throw new CompositionException(error, e);
 		}
 	}
 
-	private void removeAccessibility(NanomaterialEntity entity,
-			AccessibilityBean access) throws Exception {
-		super.deleteAccessibility(access, entity.getId().toString());
-
-		// nanomaterialEntityCollection.composingElementCollection,
-		Collection<ComposingElement> composingElementCollection = entity
-				.getComposingElementCollection();
-		if (composingElementCollection != null) {
-			for (ComposingElement composingElement : composingElementCollection) {
-				if (composingElement != null) {
-					super.deleteAccessibility(access, composingElement.getId()
-							.toString());
-				}
-				// composingElementCollection.inherentFucntionCollection
-				Collection<Function> inherentFunctionCollection = composingElement
-						.getInherentFunctionCollection();
-				if (inherentFunctionCollection != null) {
-					for (Function function : inherentFunctionCollection) {
-						if (function != null) {
-							super.deleteAccessibility(access, function.getId()
-									.toString());
-						}
-					}
-				}
+	public void assignCompositionFileAccessibility(SampleComposition comp,
+			File file) throws CompositionException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(file.getId().toString())) {
+				throw new NoAccessException();
 			}
+			// TODO check if file is in the comp fileCollection
+
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(comp.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				this.saveAccessibility(access, comp.getId().toString());
+				super.saveAccessibility(access, file.getId().toString());
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning composition file accessibility";
+			throw new CompositionException(error, e);
 		}
-		if (entity.getFileCollection() != null) {
-			for (File file : entity.getFileCollection()) {
+	}
+
+	public void removeAccessibility(NanomaterialEntity entity)
+			throws CompositionException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(entity.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(entity.getSampleComposition()
+							.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, entity);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in removing nanomaterial entity accessibility";
+			throw new CompositionException(error, e);
+		}
+	}
+
+	public void removeAccessibility(FunctionalizingEntity entity)
+			throws CompositionException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(entity.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(entity.getSampleComposition()
+							.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, entity);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in removing functionalizing entity accessibility";
+			throw new CompositionException(error, e);
+		}
+
+	}
+
+	public void removeAccessibility(ChemicalAssociation assoc)
+			throws CompositionException, NoAccessException {
+		try {
+			if (!securityService
+					.checkCreatePermission(assoc.getId().toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(assoc.getSampleComposition()
+							.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, assoc);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in removing chemical association accessibility";
+			throw new CompositionException(error, e);
+		}
+	}
+
+	public void removeCompositionFileAccessibility(SampleComposition comp,
+			File file) throws CompositionException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(file.getId().toString())) {
+				throw new NoAccessException();
+			}
+			// TODO check if file is in the comp fileCollection
+
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(comp.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
 				super.deleteAccessibility(access, file.getId().toString());
 			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in removing composition file accessibility";
+			throw new CompositionException(error, e);
 		}
 	}
 }

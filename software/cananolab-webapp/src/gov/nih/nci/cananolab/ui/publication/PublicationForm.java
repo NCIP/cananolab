@@ -25,7 +25,8 @@ public class PublicationForm extends DynaValidatorForm{
 					&& !dispatch.equalsIgnoreCase("create")) {
 				PublicationBean pubBean = (PublicationBean)form.get("publication");
 				pubBean.setResearchAreas(new String[0]);
-				pubBean.setVisibilityGroups(new String[0]);
+				//pubBean.setVisibilityGroups(new String[0]);
+				//TODO set accessibility
 				pubBean.setSampleNames(new String[0]);
 				this.set("publication", pubBean);
 			}

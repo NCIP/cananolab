@@ -18,7 +18,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -64,12 +64,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		super(user);
 	}
 
-	public SampleServiceHelper(AuthorizationService authService) {
-		super(authService);
-	}
-
-	public SampleServiceHelper(AuthorizationService authService, UserBean user) {
-		super(authService, user);
+	public SampleServiceHelper(SecurityService securityService) {
+		super(securityService);
 	}
 
 	public List<String> findSampleIdsBy(String sampleName,
@@ -791,10 +787,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	}
 
 	public PointOfContact findPointOfContactById(String pocId) throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), pocId)) {
-			throw new NoAccessException(
-					"User has no access to the point of contact " + pocId);
-		}
 		PointOfContact poc = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -885,8 +877,9 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		List<String> sampleNames = new ArrayList<String>();
 		for (Object obj : results) {
-			Sample sample=(Sample)obj;
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), sample.getId().toString())) {
+			Sample sample = (Sample) obj;
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getId().toString())) {
 				sampleNames.add(sample.getName());
 			} else {
 				logger.debug("User doesn't have access to sample of name: "

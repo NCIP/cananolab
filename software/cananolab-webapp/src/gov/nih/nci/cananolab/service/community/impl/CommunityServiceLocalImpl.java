@@ -8,8 +8,10 @@ import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.community.CommunityService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthorizationManager;
+import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
@@ -24,12 +26,39 @@ import org.apache.commons.lang.StringUtils;
 
 public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		CommunityService {
-	public CommunityServiceLocalImpl() {
+	private AuthorizationManager authManager;
+
+	public CommunityServiceLocalImpl() throws CommunityException {
 		super();
+		try {
+			this.authManager = SecurityServiceProvider
+					.getAuthorizationManager(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error(e);
+			throw new CommunityException(e);
+		}
 	}
 
-	public CommunityServiceLocalImpl(UserBean user) {
+	public CommunityServiceLocalImpl(UserBean user) throws CommunityException {
 		super(user);
+		try {
+			this.authManager = SecurityServiceProvider
+					.getAuthorizationManager(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error(e);
+			throw new CommunityException(e);
+		}
+	}
+
+	public CommunityServiceLocalImpl(SecurityService securityService) throws CommunityException {
+		super(securityService);
+		try {
+			this.authManager = SecurityServiceProvider
+					.getAuthorizationManager(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error(e);
+			throw new CommunityException(e);
+		}
 	}
 
 	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
@@ -41,9 +70,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			List<AccessibilityBean> accessibilities = collaborationGroup
 					.getUserAccessibilities();
-			AuthorizationManager authManager = authService
-					.getAuthorizationManager();
-			Group doGroup = authService.getGroup(collaborationGroup.getName());
+			Group doGroup = securityService.getGroup(collaborationGroup
+					.getName());
 			// group name already exists by another id
 			if (doGroup != null
 					&& !doGroup.getGroupId().toString().equals(
@@ -59,7 +87,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				authManager.createGroup(doGroup);
 
 				// assign CURD access to user who created the group
-				AccessibilityBean ownerAccess = new AccessibilityBean(false);
+				AccessibilityBean ownerAccess = new AccessibilityBean(
+						AccessibilityBean.ACCESS_BY_USER);
 				ownerAccess.setUserBean(user);
 				ownerAccess.setRoleName(Constants.CSM_CURD_ROLE);
 				saveAccessibility(ownerAccess,
@@ -73,8 +102,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			// update existing group
 			else {
 				if (doGroup == null) {
-					doGroup = authService.getAuthorizationManager()
-							.getGroupById(collaborationGroup.getId());
+					doGroup = authManager.getGroupById(collaborationGroup
+							.getId());
 					doGroup.setGroupName(collaborationGroup.getName());
 				}
 				doGroup.setGroupDesc(collaborationGroup.getDescription());
@@ -90,7 +119,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				for (AccessibilityBean access : accessToRemove) {
 					authManager.removeUserFromGroup(doGroup.getGroupId()
 							.toString(), access.getUserBean().getUserId());
-					authService.removeSecureObjectForUser(
+					accessUtils.removeSecureObjectForUser(
 							Constants.CSM_COLLABORATION_GROUP_PREFIX
 									+ doGroup.getGroupId(), access
 									.getUserBean().getLoginName(),
@@ -98,8 +127,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			}
 			// check if user has access to update the group
-			if (authService.checkCreatePermission(user,
-					Constants.CSM_COLLABORATION_GROUP_PREFIX
+			if (securityService
+					.checkCreatePermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
 							+ doGroup.getGroupId())) {
 				String[] userIds = new String[accessibilities.size() + 1];
 				int i = 0;
@@ -136,8 +165,6 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 
 		List<CollaborationGroupBean> collaborationGroups = new ArrayList<CollaborationGroupBean>();
 		try {
-			AuthorizationManager authManager = authService
-					.getAuthorizationManager();
 			Group dummy = new Group();
 			dummy.setGroupName("*");
 			SearchCriteria sc = new GroupSearchCriteria(dummy);
@@ -146,8 +173,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				Group doGroup = (Group) obj;
 				CollaborationGroupBean cGroup = new CollaborationGroupBean(
 						doGroup);
-				if (authService.checkCreatePermission(user,
-						Constants.CSM_COLLABORATION_GROUP_PREFIX
+				if (securityService
+						.checkCreatePermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
 								+ cGroup.getId())) {
 					setUserAccesses(cGroup);
 					collaborationGroups.add(cGroup);
@@ -168,20 +195,19 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 	// set user accessibilities
 	private void setUserAccesses(CollaborationGroupBean cGroup)
 			throws Exception {
-		AuthorizationManager authManager = authService
-				.getAuthorizationManager();
 		// set user accessibilities
 		Set<User> users = authManager.getUsers(cGroup.getId().toString());
 		List<String> userNames = new ArrayList<String>(users.size());
 		for (User user : users) {
 			userNames.add(user.getLoginName());
 		}
-		Map<String, String> userRoles = authService
-				.getUserRoles(Constants.CSM_COLLABORATION_GROUP_PREFIX
+		Map<String, String> userRoles = securityService
+				.getAllUserRoles(Constants.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
 		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
 		for (User aUser : users) {
-			AccessibilityBean accessibility = new AccessibilityBean(false);
+			AccessibilityBean accessibility = new AccessibilityBean(
+					AccessibilityBean.ACCESS_BY_USER);
 			accessibility.setGroupName(cGroup.getName());
 			accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
 			accessibility.setUserBean(new UserBean(aUser));
@@ -194,11 +220,11 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws CommunityException {
 		CollaborationGroupBean collaborationGroup = null;
 		try {
-			Group group = authService.getUserManager().getGroupById(id);
+			Group group = authManager.getGroupById(id);
 			collaborationGroup = new CollaborationGroupBean(group);
 			String pe = Constants.CSM_COLLABORATION_GROUP_PREFIX
 					+ collaborationGroup.getId();
-			if (authService.checkCreatePermission(user, pe)) {
+			if (securityService.checkCreatePermission(pe)) {
 				setUserAccesses(collaborationGroup);
 			} else {
 				String error = "User has no access to the collaboration group "
@@ -220,17 +246,15 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			// check if user has access to delete the group
-			if (!authService.checkPermission(user,
-					Constants.CSM_COLLABORATION_GROUP_PREFIX
-							+ collaborationGroup.getId(),
-					Constants.CSM_DELETE_PRIVILEGE)) {
+			if (!securityService
+					.checkDeletePermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
+							+ collaborationGroup.getId())) {
 				throw new NoAccessException();
 			} else {
-				authService
-						.removeCSMEntry(Constants.CSM_COLLABORATION_GROUP_PREFIX
+				super
+						.removeAllAccesses(Constants.CSM_COLLABORATION_GROUP_PREFIX
 								+ collaborationGroup.getId());
-				authService.getAuthorizationManager().removeGroup(
-						collaborationGroup.getId());
+				authManager.removeGroup(collaborationGroup.getId());
 			}
 		} catch (NoAccessException e) {
 			throw e;

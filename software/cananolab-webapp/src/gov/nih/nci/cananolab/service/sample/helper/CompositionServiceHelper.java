@@ -10,7 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -47,13 +47,8 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		super(user);
 	}
 
-	public CompositionServiceHelper(AuthorizationService authService) {
-		super(authService);
-	}
-
-	public CompositionServiceHelper(AuthorizationService authService,
-			UserBean user) {
-		super(authService, user);
+	public CompositionServiceHelper(SecurityService securityService) {
+		super(securityService);
 	}
 
 	// for DWR Ajax
@@ -191,35 +186,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 
 		if (!result.isEmpty()) {
 			composition = (SampleComposition) result.get(0);
-			if (getAccessibleData().contains(composition.getId().toString())) {
-				if (composition.getFileCollection() != null) {
-					removeUnaccessibleFiles(composition.getFileCollection());
-				}
-				if (composition.getNanomaterialEntityCollection() != null) {
-					for (NanomaterialEntity entity : composition
-							.getNanomaterialEntityCollection()) {
-						if (entity.getFileCollection() != null) {
-							removeUnaccessibleFiles(entity.getFileCollection());
-						}
-					}
-				}
-				if (composition.getFunctionalizingEntityCollection() != null) {
-					for (FunctionalizingEntity entity : composition
-							.getFunctionalizingEntityCollection()) {
-						if (entity.getFileCollection() != null) {
-							removeUnaccessibleFiles(entity.getFileCollection());
-						}
-					}
-				}
-				if (composition.getChemicalAssociationCollection() != null) {
-					for (ChemicalAssociation assoc : composition
-							.getChemicalAssociationCollection()) {
-						if (assoc.getFileCollection() != null) {
-							removeUnaccessibleFiles(assoc.getFileCollection());
-						}
-					}
-				}
-			} else {
+			if (!getAccessibleData().contains(composition.getId().toString())) {
 				throw new NoAccessException(
 						"User doesn't have access to the composition "
 								+ composition.getId());
@@ -266,9 +233,6 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			entity = (NanomaterialEntity) result.get(0);
-			if (entity.getFileCollection() != null) {
-				removeUnaccessibleFiles(entity.getFileCollection());
-			}
 		}
 		return entity;
 	}
@@ -311,9 +275,6 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			entity = (FunctionalizingEntity) result.get(0);
-			if (entity.getFileCollection() != null) {
-				removeUnaccessibleFiles(entity.getFileCollection());
-			}
 		}
 		return entity;
 	}
@@ -345,24 +306,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			assoc = (ChemicalAssociation) result.get(0);
-			if (assoc.getFileCollection() != null) {
-				removeUnaccessibleFiles(assoc.getFileCollection());
-			}
 		}
 		return assoc;
-	}
-
-	private void removeUnaccessibleFiles(Collection<File> files)
-			throws Exception {
-		Set<File> copiedFiles = new HashSet<File>(files);
-		for (File file : copiedFiles) {
-			// check whether user can access the file, if not remove from
-			// the
-			// list
-			if (!getAccessibleData().contains(file.getId().toString())) {
-				files.remove(file);
-				logger.debug("User can't access file of id:" + file.getId());
-			}
-		}
 	}
 }

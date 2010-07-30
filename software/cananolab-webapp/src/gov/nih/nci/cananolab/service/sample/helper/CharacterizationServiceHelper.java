@@ -8,7 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -44,13 +44,8 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		super(user);
 	}
 
-	public CharacterizationServiceHelper(AuthorizationService authService) {
-		super(authService);
-	}
-
-	public CharacterizationServiceHelper(AuthorizationService authService,
-			UserBean user) {
-		super(authService, user);
+	public CharacterizationServiceHelper(SecurityService securityService) {
+		super(securityService);
 	}
 
 	public Protocol findProtocolByCharacterizationId(
@@ -250,15 +245,6 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 					achar.setProtocol(null);
 				}
 			}
-			if (achar.getPointOfContact() != null) {
-				if (!getAccessibleData().contains(
-						achar.getPointOfContact().getId().toString())) {
-					achar.setPointOfContact(null);
-				}
-			}
-		}
-		for (Finding finding : achar.getFindingCollection()) {
-			removeUnaccessibleFiles(finding.getFileCollection());
 		}
 	}
 
