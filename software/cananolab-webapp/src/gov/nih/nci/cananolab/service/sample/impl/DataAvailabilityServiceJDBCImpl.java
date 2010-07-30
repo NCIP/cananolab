@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DataAvailabilityException;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -38,7 +39,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
  */
 public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements DataAvailabilityService{
 	
-	//[sample-data_availability] table columns.
+	//[data_availability] table columns.
 	private static final String SAMPLE_ID = "sample_id";
 	private static final String DATASOURCE_NAME = "datasource_name";
 	private static final String AVAILABLE_ENTITY_NAME = "available_entity_name";
@@ -82,7 +83,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			
 		Set<String> clazNames = null;
 		try{
-			clazNames = generate(sampleBean);
+			clazNames = generate(sampleBean, user);
 		}catch(Exception e){
 			throw new DataAvailabilityException();
 		}		
@@ -116,27 +117,25 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		
 		Set<String> newGenernatedDataAvailability = null;
 		try {
-			newGenernatedDataAvailability = generate(sampleBean);
+			newGenernatedDataAvailability = generate(sampleBean,user);
 		} catch (Exception e) {
 			throw new DataAvailabilityException();
 		}
-		List<DataAvailabilityBean> newDataAvailability = new ArrayList<DataAvailabilityBean>();
-		for(DataAvailabilityBean bean: currentDataAvailability){
-			String availableEntityName = bean.getAvailableEntityName();
-			if(newGenernatedDataAvailability.contains(availableEntityName)){
-				//this is an update
-				bean.setUpdatedBy(user.getLoginName());
-				bean.setUpdatedDate(new Date());
-			}else{
-				//this is an insert
-				DataAvailabilityBean newBean = new DataAvailabilityBean();
-				newBean.setSampleId(sampleId);
-				newBean.setAvailableEntityName(availableEntityName);
-				newBean.setDatasourceName("caNanoLab");
-				newBean.setUpdatedBy(user.getLoginName());
-				newBean.setUpdatedDate(new Date());
-				newDataAvailability.add(newBean);
+		//scenario where data is added
+		List<DataAvailabilityBean> newDataAvailability = findAddedData(user.getLoginName(), sampleId, 
+				currentDataAvailability,
+				newGenernatedDataAvailability);
+		List<String> removedEntityList = new ArrayList<String>();		
+		//scenario where data is removed
+		Set<DataAvailabilityBean> removedDataAvailability = findRemovedData(currentDataAvailability, newGenernatedDataAvailability);
+		
+		
+		if(removedDataAvailability.size() > 0){
+			for(DataAvailabilityBean removedBean:removedDataAvailability){
+				removedEntityList.add(removedBean.getAvailableEntityName());
 			}
+			deleteBatch(removedEntityList, sampleId);
+			currentDataAvailability.removeAll(removedDataAvailability);
 		}
 		
 		System.out.println("Current size: " + currentDataAvailability.size());
@@ -145,17 +144,18 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		
 		//insert the newDataAvailability
 		if(newDataAvailability.size() > 0 ){
-			insertBatch(newDataAvailability);
+			insertBatchOnUpdate(newDataAvailability);
 			currentDataAvailability.addAll(newDataAvailability);
 		}
 		
 		System.out.println("new size: " + newDataAvailability.size());
 		//return new list that contains both of them.
-		//currentDataAvailability.addAll(newDataAvailability);
 		System.out.println("currentDataAvailabitliy total size: " + currentDataAvailability.size());
 		
 		return currentDataAvailability;
 	}
+
+	
 	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#deleteDataAvailability(java.lang.String)
@@ -167,7 +167,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	}
 
 	private static final class DataAvailabilityMapper implements RowMapper {
-
 		
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 			DataAvailabilityBean dataBean = new DataAvailabilityBean();
@@ -179,8 +178,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			dataBean.setUpdatedBy(rs.getString(UPDATED_BY));
 			dataBean.setUpdatedDate(rs.getDate(UPDATED_DATE));
 			return dataBean;
-		}
-		
+		}		
 	}
 
 	/**
@@ -188,25 +186,23 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * @param sampleBean
 	 * @return
 	 */
-	private Set<String> generate(SampleBean sampleBean) throws Exception{
+	private Set<String> generate(SampleBean sampleBean, UserBean user) throws Exception{
 		
 		boolean hasComposition = sampleBean.getHasComposition();
-		boolean hasCharacterization = sampleBean.getHasCharacterizations();
 		boolean hasPublication = sampleBean.getHasPublications();
 		
-		SampleServiceLocalImpl serviceImpl = new SampleServiceLocalImpl();
-		SampleService sampleService = serviceImpl;
-		Sample fullyLoadedSample = null;
+		SampleService sampleService = new SampleServiceLocalImpl(user);
 		
-		fullyLoadedSample = serviceImpl.findFullyLoadedSampleByName(sampleBean.getDomain().getName());
+		SampleServiceHelper helper = ((SampleServiceLocalImpl) sampleService).getHelper();
 		
-		sampleBean.setDomain(fullyLoadedSample);
+		//fullyLoadedSample = serviceImpl.findFullyLoadedSampleByName(sampleBean.getDomain().getName());
+		
+		//sampleBean.setDomain(fullyLoadedSample);
 		Sample domain = sampleBean.getDomain();
 		SampleComposition comp = domain.getSampleComposition();
 		
-		System.out.println("Sample Composition: id " + comp.getId() + "; toString: " + comp.toString());
+		//System.out.println("Sample Composition: id " + comp.getId() + "; toString: " + comp.toString());
 		
-		SampleServiceHelper helper = ((SampleServiceLocalImpl) sampleService).getHelper();
 		
 		SortedSet<String> storedChemicalAssociationClassNames = helper.getStoredChemicalAssociationClassNames(domain);
 		
@@ -214,25 +210,30 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		SortedSet<String> storedFunctionClassNames = helper.getStoredFunctionClassNames(domain);
 		SortedSet<String> storedNanomaterialEntityClassNames = helper.getStoredNanomaterialEntityClassNames(domain);
 		
-		
+		//SortedSet<String> storedCharacterizationClassNames = helper.getStoredCharacterizationClassNames(domain);
+		/*for(String s: storedCharacterizationClassNames){
+			System.out.print(" characterization class name: " + s);
+		}*/
 		Set<String> clazzNames = new HashSet<String>();	
 		
-		Collection<Characterization> characterizationCollection = domain.getCharacterizationCollection() ;
-		if (characterizationCollection != null) {
-			for (Characterization achar : characterizationCollection) {
+		//Collection<Characterization> characterizationCollection = domain.getCharacterizationCollection() ;
+		if (domain.getCharacterizationCollection() != null) {
+			for (Characterization achar : domain.getCharacterizationCollection()) {
 				if (achar instanceof OtherCharacterization) {
 				} else {
 					String shortClassName = ClassUtils.getShortClassName(achar
 							.getClass().getCanonicalName());
 					String displayName = ClassUtils.getDisplayName(shortClassName);
 					if(shortClassName.equalsIgnoreCase("surface")){
-						Collection<Finding> findingCollection = achar.getFindingCollection();
+						CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper(user);
+						List<Finding> findingCollection = charHelper.findFindingsByCharacterizationId(achar.getId().toString());
+						//Collection<Finding> findingCollection = achar.getFindingCollection();
 						if(!findingCollection.isEmpty()){
 							for(Finding finding: findingCollection){						
 								Collection<Datum> datumCollection = finding.getDatumCollection();
 								for(Datum datum:datumCollection){
-									System.out.println("datum: " + datum.getName() );
-									clazzNames.add(datum.getName());
+									//System.out.println("datum: " + datum.getName() );
+									clazzNames.add(datum.getName().toLowerCase());
 								}
 							}
 						}else{
@@ -246,8 +247,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		}
 		
 		for(String s: storedChemicalAssociationClassNames){
-			System.out.println("chemicalAssociation classname: " + s);
-			clazzNames.add(s);
+			//System.out.println("chemicalAssociation classname: " + s);
+			clazzNames.add(s.toLowerCase());
 		}
 		if(storedFunctionalizingEntityClassNames.size() > 0){
 			clazzNames.add("functionalizing entities");
@@ -269,6 +270,31 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		return clazzNames;
 	}
 	
+	
+	/**
+	 * delete data availability from database table in case these data availability
+	 * are removed from currently persisted data.
+	 * @param data
+	 */
+	private void deleteBatch(final List<String> entity, final Long sampleId){
+		 
+		  String sql = "DELETE FROM DATA_AVAILABILITY WHERE " +
+			"SAMPLE_ID=? AND AVAILABLE_ENTITY_NAME=?";
+		 
+		  getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		 
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				
+				ps.setLong(1,sampleId);
+				ps.setString(2, entity.get(i));
+				
+			}
+		 
+			public int getBatchSize() {
+				return entity.size();
+			}
+		  });
+	}
 	/**
 	 * insert data availability into database table
 	 * @param data
@@ -284,9 +310,38 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				DataAvailabilityBean bean = data.get(i);
 				ps.setLong(1, bean.getSampleId());
 				ps.setString(2, bean.getDatasourceName());
-				ps.setString(3, bean.getAvailableEntityName() );
+				ps.setString(3, bean.getAvailableEntityName() );				
 				ps.setDate(4, new java.sql.Date( bean.getCreatedDate().getTime()));
 				ps.setString(5, bean.getCreatedBy());
+			}
+		 
+			public int getBatchSize() {
+				return data.size();
+			}
+		  });
+	}
+	
+	/**
+	 * insert data availability into the database in case these are 
+	 * additional data availability on existing persisted data
+	 * @param data
+	 */
+	private void insertBatchOnUpdate(final List<DataAvailabilityBean> data){
+		 
+		  String sql = "INSERT INTO DATA_AVAILABILITY " +
+			"(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY, UPDATED_DATE, UPDATED_BY) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		 
+		  getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		 
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				DataAvailabilityBean bean = data.get(i);
+				ps.setLong(1, bean.getSampleId());
+				ps.setString(2, bean.getDatasourceName());
+				ps.setString(3, bean.getAvailableEntityName() );				
+				ps.setDate(4, new java.sql.Date( bean.getCreatedDate().getTime()));
+				ps.setString(5, bean.getCreatedBy());
+				ps.setDate(6, new java.sql.Date( bean.getUpdatedDate().getTime()));
+				ps.setString(7, bean.getUpdatedBy());				
 			}
 		 
 			public int getBatchSize() {
@@ -307,8 +362,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				DataAvailabilityBean bean = data.get(i);
 				
-				//ps.setString(2, bean.getDatasourceName());
-				ps.setString(1, bean.getAvailableEntityName() );
+				ps.setString(1, bean.getAvailableEntityName() );				
 				ps.setDate(2, new java.sql.Date( bean.getUpdatedDate().getTime()));
 				ps.setString(3, bean.getUpdatedBy());
 				ps.setLong(4, bean.getSampleId());
@@ -319,5 +373,92 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				return data.size();
 			}
 		  });
+	}
+	
+	/**
+	 * find any removed data availability from the newly generated list vs the current persisted list
+	 * @param currentDataAvailability
+	 * @param newGenernatedDataAvailability
+	 * @return
+	 */
+	private Set<DataAvailabilityBean> findRemovedData(
+			List<DataAvailabilityBean> currentDataAvailability,
+			Set<String> newGenernatedDataAvailability) {
+		
+		Set<DataAvailabilityBean> removedList = new HashSet<DataAvailabilityBean>();
+		Set<DataAvailabilityBean> currentListWithoutDuplicates = new HashSet<DataAvailabilityBean>();
+		
+		for(DataAvailabilityBean currentBean: currentDataAvailability){
+			currentListWithoutDuplicates.add(currentBean);
+		}
+		if(newGenernatedDataAvailability.size() < currentDataAvailability.size()){
+			//find the ones that are removed
+			String[] availableEntityName = newGenernatedDataAvailability.toArray(new String[0]);
+			for(DataAvailabilityBean currentBean : currentListWithoutDuplicates){
+				String entityName = currentBean.getAvailableEntityName();
+				boolean removed = false;
+				for(int i=0; i<availableEntityName.length; i++){
+					System.out.println("current entity: " + availableEntityName[i]);
+					String newEntityName = availableEntityName[i];
+					if(!entityName.equalsIgnoreCase(newEntityName) ){
+						removed = true;			
+					}else{
+						removed = false;
+						break;
+					}
+				}
+				if(removed ){
+					// this entity is removed from the current list
+					removedList.add(currentBean);					
+				}
+			}
+		}
+		return removedList;
+	}
+
+	/**
+	 * find any new added data availability from the newly generated list vs the current persisted list
+	 * @param loginName
+	 * @param sampleId
+	 * @param currentDataAvailability
+	 * @param newGenernatedDataAvailability
+	 * @return
+	 */
+	private List<DataAvailabilityBean> findAddedData(String loginName, Long sampleId,
+			List<DataAvailabilityBean> currentDataAvailability,
+			Set<String> newGenernatedDataAvailability
+			) {
+		List<DataAvailabilityBean> newDataAvailability = new ArrayList<DataAvailabilityBean>();
+		for(String entity: newGenernatedDataAvailability){
+			System.out.println("entity in new generated list: " + entity);
+			boolean updated = false;
+			for(int i=0; i< currentDataAvailability.size(); i++){
+				DataAvailabilityBean bean= currentDataAvailability.get(i);
+			
+				String availableEntityName = bean.getAvailableEntityName();
+				System.out.println("current entity: " + availableEntityName);
+				if(entity.equalsIgnoreCase(availableEntityName) ){
+					//update
+					bean.setUpdatedBy(loginName);
+					bean.setUpdatedDate(new Date());
+					updated = true;					
+					break;
+				}
+			}
+			
+			if(!updated ){
+			//insert
+				DataAvailabilityBean newBean = new DataAvailabilityBean();
+				newBean.setSampleId(sampleId);
+				newBean.setAvailableEntityName(entity);
+				newBean.setDatasourceName("caNanoLab");
+				newBean.setCreatedDate(currentDataAvailability.get(0).getCreatedDate());
+				newBean.setCreatedBy(currentDataAvailability.get(0).getCreatedBy());
+				newBean.setUpdatedBy(loginName);
+				newBean.setUpdatedDate(new Date());
+				newDataAvailability.add(newBean);
+			}
+		}
+		return newDataAvailability;
 	}
 }
