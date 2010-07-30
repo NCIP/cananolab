@@ -11,13 +11,14 @@
 	src='/caNanoLab/dwr/interface/AccessibilityManager.js'></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
+<c:if test="${isOwner || newData eq 'true'}">
 <tr>
 	<td class="cellLabel" width="15%">
 		Access to the ${dataType}
 	</td>
 	<td>
 		<c:set var="newAddAccessButtonStyle" value="display:block" />
-		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess()'); disableButtons(['submitButton', 'resetButton']);" id="addAccess"
+		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')'); disableButtons(['submitButton', 'resetButton']);" id="addAccess"
 			style="${newAddAccessButtonStyle}"><img align="top"
 				src="images/btn_add.gif" border="0" /> </a>
 	</td>
@@ -29,7 +30,7 @@
 			<table class="editTableWithGrid" width="95%" align="center">
 				<tr>
 					<th width="40%">
-						Collaboration Group Name
+						Group Name
 					</th>
 					<th width="55%">
 						Access
@@ -44,20 +45,13 @@
 						<td>
 							${access.roleDisplayName}
 						</td>
-						<td align="right">
-							<c:choose>
-								<c:when test="${access.groupName eq 'Public'}">
-									<c:if test="${user.curator}">
-									    <a href="javascript:confirmRemovePublicAccess()">remove</a>
-									</c:if>
-								</c:when>
-								<c:otherwise>
+							<td align="right">
+								<c:if test="${user.curator || access.groupName ne 'Public'}">
 									<a
 										href="javascript:setTheAccess('${parentForm}', 'group', '${access.groupName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
-							    </c:otherwise>
-							</c:choose>
-						</td>
-					</tr>
+							    </c:if>
+							</td>
+						</tr>
 				</c:forEach>
 			</table>
 			<br />
@@ -71,7 +65,7 @@
 			<table class="editTableWithGrid" width="95%" align="center">
 				<tr>
 					<th width="40%">
-						User Name
+						User Login Name
 					</th>
 					<th width="55%">
 						Access
@@ -117,12 +111,22 @@
 					<td class="cellLabel" width="25%">
 						Access by *
 					</td>
-					<td colspan="2">
-						<html:radio styleId="byGroup"
-							property="${accessParent}.theAccess.groupAccess" value="true" onclick="displayAccessNameLabel();"  />
-						Collaboration Group &nbsp;&nbsp;<html:radio styleId="byUser" property="${accessParent}.theAccess.groupAccess" value="false"  onclick="displayAccessNameLabel();"/>User
-					</td>
-					<td></td>
+					<td colspan="3">
+							<html:radio styleId="byGroup"
+								property="${accessParent}.theAccess.accessBy" value="group"
+								onclick="displayAccessNameLabel();" />
+							Collaboration Group
+							<html:radio styleId="byUser"
+								property="${accessParent}.theAccess.accessBy" value="user"
+								onclick="displayAccessNameLabel();" />
+							User&nbsp;&nbsp;
+							<c:if test="${user.curator}">
+								<html:radio styleId="byPublic"
+									property="${accessParent}.theAccess.accessBy" value="public"
+									onclick="displayAccessNameLabel();" />
+							Public
+							</c:if>
+						</td>
 				</tr>
 				<tr>
 					<c:set var="accessNameLabelValue" value="Collaboration Group Name *"/>
@@ -134,7 +138,7 @@
 						<html:text styleId="userName" property="${accessParent}.theAccess.userBean.loginName" style="display:none"/>
 					</td>
 					<td>
-						<a href="#userNameField" onclick="javascript:showMatchedGroupOrUserDropdown()""><img
+						<a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown()""><img
 								src="images/icon_browse.jpg" align="middle"
 								alt="search existing collaboration groups" border="0" /> </a>
 					</td>
@@ -157,17 +161,18 @@
 										style="display: none" onclick="updateGroupName()">
 									</html:select>
 								</td>
+								<td><a id="cancelBrowse" style="display:none" href="javascript:cancelBrowseSelect()">Cancel</a></td>
 							</tr>
 						</table>
 					</td>
 				</tr>
 				<tr>
 					<td class="cellLabel" width="10%">
-						Access to the Sample *
+						Access to the ${dataType} *
 					</td>
 					<td colspan="2">
 						<html:select property="${accessParent}.theAccess.roleName"
-							styleId="roleName" onchange="">
+							styleId="roleName">
 							<option></option>
 							<html:options collection="csmRoleNames" labelProperty="label"
 								property="value" />
@@ -182,9 +187,11 @@
 					</td>
 					<td align="right" colspan="3">
 						<div align="right">
+							<html:hidden property="${accessParent}.theAccess.roleName" styleId="hiddenRoleName"/>
+							<html:hidden property="${accessParent}.theAccess.groupName" styleId="hiddenGroupName"/>
 							<input type="button" value="Save" onclick="javascript:addAccess('sample');" />
 							<input type="reset" value="Cancel"
-								onclick="javascript:closeSubmissionForm('Access');">
+								onclick="javascript:closeSubmissionForm('Access');enableButtons(['submitButton', 'resetButton']);">
 						</div>
 					</td>
 				</tr>
@@ -192,3 +199,4 @@
 		</div>
 	</td>
 </tr>
+</c:if>
