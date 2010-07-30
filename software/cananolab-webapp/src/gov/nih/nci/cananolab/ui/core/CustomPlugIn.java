@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.SampleConstants;
 
 import javax.servlet.ServletContext;
@@ -90,8 +89,6 @@ public class CustomPlugIn implements PlugIn {
 					.getInstance()
 					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
 							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
-
-			InitSecuritySetup.getInstance().setupDefaultCSM();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
