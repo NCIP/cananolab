@@ -253,6 +253,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			AccessibilityBean userAccess = new AccessibilityBean();
 			userAccess.setUserBean(user);
 			userAccess.setRoleName(Constants.CSM_CURD_ROLE);
+			userAccess.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 			defaultAccesses.add(userAccess);
 		}
 		return defaultAccesses;
