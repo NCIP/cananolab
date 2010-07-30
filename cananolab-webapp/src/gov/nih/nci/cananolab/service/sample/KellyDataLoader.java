@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.LoginService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -150,9 +150,11 @@ public class KellyDataLoader {
 		this.saveOtherTypes();
 
 		Date currentDate = Calendar.getInstance().getTime();
-		SampleService service = new SampleServiceLocalImpl(user);
+		SecurityService securityService = new SecurityService(
+				Constants.CSM_APP_NAME, user);
+		SampleService service = new SampleServiceLocalImpl(securityService);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl(
-				user);
+				securityService);
 
 		// iterate dataMatrix map, load sample & save Targeting char.
 		int count = 0;
@@ -260,20 +262,12 @@ public class KellyDataLoader {
 			String password = args[1];
 			String inputFileName = args[2];
 			try {
-				LoginService loginService = new LoginService(
-						Constants.CSM_APP_NAME);
-				UserBean user = loginService.login(loginName, password);
-				if (user.isCurator()) {
-					ExcelParser parser = new ExcelParser();
-					SortedMap<String, SortedMap<String, SortedMap<String, Double>>> dataMatrix = parser
-							.twoWayParse(inputFileName);
-					KellyDataLoader loader = new KellyDataLoader(dataMatrix);
-					loader.load(user);
-				} else {
-					System.out
-							.println("You need to be the curator to be able to execute this function");
-					System.exit(1);
-				}
+				UserBean user = new UserBean(loginName, password);
+				ExcelParser parser = new ExcelParser();
+				SortedMap<String, SortedMap<String, SortedMap<String, Double>>> dataMatrix = parser
+						.twoWayParse(inputFileName);
+				KellyDataLoader loader = new KellyDataLoader(dataMatrix);
+				loader.load(user);
 			} catch (SecurityException e) {
 				System.out.println("Can't authenticate the login name: "
 						+ loginName);

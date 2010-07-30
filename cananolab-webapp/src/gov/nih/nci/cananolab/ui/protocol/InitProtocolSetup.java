@@ -1,11 +1,10 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
@@ -34,7 +33,6 @@ public class InitProtocolSetup {
 	public void setProtocolDropdowns(HttpServletRequest request)
 			throws Exception {
 		setLocalSearchDropdowns(request);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void setLocalSearchDropdowns(HttpServletRequest request)
@@ -77,12 +75,13 @@ public class InitProtocolSetup {
 
 	private ProtocolService getServiceFromSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
 		if (request.getSession().getAttribute("protocolService") != null) {
 			return (ProtocolService) request.getSession().getAttribute(
 					"protocolService");
 		} else {
-			return new ProtocolServiceLocalImpl(user);
+			return new ProtocolServiceLocalImpl(securityService);
 		}
 	}
 }

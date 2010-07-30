@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationExporter;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
@@ -184,8 +185,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService service = this.setServicesInSession(request);
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
-		service.deletePublication(
-				(Publication) publicationBean.getDomainFile(), true);
+		service
+				.deletePublication((Publication) publicationBean
+						.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deletePublication",
 				publicationBean.getDomainFile().getTitle());
@@ -592,12 +594,14 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	private PublicationService setServicesInSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
 		PublicationService publicationService = new PublicationServiceLocalImpl(
-				user);
+				securityService);
 		request.getSession().setAttribute("publicationService",
 				publicationService);
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return publicationService;
 	}

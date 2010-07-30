@@ -20,7 +20,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.admin.AdminService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -376,7 +375,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	public Boolean canUserExecutePrivateDispatch(UserBean user)
 			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasAdminPrivilege(user);
+		return user.isAdmin();
 	}
 
 	/**

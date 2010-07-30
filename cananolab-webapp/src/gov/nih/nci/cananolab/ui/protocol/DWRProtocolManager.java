@@ -2,8 +2,8 @@ package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -29,8 +29,9 @@ public class DWRProtocolManager {
 
 	private ProtocolServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		service = new ProtocolServiceLocalImpl(user);
+		SecurityService securityService = (SecurityService) wctx.getSession()
+				.getAttribute("securityService");
+		service = new ProtocolServiceLocalImpl(securityService);
 		return service;
 	}
 
@@ -98,7 +99,6 @@ public class DWRProtocolManager {
 	}
 
 	public String getPublicCounts() {
-		WebContext wctx = WebContextFactory.get();
 		Integer counts = 0;
 		try {
 			counts = getService().getHelper().getNumberOfPublicProtocols();

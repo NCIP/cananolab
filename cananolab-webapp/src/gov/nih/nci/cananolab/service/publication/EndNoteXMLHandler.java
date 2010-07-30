@@ -18,7 +18,6 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
 import gov.nih.nci.cananolab.util.SAXEventSwitcher;
@@ -235,7 +234,6 @@ public class EndNoteXMLHandler {
 		PublicationService service = new PublicationServiceLocalImpl(user);
 		for (PublicationBean pubBean : uniquePubList) {
 			Publication publication = (Publication) pubBean.getDomainFile();
-			pubBean.setVisibilityGroups(visibilityGroups);
 			// exclude the ones that have <volume> as accepted
 			if (publication.getStatus() == null) {
 				publication.setStatus("published");
@@ -327,6 +325,10 @@ public class EndNoteXMLHandler {
 						.getLoginName());
 				System.out.println(">>>>>>" + count);
 				service.savePublication(pubBean);
+
+				// assign publication to public
+				service.assignAccessibility(Constants.CSM_PUBLIC_ACCESS,
+						publication);
 				this.printLog(pubBean, savedLog, count++);
 			} catch (Exception ex) {
 				log.println("Exception thrown in saving Publication:");
@@ -973,10 +975,7 @@ public class EndNoteXMLHandler {
 			} catch (Exception e) {
 			}
 			try {
-				// Call CSM to authenticate the user.
-				LoginService loginservice = new LoginService(
-						Constants.CSM_APP_NAME);
-				UserBean user = loginservice.login(userLoginName, userPassword);
+				UserBean user = new UserBean(userLoginName, userPassword);
 				EndNoteXMLHandler endNotehandler = new EndNoteXMLHandler(
 						inputFileName, moreLog);
 				isSuccess = endNotehandler.parsePublicationXML(user);

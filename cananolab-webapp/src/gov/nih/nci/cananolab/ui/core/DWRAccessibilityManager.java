@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import java.util.List;
 
@@ -27,8 +28,9 @@ public class DWRAccessibilityManager {
 
 	private BaseService getService() {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		service = new BaseServiceLocalImpl(user);
+		SecurityService securityService = (SecurityService) wctx.getSession()
+				.getAttribute("securityService");
+		service = new BaseServiceLocalImpl(securityService);
 		return service;
 	}
 

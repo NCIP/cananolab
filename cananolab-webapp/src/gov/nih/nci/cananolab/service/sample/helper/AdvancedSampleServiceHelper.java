@@ -16,7 +16,7 @@ import gov.nih.nci.cananolab.dto.particle.CompositionQueryBean;
 import gov.nih.nci.cananolab.dto.particle.SampleQueryBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -64,14 +64,10 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		super(user);
 	}
 
-	public AdvancedSampleServiceHelper(AuthorizationService authService) {
-		super(authService);
+	public AdvancedSampleServiceHelper(SecurityService securityService) {
+		super(securityService);
 	}
 
-	public AdvancedSampleServiceHelper(AuthorizationService authService,
-			UserBean user) {
-		super(authService, user);
-	}
 	/**
 	 * Find sample names based on advanced search parameters
 	 *
@@ -79,9 +75,9 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> findSampleNamesByAdvancedSearch(
+	public List<String> findSampleIdsByAdvancedSearch(
 			AdvancedSampleSearchBean searchBean) throws Exception {
-		List<String> sampleNames = new ArrayList<String>();
+		List<String> sampleIds = new ArrayList<String>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = new ArrayList();
@@ -92,7 +88,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 				&& searchBean.getCompositionQueries().isEmpty()) {
 			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
 					"rootCrit").setProjection(
-					Projections.distinct(Property.forName("name")));
+					Projections.distinct(Property.forName("id")));
 			setSampleCriteria(searchBean, crit);
 			setCompositionCriteria(searchBean, crit);
 			setCharacterizationCriteria(searchBean, crit);
@@ -100,12 +96,12 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		}
 		// OR union the results
 		else {
-			Set<String> sampleNameSet = new HashSet<String>();
+			Set<String> sampleIdSet = new HashSet<String>();
 			// sample
 			if (!searchBean.getSampleQueries().isEmpty()) {
 				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
 						"rootCrit").setProjection(
-						Projections.distinct(Property.forName("name")));
+						Projections.distinct(Property.forName("id")));
 				setSampleCriteria(searchBean, crit);
 				results = appService.query(crit);
 			}
@@ -113,7 +109,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			if (!searchBean.getCompositionQueries().isEmpty()) {
 				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
 						"rootCrit").setProjection(
-						Projections.distinct(Property.forName("name")));
+						Projections.distinct(Property.forName("id")));
 				setCompositionCriteria(searchBean, crit);
 				results.addAll(appService.query(crit));
 			}
@@ -121,25 +117,24 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 				// characterization
 				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
 						"rootCrit").setProjection(
-						Projections.distinct(Property.forName("name")));
+						Projections.distinct(Property.forName("id")));
 				setCharacterizationCriteria(searchBean, crit);
 				results.addAll(appService.query(crit));
 			}
 		}
 		for (Object obj : results) {
-			String sampleName = obj.toString();
+			String sampleId = obj.toString();
 			// remove redundancy
-			if (!sampleNames.contains(sampleName)
+			if (!sampleIds.contains(sampleId)
 					&& StringUtils.containsIgnoreCase(getAccessibleData(),
-							sampleName)) {
-				sampleNames.add(sampleName);
+							sampleId)) {
+				sampleIds.add(sampleId);
 			} else { // ignore no access exception
-				logger.debug("User doesn't have access to sample with name "
-						+ sampleName);
+				logger.debug("User doesn't have access to sample with id "
+						+ sampleId);
 			}
 		}
-		Collections.sort(sampleNames, new Comparators.SortableNameComparator());
-		return sampleNames;
+		return sampleIds;
 	}
 
 	/**
@@ -152,15 +147,15 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	 * @throws Exception
 	 */
 	public AdvancedSampleBean findAdvancedSampleByAdvancedSearch(
-			String sampleName, AdvancedSampleSearchBean searchBean)
+			String sampleId, AdvancedSampleSearchBean searchBean)
 			throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
 			throw new NoAccessException();
 		}
 		// load sample first with point of contact info and function info and
 		// datum info
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Restrictions.eq("name", sampleName));
+				Restrictions.eq("id", new Long(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -199,27 +194,27 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		}
 
 		List<PointOfContact> pocs = findPointOfContactsBy(sample, searchBean);
-		List<Function> functions = findFunctionsBy(sampleName, searchBean);
+		List<Function> functions = findFunctionsBy(sampleId, searchBean);
 		List<NanomaterialEntity> nanoEntities = findNanomaterialEntitiesBy(
-				sampleName, searchBean);
+				sampleId, searchBean);
 		List<FunctionalizingEntity> funcEntities = findFunctionalizingEntitiesBy(
-				sampleName, searchBean);
-		List<Characterization> charas = findCharacterizationsBy(sampleName,
+				sampleId, searchBean);
+		List<Characterization> charas = findCharacterizationsBy(sampleId,
 				searchBean);
 		List<Datum> data = findDataBy(sample, searchBean);
-		String sampleId = sample.getId().toString();
 		AdvancedSampleBean advancedSampleBean = new AdvancedSampleBean(
-				sampleName, sampleId, pocs, functions, nanoEntities,
-				funcEntities, charas, data, searchBean, sample);
+				sampleId, pocs, functions, nanoEntities, funcEntities, charas,
+				data, searchBean, sample);
 		return advancedSampleBean;
 	}
 
-	private List<Characterization> findCharacterizationsBy(String sampleName,
+	private List<Characterization> findCharacterizationsBy(String sampleId,
 			AdvancedSampleSearchBean searchBean) throws Exception {
 		List<Characterization> chars = new ArrayList<Characterization>();
 		if (searchBean.getCharacterizationQueries().isEmpty()) {
 			return chars;
 		}
+		Long id = new Long(sampleId);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		if (searchBean.getCharacterizationQueries().size() == 1
@@ -234,7 +229,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 				crit.createAlias("finding.datumCollection", "datum",
 						CriteriaSpecification.LEFT_JOIN);
 			}
-			crit.add(Restrictions.eq("sample.name", sampleName));
+			crit.add(Restrictions.eq("sample.id", id));
 			Disjunction charDisjunction = getCharacterizationDisjunction(
 					searchBean, crit, "");
 			crit.add(charDisjunction);
@@ -253,7 +248,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 				DetachedCriteria crit = DetachedCriteria.forClass(
 						Characterization.class, "rootCrit");
 				crit.createAlias("sample", "sample");
-				crit.add(Restrictions.eq("sample.name", sampleName));
+				crit.add(Restrictions.eq("sample.id", id));
 				DetachedCriteria subCrit = getCharacterizationSubquery(
 						charQuery, "id");
 				crit.add(Subqueries.exists(subCrit));
@@ -398,12 +393,13 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	}
 
 	private List<FunctionalizingEntity> findFunctionalizingEntitiesBy(
-			String sampleName, AdvancedSampleSearchBean searchBean)
+			String sampleId, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		List<FunctionalizingEntity> entities = new ArrayList<FunctionalizingEntity>();
 		if (!searchBean.getHasAgentMaterial()) {
 			return entities;
 		}
+		Long id = new Long(sampleId);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
@@ -414,7 +410,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("comp.sample", "sample",
 					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.name", sampleName));
+			crit.add(Restrictions.eq("sample.id", id));
 			crit.add(junction);
 			crit.setFetchMode("functionCollection", FetchMode.JOIN);
 			crit.setFetchMode("functionCollection.targetCollection",
@@ -440,7 +436,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 							CriteriaSpecification.LEFT_JOIN);
 					crit.createAlias("comp.sample", "sample",
 							CriteriaSpecification.LEFT_JOIN);
-					crit.add(Restrictions.eq("sample.name", sampleName));
+					crit.add(Restrictions.eq("sample.id", id));
 					DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
 							query, "", "id");
 					crit.add(Subqueries.exists(subCrit));
@@ -465,12 +461,13 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		return entities;
 	}
 
-	private List<Function> findFunctionsBy(String sampleName,
+	private List<Function> findFunctionsBy(String sampleId,
 			AdvancedSampleSearchBean searchBean) throws Exception {
 		List<Function> functions = new ArrayList<Function>();
 		if (!searchBean.getHasFunction()) {
 			return functions;
 		}
+		Long id = new Long(sampleId);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Function.class);
@@ -490,9 +487,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("comp2.sample", "sample2",
 					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.or(
-					Restrictions.eq("sample.name", sampleName), Restrictions
-							.eq("sample2.name", sampleName)));
+			crit.add(Restrictions.or(Restrictions.eq("sample.id", id),
+					Restrictions.eq("sample2.id", id)));
 			crit.add(junction);
 			crit.setFetchMode("targetCollection", FetchMode.JOIN);
 
@@ -521,9 +517,8 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 							CriteriaSpecification.LEFT_JOIN);
 					crit.createAlias("comp2.sample", "sample2",
 							CriteriaSpecification.LEFT_JOIN);
-					crit.add(Restrictions.or(Restrictions.eq("sample.name",
-							sampleName), Restrictions.eq("sample2.name",
-							sampleName)));
+					crit.add(Restrictions.or(Restrictions.eq("sample.id", id),
+							Restrictions.eq("sample2.id", id)));
 					DetachedCriteria subCrit = getFunctionSubquery(query, "",
 							"", "id");
 					crit.add(Subqueries.exists(subCrit));
@@ -544,9 +539,10 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	}
 
 	private List<NanomaterialEntity> findNanomaterialEntitiesBy(
-			String sampleName, AdvancedSampleSearchBean searchBean)
+			String sampleId, AdvancedSampleSearchBean searchBean)
 			throws Exception {
 		List<NanomaterialEntity> entities = new ArrayList<NanomaterialEntity>();
+		Long id = new Long(sampleId);
 		if (!searchBean.getHasNanomaterial()) {
 			return entities;
 		}
@@ -565,7 +561,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			}
 			crit.createAlias("sampleComposition", "comp");
 			crit.createAlias("comp.sample", "sample");
-			crit.add(Restrictions.eq("sample.name", sampleName));
+			crit.add(Restrictions.eq("sample.id", id));
 			crit.add(junction);
 			crit.setFetchMode("fileCollection", FetchMode.JOIN);
 			crit.setFetchMode("fileCollection.keywordCollection",
@@ -599,7 +595,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						crit.createAlias("composingElementCollection",
 								"compElement");
 					}
-					crit.add(Restrictions.eq("sample.name", sampleName));
+					crit.add(Restrictions.eq("sample.id", id));
 					crit.setFetchMode("fileCollection", FetchMode.JOIN);
 					crit.setFetchMode("fileCollection.keywordCollection",
 							FetchMode.JOIN);

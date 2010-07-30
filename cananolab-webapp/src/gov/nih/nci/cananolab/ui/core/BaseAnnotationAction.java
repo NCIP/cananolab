@@ -9,7 +9,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -153,7 +153,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		int i = 0;
 		for (String other : otherSamples) {
 			SampleBean sampleBean = sampleService.findSampleByName(other);
-			sampleBean.setVisibilityGroups(oldSampleBean.getVisibilityGroups());
+			sampleBean.setGroupAccesses(oldSampleBean.getGroupAccesses());
+			sampleBean.setUserAccesses(oldSampleBean.getUserAccesses());
 			sampleBeans[i] = sampleBean;
 			i++;
 		}
@@ -306,17 +307,33 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 	}
 
-	public Boolean canUserExecutePrivateDispatch(UserBean user, String protectedData)
-			throws SecurityException {
+	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request,
+			String protectedData) throws SecurityException {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user == null) {
 			return false;
 		}
 		if (protectedData == null) {
 			return true;
+		} else {
+			try {
+				SecurityService securityService = getSecurityServiceFromSession(request);
+				return securityService.checkCreatePermission(protectedData);
+			} catch (Exception e) {
+				throw new SecurityException();
+			}
 		}
-		else {
-			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			return authService.checkCreatePermission(user, protectedData);
+	}
+
+	public Boolean isUserOwner(HttpServletRequest request, String createdBy) {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// user is either a curator or the creator of the data
+		if (user != null
+				&& (user.getLoginName().equalsIgnoreCase(createdBy) || user
+						.isCurator())) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +31,6 @@ public class InitPublicationSetup {
 		InitSetup.getInstance()
 			.getDefaultAndOtherTypesByLookup(request, "publicationResearchAreas",
 				"publication", "researchArea", "otherResearchArea", true);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 	}
 

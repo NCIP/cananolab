@@ -1,9 +1,11 @@
 package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * @author tanq
  *
  */
-public interface PublicationService {
+public interface PublicationService extends BaseService {
 
 	/**
 	 * Persist a new publication or update an existing publication
@@ -49,9 +51,8 @@ public interface PublicationService {
 			String[] functionClassNames, String[] otherFunctionTypes)
 			throws PublicationException;
 
-	public List<String> deletePublication(Publication publication,
-			Boolean removeVisibility) throws PublicationException,
-			NoAccessException;
+	public void deletePublication(Publication publication)
+			throws PublicationException, NoAccessException;
 
 	/**
 	 * Parse PubMed XML file and store the information into a PublicationBean
@@ -68,6 +69,14 @@ public interface PublicationService {
 			String firstAuthorFirstName) throws PublicationException;
 
 	public void removePublicationFromSample(String sampleName,
+			Publication publication) throws PublicationException,
+			NoAccessException;
+
+	public void assignAccessibility(AccessibilityBean access,
+			Publication publication) throws PublicationException,
+			NoAccessException;
+
+	public void removeAccessibility(AccessibilityBean access,
 			Publication publication) throws PublicationException,
 			NoAccessException;
 }

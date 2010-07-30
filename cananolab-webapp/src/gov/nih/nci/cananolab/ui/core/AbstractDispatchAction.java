@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -38,7 +39,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		if (protectedData == null) {
 			protectedData = request.getParameter("protocolId");
 		}
-		boolean executeStatus = canUserExecute(user, dispatch, protectedData);
+		boolean executeStatus = canUserExecute(request, dispatch, protectedData);
 		if (executeStatus) {
 			return super.execute(mapping, form, request, response);
 		} else {
@@ -58,8 +59,9 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	 * @return
 	 * @throws SecurityException
 	 */
-	public boolean canUserExecute(UserBean user, String dispatch,
+	public boolean canUserExecute(HttpServletRequest request, String dispatch,
 			String protectedData) throws SecurityException {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// private dispatch in public actions
 		boolean privateDispatch = isDispatchPublic(dispatch);
 		if (!privateDispatch) {
@@ -67,12 +69,13 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		} else if (user == null && privateDispatch) {
 			return false;
 		} else {
-			return canUserExecutePrivateDispatch(user, protectedData);
+			return canUserExecutePrivateDispatch(request, protectedData);
 		}
 	}
 
-	public Boolean canUserExecutePrivateDispatch(UserBean user,
+	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request,
 			String protectedData) throws SecurityException {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user == null) {
 			return false;
 		}
@@ -145,5 +148,18 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			value = request.getSession().getAttribute(name);
 		}
 		return value;
+	}
+
+	protected SecurityService getSecurityServiceFromSession(
+			HttpServletRequest request) throws Exception {
+		if (request.getSession().getAttribute("securityService") == null) {
+			UserBean user = (UserBean) request.getAttribute("user");
+			SecurityService service = new SecurityService(
+					Constants.CSM_APP_NAME, user);
+			return service;
+		}
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
+		return securityService;
 	}
 }

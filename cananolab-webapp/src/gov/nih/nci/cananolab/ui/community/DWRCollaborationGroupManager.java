@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import java.util.List;
 
@@ -21,12 +22,14 @@ import org.directwebremoting.WebContextFactory;
  */
 public class DWRCollaborationGroupManager {
 	private CommunityService service;
-	private Logger logger = Logger.getLogger(DWRCollaborationGroupManager.class);
+	private Logger logger = Logger
+			.getLogger(DWRCollaborationGroupManager.class);
 
-	private CommunityService getService() {
+	private CommunityService getService() throws Exception {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		service = new CommunityServiceLocalImpl(user);
+		SecurityService securityService = (SecurityService) wctx.getSession()
+				.getAttribute("securityService");
+		service = new CommunityServiceLocalImpl(securityService);
 		return service;
 	}
 
@@ -82,17 +85,13 @@ public class DWRCollaborationGroupManager {
 		return group;
 	}
 
-	public UserBean[] getMatchedUsers(String searchStr)
-			throws Exception {
+	public UserBean[] getMatchedUsers(String searchStr) throws Exception {
 		try {
 			List<UserBean> matchedUsers = getService().findUserLoginNames(
 					searchStr);
 			return matchedUsers.toArray(new UserBean[matchedUsers.size()]);
 		} catch (Exception e) {
-			logger
-					.error(
-							"Problem getting matched user login names",
-							e);
+			logger.error("Problem getting matched user login names", e);
 			return null;
 		}
 	}

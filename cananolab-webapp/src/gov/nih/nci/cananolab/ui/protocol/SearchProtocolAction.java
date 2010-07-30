@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -66,9 +67,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			protocolAbbreviation = "*" + protocolAbbreviation + "*";
 		}
 
-		ProtocolService service = null;
-
-		service = new ProtocolServiceLocalImpl(user);
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+		ProtocolService service = new ProtocolServiceLocalImpl(securityService);
 
 		List<ProtocolBean> allProtocols = service.findProtocolsBy(protocolType,
 				protocolName, protocolAbbreviation, fileTitle);

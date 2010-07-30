@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.LoginService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExcelParser;
@@ -164,9 +164,11 @@ public class ZScoreDataLoader {
 
 	public void load(UserBean user) throws BaseException {
 		Date currentDate = Calendar.getInstance().getTime();
-		SampleService service = new SampleServiceLocalImpl(user);
+		SecurityService securityService = new SecurityService(
+				Constants.CSM_APP_NAME, user);
+		SampleService service = new SampleServiceLocalImpl(securityService);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl(
-				user);
+				securityService);
 		// iterate each Sample name, load sample & save Cytotoxity char.
 		for (String name : sampleNameMap.keySet()) {
 			String sampleName = sampleNameMap.get(name);
@@ -333,23 +335,15 @@ public class ZScoreDataLoader {
 			String password = args[1];
 			String inputFileName = args[2];
 			try {
-				LoginService loginService = new LoginService(
-						Constants.CSM_APP_NAME);
-				UserBean user = loginService.login(loginName, password);
-				if (user.isCurator()) {
-					ExcelParser parser = new ExcelParser();
-					SortedMap<String, SortedMap<String, Double>> verticalMatrix = parser
-							.verticalParse(inputFileName);
-					SortedMap<String, SortedMap<String, Double>> horizontalMatrix = parser
-							.horizontalParse(inputFileName);
-					ZScoreDataLoader loader = new ZScoreDataLoader(
-							verticalMatrix, horizontalMatrix);
-					loader.load(user);
-				} else {
-					System.out
-							.println("You need to be the curator to be able to execute this function");
-					System.exit(1);
-				}
+				UserBean user = new UserBean(loginName, password);
+				ExcelParser parser = new ExcelParser();
+				SortedMap<String, SortedMap<String, Double>> verticalMatrix = parser
+						.verticalParse(inputFileName);
+				SortedMap<String, SortedMap<String, Double>> horizontalMatrix = parser
+						.horizontalParse(inputFileName);
+				ZScoreDataLoader loader = new ZScoreDataLoader(verticalMatrix,
+						horizontalMatrix);
+				loader.load(user);
 			} catch (SecurityException e) {
 				System.out.println("Can't authenticate the login name.");
 				e.printStackTrace();

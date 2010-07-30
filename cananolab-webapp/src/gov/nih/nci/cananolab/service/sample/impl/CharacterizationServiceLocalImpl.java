@@ -25,7 +25,7 @@ import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -57,27 +57,20 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 
 	public CharacterizationServiceLocalImpl() {
 		super();
-		helper = new CharacterizationServiceHelper(authService);
-		fileService = new FileServiceLocalImpl(authService);
+		helper = new CharacterizationServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public CharacterizationServiceLocalImpl(UserBean user) {
 		super(user);
-		helper = new CharacterizationServiceHelper(authService, user);
-		fileService = new FileServiceLocalImpl(authService, user);
+		helper = new CharacterizationServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
-	public CharacterizationServiceLocalImpl(AuthorizationService authService) {
-		super(authService);
-		helper = new CharacterizationServiceHelper(authService);
-		fileService = new FileServiceLocalImpl(authService);
-	}
-
-	public CharacterizationServiceLocalImpl(AuthorizationService authService,
-			UserBean user) {
-		super(authService, user);
-		helper = new CharacterizationServiceHelper(authService, user);
-		fileService = new FileServiceLocalImpl(authService, user);
+	public CharacterizationServiceLocalImpl(SecurityService securityService) {
+		super(securityService);
+		helper = new CharacterizationServiceHelper(this.securityService);
+		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public void saveCharacterization(SampleBean sampleBean,
@@ -91,13 +84,20 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			Characterization achar = charBean.getDomainChar();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			Boolean newChar = true;
 			if (achar.getId() != null) {
-				Characterization dbChar = (Characterization) appService.load(
-						Characterization.class, achar.getId());
-				if (dbChar == null) {
+				newChar = false;
+				if (!securityService.checkCreatePermission(achar.getId()
+						.toString())) {
+					throw new NoAccessException();
+				}
+				try {
+					Characterization dbChar = (Characterization) appService
+							.load(Characterization.class, achar.getId());
+				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new CharacterizationException(err);
+					throw new CharacterizationException(err, e);
 				}
 			}
 			// if (sample.getCharacterizationCollection() != null) {
@@ -109,7 +109,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			achar.setSample(sample);
 			// sample.getCharacterizationCollection().add(achar);
 
-			// save file data to file system and assign visibility
+			// save file data to file system
 			List<FindingBean> findingBeans = charBean.getFindings();
 			if (findingBeans != null && !findingBeans.isEmpty()) {
 				for (FindingBean findingBean : findingBeans) {
@@ -120,10 +120,13 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				}
 			}
 			appService.saveOrUpdate(achar);
+			// save default access if it's new
+			if (newChar) {
+				super.saveDefaultAccessibility(achar.getId().toString());
+			}
 
-			// set visibility
-			String[] visibleGroups = sampleBean.getVisibilityGroups();
-			assignVisibility(charBean.getDomainChar(), visibleGroups);
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
 			logger.error(err, e);
@@ -138,7 +141,6 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			Characterization achar = helper.findCharacterizationById(charId);
 			if (achar != null) {
 				charBean = new CharacterizationBean(achar);
-				loadCharacterizationBean(achar);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -154,43 +156,33 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			throws Exception {
 		CharacterizationBean charBean = new CharacterizationBean(achar);
 		ProtocolBean protocolBean = charBean.getProtocolBean();
-		// retrieve protocol visibility
-		if (protocolBean.getDomain().getId() != null && user != null) {
-			protocolBean.setVisibilityGroups(authService.getAccessibleGroups(
-					protocolBean.getDomain().getId().toString(),
-					Constants.CSM_READ_PRIVILEGE));
-		}
-		for (FindingBean findingBean : charBean.getFindings()) {
-			if (findingBean.getFiles() != null && user != null) {
-				for (FileBean fileBean : findingBean.getFiles()) {
-					fileBean.setVisibilityGroups(authService
-							.getAccessibleGroups(fileBean.getDomainFile()
-									.getId().toString(),
-									Constants.CSM_READ_PRIVILEGE));
-				}
-			}
+		if (user != null && protocolBean.getDomain().getId() != null) {
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(protocolBean.getDomain().getId()
+							.toString());
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(protocolBean.getDomain().getId()
+							.toString());
+			protocolBean.setUserAccesses(userAccesses);
+			protocolBean.setGroupAccesses(groupAccesses);
 		}
 		return charBean;
 	}
 
-	public List<String> deleteCharacterization(Characterization chara,
-			Boolean removeVisibility) throws CharacterizationException,
-			NoAccessException {
-		if (helper.getUser() == null || !helper.getUser().isCurator()) {
+	public void deleteCharacterization(Characterization chara)
+			throws CharacterizationException, NoAccessException {
+		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(chara);
-			entries = removeVisibility(chara, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
-		return entries;
 	}
 
 	public List<CharacterizationBean> findCharacterizationsBySampleId(
@@ -200,7 +192,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			List<Characterization> chars = helper
 					.findCharacterizationsBySampleId(sampleId);
 			for (Characterization achar : chars) {
-				CharacterizationBean charBean = loadCharacterizationBean(achar);
+				CharacterizationBean charBean =  new CharacterizationBean(achar);
 				charBeans.add(charBean);
 			}
 			return charBeans;
@@ -219,14 +211,6 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			Finding finding = helper.findFindingById(findingId);
 			if (finding != null) {
 				findingBean = new FindingBean(finding);
-				if (findingBean.getFiles() != null && user != null) {
-					for (FileBean fileBean : findingBean.getFiles()) {
-						fileBean.setVisibilityGroups(authService
-								.getAccessibleGroups(fileBean.getDomainFile()
-										.getId().toString(),
-										Constants.CSM_READ_PRIVILEGE));
-					}
-				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -246,15 +230,24 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			Boolean newFinding = true;
+			if (finding.getDomain().getId() != null) {
+				newFinding = false;
+			}
 			for (FileBean fileBean : finding.getFiles()) {
 				fileService.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(finding.getDomain());
+			if (newFinding) {
+				for (AccessibilityBean access : this.getDefaultAccesses()) {
+					this.assignAccessibility(access, finding.getDomain());
+				}
+			}
 			// save file data to file system and assign visibility
 			for (FileBean fileBean : finding.getFiles()) {
 				fileService.writeFile(fileBean);
 			}
-			// visibility assignment is handled by saving characterization
+
 		} catch (Exception e) {
 			String err = "Error saving characterization result finding. ";
 			logger.error(err, e);
@@ -262,23 +255,20 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		}
 	}
 
-	public List<String> deleteFinding(Finding finding, Boolean removeVisibility)
+	public void deleteFinding(Finding finding)
 			throws CharacterizationException, NoAccessException {
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(finding);
-			entries = removeVisibility(finding, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error deleting finding " + finding.getId();
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
-		return entries;
 	}
 
 	public void saveExperimentConfig(ExperimentConfigBean configBean)
@@ -290,8 +280,10 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			ExperimentConfig config = configBean.getDomain();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			Boolean newConfig = true;
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
+				newConfig = false;
 				ExperimentConfig dbConfig = helper
 						.findExperimentConfigById(config.getId().toString());
 				if (dbConfig != null) {
@@ -337,7 +329,9 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				}
 			}
 			appService.saveOrUpdate(config);
-			// visibility assignment is handled by saving characterization
+			if (newConfig) {
+				this.saveDefaultAccessibility(config.getId().toString());
+			}
 
 		} catch (Exception e) {
 			String err = "Error in saving the technique and associated instruments.";
@@ -346,13 +340,11 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		}
 	}
 
-	public List<String> deleteExperimentConfig(ExperimentConfig config,
-			Boolean removeVisibility) throws ExperimentConfigException,
-			NoAccessException {
+	public void deleteExperimentConfig(ExperimentConfig config)
+			throws ExperimentConfigException, NoAccessException {
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		List<String> entries = new ArrayList<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -406,13 +398,11 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				}
 			}
 			appService.delete(config);
-			entries = removeVisibility(config, removeVisibility);
 		} catch (Exception e) {
 			String err = "Error in deleting the technique and associated instruments";
 			logger.error(err, e);
 			throw new ExperimentConfigException(err, e);
 		}
-		return entries;
 	}
 
 	private Technique findTechniqueByType(String type)
@@ -525,149 +515,6 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		}
 	}
 
-	protected void assignVisibility(Characterization aChar,
-			String[] visibleGroups) throws Exception {
-		// characterization
-		if (aChar != null && aChar.getId() != null) {
-			authService.assignVisibility(aChar.getId().toString(),
-					visibleGroups);
-			if (aChar.getFindingCollection() != null) {
-				for (Finding finding : aChar.getFindingCollection()) {
-					if (finding != null) {
-						authService.assignVisibility(
-								finding.getId().toString(), visibleGroups);
-					}
-					// datum, need to check for null for copy bean.
-					if (finding.getDatumCollection() != null) {
-						for (Datum datum : finding.getDatumCollection()) {
-							if (datum != null && datum.getId() != null) {
-								authService.assignVisibility(datum.getId()
-										.toString(), visibleGroups);
-							}
-							// condition
-							if (datum.getConditionCollection() != null) {
-								for (Condition condition : datum
-										.getConditionCollection()) {
-									authService.assignVisibility(condition
-											.getId().toString(), visibleGroups);
-								}
-							}
-						}
-					}
-				}
-			}
-			// ExperimentConfiguration
-			if (aChar.getExperimentConfigCollection() != null) {
-				for (ExperimentConfig config : aChar
-						.getExperimentConfigCollection()) {
-					authService.assignVisibility(config.getId().toString(),
-							visibleGroups);
-					// assign instruments and technique to public visibility
-					if (config.getTechnique() != null) {
-						authService.assignVisibility(config.getTechnique()
-								.getId().toString(),
-								new String[] { Constants.CSM_PUBLIC_GROUP });
-					}
-					if (config.getInstrumentCollection() != null) {
-						for (Instrument instrument : config
-								.getInstrumentCollection()) {
-							helper
-									.getAuthService()
-									.assignVisibility(
-											instrument.getId().toString(),
-											new String[] { Constants.CSM_PUBLIC_GROUP });
-						}
-					}
-				}
-			}
-		}
-	}
-
-	protected List<String> removeVisibility(Characterization aChar,
-			Boolean remove) throws Exception {
-		List<String> entries = new ArrayList<String>();
-		// characterization
-		if (aChar != null) {
-			if (remove == null || remove) {
-				authService.removeCSMEntry(aChar.getId().toString());
-			}
-			entries.add(aChar.getId().toString());
-			for (Finding finding : aChar.getFindingCollection()) {
-				if (finding != null) {
-					entries.addAll(removeVisibility(finding, remove));
-				}
-			}
-
-			// ExperimentConfiguration
-			for (ExperimentConfig config : aChar
-					.getExperimentConfigCollection()) {
-				entries.addAll(removeVisibility(config, remove));
-			}
-		}
-		return entries;
-	}
-
-	private List<String> removeVisibility(ExperimentConfig config,
-			Boolean remove) throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (remove == null || remove) {
-			authService.removeCSMEntry(config.getId().toString());
-			authService
-					.removeCSMEntry(config.getTechnique().getId().toString());
-		}
-		entries.add(config.getId().toString());
-		entries.add(config.getTechnique().getId().toString());
-		if (config.getInstrumentCollection() != null) {
-			for (Instrument instrument : config.getInstrumentCollection()) {
-				if (remove == null || remove) {
-					authService.removeCSMEntry(instrument.getId().toString());
-				}
-				entries.add(instrument.getId().toString());
-			}
-		}
-		return entries;
-	}
-
-	private List<String> removeVisibility(Finding finding, Boolean remove)
-			throws Exception {
-		List<String> entries = new ArrayList<String>();
-		if (remove == null || remove) {
-			authService.removeCSMEntry(finding.getId().toString());
-		}
-		entries.add(finding.getId().toString());
-
-		// datum
-		if (finding.getDatumCollection() != null) {
-			for (Datum datum : finding.getDatumCollection()) {
-				if (datum != null) {
-					if (remove == null || remove) {
-						authService.removeCSMEntry(datum.getId().toString());
-					}
-					entries.add(datum.getId().toString());
-				}
-				if (datum.getConditionCollection() != null) {
-					for (Condition condition : datum.getConditionCollection()) {
-						if (remove == null || remove) {
-							authService.removeCSMEntry(condition.getId()
-									.toString());
-						}
-						entries.add(condition.getId().toString());
-					}
-				}
-			}
-		}
-		// file
-		if (finding.getFileCollection() != null) {
-			for (File file : finding.getFileCollection()) {
-				if (remove == null || remove) {
-					authService.removeCSMEntry(file.getId().toString());
-				}
-				entries.add(file.getId().toString());
-			}
-		}
-		return entries;
-	}
-
 	public List<String> findOtherCharacterizationByAssayCategory(
 			String assayCategory) throws CharacterizationException {
 		List<String> charNames = new ArrayList<String>();
@@ -697,143 +544,125 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 	public void assignAccessibility(AccessibilityBean access,
 			Characterization achar) throws CharacterizationException,
 			NoAccessException {
+		String sampleCreatedBy = achar.getSample().getCreatedBy();
+		// if current user is not owner of the sample and not the owner of the
+		// characterization can't assign access
+		if (!isUserOwner(sampleCreatedBy) && !isUserOwner(achar.getCreatedBy())) {
+			throw new NoAccessException();
+		}
 		String charId = achar.getId().toString();
-		// characterization
-		super.saveDefaultAccessibility(charId);
-		super.saveAccessibility(access, charId);
-		if (achar.getFindingCollection() != null) {
-			for (Finding finding : achar.getFindingCollection()) {
-				if (finding != null) {
-					super.saveDefaultAccessibility(finding.getId().toString());
-					super.saveAccessibility(access, finding.getId().toString());
-				}
-				// files
-				if (finding.getFileCollection() != null) {
-					for (File file : finding.getFileCollection()) {
-						if (file != null && file.getId() != null) {
-							super.saveDefaultAccessibility(file.getId()
-									.toString());
-							super.saveAccessibility(access, file.getId()
-									.toString());
-						}
-					}
-				}
-				// datum, need to check for null for copy bean.
-				if (finding.getDatumCollection() != null) {
-					for (Datum datum : finding.getDatumCollection()) {
-						if (datum != null && datum.getId() != null) {
-							super.saveDefaultAccessibility(datum.getId()
-									.toString());
-							super.saveAccessibility(access, datum.getId()
-									.toString());
-						}
-						// condition
-						if (datum.getConditionCollection() != null) {
-							for (Condition condition : datum
-									.getConditionCollection()) {
-								super.saveDefaultAccessibility(condition
-										.getId().toString());
-								super.saveAccessibility(access, condition
-										.getId().toString());
-							}
-						}
-					}
-				}
-			}
-		}
-		// ExperimentConfiguration
-		if (achar.getExperimentConfigCollection() != null) {
-			for (ExperimentConfig config : achar
-					.getExperimentConfigCollection()) {
-				super.saveDefaultAccessibility(config.getId().toString());
-				super.saveAccessibility(access, config.getId().toString());
-				// assign instruments and technique to public visibility
-				if (config.getTechnique() != null) {
-					super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
-							.getTechnique().getId().toString());
-				}
-				if (config.getInstrumentCollection() != null) {
-					for (Instrument instrument : config
-							.getInstrumentCollection()) {
-						super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS,
-								instrument.getId().toString());
-					}
-				}
-			}
-		}
-	}
-
-	public void removeAccessibility(AccessibilityBean access,
-			Characterization achar) throws CharacterizationException,
-			NoAccessException {
 		try {
 			// characterization
-			if (achar != null) {
-				super.deleteAccessibility(access, achar.getId().toString());
-
+			super.saveAccessibility(access, charId);
+			if (achar.getFindingCollection() != null) {
 				for (Finding finding : achar.getFindingCollection()) {
 					if (finding != null) {
-						this.removeAccessibility(finding, access);
+						this.assignAccessibility(access, finding);
 					}
 				}
-				// ExperimentConfiguration
+			}
+			// ExperimentConfiguration
+			if (achar.getExperimentConfigCollection() != null) {
 				for (ExperimentConfig config : achar
 						.getExperimentConfigCollection()) {
-					this.removeAccessibility(config, access);
+					this.assignAccessibility(access, config);
 				}
 			}
-		} catch (NoAccessException e) {
-			throw e;
 		} catch (Exception e) {
-			String err = "Error in deleting the access for characterization "
+			String err = "Error in assigning accessibility to the characterization "
 					+ achar.getId();
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
 		}
 	}
 
-	private void removeAccessibility(ExperimentConfig config,
-			AccessibilityBean access) throws Exception {
-		super.deleteAccessibility(access, config.getId().toString());
-		super.deleteAccessibility(access, config.getTechnique().getId()
-				.toString());
-
-		if (config.getInstrumentCollection() != null) {
-			for (Instrument instrument : config.getInstrumentCollection()) {
-				super
-						.deleteAccessibility(access, instrument.getId()
-								.toString());
+	private void assignAccessibility(AccessibilityBean access, Finding finding)
+			throws Exception {
+		super.saveAccessibility(access, finding.getId().toString());
+		// files
+		if (finding.getFileCollection() != null) {
+			for (File file : finding.getFileCollection()) {
+				if (file != null && file.getId() != null) {
+					super.saveAccessibility(access, file.getId().toString());
+				}
 			}
 		}
-	}
-
-	private void removeAccessibility(Finding finding, AccessibilityBean access)
-			throws Exception {
-		super.deleteAccessibility(access, finding.getId().toString());
-
-		// datum
+		// datum, need to check for null for copy bean.
 		if (finding.getDatumCollection() != null) {
 			for (Datum datum : finding.getDatumCollection()) {
-				if (datum != null) {
-					super.deleteAccessibility(access, datum.getId().toString());
+				if (datum != null && datum.getId() != null) {
+					super.saveAccessibility(access, datum.getId().toString());
 				}
+				// condition
 				if (datum.getConditionCollection() != null) {
 					for (Condition condition : datum.getConditionCollection()) {
-						super.deleteAccessibility(access, condition.getId()
+						super.saveAccessibility(access, condition.getId()
 								.toString());
 					}
 				}
 			}
 		}
-		// file
-		if (finding.getFileCollection() != null) {
-			for (File file : finding.getFileCollection()) {
-				super.deleteAccessibility(access, file.getId().toString());
+	}
+
+	private void assignAccessibility(AccessibilityBean access,
+			ExperimentConfig config) throws Exception {
+		super.saveAccessibility(access, config.getId().toString());
+		// assign instruments and technique to public visibility
+		if (config.getTechnique() != null) {
+			super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
+					.getTechnique().getId().toString());
+		}
+		if (config.getInstrumentCollection() != null) {
+			for (Instrument instrument : config.getInstrumentCollection()) {
+				super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, instrument
+						.getId().toString());
 			}
 		}
 	}
 
 	public CharacterizationServiceHelper getHelper() {
 		return helper;
+	}
+
+	public void assignAccesses(Characterization achar)
+			throws CharacterizationException, NoAccessException {
+		try {
+			if (!securityService
+					.checkCreatePermission(achar.getId().toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.assignAccessibility(access, achar);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning characterization accessibility";
+			throw new CharacterizationException(error, e);
+		}
+	}
+
+	public void removeAccess(Characterization achar)
+			throws CharacterizationException, NoAccessException {
+		try {
+			if (!securityService
+					.checkCreatePermission(achar.getId().toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, achar);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning characterization accessibility";
+			throw new CharacterizationException(error, e);
+		}
 	}
 }

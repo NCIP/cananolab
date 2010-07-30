@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.util.Constants;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -29,6 +27,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class SchedulerPlugin implements PlugIn {
 	Logger logger = Logger.getLogger(SchedulerPlugin.class);
 	private static Scheduler scheduler = null;
+	private static final int DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS = 1;
 
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
@@ -58,15 +57,17 @@ public class SchedulerPlugin implements PlugIn {
 			scheduler = factory.getScheduler();
 			if (scheduler != null) {
 				scheduler.start();
-//				int gridDiscoveryIntervalInMinutes = getIntervalInMinutes(
-//						actionServlet.getServletConfig(),
-//						"gridDiscoveryIntervalInMinutes");
-//				initialiseGridDiscoveryJob(gridDiscoveryIntervalInMinutes);
-//				ServletContext appContext = actionServlet.getServletContext();
-//				List<GridNodeBean> gridNodes = (List<GridNodeBean>) appContext
-//						.getAttribute("allGridNodes");
-//				initialisePublicDataCountJob(gridNodes,
-//						gridDiscoveryIntervalInMinutes);
+				// int gridDiscoveryIntervalInMinutes = getIntervalInMinutes(
+				// actionServlet.getServletConfig(),
+				// "gridDiscoveryIntervalInMinutes");
+				// initialiseGridDiscoveryJob(gridDiscoveryIntervalInMinutes);
+				// ServletContext appContext =
+				// actionServlet.getServletContext();
+				// List<GridNodeBean> gridNodes = (List<GridNodeBean>)
+				// appContext
+				// .getAttribute("allGridNodes");
+				// initialisePublicDataCountJob(gridNodes,
+				// gridDiscoveryIntervalInMinutes);
 				int csmCleanupIntervalInMinutes = getIntervalInMinutes(
 						actionServlet.getServletConfig(),
 						"csmCleanupIntervalInMinutes");
@@ -91,7 +92,7 @@ public class SchedulerPlugin implements PlugIn {
 					.getInitParameter(parameterName));
 		} catch (NumberFormatException e) {
 			// use default
-			interval = Constants.DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
+			interval = DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
 		}
 		return interval;
 	}
@@ -99,8 +100,8 @@ public class SchedulerPlugin implements PlugIn {
 	public void initialiseCSMCleanupJob(int intervalInMinutes) {
 		try {
 			if (intervalInMinutes == 0) {
-				// default is 240 minutes
-				intervalInMinutes = Constants.DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
+				// default is 1 minute
+				intervalInMinutes = DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
 			}
 
 			JobDetail jobDetail = new JobDetail("CSMCleanupJob", null,
