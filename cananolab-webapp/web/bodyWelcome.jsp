@@ -62,7 +62,7 @@
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
 					coords="60,375,156,413" alt="rectangle" />
 
-				<c:if test="${!empty user && user.curator}">
+				<c:if test="${!empty user}">
 					<%-- Submit Protocols --%>
 					<area href="protocol.do?dispatch=setupNew&page=0" shape="rect"
 						coords="272,36,368,74" alt="rectangle" />
