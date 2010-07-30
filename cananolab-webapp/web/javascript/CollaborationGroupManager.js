@@ -93,7 +93,7 @@ function addUserAccess() {
 	var userAccess = {
 		userBean : userBean,
 		roleName : null,
-		groupAccess : false
+		accessBy : "user"
 	};
 
 	dwr.util.getValues(userAccess);
@@ -153,6 +153,7 @@ function showMatchedUserDropdown() {
 	// display progress.gif while waiting for the response.
 	show("loaderImg");
 	hide("matchedUserNameSelect");
+	hide("cancelBrowse");
 	var selected = dwr.util.getValue("matchedUserNameSelect");
 	var loginName = dwr.util.getValue("userBean.loginName");
 	CollaborationGroupManager.getMatchedUsers(loginName, function(data) {
@@ -161,6 +162,7 @@ function showMatchedUserDropdown() {
 		dwr.util.setValue("matchedUserNameSelect", selected);
 		hide("loaderImg");
 		show("matchedUserNameSelect");
+		show("cancelBrowse");
 	});
 }
 
@@ -168,4 +170,11 @@ function updateUserLoginName() {
 	var selected = dwr.util.getValue("matchedUserNameSelect");
 	dwr.util.setValue("userBean.loginName", selected);
 	hide("matchedUserNameSelect");
+	hide("cancelBrowse");
+}
+
+
+function cancelBrowseSelect() {
+	hide("matchedUserNameSelect");
+	hide("cancelBrowse");
 }

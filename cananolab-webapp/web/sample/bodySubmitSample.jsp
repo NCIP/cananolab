@@ -89,6 +89,10 @@
 		<c:set var="dataType" value="Sample"/>
 		<c:set var="parentForm" value="sampleForm"/>
 		<c:set var="protectedData" value="${sampleForm.map.sampleBean.domain.id}"/>
+		<c:set var="newData" value="true"/>
+		<c:if test="${updateProtocol}">
+		   <c:set var="newData" value="false"/>
+		</c:if>
 		<%@include file="../bodyManageAccessibility.jsp" %>
 		<c:if test="${!empty updateSample}">
 			<tr>
@@ -111,7 +115,7 @@
 			<tr>
 			<td colspan="2" align="center">
 				<c:set var="dataAvailabilityStyle" value="display:none" />
-				<div style="${dataAvailabilityStyle}" id="dataAvailability" ></div>					
+				<div style="${dataAvailabilityStyle}" id="dataAvailability" ></div>
 			</td>
 		</tr>
 		</c:if>
@@ -123,15 +127,12 @@
 	<c:set var="resetOnclick" value="this.form.reset();" />
 	<c:set var="deleteOnclick"
 		value="deleteData('sample', sampleForm, 'sample', 'delete')" />
-	<c:set var="deleteButtonName" value="Delete" />	
+	<c:set var="deleteButtonName" value="Delete" />
 	<c:set var="cloneOnclick"
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="5" />
 	<c:set var="review" value="false"/>
-	<c:if test="${user.curator && !empty updateSample}">
-		<c:set var="assignPublic" value="true" />
-	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 

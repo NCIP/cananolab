@@ -106,21 +106,6 @@
 					cols="60" styleId="fileDescription" />
 			</td>
 		</tr>
-		<tr>
-			<td class="cellLabel" valign="top">
-				<strong>Visibility</strong>
-			</td>
-			<td>
-				<html:select property="${fileParent}.theFile.visibilityGroups"
-					multiple="true" size="6" styleId="fileVisibility">
-					<html:options name="allVisibilityGroups" />
-				</html:select>
-				<br>
-				<i>(${applicationOwner}_Researcher and
-					${applicationOwner}_DataCurator are defaults if none of above is
-					selected)</i>
-			</td>
-		</tr>
 		<c:if test="${actionName eq 'characterization'}">
 			<html:hidden property="${fileParent}.theFile.domainFile.id"
 				styleId="hiddenFileId" />

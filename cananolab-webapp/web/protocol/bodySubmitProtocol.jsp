@@ -27,7 +27,7 @@
 			<td class="cellLabel">
 				Protocol Type*
 			</td>
-			<td colspan="3">
+			<td>
 				<div id="protocolTypePrompt">
 					<html:select styleId="protocolType" property="protocol.domain.type"
 						onchange="javascript:callPrompt('Protocol Type', 'protocolType', 'protocolTypePrompt'); retrieveProtocolNames();">
@@ -44,7 +44,7 @@
 			<td class="cellLabel">
 				Protocol Name*
 			</td>
-			<td colspan="3">
+			<td>
 				<div id="protocolNamePrompt">
 					<html:select styleId="protocolName" property="protocol.domain.name"
 						onchange="javascript:callPrompt('Protocol Name', 'protocolName', 'protocolNamePrompt'); retrieveProtocolVersions()">
@@ -78,6 +78,8 @@
 					</html:select>
 				</div>
 			</td>
+		</tr>
+		<tr>
 			<td class="cellLabel" width="20%">
 				Protocol Abbreviation
 			</td>
@@ -90,7 +92,7 @@
 			<td class="cellLabel">
 				Protocol File
 			</td>
-			<td colspan="3">
+			<td>
 				<html:file property="protocol.fileBean.uploadedFile"
 					onchange="javascript:writeLink(null);" />
 				&nbsp;&nbsp;
@@ -113,7 +115,7 @@
 			<td class="cellLabel">
 				File Title
 			</td>
-			<td colspan="3">
+			<td>
 				<html:text styleId="fileTitle"
 					property="protocol.fileBean.domainFile.title" size="100" />
 			</td>
@@ -122,26 +124,26 @@
 			<td class="cellLabel">
 				Description
 			</td>
-			<td colspan="3">
+			<td>
 				<html:textarea styleId="fileDescription"
 					property="protocol.fileBean.domainFile.description" rows="3"
 					cols="80" />
 			</td>
 		</tr>
-		<tr>
-			<td class="cellLabel">
-				Visibility
-			</td>
-			<td colspan="3">
-				<html:select property="protocol.visibilityGroups" multiple="true"
-					size="6" styleId="visibility">
-					<html:options name="allVisibilityGroups" />
-				</html:select>
-				<br>
-				<i>(${applicationOwner}_Researcher and
-					${applicationOwner}_DataCurator are always selected by default.)</i>
-			</td>
-		</tr>
+		<c:set var="groupAccesses"
+			value="${protocolForm.map.protocol.groupAccesses}" />
+		<c:set var="userAccesses"
+			value="${protocolForm.map.protocol.userAccesses}" />
+		<c:set var="accessParent" value="protocol" />
+		<c:set var="dataType" value="Protocol" />
+		<c:set var="parentForm" value="protocolForm" />
+		<c:set var="protectedData"
+			value="${protocolForm.map.protocol.domain.id}" />
+		<c:set var="newData" value="true"/>
+		<c:if test="${updateSample}">
+		   <c:set var="newData" value="false"/>
+		</c:if>
+		<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
 	<br>
 	<c:set var="updateId" value="${param.protocolId}" />

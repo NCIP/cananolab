@@ -419,20 +419,19 @@
 	</c:choose>
 	<br>
 	<table width="100%" align="center" class="submissionView">
-		<tr>
-			<td class="cellLabel" width="110">
-				Visibility
-			</td>
-			<td>
-				<html:select property="publication.visibilityGroups" multiple="true"
-					size="6" styleId="visibilityGroups">
-					<html:options name="allVisibilityGroups" />
-				</html:select>
-				<br>
-				<i>(${applicationOwner}_Researcher and
-					${applicationOwner}_DataCurator are always selected by default.)</i>
-			</td>
-		</tr>
+	<c:set var="groupAccesses"
+		value="${publicationForm.map.publication.groupAccesses}" />
+	<c:set var="userAccesses"
+		value="${publicationForm.map.publication.userAccesses}" />
+	<c:set var="accessParent" value="publication" />
+	<c:set var="dataType" value="Publication" />
+	<c:set var="parentForm" value="publicationForm" />
+	<c:set var="protectedData"  value="${publicationForm.map.publication.domainFile.id}" />
+	<c:set var="newData" value="true"/>
+	<c:if test="${updatePublication}">
+		<c:set var="newData" value="false" />
+	</c:if>
+	<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
 	<br>
 	<c:set var="updateId" value="${param.publicationId}" />
