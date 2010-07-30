@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -192,7 +193,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			List<Characterization> chars = helper
 					.findCharacterizationsBySampleId(sampleId);
 			for (Characterization achar : chars) {
-				CharacterizationBean charBean =  new CharacterizationBean(achar);
+				CharacterizationBean charBean = new CharacterizationBean(achar);
 				charBeans.add(charBean);
 			}
 			return charBeans;
@@ -281,6 +282,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Boolean newConfig = true;
+			Boolean newTechnique = true;
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
 				newConfig = false;
@@ -300,6 +302,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			// check if technique already exists;
 			Technique dbTechnique = findTechniqueByType(technique.getType());
 			if (dbTechnique != null) {
+				newTechnique = false;
 				technique.setId(dbTechnique.getId());
 				technique.setCreatedBy(dbTechnique.getCreatedBy());
 				technique.setCreatedDate(dbTechnique.getCreatedDate());
@@ -308,7 +311,6 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				technique.setCreatedBy(config.getCreatedBy());
 				technique.setCreatedDate(new Date());
 			}
-			// check if instrument already exists;
 			if (config.getInstrumentCollection() != null) {
 				Collection<Instrument> instruments = new HashSet<Instrument>(
 						config.getInstrumentCollection());
@@ -331,6 +333,16 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			appService.saveOrUpdate(config);
 			if (newConfig) {
 				this.saveDefaultAccessibility(config.getId().toString());
+				// assign public access to instrument
+				for (Instrument instrument : config.getInstrumentCollection()) {
+					this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS,
+							instrument.getId().toString());
+				}
+			}
+			if (newTechnique) {
+				//assign public access to technique
+				this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
+						.getTechnique().getId().toString());
 			}
 
 		} catch (Exception e) {
@@ -607,17 +619,17 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 	private void assignAccessibility(AccessibilityBean access,
 			ExperimentConfig config) throws Exception {
 		super.saveAccessibility(access, config.getId().toString());
-		// assign instruments and technique to public visibility
-		if (config.getTechnique() != null) {
-			super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
-					.getTechnique().getId().toString());
-		}
-		if (config.getInstrumentCollection() != null) {
-			for (Instrument instrument : config.getInstrumentCollection()) {
-				super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, instrument
-						.getId().toString());
-			}
-		}
+		// // assign instruments and technique to public visibility
+		// if (config.getTechnique() != null) {
+		// super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
+		// .getTechnique().getId().toString());
+		// }
+		// if (config.getInstrumentCollection() != null) {
+		// for (Instrument instrument : config.getInstrumentCollection()) {
+		// super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, instrument
+		// .getId().toString());
+		// }
+		// }
 	}
 
 	public CharacterizationServiceHelper getHelper() {
