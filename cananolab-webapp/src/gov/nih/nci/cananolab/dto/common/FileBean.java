@@ -24,10 +24,6 @@ import org.apache.struts.upload.FormFile;
 public class FileBean extends SecuredDataBean {
 	protected File domainFile = new File();
 
-	private String[] visibilityGroups = new String[0];
-
-	private String visibilityStr;
-
 	private boolean image = false;
 
 	private String keywordsStr;
@@ -58,27 +54,6 @@ public class FileBean extends SecuredDataBean {
 				externalUrl = file.getUri();
 			}
 		}
-	}
-
-	public String[] getVisibilityGroups() {
-		return this.visibilityGroups;
-	}
-
-	public void setVisibilityGroups(String[] visibilityGroups) {
-		this.visibilityGroups = visibilityGroups;
-	}
-
-	public String getDisplayName() {
-		return getDomainFile().getTitle();
-	}
-
-	public String getVisibilityStr() {
-		this.visibilityStr = StringUtils.join(this.visibilityGroups, "<br>");
-		return this.visibilityStr;
-	}
-
-	public void setVisibilityStr(String visibilityStr) {
-		this.visibilityStr = visibilityStr;
 	}
 
 	public boolean isImage() {
@@ -204,7 +179,7 @@ public class FileBean extends SecuredDataBean {
 		copy.getDomainFile().setDescription(domainFile.getDescription());
 		copy.getDomainFile().setUriExternal(domainFile.getUriExternal());
 		copy.setKeywordsStr(keywordsStr);
-		copy.setVisibilityGroups(visibilityGroups);
+		//TODO copy accessibility
 		copy.setUploadedFile(uploadedFile);
 		copy.setExternalUrl(externalUrl);
 		copy.getDomainFile().setId(domainFile.getId());

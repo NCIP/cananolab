@@ -5,7 +5,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -37,12 +37,8 @@ public class FileServiceHelper extends BaseServiceHelper {
 		super(user);
 	}
 
-	public FileServiceHelper(AuthorizationService authService) {
-		super(authService);
-	}
-
-	public FileServiceHelper(AuthorizationService authService, UserBean user) {
-		super(authService, user);
+	public FileServiceHelper(SecurityService securityService) {
+		super(securityService);
 	}
 
 	/**

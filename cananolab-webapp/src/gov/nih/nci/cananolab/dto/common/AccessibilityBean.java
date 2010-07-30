@@ -3,20 +3,23 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.util.Constants;
 
 public class AccessibilityBean {
-	private UserBean userBean = new UserBean();
+	public static final String CURD_ROLE_DISPLAY_NAME = "read update delete";
+	public static final String R_ROLE_DISPLAY_NAME = "read";
+	public static final String ACCESS_BY_GROUP = "group";
+	public static final String ACCESS_BY_USER = "user";
+	public static final String ACCESS_BY_PUBLIC = "public";
+
+	private UserBean userBean = new UserBean("", "");
 	private String groupName;
 	private String roleName;
 	private String roleDisplayName;
-	private boolean groupAccess = true;
-
-	public static final String CURD_ROLE_DISPLAY_NAME = "read update delete";
-	public static final String R_ROLE_DISPLAY_NAME = "read";
+	private String accessBy = ACCESS_BY_GROUP;
 
 	public AccessibilityBean() {
 	}
 
-	public AccessibilityBean(boolean groupAccess) {
-		this.groupAccess = groupAccess;
+	public AccessibilityBean(String accessBy) {
+		this.accessBy = accessBy;
 	}
 
 	public UserBean getUserBean() {
@@ -57,7 +60,8 @@ public class AccessibilityBean {
 	public boolean equals(Object obj) {
 		if (obj instanceof AccessibilityBean) {
 			AccessibilityBean access = (AccessibilityBean) obj;
-			if (isGroupAccess()) {
+			if (accessBy.equals(ACCESS_BY_GROUP)
+					|| accessBy.equals(ACCESS_BY_PUBLIC)) {
 				if (access.getGroupName().equals(getGroupName())) {
 					return true;
 				}
@@ -75,7 +79,7 @@ public class AccessibilityBean {
 	 * Returns hash code for the primary key of the object
 	 */
 	public int hashCode() {
-		if (isGroupAccess()) {
+		if (accessBy.equals(ACCESS_BY_USER)) {
 			if (getUserBean().getLoginName() != null)
 				return getUserBean().getLoginName().hashCode();
 			return 0;
@@ -86,11 +90,11 @@ public class AccessibilityBean {
 		}
 	}
 
-	public boolean isGroupAccess() {
-		return groupAccess;
+	public String getAccessBy() {
+		return accessBy;
 	}
 
-	public void setGroupAccess(boolean groupAccess) {
-		this.groupAccess = groupAccess;
+	public void setAccessBy(String accessBy) {
+		this.accessBy = accessBy;
 	}
 }
