@@ -92,7 +92,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 		List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
 		try {
-			if (!securityService.checkCreatePermission(protectedData)) {
+			if (!securityService.checkReadPermission(protectedData)) {
 				throw new NoAccessException();
 			}
 			Map<String, String> groupRoles = securityService
@@ -128,7 +128,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 		List<AccessibilityBean> userAccesses = new ArrayList<AccessibilityBean>();
 		try {
-			if (!securityService.checkCreatePermission(protectedData)) {
+			if (!securityService.checkReadPermission(protectedData)) {
 				throw new NoAccessException();
 			}
 			Map<String, String> userRoles = securityService
