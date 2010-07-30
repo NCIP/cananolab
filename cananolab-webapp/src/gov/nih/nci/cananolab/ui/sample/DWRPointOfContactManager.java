@@ -6,10 +6,7 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.StringUtils;
-
-import java.util.List;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,8 +20,10 @@ public class DWRPointOfContactManager {
 
 	private SampleServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		service = new SampleServiceLocalImpl(user);
+		SecurityService securityService = (SecurityService) wctx.getSession()
+				.getAttribute("securityService");
+
+		service = new SampleServiceLocalImpl(securityService);
 		return service;
 	}
 
@@ -78,60 +77,5 @@ public class DWRPointOfContactManager {
 		} else {
 			return null;
 		}
-	}
-
-	public String[] removeOrgFromVisibilityGroupsByPocId(String id,
-			Boolean primaryStatus) throws Exception {
-		PointOfContactBean pocBean = this.getPointOfContactById(id,
-				primaryStatus);
-		if (pocBean == null) {
-			return null;
-		}
-		String orgName = pocBean.getDomain().getOrganization().getName();
-		return removeOrgFromVisibilityGroupsByOrgName(orgName);
-	}
-
-	public String[] removeOrgFromVisibilityGroupsByOrgName(String orgName)
-			throws Exception {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		List<String> visibilityGroup = InitSecuritySetup.getInstance()
-				.getAllVisibilityGroups(request);
-		visibilityGroup.remove(orgName);
-		return visibilityGroup.toArray(new String[0]);
-	}
-
-	public String[] resetVisibilityGroups() throws Exception {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		List<String> visibilityGroup = InitSecuritySetup.getInstance()
-				.getAllVisibilityGroups(request);
-		return visibilityGroup.toArray(new String[0]);
-	}
-
-	public String[] resetSampleVisibilityGroups() throws Exception {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		List<String> visibilityGroup = InitSecuritySetup.getInstance()
-				.getAllVisibilityGroups(request);
-		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("sampleForm"));
-		if (sampleForm == null) {
-			return null;
-		}
-		SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
-		String orgName = null;
-		if (sample.getPrimaryPOCBean() != null
-				&& sample.getPrimaryPOCBean().getDomain().getId() != null) {
-			orgName = sample.getPrimaryPOCBean().getDomain().getOrganization()
-					.getName();
-			if (!StringUtils.isEmpty(orgName)) {
-				visibilityGroup.remove(orgName);
-			}
-		}
-		return visibilityGroup.toArray(new String[0]);
 	}
 }

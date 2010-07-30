@@ -16,7 +16,7 @@ import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -43,6 +43,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 public class SearchSampleAction extends AbstractDispatchAction {
 
 	private DataAvailabilityService dataAvailabilityService;
+
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -79,7 +80,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				displayPage, Constants.DISPLAY_TAG_TABLE_SIZE, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user != null) {
-			loadUserAccess(user, sampleBeansPerPage);
+			loadUserAccess(request, sampleBeansPerPage);
 		}
 		request.setAttribute("samples", sampleBeansPerPage);
 		// get the total size of collection , required for display tag to
@@ -233,7 +234,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			if (i < sampleBeans.size()) {
 				String sampleId = sampleBeans.get(i).getDomain().getId()
 						.toString();
-				
+
 				SampleBean sampleBean = service.findSampleById(sampleId);
 				if (sampleBean != null) {
 					Sample sample = sampleBean.getDomain();
@@ -252,32 +253,35 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					sampleBean.setFunctionClassNames(helper
 							.getStoredFunctionClassNames(sample).toArray(
 									new String[0]));
-					//get data availability for the samples
-					List<DataAvailabilityBean> dataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleId);
+					// get data availability for the samples
+					List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+							.findDataAvailabilityBySampleId(sampleId);
 					dataAvailabilityMapPerPage.put(sampleId, dataAvailability);
-					if(!dataAvailability.isEmpty() && dataAvailability.size() > 0){
+					if (!dataAvailability.isEmpty()
+							&& dataAvailability.size() > 0) {
 						sampleBean.setDataAvailability(dataAvailability);
 						sampleBean.setHasDataAvailability(true);
-						calculateDataAvailabilityScore(sampleBean, dataAvailability);
+						calculateDataAvailabilityScore(sampleBean,
+								dataAvailability);
 					}
 					loadedSampleBeans.add(sampleBean);
 				}
 			}
 		}
-		request.getSession().setAttribute("dataAvailabilityMapPerPage", dataAvailabilityMapPerPage);
+		request.getSession().setAttribute("dataAvailabilityMapPerPage",
+				dataAvailabilityMapPerPage);
 		return loadedSampleBeans;
 	}
 
-	private void loadUserAccess(UserBean user, List<SampleBean> sampleBeans)
-			throws Exception {
+	private void loadUserAccess(HttpServletRequest request,
+			List<SampleBean> sampleBeans) throws Exception {
 		List<String> sampleIds = new ArrayList<String>();
 		for (SampleBean sampleBean : sampleBeans) {
 			sampleIds.add(sampleBean.getDomain().getId().toString());
 		}
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		Map<String, List<String>> privilegeMap = authService.getPrivilegeMap(
-				user.getLoginName(), sampleIds);
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		Map<String, List<String>> privilegeMap = securityService
+				.getPrivilegeMap(sampleIds);
 		for (SampleBean sampleBean : sampleBeans) {
 			List<String> privileges = privilegeMap.get(sampleBean.getDomain()
 					.getId().toString());
@@ -310,18 +314,24 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		this.dataAvailabilityService = dataAvailabilityService;
 	}
 
-	
-	private void calculateDataAvailabilityScore(SampleBean sampleBean, List<DataAvailabilityBean> dataAvailability){
-		
+	private void calculateDataAvailabilityScore(SampleBean sampleBean,
+			List<DataAvailabilityBean> dataAvailability) {
+
 		ServletContext appContext = this.getServlet().getServletContext();
-		SortedSet<String> minchar = (SortedSet<String>)appContext.getAttribute("MINChar");
-		Map<String , String> attributes = (Map<String,String>)appContext.getAttribute("caNano2MINChar");
-		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar, attributes);
+		SortedSet<String> minchar = (SortedSet<String>) appContext
+				.getAttribute("MINChar");
+		Map<String, String> attributes = (Map<String, String>) appContext
+				.getAttribute("caNano2MINChar");
+		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar,
+				attributes);
 	}
+
 	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return sampleService;
 	}

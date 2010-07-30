@@ -8,12 +8,12 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SearchSampleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -123,10 +123,10 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 						sampleSearchResult.size());
 				SampleService service = this.setServiceInSession(request);
 				for (AdvancedSampleBean sample : sampleSearchResult) {
-					String sampleName = sample.getSampleName();
+					String sampleId = sample.getSampleId();
 					AdvancedSampleBean loadedAdvancedSample = null;
 					loadedAdvancedSample = service
-							.findAdvancedSampleByAdvancedSearch(sampleName,
+							.findAdvancedSampleByAdvancedSearch(sampleId,
 									searchBean);
 					samplesFullList.add(loadedAdvancedSample);
 				}
@@ -197,7 +197,7 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		List<String> sampleNames = service
-				.findSampleNamesByAdvancedSearch(searchBean);
+				.findSampleIdsByAdvancedSearch(searchBean);
 		List<AdvancedSampleBean> sampleBeans = new ArrayList<AdvancedSampleBean>();
 		for (String name : sampleNames) {
 			AdvancedSampleBean sampleBean = new AdvancedSampleBean(name);
@@ -220,9 +220,9 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		}
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
-				String sampleName = sampleBeans.get(i).getSampleName();
+				String sampleId = sampleBeans.get(i).getSampleId();
 				AdvancedSampleBean loadedAdvancedSample = service
-						.findAdvancedSampleByAdvancedSearch(sampleName,
+						.findAdvancedSampleByAdvancedSearch(sampleId,
 								searchBean);
 				loadedSampleBeans.add(loadedAdvancedSample);
 			}
@@ -289,8 +289,11 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 
 	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return sampleService;
 	}

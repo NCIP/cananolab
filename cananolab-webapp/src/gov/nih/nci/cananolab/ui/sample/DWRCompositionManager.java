@@ -11,8 +11,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
@@ -37,8 +36,9 @@ public class DWRCompositionManager {
 
 	private CompositionServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		compService = new CompositionServiceLocalImpl(user);
+		SecurityService securityService = (SecurityService) wctx.getSession()
+				.getAttribute("securityService");
+		compService = new CompositionServiceLocalImpl(securityService);
 		return compService;
 	}
 
@@ -87,26 +87,12 @@ public class DWRCompositionManager {
 	}
 
 	public FileBean resetTheFile(String type) throws Exception {
-		WebContext wctx = WebContextFactory.get();
-
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
 		if (compositionForm == null) {
 			return null;
 		}
 		FileBean fileBean = new FileBean();
-		// set file default visibilities
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		// get assigned visible groups for samples
-		String sampleName = (String) wctx.getSession().getAttribute(
-				"sampleName");
-		if (sampleName == null) {
-			return null;
-		}
-		String[] visibilityGroups = authService.getAccessibleGroups(sampleName,
-				Constants.CSM_READ_PRIVILEGE);
-		fileBean.setVisibilityGroups(visibilityGroups);
 
 		if (type.equals("nanomaterialEntity")) {
 			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm

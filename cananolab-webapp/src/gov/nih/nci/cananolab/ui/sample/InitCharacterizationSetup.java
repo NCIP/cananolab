@@ -5,13 +5,13 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -342,23 +342,25 @@ public class InitCharacterizationSetup {
 
 	private SampleService getSampleServiceFromSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
 		if (request.getSession().getAttribute("sampleService") != null) {
 			return (SampleService) request.getSession().getAttribute(
 					"sampleService");
 		} else {
-			return new SampleServiceLocalImpl(user);
+			return new SampleServiceLocalImpl(securityService);
 		}
 	}
 
 	private CharacterizationService getCharacterizationServiceFromSession(
 			HttpServletRequest request) throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
 		if (request.getSession().getAttribute("characterizationService") != null) {
 			return (CharacterizationService) request.getSession().getAttribute(
 					"characterizationService");
 		} else {
-			return new CharacterizationServiceLocalImpl(user);
+			return new CharacterizationServiceLocalImpl(securityService);
 		}
 	}
 }

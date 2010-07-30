@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -136,6 +137,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 
 		compService.saveFunctionalizingEntity(sampleBean, entityBean);
+
+		// save accessibility based on sample accessibility
+		compService.assignAccessibility(entityBean.getDomainEntity());
+
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
@@ -329,7 +334,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		entityBean.setupDomainEntity(user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
-				.getDomainEntity(), true);
+				.getDomainEntity());
+		// TODO remove accessibility
+
 		ActionMessage msg = new ActionMessage(
 				"message.deleteFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -382,11 +389,14 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 	private CompositionService setServicesInSession(HttpServletRequest request)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
 
-		CompositionService compService = new CompositionServiceLocalImpl(user);
+		CompositionService compService = new CompositionServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(user);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}

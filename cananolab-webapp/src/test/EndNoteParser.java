@@ -5,8 +5,6 @@ package test;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.publication.EndNoteXMLHandler;
-import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -37,7 +35,6 @@ public class EndNoteParser {
 		String inputFileName = null;
 		String outputFileName = null;
 		PrintStream p = System.out;
-		UserBean user = null;
 		if (args != null && args.length > 2) {
 			if (args.length == 3) {
 				inputFileName = args[2];
@@ -55,21 +52,11 @@ public class EndNoteParser {
 				printHelpPage();
 				return;
 			}
-			System.setProperty("gov.nih.nci.security.configFile",
-		 		"C:/caNanolab_1.5/conf/standalone/ApplicationSecurityConfig.xml");
+			System
+					.setProperty("gov.nih.nci.security.configFile",
+							"C:/caNanolab_1.5/conf/standalone/ApplicationSecurityConfig.xml");
 			System.setProperty("java.security.auth.login.config",
-				"C:/caNanolab_1.5/conf/standalone/login.config");
-			String userLoginName = args[0];
-			String userPassword = args[1];
-			// Call CSM to authenticate the user.
-			try {
-				LoginService loginservice = new LoginService(
-						Constants.CSM_APP_NAME);
-				user = loginservice.login(userLoginName, userPassword);
-			} catch (Exception e) {
-				System.out.println("Can't log in the user");
-				e.printStackTrace();
-			}
+					"C:/caNanolab_1.5/conf/standalone/login.config");
 		} else {
 			printHelpPage();
 			return;
@@ -77,6 +64,9 @@ public class EndNoteParser {
 		boolean isSuccess = false;
 		EndNoteXMLHandler endNotehandler = null;
 		try {
+			String userLoginName = args[0];
+			String userPassword = args[1];
+			UserBean user = new UserBean(userLoginName, userPassword);
 			endNotehandler = new EndNoteXMLHandler(inputFileName, true);
 			isSuccess = endNotehandler.parsePublicationXML(user);
 		} catch (Exception ex) {
