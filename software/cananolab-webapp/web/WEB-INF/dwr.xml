@@ -250,6 +250,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.AccessibilityBean"></convert>
 		<convert converter="bean" match="gov.nih.nci.cananolab.dto.common.UserBean">
+			<param name="exclude" value="domain"/>
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.CollaborationGroupBean"></convert>
