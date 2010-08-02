@@ -3,6 +3,10 @@ package gov.nih.nci.cananolab.dto.common;
 import java.util.Date;
 
 public class DataReviewStatusBean {
+	public static final String PENDING_STATUS = "pending";
+	public static final String PUBLIC_STATUS = "public";
+	public static final String RETRACTED_STATUS = "retracted";
+
 	private String dataId;
 	private String dataName;
 	private String dataType;
@@ -73,9 +77,8 @@ public class DataReviewStatusBean {
 			reviewLink = PUBLICATION_LINK_PREFIX;
 		} else if (dataType.equalsIgnoreCase("protocol")) {
 			reviewLink = PROTOCOL_LINK_PREFIX;
-		}
-		else {
-			reviewLink="";
+		} else {
+			reviewLink = "";
 		}
 		reviewLink += dataId;
 		return reviewLink;
