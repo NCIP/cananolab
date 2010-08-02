@@ -66,6 +66,9 @@ public class UserBean {
 
 	private User domain;
 
+	public UserBean() {
+	}
+
 	public UserBean(String loginName, String password) {
 		this.loginName = loginName;
 		this.password = password;
