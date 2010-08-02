@@ -9,7 +9,7 @@ public class AccessibilityBean {
 	public static final String ACCESS_BY_USER = "user";
 	public static final String ACCESS_BY_PUBLIC = "public";
 
-	private UserBean userBean = new UserBean("", "");
+	private UserBean userBean = new UserBean();
 	private String groupName;
 	private String roleName;
 	private String roleDisplayName;
