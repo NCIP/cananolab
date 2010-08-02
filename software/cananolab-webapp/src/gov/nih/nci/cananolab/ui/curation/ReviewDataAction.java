@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.curation.CurationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 
 import java.util.List;
@@ -38,9 +39,11 @@ public class ReviewDataAction extends AbstractDispatchAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<DataReviewStatusBean> dataPendingReview = curationService
-				.findDataPendingReview();
+				.findDataPendingReview(securityService);
 		request.setAttribute("dataPendingReview", dataPendingReview);
 		return mapping.findForward("setup");
 	}
