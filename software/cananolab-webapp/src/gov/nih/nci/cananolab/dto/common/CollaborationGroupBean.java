@@ -12,6 +12,7 @@ public class CollaborationGroupBean {
 	private List<AccessibilityBean> userAccessibilities = new ArrayList<AccessibilityBean>();
 	private AccessibilityBean theUserAccessibility = new AccessibilityBean(
 			AccessibilityBean.ACCESS_BY_USER);
+	private String ownerName;
 
 	public CollaborationGroupBean() {
 		for (AccessibilityBean access : userAccessibilities) {
@@ -79,5 +80,13 @@ public class CollaborationGroupBean {
 
 	public void removeUserAccess(AccessibilityBean userAccess) {
 		userAccessibilities.remove(userAccess);
+	}
+
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
 	}
 }
