@@ -30,6 +30,14 @@ function populateCollaborationGroup(group) {
 			dwr.util.setValue("groupName", group.name);
 			dwr.util.setValue("groupDescription", group.description);
 			dwr.util.setValue("groupId", group.id);
+			if (group.ownerName!=null) {
+				show("userSection");
+				show("userLabel");
+			}
+			else {
+				hide("userSection");
+				hide("userLabel");
+			}
 		}
 		// clear the cache for each new collaborationGroup
 		userAccessCache = {};
