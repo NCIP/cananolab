@@ -995,5 +995,20 @@ public class BaseServiceLocalImpl implements BaseService {
 				throw new SecurityException();
 			}
 		}
+
+		public void assignOwner(String protectedData, String userLoginName)
+				throws SecurityException {
+			try {
+				ProtectionElement pe = securityService
+						.getProtectionElement(protectedData);
+				User user = authManager.getUser(userLoginName);
+				authManager.assignOwners(
+						pe.getProtectionElementId().toString(),
+						new String[] { user.getUserId().toString() });
+			} catch (Exception e) {
+				logger.error("Error in assigning an owner", e);
+				throw new SecurityException();
+			}
+		}
 	}
 }
