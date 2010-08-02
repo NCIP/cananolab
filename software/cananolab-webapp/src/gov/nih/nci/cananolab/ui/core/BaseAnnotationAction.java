@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -8,6 +9,7 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +45,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  *
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
+	protected CurationService curationService;
 
 	/**
 	 * setupSample() will retrieve a SampleBean based on the sampleId which is
@@ -336,4 +340,96 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			return false;
 		}
 	}
+
+	public ActionForward submitForReview(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+		String dataId = request.getParameter("reviewDataId");
+		String dataType = request.getParameter("reviewDataType");
+		String dataName = request.getParameter("reviewDataName");
+		DataReviewStatusBean dataReviewStatusBean = new DataReviewStatusBean();
+		dataReviewStatusBean.setDataId(dataId);
+		dataReviewStatusBean.setDataName(dataName);
+		dataReviewStatusBean.setDataType(dataType);
+		dataReviewStatusBean
+				.setReviewStatus(DataReviewStatusBean.PENDING_STATUS);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		dataReviewStatusBean.setSubmittedBy(user.getLoginName());
+		dataReviewStatusBean.setSubmittedDate(new Date());
+		curationService.submitDataForReview(dataReviewStatusBean,
+				securityService);
+		String forwardName = "summaryEdit";
+
+		ActionMessages messages = new ActionMessages();
+		ActionMessage msg = null;
+		msg = new ActionMessage("message.submitReview");
+		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, messages);
+		return mapping.findForward(forwardName);
+	}
+
+	protected void setUpSubmitForReviewButton(HttpServletRequest request,
+			String dataId) throws Exception {
+		// show 'submit for review' button if sample is not public and user is
+		// not curator
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		DataReviewStatusBean reviewStatus = curationService
+				.findDataReviewStatusBeanByDataId(dataId, securityService);
+		if (!user.isCurator()
+				&& (reviewStatus == null || reviewStatus != null
+						&& reviewStatus.getReviewStatus().equals(
+								DataReviewStatusBean.RETRACTED_STATUS))) {
+			request.setAttribute("review", true);
+		} else {
+			request.setAttribute("review", false);
+		}
+	}
+
+	protected void updateReviewStatusToPublic(HttpServletRequest request,
+			String dataId) throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		DataReviewStatusBean reviewStatus = curationService
+				.findDataReviewStatusBeanByDataId(dataId, securityService);
+		if (user.isCurator()
+				&& reviewStatus != null
+				&& reviewStatus.getReviewStatus().equals(
+						DataReviewStatusBean.PENDING_STATUS)) {
+			reviewStatus.setReviewStatus(DataReviewStatusBean.PUBLIC_STATUS);
+			curationService.submitDataForReview(reviewStatus, securityService);
+		}
+	}
+
+	protected Boolean retractFromPublic(DynaValidatorForm theForm,
+			HttpServletRequest request, String dataId) throws Exception {
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		Boolean retractStatus = false;
+		DataReviewStatusBean reviewStatus = curationService
+				.findDataReviewStatusBeanByDataId(dataId, securityService);
+		if (reviewStatus != null
+				&& reviewStatus.getReviewStatus().equals(
+						DataReviewStatusBean.PUBLIC_STATUS)) {
+			reviewStatus.setReviewStatus(DataReviewStatusBean.RETRACTED_STATUS);
+			curationService.submitDataForReview(reviewStatus, securityService);
+			removePublicAccess(theForm, request);
+			retractStatus = true;
+		}
+		return retractStatus;
+	}
+
+	protected void removePublicAccess(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+	}
+
+	public CurationService getCurationService() {
+		return curationService;
+	}
+
+	public void setCurationService(CurationService curationService) {
+		this.curationService = curationService;
+	}
+
 }
