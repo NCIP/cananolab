@@ -714,6 +714,19 @@ public class SecurityService {
 		return roleName;
 	}
 
+	public Boolean isOwner(String protectedData) throws SecurityException {
+		Boolean isOwner = false;
+		try {
+			ProtectionElement pe = this.getProtectionElement(protectedData);
+			isOwner = authorizationManager.checkOwnership(userBean
+					.getLoginName(), pe.getProtectionElementId().toString());
+		} catch (Exception e) {
+			logger.error("Error in assigning an owner", e);
+			throw new SecurityException();
+		}
+		return isOwner;
+	}
+
 	public static void main(String[] args) {
 		try {
 			SecurityService service = new SecurityService(
