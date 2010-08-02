@@ -19,10 +19,6 @@
 			<c:set var="submitButtonName" value="Submit" />
 			<c:if test="${!empty updateId}">
 				<c:set var="submitButtonName" value="Update" />
-				<c:set var="validate" value="false" />
-				<c:if test="${!user.curator}">
-					<c:set var="validate" value="true" />
-				</c:if>
 			</c:if>
 			<c:if test="${disableButtons}">
 				<c:set var="disableButtonStr" value="disabled" />
@@ -31,7 +27,8 @@
 				id="resetButton" ${disableButtonStr}/>
 			&nbsp;
 			<c:if test="${!empty review && review eq 'true'}">
-				<input type="button" value="Submit for Review" id="reviewButton" />
+				<input type="button" value="Submit for Review" id="reviewButton"
+					onclick="${submitForReviewOnclick}" />
 			</c:if>
 			<c:choose>
 				<c:when test="${!empty submitOnclick }">
@@ -43,7 +40,7 @@
 						<c:when test="${validate eq 'true'}">
 							<html:submit value="${submitButtonName}" styleId="submitButton"
 								disabled="${disableButtons}"
-								onclick="javascript:confirmPublicDataUpdate;" />
+								onclick="javascript:return confirmPublicDataUpdate();" />
 						</c:when>
 						<c:otherwise>
 							<html:submit value="${submitButtonName}" styleId="submitButton"

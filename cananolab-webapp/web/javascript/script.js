@@ -520,9 +520,14 @@ function manageDataAvailability(sampleId, actionName, dispatch){
 }
 
 function confirmPublicDataUpdate() {
-	if (confirm("The data has been assigned to Public.  Updating it would retract it from Public.  You will need to resubmit to the curator for review again before the curator assigns it to Public again.  Are you sure to continue?")) {
+	if (confirm("The data has been assigned to Public.  Updating it would retract it from Public.  You will need to resubmit to the curator for review again before the curator reassigns it to Public.  Are you sure to continue?")) {
 		return true;
 	} else {
 		return false;
 	}
+}
+
+function submitReview(form, actionName, dataId, dataName, dataType) {
+	form.action = actionName + ".do?dispatch=submitForReview&reviewDataId=" +dataId+"&reviewDataName="+dataName+"&reviewDataType="+dataType;
+	form.submit();
 }
