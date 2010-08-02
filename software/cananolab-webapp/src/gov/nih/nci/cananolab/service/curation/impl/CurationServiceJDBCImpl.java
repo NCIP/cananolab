@@ -2,7 +2,9 @@ package gov.nih.nci.cananolab.service.curation.impl;
 
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.exception.CurationException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.curation.CurationService;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +34,6 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 			+ REVIEW_STATUS_TABLE_SUBMITTED_BY_COL
 			+ ", "
 			+ REVIEW_STATUS_TABLE_SUBMITTED_DATE_COL;
-	private static final String PENDING_STATUS = "pending";
 
 	private ParameterizedRowMapper<DataReviewStatusBean> dataReviewStatusRowMapper;
 
@@ -60,15 +61,19 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 		return dataReviewStatusRowMapper;
 	}
 
-	public List<DataReviewStatusBean> findDataPendingReview()
-			throws CurationException {
+	public List<DataReviewStatusBean> findDataPendingReview(
+			SecurityService securityService) throws CurationException,
+			NoAccessException {
 		List<DataReviewStatusBean> pendingDataList = null;
+		if (!securityService.getUserBean().isCurator()) {
+			throw new NoAccessException();
+		}
 		try {
 			JdbcTemplate template = this.getJdbcTemplate();
 			String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + " from "
 					+ REVIEW_STATUS_TABLE + " where "
 					+ REVIEW_STATUS_TABLE_STATUS_COL + "=?";
-			Object[] args = { PENDING_STATUS };
+			Object[] args = { DataReviewStatusBean.PENDING_STATUS };
 			pendingDataList = template.query(sql, args,
 					getDataReviewStatusRowMapper());
 		} catch (Exception e) {
@@ -78,19 +83,29 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 		return pendingDataList;
 	}
 
-	private DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId)
-			throws SQLException {
+	public DataReviewStatusBean findDataReviewStatusBeanByDataId(String dataId,
+			SecurityService securityService) throws CurationException,
+			NoAccessException {
 		DataReviewStatusBean dataReviewStatusBean = null;
-
-		JdbcTemplate template = this.getJdbcTemplate();
-		String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + "from "
-				+ REVIEW_STATUS_TABLE + " where status=?";
-		Object[] args = { PENDING_STATUS };
-		List result = template.query(sql, args, getDataReviewStatusRowMapper());
-		for (int i = 0; i < result.size(); i++) {
-			dataReviewStatusBean = (DataReviewStatusBean) result.get(0);
+		try {
+			if (!securityService.checkCreatePermission(dataId)) {
+				throw new NoAccessException();
+			}
+			JdbcTemplate template = this.getJdbcTemplate();
+			String sql = "select " + REVIEW_STATUS_TABLE_ALL_COLS + " from "
+					+ REVIEW_STATUS_TABLE + " where data_id=?";
+			Object[] args = { dataId };
+			List result = template.query(sql, args,
+					getDataReviewStatusRowMapper());
+			for (int i = 0; i < result.size(); i++) {
+				dataReviewStatusBean = (DataReviewStatusBean) result.get(0);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error finding existing pending for review data by Id";
+			throw new CurationException(error, e);
 		}
-
 		return dataReviewStatusBean;
 	}
 
@@ -122,16 +137,23 @@ public class CurationServiceJDBCImpl extends JdbcDaoSupport implements
 		return status;
 	}
 
-	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean)
-			throws CurationException {
+	public void submitDataForReview(DataReviewStatusBean dataReviewStatusBean,
+			SecurityService securityService) throws CurationException,
+			NoAccessException {
 		try {
-			DataReviewStatusBean existingBean = findDataReviewStatusBeanByDataId(dataReviewStatusBean
-					.getDataId());
+			if (!securityService.checkCreatePermission(dataReviewStatusBean
+					.getDataId())) {
+				throw new NoAccessException();
+			}
+			DataReviewStatusBean existingBean = findDataReviewStatusBeanByDataId(
+					dataReviewStatusBean.getDataId(), securityService);
 			if (existingBean != null) {
 				this.updateDataReviewStatusBean(dataReviewStatusBean);
 			} else {
 				this.insertDataReviewStatusBean(dataReviewStatusBean);
 			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String error = "Error in submitting data for curator review";
 			throw new CurationException(error, e);
