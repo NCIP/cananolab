@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -61,12 +62,28 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		Boolean newSample = true;
+		if (sampleBean.getDomain().getId() != null) {
+			newSample = false;
+		}
 		setServiceInSession(request);
 		saveSample(request, sampleBean);
+		// retract from public if updating an existing public record and not
+		// curator
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		if (!newSample && !user.isCurator()) {
+			Boolean retracted = retractFromPublic(theForm, request, sampleBean
+					.getDomain().getId().toString());
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		}
 		request.getSession().setAttribute("updateSample", "true");
 		request.setAttribute("theSample", sampleBean);
 
-		return mapping.findForward("summaryEdit");
+		return summaryEdit(mapping, form, request, response);
 	}
 
 	private void saveSample(HttpServletRequest request, SampleBean sampleBean)
@@ -77,6 +94,7 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		service.saveSample(sampleBean);
+
 		ActionMessages messages = new ActionMessages();
 		ActionMessage msg = null;
 		String updateSample = (String) request.getSession().getAttribute(
@@ -196,14 +214,8 @@ public class SampleAction extends BaseAnnotationAction {
 			request.getSession().setAttribute("isOwner", true);
 		}
 
-		// show 'submit for review' button is sample is not public and user is
-		// not curator
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user.isCurator() || sampleBean.getPublicStatus()) {
-			request.setAttribute("review", false);
-		} else {
-			request.setAttribute("review", true);
-		}
+		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
+				.toString());
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -565,6 +577,13 @@ public class SampleAction extends BaseAnnotationAction {
 		AccessibilityBean theAccess = sample.getTheAccess();
 		SampleService service = this.setServiceInSession(request);
 		service.assignAccessibility(theAccess, sample.getDomain());
+		// if public access, curator, pending review status, update review
+		// status to public
+		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+			updateReviewStatusToPublic(request, sample.getDomain().getId()
+					.toString());
+		}
+
 		ActionForward forward = null;
 		String updateSample = (String) request.getSession().getAttribute(
 				"updateSample");
@@ -606,6 +625,14 @@ public class SampleAction extends BaseAnnotationAction {
 		return forward;
 	}
 
+	protected void removePublicAccess(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		SampleBean sample = (SampleBean) theForm.get("sampleBean");
+		SampleService service = this.setServiceInSession(request);
+		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS, sample
+				.getDomain());
+	}
+
 	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
 		SecurityService securityService = super
@@ -622,4 +649,5 @@ public class SampleAction extends BaseAnnotationAction {
 
 		return false;
 	}
+
 }
