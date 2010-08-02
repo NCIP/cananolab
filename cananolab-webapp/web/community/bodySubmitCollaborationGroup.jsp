@@ -28,12 +28,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel" width="15%">
+		<td class="cellLabel" width="15%" id="userLabel">
 			User
 		</td>
 		<td>
 			<div id="userSection">
-				<a style="display: block" id="addUser" href="javascript:show('newUser');clearUserAccess();">Add</a>
+				<a style="display:block" id="addUser" href="javascript:show('newUser');clearUserAccess();">Add</a>
 				<br />
 				<table id="userTable" class="editTableWithGrid" width="85%"
 					style="display: none;">
