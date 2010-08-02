@@ -132,6 +132,14 @@
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="5" />
+	<c:if test="${review}">
+		<c:set var="submitForReviewOnclick"
+			value="submitReview(sampleForm, 'sample', '${sampleForm.map.sampleBean.domain.id}', '${sampleForm.map.sampleBean.domain.name}', 'sample')" />
+	</c:if>
+	<c:set var="validate" value="false" />
+	<c:if test="${!user.curator && sampleForm.map.sampleBean.publicStatus}">
+		<c:set var="validate" value="true" />
+	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
 
