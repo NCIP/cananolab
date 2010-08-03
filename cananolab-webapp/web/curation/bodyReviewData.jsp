@@ -29,7 +29,7 @@
 								Data Type
 							</th>
 							<th>
-								Data ID
+								Data Name
 							</th>
 							<th></th>
 						</tr>
