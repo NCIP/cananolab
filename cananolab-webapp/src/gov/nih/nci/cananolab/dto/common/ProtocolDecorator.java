@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -15,14 +16,17 @@ import org.displaytag.decorator.TableDecorator;
  *
  */
 public class ProtocolDecorator extends TableDecorator {
-	public String getEditURL() {
+	public String getDetailURL() {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
-		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("protocol.do?dispatch=setupUpdate&protocolId=");
-		sb.append(protocol.getDomain().getId()).append('>');
-		sb.append("Edit").append("</a>");
-		String link = sb.toString();
-		return link;
+		if (protocol.getUserUpdatable()) {
+			StringBuilder sb = new StringBuilder("<a href=");
+			sb.append("protocol.do?dispatch=setupUpdate&protocolId=");
+			sb.append(protocol.getDomain().getId()).append('>');
+			sb.append("Edit").append("</a>");
+			return sb.toString();
+		} else {
+			return "";
+		}
 	}
 
 	public SortableName getViewName() {
