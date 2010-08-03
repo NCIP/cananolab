@@ -102,12 +102,12 @@
 				<td>
 					<c:if
 						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability}">
-						<input type="button" value="Generate"
+						<input type="image" value="Generate" src="images/btn_generate.gif"
 							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 					</c:if>
 					<c:if
 						test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true' && user.admin}">
-						<input type="button" value="Edit" id="editDataAvailability"
+						<input type="image" value="Edit" id="editDataAvailability" src="images/btn_edit.gif"
 							onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView');" >
 					</c:if>
 				</td>
