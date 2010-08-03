@@ -136,11 +136,12 @@
 			value="${protocolForm.map.protocol.userAccesses}" />
 		<c:set var="accessParent" value="protocol" />
 		<c:set var="dataType" value="Protocol" />
+		<c:set var="parentAction" value="protocol" />
 		<c:set var="parentForm" value="protocolForm" />
 		<c:set var="protectedData"
 			value="${protocolForm.map.protocol.domain.id}" />
 		<c:set var="newData" value="true"/>
-		<c:if test="${updateSample}">
+		<c:if test="${updateProtocol}">
 		   <c:set var="newData" value="false"/>
 		</c:if>
 		<%@include file="../bodyManageAccessibility.jsp"%>
@@ -153,5 +154,13 @@
 		value="deleteData('protocol', protocolForm, 'protocol', 'delete')" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="2" />
+	<c:if test="${review}">
+		<c:set var="submitForReviewOnclick"
+			value="submitReview(protocolForm, 'protocol', '${protocolForm.map.protocol.domain.id}', '${protocolForm.map.protocolBean.domain.name}', 'protocol')" />
+	</c:if>
+	<c:set var="validate" value="false" />
+	<c:if test="${!user.curator && protocolForm.map.protocol.publicStatus}">
+		<c:set var="validate" value="true" />
+	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>

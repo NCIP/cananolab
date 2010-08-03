@@ -18,9 +18,7 @@
 			<display:table name="sessionScope.protocols" id="protocol"
 				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
-				<c:if test="${!empty user && user.curator}">
-					<display:column title="" property="editURL"/>
-				</c:if>
+				<display:column title="" property="detailURL" />
 				<display:column title="Protocol Name" property="viewName"
 					sortable="true" />
 				<display:column title="Protocol Abbreviation"
