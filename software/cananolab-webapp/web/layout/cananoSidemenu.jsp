@@ -56,6 +56,13 @@
 				</td>
 			</tr>
 		</c:if>
+		<c:if test="${!empty user}">
+			<tr>
+				<td class="subMenuCommentText" height="20">
+					Logged in as <i>${user.loginName}</i>
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td class="subMenuFill" height="100%">
 				&nbsp;
