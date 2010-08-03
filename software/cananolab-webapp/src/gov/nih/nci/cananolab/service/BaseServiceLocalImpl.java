@@ -100,8 +100,11 @@ public class BaseServiceLocalImpl implements BaseService {
 			for (Map.Entry<String, String> entry : groupRoles.entrySet()) {
 				String groupName = entry.getKey();
 				Group group = securityService.getGroup(groupName);
-				// include Public group and groups that user has access to
+				// include Public group, Curator group and groups that user has
+				// access to
 				if (group.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+						|| group.getGroupName().equals(
+								Constants.CSM_DATA_CURATOR)
 						|| securityService
 								.checkReadPermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
 										+ group.getGroupId())) {
@@ -109,6 +112,7 @@ public class BaseServiceLocalImpl implements BaseService {
 					AccessibilityBean access = new AccessibilityBean();
 					access.setRoleName(roleName);
 					access.setGroupName(groupName);
+					access.setAccessBy(AccessibilityBean.ACCESS_BY_GROUP);
 					groupAccesses.add(access);
 				}
 			}
@@ -140,7 +144,9 @@ public class BaseServiceLocalImpl implements BaseService {
 				access.setRoleName(roleName);
 				// don't need user ID nor password
 				access.setUserBean(new UserBean(userLoginName, null));
+				access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 				userAccesses.add(access);
+
 			}
 		} catch (NoAccessException e) {
 			throw e;
