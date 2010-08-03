@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -11,6 +12,7 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +39,10 @@ public class ProtocolAction extends BaseAnnotationAction {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
+		Boolean newProtocol = true;
+		if (protocolBean.getDomain().getId() != null) {
+			newProtocol = false;
+		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ProtocolService service = this.setServiceInSession(request);
 		protocolBean
@@ -44,6 +50,23 @@ public class ProtocolAction extends BaseAnnotationAction {
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				protocolBean);
 		service.saveProtocol(protocolBean);
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newProtocol && !user.isCurator()) {
+			Boolean retracted = retractFromPublic(theForm, request,
+					protocolBean.getDomain().getId().toString(), protocolBean
+							.getDomain().getName(), "protocol");
+			if (retracted) {
+				ActionMessages messages = new ActionMessages();
+				ActionMessage msg = null;
+				msg = new ActionMessage(
+						"message.updateSample.retractFromPublic");
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, messages);
+				setupDynamicDropdowns(request, protocolBean);
+				return mapping.findForward("inputPage");
+			}
+		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitProtocol",
 				protocolBean.getDisplayName());
@@ -112,6 +135,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		request.getSession().removeAttribute("protocolNamesByType");
 		request.getSession().removeAttribute("protocolVersionsByTypeName");
+		request.getSession().removeAttribute("updateProtocol");
 		return mapping.findForward("inputPage");
 	}
 
@@ -125,7 +149,29 @@ public class ProtocolAction extends BaseAnnotationAction {
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
 		theForm.set("protocol", protocolBean);
 		setupDynamicDropdowns(request, protocolBean);
+		if (super.isUserOwner(request, protocolBean.getDomain().getCreatedBy())) {
+			request.getSession().setAttribute("isOwner", true);
+		} else {
+			request.getSession().setAttribute("isOwner", false);
+		}
+		request.getSession().setAttribute("updateProtocol", "true");
+
+		setUpSubmitForReviewButton(request, protocolBean.getDomain().getId()
+				.toString(), protocolBean.getPublicStatus());
 		return mapping.findForward("inputPage");
+	}
+
+	private void setAccesses(HttpServletRequest request,
+			ProtocolBean protocolBean) throws Exception {
+		ProtocolService service = this.setServiceInSession(request);
+		List<AccessibilityBean> groupAccesses = service
+				.findGroupAccessibilities(protocolBean.getDomain().getId()
+						.toString());
+		List<AccessibilityBean> userAccesses = service
+				.findUserAccessibilities(protocolBean.getDomain().getId()
+						.toString());
+		protocolBean.setUserAccesses(userAccesses);
+		protocolBean.setGroupAccesses(groupAccesses);
 	}
 
 	/**
@@ -161,5 +207,45 @@ public class ProtocolAction extends BaseAnnotationAction {
 				securityService);
 		request.getSession().setAttribute("protocolService", protocolService);
 		return protocolService;
+	}
+
+	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
+		AccessibilityBean theAccess = protocol.getTheAccess();
+		ProtocolService service = this.setServiceInSession(request);
+		service.assignAccessibility(theAccess, protocol.getDomain());
+		// if public access, curator, pending review status, update review
+		// status to public
+		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+			updateReviewStatusToPublic(request, protocol.getDomain().getId()
+					.toString());
+		}
+		setupDynamicDropdowns(request, protocol);
+		this.setAccesses(request, protocol);
+		return mapping.findForward("inputPage");
+	}
+
+	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
+		AccessibilityBean theAccess = protocol.getTheAccess();
+		ProtocolService service = this.setServiceInSession(request);
+		service.removeAccessibility(theAccess, protocol.getDomain());
+		setupDynamicDropdowns(request, protocol);
+		this.setAccesses(request, protocol);
+		return mapping.findForward("inputPage");
+	}
+
+	protected void removePublicAccess(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
+		ProtocolService service = this.setServiceInSession(request);
+		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS, protocol
+				.getDomain());
 	}
 }

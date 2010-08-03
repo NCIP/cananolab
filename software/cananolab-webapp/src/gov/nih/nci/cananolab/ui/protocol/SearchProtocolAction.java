@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -9,7 +10,9 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +76,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 
 		List<ProtocolBean> allProtocols = service.findProtocolsBy(protocolType,
 				protocolName, protocolAbbreviation, fileTitle);
-
+		this.loadUserAccess(request, allProtocols);
 		if (allProtocols != null && !allProtocols.isEmpty()) {
 			request.getSession().setAttribute("protocols", allProtocols);
 			forward = mapping.findForward("success");
@@ -86,6 +89,26 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			forward = mapping.getInputForward();
 		}
 		return forward;
+	}
+
+	private void loadUserAccess(HttpServletRequest request,
+			List<ProtocolBean> protocolBeans) throws Exception {
+		List<String> protocolIds = new ArrayList<String>();
+		for (ProtocolBean protocolBean : protocolBeans) {
+			protocolIds.add(protocolBean.getDomain().getId().toString());
+		}
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		Map<String, List<String>> privilegeMap = securityService
+				.getPrivilegeMap(protocolIds);
+		for (ProtocolBean protocolBean : protocolBeans) {
+			List<String> privileges = privilegeMap.get(protocolBean.getDomain()
+					.getId().toString());
+			if (privileges.contains(Constants.CSM_UPDATE_PRIVILEGE)) {
+				protocolBean.setUserUpdatable(true);
+			} else {
+				protocolBean.setUserUpdatable(false);
+			}
+		}
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
