@@ -371,18 +371,25 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	protected void setUpSubmitForReviewButton(HttpServletRequest request,
-			String dataId) throws Exception {
-		// show 'submit for review' button if sample is not public and user is
+			String dataId, Boolean publicData) throws Exception {
+		// show 'submit for review' button if data is not public and doesn't
+		// have tracted status and user is
 		// not curator
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SecurityService securityService = getSecurityServiceFromSession(request);
-		DataReviewStatusBean reviewStatus = curationService
-				.findDataReviewStatusBeanByDataId(dataId, securityService);
-		if (!user.isCurator()
-				&& (reviewStatus == null || reviewStatus != null
-						&& reviewStatus.getReviewStatus().equals(
-								DataReviewStatusBean.RETRACTED_STATUS))) {
-			request.setAttribute("review", true);
+		if (!publicData) {
+			UserBean user = (UserBean) request.getSession()
+					.getAttribute("user");
+			SecurityService securityService = getSecurityServiceFromSession(request);
+			DataReviewStatusBean reviewStatus = curationService
+					.findDataReviewStatusBeanByDataId(dataId, securityService);
+
+			if (!user.isCurator()
+					&& (reviewStatus == null || reviewStatus != null
+							&& reviewStatus.getReviewStatus().equals(
+									DataReviewStatusBean.RETRACTED_STATUS))) {
+				request.setAttribute("review", true);
+			} else {
+				request.setAttribute("review", false);
+			}
 		} else {
 			request.setAttribute("review", false);
 		}
@@ -404,14 +411,25 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	protected Boolean retractFromPublic(DynaValidatorForm theForm,
-			HttpServletRequest request, String dataId) throws Exception {
+			HttpServletRequest request, String dataId, String dataName,
+			String dataType) throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SecurityService securityService = getSecurityServiceFromSession(request);
 		Boolean retractStatus = false;
 		DataReviewStatusBean reviewStatus = curationService
 				.findDataReviewStatusBeanByDataId(dataId, securityService);
-		if (reviewStatus != null
+		if (reviewStatus == null
+				|| reviewStatus != null
 				&& reviewStatus.getReviewStatus().equals(
 						DataReviewStatusBean.PUBLIC_STATUS)) {
+			if (reviewStatus == null) {
+				reviewStatus = new DataReviewStatusBean();
+				reviewStatus.setDataId(dataId);
+				reviewStatus.setDataName(dataName);
+				reviewStatus.setDataType(dataType);
+				reviewStatus.setSubmittedBy(user.getLoginName());
+				reviewStatus.setSubmittedDate(new Date());
+			}
 			reviewStatus.setReviewStatus(DataReviewStatusBean.RETRACTED_STATUS);
 			curationService.submitDataForReview(reviewStatus, securityService);
 			removePublicAccess(theForm, request);
