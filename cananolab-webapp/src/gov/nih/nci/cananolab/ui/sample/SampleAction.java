@@ -184,15 +184,14 @@ public class SampleAction extends BaseAnnotationAction {
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
-		// List<DataAvailabilityBean> selectedSampleDataAvailability =
-		// dataAvailabilityMapPerPage
-		// .get(sampleBean.getDomain().getId().toString());
-		//
-		// if (!selectedSampleDataAvailability.isEmpty()
-		// && selectedSampleDataAvailability.size() > 0) {
-		// sampleBean.setHasDataAvailability(true);
-		// sampleBean.setDataAvailability(selectedSampleDataAvailability);
-		// }
+		 List<DataAvailabilityBean> selectedSampleDataAvailability =
+			 dataAvailabilityMapPerPage.get(sampleBean.getDomain().getId().toString());
+		
+		 if (!selectedSampleDataAvailability.isEmpty()
+		  && selectedSampleDataAvailability.size() > 0) {
+			 sampleBean.setHasDataAvailability(true);
+			 sampleBean.setDataAvailability(selectedSampleDataAvailability);
+		 }
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
@@ -460,10 +459,12 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
+		//SecurityService securityService = super
+		//.getSecurityServiceFromSession(request);
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-				.generateDataAvailability(sampleBean, user);
+				.generateDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
 		return mapping.findForward("summaryEdit");
@@ -484,10 +485,11 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");		
+		SecurityService securityService = super
+		.getSecurityServiceFromSession(request);
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-				.saveDataAvailability(sampleBean, user);
+				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		return mapping.findForward("summaryEdit");
 	}
@@ -508,8 +510,10 @@ public class SampleAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
+		SecurityService securityService = super
+		.getSecurityServiceFromSession(request);
 		dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain()
-				.getId().toString());
+				.getId().toString(),securityService);
 		sampleBean.setHasDataAvailability(false);
 		sampleBean.setDataAvailability(new ArrayList<DataAvailabilityBean>());
 		return mapping.findForward("summaryEdit");
@@ -521,10 +525,11 @@ public class SampleAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request);
-
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
-						.toString());
+						.toString(), securityService);
 
 		sampleBean.setDataAvailability(dataAvailability);
 		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
@@ -562,10 +567,12 @@ public class SampleAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request);
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
 
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
-						.toString());
+						.toString(), securityService);
 
 		sampleBean.setDataAvailability(dataAvailability);
 		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
