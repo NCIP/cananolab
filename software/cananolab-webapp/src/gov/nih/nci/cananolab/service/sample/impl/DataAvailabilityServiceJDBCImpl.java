@@ -5,15 +5,16 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DataAvailabilityException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.sql.PreparedStatement;
@@ -47,12 +48,21 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	private static final String CREATED_DATE = "created_date";
 	private static final String UPDATED_BY = "updated_by";
 	private static final String UPDATED_DATE = "updated_date";
+	private static final String TABLE_COLS = SAMPLE_ID + ", " + DATASOURCE_NAME + ", " + AVAILABLE_ENTITY_NAME +
+							", " + CREATED_BY + ", " + CREATED_DATE + ", " + UPDATED_BY + ", "  + UPDATED_DATE;
 	
 	private static String SELECT_DATA_AVAILABILITY = 
-		"select * from data_availability where sample_id=" ;
+		"select " + TABLE_COLS + " from data_availability where sample_id=" ;
 	
 	private static String INSERT_SQL = "INSERT INTO DATA_AVAILABILITY ";
-	private static String UPDATE_SQL = "UPDATE DATA_AVAILABILITY ";
+	private static String INSERT_COLS = "(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY) VALUES (?, ?, ?, ?, ?)";
+	private static String UPDATE_SQL = "UPDATE DATA_AVAILABILITY SET AVAILABLE_ENTITY_NAME=?, UPDATED_DATE=?, UPDATED_BY=? WHERE SAMPLE_ID=? and AVAILABLE_ENTITY_NAME=?";
+	private static String INSERT_ON_UPDATE = INSERT_SQL + 
+		"(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY, UPDATED_DATE, UPDATED_BY ) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static String DELETE_SQL = "DELETE FROM DATA_AVAILABILITY ";
+	private static String DELETE_ON_UPDATE = DELETE_SQL + " WHERE SAMPLE_ID=? AND AVAILABLE_ENTITY_NAME=?";
+	
+	private static String noAccessException="You do not have permission to access the specified sample data: ";
 	
 	//DATA_MAPPER
 	private static DataAvailabilityMapper DATA_MAPPER = new DataAvailabilityMapper();
@@ -64,7 +74,16 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#findDataAvailabilityBySampleId(java.lang.String)
 	 */
-	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId) throws DataAvailabilityException{
+	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId, SecurityService securityService) 
+		throws DataAvailabilityException, NoAccessException, SecurityException{
+		
+		try {
+			if(!securityService.checkReadPermission(sampleId)){
+				throw new NoAccessException(noAccessException + sampleId);
+			}
+		} catch (Exception e) {
+			throw new DataAvailabilityException("Exception getting data availability for sample " + sampleId);
+		}
 		List<DataAvailabilityBean> result = new ArrayList<DataAvailabilityBean>();
 		
 		JdbcTemplate data = this.getJdbcTemplate();
@@ -75,20 +94,21 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		return result;
 	}
 	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#generateDataAvailability(gov.nih.nci.cananolab.dto.particle.SampleBean, gov.nih.nci.cananolab.dto.common.UserBean)
-	 */
-	public List<DataAvailabilityBean> generateDataAvailability(SampleBean sampleBean, UserBean user) throws DataAvailabilityException{
+	public List<DataAvailabilityBean> generateDataAvailability(
+			SampleBean sampleBean, SecurityService securityService)
+			throws DataAvailabilityException, NoAccessException, SecurityException {
 		Long sampleId = sampleBean.getDomain().getId();
-			
+		UserBean user = securityService.getUserBean();
+		
+		if(!securityService.checkCreatePermission(sampleId.toString())){
+			throw new NoAccessException(noAccessException + sampleId);
+		}
 		Set<String> clazNames = null;
 		try{
-			clazNames = generate(sampleBean, user);
+			clazNames = generate(sampleBean, securityService);
 		}catch(Exception e){
 			throw new DataAvailabilityException();
-		}		
-		
-		System.out.println("total : " + clazNames.size());
+		}
 		
 		List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 		
@@ -105,19 +125,26 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		insertBatch(dataAvailability);
 		
 		return dataAvailability;
-		
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#saveDataAvailability(gov.nih.nci.cananolab.dto.particle.SampleBean, gov.nih.nci.cananolab.dto.common.UserBean)
 	 */
-	public List<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean, UserBean user) throws DataAvailabilityException{
+	public List<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean, SecurityService securityService)
+	throws DataAvailabilityException, NoAccessException, SecurityException {
 		Long sampleId = sampleBean.getDomain().getId();
+		
+		UserBean user = securityService.getUserBean();
+		
+		if(!securityService.checkCreatePermission(sampleId.toString())){
+			throw new NoAccessException(noAccessException + sampleId);
+		}
+		
 		List<DataAvailabilityBean> currentDataAvailability = sampleBean.getDataAvailability();
 		
 		Set<String> newGenernatedDataAvailability = null;
 		try {
-			newGenernatedDataAvailability = generate(sampleBean,user);
+			newGenernatedDataAvailability = generate(sampleBean, securityService);
 		} catch (Exception e) {
 			throw new DataAvailabilityException();
 		}
@@ -160,7 +187,12 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cananolab.service.sample.DataAvailabilityService#deleteDataAvailability(java.lang.String)
 	 */
-	public void deleteDataAvailability(String sampleId) throws DataAvailabilityException{
+	public void deleteDataAvailability(String sampleId, SecurityService securityService)
+		throws DataAvailabilityException, NoAccessException, SecurityException {
+	
+		if(!securityService.checkDeletePermission(sampleId.toString())){
+			throw new NoAccessException(noAccessException + sampleId);
+		}
 		
 		String sql = "delete from data_availability where sample_id = " + sampleId;
 		this.getJdbcTemplate().execute(sql);		
@@ -186,23 +218,13 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * @param sampleBean
 	 * @return
 	 */
-	private Set<String> generate(SampleBean sampleBean, UserBean user) throws Exception{
+	private Set<String> generate(SampleBean sampleBean, SecurityService securityService) throws Exception{
 		
 		boolean hasComposition = sampleBean.getHasComposition();
 		boolean hasPublication = sampleBean.getHasPublications();
 		
-		SampleService sampleService = new SampleServiceLocalImpl(user);
-		
-		SampleServiceHelper helper = ((SampleServiceLocalImpl) sampleService).getHelper();
-		
-		//fullyLoadedSample = serviceImpl.findFullyLoadedSampleByName(sampleBean.getDomain().getName());
-		
-		//sampleBean.setDomain(fullyLoadedSample);
+		SampleServiceHelper helper = new SampleServiceHelper(securityService);
 		Sample domain = sampleBean.getDomain();
-		SampleComposition comp = domain.getSampleComposition();
-		
-		//System.out.println("Sample Composition: id " + comp.getId() + "; toString: " + comp.toString());
-		
 		
 		SortedSet<String> storedChemicalAssociationClassNames = helper.getStoredChemicalAssociationClassNames(domain);
 		
@@ -225,7 +247,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 							.getClass().getCanonicalName());
 					String displayName = ClassUtils.getDisplayName(shortClassName);
 					if(shortClassName.equalsIgnoreCase("surface")){
-						CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper(user);
+						CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper(securityService);
 						List<Finding> findingCollection = charHelper.findFindingsByCharacterizationId(achar.getId().toString());
 						//Collection<Finding> findingCollection = achar.getFindingCollection();
 						if(!findingCollection.isEmpty()){
@@ -278,10 +300,10 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 */
 	private void deleteBatch(final List<String> entity, final Long sampleId){
 		 
-		  String sql = "DELETE FROM DATA_AVAILABILITY WHERE " +
-			"SAMPLE_ID=? AND AVAILABLE_ENTITY_NAME=?";
+		 /* String sql = "DELETE FROM DATA_AVAILABILITY WHERE " +
+			"SAMPLE_ID=? AND AVAILABLE_ENTITY_NAME=?";*/
 		 
-		  getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		  getJdbcTemplate().batchUpdate(DELETE_ON_UPDATE, new BatchPreparedStatementSetter() {
 		 
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				
@@ -301,10 +323,10 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 */
 	private void insertBatch(final List<DataAvailabilityBean> data){
 		 
-		  String sql = "INSERT INTO DATA_AVAILABILITY " +
+		/*  String sql = "INSERT INTO DATA_AVAILABILITY " +
 			"(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY) VALUES (?, ?, ?, ?, ?)";
-		 
-		  getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		 */
+		  getJdbcTemplate().batchUpdate(INSERT_SQL + INSERT_COLS, new BatchPreparedStatementSetter() {
 		 
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				DataAvailabilityBean bean = data.get(i);
@@ -328,10 +350,10 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 */
 	private void insertBatchOnUpdate(final List<DataAvailabilityBean> data){
 		 
-		  String sql = "INSERT INTO DATA_AVAILABILITY " +
+		  /*String sql = "INSERT INTO DATA_AVAILABILITY " +
 			"(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY, UPDATED_DATE, UPDATED_BY) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		 
-		  getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		 */
+		  getJdbcTemplate().batchUpdate(INSERT_ON_UPDATE, new BatchPreparedStatementSetter() {
 		 
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				DataAvailabilityBean bean = data.get(i);
@@ -355,9 +377,9 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * @param data
 	 */
 	private void updateBatch(final List<DataAvailabilityBean> data){
-		String sql = "UPDATE DATA_AVAILABILITY SET AVAILABLE_ENTITY_NAME=?, UPDATED_DATE=?, UPDATED_BY=? WHERE SAMPLE_ID=? and AVAILABLE_ENTITY_NAME=?";
+		//String sql = "UPDATE DATA_AVAILABILITY SET AVAILABLE_ENTITY_NAME=?, UPDATED_DATE=?, UPDATED_BY=? WHERE SAMPLE_ID=? and AVAILABLE_ENTITY_NAME=?";
 		
-		getJdbcTemplate().batchUpdate(sql, new BatchPreparedStatementSetter() {
+		getJdbcTemplate().batchUpdate(UPDATE_SQL, new BatchPreparedStatementSetter() {
 			 
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				DataAvailabilityBean bean = data.get(i);
@@ -398,7 +420,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				String entityName = currentBean.getAvailableEntityName();
 				boolean removed = false;
 				for(int i=0; i<availableEntityName.length; i++){
-					System.out.println("current entity: " + availableEntityName[i]);
+					//System.out.println("current entity: " + availableEntityName[i]);
 					String newEntityName = availableEntityName[i];
 					if(!entityName.equalsIgnoreCase(newEntityName) ){
 						removed = true;			
@@ -430,13 +452,13 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			) {
 		List<DataAvailabilityBean> newDataAvailability = new ArrayList<DataAvailabilityBean>();
 		for(String entity: newGenernatedDataAvailability){
-			System.out.println("entity in new generated list: " + entity);
+			//System.out.println("entity in new generated list: " + entity);
 			boolean updated = false;
 			for(int i=0; i< currentDataAvailability.size(); i++){
 				DataAvailabilityBean bean= currentDataAvailability.get(i);
 			
 				String availableEntityName = bean.getAvailableEntityName();
-				System.out.println("current entity: " + availableEntityName);
+				//System.out.println("current entity: " + availableEntityName);
 				if(entity.equalsIgnoreCase(availableEntityName) ){
 					//update
 					bean.setUpdatedBy(loginName);
