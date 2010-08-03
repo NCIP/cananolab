@@ -26,7 +26,7 @@
 		<c:set var="dispatch" value="summaryView" />
 	</c:otherwise>
 </c:choose>
-<table summary="" cellpadding="0" cellspacing="0" border="0">
+<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="22">
 			NAVIGATION TREE
@@ -177,12 +177,20 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="subMenuFill" height="100%">
+		<td class="subMenuFill" height="5">
 			&nbsp;
 		</td>
 	</tr>
+	<c:if test="${!empty user}">
+		<tr>
+			<td class="subMenuCommentText" height="20">
+				Logged in as
+				<i>${user.loginName}</i>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
-		<td class="subMenuFooter" height="22">
+		<td class="subMenuFill" height="100%">
 			&nbsp;
 		</td>
 	</tr>
