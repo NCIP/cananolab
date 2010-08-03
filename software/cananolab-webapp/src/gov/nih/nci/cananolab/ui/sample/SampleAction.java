@@ -73,12 +73,16 @@ public class SampleAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		if (!newSample && !user.isCurator()) {
 			Boolean retracted = retractFromPublic(theForm, request, sampleBean
-					.getDomain().getId().toString());
-			ActionMessages messages = new ActionMessages();
-			ActionMessage msg = null;
-			msg = new ActionMessage("message.updateSample.retractFromPublic");
-			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, messages);
+					.getDomain().getId().toString(), sampleBean.getDomain()
+					.getName(), "sample");
+			if (retracted) {
+				ActionMessages messages = new ActionMessages();
+				ActionMessage msg = null;
+				msg = new ActionMessage(
+						"message.updateSample.retractFromPublic");
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, messages);
+			}
 		}
 		request.getSession().setAttribute("updateSample", "true");
 		request.setAttribute("theSample", sampleBean);
@@ -176,7 +180,7 @@ public class SampleAction extends BaseAnnotationAction {
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request);
 		// set existing sample accessibility
-		this.setSampleAccesses(request, sampleBean);
+		this.setAccesses(request, sampleBean);
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
@@ -212,15 +216,16 @@ public class SampleAction extends BaseAnnotationAction {
 		// }
 		if (super.isUserOwner(request, sampleBean.getDomain().getCreatedBy())) {
 			request.getSession().setAttribute("isOwner", true);
+		} else {
+			request.getSession().setAttribute("isOwner", false);
 		}
-
 		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
-				.toString());
+				.toString(), sampleBean.getPublicStatus());
 		return mapping.findForward("summaryEdit");
 	}
 
-	private void setSampleAccesses(HttpServletRequest request,
-			SampleBean sampleBean) throws Exception {
+	private void setAccesses(HttpServletRequest request, SampleBean sampleBean)
+			throws Exception {
 		SampleService service = this.setServiceInSession(request);
 		List<AccessibilityBean> groupAccesses = service
 				.findGroupAccessibilities(sampleBean.getDomain().getId()
@@ -326,7 +331,7 @@ public class SampleAction extends BaseAnnotationAction {
 			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
-			this.setSampleAccesses(request, sample);
+			this.setAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -591,7 +596,7 @@ public class SampleAction extends BaseAnnotationAction {
 			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
-			this.setSampleAccesses(request, sample);
+			this.setAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -616,7 +621,7 @@ public class SampleAction extends BaseAnnotationAction {
 			forward = mapping.findForward("createInput");
 			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
 					.getOrganization().getName());
-			this.setSampleAccesses(request, sample);
+			this.setAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -646,8 +651,6 @@ public class SampleAction extends BaseAnnotationAction {
 
 	public Boolean canUserExecutePrivateLink(UserBean user, String protectedData)
 			throws SecurityException {
-
 		return false;
 	}
-
 }
