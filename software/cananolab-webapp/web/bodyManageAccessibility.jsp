@@ -46,10 +46,15 @@
 							${access.roleDisplayName}
 						</td>
 							<td align="right">
-								<c:if test="${user.curator || access.groupName ne 'Public'}">
-									<a
-										href="javascript:setTheAccess('${parentForm}', 'group', '${access.groupName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
-							    </c:if>
+								<c:choose>
+									<c:when
+										test="${access.groupName eq 'Curator' || access.groupName eq 'Public' && !user.curator}">
+									</c:when>
+									<c:otherwise>
+										<a
+											href="javascript:setTheAccess('${parentForm}', 'group', '${access.groupName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
+							    </c:otherwise>
+							    </c:choose>
 							</td>
 						</tr>
 				</c:forEach>
@@ -86,7 +91,7 @@
 								</c:when>
 								<c:otherwise>
 									<a
-										href="javascript:setTheAccess('${parentForm}', 'user', '${access.userBean.loginName}', 'sample', '${protectedData}');">Edit</a>&nbsp;
+										href="javascript:setTheAccess('${parentForm}', 'user', '${access.userBean.loginName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
 							    </c:otherwise>
 							</c:choose>
 						</td>
@@ -183,13 +188,13 @@
 				<tr>
 					<td>
 						<input
-							id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sample');">
+							id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('${parentAction}', ${parentPage});">
 					</td>
 					<td align="right" colspan="3">
 						<div align="right">
 							<html:hidden property="${accessParent}.theAccess.roleName" styleId="hiddenRoleName"/>
 							<html:hidden property="${accessParent}.theAccess.groupName" styleId="hiddenGroupName"/>
-							<input type="button" value="Save" onclick="javascript:addAccess('sample');" />
+							<input type="button" value="Save" onclick="javascript:addAccess('${parentAction}', ${parentPage});" />
 							<input type="reset" value="Cancel"
 								onclick="javascript:closeSubmissionForm('Access');enableButtons(['submitButton', 'resetButton']);">
 						</div>
