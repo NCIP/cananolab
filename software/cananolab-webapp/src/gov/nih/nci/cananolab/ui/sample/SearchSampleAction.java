@@ -229,6 +229,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		} else {
 			service = this.setServiceInSession(request);
 		}
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = new HashMap<String, List<DataAvailabilityBean>>();
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
@@ -255,7 +257,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 									new String[0]));
 					// get data availability for the samples
 					List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-							.findDataAvailabilityBySampleId(sampleId);
+							.findDataAvailabilityBySampleId(sampleId, securityService);
 					dataAvailabilityMapPerPage.put(sampleId, dataAvailability);
 					if (!dataAvailability.isEmpty()
 							&& dataAvailability.size() > 0) {
