@@ -116,10 +116,10 @@ function clearAccess(parentFormName, parentType) {
 	enableAccessBy(true);
 }
 
-function deleteTheAccess() {
+function deleteTheAccess(actionName) {
 	var answer = confirmDelete("access");
 	if (answer != 0) {
-		submitAction(document.forms[0], "sample", "deleteAccess", 2);
+		submitAction(document.forms[0], actionName, "deleteAccess", 2);
 	}
 }
 
