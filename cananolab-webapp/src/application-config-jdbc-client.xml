@@ -86,6 +86,18 @@
 		</property>
 	</bean>
 
+	<bean name="/protocol" class="gov.nih.nci.cananolab.ui.protocol.ProtocolAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/publication" class="gov.nih.nci.cananolab.ui.publication.PublicationAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
 	<bean name="curationServiceJDBCImpl"
 		class="gov.nih.nci.cananolab.service.curation.impl.CurationServiceJDBCImpl">
 		<property name="dataSource">
