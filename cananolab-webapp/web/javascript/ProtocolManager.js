@@ -4,7 +4,7 @@ var emptyOption = [ {
 } ];
 function retrieveProtocolNames() {
 	var protocolType = document.getElementById("protocolType").value;
-	if (protocolType=="") {
+	if (protocolType == "") {
 		gotoSubmitNewPage();
 	}
 	ProtocolManager.getProtocolNames(protocolType, populateProtocolNames);
@@ -55,6 +55,7 @@ function retrieveProtocol(applicationOwner) {
 }
 
 function clearProtocol() {
+	enableButtons( [ 'submitButton' ]);
 	writeLink(null);
 	dwr.util.setValue("protocolId", null);
 	dwr.util.setValue("fileId", null);
@@ -67,7 +68,7 @@ function clearProtocol() {
 function populateProtocol(protocol) {
 	if (protocol == null) {
 		clearProtocol();
-		//gotoInputPage();
+		// gotoInputPage();
 		return;
 	}
 	dwr.util.setValue("protocolId", protocol.domain.id);
@@ -81,7 +82,12 @@ function populateProtocol(protocol) {
 		dwr.util.setValue("fileName", protocol.fileBean.domainFile.name);
 		writeLink(protocol);
 	}
-	gotoUpdatePage(protocol);
+	if (protocol.userUpdatable == true) {
+		gotoUpdatePage(protocol);
+	} else {
+		alert("The protocol already exists and you don't have update and delete privilege on this protocol");
+		disableButtons( [ 'submitButton' ]);
+	}
 }
 function writeLink(protocol) {
 	if (protocol == null) {
@@ -103,19 +109,20 @@ function writeLink(protocol) {
 }
 
 function gotoUpdatePage(protocol) {
-	var form=document.forms[0];
-	form.action = "protocol.do?dispatch=setupUpdate&page=0&protocolId=" + protocol.domain.id;
+	var form = document.forms[0];
+	form.action = "protocol.do?dispatch=setupUpdate&page=0&protocolId="
+			+ protocol.domain.id;
 	form.submit();
 }
 
 function gotoSubmitNewPage() {
-	var form=document.forms[0];
+	var form = document.forms[0];
 	form.action = "protocol.do?dispatch=setupNew&page=0";
 	form.submit();
 }
 
 function gotoInputPage() {
-	var form=document.forms[0];
+	var form = document.forms[0];
 	form.action = "protocol.do?dispatch=input&page=0";
 	form.submit();
 }
