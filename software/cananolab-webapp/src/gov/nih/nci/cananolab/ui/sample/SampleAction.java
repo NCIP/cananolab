@@ -185,13 +185,15 @@ public class SampleAction extends BaseAnnotationAction {
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
-		List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage
-				.get(sampleBean.getDomain().getId().toString());
-
-		if (!selectedSampleDataAvailability.isEmpty()
-				&& selectedSampleDataAvailability.size() > 0) {
-			sampleBean.setHasDataAvailability(true);
-			sampleBean.setDataAvailability(selectedSampleDataAvailability);
+		if(dataAvailabilityMapPerPage != null){
+			 List<DataAvailabilityBean> selectedSampleDataAvailability =
+				 dataAvailabilityMapPerPage.get(sampleBean.getDomain().getId().toString());
+			
+			 if (!selectedSampleDataAvailability.isEmpty()
+			  && selectedSampleDataAvailability.size() > 0) {
+				 sampleBean.setHasDataAvailability(true);
+				 sampleBean.setDataAvailability(selectedSampleDataAvailability);
+			 }
 		}
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
@@ -563,7 +565,7 @@ public class SampleAction extends BaseAnnotationAction {
 				attributes);
 	}
 
-	public ActionForward manageDataAvailability(ActionMapping mapping,
+	/*public ActionForward manageDataAvailability(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -581,7 +583,7 @@ public class SampleAction extends BaseAnnotationAction {
 			sampleBean.setHasDataAvailability(true);
 		}
 		return mapping.findForward("summaryEdit");
-	}
+	}*/
 
 	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
