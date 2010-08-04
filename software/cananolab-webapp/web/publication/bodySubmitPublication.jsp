@@ -426,6 +426,8 @@
 	<c:set var="accessParent" value="publication" />
 	<c:set var="dataType" value="Publication" />
 	<c:set var="parentForm" value="publicationForm" />
+	<c:set var="parentAction" value="publication" />
+	<c:set var="parentPage" value="2"/>
 	<c:set var="protectedData"  value="${publicationForm.map.publication.domainFile.id}" />
 	<c:set var="newData" value="true"/>
 	<c:if test="${updatePublication}">
@@ -436,7 +438,7 @@
 	<br>
 	<c:set var="updateId" value="${param.publicationId}" />
 	<c:set var="hiddenDispatch" value="create" />
-	<c:set var="hiddenPage" value="2" />
+	<c:set var="hiddenPage" value="1" />
 
 	<c:set var="resetOnclick"
 		value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}'" />
@@ -454,6 +456,13 @@
 			value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
 	</c:if>
-
+    <c:if test="${review}">
+		<c:set var="submitForReviewOnclick"
+			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domain.id}', '${publicationForm.map.publication.domain.name}', 'publication')" />
+	</c:if>
+	<c:set var="validate" value="false" />
+	<c:if test="${!user.curator && publicationForm.map.publication.publicStatus}">
+		<c:set var="validate" value="true" />
+	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
