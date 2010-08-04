@@ -418,7 +418,7 @@
 		</c:otherwise>
 	</c:choose>
 	<br>
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" id="accessBlock">
 	<c:set var="groupAccesses"
 		value="${publicationForm.map.publication.groupAccesses}" />
 	<c:set var="userAccesses"
