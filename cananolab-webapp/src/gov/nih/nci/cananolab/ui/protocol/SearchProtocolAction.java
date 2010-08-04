@@ -76,7 +76,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 
 		List<ProtocolBean> allProtocols = service.findProtocolsBy(protocolType,
 				protocolName, protocolAbbreviation, fileTitle);
-		this.loadUserAccess(request, allProtocols);
+		if (user != null) {
+			this.loadUserAccess(request, allProtocols);
+		}
 		if (allProtocols != null && !allProtocols.isEmpty()) {
 			request.getSession().setAttribute("protocols", allProtocols);
 			forward = mapping.findForward("success");

@@ -253,18 +253,12 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			Publication publication = helper.findPublicationByKey(keyName,
 					keyValue);
+			publicationBean = loadPublicationBean(publication);
 			if (publication != null) {
 				String[] sampleNames = helper
 						.findSampleNamesByPublicationId(publication.getId()
 								.toString());
-				publicationBean = new PublicationBean(publication, sampleNames);
-				if (helper.getUser() != null) {
-					// publicationBean.setVisibilityGroups(helper.getAuthService()
-					// .getAccessibleGroups(
-					// publication.getId().toString(),
-					// Constants.CSM_READ_PRIVILEGE));
-					// TODO set accessibility
-				}
+				publicationBean.setSampleNames(sampleNames);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -272,6 +266,21 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			String err = "Problem finding the publication by key: " + keyName;
 			logger.error(err, e);
 			throw new PublicationException(err, e);
+		}
+		return publicationBean;
+	}
+
+	private PublicationBean loadPublicationBean(Publication publication)
+			throws Exception {
+		PublicationBean publicationBean = new PublicationBean(publication);
+		if (user != null) {
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(publication.getId().toString());
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(publication.getId().toString());
+
+			publicationBean.setUserAccesses(userAccesses);
+			publicationBean.setGroupAccesses(groupAccesses);
 		}
 		return publicationBean;
 	}
@@ -372,23 +381,17 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	public PublicationBean findNonPubMedNonDOIPublication(
 			String publicationType, String title, String firstAuthorLastName,
 			String firstAuthorFirstName) throws PublicationException {
-		PublicationBean pubBean = null;
+		PublicationBean publicationBean = null;
 		try {
 			Publication publication = helper.findNonPubMedNonDOIPublication(
 					publicationType, title, firstAuthorLastName,
 					firstAuthorFirstName);
+			publicationBean = loadPublicationBean(publication);
 			if (publication != null) {
 				String[] sampleNames = helper
 						.findSampleNamesByPublicationId(publication.getId()
 								.toString());
-				pubBean = new PublicationBean(publication, sampleNames);
-				if (helper.getUser() != null) {
-					// pubBean.setVisibilityGroups(helper.getAuthService()
-					// .getAccessibleGroups(
-					// publication.getId().toString(),
-					// Constants.CSM_READ_PRIVILEGE));
-					// TODO set accessibility
-				}
+				publicationBean.setSampleNames(sampleNames);
 			}
 		} catch (Exception e) {
 			String err = "trouble finding non PubMed/DOI publication based on type: "
@@ -402,7 +405,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
-		return pubBean;
+		return publicationBean;
 	}
 
 	public void assignAccessibility(AccessibilityBean access,
