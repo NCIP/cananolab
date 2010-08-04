@@ -186,7 +186,8 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			Collections.sort(protocols,
 					new Comparators.ProtocolNameVersionComparator());
 			for (Protocol protocol : protocols) {
-				ProtocolBean protocolBean = loadProtocolBean(protocol);
+				//don't need to load accessibility
+				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				protocolBeans.add(protocolBean);
 			}
 			return protocolBeans;
