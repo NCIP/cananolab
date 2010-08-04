@@ -49,7 +49,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -86,7 +86,8 @@ public class SampleAction extends BaseAnnotationAction {
 		}
 		request.getSession().setAttribute("updateSample", "true");
 		request.setAttribute("theSample", sampleBean);
-
+		request.setAttribute("sampleId", sampleBean.getDomain().getId()
+				.toString());
 		return summaryEdit(mapping, form, request, response);
 	}
 
@@ -112,7 +113,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -163,7 +164,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -184,14 +185,14 @@ public class SampleAction extends BaseAnnotationAction {
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
-		 List<DataAvailabilityBean> selectedSampleDataAvailability =
-			 dataAvailabilityMapPerPage.get(sampleBean.getDomain().getId().toString());
-		
-		 if (!selectedSampleDataAvailability.isEmpty()
-		  && selectedSampleDataAvailability.size() > 0) {
-			 sampleBean.setHasDataAvailability(true);
-			 sampleBean.setDataAvailability(selectedSampleDataAvailability);
-		 }
+		List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage
+				.get(sampleBean.getDomain().getId().toString());
+
+		if (!selectedSampleDataAvailability.isEmpty()
+				&& selectedSampleDataAvailability.size() > 0) {
+			sampleBean.setHasDataAvailability(true);
+			sampleBean.setDataAvailability(selectedSampleDataAvailability);
+		}
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
@@ -225,7 +226,8 @@ public class SampleAction extends BaseAnnotationAction {
 
 	private void setAccesses(HttpServletRequest request, SampleBean sampleBean)
 			throws Exception {
-		SampleService service = this.setServiceInSession(request);
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
 		List<AccessibilityBean> groupAccesses = service
 				.findGroupAccessibilities(sampleBean.getDomain().getId()
 						.toString());
@@ -237,7 +239,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -256,7 +258,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -282,7 +284,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 *
+	 * 
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception
@@ -446,7 +448,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * generate data availability for the sample
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -459,10 +461,10 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		//SecurityService securityService = super
-		//.getSecurityServiceFromSession(request);
+		// SecurityService securityService = super
+		// .getSecurityServiceFromSession(request);
 		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
+				.getSession().getAttribute("securityService");
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.generateDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
@@ -472,7 +474,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * update data availability for the sample
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -485,9 +487,9 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");		
+		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SecurityService securityService = super
-		.getSecurityServiceFromSession(request);
+				.getSecurityServiceFromSession(request);
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
@@ -496,7 +498,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * delete data availability for the sample
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -511,9 +513,9 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SecurityService securityService = super
-		.getSecurityServiceFromSession(request);
+				.getSecurityServiceFromSession(request);
 		dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain()
-				.getId().toString(),securityService);
+				.getId().toString(), securityService);
 		sampleBean.setHasDataAvailability(false);
 		sampleBean.setDataAvailability(new ArrayList<DataAvailabilityBean>());
 		return mapping.findForward("summaryEdit");
@@ -526,7 +528,7 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request);
 		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
+				.getSession().getAttribute("securityService");
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
@@ -568,7 +570,7 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request);
 		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
+				.getSession().getAttribute("securityService");
 
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
@@ -645,11 +647,13 @@ public class SampleAction extends BaseAnnotationAction {
 				.getDomain());
 	}
 
+	// creates a new sample service and put it in the session
+	// a new service needs to be created when there had been updates to the data
+	// that lead to changes in accessibleData
 	private SampleService setServiceInSession(HttpServletRequest request)
 			throws Exception {
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
-
 		SampleService sampleService = new SampleServiceLocalImpl(
 				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
