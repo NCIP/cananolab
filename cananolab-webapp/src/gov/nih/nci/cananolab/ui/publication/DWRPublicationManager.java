@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -11,6 +12,7 @@ import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Collections;
@@ -89,9 +91,22 @@ public class DWRPublicationManager {
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"pubMedId", new Long(pubmedID));
-			if (!securityService.checkCreatePermission(dbPubBean.getDomainFile()
-					.getId().toString())) {
-				throw new NoAccessException();
+			WebContext wctx = WebContextFactory.get();
+			UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+			if (user != null) {
+				if (user.isCurator()) {
+					dbPubBean.setUserUpdatable(true);
+				} else {
+					for (AccessibilityBean access : dbPubBean.getUserAccesses()) {
+						if (access.getUserBean().getLoginName().equals(
+								user.getLoginName())
+								&& access.getRoleName().equals(
+										Constants.CSM_CURD_ROLE)) {
+							dbPubBean.setUserUpdatable(true);
+							break;
+						}
+					}
+				}
 			}
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
@@ -146,9 +161,20 @@ public class DWRPublicationManager {
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"digitalObjectId", doi);
-			if (!securityService.checkCreatePermission(dbPubBean.getDomainFile()
-					.getId().toString())) {
-				throw new NoAccessException();
+			if (user != null) {
+				if (user.isCurator()) {
+					dbPubBean.setUserUpdatable(true);
+				} else {
+					for (AccessibilityBean access : dbPubBean.getUserAccesses()) {
+						if (access.getUserBean().getLoginName().equals(
+								user.getLoginName())
+								&& access.getRoleName().equals(
+										Constants.CSM_CURD_ROLE)) {
+							dbPubBean.setUserUpdatable(true);
+							break;
+						}
+					}
+				}
 			}
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
@@ -284,10 +310,26 @@ public class DWRPublicationManager {
 			firstName = firstAuthor.getFirstName();
 			lastName = firstAuthor.getLastName();
 		}
-		PublicationBean dbBean = getService().findNonPubMedNonDOIPublication(
-				category, title, lastName, firstName);
-		if (dbBean != null) {
-			publicationBean.copyFromDatabase(dbBean);
+		PublicationBean dbPubBean = getService()
+				.findNonPubMedNonDOIPublication(category, title, lastName,
+						firstName);
+		if (user != null) {
+			if (user.isCurator()) {
+				dbPubBean.setUserUpdatable(true);
+			} else {
+				for (AccessibilityBean access : dbPubBean.getUserAccesses()) {
+					if (access.getUserBean().getLoginName().equals(
+							user.getLoginName())
+							&& access.getRoleName().equals(
+									Constants.CSM_CURD_ROLE)) {
+						dbPubBean.setUserUpdatable(true);
+						break;
+					}
+				}
+			}
+		}
+		if (dbPubBean != null) {
+			publicationBean.copyFromDatabase(dbPubBean);
 			return publicationBean;
 		} else {
 			return null;
