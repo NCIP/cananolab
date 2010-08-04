@@ -106,13 +106,18 @@ public class DWRProtocolManager {
 			WebContext wctx = WebContextFactory.get();
 			UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 			if (user != null) {
-				for (AccessibilityBean access : protocolBean.getUserAccesses()) {
-					if (access.getUserBean().getLoginName().equals(
-							user.getLoginName())
-							&& access.getRoleName().equals(
-									Constants.CSM_CURD_ROLE)) {
-						protocolBean.setUserUpdatable(true);
-						break;
+				if (user.isCurator()) {
+					protocolBean.setUserUpdatable(true);
+				} else {
+					for (AccessibilityBean access : protocolBean
+							.getUserAccesses()) {
+						if (access.getUserBean().getLoginName().equals(
+								user.getLoginName())
+								&& access.getRoleName().equals(
+										Constants.CSM_CURD_ROLE)) {
+							protocolBean.setUserUpdatable(true);
+							break;
+						}
 					}
 				}
 			}
