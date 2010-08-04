@@ -60,7 +60,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 				ActionMessages messages = new ActionMessages();
 				ActionMessage msg = null;
 				msg = new ActionMessage(
-						"message.updateSample.retractFromPublic");
+						"message.updateProtocol.retractFromPublic");
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, messages);
 				setupDynamicDropdowns(request, protocolBean);
@@ -131,6 +131,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		request.getSession().removeAttribute("protocolForm");
 		setServiceInSession(request);
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		request.getSession().removeAttribute("protocolNamesByType");
@@ -223,9 +224,14 @@ public class ProtocolAction extends BaseAnnotationAction {
 			updateReviewStatusToPublic(request, protocol.getDomain().getId()
 					.toString());
 		}
-		setupDynamicDropdowns(request, protocol);
+		if (protocol.getDomain().getId()==null) {
+			UserBean user = (UserBean) request.getSession().getAttribute("user");
+			protocol
+					.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
+			service.saveProtocol(protocol);
+		}
 		this.setAccesses(request, protocol);
-		return mapping.findForward("inputPage");
+		return input(mapping, form, request, response);
 	}
 
 	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
@@ -236,9 +242,8 @@ public class ProtocolAction extends BaseAnnotationAction {
 		AccessibilityBean theAccess = protocol.getTheAccess();
 		ProtocolService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, protocol.getDomain());
-		setupDynamicDropdowns(request, protocol);
 		this.setAccesses(request, protocol);
-		return mapping.findForward("inputPage");
+		return input(mapping, form, request, response);
 	}
 
 	protected void removePublicAccess(DynaValidatorForm theForm,

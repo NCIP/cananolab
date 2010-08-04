@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.publication;
 
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -14,6 +15,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,6 +69,10 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		List<PublicationBean> pubBeansPerPage = getPublicationsPerPage(
 				publicationBeans, displayPage,
 				Constants.DISPLAY_TAG_TABLE_SIZE, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user != null) {
+			loadUserAccess(request, pubBeansPerPage);
+		}
 		request.setAttribute("publications", pubBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
@@ -74,6 +80,28 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 				.setAttribute("resultSize",
 						new Integer(publicationBeans.size()));
 		return mapping.findForward("success");
+	}
+
+	private void loadUserAccess(HttpServletRequest request,
+			List<PublicationBean> publicationBeans) throws Exception {
+		List<String> publicationIds = new ArrayList<String>();
+
+		for (PublicationBean publicationBean : publicationBeans) {
+			publicationIds.add(publicationBean.getDomainFile().getId()
+					.toString());
+		}
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		Map<String, List<String>> privilegeMap = securityService
+				.getPrivilegeMap(publicationIds);
+		for (PublicationBean publicationBean : publicationBeans) {
+			List<String> privileges = privilegeMap.get(publicationBean
+					.getDomainFile().getId().toString());
+			if (privileges.contains(Constants.CSM_UPDATE_PRIVILEGE)) {
+				publicationBean.setUserUpdatable(true);
+			} else {
+				publicationBean.setUserUpdatable(false);
+			}
+		}
 	}
 
 	private List<PublicationBean> getPublicationsPerPage(

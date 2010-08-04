@@ -28,11 +28,12 @@ public class DWRPublicationManager {
 
 	Logger logger = Logger.getLogger(DWRPublicationManager.class);
 	PublicationServiceLocalImpl service;
+	SecurityService securityService;
 
 	private PublicationServiceLocalImpl getService() {
 		WebContext wctx = WebContextFactory.get();
-		SecurityService securityService = (SecurityService) wctx.getSession()
-				.getAttribute("securityService");
+		securityService = (SecurityService) wctx.getSession().getAttribute(
+				"securityService");
 		service = new PublicationServiceLocalImpl(securityService);
 		return service;
 	}
@@ -88,6 +89,10 @@ public class DWRPublicationManager {
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"pubMedId", new Long(pubmedID));
+			if (!securityService.checkCreatePermission(dbPubBean.getDomainFile()
+					.getId().toString())) {
+				throw new NoAccessException();
+			}
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
 				publicationBean.copyNonPubMedFieldsFromDatabase(dbPubBean);
@@ -141,6 +146,10 @@ public class DWRPublicationManager {
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"digitalObjectId", doi);
+			if (!securityService.checkCreatePermission(dbPubBean.getDomainFile()
+					.getId().toString())) {
+				throw new NoAccessException();
+			}
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
 				publicationBean.copyFromDatabase(dbPubBean);

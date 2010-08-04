@@ -7,6 +7,7 @@ package gov.nih.nci.cananolab.ui.publication;
  */
 
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -43,6 +44,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class PublicationAction extends BaseAnnotationAction {
 
@@ -52,6 +54,10 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
+		Boolean newPub = true;
+		if (publicationBean.getDomainFile().getId() != null) {
+			newPub = false;
+		}
 		PublicationService service = this.setServicesInSession(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = (String) theForm.get("sampleId");
@@ -101,6 +107,23 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
+
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newPub && !user.isCurator()) {
+			Boolean retracted = retractFromPublic(theForm, request,
+					publicationBean.getDomainFile().getId().toString(),
+					((Publication) publicationBean.getDomainFile()).getTitle(),
+					"publication");
+			if (retracted) {
+				ActionMessages messages = new ActionMessages();
+				ActionMessage msg = null;
+				msg = new ActionMessage(
+						"message.updatePublication.retractFromPublic");
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, messages);
+			}
+		}
 
 		ActionMessage msg = new ActionMessage("message.submitPublication",
 				publicationBean.getDomainFile().getTitle());
@@ -220,6 +243,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory()");
+		request.getSession().removeAttribute("updatePublication");
 		return forward;
 	}
 
@@ -240,6 +264,15 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();fillPubMedInfo('false')");
+
+		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
+				.toString(), pubBean.getPublicStatus());
+		if (super.isUserOwner(request, pubBean.getDomainFile().getCreatedBy())) {
+			request.getSession().setAttribute("isOwner", true);
+		} else {
+			request.getSession().setAttribute("isOwner", false);
+		}
+		request.getSession().setAttribute("updatePublication", "true");
 		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
@@ -604,5 +637,63 @@ public class PublicationAction extends BaseAnnotationAction {
 				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return publicationService;
+	}
+
+	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		PublicationForm theForm = (PublicationForm) form;
+		PublicationBean publication = (PublicationBean) theForm
+				.get("publication");
+
+		AccessibilityBean theAccess = publication.getTheAccess();
+		PublicationService service = this.setServicesInSession(request);
+		service.assignAccessibility(theAccess, (Publication) publication
+				.getDomainFile());
+		// if public access, curator, pending review status, update review
+		// status to public
+		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+			updateReviewStatusToPublic(request, publication.getDomainFile()
+					.getId().toString());
+		}
+		this.setAccesses(request, publication);
+		return input(mapping, form, request, response);
+	}
+
+	protected void setAccesses(HttpServletRequest request,
+			PublicationBean publicationBean) throws Exception {
+		PublicationService service = (PublicationService) request.getSession()
+				.getAttribute("publicationService");
+		List<AccessibilityBean> groupAccesses = service
+				.findGroupAccessibilities(publicationBean.getDomainFile()
+						.getId().toString());
+		List<AccessibilityBean> userAccesses = service
+				.findUserAccessibilities(publicationBean.getDomainFile()
+						.getId().toString());
+		publicationBean.setUserAccesses(userAccesses);
+		publicationBean.setGroupAccesses(groupAccesses);
+	}
+
+	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		PublicationForm theForm = (PublicationForm) form;
+		PublicationBean publication = (PublicationBean) theForm
+				.get("publication");
+		AccessibilityBean theAccess = publication.getTheAccess();
+		PublicationService service = this.setServicesInSession(request);
+		service.removeAccessibility(theAccess, (Publication) publication
+				.getDomainFile());
+		this.setAccesses(request, publication);
+		return input(mapping, form, request, response);
+	}
+
+	protected void removePublicAccess(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		PublicationBean publication = (PublicationBean) theForm
+				.get("publication");
+		PublicationService service = this.setServicesInSession(request);
+		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS,
+				(Publication) publication.getDomainFile());
 	}
 }
