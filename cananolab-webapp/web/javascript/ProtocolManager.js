@@ -55,7 +55,9 @@ function retrieveProtocol(applicationOwner) {
 }
 
 function clearProtocol() {
-	enableButtons( [ 'submitButton' ]);
+	enableButtons( [ 'submitButton']);
+	show("addAccess");
+	show("addAccessLabel");
 	writeLink(null);
 	dwr.util.setValue("protocolId", null);
 	dwr.util.setValue("fileId", null);
@@ -86,7 +88,9 @@ function populateProtocol(protocol) {
 		gotoUpdatePage(protocol);
 	} else {
 		alert("The protocol already exists and you don't have update and delete privilege on this protocol");
-		disableButtons( [ 'submitButton' ]);
+		disableButtons( [ 'submitButton']);
+		hide("addAccess");
+		hide("addAccessLabel");
 	}
 }
 function writeLink(protocol) {

@@ -6,6 +6,8 @@ var confirmMessage = "test";
 var updateFormPrompt = "false";
 var appOwner = "";
 function clearPublication() {
+	enableButtons( [ 'submitButton']);
+	show("accessBlock");
 	// clear submission form first
 	PublicationManager.clearPublication(function(publication) {
 		dwr.util.setValues(publication);
@@ -193,24 +195,32 @@ function populatePubMedInfo(publication) {
 
 function populateNonPubMedFields(publication) {
 	if (publication != null) {
-		if (updateFormPrompt == "true" && confirm(confirmMessage)) {
-			dwr.util.setValue("category", publication.domainFile.category);
-			dwr.util.setValue("status", publication.domainFile.status);
-			dwr.util.setValue("keywordsStr", publication.keywordsStr, {
-				escapeHtml : false
-			});
-			dwr.util.setValue("domainFile.description",
-					publication.domainFile.description, {
-						escapeHtml : false
-					});
-			dwr.util.setValue("associatedSampleNames",
-					publication.sampleNamesStr, {
-						escapeHtml : false
-					});
-			dwr.util.setValue("researchAreas", publication.researchAreas);
-			currentPublication = publication;
-			// populateAuthors(true);
+		if (publication.userUpdatable == true) {
+			if (updateFormPrompt == "true" && confirm(confirmMessage)) {
+				dwr.util.setValue("category", publication.domainFile.category);
+				dwr.util.setValue("status", publication.domainFile.status);
+				dwr.util.setValue("keywordsStr", publication.keywordsStr, {
+					escapeHtml : false
+				});
+				dwr.util.setValue("domainFile.description",
+						publication.domainFile.description, {
+							escapeHtml : false
+						});
+				dwr.util.setValue("associatedSampleNames",
+						publication.sampleNamesStr, {
+							escapeHtml : false
+						});
+				dwr.util.setValue("researchAreas", publication.researchAreas);
+				currentPublication = publication;
+			}
+		}
+		// populateAuthors(true);
+		if (publication.userUpdatable == true) {
 			gotoUpdatePage(publication);
+		} else {
+			alert("The publication already exists and you don't have update and delete privilege on this publication");
+			disableButtons( [ 'submitButton' ]);
+			hide("accessBlock");
 		}
 	}
 	updateFormPrompt = "false";
@@ -246,7 +256,8 @@ function updateWithExistingNonPubMedDOIPublication(updatePrompt,
 	}
 	updateFormPrompt = updatePrompt;
 	confirmMessage = "A database record with the same publication type, title, first author already exists.  Load saved information?";
-	if ((pubMedId == null || pubMedId == 0) && doi == "" && (uri==null||uri=="")) {
+	if ((pubMedId == null || pubMedId == 0) && doi == ""
+			&& (uri == null || uri == "")) {
 		waitCursor();
 		PublicationManager.updateWithExistingNonPubMedDOIPublication(category,
 				title, firstAuthor, populateAllFields);
@@ -420,20 +431,20 @@ function deleteTheAuthor() {
 }
 
 function gotoUpdatePage(publication) {
-	var form=document.forms[0];
-	form.action = "publication.do?dispatch=setupUpdate&page=0&publicationId=" + publication.domainFile.id;
+	var form = document.forms[0];
+	form.action = "publication.do?dispatch=setupUpdate&page=0&publicationId="
+			+ publication.domainFile.id;
 	form.submit();
 }
 
 function gotoSubmitNewPage() {
-	var form=document.forms[0];
+	var form = document.forms[0];
 	form.action = "publication.do?dispatch=setupNew&page=0";
 	form.submit();
 }
 
 function gotoInputPage() {
-	var form=document.forms[0];
+	var form = document.forms[0];
 	form.action = "publication.do?dispatch=input&page=0";
 	form.submit();
 }
-
