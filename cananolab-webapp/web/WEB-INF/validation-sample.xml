@@ -19,7 +19,7 @@
 			<field property="sampleBean.domain.name" page="1" depends="required">
 				<arg position="0" key="sampleForm.sampleName" bundle="sample" />
 			</field>
-			<field property="sampleBean.primaryPOCBean.domain.id" page="3"
+			<field property="sampleBean.primaryPOCBean.domain.id" page="2"
 				depends="validwhen">
 				<arg position="0" key="sampleForm.primaryPOC" bundle="sample" />
 				<var>
@@ -30,11 +30,14 @@
 					</var-value>
 				</var>
 			</field>
+			<field property="sampleBean.thePOC.domain.organization.name"
+				page="3" depends="required">
+				<arg position="0" key="sampleForm.organizationName" bundle="sample" />
+			</field>
 			<field property="sampleBean.theAccess.accessBy" page="4"
 				depends="required">
 				<arg position="0" key="access.accessBy" bundle="sample" />
 			</field>
-			<!--
 			<field property="sampleBean.theAccess.roleName" page="4"
 				depends="required">
 				<arg position="0" key="access.roleName" bundle="sample" />
@@ -51,7 +54,6 @@
 					</var-value>
 				</var>
 			</field>
-			 -->
 			<field property="sampleBean.theAccess.userBean.loginName" page="4"
 				depends="validwhen">
 				<arg position="0" key="access.userName" bundle="sample" />
@@ -62,10 +64,6 @@
 						(*this*!=null))
 					</var-value>
 				</var>
-			</field>
-			<field property="sampleBean.thePOC.domain.organization.name"
-				page="5" depends="required">
-				<arg position="0" key="sampleForm.organizationName" bundle="sample" />
 			</field>
 		</form>
 		<form name="/chemicalAssociation">

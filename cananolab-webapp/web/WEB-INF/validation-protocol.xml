@@ -5,8 +5,7 @@
 <form-validation>
 	<formset>
 		<form name="protocolForm">
-			<field property="protocol.domain.name" page="1"
-				depends="required, mask">
+			<field property="protocol.domain.name" page="1" depends="required, mask">
 				<arg position="0" key="protocol.name" bundle="protocol" />
 				<msg name="mask" key="protocol.name.invalid" />
 				<var>
@@ -14,20 +13,49 @@
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
-			<field property="protocol.domain.type" page="1"
-				depends="required">
+			<field property="protocol.domain.type" page="1" depends="required">
 				<arg position="0" key="protocol.type" bundle="protocol" />
 			</field>
 			<field property="protocol.domain.version" page="1" depends="required">
-				<arg position="0" key="protocol.version"
-					bundle="protocol" />
+				<arg position="0" key="protocol.version" bundle="protocol" />
 			</field>
-			<field property="protocol.fileBean.domainFile.title" page="1" depends="mask">
+			<field property="protocol.fileBean.domainFile.title" page="1"
+				depends="mask">
 				<arg position="0" key="protocol.title" bundle="protocol" />
 				<msg name="mask" key="protocol.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\.,/:\-\_\s\(\)]*$</var-value>
+				</var>
+			</field>
+			<field property="protocol.theAccess.accessBy" page="2"
+				depends="required">
+				<arg position="0" key="access.accessBy" bundle="protocol" />
+			</field>
+			<field property="protocol.theAccess.roleName" page="2" depends="required">
+				<arg position="0" key="access.roleName" bundle="protocol" />
+			</field>
+			<field property="protocol.theAccess.groupName" page="2"
+				depends="validwhen">
+				<arg position="0" key="access.groupName" bundle="protocol" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((protocol.theAccess.accessBy!='group') and
+						(protocol.theAccess.accessBy!='public')) or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field property="protocol.theAccess.userBean.loginName" page="2"
+				depends="validwhen">
+				<arg position="0" key="access.userName" bundle="protocol" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((protocol.theAccess.accessBy!='user') or
+						(*this*!=null))
+					</var-value>
 				</var>
 			</field>
 		</form>
@@ -49,8 +77,7 @@
 				</var>
 			</field>
 			<field property="fileTitle" page="1" depends="mask">
-				<arg position="0" key="protocol.title"
-					bundle="protocol" />
+				<arg position="0" key="protocol.title" bundle="protocol" />
 				<msg name="mask" key="protocol.title.invalid" />
 				<var>
 					<var-name>mask</var-name>

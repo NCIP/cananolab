@@ -19,6 +19,35 @@
 				depends="required">
 				<arg position="0" key="publication.title" bundle="publication" />
 			</field>
+			<field property="publication.theAccess.accessBy" page="2" depends="required">
+				<arg position="0" key="access.accessBy" bundle="publication" />
+			</field>
+			<field property="publication.theAccess.roleName" page="2" depends="required">
+				<arg position="0" key="access.roleName" bundle="publication" />
+			</field>
+			<field property="publication.theAccess.groupName" page="2"
+				depends="validwhen">
+				<arg position="0" key="access.groupName" bundle="publication" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((publication.theAccess.accessBy!='group') and
+						(publication.theAccess.accessBy!='public')) or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field property="publication.theAccess.userBean.loginName" page="2"
+				depends="validwhen">
+				<arg position="0" key="access.userName" bundle="publication" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((publication.theAccess.accessBy!='user') or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
 		</form>
 
 		<form name="searchPublicationForm">
