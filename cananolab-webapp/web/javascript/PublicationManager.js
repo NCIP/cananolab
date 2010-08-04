@@ -210,6 +210,7 @@ function populateNonPubMedFields(publication) {
 			dwr.util.setValue("researchAreas", publication.researchAreas);
 			currentPublication = publication;
 			// populateAuthors(true);
+			gotoUpdatePage(publication);
 		}
 	}
 	updateFormPrompt = "false";
@@ -417,3 +418,22 @@ function deleteTheAuthor() {
 		}
 	}
 }
+
+function gotoUpdatePage(publication) {
+	var form=document.forms[0];
+	form.action = "publication.do?dispatch=setupUpdate&page=0&publicationId=" + publication.domainFile.id;
+	form.submit();
+}
+
+function gotoSubmitNewPage() {
+	var form=document.forms[0];
+	form.action = "publication.do?dispatch=setupNew&page=0";
+	form.submit();
+}
+
+function gotoInputPage() {
+	var form=document.forms[0];
+	form.action = "publication.do?dispatch=input&page=0";
+	form.submit();
+}
+

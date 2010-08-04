@@ -4,6 +4,9 @@ var emptyOption = [ {
 } ];
 function retrieveProtocolNames() {
 	var protocolType = document.getElementById("protocolType").value;
+	if (protocolType=="") {
+		gotoSubmitNewPage();
+	}
 	ProtocolManager.getProtocolNames(protocolType, populateProtocolNames);
 }
 function resetProtocols() {
@@ -11,6 +14,7 @@ function resetProtocols() {
 	dwr.util.removeAllOptions("protocolVersion");
 	dwr.util.addOptions("protocolName", emptyOption, "value", "label");
 	dwr.util.addOptions("protocolVersion", emptyOption, "value", "label");
+	clearProtocol();
 }
 
 function populateProtocolNames(protocolNames) {
@@ -49,16 +53,21 @@ function retrieveProtocol(applicationOwner) {
 	ProtocolManager.getProtocol(protocolType, protocolName, protocolVersion,
 			populateProtocol);
 }
+
+function clearProtocol() {
+	writeLink(null);
+	dwr.util.setValue("protocolId", null);
+	dwr.util.setValue("fileId", null);
+	dwr.util.setValue("fileUri", null);
+	dwr.util.setValue("fileName", null);
+	dwr.util.setValue("fileTitle", "");
+	dwr.util.setValue("fileDescription", "");
+	dwr.util.setValue("protocolAbbreviation", "");
+}
 function populateProtocol(protocol) {
 	if (protocol == null) {
-		writeLink(null);
-		dwr.util.setValue("protocolId", null);
-		dwr.util.setValue("fileId", null);
-		dwr.util.setValue("fileUri", null);
-		dwr.util.setValue("fileName", null);
-		dwr.util.setValue("fileTitle", "");
-		dwr.util.setValue("fileDescription", "");
-		dwr.util.setValue("protocolAbbreviation", "");
+		clearProtocol();
+		//gotoInputPage();
 		return;
 	}
 	dwr.util.setValue("protocolId", protocol.domain.id);
@@ -72,6 +81,7 @@ function populateProtocol(protocol) {
 		dwr.util.setValue("fileName", protocol.fileBean.domainFile.name);
 		writeLink(protocol);
 	}
+	gotoUpdatePage(protocol);
 }
 function writeLink(protocol) {
 	if (protocol == null) {
@@ -91,6 +101,25 @@ function writeLink(protocol) {
 		document.getElementById("protocolFileLink").innerHTML = "";
 	}
 }
+
+function gotoUpdatePage(protocol) {
+	var form=document.forms[0];
+	form.action = "protocol.do?dispatch=setupUpdate&page=0&protocolId=" + protocol.domain.id;
+	form.submit();
+}
+
+function gotoSubmitNewPage() {
+	var form=document.forms[0];
+	form.action = "protocol.do?dispatch=setupNew&page=0";
+	form.submit();
+}
+
+function gotoInputPage() {
+	var form=document.forms[0];
+	form.action = "protocol.do?dispatch=input&page=0";
+	form.submit();
+}
+
 function setProtocolNameDropdown() {
 	var searchLocations = getSelectedOptions(document
 			.getElementById("searchLocations"));

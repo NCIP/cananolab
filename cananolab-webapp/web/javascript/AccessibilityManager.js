@@ -103,9 +103,9 @@ function populateAccess(access) {
 	}
 }
 
-function addAccess(actionName) {
+function addAccess(actionName, page) {
 	enableButtons( [ "submitButton", "resetButton" ]);
-	submitAction(document.forms[0], actionName, "saveAccess", 4);
+	submitAction(document.forms[0], actionName, "saveAccess", page);
 }
 
 function clearAccess(parentFormName, parentType) {
@@ -116,10 +116,10 @@ function clearAccess(parentFormName, parentType) {
 	enableAccessBy(true);
 }
 
-function deleteTheAccess(actionName) {
+function deleteTheAccess(actionName, page) {
 	var answer = confirmDelete("access");
 	if (answer != 0) {
-		submitAction(document.forms[0], actionName, "deleteAccess", 2);
+		submitAction(document.forms[0], actionName, "deleteAccess", page);
 	}
 }
 
