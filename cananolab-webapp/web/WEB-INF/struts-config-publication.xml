@@ -47,7 +47,7 @@
 	</global-forwards>
 	<action-mappings>
 		<action name="publicationForm" parameter="dispatch" path="/publication"
-			type="gov.nih.nci.cananolab.ui.publication.PublicationAction" input="input">
+			type="org.springframework.web.struts.DelegatingActionProxy" input="input">
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicatePublication" path="publication.message"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />

@@ -39,7 +39,7 @@
 			parameter="protocol.manageProtocol" scope="request" />
 		<action name="protocolForm" parameter="dispatch"
 			path="/protocol"
-			type="gov.nih.nci.cananolab.ui.protocol.ProtocolAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
 			input="input">
 			<forward name="success" path="protocol.message" />
 			<forward name="input"
