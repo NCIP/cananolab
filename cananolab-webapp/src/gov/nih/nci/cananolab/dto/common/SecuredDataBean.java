@@ -18,6 +18,8 @@ public class SecuredDataBean {
 
 	private String securedId;
 
+	private Boolean userUpdatable = false;
+
 	public List<AccessibilityBean> getUserAccess() {
 		return userAccesses;
 	}
@@ -50,8 +52,6 @@ public class SecuredDataBean {
 	public List<AccessibilityBean> getUserAccesses() {
 		return userAccesses;
 	}
-
-	private Boolean userUpdatable = false;
 
 	public Boolean getUserUpdatable() {
 		return userUpdatable;
