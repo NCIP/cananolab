@@ -12,8 +12,9 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
 <c:if test="${isOwner || newData eq 'true'}">
+
 <tr>
-	<td class="cellLabel" width="15%">
+	<td class="cellLabel" width="15%" id="addAccessLabel">
 		Access to the ${dataType}
 	</td>
 	<td>
