@@ -673,16 +673,37 @@ function updateCloningSample() {
 }
 
 function editDataAvailability(url){
-	SampleManager.getDetailContent(url, function(pageData){
-		if (pageData == "") {
-			hide('dataAvailability');
-			show('editDataAvailability');
-		} else {
-			dwr.util.setValue("dataAvailability", pageData, {
-				escapeHtml : false
-			});
-			show('dataAvailability' );
-			hide('editDataAvailability');
-		}		
-	});
+	alert(url);
+//	SampleManager.getDetailContent(url, function(pageData){
+//		if (pageData == "") {
+//			hide('dataAvailability');
+//			show('editDataAvailability');
+//		} else {
+//			dwr.util.setValue("dataAvailability", pageData, {
+//				escapeHtml : false
+//			});
+//			show('dataAvailability' );
+//			hide('editDataAvailability');
+//		}
+//	});
 }
+
+function generateDataAvailability(form, actionName, dispatch){
+	submitAction(form, actionName, dispatch, 0);
+}
+
+function updateDataAvailability(form, actionName, dispatch){
+	submitAction(form, actionName, dispatch, 0);
+}
+
+function deleteDataAvailability(type, form, actionName, dispatch){
+	var answer = confirmDelete(type);
+	if (answer) {
+		submitAction(form, actionName, dispatch, 0);
+	}
+}
+
+function manageDataAvailability(sampleId, actionName, dispatch){
+	 editDataAvailability(actionName + ".do?dispatch=" + dispatch + "&sampleId=" + sampleId);
+}
+
