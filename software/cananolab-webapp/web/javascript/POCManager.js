@@ -44,10 +44,10 @@ function populatePointOfContact(poc) {
 }
 function addPointOfContact(actionName) {
 	enableButtons(["submitButton", "resetButton"]);
-	submitAction(document.forms[0], actionName, "savePointOfContact", 3);
+	submitAction(document.forms[0], actionName, "savePointOfContact", 2);
 }
 function removePointOfContact(actionName) {
-	submitAction(document.forms[0], actionName, "removePointOfContact", 3);
+	submitAction(document.forms[0], actionName, "removePointOfContact", 2);
 }
 function updateOrganizationInfo() {
 	var orgName = dwr.util.getValue("domain.organization.name");
