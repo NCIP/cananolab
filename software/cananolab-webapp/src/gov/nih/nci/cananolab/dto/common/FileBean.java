@@ -42,6 +42,7 @@ public class FileBean extends SecuredDataBean {
 
 	public FileBean(File file) {
 		this.domainFile = file;
+		this.setSecuredId(file.getId().toString());
 		if (file != null) {
 			SortedSet<String> keywordStrs = new TreeSet<String>();
 			if (domainFile.getKeywordCollection() != null) {
@@ -179,7 +180,7 @@ public class FileBean extends SecuredDataBean {
 		copy.getDomainFile().setDescription(domainFile.getDescription());
 		copy.getDomainFile().setUriExternal(domainFile.getUriExternal());
 		copy.setKeywordsStr(keywordsStr);
-		//TODO copy accessibility
+		// TODO copy accessibility
 		copy.setUploadedFile(uploadedFile);
 		copy.setExternalUrl(externalUrl);
 		copy.getDomainFile().setId(domainFile.getId());

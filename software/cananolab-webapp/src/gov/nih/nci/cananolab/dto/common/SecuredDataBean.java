@@ -16,6 +16,8 @@ public class SecuredDataBean {
 
 	private Boolean publicStatus = false;
 
+	private String securedId;
+
 	public List<AccessibilityBean> getUserAccess() {
 		return userAccesses;
 	}
@@ -69,4 +71,11 @@ public class SecuredDataBean {
 		return publicStatus;
 	}
 
+	public String getSecuredId() {
+		return securedId;
+	}
+
+	public void setSecuredId(String securedId) {
+		this.securedId = securedId;
+	}
 }

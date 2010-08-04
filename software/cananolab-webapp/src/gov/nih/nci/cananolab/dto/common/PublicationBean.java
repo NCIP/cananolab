@@ -41,6 +41,7 @@ public class PublicationBean extends FileBean {
 
 	public PublicationBean(String id) {
 		domainFile.setId(new Long(id));
+		this.setSecuredId(id);
 	}
 
 	public PublicationBean(Publication publication) {
