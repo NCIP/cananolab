@@ -22,10 +22,8 @@
 				requestURI="searchPublication.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
 				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator"
-				defaultsort="${defaultSortColumn}">
-				<c:if test="${!empty user && user.curator}">
-					<display:column title="" property="editURL" />
-				</c:if>
+				defaultsort="${defaultSortColumn}"><u>
+				</u><display:column title="" property="detailURL" />
 				<display:column title="Bibliography Info" property="displayName"
 					sortable="true" />
 				<display:column title="Publication<br>Type"

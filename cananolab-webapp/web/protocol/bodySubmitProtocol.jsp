@@ -138,6 +138,7 @@
 		<c:set var="dataType" value="Protocol" />
 		<c:set var="parentAction" value="protocol" />
 		<c:set var="parentForm" value="protocolForm" />
+		<c:set var="parentPage" value="2"/>
 		<c:set var="protectedData"
 			value="${protocolForm.map.protocol.domain.id}" />
 		<c:set var="newData" value="true"/>
@@ -153,10 +154,10 @@
 	<c:set var="deleteOnclick"
 		value="deleteData('protocol', protocolForm, 'protocol', 'delete')" />
 	<c:set var="hiddenDispatch" value="create" />
-	<c:set var="hiddenPage" value="2" />
+	<c:set var="hiddenPage" value="1" />
 	<c:if test="${review}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(protocolForm, 'protocol', '${protocolForm.map.protocol.domain.id}', '${protocolForm.map.protocolBean.domain.name}', 'protocol')" />
+			value="submitReview(protocolForm, 'protocol', '${protocolForm.map.protocol.domain.id}', '${protocolForm.map.protocol.domain.name}', 'protocol')" />
 	</c:if>
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && protocolForm.map.protocol.publicStatus}">

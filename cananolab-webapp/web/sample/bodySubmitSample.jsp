@@ -87,10 +87,12 @@
 		<c:set var="userAccesses" value="${sampleForm.map.sampleBean.userAccesses}"/>
 		<c:set var="accessParent" value="sampleBean"/>
 		<c:set var="dataType" value="Sample"/>
+		<c:set var="parentAction" value="sample"/>
 		<c:set var="parentForm" value="sampleForm"/>
+		<c:set var="parentPage" value="4"/>
 		<c:set var="protectedData" value="${sampleForm.map.sampleBean.domain.id}"/>
 		<c:set var="newData" value="true"/>
-		<c:if test="${updateProtocol}">
+		<c:if test="${updateSample}">
 		   <c:set var="newData" value="false"/>
 		</c:if>
 		<%@include file="../bodyManageAccessibility.jsp" %>
@@ -131,7 +133,7 @@
 	<c:set var="cloneOnclick"
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
 	<c:set var="hiddenDispatch" value="create" />
-	<c:set var="hiddenPage" value="5" />
+	<c:set var="hiddenPage" value="2" />
 	<c:if test="${review}">
 		<c:set var="submitForReviewOnclick"
 			value="submitReview(sampleForm, 'sample', '${sampleForm.map.sampleBean.domain.id}', '${sampleForm.map.sampleBean.domain.name}', 'sample')" />
