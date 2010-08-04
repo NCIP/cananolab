@@ -500,25 +500,6 @@ function confirmAddNew(otherStyleIds, styleId, newObjectName, cleanupFunction) {
 	}
 }
 
-function generateDataAvailability(form, actionName, dispatch){
-	submitAction(form, actionName, dispatch, 0);
-}
-
-function updateDataAvailability(form, actionName, dispatch){
-	submitAction(form, actionName, dispatch, 0);
-}
-
-function deleteDataAvailability(type, form, actionName, dispatch){
-	var answer = confirmDelete(type);
-	if (answer) {
-		submitAction(form, actionName, dispatch, 0);
-	}
-}
-
-function manageDataAvailability(sampleId, actionName, dispatch){
-	 editDataAvailability(actionName + ".do?dispatch=" + dispatch + "&sampleId=" + sampleId);
-}
-
 function confirmPublicDataUpdate() {
 	if (confirm("The data has been assigned to Public.  Updating it would retract it from Public.  You will need to resubmit to the curator for review again before the curator reassigns it to Public.  Are you sure to continue?")) {
 		return true;
