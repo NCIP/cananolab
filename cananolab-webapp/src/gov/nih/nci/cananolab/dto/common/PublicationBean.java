@@ -110,7 +110,9 @@ public class PublicationBean extends FileBean {
 		oldPub.setType(dbPub.getType());
 		this.setSampleNamesStr(source.getSampleNamesStr());
 		this.setSampleNames(source.getSampleNames());
-		//TODO copy accessibility
+		this.setUserAccesses(source.getUserAccess());
+		this.setGroupAccesses(source.getGroupAccesses());
+		this.setUserUpdatable(source.getUserUpdatable());
 	}
 
 	public void copyFromDatabase(PublicationBean source) {
@@ -137,7 +139,9 @@ public class PublicationBean extends FileBean {
 		oldPub.setType(dbPub.getType());
 		this.setSampleNamesStr(source.getSampleNamesStr());
 		this.setSampleNames(source.getSampleNames());
-		//TODO copy accessibility
+		this.setUserAccesses(source.getUserAccess());
+		this.setGroupAccesses(source.getGroupAccesses());
+		this.setUserUpdatable(source.getUserUpdatable());
 		oldPub.setUri(dbPub.getUri());
 		oldPub.setUriExternal(dbPub.getUriExternal());
 	}
