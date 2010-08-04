@@ -20,7 +20,7 @@
 		<c:set var="newAddAccessButtonStyle" value="display:block" />
 		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')'); disableButtons(['submitButton', 'resetButton']);" id="addAccess"
 			style="${newAddAccessButtonStyle}"><img align="top"
-				src="images/btn_add.gif" border="0" /> </a>
+				src="images/btn_add.gif" border="0" /></a>
 	</td>
 </tr>
 <tr>
