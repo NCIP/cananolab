@@ -1,11 +1,12 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
@@ -65,10 +66,7 @@ public class DWRProtocolManager {
 					protocolType, null, null, null);
 			SortedSet<String> protocolNames = new TreeSet<String>();
 			for (ProtocolBean protocolBean : protocols) {
-				if (securityService.checkCreatePermission(protocolBean
-						.getDomain().getId().toString())) {
-					protocolNames.add(protocolBean.getDomain().getName());
-				}
+				protocolNames.add(protocolBean.getDomain().getName());
 			}
 			return protocolNames;
 		} catch (Exception e) {
@@ -82,8 +80,12 @@ public class DWRProtocolManager {
 			if (StringUtils.isEmpty(protocolName)) {
 				return null;
 			}
-			SortedSet<String> protocolVersions = getService().getHelper()
-					.getProtocolVersionsBy(protocolType, protocolName);
+			List<ProtocolBean> protocols = getService().findProtocolsBy(
+					protocolType, protocolName, null, null);
+			SortedSet<String> protocolVersions = new TreeSet<String>();
+			for (ProtocolBean protocol : protocols) {
+				protocolVersions.add(protocol.getDomain().getVersion());
+			}
 			return protocolVersions;
 		} catch (Exception e) {
 			return null;
@@ -99,15 +101,22 @@ public class DWRProtocolManager {
 			return null;
 		}
 		try {
-			Protocol protocol = getService().getHelper().findProtocolBy(
+			ProtocolBean protocolBean = getService().findProtocolBy(
 					protocolType, protocolName, protocolVersion);
-			if (!securityService.checkCreatePermission(protocol.getId()
-					.toString())) {
-				throw new NoAccessException();
+			WebContext wctx = WebContextFactory.get();
+			UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+			if (user != null) {
+				for (AccessibilityBean access : protocolBean.getUserAccesses()) {
+					if (access.getUserBean().getLoginName().equals(
+							user.getLoginName())
+							&& access.getRoleName().equals(
+									Constants.CSM_CURD_ROLE)) {
+						protocolBean.setUserUpdatable(true);
+						break;
+					}
+				}
 			}
-			return new ProtocolBean(protocol);
-		} catch (NoAccessException ne) {
-			logger.info("User can't access the protocol " + protocolName);
+			return protocolBean;
 		} catch (Exception e) {
 			logger.info("Error in retrieving the protocol " + protocolName);
 		}
