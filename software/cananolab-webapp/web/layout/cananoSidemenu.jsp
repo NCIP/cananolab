@@ -68,10 +68,5 @@
 				&nbsp;
 			</td>
 		</tr>
-		<tr>
-			<td class="subMenuFooter" height="22">
-				&nbsp;
-			</td>
-		</tr>
 	</tbody>
 </table>
