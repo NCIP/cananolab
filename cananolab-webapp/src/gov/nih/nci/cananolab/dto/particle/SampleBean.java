@@ -66,7 +66,7 @@ public class SampleBean extends SecuredDataBean {
 
 	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 
-	private String dataAvailabilityMetricsScore="NA";
+	private String dataAvailabilityMetricsScore = "NA";
 	private String caNanoLabScore;
 	private String mincharScore;
 
@@ -75,11 +75,12 @@ public class SampleBean extends SecuredDataBean {
 
 	public SampleBean(String sampleId) {
 		domain.setId(new Long(sampleId));
+		this.setSecuredId(sampleId);
 	}
 
 	public SampleBean(Sample sample) {
 		this.domain = sample;
-
+		this.setSecuredId(sample.getId().toString());
 		if (sample.getKeywordCollection() != null) {
 			for (Keyword keyword : sample.getKeywordCollection()) {
 				keywordSet.add(keyword.getName());
@@ -279,7 +280,8 @@ public class SampleBean extends SecuredDataBean {
 		return dataAvailabilityMetricsScore;
 	}
 
-	public void setDataAvailabilityMetricsScore(String dataAvailabilityMetricsScore) {
+	public void setDataAvailabilityMetricsScore(
+			String dataAvailabilityMetricsScore) {
 		this.dataAvailabilityMetricsScore = dataAvailabilityMetricsScore;
 	}
 
@@ -416,35 +418,43 @@ public class SampleBean extends SecuredDataBean {
 		return copy;
 	}
 
-	public void calculateDataAvailabilityScore(List<DataAvailabilityBean> dataAvailability,
-			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap){
-		//add 1 for the General Sample Information
+	public void calculateDataAvailabilityScore(
+			List<DataAvailabilityBean> dataAvailability,
+			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap) {
+		// add 1 for the General Sample Information
 		int size = dataAvailability.size() + 1;
-		int minCharSize=0;
+		int minCharSize = 0;
 		int totalMinCharSize = minchar.size();
 		List<String> caNanoForMincharEntities = new ArrayList<String>();
 		Set<String> keySet = caNanoLab2MinCharMap.keySet();
-		for(String key: keySet){
+		for (String key : keySet) {
 			String value = caNanoLab2MinCharMap.get(key);
-			for(String minCharEntity: minchar){
-				if(minCharEntity.equalsIgnoreCase(value)){
+			for (String minCharEntity : minchar) {
+				if (minCharEntity.equalsIgnoreCase(value)) {
 					caNanoForMincharEntities.add(key);
 				}
 			}
 		}
-		for(DataAvailabilityBean bean: dataAvailability){
+		for (DataAvailabilityBean bean : dataAvailability) {
 			String availableEntityName = bean.getAvailableEntityName();
-			for(String s : caNanoForMincharEntities){
-				if(s.equalsIgnoreCase(availableEntityName)){
+			for (String s : caNanoForMincharEntities) {
+				if (s.equalsIgnoreCase(availableEntityName)) {
 					minCharSize++;
 				}
 			}
 		}
-		Double caNanoLabScore = new Double(size*100/30); // this value needs to go to constant class.
-		Double minCharScore = new Double(minCharSize*100/totalMinCharSize);
+		Double caNanoLabScore = new Double(size * 100 / 30); // this value needs
+																// to go to
+																// constant
+																// class.
+		Double minCharScore = new Double(minCharSize * 100 / totalMinCharSize);
 
-		this.dataAvailabilityMetricsScore = "caNanoLab: " + caNanoLabScore.intValue() + "%; MINChar: " + minCharScore.intValue() + "%";
-		this.caNanoLabScore = caNanoLabScore.toString() + "% ("+size + " out of 30)";
-		this.mincharScore = minCharScore.toString() + "% (" + minCharSize + " out of " + totalMinCharSize + ")";
+		this.dataAvailabilityMetricsScore = "caNanoLab: "
+				+ caNanoLabScore.intValue() + "%; MINChar: "
+				+ minCharScore.intValue() + "%";
+		this.caNanoLabScore = caNanoLabScore.toString() + "% (" + size
+				+ " out of 30)";
+		this.mincharScore = minCharScore.toString() + "% (" + minCharSize
+				+ " out of " + totalMinCharSize + ")";
 	}
 }
