@@ -6,7 +6,7 @@
 <table width="100%" class="invisibleTable">
 	<tr>
 		<td align="left" width="600">
-			<c:if test="${!empty user && !empty updateId && user.admin}">
+			<c:if test="${showDelete eq 'true'}">
 				<input type="button" value="${deleteButtonName}"
 					onclick="${deleteOnclick}" id="deleteButton">
 			</c:if>
