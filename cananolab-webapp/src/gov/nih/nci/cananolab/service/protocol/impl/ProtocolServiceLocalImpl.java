@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -86,8 +85,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			protocolBean.setUserAccesses(userAccesses);
 			protocolBean.setGroupAccesses(groupAccesses);
-			protocolBean
-					.setUserUpdatable(this.checkUserUpdatable(userAccesses));
+			protocolBean.setUserUpdatable(this.checkUserUpdatable(
+					groupAccesses, userAccesses));
+			protocolBean.setUserDeletable(this.checkUserUpdatable(
+					groupAccesses, userAccesses));
 		}
 		return protocolBean;
 	}
@@ -303,12 +304,14 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// if access is Public, remove all other access except Public
 			// Curator and owner
-			if (access.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+			if (access.getGroupName()
+					.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 				for (AccessibilityBean acc : groupAccesses) {
 					// remove group accesses that are not public or curator
-					if (!acc.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+					if (!acc.getGroupName().equals(
+							AccessibilityBean.CSM_PUBLIC_GROUP)
 							&& !acc.getGroupName().equals(
-									(Constants.CSM_DATA_CURATOR))) {
+									(AccessibilityBean.CSM_DATA_CURATOR))) {
 						this.removeAccessibility(acc, protocol);
 					}
 				}
@@ -322,9 +325,9 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 			// if protocol is already public, retract from public
 			else {
-				if (groupAccesses.contains(Constants.CSM_PUBLIC_ACCESS)) {
-					this.removeAccessibility(Constants.CSM_PUBLIC_ACCESS,
-							protocol);
+				if (groupAccesses.contains(AccessibilityBean.CSM_PUBLIC_ACCESS)) {
+					this.removeAccessibility(
+							AccessibilityBean.CSM_PUBLIC_ACCESS, protocol);
 				}
 			}
 
