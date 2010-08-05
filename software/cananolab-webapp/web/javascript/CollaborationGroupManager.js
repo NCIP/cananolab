@@ -124,13 +124,13 @@ function clearUserAccess() {
 	dwr.util.setValue("userBean.loginName", "");
 	dwr.util.setValue("roleName", "");
 	hide("deleteUser");
-	enableButtons( [ "submitButton", "resetButton", "deleteCollaborationGroup" ]);
+	enableButtons( [ "submitButton", "deleteCollaborationGroup" ]);
 }
 
 function editUserAccess(userLoginName) {
 	var userAccess = userAccessCache[userLoginName.substring(4)];
 	populateUserAccessForm(userAccess);
-	disableButtons( [ "submitButton", "resetButton", "deleteCollaborationGroup" ]);
+	disableButtons( [ "submitButton", "deleteCollaborationGroup" ]);
 }
 
 function populateUserAccessForm(userAccess) {
