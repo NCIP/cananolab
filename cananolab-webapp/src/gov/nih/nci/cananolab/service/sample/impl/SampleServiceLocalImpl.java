@@ -885,6 +885,44 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (!isUserOwner(sample.getCreatedBy())) {
 				throw new NoAccessException();
 			}
+			// get existing accessibilities
+			List<AccessibilityBean> groupAccesses = this
+					.findGroupAccessibilities(sampleId);
+			List<AccessibilityBean> userAccesses = this
+					.findUserAccessibilities(sampleId);
+			// do nothing is access already exist
+			if (groupAccesses.contains(access)) {
+				return;
+			} else if (userAccesses.contains(access)) {
+				return;
+			}
+
+			// if access is Public, remove all other access except Public
+			// Curator and owner
+			if (access.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+				for (AccessibilityBean acc : groupAccesses) {
+					// remove group accesses that are not public or curator
+					if (!acc.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+							&& !acc.getGroupName().equals(
+									(Constants.CSM_DATA_CURATOR))) {
+						this.removeAccessibility(acc, sample);
+					}
+				}
+				for (AccessibilityBean acc : userAccesses) {
+					// remove accesses that are not owner
+					if (!acc.getUserBean().getLoginName().equals(
+							sample.getCreatedBy())) {
+						this.removeAccessibility(acc, sample);
+					}
+				}
+			}
+			// if sample is already public, retract from public
+			else {
+				if (groupAccesses.contains(Constants.CSM_PUBLIC_ACCESS)) {
+					this.removeAccessibility(Constants.CSM_PUBLIC_ACCESS,
+							sample);
+				}
+			}
 			super.saveAccessibility(access, sampleId);
 
 			// fully load sample
