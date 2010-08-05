@@ -36,7 +36,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -335,13 +334,13 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				this.saveDefaultAccessibility(config.getId().toString());
 				// assign public access to instrument
 				for (Instrument instrument : config.getInstrumentCollection()) {
-					this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS,
+					this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
 							instrument.getId().toString());
 				}
 			}
 			if (newTechnique) {
 				//assign public access to technique
-				this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
+				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, config
 						.getTechnique().getId().toString());
 			}
 
@@ -621,12 +620,12 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		super.saveAccessibility(access, config.getId().toString());
 		// // assign instruments and technique to public visibility
 		// if (config.getTechnique() != null) {
-		// super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
+		// super.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, config
 		// .getTechnique().getId().toString());
 		// }
 		// if (config.getInstrumentCollection() != null) {
 		// for (Instrument instrument : config.getInstrumentCollection()) {
-		// super.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, instrument
+		// super.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, instrument
 		// .getId().toString());
 		// }
 		// }

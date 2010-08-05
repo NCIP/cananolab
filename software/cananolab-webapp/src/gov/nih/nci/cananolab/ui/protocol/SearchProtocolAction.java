@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -105,10 +105,15 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		for (ProtocolBean protocolBean : protocolBeans) {
 			List<String> privileges = privilegeMap.get(protocolBean.getDomain()
 					.getId().toString());
-			if (privileges.contains(Constants.CSM_UPDATE_PRIVILEGE)) {
+			if (privileges.contains(AccessibilityBean.CSM_UPDATE_PRIVILEGE)) {
 				protocolBean.setUserUpdatable(true);
 			} else {
 				protocolBean.setUserUpdatable(false);
+			}
+			if (privileges.contains(AccessibilityBean.CSM_DELETE_PRIVILEGE)) {
+				protocolBean.setUserDeletable(true);
+			} else {
+				protocolBean.setUserDeletable(false);
 			}
 		}
 	}

@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.security;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +52,7 @@ public class LoginAction extends Action {
 			session.invalidate();
 		}
 		UserBean user = new UserBean(loginName, password);
-		SecurityService service = new SecurityService(Constants.CSM_APP_NAME,
+		SecurityService service = new SecurityService(AccessibilityBean.CSM_APP_NAME,
 				user);
 		request.getSession().setAttribute("securityService", service);
 		request.getSession().setAttribute("user", service.getUserBean());

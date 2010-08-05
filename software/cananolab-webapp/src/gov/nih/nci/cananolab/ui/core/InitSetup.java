@@ -381,9 +381,9 @@ public class InitSetup {
 
 		LabelValueBean[] csmRoleNames = new LabelValueBean[] {
 				new LabelValueBean(AccessibilityBean.R_ROLE_DISPLAY_NAME,
-						Constants.CSM_READ_ROLE),
+						AccessibilityBean.CSM_READ_ROLE),
 				new LabelValueBean(AccessibilityBean.CURD_ROLE_DISPLAY_NAME,
-						Constants.CSM_CURD_ROLE) };
+						AccessibilityBean.CSM_CURD_ROLE) };
 		appContext.setAttribute("csmRoleNames", csmRoleNames);
 	}
 }

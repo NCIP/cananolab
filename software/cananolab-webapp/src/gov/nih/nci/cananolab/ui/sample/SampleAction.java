@@ -23,7 +23,6 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -595,7 +594,7 @@ public class SampleAction extends BaseAnnotationAction {
 		service.assignAccessibility(theAccess, sample.getDomain());
 		// update status to retracted if the access is not public and sample is
 		// public
-		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)
 				&& sample.getPublicStatus()) {
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS,
 					request, sample.getDomain().getId().toString(), sample
@@ -603,7 +602,7 @@ public class SampleAction extends BaseAnnotationAction {
 		}
 		// if access is public, pending review status, update review
 		// status to public
-		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 			this.switchPendingReviewToPublic(request, sample.getDomain()
 					.getId().toString());
 		}
@@ -653,7 +652,7 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request) throws Exception {
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		SampleService service = this.setServiceInSession(request);
-		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS, sample
+		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, sample
 				.getDomain());
 	}
 

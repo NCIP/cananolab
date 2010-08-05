@@ -653,7 +653,7 @@ public class PublicationAction extends BaseAnnotationAction {
 				.getDomainFile());
 		// update status to retracted if the access is not public and
 		// publication is public
-		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)
 				&& publication.getPublicStatus()) {
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS,
 					request, publication.getDomainFile().getId().toString(),
@@ -661,7 +661,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 		// if access is public, pending review status, update review
 		// status to public
-		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 			this.switchPendingReviewToPublic(request, publication
 					.getDomainFile().getId().toString());
 		}
@@ -703,7 +703,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationBean publication = (PublicationBean) theForm
 				.get("publication");
 		PublicationService service = this.setServicesInSession(request);
-		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS,
+		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
 				(Publication) publication.getDomainFile());
 	}
 }

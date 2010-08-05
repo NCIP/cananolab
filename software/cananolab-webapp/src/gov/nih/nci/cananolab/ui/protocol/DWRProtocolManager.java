@@ -1,12 +1,9 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;

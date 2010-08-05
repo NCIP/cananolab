@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -155,7 +156,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		if (request.getSession().getAttribute("securityService") == null) {
 			UserBean user = (UserBean) request.getAttribute("user");
 			SecurityService service = new SecurityService(
-					Constants.CSM_APP_NAME, user);
+					AccessibilityBean.CSM_APP_NAME, user);
 			return service;
 		}
 		SecurityService securityService = (SecurityService) request

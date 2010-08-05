@@ -21,7 +21,6 @@ import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -53,7 +52,8 @@ public class BaseServiceLocalImpl implements BaseService {
 
 	public BaseServiceLocalImpl() {
 		try {
-			securityService = new SecurityService(Constants.CSM_APP_NAME);
+			securityService = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME);
 			accessUtils = new AccessibilityUtils();
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
@@ -62,7 +62,8 @@ public class BaseServiceLocalImpl implements BaseService {
 
 	public BaseServiceLocalImpl(UserBean user) {
 		try {
-			securityService = new SecurityService(Constants.CSM_APP_NAME, user);
+			securityService = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME, user);
 			this.user = securityService.getUserBean();
 			accessUtils = new AccessibilityUtils();
 		} catch (Exception e) {
@@ -77,7 +78,7 @@ public class BaseServiceLocalImpl implements BaseService {
 				this.user = securityService.getUserBean();
 			} else {
 				this.securityService = new SecurityService(
-						Constants.CSM_APP_NAME);
+						AccessibilityBean.CSM_APP_NAME);
 			}
 			accessUtils = new AccessibilityUtils();
 		} catch (Exception e) {
@@ -102,11 +103,12 @@ public class BaseServiceLocalImpl implements BaseService {
 				Group group = securityService.getGroup(groupName);
 				// include Public group, Curator group and groups that user has
 				// access to
-				if (group.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+				if (group.getGroupName().equals(
+						AccessibilityBean.CSM_PUBLIC_GROUP)
 						|| group.getGroupName().equals(
-								Constants.CSM_DATA_CURATOR)
+								AccessibilityBean.CSM_DATA_CURATOR)
 						|| securityService
-								.checkReadPermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
+								.checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 										+ group.getGroupId())) {
 					String roleName = entry.getValue();
 					AccessibilityBean access = new AccessibilityBean();
@@ -170,15 +172,15 @@ public class BaseServiceLocalImpl implements BaseService {
 			Group group = securityService.getGroup(groupName);
 			// include public group and groups that user has access to
 			if (securityService
-					.checkReadPermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
+					.checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 							+ group.getGroupId())
-					|| groupName.equals(Constants.CSM_PUBLIC_GROUP)) {
+					|| groupName.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 				String roleName = securityService.getGroupRole(protectedData,
 						groupName);
 				access = new AccessibilityBean();
 				access.setRoleName(roleName);
 				access.setGroupName(groupName);
-				if (groupName.equals(Constants.CSM_PUBLIC_GROUP)) {
+				if (groupName.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 					access.setAccessBy(AccessibilityBean.ACCESS_BY_PUBLIC);
 				} else {
 					access.setAccessBy(AccessibilityBean.ACCESS_BY_GROUP);
@@ -254,11 +256,11 @@ public class BaseServiceLocalImpl implements BaseService {
 
 	protected List<AccessibilityBean> getDefaultAccesses() {
 		List<AccessibilityBean> defaultAccesses = new ArrayList<AccessibilityBean>();
-		defaultAccesses.add(Constants.CSM_DEFAULT_ACCESS);
+		defaultAccesses.add(AccessibilityBean.CSM_DEFAULT_ACCESS);
 		if (!user.isCurator()) {
 			AccessibilityBean userAccess = new AccessibilityBean();
 			userAccess.setUserBean(user);
-			userAccess.setRoleName(Constants.CSM_CURD_ROLE);
+			userAccess.setRoleName(AccessibilityBean.CSM_CURD_ROLE);
 			userAccess.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 			defaultAccesses.add(userAccess);
 		}
@@ -289,7 +291,8 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
-	protected Boolean checkUserUpdatable(List<AccessibilityBean> userAccesses) {
+	protected Boolean checkUserUpdatable(List<AccessibilityBean> groupAccesses,
+			List<AccessibilityBean> userAccesses) {
 		if (user == null) {
 			return false;
 		}
@@ -298,10 +301,57 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 		for (AccessibilityBean access : userAccesses) {
 			if (access.getUserBean().getLoginName().equals(user.getLoginName())
-					&& access.getRoleName().equals(Constants.CSM_CURD_ROLE)) {
+					&& (access.getRoleName().equals(
+							AccessibilityBean.CSM_CURD_ROLE) || access
+							.getRoleName().equals(
+									AccessibilityBean.CSM_CUR_ROLE))) {
 				return true;
 			}
 		}
+		for (AccessibilityBean access : groupAccesses) {
+			for (String groupName : user.getGroupNames()) {
+				if (access.getGroupName().equals(groupName)
+						&& access.getRoleName().equals(
+								AccessibilityBean.CSM_CURD_ROLE)
+						|| access.getRoleName().equals(
+								AccessibilityBean.CSM_CUR_ROLE)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	protected Boolean checkUserDeletable(List<AccessibilityBean> groupAccesses,
+			List<AccessibilityBean> userAccesses) {
+		if (user == null) {
+			return false;
+		}
+		if (user.isCurator()) {
+			return true;
+		}
+		for (AccessibilityBean access : userAccesses) {
+			if (access.getUserBean().getLoginName().equals(user.getLoginName())
+					&& (access.getRoleName().equals(
+							AccessibilityBean.CSM_CURD_ROLE) || access
+							.getRoleName().equals(
+									AccessibilityBean.CSM_DELETE_ROLE))) {
+				return true;
+			}
+		}
+		for (AccessibilityBean access : groupAccesses) {
+			for (String groupName : user.getGroupNames()) {
+				if (access.getGroupName().equals(groupName)
+						&& access.getRoleName().equals(
+								AccessibilityBean.CSM_CURD_ROLE)
+						|| access.getRoleName().equals(
+								AccessibilityBean.CSM_DELETE_ROLE)) {
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
@@ -341,8 +391,8 @@ public class BaseServiceLocalImpl implements BaseService {
 			List<String> allGroupNames = accessUtils.getAllGroups();
 			for (String groupName : allGroupNames) {
 				// exclude Public and Curator
-				if (groupName.equals(Constants.CSM_PUBLIC_GROUP)
-						|| groupName.equals(Constants.CSM_DATA_CURATOR)) {
+				if (groupName.equals(AccessibilityBean.CSM_PUBLIC_GROUP)
+						|| groupName.equals(AccessibilityBean.CSM_DATA_CURATOR)) {
 					continue;
 				}
 				if (StringUtils.isEmpty(groupNameSearchStr)
@@ -412,7 +462,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		private AccessibilityUtils() throws SecurityException {
 			try {
 				this.authManager = SecurityServiceProvider
-						.getAuthorizationManager(Constants.CSM_APP_NAME);
+						.getAuthorizationManager(AccessibilityBean.CSM_APP_NAME);
 			} catch (Exception e) {
 				logger.error(e);
 				throw new SecurityException(e);
@@ -720,13 +770,13 @@ public class BaseServiceLocalImpl implements BaseService {
 			saveAccessibility(access, config.getId().toString());
 			// assign instruments and technique to public visibility
 			if (config.getTechnique() != null) {
-				saveAccessibility(Constants.CSM_PUBLIC_ACCESS, config
+				saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, config
 						.getTechnique().getId().toString());
 			}
 			if (config.getInstrumentCollection() != null) {
 				for (Instrument instrument : config.getInstrumentCollection()) {
-					saveAccessibility(Constants.CSM_PUBLIC_ACCESS, instrument
-							.getId().toString());
+					saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+							instrument.getId().toString());
 				}
 			}
 		}

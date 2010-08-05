@@ -9,6 +9,7 @@ package gov.nih.nci.cananolab.ui.sample;
 /* CVS $Id: SearchSampleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -230,7 +231,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			service = this.setServiceInSession(request);
 		}
 		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
+				.getSession().getAttribute("securityService");
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = new HashMap<String, List<DataAvailabilityBean>>();
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
@@ -257,7 +258,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 									new String[0]));
 					// get data availability for the samples
 					List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-							.findDataAvailabilityBySampleId(sampleId, securityService);
+							.findDataAvailabilityBySampleId(sampleId,
+									securityService);
 					dataAvailabilityMapPerPage.put(sampleId, dataAvailability);
 					if (!dataAvailability.isEmpty()
 							&& dataAvailability.size() > 0) {
@@ -287,10 +289,15 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		for (SampleBean sampleBean : sampleBeans) {
 			List<String> privileges = privilegeMap.get(sampleBean.getDomain()
 					.getId().toString());
-			if (privileges.contains(Constants.CSM_UPDATE_PRIVILEGE)) {
+			if (privileges.contains(AccessibilityBean.CSM_UPDATE_PRIVILEGE)) {
 				sampleBean.setUserUpdatable(true);
 			} else {
 				sampleBean.setUserUpdatable(false);
+			}
+			if (privileges.contains(AccessibilityBean.CSM_DELETE_PRIVILEGE)) {
+				sampleBean.setUserDeletable(true);
+			} else {
+				sampleBean.setUserDeletable(false);
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.service;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class BaseServiceHelper {
 
 	public BaseServiceHelper() {
 		try {
-			securityService = new SecurityService(Constants.CSM_APP_NAME);
+			securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME);
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
 		}
@@ -27,7 +27,7 @@ public class BaseServiceHelper {
 	public BaseServiceHelper(UserBean user) {
 		this.user = user;
 		try {
-			securityService = new SecurityService(Constants.CSM_APP_NAME, user);
+			securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME, user);
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
 		}
@@ -36,7 +36,7 @@ public class BaseServiceHelper {
 	public BaseServiceHelper(SecurityService securityService) {
 		if (securityService == null) {
 			try {
-				securityService = new SecurityService(Constants.CSM_APP_NAME);
+				securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME);
 			} catch (Exception e) {
 				logger.error("Can't create authorization service: " + e);
 			}
