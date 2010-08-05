@@ -232,6 +232,9 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
+		if(securityService == null){
+			securityService = new SecurityService(Constants.CSM_APP_NAME);
+		}
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = new HashMap<String, List<DataAvailabilityBean>>();
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
