@@ -144,9 +144,7 @@
 					<c:otherwise>
 						<td class="subMenuSecondaryTitle"
 							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout=
-	changeMenuStyle(this, 'subMenuSecondaryTitle'), hideCursor();
-onclick="gotoPage('${pubUrl}')" height="20">
+							onmouseout="changeMenuStyle(this, 'subMenuSecondaryTitle'), hideCursor();" onclick="gotoPage('${pubUrl}')" height="20">
 							<a class="subMenuSecondary">PUBLICATION</a>
 						</td>
 					</c:otherwise>
