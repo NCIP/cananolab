@@ -103,14 +103,22 @@ function populateAccess(access) {
 	}
 }
 
-function addAccess(actionName, page) {
-	enableButtons( [ "submitButton", "resetButton" ]);
-	submitAction(document.forms[0], actionName, "saveAccess", page);
+function addAccess(actionName, page, isPublic) {
+	if (isPublic) {
+		if (confirm("Data is already public.  Assigning a different accessibility will retract it from public.  Continue?")) {
+			enableButtons( [ "submitButton" ]);
+			submitAction(document.forms[0], actionName, "saveAccess", page);
+		}
+	} else {
+		enableButtons( [ "submitButton" ]);
+		submitAction(document.forms[0], actionName, "saveAccess", page);
+	}
 }
 
 function clearAccess(parentFormName, parentType) {
 	// go to server and clean form bean
-	AccessibilityManager.resetTheAccess(parentFormName, parentType, populateAccess);
+	AccessibilityManager.resetTheAccess(parentFormName, parentType,
+			populateAccess);
 	hide("deleteAccess");
 	hide("newUser");
 	enableAccessBy(true);
