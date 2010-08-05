@@ -89,6 +89,8 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 					groupAccesses, userAccesses));
 			protocolBean.setUserDeletable(this.checkUserUpdatable(
 					groupAccesses, userAccesses));
+			protocolBean.setUserIsOwner(this.checkUserOwner(protocolBean
+					.getDomain().getCreatedBy()));
 		}
 		return protocolBean;
 	}
