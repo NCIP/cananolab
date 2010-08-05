@@ -1,10 +1,11 @@
 package gov.nih.nci.cananolab.service.security;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -74,9 +75,7 @@ public class SecurityService {
 				// check if userBean is curator and if userBean is admin
 
 				this.userBean.setAdmin(this.isAdmin(this.userBean));
-				this.userBean.setCurator(this.isUserInGroup(this.userBean,
-						Constants.CSM_DATA_CURATOR));
-
+				this.userBean.setGroupNames(this.getUserGroups());
 			} catch (Exception e) {
 				logger.error(e);
 				throw new SecurityException(e);
@@ -96,7 +95,7 @@ public class SecurityService {
 	 * @throws SecurityException
 	 */
 	public UserBean login(String loginName, String password)
-			throws SecurityException {
+			throws SecurityException, InvalidSessionException {
 		UserBean userBean = null;
 		try {
 			boolean authenticated = authenticationManager.login(loginName,
@@ -127,30 +126,20 @@ public class SecurityService {
 		return adminStatus;
 	}
 
-	/**
-	 * Check whether the given userBean belongs to the given group.
-	 *
-	 * @param userBean
-	 * @param groupName
-	 * @return
-	 * @throws SecurityException
-	 */
-	private boolean isUserInGroup(UserBean user, String groupName)
-			throws SecurityException {
+	private List<String> getUserGroups() throws SecurityException {
+		List<String> groupNames = new ArrayList<String>();
 		try {
-			Set groups = this.authorizationManager.getGroups(user.getUserId());
+			Set groups = this.authorizationManager.getGroups(userBean
+					.getDomain().getUserId().toString());
 			for (Object obj : groups) {
 				Group group = (Group) obj;
-				if (group.getGroupName().equalsIgnoreCase(groupName)
-						|| group.getGroupName().startsWith(groupName)) {
-					return true;
-				}
+				groupNames.add(group.getGroupName());
 			}
-			return false;
 		} catch (Exception e) {
-			logger.error("Error in checking if userBean is in the group.", e);
+			logger.error("Error in getting the groups user is in.", e);
 			throw new SecurityException();
 		}
+		return groupNames;
 	}
 
 	/**
@@ -202,7 +191,7 @@ public class SecurityService {
 	public boolean checkCreatePermission(String protectionElementObjectId)
 			throws SecurityException {
 		return checkPermission(protectionElementObjectId,
-				Constants.CSM_CREATE_PRIVILEGE);
+				AccessibilityBean.CSM_CREATE_PRIVILEGE);
 	}
 
 	/**
@@ -216,7 +205,7 @@ public class SecurityService {
 	public boolean checkExecutePermission(String protectionElementObjectId)
 			throws SecurityException {
 		return checkPermission(protectionElementObjectId,
-				Constants.CSM_EXECUTE_PRIVILEGE);
+				AccessibilityBean.CSM_EXECUTE_PRIVILEGE);
 	}
 
 	/**
@@ -237,7 +226,7 @@ public class SecurityService {
 			return true;
 		} else {
 			return checkPermission(protectionElementObjectId,
-					Constants.CSM_READ_PRIVILEGE);
+					AccessibilityBean.CSM_READ_PRIVILEGE);
 		}
 	}
 
@@ -252,7 +241,7 @@ public class SecurityService {
 	public boolean checkDeletePermission(String protectionElementObjectId)
 			throws SecurityException {
 		return checkPermission(protectionElementObjectId,
-				Constants.CSM_DELETE_PRIVILEGE);
+				AccessibilityBean.CSM_DELETE_PRIVILEGE);
 	}
 
 	/**
@@ -380,7 +369,7 @@ public class SecurityService {
 		try {
 			if (userBean != null && userBean.isAdmin()) {
 				Application caNanoLabApp = authorizationManager
-						.getApplication(Constants.CSM_APP_NAME);
+						.getApplication(AccessibilityBean.CSM_APP_NAME);
 				caNanoLabApp.setDatabaseURL(dbURL);
 				caNanoLabApp.setDatabaseDialect(dbDialect);
 				caNanoLabApp.setDatabaseDriver(dbDriver);
@@ -414,11 +403,10 @@ public class SecurityService {
 			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
 					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
 					+ "d.group_name='"
-					+ Constants.CSM_PUBLIC_GROUP
+					+ AccessibilityBean.CSM_PUBLIC_GROUP
 					+ "' and b.role_name='"
-					+ Constants.CSM_READ_ROLE
-					+ "'"
-					+ " and protection_group_name='" + dataId + "'";
+					+ AccessibilityBean.CSM_READ_ROLE
+					+ "'" + " and protection_group_name='" + dataId + "'";
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = appService.directSQL(query, columns, columnTypes);
@@ -458,8 +446,9 @@ public class SecurityService {
 					+ "AND ugrp.role_id = r.role_id "
 					+ "AND ugrp.user_id = u.user_id " + "AND u.login_name = '"
 					+ userBean.getLoginName() + "' " + "AND r.role_name IN ('"
-					+ Constants.CSM_READ_ROLE + "', '" + Constants.CSM_CUR_ROLE
-					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+					+ AccessibilityBean.CSM_READ_ROLE + "', '"
+					+ AccessibilityBean.CSM_CUR_ROLE + "', '"
+					+ AccessibilityBean.CSM_CURD_ROLE + "')";
 
 			String query2 = "select distinct pg.protection_group_name  "
 					+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_group g, csm_user_group ug, csm_role r "
@@ -469,8 +458,9 @@ public class SecurityService {
 					+ "and ug.user_id=u.user_id "
 					+ "and ug.group_id=g.group_id " + "and u.login_name='"
 					+ userBean.getLoginName() + "' " + "and r.role_name in ('"
-					+ Constants.CSM_READ_ROLE + "', '" + Constants.CSM_CUR_ROLE
-					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+					+ AccessibilityBean.CSM_READ_ROLE + "', '"
+					+ AccessibilityBean.CSM_CUR_ROLE + "', '"
+					+ AccessibilityBean.CSM_CURD_ROLE + "')";
 			String query = query1 + " union " + query2;
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
@@ -503,7 +493,7 @@ public class SecurityService {
 					.getApplicationService();
 			if (userBean == null) {
 				for (String data : appService.getAllPublicData()) {
-					data2role.put(data, Constants.CSM_READ_ROLE);
+					data2role.put(data, AccessibilityBean.CSM_READ_ROLE);
 				}
 				return data2role;
 			}
@@ -519,10 +509,11 @@ public class SecurityService {
 					+ userBean.getLoginName()
 					+ "' "
 					+ "AND r.role_name IN ('"
-					+ Constants.CSM_READ_ROLE
+					+ AccessibilityBean.CSM_READ_ROLE
 					+ "', '"
-					+ Constants.CSM_CUR_ROLE
-					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+					+ AccessibilityBean.CSM_CUR_ROLE
+					+ "', '"
+					+ AccessibilityBean.CSM_CURD_ROLE + "')";
 
 			String query2 = "select distinct pg.protection_group_name, r.role_name  "
 					+ "from csm_user_group_role_pg ugrp, csm_protection_group pg, csm_user u, csm_group g, csm_user_group ug, csm_role r "
@@ -535,10 +526,11 @@ public class SecurityService {
 					+ userBean.getLoginName()
 					+ "' "
 					+ "and r.role_name in ('"
-					+ Constants.CSM_READ_ROLE
+					+ AccessibilityBean.CSM_READ_ROLE
 					+ "', '"
-					+ Constants.CSM_CUR_ROLE
-					+ "', '" + Constants.CSM_CURD_ROLE + "')";
+					+ AccessibilityBean.CSM_CUR_ROLE
+					+ "', '"
+					+ AccessibilityBean.CSM_CURD_ROLE + "')";
 			String query = query1 + " union " + query2;
 			String[] columns = new String[] { "protection_group_name",
 					"role_name" };
@@ -730,7 +722,7 @@ public class SecurityService {
 	public static void main(String[] args) {
 		try {
 			SecurityService service = new SecurityService(
-					Constants.CSM_APP_NAME);
+					AccessibilityBean.CSM_APP_NAME);
 			service.updateDatabaseConnectionForCSMApplications(args[0],
 					args[1], args[2], args[3], args[4]);
 			System.exit(0);
