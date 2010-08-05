@@ -148,11 +148,6 @@ public class ProtocolAction extends BaseAnnotationAction {
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
 		theForm.set("protocol", protocolBean);
 		setupDynamicDropdowns(request, protocolBean);
-		if (super.isUserOwner(request, protocolBean.getDomain().getCreatedBy())) {
-			request.getSession().setAttribute("isOwner", true);
-		} else {
-			request.getSession().setAttribute("isOwner", false);
-		}
 		request.getSession().setAttribute("updateProtocol", "true");
 
 		setUpSubmitForReviewButton(request, protocolBean.getDomain().getId()

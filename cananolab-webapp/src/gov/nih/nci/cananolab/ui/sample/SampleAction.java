@@ -213,11 +213,6 @@ public class SampleAction extends BaseAnnotationAction {
 		// request.setAttribute("onloadJavascript", sb.toString());
 		// }
 		// }
-		if (super.isUserOwner(request, sampleBean.getDomain().getCreatedBy())) {
-			request.getSession().setAttribute("isOwner", true);
-		} else {
-			request.getSession().setAttribute("isOwner", false);
-		}
 		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
 				.toString(), sampleBean.getPublicStatus());
 		return mapping.findForward("summaryEdit");
