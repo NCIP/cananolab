@@ -9,6 +9,7 @@ package gov.nih.nci.cananolab.ui.community;
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -99,6 +100,10 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 				.get("group");
 		CommunityService service = setServiceInSession(request);
 		service.saveCollaborationGroup(group);
+		// update user's groupNames
+		UserBean user = ((CommunityServiceLocalImpl) service)
+				.getSecurityService().getUserBean();
+		request.getSession().setAttribute("user", user);
 		return setupNew(mapping, form, request, response);
 	}
 

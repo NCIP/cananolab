@@ -169,6 +169,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				userIds[i] = user.getUserId();
 				authManager.addUsersToGroup(doGroup.getGroupId().toString(),
 						userIds);
+				//update userBean's associated group
+				user.getGroupNames().add(doGroup.getGroupName());
 			}
 		} catch (NoAccessException e) {
 			throw e;
