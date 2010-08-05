@@ -19,7 +19,7 @@
 	</td>
 	<td>
 		<c:set var="newAddAccessButtonStyle" value="display:block" />
-		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')'); disableButtons(['submitButton', 'resetButton']);" id="addAccess"
+		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')'); disableButtons(['submitButton']);" id="addAccess"
 			style="${newAddAccessButtonStyle}"><img align="top"
 				src="images/btn_add.gif" border="0" /></a>
 	</td>
@@ -195,9 +195,9 @@
 						<div align="right">
 							<html:hidden property="${accessParent}.theAccess.roleName" styleId="hiddenRoleName"/>
 							<html:hidden property="${accessParent}.theAccess.groupName" styleId="hiddenGroupName"/>
-							<input type="button" value="Save" onclick="javascript:addAccess('${parentAction}', ${parentPage});" />
+							<input type="button" value="Save" onclick="javascript:addAccess('${parentAction}', ${parentPage}, ${isPublic});" />
 							<input type="reset" value="Cancel"
-								onclick="javascript:closeSubmissionForm('Access');enableButtons(['submitButton', 'resetButton']);">
+								onclick="javascript:closeSubmissionForm('Access');enableButtons(['submitButton']);">
 						</div>
 					</td>
 				</tr>
