@@ -87,7 +87,7 @@
 				<br>
 				<html:text property="publication.domainFile.pubMedId" size="50"
 					styleId="domainFile.pubMedId"
-					onchange="javascript:fillPubMedInfo('true')" />
+					onchange="javascript:fillPubMedInfo('true', 'setupUpdate')" />
 				<br>
 				<i> clicking outside of the text field after entering a valid
 					PubMed ID enables auto-population of PubMed related fields</i>
@@ -429,6 +429,8 @@
 	<c:set var="parentAction" value="publication" />
 	<c:set var="parentPage" value="2"/>
 	<c:set var="protectedData"  value="${publicationForm.map.publication.domainFile.id}" />
+	<c:set var="isPublic" value="${publicationForm.map.publication.publicStatus}"/>
+
 	<c:set var="newData" value="true"/>
 	<c:if test="${updatePublication}">
 		<c:set var="newData" value="false" />
@@ -439,12 +441,15 @@
 	<c:set var="updateId" value="${param.publicationId}" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="1" />
-
+	<c:set var="resetSampleIdStr" value=""/>
+	<c:if test="${!empty publicationForm.map.sampleId}">
+	   <c:set var="resetSampleIdStr" value="&sampleId=${publicationForm.map.sampleId}"/>
+	</c:if>
 	<c:set var="resetOnclick"
-		value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0&sampleId=${publicationForm.map.sampleId}'" />
+		value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0${resetSampleIdStr}'" />
 	<c:if test="${!empty param.publicationId }">
 		<c:set var="resetOnclick"
-			value="javascript: location.href = 'publication.do?dispatch=setupUpdate&page=0&sampleId=${publicationForm.map.sampleId}&publicationId=${param.publicationId}'" />
+			value="javascript: location.href = 'publication.do?dispatch=setupUpdate&page=0&publicationId=${param.publicationId}${resetSampleIdStr}'" />
 	</c:if>
 	<c:set var="deleteOnclick"
 		value="deleteData('publication', publicationForm, 'publication', 'delete')" />
