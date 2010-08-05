@@ -521,7 +521,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				throw new NoAccessException("User has no access to the sample "
 						+ sampleName);
 			}
-			checkAssociatedVisibility(sample);
 		}
 		return sample;
 	}
@@ -547,31 +546,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			keywords.addAll(sample.getKeywordCollection());
 		}
 		return keywords;
-	}
-
-	private void checkAssociatedVisibility(Sample sample) throws Exception {
-		// check visibility of POC
-		if (sample.getPrimaryPointOfContact() != null) {
-			String pocId = sample.getPrimaryPointOfContact().getId().toString();
-			if (!getAccessibleData().contains(pocId)) {
-				sample.setPrimaryPointOfContact(null);
-				logger.debug("User can't access primary point of contact:"
-						+ pocId);
-			}
-		}
-		// remove POC that are not accessible to user
-		Set<PointOfContact> otherPOCs = new HashSet<PointOfContact>();
-		if (sample.getOtherPointOfContactCollection() != null) {
-			for (PointOfContact poc : sample.getOtherPointOfContactCollection()) {
-				if (getAccessibleData().contains(poc.getId().toString())) {
-					otherPOCs.add(poc);
-				} else {
-					logger.debug("User can't access point of contact:"
-							+ poc.getId());
-				}
-			}
-			sample.setOtherPointOfContactCollection(otherPOCs);
-		}
 	}
 
 	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId)
@@ -679,7 +653,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			checkAssociatedVisibility(sample);
 		}
 		return sample;
 	}
