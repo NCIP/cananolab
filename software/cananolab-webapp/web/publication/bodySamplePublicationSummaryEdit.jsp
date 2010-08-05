@@ -141,7 +141,9 @@
 																	<c:param name="dispatch" value="setupUpdate" />
 																	<c:param name="publicationId" value="${pubObj.id}" />
 																</c:url>
-																<a href="${pubUrl}">Edit</a>
+																<c:if test="${pubBean.userUpdatable}">
+																	<a href="${pubUrl}">Edit</a>
+																</c:if>
 															</td>
 														</tr>
 														<tr>
