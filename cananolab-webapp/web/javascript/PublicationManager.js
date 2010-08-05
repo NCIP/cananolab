@@ -6,7 +6,7 @@ var confirmMessage = "test";
 var updateFormPrompt = "false";
 var appOwner = "";
 function clearPublication() {
-	enableButtons( [ 'submitButton']);
+	enableButtons( [ 'submitButton' ]);
 	show("accessBlock");
 	// clear submission form first
 	PublicationManager.clearPublication(function(publication) {
@@ -213,11 +213,10 @@ function populateNonPubMedFields(publication) {
 				dwr.util.setValue("researchAreas", publication.researchAreas);
 				currentPublication = publication;
 			}
-		}
-		// populateAuthors(true);
-		if (publication.userUpdatable == true) {
+			// populateAuthors(true);
 			gotoUpdatePage(publication);
-		} else {
+		}
+		else {
 			alert("The publication already exists and you don't have update and delete privilege on this publication");
 			disableButtons( [ 'submitButton' ]);
 			hide("accessBlock");
