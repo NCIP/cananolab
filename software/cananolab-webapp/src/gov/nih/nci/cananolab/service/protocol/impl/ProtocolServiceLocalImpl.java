@@ -86,6 +86,8 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			protocolBean.setUserAccesses(userAccesses);
 			protocolBean.setGroupAccesses(groupAccesses);
+			protocolBean
+					.setUserUpdatable(this.checkUserUpdatable(userAccesses));
 		}
 		return protocolBean;
 	}

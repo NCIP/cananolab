@@ -375,6 +375,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findUserAccessibilities(sample.getId().toString());
 			sampleBean.setUserAccesses(userAccesses);
 			sampleBean.setGroupAccesses(groupAccesses);
+			sampleBean.setUserUpdatable(this.checkUserUpdatable(userAccesses));
 		}
 		return sampleBean;
 	}

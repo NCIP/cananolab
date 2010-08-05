@@ -218,20 +218,9 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					String[] sampleNames = helper
 							.findSampleNamesByPublicationId(publication.getId()
 									.toString());
-					PublicationBean pubBean = new PublicationBean(publication,
-							sampleNames);
-
-					// retrieve accessibility
-					if (user != null) {
-						List<AccessibilityBean> groupAccesses = super
-								.findGroupAccessibilities(publication.getId()
-										.toString());
-						List<AccessibilityBean> userAccesses = super
-								.findUserAccessibilities(publication.getId()
-										.toString());
-						pubBean.setUserAccesses(userAccesses);
-						pubBean.setGroupAccesses(groupAccesses);
-					}
+					PublicationBean pubBean = this
+							.loadPublicationBean(publication);
+					pubBean.setSampleNames(sampleNames);
 					publicationBeans.add(pubBean);
 				}
 			}
@@ -282,6 +271,8 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			publicationBean.setUserAccesses(userAccesses);
 			publicationBean.setGroupAccesses(groupAccesses);
+			publicationBean.setUserUpdatable(this
+					.checkUserUpdatable(userAccesses));
 		}
 		return publicationBean;
 	}
