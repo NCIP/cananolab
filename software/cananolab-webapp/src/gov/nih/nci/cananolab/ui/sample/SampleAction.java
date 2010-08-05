@@ -176,8 +176,6 @@ public class SampleAction extends BaseAnnotationAction {
 
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request);
-		// set existing sample accessibility
-		this.setAccesses(request, sampleBean);
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
