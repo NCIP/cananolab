@@ -37,9 +37,9 @@ import org.hibernate.Hibernate;
 
 /**
  * This class extends CSM API with convenient methods
- * 
+ *
  * @author Pansu
- * 
+ *
  */
 public class SecurityService {
 	private Logger logger = Logger.getLogger(SecurityService.class);
@@ -73,13 +73,14 @@ public class SecurityService {
 				this.userBean = login(userBean.getLoginName(), userBean
 						.getPassword());
 				// check if userBean is curator and if userBean is admin
-
 				this.userBean.setAdmin(this.isAdmin(this.userBean));
 				this.userBean.setGroupNames(this.getUserGroups());
 				// if user is not in Public group, add the user
 				if (!this.userBean.getGroupNames().contains(
 						AccessibilityBean.CSM_PUBLIC_GROUP)) {
 					this.assignUserToGroup(AccessibilityBean.CSM_PUBLIC_GROUP);
+					this.userBean.getGroupNames().add(
+							AccessibilityBean.CSM_PUBLIC_GROUP);
 				}
 			} catch (Exception e) {
 				logger.error(e);
@@ -95,7 +96,7 @@ public class SecurityService {
 	/**
 	 * Uses CSM to authenticate the given userBean and password. If userBean is
 	 * authenticated, check if the userBean is an admin or is a curator.
-	 * 
+	 *
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -121,7 +122,7 @@ public class SecurityService {
 
 	/**
 	 * Check whether the given userBean is the admin of the application.
-	 * 
+	 *
 	 * @param userBean
 	 * @return
 	 */
@@ -160,7 +161,7 @@ public class SecurityService {
 
 	/**
 	 * Set a new password for the given userBean login name
-	 * 
+	 *
 	 * @param loginName
 	 * @param newPassword
 	 * @throws SecurityException
@@ -182,7 +183,7 @@ public class SecurityService {
 	/**
 	 * Check whether the given userBean has the given privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param protectionElementObjectId
 	 * @param privilege
 	 * @return
@@ -213,7 +214,7 @@ public class SecurityService {
 	/**
 	 * Check whether the given userBean has execute privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param protectionElementObjectId
 	 * @return
 	 * @throws SecurityException
@@ -227,7 +228,7 @@ public class SecurityService {
 	/**
 	 * Check whether the given userBean has read privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param protectionElementObjectId
 	 * @return
 	 * @throws SecurityException
@@ -249,7 +250,7 @@ public class SecurityService {
 	/**
 	 * Check whether the given userBean has delete privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param protectionElementObjectId
 	 * @return
 	 * @throws SecurityException
@@ -262,7 +263,7 @@ public class SecurityService {
 
 	/**
 	 * Get a Group object for the given groupName.
-	 * 
+	 *
 	 * @param groupName
 	 * @return
 	 */
@@ -281,7 +282,7 @@ public class SecurityService {
 
 	/**
 	 * Get a Role object for the given roleName.
-	 * 
+	 *
 	 * @param roleName
 	 * @return
 	 */
@@ -300,7 +301,7 @@ public class SecurityService {
 
 	/**
 	 * Get a ProtectionElement object for the given objectId.
-	 * 
+	 *
 	 * @param objectId
 	 * @return
 	 * @throws SecurityException
@@ -332,7 +333,7 @@ public class SecurityService {
 
 	/**
 	 * Get a ProtectionGroup object for the given protectionGroupName.
-	 * 
+	 *
 	 * @param protectionGroupName
 	 * @return
 	 * @throws SecurityException
@@ -441,7 +442,7 @@ public class SecurityService {
 	/**
 	 * Return a list of data (csm protected_group_name) accessible to the
 	 * userBean in the database (R, CUR and CURD roles)
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
@@ -497,7 +498,7 @@ public class SecurityService {
 	/**
 	 * Return a map of data (csm protected_group_name) against roles accessible
 	 * to the userBean in the database
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
