@@ -306,7 +306,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		}
 		// check if user have access to publication first
 
-		String query = "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
+		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
 				+ publicationId + "'";
 		HQLCriteria crit = new HQLCriteria(query);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -314,8 +314,10 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		SortedSet<String> names = new TreeSet<String>();
 		for (Object obj : results) {
-			String sampleName = obj.toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
+			Object[] row = (Object[]) obj;
+			String sampleName = row[0].toString();
+			String sampleId = row[1].toString();
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
 				names.add(sampleName);
 			} else {
 				logger
@@ -328,6 +330,10 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 
 	public List<Publication> findPublicationsBySampleId(String sampleId)
 			throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -343,11 +349,6 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sample.getName());
-			}
 		}
 		for (Object obj : sample.getPublicationCollection()) {
 			Publication pub = (Publication) obj;
@@ -363,13 +364,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		return publications;
 	}
 
-	public List<Publication> findPublicationsBySampleName(String sampleName)
+	private List<Publication> findPublicationsBySampleName(String sampleName)
 			throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleName);
-		}
-
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -381,6 +377,10 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getId().toString())) {
+				return publications;
+			}
 		}
 		for (Object obj : sample.getPublicationCollection()) {
 			Publication pub = (Publication) obj;
@@ -537,9 +537,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sample.getName());
+					.getId().toString())) {
+				return publications;
 			}
 			for (Object obj : sample.getPublicationCollection()) {
 				Publication pub = (Publication) obj;
