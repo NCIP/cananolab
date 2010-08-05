@@ -51,7 +51,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="subMenuCommentText" height="20">
+				<td class="subMenuCommentText" height="30">
 					<em>Since ${counterStartDate}</em>
 				</td>
 			</tr>
@@ -60,6 +60,12 @@
 			<tr>
 				<td class="subMenuCommentText" height="20">
 					Logged in as <i>${user.loginName}</i>
+					<c:if test="${!empty user.groupNames}">
+					<br>Associated Groups:<br/>
+					<c:forEach var="group" items="${user.groupNames}">
+						<span class="indented1"><i>${group}</i></span><br/>
+					</c:forEach>
+					</c:if>
 				</td>
 			</tr>
 		</c:if>
