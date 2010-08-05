@@ -93,13 +93,14 @@
 		<c:set var="protectedData" value="${sampleForm.map.sampleBean.domain.id}"/>
 		<c:set var="newData" value="true"/>
 		<c:set var="isPublic" value="${sampleForm.map.sampleBean.publicStatus}"/>
+		<c:set var="isOwner" value="${sampleForm.map.sampleBean.userIsOwner}"/>
 		<c:if test="${updateSample}">
 		   <c:set var="newData" value="false"/>
 		</c:if>
 		<%@include file="../bodyManageAccessibility.jsp" %>
 		<c:if test="${!empty updateSample}">
 			<tr>
-			<c:set var="showDataAvailabilityMetrics" value="${sampleForm.map.sampleBean.hasComposition 
+			<c:set var="showDataAvailabilityMetrics" value="${sampleForm.map.sampleBean.hasComposition
 						|| sampleForm.map.sampleBean.hasCharacterizations || sampleForm.map.sampleBean.hasPublications }" />
 				<c:if test="${!empty user && showDataAvailabilityMetrics }">
 					<td class="cellLabel">
@@ -148,6 +149,10 @@
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && sampleForm.map.sampleBean.publicStatus}">
 		<c:set var="validate" value="true" />
+	</c:if>
+	<c:set var="showDelete" value="false"/>
+	<c:if test="${sampleForm.map.sampleBean.userDeletable}">
+	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>

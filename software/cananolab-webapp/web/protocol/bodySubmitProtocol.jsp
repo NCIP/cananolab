@@ -146,6 +146,7 @@
 		   <c:set var="newData" value="false"/>
 		</c:if>
 		<c:set var="isPublic" value="${protocolForm.map.protocol.publicStatus}"/>
+		<c:set var="isOwner" value="${protocolForm.map.protocol.userIsOwner}"/>
 		<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
 	<br>
@@ -163,6 +164,9 @@
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && protocolForm.map.protocol.publicStatus}">
 		<c:set var="validate" value="true" />
+	</c:if>
+	<c:if test="${protocolForm.map.protocol.userDeletable}">
+	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
