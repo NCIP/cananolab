@@ -430,7 +430,7 @@
 	<c:set var="parentPage" value="2"/>
 	<c:set var="protectedData"  value="${publicationForm.map.publication.domainFile.id}" />
 	<c:set var="isPublic" value="${publicationForm.map.publication.publicStatus}"/>
-
+    <c:set var="isOwner" value="${publicationForm.map.publication.userIsOwner}"/>
 	<c:set var="newData" value="true"/>
 	<c:if test="${updatePublication}">
 		<c:set var="newData" value="false" />
@@ -468,6 +468,10 @@
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && publicationForm.map.publication.publicStatus}">
 		<c:set var="validate" value="true" />
+	</c:if>
+	<c:set var="showDelete" value="false"/>
+	<c:if test="${publicationForm.map.publication.userDeletable}">
+	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
