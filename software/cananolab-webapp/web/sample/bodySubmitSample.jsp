@@ -104,14 +104,17 @@
 				</td>
 				<td>
 					<c:if
-						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability}">
+						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability && (sampleForm.map.sampleBean.hasComposition 
+						|| sampleForm.map.sampleBean.hasCharacterizations || sampleForm.map.sampleBean.hasPublications) }">
 						<input type="image" value="Generate" src="images/btn_generate.gif"
 							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 					</c:if>
 					<c:if
-						test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true' && user.admin}">
-						<input type="image" value="Edit" id="editDataAvailability" src="images/btn_edit.gif"
-							onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView');" >
+						test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true'}">
+						<a href="#"
+					onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView'); "
+					id="editDataAvailability" ><img
+						align="top" src="images/btn_edit.gif" border="0" /></a>
 					</c:if>
 				</td>
 			</tr>
