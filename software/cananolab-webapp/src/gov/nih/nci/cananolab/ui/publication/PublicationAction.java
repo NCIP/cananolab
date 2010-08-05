@@ -262,7 +262,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
-				"updateSubmitFormBasedOnCategory();fillPubMedInfo('false')");
+				"updateSubmitFormBasedOnCategory();fillPubMedInfo('false', null)");
 
 		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
 				.toString(), pubBean.getPublicStatus());
