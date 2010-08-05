@@ -478,10 +478,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	}
 
 	public Sample findSampleByName(String sampleName) throws Exception {
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleName)) {
-			throw new NoAccessException("User has no access to the sample "
-					+ sampleName);
-		}
 		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -520,6 +516,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
+			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
+					.getId().toString())) {
+				throw new NoAccessException("User has no access to the sample "
+						+ sampleName);
+			}
 			checkAssociatedVisibility(sample);
 		}
 		return sample;
@@ -527,6 +528,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 	public List<Keyword> findKeywordsBySampleId(String sampleId)
 			throws Exception {
+		// check whether user has access to the sample
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException(
+					"User doesn't have access to the sample.");
+		}
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -538,14 +544,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		Sample sample = null;
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
-			// check whether user has access to the sample
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				keywords.addAll(sample.getKeywordCollection());
-			} else {
-				throw new NoAccessException(
-						"User doesn't have access to the sample.");
-			}
+			keywords.addAll(sample.getKeywordCollection());
 		}
 		return keywords;
 	}
@@ -577,6 +576,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId)
 			throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -588,11 +591,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		PointOfContact poc = null;
 		for (Object obj : results) {
 			Sample sample = (Sample) obj;
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sample.getName());
-			}
 			poc = sample.getPrimaryPointOfContact();
 		}
 		if (poc != null) {
@@ -607,6 +605,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 	public List<PointOfContact> findOtherPointOfContactsBySampleId(
 			String sampleId) throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -619,11 +621,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
 		for (Object obj : results) {
 			Sample sample = (Sample) obj;
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sample.getName());
-			}
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
 			for (PointOfContact poc : otherPOCs) {
@@ -803,6 +800,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 	public List<PointOfContact> findPointOfContactsBySampleId(String sampleId)
 			throws Exception {
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -817,11 +818,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List<PointOfContact> pointOfContacts = new ArrayList<PointOfContact>();
 		for (Object obj : results) {
 			Sample sample = (Sample) obj;
-			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
-					.getName())) {
-				throw new NoAccessException("User has no access to the sample "
-						+ sample.getName());
-			}
 			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
 			if (getAccessibleData().contains(primaryPOC.getId().toString())) {
 				pointOfContacts.add(primaryPOC);
@@ -896,15 +892,17 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select other.name from gov.nih.nci.cananolab.domain.particle.Sample as other "
+				"select other.name, other.id from gov.nih.nci.cananolab.domain.particle.Sample as other "
 						+ "where exists ("
 						+ "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample "
 						+ "where sample.primaryPointOfContact.organization.name=other.primaryPointOfContact.organization.name and sample.id="
 						+ sampleId + " and other.name!=sample.name)");
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			String name = (String) obj.toString();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), name)) {
+			Object[] row = (Object[]) obj;
+			String name = row[0].toString();
+			String id = row[1].toString();
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
 				otherSamples.add(name);
 			} else {
 				logger.debug("User doesn't have access to sample of name: "
