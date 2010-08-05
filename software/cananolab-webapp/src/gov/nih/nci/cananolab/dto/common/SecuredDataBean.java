@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.util.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +18,8 @@ public class SecuredDataBean {
 
 	private Boolean userUpdatable = false;
 
+	private Boolean userDeletable = false;
+
 	public List<AccessibilityBean> getUserAccess() {
 		return userAccesses;
 	}
@@ -34,7 +34,8 @@ public class SecuredDataBean {
 
 	public void setGroupAccesses(List<AccessibilityBean> groupAccesses) {
 		for (AccessibilityBean access : groupAccesses) {
-			if (access.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+			if (access.getGroupName()
+					.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 				publicStatus = true;
 			}
 		}
@@ -77,5 +78,13 @@ public class SecuredDataBean {
 
 	public void setSecuredId(String securedId) {
 		this.securedId = securedId;
+	}
+
+	public Boolean getUserDeletable() {
+		return userDeletable;
+	}
+
+	public void setUserDeletable(Boolean userDeletable) {
+		this.userDeletable = userDeletable;
 	}
 }
