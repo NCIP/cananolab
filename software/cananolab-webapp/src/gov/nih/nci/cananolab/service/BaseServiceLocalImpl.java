@@ -289,6 +289,22 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
+	protected Boolean checkUserUpdatable(List<AccessibilityBean> userAccesses) {
+		if (user == null) {
+			return false;
+		}
+		if (user.isCurator()) {
+			return true;
+		}
+		for (AccessibilityBean access : userAccesses) {
+			if (access.getUserBean().getLoginName().equals(user.getLoginName())
+					&& access.getRoleName().equals(Constants.CSM_CURD_ROLE)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public List<UserBean> findUserLoginNames(String loginNameSearchStr)
 			throws SecurityException {
 		List<UserBean> matchedUsers = new ArrayList<UserBean>();
