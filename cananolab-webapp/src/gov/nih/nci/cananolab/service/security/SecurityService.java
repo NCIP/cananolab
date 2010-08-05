@@ -711,7 +711,7 @@ public class SecurityService {
 		try {
 			ProtectionElement pe = this.getProtectionElement(protectedData);
 			isOwner = authorizationManager.checkOwnership(userBean
-					.getLoginName(), pe.getProtectionElementId().toString());
+					.getLoginName(), pe.getObjectId());
 		} catch (Exception e) {
 			logger.error("Error in assigning an owner", e);
 			throw new SecurityException();
