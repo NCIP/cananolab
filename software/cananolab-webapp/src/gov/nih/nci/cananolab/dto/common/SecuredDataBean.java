@@ -20,6 +20,8 @@ public class SecuredDataBean {
 
 	private Boolean userDeletable = false;
 
+	private Boolean userIsOwner = false;
+
 	public List<AccessibilityBean> getUserAccess() {
 		return userAccesses;
 	}
@@ -86,5 +88,13 @@ public class SecuredDataBean {
 
 	public void setUserDeletable(Boolean userDeletable) {
 		this.userDeletable = userDeletable;
+	}
+
+	public Boolean getUserIsOwner() {
+		return userIsOwner;
+	}
+
+	public void setUserIsOwner(Boolean userIsOwner) {
+		this.userIsOwner = userIsOwner;
 	}
 }

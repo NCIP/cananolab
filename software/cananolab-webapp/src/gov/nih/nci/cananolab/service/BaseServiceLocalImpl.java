@@ -355,6 +355,21 @@ public class BaseServiceLocalImpl implements BaseService {
 		return false;
 	}
 
+	protected Boolean checkUserOwner(String createdBy) {
+		if (user == null) {
+			return false;
+		}
+		if (user.isCurator()) {
+			return true;
+		}
+		// the creator of the data
+		if (user.getLoginName().equalsIgnoreCase(createdBy)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public List<UserBean> findUserLoginNames(String loginNameSearchStr)
 			throws SecurityException {
 		List<UserBean> matchedUsers = new ArrayList<UserBean>();
@@ -409,7 +424,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		return matchedGroupNames;
 	}
 
-	public SecurityService getAuthService() {
+	public SecurityService getSecurityService() {
 		return securityService;
 	}
 

@@ -273,6 +273,8 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					groupAccesses, userAccesses));
 			publicationBean.setUserDeletable(this.checkUserUpdatable(
 					groupAccesses, userAccesses));
+			publicationBean.setUserIsOwner(this.checkUserOwner(publicationBean
+					.getDomainFile().getCreatedBy()));
 		}
 		return publicationBean;
 	}
