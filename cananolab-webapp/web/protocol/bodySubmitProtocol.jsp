@@ -145,6 +145,7 @@
 		<c:if test="${updateProtocol}">
 		   <c:set var="newData" value="false"/>
 		</c:if>
+		<c:set var="isPublic" value="${protocolForm.map.protocol.publicStatus}"/>
 		<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
 	<br>
