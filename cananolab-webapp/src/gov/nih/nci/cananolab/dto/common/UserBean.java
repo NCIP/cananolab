@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.security.authorization.domainobjects.User;
 
+import java.util.List;
+
 /**
  * This class represents properties of a user object to be shown in the view
  * page.
@@ -65,6 +67,8 @@ public class UserBean {
 	private boolean curator;
 
 	private User domain;
+
+	private List<String> groupNames;
 
 	public UserBean() {
 	}
@@ -189,10 +193,6 @@ public class UserBean {
 		return curator;
 	}
 
-	public void setCurator(boolean curator) {
-		this.curator = curator;
-	}
-
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof UserBean) {
@@ -222,5 +222,18 @@ public class UserBean {
 
 	public User getDomain() {
 		return domain;
+	}
+
+	public List<String> getGroupNames() {
+		return groupNames;
+	}
+
+	public void setGroupNames(List<String> groupNames) {
+		this.groupNames = groupNames;
+		if (groupNames.contains(AccessibilityBean.CSM_DATA_CURATOR)) {
+			this.curator = true;
+		} else {
+			this.curator = false;
+		}
 	}
 }
