@@ -99,13 +99,16 @@
 		<%@include file="../bodyManageAccessibility.jsp" %>
 		<c:if test="${!empty updateSample}">
 			<tr>
-				<td class="cellLabel">
+			<c:set var="showDataAvailabilityMetrics" value="${sampleForm.map.sampleBean.hasComposition 
+						|| sampleForm.map.sampleBean.hasCharacterizations || sampleForm.map.sampleBean.hasPublications }" />
+				<c:if test="${!empty user && showDataAvailabilityMetrics }">
+					<td class="cellLabel">
 					Data Availability Metrics
-				</td>
+					</td>
+				</c:if>
 				<td>
 					<c:if
-						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability && (sampleForm.map.sampleBean.hasComposition 
-						|| sampleForm.map.sampleBean.hasCharacterizations || sampleForm.map.sampleBean.hasPublications) }">
+						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability && showDataAvailabilityMetrics }">
 						<input type="image" value="Generate" src="images/btn_generate.gif"
 							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 					</c:if>
