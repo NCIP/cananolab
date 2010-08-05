@@ -4,6 +4,7 @@ var numberOfAuthors = 0; // number of unique authors in the cache, used to
 // generate author id
 var confirmMessage = "test";
 var updateFormPrompt = "false";
+var redirect = null;
 var appOwner = "";
 function clearPublication() {
 	enableButtons( [ 'submitButton' ]);
@@ -150,9 +151,10 @@ function validatePubMedInfo(publication) {
 	}
 }
 
-function fillPubMedInfo(updatePrompt) {
+function fillPubMedInfo(updatePrompt, theRedirect) {
 	var pubMedId = dwr.util.getValue("domainFile.pubMedId");
 	updateFormPrompt = updatePrompt;
+	redirect = theRedirect;
 	if (pubMedId != null && pubMedId != 0) {
 		PublicationManager.retrievePubMedInfo(pubMedId, populatePubMedInfo);
 	} else {
@@ -168,7 +170,6 @@ function populatePubMedInfo(publication) {
 		});
 		// If PubMedId is null in returned pub -> pubMedId not found.
 		if (publication.domainFile.pubMedId == null) {
-			alert("Invalid PubMed ID entered.");
 			clearPublication();
 			// populateAuthors(false);
 			// enableAutoFields();
@@ -214,10 +215,11 @@ function populateNonPubMedFields(publication) {
 				currentPublication = publication;
 			}
 			// populateAuthors(true);
-			gotoUpdatePage(publication);
-		}
-		else {
-			alert("The publication already exists and you don't have update and delete privilege on this publication");
+			if (redirect == "setupUpdate") {
+				gotoUpdatePage(publication);
+			}
+		} else {
+			alert("The publication already exists and you don't have update privilege on this publication");
 			disableButtons( [ 'submitButton' ]);
 			hide("accessBlock");
 		}
