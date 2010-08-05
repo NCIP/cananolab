@@ -47,7 +47,7 @@
 					<c:set var="disableButtons" value="true"/>
 				</c:if>
 				<a href="#"
-					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()'); disableButtons(['submitButton', 'resetButton'])"
+					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()'); disableButtons(['submitButton'])"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
 						align="top" src="images/btn_add.gif" border="0" /></a>
 			</td>
@@ -92,6 +92,7 @@
 		<c:set var="parentPage" value="4"/>
 		<c:set var="protectedData" value="${sampleForm.map.sampleBean.domain.id}"/>
 		<c:set var="newData" value="true"/>
+		<c:set var="isPublic" value="${sampleForm.map.sampleBean.publicStatus}"/>
 		<c:if test="${updateSample}">
 		   <c:set var="newData" value="false"/>
 		</c:if>
