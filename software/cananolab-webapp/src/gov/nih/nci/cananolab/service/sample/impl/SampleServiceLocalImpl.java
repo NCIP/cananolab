@@ -249,12 +249,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			appService.saveOrUpdate(domainPOC);
 
 			if (newPOC) {
-				this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, domainPOC
-						.getId().toString());
+				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+						domainPOC.getId().toString());
 			}
 			if (newOrg) {
-				this.saveAccessibility(Constants.CSM_PUBLIC_ACCESS, domainPOC
-						.getOrganization().getId().toString());
+				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+						domainPOC.getOrganization().getId().toString());
 			}
 		} catch (Exception e) {
 			String err = "Error in saving the PointOfContact.";
@@ -375,7 +375,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findUserAccessibilities(sample.getId().toString());
 			sampleBean.setUserAccesses(userAccesses);
 			sampleBean.setGroupAccesses(groupAccesses);
-			sampleBean.setUserUpdatable(this.checkUserUpdatable(userAccesses));
+			sampleBean.setUserUpdatable(this.checkUserUpdatable(groupAccesses,
+					userAccesses));
+			sampleBean.setUserDeletable(this.checkUserUpdatable(groupAccesses,
+					userAccesses));
 		}
 		return sampleBean;
 	}
@@ -750,7 +753,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				PublicationBean pubBean = new PublicationBean(pub);
 				String[] accessibleGroups = securityService
 						.getAccessibleGroups(pub.getId().toString(),
-								Constants.CSM_READ_PRIVILEGE);
+								AccessibilityBean.CSM_READ_PRIVILEGE);
 				// pubBean.setVisibilityGroups(accessibleGroups);
 				// TODO set accessibility in copy
 				// to prevent overwriting sample associations
@@ -900,12 +903,14 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// if access is Public, remove all other access except Public
 			// Curator and owner
-			if (access.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+			if (access.getGroupName()
+					.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 				for (AccessibilityBean acc : groupAccesses) {
 					// remove group accesses that are not public or curator
-					if (!acc.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+					if (!acc.getGroupName().equals(
+							AccessibilityBean.CSM_PUBLIC_GROUP)
 							&& !acc.getGroupName().equals(
-									(Constants.CSM_DATA_CURATOR))) {
+									(AccessibilityBean.CSM_DATA_CURATOR))) {
 						this.removeAccessibility(acc, sample);
 					}
 				}
@@ -919,9 +924,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 			// if sample is already public, retract from public
 			else {
-				if (groupAccesses.contains(Constants.CSM_PUBLIC_ACCESS)) {
-					this.removeAccessibility(Constants.CSM_PUBLIC_ACCESS,
-							sample);
+				if (groupAccesses.contains(AccessibilityBean.CSM_PUBLIC_ACCESS)) {
+					this.removeAccessibility(
+							AccessibilityBean.CSM_PUBLIC_ACCESS, sample);
 				}
 			}
 			super.saveAccessibility(access, sampleId);
