@@ -60,14 +60,16 @@ public class AccessibilityBean {
 	public boolean equals(Object obj) {
 		if (obj instanceof AccessibilityBean) {
 			AccessibilityBean access = (AccessibilityBean) obj;
-			if (accessBy.equals(ACCESS_BY_GROUP)
-					|| accessBy.equals(ACCESS_BY_PUBLIC)) {
-				if (access.getGroupName().equals(getGroupName())) {
+			if (access.getAccessBy().equals(ACCESS_BY_GROUP)
+					|| access.getAccessBy().equals(ACCESS_BY_PUBLIC)) {
+				if (access.getGroupName().equals(getGroupName())
+						&& access.getRoleName().equals(getRoleName())) {
 					return true;
 				}
 			} else {
 				if (access.getUserBean().getLoginName().equals(
-						getUserBean().getLoginName())) {
+						getUserBean().getLoginName())
+						&& access.getRoleName().equals(getRoleName())) {
 					return true;
 				}
 			}
