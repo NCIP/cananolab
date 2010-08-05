@@ -329,18 +329,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 	}
 
-	public Boolean isUserOwner(HttpServletRequest request, String createdBy) {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// user is either a curator or the creator of the data
-		if (user != null
-				&& (user.getLoginName().equalsIgnoreCase(createdBy) || user
-						.isCurator())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	public ActionForward submitForReview(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
