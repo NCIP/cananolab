@@ -16,16 +16,7 @@
 		<c:set var="sampleId" value="${theSample.domain.id}" scope="session" />
 	</c:when>
 </c:choose>
-
-<c:choose>
-	<c:when
-		test="${!empty user}">
-		<c:set var="dispatch" value="summaryEdit" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="dispatch" value="summaryView" />
-	</c:otherwise>
-</c:choose>
+<c:set var="dispatch" value="${param.dispatch}"/>
 <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="22">
