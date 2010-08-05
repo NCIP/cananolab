@@ -36,7 +36,7 @@
 					property="characterizationStr" />
 				<display:column title="Data Availability" >
 				    <c:choose>
-						<c:when test="${sample.dataAvailabilityMetricsScore ==  'NA' }">NA
+						<c:when test="${sample.dataAvailabilityMetricsScore ==  'N/A' }">${sample.dataAvailabilityMetricsScore}
 						</c:when>
 						<c:otherwise>
 							<div id="details${sample.domain.id}" style="position: relative">
@@ -63,4 +63,3 @@
 		</td>
 	</tr>
 </table>
-
