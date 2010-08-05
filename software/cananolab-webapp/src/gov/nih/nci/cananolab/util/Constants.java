@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.util;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +7,6 @@ public class Constants {
 	public static final String DOMAIN_MODEL_NAME = "caNanoLab";
 
 	public static final String SDK_BEAN_JAR = "caNanoLabSDK-beans.jar";
-
-	public static final String CSM_APP_NAME = "caNanoLab";
 
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
@@ -48,25 +44,6 @@ public class Constants {
 		SAMPLE_PREFIX = samplePrefix.trim();
 	}
 
-	public static final AccessibilityBean CSM_DEFAULT_ACCESS;
-	static {
-		AccessibilityBean defaultAccess = new AccessibilityBean(
-				AccessibilityBean.ACCESS_BY_GROUP);
-		defaultAccess.setGroupName(Constants.CSM_DATA_CURATOR);
-		defaultAccess.setRoleName(Constants.CSM_CURD_ROLE);
-		CSM_DEFAULT_ACCESS = defaultAccess;
-
-	}
-
-	public static final AccessibilityBean CSM_PUBLIC_ACCESS;
-	static {
-		AccessibilityBean publicAccess = new AccessibilityBean(
-				AccessibilityBean.ACCESS_BY_PUBLIC);
-		publicAccess.setGroupName(Constants.CSM_PUBLIC_GROUP);
-		publicAccess.setRoleName(Constants.CSM_READ_ROLE);
-		CSM_PUBLIC_ACCESS = publicAccess;
-
-	}
 	public static final String ASSOCIATED_FILE = "Other Associated File";
 
 	public static final String PROTOCOL_FILE = "Protocol File";
@@ -86,41 +63,14 @@ public class Constants {
 
 	public static final int MAX_VIEW_TITLE_LENGTH = 23;
 
-	public static final String CSM_DATA_CURATOR = "Curator";
-
-	public static final String CSM_PUBLIC_GROUP = "Public";
-
-	public static final String[] VISIBLE_GROUPS = new String[] { CSM_DATA_CURATOR };
-
 	public static final String AUTO_COPY_ANNOTATION_PREFIX = "COPY";
 
 	public static final String AUTO_COPY_ANNNOTATION_VIEW_COLOR = "red";
 
-	public static final String CSM_READ_ROLE = "R";
 
-	public static final String CSM_DELETE_ROLE = "D";
-
-	public static final String CSM_EXECUTE_ROLE = "E";
-
-	public static final String CSM_CURD_ROLE = "CURD";
-
-	public static final String CSM_CUR_ROLE = "CUR";
-
-	public static final String CSM_READ_PRIVILEGE = "READ";
-
-	public static final String CSM_EXECUTE_PRIVILEGE = "EXECUTE";
-
-	public static final String CSM_DELETE_PRIVILEGE = "DELETE";
-
-	public static final String CSM_CREATE_PRIVILEGE = "CREATE";
-
-	public static final String CSM_UPDATE_PRIVILEGE = "UPDATE";
-
-	public static final String CSM_PG_CURATION = "curation";
 
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
 
-	public static final String CSM_COLLABORATION_GROUP_PREFIX = "CollaborationGroup_";
 	// This is a hack to querying based on .class to work in case of multi-level
 	// inheritance with joined-subclass
 	// TODO check the order generated in the hibernate mapping file for each
