@@ -266,11 +266,6 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
 				.toString(), pubBean.getPublicStatus());
-		if (super.isUserOwner(request, pubBean.getDomainFile().getCreatedBy())) {
-			request.getSession().setAttribute("isOwner", true);
-		} else {
-			request.getSession().setAttribute("isOwner", false);
-		}
 		request.getSession().setAttribute("updatePublication", "true");
 		if (!StringUtils.isEmpty(sampleId)) {
 			InitSampleSetup.getInstance()
