@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -53,19 +54,16 @@ public class ProtocolAction extends BaseAnnotationAction {
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newProtocol && !user.isCurator()) {
-			Boolean retracted = retractFromPublic(theForm, request,
-					protocolBean.getDomain().getId().toString(), protocolBean
-							.getDomain().getName(), "protocol");
-			if (retracted) {
-				ActionMessages messages = new ActionMessages();
-				ActionMessage msg = null;
-				msg = new ActionMessage(
-						"message.updateProtocol.retractFromPublic");
-				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveMessages(request, messages);
-				setupDynamicDropdowns(request, protocolBean);
-				return mapping.findForward("inputPage");
-			}
+			retractFromPublic(theForm, request, protocolBean.getDomain()
+					.getId().toString(), protocolBean.getDomain().getName(),
+					"protocol");
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateProtocol.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+			setupDynamicDropdowns(request, protocolBean);
+			return mapping.findForward("inputPage");
 		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitProtocol",
@@ -218,14 +216,27 @@ public class ProtocolAction extends BaseAnnotationAction {
 		AccessibilityBean theAccess = protocol.getTheAccess();
 		ProtocolService service = this.setServiceInSession(request);
 		service.assignAccessibility(theAccess, protocol.getDomain());
-		// if public access, curator, pending review status, update review
+		// if protocol is public, the access is not public, retract public
+		// privilege would be handled in the service method
+		service.assignAccessibility(theAccess, protocol.getDomain());
+		// update status to retracted if the access is not public and protocol
+		// is public
+		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+				&& protocol.getPublicStatus()) {
+			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS,
+					request, protocol.getDomain().getId().toString(), protocol
+							.getDomain().getName(), "protocol");
+		}
+		// if access is public, pending review status, update review
 		// status to public
 		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
-			updateReviewStatusToPublic(request, protocol.getDomain().getId()
-					.toString());
+			this.switchPendingReviewToPublic(request, protocol.getDomain()
+					.getId().toString());
 		}
-		if (protocol.getDomain().getId()==null) {
-			UserBean user = (UserBean) request.getSession().getAttribute("user");
+
+		if (protocol.getDomain().getId() == null) {
+			UserBean user = (UserBean) request.getSession()
+					.getAttribute("user");
 			protocol
 					.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 			service.saveProtocol(protocol);
