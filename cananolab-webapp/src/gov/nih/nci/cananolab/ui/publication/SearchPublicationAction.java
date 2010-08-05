@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.ui.publication;
 
-import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -96,10 +96,15 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		for (PublicationBean publicationBean : publicationBeans) {
 			List<String> privileges = privilegeMap.get(publicationBean
 					.getDomainFile().getId().toString());
-			if (privileges.contains(Constants.CSM_UPDATE_PRIVILEGE)) {
+			if (privileges.contains(AccessibilityBean.CSM_UPDATE_PRIVILEGE)) {
 				publicationBean.setUserUpdatable(true);
 			} else {
 				publicationBean.setUserUpdatable(false);
+			}
+			if (privileges.contains(AccessibilityBean.CSM_DELETE_PRIVILEGE)) {
+				publicationBean.setUserDeletable(true);
+			} else {
+				publicationBean.setUserDeletable(false);
 			}
 		}
 	}

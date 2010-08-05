@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.security;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public class UpdatePasswordAction extends Action {
 		String newPassword = (String) theForm.get("newPassword");
 
 		UserBean user = new UserBean(loginId, password);
-		SecurityService service = new SecurityService(Constants.CSM_APP_NAME,
+		SecurityService service = new SecurityService(AccessibilityBean.CSM_APP_NAME,
 				user);
 		if (user != null) {
 			service.updatePassword(newPassword);

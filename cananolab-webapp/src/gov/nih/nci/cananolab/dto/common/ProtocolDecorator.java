@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 

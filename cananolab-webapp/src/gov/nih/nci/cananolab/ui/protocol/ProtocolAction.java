@@ -221,7 +221,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		service.assignAccessibility(theAccess, protocol.getDomain());
 		// update status to retracted if the access is not public and protocol
 		// is public
-		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)
 				&& protocol.getPublicStatus()) {
 			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS,
 					request, protocol.getDomain().getId().toString(), protocol
@@ -229,7 +229,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		}
 		// if access is public, pending review status, update review
 		// status to public
-		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
 			this.switchPendingReviewToPublic(request, protocol.getDomain()
 					.getId().toString());
 		}
@@ -261,7 +261,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 			HttpServletRequest request) throws Exception {
 		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
 		ProtocolService service = this.setServiceInSession(request);
-		service.removeAccessibility(Constants.CSM_PUBLIC_ACCESS, protocol
+		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, protocol
 				.getDomain());
 	}
 }

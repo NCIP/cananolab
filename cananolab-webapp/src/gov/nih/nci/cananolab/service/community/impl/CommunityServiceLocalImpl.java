@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -32,7 +31,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		super();
 		try {
 			this.authManager = SecurityServiceProvider
-					.getAuthorizationManager(Constants.CSM_APP_NAME);
+					.getAuthorizationManager(AccessibilityBean.CSM_APP_NAME);
 		} catch (Exception e) {
 			logger.error(e);
 			throw new CommunityException(e);
@@ -43,7 +42,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		super(user);
 		try {
 			this.authManager = SecurityServiceProvider
-					.getAuthorizationManager(Constants.CSM_APP_NAME);
+					.getAuthorizationManager(AccessibilityBean.CSM_APP_NAME);
 		} catch (Exception e) {
 			logger.error(e);
 			throw new CommunityException(e);
@@ -55,7 +54,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		super(securityService);
 		try {
 			this.authManager = SecurityServiceProvider
-					.getAuthorizationManager(Constants.CSM_APP_NAME);
+					.getAuthorizationManager(AccessibilityBean.CSM_APP_NAME);
 		} catch (Exception e) {
 			logger.error(e);
 			throw new CommunityException(e);
@@ -92,25 +91,25 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				AccessibilityBean ownerAccess = new AccessibilityBean(
 						AccessibilityBean.ACCESS_BY_USER);
 				ownerAccess.setUserBean(user);
-				ownerAccess.setRoleName(Constants.CSM_CURD_ROLE);
+				ownerAccess.setRoleName(AccessibilityBean.CSM_CURD_ROLE);
 				saveAccessibility(ownerAccess,
-						Constants.CSM_COLLABORATION_GROUP_PREFIX
+						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ doGroup.getGroupId());
 				// assign CURD access to Curator group
-				saveAccessibility(Constants.CSM_DEFAULT_ACCESS,
-						Constants.CSM_COLLABORATION_GROUP_PREFIX
+				saveAccessibility(AccessibilityBean.CSM_DEFAULT_ACCESS,
+						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ doGroup.getGroupId());
 
 				// assign current user to be owner of the collaboration group
 				accessUtils.assignOwner(
-						Constants.CSM_COLLABORATION_GROUP_PREFIX
+						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ doGroup.getGroupId(), user.getLoginName());
 			}
 			// update existing group
 			else {
 				// if user has access to update the group
 				if (securityService
-						.checkCreatePermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
+						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ collaborationGroup.getId())) {
 					if (doGroup == null) {
 						// update name to a new name not exist in the database
@@ -126,7 +125,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 					// curator
 					if (user.isCurator()
 							|| securityService
-									.isOwner(Constants.CSM_COLLABORATION_GROUP_PREFIX
+									.isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 											+ doGroup.getGroupId())) {
 						List<AccessibilityBean> existingAccess = existingGroup
 								.getUserAccessibilities();
@@ -138,10 +137,10 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 									.getGroupId().toString(), access
 									.getUserBean().getUserId());
 							accessUtils.removeSecureObjectForUser(
-									Constants.CSM_COLLABORATION_GROUP_PREFIX
+									AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 											+ doGroup.getGroupId(), access
 											.getUserBean().getLoginName(),
-									Constants.CSM_CURD_ROLE);
+									AccessibilityBean.CSM_CURD_ROLE);
 						}
 					}
 				} else {
@@ -152,13 +151,13 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			// check if user is the owner the group
 			if (user.isCurator()
 					|| securityService
-							.isOwner(Constants.CSM_COLLABORATION_GROUP_PREFIX
+							.isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 									+ doGroup.getGroupId())) {
 				String[] userIds = new String[accessibilities.size() + 1];
 				int i = 0;
 				for (AccessibilityBean access : accessibilities) {
 					saveAccessibility(access,
-							Constants.CSM_COLLABORATION_GROUP_PREFIX
+							AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 									+ doGroup.getGroupId());
 					User user = authManager.getUser(access.getUserBean()
 							.getLoginName());
@@ -195,7 +194,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				CollaborationGroupBean cGroup = new CollaborationGroupBean(
 						doGroup);
 				if (securityService
-						.checkCreatePermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
+						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ cGroup.getId())) {
 					setUserAccesses(cGroup);
 					collaborationGroups.add(cGroup);
@@ -223,7 +222,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			userNames.add(user.getLoginName());
 		}
 		Map<String, String> userRoles = securityService
-				.getAllUserRoles(Constants.CSM_COLLABORATION_GROUP_PREFIX
+				.getAllUserRoles(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
 		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
 		for (User aUser : users) {
@@ -238,7 +237,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		// set owner if it's the same as the current owner
 		if (user.isCurator()
 				|| securityService
-						.isOwner(Constants.CSM_COLLABORATION_GROUP_PREFIX
+						.isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ cGroup.getId())) {
 			cGroup.setOwnerName(user.getLoginName());
 		}
@@ -250,7 +249,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			Group group = authManager.getGroupById(id);
 			collaborationGroup = new CollaborationGroupBean(group);
-			String pe = Constants.CSM_COLLABORATION_GROUP_PREFIX
+			String pe = AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 					+ collaborationGroup.getId();
 			if (securityService.checkCreatePermission(pe)) {
 				setUserAccesses(collaborationGroup);
@@ -275,12 +274,12 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			// check if user has access to delete the group
 			if (!securityService
-					.checkDeletePermission(Constants.CSM_COLLABORATION_GROUP_PREFIX
+					.checkDeletePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 							+ collaborationGroup.getId())) {
 				throw new NoAccessException();
 			} else {
 				super
-						.removeAllAccesses(Constants.CSM_COLLABORATION_GROUP_PREFIX
+						.removeAllAccesses(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ collaborationGroup.getId());
 				authManager.removeGroup(collaborationGroup.getId());
 			}

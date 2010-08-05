@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.sample;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Targeting;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -14,7 +15,6 @@ import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExcelParser;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -151,7 +151,7 @@ public class KellyDataLoader {
 
 		Date currentDate = Calendar.getInstance().getTime();
 		SecurityService securityService = new SecurityService(
-				Constants.CSM_APP_NAME, user);
+				AccessibilityBean.CSM_APP_NAME, user);
 		SampleService service = new SampleServiceLocalImpl(securityService);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl(
 				securityService);

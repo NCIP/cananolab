@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.authorization.domainobjects.User;
@@ -45,7 +45,7 @@ public class CSMCleanupJob implements Job {
 
 	public void cleanUpCSM() throws Exception {
 		AuthorizationManager authManager = SecurityServiceProvider
-				.getAuthorizationManager(Constants.CSM_APP_NAME);
+				.getAuthorizationManager(AccessibilityBean.CSM_APP_NAME);
 		User adminUser = authManager.getUser("admin");
 		BaseService service = new BaseServiceLocalImpl(new UserBean(adminUser));
 		Set<String> entries = Collections.synchronizedSet(new HashSet<String>(
