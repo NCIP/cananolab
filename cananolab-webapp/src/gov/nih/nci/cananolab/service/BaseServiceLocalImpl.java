@@ -602,6 +602,11 @@ public class BaseServiceLocalImpl implements BaseService {
 						}
 					}
 				}
+				if (entity.getFileCollection() != null) {
+					for (File file : entity.getFileCollection()) {
+						saveAccessibility(access, file.getId().toString());
+					}
+				}
 			}
 		}
 
@@ -666,6 +671,11 @@ public class BaseServiceLocalImpl implements BaseService {
 						}
 					}
 				}
+				if (functionalizingEntity.getFileCollection() != null) {
+					for (File file : functionalizingEntity.getFileCollection()) {
+						saveAccessibility(access, file.getId().toString());
+					}
+				}
 			}
 		}
 
@@ -710,8 +720,10 @@ public class BaseServiceLocalImpl implements BaseService {
 				// accessibility of the associated elements should already be
 				// assigned when creating the entities
 				saveAccessibility(access, assoc.getId().toString());
-				for (File file : assoc.getFileCollection()) {
-					saveAccessibility(access, file.getId().toString());
+				if (assoc.getFileCollection() != null) {
+					for (File file : assoc.getFileCollection()) {
+						saveAccessibility(access, file.getId().toString());
+					}
 				}
 			}
 		}
@@ -719,8 +731,10 @@ public class BaseServiceLocalImpl implements BaseService {
 		public void removeAccessibility(AccessibilityBean access,
 				ChemicalAssociation chemicalAssociation) throws Exception {
 			deleteAccessibility(access, chemicalAssociation.getId().toString());
-			for (File file : chemicalAssociation.getFileCollection()) {
-				deleteAccessibility(access, file.getId().toString());
+			if (chemicalAssociation.getFileCollection() != null) {
+				for (File file : chemicalAssociation.getFileCollection()) {
+					deleteAccessibility(access, file.getId().toString());
+				}
 			}
 		}
 
