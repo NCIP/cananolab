@@ -16,8 +16,12 @@
 		<c:set var="sampleId" value="${theSample.domain.id}" scope="session" />
 	</c:when>
 </c:choose>
-<c:set var="dispatch" value="${param.dispatch}"/>
-<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
+<c:set var="dispatch" value="summaryView" />
+<c:if test="${theSample.userUpdatable}">
+	<c:set var="dispatch" value="summaryEdit" />
+</c:if>
+<table summary="" cellpadding="0" cellspacing="0" border="0"
+	height="100%">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="22">
 			NAVIGATION TREE
@@ -50,8 +54,7 @@
 	</tr>
 	<tr>
 		<c:choose>
-			<c:when
-				test="${theSample.hasComposition|| !empty user}">
+			<c:when test="${theSample.hasComposition|| !empty user}">
 				<c:url var="compUrl" value="composition.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -87,8 +90,7 @@
 	</tr>
 	<tr>
 		<c:choose>
-			<c:when
-				test="${theSample.hasCharacterizations || !empty user}">
+			<c:when test="${theSample.hasCharacterizations || !empty user}">
 				<c:url var="charUrl" value="characterization.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -123,8 +125,7 @@
 	</tr>
 	<tr>
 		<c:choose>
-			<c:when
-				test="${theSample.hasPublications || !empty user}">
+			<c:when test="${theSample.hasPublications || !empty user}">
 				<c:url var="pubUrl" value="publication.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -143,8 +144,9 @@
 					<c:otherwise>
 						<td class="subMenuSecondaryTitle"
 							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-							onclick="gotoPage('${pubUrl}')" height="20">
+							onmouseout=
+	changeMenuStyle(this, 'subMenuSecondaryTitle'), hideCursor();
+onclick="gotoPage('${pubUrl}')" height="20">
 							<a class="subMenuSecondary">PUBLICATION</a>
 						</td>
 					</c:otherwise>
