@@ -91,23 +91,6 @@ public class DWRPublicationManager {
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"pubMedId", new Long(pubmedID));
-			WebContext wctx = WebContextFactory.get();
-			UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-			if (user != null) {
-				if (user.isCurator()) {
-					dbPubBean.setUserUpdatable(true);
-				} else {
-					for (AccessibilityBean access : dbPubBean.getUserAccesses()) {
-						if (access.getUserBean().getLoginName().equals(
-								user.getLoginName())
-								&& access.getRoleName().equals(
-										Constants.CSM_CURD_ROLE)) {
-							dbPubBean.setUserUpdatable(true);
-							break;
-						}
-					}
-				}
-			}
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
 				publicationBean.copyNonPubMedFieldsFromDatabase(dbPubBean);
@@ -161,21 +144,6 @@ public class DWRPublicationManager {
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
 					"digitalObjectId", doi);
-			if (user != null) {
-				if (user.isCurator()) {
-					dbPubBean.setUserUpdatable(true);
-				} else {
-					for (AccessibilityBean access : dbPubBean.getUserAccesses()) {
-						if (access.getUserBean().getLoginName().equals(
-								user.getLoginName())
-								&& access.getRoleName().equals(
-										Constants.CSM_CURD_ROLE)) {
-							dbPubBean.setUserUpdatable(true);
-							break;
-						}
-					}
-				}
-			}
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
 				publicationBean.copyFromDatabase(dbPubBean);
@@ -313,21 +281,6 @@ public class DWRPublicationManager {
 		PublicationBean dbPubBean = getService()
 				.findNonPubMedNonDOIPublication(category, title, lastName,
 						firstName);
-		if (user != null) {
-			if (user.isCurator()) {
-				dbPubBean.setUserUpdatable(true);
-			} else {
-				for (AccessibilityBean access : dbPubBean.getUserAccesses()) {
-					if (access.getUserBean().getLoginName().equals(
-							user.getLoginName())
-							&& access.getRoleName().equals(
-									Constants.CSM_CURD_ROLE)) {
-						dbPubBean.setUserUpdatable(true);
-						break;
-					}
-				}
-			}
-		}
 		if (dbPubBean != null) {
 			publicationBean.copyFromDatabase(dbPubBean);
 			return publicationBean;
