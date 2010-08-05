@@ -66,7 +66,7 @@ public class SampleBean extends SecuredDataBean {
 
 	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
 
-	private String dataAvailabilityMetricsScore = "NA";
+	private String dataAvailabilityMetricsScore = Constants.EMPTY;
 	private String caNanoLabScore;
 	private String mincharScore;
 
