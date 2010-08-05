@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -186,7 +187,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			Collections.sort(protocols,
 					new Comparators.ProtocolNameVersionComparator());
 			for (Protocol protocol : protocols) {
-				//don't need to load accessibility
+				// don't need to load accessibility
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				protocolBeans.add(protocolBean);
 			}
@@ -286,6 +287,45 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
+			// get existing accessibilities
+			List<AccessibilityBean> groupAccesses = this
+					.findGroupAccessibilities(protocol.getId().toString());
+			List<AccessibilityBean> userAccesses = this
+					.findUserAccessibilities(protocol.getId().toString());
+			// do nothing is access already exist
+			if (groupAccesses.contains(access)) {
+				return;
+			} else if (userAccesses.contains(access)) {
+				return;
+			}
+
+			// if access is Public, remove all other access except Public
+			// Curator and owner
+			if (access.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+				for (AccessibilityBean acc : groupAccesses) {
+					// remove group accesses that are not public or curator
+					if (!acc.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+							&& !acc.getGroupName().equals(
+									(Constants.CSM_DATA_CURATOR))) {
+						this.removeAccessibility(acc, protocol);
+					}
+				}
+				for (AccessibilityBean acc : userAccesses) {
+					// remove accesses that are not owner
+					if (!acc.getUserBean().getLoginName().equals(
+							protocol.getCreatedBy())) {
+						this.removeAccessibility(acc, protocol);
+					}
+				}
+			}
+			// if protocol is already public, retract from public
+			else {
+				if (groupAccesses.contains(Constants.CSM_PUBLIC_ACCESS)) {
+					this.removeAccessibility(Constants.CSM_PUBLIC_ACCESS,
+							protocol);
+				}
+			}
+
 			super.saveAccessibility(access, protocol.getId().toString());
 			if (protocol.getFile() != null) {
 				super.saveAccessibility(access, protocol.getFile().getId()

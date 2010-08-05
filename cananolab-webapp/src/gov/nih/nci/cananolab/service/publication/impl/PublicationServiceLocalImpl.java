@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -415,6 +416,44 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
+			// get existing accessibilities
+			List<AccessibilityBean> groupAccesses = this
+					.findGroupAccessibilities(publication.getId().toString());
+			List<AccessibilityBean> userAccesses = this
+					.findUserAccessibilities(publication.getId().toString());
+			// do nothing is access already exist
+			if (groupAccesses.contains(access)) {
+				return;
+			} else if (userAccesses.contains(access)) {
+				return;
+			}
+
+			// if access is Public, remove all other access except Public
+			// Curator and owner
+			if (access.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
+				for (AccessibilityBean acc : groupAccesses) {
+					// remove group accesses that are not public or curator
+					if (!acc.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+							&& !acc.getGroupName().equals(
+									(Constants.CSM_DATA_CURATOR))) {
+						this.removeAccessibility(acc, publication);
+					}
+				}
+				for (AccessibilityBean acc : userAccesses) {
+					// remove accesses that are not owner
+					if (!acc.getUserBean().getLoginName().equals(
+							publication.getCreatedBy())) {
+						this.removeAccessibility(acc, publication);
+					}
+				}
+			}
+			// if publication is already public, retract from public
+			else {
+				if (groupAccesses.contains(Constants.CSM_PUBLIC_ACCESS)) {
+					this.removeAccessibility(Constants.CSM_PUBLIC_ACCESS,
+							publication);
+				}
+			}
 			super.saveAccessibility(access, publication.getId().toString());
 			// set author accessibility as well because didn't share authors
 			// between publications
