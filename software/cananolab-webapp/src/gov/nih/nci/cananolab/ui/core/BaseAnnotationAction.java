@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -396,7 +395,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 	}
 
-	protected void updateReviewStatusToPublic(HttpServletRequest request,
+	protected void switchPendingReviewToPublic(HttpServletRequest request,
 			String dataId) throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SecurityService securityService = getSecurityServiceFromSession(request);
@@ -411,32 +410,45 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 	}
 
-	protected Boolean retractFromPublic(DynaValidatorForm theForm,
+	/**
+	 * Update the review status of the given data to the give status
+	 *
+	 * @param status
+	 * @param request
+	 * @param dataId
+	 * @param dataName
+	 * @param dataType
+	 * @throws Exception
+	 */
+	protected void updateReviewStatusTo(String status,
 			HttpServletRequest request, String dataId, String dataName,
 			String dataType) throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SecurityService securityService = getSecurityServiceFromSession(request);
-		Boolean retractStatus = false;
 		DataReviewStatusBean reviewStatus = curationService
 				.findDataReviewStatusBeanByDataId(dataId, securityService);
-		if (reviewStatus == null
-				|| reviewStatus != null
-				&& reviewStatus.getReviewStatus().equals(
-						DataReviewStatusBean.PUBLIC_STATUS)) {
-			if (reviewStatus == null) {
-				reviewStatus = new DataReviewStatusBean();
-				reviewStatus.setDataId(dataId);
-				reviewStatus.setDataName(dataName);
-				reviewStatus.setDataType(dataType);
-				reviewStatus.setSubmittedBy(user.getLoginName());
-				reviewStatus.setSubmittedDate(new Date());
+		if (reviewStatus == null) {
+			reviewStatus = new DataReviewStatusBean();
+			reviewStatus.setDataId(dataId);
+			reviewStatus.setDataName(dataName);
+			reviewStatus.setDataType(dataType);
+			reviewStatus.setSubmittedBy(user.getLoginName());
+			reviewStatus.setSubmittedDate(new Date());
+		} else {
+			if (reviewStatus.getReviewStatus().equals(status)) {
+				return;
 			}
-			reviewStatus.setReviewStatus(DataReviewStatusBean.RETRACTED_STATUS);
-			curationService.submitDataForReview(reviewStatus, securityService);
-			removePublicAccess(theForm, request);
-			retractStatus = true;
 		}
-		return retractStatus;
+		reviewStatus.setReviewStatus(status);
+		curationService.submitDataForReview(reviewStatus, securityService);
+	}
+
+	protected void retractFromPublic(DynaValidatorForm theForm,
+			HttpServletRequest request, String dataId, String dataName,
+			String dataType) throws Exception {
+		updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS, request,
+				dataId, dataName, dataType);
+		removePublicAccess(theForm, request);
 	}
 
 	protected void removePublicAccess(DynaValidatorForm theForm,

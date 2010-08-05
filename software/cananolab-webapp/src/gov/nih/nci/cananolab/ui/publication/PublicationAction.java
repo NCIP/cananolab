@@ -8,6 +8,7 @@ package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -111,18 +112,16 @@ public class PublicationAction extends BaseAnnotationAction {
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newPub && !user.isCurator()) {
-			Boolean retracted = retractFromPublic(theForm, request,
-					publicationBean.getDomainFile().getId().toString(),
-					((Publication) publicationBean.getDomainFile()).getTitle(),
-					"publication");
-			if (retracted) {
-				ActionMessages messages = new ActionMessages();
-				ActionMessage msg = null;
-				msg = new ActionMessage(
-						"message.updatePublication.retractFromPublic");
-				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveMessages(request, messages);
-			}
+			retractFromPublic(theForm, request, publicationBean.getDomainFile()
+					.getId().toString(), ((Publication) publicationBean
+					.getDomainFile()).getTitle(), "publication");
+
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage(
+					"message.updatePublication.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
 		}
 
 		ActionMessage msg = new ActionMessage("message.submitPublication",
@@ -648,14 +647,25 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		AccessibilityBean theAccess = publication.getTheAccess();
 		PublicationService service = this.setServicesInSession(request);
+		// if publication is public, the access is not public, retract public
+		// privilege would be handled in the service method
 		service.assignAccessibility(theAccess, (Publication) publication
 				.getDomainFile());
-		// if public access, curator, pending review status, update review
+		// update status to retracted if the access is not public and
+		// publication is public
+		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+				&& publication.getPublicStatus()) {
+			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS,
+					request, publication.getDomainFile().getId().toString(),
+					publication.getDomainFile().getTitle(), "publication");
+		}
+		// if access is public, pending review status, update review
 		// status to public
 		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
-			updateReviewStatusToPublic(request, publication.getDomainFile()
-					.getId().toString());
+			this.switchPendingReviewToPublic(request, publication
+					.getDomainFile().getId().toString());
 		}
+
 		this.setAccesses(request, publication);
 		return input(mapping, form, request, response);
 	}

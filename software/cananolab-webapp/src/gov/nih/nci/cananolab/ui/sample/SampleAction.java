@@ -9,6 +9,7 @@ package gov.nih.nci.cananolab.ui.sample;
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
@@ -49,7 +50,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -71,18 +72,14 @@ public class SampleAction extends BaseAnnotationAction {
 		// retract from public if updating an existing public record and not
 		// curator
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		if (!newSample && !user.isCurator()) {
-			Boolean retracted = retractFromPublic(theForm, request, sampleBean
-					.getDomain().getId().toString(), sampleBean.getDomain()
-					.getName(), "sample");
-			if (retracted) {
-				ActionMessages messages = new ActionMessages();
-				ActionMessage msg = null;
-				msg = new ActionMessage(
-						"message.updateSample.retractFromPublic");
-				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveMessages(request, messages);
-			}
+		if (!newSample && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
 		}
 		request.getSession().setAttribute("updateSample", "true");
 		request.setAttribute("theSample", sampleBean);
@@ -113,7 +110,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -164,7 +161,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -185,15 +182,16 @@ public class SampleAction extends BaseAnnotationAction {
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
-		if(dataAvailabilityMapPerPage != null){
-			 List<DataAvailabilityBean> selectedSampleDataAvailability =
-				 dataAvailabilityMapPerPage.get(sampleBean.getDomain().getId().toString());
-			
-			 if (!selectedSampleDataAvailability.isEmpty()
-			  && selectedSampleDataAvailability.size() > 0) {
-				 sampleBean.setHasDataAvailability(true);
-				 sampleBean.setDataAvailability(selectedSampleDataAvailability);
-			 }
+		if (dataAvailabilityMapPerPage != null) {
+			List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage
+					.get(sampleBean.getDomain().getId().toString());
+
+			if (selectedSampleDataAvailability != null
+					&& !selectedSampleDataAvailability.isEmpty()
+					&& selectedSampleDataAvailability.size() > 0) {
+				sampleBean.setHasDataAvailability(true);
+				sampleBean.setDataAvailability(selectedSampleDataAvailability);
+			}
 		}
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
@@ -241,7 +239,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -260,7 +258,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -286,7 +284,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 * 
+	 *
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception
@@ -450,7 +448,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * generate data availability for the sample
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -476,7 +474,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * update data availability for the sample
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -500,7 +498,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * delete data availability for the sample
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -565,25 +563,25 @@ public class SampleAction extends BaseAnnotationAction {
 				attributes);
 	}
 
-	/*public ActionForward manageDataAvailability(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request);
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
-
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
-						.toString(), securityService);
-
-		sampleBean.setDataAvailability(dataAvailability);
-		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
-			sampleBean.setHasDataAvailability(true);
-		}
-		return mapping.findForward("summaryEdit");
-	}*/
+	/*
+	 * public ActionForward manageDataAvailability(ActionMapping mapping,
+	 * ActionForm form, HttpServletRequest request, HttpServletResponse
+	 * response) throws Exception {
+	 *
+	 * DynaValidatorForm theForm = (DynaValidatorForm) form; SampleBean
+	 * sampleBean = setupSample(theForm, request); SecurityService
+	 * securityService = (SecurityService) request
+	 * .getSession().getAttribute("securityService");
+	 *
+	 * List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+	 * .findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
+	 * .toString(), securityService);
+	 *
+	 * sampleBean.setDataAvailability(dataAvailability); if
+	 * (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
+	 * sampleBean.setHasDataAvailability(true); } return
+	 * mapping.findForward("summaryEdit"); }
+	 */
 
 	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -592,12 +590,22 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		AccessibilityBean theAccess = sample.getTheAccess();
 		SampleService service = this.setServiceInSession(request);
+		// if sample is public, the access is not public, retract public
+		// privilege would be handled in the service method
 		service.assignAccessibility(theAccess, sample.getDomain());
-		// if public access, curator, pending review status, update review
+		// update status to retracted if the access is not public and sample is
+		// public
+		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)
+				&& sample.getPublicStatus()) {
+			updateReviewStatusTo(DataReviewStatusBean.RETRACTED_STATUS,
+					request, sample.getDomain().getId().toString(), sample
+							.getDomain().getName(), "sample");
+		}
+		// if access is public, pending review status, update review
 		// status to public
 		if (theAccess.getGroupName().equals(Constants.CSM_PUBLIC_GROUP)) {
-			updateReviewStatusToPublic(request, sample.getDomain().getId()
-					.toString());
+			this.switchPendingReviewToPublic(request, sample.getDomain()
+					.getId().toString());
 		}
 
 		ActionForward forward = null;
