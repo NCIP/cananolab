@@ -77,6 +77,7 @@
 			<td>
 				<c:set var="files" value="${nanomaterialEntity.files }" />
 				<c:set var="entityType" value="nanomaterial entity" />
+				<c:set var="downloadAction" value="composition"/>
 				<%@include file="../../bodyFileView.jsp"%>
 			</td>
 		</tr>
