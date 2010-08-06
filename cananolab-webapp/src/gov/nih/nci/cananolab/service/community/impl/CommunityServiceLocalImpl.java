@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -20,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		CommunityService {
@@ -136,11 +135,12 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 							authManager.removeUserFromGroup(doGroup
 									.getGroupId().toString(), access
 									.getUserBean().getUserId());
-							accessUtils.removeSecureObjectForUser(
-									AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-											+ doGroup.getGroupId(), access
-											.getUserBean().getLoginName(),
-									AccessibilityBean.CSM_CURD_ROLE);
+							accessUtils
+									.removeSecureObjectForUser(
+											AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+													+ doGroup.getGroupId(),
+											access.getUserBean().getLoginName(),
+											AccessibilityBean.CSM_CURD_ROLE);
 						}
 					}
 				} else {
@@ -169,7 +169,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				userIds[i] = user.getUserId();
 				authManager.addUsersToGroup(doGroup.getGroupId().toString(),
 						userIds);
-				//update userBean's associated group
+				// update userBean's associated group
 				user.getGroupNames().add(doGroup.getGroupName());
 			}
 		} catch (NoAccessException e) {
@@ -236,13 +236,10 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			access.add(accessibility);
 		}
 		cGroup.setUserAccessibilities(access);
-		// set owner if it's the same as the current owner
-		if (user.isCurator()
-				|| securityService
-						.isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ cGroup.getId())) {
-			cGroup.setOwnerName(user.getLoginName());
-		}
+		List<String> ownerNames = accessUtils
+				.getOwnerNames(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+						+ cGroup.getId());
+		cGroup.setOwnerName(StringUtils.join(ownerNames, ","));
 	}
 
 	public CollaborationGroupBean findCollaborationGroupById(String id)
