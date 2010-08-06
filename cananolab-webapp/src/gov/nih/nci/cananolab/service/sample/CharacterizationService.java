@@ -71,7 +71,16 @@ public interface CharacterizationService extends BaseService {
 	public List<String> findOtherCharacterizationByAssayCategory(
 			String assayCategory) throws CharacterizationException;
 
-	public void assignAccesses(Characterization achar)
+	public void assignAccesses(Characterization achar, ExperimentConfig config)
+			throws CharacterizationException, NoAccessException;
+
+	public void removeAccesses(Characterization achar, ExperimentConfig config)
+			throws CharacterizationException, NoAccessException;
+
+	public void assignAccesses(Characterization achar, Finding finding)
+			throws CharacterizationException, NoAccessException;
+
+	public void removeAccesses(Characterization achar, Finding finding)
 			throws CharacterizationException, NoAccessException;
 
 	public void removeAccess(Characterization achar)
