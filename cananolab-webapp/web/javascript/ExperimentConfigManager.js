@@ -31,6 +31,7 @@ function setTheExperimentConfig(configId) {
 	ExperimentConfigManager.getExperimentConfigById(configId, populateExperimentConfig);
 	show("deleteExperimentConfig");
 	openSubmissionForm("ExperimentConfig");
+	disableOuterButtons();
 	// Feature request [26487] Deeper Edit Links.
 	window.setTimeout("openOneInstrument()", 200);
 }
@@ -104,7 +105,7 @@ function deleteTheExperimentConfig() {
 	}
 }
 function validateSaveConfig(actionName) {
-	if (validateShapeInfo() && validateSolubilityInfo() && 
+	if (validateShapeInfo() && validateSolubilityInfo() &&
 		validateSavingTheData('newInstrument', 'Instrument')) {
 		submitAction(document.forms[0], actionName, "saveExperimentConfig", 2);
 		return true;

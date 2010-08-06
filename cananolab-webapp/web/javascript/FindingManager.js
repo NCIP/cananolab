@@ -5,7 +5,7 @@ function setNameOptionsByCharName(columnNumber) {
 	var columnType = dwr.util.getValue("columnType" + columnNumber);
 	var currentColumnName = dwr.util.getValue("theColumnName"+columnNumber);
 	dwr.util.setValue("constantValue" + columnNumber, "");
-	
+
 	if (columnType == "datum") {
 		hide("conditionPropertyPrompt" + columnNumber);
 		hide("conditionPropertyLabel" + columnNumber);
@@ -13,7 +13,7 @@ function setNameOptionsByCharName(columnNumber) {
 				function(data) {
 					dwr.util.removeAllOptions("columnName" + columnNumber);
 					dwr.util.addOptions("columnName" + columnNumber, [ "" ]);
-					dwr.util.addOptions("columnName" + columnNumber, data);				
+					dwr.util.addOptions("columnName" + columnNumber, data);
 					dwr.util.addOptions("columnName" + columnNumber,
 							[ "[other]" ]);
 					// add the current value to the list if not in the list
@@ -30,7 +30,7 @@ function setNameOptionsByCharName(columnNumber) {
 						dwr.util.removeAllOptions("columnName" + columnNumber);
 						dwr.util
 								.addOptions("columnName" + columnNumber, [ "" ]);
-						dwr.util.addOptions("columnName" + columnNumber, data);											
+						dwr.util.addOptions("columnName" + columnNumber, data);
 						dwr.util.addOptions("columnName" + columnNumber,
 								[ "[other]" ]);
 						// add the current value to the list if not in the list
@@ -60,7 +60,7 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 					dwr.util.addOptions("conditionProperty" + columnNumber,
 							[ "" ]);
 					dwr.util.addOptions("conditionProperty" + columnNumber,
-							data);					
+							data);
 					dwr.util.addOptions("conditionProperty" + columnNumber,
 							[ "[other]" ]);
 					// add the current value to the list if not in the list
@@ -70,7 +70,7 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 				});
 	}
 }
-function setColumnValueUnit(columnNumber) {	
+function setColumnValueUnit(columnNumber) {
 	var currentValueUnit=dwr.util.getValue("theValueUnit"+columnNumber);
 
 	var name = null, property = null;
@@ -86,8 +86,8 @@ function setColumnValueUnit(columnNumber) {
 		// add the current value to the list if not in the list
 		if (currentValueUnit!="" && data.toString().indexOf(currentValueUnit)==-1) {
 			dwr.util.addOptions("valueUnit"+columnNumber,[currentValueUnit]);
-		}		
-	});	
+		}
+	});
 }
 function resetTheFinding(form) {
 	form.action = "characterization.do?dispatch=resetFinding&page=0";
@@ -106,8 +106,8 @@ function saveFinding(actionName) {
 			alert("Please click on either the Save button or the Cancel button in the File form.");
 			return false;
 		} else {
-			if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo() && 
-				validateSavingTheData('newExperimentConfig', 'Technique and Instrument') 
+			if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo() &&
+				validateSavingTheData('newExperimentConfig', 'Technique and Instrument')
 				) {
 			    submitAction(document.forms[0], actionName, "saveFinding", 4);
 				return true;
@@ -124,13 +124,13 @@ function validateMatrix() {
 	for (var cInd = 0; cInd < colNum; cInd++) {
 		var columnType=dwr.util.getValue("theColumnType"+cInd);
 		var columnName=dwr.util.getValue("theColumnName"+cInd);
-		
+
 		if (columnType==""||columnName=="" && !(rowNum==0 &&colNum==0)) {
 			alert("Please click on the column header to update the column type and column name.");
 			return false;
 		}
 	}
-	
+
 	// Iterate matrix to check for empty row.
 	for (var rInd = 0; rInd < rowNum; rInd++) {
 		var cInd = 0;
@@ -157,7 +157,7 @@ function validateMatrix() {
 		if (rInd == rowNum) {
 			alert("An empty column is not allowed in Data and Conditions table.");
 			return false;
-		}		
+		}
 	}
 	// validate each datum entry for valid float number.
 	for (var rInd = 0; rInd < rowNum; rInd++) {
@@ -226,7 +226,7 @@ function openColumnForm(characterizationName, columnNumber) {
 						// timeout to populate drop down first
 						dwr.util.setValue("columnType" + columnNumber, dwr.util
 								.getValue("theColumnType" + columnNumber));
-						setNameOptionsByCharName(columnNumber);						
+						setNameOptionsByCharName(columnNumber);
 						window.setTimeout("delaySetColumnName(" + columnNumber
 								+ ")", 100);
 						dwr.util.setValue("valueType" + columnNumber, dwr.util
@@ -245,7 +245,7 @@ function openColumnForm(characterizationName, columnNumber) {
 }
 
 function updateValueType(columnNumber) {
-	
+
 }
 function delaySetColumnName(columnNumber) {
 	dwr.util.setValue("columnName" + columnNumber, dwr.util
@@ -287,10 +287,10 @@ function addColumnHeader(columnNumber) {
 		alert("Please specify Column Type when saving change(s).");
 		return false;
 	}
-	
+
 	var numberOfRows = dwr.util.getValue("rowNum");
 	if (columnHeader.constantValue != null && columnHeader.constantValue != "") {
-		if (columnHeader.columnType == "datum" && 
+		if (columnHeader.columnType == "datum" &&
 			!validFloatNumber(columnHeader.constantValue)) {
 			alert("Please enter a valid number for constant datum value.");
 			dwr.util.setValue("constantValue" + columnNumber, "");
@@ -342,7 +342,7 @@ function clearFile() {
 	hide("link");
 	dwr.util.setValue("uploadedFile", "");
 	dwr.util.setValue("externalUrl", "");
-	
+
 	//FR# [26487], Must reset hidden file field for new file.
 	dwr.util.setValue("hiddenFileId", "");
 	dwr.util.setValue("hiddenFileUri", "");

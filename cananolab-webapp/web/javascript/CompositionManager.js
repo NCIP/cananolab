@@ -111,6 +111,7 @@ function setTheFile(type, id) {
 		show("newFile");
 	} else {
 		openSubmissionForm("File");
+		disableOuterButtons();
 	}
 	show("deleteFile");
 }

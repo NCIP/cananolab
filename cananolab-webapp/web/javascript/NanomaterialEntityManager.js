@@ -91,8 +91,9 @@ function setTheComposingElement(id) {
 	NanomaterialEntityManager.getComposingElementById(id, populateComposingElement);
 	show("deleteComposingElement");
 	openSubmissionForm("ComposingElement");
+	disableOuterButtons();
 	//closeSubmissionForm("InherentFunction");
-	
+
 	// Feature request [26487] Deeper Edit Links.
 	window.setTimeout("openOneCompElement()", 200);
 }
@@ -170,8 +171,8 @@ function deleteTheInherentFunction() {
 }
 function addComposingElement(actionName) {
 	if (validateComposingInfo() &&
-		validateTubeInfo() && 
-		validateFullereneInfo() && 
+		validateTubeInfo() &&
+		validateFullereneInfo() &&
 		validatePolymerInfo() &&
 		validateSavingTheData('newInherentFunction', 'Inherent Function')) {
 		submitAction(document.forms[0], actionName, "saveComposingElement", 2);
