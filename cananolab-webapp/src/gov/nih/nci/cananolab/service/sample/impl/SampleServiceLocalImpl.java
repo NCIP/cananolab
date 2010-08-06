@@ -33,7 +33,6 @@ import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
@@ -77,7 +76,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	private CharacterizationServiceLocalImpl charService;
 	private CompositionServiceLocalImpl compService;
 	private PublicationServiceLocalImpl publicationService;
-	private FileServiceLocalImpl fileService;
 
 	public SampleServiceLocalImpl() {
 		super();
@@ -86,7 +84,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		compService = new CompositionServiceLocalImpl(this.securityService);
 		publicationService = new PublicationServiceLocalImpl(
 				this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 		advancedHelper = new AdvancedSampleServiceHelper(this.securityService);
 	}
 
@@ -97,7 +94,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		compService = new CompositionServiceLocalImpl(this.securityService);
 		publicationService = new PublicationServiceLocalImpl(
 				this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 		advancedHelper = new AdvancedSampleServiceHelper(this.securityService);
 	}
 
@@ -108,7 +104,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		compService = new CompositionServiceLocalImpl(this.securityService);
 		publicationService = new PublicationServiceLocalImpl(
 				this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 		advancedHelper = new AdvancedSampleServiceHelper(this.securityService);
 	}
 
@@ -164,7 +159,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			appService.saveOrUpdate(sample);
 			// save default access
 			if (newSample) {
-				super.saveDefaultAccessibility(sample.getId().toString());
+				super.saveDefaultAccessibilities(sample.getId().toString());
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -630,7 +625,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				if (charBean.getFindings() != null) {
 					for (FindingBean findingBean : charBean.getFindings()) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							fileService.updateClonedFileInfo(fileBean,
+							fileUtils.updateClonedFileInfo(fileBean,
 									origSampleName, newSampleName);
 						}
 						charService.saveFinding(findingBean);
@@ -656,7 +651,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
 							entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileService.updateClonedFileInfo(fileBean,
+						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
 					}
 					compService.saveNanomaterialEntity(sampleBean, entityBean);
@@ -671,7 +666,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 							entity);
 					for (FileBean fileBean : entityBean.getFiles()) {
-						fileService.updateClonedFileInfo(fileBean,
+						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
 					}
 					compService.saveFunctionalizingEntity(sampleBean,
@@ -684,7 +679,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				for (File file : sampleBean.getDomain().getSampleComposition()
 						.getFileCollection()) {
 					FileBean fileBean = new FileBean(file);
-					fileService.updateClonedFileInfo(fileBean, origSampleName,
+					fileUtils.updateClonedFileInfo(fileBean, origSampleName,
 							newSampleName);
 					compService.saveCompositionFile(sampleBean, fileBean);
 				}
@@ -705,7 +700,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 							.getSampleComposition(), assoc
 							.getAssociatedElementB());
 					for (FileBean fileBean : assocBean.getFiles()) {
-						fileService.updateClonedFileInfo(fileBean,
+						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
 					}
 					compService.saveChemicalAssociation(sampleBean, assocBean);

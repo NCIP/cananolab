@@ -22,7 +22,6 @@ import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -53,24 +52,20 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceLocalImpl.class);
 	private CharacterizationServiceHelper helper;
-	private FileServiceLocalImpl fileService;
 
 	public CharacterizationServiceLocalImpl() {
 		super();
 		helper = new CharacterizationServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public CharacterizationServiceLocalImpl(UserBean user) {
 		super(user);
 		helper = new CharacterizationServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public CharacterizationServiceLocalImpl(SecurityService securityService) {
 		super(securityService);
 		helper = new CharacterizationServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public void saveCharacterization(SampleBean sampleBean,
@@ -114,15 +109,15 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			if (findingBeans != null && !findingBeans.isEmpty()) {
 				for (FindingBean findingBean : findingBeans) {
 					for (FileBean fileBean : findingBean.getFiles()) {
-						fileService.prepareSaveFile(fileBean.getDomainFile());
-						fileService.writeFile(fileBean);
+						fileUtils.prepareSaveFile(fileBean.getDomainFile());
+						fileUtils.writeFile(fileBean);
 					}
 				}
 			}
 			appService.saveOrUpdate(achar);
 			// save default access if it's new
 			if (newChar) {
-				super.saveDefaultAccessibility(achar.getId().toString());
+				super.saveDefaultAccessibilities(achar.getId().toString());
 			}
 
 		} catch (NoAccessException e) {
@@ -235,7 +230,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				newFinding = false;
 			}
 			for (FileBean fileBean : finding.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile());
+				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(finding.getDomain());
 			if (newFinding) {
@@ -245,7 +240,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			}
 			// save file data to file system and assign visibility
 			for (FileBean fileBean : finding.getFiles()) {
-				fileService.writeFile(fileBean);
+				fileUtils.writeFile(fileBean);
 			}
 
 		} catch (Exception e) {
@@ -331,7 +326,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			}
 			appService.saveOrUpdate(config);
 			if (newConfig) {
-				this.saveDefaultAccessibility(config.getId().toString());
+				this.saveDefaultAccessibilities(config.getId().toString());
 				// assign public access to instrument
 				for (Instrument instrument : config.getInstrumentCollection()) {
 					this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
@@ -339,9 +334,9 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				}
 			}
 			if (newTechnique) {
-				//assign public access to technique
-				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, config
-						.getTechnique().getId().toString());
+				// assign public access to technique
+				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+						config.getTechnique().getId().toString());
 			}
 
 		} catch (Exception e) {
@@ -494,7 +489,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				if (findings != null && !findings.isEmpty()) {
 					for (FindingBean findingBean : findings) {
 						for (FileBean fileBean : findingBean.getFiles()) {
-							fileService.updateClonedFileInfo(fileBean,
+							fileUtils.updateClonedFileInfo(fileBean,
 									oldSampleBean.getDomain().getName(),
 									sampleBean.getDomain().getName());
 						}
@@ -625,7 +620,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		// }
 		// if (config.getInstrumentCollection() != null) {
 		// for (Instrument instrument : config.getInstrumentCollection()) {
-		// super.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, instrument
+		// super.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+		// instrument
 		// .getId().toString());
 		// }
 		// }
