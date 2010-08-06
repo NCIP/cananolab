@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.service;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 
@@ -29,4 +31,7 @@ public interface BaseService {
 
 	public void removeAllAccesses(String protectedData)
 			throws SecurityException, NoAccessException;
+
+	public FileBean findFileById(String id) throws FileException,
+			NoAccessException;
 }
