@@ -342,31 +342,27 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			fileUtils.prepareSaveFile(file);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-
+			SampleComposition comp = null;
 			if (sample.getSampleComposition() == null) {
-				sample.setSampleComposition(new SampleComposition());
-				sample.getSampleComposition().setSample(sampleBean.getDomain());
-				sample.getSampleComposition().setFileCollection(
-						new HashSet<File>());
-			}
-			if (sample.getSampleComposition().getId() != null) {
+				comp = new SampleComposition();
+				comp.setSample(sampleBean.getDomain());
+				comp.setFileCollection(new HashSet<File>());
+			} else {
 				newComp = false;
+				// need to load the composition file collection to save
+				// composition
+				// because of
+				// unidirectional relationship between composition and file
+
+				comp = helper.findCompositionBySampleId(sample.getId()
+						.toString());
 			}
-			// need to load the composition file collection to save composition
-			// because of
-			// unidirectional relationship between composition and file
-			else {
-				List<File> fileList = helper.findFilesByCompositionInfoId(
-						sample.getSampleComposition().getId().toString(),
-						"SampleComposition");
-				sample.getSampleComposition().setFileCollection(
-						new HashSet<File>(fileList));
-			}
-			sample.getSampleComposition().getFileCollection().add(file);
+			comp.getFileCollection().add(file);
+			sample.setSampleComposition(comp);
 			if (file.getId() == null) { // because of unidirectional
 				// relationship between composition
 				// and lab files
-				appService.saveOrUpdate(sample.getSampleComposition());
+				appService.saveOrUpdate(comp);
 			} else {
 				appService.saveOrUpdate(file);
 			}
@@ -380,8 +376,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			// save sample accesses
 			for (AccessibilityBean access : sampleAccesses) {
 				if (newComp) {
-					this.saveAccessibility(access, sample
-							.getSampleComposition().getId().toString());
+					this.saveAccessibility(access, comp.getId().toString());
 				}
 				if (newFile) {
 					this.saveAccessibility(access, file.getId().toString());
