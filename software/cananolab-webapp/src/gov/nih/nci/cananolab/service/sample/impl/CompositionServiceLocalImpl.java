@@ -701,7 +701,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (!isUserOwner(composingElement.getCreatedBy())) {
 				throw new NoAccessException();
 			}
-			// find sample accesses, already container owner for composing
+			// find sample accesses, already contains owner for composing
 			// element
 			List<AccessibilityBean> sampleAccesses = this
 					.findSampleAccesses(composingElement
@@ -808,7 +808,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void assignFileAccessibility(SampleComposition comp, File file)
+	public void assignAccessibility(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!isUserOwner(file.getCreatedBy())) {
@@ -897,7 +897,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeFileAccessibility(SampleComposition comp, File file)
+	public void removeAccessibility(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!securityService.checkCreatePermission(file.getId().toString())) {

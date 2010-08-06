@@ -102,7 +102,7 @@ public interface CompositionService extends BaseService {
 	public void assignAccessibility(ComposingElement composingElement)
 			throws CompositionException, NoAccessException;
 
-	public void assignFileAccessibility(SampleComposition comp, File file)
+	public void assignAccessibility(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException;
 
 	public void assignAccessibility(Function function)
@@ -123,7 +123,7 @@ public interface CompositionService extends BaseService {
 	public void removeAccessibility(FunctionalizingEntity entity, Function function)
 			throws CompositionException, NoAccessException;
 
-	public void removeFileAccessibility(SampleComposition comp, File file)
+	public void removeAccessibility(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException;
 
 }

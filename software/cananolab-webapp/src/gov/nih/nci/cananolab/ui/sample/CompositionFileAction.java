@@ -36,9 +36,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
 		Boolean newFile = true;
-		if (theFile.getDomainFile().getId() != null) {
-			newFile = true;
-		}
+
 		CompositionService service = this.setServicesInSession(request);
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
@@ -49,7 +47,9 @@ public class CompositionFileAction extends BaseAnnotationAction {
 				+ sampleBean.getDomain().getName() + "/" + "compositionFile";
 
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
-
+		if (theFile.getDomainFile().getId() != null) {
+			newFile = true;
+		}
 		service.saveCompositionFile(sampleBean, theFile);
 		ActionMessages msgs = new ActionMessages();
 		// retract from public if updating an existing public record and not
@@ -82,7 +82,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		compService.deleteCompositionFile(sampleBean.getDomain()
 				.getSampleComposition(), fileBean.getDomainFile());
-		compService.removeFileAccessibility(comp.getDomain(), fileBean
+		compService.removeAccessibility(comp.getDomain(), fileBean
 				.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
 		// retract from public if updating an existing public record and not
