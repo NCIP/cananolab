@@ -261,8 +261,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
 
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		request.setAttribute("onloadJavascript",
-				"updateSubmitFormBasedOnCategory();fillPubMedInfo('false', null)");
+		request
+				.setAttribute("onloadJavascript",
+						"updateSubmitFormBasedOnCategory();fillPubMedInfo('false', null)");
 
 		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
 				.toString(), pubBean.getPublicStatus());
@@ -700,5 +701,13 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService service = this.setServicesInSession(request);
 		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
 				(Publication) publication.getDomainFile());
+	}
+
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		PublicationService service = (PublicationService) (request.getSession()
+				.getAttribute("publicationService"));
+		return downloadFile(service, mapping, form, request, response);
 	}
 }
