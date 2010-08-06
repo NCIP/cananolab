@@ -673,19 +673,19 @@ function updateCloningSample() {
 }
 
 function editDataAvailability(url){
-	alert(url);
-//	SampleManager.getDetailContent(url, function(pageData){
-//		if (pageData == "") {
-//			hide('dataAvailability');
-//			show('editDataAvailability');
-//		} else {
-//			dwr.util.setValue("dataAvailability", pageData, {
-//				escapeHtml : false
-//			});
-//			show('dataAvailability' );
-//			hide('editDataAvailability');
-//		}
-//	});
+	//alert(url);
+	SampleManager.getDetailContent(url, function(pageData){
+		if (pageData == "") {
+			hide('dataAvailability');
+			show('editDataAvailability');
+		} else {
+			dwr.util.setValue("dataAvailability", pageData, {
+				escapeHtml : false
+			});
+			show('dataAvailability' );
+			hide('editDataAvailability');
+		}
+	});
 }
 
 function generateDataAvailability(form, actionName, dispatch){
