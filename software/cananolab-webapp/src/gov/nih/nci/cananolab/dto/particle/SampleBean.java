@@ -75,12 +75,10 @@ public class SampleBean extends SecuredDataBean {
 
 	public SampleBean(String sampleId) {
 		domain.setId(new Long(sampleId));
-		this.setSecuredId(sampleId);
 	}
 
 	public SampleBean(Sample sample) {
 		this.domain = sample;
-		this.setSecuredId(sample.getId().toString());
 		if (sample.getKeywordCollection() != null) {
 			for (Keyword keyword : sample.getKeywordCollection()) {
 				keywordSet.add(keyword.getName());
