@@ -249,8 +249,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
 		}
-		// save accessibility based on sample accesses
-		charService.assignAccesses(charBean.getDomainChar());
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
@@ -530,6 +528,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.addExperimentConfig(configBean);
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
+		service.assignAccesses(achar.getDomainChar(), configBean.getDomain());
 		this.checkOpenForms(achar, theForm, request);
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
@@ -616,6 +615,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
+		service.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
 		this.checkOpenForms(achar, theForm, request);
 		request.setAttribute("anchor", "result");
 		// return to setupUpdate to retrieve the data matrix in the correct
@@ -735,7 +735,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		FindingBean dataSetBean = achar.getTheFinding();
 		CharacterizationService service = this.setServicesInSession(request);
 		service.deleteFinding(dataSetBean.getDomain());
-		// TODO remove accessibility
+		service.removeAccesses(achar.getDomainChar(), dataSetBean.getDomain());
 		achar.removeFinding(dataSetBean);
 		request.setAttribute("anchor", "result");
 		this.checkOpenForms(achar, theForm, request);
@@ -756,6 +756,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.removeExperimentConfig(configBean);
 		// also save characterization
 		this.saveCharacterization(request, theForm, achar);
+		service.removeAccesses(achar.getDomainChar(), configBean.getDomain());
 		this.checkOpenForms(achar, theForm, request);
 		return mapping.findForward("inputForm");
 	}
