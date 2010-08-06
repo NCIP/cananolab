@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
@@ -97,28 +99,31 @@ public interface CompositionService extends BaseService {
 			SampleBean[] newSampleBeans) throws CompositionException,
 			NoAccessException;
 
-	public void assignAccessibility(NanomaterialEntity entity)
+	public void assignAccessibility(ComposingElement composingElement)
 			throws CompositionException, NoAccessException;
 
-	public void assignAccessibility(FunctionalizingEntity entity)
+	public void assignFileAccessibility(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException;
 
-	public void assignAccessibility(ChemicalAssociation assoc)
+	public void assignAccessibility(Function function)
 			throws CompositionException, NoAccessException;
 
-	public void assignCompositionFileAccessibility(SampleComposition comp,
-			File file) throws CompositionException, NoAccessException;
-
-	public void removeAccessibility(NanomaterialEntity entity)
+	public void removeAccessibility(NanomaterialEntity entity, ComposingElement composingElement)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(FunctionalizingEntity entity)
+	public void removeAccessibility(NanomaterialEntity nanomaterialEntity)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(ChemicalAssociation assoc)
+	public void removeAccessibility(FunctionalizingEntity functionalizingEntity)
 			throws CompositionException, NoAccessException;
 
-	public void removeCompositionFileAccessibility(SampleComposition comp,
-			File file) throws CompositionException, NoAccessException;
+	public void removeAccessibility(ChemicalAssociation chemicalAssociation)
+			throws CompositionException, NoAccessException;
+
+	public void removeAccessibility(FunctionalizingEntity entity, Function function)
+			throws CompositionException, NoAccessException;
+
+	public void removeFileAccessibility(SampleComposition comp, File file)
+			throws CompositionException, NoAccessException;
 
 }

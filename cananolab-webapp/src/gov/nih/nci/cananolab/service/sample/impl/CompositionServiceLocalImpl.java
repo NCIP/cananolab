@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -18,7 +20,6 @@ import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -43,24 +44,20 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			.getLogger(CompositionServiceLocalImpl.class);
 
 	private CompositionServiceHelper helper;
-	private FileServiceLocalImpl fileService;
 
 	public CompositionServiceLocalImpl() {
 		super();
 		helper = new CompositionServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public CompositionServiceLocalImpl(UserBean user) {
 		super(user);
 		helper = new CompositionServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public CompositionServiceLocalImpl(SecurityService securityService) {
 		super(securityService);
 		helper = new CompositionServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public void saveNanomaterialEntity(SampleBean sampleBean,
@@ -71,6 +68,10 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			Sample sample = sampleBean.getDomain();
+			if (!securityService.checkCreatePermission(sample.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			NanomaterialEntity entity = entityBean.getDomainEntity();
@@ -109,22 +110,25 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// save file and keyword
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile());
+				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(entity);
 			// save file to the file system and assign visibility
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.writeFile(fileBean);
+				fileUtils.writeFile(fileBean);
 			}
-			// save default access
-			if (newComp) {
-				this.saveDefaultAccessibility(sample.getSampleComposition()
-						.getId().toString());
-			}
-			if (newEntity) {
-				for (AccessibilityBean access : this.getDefaultAccesses()) {
-					accessUtils.assignAccessibility(access, entityBean
-							.getDomainEntity());
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(entity.getSampleComposition()
+							.getSample().getId().toString());
+			// save sample accesses
+			for (AccessibilityBean access : sampleAccesses) {
+				if (newComp) {
+					this.saveAccessibility(access, sample
+							.getSampleComposition().getId().toString());
+				}
+				if (newEntity) {
+					this.saveAccessibility(access, entity.getId().toString());
 				}
 			}
 		} catch (NoAccessException e) {
@@ -164,6 +168,10 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			Sample sample = sampleBean.getDomain();
+			if (!securityService.checkCreatePermission(sample.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			FunctionalizingEntity entity = entityBean.getDomainEntity();
@@ -202,23 +210,25 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// save file and keyword
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile());
+				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(entity);
 			// save file to the file system
 			for (FileBean fileBean : entityBean.getFiles()) {
-				fileService.writeFile(fileBean);
+				fileUtils.writeFile(fileBean);
 			}
-			// save default access
-			// save default access
-			if (newComp) {
-				this.saveDefaultAccessibility(sample.getSampleComposition()
-						.getId().toString());
-			}
-			if (newEntity) {
-				for (AccessibilityBean access : this.getDefaultAccesses()) {
-					accessUtils.assignAccessibility(access, entityBean
-							.getDomainEntity());
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(entity.getSampleComposition()
+							.getSample().getId().toString());
+			// save sample accesses
+			for (AccessibilityBean access : sampleAccesses) {
+				if (newComp) {
+					this.saveAccessibility(access, sample
+							.getSampleComposition().getId().toString());
+				}
+				if (newEntity) {
+					this.saveAccessibility(access, entity.getId().toString());
 				}
 			}
 		} catch (NoAccessException e) {
@@ -241,6 +251,10 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.getApplicationService();
 			ChemicalAssociation assoc = assocBean.getDomainAssociation();
 			Sample sample = sampleBean.getDomain();
+			if (!securityService.checkCreatePermission(sample.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
 			Boolean newAssoc = true;
 			Boolean newComp = true;
 			if (assoc.getId() != null) {
@@ -273,23 +287,25 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			assoc.setSampleComposition(sample.getSampleComposition());
 			// save file and keyword
 			for (FileBean fileBean : assocBean.getFiles()) {
-				fileService.prepareSaveFile(fileBean.getDomainFile());
+				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(assoc);
 			// save file to the file system
 			for (FileBean fileBean : assocBean.getFiles()) {
-				fileService.writeFile(fileBean);
+				fileUtils.writeFile(fileBean);
 			}
-			// save default access
-			if (newComp) {
-				this.saveDefaultAccessibility(sample.getSampleComposition()
-						.getId().toString());
-			}
-			// save default access
-			if (newAssoc) {
-				for (AccessibilityBean access : this.getDefaultAccesses()) {
-					accessUtils.assignAccessibility(access, assocBean
-							.getDomainAssociation());
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(assoc.getSampleComposition()
+							.getSample().getId().toString());
+			// save sample accesses
+			for (AccessibilityBean access : sampleAccesses) {
+				if (newComp) {
+					this.saveAccessibility(access, sample
+							.getSampleComposition().getId().toString());
+				}
+				if (newAssoc) {
+					this.saveAccessibility(access, assoc.getId().toString());
 				}
 			}
 		} catch (NoAccessException e) {
@@ -308,6 +324,10 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			Sample sample = sampleBean.getDomain();
+			if (!securityService.checkCreatePermission(sample.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
 			File file = fileBean.getDomainFile();
 			Boolean newFile = true;
 			Boolean newComp = true;
@@ -319,7 +339,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 							.toString())) {
 				throw new NoAccessException();
 			}
-			fileService.prepareSaveFile(file);
+			fileUtils.prepareSaveFile(file);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
@@ -351,16 +371,21 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				appService.saveOrUpdate(file);
 			}
 			// write file to file system
-			fileService.writeFile(fileBean);
+			fileUtils.writeFile(fileBean);
 			// save default access
 			// save default access
-			if (newComp) {
-				this.saveDefaultAccessibility(sample.getSampleComposition()
-						.getId().toString());
-			}
-			if (newFile) {
-				this.saveDefaultAccessibility(fileBean.getDomainFile().getId()
-						.toString());
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(sample.getId().toString());
+			// save sample accesses
+			for (AccessibilityBean access : sampleAccesses) {
+				if (newComp) {
+					this.saveAccessibility(access, sample
+							.getSampleComposition().getId().toString());
+				}
+				if (newFile) {
+					this.saveAccessibility(access, file.getId().toString());
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -569,9 +594,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					copyBean = new NanomaterialEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileService.updateClonedFileInfo(fileBean,
-								oldSampleBean.getDomain().getName(), sampleBean
-										.getDomain().getName());
+						fileUtils.updateClonedFileInfo(fileBean, oldSampleBean
+								.getDomain().getName(), sampleBean.getDomain()
+								.getName());
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the nanomaterial entity.";
@@ -600,9 +625,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					copyBean = new FunctionalizingEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
-						fileService.updateClonedFileInfo(fileBean,
-								oldSampleBean.getDomain().getName(), sampleBean
-										.getDomain().getName());
+						fileUtils.updateClonedFileInfo(fileBean, oldSampleBean
+								.getDomain().getName(), sampleBean.getDomain()
+								.getName());
 					}
 				} catch (Exception e) {
 					String error = "Error in copying the functionalizing entity.";
@@ -675,25 +700,20 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return helper;
 	}
 
-	public FileServiceLocalImpl getFileService() {
-		return fileService;
-	}
-
-	public void assignAccessibility(NanomaterialEntity entity)
+	public void assignAccessibility(ComposingElement composingElement)
 			throws CompositionException, NoAccessException {
 		try {
-			if (!securityService.checkCreatePermission(entity.getId()
-					.toString())) {
+			if (!isUserOwner(composingElement.getCreatedBy())) {
 				throw new NoAccessException();
 			}
-			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(entity.getSampleComposition()
+			// find sample accesses, already container owner for composing
+			// element
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(composingElement
+							.getNanomaterialEntity().getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				this.saveAccessibility(access, entity.getSampleComposition()
-						.getId().toString());
-				accessUtils.assignAccessibility(access, entity);
+				accessUtils.assignAccessibility(access, composingElement);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -703,10 +723,11 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void assignAccessibility(FunctionalizingEntity entity)
-			throws CompositionException, NoAccessException {
+	public void removeAccessibility(NanomaterialEntity entity,
+			ComposingElement composingElement) throws CompositionException,
+			NoAccessException {
 		try {
-			if (!securityService.checkCreatePermission(entity.getId()
+			if (!securityService.checkCreatePermission(composingElement.getId()
 					.toString())) {
 				throw new NoAccessException();
 			}
@@ -715,9 +736,51 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findSampleAccesses(entity.getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				this.saveAccessibility(access, entity.getSampleComposition()
-						.getId().toString());
-				accessUtils.assignAccessibility(access, entity);
+				accessUtils.removeAccessibility(access, composingElement);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning nanomaterial entity accessibility";
+			throw new CompositionException(error, e);
+		}
+	}
+
+	public void assignAccessibility(Function function)
+			throws CompositionException, NoAccessException {
+		try {
+			if (!isUserOwner(function.getCreatedBy())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(function.getFunctionalizingEntity()
+							.getSampleComposition().getSample().getId()
+							.toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.assignAccessibility(access, function);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning functionalizing entity accessibility";
+			throw new CompositionException(error, e);
+		}
+	}
+
+	public void removeAccessibility(FunctionalizingEntity entity,
+			Function function) throws CompositionException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(function.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(entity.getSampleComposition()
+							.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, function);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -730,8 +793,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignAccessibility(ChemicalAssociation assoc)
 			throws CompositionException, NoAccessException {
 		try {
-			if (!securityService
-					.checkCreatePermission(assoc.getId().toString())) {
+			if (!isUserOwner(assoc.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// find sample accesses
@@ -751,20 +813,19 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void assignCompositionFileAccessibility(SampleComposition comp,
-			File file) throws CompositionException, NoAccessException {
+	public void assignFileAccessibility(SampleComposition comp, File file)
+			throws CompositionException, NoAccessException {
 		try {
-			if (!securityService.checkCreatePermission(file.getId().toString())) {
+			if (!isUserOwner(file.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// TODO check if file is in the comp fileCollection
 
 			// find sample accesses
-			List<AccessibilityBean> sampleAccesses = super
+			List<AccessibilityBean> sampleAccesses = this
 					.findSampleAccesses(comp.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				this.saveAccessibility(access, comp.getId().toString());
-				super.saveAccessibility(access, file.getId().toString());
+				this.saveAccessibility(access, file.getId().toString());
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -841,8 +902,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeCompositionFileAccessibility(SampleComposition comp,
-			File file) throws CompositionException, NoAccessException {
+	public void removeFileAccessibility(SampleComposition comp, File file)
+			throws CompositionException, NoAccessException {
 		try {
 			if (!securityService.checkCreatePermission(file.getId().toString())) {
 				throw new NoAccessException();
