@@ -190,7 +190,7 @@
 	</tr>
 	<tr>
 		<td>
-			<c:if test="${!empty user && user.curator && user.admin}">
+			<c:if test="${theSample.userDeletable eq 'true'}">
 				<input type="button" value="Remove"
 					onclick="removeFunction('functionalizingEntity')"
 					id="deleteFunction" style="display: none;" />
