@@ -736,6 +736,23 @@ public class SecurityService {
 		return isOwner;
 	}
 
+	public List<String> getUserNames(String groupName) throws SecurityException {
+		List<String> userNames = new ArrayList<String>();
+		try {
+			Group group = this.getGroup(groupName);
+			Set users = authorizationManager.getUsers(group.getGroupId()
+					.toString());
+			for (Object obj : users) {
+				User user = (User) obj;
+				userNames.add(user.getLoginName());
+			}
+		} catch (Exception e) {
+			logger.error("Error in getting users of the given group", e);
+			throw new SecurityException();
+		}
+		return userNames;
+	}
+
 	public static void main(String[] args) {
 		try {
 			SecurityService service = new SecurityService(
