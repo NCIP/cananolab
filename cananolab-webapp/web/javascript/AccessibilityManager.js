@@ -106,11 +106,11 @@ function populateAccess(access) {
 function addAccess(actionName, page, isPublic) {
 	if (isPublic) {
 		if (confirm("Data is already public.  Assigning a different accessibility will retract it from public.  Continue?")) {
-			enableButtons( [ "submitButton" ]);
+			enableOuterButtons();
 			submitAction(document.forms[0], actionName, "saveAccess", page);
 		}
 	} else {
-		enableButtons( [ "submitButton" ]);
+		enableOuterButtons();
 		submitAction(document.forms[0], actionName, "saveAccess", page);
 	}
 }
