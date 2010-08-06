@@ -106,7 +106,7 @@
 			<forward name="summaryView" path="sample.summaryView" />
 			<forward name="summaryEdit" path="sample.summaryEdit" />
 			<forward name="input" path="/sample.do?dispatch=input&amp;page=0" />
-			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />			
+			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />
 			<forward name="dataAvailabilityView" path="/sample/bodyDataAvailability.jsp" />
 		</action>
 		<action input="input" name="searchSampleForm" parameter="dispatch"
@@ -114,7 +114,7 @@
 			scope="request">
 			<forward name="input" path="sample.searchSample" />
 			<forward name="success" path="sample.searchSampleResult" />
-		</action>		
+		</action>
 		<action input="input" name="advancedSampleSearchForm"
 			parameter="dispatch" path="/advancedSampleSearch"
 			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">
@@ -134,7 +134,7 @@
 				path="/sample/composition/bodyCompositionSummaryPrintView.jsp" />
 		</action>
 		<action name="compositionForm" parameter="dispatch" path="/nanomaterialEntity"
-			type="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
 			input="input">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
@@ -150,7 +150,7 @@
 				path="/sample/composition/nanomaterialEntity/bodySingleNanomaterialEntitySummaryView.jsp" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
-			path="/functionalizingEntity" type="gov.nih.nci.cananolab.ui.sample.FunctionalizingEntityAction"
+			path="/functionalizingEntity" type="org.springframework.web.struts.DelegatingActionProxy"
 			input="input">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
@@ -166,7 +166,7 @@
 				path="/sample/composition/functionalizingEntity/bodySingleFunctionalizingEntitySummaryView.jsp" />
 		</action>
 		<action name="compositionForm" parameter="dispatch" path="/chemicalAssociation"
-			type="gov.nih.nci.cananolab.ui.sample.ChemicalAssociationAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
 			input="input">
 			<forward name="input"
 				path="/chemicalAssociation.do?dispatch=input&amp;page=0" />
@@ -175,14 +175,14 @@
 				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch" path="/compositionFile"
-			type="gov.nih.nci.cananolab.ui.sample.CompositionFileAction" input="input">
+			type="org.springframework.web.struts.DelegatingActionProxy" input="input">
 			<forward name="input" path="/compositionFile.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="sample.composition.compositionFile" />
 			<forward name="success"
 				path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="characterizationForm" parameter="dispatch"
-			path="/characterization" type="gov.nih.nci.cananolab.ui.sample.CharacterizationAction"
+			path="/characterization" type="org.springframework.web.struts.DelegatingActionProxy"
 			input="input" validate="true">
 			<forward name="input"
 				path="/characterization.do?dispatch=input&amp;page=0" />
