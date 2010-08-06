@@ -145,8 +145,6 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		compService.saveChemicalAssociation(sampleBean, assocBean);
-		// save accessibility based on sample accessibility
-		compService.assignAccessibility(assocBean.getDomainAssociation());
 
 		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
 				.getAttribute("hasFunctionalizingEntity");
@@ -381,6 +379,12 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 		// save the association
 		saveAssociation(request, theForm, assoc);
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.assignFileAccessibility(assoc.getDomainAssociation()
+				.getSampleComposition(), theFile.getDomainFile());
+
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(assoc, request);
 
@@ -401,6 +405,12 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "file");
 		// save the association
 		saveAssociation(request, theForm, assoc);
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.removeFileAccessibility(assoc.getDomainAssociation()
+				.getSampleComposition(), theFile.getDomainFile());
+
 		this.checkOpenForms(assoc, request);
 		return mapping.findForward("inputForm");
 	}
@@ -470,9 +480,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
 
-		CompositionService compService = new CompositionServiceLocalImpl(securityService);
+		CompositionService compService = new CompositionServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("compositionService", compService);
-		SampleService sampleService = new SampleServiceLocalImpl(securityService);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}
