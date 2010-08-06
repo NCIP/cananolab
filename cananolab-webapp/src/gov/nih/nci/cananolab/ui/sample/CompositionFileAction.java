@@ -4,8 +4,6 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -51,10 +49,6 @@ public class CompositionFileAction extends BaseAnnotationAction {
 
 		service.saveCompositionFile(sampleBean, theFile);
 
-		// save accessibility based on sample accessibility
-		service.assignCompositionFileAccessibility(comp.getDomain(), theFile
-				.getDomainFile());
-
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
@@ -76,7 +70,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		compService.deleteCompositionFile(sampleBean.getDomain()
 				.getSampleComposition(), fileBean.getDomainFile());
-		// TODO remove accessibility
+		compService.removeFileAccessibility(comp.getDomain(), fileBean
+				.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -102,9 +97,9 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileId = request.getParameter("dataId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService fileService = new FileServiceLocalImpl(user);
-		FileBean fileBean = fileService.findFileById(fileId);
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		FileBean fileBean = compService.findFileById(fileId);
 		CompositionBean compBean = (CompositionBean) theForm.get("comp");
 		compBean.setTheFile(fileBean);
 		ActionForward forward = mapping.getInputForward();
