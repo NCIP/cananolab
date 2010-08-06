@@ -38,6 +38,7 @@
 							<th>
 								Group Description
 							</th>
+							<th>Group Owner Name</th>
 							<th>
 								Users (Access)
 							</th>
@@ -52,9 +53,12 @@
 									${group.description}
 								</td>
 								<td>
+									${group.ownerName}
+								</td>
+								<td>
 									<c:forEach var="userAccess"
 										items="${group.userAccessibilities}">
-									${userAccess.userBean.loginName} (${userAccess.roleName})<br />
+									${userAccess.userBean.loginName} (${userAccess.roleDisplayName})<br />
 									</c:forEach>
 								</td>
 								<td align="right">
