@@ -448,16 +448,18 @@ function closeSubmissionForm(styleId) {
 function enableButtons(buttons) {
 	for(var i=0; i<buttons.length;i++) {
 		var button=buttons[i];
-		document.getElementById(button).disabled=false;
-		document.getElementById(button).disabled=false;
+		if (document.getElementById(button)!=null) {
+		   document.getElementById(button).disabled=false;
+		}
 	}
 }
 
 function disableButtons(buttons) {
 	for(var i=0; i<buttons.length;i++) {
 		var button=buttons[i];
-		document.getElementById(button).disabled=true;
-		document.getElementById(button).disabled=true;
+		if (document.getElementById(button)!=null) {
+		   document.getElementById(button).disabled=true;
+		}
 	}
 }
 
@@ -511,4 +513,14 @@ function confirmPublicDataUpdate() {
 function submitReview(form, actionName, dataId, dataName, dataType) {
 	form.action = actionName + ".do?dispatch=submitForReview&reviewDataId=" +dataId+"&reviewDataName="+dataName+"&reviewDataType="+dataType;
 	form.submit();
+}
+
+function disableOuterButtons() {
+	var buttons=['submitButton', 'reviewButton', 'copyButton', 'deleteButton', 'reviewButton', 'deleteCollaborationGroup'];
+	disableButtons(buttons);
+}
+
+function enableOuterButtons() {
+	var buttons=['submitButton', 'reviewButton', 'copyButton', 'deleteButton', 'reviewButton', 'deleteCollaborationGroup'];
+	enableButtons(buttons);
 }

@@ -7,7 +7,7 @@ var updateFormPrompt = "false";
 var redirect = null;
 var appOwner = "";
 function clearPublication() {
-	enableButtons( [ 'submitButton' ]);
+	enableOuterButtons();
 	show("accessBlock");
 	// clear submission form first
 	PublicationManager.clearPublication(function(publication) {
@@ -220,7 +220,7 @@ function populateNonPubMedFields(publication) {
 			}
 		} else {
 			alert("The publication already exists and you don't have update privilege on this publication");
-			disableButtons( [ 'submitButton' ]);
+			disableOuterButtons();
 			hide("accessBlock");
 		}
 	}

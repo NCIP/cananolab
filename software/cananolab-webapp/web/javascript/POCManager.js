@@ -8,7 +8,7 @@ function clearPointOfContact() {
 function setThePointOfContact(id, isPrimary) {
 	// add a timeout to allow correct refresh order
 	window.setTimeout("fillPointOfContact(" + id + ", " + isPrimary + ")", 100);
-	disableButtons(["submitButton"]);
+	disableOuterButtons();
 }
 
 function fillPointOfContact(id, isPrimary) {
@@ -43,7 +43,7 @@ function populatePointOfContact(poc) {
 	}
 }
 function addPointOfContact(actionName) {
-	enableButtons(["submitButton"]);
+	enableOuterButtons();
 	submitAction(document.forms[0], actionName, "savePointOfContact", 2);
 }
 function removePointOfContact(actionName) {

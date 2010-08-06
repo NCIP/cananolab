@@ -55,7 +55,7 @@ function retrieveProtocol(applicationOwner) {
 }
 
 function clearProtocol() {
-	enableButtons( [ 'submitButton']);
+	enableOuterButtons();
 	show("addAccess");
 	show("addAccessLabel");
 	writeLink(null);
@@ -88,7 +88,7 @@ function populateProtocol(protocol) {
 		gotoUpdatePage(protocol);
 	} else {
 		alert("The protocol already exists and you don't have update and delete privilege on this protocol");
-		disableButtons( [ 'submitButton']);
+		disableOuterButtons();
 		hide("addAccess");
 		hide("addAccessLabel");
 	}
@@ -105,7 +105,7 @@ function writeLink(protocol) {
 		fileId = protocol.fileBean.domainFile.id;
 	}
 	if (uri != null && fileId != null) {
-		document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location="
+		document.getElementById("protocolFileLink").innerHTML = "<a href='protocol.do?dispatch=download&amp;location="
 				+ appOwner + "&amp;fileId=" + fileId + "'>" + uri + "</a>";
 	} else {
 		document.getElementById("protocolFileLink").innerHTML = "";
