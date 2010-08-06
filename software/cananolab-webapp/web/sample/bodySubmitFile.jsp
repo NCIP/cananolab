@@ -117,7 +117,7 @@
 		<c:if test="${actionName ne 'compositionFile'}">
 			<tr>
 				<td>
-					<c:if test="${!empty user && user.curator && user.admin}">
+					<c:if test="${theSample.userDeletable eq 'true'}">
 						<input class="${buttonStyle}" type="button" value="Remove"
 							onclick="removeFile('${actionName}', ${fileForm})"
 							id="deleteFile" style="display: none;" />
@@ -128,7 +128,7 @@
 						<input class="${buttonStyle}" type="button" value="Save"
 							onclick="addFile('${actionName}', ${fileForm});" />
 						<input class="${buttonStyle}" type="button" value="Cancel"
-							onclick="clearFile('${fileParent }');closeSubmissionForm('File');" />
+							onclick="clearFile('${fileParent }');closeSubmissionForm('File');enableOuterButtons();" />
 					</div>
 				</td>
 			</tr>
