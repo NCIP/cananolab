@@ -544,7 +544,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (findingBean.getFiles().size() == 1) {
 			request.setAttribute("onloadJavascript", "setTheFile(0)");
 		}
-
+		request.setAttribute("disableOuterButtons", true);
 		return mapping.findForward("inputForm");
 	}
 
@@ -562,6 +562,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.setTheFinding(theFinding);
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, theForm, request);
+		request.setAttribute("disableOuterButtons", true);
 		return mapping.findForward("inputForm");
 	}
 
