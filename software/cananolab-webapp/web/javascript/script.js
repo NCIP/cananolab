@@ -517,7 +517,7 @@ function confirmAddNew(otherStyleIds, styleId, newObjectName, cleanupFunction) {
 }
 
 function confirmPublicDataUpdate() {
-	if (confirm("The data has been assigned to Public.  Updating it would retract it from Public.  You will need to resubmit to the curator for review again before the curator reassigns it to Public.  Are you sure to continue?")) {
+	if (confirm("The data has been assigned to Public.  Updating the data would retract it from Public.  You will need to resubmit the data to the curator for review before the curator reassigns it to Public.  Are you sure you want to continue?")) {
 		return true;
 	} else {
 		enableOuterButtons();
