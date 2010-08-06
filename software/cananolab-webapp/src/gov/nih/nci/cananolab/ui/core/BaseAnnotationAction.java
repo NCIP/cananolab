@@ -7,8 +7,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -92,17 +91,11 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * @param
 	 * @return
 	 */
-	public ActionForward download(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
+	protected ActionForward downloadFile(BaseService service,
+			ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String fileId = request.getParameter("fileId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService fileService = null;
-		FileBean fileBean = null;
-		fileService = new FileServiceLocalImpl(user);
-
-		fileBean = fileService.findFileById(fileId);
+		FileBean fileBean = service.findFileById(fileId);
 		if (fileBean != null) {
 			if (fileBean.getDomainFile().getUriExternal()) {
 				response.sendRedirect(fileBean.getDomainFile().getUri());
@@ -141,6 +134,18 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throw new FileException("File " + fileBean.getDomainFile().getUri()
 					+ " doesn't exist on the server");
 		}
+		return null;
+	}
+
+	/**
+	 * Download action to handle file downloading and viewing
+	 *
+	 * @param
+	 * @return
+	 */
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		return null;
 	}
 
