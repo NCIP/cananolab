@@ -95,7 +95,7 @@
 				</c:if>
 				<input type="button" value="Save"
 					onclick="javascript:saveFinding('characterization');">
-				<input type="button" value="Cancel"	onclick="javascript:closeSubmissionForm('Finding');">
+				<input type="button" value="Cancel"	onclick="javascript:closeSubmissionForm('Finding');enableOuterButtons();">
 			</div>
 		</td>
 	</tr>
