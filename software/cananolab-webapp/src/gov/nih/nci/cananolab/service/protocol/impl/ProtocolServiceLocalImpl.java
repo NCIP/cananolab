@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -37,24 +36,20 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 	private static Logger logger = Logger
 			.getLogger(ProtocolServiceLocalImpl.class);
 	private ProtocolServiceHelper helper;
-	private FileServiceLocalImpl fileService;
 
 	public ProtocolServiceLocalImpl() {
 		super();
 		helper = new ProtocolServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public ProtocolServiceLocalImpl(UserBean user) {
 		super(user);
 		helper = new ProtocolServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public ProtocolServiceLocalImpl(SecurityService securityService) {
 		super(securityService);
 		helper = new ProtocolServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 	}
 
 	public ProtocolBean findProtocolById(String protocolId)
@@ -116,7 +111,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			}
 			if (protocolBean.getFileBean() != null) {
-				fileService.prepareSaveFile(protocolBean.getFileBean()
+				fileUtils.prepareSaveFile(protocolBean.getFileBean()
 						.getDomainFile());
 			}
 			Protocol dbProtocol = helper.findProtocolBy(protocolBean
@@ -146,12 +141,12 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// save to the file system fileData is not empty
 			if (protocolBean.getFileBean() != null) {
-				fileService.writeFile(protocolBean.getFileBean());
+				fileUtils.writeFile(protocolBean.getFileBean());
 			}
 
 			// save default accesses
 			if (newProtocol) {
-				super.saveDefaultAccessibility(protocolBean.getDomain().getId()
+				super.saveDefaultAccessibilities(protocolBean.getDomain().getId()
 						.toString());
 			}
 		} catch (Exception e) {

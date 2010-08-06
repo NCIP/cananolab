@@ -9,8 +9,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
@@ -41,26 +39,22 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			.getLogger(PublicationServiceLocalImpl.class);
 	private PublicationServiceHelper helper;
 	private SampleServiceHelper sampleHelper;
-	private FileService fileService;
 
 	public PublicationServiceLocalImpl() {
 		super();
 		helper = new PublicationServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 		sampleHelper = new SampleServiceHelper(this.securityService);
 	}
 
 	public PublicationServiceLocalImpl(UserBean user) {
 		super(user);
 		helper = new PublicationServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 		sampleHelper = new SampleServiceHelper(this.securityService);
 	}
 
 	public PublicationServiceLocalImpl(SecurityService securityService) {
 		super(securityService);
 		helper = new PublicationServiceHelper(this.securityService);
-		fileService = new FileServiceLocalImpl(this.securityService);
 		sampleHelper = new SampleServiceHelper(this.securityService);
 	}
 
@@ -112,9 +106,9 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					publication.setId(dbPublication.getId());
 				}
 			}
-			fileService.prepareSaveFile(publication);
+			fileUtils.prepareSaveFile(publication);
 			appService.saveOrUpdate(publication);
-			fileService.writeFile(publicationBean);
+			fileUtils.writeFile(publicationBean);
 
 			// update sample associations
 			updateSampleAssociation(appService, publicationBean);
