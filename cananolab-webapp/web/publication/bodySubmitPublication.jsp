@@ -431,6 +431,7 @@
 	<c:set var="protectedData"  value="${publicationForm.map.publication.domainFile.id}" />
 	<c:set var="isPublic" value="${publicationForm.map.publication.publicStatus}"/>
     <c:set var="isOwner" value="${publicationForm.map.publication.userIsOwner}"/>
+    <c:set var="ownerName" value="${publicationForm.map.publication.domainFile.createdBy}"/>
 	<c:set var="newData" value="true"/>
 	<c:if test="${updatePublication}">
 		<c:set var="newData" value="false" />

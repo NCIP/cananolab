@@ -147,6 +147,7 @@
 		</c:if>
 		<c:set var="isPublic" value="${protocolForm.map.protocol.publicStatus}"/>
 		<c:set var="isOwner" value="${protocolForm.map.protocol.userIsOwner}"/>
+		<c:set var="ownerName" value="${protocolForm.map.protocol.domain.createdBy}"/>
 		<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
 	<br>

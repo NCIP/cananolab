@@ -144,7 +144,7 @@
 						<html:text styleId="userName" property="${accessParent}.theAccess.userBean.loginName" style="display:none"/>
 					</td>
 					<td>
-						<a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown()""><img
+						<a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown('${ownerName}')"><img
 								src="images/icon_browse.jpg" align="middle"
 								alt="search existing collaboration groups" border="0" /> </a>
 					</td>
