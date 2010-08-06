@@ -16,7 +16,11 @@
 	</tr>
 	<tr>
 		<td colspan="2" class="welcomeContent">
-			This is the manage curation section which allows curators ...
+			This is the manage curation section which allows a curator to review
+			data that is pending release to public. In this section, curators can
+			view a list of samples, publications, and protocols pending public
+			review, select an item from the pending list, review the item, and
+			make the item accessible to public.
 			<br>
 		</td>
 	</tr>
