@@ -176,7 +176,6 @@ function showMatchedUserDropdown() {
 	else {
 		ownerName=currentGroup.ownerName;
 	}
-	alert(ownerName);
 	CollaborationGroupManager.getMatchedUsers(ownerName, loginName, function(data) {
 		dwr.util.removeAllOptions("matchedUserNameSelect");
 		dwr.util.addOptions("matchedUserNameSelect", data, "loginName",
