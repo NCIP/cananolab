@@ -167,7 +167,7 @@
 				</td>
 				<td>
 					<a style="display:block" id="addFile"
-						href="javascript:confirmAddNew('File', 'File', 'clearFile(\'${fileParent}\')')">
+						href="javascript:confirmAddNew('File', 'File', 'clearFile(\'${fileParent}\')'); disableOuterButtons();">
 						<img align="top" src="images/btn_add.gif" border="0" />
 					</a>
 				</td>
@@ -177,6 +177,7 @@
 					<c:if test="${! empty compositionForm.map.assoc.files }">
 						<c:set var="files" value="${compositionForm.map.assoc.files}" />
 						<c:set var="editFile" value="true" />
+						<c:set var="downloadAction" value="composition"/>
 						<%@ include file="../bodyFileEdit.jsp"%>
 					</c:if>
 				</td>
@@ -197,12 +198,16 @@
 			</tr>
 		</table> </a>
 	<br>
-    <html:hidden property="sampleId" value="${param.sampleId}" />   
+    <html:hidden property="sampleId" value="${param.sampleId}" />
 	<c:set var="updateId" value="${compositionForm.map.assoc.domainAssociation.id}"/>
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
 	<c:set var="deleteOnclick" value="deleteData('chemical association', compositionForm, 'chemicalAssociation', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>
+	<c:set var="showDelete" value="false"/>
+	<c:if test="${theSample.userDeletable}">
+	   <c:set var="showDelete" value="true"/>
+	</c:if>
 	<%@include file="../../bodySubmitButtons.jsp"%>
 </html:form>

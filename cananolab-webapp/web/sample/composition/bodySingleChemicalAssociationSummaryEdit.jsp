@@ -97,6 +97,7 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 				<c:when test="${! empty assoc.files}">
 					<c:set var="files" value="${assoc.files }" />
 					<c:set var="entityType" value="chemical association" />
+					<c:set var="downloadAction" value="composition"/>
 					<%@include file="../bodyFileView.jsp"%>
 				</c:when>
 				<c:otherwise>
