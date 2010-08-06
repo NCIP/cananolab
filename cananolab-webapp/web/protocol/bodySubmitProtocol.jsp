@@ -99,7 +99,7 @@
 				<span id="protocolFileLink"> <c:if
 						test="${!empty protocolForm.map.protocol.fileBean.domainFile.uri }">&nbsp;&nbsp;
 									<a
-							href="searchProtocol.do?dispatch=download&amp;fileId=${protocolForm.map.protocol.fileBean.domainFile.id}">
+							href="protocol.do?dispatch=download&amp;fileId=${protocolForm.map.protocol.fileBean.domainFile.id}">
 							${protocolForm.map.protocol.fileBean.domainFile.uri }</a>
 					</c:if> </span>&nbsp;
 			</td>
