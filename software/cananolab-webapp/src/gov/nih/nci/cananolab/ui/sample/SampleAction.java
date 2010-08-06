@@ -532,6 +532,9 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
+		if(securityService == null){
+			securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME);
+		}
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
