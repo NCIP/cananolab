@@ -11,7 +11,7 @@ function setTheCollaborationGroup(groupId) {
 	document.getElementById("")
 	openSubmissionForm("CollaborationGroup");
 	// Feature request [26487] Deeper Edit Links.
-	window.setTimeout("openOneUserAccess()", 500);
+	// window.setTimeout("openOneUserAccess()", 500);
 }
 // Populate user submission form and auto open it for user.
 function openOneUserAccess() {
@@ -30,24 +30,23 @@ function populateCollaborationGroup(group) {
 			dwr.util.setValue("groupName", group.name);
 			dwr.util.setValue("groupDescription", group.description);
 			dwr.util.setValue("groupId", group.id);
-			if (group.ownerName!=null) {
+			if (group.ownerName != null) {
 				show("userSection");
 				show("userLabel");
-			}
-			else {
+			} else {
 				hide("userSection");
 				hide("userLabel");
 			}
 		}
 		// clear the cache for each new collaborationGroup
 		userAccessCache = {};
-		populateUserAccesses();
+		populateUserAccesses(group.ownerName);
 	} else {
 		sessionTimeout();
 	}
 }
 // Populate the user access table inside collaboration group form.
-function populateUserAccesses() {
+function populateUserAccesses(groupOwner) {
 	var userAccesses = currentGroup.userAccessibilities;
 	dwr.util.removeAllRows("userRows", {
 		filter : function(tr) {
@@ -55,11 +54,6 @@ function populateUserAccesses() {
 		}
 	});
 	var userAccess, id;
-	if (userAccesses.length > 0) {
-		show("userTable");
-	} else {
-		hide("userTable");
-	}
 	for ( var i = 0; i < userAccesses.length; i++) {
 		userAccess = userAccesses[i];
 		id = userAccess.userBean.loginName;
@@ -74,6 +68,18 @@ function populateUserAccesses() {
 			numberOfUserAccesses++;
 		}
 		userAccessCache[id] = userAccess;
+		//hide edit link
+		if (userAccess.userBean.loginName==groupOwner) {
+			hide("edit"+id);
+		}
+		else {
+			show("edit"+id);
+		}
+	}
+	if (userAccesses.length > 0) {
+		show("userTable");
+	} else {
+		hide("userTable");
 	}
 	closeSubmissionForm('User');
 }
@@ -112,7 +118,7 @@ function addUserAccess() {
 			}
 			currentGroup = group;
 		});
-		window.setTimeout("populateUserAccesses()", 200);
+		window.setTimeout("populateUserAccesses('"+currentGroup.ownerName+"')", 200);
 		return true;
 	} else {
 		alert("Please fill in both fields.");
@@ -166,7 +172,8 @@ function showMatchedUserDropdown() {
 	var loginName = dwr.util.getValue("userBean.loginName");
 	CollaborationGroupManager.getMatchedUsers(loginName, function(data) {
 		dwr.util.removeAllOptions("matchedUserNameSelect");
-		dwr.util.addOptions("matchedUserNameSelect", data, "loginName", "fullName");
+		dwr.util.addOptions("matchedUserNameSelect", data, "loginName",
+				"fullName");
 		dwr.util.setValue("matchedUserNameSelect", selected);
 		hide("loaderImg");
 		show("matchedUserNameSelect");
@@ -180,7 +187,6 @@ function updateUserLoginName() {
 	hide("matchedUserNameSelect");
 	hide("cancelBrowse");
 }
-
 
 function cancelBrowseSelect() {
 	hide("matchedUserNameSelect");
