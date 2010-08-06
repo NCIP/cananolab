@@ -285,4 +285,12 @@ public class CompositionAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}
+
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		CompositionService service = (CompositionService) (request.getSession()
+				.getAttribute("compositionService"));
+		return downloadFile(service, mapping, form, request, response);
+	}
 }
