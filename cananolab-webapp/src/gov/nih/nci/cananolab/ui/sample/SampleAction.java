@@ -461,6 +461,17 @@ public class SampleAction extends BaseAnnotationAction {
 				.generateDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
+		
+		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
+		.getSession().getAttribute("dataAvailabilityMapPerPage");
+
+		if (dataAvailabilityMapPerPage != null) {
+			dataAvailabilityMapPerPage.remove(sampleBean.getDomain().getId().toString());
+			dataAvailabilityMapPerPage.put(sampleBean.getDomain().getId().toString(), dataAvailability);
+			
+			request.getSession().setAttribute("dataAvailabilityMapPerPage", dataAvailabilityMapPerPage);
+		}
+
 		return mapping.findForward("summaryEdit");
 	}
 
