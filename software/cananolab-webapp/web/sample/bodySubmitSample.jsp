@@ -152,7 +152,7 @@
 		<c:set var="validate" value="true" />
 	</c:if>
 	<c:set var="showDelete" value="false"/>
-	<c:if test="${sampleForm.map.sampleBean.userDeletable}">
+	<c:if test="${sampleForm.map.sampleBean.userDeletable && !empty updateId}">
 	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>

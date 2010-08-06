@@ -90,7 +90,7 @@
 		<c:set var="validate" value="true" />
 	</c:if>
 	<c:set var="showDelete" value="false"/>
-	<c:if test="${theSample.userDeletable}">
+	<c:if test="${theSample.userDeletable && !empty updateId}">
 	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../../bodySubmitButtons.jsp"%>

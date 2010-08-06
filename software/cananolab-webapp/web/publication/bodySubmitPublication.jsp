@@ -470,7 +470,7 @@
 		<c:set var="validate" value="true" />
 	</c:if>
 	<c:set var="showDelete" value="false"/>
-	<c:if test="${publicationForm.map.publication.userDeletable}">
+	<c:if test="${publicationForm.map.publication.userDeletable && param.publicationId}">
 	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
