@@ -73,8 +73,9 @@ function setTheFunction(funcId) {
 	numberOfTargets = 0;
 	FunctionalizingEntityManager.getFunctionById(funcId, populateFunction);
 	openSubmissionForm("Function");
+	disableOuterButtons();
 	show("deleteFunction");
-	
+
 	// Feature request [26487] Deeper Edit Links.
 	window.setTimeout("openOneTarget()", 200);
 }
