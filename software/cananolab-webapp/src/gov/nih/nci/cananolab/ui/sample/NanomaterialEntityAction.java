@@ -109,11 +109,11 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Boolean newEntity=true;
-		if (entityBean.getDomainEntity().getId()!=null) {
-			newEntity=false;
-		}
 		try {
 			entityBean.setupDomainEntity(user.getLoginName());
+			if (entityBean.getDomainEntity().getId()!=null) {
+				newEntity=false;
+			}
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
@@ -342,7 +342,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.assignFileAccessibility(entity.getDomainEntity()
+		compService.assignAccessibility(entity.getDomainEntity()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
@@ -365,7 +365,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.removeFileAccessibility(entity.getDomainEntity()
+		compService.removeAccessibility(entity.getDomainEntity()
 				.getSampleComposition(), theFile.getDomainFile());
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);

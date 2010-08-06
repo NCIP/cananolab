@@ -125,12 +125,12 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Boolean newAssoc=true;
-		if (assocBean.getDomainAssociation().getId()!=null) {
-			newAssoc=false;
-		}
+		Boolean newAssoc = true;
 		try {
 			assocBean.setupDomainAssociation(user.getLoginName());
+			if (assocBean.getDomainAssociation().getId() != null) {
+				newAssoc = false;
+			}
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
@@ -397,7 +397,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.assignFileAccessibility(assoc.getDomainAssociation()
+		compService.assignAccessibility(assoc.getDomainAssociation()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
@@ -423,7 +423,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.removeFileAccessibility(assoc.getDomainAssociation()
+		compService.removeAccessibility(assoc.getDomainAssociation()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		this.checkOpenForms(assoc, request);
