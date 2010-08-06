@@ -138,7 +138,7 @@
 		<td colspan="3">
 			<div id="functionSection" style="position: relative;">
 				<a style="display: block" id="addInherentFunction"
-					href="javascript:confirmAddNew('InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a>
+					href="javascript:confirmAddNew(null, 'InherentFunction', 'Inherent Function', 'clearInherentFunction()');">Add</a>
 				<br>
 				<table id="functionTable" class="editTableWithGrid" width="85%"
 					style="display: none;">
@@ -253,7 +253,7 @@
 	</tr>
 	<tr>
 		<td>
-			<c:if test="${!empty user && user.curator && user.admin}">
+			<c:if test="${theSample.userDeletable eq 'true'}">
 				<input type="button" value="Remove"
 					onclick="removeComposingElement('nanomaterialEntity')"
 					id="deleteComposingElement" style="display: none;" />
@@ -264,7 +264,7 @@
 				<input type="button" value="Save"
 					onclick="addComposingElement('nanomaterialEntity')" />
 				<input type="button" value="Cancel"
-					onclick="clearComposingElement();closeSubmissionForm('ComposingElement');" />
+					onclick="clearComposingElement();closeSubmissionForm('ComposingElement');enableOuterButtons();" />
 			</div>
 		</td>
 	</tr>
