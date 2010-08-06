@@ -129,9 +129,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		compService.saveNanomaterialEntity(sampleBean, entityBean);
-
-		// save accessibility based on sample accessibility
-		compService.assignAccessibility(entityBean.getDomainEntity());
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
@@ -269,6 +266,12 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		entity.addComposingElement(composingElement);
 		// save nanomaterial entity
 		this.saveEntity(request, theForm, entity);
+
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.assignAccessibility(composingElement.getDomain());
+
 		// return to setupUpdate to retrieve the correct entity from database
 		// after saving to database.
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
@@ -293,6 +296,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		}
 		entity.removeComposingElement(composingElement);
 		this.saveEntity(request, theForm, entity);
+		compService.removeAccessibility(entity.getDomainEntity(),
+				composingElement.getDomain());
 		this.checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}
@@ -318,6 +323,12 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 		// save nanomaterial entity to save file because inverse="false"
 		this.saveEntity(request, theForm, entity);
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.assignFileAccessibility(entity.getDomainEntity()
+				.getSampleComposition(), theFile.getDomainFile());
+
 		request.setAttribute("anchor", "file");
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
@@ -335,6 +346,11 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		entity.setTheFile(new FileBean());
 		// save nanomaterial entity
 		this.saveEntity(request, theForm, entity);
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.removeFileAccessibility(entity.getDomainEntity()
+				.getSampleComposition(), theFile.getDomainFile());
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
@@ -352,8 +368,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteNanomaterialEntity(entityBean
 				.getDomainEntity());
-		// TODO remove accessibility
-
+		compositionService.removeAccessibility(entityBean.getDomainEntity());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteNanomaterialEntity");
@@ -458,4 +473,13 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("sampleService", sampleService);
 		return compService;
 	}
+
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		CompositionService service = (CompositionService) (request.getSession()
+				.getAttribute("compositionService"));
+		return downloadFile(service, mapping, form, request, response);
+	}
+
 }
