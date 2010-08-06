@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -16,11 +17,16 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -32,7 +38,14 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
+import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,11 +56,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 
 public class BaseServiceLocalImpl implements BaseService {
 	protected SecurityService securityService;
 	protected Logger logger = Logger.getLogger(BaseServiceLocalImpl.class);
 	protected AccessibilityUtils accessUtils;
+	protected FileUtils fileUtils;
 	protected UserBean user;
 
 	public BaseServiceLocalImpl() {
@@ -55,6 +72,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			securityService = new SecurityService(
 					AccessibilityBean.CSM_APP_NAME);
 			accessUtils = new AccessibilityUtils();
+			fileUtils = new FileUtils();
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
 		}
@@ -66,6 +84,7 @@ public class BaseServiceLocalImpl implements BaseService {
 					AccessibilityBean.CSM_APP_NAME, user);
 			this.user = securityService.getUserBean();
 			accessUtils = new AccessibilityUtils();
+			fileUtils = new FileUtils();
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
 		}
@@ -81,6 +100,7 @@ public class BaseServiceLocalImpl implements BaseService {
 						AccessibilityBean.CSM_APP_NAME);
 			}
 			accessUtils = new AccessibilityUtils();
+			fileUtils = new FileUtils();
 		} catch (Exception e) {
 			logger.error("Can't create authorization service: " + e);
 		}
@@ -247,24 +267,40 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
-	protected void saveDefaultAccessibility(String protectedData)
+	protected void saveDefaultAccessibilities(String protectedData)
 			throws SecurityException, NoAccessException {
-		for (AccessibilityBean access : this.getDefaultAccesses()) {
-			this.saveAccessibility(access, protectedData);
+		this.saveAccessibility(AccessibilityBean.CSM_DEFAULT_ACCESS,
+				protectedData);
+		this.saveOwnerAccessibility(protectedData);
+	}
+
+	protected void saveOwnerAccessibility(String protectedData)
+			throws SecurityException, NoAccessException {
+		AccessibilityBean ownerAccess = this.getOwnerAccess();
+		if (ownerAccess != null) {
+			this.saveAccessibility(ownerAccess, protectedData);
 		}
 	}
 
 	protected List<AccessibilityBean> getDefaultAccesses() {
 		List<AccessibilityBean> defaultAccesses = new ArrayList<AccessibilityBean>();
 		defaultAccesses.add(AccessibilityBean.CSM_DEFAULT_ACCESS);
+		AccessibilityBean ownerAccess = getOwnerAccess();
+		if (ownerAccess != null) {
+			defaultAccesses.add(ownerAccess);
+		}
+		return defaultAccesses;
+	}
+
+	protected AccessibilityBean getOwnerAccess() {
+		AccessibilityBean userAccess = null;
 		if (!user.isCurator()) {
-			AccessibilityBean userAccess = new AccessibilityBean();
+			userAccess = new AccessibilityBean();
 			userAccess.setUserBean(user);
 			userAccess.setRoleName(AccessibilityBean.CSM_CURD_ROLE);
 			userAccess.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
-			defaultAccesses.add(userAccess);
 		}
-		return defaultAccesses;
+		return userAccess;
 	}
 
 	protected void deleteAccessibility(AccessibilityBean access,
@@ -457,12 +493,30 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
-	public List<AccessibilityBean> findSampleAccesses(String sampleId)
+	protected List<AccessibilityBean> findSampleAccesses(String sampleId)
 			throws Exception {
 		List<AccessibilityBean> accesses = new ArrayList<AccessibilityBean>();
 		accesses.addAll(this.findGroupAccessibilities(sampleId));
 		accesses.addAll(this.findUserAccessibilities(sampleId));
 		return accesses;
+	}
+
+	public FileBean findFileById(String fileId) throws FileException,
+			NoAccessException {
+		FileBean fileBean = null;
+		try {
+			if (!securityService.checkReadPermission(fileId)) {
+				throw new NoAccessException("No access to the file");
+			}
+			File file = fileUtils.findFileById(fileId);
+			fileBean = new FileBean(file);
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error finding the file by the given ID.";
+			throw new FileException(error, e);
+		}
+		return fileBean;
 	}
 
 	/**
@@ -585,26 +639,48 @@ public class BaseServiceLocalImpl implements BaseService {
 						.getComposingElementCollection();
 				if (composingElementCollection != null) {
 					for (ComposingElement composingElement : composingElementCollection) {
-						if (composingElement != null) {
-							saveAccessibility(access, composingElement.getId()
-									.toString());
-						}
-						// composingElementCollection.inherentFucntionCollection
-						Collection<Function> inherentFunctionCollection = composingElement
-								.getInherentFunctionCollection();
-						if (inherentFunctionCollection != null) {
-							for (Function function : inherentFunctionCollection) {
-								if (function != null) {
-									saveAccessibility(access, function.getId()
-											.toString());
-								}
-							}
-						}
+						this.assignAccessibility(access, composingElement);
 					}
 				}
 				if (entity.getFileCollection() != null) {
 					for (File file : entity.getFileCollection()) {
 						saveAccessibility(access, file.getId().toString());
+					}
+				}
+			}
+		}
+
+		public void assignAccessibility(AccessibilityBean access,
+				ComposingElement composingElement) throws Exception {
+			if (composingElement != null) {
+				saveAccessibility(access, composingElement.getId().toString());
+
+				// composingElementCollection.inherentFucntionCollection
+				Collection<Function> inherentFunctionCollection = composingElement
+						.getInherentFunctionCollection();
+				if (inherentFunctionCollection != null) {
+					for (Function function : inherentFunctionCollection) {
+						if (function != null) {
+							saveAccessibility(access, function.getId()
+									.toString());
+						}
+					}
+				}
+			}
+		}
+
+		public void removeAccessibility(AccessibilityBean access,
+				ComposingElement composingElement) throws Exception {
+			if (composingElement != null) {
+				deleteAccessibility(access, composingElement.getId().toString());
+			}
+			// composingElementCollection.inherentFucntionCollection
+			Collection<Function> inherentFunctionCollection = composingElement
+					.getInherentFunctionCollection();
+			if (inherentFunctionCollection != null) {
+				for (Function function : inherentFunctionCollection) {
+					if (function != null) {
+						deleteAccessibility(access, function.getId().toString());
 					}
 				}
 			}
@@ -679,6 +755,19 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
+		public void assignAccessibility(AccessibilityBean access,
+				Function function) throws Exception {
+			if (function != null) {
+				saveAccessibility(access, function.getId().toString());
+				if (function instanceof TargetingFunction) {
+					for (Target target : ((TargetingFunction) function)
+							.getTargetCollection()) {
+						saveAccessibility(access, target.getId().toString());
+					}
+				}
+			}
+		}
+
 		public void removeAccessibility(AccessibilityBean access,
 				FunctionalizingEntity functionalizingEntity) throws Exception {
 			if (functionalizingEntity != null) {
@@ -714,6 +803,19 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
+		public void removeAccessibility(AccessibilityBean access,
+				Function function) throws Exception {
+			if (function != null) {
+				deleteAccessibility(access, function.getId().toString());
+				if (function instanceof TargetingFunction) {
+					for (Target target : ((TargetingFunction) function)
+							.getTargetCollection()) {
+						deleteAccessibility(access, target.getId().toString());
+					}
+				}
+			}
+		}
+
 		public void assignAccessibility(AccessibilityBean access,
 				ChemicalAssociation assoc) throws Exception {
 			if (assoc != null) {
@@ -738,7 +840,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		private void assignAccessibility(AccessibilityBean access,
+		public void assignAccessibility(AccessibilityBean access,
 				Finding finding) throws Exception {
 			saveAccessibility(access, finding.getId().toString());
 			// files
@@ -767,7 +869,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		private void removeAccessibility(AccessibilityBean access,
+		public void removeAccessibility(AccessibilityBean access,
 				Finding finding) throws Exception {
 			deleteAccessibility(access, finding.getId().toString());
 
@@ -794,7 +896,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		private void assignAccessibility(AccessibilityBean access,
+		public void assignAccessibility(AccessibilityBean access,
 				ExperimentConfig config) throws Exception {
 			saveAccessibility(access, config.getId().toString());
 			// assign instruments and technique to public visibility
@@ -810,7 +912,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		private void removeAccessibility(AccessibilityBean access,
+		public void removeAccessibility(AccessibilityBean access,
 				ExperimentConfig config) throws Exception {
 			deleteAccessibility(access, config.getId().toString());
 			deleteAccessibility(access, config.getTechnique().getId()
@@ -1109,6 +1211,191 @@ public class BaseServiceLocalImpl implements BaseService {
 			} catch (Exception e) {
 				logger.error("Error in assigning an owner", e);
 				throw new SecurityException();
+			}
+		}
+	}
+
+	protected class FileUtils {
+
+		private FileUtils() {
+
+		}
+
+		/**
+		 * Load the file for the given fileId from the database
+		 *
+		 * @param fileId
+		 * @return
+		 */
+		public File findFileById(String fileId) throws Exception {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
+					Property.forName("id").eq(new Long(fileId)));
+			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+			List result = appService.query(crit);
+			File file = null;
+			if (!result.isEmpty()) {
+				file = (File) result.get(0);
+			}
+			return file;
+		}
+
+		/**
+		 * Get the content of the file into a byte array.
+		 *
+		 * @param fileId
+		 * @return
+		 * @throws FileException
+		 */
+		public byte[] getFileContent(Long fileId) throws Exception {
+			File file = findFileById(fileId.toString());
+			if (file == null || file.getUri() == null) {
+				return null;
+			}
+			// check if the file is external link
+			if (file.getUri().startsWith("http")) {
+				return null;
+			}
+			String fileRoot = PropertyUtils.getProperty(
+					Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+
+			java.io.File fileObj = new java.io.File(fileRoot
+					+ java.io.File.separator + file.getUri());
+			long fileLength = fileObj.length();
+
+			// You cannot create an array using a long type.
+			// It needs to be an int type.
+			// Before converting to an int type, check
+			// to ensure that file is not larger than Integer.MAX_VALUE.
+			if (fileLength > Integer.MAX_VALUE) {
+				logger
+						.error("The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
+				throw new FileException(
+						"The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
+			}
+
+			// Create the byte array to hold the data
+			byte[] fileData = new byte[(int) fileLength];
+
+			// Read in the bytes
+			InputStream is = new FileInputStream(fileObj);
+			int offset = 0;
+			int numRead = 0;
+			while (offset < fileData.length
+					&& (numRead = is.read(fileData, offset, fileData.length
+							- offset)) >= 0) {
+				offset += numRead;
+			}
+
+			// Ensure all the bytes have been read in
+			if (offset < fileData.length) {
+				throw new FileException("Could not completely read file "
+						+ fileObj.getName());
+			}
+
+			// Close the input stream and return bytes
+			is.close();
+
+			return fileData;
+		}
+
+		private void writeFile(byte[] fileContent, String fullFileName)
+				throws IOException {
+			String path = fullFileName.substring(0, fullFileName
+					.lastIndexOf("/"));
+			java.io.File pathDir = new java.io.File(path);
+			if (!pathDir.exists())
+				pathDir.mkdirs();
+			java.io.File file = new java.io.File(fullFileName);
+			if (file.exists()) {
+				return; // don't save again
+			}
+			OutputStream oStream = null;
+			try {
+				oStream = new BufferedOutputStream(new FileOutputStream(file));
+				oStream.write(fileContent);
+				oStream.flush();
+			} finally {
+				if (oStream != null) {
+					try {
+						oStream.close();
+					} catch (Exception e) {
+					}
+				}
+			}
+		}
+
+		// save to the file system if fileData is not empty
+		public void writeFile(FileBean fileBean) throws Exception {
+			if (fileBean.getNewFileData() != null) {
+				String rootPath = PropertyUtils.getProperty(
+						Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+				String fullFileName = rootPath + "/"
+						+ fileBean.getDomainFile().getUri();
+				writeFile(fileBean.getNewFileData(), fullFileName);
+			}
+		}
+
+		/**
+		 * Preparing keywords and other information prior to saving a file
+		 *
+		 * @param file
+		 * @throws FileException
+		 */
+		public void prepareSaveFile(File file) throws Exception {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			if (file.getId() != null) {
+				File dbFile = (File) appService.get(File.class, file.getId());
+				if (dbFile != null) {
+					// use original createdBy if it is not COPY
+					if (!dbFile.getCreatedBy().equals(
+							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						file.setCreatedBy(dbFile.getCreatedBy());
+					}
+					// use original createdDate
+					file.setCreatedDate(dbFile.getCreatedDate());
+				} else {
+					String err = "Object doesn't exist in the database anymore.  Please log in again.";
+					logger.error(err);
+					throw new FileException(err);
+				}
+			}
+			if (file.getKeywordCollection() != null) {
+				Collection<Keyword> keywords = new HashSet<Keyword>(file
+						.getKeywordCollection());
+				file.getKeywordCollection().clear();
+				for (Keyword keyword : keywords) {
+					Keyword dbKeyword = (Keyword) appService.getObject(
+							Keyword.class, "name", keyword.getName());
+					if (dbKeyword != null) {
+						keyword.setId(dbKeyword.getId());
+					} else {
+						keyword.setId(null);
+					}
+					appService.saveOrUpdate(keyword);
+					file.getKeywordCollection().add(keyword);
+				}
+			}
+		}
+
+		// update cloned file with existing visibility and file content, and new
+		// file path
+		public void updateClonedFileInfo(FileBean copy, String origSampleName,
+				String newSampleName) throws Exception {
+			// copy file content obtain original id from created by
+			String origId = copy.getDomainFile().getCreatedBy().substring(5);
+			if (origId != null) {
+				byte[] content = this.getFileContent(new Long(origId));
+				copy.setNewFileData(content);
+			}
+			// replace file URI with new sample name
+			if (copy.getDomainFile().getUri() != null) {
+				String newUri = copy.getDomainFile().getUri().replace(
+						origSampleName, newSampleName);
+				copy.getDomainFile().setUri(newUri);
 			}
 		}
 	}
