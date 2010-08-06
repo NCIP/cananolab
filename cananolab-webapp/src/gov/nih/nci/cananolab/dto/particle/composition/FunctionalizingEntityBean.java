@@ -293,6 +293,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		for (FunctionBean functionBean : functions) {
 			domainEntity.getFunctionCollection().add(
 					functionBean.getDomainFunction());
+			functionBean.getDomainFunction().setFunctionalizingEntity(
+					domainEntity);
 		}
 		if (domainEntity.getFileCollection() != null) {
 			domainEntity.getFileCollection().clear();
@@ -453,8 +455,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	public String getPubChemLink() {
 		if (!StringUtils.isEmpty(pubChemId)
 				&& !StringUtils.isEmpty(pubChemDataSourceName)) {
-			pubChemLink = CompositionBean.getPubChemURL(
-					pubChemDataSourceName, new Long(pubChemId));
+			pubChemLink = CompositionBean.getPubChemURL(pubChemDataSourceName,
+					new Long(pubChemId));
 		}
 		return pubChemLink;
 	}
