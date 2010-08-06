@@ -1381,8 +1381,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		// update cloned file with existing visibility and file content, and new
-		// file path
+		// update cloned file with file content and new file path
 		public void updateClonedFileInfo(FileBean copy, String origSampleName,
 				String newSampleName) throws Exception {
 			// copy file content obtain original id from created by

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -124,6 +125,10 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		Boolean newAssoc=true;
+		if (assocBean.getDomainAssociation().getId()!=null) {
+			newAssoc=false;
+		}
 		try {
 			assocBean.setupDomainAssociation(user.getLoginName());
 		} catch (ClassCastException ex) {
@@ -145,7 +150,17 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		compService.saveChemicalAssociation(sampleBean, assocBean);
-
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newAssoc && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		}
 		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
 				.getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(

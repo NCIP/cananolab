@@ -230,11 +230,25 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		charBean.setupDomain(user.getLoginName());
+		Boolean newChar = true;
+		if (charBean.getDomainChar().getId() != null) {
+			newChar = false;
+		}
 		// reuse the existing char service
 		CharacterizationService charService = (CharacterizationService) request
 				.getSession().getAttribute("characterizationService");
 		charService.saveCharacterization(sampleBean, charBean);
-
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newChar && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		}
 		// save accessibility based on sample accesses
 		charService.assignAccesses(charBean.getDomainChar());
 		// save to other samples (only when user click [Submit] button.)

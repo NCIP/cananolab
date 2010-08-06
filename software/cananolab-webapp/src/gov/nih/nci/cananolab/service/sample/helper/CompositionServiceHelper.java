@@ -124,6 +124,10 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 
 	public SampleComposition findCompositionBySampleId(String sampleId)
 			throws Exception {
+		if (!getAccessibleData().contains(sampleId)) {
+			new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
 		SampleComposition composition = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider

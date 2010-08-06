@@ -587,7 +587,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				try {
 					NanomaterialEntity copy = entityBean.getDomainCopy();
 					copyBean = new NanomaterialEntityBean(copy);
-					// copy file visibility and file content
+					// copy file file content
 					for (FileBean fileBean : copyBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean, oldSampleBean
 								.getDomain().getName(), sampleBean.getDomain()
