@@ -255,14 +255,14 @@
 		<td>
 			<c:if test="${theSample.userDeletable eq 'true'}">
 				<input type="button" value="Remove"
-					onclick="removeComposingElement('nanomaterialEntity')"
+					onclick="removeComposingElement('${validate}', 'nanomaterialEntity')"
 					id="deleteComposingElement" style="display: none;" />
 			</c:if>
 		</td>
 		<td colspan="3">
 			<div align="right">
 				<input type="button" value="Save"
-					onclick="addComposingElement('nanomaterialEntity')" />
+					onclick="addComposingElement('${validate}', 'nanomaterialEntity');" />
 				<input type="button" value="Cancel"
 					onclick="clearComposingElement();closeSubmissionForm('ComposingElement');enableOuterButtons();" />
 			</div>

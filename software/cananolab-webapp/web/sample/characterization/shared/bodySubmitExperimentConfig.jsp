@@ -167,13 +167,13 @@
 			<c:if test="${theSample.userDeletable eq 'true'}">
 				<input style="display: none;" id="deleteExperimentConfig"
 					type="button" value="Remove"
-					onclick="javascript:deleteTheExperimentConfig()">
+					onclick="javascript:deleteTheExperimentConfig('${validate}')">
 			</c:if>
 		</td>
 		<td align="right">
 			<div align="right">
 				<input type="button" value="Save"
-					onclick="javascript:validateSaveConfig('characterization');">
+					onclick="javascript:validateSaveConfig('${validate}', 'characterization');">
 				<input type="reset" value="Cancel"
 					onclick="javascript:clearExperimentConfig();closeSubmissionForm('ExperimentConfig'); enableOuterButtons();">
 			</div>

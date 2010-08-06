@@ -14,7 +14,8 @@
 <c:set var="fileParent" value="comp" />
 <c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="${sampleName} Sample Composition - Composition File" />
+	<jsp:param name="pageTitle"
+		value="${sampleName} Sample Composition - Composition File" />
 	<jsp:param name="topic" value="compo_file_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -25,16 +26,23 @@
 	<c:set var="actionName" value="compositionFile" />
 	<%@include file="../bodySubmitFile.jsp"%>
 	<br>
-    <html:hidden property="sampleId" value="${param.sampleId}" />
-	<c:set var="updateId" value="${compositionForm.map.comp.theFile.domainFile.id}"/>
-	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
-	<c:set var="deleteOnclick" value="deleteData('composition file', compositionForm, 'compositionFile', 'delete')"/>
-	<c:set var="deleteButtonName" value="Delete"/>
-	<c:set var="hiddenDispatch" value="create"/>
-	<c:set var="hiddenPage" value="2"/>
-	<c:set var="showDelete" value="false"/>
+	<html:hidden property="sampleId" value="${param.sampleId}" />
+	<c:set var="updateId"
+		value="${compositionForm.map.comp.theFile.domainFile.id}" />
+	<c:set var="resetOnclick"
+		value="this.form.reset();displayFileRadioButton();" />
+	<c:set var="deleteOnclick"
+		value="deleteData('composition file', compositionForm, 'compositionFile', 'delete')" />
+	<c:set var="deleteButtonName" value="Delete" />
+	<c:set var="hiddenDispatch" value="create" />
+	<c:set var="hiddenPage" value="2" />
+	<c:set var="showDelete" value="false" />
 	<c:if test="${theSample.userDeletable && !empty updateId}">
-	   <c:set var="showDelete" value="true"/>
+		<c:set var="showDelete" value="true" />
+	</c:if>
+	<c:set var="validate" value="false" />
+	<c:if test="${!user.curator && theSample.publicStatus}">
+		<c:set var="validate" value="true" />
 	</c:if>
 	<%@include file="../../bodySubmitButtons.jsp"%>
 </html:form>
