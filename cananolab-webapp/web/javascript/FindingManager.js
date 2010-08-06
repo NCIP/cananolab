@@ -98,21 +98,27 @@ function setTheFinding(form, actionName, findingId) {
 			+ "&page=0";
 	form.submit();
 }
-function saveFinding(actionName) {
-	var fileDiv = document.getElementById('newFile');
-	if (fileDiv != null) {
-		var displayStatus = fileDiv.style.display;
-		if (displayStatus == 'block') {
-			alert("Please click on either the Save button or the Cancel button in the File form.");
-			return false;
-		} else {
-			if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo() &&
-				validateSavingTheData('newExperimentConfig', 'Technique and Instrument')
-				) {
-			    submitAction(document.forms[0], actionName, "saveFinding", 4);
-				return true;
-			} else {
+function saveFinding(publicRetract, actionName) {
+	var validateRetract = true;
+	if (publicRetract == "true") {
+		validateRetract = confirmPublicDataUpdate();
+	}
+	if (validateRetract) {
+		var fileDiv = document.getElementById('newFile');
+		if (fileDiv != null) {
+			var displayStatus = fileDiv.style.display;
+			if (displayStatus == 'block') {
+				alert("Please click on either the Save button or the Cancel button in the File form.");
 				return false;
+			} else {
+				if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo() &&
+					validateSavingTheData('newExperimentConfig', 'Technique and Instrument')
+					) {
+				    submitAction(document.forms[0], actionName, "saveFinding", 4);
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 	}
@@ -189,11 +195,17 @@ function validateMatrix() {
 	}
 	return true;
 }
-function deleteTheFinding(form) {
-	var answer = confirmDelete("finding");
-	if (answer != 0) {
-		form.action = "characterization.do?dispatch=deleteFinding&page=2";
-		form.submit();
+function deleteTheFinding(publicRetract, form) {
+	var validateRetract = true;
+	if (publicRetract == "true") {
+		validateRetract = confirmPublicDataUpdate();
+	}
+	if (validateRetract) {
+		var answer = confirmDelete("finding");
+		if (answer != 0) {
+			form.action = "characterization.do?dispatch=deleteFinding&page=2";
+			form.submit();
+		}
 	}
 }
 function updateMatrix(form) {
@@ -343,7 +355,7 @@ function clearFile() {
 	dwr.util.setValue("uploadedFile", "");
 	dwr.util.setValue("externalUrl", "");
 
-	//FR# [26487], Must reset hidden file field for new file.
+	// FR# [26487], Must reset hidden file field for new file.
 	dwr.util.setValue("hiddenFileId", "");
 	dwr.util.setValue("hiddenFileUri", "");
 	dwr.util.setValue("hiddenFileIndex", -1);
@@ -358,7 +370,7 @@ function setTheFile(index) {
 /* end of set submit file form */
 
 /** FR# 26194, matrix column order. */
-//"Set Column Order" link on 'bodySubmitFinding.jsp'.
+// "Set Column Order" link on 'bodySubmitFinding.jsp'.
 function setColumnOrder() {
 	var colNum = dwr.util.getValue("colNum");
 	if (colNum > 1) {
@@ -372,7 +384,7 @@ function setColumnOrder() {
 		show('newColumnOrder');
 	}
 }
-//"Save" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
+// "Save" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
 function updateColumnOrder(form) {
 	var colNum = dwr.util.getValue("colNum");
 	if (colNum > 1) {
