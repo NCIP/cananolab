@@ -174,6 +174,7 @@
 				<c:when test="${! empty functionalizingEntity.files}">
 					<c:set var="files" value="${functionalizingEntity.files }" />
 					<c:set var="entityType" value="functionalizing entity" />
+					<c:set var="downloadAction" value="composition"/>
 					<%@include file="../../bodyFileView.jsp"%>
 				</c:when>
 				<c:otherwise>

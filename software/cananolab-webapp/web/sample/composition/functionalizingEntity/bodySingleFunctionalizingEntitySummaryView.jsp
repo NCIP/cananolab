@@ -131,6 +131,7 @@
 			<td>
 				<c:set var="files" value="${functionalizingEntity.files }" />
 				<c:set var="entityType" value="functionalizing entity" />
+				<c:set var="downloadAction" value="composition"/>
 				<%@include file="../../bodyFileView.jsp"%>
 			</td>
 		</tr>
