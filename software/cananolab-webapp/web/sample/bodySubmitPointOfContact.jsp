@@ -189,7 +189,7 @@
 			<table width="100%">
 				<tr>
 					<td>
-						<c:if test="${!empty user && user.curator && user.admin}">
+						<c:if test="${sampleForm.map.sampleBean.userDeletable eq 'true'}">
 							<input type="button" value="Remove"
 								onclick="removePointOfContact('sample')"
 								id="deletePointOfContact" style="display: none;" />
@@ -200,7 +200,7 @@
 							<input type="button" value="Save"
 								onclick="addPointOfContact('sample')" />
 							<input type="button" value="Cancel"
-								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');enableButtons(['submitButton', 'resetButton']);" />
+								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');enableOuterButtons();" />
 							<html:hidden styleId="domain.id"
 								property="sampleBean.thePOC.domain.id" />
 							<html:hidden styleId="primaryStatus"
