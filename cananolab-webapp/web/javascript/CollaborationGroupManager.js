@@ -170,7 +170,14 @@ function showMatchedUserDropdown() {
 	hide("cancelBrowse");
 	var selected = dwr.util.getValue("matchedUserNameSelect");
 	var loginName = dwr.util.getValue("userBean.loginName");
-	CollaborationGroupManager.getMatchedUsers(loginName, function(data) {
+	if (currentGroup.ownerName==null) {
+		ownerName=""
+	}
+	else {
+		ownerName=currentGroup.ownerName;
+	}
+	alert(ownerName);
+	CollaborationGroupManager.getMatchedUsers(ownerName, loginName, function(data) {
 		dwr.util.removeAllOptions("matchedUserNameSelect");
 		dwr.util.addOptions("matchedUserNameSelect", data, "loginName",
 				"fullName");
