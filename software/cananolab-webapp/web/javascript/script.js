@@ -338,38 +338,52 @@ function showSummary(layer_ref, totalLayers) {
 	printLink.href = printUrl.href;
 	exportLink.href = exportUrl.href;
 }
-function addFile(actionName, form) {
-	// for characterization form, files are saved to the session per finding,
-	// not directly
-	// to the database
-	if (actionName == "characterization") {
-		dispatch = "addFile";
-	} else {
-		dispatch = "saveFile";
-		if (actionName == "functionalizingEntity" &&
-			(!validateAmountValue() ||
-			 !validateSavingTheData('newFunction', 'function'))) {
-			return false;
-		}
-		if (actionName == "nanomaterialEntity" &&
-			(!validateTubeInfo() ||
-			!validateFullereneInfo() ||
-			!validatePolymerInfo() ||
-			!validateSavingTheData('newComposingElement', 'Composing Element')
-			)) {
-			return false;
-		}
+function addFile(publicRetract, actionName, form) {
+	var validateRetract = true;
+	if (publicRetract == "true") {
+		validateRetract = confirmPublicDataUpdate();
 	}
-	submitAction(form, actionName, dispatch, 3);
+	if (validateRetract) {
+		// for characterization form, files are saved to the session per
+		// finding,
+		// not directly
+		// to the database
+		if (actionName == "characterization") {
+			dispatch = "addFile";
+		} else {
+			dispatch = "saveFile";
+			if (actionName == "functionalizingEntity" &&
+				(!validateAmountValue() ||
+				 !validateSavingTheData('newFunction', 'function'))) {
+				return false;
+			}
+			if (actionName == "nanomaterialEntity" &&
+				(!validateTubeInfo() ||
+				!validateFullereneInfo() ||
+				!validatePolymerInfo() ||
+				!validateSavingTheData('newComposingElement', 'Composing Element')
+				)) {
+				return false;
+			}
+		}
+		submitAction(form, actionName, dispatch, 3);
+	}
 }
 function confirmDelete(type) {
 	answer = confirm("Are you sure you want to delete the " + type + "?");
 	return answer;
 }
-function removeFile(actionName, form, index) {
-	var answer = confirmDelete("file");
-	if (answer != 0) {
-		submitAction(form, actionName, "removeFile", 3);
+
+function removeFile(publicRetract, actionName, form, index) {
+	var validateRetract = true;
+	if (publicRetract == "true") {
+		validateRetract = confirmPublicDataUpdate();
+	}
+	if (validateRetract) {
+      var answer = confirmDelete("file");
+	  if (answer != 0) {
+		 submitAction(form, actionName, "removeFile", 3);
+	  }
 	}
 }
 function populateFile(file) {
@@ -506,6 +520,7 @@ function confirmPublicDataUpdate() {
 	if (confirm("The data has been assigned to Public.  Updating it would retract it from Public.  You will need to resubmit to the curator for review again before the curator reassigns it to Public.  Are you sure to continue?")) {
 		return true;
 	} else {
+		enableOuterButtons();
 		return false;
 	}
 }
