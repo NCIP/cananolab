@@ -1213,6 +1213,38 @@ public class BaseServiceLocalImpl implements BaseService {
 				throw new SecurityException();
 			}
 		}
+
+		public void removeOwner(String protectedData, String userLoginName)
+				throws SecurityException {
+			try {
+				ProtectionElement pe = securityService
+						.getProtectionElement(protectedData);
+				authManager.removeOwnerForProtectionElement(pe.getObjectId(),
+						new String[] { userLoginName });
+			} catch (Exception e) {
+				logger.error("Error in assigning an owner", e);
+				throw new SecurityException();
+			}
+		}
+
+		public List<String> getOwnerNames(String protectedData)
+				throws SecurityException {
+			List<String> ownerNames = new ArrayList<String>();
+			try {
+				ProtectionElement pe = securityService
+						.getProtectionElement(protectedData);
+				Set owners = authManager.getOwners(pe.getProtectionElementId()
+						.toString());
+				for (Object obj : owners) {
+					User user = (User) obj;
+					ownerNames.add(user.getLoginName());
+				}
+			} catch (Exception e) {
+				logger.error("Error in assigning an owner", e);
+				throw new SecurityException();
+			}
+			return ownerNames;
+		}
 	}
 
 	protected class FileUtils {
