@@ -36,7 +36,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			File 
+			File
 		</td>
 		<td>
 			<a style="display:block" id="addFile"
@@ -81,7 +81,7 @@
 	<tr>
 		<td>
 			<c:if
-				test="${not empty characterizationForm.map.achar.theFinding.domain.id}">
+				test="${theSample.userDeletable && not empty characterizationForm.map.achar.theFinding.domain.id}">
 				<input type="button" value="Remove" id="deleteFinding"
 					onclick="javascript: deleteTheFinding(characterizationForm);">
 			</c:if>
