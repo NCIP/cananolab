@@ -15,7 +15,10 @@
 	</tr>
 	<tr>
 		<td colspan="2" class="welcomeContent">
-			This is the manage community section which allows users ...
+			This is the manage community section which allows a user to manage
+			collaboration groups. In this section, a user can create, edit, or
+			delete a collaboration group and assign users to participate in the
+			collaboration group.
 			<br>
 		</td>
 	</tr>
