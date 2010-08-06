@@ -16,7 +16,7 @@
 			</c:if>
 			<a style="${addFindingButtonStyle}" id="addFinding"
 				href="javascript:resetTheFinding(characterizationForm);openSubmissionForm('Finding');"><img
-					align="top" src="images/btn_add.gif" border="0" /> </a>
+					align="top" src="images/btn_add.gif" border="0" /></a>
 		</td>
 	</tr>
 	<tr>
