@@ -35,7 +35,10 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
-
+		Boolean newFile = true;
+		if (theFile.getDomainFile().getId() != null) {
+			newFile = true;
+		}
 		CompositionService service = this.setServicesInSession(request);
 		// restore previously uploaded file from session.
 		restoreUploadedFile(request, theFile);
@@ -48,8 +51,17 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		theFile.setupDomainFile(internalUriPath, user.getLoginName());
 
 		service.saveCompositionFile(sampleBean, theFile);
-
 		ActionMessages msgs = new ActionMessages();
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newFile && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+		}
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -73,6 +85,18 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		compService.removeFileAccessibility(comp.getDomain(), fileBean
 				.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
+		// retract from public if updating an existing public record and not
+		// curator
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (!user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+		}
+
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 

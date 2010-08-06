@@ -8,6 +8,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -118,6 +119,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getSession().getAttribute("compositionService");
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		Boolean newEntity=true;
+		if (entityBean.getDomainEntity().getId()!=null) {
+			newEntity=false;
+		}
 		try {
 			entityBean.setupDomainEntity(user.getLoginName());
 		} catch (ClassCastException ex) {
@@ -137,7 +142,17 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 
 		compService.saveFunctionalizingEntity(sampleBean, entityBean);
-
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		}
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {

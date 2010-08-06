@@ -86,13 +86,49 @@
 		</property>
 	</bean>
 
+	<bean name="/nanomaterialEntity"
+		class="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/functionalizingEntity"
+		class="gov.nih.nci.cananolab.ui.sample.FunctionalizingEntityAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/compositionFile"
+		class="gov.nih.nci.cananolab.ui.sample.CompositionFileAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/chemicalAssociation"
+		class="gov.nih.nci.cananolab.ui.sample.ChemicalAssociationAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
+	<bean name="/characterization"
+		class="gov.nih.nci.cananolab.ui.sample.CharacterizationAction">
+		<property name="curationService">
+			<ref bean="curationServiceDAO" />
+		</property>
+	</bean>
+
 	<bean name="/protocol" class="gov.nih.nci.cananolab.ui.protocol.ProtocolAction">
 		<property name="curationService">
 			<ref bean="curationServiceDAO" />
 		</property>
 	</bean>
 
-	<bean name="/publication" class="gov.nih.nci.cananolab.ui.publication.PublicationAction">
+	<bean name="/publication"
+		class="gov.nih.nci.cananolab.ui.publication.PublicationAction">
 		<property name="curationService">
 			<ref bean="curationServiceDAO" />
 		</property>

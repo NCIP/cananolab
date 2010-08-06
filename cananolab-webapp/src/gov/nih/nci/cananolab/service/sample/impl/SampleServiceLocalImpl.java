@@ -315,7 +315,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleBean;
 	}
 
-	protected Sample findFullyLoadedSampleByName(String sampleName)
+	private Sample findFullyLoadedSampleByName(String sampleName)
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();

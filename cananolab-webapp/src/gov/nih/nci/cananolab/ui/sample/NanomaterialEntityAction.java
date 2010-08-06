@@ -8,6 +8,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: NanomaterialEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -107,6 +108,10 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		Boolean newEntity=true;
+		if (entityBean.getDomainEntity().getId()!=null) {
+			newEntity=false;
+		}
 		try {
 			entityBean.setupDomainEntity(user.getLoginName());
 		} catch (ClassCastException ex) {
@@ -138,6 +143,17 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				compService.copyAndSaveNanomaterialEntity(entityBean,
 						sampleBean, otherSampleBeans);
 			}
+		}
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newEntity && !user.isCurator() && sampleBean.getPublicStatus()) {
+			retractFromPublic(theForm, request, sampleBean.getDomain().getId()
+					.toString(), sampleBean.getDomain().getName(), "sample");
+			ActionMessages messages = new ActionMessages();
+			ActionMessage msg = null;
+			msg = new ActionMessage("message.updateSample.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
 		}
 	}
 
@@ -481,5 +497,4 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.getAttribute("compositionService"));
 		return downloadFile(service, mapping, form, request, response);
 	}
-
 }

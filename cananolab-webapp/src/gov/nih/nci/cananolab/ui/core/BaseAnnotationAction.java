@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -164,6 +165,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			SampleBean sampleBean = sampleService.findSampleByName(other);
 			sampleBean.setGroupAccesses(oldSampleBean.getGroupAccesses());
 			sampleBean.setUserAccesses(oldSampleBean.getUserAccesses());
+			sampleBean.setUserDeletable(oldSampleBean.getUserDeletable());
+			sampleBean.setUserUpdatable(oldSampleBean.getUserUpdatable());
+			sampleBean.setUserIsOwner(oldSampleBean.getUserIsOwner());
 			sampleBeans[i] = sampleBean;
 			i++;
 		}
@@ -444,8 +448,13 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		removePublicAccess(theForm, request);
 	}
 
+	//to be overwritten by child class if necessary
 	protected void removePublicAccess(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
+		SampleBean sample = this.setupSample(theForm, request);
+		SampleService service = (SampleService)request.getSession().getAttribute("sampleService");
+		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, sample
+				.getDomain());
 	}
 
 	public CurationService getCurationService() {
