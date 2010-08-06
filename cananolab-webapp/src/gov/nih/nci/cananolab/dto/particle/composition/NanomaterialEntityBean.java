@@ -123,8 +123,10 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			copy.setComposingElementCollection(new HashSet<ComposingElement>(
 					oldComposingElements));
 			for (ComposingElement ce : copy.getComposingElementCollection()) {
-				//append original ID in created by to aid in chemical association copy
-				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX+":"+ce.getId());
+				// append original ID in created by to aid in chemical
+				// association copy
+				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+						+ ce.getId());
 				ce.setId(null);
 				Collection<Function> oldFunctions = ce
 						.getInherentFunctionCollection();
@@ -215,12 +217,13 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		} else if (domainEntity instanceof Fullerene) {
 			domainEntity = fullerene;
 		}
-		//updated created_date and created_by if id is null
+		// updated created_date and created_by if id is null
 		if (domainEntity.getId() == null) {
 			domainEntity.setCreatedBy(createdBy);
 			domainEntity.setCreatedDate(Calendar.getInstance().getTime());
 		}
-		//updated created_by if created_by contains copy, but keep the original created_date
+		// updated created_by if created_by contains copy, but keep the original
+		// created_date
 		if (domainEntity.getId() != null
 				|| !StringUtils.isEmpty(domainEntity.getCreatedBy())
 				&& domainEntity.getCreatedBy().contains(
@@ -237,6 +240,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		for (ComposingElementBean composingElementBean : composingElements) {
 			domainEntity.getComposingElementCollection().add(
 					composingElementBean.getDomain());
+			composingElementBean.getDomain()
+					.setNanomaterialEntity(domainEntity);
 		}
 		if (files.isEmpty()) {
 			domainEntity.setFileCollection(null);
