@@ -138,9 +138,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 		compService.saveFunctionalizingEntity(sampleBean, entityBean);
 
-		// save accessibility based on sample accessibility
-		compService.assignAccessibility(entityBean.getDomainEntity());
-
 		// save to other samples (only when user click [Submit] button.)
 		String dispatch = (String) theForm.get("dispatch");
 		if ("create".equals(dispatch)) {
@@ -243,6 +240,12 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		function.setupDomainFunction(user.getLoginName(), 0);
 		entity.addFunction(function);
 		this.saveEntity(request, theForm, entity);
+
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.assignAccessibility(function.getDomainFunction());
+
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
 		// return to setupUpdate to get the correct entity from database
@@ -258,6 +261,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
 		this.saveEntity(request, theForm, entity);
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.removeAccessibility(entity.getDomainEntity(), function
+				.getDomainFunction());
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}
@@ -284,6 +292,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 		// save the functionalizing entity
 		this.saveEntity(request, theForm, entity);
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.assignFileAccessibility(entity.getDomainEntity()
+				.getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);
@@ -302,6 +315,12 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "file");
 		// save the functionalizing entity
 		this.saveEntity(request, theForm, entity);
+		// comp service has already been created
+		CompositionService compService = (CompositionService) request
+				.getSession().getAttribute("compositionService");
+		compService.removeFileAccessibility(entity.getDomainEntity()
+				.getSampleComposition(), theFile.getDomainFile());
+
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}
@@ -335,7 +354,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
 				.getDomainEntity());
-		// TODO remove accessibility
+		compositionService.removeAccessibility(entityBean.getDomainEntity());
 
 		ActionMessage msg = new ActionMessage(
 				"message.deleteFunctionalizingEntity");
