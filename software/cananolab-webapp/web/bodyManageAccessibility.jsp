@@ -19,7 +19,7 @@
 	</td>
 	<td>
 		<c:set var="newAddAccessButtonStyle" value="display:block" />
-		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')'); disableButtons(['submitButton']);" id="addAccess"
+		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')'); disableOuterButtons();" id="addAccess"
 			style="${newAddAccessButtonStyle}"><img align="top"
 				src="images/btn_add.gif" border="0" /></a>
 	</td>
@@ -197,7 +197,7 @@
 							<html:hidden property="${accessParent}.theAccess.groupName" styleId="hiddenGroupName"/>
 							<input type="button" value="Save" onclick="javascript:addAccess('${parentAction}', ${parentPage}, ${isPublic});" />
 							<input type="reset" value="Cancel"
-								onclick="javascript:closeSubmissionForm('Access');enableButtons(['submitButton']);">
+								onclick="javascript:closeSubmissionForm('Access');enableOuterButtons();">
 						</div>
 					</td>
 				</tr>
