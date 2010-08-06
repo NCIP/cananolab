@@ -192,12 +192,14 @@
 			</td>
 			<td>
 				<c:set var="newaddFuncButtonStyle" value="display:block" />
+				<c:set var="disableOuterButtons" value="false"/>
 				<c:if
 					test="${openFunction eq 'true'}">
 					<c:set var="newaddFuncButtonStyle" value="display:none" />
+					<c:set var="disableOuterButtons" value="true"/>
 				</c:if>
 				<a style="${newaddFuncButtonStyle}" id="addFunction"
-					href="javascript:clearFunction();openSubmissionForm('Function');"><img
+					href="javascript:clearFunction();openSubmissionForm('Function');disableOuterButtons();"><img
 						align="top" src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
@@ -241,7 +243,7 @@
 						<c:set var="addFileButtonStyle" value="display:none"/>
 					</c:if>
 					<a style="${addFileButtonStyle }" id="addFile"
-						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
+						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');disableOuterButtons();"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
 			</tr>
@@ -252,6 +254,7 @@
 						<c:set var="files"
 							value="${compositionForm.map.functionalizingEntity.files}" />
 						<c:set var="editFile" value="true" />
+						<c:set var="downloadAction" value="composition"/>
 						<%@ include file="../../bodyFileEdit.jsp"%>
 					</c:if>
 				</td>
@@ -284,5 +287,9 @@
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>
+	<c:set var="showDelete" value="false"/>
+	<c:if test="${theSample.userDeletable}">
+	   <c:set var="showDelete" value="true"/>
+	</c:if>
 	<%@include file="../../../bodySubmitButtons.jsp"%>
 </html:form>

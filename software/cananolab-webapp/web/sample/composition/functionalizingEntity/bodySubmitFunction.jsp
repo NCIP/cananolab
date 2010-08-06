@@ -201,7 +201,7 @@
 				<input type="button" value="Save"
 					onclick="addFunction('functionalizingEntity');show('targetTable');closeSubmissionForm('Function');" />
 				<input type="button" value="Cancel"
-					onclick="clearFunction();closeSubmissionForm('Function');" />
+					onclick="clearFunction();closeSubmissionForm('Function');enableOuterButtons();" />
 			</div>
 		</td>
 	</tr>
