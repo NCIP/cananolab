@@ -11,7 +11,10 @@
 	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-
+<c:set var="validate" value="false" />
+<c:if test="${!user.curator && theSample.publicStatus}">
+	<c:set var="validate" value="true" />
+</c:if>
 <c:choose>
 	<c:when test="${compositionForm.map.assoc.type eq 'attachment'}">
 		<c:set var="style" value="display:block" />

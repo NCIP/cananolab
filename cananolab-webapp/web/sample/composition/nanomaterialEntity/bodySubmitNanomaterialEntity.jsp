@@ -15,7 +15,10 @@
 	src='/caNanoLab/dwr/interface/NanomaterialEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-
+<c:set var="validate" value="false" />
+<c:if test="${!user.curator && theSample.publicStatus}">
+	<c:set var="validate" value="true" />
+</c:if>
 <c:choose>
 	<c:when test="${!empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
 		<c:set var="nanoTitle"

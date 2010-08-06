@@ -192,14 +192,14 @@
 		<td>
 			<c:if test="${theSample.userDeletable eq 'true'}">
 				<input type="button" value="Remove"
-					onclick="removeFunction('functionalizingEntity')"
+					onclick="removeFunction('${validate}', 'functionalizingEntity')"
 					id="deleteFunction" style="display: none;" />
 			</c:if>
 		</td>
 		<td colspan="3">
 			<div align="right">
 				<input type="button" value="Save"
-					onclick="addFunction('functionalizingEntity');show('targetTable');closeSubmissionForm('Function');" />
+					onclick="addFunction('${validate}', 'functionalizingEntity');show('targetTable');closeSubmissionForm('Function');" />
 				<input type="button" value="Cancel"
 					onclick="clearFunction();closeSubmissionForm('Function');enableOuterButtons();" />
 			</div>
