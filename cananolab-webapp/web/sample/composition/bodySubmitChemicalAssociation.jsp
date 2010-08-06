@@ -206,7 +206,7 @@
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>
 	<c:set var="showDelete" value="false"/>
-	<c:if test="${theSample.userDeletable}">
+	<c:if test="${theSample.userDeletable && !empty updateId}">
 	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../../bodySubmitButtons.jsp"%>

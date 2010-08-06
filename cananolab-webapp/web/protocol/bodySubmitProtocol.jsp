@@ -165,7 +165,7 @@
 	<c:if test="${!user.curator && protocolForm.map.protocol.publicStatus}">
 		<c:set var="validate" value="true" />
 	</c:if>
-	<c:if test="${protocolForm.map.protocol.userDeletable}">
+	<c:if test="${protocolForm.map.protocol.userDeletable && param.protocolId}">
 	   <c:set var="showDelete" value="true"/>
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
