@@ -115,11 +115,15 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				}
 			}
 			appService.saveOrUpdate(achar);
-			// save default access if it's new
-			if (newChar) {
-				super.saveDefaultAccessibilities(achar.getId().toString());
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(achar.getSample().getId().toString());
+			// save sample accesses
+			for (AccessibilityBean access : sampleAccesses) {
+				if (newChar) {
+					this.saveAccessibility(access, achar.getId().toString());
+				}
 			}
-
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -225,19 +229,10 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			Boolean newFinding = true;
-			if (finding.getDomain().getId() != null) {
-				newFinding = false;
-			}
 			for (FileBean fileBean : finding.getFiles()) {
 				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(finding.getDomain());
-			if (newFinding) {
-				for (AccessibilityBean access : this.getDefaultAccesses()) {
-					this.assignAccessibility(access, finding.getDomain());
-				}
-			}
 			// save file data to file system and assign visibility
 			for (FileBean fileBean : finding.getFiles()) {
 				fileUtils.writeFile(fileBean);
@@ -275,11 +270,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			ExperimentConfig config = configBean.getDomain();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			Boolean newConfig = true;
-			Boolean newTechnique = true;
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
-				newConfig = false;
 				ExperimentConfig dbConfig = helper
 						.findExperimentConfigById(config.getId().toString());
 				if (dbConfig != null) {
@@ -296,7 +288,6 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			// check if technique already exists;
 			Technique dbTechnique = findTechniqueByType(technique.getType());
 			if (dbTechnique != null) {
-				newTechnique = false;
 				technique.setId(dbTechnique.getId());
 				technique.setCreatedBy(dbTechnique.getCreatedBy());
 				technique.setCreatedDate(dbTechnique.getCreatedDate());
@@ -325,20 +316,6 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				}
 			}
 			appService.saveOrUpdate(config);
-			if (newConfig) {
-				this.saveDefaultAccessibilities(config.getId().toString());
-				// assign public access to instrument
-				for (Instrument instrument : config.getInstrumentCollection()) {
-					this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
-							instrument.getId().toString());
-				}
-			}
-			if (newTechnique) {
-				// assign public access to technique
-				this.saveAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
-						config.getTechnique().getId().toString());
-			}
-
 		} catch (Exception e) {
 			String err = "Error in saving the technique and associated instruments.";
 			logger.error(err, e);
@@ -669,6 +646,88 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			throw e;
 		} catch (Exception e) {
 			String error = "Error in assigning characterization accessibility";
+			throw new CharacterizationException(error, e);
+		}
+	}
+
+	public void assignAccesses(Characterization achar, ExperimentConfig config)
+			throws CharacterizationException, NoAccessException {
+		try {
+			if (!isUserOwner(config.getCreatedBy())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses, already contains owner for config
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.assignAccessibility(access, config);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning experiment config accessibility";
+			throw new CharacterizationException(error, e);
+		}
+	}
+
+	public void assignAccesses(Characterization achar, Finding finding)
+			throws CharacterizationException, NoAccessException {
+		try {
+			if (!isUserOwner(finding.getCreatedBy())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses, already contains owner for finding
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.assignAccessibility(access, finding);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in assigning finding accessibility";
+			throw new CharacterizationException(error, e);
+		}
+	}
+
+	public void removeAccesses(Characterization achar, ExperimentConfig config)
+			throws CharacterizationException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(config.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses, already contains owner for config
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, config);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in removing experiment config accessibility";
+			throw new CharacterizationException(error, e);
+		}
+	}
+
+	public void removeAccesses(Characterization achar, Finding finding)
+			throws CharacterizationException, NoAccessException {
+		try {
+			if (!securityService.checkCreatePermission(finding.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+			// find sample accesses, already contains owner for finding
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, finding);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in removing finding accessibility";
 			throw new CharacterizationException(error, e);
 		}
 	}
