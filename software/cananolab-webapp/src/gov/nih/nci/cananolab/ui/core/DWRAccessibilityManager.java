@@ -26,11 +26,12 @@ import org.directwebremoting.WebContextFactory;
 public class DWRAccessibilityManager {
 	private BaseService service;
 	private Logger logger = Logger.getLogger(DWRAccessibilityManager.class);
+	SecurityService securityService;
 
 	private BaseService getService() {
 		WebContext wctx = WebContextFactory.get();
-		SecurityService securityService = (SecurityService) wctx.getSession()
-				.getAttribute("securityService");
+		securityService = (SecurityService) wctx.getSession().getAttribute(
+				"securityService");
 		service = new BaseServiceLocalImpl(securityService);
 		return service;
 	}
@@ -121,6 +122,7 @@ public class DWRAccessibilityManager {
 	public UserBean[] getMatchedUsers(String dataOwner, String searchStr)
 			throws Exception {
 		try {
+
 			List<UserBean> matchedUsers = getService().findUserLoginNames(
 					searchStr);
 			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
@@ -128,6 +130,7 @@ public class DWRAccessibilityManager {
 			WebContext wctx = WebContextFactory.get();
 			UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 			updatedUsers.remove(user);
+
 			// remove data owner from the list if owner is not the current user
 			if (!dataOwner.equalsIgnoreCase(user.getLoginName())) {
 				for (UserBean userBean : matchedUsers) {
@@ -137,6 +140,17 @@ public class DWRAccessibilityManager {
 					}
 				}
 			}
+			// exclude curators;
+			List<String> curators = securityService
+					.getUserNames(AccessibilityBean.CSM_DATA_CURATOR);
+			for (UserBean userBean : matchedUsers) {
+				for (String curator : curators) {
+					if (userBean.getLoginName().equalsIgnoreCase(curator)) {
+						updatedUsers.remove(userBean);
+					}
+				}
+			}
+
 			return updatedUsers.toArray(new UserBean[updatedUsers.size()]);
 		} catch (Exception e) {
 			logger.error("Problem getting matched user login names", e);
