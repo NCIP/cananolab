@@ -14,8 +14,6 @@ public class SecuredDataBean {
 
 	private Boolean publicStatus = false;
 
-	private String securedId;
-
 	private Boolean userUpdatable = false;
 
 	private Boolean userDeletable = false;
@@ -72,14 +70,6 @@ public class SecuredDataBean {
 
 	public Boolean getPublicStatus() {
 		return publicStatus;
-	}
-
-	public String getSecuredId() {
-		return securedId;
-	}
-
-	public void setSecuredId(String securedId) {
-		this.securedId = securedId;
 	}
 
 	public Boolean getUserDeletable() {

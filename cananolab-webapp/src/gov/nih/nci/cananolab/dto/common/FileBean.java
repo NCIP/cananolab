@@ -42,7 +42,6 @@ public class FileBean extends SecuredDataBean {
 
 	public FileBean(File file) {
 		this.domainFile = file;
-		this.setSecuredId(file.getId().toString());
 		if (file != null) {
 			SortedSet<String> keywordStrs = new TreeSet<String>();
 			if (domainFile.getKeywordCollection() != null) {
