@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -61,9 +60,7 @@ public class DWRCompositionManager {
 		if (user == null) {
 			return null;
 		}
-		FileService fileService = ((CompositionServiceLocalImpl) getService())
-				.getFileService();
-		FileBean fileBean = fileService.findFileById(id);
+		FileBean fileBean = getService().findFileById(id);
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
 		if (type.equals("nanomaterialEntity")) {
