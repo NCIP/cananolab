@@ -83,7 +83,7 @@
 							<html:options collection="characterizationProtocols"
 								property="domain.id" labelProperty="displayName" />
 					</html:select> &nbsp;<span id="protocolFileLink"><a
-						href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolBean.fileBean.domainFile.id}">${characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri}</a>
+						href="protocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolBean.fileBean.domainFile.id}">${characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri}</a>
 					</span>
 				</c:when>
 				<c:otherwise>

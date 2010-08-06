@@ -49,6 +49,7 @@
 				<c:choose>
 					<c:when test="${! empty finding.files}">
 						<c:set var="files" value="${finding.files }" />
+						<c:set var="downloadAction" value="characterization"/>
 						<%@include file="../../bodyFileView.jsp"%>
 					</c:when>
 				</c:choose>
