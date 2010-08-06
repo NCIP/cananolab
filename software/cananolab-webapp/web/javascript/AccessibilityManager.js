@@ -131,7 +131,7 @@ function deleteTheAccess(actionName, page) {
 	}
 }
 
-function showMatchedGroupOrUserDropdown() {
+function showMatchedGroupOrUserDropdown(dataOwner) {
 	// display progress.gif while waiting for the response.
 	show("loaderImg");
 	hide("matchedUserNameSelect");
@@ -159,7 +159,7 @@ function showMatchedGroupOrUserDropdown() {
 	} else {
 		var selectedUser = dwr.util.getValue("matchedUserNameSelect");
 		var loginName = dwr.util.getValue("userName");
-		AccessibilityManager.getMatchedUsers(loginName, function(data) {
+		AccessibilityManager.getMatchedUsers(dataOwner, loginName, function(data) {
 			if (data.length == 0) {
 				alert("no matching users found. ");
 				hide("loaderImg");

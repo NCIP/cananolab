@@ -95,6 +95,7 @@
 		<c:set var="newData" value="true"/>
 		<c:set var="isPublic" value="${sampleForm.map.sampleBean.publicStatus}"/>
 		<c:set var="isOwner" value="${sampleForm.map.sampleBean.userIsOwner}"/>
+		<c:set var="ownerName" value="${sampleForm.map.sampleBean.domain.createdBy}"/>
 		<c:if test="${updateSample}">
 		   <c:set var="newData" value="false"/>
 		</c:if>
