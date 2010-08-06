@@ -83,7 +83,7 @@
 			<c:if
 				test="${theSample.userDeletable && not empty characterizationForm.map.achar.theFinding.domain.id}">
 				<input type="button" value="Remove" id="deleteFinding"
-					onclick="javascript: deleteTheFinding('${validate}', characterizationForm);">
+					onclick="javascript: deleteTheFinding('${param.validate}', characterizationForm);">
 			</c:if>
 		</td>
 		<td>
@@ -94,7 +94,7 @@
 						value="${characterizationForm.map.achar.theFinding.domain.id}" />
 				</c:if>
 				<input type="button" value="Save"
-					onclick="javascript:saveFinding('${validate}', 'characterization');">
+					onclick="javascript:saveFinding('${param.validate}', 'characterization');">
 				<input type="button" value="Cancel"	onclick="javascript:closeSubmissionForm('Finding');enableOuterButtons();">
 			</div>
 		</td>

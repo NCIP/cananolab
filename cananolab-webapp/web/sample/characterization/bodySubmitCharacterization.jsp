@@ -68,7 +68,7 @@
 	validateSavingTheData('newFinding', 'Finding');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<jsp:include
-		page="/sample/characterization/shared/bodyCharacterizationSummary.jsp" />
+		page="shared/bodyCharacterizationSummary.jsp" />
 
 	<div id="characterizationDetail">
 	<c:if test="${!empty characterizationDetailPage}">
@@ -76,9 +76,9 @@
 	</c:if>
 	</div>
 	<a name="designAndMethod"> <jsp:include
-			page="shared/bodyCharacterizationDesignMethods.jsp" /></a>
+			page="shared/bodyCharacterizationDesignMethods.jsp?validate=${validate}" /></a>
 	<a name="result"> <jsp:include
-			page="shared/bodyCharacterizationResults.jsp" /></a>
+			page="shared/bodyCharacterizationResults.jsp?validate=${validate}" /></a>
 	<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
 	<jsp:include
 		page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
