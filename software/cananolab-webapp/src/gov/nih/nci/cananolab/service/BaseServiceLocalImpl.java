@@ -566,23 +566,28 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				Characterization achar) throws Exception {
+		public List<String> removeAccessibility(AccessibilityBean access,
+				Characterization achar, Boolean removeLater) throws Exception {
+			List<String> ids = new ArrayList<String>();
 			// characterization
 			if (achar != null) {
-				deleteAccessibility(access, achar.getId().toString());
-
+				if (!removeLater)
+					deleteAccessibility(access, achar.getId().toString());
+				ids.add(achar.getId().toString());
 				for (Finding finding : achar.getFindingCollection()) {
 					if (finding != null) {
-						this.removeAccessibility(access, finding);
+						ids.addAll(this.removeAccessibility(access, finding,
+								removeLater));
 					}
 				}
 				// ExperimentConfiguration
 				for (ExperimentConfig config : achar
 						.getExperimentConfigCollection()) {
-					this.removeAccessibility(access, config);
+					ids.addAll(this.removeAccessibility(access, config,
+							removeLater));
 				}
 			}
+			return ids;
 		}
 
 		public void assignAccessibility(AccessibilityBean access,
@@ -605,29 +610,38 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				SampleComposition comp) throws Exception {
-			deleteAccessibility(access, comp.getId().toString());
+		public List<String> removeAccessibility(AccessibilityBean access,
+				SampleComposition comp, Boolean removeLater) throws Exception {
+			List<String> ids = new ArrayList<String>();
+			if (!removeLater)
+				deleteAccessibility(access, comp.getId().toString());
+			ids.add(comp.getId().toString());
 			if (comp.getNanomaterialEntityCollection() != null)
 				for (NanomaterialEntity entity : comp
 						.getNanomaterialEntityCollection()) {
-					this.removeAccessibility(access, entity);
+					ids.addAll(this.removeAccessibility(access, entity,
+							removeLater));
 				}
 			if (comp.getFunctionalizingEntityCollection() != null)
 				for (FunctionalizingEntity entity : comp
 						.getFunctionalizingEntityCollection()) {
-					this.removeAccessibility(access, entity);
+					ids.addAll(this.removeAccessibility(access, entity,
+							removeLater));
 				}
 			if (comp.getChemicalAssociationCollection() != null)
 				for (ChemicalAssociation assoc : comp
 						.getChemicalAssociationCollection()) {
-					this.removeAccessibility(access, assoc);
+					ids.addAll(this.removeAccessibility(access, assoc,
+							removeLater));
 				}
 			if (comp.getFileCollection() != null) {
 				for (File file : comp.getFileCollection()) {
-					deleteAccessibility(access, file.getId().toString());
+					if (!removeLater)
+						deleteAccessibility(access, file.getId().toString());
+					ids.add(file.getId().toString());
 				}
 			}
+			return ids;
 		}
 
 		public void assignAccessibility(AccessibilityBean access,
@@ -669,10 +683,15 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				ComposingElement composingElement) throws Exception {
+		public List<String> removeAccessibility(AccessibilityBean access,
+				ComposingElement composingElement, Boolean removeLater)
+				throws Exception {
+			List<String> ids = new ArrayList<String>();
 			if (composingElement != null) {
-				deleteAccessibility(access, composingElement.getId().toString());
+				if (!removeLater)
+					deleteAccessibility(access, composingElement.getId()
+							.toString());
+				ids.add(composingElement.getId().toString());
 			}
 			// composingElementCollection.inherentFucntionCollection
 			Collection<Function> inherentFunctionCollection = composingElement
@@ -680,43 +699,40 @@ public class BaseServiceLocalImpl implements BaseService {
 			if (inherentFunctionCollection != null) {
 				for (Function function : inherentFunctionCollection) {
 					if (function != null) {
-						deleteAccessibility(access, function.getId().toString());
+						if (!removeLater)
+							deleteAccessibility(access, function.getId()
+									.toString());
+						ids.add(function.getId().toString());
 					}
 				}
 			}
+			return ids;
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				NanomaterialEntity entity) throws Exception {
-			deleteAccessibility(access, entity.getId().toString());
-
+		public List<String> removeAccessibility(AccessibilityBean access,
+				NanomaterialEntity entity, Boolean removeLater)
+				throws Exception {
+			List<String> ids = new ArrayList<String>();
+			if (!removeLater)
+				deleteAccessibility(access, entity.getId().toString());
+			ids.add(entity.getId().toString());
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = entity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
-					if (composingElement != null) {
-						deleteAccessibility(access, composingElement.getId()
-								.toString());
-					}
-					// composingElementCollection.inherentFucntionCollection
-					Collection<Function> inherentFunctionCollection = composingElement
-							.getInherentFunctionCollection();
-					if (inherentFunctionCollection != null) {
-						for (Function function : inherentFunctionCollection) {
-							if (function != null) {
-								deleteAccessibility(access, function.getId()
-										.toString());
-							}
-						}
-					}
+					ids.addAll(this.removeAccessibility(access,
+							composingElement, removeLater));
 				}
 			}
 			if (entity.getFileCollection() != null) {
 				for (File file : entity.getFileCollection()) {
-					deleteAccessibility(access, file.getId().toString());
+					if (!removeLater)
+						deleteAccessibility(access, file.getId().toString());
+					ids.add(file.getId().toString());
 				}
 			}
+			return ids;
 		}
 
 		public void assignAccessibility(AccessibilityBean access,
@@ -768,14 +784,21 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				FunctionalizingEntity functionalizingEntity) throws Exception {
+		public List<String> removeAccessibility(AccessibilityBean access,
+				FunctionalizingEntity functionalizingEntity, Boolean removeLater)
+				throws Exception {
+			List<String> ids = new ArrayList<String>();
 			if (functionalizingEntity != null) {
-				deleteAccessibility(access, functionalizingEntity.getId()
-						.toString());
+				if (!removeLater)
+					deleteAccessibility(access, functionalizingEntity.getId()
+							.toString());
+				ids.add(functionalizingEntity.getId().toString());
 				if (functionalizingEntity.getActivationMethod() != null) {
-					deleteAccessibility(access, functionalizingEntity
-							.getActivationMethod().getId().toString());
+					if (!removeLater)
+						deleteAccessibility(access, functionalizingEntity
+								.getActivationMethod().getId().toString());
+					ids.add(functionalizingEntity.getActivationMethod().getId()
+							.toString());
 				}
 				// functionalizingEntityCollection.functionCollection
 				Collection<Function> functionCollection = functionalizingEntity
@@ -783,37 +806,40 @@ public class BaseServiceLocalImpl implements BaseService {
 				if (functionCollection != null) {
 					for (Function function : functionCollection) {
 						if (function != null) {
-							deleteAccessibility(access, function.getId()
-									.toString());
-							if (function instanceof TargetingFunction) {
-								for (Target target : ((TargetingFunction) function)
-										.getTargetCollection()) {
-									deleteAccessibility(access, target.getId()
-											.toString());
-								}
-							}
+							ids.addAll(this.removeAccessibility(access,
+									function, removeLater));
 						}
 					}
 				}
 				if (functionalizingEntity.getFileCollection() != null) {
 					for (File file : functionalizingEntity.getFileCollection()) {
-						deleteAccessibility(access, file.getId().toString());
+						if (!removeLater)
+							deleteAccessibility(access, file.getId().toString());
+						ids.add(file.getId().toString());
 					}
 				}
 			}
+			return ids;
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				Function function) throws Exception {
+		public List<String> removeAccessibility(AccessibilityBean access,
+				Function function, Boolean removeLater) throws Exception {
+			List<String> ids = new ArrayList<String>();
 			if (function != null) {
-				deleteAccessibility(access, function.getId().toString());
+				if (!removeLater)
+					deleteAccessibility(access, function.getId().toString());
+				ids.add(function.getId().toString());
 				if (function instanceof TargetingFunction) {
 					for (Target target : ((TargetingFunction) function)
 							.getTargetCollection()) {
-						deleteAccessibility(access, target.getId().toString());
+						if (!removeLater)
+							deleteAccessibility(access, target.getId()
+									.toString());
+						ids.add(target.getId().toString());
 					}
 				}
 			}
+			return ids;
 		}
 
 		public void assignAccessibility(AccessibilityBean access,
@@ -830,14 +856,22 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				ChemicalAssociation chemicalAssociation) throws Exception {
-			deleteAccessibility(access, chemicalAssociation.getId().toString());
+		public List<String> removeAccessibility(AccessibilityBean access,
+				ChemicalAssociation chemicalAssociation, Boolean removeLater)
+				throws Exception {
+			List<String> ids = new ArrayList<String>();
+			if (!removeLater)
+				deleteAccessibility(access, chemicalAssociation.getId()
+						.toString());
+			ids.add(chemicalAssociation.getId().toString());
 			if (chemicalAssociation.getFileCollection() != null) {
 				for (File file : chemicalAssociation.getFileCollection()) {
-					deleteAccessibility(access, file.getId().toString());
+					if (!removeLater)
+						deleteAccessibility(access, file.getId().toString());
+					ids.add(file.getId().toString());
 				}
 			}
+			return ids;
 		}
 
 		public void assignAccessibility(AccessibilityBean access,
@@ -869,21 +903,28 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				Finding finding) throws Exception {
-			deleteAccessibility(access, finding.getId().toString());
-
+		public List<String> removeAccessibility(AccessibilityBean access,
+				Finding finding, Boolean removeLater) throws Exception {
+			List<String> ids = new ArrayList<String>();
+			if (!removeLater)
+				deleteAccessibility(access, finding.getId().toString());
+			ids.add(finding.getId().toString());
 			// datum
 			if (finding.getDatumCollection() != null) {
 				for (Datum datum : finding.getDatumCollection()) {
 					if (datum != null) {
-						deleteAccessibility(access, datum.getId().toString());
+						if (!removeLater)
+							deleteAccessibility(access, datum.getId()
+									.toString());
+						ids.add(datum.getId().toString());
 					}
 					if (datum.getConditionCollection() != null) {
 						for (Condition condition : datum
 								.getConditionCollection()) {
-							deleteAccessibility(access, condition.getId()
-									.toString());
+							if (!removeLater)
+								deleteAccessibility(access, condition.getId()
+										.toString());
+							ids.add(condition.getId().toString());
 						}
 					}
 				}
@@ -891,9 +932,12 @@ public class BaseServiceLocalImpl implements BaseService {
 			// file
 			if (finding.getFileCollection() != null) {
 				for (File file : finding.getFileCollection()) {
-					deleteAccessibility(access, file.getId().toString());
+					if (!removeLater)
+						deleteAccessibility(access, file.getId().toString());
+					ids.add(file.getId().toString());
 				}
 			}
+			return ids;
 		}
 
 		public void assignAccessibility(AccessibilityBean access,
@@ -912,17 +956,14 @@ public class BaseServiceLocalImpl implements BaseService {
 			}
 		}
 
-		public void removeAccessibility(AccessibilityBean access,
-				ExperimentConfig config) throws Exception {
-			deleteAccessibility(access, config.getId().toString());
-			deleteAccessibility(access, config.getTechnique().getId()
-					.toString());
-
-			if (config.getInstrumentCollection() != null) {
-				for (Instrument instrument : config.getInstrumentCollection()) {
-					deleteAccessibility(access, instrument.getId().toString());
-				}
+		public List<String> removeAccessibility(AccessibilityBean access,
+				ExperimentConfig config, Boolean removeLater) throws Exception {
+			List<String> ids = new ArrayList<String>();
+			if (!removeLater) {
+				deleteAccessibility(access, config.getId().toString());
 			}
+			ids.add(config.getId().toString());
+			return ids;
 		}
 
 		private void removeCSMEntries(String objectName)
