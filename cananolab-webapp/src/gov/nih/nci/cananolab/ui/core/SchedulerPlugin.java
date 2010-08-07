@@ -1,5 +1,13 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.service.BaseService;
+import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
+import gov.nih.nci.security.AuthorizationManager;
+import gov.nih.nci.security.SecurityServiceProvider;
+import gov.nih.nci.security.authorization.domainobjects.User;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -104,14 +112,20 @@ public class SchedulerPlugin implements PlugIn {
 				intervalInMinutes = DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
 			}
 
+			AuthorizationManager authManager = SecurityServiceProvider
+					.getAuthorizationManager(AccessibilityBean.CSM_APP_NAME);
+			User adminUser = authManager.getUser("admin");
+			BaseService service = new BaseServiceLocalImpl(new UserBean(
+					adminUser));
 			JobDetail jobDetail = new JobDetail("CSMCleanupJob", null,
 					CSMCleanupJob.class);
+			jobDetail.getJobDataMap().put("csmCleanupService", service);
 			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
 					"CSMCleanupJobTrigger", intervalInMinutes,
 					SimpleTrigger.REPEAT_INDEFINITELY);
 			scheduler.scheduleJob(jobDetail, trigger);
 			logger.debug("CSM clean up scheduler started......");
-		} catch (SchedulerException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 	}

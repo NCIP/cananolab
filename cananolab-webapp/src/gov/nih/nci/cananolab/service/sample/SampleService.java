@@ -88,4 +88,7 @@ public interface SampleService extends BaseService {
 
 	public void removeAccessibility(AccessibilityBean access, Sample sample)
 			throws SampleException, NoAccessException;
+
+	public List<String> removeAccesses(Sample sample, Boolean removeLater)
+			throws SampleException, NoAccessException;
 }

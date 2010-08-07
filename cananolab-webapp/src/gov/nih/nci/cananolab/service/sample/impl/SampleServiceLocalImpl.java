@@ -323,6 +323,16 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		// join limitation
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("name").eq(sampleName).ignoreCase());
+		Sample sample = loadFullSample(crit);
+		return sample;
+	}
+
+	private Sample loadFullSample(DetachedCriteria crit) throws Exception {
+		Sample sample = null;
+		// load composition and characterization separate because of
+		// Hibernate join limitation
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -335,7 +345,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		crit.setFetchMode("publicationCollection.keywordCollection",
 				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		Sample sample = null;
+
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
@@ -970,13 +980,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (sample.getCharacterizationCollection() != null) {
 				for (Characterization achar : sample
 						.getCharacterizationCollection()) {
-					accessUtils.removeAccessibility(access, achar);
+					accessUtils.removeAccessibility(access, achar, false);
 				}
 			}
 			// remove composition accessibility
 			if (sample.getSampleComposition() != null) {
 				accessUtils.removeAccessibility(access, sample
-						.getSampleComposition());
+						.getSampleComposition(), false);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -985,5 +995,41 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
+	}
+
+	public List<String> removeAccesses(Sample sample, Boolean removeLater)
+			throws SampleException, NoAccessException {
+		List<String> ids = new ArrayList<String>();
+		try {
+			if (!securityService.checkCreatePermission(sample.getId()
+					.toString())) {
+				throw new NoAccessException();
+			}
+			// fully load sample
+			Sample fullSample = this.findFullyLoadedSampleByName(sample
+					.getName());
+			// find sample accesses
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(sample.getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				if (fullSample.getCharacterizationCollection() != null) {
+					for (Characterization achar : fullSample
+							.getCharacterizationCollection()) {
+						ids.addAll(accessUtils.removeAccessibility(access,
+								achar, removeLater));
+					}
+				}
+				if (fullSample.getSampleComposition() != null) {
+					ids.addAll(accessUtils.removeAccessibility(access,
+							fullSample.getSampleComposition(), removeLater));
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in removing sample accesses";
+			throw new SampleException(error, e);
+		}
+		return ids;
 	}
 }

@@ -101,15 +101,5 @@ public class CustomPlugIn implements PlugIn {
 		System.out.println("Exiting CustomPlugIn.destroy()");
 		// be sure to clean up CSM entries that need to be removed before
 		// shutting down the server.
-		try {
-			cleanUpCSM();
-		} catch (Exception e) {
-			logger.error("Error removing obsoleted CSM entries.");
-		}
-	}
-
-	private void cleanUpCSM() throws Exception {
-		CSMCleanupJob csmCleanJob = new CSMCleanupJob();
-		csmCleanJob.cleanUpCSM();
 	}
 }
