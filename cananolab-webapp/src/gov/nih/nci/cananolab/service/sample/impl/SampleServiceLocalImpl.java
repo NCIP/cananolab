@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -229,9 +230,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					newPOC = true;
 				}
 				// if name information is changed, create a new POC
-				else if (domainPOC.getFirstName().equalsIgnoreCase(
-						dbPointOfContact.getFirstName())
-						|| domainPOC.getLastName().equalsIgnoreCase(
+				else if (domainPOC.getFirstName() != null
+						&& domainPOC.getFirstName().equalsIgnoreCase(
+								dbPointOfContact.getFirstName())
+						|| domainPOC.getLastName() != null
+						&& domainPOC.getLastName().equalsIgnoreCase(
 								dbPointOfContact.getLastName())) {
 					newPOC = true;
 				} else {
@@ -615,6 +618,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				&& !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
 				savePointOfContact(pocBean);
+				// don't need to set access for POC for they are shared between
+				// source and copy
 			}
 		}
 	}
@@ -630,6 +635,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (ExperimentConfigBean configBean : charBean
 							.getExperimentConfigs()) {
 						charService.saveExperimentConfig(configBean);
+						charService.assignAccesses(achar, configBean
+								.getDomain());
 					}
 				}
 				if (charBean.getFindings() != null) {
@@ -639,6 +646,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 									origSampleName, newSampleName);
 						}
 						charService.saveFinding(findingBean);
+						charService.assignAccesses(achar, findingBean
+								.getDomain());
+
 					}
 				}
 				charService.saveCharacterization(sampleBean, charBean);
@@ -663,8 +673,18 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (FileBean fileBean : entityBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
+						compService.assignAccesses(sampleBean.getDomain()
+								.getSampleComposition(), fileBean
+								.getDomainFile());
 					}
 					compService.saveNanomaterialEntity(sampleBean, entityBean);
+
+					if (entity.getComposingElementCollection() != null) {
+						for (ComposingElement composingElement : entity
+								.getComposingElementCollection()) {
+							compService.assignAccesses(composingElement);
+						}
+					}
 				}
 			}
 			// save functionalizing entities
@@ -678,9 +698,17 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (FileBean fileBean : entityBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
+						compService.assignAccesses(sampleBean.getDomain()
+								.getSampleComposition(), fileBean
+								.getDomainFile());
 					}
 					compService.saveFunctionalizingEntity(sampleBean,
 							entityBean);
+					if (entity.getFunctionCollection() != null) {
+						for (Function function : entity.getFunctionCollection()) {
+							compService.assignAccesses(function);
+						}
+					}
 				}
 			}
 			// save files
@@ -692,6 +720,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					fileUtils.updateClonedFileInfo(fileBean, origSampleName,
 							newSampleName);
 					compService.saveCompositionFile(sampleBean, fileBean);
+					compService.assignAccesses(sampleBean.getDomain()
+							.getSampleComposition(), file);
 				}
 			}
 			// save chemical association
@@ -712,6 +742,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (FileBean fileBean : assocBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
+						compService.assignAccesses(sampleBean.getDomain()
+								.getSampleComposition(), fileBean
+								.getDomainFile());
 					}
 					compService.saveChemicalAssociation(sampleBean, assocBean);
 				}
