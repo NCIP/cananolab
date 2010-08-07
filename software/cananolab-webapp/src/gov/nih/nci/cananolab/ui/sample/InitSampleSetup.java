@@ -1,13 +1,16 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.ui.core.CSMCleanupJob;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -102,5 +105,16 @@ public class InitSampleSetup {
 		} else {
 			return new SampleServiceLocalImpl(securityService);
 		}
+	}
+
+	public void updateCSMCleanupEntriesInContext(Sample sample,
+			HttpServletRequest request) throws Exception {
+		CSMCleanupJob job = new CSMCleanupJob();
+		Set<String> secureObjects = job.getAllSecureObjectsToRemove();
+		SampleService service = getServiceFromSession(request);
+		List<String> csmEntriesToRemove = service.removeAccesses(sample, true);
+		secureObjects.addAll(csmEntriesToRemove);
+		request.getSession().getServletContext().setAttribute(
+				"allCSMEntriesToRemove", secureObjects);
 	}
 }

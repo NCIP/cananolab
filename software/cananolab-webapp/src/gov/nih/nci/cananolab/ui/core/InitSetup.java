@@ -74,7 +74,7 @@ public class InitSetup {
 		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable.get(name);
 		Map<String, String> lookupMap = new HashMap<String, String>();
 		Set<String> keySet = lookupByNameMap.keySet();
-		for(String key: keySet){			
+		for(String key: keySet){
 			lookupMap.put(key, (String)lookupByNameMap.get(key).first());
 		}
 		appContext.setAttribute(contextAttribute, lookupMap);
@@ -289,16 +289,6 @@ public class InitSetup {
 		} else {
 			LookupService.saveOtherType(lookupName, otherAttribute, value);
 		}
-	}
-
-	public void updateCSMCleanupEntriesInContext(
-			List<String> csmEntriesToRemove, HttpServletRequest request)
-			throws Exception {
-		CSMCleanupJob job = new CSMCleanupJob();
-		Set<String> secureObjects = job.getAllSecureObjectsToRemove();
-		secureObjects.addAll(csmEntriesToRemove);
-		request.getSession().getServletContext().setAttribute(
-				"allCSMEntriesToRemove", secureObjects);
 	}
 
 	public List<LabelValueBean> getDefaultAndOtherTypesByLookupAsOptions(
