@@ -17,7 +17,6 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -38,7 +37,7 @@ import java.util.List;
  * @author pansu
  *
  */
-public class CharacterizationBean extends SecuredDataBean{
+public class CharacterizationBean {
 	private PointOfContactBean pocBean = new PointOfContactBean();
 
 	private String conclusion;
@@ -168,7 +167,7 @@ public class CharacterizationBean extends SecuredDataBean{
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 
-		//copy experiment config
+		// copy experiment config
 		Collection<ExperimentConfig> oldConfigs = copy
 				.getExperimentConfigCollection();
 		if (oldConfigs == null || oldConfigs.isEmpty()) {
@@ -184,7 +183,7 @@ public class CharacterizationBean extends SecuredDataBean{
 
 		}
 
-		//copy finding
+		// copy finding
 		Collection<Finding> oldFindings = copy.getFindingCollection();
 		if (oldFindings == null || oldFindings.isEmpty()) {
 			copy.setFindingCollection(null);
@@ -226,12 +225,13 @@ public class CharacterizationBean extends SecuredDataBean{
 		} else if (domainChar instanceof Transfection) {
 			domainChar = transfection;
 		}
-		//updated created_date and created_by if id is null
+		// updated created_date and created_by if id is null
 		if (domainChar.getId() == null) {
 			domainChar.setCreatedBy(createdBy);
 			domainChar.setCreatedDate(Calendar.getInstance().getTime());
 		}
-		//updated created_by if created_by contains copy, but keep the original created_date
+		// updated created_by if created_by contains copy, but keep the original
+		// created_date
 		if (domainChar.getId() != null
 				|| !StringUtils.isEmpty(domainChar.getCreatedBy())
 				&& domainChar.getCreatedBy().contains(
