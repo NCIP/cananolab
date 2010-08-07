@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: NanomaterialEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -286,7 +285,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.assignAccessibility(composingElement.getDomain());
+		compService.assignAccesses(composingElement.getDomain());
 
 		// return to setupUpdate to retrieve the correct entity from database
 		// after saving to database.
@@ -312,7 +311,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		}
 		entity.removeComposingElement(composingElement);
 		this.saveEntity(request, theForm, entity);
-		compService.removeAccessibility(entity.getDomainEntity(),
+		compService.removeAccesses(entity.getDomainEntity(),
 				composingElement.getDomain());
 		this.checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
@@ -342,7 +341,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.assignAccessibility(entity.getDomainEntity()
+		compService.assignAccesses(entity.getDomainEntity()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
@@ -365,7 +364,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.removeAccessibility(entity.getDomainEntity()
+		compService.removeAccesses(entity.getDomainEntity()
 				.getSampleComposition(), theFile.getDomainFile());
 		request.setAttribute("anchor", "file");
 		this.checkOpenForms(entity, request);
@@ -384,7 +383,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		entityBean.setupDomainEntity(user.getLoginName());
 		compositionService.deleteNanomaterialEntity(entityBean
 				.getDomainEntity());
-		compositionService.removeAccessibility(entityBean.getDomainEntity());
+		compositionService.removeAccesses(entityBean.getDomainEntity());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteNanomaterialEntity");

@@ -83,7 +83,7 @@ public interface CharacterizationService extends BaseService {
 	public void removeAccesses(Characterization achar, Finding finding)
 			throws CharacterizationException, NoAccessException;
 
-	public void removeAccess(Characterization achar)
+	public void removeAccesses(Characterization achar)
 			throws CharacterizationException, NoAccessException;
 
 }

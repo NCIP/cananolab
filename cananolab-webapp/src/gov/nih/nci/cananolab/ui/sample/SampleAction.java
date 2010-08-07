@@ -414,11 +414,12 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SampleService service = this.setServiceInSession(request);
+		// remove all access associated with sample takes too long. Set up the
+		// delete job in scheduler
+		InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(
+				sampleBean.getDomain(), request);
 		service.deleteSample(sampleBean.getDomain().getName());
-		// TODO remove accessibility
 
-		// InitSetup.getInstance().updateCSMCleanupEntriesInContext(
-		// csmEntriesToRemove, request);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
 				sampleBean.getDomain().getName());
@@ -461,15 +462,18 @@ public class SampleAction extends BaseAnnotationAction {
 				.generateDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
-		
+
 		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
-		.getSession().getAttribute("dataAvailabilityMapPerPage");
+				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
 		if (dataAvailabilityMapPerPage != null) {
-			dataAvailabilityMapPerPage.remove(sampleBean.getDomain().getId().toString());
-			dataAvailabilityMapPerPage.put(sampleBean.getDomain().getId().toString(), dataAvailability);
-			
-			request.getSession().setAttribute("dataAvailabilityMapPerPage", dataAvailabilityMapPerPage);
+			dataAvailabilityMapPerPage.remove(sampleBean.getDomain().getId()
+					.toString());
+			dataAvailabilityMapPerPage.put(sampleBean.getDomain().getId()
+					.toString(), dataAvailability);
+
+			request.getSession().setAttribute("dataAvailabilityMapPerPage",
+					dataAvailabilityMapPerPage);
 		}
 
 		return mapping.findForward("summaryEdit");
@@ -532,8 +536,9 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
-		if(securityService == null){
-			securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME);
+		if (securityService == null) {
+			securityService = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME);
 		}
 		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()

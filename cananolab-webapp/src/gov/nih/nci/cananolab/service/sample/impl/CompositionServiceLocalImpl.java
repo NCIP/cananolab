@@ -695,7 +695,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return helper;
 	}
 
-	public void assignAccessibility(ComposingElement composingElement)
+	public void assignAccesses(ComposingElement composingElement)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!isUserOwner(composingElement.getCreatedBy())) {
@@ -718,7 +718,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccessibility(NanomaterialEntity entity,
+	public void removeAccesses(NanomaterialEntity entity,
 			ComposingElement composingElement) throws CompositionException,
 			NoAccessException {
 		try {
@@ -731,7 +731,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findSampleAccesses(entity.getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, composingElement);
+				accessUtils.removeAccessibility(access, composingElement, false);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -741,7 +741,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void assignAccessibility(Function function)
+	public void assignAccesses(Function function)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!isUserOwner(function.getCreatedBy())) {
@@ -763,7 +763,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccessibility(FunctionalizingEntity entity,
+	public void removeAccesses(FunctionalizingEntity entity,
 			Function function) throws CompositionException, NoAccessException {
 		try {
 			if (!securityService.checkCreatePermission(function.getId()
@@ -775,7 +775,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findSampleAccesses(entity.getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, function);
+				accessUtils.removeAccessibility(access, function, false);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -808,7 +808,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void assignAccessibility(SampleComposition comp, File file)
+	public void assignAccesses(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!isUserOwner(file.getCreatedBy())) {
@@ -830,7 +830,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccessibility(NanomaterialEntity entity)
+	public void removeAccesses(NanomaterialEntity entity)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!securityService.checkCreatePermission(entity.getId()
@@ -842,7 +842,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findSampleAccesses(entity.getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, entity);
+				accessUtils.removeAccessibility(access, entity, false);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -852,7 +852,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccessibility(FunctionalizingEntity entity)
+	public void removeAccesses(FunctionalizingEntity entity)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!securityService.checkCreatePermission(entity.getId()
@@ -864,7 +864,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findSampleAccesses(entity.getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, entity);
+				accessUtils.removeAccessibility(access, entity, false);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -875,7 +875,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	}
 
-	public void removeAccessibility(ChemicalAssociation assoc)
+	public void removeAccesses(ChemicalAssociation assoc)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!securityService
@@ -887,7 +887,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findSampleAccesses(assoc.getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, assoc);
+				accessUtils.removeAccessibility(access, assoc, false);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -897,7 +897,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccessibility(SampleComposition comp, File file)
+	public void removeAccesses(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException {
 		try {
 			if (!securityService.checkCreatePermission(file.getId().toString())) {

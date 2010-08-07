@@ -82,7 +82,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		compService.deleteCompositionFile(sampleBean.getDomain()
 				.getSampleComposition(), fileBean.getDomainFile());
-		compService.removeAccessibility(comp.getDomain(), fileBean
+		compService.removeAccesses(comp.getDomain(), fileBean
 				.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
 		// retract from public if updating an existing public record and not

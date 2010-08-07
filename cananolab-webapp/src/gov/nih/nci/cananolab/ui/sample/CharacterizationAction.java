@@ -271,7 +271,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		charBean.setupDomain(createdBy);
 		CharacterizationService service = this.setServicesInSession(request);
 		service.deleteCharacterization(charBean.getDomainChar());
-		service.removeAccess(charBean.getDomainChar());
+		service.removeAccesses(charBean.getDomainChar());
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,

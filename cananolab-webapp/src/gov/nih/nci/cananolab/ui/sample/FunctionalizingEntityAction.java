@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -259,7 +258,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.assignAccessibility(function.getDomainFunction());
+		compService.assignAccesses(function.getDomainFunction());
 
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
@@ -279,7 +278,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.removeAccessibility(entity.getDomainEntity(), function
+		compService.removeAccesses(entity.getDomainEntity(), function
 				.getDomainFunction());
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
@@ -310,7 +309,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.assignAccessibility(entity.getDomainEntity()
+		compService.assignAccesses(entity.getDomainEntity()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
@@ -333,7 +332,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.removeAccessibility(entity.getDomainEntity()
+		compService.removeAccesses(entity.getDomainEntity()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		checkOpenForms(entity, request);
@@ -369,7 +368,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		compositionService.deleteFunctionalizingEntity(entityBean
 				.getDomainEntity());
-		compositionService.removeAccessibility(entityBean.getDomainEntity());
+		compositionService.removeAccesses(entityBean.getDomainEntity());
 
 		ActionMessage msg = new ActionMessage(
 				"message.deleteFunctionalizingEntity");
