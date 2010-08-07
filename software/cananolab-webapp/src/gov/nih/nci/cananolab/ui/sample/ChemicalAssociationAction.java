@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -397,7 +396,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.assignAccessibility(assoc.getDomainAssociation()
+		compService.assignAccesses(assoc.getDomainAssociation()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		request.setAttribute("anchor", "file");
@@ -423,7 +422,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.removeAccessibility(assoc.getDomainAssociation()
+		compService.removeAccesses(assoc.getDomainAssociation()
 				.getSampleComposition(), theFile.getDomainFile());
 
 		this.checkOpenForms(assoc, request);

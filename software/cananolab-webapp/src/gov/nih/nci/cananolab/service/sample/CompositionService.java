@@ -99,31 +99,31 @@ public interface CompositionService extends BaseService {
 			SampleBean[] newSampleBeans) throws CompositionException,
 			NoAccessException;
 
-	public void assignAccessibility(ComposingElement composingElement)
+	public void assignAccesses(ComposingElement composingElement)
 			throws CompositionException, NoAccessException;
 
-	public void assignAccessibility(SampleComposition comp, File file)
+	public void assignAccesses(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException;
 
-	public void assignAccessibility(Function function)
+	public void assignAccesses(Function function)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(NanomaterialEntity entity, ComposingElement composingElement)
+	public void removeAccesses(NanomaterialEntity entity, ComposingElement composingElement)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(NanomaterialEntity nanomaterialEntity)
+	public void removeAccesses(NanomaterialEntity nanomaterialEntity)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(FunctionalizingEntity functionalizingEntity)
+	public void removeAccesses(FunctionalizingEntity functionalizingEntity)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(ChemicalAssociation chemicalAssociation)
+	public void removeAccesses(ChemicalAssociation chemicalAssociation)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(FunctionalizingEntity entity, Function function)
+	public void removeAccesses(FunctionalizingEntity entity, Function function)
 			throws CompositionException, NoAccessException;
 
-	public void removeAccessibility(SampleComposition comp, File file)
+	public void removeAccesses(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException;
 
 }
