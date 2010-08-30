@@ -25,9 +25,10 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -175,21 +176,19 @@ public class SampleAction extends BaseAnnotationAction {
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
 		SampleBean sampleBean = setupSample(theForm, request);
-		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
-				.getSession().getAttribute("dataAvailabilityMapPerPage");
-
-		if (dataAvailabilityMapPerPage != null) {
-			List<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityMapPerPage
-					.get(sampleBean.getDomain().getId().toString());
-
-			if (selectedSampleDataAvailability != null
-					&& !selectedSampleDataAvailability.isEmpty()
-					&& selectedSampleDataAvailability.size() > 0) {
-				sampleBean.setHasDataAvailability(true);
-				sampleBean.setDataAvailability(selectedSampleDataAvailability);
-			}
+		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(
+						sampleBean.getDomain().getId().toString(), securityService);
+		
+		if (selectedSampleDataAvailability != null
+				&& !selectedSampleDataAvailability.isEmpty()
+				&& selectedSampleDataAvailability.size() > 0) {
+			sampleBean.setHasDataAvailability(true);
+			sampleBean.setDataAvailability(selectedSampleDataAvailability);
 		}
+		
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
@@ -454,16 +453,15 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		// SecurityService securityService = super
-		// .getSecurityServiceFromSession(request);
+		
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.generateDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
 
-		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
+		/*Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
 
 		if (dataAvailabilityMapPerPage != null) {
@@ -474,8 +472,8 @@ public class SampleAction extends BaseAnnotationAction {
 
 			request.getSession().setAttribute("dataAvailabilityMapPerPage",
 					dataAvailabilityMapPerPage);
-		}
-
+		}*/
+		request.getSession().setAttribute("dataAvailabilityGenerated", true);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -497,9 +495,10 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
+		request.getSession().setAttribute("dataAvailabilityGenerated", false);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -524,7 +523,8 @@ public class SampleAction extends BaseAnnotationAction {
 		dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain()
 				.getId().toString(), securityService);
 		sampleBean.setHasDataAvailability(false);
-		sampleBean.setDataAvailability(new ArrayList<DataAvailabilityBean>());
+		sampleBean.setDataAvailability(new HashSet<DataAvailabilityBean>());
+		request.getSession().setAttribute("dataAvailabilityGenerated", false);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -540,7 +540,7 @@ public class SampleAction extends BaseAnnotationAction {
 			securityService = new SecurityService(
 					AccessibilityBean.CSM_APP_NAME);
 		}
-		List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
 
@@ -563,7 +563,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	private void calculateDataAvailabilityScore(SampleBean sampleBean,
-			List<DataAvailabilityBean> dataAvailability) {
+			Set<DataAvailabilityBean> dataAvailability) {
 
 		ServletContext appContext = this.getServlet().getServletContext();
 		SortedSet<String> minchar = (SortedSet<String>) appContext
@@ -684,5 +684,29 @@ public class SampleAction extends BaseAnnotationAction {
 	public Boolean canUserExecutePrivateLink(UserBean user, String protectedData)
 			throws SecurityException {
 		return false;
+	}
+	
+	public ActionForward generateBatchDataAvailability(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
+		
+		SampleService service = (SampleService) request.getSession()
+		.getAttribute("sampleService");
+		
+		if(service == null){
+			service = setServiceInSession(request);
+		}
+		List<String> sampleIds = service.findSampleIdsBy("", "", null, null, null, null, null, null, null, null, null);
+		
+		dataAvailabilityService.generateBatch(securityService, sampleIds);
+		ActionMessages messages = new ActionMessages();
+		ActionMessage message = new ActionMessage("message.register");
+		messages.add("message", message);
+		saveMessages(request, messages);
+		return mapping.findForward("/manageCuration.do");
+		
 	}
 }
