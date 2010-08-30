@@ -18,12 +18,16 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of ProtocolService
@@ -357,8 +361,42 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new ProtocolException(error, e);
 		}
 	}
+	public Map<String, String> findProtocolsByOwner(String currentOwner) throws Exception{
+		Map<String,String> protocols = new HashMap<String, String>();
+		
+		Protocol p = new Protocol();
+		
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+		.setProjection(
+				Projections.projectionList().add(
+						Projections.property("id")).add(
+						Projections.property("name")));
+		crit.add(Restrictions.eq("createdBy", currentOwner));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		.getApplicationService();
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			Object[] row = (Object[]) obj;
+			protocols.put(row[0].toString(),row[1].toString());
+		}
+		return protocols;
+	}
 
 	public ProtocolServiceHelper getHelper() {
 		return helper;
+	}
+
+	public void transferOwner(Set<String> protocolIds,
+			String newOwner) throws Exception {
+		if(!this.securityService.getUserBean().isCurator()){
+			throw new NoAccessException();
+		}
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		.getApplicationService();
+		for(String protocolId : protocolIds){
+			Protocol protocol = helper.findProtocolById(protocolId);
+			protocol.setCreatedBy(newOwner);
+			appService.saveOrUpdate(protocol);
+		}		
 	}
 }
