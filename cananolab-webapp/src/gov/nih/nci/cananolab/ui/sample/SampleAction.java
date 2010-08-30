@@ -704,9 +704,9 @@ public class SampleAction extends BaseAnnotationAction {
 		List<String> sampleIds = service.findSampleIdsBy("", "", null, null, null, null, null, null, null, null, null);
 		int sampleIdsSize = sampleIds.size();
 		int i=0;
-		System.out.println("sampleIdsSize: " + sampleIdsSize);
-		if(sampleIdsSize > 50){		
-			int subListValue = 50;
+		System.out.println("sampleIdsSize: " + sampleIdsSize + " time start: " + System.currentTimeMillis());
+		if(sampleIdsSize > 30){		
+			int subListValue = 30;
 			while(true){				
 				List<String> tempSampleIds = sampleIds.subList(i, i+subListValue);
 				System.out.println("subList size: " + tempSampleIds.size());
@@ -724,6 +724,7 @@ public class SampleAction extends BaseAnnotationAction {
 		}else{
 			dataAvailabilityService.generateBatch(securityService, sampleIds);			
 		}
+		System.out.println("Time finish : " + System.currentTimeMillis() );
 		ActionMessages messages = new ActionMessages();
 		ActionMessage message = new ActionMessage("message.generateDataAvailability");
 		messages.add("message", message);
