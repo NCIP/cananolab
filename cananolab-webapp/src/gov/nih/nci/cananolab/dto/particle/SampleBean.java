@@ -64,7 +64,7 @@ public class SampleBean extends SecuredDataBean {
 
 	private String cloningSampleName;
 
-	private List<DataAvailabilityBean> dataAvailability = new ArrayList<DataAvailabilityBean>();
+	private Set<DataAvailabilityBean> dataAvailability = new HashSet<DataAvailabilityBean>();
 
 	private String dataAvailabilityMetricsScore = Constants.EMPTY;
 	private String caNanoLabScore;
@@ -266,11 +266,11 @@ public class SampleBean extends SecuredDataBean {
 		this.hasDataAvailability = hasDataAvailability;
 	}
 
-	public List<DataAvailabilityBean> getDataAvailability() {
+	public Set<DataAvailabilityBean> getDataAvailability() {
 		return dataAvailability;
 	}
 
-	public void setDataAvailability(List<DataAvailabilityBean> dataAvailability) {
+	public void setDataAvailability(Set<DataAvailabilityBean> dataAvailability) {
 		this.dataAvailability = dataAvailability;
 	}
 
@@ -417,7 +417,7 @@ public class SampleBean extends SecuredDataBean {
 	}
 
 	public void calculateDataAvailabilityScore(
-			List<DataAvailabilityBean> dataAvailability,
+			Set<DataAvailabilityBean> dataAvailability,
 			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap) {
 		// add 1 for the General Sample Information
 		int size = dataAvailability.size() + 1;
