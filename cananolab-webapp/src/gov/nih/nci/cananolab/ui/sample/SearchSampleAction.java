@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -235,7 +236,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		if(securityService == null){
 			securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME);
 		}
-		Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = new HashMap<String, List<DataAvailabilityBean>>();
+		//Map<String, Set<DataAvailabilityBean>> dataAvailabilityMapPerPage = new HashMap<String, Set<DataAvailabilityBean>>();
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String sampleId = sampleBeans.get(i).getDomain().getId()
@@ -260,10 +261,10 @@ public class SearchSampleAction extends AbstractDispatchAction {
 							.getStoredFunctionClassNames(sample).toArray(
 									new String[0]));
 					// get data availability for the samples
-					List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
+					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 							.findDataAvailabilityBySampleId(sampleId,
 									securityService);
-					dataAvailabilityMapPerPage.put(sampleId, dataAvailability);
+					//dataAvailabilityMapPerPage.put(sampleId, dataAvailability);
 					if (!dataAvailability.isEmpty()
 							&& dataAvailability.size() > 0) {
 						sampleBean.setDataAvailability(dataAvailability);
@@ -275,8 +276,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				}
 			}
 		}
-		request.getSession().setAttribute("dataAvailabilityMapPerPage",
-				dataAvailabilityMapPerPage);
+		//request.getSession().setAttribute("dataAvailabilityMapPerPage",
+		//		dataAvailabilityMapPerPage);
 		return loadedSampleBeans;
 	}
 
@@ -327,7 +328,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 	}
 
 	private void calculateDataAvailabilityScore(SampleBean sampleBean,
-			List<DataAvailabilityBean> dataAvailability) {
+			Set<DataAvailabilityBean> dataAvailability) {
 
 		ServletContext appContext = this.getServlet().getServletContext();
 		SortedSet<String> minchar = (SortedSet<String>) appContext
