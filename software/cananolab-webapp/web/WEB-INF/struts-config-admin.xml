@@ -9,6 +9,17 @@
 			<form-property name="siteLogo" type="org.apache.struts.upload.FormFile"	/>
 			<form-property name="siteBean"
 				type="gov.nih.nci.cananolab.dto.admin.SitePreferenceBean" />
+		</form-bean>		
+		<form-bean name="transferOwnerForm" 
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="transferOwnerBean"
+				type="gov.nih.nci.cananolab.dto.admin.TransferOwnerBean" />
+		</form-bean>
+		<form-bean name="transferOwnerSearchForm" 
+			type="org.apache.struts.validator.DynaValidatorForm">		
+			<form-property name="currentOwner" type="java.lang.String" />
+			<form-property name="newOwner" type="java.lang.String" />
+			<form-property name="dataType" type="java.lang.String[]" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
@@ -30,5 +41,18 @@
 			<forward name="cananoHeader" path="/layout/cananoHeader.jsp" />
 			<forward name="cananoSidemenu" path="/layout/cananoSidemenu.jsp" />
 		</action>
+		<action path="/transferOwner"
+			name="transferOwnerForm" 
+			type="gov.nih.nci.cananolab.ui.admin.TransferOwnerAction"
+			scope="request">
+		</action>
+		<action path="/searchTransferOwner"
+			name="transferOwnerSearchForm"
+			type="gov.nih.nci.cananolab.ui.admin.TransferOwnerSearchAction"
+		    input="input" validate="true"
+			scope="request">
+			<forward name="input" path="admin.transferOwnerSearch"  />
+			<forward name="success" path="admin.transferOwnerSearchResult" />
+		</action>		
 	</action-mappings>
 </struts-config>
