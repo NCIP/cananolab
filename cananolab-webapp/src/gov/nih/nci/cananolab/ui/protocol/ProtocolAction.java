@@ -66,9 +66,15 @@ public class ProtocolAction extends BaseAnnotationAction {
 			return mapping.findForward("inputPage");
 		}
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.submitProtocol",
-				protocolBean.getDisplayName());
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		if (!newProtocol) {
+			ActionMessage msg = new ActionMessage("message.updateProtocol",
+					protocolBean.getDisplayName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		} else {
+			ActionMessage msg = new ActionMessage("message.submitProtocol",
+					protocolBean.getDisplayName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		}
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		return forward;
@@ -256,14 +262,14 @@ public class ProtocolAction extends BaseAnnotationAction {
 			HttpServletRequest request) throws Exception {
 		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
 		ProtocolService service = this.setServiceInSession(request);
-		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, protocol
-				.getDomain());
+		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+				protocol.getDomain());
 	}
 
 	public ActionForward download(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ProtocolService service= (ProtocolService) (request.getSession()
+		ProtocolService service = (ProtocolService) (request.getSession()
 				.getAttribute("protocolService"));
 		return downloadFile(service, mapping, form, request, response);
 	}
