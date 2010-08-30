@@ -82,6 +82,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					.getDomainFile();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			Boolean newPub=true;
 			// check if publication is already entered based on PubMedId or DOI
 			if (publication.getPubMedId() != null
 					&& publication.getPubMedId() != 0) {
@@ -96,6 +97,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					logger.info("PubMed ID " + publication.getPubMedId()
 							+ " is already in use.  Resuse the database entry");
 					publication.setId(dbPublication.getId());
+					newPub=false;
 				}
 			}
 			if (!StringUtils.isEmpty(publication.getDigitalObjectId())) {
@@ -109,10 +111,17 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					logger.info("DOI " + publication.getDigitalObjectId()
 							+ " is already in use.  Resuse the database entry");
 					publication.setId(dbPublication.getId());
+					newPub=false;
 				}
 			}
 			fileUtils.prepareSaveFile(publication);
 			appService.saveOrUpdate(publication);
+
+			// save default accesses
+			if (newPub) {
+				super.saveDefaultAccessibilities(publicationBean.getDomainFile().getId()
+						.toString());
+			}
 			fileUtils.writeFile(publicationBean);
 
 			// update sample associations
