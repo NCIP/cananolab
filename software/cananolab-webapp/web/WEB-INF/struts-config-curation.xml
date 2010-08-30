@@ -12,6 +12,8 @@
 	<global-exceptions>
 	</global-exceptions>
 	<global-forwards>
+		<forward name="manageCuration"
+			path="curation.manageCuration" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageCuration" type="org.apache.struts.actions.ForwardAction"
