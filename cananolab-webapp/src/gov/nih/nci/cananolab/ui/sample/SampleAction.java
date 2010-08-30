@@ -473,7 +473,8 @@ public class SampleAction extends BaseAnnotationAction {
 			request.getSession().setAttribute("dataAvailabilityMapPerPage",
 					dataAvailabilityMapPerPage);
 		}*/
-		request.getSession().setAttribute("dataAvailabilityGenerated", true);
+		request.setAttribute("onloadJavascript", "manageDataAvailability('" + sampleBean.getDomain().getId() + "', 'sample', 'dataAvailabilityView')");
+		
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -699,14 +700,28 @@ public class SampleAction extends BaseAnnotationAction {
 		if(service == null){
 			service = setServiceInSession(request);
 		}
+		System.out.println("Generate data availability by batch ");
 		List<String> sampleIds = service.findSampleIdsBy("", "", null, null, null, null, null, null, null, null, null);
-		
-		dataAvailabilityService.generateBatch(securityService, sampleIds);
+		int sampleIdsSize = sampleIds.size();
+		int i=0;
+		System.out.println("sampleIdsSize: " + sampleIdsSize);
+		if(sampleIdsSize > 0){
+			while(true){
+				List<String> tempSampleIds = sampleIds.subList(i, i+30);
+				System.out.println("subList size: " + tempSampleIds.size());
+				dataAvailabilityService.generateBatch(securityService, tempSampleIds);
+				i= i + 30;
+				System.out.println("i = " + i);
+				if(i>=sampleIdsSize){
+					break;
+				}
+			}
+		}
 		ActionMessages messages = new ActionMessages();
-		ActionMessage message = new ActionMessage("message.register");
+		ActionMessage message = new ActionMessage("message.generateDataAvailability");
 		messages.add("message", message);
 		saveMessages(request, messages);
-		return mapping.findForward("/manageCuration.do");
+		return mapping.findForward("manageCuration");
 		
 	}
 }
