@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DataAvailabilityService {
 
@@ -20,7 +21,7 @@ public interface DataAvailabilityService {
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public List<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId, SecurityService securityService) 
+	public Set<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId, SecurityService securityService) 
 		throws DataAvailabilityException, NoAccessException, SecurityException;
 	
 	/**
@@ -43,7 +44,7 @@ public interface DataAvailabilityService {
 	 * @throws NoAccessException 
 	 * @throws SecurityException 
 	 */
-	public List<DataAvailabilityBean> generateDataAvailability(SampleBean sampleBean, SecurityService securityService) 
+	public Set<DataAvailabilityBean> generateDataAvailability(SampleBean sampleBean, SecurityService securityService) 
 		throws DataAvailabilityException, NoAccessException, SecurityException;
 	
 	/**
@@ -55,7 +56,7 @@ public interface DataAvailabilityService {
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public List<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean, SecurityService securityService) 
+	public Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean, SecurityService securityService) 
 		throws DataAvailabilityException, NoAccessException, SecurityException;
 	
 	/**
@@ -67,4 +68,6 @@ public interface DataAvailabilityService {
 	 * @throws SecurityException
 	 */
 	public void deleteDataAvailability(String sampleId, SecurityService securityService) throws DataAvailabilityException, NoAccessException, SecurityException;
+	
+	public void generateBatch(SecurityService securityService, List<String> sampleIds) throws Exception;
 }
