@@ -289,4 +289,118 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new CommunityException(error, e);
 		}
 	}
+
+	public Map<String, String> findCollaborationGroupByGroupName(String ownerName) 
+		throws Exception{
+		
+		List<CollaborationGroupBean> collaborationGroups = new ArrayList<CollaborationGroupBean>();
+		try {
+			User user = authManager.getUser(ownerName);
+			user.getUserId();
+			Set groups = authManager.getGroups(user.getUserId().toString());
+			for (Object obj : groups) {
+				Group group = (Group) obj;
+				//groupNames.add(group.getGroupName());
+			}
+			
+			
+			Group dummy = new Group();
+			//dummy.setGroupName(groupName);
+			//dummy.s
+			SearchCriteria sc = new GroupSearchCriteria(dummy);
+			List results = authManager.getObjects(sc);
+			for (Object obj : results) {
+				Group doGroup = (Group) obj;
+				CollaborationGroupBean cGroup = new CollaborationGroupBean(
+						doGroup);
+				if (securityService
+						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+								+ cGroup.getId())) {
+					setUserAccesses(cGroup);
+					collaborationGroups.add(cGroup);
+				} else {
+					String error = "User has no access to the collaboration group "
+							+ cGroup.getName();
+					logger.info(error);
+				}
+			}
+
+		} catch (Exception e) {
+			String error = "Error finding existing collaboration groups accessible by the user";
+			throw new CommunityException(error, e);
+		}
+		//return collaborationGroups;
+		
+		//authManager.
+		
+
+		if (user == null) {
+			throw new NoAccessException();
+		}
+		
+
+		/*
+		Map<String,String> collaborationGroup = null;
+		DetachedCriteria crit = DetachedCriteria.forClass(Group.class)
+		.setProjection(
+				Projections.projectionList().add(
+						Projections.property("id")).add(
+						Projections.property("groupName")));
+		crit.add(Restrictions.eq("groupName", groupName));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		.getApplicationService();
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			Object[] row = (Object[]) obj;			
+			collaborationGroup.put(row[0].toString(),row[1].toString());
+		}
+		/*try {
+			Group group = authManager.(id);
+			collaborationGroup = new CollaborationGroupBean(group);
+			String pe = AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+					+ collaborationGroup.getId();
+			if (securityService.checkCreatePermission(pe)) {
+				setUserAccesses(collaborationGroup);
+			} else {
+				String error = "User has no access to the collaboration group "
+						+ collaborationGroup.getName();
+				logger.info(error);
+			}
+		} catch (Exception e) {
+			String error = "Error retrieving the collaboration group by name";
+			throw new CommunityException(error, e);
+		}*/
+		return null;
+	}
+
+	public void transferOwner(Set<String> collaborationGroupIds, String newOwnerName)
+			throws CommunityException, NoAccessException {
+		//remove collaboration group
+		if (user == null) {
+			throw new NoAccessException();
+		}
+		try {
+			
+			for(String id: collaborationGroupIds){
+			
+			// check if user has access to delete the group
+				if (!securityService
+						.checkDeletePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+								+ id)) {
+					throw new NoAccessException();
+				} else {
+					CollaborationGroupBean bean = findCollaborationGroupById(id);
+					System.out.println("owner name: " + bean.getOwnerName());
+					
+									
+				}
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error deleting the collaboration group";
+			throw new CommunityException(error, e);
+		}
+		
+	}
 }
