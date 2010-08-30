@@ -62,15 +62,10 @@ public class ProtocolAction extends BaseAnnotationAction {
 			return mapping.findForward("inputPage");
 		}
 		ActionMessages msgs = new ActionMessages();
-		if (!newProtocol) {
-			ActionMessage msg = new ActionMessage("message.updateProtocol",
-					protocolBean.getDisplayName());
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		} else {
-			ActionMessage msg = new ActionMessage("message.submitProtocol",
-					protocolBean.getDisplayName());
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		}
+		ActionMessage msg = new ActionMessage("message.submitProtocol",
+				protocolBean.getDisplayName());
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		return forward;
