@@ -524,14 +524,29 @@ function confirmPublicDataUpdate() {
 		return false;
 	}
 }
-function confirmTransferOwner(form, actionName, dispatch){
-	 if(confirm("This process will take a while. Are you sure to continue?")){
+
+function transferOwner(form, actionName, dispatch){
+	 if(confirmAction()){
 		 return true;
 	}else {
 		return false;
 	}
 }
 
+function confirmAction(){
+	if(confirm("This process will take a while. Are you sure you want to continue ?")){
+		return true;
+	}else{
+		return false;
+	}	
+}
+function generateBatchDataAvailability() {	
+	if(confirmAction()){
+		gotoPage("sample.do?dispatch=generateBatchDataAvailability");
+	}else{
+		return false;
+	}
+}
 function submitReview(form, actionName, dataId, dataName, dataType) {
 	form.action = actionName + ".do?dispatch=submitForReview&reviewDataId=" +dataId+"&reviewDataName="+dataName+"&reviewDataType="+dataType;
 	form.submit();
