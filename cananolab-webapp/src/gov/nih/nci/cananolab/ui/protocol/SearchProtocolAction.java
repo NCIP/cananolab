@@ -70,10 +70,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			protocolAbbreviation = "*" + protocolAbbreviation + "*";
 		}
 
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		ProtocolService service = new ProtocolServiceLocalImpl(securityService);
-
+		ProtocolService service = this.setServiceInSession(request);
 		List<ProtocolBean> allProtocols = service.findProtocolsBy(protocolType,
 				protocolName, protocolAbbreviation, fileTitle);
 		if (user != null) {
@@ -123,5 +120,23 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setLocalSearchDropdowns(request);
 		return mapping.getInputForward();
+	}
+
+	private ProtocolService setServiceInSession(HttpServletRequest request)
+			throws Exception {
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+		ProtocolService protocolService = new ProtocolServiceLocalImpl(
+				securityService);
+		request.getSession().setAttribute("protocolService", protocolService);
+		return protocolService;
+	}
+
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ProtocolService service = (ProtocolService) (request.getSession()
+				.getAttribute("protocolService"));
+		return downloadFile(service, mapping, form, request, response);
 	}
 }

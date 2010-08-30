@@ -7,7 +7,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -34,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author tanq
  */
 
-public class SearchPublicationAction extends AbstractDispatchAction {
+public class SearchPublicationAction extends BaseAnnotationAction {
 
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -277,5 +277,13 @@ public class SearchPublicationAction extends AbstractDispatchAction {
 		request.getSession().setAttribute("publicationService",
 				publicationService);
 		return publicationService;
+	}
+
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		PublicationService service = (PublicationService) (request
+				.getSession().getAttribute("publicationService"));
+		return downloadFile(service, mapping, form, request, response);
 	}
 }
