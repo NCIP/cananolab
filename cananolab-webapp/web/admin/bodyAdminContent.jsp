@@ -47,6 +47,15 @@
 										Click to configure site preferences including custom logos and site banners.
 									</td>
 								</tr>
+								<tr>
+									<td class="sidebarContent">
+										<a href="#" onClick="javascript:location.href='transferOwner.jsp';">
+											Transfer ownership
+										</a>
+										<br>
+										Click to reassign ownership.
+									</td>
+								</tr>
 							</table>
 						</c:if>
 					</td>
