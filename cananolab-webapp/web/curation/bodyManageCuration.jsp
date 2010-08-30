@@ -14,6 +14,7 @@
 			</jsp:include>
 		</td>
 	</tr>
+	<tr><td colspan="2"><jsp:include page="/bodyMessage.jsp?" /></td></tr>
 	<tr>
 		<td colspan="2" class="welcomeContent">
 			This is the manage curation section which allows a curator to review
@@ -57,7 +58,7 @@
 						
 							<tr>
 								<td class="sidebarContent">
-									<a href="sample.do?dispatch=generateBatchDataAvailability">Generate Data
+									<a href="#" onclick="javascript:generateBatchDataAvailability()">Generate Data
 										Availability for existing Samples</a>
 									<br>
 									Generate Data Availability for submitted samples that data availability has not been generated.
