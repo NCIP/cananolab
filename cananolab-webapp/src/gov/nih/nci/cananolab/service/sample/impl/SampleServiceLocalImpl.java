@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -1030,6 +1031,56 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
+
+	public Map<String, String> findSampleIdsBy(String currentOwner) {
+		Map<String,String> sampleIds=null;
+		try {
+			sampleIds =  helper.findSampleIdsBy(currentOwner);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sampleIds;
+	}
+
+	public void transferOwner(Set<String> sampleIds, String currentOwner,
+			String newOwner) throws Exception {
+		
+		if(!this.securityService.getUserBean().isCurator()){
+			throw new NoAccessException();
+		}
+		
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		.getApplicationService();
+		for(String sampleId : sampleIds){
+			Sample domain = helper.findSampleById(sampleId);
+			domain.setCreatedBy(newOwner);
+			SampleComposition sampleComposition = domain.getSampleComposition();
+			Collection<ChemicalAssociation> chemicalAssociation = sampleComposition.getChemicalAssociationCollection();
+			Collection<FunctionalizingEntity> functionalizingEntity = sampleComposition.getFunctionalizingEntityCollection();
+			Collection<NanomaterialEntity> nanomaterialEntity = sampleComposition.getNanomaterialEntityCollection();
+			Collection<Characterization> characterization = domain.getCharacterizationCollection();
+			appService.saveOrUpdate(domain);
+			for(ChemicalAssociation ca : chemicalAssociation){
+				ca.setCreatedBy(newOwner);
+				appService.saveOrUpdate(ca);
+			}
+			for(FunctionalizingEntity fe : functionalizingEntity){
+				fe.setCreatedBy(newOwner);
+				appService.saveOrUpdate(fe);
+			}
+			for(NanomaterialEntity ne : nanomaterialEntity){
+				ne.setCreatedBy(newOwner);
+				appService.saveOrUpdate(ne);
+			}
+			
+			for(Characterization c : characterization){
+				c.setCreatedBy(newOwner);
+				appService.saveOrUpdate(c);
+			}		
+		}		
+	}
+
+
 	public List<String> removeAccesses(Sample sample, Boolean removeLater)
 			throws SampleException, NoAccessException {
 		List<String> ids = new ArrayList<String>();
@@ -1065,4 +1116,5 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		return ids;
 	}
+
 }
