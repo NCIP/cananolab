@@ -32,9 +32,10 @@
 		<td width="30%"></td>
 	</tr>	
 	<tr>
-		<td width="70%" colspan="2">
+		<td width="35%">
 			General Sample Information
 		</td>
+		<td width="35%"></td>
 		<td width="30%" align="center">
 			<img src="images/icon_check.png" />
 		</td>
