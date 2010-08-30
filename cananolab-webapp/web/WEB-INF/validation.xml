@@ -62,5 +62,16 @@
     		</field>
 			
 		</form>
+		<form name="transferOwnerSearchForm">		
+			<field property="currentOwner" depends="required">
+				<arg position="0" key="transferOwnerSearchForm.currentOwner" />
+			</field>
+			<field property="newOwner" depends="required">
+				<arg position="0" key="transferOwnerSearchForm.newOwner"  />
+			</field>
+			<field property="dataType" depends="required">
+				<arg position="0" key="transferOwnerSearchForm.dataType"  />
+			</field>					
+		</form>
 	</formset>
 </form-validation>
