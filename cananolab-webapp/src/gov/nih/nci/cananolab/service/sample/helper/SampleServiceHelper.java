@@ -29,8 +29,10 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -42,6 +44,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -912,5 +915,41 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			}
 		}
 		return poc;
+	}
+	public Map<String, String> findSampleIdsBy(String currentOwner)
+	throws Exception {
+		Map<String, String> samples = new HashMap<String, String>();
+		
+		// can't query for the entire Sample object due to
+		// limitations in pagination in SDK
+		//Sample sample = new Sample();
+		ProjectionList projectionList = Projections.projectionList();
+		
+		projectionList.add(Projections.property("id"));
+		projectionList.add(Projections.property("name"));
+		
+		
+		
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
+		crit.setProjection(Projections.distinct(projectionList));
+		
+		crit.add(Restrictions.eq("createdBy", currentOwner));		
+		
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+				
+		List results =   appService.query(crit);
+		for (Object obj : results) {
+			Object[] row = (Object[])obj;
+			String id = row[0].toString();
+			
+			String name = row[1].toString();
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+				samples.put(id, name);
+			} else {
+				logger.debug("User doesn't have access to sample of ID: " + id);
+			}
+		}
+		return samples;
 	}
 }
