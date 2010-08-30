@@ -41,7 +41,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
 		Boolean newProtocol = true;
-		if (protocolBean.getDomain().getId() != null) {
+		if (protocolBean.getDomain().getId() > 0) {
 			newProtocol = false;
 		}
 		this.saveProtocol(request, protocolBean);
