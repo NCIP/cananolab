@@ -21,16 +21,21 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of PublicationService
  *
- * @author tanq, pansu
+ * @author tanq, pansu, lethai
  *
  */
 public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
@@ -489,5 +494,42 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public SampleServiceHelper getSampleHelper() {
 		return sampleHelper;
+	}
+
+	public Map<String,String> findPublicationsByOwner(String currentOwner) throws Exception{
+		
+		Map<String,String> publications = new HashMap<String, String>();
+		Publication p = new Publication();
+		
+		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
+		.setProjection(
+				Projections.projectionList().add(
+						Projections.property("id")).add(
+						Projections.property("title")));
+		crit.add(Restrictions.eq("createdBy", currentOwner));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		.getApplicationService();
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			Object[] row = (Object[]) obj;			
+			String id = row[0].toString();
+			String title = row[1].toString();
+			publications.put(id,title);
+		}
+		return publications;
+	}
+
+	public void transferOwner(Set<String> publicationIds,
+			String newOwner) throws Exception {
+		if(!this.securityService.getUserBean().isCurator()){
+			throw new NoAccessException();
+		}
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		.getApplicationService();
+		for(String publicationId : publicationIds){
+			Publication publication = helper.findPublicationById(publicationId);
+			publication.setCreatedBy(newOwner);
+			appService.saveOrUpdate(publication);
+		}		
 	}
 }
