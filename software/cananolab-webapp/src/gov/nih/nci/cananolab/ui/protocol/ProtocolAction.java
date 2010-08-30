@@ -44,13 +44,8 @@ public class ProtocolAction extends BaseAnnotationAction {
 		if (protocolBean.getDomain().getId() != null) {
 			newProtocol = false;
 		}
+		this.saveProtocol(request, protocolBean);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ProtocolService service = this.setServiceInSession(request);
-		protocolBean
-				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
-		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
-				protocolBean);
-		service.saveProtocol(protocolBean);
 		// retract from public if updating an existing public record and not
 		// curator
 		if (!newProtocol && !user.isCurator()) {
@@ -78,6 +73,17 @@ public class ProtocolAction extends BaseAnnotationAction {
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		return forward;
+	}
+
+	public void saveProtocol(HttpServletRequest request,
+			ProtocolBean protocolBean) throws Exception {
+		ProtocolService service = this.setServiceInSession(request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		protocolBean
+				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
+		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
+				protocolBean);
+		service.saveProtocol(protocolBean);
 	}
 
 	// for retaining user selected values during validation
@@ -216,7 +222,10 @@ public class ProtocolAction extends BaseAnnotationAction {
 		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
 		AccessibilityBean theAccess = protocol.getTheAccess();
 		ProtocolService service = this.setServiceInSession(request);
-		service.assignAccessibility(theAccess, protocol.getDomain());
+		// if protocol is new, save protocol first
+		if (protocol.getDomain().getId() == 0) {
+			this.saveProtocol(request, protocol);
+		}
 		// if protocol is public, the access is not public, retract public
 		// privilege would be handled in the service method
 		service.assignAccessibility(theAccess, protocol.getDomain());
