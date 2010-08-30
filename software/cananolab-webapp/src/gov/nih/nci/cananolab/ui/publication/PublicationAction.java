@@ -56,9 +56,45 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
 		Boolean newPub = true;
-		if (publicationBean.getDomainFile().getId() != null) {
+		if (publicationBean.getDomainFile().getId() != null
+				&& publicationBean.getDomainFile().getId() > 0) {
 			newPub = false;
 		}
+		this.savePublication(request, theForm);
+
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		String sampleId = (String) theForm.get("sampleId");
+		ActionMessages messages = new ActionMessages();
+
+		// retract from public if updating an existing public record and not
+		// curator
+		if (!newPub && !user.isCurator()) {
+			retractFromPublic(theForm, request, publicationBean.getDomainFile()
+					.getId().toString(), ((Publication) publicationBean
+					.getDomainFile()).getTitle(), "publication");
+			ActionMessage msg = null;
+			msg = new ActionMessage(
+					"message.updatePublication.retractFromPublic");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		}
+
+		ActionMessage msg = new ActionMessage("message.submitPublication",
+				publicationBean.getDomainFile().getTitle());
+		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, messages);
+
+		if (!StringUtils.isEmpty(sampleId)) {
+			return summaryEdit(mapping, form, request, response);
+		} else {
+			return mapping.findForward("success");
+		}
+	}
+
+	private void savePublication(HttpServletRequest request,
+			PublicationForm theForm) throws Exception {
+		PublicationBean publicationBean = (PublicationBean) theForm
+				.get("publication");
 		PublicationService service = this.setServicesInSession(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = (String) theForm.get("sampleId");
@@ -68,7 +104,6 @@ public class PublicationAction extends BaseAnnotationAction {
 			ActionMessage msg = new ActionMessage("publication.fileRequired");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			return mapping.getInputForward();
 		}
 		// validate associated sample names
 		if (StringUtils.isEmpty(sampleId)
@@ -77,7 +112,6 @@ public class PublicationAction extends BaseAnnotationAction {
 					"error.submitPublication.invalidSample");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			return mapping.getInputForward();
 		}
 
 		/**
@@ -109,26 +143,6 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
 
-		// retract from public if updating an existing public record and not
-		// curator
-		if (!newPub && !user.isCurator()) {
-			retractFromPublic(theForm, request, publicationBean.getDomainFile()
-					.getId().toString(), ((Publication) publicationBean
-					.getDomainFile()).getTitle(), "publication");
-
-			ActionMessages messages = new ActionMessages();
-			ActionMessage msg = null;
-			msg = new ActionMessage(
-					"message.updatePublication.retractFromPublic");
-			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, messages);
-		}
-
-		ActionMessage msg = new ActionMessage("message.submitPublication",
-				publicationBean.getDomainFile().getTitle());
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-
 		if (!StringUtils.isEmpty(sampleId)) {
 			SortedSet<String> publicationCategories = InitSetup.getInstance()
 					.getDefaultAndOtherTypesByLookup(request,
@@ -141,10 +155,6 @@ public class PublicationAction extends BaseAnnotationAction {
 							.getCategory()) + 1;
 			request.setAttribute("onloadJavascript", "showSummary('" + ind
 					+ "', " + allPublicationTypes.size() + ")");
-
-			return summaryEdit(mapping, form, request, response);
-		} else {
-			return mapping.findForward("success");
 		}
 	}
 
@@ -643,7 +653,14 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		AccessibilityBean theAccess = publication.getTheAccess();
 		PublicationService service = this.setServicesInSession(request);
-		// if publication is public, the access is not public, retract public
+		// if publication is new, save publication first
+		if (publication.getDomainFile().getId() == null
+				|| publication.getDomainFile().getId() != null
+				&& publication.getDomainFile().getId() == 0) {
+			this.savePublication(request, theForm);
+		}
+		// if publication is public, the access is not public, retract
+		// public
 		// privilege would be handled in the service method
 		service.assignAccessibility(theAccess, (Publication) publication
 				.getDomainFile());
