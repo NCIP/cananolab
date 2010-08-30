@@ -54,6 +54,15 @@
 									appropriate.
 								</td>
 							</tr>
+						
+							<tr>
+								<td class="sidebarContent">
+									<a href="sample.do?dispatch=generateBatchDataAvailability">Generate Data
+										Availability for existing Samples</a>
+									<br>
+									Generate Data Availability for submitted samples that data availability has not been generated.
+								</td>
+							</tr>							
 						</table>
 					</td>
 				</tr>
