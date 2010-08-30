@@ -88,6 +88,7 @@ td.footerMenuItem {
 	background-color: #5c5c5c; /* constant: dark gray */
 	padding-left: 1em;
 	padding-right: 1em;
+	text-align:center;
 }
 
 td.footerMenuItemOver {
@@ -97,6 +98,7 @@ td.footerMenuItemOver {
 	background-color: #6a8989; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
+	text-align:center;
 }
 
 td.sideMenu { /* for the basic style of the side-menu area */
