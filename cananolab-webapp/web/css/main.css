@@ -83,7 +83,7 @@ td.footerMenu {
 
 td.footerMenuItem {
 	/* for the off state of the footer menu (bottom) cells */
-	font-size: 0.7em;
+	font-size: 0.6em;
 	font-weight: bold;
 	background-color: #5c5c5c; /* constant: dark gray */
 	padding-left: 1em;
@@ -93,7 +93,7 @@ td.footerMenuItem {
 
 td.footerMenuItemOver {
 	/* for the over state of the footer menu (bottom) cells */
-	font-size: 0.7em;
+	font-size: 0.6em;
 	font-weight: bold;
 	background-color: #6a8989; /* darker */
 	padding-left: 1em;
