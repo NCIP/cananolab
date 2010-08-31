@@ -72,23 +72,23 @@
 														<tiles:insert attribute="cananoContent" />
 													</td>
 												</tr>
-												<tr>
-													<td class="footerMenu" width="100%" height="20">
-														<%-- include caNanoLab footer --%>
-														<tiles:insert attribute="cananoFooter" />
-													</td>
-												</tr>
 											</tbody>
 										</table>
 									</td>
 								</tr>
+								<tr>
+								<td class="footerMenu">&nbsp;</td>
+								<td class="footerMenu">
+									<%-- include caNanoLab footer --%>
+									<tiles:insert attribute="cananoFooter" />
+								</td>
+							</tr>
 							</tbody>
 						</table>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						l
 						<%-- include NCI footer --%>
 						<tiles:insert attribute="nciFooter" />
 					</td>

@@ -33,8 +33,7 @@
 			onload="${onloadJavascript};location.href='#${anchor}'">
 	</c:if>
 	<c:if test="${!empty onloadJavascript && empty anchor}">
-		<body style="cursor: default"
-			onload="${onloadJavascript};">
+		<body style="cursor: default" onload="${onloadJavascript};">
 	</c:if>
 	<c:if test="${empty onloadJavascript && !empty anchor}">
 		<body style="cursor: default" onload="location.href='#${anchor}'">
@@ -54,8 +53,8 @@
 			</tr>
 			<tr>
 				<td valign="top" height="100%">
-					<table height="100%" cellspacing="0" cellpadding="0" summary=""  width="100%"
-						border="0">
+					<table height="100%" cellspacing="0" cellpadding="0" summary=""
+						width="100%" border="0">
 						<tbody>
 							<tr>
 								<td colspan="2" height="50">
@@ -121,14 +120,15 @@
 													</table>
 												</td>
 											</tr>
-											<tr>
-												<td class="footerMenu" width="100%" height="20">
-													<%-- include caNanoLab footer --%>
-													<tiles:insert attribute="cananoFooter" />
-												</td>
-											</tr>
 										</tbody>
 									</table>
+								</td>
+							</tr>
+							<tr>
+								<td class="footerMenu">&nbsp;</td>
+								<td class="footerMenu">
+									<%-- include caNanoLab footer --%>
+									<tiles:insert attribute="cananoFooter" />
 								</td>
 							</tr>
 						</tbody>
