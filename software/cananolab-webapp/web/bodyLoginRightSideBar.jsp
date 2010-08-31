@@ -21,7 +21,7 @@
 				</tr>
 				<tr>
 					<td class="sidebarContent">
-						<b>caNanoLab provides access to information on:</b>						
+						<b>caNanoLab provides access to information on:</b>
 						<ul class="indented0">
 							<li>
 								Nanotechnology protocols in biomedicine
@@ -154,6 +154,7 @@
 						<a target="_blank" href="https://gforge.nci.nih.gov/frs/?group_id=69">caNanoLab Release Notes</a>.
 					</td>
 				</tr>
+				<tr><td height="10">&nbsp;</td></tr>
 			</table>
 		</td>
 		<td height="30">
