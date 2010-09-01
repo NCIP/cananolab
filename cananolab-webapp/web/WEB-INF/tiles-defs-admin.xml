@@ -16,12 +16,8 @@
 		<put name="cananoContent" value="/admin/bodySitePreference.jsp" />
 		<put name="menu" value="ADMINISTRATION" />
 	</definition>
-	<definition name="admin.transferOwnerSearch" extends="canano.home">
+	<definition name="admin.transferOwner" extends="canano.home">
 		<put name="cananoContent" value="/admin/bodyTransferOwner.jsp" />
 		<put name="menu" value="ADMINISTRATION" />
 	</definition>	
-	<definition name="admin.transferOwnerSearchResult" extends="canano.home">
-		<put name="cananoContent" value="/admin/bodyTransferOwnerSearchResult.jsp" />
-		<put name="menu" value="ADMINISTRATION" />
-	</definition>
 </tiles-definitions>
