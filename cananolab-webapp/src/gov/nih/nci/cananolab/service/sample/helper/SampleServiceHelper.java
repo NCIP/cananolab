@@ -916,7 +916,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		return poc;
 	}
-	public Map<String, String> findSampleIdsBy(String currentOwner)
+	public Map<String, String> findSampleIdsByOwner(String currentOwner)
 	throws Exception {
 		Map<String, String> samples = new HashMap<String, String>();
 		
