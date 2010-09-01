@@ -82,5 +82,6 @@ public interface PublicationService extends BaseService {
 			Publication publication) throws PublicationException,
 			NoAccessException;
 	public Map<String, String> findPublicationsByOwner(String currentOwner) throws Exception;
-	public void transferOwner(Set<String> publicationIds, String newOwner) throws Exception;
+	
+	public void transferOwner(Set<String> publicationIds, String currentOwner, String newOwner) throws Exception;
 }
