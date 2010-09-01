@@ -95,9 +95,9 @@ public interface SampleService extends BaseService {
 	throws SampleException, NoAccessException;
 
 	
-	public Map<String, String> findSampleIdsBy(String currentOwner);
+	public Map<String, String> findSampleIdsByOwner(String currentOwner);
 	
 	public void transferOwner(Set<String> sampleIds, String currentOwner, String newOwner) 
-	throws SampleException, NoAccessException, Exception;
+	throws NoAccessException, Exception;
 
 }
