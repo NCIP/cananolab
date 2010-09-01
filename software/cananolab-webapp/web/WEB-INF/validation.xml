@@ -62,15 +62,15 @@
     		</field>
 			
 		</form>
-		<form name="transferOwnerSearchForm">		
+		<form name="transferOwnerForm">		
 			<field property="currentOwner" depends="required">
-				<arg position="0" key="transferOwnerSearchForm.currentOwner" />
+				<arg position="0" key="transferOwnerForm.currentOwner" />
 			</field>
 			<field property="newOwner" depends="required">
-				<arg position="0" key="transferOwnerSearchForm.newOwner"  />
+				<arg position="0" key="transferOwnerForm.newOwner"  />
 			</field>
 			<field property="dataType" depends="required">
-				<arg position="0" key="transferOwnerSearchForm.dataType"  />
+				<arg position="0" key="transferOwnerForm.dataType"  />
 			</field>					
 		</form>
 	</formset>
