@@ -386,14 +386,14 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		return helper;
 	}
 
-	public void transferOwner(Set<String> protocolIds,
-			String newOwner) throws Exception {
+	public void transferOwner(Set<String> ids, String currentOwner,
+			String newOwner) throws NoAccessException, Exception {
 		if(!this.securityService.getUserBean().isCurator()){
 			throw new NoAccessException();
 		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 		.getApplicationService();
-		for(String protocolId : protocolIds){
+		for(String protocolId : ids){
 			Protocol protocol = helper.findProtocolById(protocolId);
 			protocol.setCreatedBy(newOwner);
 			appService.saveOrUpdate(protocol);
