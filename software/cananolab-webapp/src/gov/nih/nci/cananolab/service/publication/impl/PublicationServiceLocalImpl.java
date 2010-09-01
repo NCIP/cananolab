@@ -508,41 +508,41 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleHelper;
 	}
 
-	public Map<String, String> findPublicationsByOwner(String currentOwner)
-			throws Exception {
-
-		Map<String, String> publications = new HashMap<String, String>();
+public Map<String,String> findPublicationsByOwner(String currentOwner) throws Exception{
+		
+		Map<String,String> publications = new HashMap<String, String>();
 		Publication p = new Publication();
-
+		
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-				.setProjection(
-						Projections.projectionList().add(
-								Projections.property("id")).add(
-								Projections.property("title")));
+		.setProjection(
+				Projections.projectionList().add(
+						Projections.property("id")).add(
+						Projections.property("title")));
 		crit.add(Restrictions.eq("createdBy", currentOwner));
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+		.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			Object[] row = (Object[]) obj;
+			Object[] row = (Object[]) obj;			
 			String id = row[0].toString();
 			String title = row[1].toString();
-			publications.put(id, title);
+			publications.put(id,title);
 		}
 		return publications;
 	}
 
-	public void transferOwner(Set<String> publicationIds, String newOwner)
-			throws Exception {
-		if (!this.securityService.getUserBean().isCurator()) {
+	public void transferOwner(Set<String> publicationIds, String currentOwner,
+			String newOwner) throws Exception {
+		if(!this.securityService.getUserBean().isCurator()){
 			throw new NoAccessException();
 		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		for (String publicationId : publicationIds) {
+			.getApplicationService();
+		for(String publicationId : publicationIds){
 			Publication publication = helper.findPublicationById(publicationId);
 			publication.setCreatedBy(newOwner);
 			appService.saveOrUpdate(publication);
 		}
 	}
+	
 }
