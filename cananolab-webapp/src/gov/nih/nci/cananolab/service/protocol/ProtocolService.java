@@ -51,5 +51,5 @@ public interface ProtocolService extends BaseService {
 			throws ProtocolException, NoAccessException;
 	public Map<String, String> findProtocolsByOwner(String currentOwner) throws Exception;
 	
-	public void transferOwner(Set<String> protocolIds, String newOwner) throws Exception;
+	public void transferOwner(Set<String> protocolIds, String currentOwner, String newOwner) throws Exception;
 }
