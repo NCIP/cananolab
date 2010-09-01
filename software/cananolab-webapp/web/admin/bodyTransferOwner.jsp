@@ -8,7 +8,7 @@
 	<jsp:param name="topic" value="site_preference_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="searchTransferOwner" >
+<html:form action="transferOwner" >
 	<table width="100%" align="left">
 		<tr>
 			<td colspan="4">
@@ -53,9 +53,9 @@
 					<tr>
 						<td>
 							<div align="right">
-								<input type="button" value="Reset" onclick="this.form.reset()">
+								<input type="submit" value="Reset" onclick="this.form.reset()">
 								
-								<input type="submit" value="Submit"  onclick="javascript:location.href='searchTransferOwner.do?dispatch=search'"/>
+								<input type="submit" value="Submit"  onclick="transferOwner();"/>
 							</div>
 						</td>
 					</tr>
