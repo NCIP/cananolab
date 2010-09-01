@@ -25,8 +25,8 @@ public interface CommunityService extends BaseService {
 			CollaborationGroupBean collaborationGroup)
 			throws CommunityException, NoAccessException;
 	
-	public Map<String, String> findCollaborationGroupByGroupName(String groupName)
+	public Map<String, String> findCollaborationGroupByOwner(String owner)
 			throws Exception, NoAccessException;
-	public void transferOwner(Set<String> collaborationGroupIds, String newGroupName) 
+	public void transferOwner(Set<String> collaborationGroupIds, String currentOwner, String newOwner) 
 			throws CommunityException, NoAccessException;
 }
