@@ -1032,10 +1032,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 
-	public Map<String, String> findSampleIdsBy(String currentOwner) {
+	public Map<String, String> findSampleIdsByOwner(String currentOwner) {
 		Map<String,String> sampleIds=null;
-		try {
-			sampleIds =  helper.findSampleIdsBy(currentOwner);
+		try {			
+			sampleIds =  helper.findSampleIdsByOwner(currentOwner);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
