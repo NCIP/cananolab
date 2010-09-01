@@ -16,7 +16,7 @@
 				<table width="100%" align="left" class="submissionView">
 					<tr>
 						<td class="cellLabel" width="20%">
-							Current Owner *
+							Current Owner Login Name *
 						</td>
 						<td >
 							<html:text styleId="currentOwner" property="currentOwner" size="30" />
@@ -25,7 +25,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" width="20%">
-							New Owner *
+							New Owner Login Name *
 						</td>
 						<td >
 							<html:text styleId="newOwner" property="newOwner" size="30" />
@@ -37,7 +37,7 @@
 							Data Type *
 						</td>
 						<td colspan="2">
-							<html:select styleId="dataType" property="dataType"  multiple="true" size="4">
+							<html:select styleId="dataType" property="dataType">
 								<html:option value="Sample"  />
 								<html:option value="Publication" />
 								<html:option value="Protocol" />
@@ -53,7 +53,7 @@
 					<tr>
 						<td>
 							<div align="right">
-								<input type="submit" value="Reset" onclick="this.form.reset()">
+								<input type="reset" value="Reset" onclick="this.form.reset()">
 								
 								<input type="submit" value="Submit"  onclick="transferOwner();"/>
 							</div>
