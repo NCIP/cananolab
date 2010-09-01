@@ -525,16 +525,16 @@ function confirmPublicDataUpdate() {
 	}
 }
 
-function transferOwner(form, actionName, dispatch){
+function transferOwner(){
 	 if(confirmAction()){
-		 return true;
+		 gotoPage("transferOwner.do?");
 	}else {
 		return false;
 	}
 }
 
 function confirmAction(){
-	if(confirm("This process will take a while. Are you sure you want to continue ?")){
+	if(confirm("This process will take a while. Are you sure to continue ?")){
 		return true;
 	}else{
 		return false;
