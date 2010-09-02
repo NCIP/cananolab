@@ -33,12 +33,12 @@
 					<table class="editTableWithGrid" width="95%" align="center">
 						<tr>
 							<th>
-								Group Name
+								Name
 							</th>
-							<th>
-								Group Description
+							<th width="33%">
+								Description
 							</th>
-							<th>Group Owner Name</th>
+							<th>Owner</th>
 							<th>
 								Users (Access)
 							</th>
