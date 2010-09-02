@@ -301,13 +301,17 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public SampleBean findSampleById(String sampleId) throws SampleException,
-			NoAccessException {
+	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
+			throws SampleException, NoAccessException {
 		SampleBean sampleBean = null;
 		try {
 			Sample sample = helper.findSampleById(sampleId);
 			if (sample != null) {
-				sampleBean = loadSampleBean(sample);
+				if (loadAccessInfo) {
+					sampleBean = loadSampleBean(sample);
+				} else {
+					sampleBean = new SampleBean(sample);
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -1031,11 +1035,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-
 	public Map<String, String> findSampleIdsByOwner(String currentOwner) {
-		Map<String,String> sampleIds=null;
-		try {			
-			sampleIds =  helper.findSampleIdsByOwner(currentOwner);
+		Map<String, String> sampleIds = null;
+		try {
+			sampleIds = helper.findSampleIdsByOwner(currentOwner);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1044,42 +1047,45 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void transferOwner(Set<String> sampleIds, String currentOwner,
 			String newOwner) throws Exception {
-		
-		if(!this.securityService.getUserBean().isCurator()){
+
+		if (!this.securityService.getUserBean().isCurator()) {
 			throw new NoAccessException();
 		}
-		
+
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-		.getApplicationService();
-		for(String sampleId : sampleIds){
+				.getApplicationService();
+		for (String sampleId : sampleIds) {
 			Sample domain = helper.findSampleById(sampleId);
 			domain.setCreatedBy(newOwner);
 			SampleComposition sampleComposition = domain.getSampleComposition();
-			Collection<ChemicalAssociation> chemicalAssociation = sampleComposition.getChemicalAssociationCollection();
-			Collection<FunctionalizingEntity> functionalizingEntity = sampleComposition.getFunctionalizingEntityCollection();
-			Collection<NanomaterialEntity> nanomaterialEntity = sampleComposition.getNanomaterialEntityCollection();
-			Collection<Characterization> characterization = domain.getCharacterizationCollection();
+			Collection<ChemicalAssociation> chemicalAssociation = sampleComposition
+					.getChemicalAssociationCollection();
+			Collection<FunctionalizingEntity> functionalizingEntity = sampleComposition
+					.getFunctionalizingEntityCollection();
+			Collection<NanomaterialEntity> nanomaterialEntity = sampleComposition
+					.getNanomaterialEntityCollection();
+			Collection<Characterization> characterization = domain
+					.getCharacterizationCollection();
 			appService.saveOrUpdate(domain);
-			for(ChemicalAssociation ca : chemicalAssociation){
+			for (ChemicalAssociation ca : chemicalAssociation) {
 				ca.setCreatedBy(newOwner);
 				appService.saveOrUpdate(ca);
 			}
-			for(FunctionalizingEntity fe : functionalizingEntity){
+			for (FunctionalizingEntity fe : functionalizingEntity) {
 				fe.setCreatedBy(newOwner);
 				appService.saveOrUpdate(fe);
 			}
-			for(NanomaterialEntity ne : nanomaterialEntity){
+			for (NanomaterialEntity ne : nanomaterialEntity) {
 				ne.setCreatedBy(newOwner);
 				appService.saveOrUpdate(ne);
 			}
-			
-			for(Characterization c : characterization){
+
+			for (Characterization c : characterization) {
 				c.setCreatedBy(newOwner);
 				appService.saveOrUpdate(c);
-			}		
-		}		
+			}
+		}
 	}
-
 
 	public List<String> removeAccesses(Sample sample, Boolean removeLater)
 			throws SampleException, NoAccessException {

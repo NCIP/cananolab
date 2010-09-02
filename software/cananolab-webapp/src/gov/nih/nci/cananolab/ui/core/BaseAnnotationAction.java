@@ -75,7 +75,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 
-		SampleBean sampleBean = service.findSampleById(sampleId);
+		SampleBean sampleBean = service.findSampleById(sampleId, true);
 		request.setAttribute("theSample", sampleBean);
 		return sampleBean;
 	}
