@@ -24,7 +24,6 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -233,16 +232,18 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		}
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
-		if(securityService == null){
-			securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME);
+		if (securityService == null) {
+			securityService = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME);
 		}
-		//Map<String, Set<DataAvailabilityBean>> dataAvailabilityMapPerPage = new HashMap<String, Set<DataAvailabilityBean>>();
+		// Map<String, Set<DataAvailabilityBean>> dataAvailabilityMapPerPage =
+		// new HashMap<String, Set<DataAvailabilityBean>>();
 		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
 			if (i < sampleBeans.size()) {
 				String sampleId = sampleBeans.get(i).getDomain().getId()
 						.toString();
 
-				SampleBean sampleBean = service.findSampleById(sampleId);
+				SampleBean sampleBean = service.findSampleById(sampleId, false);
 				if (sampleBean != null) {
 					Sample sample = sampleBean.getDomain();
 					SampleServiceHelper helper = ((SampleServiceLocalImpl) service)
@@ -264,7 +265,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 							.findDataAvailabilityBySampleId(sampleId,
 									securityService);
-					//dataAvailabilityMapPerPage.put(sampleId, dataAvailability);
+					// dataAvailabilityMapPerPage.put(sampleId,
+					// dataAvailability);
 					if (!dataAvailability.isEmpty()
 							&& dataAvailability.size() > 0) {
 						sampleBean.setDataAvailability(dataAvailability);
@@ -276,8 +278,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				}
 			}
 		}
-		//request.getSession().setAttribute("dataAvailabilityMapPerPage",
-		//		dataAvailabilityMapPerPage);
+		// request.getSession().setAttribute("dataAvailabilityMapPerPage",
+		// dataAvailabilityMapPerPage);
 		return loadedSampleBeans;
 	}
 
