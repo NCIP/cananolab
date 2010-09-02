@@ -38,7 +38,7 @@
 		</td>
 		<td ></td>
 		<td align="center">
-			<img src="images/checkMark.jpg"  width=12%"/>
+			<img src="images/checkMark.jpg"  width=11%"/>
 		</td>
 	</tr>
 	<tr>
