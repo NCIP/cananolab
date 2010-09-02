@@ -50,10 +50,10 @@
 								<tr>
 									<td class="sidebarContent">
 										<a href="#" onClick="javascript:location.href='transferOwner.jsp';">
-											Transfer ownership
+											Transfer Data Ownership
 										</a>
 										<br>
-										Click to reassign ownership.
+										Click to reassign ownership for samples, protocols, publications and collaboration groups.
 									</td>
 								</tr>
 							</table>
