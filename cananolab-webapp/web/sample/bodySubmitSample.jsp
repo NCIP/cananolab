@@ -104,14 +104,14 @@
 			<tr>
 			<c:set var="showDataAvailabilityMetrics" value="${sampleForm.map.sampleBean.hasComposition
 						|| sampleForm.map.sampleBean.hasCharacterizations || sampleForm.map.sampleBean.hasPublications }" />
-				<c:if test="${!empty user && showDataAvailabilityMetrics }">
+				<c:if test="${!empty user }">
 					<td class="cellLabel">
 					Data Availability Metrics
 					</td>
 				</c:if>
 				<td>
 					<c:if
-						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability && showDataAvailabilityMetrics }">
+						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability }">
 						<input type="image" value="Generate" src="images/btn_generate.gif"
 							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 					</c:if>
