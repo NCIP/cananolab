@@ -552,6 +552,33 @@ div.logindiv {
 	vertical-align: top;
 }
 
+.gridTableData {
+	font-family: arial, helvetica, verdana, sans-serif;
+	border-style: solid;
+	border-collapse: collapse;
+	border-width: 0px;
+}
+
+.gridTableData th {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	padding: 3px 10px 6px 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #dedede;
+	text-align: center;
+}
+
+.gridTableData td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	padding: 3px 0 3px 3px;
+	border-width: 1px;
+	border-color: #dedede;
+	border-style: solid;
+	vertical-align: top;
+}
+
 .gridtableNoBorder {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-width: 0px;
