@@ -78,7 +78,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 */
 	public Set<DataAvailabilityBean> findDataAvailabilityBySampleId(String sampleId, SecurityService securityService) 
 		throws DataAvailabilityException, NoAccessException, SecurityException{
-		
+		System.out.println("Finding Data Availability for Sample id: " + sampleId);
 		try {
 			if(!securityService.checkReadPermission(sampleId)){
 				throw new NoAccessException(noAccessException + sampleId);
@@ -94,8 +94,19 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 				SELECT_DATA_AVAILABILITY + sampleId, DATA_MAPPER);
 		
 		Set<DataAvailabilityBean> resultSet = new HashSet<DataAvailabilityBean>();
-		resultSet.addAll(result);
-		
+		Set<String> availableEntityNames = new HashSet<String>();
+		for(DataAvailabilityBean bean: result){
+			String availableEntityName = bean.getAvailableEntityName();
+			if(availableEntityNames.isEmpty()){
+				resultSet.add(bean);
+				availableEntityNames.add(availableEntityName);
+			}else{
+				if(!availableEntityNames.contains(availableEntityName)){
+					resultSet.add(bean);
+				}
+				availableEntityNames.add(availableEntityName);
+			}			
+		}		
 		return resultSet;
 	}
 	
@@ -111,6 +122,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		Set<String> clazNames = null;
 		try{
 			clazNames = generate(sampleBean, securityService);
+			clazNames.add("General Sample Information");
 		}catch(Exception e){
 			throw new DataAvailabilityException();
 		}
@@ -172,6 +184,10 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		}
 		
 		System.out.println("Current size: " + currentDataAvailability.size());
+		for(DataAvailabilityBean bean: currentDataAvailability){
+			bean.setUpdatedBy(user.getLoginName());
+			bean.setUpdatedDate(new Date());
+		}
 		//update the currentDataAvailability
 		List<DataAvailabilityBean> currentList = new ArrayList<DataAvailabilityBean>();
 		currentList.addAll(currentDataAvailability);
@@ -244,13 +260,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		SortedSet<String> storedFunctionClassNames = helper.getStoredFunctionClassNames(domain);
 		SortedSet<String> storedNanomaterialEntityClassNames = helper.getStoredNanomaterialEntityClassNames(domain);
 		
-		//SortedSet<String> storedCharacterizationClassNames = helper.getStoredCharacterizationClassNames(domain);
-		/*for(String s: storedCharacterizationClassNames){
-			System.out.print(" characterization class name: " + s);
-		}*/
 		Set<String> clazzNames = new HashSet<String>();	
 		
-		//Collection<Characterization> characterizationCollection = domain.getCharacterizationCollection() ;
 		if (domain.getCharacterizationCollection() != null) {
 			for (Characterization achar : domain.getCharacterizationCollection()) {
 				if (achar instanceof OtherCharacterization) {
@@ -311,17 +322,12 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * @param data
 	 */
 	private void deleteBatch(final List<String> entity, final Long sampleId){
-		 
-		 /* String sql = "DELETE FROM DATA_AVAILABILITY WHERE " +
-			"SAMPLE_ID=? AND AVAILABLE_ENTITY_NAME=?";*/
-		 
+	
 		  getJdbcTemplate().batchUpdate(DELETE_ON_UPDATE, new BatchPreparedStatementSetter() {
 		 
-			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				
+			public void setValues(PreparedStatement ps, int i) throws SQLException {				
 				ps.setLong(1,sampleId);
-				ps.setString(2, entity.get(i));
-				
+				ps.setString(2, entity.get(i));				
 			}
 		 
 			public int getBatchSize() {
@@ -334,10 +340,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * @param data
 	 */
 	private void insertBatch(final List<DataAvailabilityBean> data){
-		 
-		/*  String sql = "INSERT INTO DATA_AVAILABILITY " +
-			"(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY) VALUES (?, ?, ?, ?, ?)";
-		 */
+	
 		  getJdbcTemplate().batchUpdate(INSERT_SQL + INSERT_COLS, new BatchPreparedStatementSetter() {
 		 
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -361,10 +364,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	 * @param data
 	 */
 	private void insertBatchOnUpdate(final List<DataAvailabilityBean> data){
-		 
-		  /*String sql = "INSERT INTO DATA_AVAILABILITY " +
-			"(SAMPLE_ID, DATASOURCE_NAME, AVAILABLE_ENTITY_NAME, CREATED_DATE, CREATED_BY, UPDATED_DATE, UPDATED_BY) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		 */
+		
 		  getJdbcTemplate().batchUpdate(INSERT_ON_UPDATE, new BatchPreparedStatementSetter() {
 		 
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -420,11 +420,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			Set<String> newGenernatedDataAvailability) {
 		
 		Set<DataAvailabilityBean> removedList = new HashSet<DataAvailabilityBean>();
-		//Set<DataAvailabilityBean> currentListWithoutDuplicates = new HashSet<DataAvailabilityBean>();
 		
-		//for(DataAvailabilityBean currentBean: currentDataAvailability){
-		//	currentListWithoutDuplicates.add(currentBean);
-		//}
 		if(newGenernatedDataAvailability.size() < currentDataAvailability.size()){
 			//find the ones that are removed
 			String[] availableEntityName = newGenernatedDataAvailability.toArray(new String[0]);
@@ -468,7 +464,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 			//System.out.println("entity in new generated list: " + entity);
 			boolean updated = false;
 			for(DataAvailabilityBean bean : currentDataAvailability) {//int i=0; i< currentDataAvailability.size(); i++){
-				//DataAvailabilityBean bean= currentDataAvailability.get(i);
 			
 				String availableEntityName = bean.getAvailableEntityName();
 				//System.out.println("current entity: " + availableEntityName);
@@ -503,17 +498,14 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		UserBean ub = securityService.getUserBean();
 		if(!ub.isCurator()){
 			throw new Exception("No permission to process the request");
-		}else{
-			
-			
+		}else{			
 			// if data availability not found, generate them.
 			for(String sampleId : sampleIds){				
 				Set<DataAvailabilityBean> dataAvailabilityBeans = findDataAvailabilityBySampleId(sampleId, securityService);
 				if(dataAvailabilityBeans != null && dataAvailabilityBeans.isEmpty()){
 					//need to load the sample
 					SampleBean sampleBean = loadSample(sampleId, securityService);
-					generateDataAvailability(sampleBean, securityService);
-					
+					generateDataAvailability(sampleBean, securityService);		
 				}
 			}
 		}
@@ -522,24 +514,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 	private SampleBean loadSample(String sampleId, SecurityService securityService) throws SampleException, NoAccessException{
 		SampleService service = getSampleService(securityService);
 		SampleBean sampleBean = service.findSampleById(sampleId);
-		/*if (sampleBean != null) {
-			Sample sample = sampleBean.getDomain();
-			SampleServiceHelper helper = ((SampleServiceLocalImpl) service)
-					.getHelper();
-			// load summary information
-			sampleBean.setCharacterizationClassNames(helper
-					.getStoredCharacterizationClassNames(sample)
-					.toArray(new String[0]));
-			sampleBean.setFunctionalizingEntityClassNames(helper
-					.getStoredFunctionalizingEntityClassNames(sample)
-					.toArray(new String[0]));
-			sampleBean.setNanomaterialEntityClassNames(helper
-					.getStoredNanomaterialEntityClassNames(sample)
-					.toArray(new String[0]));
-			sampleBean.setFunctionClassNames(helper
-					.getStoredFunctionClassNames(sample).toArray(
-							new String[0]));
-		}*/
+		
 		return sampleBean;
 	}
 	
