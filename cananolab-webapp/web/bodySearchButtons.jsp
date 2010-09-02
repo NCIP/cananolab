@@ -6,7 +6,7 @@
 	<tr>
 		<td align="center">
 			<span class="formMessage"> <em>Searching without any
-					parameters would return all ${dataType}s.</em> </span>
+					parameters returns all ${dataType}s.</em> </span>
 		</td>
 	</tr>
 	<tr>
