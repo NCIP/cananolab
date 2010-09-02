@@ -46,8 +46,8 @@
 									<img src="images/ajax-loader.gif" border="0" class="counts"	id="loaderImg${sample.domain.id}" style="display: none">
 									<table
 										id="detailView${sample.domain.id}"
-										style="display: none; position: absolute; left: -650px; top: -100px; z-index: 5; width: 520px; font-size: 10px; background-color: #FFFFFF"
-										class="promptbox">
+										style="display: none; position: absolute; left: -650px; top: -100px; z-index: 5; font-size: 8px; background-color: #FFFFFF"
+										class="promptBox" border="0">
 										<tr>
 											<td>
 												<div
