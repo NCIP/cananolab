@@ -12,7 +12,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Group Name*
+			Name*
 		</td>
 		<td>
 			<html:text styleId="groupName" property="group.name" size="30"/>
@@ -20,7 +20,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Group Description
+			Description
 		</td>
 		<td>
 			<html:textarea styleId="groupDescription"
@@ -40,7 +40,7 @@
 					<tbody id="userRows">
 						<tr id="patternHeader">
 							<td width="30%" class="cellLabel">
-								User Login Name
+								Login Name
 							</td>
 							<td width="30%" class="cellLabel">
 								Access to the Group
