@@ -8,7 +8,7 @@
 <table class="promptbox" width="85%" align="center">
 	<tr>
 		<td class="cellLabel" colspan="${characterizationForm.map.achar.theFinding.numberOfColumns}">
-			Please enter column order for each column below.
+			Please enter column number for each column below.
 		</td>
 	</tr>
 	<tr>
@@ -30,8 +30,8 @@
 		<logic:iterate id="col" name="characterizationForm"
 			property="achar.theFinding.columnHeaders" indexId="cInd">
 			<td>
-				<html:text styleId="columnOrder${cInd}" size="5" 
-					property="achar.theFinding.columnHeaders[${cInd}].columnOrder" 
+				<html:text styleId="columnOrder${cInd}" size="5"
+					property="achar.theFinding.columnHeaders[${cInd}].columnOrder"
 					onkeydown="return filterInteger(event)" />
 			</td>
 		</logic:iterate>
