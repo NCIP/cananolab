@@ -46,7 +46,7 @@ public interface SampleService extends BaseService {
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException;
 
-	public SampleBean findSampleById(String sampleId) throws SampleException,
+	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo) throws SampleException,
 			NoAccessException;
 
 	public SampleBean findSampleByName(String sampleName)
@@ -90,14 +90,14 @@ public interface SampleService extends BaseService {
 
 	public void removeAccessibility(AccessibilityBean access, Sample sample)
 			throws SampleException, NoAccessException;
-	
+
 	public List<String> removeAccesses(Sample sample, Boolean removeLater)
 	throws SampleException, NoAccessException;
 
-	
+
 	public Map<String, String> findSampleIdsByOwner(String currentOwner);
-	
-	public void transferOwner(Set<String> sampleIds, String currentOwner, String newOwner) 
+
+	public void transferOwner(Set<String> sampleIds, String currentOwner, String newOwner)
 	throws NoAccessException, Exception;
 
 }
