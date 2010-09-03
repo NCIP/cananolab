@@ -70,4 +70,6 @@ public interface DataAvailabilityService {
 	public void deleteDataAvailability(String sampleId, SecurityService securityService) throws DataAvailabilityException, NoAccessException, SecurityException;
 	
 	public void generateBatch(SecurityService securityService, List<String> sampleIds) throws Exception;
+	public void deleteAll(SecurityService securityService) throws Exception;
+	public Set<String> findSampleIds(SecurityService securityService) throws Exception;
 }
