@@ -705,6 +705,7 @@ public class SampleAction extends BaseAnnotationAction {
 		if(service == null){
 			service = setServiceInSession(request);
 		}
+		
 		System.out.println("Generate data availability by batch ");
 		List<String> sampleIds = service.findSampleIdsBy("", "", null, null, null, null, null, null, null, null, null);
 		int sampleIdsSize = sampleIds.size();
