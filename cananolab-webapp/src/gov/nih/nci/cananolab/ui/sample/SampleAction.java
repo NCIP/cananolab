@@ -462,6 +462,7 @@ public class SampleAction extends BaseAnnotationAction {
 				.generateDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
+		calculateDataAvailabilityScore(sampleBean, dataAvailability);
 
 		/*Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
 				.getSession().getAttribute("dataAvailabilityMapPerPage");
