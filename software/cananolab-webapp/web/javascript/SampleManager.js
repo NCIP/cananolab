@@ -580,7 +580,7 @@ function deleteTheCharacterizationQuery() {
 function showDetailView(styleId, url) {
 	hideOtherLinksAndViews(styleId);
 	url = url + "&styleId=" + styleId;
-	hide("detailLink" + styleId);
+	//hide("detailLink" + styleId);
 	show("loaderImg" + styleId);
 	SampleManager.getDetailContent(url, function(pageData) {
 		var contentElement = document.getElementById("content" + styleId);
@@ -683,7 +683,7 @@ function editDataAvailability(url){
 				escapeHtml : false
 			});
 			show('dataAvailability' );
-			hide('editDataAvailability');
+			//hide('editDataAvailability');
 		}
 	});
 }
