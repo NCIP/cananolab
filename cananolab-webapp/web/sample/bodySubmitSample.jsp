@@ -101,7 +101,7 @@
 		</c:if>
 		<%@include file="../bodyManageAccessibility.jsp" %>
 		<c:if test="${!empty updateSample}">
-			<tr>
+		<tr>
 			<c:set var="showDataAvailabilityMetrics" value="${sampleForm.map.sampleBean.hasComposition
 						|| sampleForm.map.sampleBean.hasCharacterizations || sampleForm.map.sampleBean.hasPublications }" />
 				<c:if test="${!empty user }">
@@ -115,15 +115,32 @@
 						<input type="image" value="Generate" src="images/btn_generate.gif"
 							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 					</c:if>
-					<c:if
-						test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true'}">
-						<a href="#"
-					onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView'); "
-					id="editDataAvailability" ><img
-						align="top" src="images/btn_edit.gif" border="0" /></a>
-					</c:if>
 				</td>
 			</tr>
+			<c:if
+				test="${!empty user && sampleForm.map.sampleBean.hasDataAvailability eq 'true'}">
+			<tr>
+				<td colspan="2"><table class="editTableWithGrid" width="95%" align="center">
+									<tr>
+										<th>
+											caNanoLab Availability Score
+										</th>
+										<th>
+											MINChar Availability Score
+										</th>
+										<th></th>
+										
+									</tr>
+									<tr><td>${sampleForm.map.sampleBean.caNanoLabScore}</td>
+										<td>${sampleForm.map.sampleBean.mincharScore}</td>
+										<td><a href="#"	onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView'); ">
+											Edit</a>
+										</td>
+									</tr>
+								</table>
+				</td>
+			</tr>
+			</c:if>
 			<tr>
 			<td colspan="2" align="center">
 				<c:set var="dataAvailabilityStyle" value="display:none" />
