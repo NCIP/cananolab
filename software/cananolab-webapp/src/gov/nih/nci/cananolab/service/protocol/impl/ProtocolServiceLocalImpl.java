@@ -150,8 +150,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// save default accesses
 			if (newProtocol) {
-				super.saveDefaultAccessibilities(protocolBean.getDomain().getId()
-						.toString());
+				super.saveDefaultAccessibilities(protocolBean.getDomain()
+						.getId().toString());
+				super.saveDefaultAccessibilities(protocolBean.getFileBean()
+						.getDomainFile().getId().toString());
 			}
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
@@ -361,23 +363,25 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new ProtocolException(error, e);
 		}
 	}
-	public Map<String, String> findProtocolsByOwner(String currentOwner) throws Exception{
-		Map<String,String> protocols = new HashMap<String, String>();
-		
+
+	public Map<String, String> findProtocolsByOwner(String currentOwner)
+			throws Exception {
+		Map<String, String> protocols = new HashMap<String, String>();
+
 		Protocol p = new Protocol();
-		
+
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
-		.setProjection(
-				Projections.projectionList().add(
-						Projections.property("id")).add(
-						Projections.property("name")));
+				.setProjection(
+						Projections.projectionList().add(
+								Projections.property("id")).add(
+								Projections.property("name")));
 		crit.add(Restrictions.eq("createdBy", currentOwner));
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-		.getApplicationService();
+				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			Object[] row = (Object[]) obj;
-			protocols.put(row[0].toString(),row[1].toString());
+			protocols.put(row[0].toString(), row[1].toString());
 		}
 		return protocols;
 	}
@@ -388,15 +392,15 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void transferOwner(Set<String> ids, String currentOwner,
 			String newOwner) throws NoAccessException, Exception {
-		if(!this.securityService.getUserBean().isCurator()){
+		if (!this.securityService.getUserBean().isCurator()) {
 			throw new NoAccessException();
 		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-		.getApplicationService();
-		for(String protocolId : ids){
+				.getApplicationService();
+		for (String protocolId : ids) {
 			Protocol protocol = helper.findProtocolById(protocolId);
 			protocol.setCreatedBy(newOwner);
 			appService.saveOrUpdate(protocol);
-		}		
+		}
 	}
 }
