@@ -187,7 +187,8 @@ public class SampleAction extends BaseAnnotationAction {
 				&& selectedSampleDataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
 			sampleBean.setDataAvailability(selectedSampleDataAvailability);
-			request.setAttribute("onloadJavascript", "manageDataAvailability('" + sampleBean.getDomain().getId() + "', 'sample', 'dataAvailabilityView')");
+			calculateDataAvailabilityScore(sampleBean, selectedSampleDataAvailability);	
+			//request.setAttribute("onloadJavascript", "manageDataAvailability('" + sampleBean.getDomain().getId() + "', 'sample', 'dataAvailabilityView')");
 		}
 		
 		theForm.set("sampleBean", sampleBean);
@@ -500,6 +501,8 @@ public class SampleAction extends BaseAnnotationAction {
 		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
+		//recalculate the score
+		calculateDataAvailabilityScore(sampleBean, dataAvailability);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -556,8 +559,12 @@ public class SampleAction extends BaseAnnotationAction {
 			request.setAttribute("availableEntityNames", availableEntityNames);
 		}
 		request.setAttribute("sampleBean", sampleBean);
-
-		return mapping.findForward("dataAvailabilityView");
+		String styleId = request.getParameter("styleId");
+		if(styleId != null){
+			return mapping.findForward("dataAvailabilityView");
+		}else{
+			return mapping.findForward("dataAvailabilityEdit");
+		}
 	}
 
 	private void calculateDataAvailabilityScore(SampleBean sampleBean,
