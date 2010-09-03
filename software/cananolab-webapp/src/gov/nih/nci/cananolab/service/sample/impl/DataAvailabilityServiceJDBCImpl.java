@@ -524,4 +524,22 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements D
 		}
 		return sampleService;
 	}
+
+	public void deleteAll(SecurityService securityService) throws Exception {
+		UserBean ub = securityService.getUserBean();
+		if(!ub.isCurator()){
+			throw new Exception("No permission to process the request");
+		}else{
+			this.getJdbcTemplate().execute(DELETE_SQL);
+		}
+		
+	}
+
+	public Set<String> findSampleIds(SecurityService securityService)
+			throws Exception {
+		List<String> sampleIdsList = this.getJdbcTemplate().queryForList("select distinct(sample_id) from data_availability");
+		Set<String> sampleIds = new HashSet();
+		sampleIds.addAll(sampleIdsList);
+		return sampleIds;
+	}
 }
