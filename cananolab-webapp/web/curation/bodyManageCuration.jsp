@@ -58,8 +58,8 @@
 						
 							<tr>
 								<td class="sidebarContent">
-									<a href="#" onclick="javascript:generateBatchDataAvailability()">Generate Data
-										Availability for existing Samples</a>
+									<a href="#" onClick="javascript:location.href='generateBatchDataAvailability.jsp';">Generate Data
+										Availability</a>
 									<br>
 									Generate Data Availability for submitted samples that data availability has not been generated.
 								</td>
