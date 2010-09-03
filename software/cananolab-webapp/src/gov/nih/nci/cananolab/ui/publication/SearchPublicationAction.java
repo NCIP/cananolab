@@ -125,7 +125,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 				String publicationId = publicationBeans.get(i).getDomainFile()
 						.getId().toString();
 				PublicationBean pubBean = service
-						.findPublicationById(publicationId);
+						.findPublicationById(publicationId, false);
 				if (pubBean != null) {
 					loadedPublicationBeans.add(pubBean);
 				}

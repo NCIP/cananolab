@@ -271,7 +271,7 @@ public class EndNoteXMLHandler {
 							.getPublicationFromPubMedXML(pubMedId.toString());
 					pubBean.copyPubMedFieldsFromPubMedXML(xmlPubBean);
 					PublicationBean pBean = service.findPublicationByKey(
-							"pubMedId", pubMedId);
+							"pubMedId", pubMedId, false);
 					if (pBean != null) {
 						Publication pub = (Publication) pBean.getDomainFile();
 						if (pub != null && pub.getId() != null
@@ -292,7 +292,7 @@ public class EndNoteXMLHandler {
 				// 2.check for duplicated publication in DB by DOI.
 				else if (!StringUtils.isEmpty(doi)) {
 					PublicationBean pBean = service.findPublicationByKey(
-							"digitalObjectId", doi);
+							"digitalObjectId", doi, false);
 					if (pBean != null) {
 						Publication pub = (Publication) pBean.getDomainFile();
 						if (pub != null && pub.getId() != null
