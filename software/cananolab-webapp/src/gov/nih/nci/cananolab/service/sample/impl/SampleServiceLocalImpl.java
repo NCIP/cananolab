@@ -390,7 +390,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			sampleBean.setGroupAccesses(groupAccesses);
 			sampleBean.setUserUpdatable(this.checkUserUpdatable(groupAccesses,
 					userAccesses));
-			sampleBean.setUserDeletable(this.checkUserUpdatable(groupAccesses,
+			sampleBean.setUserDeletable(this.checkUserDeletable(groupAccesses,
 					userAccesses));
 			sampleBean.setUserIsOwner(this.checkUserOwner(sampleBean
 					.getDomain().getCreatedBy()));
