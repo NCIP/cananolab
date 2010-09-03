@@ -230,7 +230,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(finding.getDomain());
-			// save file data to file system and assign visibility
+			// save file data to file system
 			for (FileBean fileBean : finding.getFiles()) {
 				fileUtils.writeFile(fileBean);
 			}
