@@ -9,7 +9,7 @@
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
 <c:if test="${! empty param.styleId}">
-	<table width="100%" class="gridtableNoBorder">
+	<table width="100%" class="summaryViewNoGrid">
 		<tr>
 			<td style="text-align:right;">
 				<a href="#"
