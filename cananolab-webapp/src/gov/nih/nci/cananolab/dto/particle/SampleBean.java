@@ -419,7 +419,7 @@ public class SampleBean extends SecuredDataBean {
 	public void calculateDataAvailabilityScore(
 			Set<DataAvailabilityBean> dataAvailability,
 			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap) {
-		// add 1 for the General Sample Information
+		
 		int size = dataAvailability.size() ;
 		int minCharSize = 0;
 		int totalMinCharSize = minchar.size();
@@ -444,12 +444,18 @@ public class SampleBean extends SecuredDataBean {
 		Double caNanoLabScore = new Double(size * 100 / Constants.CANANOLAB_AVAILABLE_ENTITY); 
 		Double minCharScore = new Double(minCharSize * 100 / totalMinCharSize);
 
+		this.setDataAvailabilityMetricsScore("caNanoLab: "
+				+ caNanoLabScore.intValue() + "%; MINChar: "
+				+ minCharScore.intValue() + "%");
 		this.dataAvailabilityMetricsScore = "caNanoLab: "
 				+ caNanoLabScore.intValue() + "%; MINChar: "
 				+ minCharScore.intValue() + "%";
 		this.caNanoLabScore = caNanoLabScore.toString() + "% (" + size
 				+ " out of 30)";
+		this.setCaNanoLabScore(caNanoLabScore.toString() + "% (" + size	+ " out of 30)");
 		this.mincharScore = minCharScore.toString() + "% (" + minCharSize
 				+ " out of " + totalMinCharSize + ")";
+		this.setMincharScore(minCharScore.toString() + "% (" + minCharSize
+				+ " out of " + totalMinCharSize + ")");
 	}
 }
