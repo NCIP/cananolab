@@ -135,8 +135,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward download(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ProtocolService service = (ProtocolService) (request.getSession()
-				.getAttribute("protocolService"));
+		ProtocolService service = setServiceInSession(request);
 		return downloadFile(service, mapping, form, request, response);
 	}
 }
