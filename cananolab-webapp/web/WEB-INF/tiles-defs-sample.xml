@@ -187,4 +187,13 @@
 		<put name="cananoContent" value="/sample/bodySubmitPointOfContact.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
+	
+	<definition name="sample.generateDataAvailability" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodyDataAvailabilityBatchGeneration.jsp" />
+		<put name="menu" value="samples" />
+	</definition>
+	<definition name="sample.generateDataAvailabilityResult" extends="canano.home">
+		<put name="cananoContent" value="/sample/bodyDataAvailabilityBatchGeneration.jsp" />
+		<put name="menu" value="samples" />
+	</definition>
 </tiles-definitions>
