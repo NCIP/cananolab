@@ -88,7 +88,7 @@ public class DWRPublicationManager {
 		// search database record for pubMed ID
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
-					"pubMedId", new Long(pubmedID));
+					"pubMedId", new Long(pubmedID), true);
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
 				publicationBean.copyNonPubMedFieldsFromDatabase(dbPubBean);
@@ -141,7 +141,7 @@ public class DWRPublicationManager {
 		// search database record for DOI
 		try {
 			PublicationBean dbPubBean = getService().findPublicationByKey(
-					"digitalObjectId", doi);
+					"digitalObjectId", doi, true);
 			if (dbPubBean != null) {
 				// update form publication with data stored in the databbase
 				publicationBean.copyFromDatabase(dbPubBean);

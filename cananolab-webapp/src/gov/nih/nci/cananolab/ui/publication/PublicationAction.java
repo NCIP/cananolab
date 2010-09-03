@@ -265,7 +265,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService publicationService = this
 				.setServicesInSession(request);
 		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId);
+				.findPublicationById(publicationId, true);
 		theForm.set("publication", pubBean);
 		theForm.set("sampleId", sampleId);
 		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
@@ -458,7 +458,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		 */
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId);
+				.findPublicationById(publicationId, false);
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("publication", pubBean);
 		return mapping.findForward("publicationDetailPrintView");
@@ -581,7 +581,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId);
+				.findPublicationById(publicationId, false);
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("publication", pubBean);
 		String title = pubBean.getDomainFile().getTitle();

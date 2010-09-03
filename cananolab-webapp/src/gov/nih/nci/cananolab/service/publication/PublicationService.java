@@ -32,10 +32,10 @@ public interface PublicationService extends BaseService {
 	public void savePublication(PublicationBean publicationBean)
 			throws PublicationException, NoAccessException;
 
-	public PublicationBean findPublicationById(String publicationId)
+	public PublicationBean findPublicationById(String publicationId, Boolean loadAccessInfo)
 			throws PublicationException, NoAccessException;
 
-	public PublicationBean findPublicationByKey(String keyName, Object keyValue)
+	public PublicationBean findPublicationByKey(String keyName, Object keyValue, Boolean loadAccessInfo)
 			throws PublicationException, NoAccessException;
 
 	public List<PublicationBean> findPublicationsBySampleId(String sampleId)
@@ -82,6 +82,6 @@ public interface PublicationService extends BaseService {
 			Publication publication) throws PublicationException,
 			NoAccessException;
 	public Map<String, String> findPublicationsByOwner(String currentOwner) throws Exception;
-	
+
 	public void transferOwner(Set<String> publicationIds, String currentOwner, String newOwner) throws Exception;
 }

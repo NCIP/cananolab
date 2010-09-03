@@ -82,7 +82,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					.getDomainFile();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			Boolean newPub=true;
+			Boolean newPub = true;
 			// check if publication is already entered based on PubMedId or DOI
 			if (publication.getPubMedId() != null
 					&& publication.getPubMedId() != 0) {
@@ -97,7 +97,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					logger.info("PubMed ID " + publication.getPubMedId()
 							+ " is already in use.  Resuse the database entry");
 					publication.setId(dbPublication.getId());
-					newPub=false;
+					newPub = false;
 				}
 			}
 			if (!StringUtils.isEmpty(publication.getDigitalObjectId())) {
@@ -111,7 +111,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					logger.info("DOI " + publication.getDigitalObjectId()
 							+ " is already in use.  Resuse the database entry");
 					publication.setId(dbPublication.getId());
-					newPub=false;
+					newPub = false;
 				}
 			}
 			fileUtils.prepareSaveFile(publication);
@@ -119,8 +119,8 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 			// save default accesses
 			if (newPub) {
-				super.saveDefaultAccessibilities(publicationBean.getDomainFile().getId()
-						.toString());
+				super.saveDefaultAccessibilities(publicationBean
+						.getDomainFile().getId().toString());
 			}
 			fileUtils.writeFile(publicationBean);
 
@@ -239,19 +239,26 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public PublicationBean findPublicationById(String publicationId)
-			throws PublicationException, NoAccessException {
-		return findPublicationByKey("id", new Long(publicationId));
+	public PublicationBean findPublicationById(String publicationId,
+			Boolean loadAccessInfo) throws PublicationException,
+			NoAccessException {
+		return findPublicationByKey("id", new Long(publicationId),
+				loadAccessInfo);
 	}
 
-	public PublicationBean findPublicationByKey(String keyName, Object keyValue)
+	public PublicationBean findPublicationByKey(String keyName,
+			Object keyValue, Boolean loadAccessInfo)
 			throws PublicationException, NoAccessException {
 		PublicationBean publicationBean = null;
 		try {
 			Publication publication = helper.findPublicationByKey(keyName,
 					keyValue);
-			publicationBean = loadPublicationBean(publication);
 			if (publication != null) {
+				if (loadAccessInfo) {
+					publicationBean = loadPublicationBean(publication);
+				} else {
+					publicationBean = new PublicationBean(publication);
+				}
 				String[] sampleNames = helper
 						.findSampleNamesByPublicationId(publication.getId()
 								.toString());
@@ -508,41 +515,42 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleHelper;
 	}
 
-public Map<String,String> findPublicationsByOwner(String currentOwner) throws Exception{
-		
-		Map<String,String> publications = new HashMap<String, String>();
+	public Map<String, String> findPublicationsByOwner(String currentOwner)
+			throws Exception {
+
+		Map<String, String> publications = new HashMap<String, String>();
 		Publication p = new Publication();
-		
+
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-		.setProjection(
-				Projections.projectionList().add(
-						Projections.property("id")).add(
-						Projections.property("title")));
+				.setProjection(
+						Projections.projectionList().add(
+								Projections.property("id")).add(
+								Projections.property("title")));
 		crit.add(Restrictions.eq("createdBy", currentOwner));
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-		.getApplicationService();
+				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			Object[] row = (Object[]) obj;			
+			Object[] row = (Object[]) obj;
 			String id = row[0].toString();
 			String title = row[1].toString();
-			publications.put(id,title);
+			publications.put(id, title);
 		}
 		return publications;
 	}
 
 	public void transferOwner(Set<String> publicationIds, String currentOwner,
 			String newOwner) throws Exception {
-		if(!this.securityService.getUserBean().isCurator()){
+		if (!this.securityService.getUserBean().isCurator()) {
 			throw new NoAccessException();
 		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-			.getApplicationService();
-		for(String publicationId : publicationIds){
+				.getApplicationService();
+		for (String publicationId : publicationIds) {
 			Publication publication = helper.findPublicationById(publicationId);
 			publication.setCreatedBy(newOwner);
 			appService.saveOrUpdate(publication);
 		}
 	}
-	
+
 }
