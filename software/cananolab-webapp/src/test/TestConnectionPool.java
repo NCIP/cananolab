@@ -44,7 +44,7 @@ public class TestConnectionPool {
 				// System.out.println("Publication: "
 				// + publication.getDisplayName());
 				// logger.info("Publication: " + publication.getDisplayName());
-				PublicationBean publication = service.findPublicationById(id);
+				PublicationBean publication = service.findPublicationById(id, true);
 				if (!StringUtils.isEmpty(publication.getDomainFile().getUri())) {
 					p.println(publication.getDomainFile().getUri());
 					URL yahoo = new URL(publication.getDomainFile().getUri());
