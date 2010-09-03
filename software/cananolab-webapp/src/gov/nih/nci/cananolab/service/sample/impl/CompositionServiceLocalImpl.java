@@ -113,7 +113,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				fileUtils.prepareSaveFile(fileBean.getDomainFile());
 			}
 			appService.saveOrUpdate(entity);
-z			// save file to the file system
+			// save file to the file system
 			for (FileBean fileBean : entityBean.getFiles()) {
 				fileUtils.writeFile(fileBean);
 			}
