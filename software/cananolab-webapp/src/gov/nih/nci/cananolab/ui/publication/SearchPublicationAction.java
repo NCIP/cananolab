@@ -79,6 +79,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		request
 				.setAttribute("resultSize",
 						new Integer(publicationBeans.size()));
+		//allow user to go back to the search results via the cache
+		response.setHeader("Cache-Control","private");
 		return mapping.findForward("success");
 	}
 
