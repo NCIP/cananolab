@@ -64,11 +64,6 @@
 				initial="0" />
 			<form-property name="dispatch" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="generateBatchDataAvailabilityForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="option"
-				type="java.lang.String" />
-		</form-bean>
 	</form-beans>
 	<global-exceptions>
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
@@ -114,7 +109,7 @@
 			<forward name="bareSummaryView" path="/sample/bodyBareSampleSummaryView.jsp" />
 			<forward name="dataAvailabilityView" path="/sample/bodyDataAvailabilityView.jsp" />
 			<forward name="dataAvailabilityEdit" path="/sample/bodyDataAvailabilityEdit.jsp" />
-			
+
 		</action>
 		<action input="input" name="searchSampleForm" parameter="dispatch"
 			path="/searchSample" type="org.springframework.web.struts.DelegatingActionProxy"
@@ -202,12 +197,6 @@
 			<forward name="summaryEdit" path="sample.characterization.summaryEdit" />
 			<forward name="saveExperimentConfig"
 				path="/submitExperimentConfig.do?dispatch=create&amp;page=1" />
-		</action>
-		<action input="input" name="generateBatchDataAvailabilityForm" path="/generateBatchDataAvailability" 
-			type="org.springframework.web.struts.DelegatingActionProxy"
-			scope="request">
-			<forward name="input" path="sample.generateDataAvailability" />
-			<forward name="success" path="sample.generateDataAvailabilityResult" />
 		</action>
 	</action-mappings>
 </struts-config>

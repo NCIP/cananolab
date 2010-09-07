@@ -8,22 +8,33 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
+		<form-bean name="generateBatchDataAvailabilityForm"
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="option" type="java.lang.String" />
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
 	</form-beans>
 	<global-exceptions>
 	</global-exceptions>
 	<global-forwards>
-		<forward name="manageCuration"
-			path="curation.manageCuration" />
+		<forward name="manageCuration" path="curation.manageCuration" />
 	</global-forwards>
 	<action-mappings>
-		<action path="/manageCuration" type="gov.nih.nci.cananolab.ui.curation.ManageCurationAction"
+		<action path="/manageCuration"
+			type="gov.nih.nci.cananolab.ui.curation.ManageCurationAction"
 			parameter="curation.manageCuration" scope="request" />
-		<action name="reviewDataForm" parameter="dispatch"
-			path="/reviewData" type="org.springframework.web.struts.DelegatingActionProxy"
-			input="input">
+		<action name="reviewDataForm" parameter="dispatch" path="/reviewData"
+			type="org.springframework.web.struts.DelegatingActionProxy" input="input">
 			<forward name="setup" path="curation.reviewData" />
-			<forward name="input"
-				path="/reviewData.do?dispatch=input&amp;page=0" />
+			<forward name="input" path="/reviewData.do?dispatch=input&amp;page=0" />
+		</action>
+		<action input="input" name="generateBatchDataAvailabilityForm"
+			parameter="dispatch" path="/generateBatchDataAvailability"
+			type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
+			<forward name="input" path="curation.generateBatchDataAvailability" />
+			<forward name="success" path="curation.generateBatchDataAvailability" />
 		</action>
 	</action-mappings>
 </struts-config>
