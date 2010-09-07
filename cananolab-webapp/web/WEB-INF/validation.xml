@@ -39,39 +39,42 @@
 				</var>
 			</field>
 		</form>
-		<form name="registerUserForm">		
+		<form name="registerUserForm">
 			<field property="firstName" depends="required">
 				<arg position="0" key="registerUserForm.firstName" />
 			</field>
 			<field property="lastName" depends="required">
 				<arg position="0" key="registerUserForm.lastName" />
 			</field>
-			<field property="email" depends="required,email" >
-				<arg position="0" key="registerUserForm.email" />								
+			<field property="email" depends="required,email">
+				<arg position="0" key="registerUserForm.email" />
 			</field>
 			<field property="phone" depends="required">
 				<arg position="0" key="registerUserForm.phone" />
 			</field>
 			<field property="organization" depends="required">
 				<arg position="0" key="registerUserForm.organization" />
-			</field>			
+			</field>
 			<field property="comment" depends="maxlength">
-        		<arg0 key="registerUserForm.comment"/>
-        		<arg1 name="maxlength" key="${var:maxlength}" resource="false"/>
-        		<var><var-name>maxlength</var-name><var-value>4000</var-value></var>
-    		</field>
-			
+				<arg0 key="registerUserForm.comment" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>4000</var-value>
+				</var>
+			</field>
+
 		</form>
-		<form name="transferOwnerForm">		
-			<field property="currentOwner" depends="required">
-				<arg position="0" key="transferOwnerForm.currentOwner" />
+		<form name="transferOwnerForm">
+			<field property="currentOwner" page="1" depends="required">
+				<arg position="0" key="transferOwnerForm.currentOwner" bundle="admin" />
 			</field>
-			<field property="newOwner" depends="required">
-				<arg position="0" key="transferOwnerForm.newOwner"  />
+			<field property="newOwner" page="1" depends="required">
+				<arg position="0" key="transferOwnerForm.newOwner" bundle="admin" />
 			</field>
-			<field property="dataType" depends="required">
-				<arg position="0" key="transferOwnerForm.dataType"  />
-			</field>					
+			<field property="dataType" page="1" depends="required">
+				<arg position="0" key="transferOwnerForm.dataType" bundle="admin" />
+			</field>
 		</form>
 	</formset>
 </form-validation>
