@@ -14,7 +14,9 @@
 			</jsp:include>
 		</td>
 	</tr>
-	<tr><td colspan="2"><jsp:include page="/bodyMessage.jsp?" /></td></tr>
+	<tr>
+		<td colspan="2"><jsp:include page="/bodyMessage.jsp?bundle=curation" /></td>
+	</tr>
 	<tr>
 		<td colspan="2" class="welcomeContent">
 			This is the manage curation section which allows a curator to review
@@ -47,23 +49,24 @@
 							</tr>
 							<tr>
 								<td class="sidebarContent">
-									<a href="reviewData.do?dispatch=setupNew">Review Data
-										Pending Release to Public</a>
+									<a href="reviewData.do?dispatch=setupNew&page=0">Review
+										Data Pending Release to Public</a>
 									<br>
 									Review samples, publications and protocols submitted by
 									researchers and assign them to be readable by Public when
 									appropriate.
 								</td>
 							</tr>
-						
+
 							<tr>
 								<td class="sidebarContent">
-									<a href="#" onClick="javascript:location.href='generateBatchDataAvailability.jsp';">Generate Data
-										Availability</a>
+									<a
+										href="generateBatchDataAvailability.do?dispatch=setupNew&page=0">Generate
+										Data Availability</a>
 									<br>
-									Generate Data Availability for submitted samples that data availability has not been generated.
+									Generate Data Availability for submitted samples in a batch.
 								</td>
-							</tr>							
+							</tr>
 						</table>
 					</td>
 				</tr>
