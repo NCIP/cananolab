@@ -49,7 +49,7 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<a href="#" onClick="javascript:location.href='transferOwner.jsp';">
+										<a href="transferOwner.do?dispatch=setupNew&page=0">
 											Transfer Data Ownership
 										</a>
 										<br>
