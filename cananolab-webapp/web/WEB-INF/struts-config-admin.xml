@@ -2,11 +2,10 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="sitePreferenceForm"
-			type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="sitePreferenceForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="siteName" type="java.lang.String" />
-			<form-property name="siteLogo" type="org.apache.struts.upload.FormFile"	/>
+			<form-property name="siteLogo" type="org.apache.struts.upload.FormFile" />
 			<form-property name="siteBean"
 				type="gov.nih.nci.cananolab.dto.admin.SitePreferenceBean" />
 		</form-bean>
@@ -15,6 +14,9 @@
 			<form-property name="currentOwner" type="java.lang.String" />
 			<form-property name="newOwner" type="java.lang.String" />
 			<form-property name="dataType" type="java.lang.String[]" />
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
@@ -22,25 +24,20 @@
 	<global-forwards>
 	</global-forwards>
 	<action-mappings>
-		<action path="/adminHome"
-			type="gov.nih.nci.cananolab.ui.admin.ManageAdminAction"
+		<action path="/adminHome" type="gov.nih.nci.cananolab.ui.admin.ManageAdminAction"
 			parameter="admin.home" scope="request">
 		</action>
-		<action path="/admin"
-			name="sitePreferenceForm"
+		<action path="/admin" name="sitePreferenceForm"
 			type="org.springframework.web.struts.DelegatingActionProxy"
-			parameter="dispatch" input="input" validate="false"
-			scope="request">
+			parameter="dispatch" input="input" validate="false" scope="request">
 			<forward name="input" path="admin.sitePreference" />
 			<forward name="cananoHeader" path="/layout/cananoHeader.jsp" />
 			<forward name="cananoSidemenu" path="/layout/cananoSidemenu.jsp" />
 		</action>
-		<action path="/transferOwner"
-			name="transferOwnerForm"
-			type="gov.nih.nci.cananolab.ui.admin.TransferOwnerAction"
-		    input="input" validate="true"
-			scope="request">
-			<forward name="input" path="admin.transferOwner"  />
+		<action path="/transferOwner" name="transferOwnerForm" parameter="dispatch"
+			type="gov.nih.nci.cananolab.ui.admin.TransferOwnerAction" input="input"
+			validate="true" scope="request">
+			<forward name="input" path="admin.transferOwner" />
 			<forward name="success" path="admin.transferOwner" />
 		</action>
 	</action-mappings>
