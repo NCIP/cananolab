@@ -26,7 +26,6 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 
 import java.util.Map;
 import java.util.Set;
