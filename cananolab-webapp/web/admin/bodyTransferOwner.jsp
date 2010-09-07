@@ -8,59 +8,44 @@
 	<jsp:param name="topic" value="site_preference_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="transferOwner" >
-	<table width="100%" align="left">
+<html:form action="/transferOwner">
+	<jsp:include page="/bodyMessage.jsp?bundle=admin" />
+	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td colspan="4">
-				<jsp:include page="/bodyMessage.jsp" />
-				<table width="100%" align="left" class="submissionView">
-					<tr>
-						<td class="cellLabel" width="20%">
-							Current Owner Login Name *
-						</td>
-						<td >
-							<html:text styleId="currentOwner" property="currentOwner" size="30" />
-						</td>
-						
-					</tr>
-					<tr>
-						<td class="cellLabel" width="20%">
-							New Owner Login Name *
-						</td>
-						<td >
-							<html:text styleId="newOwner" property="newOwner" size="30" />
-						</td>
-						
-					</tr>
-					<tr>
-						<td class="cellLabel" width="20%">
-							Data Type *
-						</td>
-						<td colspan="2">
-							<html:select styleId="dataType" property="dataType">
-								<html:option value="Sample"  />
-								<html:option value="Publication" />
-								<html:option value="Protocol" />
-								<html:option value="Collaboration Group" />
-							</html:select>							
-						</td>						
-					</tr>
-				</table>
-				<br>
-			
-			
-				<table border="0" align="right" cellpadding="4" cellspacing="0">
-					<tr>
-						<td>
-							<div align="right">
-								<input type="reset" value="Reset" onclick="this.form.reset()">
-								
-								<input type="submit" value="Submit"  onclick="transferOwner();"/>
-							</div>
-						</td>
-					</tr>
-				</table>
+			<td class="cellLabel" width="30%">
+				Current Owner Login Name *
+			</td>
+			<td>
+				<html:text styleId="currentOwner" property="currentOwner" size="30" />
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				New Owner Login Name *
+			</td>
+			<td>
+				<html:text styleId="newOwner" property="newOwner" size="30" />
+			</td>
+
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Data Type *
+			</td>
+			<td>
+				<html:select styleId="dataType" property="dataType" multiple="true">
+					<html:option value="Sample" />
+					<html:option value="Publication" />
+					<html:option value="Protocol" />
+					<html:option value="Collaboration Group" />
+				</html:select>
 			</td>
 		</tr>
 	</table>
+	<br>
+	<c:set var="hiddenDispatch" value="transfer" />
+	<c:set var="hiddenPage" value="1" />
+	<c:set var="resetOnclick"
+		value="javascript:location.href='transferOwner.do?dispatch=setupNew&page=0'" />
+	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
