@@ -21,4 +21,9 @@
 		<put name="cananoContent" value="/curation/bodyReviewData.jsp" />
 		<put name="menu" value="curation" />
 	</definition>
+	<definition name="curation.generateBatchDataAvailability"
+		extends="canano.home">
+		<put name="cananoContent" value="/curation/bodyDataAvailabilityBatchGeneration.jsp" />
+		<put name="menu" value="curation" />
+	</definition>
 </tiles-definitions>
