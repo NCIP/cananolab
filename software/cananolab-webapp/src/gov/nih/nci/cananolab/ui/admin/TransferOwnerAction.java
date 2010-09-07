@@ -25,6 +25,8 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +34,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,10 +41,16 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class TransferOwnerAction extends Action {
+public class TransferOwnerAction extends AbstractDispatchAction {
 	//private static Logger logger = Logger.getLogger(TransferOwnerAction.class);
-	
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
+
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return mapping.findForward("input");
+	}
+
+	public ActionForward transfer(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -53,18 +59,18 @@ public class TransferOwnerAction extends Action {
 		String currentOwner = (String) theForm.get("currentOwner");
 		String newOwner = (String) theForm.get("newOwner");
 		System.out.println("current owner: " + currentOwner + " new owner: " + newOwner);
-		
+
 		String[] dataTypes = new String[0];
 		if (theForm != null) {
 			dataTypes = (String[]) theForm
 					.get("dataType");
-			
+
 		}
 		Map<String,String> sampleResult=null;
 		Map<String,String> protocolResult = null;
 		Map<String,String> publicationResult = null;
 		Map<String,String> collaborationGroupResult = null;
-		
+
 		for(int i=0; i<dataTypes.length; i++){
 			if(dataTypes[i].equalsIgnoreCase("Sample")){
 				sampleResult = searchSample(currentOwner,  request);
@@ -79,16 +85,16 @@ public class TransferOwnerAction extends Action {
 				collaborationGroupResult = searchCollaborationGroup(currentOwner, request);
 				transferOwnerForCollaborationGroup(currentOwner, newOwner, collaborationGroupResult.keySet(), request);
 			}
-		}	
-		
+		}
+
 		ActionMessages messages = new ActionMessages();
 		ActionMessage message = new ActionMessage("message.transferOwner");
 		messages.add("message", message);
 		saveMessages(request, messages);
-		
+
 		return mapping.findForward("success");
 	}
-	
+
 	private Map<String, String> searchSample(String currentOwner, HttpServletRequest request) throws Exception{
 		SampleService service = null;
 		SecurityService securityService = getSecurityService(request);
@@ -99,16 +105,16 @@ public class TransferOwnerAction extends Action {
 			service = new SampleServiceLocalImpl(securityService);
 			request.getSession().setAttribute("sampleService",service);
 		}
-		
+
 		Map<String, String> sampleIds = service.findSampleIdsByOwner(currentOwner);
-		
+
 		return sampleIds;
 	}
-	
+
 	private Map<String,String> searchCollaborationGroup(String currentOwner, HttpServletRequest request) throws Exception{
 		CommunityService service = null;
 		SecurityService securityService = getSecurityService(request);
-		
+
 		if (request.getSession().getAttribute("communityService") != null) {
 			service = (CommunityService) request.getSession().getAttribute(
 					"communityService");
@@ -117,7 +123,7 @@ public class TransferOwnerAction extends Action {
 			request.getSession().setAttribute("communityService",service);
 		}
 		return service.findCollaborationGroupByOwner(currentOwner);
-		
+
 	}
 	/**
 	 * map contain publication id and name
@@ -136,7 +142,7 @@ public class TransferOwnerAction extends Action {
 		Map<String, String> publications = service.findPublicationsByOwner(currentOwner);
 		return publications;
 	}
-	
+
 	private Map<String, String> searchProtocol(String currentOwner, HttpServletRequest request) throws Exception{
 		SecurityService securityService  = getSecurityService(request);
 		ProtocolService service = (ProtocolService)request.getSession().getAttribute("protocolService");
@@ -146,61 +152,61 @@ public class TransferOwnerAction extends Action {
 		}
 		Map<String, String> protocols = service.findProtocolsByOwner(currentOwner);
 		return protocols;
-	}	
-	
-	private void transferOwnerForSample(String currentOwner, String newOwner, 
+	}
+
+	private void transferOwnerForSample(String currentOwner, String newOwner,
 			Set<String> sampleIds, HttpServletRequest request) throws Exception{
 		SecurityService securityService = getSecurityService(request);
 		if(!securityService.getUserBean().isAdmin()){
 			//you do not have permission to change sample owner
 			throw new NoAccessException();
 		}
-		
+
 		SampleService service = (SampleService) request.getSession()
 		.getAttribute("sampleService");
-		
+
 		service.transferOwner(sampleIds, currentOwner, newOwner);
 	}
-	
-	private void transferOwnerForPublication(String currentOwner, String newOwner, 
+
+	private void transferOwnerForPublication(String currentOwner, String newOwner,
 			Set<String> publicationIds, HttpServletRequest request) throws Exception{
 		SecurityService securityService = getSecurityService(request);
 		if(!securityService.getUserBean().isAdmin()){
 			//you do not have permission to change publication owner
 			throw new NoAccessException();
 		}
-		
+
 		PublicationService service = (PublicationService) request.getSession()
 		.getAttribute("publicationService");
-		
+
 		service.transferOwner(publicationIds, currentOwner, newOwner);
 	}
-	
-	private void transferOwnerForProtocol(String currentOwner, String newOwner, 
+
+	private void transferOwnerForProtocol(String currentOwner, String newOwner,
 			Set<String> protocolIds, HttpServletRequest request) throws Exception{
 		SecurityService securityService = getSecurityService(request);
 		if(!securityService.getUserBean().isAdmin()){
 			//you do not have permission to change protocol owner
 			throw new NoAccessException();
 		}
-		
+
 		ProtocolService service = (ProtocolService) request.getSession()
 		.getAttribute("protocolService");
-		
+
 		service.transferOwner(protocolIds, currentOwner, newOwner);
 	}
-	
-	private void transferOwnerForCollaborationGroup(String currentOwner, String newOwner, 
+
+	private void transferOwnerForCollaborationGroup(String currentOwner, String newOwner,
 			Set<String> collaborationGroupIds, HttpServletRequest request) throws Exception{
 		SecurityService securityService = getSecurityService(request);
 		if(!securityService.getUserBean().isAdmin()){
 			//you do not have permission to change collaboration group owner
 			throw new NoAccessException();
 		}
-		
+
 		CommunityService service = (CommunityService) request.getSession()
 		.getAttribute("communityService");
-		
+
 		service.transferOwner(collaborationGroupIds,  newOwner, currentOwner);
 	}
 
