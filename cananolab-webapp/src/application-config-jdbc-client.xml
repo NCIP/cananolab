@@ -157,7 +157,7 @@
 			<ref bean="curationServiceDAO" />
 		</property>
 	</bean>
-	<bean name="/generateBatchDataAvailability" class="gov.nih.nci.cananolab.ui.sample.BatchDataAvailabilityAction">
+	<bean name="/generateBatchDataAvailability" class="gov.nih.nci.cananolab.ui.curation.BatchDataAvailabilityAction">
 		<property name="dataAvailabilityService">
 			<ref bean="dataAvailabilityServiceDAO" />
 		</property>
