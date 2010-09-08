@@ -230,7 +230,7 @@ public class UserBean {
 
 	public void setGroupNames(List<String> groupNames) {
 		this.groupNames = groupNames;
-		if (groupNames.contains(AccessibilityBean.CSM_DATA_CURATOR)) {
+		if (groupNames!=null && groupNames.contains(AccessibilityBean.CSM_DATA_CURATOR)) {
 			this.curator = true;
 		} else {
 			this.curator = false;
