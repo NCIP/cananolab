@@ -124,8 +124,8 @@
 						</td>
 						<td align="right" colspan="3">
 							<div align="right">
-								<input class="promptButton" type="button" value="Save" onclick="javascript:addUserAccess();" />
-								<input class="promptButton" type="button" value="Cancel" onclick="clearUserAccess();closeSubmissionForm('User');">
+								<input class="promptButton" type="button" value="Save" onclick="javascript:addUserAccess();enableOuterButtons();" />
+								<input class="promptButton" type="button" value="Cancel" onclick="clearUserAccess();closeSubmissionForm('User');enableOuterButtons();">
 							</div>
 						</td>
 					</tr>
