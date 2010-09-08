@@ -152,8 +152,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (newProtocol) {
 				super.saveDefaultAccessibilities(protocolBean.getDomain()
 						.getId().toString());
-				super.saveDefaultAccessibilities(protocolBean.getFileBean()
-						.getDomainFile().getId().toString());
+				if (protocolBean.getFileBean() != null) {
+					super.saveDefaultAccessibilities(protocolBean.getFileBean()
+							.getDomainFile().getId().toString());
+				}
 			}
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
