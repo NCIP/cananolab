@@ -33,7 +33,7 @@
 				Data Type *
 			</td>
 			<td>
-				<html:select styleId="dataType" property="dataType" multiple="true">
+				<html:select styleId="dataType" property="dataType" >
 					<html:option value="Sample" />
 					<html:option value="Publication" />
 					<html:option value="Protocol" />
