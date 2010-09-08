@@ -120,7 +120,7 @@
 					<tr>
 						<td>
 							<input class="promptButton" style="display: none;" id="deleteUser" type="button"
-								value="Remove" onclick="deleteTheUserAccess()">
+								value="Remove" onclick="deleteTheUserAccess(); enableOuterButtons();">
 						</td>
 						<td align="right" colspan="3">
 							<div align="right">
