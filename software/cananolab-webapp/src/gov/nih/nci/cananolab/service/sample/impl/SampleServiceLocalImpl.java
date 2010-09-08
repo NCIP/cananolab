@@ -1048,7 +1048,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void transferOwner(Set<String> sampleIds, String currentOwner,
 			String newOwner) throws Exception {
 
-		if (!this.securityService.getUserBean().isCurator()) {
+		if (!this.securityService.getUserBean().isAdmin()) {
 			throw new NoAccessException();
 		}
 
@@ -1058,31 +1058,39 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			Sample domain = helper.findSampleById(sampleId);
 			domain.setCreatedBy(newOwner);
 			SampleComposition sampleComposition = domain.getSampleComposition();
-			Collection<ChemicalAssociation> chemicalAssociation = sampleComposition
-					.getChemicalAssociationCollection();
-			Collection<FunctionalizingEntity> functionalizingEntity = sampleComposition
-					.getFunctionalizingEntityCollection();
-			Collection<NanomaterialEntity> nanomaterialEntity = sampleComposition
-					.getNanomaterialEntityCollection();
-			Collection<Characterization> characterization = domain
-					.getCharacterizationCollection();
+			Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
+			Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>(); 
+			Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>(); ;
+			Collection<Characterization> characterization = new ArrayList<Characterization>(); 
+			
 			appService.saveOrUpdate(domain);
-			for (ChemicalAssociation ca : chemicalAssociation) {
-				ca.setCreatedBy(newOwner);
-				appService.saveOrUpdate(ca);
-			}
-			for (FunctionalizingEntity fe : functionalizingEntity) {
-				fe.setCreatedBy(newOwner);
-				appService.saveOrUpdate(fe);
-			}
-			for (NanomaterialEntity ne : nanomaterialEntity) {
-				ne.setCreatedBy(newOwner);
-				appService.saveOrUpdate(ne);
-			}
-
-			for (Characterization c : characterization) {
-				c.setCreatedBy(newOwner);
-				appService.saveOrUpdate(c);
+			if(sampleComposition != null){
+				chemicalAssociation = sampleComposition
+					.getChemicalAssociationCollection();
+				functionalizingEntity = sampleComposition
+					.getFunctionalizingEntityCollection();
+				nanomaterialEntity = sampleComposition
+					.getNanomaterialEntityCollection();
+				characterization = domain
+					.getCharacterizationCollection();
+							
+				for (ChemicalAssociation ca : chemicalAssociation) {
+					ca.setCreatedBy(newOwner);
+					appService.saveOrUpdate(ca);
+				}
+				for (FunctionalizingEntity fe : functionalizingEntity) {
+					fe.setCreatedBy(newOwner);
+					appService.saveOrUpdate(fe);
+				}
+				for (NanomaterialEntity ne : nanomaterialEntity) {
+					ne.setCreatedBy(newOwner);
+					appService.saveOrUpdate(ne);
+				}
+	
+				for (Characterization c : characterization) {
+					c.setCreatedBy(newOwner);
+					appService.saveOrUpdate(c);
+				}
 			}
 		}
 	}
