@@ -464,7 +464,7 @@
 	</c:if>
     <c:if test="${review}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domain.id}', '${publicationForm.map.publication.domain.name}', 'publication')" />
+			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.name}', 'publication')" />
 	</c:if>
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && publicationForm.map.publication.publicStatus}">
