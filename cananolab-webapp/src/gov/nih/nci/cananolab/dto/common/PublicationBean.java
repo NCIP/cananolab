@@ -168,6 +168,7 @@ public class PublicationBean extends FileBean {
 
 	public void setSampleNames(String[] sampleNames) {
 		this.sampleNames = sampleNames;
+		sampleNamesStr = StringUtils.join(sampleNames, "\r\n");
 	}
 
 	/**
