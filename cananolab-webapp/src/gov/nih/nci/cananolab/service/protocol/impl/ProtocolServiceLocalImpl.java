@@ -392,7 +392,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void transferOwner(Set<String> ids, String currentOwner,
 			String newOwner) throws NoAccessException, Exception {
-		if (!this.securityService.getUserBean().isCurator()) {
+		if (!this.securityService.getUserBean().isAdmin()) {
 			throw new NoAccessException();
 		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
