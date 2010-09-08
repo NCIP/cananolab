@@ -541,7 +541,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void transferOwner(Set<String> publicationIds, String currentOwner,
 			String newOwner) throws Exception {
-		if (!this.securityService.getUserBean().isCurator()) {
+		if (!this.securityService.getUserBean().isAdmin()) {
 			throw new NoAccessException();
 		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
