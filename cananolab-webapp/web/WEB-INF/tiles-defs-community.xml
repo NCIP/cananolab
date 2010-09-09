@@ -3,18 +3,18 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
-	<definition name="collaboratorGroup.message" extends="canano.home">
+	<definition name="collaboratorGroup.message" extends="canano.base">
 		<put name="cananoContent" value="/bodyMessage.jsp?bundle=community" />
 		<put name="menu" value="community" />
 	</definition>
 
 	<!-- definition for the manage sample page -->
-	<definition name="community.manageCommunity" extends="canano.home">
+	<definition name="community.manageCommunity" extends="canano.base">
 		<put name="cananoContent" value="/community/bodyManageCommunity.jsp" />
 		<put name="menu" value="community" />
 	</definition>
 	<!-- definition for the manage sample page -->
-	<definition name="community.manageCollaborationGroup" extends="canano.home">
+	<definition name="community.manageCollaborationGroup" extends="canano.base">
 		<put name="cananoContent" value="/community/bodyManageCollaborationGroup.jsp" />
 		<put name="menu" value="community" />
 	</definition>

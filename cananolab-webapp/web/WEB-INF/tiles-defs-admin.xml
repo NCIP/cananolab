@@ -4,7 +4,7 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<!-- definition for the administration home page -->
-	<definition name="admin.home" extends="canano.home">
+	<definition name="admin.home" extends="canano.base">
 		<put name="itemDescription"	value="/admin/bodyAdminDescription.jsp" />
 		<put name="cananoContent" value="/admin/bodyAdminContent.jsp" />
 		<put name="menu" value="ADMINISTRATION" />
@@ -12,11 +12,11 @@
 	</definition>
 	
 	<!-- definition for the site preference page -->
-	<definition name="admin.sitePreference" extends="canano.home">
+	<definition name="admin.sitePreference" extends="canano.base">
 		<put name="cananoContent" value="/admin/bodySitePreference.jsp" />
 		<put name="menu" value="ADMINISTRATION" />
 	</definition>
-	<definition name="admin.transferOwner" extends="canano.home">
+	<definition name="admin.transferOwner" extends="canano.base">
 		<put name="cananoContent" value="/admin/bodyTransferOwner.jsp" />
 		<put name="menu" value="ADMINISTRATION" />
 	</definition>	

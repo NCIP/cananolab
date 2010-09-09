@@ -4,13 +4,13 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<!--  Main layout definition for the login page of caNanoLab -->
-	<definition name="canano.login" path="/layout/mainLayoutNoContentSpace.jsp">
+	<definition name="canano.home" path="/layout/mainLayoutNoContentSpace.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
 		<put name="cananoSidemenu" value="/admin.do?dispatch=getCaNanoSidemenu" />
 		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
-		<put name="cananoContent" value="/bodyLogin.jsp" />
+		<put name="cananoContent" value="/bodyHome.jsp" />
 		<put name="cananoFooter" value="/html/cananoFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />
@@ -18,11 +18,10 @@
 			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
 			<item value="GLOSSARY"
 				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
-			<item value="LOGOUT" link="logout.do" />
 		</putList>
 	</definition>
 	<!--  Main layout definition for pages after log in-->
-	<definition name="canano.home" path="/layout/mainLayout.jsp">
+	<definition name="canano.base" path="/layout/mainLayout.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
@@ -38,31 +37,37 @@
 			<item value="PUBLICATIONS" link="gotoPage('managePublication.do')" />
 			<item value="COMMUNITY" link="gotoPage('manageCommunity.do')" />
 			<item value="CURATION" link="gotoPage('manageCuration.do')" />
+			<item value="RESULTS" link="gotoPage('manageResult.do')" />
 			<item value="ADMINISTRATION" link="gotoPage('adminHome.do')" />
 			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
 			<item value="GLOSSARY"
 				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
+			<item value="LOGIN" link="gotoPage('login.jsp')" />
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
 		</putList>
 	</definition>
-	<definition name="home.error" extends="canano.home">
+	<definition name="home.error" extends="canano.base">
 		<put name="cananoContent" value="/bodyMessage.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="canano.help" extends="canano.login">
+	<definition name="canano.help" extends="canano.base">
 		<put name="cananoContent" value="/help/bodyOnlineHelp.jsp" />
 		<put name="menu" value="help" />
 	</definition>
-	<definition name="canano.welcome" extends="canano.home">
+	<definition name="canano.welcome" extends="canano.base">
 		<put name="cananoContent" value="/bodyWelcome.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="canano.password" extends="canano.home">
+	<definition name="canano.password" extends="canano.base">
 		<put name="cananoContent" value="/bodyUpdatePassword.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="canano.register" extends="canano.home">
+	<definition name="canano.register" extends="canano.base">
 		<put name="cananoContent" value="/bodyRegister.jsp" />
+		<put name="menu" value="home" />
+	</definition>
+	<definition name="canano.login" extends="canano.base">
+		<put name="cananoContent" value="/bodyLogin.jsp" />
 		<put name="menu" value="home" />
 	</definition>
 	<definition name="canano.disclaimer" path="/layout/disclaimerLayout.jsp">

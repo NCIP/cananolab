@@ -3,26 +3,26 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
-	<definition name="collaboratorGroup.message" extends="canano.home">
+	<definition name="collaboratorGroup.message" extends="canano.base">
 		<put name="cananoContent" value="/bodyMessage.jsp?bundle=community" />
 		<put name="menu" value="community" />
 	</definition>
 
 	<!-- definition for the manage sample page -->
-	<definition name="curation.manageCuration" extends="canano.home">
+	<definition name="curation.manageCuration" extends="canano.base">
 		<put name="cananoContent" value="/curation/bodyManageCuration.jsp" />
 		<put name="menu" value="curation" />
 	</definition>
-	<definition name="curation.message" extends="canano.home">
+	<definition name="curation.message" extends="canano.base">
 		<put name="cananoContent" value="/bodyMessage.jsp?bundle=curation" />
 		<put name="menu" value="curation" />
 	</definition>
-	<definition name="curation.reviewData" extends="canano.home">
+	<definition name="curation.reviewData" extends="canano.base">
 		<put name="cananoContent" value="/curation/bodyReviewData.jsp" />
 		<put name="menu" value="curation" />
 	</definition>
 	<definition name="curation.generateBatchDataAvailability"
-		extends="canano.home">
+		extends="canano.base">
 		<put name="cananoContent" value="/curation/bodyDataAvailabilityBatchGeneration.jsp" />
 		<put name="menu" value="curation" />
 	</definition>
