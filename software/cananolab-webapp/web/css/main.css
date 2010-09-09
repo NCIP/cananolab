@@ -385,6 +385,8 @@ SIDEBAR BEGINS
 	font-weight: bold;
 	padding-left: 0.8em;
 	padding-right: 0.8em;
+	padding-top: 0.3 em;
+	padding-bottom: 0.3 em;
 	background-color: #7a7a7a; /* constant: darker gray */
 	color: #ffffff; /* constant: white */
 	border: 1px solid #7a7a7a; /* constant: medium gray */
@@ -563,7 +565,7 @@ div.logindiv {
 	background-color: #D3E4DE;
 }
 
-	
+
 .gridTableData th {
 	font-size: 0.7em;
 	padding: 3px 3px 3px 3px;
@@ -589,10 +591,10 @@ div.logindiv {
 	border-width: 1px;
 	color: #5C5C5C;
 	background-color: #F5F5f5;
-	
+
 }
 
-	
+
 .gridTableDataView th {
 	font-size: 0.7em;
 	padding: 3px 3px 3px 3px;
