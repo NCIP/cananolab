@@ -3,13 +3,13 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
-	<definition name="sample.message" extends="canano.home">
+	<definition name="sample.message" extends="canano.base">
 		<put name="cananoContent" value="/bodyMessage.jsp?bundle=sample" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the manage sample page -->
-	<definition name="sample.manageSample" extends="canano.home">
+	<definition name="sample.manageSample" extends="canano.base">
 		<put name="cananoContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="samples" />
 		<put name="item" value="Sample" />
@@ -19,12 +19,12 @@
 	</definition>
 
 	<!-- definition for submit a new sample page -->
-	<definition name="sample.submitSample" extends="canano.home">
+	<definition name="sample.submitSample" extends="canano.base">
 		<put name="cananoContent" value="/sample/bodySubmitSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.clone" extends="canano.home">
+	<definition name="sample.clone" extends="canano.base">
 		<put name="cananoContent" value="/sample/bodyCloneSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
@@ -39,7 +39,7 @@
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.annotationHome" extends="canano.home">
+	<definition name="sample.annotationHome" extends="canano.base">
 		<put name="cananoSidemenu" value="/sample/sideSampleMenu.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
@@ -149,26 +149,26 @@
 	</definition>
 
 	<!-- definition for the search sample page -->
-	<definition name="sample.searchSample" extends="canano.home">
+	<definition name="sample.searchSample" extends="canano.base">
 		<put name="cananoContent" value="/sample/bodySearchSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the advanced search sample page -->
-	<definition name="sample.advancedSearch" extends="canano.home">
+	<definition name="sample.advancedSearch" extends="canano.base">
 		<put name="cananoContent" value="/sample/bodyAdvancedSampleSearch.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the search sample result page -->
-	<definition name="sample.searchSampleResult" extends="canano.home">
+	<definition name="sample.searchSampleResult" extends="canano.base">
 		<put name="cananoContent" value="/sample/bodySearchSampleResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<!-- definition for the advanced search sample result page -->
 	<definition name="sample.advancedSampleSearchResult"
-		extends="canano.home">
+		extends="canano.base">
 		<put name="cananoContent" value="/sample/bodyAdvancedSampleSearchResult.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
@@ -178,12 +178,12 @@
 		<put name="cananoContent" value="/bodyMessage.jsp?bundle=sample" />
 	</definition>
 
-	<definition name="sample.pointOfContactDetailView" extends="canano.home">
+	<definition name="sample.pointOfContactDetailView" extends="canano.base">
 		<put name="cananoContent" value="/sample/bodyPointOfContactDetailView.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.submitPointOfContact" extends="canano.home">
+	<definition name="sample.submitPointOfContact" extends="canano.base">
 		<put name="cananoContent" value="/sample/bodySubmitPointOfContact.jsp" />
 		<put name="menu" value="samples" />
 	</definition>

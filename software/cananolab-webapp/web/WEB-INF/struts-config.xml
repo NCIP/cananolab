@@ -80,26 +80,29 @@
 			<forward name="success" path="/welcome.do" />
 		</action>
 		<action path="/welcome" type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
-			parameter="canano.login" scope="request">
+			parameter="canano.home" scope="request">
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.autodiscover" path="canano.login"
+				key="error.grid.autodiscover" path="canano.home"
 				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
 		</action>
 		<action path="/publicCount" parameter="dispatch"
 			type="gov.nih.nci.cananolab.ui.core.CountAction">
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.down" path="canano.login"
+				key="error.grid.down" path="canano.home"
 				type="gov.nih.nci.cananolab.exception.GridDownException" />
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.document.query" path="canano.login"
+				key="error.grid.document.query" path="canano.home"
 				type="gov.nih.nci.cananolab.exception.PublicationException" />
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.protocol.query" path="canano.login"
+				key="error.grid.protocol.query" path="canano.home"
 				type="gov.nih.nci.cananolab.exception.ProtocolException" />
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.sample.query" path="canano.login"
+				key="error.grid.sample.query" path="canano.home"
 				type="gov.nih.nci.cananolab.exception.SampleException" />
 		</action>
+		<action path="/manageResult"
+			type="gov.nih.nci.cananolab.ui.curation.ManageResultAction"
+			parameter="result.manageResult" scope="request" />
 	</action-mappings>
 	<controller>
 		<set-property value="true" property="inputForward" />
