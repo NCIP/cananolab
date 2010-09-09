@@ -22,13 +22,14 @@
 							test="${item.value eq 'LOGOUT' && sessionScope.user == null ||
 							        item.value eq 'ADMINISTRATION' && (user==null || !user.admin) ||
 							        item.value eq 'CURATION' && (user==null || !user.curator)||
-							        item.value eq 'COMMUNITY' && user==null}">
+							        item.value eq 'COMMUNITY' && user==null ||
+							        item.value eq 'LOGIN' && sessionScope.user !=null||
+							        item.value eq 'RESULTS' && !(user.curator && hasResultsWaiting)}">
 							<td></td>
 						</c:when>
 						<c:otherwise>
 							<td class="${style}" onclick="${item.link}"
-								onmouseover="changeMenuStyle(this,'mainMenuItemOver');" onmouseout="changeMenuStyle(this,'${style}')"
-								height="20">
+								onmouseover="changeMenuStyle(this, 'mainMenuItemOver');" onmouseout="changeMenuStyle(this,'${style}')" height="20">
 								<a class="mainMenuLink" href="#">${item.value}</a>
 							</td>
 							<td>
