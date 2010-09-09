@@ -1,7 +1,3 @@
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="gridtable" width="98%" align="center">
 	<tr>
 		<th width="60%">
