@@ -24,6 +24,7 @@
 							        item.value eq 'CURATION' && (user==null || !user.curator)||
 							        item.value eq 'COMMUNITY' && user==null ||
 							        item.value eq 'LOGIN' && sessionScope.user !=null||
+							        item.value eq 'LOGIN' && pageContext.request.requestURI eq '/caNanoLab/login.jsp' ||
 							        item.value eq 'RESULTS' && !(user.curator && hasResultsWaiting)}">
 							<td></td>
 						</c:when>
