@@ -29,7 +29,7 @@
 	</head>
 	<tiles:importAttribute scope="session" />
 	<body style="cursor: default" onload="getPublicCounts();">
-		<table height="100%" cellspacing="0" cellpadding="0" width="100%"
+		<table cellspacing="0" cellpadding="0" width="100%"
 			summary="" border="0" align="center">
 			<!-- nci hdr begins -->
 			<tbody>
@@ -40,7 +40,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td valign="top" height="100%">
+					<td valign="top">
 						<table height="100%" cellspacing="0" cellpadding="0" summary=""
 							border="0" width="100%">
 							<tbody>
@@ -56,8 +56,8 @@
 										<tiles:insert attribute="cananoSidemenu" />
 									</td>
 									<td valign="top">
-										<table height="100%" cellspacing="0" cellpadding="0"
-											summary="" border="0" width="100%">
+										<table cellspacing="0" cellpadding="0"
+											summary="" border="0" width="800">
 											<tbody>
 												<tr>
 													<td class="mainMenu" width="100%" height="20">
@@ -66,7 +66,7 @@
 													</td>
 												</tr>
 												<tr>
-													<td valign="top">
+													<td height="100%" valign="top">
 														<%-- include caNanoLab main content --%>
 														<%--main content starts --%>
 														<tiles:insert attribute="cananoContent" />

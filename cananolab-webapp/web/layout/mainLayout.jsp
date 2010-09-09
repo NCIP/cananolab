@@ -7,8 +7,7 @@
 %>
 <html>
 	<head>
-		<title><tiles:getAsString name="title" ignore="true" />
-		</title>
+		<title><tiles:getAsString name="title" ignore="true" /></title>
 		<meta name="keywords"
 			content="nano informatics, nanotechnology model, caNanoLab, nanotechnology, nanoparticle, cancer, information model, portal, data portal, data repository, caBIG, caGRID, NCL, nano characterization, nanoparticle composition, Cancer Nanotechnology Excellence">
 		<meta name="description"
@@ -81,19 +80,6 @@
 												<td width="800" valign="top">
 													<%-- include caNanoLab main content --%>
 													<table border="0" width="100%">
-														<%--
-															<tr>
-																<td width="15" height="1">
-																	&nbsp;
-																</td>
-																<td>
-																	&nbsp;
-																</td>
-																<td width="15">
-																	&nbsp;
-																</td>
-															</tr>
-															--%>
 														<tr>
 															<td width="15">
 																&nbsp;
@@ -125,7 +111,9 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="footerMenu">&nbsp;</td>
+								<td class="footerMenu">
+									&nbsp;
+								</td>
 								<td class="footerMenu">
 									<%-- include caNanoLab footer --%>
 									<tiles:insert attribute="cananoFooter" />
