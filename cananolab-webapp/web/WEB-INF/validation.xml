@@ -68,8 +68,14 @@
 			<field property="currentOwner" page="1" depends="required">
 				<arg position="0" key="transferOwnerForm.currentOwner"/>
 			</field>
-			<field property="newOwner" page="1" depends="required">
+			<field property="newOwner" page="1" depends="validwhenmatch">
 				<arg position="0" key="transferOwnerForm.newOwner"/>
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) and (newOwner!=currentOwner))
+					</var-value>
+				</var>
 			</field>
 			<field property="dataType" page="1" depends="required">
 				<arg position="0" key="transferOwnerForm.dataType"/>
