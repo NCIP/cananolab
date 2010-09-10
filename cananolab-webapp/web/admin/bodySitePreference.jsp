@@ -13,7 +13,7 @@
 	<table width="100%" align="center">
 		<tr>
 			<td colspan="4">
-				<jsp:include page="/bodyMessage.jsp?bundle=admin" />
+				<jsp:include page="/bodyMessage.jsp" />
 				<table width="100%" align="center" class="submissionView">
 					<tr>
 						<td class="cellLabel">
