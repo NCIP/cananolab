@@ -16,7 +16,7 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/transferOwner">
-	<jsp:include page="/bodyMessage.jsp?bundle=admin" />
+	<jsp:include page="/bodyMessage.jsp" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="30%">
@@ -87,6 +87,7 @@
 			</td>
 			<td>
 				<html:select styleId="dataType" property="dataType" >
+					<option value=""></option>
 					<html:option value="Sample" />
 					<html:option value="Publication" />
 					<html:option value="Protocol" />
