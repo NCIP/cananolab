@@ -52,14 +52,15 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaActionForm theForm = (DynaActionForm)form;
+		theForm.set("option", "option1");
 		return mapping.findForward("input");
 	}
 
-	// option1 - generate new ones for samples that data availability has not
-	// been generated.
-	// option2 - generate all: update existing one and generate new one.
-	// option3 - delete all data availability
-	// option4 - update data availability
+	// option1 - generate new ones for samples without data availability.
+	// option2 - generate all: update existing one and generate new ones.
+	// option3 - re-generate for samples with existing data availability
+	// option4 - delete data availability for all samples
 	public ActionForward generate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -69,17 +70,17 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		System.out.println("option: " + option);
 
 		if ("option1".equals(option)) {
-			// generate new ones
+			// generate for samples without data availability
 			generate(request);
 		} else if ("option2".equals(option)) {
-			// generate all
+			// generate for all samples
 			generateAndUpdate(request);
 		} else if ("option3".equals(option)) {
-			// delete all
-			delete(request);
-		} else if ("option4".equals(option)) {
-			// update
+			// re-generate for samples with existing data availability
 			update(request);
+		} else if ("option4".equals(option)) {
+			// delete data availability for all samples
+			delete(request);
 		}
 		ActionMessages messages = new ActionMessages();
 		ActionMessage message = new ActionMessage(
