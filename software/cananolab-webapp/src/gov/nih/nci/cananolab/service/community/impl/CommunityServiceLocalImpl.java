@@ -291,11 +291,10 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public Map<String, String> findCollaborationGroupByOwner(String owner) 
-		throws Exception{
-		Map<String,String> groupsMap = new HashMap<String,String>();
-		List<CollaborationGroupBean> collaborationGroups = new ArrayList<CollaborationGroupBean>();
-		if(!this.user.isAdmin()){
+	public Map<String, String> findCollaborationGroupByOwner(String owner)
+			throws Exception {
+		Map<String, String> groupsMap = new HashMap<String, String>();
+		if (!this.user.isAdmin()) {
 			throw new NoAccessException();
 		}
 		try {
@@ -304,54 +303,46 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			Set groups = authManager.getGroups(user.getUserId().toString());
 			for (Object obj : groups) {
 				Group group = (Group) obj;
-				groupsMap.put(group.getGroupId().toString(), group.getGroupName());
-				CollaborationGroupBean cGroup = new CollaborationGroupBean(
-						group);
+				String groupId = group.getGroupId().toString();
 				if (securityService
 						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ cGroup.getId())) {
-					setUserAccesses(cGroup);
-					collaborationGroups.add(cGroup);
+								+ groupId)) {
+					groupsMap.put(groupId, group.getGroupName());
 				} else {
 					String error = "User has no access to the collaboration group "
-							+ cGroup.getName();
+							+ group.getGroupName();
 					logger.info(error);
 				}
 			}
-		}catch(Exception e){
-			throw new Exception("Error finding CollaborationGroupByOwner: " + owner);
-		}		
-			
+		} catch (Exception e) {
+			throw new Exception("Error finding CollaborationGroupByOwner: "
+					+ owner);
+		}
+
 		return groupsMap;
 	}
 
-	public void transferOwner(Set<String> collaborationGroupIds, String currentOwner, String newOwner)
-			throws CommunityException, NoAccessException {
-		//remove collaboration group
+	public void transferOwner(Set<String> collaborationGroupIds,
+			String currentOwner, String newOwner) throws CommunityException,
+			NoAccessException {
+		// remove collaboration group
 		if (user == null || (user != null && !user.isAdmin())) {
 			throw new NoAccessException();
 		}
-		try {			
-			for(String id: collaborationGroupIds){
-			
-			// check if user has access to delete the group
-				if (!securityService
-						.checkDeletePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ id)) {
-					throw new NoAccessException();
-				} else {
-					CollaborationGroupBean bean = findCollaborationGroupById(id);
-					System.out.println("owner name: " + bean.getOwnerName());
-					//this.accessUtils.
-					this.accessUtils.removeOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX + id, currentOwner);
-					this.accessUtils.assignOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX + id, newOwner);
-				}
+		try {
+			for (String id : collaborationGroupIds) {
+				CollaborationGroupBean bean = findCollaborationGroupById(id);
+				System.out.println("owner name: " + bean.getOwnerName());
+				// Doesn't seem to need to call this, assignOwner replaces the old association
+				// this.accessUtils.removeOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+				// + id, currentOwner);
+				this.accessUtils.assignOwner(
+						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX + id,
+						newOwner);
 			}
-		} catch (NoAccessException e) {
-			throw e;
 		} catch (Exception e) {
 			String error = "Error changing the collaboration group owner";
 			throw new CommunityException(error, e);
-		}		
+		}
 	}
 }
