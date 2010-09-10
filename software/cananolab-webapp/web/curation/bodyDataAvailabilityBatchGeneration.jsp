@@ -13,7 +13,7 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <c:set var="title" value="Copy" />
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Generate Data Availability" />
+	<jsp:param name="pageTitle" value="Manage Batch Data Availability" />
 	<jsp:param name="topic" value="copy_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -22,26 +22,24 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">
-				<html:radio styleId="option0" property="option" value="option1" />
-				Generate Data Availability for submitted samples that data
-				availability has not been generated.
+				<html:radio styleId="option1" property="option" value="option1"  />
+				Generate data availability for samples without data availability.
 				<br>
 				&nbsp;&nbsp;or
 				<br>
-				<html:radio styleId="option1" property="option" value="option2" />
-				Re-generate all Data Availability which includes update existing
-				data availability as well as generate new ones.
+				<html:radio styleId="option2" property="option" value="option2" />
+				Re-generate data availability for all samples.
 				<br>
 				&nbsp;&nbsp;or
 				<br>
 
-				<html:radio styleId="option1" property="option" value="option3" />
-				Delete data availability
+				<html:radio styleId="option3" property="option" value="option3" />
+				Re-generate data availability for samples with existing data availability.
 				<br>
 				&nbsp;&nbsp;or
 				<br>
-				<html:radio styleId="option1" property="option" value="option4" />
-				Update data availability
+				<html:radio styleId="option4" property="option" value="option4" />
+				Delete data availability for all samples.
 			</td>
 
 		</tr>
