@@ -63,17 +63,16 @@
 					<var-value>4000</var-value>
 				</var>
 			</field>
-
 		</form>
 		<form name="transferOwnerForm">
 			<field property="currentOwner" page="1" depends="required">
-				<arg position="0" key="transferOwnerForm.currentOwner" bundle="admin" />
+				<arg position="0" key="transferOwnerForm.currentOwner"/>
 			</field>
 			<field property="newOwner" page="1" depends="required">
-				<arg position="0" key="transferOwnerForm.newOwner" bundle="admin" />
+				<arg position="0" key="transferOwnerForm.newOwner"/>
 			</field>
 			<field property="dataType" page="1" depends="required">
-				<arg position="0" key="transferOwnerForm.dataType" bundle="admin" />
+				<arg position="0" key="transferOwnerForm.dataType"/>
 			</field>
 		</form>
 	</formset>
