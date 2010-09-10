@@ -61,10 +61,10 @@
 							<tr>
 								<td class="sidebarContent">
 									<a
-										href="generateBatchDataAvailability.do?dispatch=setupNew&page=0">Generate
+										href="generateBatchDataAvailability.do?dispatch=setupNew&page=0">Manage Batch
 										Data Availability</a>
 									<br>
-									Generate Data Availability for submitted samples in a batch.
+									Manage Data Availability for submitted samples in a batch.
 								</td>
 							</tr>
 						</table>
