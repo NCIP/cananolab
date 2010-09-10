@@ -13,7 +13,7 @@
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="currentOwner" type="java.lang.String" />
 			<form-property name="newOwner" type="java.lang.String" />
-			<form-property name="dataType" type="java.lang.String[]" />
+			<form-property name="dataType" type="java.lang.String" />
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
