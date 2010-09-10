@@ -59,12 +59,16 @@ public class TransferOwnerAction extends AbstractDispatchAction {
 		String newOwner = (String) theForm.get("newOwner");
 		System.out.println("current owner: " + currentOwner + " new owner: " + newOwner);
 
-		String[] dataTypes = new String[0];
-		if (theForm != null) {
-			dataTypes = (String[]) theForm
-					.get("dataType");
+//		String[] dataTypes = new String[0];
+//		if (theForm != null) {
+//			dataTypes = (String[]) theForm
+//					.get("dataType");
+//
+//		}
 
-		}
+		String dataType=theForm.getString("dataType");
+		String[] dataTypes=new String[] {dataType};
+
 		Map<String,String> sampleResult=null;
 		Map<String,String> protocolResult = null;
 		Map<String,String> publicationResult = null;
