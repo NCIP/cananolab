@@ -7,7 +7,7 @@ function showMatchedUserDropdown(userLoginName, styleId,cancelStyleId) {
 	var selected = dwr.util.getValue(styleId);
 	var loginName = dwr.util.getValue(userLoginName);
 	
-	AccessibilityManager.getMatchedUsers("", loginName, function(data) {
+	AccessibilityManager.getUsers( function(data) {
 		dwr.util.removeAllOptions(styleId);
 		dwr.util.addOptions(styleId, data, "loginName",
 				"fullName");
