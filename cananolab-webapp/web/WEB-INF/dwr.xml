@@ -131,11 +131,12 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.core.DWRAccessibilityManager" />
+			<include method="getUsers"/>
 			<include method="getGroupAccess" />
 			<include method="getUserAccess" />
 			<include method="resetTheAccess" />
 			<include method="getMatchedUsers"/>
-			<include method="getMatchedGroupNames"/>
+			<include method="getMatchedGroupNames"/>			
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
