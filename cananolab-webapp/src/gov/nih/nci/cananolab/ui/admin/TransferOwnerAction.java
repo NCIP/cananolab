@@ -210,7 +210,7 @@ public class TransferOwnerAction extends AbstractDispatchAction {
 		CommunityService service = (CommunityService) request.getSession()
 		.getAttribute("communityService");
 
-		service.transferOwner(collaborationGroupIds,  newOwner, currentOwner);
+		service.transferOwner(collaborationGroupIds,  currentOwner, newOwner);
 	}
 
 	private SecurityService getSecurityService(HttpServletRequest request) throws Exception{
