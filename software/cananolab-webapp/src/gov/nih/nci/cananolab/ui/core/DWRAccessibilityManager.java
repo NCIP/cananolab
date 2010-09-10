@@ -157,6 +157,21 @@ public class DWRAccessibilityManager {
 			return null;
 		}
 	}
+	
+	public UserBean[] getUsers()
+			throws Exception {
+		String searchStr="";
+		try {
+		
+			List<UserBean> matchedUsers = getService().findUserLoginNames(
+					searchStr);
+					
+			return matchedUsers.toArray(new UserBean[matchedUsers.size()]);
+		} catch (Exception e) {
+			logger.error("Problem getting user login names", e);
+			return null;
+		}
+	}
 
 	public String[] getMatchedGroupNames(String searchStr) throws Exception {
 		try {
