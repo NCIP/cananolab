@@ -112,8 +112,6 @@
 	</controller>
 	<message-resources parameter="gov.nih.nci.cananolab.resources.application"
 		null="false" />
-	<message-resources key="admin"
-		parameter="gov.nih.nci.cananolab.resources.admin" null="false" />
 	<message-resources key="protocol"
 		parameter="gov.nih.nci.cananolab.resources.protocol" null="false" />
 	<message-resources key="publication"
@@ -124,7 +122,6 @@
 		parameter="gov.nih.nci.cananolab.resources.curation" null="false" />
 	<message-resources key="community"
 		parameter="gov.nih.nci.cananolab.resources.community" null="false" />
-
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
 			value="/WEB-INF/tiles-defs.xml,
