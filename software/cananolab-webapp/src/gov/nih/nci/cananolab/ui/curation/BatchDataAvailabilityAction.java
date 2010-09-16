@@ -52,7 +52,7 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaActionForm theForm = (DynaActionForm)form;
+		DynaActionForm theForm = (DynaActionForm) form;
 		theForm.set("option", "option1");
 		return mapping.findForward("input");
 	}
@@ -67,7 +67,7 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 
 		DynaActionForm theForm = (DynaActionForm) form;
 		String option = theForm.getString("option");
-		//System.out.println("option: " + option);
+		// System.out.println("option: " + option);
 
 		if ("option1".equals(option)) {
 			// generate for samples without data availability
@@ -98,12 +98,14 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		// run generate for the one not in data availability sampleIds
 		List<String> sampleIds = service.findSampleIdsBy("", "", null, null,
 				null, null, null, null, null, null, null);
-		Set<String> dataAvailabilitySampleIds = dataAvailabilityService
+		List<String> dataAvailabilitySampleIds = dataAvailabilityService
 				.findSampleIds(securityService);
 
-		/*System.out.println("samples: " + sampleIds.size()
-				+ ", existing data availability sampleIds: "
-				+ dataAvailabilitySampleIds.size());*/
+		/*
+		 * System.out.println("samples: " + sampleIds.size() +
+		 * ", existing data availability sampleIds: " +
+		 * dataAvailabilitySampleIds.size());
+		 */
 		long start = System.currentTimeMillis();
 		for (String sampleId : sampleIds) {
 			if (!dataAvailabilitySampleIds.contains(sampleId)) {
@@ -126,11 +128,13 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		// run either update or generate data availability
 		List<String> sampleIds = service.findSampleIdsBy("", "", null, null,
 				null, null, null, null, null, null, null);
-		Set<String> dataAvailabilitySampleIds = dataAvailabilityService
+		List<String> dataAvailabilitySampleIds = dataAvailabilityService
 				.findSampleIds(securityService);
-		/*System.out.println("samples: " + sampleIds.size()
-				+ ", existing data availability samples: "
-				+ dataAvailabilitySampleIds.size());*/
+		/*
+		 * System.out.println("samples: " + sampleIds.size() +
+		 * ", existing data availability samples: " +
+		 * dataAvailabilitySampleIds.size());
+		 */
 		long start = System.currentTimeMillis();
 		for (String sampleId : sampleIds) {
 			SampleBean sampleBean = service.findSampleById(sampleId, false);
@@ -158,10 +162,12 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		SecurityService securityService = getSecurityService(request);
 		// select all distinct sampleid from data availability table
 		// call update on each one of them
-		Set<String> sampleIds = dataAvailabilityService
+		List<String> sampleIds = dataAvailabilityService
 				.findSampleIds(securityService);
-		/*System.out.println("existing data availability samples: "
-				+ sampleIds.size());*/
+		/*
+		 * System.out.println("existing data availability samples: " +
+		 * sampleIds.size());
+		 */
 		long start = System.currentTimeMillis();
 		for (String sampleId : sampleIds) {
 			SampleBean sampleBean = service.findSampleById(sampleId, false);
