@@ -16,6 +16,7 @@ package gov.nih.nci.cananolab.ui.curation;
  */
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
@@ -142,6 +143,8 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 				dataAvailabilityService.generateDataAvailability(sampleBean,
 						securityService);
 			} else {
+				Set<DataAvailabilityBean> currentDataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleId, securityService);
+				sampleBean.setDataAvailability(currentDataAvailability);
 				dataAvailabilityService.saveDataAvailability(sampleBean,
 						securityService);
 			}
@@ -171,6 +174,8 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		long start = System.currentTimeMillis();
 		for (String sampleId : sampleIds) {
 			SampleBean sampleBean = service.findSampleById(sampleId, false);
+			Set<DataAvailabilityBean> currentDataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(sampleId, securityService);
+			sampleBean.setDataAvailability(currentDataAvailability);
 			dataAvailabilityService.saveDataAvailability(sampleBean,
 					securityService);
 		}
