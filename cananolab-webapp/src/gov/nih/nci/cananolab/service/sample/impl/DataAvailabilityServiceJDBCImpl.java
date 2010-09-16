@@ -135,7 +135,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		Set<String> clazNames = null;
 		try {
 			clazNames = generate(sampleBean, securityService);
-			clazNames.add("General Sample Information");
+			
 		} catch (Exception e) {
 			throw new DataAvailabilityException();
 		}
@@ -204,7 +204,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 			currentDataAvailability.removeAll(removedDataAvailability);
 		}
 
-		System.out.println("Current size: " + currentDataAvailability.size());
+		//System.out.println("Current size: " + currentDataAvailability.size());
 		for (DataAvailabilityBean bean : currentDataAvailability) {
 			bean.setUpdatedBy(user.getLoginName());
 			bean.setUpdatedDate(new Date());
@@ -224,10 +224,10 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 			currentDataAvailability.addAll(newDataAvailability);
 		}
 
-		System.out.println("new size: " + newDataAvailability.size());
+		/*System.out.println("new size: " + newDataAvailability.size());
 		// return new list that contains both of them.
 		System.out.println("currentDataAvailabitliy total size: "
-				+ currentDataAvailability.size());
+				+ currentDataAvailability.size());*/
 
 		return currentDataAvailability;
 	}
@@ -293,7 +293,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 				.getStoredNanomaterialEntityClassNames(domain);
 
 		Set<String> clazzNames = new HashSet<String>();
-
+		clazzNames.add("General Sample Information");
 		if (domain.getCharacterizationCollection() != null) {
 			for (Characterization achar : domain
 					.getCharacterizationCollection()) {
