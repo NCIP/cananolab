@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DataAvailabilityException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 
@@ -28,13 +29,31 @@ public interface DataAvailabilityService {
 			SecurityException;
 
 	/**
-	 * generate data availability for the sample and persist to database table
+	 * save data availability for the sample and persist to database table
 	 *
 	 * @param sampleBean
 	 * @param user
 	 * @return
 	 * @throws DataAvailabilityException
 	 */
+	
+	public Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean, SecurityService securityService)
+		throws DataAvailabilityException, NoAccessException,
+			SecurityException;
+	/**
+	 * save data availability for the sample and persist to database table
+	 *
+	 * @param sampleId
+	 * @param user
+	 * @return
+	 * @throws DataAvailabilityException
+	 * @throws SampleException 
+	 */
+	public Set<DataAvailabilityBean> saveDataAvailability(String sampleId, SecurityService securityService)
+	throws DataAvailabilityException, NoAccessException,
+		SecurityException, SampleException;
+	
+	
 	/*
 	 * public List<DataAvailabilityBean> generateDataAvailability(SampleBean
 	 * sampleBean, UserBean user) throws DataAvailabilityException;
@@ -49,10 +68,10 @@ public interface DataAvailabilityService {
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public Set<DataAvailabilityBean> generateDataAvailability(
+	/*public Set<DataAvailabilityBean> generateDataAvailability(
 			SampleBean sampleBean, SecurityService securityService)
 			throws DataAvailabilityException, NoAccessException,
-			SecurityException;
+			SecurityException;*/
 
 	/**
 	 * find update to data availability for the sample and persist to database
@@ -65,10 +84,10 @@ public interface DataAvailabilityService {
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	public Set<DataAvailabilityBean> saveDataAvailability(
+	/*public Set<DataAvailabilityBean> saveDataAvailability(
 			SampleBean sampleBean, SecurityService securityService)
 			throws DataAvailabilityException, NoAccessException,
-			SecurityException;
+			SecurityException;*/
 
 	/**
 	 * delete data availability for the sample from database table
@@ -83,11 +102,12 @@ public interface DataAvailabilityService {
 			SecurityService securityService) throws DataAvailabilityException,
 			NoAccessException, SecurityException;
 
-	public void generateBatch(SecurityService securityService,
-			List<String> sampleIds) throws Exception;
+	public void saveBatchDataAvailability(List<String> sampleIds, SecurityService securityService) throws Exception;
 
-	public void deleteAll(SecurityService securityService) throws Exception;
+	public void deleteBatchDataAvailability(SecurityService securityService) throws Exception;
 
-	public List<String> findSampleIds(SecurityService securityService)
+	public void deleteBatchDataAvailability(List<String> sampleIds, SecurityService securityService) throws Exception;
+
+	public List<String> findSampleIdsWithDataAvailability(SecurityService securityService)
 			throws Exception;
 }
