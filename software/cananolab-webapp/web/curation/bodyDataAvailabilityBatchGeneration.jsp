@@ -21,27 +21,21 @@
 	<jsp:include page="/bodyMessage.jsp" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="20%">
-				<!--<html:radio styleId="option1" property="option" value="option1"  />
-				Generate data availability for samples without data availability.
+			<th>
+				Please select an option
+			</th>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				<html:radio styleId="option1" property="option" value="generate_all" />
+				Generate data availability for all samples.
 				<br>
-				
-				&nbsp;&nbsp;or
+				<html:radio styleId="option2" property="option" value="regenerate_old" />
+				Re-generate data availability for samples with existing data
+				availability.
 				<br>
-				--><html:radio styleId="option1" property="option" value="option1" />
-				Re-generate data availability for all samples.
-				<br>
-				&nbsp;&nbsp;or
-				<br>
-
-				<html:radio styleId="option2" property="option" value="option2" />
-				Re-generate data availability for samples with existing data availability.
-				<br>
-				&nbsp;&nbsp;or
-				<br>
-				<html:radio styleId="option3" property="option" value="option3" />
+				<html:radio styleId="option3" property="option" value="delete_all" />
 				Delete data availability for all samples.
-				
 			</td>
 
 		</tr>
