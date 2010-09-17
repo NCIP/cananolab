@@ -267,13 +267,15 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		}
 		Set<DataAvailabilityBean> dataAvailability = findDataAvailabilityBySampleId(sampleId, securityService);
 		SampleBean sampleBean = loadSample(sampleId, securityService);
-		sampleBean.setDataAvailability(dataAvailability);
-		if(dataAvailability.size() > 0){
-			//update
-			results = save(sampleBean, securityService);
-		}else{
-			//insert
-			results = insert(sampleBean, securityService);
+		if(sampleBean != null){
+			sampleBean.setDataAvailability(dataAvailability);
+			if(dataAvailability.size() > 0){
+				//update
+				results = save(sampleBean, securityService);
+			}else{
+				//insert
+				results = insert(sampleBean, securityService);
+			}
 		}
 		return results;
 	}
