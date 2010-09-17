@@ -24,7 +24,7 @@ public class CustomPlugIn implements PlugIn {
 	// This method will be called at application startup time
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
-		System.out.println("Entering CustomPlugIn.init()");
+		logger.info("Entering CustomPlugIn.init()");
 		try {
 			// set default lookup valules in the servlet context
 			ServletContext appContext = actionServlet.getServletContext();
@@ -92,13 +92,13 @@ public class CustomPlugIn implements PlugIn {
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
-		System.out.println("Exiting CustomPlugIn.init()");
+		logger.info("Exiting CustomPlugIn.init()");
 	}
 
 	// This method will be called at application shutdown time
 	public void destroy() {
-		System.out.println("Entering CustomPlugIn.destroy()");
-		System.out.println("Exiting CustomPlugIn.destroy()");
+		logger.info("Entering CustomPlugIn.destroy()");
+		logger.info("Exiting CustomPlugIn.destroy()");
 		// be sure to clean up CSM entries that need to be removed before
 		// shutting down the server.
 	}
