@@ -459,7 +459,7 @@ public class SampleAction extends BaseAnnotationAction {
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
-				.generateDataAvailability(sampleBean, securityService);
+				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
 		calculateDataAvailabilityScore(sampleBean, dataAvailability);
@@ -692,7 +692,7 @@ public class SampleAction extends BaseAnnotationAction {
 		return false;
 	}
 	
-	public ActionForward generateBatchDataAvailability(ActionMapping mapping,
+	/*public ActionForward generateBatchDataAvailability(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
@@ -737,5 +737,5 @@ public class SampleAction extends BaseAnnotationAction {
 		saveMessages(request, messages);
 		return mapping.findForward("manageCuration");
 		
-	}
+	}*/
 }
