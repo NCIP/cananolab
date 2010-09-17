@@ -18,28 +18,30 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/generateBatchDataAvailability">
-	<jsp:include page="/bodyMessage.jsp?bundle=curation" />
+	<jsp:include page="/bodyMessage.jsp" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">
-				<html:radio styleId="option1" property="option" value="option1"  />
+				<!--<html:radio styleId="option1" property="option" value="option1"  />
 				Generate data availability for samples without data availability.
 				<br>
+				
 				&nbsp;&nbsp;or
 				<br>
-				<html:radio styleId="option2" property="option" value="option2" />
+				--><html:radio styleId="option1" property="option" value="option1" />
 				Re-generate data availability for all samples.
 				<br>
 				&nbsp;&nbsp;or
 				<br>
 
-				<html:radio styleId="option3" property="option" value="option3" />
+				<html:radio styleId="option2" property="option" value="option2" />
 				Re-generate data availability for samples with existing data availability.
 				<br>
 				&nbsp;&nbsp;or
 				<br>
-				<html:radio styleId="option4" property="option" value="option4" />
+				<html:radio styleId="option3" property="option" value="option3" />
 				Delete data availability for all samples.
+				
 			</td>
 
 		</tr>
