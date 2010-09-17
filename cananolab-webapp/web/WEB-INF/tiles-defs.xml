@@ -78,4 +78,9 @@
 		<put name="cananoFooter" value="/bodyMessage.jsp" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 	</definition>
+	<definition name="curation.result"
+		extends="canano.base">
+		<put name="cananoContent" value="/curation/bodyCurationResult.jsp" />
+		<put name="menu" value="results" />
+	</definition>
 </tiles-definitions>
