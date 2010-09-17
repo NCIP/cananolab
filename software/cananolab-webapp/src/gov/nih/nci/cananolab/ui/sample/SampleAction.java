@@ -420,7 +420,11 @@ public class SampleAction extends BaseAnnotationAction {
 		InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(
 				sampleBean.getDomain(), request);
 		service.deleteSample(sampleBean.getDomain().getName());
-
+		SecurityService securityService = (SecurityService) request
+		.getSession().getAttribute("securityService");
+		if(sampleBean.getHasDataAvailability()){
+			dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain().getId().toString(), securityService);
+		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
 				sampleBean.getDomain().getName());
