@@ -8,8 +8,7 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-		<form-bean name="generateBatchDataAvailabilityForm"
-			type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="generateBatchDataAvailabilityForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="option" type="java.lang.String" />
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
@@ -20,6 +19,7 @@
 	</global-exceptions>
 	<global-forwards>
 		<forward name="manageCuration" path="curation.manageCuration" />
+		<forward name="batchDataAvailabilityResults" path="/manageResult.do?processType=dataAvailability" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageCuration"
@@ -34,7 +34,6 @@
 			parameter="dispatch" path="/generateBatchDataAvailability"
 			type="org.springframework.web.struts.DelegatingActionProxy" scope="request">
 			<forward name="input" path="curation.generateBatchDataAvailability" />
-			<forward name="success" path="curation.generateBatchDataAvailability" />
 		</action>
 	</action-mappings>
 </struts-config>
