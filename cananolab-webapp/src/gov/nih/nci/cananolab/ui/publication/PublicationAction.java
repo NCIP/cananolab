@@ -264,16 +264,18 @@ public class PublicationAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		PublicationService publicationService = this
 				.setServicesInSession(request);
-		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId, true);
+		PublicationBean pubBean = publicationService.findPublicationById(
+				publicationId, true);
 		theForm.set("publication", pubBean);
 		theForm.set("sampleId", sampleId);
 		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
 
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		request
-				.setAttribute("onloadJavascript",
-						"updateSubmitFormBasedOnCategory();fillPubMedInfo('false', null)");
+		// request
+		// .setAttribute("onloadJavascript",
+		// "updateSubmitFormBasedOnCategory();fillPubMedInfo('false', null)");
+		request.setAttribute("onloadJavascript",
+				"updateSubmitFormBasedOnCategory();");
 
 		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
 				.toString(), pubBean.getPublicStatus());
@@ -457,8 +459,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		 * publicationService = new PublicationServiceRemoteImpl(serviceUrl); }
 		 */
 		String publicationId = request.getParameter("publicationId");
-		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId, false);
+		PublicationBean pubBean = publicationService.findPublicationById(
+				publicationId, false);
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("publication", pubBean);
 		return mapping.findForward("publicationDetailPrintView");
@@ -580,8 +582,8 @@ public class PublicationAction extends BaseAnnotationAction {
 				.setServicesInSession(request);
 
 		String publicationId = request.getParameter("publicationId");
-		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId, false);
+		PublicationBean pubBean = publicationService.findPublicationById(
+				publicationId, false);
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("publication", pubBean);
 		String title = pubBean.getDomainFile().getTitle();
