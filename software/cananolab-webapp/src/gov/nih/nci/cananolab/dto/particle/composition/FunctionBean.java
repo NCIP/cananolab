@@ -18,12 +18,12 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * 
+ *
  * Represents the view bean for Function domain object
- * 
+ *
  * @author pansu
- * 
- * 
+ *
+ *
  */
 public class FunctionBean {
 	// needed for use in DWR ordering functions in the session.
@@ -101,8 +101,10 @@ public class FunctionBean {
 	public void setupDomainFunction(String createdBy, int index)
 			throws Exception {
 		className = ClassUtils.getShortClassNameFromDisplayName(type);
+
 		Class clazz = ClassUtils.getFullClass(className);
-		if (clazz == null) {
+		// special case for transfection as a function
+		if (clazz == null || className.equals("Transfection")) {
 			clazz = OtherFunction.class;
 		}
 		if (domainFunction == null
@@ -140,8 +142,8 @@ public class FunctionBean {
 			((OtherFunction) domainFunction).setType(type);
 		}
 		domainFunction.setDescription(description);
-	
-		//updated created_date and created_by if id is null
+
+		// updated created_date and created_by if id is null
 		if (domainFunction.getId() == null) {
 			domainFunction.setCreatedBy(createdBy);
 			// fix for MySQL database, which supports precision only up to
@@ -149,7 +151,8 @@ public class FunctionBean {
 			domainFunction.setCreatedDate(DateUtils
 					.addSecondsToCurrentDate(index));
 		}
-		//updated created_by if created_by contains copy, but keep the original created_date
+		// updated created_by if created_by contains copy, but keep the original
+		// created_date
 		if (domainFunction.getId() != null
 				|| !StringUtils.isEmpty(domainFunction.getCreatedBy())
 				&& domainFunction.getCreatedBy().contains(
