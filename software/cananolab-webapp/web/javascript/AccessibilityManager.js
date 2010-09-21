@@ -129,6 +129,7 @@ function deleteTheAccess(actionName, page) {
 	if (answer != 0) {
 		submitAction(document.forms[0], actionName, "deleteAccess", page);
 	}
+	enableOuterButtons();
 }
 
 function showMatchedGroupOrUserDropdown(dataOwner) {

@@ -200,7 +200,7 @@
 							<input type="button" value="Save"
 								onclick="addPointOfContact('sample')" />
 							<input type="button" value="Cancel"
-								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');enableOuterButtons();" />
+								onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');" />
 							<html:hidden styleId="domain.id"
 								property="sampleBean.thePOC.domain.id" />
 							<html:hidden styleId="primaryStatus"

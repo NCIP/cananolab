@@ -90,7 +90,7 @@
 				</c:if>
 				<a style="${newAddCEButtonStyle}" id="addComposingElement"
 					href="#submitComposingElement"
-					onclick="javascript:clearComposingElement(); openSubmissionForm('ComposingElement');disableOuterButtons();"><img
+					onclick="javascript:clearComposingElement(); openSubmissionForm('ComposingElement');"><img
 						align="top" src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
@@ -136,7 +136,7 @@
 						<c:set var="addFileButtonStyle" value="display:none" />
 					</c:if>
 					<a style="${addFileButtonStyle}" id="addFile"
-						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');disableOuterButtons();"><img
+						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
 			</tr>

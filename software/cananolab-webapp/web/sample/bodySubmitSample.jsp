@@ -48,7 +48,7 @@
 					<c:set var="disableOuterButtons" value="true"/>
 				</c:if>
 				<a href="#"
-					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()'); disableOuterButtons();"
+					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
 						align="top" src="images/btn_add.gif" border="0" /></a>
 			</td>
@@ -129,11 +129,11 @@
 											MINChar Availability Score
 										</th>
 										<th></th>
-										
+
 									</tr>
 									<tr><td>${sampleForm.map.sampleBean.caNanoLabScore}</td>
 										<td>${sampleForm.map.sampleBean.mincharScore}</td>
-										<td><a href="#"	onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView'); ">
+										<td><a href="#"	onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView');">
 											Edit</a>
 										</td>
 									</tr>

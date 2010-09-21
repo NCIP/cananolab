@@ -19,7 +19,7 @@
 	</td>
 	<td>
 		<c:set var="newAddAccessButtonStyle" value="display:block" />
-		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')'); disableOuterButtons();" id="addAccess"
+		<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')');" id="addAccess"
 			style="${newAddAccessButtonStyle}"><img align="top"
 				src="images/btn_add.gif" border="0" /></a>
 	</td>
@@ -167,7 +167,7 @@
 										style="display: none" onclick="updateGroupName()">
 									</html:select>
 								</td>
-								<td><a id="cancelBrowse" style="display:none" href="javascript:cancelBrowseSelect()">Cancel</a></td>
+								<td><a id="cancelBrowse" style="display:none" href="javascript:cancelBrowseSelect();">Cancel</a></td>
 							</tr>
 						</table>
 					</td>
@@ -197,7 +197,7 @@
 							<html:hidden property="${accessParent}.theAccess.groupName" styleId="hiddenGroupName"/>
 							<input type="button" value="Save" onclick="javascript:addAccess('${parentAction}', ${parentPage}, ${isPublic});" />
 							<input type="reset" value="Cancel"
-								onclick="javascript:closeSubmissionForm('Access');enableOuterButtons();">
+								onclick="javascript:closeSubmissionForm('Access');">
 						</div>
 					</td>
 				</tr>

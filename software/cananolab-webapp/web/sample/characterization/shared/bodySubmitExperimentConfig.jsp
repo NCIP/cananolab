@@ -175,7 +175,7 @@
 				<input type="button" value="Save"
 					onclick="javascript:validateSaveConfig('${param.validate}', 'characterization');">
 				<input type="reset" value="Cancel"
-					onclick="javascript:clearExperimentConfig();closeSubmissionForm('ExperimentConfig'); enableOuterButtons();">
+					onclick="javascript:clearExperimentConfig();closeSubmissionForm('ExperimentConfig');">
 			</div>
 		</td>
 	</tr>

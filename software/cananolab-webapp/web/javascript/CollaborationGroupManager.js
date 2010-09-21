@@ -130,7 +130,7 @@ function clearUserAccess() {
 	dwr.util.setValue("userBean.loginName", "");
 	dwr.util.setValue("roleName", "");
 	hide("deleteUser");
-	enableOuterButtons();
+	disableOuterButtons();
 }
 
 function editUserAccess(userLoginName) {
@@ -161,6 +161,7 @@ function deleteTheUserAccess() {
 			hide("newUser");
 		}
 	}
+	enableOuterButtons();
 }
 
 function showMatchedUserDropdown() {

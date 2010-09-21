@@ -453,10 +453,12 @@ function sessionTimeout() {
 function openSubmissionForm(styleId) {
 	show("new" + styleId);
 	hide("add" + styleId);
+	disableOuterButtons();
 }
 function closeSubmissionForm(styleId) {
 	hide("new" + styleId);
 	show("add" + styleId);
+	enableOuterButtons();
 }
 
 function enableButtons(buttons) {
@@ -538,9 +540,9 @@ function confirmAction(){
 		return true;
 	}else{
 		return false;
-	}	
+	}
 }
-function generateBatchDataAvailability() {	
+function generateBatchDataAvailability() {
 	if(confirmAction()){
 		gotoPage("sample.do?dispatch=generateBatchDataAvailability");
 	}else{
