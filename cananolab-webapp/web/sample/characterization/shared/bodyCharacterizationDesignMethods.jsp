@@ -23,7 +23,7 @@
 				<c:set var="addExpermentConfigButtonStyle" value="display:none" />
 			</c:if>
 			<a style="${addExpermentConfigButtonStyle}" id="addExperimentConfig"
-				href="javascript:clearExperimentConfig();openSubmissionForm('ExperimentConfig');disableOuterButtons();"><img
+				href="javascript:clearExperimentConfig();openSubmissionForm('ExperimentConfig');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>

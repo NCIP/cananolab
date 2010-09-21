@@ -128,7 +128,7 @@
 						<input class="${buttonStyle}" type="button" value="Save"
 							onclick="addFile('${validate}', '${actionName}', ${fileForm});" />
 						<input class="${buttonStyle}" type="button" value="Cancel"
-							onclick="clearFile('${fileParent }');closeSubmissionForm('File');enableOuterButtons();" />
+							onclick="clearFile('${fileParent }');closeSubmissionForm('File');" />
 					</div>
 				</td>
 			</tr>

@@ -99,7 +99,7 @@
 											size="10" styleId="matchedUserNameSelect" style="display: none" onclick="updateUserLoginName()">
 										</html:select>
 									</td>
-									<td><a id="cancelBrowse" style="display:none" href="javascript:cancelBrowseSelect()">Cancel</a></td>
+									<td><a id="cancelBrowse" style="display:none" href="javascript:cancelBrowseSelect();">Cancel</a></td>
 								</tr>
 							</table>
 						</td>
@@ -120,12 +120,12 @@
 					<tr>
 						<td>
 							<input class="promptButton" style="display: none;" id="deleteUser" type="button"
-								value="Remove" onclick="deleteTheUserAccess(); enableOuterButtons();">
+								value="Remove" onclick="deleteTheUserAccess();">
 						</td>
 						<td align="right" colspan="3">
 							<div align="right">
-								<input class="promptButton" type="button" value="Save" onclick="javascript:addUserAccess();enableOuterButtons();" />
-								<input class="promptButton" type="button" value="Cancel" onclick="clearUserAccess();closeSubmissionForm('User');enableOuterButtons();">
+								<input class="promptButton" type="button" value="Save" onclick="javascript:addUserAccess();" />
+								<input class="promptButton" type="button" value="Cancel" onclick="clearUserAccess();closeSubmissionForm('User');">
 							</div>
 						</td>
 					</tr>

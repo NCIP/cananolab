@@ -686,20 +686,24 @@ function editDataAvailability(url){
 			//hide('editDataAvailability');
 		}
 	});
+	 disableOuterButtons();
 }
 
 function generateDataAvailability(form, actionName, dispatch){
 	submitAction(form, actionName, dispatch, 0);
+	disableOuterButtons();
 }
 
 function updateDataAvailability(form, actionName, dispatch){
 	submitAction(form, actionName, dispatch, 0);
+	enableOuterButtons();
 }
 
 function deleteDataAvailability(type, form, actionName, dispatch){
 	var answer = confirmDelete(type);
 	if (answer) {
 		submitAction(form, actionName, dispatch, 0);
+		enableOuterButtons();
 	}
 }
 

@@ -264,7 +264,7 @@
 				<input type="button" value="Save"
 					onclick="addComposingElement('${validate}', 'nanomaterialEntity');" />
 				<input type="button" value="Cancel"
-					onclick="clearComposingElement();closeSubmissionForm('ComposingElement');enableOuterButtons();" />
+					onclick="clearComposingElement();closeSubmissionForm('ComposingElement');" />
 			</div>
 		</td>
 	</tr>
