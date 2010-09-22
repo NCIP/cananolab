@@ -27,6 +27,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +146,7 @@ public class SecurityService {
 			logger.error("Error in getting the groups user is in.", e);
 			throw new SecurityException();
 		}
+		Collections.sort(groupNames);
 		return groupNames;
 	}
 
