@@ -20,7 +20,7 @@ public class SecuredDataBean {
 
 	private Boolean userIsOwner = false;
 
-	public List<AccessibilityBean> getUserAccess() {
+	public List<AccessibilityBean> getUserAccesses() {
 		return userAccesses;
 	}
 
@@ -48,10 +48,6 @@ public class SecuredDataBean {
 
 	public void setTheAccess(AccessibilityBean theAccess) {
 		this.theAccess = theAccess;
-	}
-
-	public List<AccessibilityBean> getUserAccesses() {
-		return userAccesses;
 	}
 
 	public Boolean getUserUpdatable() {
