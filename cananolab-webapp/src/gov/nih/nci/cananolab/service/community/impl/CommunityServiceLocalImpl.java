@@ -250,11 +250,10 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 						cGroup.setUserUpdatable(true);
 					}
 				}
-			} else if (user.isCurator()) {
-				cGroup.setUserUpdatable(true);
-			} else {
-				cGroup.setUserUpdatable(false);
 			}
+		}
+		if (user.isCurator()) {
+			cGroup.setUserUpdatable(true);
 		}
 		cGroup.setUserAccesses(accesses);
 		List<String> ownerNames = accessUtils
@@ -302,6 +301,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 						.removeAllAccesses(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ collaborationGroup.getId());
 				authManager.removeGroup(collaborationGroup.getId());
+				// update user group list
+				user.getGroupNames().remove(collaborationGroup.getName());
 			}
 		} catch (NoAccessException e) {
 			throw e;
