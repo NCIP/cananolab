@@ -83,7 +83,6 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 				return mapping.findForward("input");
 			}
 		}
-		System.out.println("right before forward");
 		return mapping.findForward("batchDataAvailabilityResults");
 	}
 }
