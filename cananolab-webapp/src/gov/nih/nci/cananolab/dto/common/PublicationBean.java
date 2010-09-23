@@ -109,7 +109,7 @@ public class PublicationBean extends FileBean {
 		oldPub.setType(dbPub.getType());
 		this.setSampleNamesStr(source.getSampleNamesStr());
 		this.setSampleNames(source.getSampleNames());
-		this.setUserAccesses(source.getUserAccess());
+		this.setUserAccesses(source.getUserAccesses());
 		this.setGroupAccesses(source.getGroupAccesses());
 		this.setUserUpdatable(source.getUserUpdatable());
 	}
@@ -138,7 +138,7 @@ public class PublicationBean extends FileBean {
 		oldPub.setType(dbPub.getType());
 		this.setSampleNamesStr(source.getSampleNamesStr());
 		this.setSampleNames(source.getSampleNames());
-		this.setUserAccesses(source.getUserAccess());
+		this.setUserAccesses(source.getUserAccesses());
 		this.setGroupAccesses(source.getGroupAccesses());
 		this.setUserUpdatable(source.getUserUpdatable());
 		oldPub.setUri(dbPub.getUri());
