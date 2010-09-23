@@ -69,7 +69,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			List<AccessibilityBean> accessibilities = collaborationGroup
-					.getUserAccessibilities();
+					.getUserAccesses();
 			Group doGroup = securityService.getGroup(collaborationGroup
 					.getName());
 			// group name already exists by another id
@@ -123,37 +123,43 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 							.getId());
 					// update user access if user is the owner of the group or
 					// curator
-					if (user.isCurator()
-							|| securityService
-									.isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-											+ doGroup.getGroupId())) {
-						List<AccessibilityBean> existingAccess = existingGroup
-								.getUserAccessibilities();
-						List<AccessibilityBean> accessToRemove = new ArrayList<AccessibilityBean>(
-								existingAccess);
-						accessToRemove.removeAll(accessibilities);
-						for (AccessibilityBean access : accessToRemove) {
-							authManager.removeUserFromGroup(doGroup
-									.getGroupId().toString(), access
-									.getUserBean().getUserId());
-							accessUtils
-									.removeSecureObjectForUser(
-											AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-													+ doGroup.getGroupId(),
-											access.getUserBean().getLoginName(),
-											AccessibilityBean.CSM_CURD_ROLE);
-						}
+					// if (user.isCurator()
+					// || securityService
+					// .isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+					// + doGroup.getGroupId())) {
+					List<AccessibilityBean> existingAccess = existingGroup
+							.getUserAccesses();
+					List<AccessibilityBean> accessToRemove = new ArrayList<AccessibilityBean>(
+							existingAccess);
+					accessToRemove.removeAll(accessibilities);
+					for (AccessibilityBean access : accessToRemove) {
+						authManager.removeUserFromGroup(doGroup.getGroupId()
+								.toString(), access.getUserBean().getUserId());
+						accessUtils
+								.removeSecureObjectForUser(
+										AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+												+ doGroup.getGroupId(), access
+												.getUserBean().getLoginName(),
+										AccessibilityBean.CSM_CURD_ROLE);
 					}
+					// } else {
+					// throw new NoAccessException(
+					// "You'd have to the curator or the owner of the group to manage users.");
+					// }
 				} else {
 					throw new NoAccessException(
 							"You don't have access to update the collaboration group");
 				}
 			}
 			// check if user is the owner the group
-			if (user.isCurator()
-					|| securityService
-							.isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-									+ doGroup.getGroupId())) {
+			// if (user.isCurator()
+			// || securityService
+			// .isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+			// + doGroup.getGroupId())) {
+			// check if user can update the group
+			if (securityService
+					.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+							+ collaborationGroup.getId())) {
 				String[] userIds = new String[accessibilities.size() + 1];
 				int i = 0;
 				for (AccessibilityBean access : accessibilities) {
@@ -202,9 +208,15 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 					setUserAccesses(cGroup);
 					collaborationGroups.add(cGroup);
 				} else {
-					String error = "User has no access to the collaboration group "
-							+ cGroup.getName();
-					logger.info(error);
+					// ignore Public and Curator groups
+					if (!cGroup.getName().equalsIgnoreCase(
+							AccessibilityBean.CSM_PUBLIC_GROUP)
+							&& !cGroup.getName().equalsIgnoreCase(
+									AccessibilityBean.CSM_DATA_CURATOR)) {
+						String error = "User has no access to the collaboration group "
+								+ cGroup.getName();
+						logger.info(error);
+					}
 				}
 			}
 
@@ -235,8 +247,21 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
 			accessibility.setUserBean(new UserBean(aUser));
 			access.add(accessibility);
+			// check current user access
+			if (aUser.getLoginName().equalsIgnoreCase(user.getLoginName())) {
+				if (accessibility.getRoleName().equalsIgnoreCase(
+						AccessibilityBean.CSM_READ_ROLE)) {
+					cGroup.setUserUpdatable(false);
+				} else if (accessibility.getRoleName().equalsIgnoreCase(
+						AccessibilityBean.CSM_CURD_ROLE)) {
+					cGroup.setUserUpdatable(true);
+				}
+			}
 		}
-		cGroup.setUserAccessibilities(access);
+		if (user.isCurator()) {
+			cGroup.setUserUpdatable(true);
+		}
+		cGroup.setUserAccesses(access);
 		List<String> ownerNames = accessUtils
 				.getOwnerNames(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
@@ -333,7 +358,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (String id : collaborationGroupIds) {
 				CollaborationGroupBean bean = findCollaborationGroupById(id);
 				System.out.println("owner name: " + bean.getOwnerName());
-				// Doesn't seem to need to call this, assignOwner replaces the old association
+				// Doesn't seem to need to call this, assignOwner replaces the
+				// old association
 				// this.accessUtils.removeOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 				// + id, currentOwner);
 				this.accessUtils.assignOwner(
