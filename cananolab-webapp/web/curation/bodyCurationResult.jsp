@@ -15,6 +15,6 @@
 
 <jsp:include page="/bodyMessage.jsp" />
 <c:if test="${!processComplete eq 'true'}">
-	<span class="welcomeContent">Process may take a while to complete.  Please click on RESULTS tab later to check the progress.</span>
+	<span class="welcomeContent">The process may take a while to complete.  Please click on RESULTS tab later to check the progress.</span>
 </c:if>
 
