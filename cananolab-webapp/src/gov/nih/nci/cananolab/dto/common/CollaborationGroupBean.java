@@ -2,20 +2,14 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.security.authorization.domainobjects.Group;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CollaborationGroupBean {
+public class CollaborationGroupBean extends SecuredDataBean {
 	private String id;
 	private String name;
 	private String description;
-	private List<AccessibilityBean> userAccessibilities = new ArrayList<AccessibilityBean>();
-	private AccessibilityBean theUserAccessibility = new AccessibilityBean(
-			AccessibilityBean.ACCESS_BY_USER);
 	private String ownerName;
 
 	public CollaborationGroupBean() {
-		for (AccessibilityBean access : userAccessibilities) {
+		for (AccessibilityBean access : this.getUserAccesses()) {
 			access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 		}
 	}
@@ -50,36 +44,19 @@ public class CollaborationGroupBean {
 		this.description = description;
 	}
 
-	public List<AccessibilityBean> getUserAccessibilities() {
-		return userAccessibilities;
-	}
-
-	public void setUserAccessibilities(
-			List<AccessibilityBean> userAccessibilities) {
-		this.userAccessibilities = userAccessibilities;
-	}
-
-	public AccessibilityBean getTheUserAccessibility() {
-		return theUserAccessibility;
-	}
-
-	public void setTheUserAccessibility(AccessibilityBean theUserAccessibility) {
-		this.theUserAccessibility = theUserAccessibility;
-	}
-
 	public void addUserAccess(AccessibilityBean userAccess) {
-		int index = userAccessibilities.indexOf(userAccess);
+		int index = this.getUserAccesses().indexOf(userAccess);
 		if (index != -1) {
-			userAccessibilities.remove(userAccess);
+			this.getUserAccesses().remove(userAccess);
 			// retain the original order
-			userAccessibilities.add(index, userAccess);
+			this.getUserAccesses().add(index, userAccess);
 		} else {
-			userAccessibilities.add(userAccess);
+			this.getUserAccesses().add(userAccess);
 		}
 	}
 
 	public void removeUserAccess(AccessibilityBean userAccess) {
-		userAccessibilities.remove(userAccess);
+		this.getUserAccesses().remove(userAccess);
 	}
 
 	public String getOwnerName() {
