@@ -15,6 +15,10 @@ package gov.nih.nci.cananolab.ui.curation;
  * @author pansu
  */
 
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.ui.core.AbstractForwardAction;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,10 +26,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.ui.core.AbstractForwardAction;
 
 public class ManageCurationAction extends AbstractForwardAction {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
