@@ -28,15 +28,18 @@
 	<property name="cananolab-webapp.base.dir" location="${software.dir}/cananolab-webapp" />
 	<property name="cananolab-grid.base.dir" location="${software.dir}/cananolab-grid" />
 	<property name="cananolab-db.base.dir" location="${software.dir}/cananolab-db" />
+	<property name="cananolab-app.base.dir" location="${software.dir}/cananolab-app" />
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="cananolab-webapp.build.file" value="build.xml" />
 	<property name="cananolab-grid.build.file" value="build.xml" />
 	<property name="cananolab-db.build.file" value="build.xml" />
+	<property name="cananolab-app.build.file" value="build-app.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
 	<property name="cananolab-webapp.build.target" value="run" />
 	<property name="cananolab-grid.build.target" value="distWebApp" />
+	<property name="cananolab-app.build.target" value="run" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
@@ -47,6 +50,7 @@
 	<property name="common.dist.dir" location="${dist.exploded.dir}/common" />
 	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
 	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
+	<property name="cananolab-app.dist.dir" location="${dist.exploded.dir}/cananolab-app" />
 
 	<condition property="application.base.path" value="${application.base.path.linux}">
 		<or>
@@ -146,6 +150,7 @@
 	<target name="deploy:cananolab-grid" depends="dist:cananolab-grid">
 		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-grid" dir="${build.dir}">
 			<property name="cananolab-grid.dist.dir" location="${cananolab-grid.dist.dir}" />
+			<property name="common.dist.dir" location="${common.dist.dir}" />
 		</ant>
 	</target>
 
