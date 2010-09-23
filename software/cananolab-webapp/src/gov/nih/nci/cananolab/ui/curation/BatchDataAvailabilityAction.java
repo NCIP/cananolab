@@ -68,12 +68,12 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		BatchDataAvailabilityProcess batchProcess = (BatchDataAvailabilityProcess) session
 				.getAttribute("batchDataAvailabilityProcess");
 		if (batchProcess == null) {
+			session.setAttribute("hasResultsWaiting", true);
 			batchProcess = new BatchDataAvailabilityProcess(
 					dataAvailabilityService, option, user);
 			session.setAttribute("batchDataAvailabilityProcess", batchProcess);
 			session.setAttribute("processType", "dataAvailability");
 			batchProcess.process();
-			session.setAttribute("hasResultsWaiting", true);
 		} else {
 			if (!batchProcess.isComplete()) {
 				ActionMessage msg = new ActionMessage(
@@ -83,6 +83,7 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 				return mapping.findForward("input");
 			}
 		}
+		System.out.println("right before forward");
 		return mapping.findForward("batchDataAvailabilityResults");
 	}
 }
