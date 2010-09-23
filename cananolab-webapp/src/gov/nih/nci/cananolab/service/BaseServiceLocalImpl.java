@@ -519,6 +519,10 @@ public class BaseServiceLocalImpl implements BaseService {
 		return fileBean;
 	}
 
+	public UserBean getUser() {
+		return user;
+	}
+
 	/**
 	 * Utilities methods related to assign/remove access
 	 *
