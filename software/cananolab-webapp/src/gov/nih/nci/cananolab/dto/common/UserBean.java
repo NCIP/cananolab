@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.security.authorization.domainobjects.User;
 
-import java.util.List;
+import java.util.SortedSet;
 
 /**
  * This class represents properties of a user object to be shown in the view
@@ -68,7 +68,7 @@ public class UserBean {
 
 	private User domain;
 
-	private List<String> groupNames;
+	private SortedSet<String> groupNames;
 
 	public UserBean() {
 	}
@@ -224,13 +224,14 @@ public class UserBean {
 		return domain;
 	}
 
-	public List<String> getGroupNames() {
+	public SortedSet<String> getGroupNames() {
 		return groupNames;
 	}
 
-	public void setGroupNames(List<String> groupNames) {
+	public void setGroupNames(SortedSet<String> groupNames) {
 		this.groupNames = groupNames;
-		if (groupNames!=null && groupNames.contains(AccessibilityBean.CSM_DATA_CURATOR)) {
+		if (groupNames != null
+				&& groupNames.contains(AccessibilityBean.CSM_DATA_CURATOR)) {
 			this.curator = true;
 		} else {
 			this.curator = false;
