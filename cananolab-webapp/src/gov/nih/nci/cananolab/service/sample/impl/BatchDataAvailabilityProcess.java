@@ -30,7 +30,7 @@ public class BatchDataAvailabilityProcess implements Runnable {
 			.getLogger(BatchDataAvailabilityProcess.class);
 	private boolean complete = false;
 	private boolean running = false;
-	private String statusMessage = "Process has not begun";
+	private String statusMessage = "Data availability batch process has not been started";
 	private boolean withError = false;
 
 	public BatchDataAvailabilityProcess(
@@ -41,7 +41,7 @@ public class BatchDataAvailabilityProcess implements Runnable {
 		securityService = new SecurityService(AccessibilityBean.CSM_APP_NAME,
 				user);
 		sampleService = new SampleServiceLocalImpl(securityService);
-		logger.info("New data availability batch process created");
+		logger.info("New data availability batch process is created");
 	}
 
 	/**
@@ -49,9 +49,14 @@ public class BatchDataAvailabilityProcess implements Runnable {
 	 */
 	public void process() {
 		if (!isRunning()) {
-			this.statusMessage = "Starting process";
+			this.statusMessage = "Starting data availability batch process with option "
+					+ batchOption;
 			try {
 				Thread t = new Thread(this);
+				// Daemon threads are used for background supporting tasks and
+				// are only needed while normal threads are executing. If normal
+				// threads are not running and remaining threads are daemon
+				// threads then the JVM exits.
 				t.setDaemon(true);
 				t.start();
 
@@ -61,10 +66,11 @@ public class BatchDataAvailabilityProcess implements Runnable {
 				while (false == this.isRunning()) {
 				}
 			} catch (Exception e) {
-				this.statusMessage = "Process is terminated with error";
+				this.statusMessage = "Data availability batch process with option "
+						+ batchOption + " is terminated with error";
 				this.withError = true;
 				e.printStackTrace();
-				logger.error(e);
+				logger.error(this.statusMessage, e);
 			}
 		}
 	}
@@ -73,8 +79,9 @@ public class BatchDataAvailabilityProcess implements Runnable {
 	 * Triggers the long running process.
 	 */
 	public void run() {
-		logger.info("Running batch data availability process for option "
-				+ batchOption);
+		this.statusMessage = "Running batch data availability process with option "
+				+ batchOption;
+		logger.info(this.statusMessage);
 		try {
 			this.running = true;
 			this.complete = false;
@@ -100,13 +107,17 @@ public class BatchDataAvailabilityProcess implements Runnable {
 						securityService);
 			}
 			long end = System.currentTimeMillis();
+			long duration = (end - start) / 1000;
 			logger.info("total time to run option " + batchOption + ": "
-					+ (end - start) / 1000 + " seconds.");
-			this.statusMessage = "Process Complete";
+					+ duration + " seconds.");
+			this.statusMessage = "Data availability batch process with option "
+					+ batchOption + " is completed after " + duration
+					+ " seccond(s)";
 			this.complete = true;
 			this.running = false;
 		} catch (Exception e) {
-			this.statusMessage = "Process is terminated with error";
+			this.statusMessage = "Data availability batch process with option "
+					+ batchOption + "is terminated with error";
 			this.complete = true;
 			this.running = false;
 			this.withError = true;
