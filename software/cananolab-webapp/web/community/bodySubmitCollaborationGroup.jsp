@@ -77,7 +77,7 @@
 							User Login Name *
 						</td>
 						<td>
-							<html:text property="group.theUserAccessibility.userBean.loginName"
+							<html:text property="group.theAccess.userBean.loginName"
 								styleId="userBean.loginName" onchange=""/>
 						</td>
 						<td width="5">
@@ -95,7 +95,7 @@
 									</td>
 									<td>
 										<html:select
-											property="group.theUserAccessibility.userBean.loginName"
+											property="group.theAccess.userBean.loginName"
 											size="10" styleId="matchedUserNameSelect" style="display: none" onclick="updateUserLoginName()">
 										</html:select>
 									</td>
@@ -109,8 +109,8 @@
 							Access to the Group *
 						</td>
 						<td colspan="2">
-							<html:hidden property="group.theUserAccessibility.groupAccess" value="false"/>
-							<html:select property="group.theUserAccessibility.roleDisplayName"
+							<html:hidden property="group.theAccess.groupAccess" value="false"/>
+							<html:select property="group.theAccess.roleDisplayName"
 								styleId="roleName" onchange="">
 								<option></option>
 								<html:options collection="csmRoleNames" labelProperty="label" property="value"/>
