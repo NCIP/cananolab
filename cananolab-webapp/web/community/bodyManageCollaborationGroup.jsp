@@ -23,9 +23,10 @@
 	<table width="100%" align="center" class="submissionView">
 		<c:if test="${!empty existingCollaborationGroups}">
 			<tr>
-				<td class="cellLabel" colspan="2">
+				<td class="cellLabel" width="25%">
 					Existing Collaboration Groups
 				</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -38,7 +39,9 @@
 							<th width="33%">
 								Description
 							</th>
-							<th>Owner</th>
+							<th>
+								Owner
+							</th>
 							<th>
 								Users (Access)
 							</th>
@@ -56,13 +59,14 @@
 									${group.ownerName}
 								</td>
 								<td>
-									<c:forEach var="userAccess"
-										items="${group.userAccessibilities}">
+									<c:forEach var="userAccess" items="${group.userAccesses}">
 									${userAccess.userBean.loginName} (${userAccess.roleDisplayName})<br />
 									</c:forEach>
 								</td>
 								<td align="right">
-									<a href="javascript:setTheCollaborationGroup(${group.id});">Edit</a>&nbsp;
+									<c:if test="${group.userUpdatable}">
+										<a href="javascript:setTheCollaborationGroup(${group.id});">Edit</a>&nbsp;
+									</c:if>
 								</td>
 							</tr>
 						</c:forEach>
@@ -72,7 +76,7 @@
 			</tr>
 		</c:if>
 		<tr>
-			<td class="cellLabel" width="20%" id="newCollaborationGroupLabel"
+			<td class="cellLabel" id="newCollaborationGroupLabel"
 				style="display: block">
 				New Collaboration Group
 			</td>
@@ -81,8 +85,7 @@
 				<a href="#"
 					onclick="javascript:clearCollaborationGroup();openSubmissionForm('CollaborationGroup');"
 					id="addCollaborationGroup" style="${newAddCGButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" />
-				</a>
+						align="top" src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
 		<tr>
