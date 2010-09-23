@@ -86,7 +86,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				doGroup.setGroupName(collaborationGroup.getName());
 				doGroup.setGroupDesc(collaborationGroup.getDescription());
 				authManager.createGroup(doGroup);
-
+				collaborationGroup.setId(doGroup.getGroupId().toString());
 				// assign CURD access to user who created the group
 				AccessibilityBean ownerAccess = new AccessibilityBean(
 						AccessibilityBean.ACCESS_BY_USER);
@@ -177,7 +177,9 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				authManager.addUsersToGroup(doGroup.getGroupId().toString(),
 						userIds);
 				// update userBean's associated group
-				user.getGroupNames().add(doGroup.getGroupName());
+				if (!user.getGroupNames().contains(doGroup.getGroupName())) {
+					user.getGroupNames().add(doGroup.getGroupName());
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -207,16 +209,6 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 								+ cGroup.getId())) {
 					setUserAccesses(cGroup);
 					collaborationGroups.add(cGroup);
-				} else {
-					// ignore Public and Curator groups
-					if (!cGroup.getName().equalsIgnoreCase(
-							AccessibilityBean.CSM_PUBLIC_GROUP)
-							&& !cGroup.getName().equalsIgnoreCase(
-									AccessibilityBean.CSM_DATA_CURATOR)) {
-						String error = "User has no access to the collaboration group "
-								+ cGroup.getName();
-						logger.info(error);
-					}
 				}
 			}
 
@@ -239,29 +231,32 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		Map<String, String> userRoles = securityService
 				.getAllUserRoles(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
-		List<AccessibilityBean> access = new ArrayList<AccessibilityBean>();
+		List<AccessibilityBean> accesses = new ArrayList<AccessibilityBean>();
 		for (User aUser : users) {
-			AccessibilityBean accessibility = new AccessibilityBean(
-					AccessibilityBean.ACCESS_BY_USER);
-			accessibility.setGroupName(cGroup.getName());
-			accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
-			accessibility.setUserBean(new UserBean(aUser));
-			access.add(accessibility);
-			// check current user access
-			if (aUser.getLoginName().equalsIgnoreCase(user.getLoginName())) {
-				if (accessibility.getRoleName().equalsIgnoreCase(
-						AccessibilityBean.CSM_READ_ROLE)) {
-					cGroup.setUserUpdatable(false);
-				} else if (accessibility.getRoleName().equalsIgnoreCase(
-						AccessibilityBean.CSM_CURD_ROLE)) {
-					cGroup.setUserUpdatable(true);
+			if (userRoles.get(aUser.getLoginName()) != null) {
+				AccessibilityBean accessibility = new AccessibilityBean(
+						AccessibilityBean.ACCESS_BY_USER);
+				accessibility.setGroupName(cGroup.getName());
+				accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
+				accessibility.setUserBean(new UserBean(aUser));
+				accesses.add(accessibility);
+				// set user updatable
+				if (aUser.getLoginName().equalsIgnoreCase(user.getLoginName())) {
+					if (accessibility.getRoleName().equalsIgnoreCase(
+							AccessibilityBean.CSM_READ_ROLE)) {
+						cGroup.setUserUpdatable(false);
+					} else if (accessibility.getRoleName().equalsIgnoreCase(
+							AccessibilityBean.CSM_CURD_ROLE)) {
+						cGroup.setUserUpdatable(true);
+					}
 				}
+			} else if (user.isCurator()) {
+				cGroup.setUserUpdatable(true);
+			} else {
+				cGroup.setUserUpdatable(false);
 			}
 		}
-		if (user.isCurator()) {
-			cGroup.setUserUpdatable(true);
-		}
-		cGroup.setUserAccesses(access);
+		cGroup.setUserAccesses(accesses);
 		List<String> ownerNames = accessUtils
 				.getOwnerNames(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
