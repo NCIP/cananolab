@@ -55,7 +55,6 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 		CommunityService service = setServiceInSession(request);
 		List<CollaborationGroupBean> existingCollaborationGroups = service
 				.findCollaborationGroups();
-		// TODO remove group owner from the user access list?
 		request.setAttribute("existingCollaborationGroups",
 				existingCollaborationGroups);
 	}
@@ -101,8 +100,7 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 		CommunityService service = setServiceInSession(request);
 		service.saveCollaborationGroup(group);
 		// update user's groupNames
-		UserBean user = ((CommunityServiceLocalImpl) service)
-				.getSecurityService().getUserBean();
+		UserBean user = ((CommunityServiceLocalImpl) service).getUser();
 		request.getSession().setAttribute("user", user);
 		return setupNew(mapping, form, request, response);
 	}
