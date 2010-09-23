@@ -574,7 +574,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			SampleBean newSampleBean0 = new SampleBean(newSample0);
 			// copy accessibility
 			newSampleBean0.setGroupAccesses(origSampleBean.getGroupAccesses());
-			newSampleBean0.setUserAccesses(origSampleBean.getUserAccess());
+			newSampleBean0.setUserAccesses(origSampleBean.getUserAccesses());
 			// save the sample to get an ID before saving associations
 			saveSample(newSampleBean0);
 		} catch (NotExistException e) {
@@ -1059,21 +1059,21 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			domain.setCreatedBy(newOwner);
 			SampleComposition sampleComposition = domain.getSampleComposition();
 			Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
-			Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>(); 
-			Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>(); ;
-			Collection<Characterization> characterization = new ArrayList<Characterization>(); 
-			
+			Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
+			Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
+			;
+			Collection<Characterization> characterization = new ArrayList<Characterization>();
+
 			appService.saveOrUpdate(domain);
-			if(sampleComposition != null){
+			if (sampleComposition != null) {
 				chemicalAssociation = sampleComposition
-					.getChemicalAssociationCollection();
+						.getChemicalAssociationCollection();
 				functionalizingEntity = sampleComposition
-					.getFunctionalizingEntityCollection();
+						.getFunctionalizingEntityCollection();
 				nanomaterialEntity = sampleComposition
-					.getNanomaterialEntityCollection();
-				characterization = domain
-					.getCharacterizationCollection();
-							
+						.getNanomaterialEntityCollection();
+				characterization = domain.getCharacterizationCollection();
+
 				for (ChemicalAssociation ca : chemicalAssociation) {
 					ca.setCreatedBy(newOwner);
 					appService.saveOrUpdate(ca);
@@ -1086,7 +1086,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					ne.setCreatedBy(newOwner);
 					appService.saveOrUpdate(ne);
 				}
-	
+
 				for (Characterization c : characterization) {
 					c.setCreatedBy(newOwner);
 					appService.saveOrUpdate(c);
