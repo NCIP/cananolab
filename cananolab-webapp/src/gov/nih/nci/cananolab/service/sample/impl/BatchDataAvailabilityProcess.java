@@ -64,6 +64,7 @@ public class BatchDataAvailabilityProcess implements Runnable {
 				// don't return until the new thread is running.
 				//
 				while (false == this.isRunning()) {
+					logger.info("Trying to run the new thread");
 				}
 			} catch (Exception e) {
 				this.statusMessage = "Data availability batch process with option "
