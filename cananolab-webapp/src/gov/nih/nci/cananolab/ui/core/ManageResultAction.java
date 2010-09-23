@@ -50,6 +50,8 @@ public class ManageResultAction extends AbstractForwardAction {
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, messages);
 				request.setAttribute("processComplete", true);
+				//hide the results tab
+				session.setAttribute("hasResultsWaiting", false);
 				return super.execute(mapping, form, request, response);
 			}
 		}
