@@ -27,11 +27,12 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -133,8 +134,8 @@ public class SecurityService {
 		return adminStatus;
 	}
 
-	private List<String> getUserGroups() throws SecurityException {
-		List<String> groupNames = new ArrayList<String>();
+	private SortedSet<String> getUserGroups() throws SecurityException {
+		SortedSet<String> groupNames = new TreeSet<String>();
 		try {
 			Set groups = this.authorizationManager.getGroups(userBean
 					.getDomain().getUserId().toString());
@@ -146,7 +147,6 @@ public class SecurityService {
 			logger.error("Error in getting the groups user is in.", e);
 			throw new SecurityException();
 		}
-		Collections.sort(groupNames);
 		return groupNames;
 	}
 
