@@ -15,8 +15,8 @@ function setTheCollaborationGroup(groupId) {
 }
 // Populate user submission form and auto open it for user.
 function openOneUserAccess() {
-	if (currentGroup != null && currentGroup.userAccessibilities.length == 1) {
-		var userAccess = currentGroup.userAccessibilities[0];
+	if (currentGroup != null && currentGroup.userAccesses.length == 1) {
+		var userAccess = currentGroup.userAccesses[0];
 		populateUserAccessForm(userAccess);
 	} else {
 		hide("newUser");
@@ -47,7 +47,7 @@ function populateCollaborationGroup(group) {
 }
 // Populate the user access table inside collaboration group form.
 function populateUserAccesses(groupOwner) {
-	var userAccesses = currentGroup.userAccessibilities;
+	var userAccesses = currentGroup.userAccesses;
 	dwr.util.removeAllRows("userRows", {
 		filter : function(tr) {
 			return (tr.id != "pattern" && tr.id != "patternHeader");
