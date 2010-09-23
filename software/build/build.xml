@@ -113,7 +113,7 @@
 
 		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 			<classpath>
-				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+				<pathelement location="${common.dir}/lib/ant-contrib-1.0b3.jar" />
 			</classpath>
 		</taskdef>
 	</target>
@@ -249,8 +249,9 @@
 		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
 
 		<!-- replace grid service port -->
-		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token="DEFAULT_PORT" value="${grid.service.port}" />
-
+		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token=">8080" value=">${grid.service.port}" />
+		<!-- replace grid web app name -->
+		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token=">wsrf" value=">wsrf-canano" />
 		<!-- replace grid index service URL -->
 		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/${grid.service.name}_registration.xml" token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
 
