@@ -68,8 +68,6 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
-			List<AccessibilityBean> accessibilities = collaborationGroup
-					.getUserAccesses();
 			Group doGroup = securityService.getGroup(collaborationGroup
 					.getName());
 			// group name already exists by another id
@@ -104,6 +102,9 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				accessUtils.assignOwner(
 						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ doGroup.getGroupId(), user.getLoginName());
+				collaborationGroup.getUserAccesses().add(ownerAccess);
+				collaborationGroup.getGroupAccesses().add(
+						AccessibilityBean.CSM_DEFAULT_ACCESS);
 			}
 			// update existing group
 			else {
@@ -131,7 +132,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 							.getUserAccesses();
 					List<AccessibilityBean> accessToRemove = new ArrayList<AccessibilityBean>(
 							existingAccess);
-					accessToRemove.removeAll(accessibilities);
+					accessToRemove.removeAll(collaborationGroup
+							.getUserAccesses());
 					for (AccessibilityBean access : accessToRemove) {
 						authManager.removeUserFromGroup(doGroup.getGroupId()
 								.toString(), access.getUserBean().getUserId());
@@ -160,9 +162,11 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (securityService
 					.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 							+ collaborationGroup.getId())) {
-				String[] userIds = new String[accessibilities.size() + 1];
+				String[] userIds = new String[collaborationGroup
+						.getUserAccesses().size()];
 				int i = 0;
-				for (AccessibilityBean access : accessibilities) {
+				for (AccessibilityBean access : collaborationGroup
+						.getUserAccesses()) {
 					saveAccessibility(access,
 							AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 									+ doGroup.getGroupId());
@@ -172,8 +176,13 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 					userIds[i] = userId;
 					i++;
 				}
-				// add current user to the group
-				userIds[i] = user.getUserId();
+				// // add current user to the group if the current user is the
+				// // owner
+				// if (securityService
+				// .isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+				// + collaborationGroup.getId())) {
+				// userIds[i] = user.getUserId();
+				// }
 				authManager.addUsersToGroup(doGroup.getGroupId().toString(),
 						userIds);
 				// update userBean's associated group
