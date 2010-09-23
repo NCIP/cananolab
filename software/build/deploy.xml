@@ -66,7 +66,7 @@
 		</copy>
 		<!-- copy globus libs to JBoss lib direction -->
 		<copy todir="${jboss.lib.dir}" overwrite="true">
-			<fileset dir="${cananolab-grid.dist.dir}">
+			<fileset dir="${common.dist.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
