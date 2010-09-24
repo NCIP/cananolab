@@ -387,12 +387,12 @@ public class GridClientTest {
 							args[1]);
 					GridClientTest test=new GridClientTest(client);
 					//test.testgetSampleIds();
-					//test.testCharacterization();
-					//test.testNanomaterialEntity();
-					//test.testFunction();
-					//test.testComposingElement();
-					//test.testFunctionalizingEntity();
-					//test.testSample();
+					test.testCharacterization();
+					test.testNanomaterialEntity();
+					test.testFunction();
+					test.testComposingElement();
+					test.testFunctionalizingEntity();
+					test.testSample();
 					test.testChemicalAssociation();
 					test.testSampleComposition();
 					
