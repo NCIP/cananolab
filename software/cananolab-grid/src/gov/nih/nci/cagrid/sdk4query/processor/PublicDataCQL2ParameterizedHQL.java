@@ -1,19 +1,5 @@
 package gov.nih.nci.cagrid.sdk4query.processor;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
@@ -28,6 +14,20 @@ import gov.nih.nci.cagrid.sdkquery4.processor.CQL2ParameterizedHQL;
 import gov.nih.nci.cagrid.sdkquery4.processor.DomainTypesInformationUtil;
 import gov.nih.nci.cagrid.sdkquery4.processor.ParameterizedHqlQuery;
 import gov.nih.nci.cagrid.sdkquery4.processor.RoleNameResolver;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * CQL2ParameterizedHQL Converter utility to turn CQL into HQL using positional
