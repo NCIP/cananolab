@@ -128,11 +128,25 @@
 			<filterset refid="properties.filterset" />
 		</copy>
 		<!-- package jar file -->
-		<jar destfile="${dist.dir}/caNanoLab-helpers.jar" basedir="${build.dir}/WEB-INF/classes" includes="**/UserBean.class, **/*Exception.class, **/AuthorizationService.class, **/*Helper.class, **/ClassUtils.class, **/StringUtils.class, **/TextMatchMode.class, **/Constants.class, **/PropertyUtils.class, caNanoLab.properties.template" excludes="**/AdvancedSampleServiceHelper.class" />
+		<jar destfile="${dist.dir}/caNanoLab-helpers.jar" basedir="${build.dir}/WEB-INF/classes" includes="**/AccessibilityBean.class, **/UserBean.class, **/*Exception.class, **/SecurityService.class, **/*Helper.class, **/ClassUtils.class, **/StringUtils.class, **/TextMatchMode.class, **/Constants.class, **/PropertyUtils.class, caNanoLab.properties.template" excludes="**/AdvancedSampleServiceHelper.class" />
 	</target>
 
 	<target name="jar:orm">
 		<!-- package jar file -->
 		<jar destfile="${dist.dir}/caNanoLabSDK-orm.jar" basedir="${src.dir}" includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml" />
+	</target>
+
+	<target name="update:csm_application:db" depends="compile">
+		<java classname="gov.nih.nci.cananolab.service.security.AuthorizationService" fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile" value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<arg value="org.hibernate.dialect.MySQLDialect" />
+			<arg value="com.mysql.jdbc.Driver" />
+			<arg value="jdbc:mysql://${database.host}:${database.port}/canano" />
+			<arg value="${database.user}" />
+			<arg value="${database.password}" />
+		</java>
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" />
 	</target>
 </project>
