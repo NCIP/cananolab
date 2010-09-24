@@ -11,7 +11,6 @@ import gov.nih.nci.cagrid.sdkquery4.processor.DomainTypesInformationUtil;
 import gov.nih.nci.cagrid.sdkquery4.processor.ParameterizedHqlQuery;
 import gov.nih.nci.cagrid.sdkquery4.processor.RoleNameResolver;
 import gov.nih.nci.cagrid.sdkquery4.processor.SDK4QueryProcessor;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
