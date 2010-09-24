@@ -26,6 +26,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.util.LabelValueBean;
+import org.directwebremoting.WebContextFactory;
 
 /**
  * This class sets up information required for characterization forms.
@@ -115,7 +116,6 @@ public class InitCharacterizationSetup {
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"datumConditionValueTypes", "datum and condition", "valueType",
 				"otherValueType", true);
-
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"dimensionUnits", "dimension", "unit", "otherUnit", true);
 
@@ -181,6 +181,8 @@ public class InitCharacterizationSetup {
 					InitSetup.getInstance().persistLookup(request,
 							"datum and condition", "valueType",
 							"otherValueType", condition.getValueType());
+					InitSetup.getInstance().persistLookup(request, condition.getName(),
+							"property", "otherProperty", condition.getProperty());
 				}
 			}
 		}
@@ -289,7 +291,7 @@ public class InitCharacterizationSetup {
 			allDatumNames.addAll(LookupService.getDefaultAndOtherLookupTypes(
 					assayType, "datumName", "otherDatumName"));
 		}
-		request.getSession().setAttribute("charNameDatumNames", allDatumNames);
+		request.getSession().setAttribute("charDatumNames", allDatumNames);
 		return allDatumNames;
 	}
 
@@ -355,7 +357,7 @@ public class InitCharacterizationSetup {
 	private CharacterizationService getCharacterizationServiceFromSession(
 			HttpServletRequest request) throws Exception {
 		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
+				.getSession().getAttribute("securityService");
 		if (request.getSession().getAttribute("characterizationService") != null) {
 			return (CharacterizationService) request.getSession().getAttribute(
 					"characterizationService");
