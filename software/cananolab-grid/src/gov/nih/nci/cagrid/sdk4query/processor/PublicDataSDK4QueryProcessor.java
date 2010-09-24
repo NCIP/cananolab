@@ -121,7 +121,8 @@ public class PublicDataSDK4QueryProcessor extends SDK4QueryProcessor {
 				PROPERTY_HOST_NAME);
 		/*
 		 * if (!hostname.startsWith("http://") ||
-		 * !hostname.startsWith("https://")) { hostname = "http://" + hostname; }
+		 * !hostname.startsWith("https://")) { hostname = "http://" + hostname;
+		 * }
 		 */
 		String port = getConfiguredParameters().getProperty(PROPERTY_HOST_PORT);
 		while (hostname.endsWith("/")) {
@@ -241,21 +242,10 @@ public class PublicDataSDK4QueryProcessor extends SDK4QueryProcessor {
 		// filter non public data if queryModifier doesn't exists
 		if (mods == null) {
 			for (Object obj : rawObjects) {
-				String data = null;
-				if (obj instanceof Sample) {
-					data = ((Sample) obj).getName();
-					if (data != null
-							&& StringUtils.containsIgnoreCase(publicDataIds,
-									data)) {
-						filteredObjects.add(obj);
-					}
-				} else {
-					data = ClassUtils.getIdString(obj);
-					if (data != null
-							&& StringUtils.containsIgnoreCase(publicDataIds,
-									data)) {
-						filteredObjects.add(obj);
-					}
+				String data = ClassUtils.getIdString(obj);
+				if (data != null
+						&& StringUtils.containsIgnoreCase(publicDataIds, data)) {
+					filteredObjects.add(obj);
 				}
 			}
 		}
