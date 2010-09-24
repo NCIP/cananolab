@@ -164,6 +164,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// set up other samples with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
+
+//		// clear the session list that stores other column names for the
+//		// characterization
+//		request.getSession().removeAttribute("otherCharDatumNames");
+//		request.getSession().removeAttribute("otherCharConditionNames");
+//		request.getSession().removeAttribute("otherCharConditionProperties");
+//		request.getSession().removeAttribute("otherCharValueUnits");
+//		request.getSession().removeAttribute("otherCharValueTypes");
 	}
 
 	/**
