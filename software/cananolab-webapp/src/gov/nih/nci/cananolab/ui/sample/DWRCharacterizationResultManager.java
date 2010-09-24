@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -10,8 +11,10 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.util.LabelValueBean;
 import org.apache.struts.validator.DynaValidatorForm;
@@ -31,6 +34,12 @@ public class DWRCharacterizationResultManager {
 				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
 						"datumConditions", "condition", "name", "otherName",
 						true);
+		// add other condition names stored in the session for the char
+		SortedSet<String> otherCharConditionNames = (SortedSet<String>) wctx
+				.getSession().getAttribute("otherCharConditionNames");
+		if (otherCharConditionNames != null) {
+			conditions.addAll(otherCharConditionNames);
+		}
 		return conditions.toArray(new String[conditions.size()]);
 	}
 
@@ -41,6 +50,12 @@ public class DWRCharacterizationResultManager {
 				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
 						"conditionProperties", conditionName, "property",
 						"otherProperty", true);
+		// add other condition properties stored in the session for the char
+		SortedSet<String> otherConditionProperties = (SortedSet<String>) wctx
+				.getSession().getAttribute("otherCharConditionProperties");
+		if (otherConditionProperties != null) {
+			properties.addAll(otherConditionProperties);
+		}
 		return properties.toArray(new String[properties.size()]);
 	}
 
@@ -50,6 +65,12 @@ public class DWRCharacterizationResultManager {
 		SortedSet<String> names = InitCharacterizationSetup.getInstance()
 				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
 						characterizationType, characterizationName, assayType);
+		// add other datum names stored in the session for the char
+		SortedSet<String> otherColumnNames = (SortedSet<String>) wctx
+				.getSession().getAttribute("otherCharDatumNames");
+		if (otherColumnNames != null) {
+			names.addAll(otherColumnNames);
+		}
 		return names.toArray(new String[names.size()]);
 	}
 
@@ -104,6 +125,12 @@ public class DWRCharacterizationResultManager {
 		SortedSet<String> units = InitSetup.getInstance()
 				.getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
 						"valueUnits", valueName, "unit", "otherUnit", true);
+		// add other value unit stored in the session for the char
+		SortedSet<String> otherValueUnits = (SortedSet<String>) wctx
+				.getSession().getAttribute("otherCharValueUnits");
+		if (otherValueUnits != null) {
+			units.addAll(otherValueUnits);
+		}
 		return units.toArray(new String[units.size()]);
 	}
 
@@ -135,12 +162,83 @@ public class DWRCharacterizationResultManager {
 	}
 
 	public String addColumnHeader(ColumnHeader header) {
-		// added other valueType to the dropdown list in the session
-		SortedSet<String> valueTypes = (SortedSet<String>) WebContextFactory
-				.get().getSession().getAttribute("datumConditionValueTypes");
-		if (!valueTypes.contains(header.getValueType())) {
-			valueTypes.add(header.getValueType());
+		WebContext wctx = WebContextFactory.get();
+		HttpSession session = wctx.getSession();
+		if (header.getColumnType().equals(FindingBean.DATUM_TYPE)) {
+			// remember other datum names in the session
+			SortedSet<String> datumColumnNames = (SortedSet<String>) session
+					.getAttribute("charDatumNames");
+			SortedSet<String> otherDatumNames = new TreeSet<String>();
+			if (session.getAttribute("otherCharDatumNames") != null) {
+				otherDatumNames = (SortedSet<String>) session
+						.getAttribute("otherCharDatumNames");
+			}
+			if (!datumColumnNames.contains(header.getColumnName())) {
+				otherDatumNames.add(header.getColumnName());
+				WebContextFactory.get().getSession().setAttribute(
+						"otherCharDatumNames", otherDatumNames);
+			}
 		}
+		if (header.getColumnType().equals(FindingBean.CONDITION_TYPE)) {
+			// remember other condition names in the session
+			SortedSet<String> conditionColumnNames = (SortedSet<String>) session
+					.getAttribute("datumConditions");
+			SortedSet<String> otherConditionNames = new TreeSet<String>();
+			if (session.getAttribute("otherCharConditionNames") != null) {
+				otherConditionNames = (SortedSet<String>) session
+						.getAttribute("otherCharConditionNames");
+			}
+			if (!conditionColumnNames.contains(header.getColumnName())) {
+				otherConditionNames.add(header.getColumnName());
+				WebContextFactory.get().getSession().setAttribute(
+						"otherCharConditionNames", otherConditionNames);
+			}
+		}
+
+		if (header.getColumnType().equals(FindingBean.CONDITION_TYPE)) {
+			// remember other condition properties in the session
+			SortedSet<String> conditionProperties = (SortedSet<String>) session
+					.getAttribute("conditionProperties");
+			SortedSet<String> otherConditionProperties = new TreeSet<String>();
+			if (session.getAttribute("otherCharConditionProperties") != null) {
+				otherConditionProperties = (SortedSet<String>) session
+						.getAttribute("otherCharConditionProperties");
+			}
+			if (!conditionProperties.contains(header.getConditionProperty())) {
+				otherConditionProperties.add(header.getConditionProperty());
+				WebContextFactory.get().getSession().setAttribute(
+						"otherCharConditionProperties",
+						otherConditionProperties);
+			}
+		}
+		// remember other value units in the session
+		SortedSet<String> valueUnits = (SortedSet<String>) session
+				.getAttribute("valueUnits");
+		SortedSet<String> otherValueUnits = new TreeSet<String>();
+		if (session.getAttribute("otherCharValueUnits") != null) {
+			otherValueUnits = (SortedSet<String>) session
+					.getAttribute("otherCharValueUnits");
+		}
+		if (!valueUnits.contains(header.getValueUnit())) {
+			otherValueUnits.add(header.getValueUnit());
+			WebContextFactory.get().getSession().setAttribute(
+					"otherCharValueUnits", otherValueUnits);
+		}
+
+		// remember other value types in the session
+		SortedSet<String> valueTypes = (SortedSet<String>) session
+				.getAttribute("datumConditionValueTypes");
+		SortedSet<String> otherValueTypes = new TreeSet<String>();
+		if (session.getAttribute("otherCharValueTypes") != null) {
+			otherValueTypes = (SortedSet<String>) session
+					.getAttribute("otherCharValueTypes");
+		}
+		if (!valueTypes.contains(header.getValueType())) {
+			otherValueTypes.add(header.getValueType());
+			WebContextFactory.get().getSession().setAttribute(
+					"otherCharValueTypes", otherValueTypes);
+		}
+
 		return header.getDisplayName();
 	}
 
