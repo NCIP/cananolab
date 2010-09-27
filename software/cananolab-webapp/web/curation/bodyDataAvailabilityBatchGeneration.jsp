@@ -27,15 +27,15 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				<html:radio styleId="option1" property="option" value="generate_all" />
-				Generate data availability for all samples.
+				<html:radio styleId="option1" property="option" value="generate all" />
+				Generate data availability for all samples
 				<br>
-				<html:radio styleId="option2" property="option" value="regenerate_old" />
+				<html:radio styleId="option2" property="option" value="regenerate old" />
 				Re-generate data availability for samples with existing data
-				availability.
+				availability
 				<br>
-				<html:radio styleId="option3" property="option" value="delete_all" />
-				Delete data availability for all samples.
+				<html:radio styleId="option3" property="option" value="delete all" />
+				Delete data availability for all samples
 			</td>
 
 		</tr>
