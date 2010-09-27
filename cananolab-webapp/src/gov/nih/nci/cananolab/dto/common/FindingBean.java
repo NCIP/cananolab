@@ -156,12 +156,19 @@ public class FindingBean {
 					ColumnHeader theHeader = columnHeaders.get(j);
 					if (theHeader.getColumnType()
 							.equals(FindingBean.DATUM_TYPE)) {
-						Datum datum = datumMap.get(theHeader).get(i);
+						Datum datum = new Datum();
+						if (datumMap.get(theHeader) != null
+								&& datumMap.get(theHeader).size() > i) {
+							datum = datumMap.get(theHeader).get(i);
+						}
 						row.getCells().add(new TableCell(datum));
 					} else if (theHeader.getColumnType().equals(
 							FindingBean.CONDITION_TYPE)) {
-						Condition condition = conditionMap.get(theHeader)
-								.get(i);
+						Condition condition = new Condition();
+						if (conditionMap.get(theHeader) != null
+								&& conditionMap.get(theHeader).size() > i) {
+							condition = conditionMap.get(theHeader).get(i);
+						}
 						row.getCells().add(new TableCell(condition));
 					}
 				}
