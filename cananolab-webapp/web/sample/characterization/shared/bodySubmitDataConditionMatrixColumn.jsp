@@ -74,6 +74,13 @@
 							${vtype}
 						</option>
 					</logic:iterate>
+					<c:if test="${!empty otherCharValueTypes }">
+					<logic:iterate id="vtype" name="otherCharValueTypes">
+						<option value="${vtype}">
+							${vtype}
+						</option>
+					</logic:iterate>
+					</c:if>
 					<option value="other">
 						[other]
 					</option>
