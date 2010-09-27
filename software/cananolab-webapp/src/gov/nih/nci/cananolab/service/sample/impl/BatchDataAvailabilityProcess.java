@@ -17,9 +17,9 @@ import org.apache.log4j.Logger;
  *
  */
 public class BatchDataAvailabilityProcess implements Runnable {
-	public static final String BATCH_OPTION1 = "generate_all";
-	public static final String BATCH_OPTION2 = "regenerate_old";
-	public static final String BATCH_OPTION3 = "delete_all";
+	public static final String BATCH_OPTION1 = "generate all";
+	public static final String BATCH_OPTION2 = "regenerate old";
+	public static final String BATCH_OPTION3 = "delete all";
 
 	private DataAvailabilityService dataAvailabilityService;
 	private String batchOption;
