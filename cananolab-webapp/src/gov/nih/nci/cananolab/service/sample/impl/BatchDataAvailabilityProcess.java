@@ -113,7 +113,7 @@ public class BatchDataAvailabilityProcess implements Runnable {
 					+ duration + " seconds.");
 			this.statusMessage = "Data availability batch process with option "
 					+ batchOption + " is completed after " + duration
-					+ " seccond(s)";
+					+ " second(s)";
 			this.complete = true;
 			this.running = false;
 		} catch (Exception e) {
