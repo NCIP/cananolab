@@ -6,12 +6,12 @@
 		<!--
         <property name="connection.datasource">java:/caNanoLab</property>
 		-->
-		
-        <property name="connection.url">@database.url@/canano</property>
+
+        <property name="connection.url">@database.url</property>
         <property name="connection.username">@database.user@</property>
         <property name="connection.password">@database.password@</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        
+
 		<property name="c3p0.max_size">10</property>
 		<property name="c3p0.min_size">2</property>
 		<property name="c3p0.timeout">5000</property>
@@ -19,7 +19,7 @@
 		<property name="c3p0.idle_test_period">3000</property>
 		<property name="c3p0.acquire_increment">2</property>
 		<property name="c3p0.validate">false</property>
-		
+
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 
         <mapping resource="gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml"/>
@@ -28,7 +28,7 @@
         <mapping resource="gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml"/>
         <mapping resource="gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml"/>
         <mapping resource="gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml"/>
-        <mapping resource="gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml"/>     
+        <mapping resource="gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml"/>
         <mapping resource="gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml"/>
         <mapping resource="gov/nih/nci/security/authorization/domainobjects/User.hbm.xml"/>
         <mapping resource="gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml"/>
