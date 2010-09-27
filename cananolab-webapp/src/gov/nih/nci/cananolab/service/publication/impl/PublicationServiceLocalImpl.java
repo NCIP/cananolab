@@ -15,12 +15,14 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -218,6 +220,8 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			List<Publication> publications = helper
 					.findPublicationsBySampleId(sampleId);
+			Collections.sort(publications,
+					new Comparators.PublicationCategoryTitleComparator());
 			List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 			if (publications != null) {
 				for (Publication publication : publications) {
