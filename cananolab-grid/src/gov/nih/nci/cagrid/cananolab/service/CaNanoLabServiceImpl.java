@@ -37,7 +37,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return findings.toArray(new Finding[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Error finding remote findings for characterization id.");
+					"Error finding remote findings for characterization id.", e);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return files.toArray(new File[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Error finding remote lab files by composition info");
+					"Error finding remote lab files by composition info", e);
 		}
 	}
 
@@ -88,7 +88,8 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return protocol;
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Error finding remote protocol file by characterization id.");
+					"Error finding remote protocol file by characterization id.",
+					e);
 		}
 	}
 
@@ -101,7 +102,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return primaryPOC;
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get primary point of contact by sample id");
+					"Can't get primary point of contact by sample id", e);
 		}
 	}
 
@@ -114,7 +115,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return pocList.toArray(new PointOfContact[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get other point of contacts by sample id");
+					"Can't get other point of contacts by sample id", e);
 		}
 	}
 
@@ -127,7 +128,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return sampleNames;
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get publications by the given parameters");
+					"Can't get publications by the given parameters", e);
 		}
 	}
 
@@ -140,7 +141,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return publicationList.toArray(new Publication[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get publications by the given sampleId");
+					"Can't get publications by the given sampleId", e);
 		}
 	}
 
@@ -160,7 +161,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return sampleIds.toArray(new String[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get sample IDs by the given criteria");
+					"Can't get sample IDs by the given criteria", e);
 		}
 	}
 
@@ -183,8 +184,8 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			}
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get sample view columns for the given sample name or sample ID: "
-							+ e);
+					"Can't get sample view columns for the given sample name or sample ID",
+					e);
 		}
 	}
 
@@ -208,7 +209,7 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			return publicationIds.toArray(new String[0]);
 		} catch (Exception e) {
 			throw new RemoteException(
-					"Can't get publications by the given sampleId");
+					"Can't get publications by the given sampleId", e);
 		}
 	}
 
@@ -219,7 +220,8 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			File file = helper.findFileByProtocolId(protocolId);
 			return file;
 		} catch (Exception e) {
-			throw new RemoteException("Can't get file by the given protocolId");
+			throw new RemoteException("Can't get file by the given protocolId",
+					e);
 		}
 	}
 
