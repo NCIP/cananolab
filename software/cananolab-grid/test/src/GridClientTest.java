@@ -4,16 +4,22 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
-import gov.nih.nci.cananolab.domain.characterization.physical.*;
 
 public class GridClientTest {
 	CaNanoLabServiceClient gridClient;
@@ -370,13 +376,125 @@ public class GridClientTest {
 		}
 	}
 	
-	public void testgetSampleIds() throws Exception{
-		String[] sampleIds = gridClient.getSampleIds("", "", null, null, null, null, null);
+	public void testGetKeywordsBySampleId() throws Exception{
+		String sampleId = "20917507";
+		System.out.println("Testing getKeyworkdsBySampleId: 20917507: ");
+		Keyword[] keywords = gridClient.getKeywordsBySampleId(sampleId);
+		for(Keyword keyword: keywords){
+			System.out.println("Keyword name: " + keyword.getName() + "\tId: " + keyword.getId());
+		}
+		System.out.println("Finished printing getKeyworkdsBySampleId results for 20917507: ");
+	}
+	
+	public void testGetPrimaryPointOfContactBySampleId() throws Exception{
+		String sampleId = "20917507";
+		System.out.println("Testing getPrimaryPointOfContactBySampleId 20917507: ");
+		PointOfContact contact = gridClient.getPrimaryPointOfContactBySampleId(sampleId);
 		
+		System.out.println("primary contact name: " + contact.getFirstName() + "\t" +contact.getLastName() + 
+				"\tId: " + contact.getId() + "\tPhone: " + contact.getPhone() + "\tRole: " + 
+				contact.getRole() + "\tEmail: " +contact.getEmail());
+		
+		System.out.println("Finished printing getPrimaryPointOfContactBySampleId results for 20917507: ");
+	}
+	
+	public void testGetOtherPointOfContactsBySampleId() throws Exception{
+		String sampleId = "3735553";
+		System.out.println("Testing getOtherPointOfContactsBySampleId 3735553: ");
+		PointOfContact[] contacts = gridClient.getOtherPointOfContactsBySampleId(sampleId);
+		System.out.println("contacts " + contacts);
+		for(PointOfContact contact: contacts){
+			System.out.println("primary contact name: " + contact.getFirstName() + "\t" +contact.getLastName() + 
+				"\tId: " + contact.getId() + "\tPhone: " + contact.getPhone() + "\tRole: " + 
+				contact.getRole() + "\tEmail: " +contact.getEmail());
+		}
+		System.out.println("Finished printing getPrimaryPointOfContactBySampleId results for 3735553: ");
+	}
+	
+	public void testGetExperimentConfigsByCharacterizationId() throws Exception{
+		String charId = "3932251";
+		System.out.println("Testing testGetExperimentConfigsByCharacterizationId 3932251: ");
+		ExperimentConfig[] experimentConfigs = gridClient.getExperimentConfigsByCharacterizationId(charId);
+		
+		for(ExperimentConfig exp: experimentConfigs){
+			System.out.println("ExperimentConfig Id: " + exp.getId() + "\tDesc: " +exp.getDescription() );
+		}
+		System.out.println("Finished printing testGetExperimentConfigsByCharacterizationId results for 3932251: ");
+	}
+	
+	public void testGetFindingsByCharacterizationId() throws Exception{
+		String charId = "3932251";
+		System.out.println("Testing testGetFindingsByCharacterizationId 3932251: ");
+		Finding[] findings = gridClient.getFindingsByCharacterizationId(charId);
+		
+		for(Finding f: findings){
+			System.out.println("Finding Id: " + f.getId() + "\tCreatedBy: " +f.getCreatedBy() );
+		}
+		System.out.println("Finished printing testGetFindingsByCharacterizationId results for 3932251: ");
+	}
+	
+	public void testGetProtocolByCharacterizationId() throws Exception{
+		String charId = "21867791";
+		System.out.println("Testing testGetProtocolByCharacterizationId 21867791: ");
+		Protocol p = gridClient.getProtocolByCharacterizationId(charId);
+		
+		System.out.println("Protocol: " + p);
+		
+		System.out.println("Protocol Id: " + p.getId() + "\tCreatedBy: " +p.getCreatedBy() + "\tName: "
+				+ p.getName() + "\tType: " + p.getType());
+		
+		System.out.println("Finished printing testGetProtocolByCharacterizationId results for 21867791: ");
+	}
+	
+	public void testGetPublicationBySampleId() throws Exception{
+		String sampleId = "20917507";
+		System.out.println("Testing getPublicationBySampleId 20917507: ");
+		Publication[] pubs = gridClient.getPublicationsBySampleId(sampleId);
+		
+		for(Publication p: pubs){
+			System.out.print("Publication Id: " + p.getId() + "\tDesc: " + p.getDescription() +
+					"\tName: " + p.getName() + "\tJournalName: " + p.getJournalName() + "\tTitle: " +p.getTitle());
+		}
+		System.out.println("Finished printing getPrimaryPointOfContactBySampleId results for 20917507: ");
+	}
+	
+	public void testGetSampleIds() throws Exception{
+		String[] sampleIds = gridClient.getSampleIds("", "", null, null, null, null, null);
+		System.out.println("Testing getSampleIds operation.... The results: ");		
 		for(String id: sampleIds){
-			System.out.println("sampleId: " + id);
+			System.out.print("sampleId: " + id + " \t");
+		}
+		System.out.println("\nFinished printing getSampleIds operation results.");
+	}
+	
+	public void testGetPublicationIdsBy() throws Exception{
+		String[] pubIds = gridClient.getPublicationIdsBy("", "", "", null, null, null, null, null, null, null, null);
+		System.out.println("Testing getPublicationIdsBy operation.... The results: ");		
+		for(String id: pubIds){
+			System.out.print("publicationId: " + id + " \t");
+		}
+		System.out.println("\nFinished printing getPublicationIdsBy operation results.");
+	}
+	
+	public void testGetFileByProtocolId() throws Exception{
+		String protocolId = "24390915";
+		File file = gridClient.getFileByProtocolId(protocolId);
+		if(file != null){
+			System.out.println("File desc: " + file.getDescription() + "\tName: "+ file.getName() + "\tUri: " +file.getUri());
 		}
 	}
+	
+	public void testGetFilesByCompositionInfoId() throws Exception{
+		String id = "21376285";//"21376285";
+		String className="NanoMaterialEntity";
+		File[] files = gridClient.getFilesByCompositionInfoId(id,className);
+		if(files != null){
+			for(File file: files){
+				System.out.println("File desc: " + file.getDescription() + "\tName: "+ file.getName() + "\tUri: " +file.getUri());
+			}
+		}
+	}
+	
 
 	public static void main(String[] args) {
 		System.out.println("Running the Grid Service Client");
@@ -386,7 +504,19 @@ public class GridClientTest {
 					CaNanoLabServiceClient client = new CaNanoLabServiceClient(
 							args[1]);
 					GridClientTest test=new GridClientTest(client);
-					//test.testgetSampleIds();
+					test.testGetSampleIds();
+					test.testGetKeywordsBySampleId();
+					test.testGetPrimaryPointOfContactBySampleId();
+					test.testGetExperimentConfigsByCharacterizationId();
+					test.testGetFindingsByCharacterizationId();
+					test.testGetOtherPointOfContactsBySampleId();
+					test.testGetPrimaryPointOfContactBySampleId();
+					test.testGetPublicationBySampleId();
+					test.testGetProtocolByCharacterizationId();
+					test.testGetPublicationIdsBy();
+					test.testGetFileByProtocolId();
+					test.testGetFilesByCompositionInfoId();
+					
 					test.testCharacterization();
 					test.testNanomaterialEntity();
 					test.testFunction();
@@ -395,6 +525,8 @@ public class GridClientTest {
 					test.testSample();
 					test.testChemicalAssociation();
 					test.testSampleComposition();
+					test.testActivationMethod();
+					
 					
 				} else {
 					System.exit(1);
