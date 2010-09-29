@@ -69,7 +69,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 			+ " WHERE SAMPLE_ID=? AND AVAILABLE_ENTITY_NAME=?";
 
 	private static String noAccessException = "You do not have permission to access the specified sample data: ";
-	
+
 	// DATA_MAPPER
 	private static DataAvailabilityMapper DATA_MAPPER = new DataAvailabilityMapper();
 
@@ -87,7 +87,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 			String sampleId, SecurityService securityService)
 			throws DataAvailabilityException, NoAccessException,
 			SecurityException {
-		
+
 		List<DataAvailabilityBean> result = new ArrayList<DataAvailabilityBean>();
 
 		JdbcTemplate data = this.getJdbcTemplate();
@@ -111,7 +111,6 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		}
 		return resultSet;
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -141,7 +140,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		return sampleBean;
 	}
 
-	public void deleteBatchDataAvailability(SecurityService securityService) throws Exception {
+	public void deleteBatchDataAvailability(SecurityService securityService)
+			throws Exception {
 		UserBean ub = securityService.getUserBean();
 		if (!ub.isCurator()) {
 			throw new Exception("No permission to process the request");
@@ -151,8 +151,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 
 	}
 
-	public List<String> findSampleIdsWithDataAvailability(SecurityService securityService)
-			throws Exception {
+	public List<String> findSampleIdsWithDataAvailability(
+			SecurityService securityService) throws Exception {
 		List sampleIdsList = this.getJdbcTemplate().queryForList(
 				"select distinct(sample_id) from data_availability",
 				String.class);
@@ -163,9 +163,9 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		return sampleIds;
 	}
 
-	public void deleteDataAvailability(String sampleId, SecurityService securityService)
-			throws DataAvailabilityException, NoAccessException,
-			SecurityException {
+	public void deleteDataAvailability(String sampleId,
+			SecurityService securityService) throws DataAvailabilityException,
+			NoAccessException, SecurityException {
 		if (!securityService.checkDeletePermission(sampleId.toString())) {
 			throw new NoAccessException(noAccessException + sampleId);
 		}
@@ -173,42 +173,44 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		String sql = "delete from data_availability where sample_id = "
 				+ sampleId;
 		this.getJdbcTemplate().execute(sql);
-		
+
 	}
 
 	public void deleteBatchDataAvailability(List<String> sampleIds,
 			SecurityService securityService) throws Exception {
 		// delete all records from data_availability table
-		
+
 		UserBean ub = securityService.getUserBean();
 		if (!ub.isCurator()) {
 			throw new Exception("No permission to process the request");
 		} else {
-			for(String sampleId : sampleIds){
+			for (String sampleId : sampleIds) {
 				deleteDataAvailability(sampleId, securityService);
 			}
 		}
-		
+
 	}
 
-	public Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean,
-			SecurityService securityService) throws DataAvailabilityException,
-			NoAccessException, SecurityException {
+	public Set<DataAvailabilityBean> saveDataAvailability(
+			SampleBean sampleBean, SecurityService securityService)
+			throws DataAvailabilityException, NoAccessException,
+			SecurityException {
 		String sampleId = sampleBean.getDomain().getId().toString();
 		if (!securityService.checkCreatePermission(sampleId.toString())) {
 			throw new NoAccessException(noAccessException + sampleId);
 		}
 		Set<DataAvailabilityBean> results = new HashSet<DataAvailabilityBean>();
-		Set<DataAvailabilityBean> dataAvailability = findDataAvailabilityBySampleId(sampleId, securityService);
-		//Set<DataAvailabilityBean> saveDataAvailability
-		if(dataAvailability.size() > 0){
-			//update
+		Set<DataAvailabilityBean> dataAvailability = findDataAvailabilityBySampleId(
+				sampleId, securityService);
+		// Set<DataAvailabilityBean> saveDataAvailability
+		if (dataAvailability.size() > 0) {
+			// update
 			results = save(sampleBean, securityService);
-		}else{
-			//insert
+		} else {
+			// insert
 			results = insert(sampleBean, securityService);
 		}
-		
+
 		return results;
 	}
 
@@ -216,43 +218,45 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 			SecurityService securityService) throws DataAvailabilityException,
 			NoAccessException, SecurityException, SampleException {
 		Set<DataAvailabilityBean> results = new HashSet<DataAvailabilityBean>();
-		//check for existing data availability for this sample
-		//if exist, update else insert
+		// check for existing data availability for this sample
+		// if exist, update else insert
 		if (!securityService.checkCreatePermission(sampleId.toString())) {
 			throw new NoAccessException(noAccessException + sampleId);
 		}
-		Set<DataAvailabilityBean> dataAvailability = findDataAvailabilityBySampleId(sampleId, securityService);
+		Set<DataAvailabilityBean> dataAvailability = findDataAvailabilityBySampleId(
+				sampleId, securityService);
 		SampleBean sampleBean = loadSample(sampleId, securityService);
-		if(sampleBean != null){
+		if (sampleBean != null) {
 			sampleBean.setDataAvailability(dataAvailability);
-			if(dataAvailability.size() > 0){
-				//update
+			if (dataAvailability.size() > 0) {
+				// update
 				results = save(sampleBean, securityService);
-			}else{
-				//insert
+			} else {
+				// insert
 				results = insert(sampleBean, securityService);
 			}
 		}
 		return results;
 	}
 
-	
-	public void saveBatchDataAvailability(List<String> sampleIds, SecurityService securityService) throws Exception {
-		// find data availability for the sampleId, 
-		//update if exist, otherwise insert
-		
+	public void saveBatchDataAvailability(List<String> sampleIds,
+			SecurityService securityService) throws Exception {
+		// find data availability for the sampleId,
+		// update if exist, otherwise insert
+
 		SampleService service = new SampleServiceLocalImpl(securityService);
-		
-		for(String sampleId : sampleIds){
+
+		for (String sampleId : sampleIds) {
 			SampleBean sampleBean = service.findSampleById(sampleId, false);
-			saveDataAvailability(sampleBean, securityService);
-		}		
+			if (sampleBean != null) {
+				saveDataAvailability(sampleBean, securityService);
+			}
+		}
 	}
-	
-	private Set<DataAvailabilityBean> insert(
-			SampleBean sampleBean, SecurityService securityService)
-			throws DataAvailabilityException, NoAccessException,
-			SecurityException {
+
+	private Set<DataAvailabilityBean> insert(SampleBean sampleBean,
+			SecurityService securityService) throws DataAvailabilityException,
+			NoAccessException, SecurityException {
 		Long sampleId = sampleBean.getDomain().getId();
 		UserBean user = securityService.getUserBean();
 
@@ -262,7 +266,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		Set<String> clazNames = null;
 		try {
 			clazNames = generate(sampleBean, securityService);
-			
+
 		} catch (Exception e) {
 			throw new DataAvailabilityException();
 		}
@@ -284,10 +288,10 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 
 		return dataAvailability;
 	}
-	private Set<DataAvailabilityBean> save(
-			SampleBean sampleBean, SecurityService securityService)
-			throws DataAvailabilityException, NoAccessException,
-			SecurityException {
+
+	private Set<DataAvailabilityBean> save(SampleBean sampleBean,
+			SecurityService securityService) throws DataAvailabilityException,
+			NoAccessException, SecurityException {
 		Long sampleId = sampleBean.getDomain().getId();
 
 		UserBean user = securityService.getUserBean();
@@ -323,7 +327,8 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 			currentDataAvailability.removeAll(removedDataAvailability);
 		}
 
-		//System.out.println("Current size: " + currentDataAvailability.size());
+		// System.out.println("Current size: " +
+		// currentDataAvailability.size());
 		for (DataAvailabilityBean bean : currentDataAvailability) {
 			bean.setUpdatedBy(user.getLoginName());
 			bean.setUpdatedDate(new Date());
@@ -343,14 +348,16 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 			currentDataAvailability.addAll(newDataAvailability);
 		}
 
-		/*System.out.println("new size: " + newDataAvailability.size());
-		// return new list that contains both of them.
-		System.out.println("currentDataAvailabitliy total size: "
-				+ currentDataAvailability.size());*/
+		/*
+		 * System.out.println("new size: " + newDataAvailability.size()); //
+		 * return new list that contains both of them.
+		 * System.out.println("currentDataAvailabitliy total size: " +
+		 * currentDataAvailability.size());
+		 */
 
 		return currentDataAvailability;
 	}
-	
+
 	/**
 	 * generate the data availability information for the sample
 	 *
@@ -439,7 +446,7 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		}
 		return clazzNames;
 	}
-	
+
 	/**
 	 * delete data availability from database table in case these data
 	 * availability are removed from currently persisted data.
