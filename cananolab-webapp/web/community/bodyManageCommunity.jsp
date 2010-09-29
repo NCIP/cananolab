@@ -8,7 +8,7 @@
 		<td colspan="2">
 			<jsp:include page="/bodyTitle.jsp">
 				<jsp:param name="pageTitle" value="Manage Community" />
-				<jsp:param name="topic" value="manage_community_help" />
+				<jsp:param name="topic" value="manage_collaboration_groups_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
 		</td>
