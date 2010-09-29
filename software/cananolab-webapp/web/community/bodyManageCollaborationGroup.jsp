@@ -14,7 +14,7 @@
 
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Manage Collaboration Groups" />
-	<jsp:param name="topic" value="manage_collaborator_groups_help" />
+	<jsp:param name="topic" value="manage_collaboration_groups_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/collaborationGroup">
@@ -77,7 +77,7 @@
 		</c:if>
 		<tr>
 			<td class="cellLabel" id="newCollaborationGroupLabel"
-				style="display: block">
+				style="display: block" width="25%">
 				New Collaboration Group
 			</td>
 			<td>
