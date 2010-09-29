@@ -14,7 +14,7 @@
 <c:set var="title" value="Copy" />
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Manage Batch Data Availability" />
-	<jsp:param name="topic" value="copy_sample_help" />
+	<jsp:param name="topic" value="manage_batch_data_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/generateBatchDataAvailability">
