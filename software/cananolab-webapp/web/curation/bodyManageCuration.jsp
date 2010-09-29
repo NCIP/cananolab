@@ -9,21 +9,22 @@
 		<td colspan="2">
 			<jsp:include page="/bodyTitle.jsp">
 				<jsp:param name="pageTitle" value="Manage Curation" />
-				<jsp:param name="topic" value="manage_Curation_help" />
+				<jsp:param name="topic" value="manage_curation_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><jsp:include page="/bodyMessage.jsp?bundle=curation" /></td>
+		<td colspan="2"><jsp:include
+				page="/bodyMessage.jsp?bundle=curation" /></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="welcomeContent">
-			This is the manage curation section which allows a curator to review
-			data that is pending release to public. In this section, curators can
+			This is the manage curation section. In this section, curators can
 			view a list of samples, publications, and protocols pending public
 			review, select an item from the pending list, review the item, and
-			make the item accessible to public.
+			make the item accessible to public. Curators can also generate,
+			regenerate and delete data availability metrics in batch.
 			<br>
 		</td>
 	</tr>
@@ -61,8 +62,8 @@
 							<tr>
 								<td class="sidebarContent">
 									<a
-										href="generateBatchDataAvailability.do?dispatch=setupNew&page=0">Manage Batch
-										Data Availability</a>
+										href="generateBatchDataAvailability.do?dispatch=setupNew&page=0">Manage
+										Batch Data Availability</a>
 									<br>
 									Manage Data Availability for submitted samples in a batch.
 								</td>

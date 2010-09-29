@@ -12,7 +12,7 @@
 <script type="text/javascript" src="javascript/TransferOwnerManager.js"></script>
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Transfer Ownership" />
-	<jsp:param name="topic" value="site_preference_help" />
+	<jsp:param name="topic" value="transfer_data_ownership_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/transferOwner">

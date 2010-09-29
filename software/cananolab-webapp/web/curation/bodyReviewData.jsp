@@ -10,7 +10,7 @@
 
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Review By Curator" />
-	<jsp:param name="topic" value="manage_collaborator_groups_help" />
+	<jsp:param name="topic" value="review_data_pending_release_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <table width="100%" align="center" class="submissionView">
