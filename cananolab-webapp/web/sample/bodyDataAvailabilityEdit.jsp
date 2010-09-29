@@ -289,7 +289,7 @@
 					</td>
 					<td >
 						<div align="right">
-							<input type="button" value="Update"
+							<input type="button" value="Re-generate"
 								onclick="javascript:updateDataAvailability(sampleForm, 'sample', 'updateDataAvailability');" />
 							<input type="button" value="Cancel"
 								onclick="javascript:hide('dataAvailability');enableOuterButtons();" />
