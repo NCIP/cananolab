@@ -145,7 +145,7 @@ function showMatchedGroupOrUserDropdown(dataOwner) {
 		var groupName = dwr.util.getValue("groupName");
 		AccessibilityManager.getMatchedGroupNames(loginName, function(data) {
 			if (data.length == 0) {
-				alert("no matching collaboration groups found.");
+				alert("No matching collaboration groups found.  Please create a collaboration group first.");
 				hide("loaderImg");
 				dwr.util.setValue("groupName", "");
 				return;
