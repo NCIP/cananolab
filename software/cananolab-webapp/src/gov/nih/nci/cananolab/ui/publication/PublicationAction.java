@@ -654,6 +654,9 @@ public class PublicationAction extends BaseAnnotationAction {
 				.get("publication");
 
 		AccessibilityBean theAccess = publication.getTheAccess();
+		if (!super.validateAccess(request, theAccess)) {
+			return input(mapping, form, request, response);
+		}
 		PublicationService service = this.setServicesInSession(request);
 		// if publication is new, save publication first
 		if (publication.getDomainFile().getId() == null

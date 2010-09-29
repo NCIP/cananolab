@@ -217,6 +217,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
 		AccessibilityBean theAccess = protocol.getTheAccess();
+		if (!super.validateAccess(request, theAccess)) {
+			return input(mapping, form, request, response);
+		}
 		ProtocolService service = this.setServiceInSession(request);
 		// if protocol is new, save protocol first
 		if (protocol.getDomain().getId() == 0) {

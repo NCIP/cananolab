@@ -448,11 +448,12 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		removePublicAccess(theForm, request);
 	}
 
-	//to be overwritten by child class if necessary
+	// to be overwritten by child class if necessary
 	protected void removePublicAccess(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
 		SampleBean sample = this.setupSample(theForm, request);
-		SampleService service = (SampleService)request.getSession().getAttribute("sampleService");
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
 		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, sample
 				.getDomain());
 	}
@@ -463,5 +464,65 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	public void setCurationService(CurationService curationService) {
 		this.curationService = curationService;
+	}
+
+	// check if the entered user name is valid
+	private Boolean validateGroupAccess(HttpServletRequest request,
+			AccessibilityBean access) throws Exception {
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user.isCurator()
+				&& access.getGroupName().equalsIgnoreCase(
+						AccessibilityBean.CSM_PUBLIC_GROUP)) {
+			return true;
+		}
+		if (access.getAccessBy().equals(AccessibilityBean.ACCESS_BY_GROUP)) {
+			String groupName = access.getGroupName();
+			return securityService.isGroupAccessibleByUser(groupName);
+		}
+		return true;
+	}
+
+	// check if the entered group name is valid
+	private Boolean validateUserAccess(HttpServletRequest request,
+			AccessibilityBean access) throws Exception {
+		SecurityService securityService = getSecurityServiceFromSession(request);
+		if (access.getAccessBy().equals(AccessibilityBean.ACCESS_BY_USER)) {
+			UserBean user = access.getUserBean();
+			return securityService.isUserValid(user.getLoginName());
+		}
+		return true;
+	}
+
+	protected Boolean validateAccess(HttpServletRequest request,
+			AccessibilityBean theAccess) throws Exception {
+		ActionMessages msgs = new ActionMessages();
+		if (!validateGroupAccess(request, theAccess)) {
+			ActionMessage msg = new ActionMessage("error.invalidGroup",
+					theAccess.getGroupName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return false;
+		}
+		if (!validateUserAccess(request, theAccess)) {
+			ActionMessage msg = new ActionMessage("error.invalidUser",
+					theAccess.getUserBean().getLoginName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return false;
+		}
+		return true;
+	}
+
+	protected void checkOpenAccessForm(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openAccess = false;
+		if (dispatch.equals("input") && browserDispatch.equals("saveAccess")) {
+			openAccess = true;
+		}
+		session.setAttribute("openAccess", openAccess);
 	}
 }
