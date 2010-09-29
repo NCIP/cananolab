@@ -755,6 +755,26 @@ public class SecurityService {
 		return userNames;
 	}
 
+	public Boolean isGroupAccessibleByUser(String groupName) throws Exception {
+		Group group = this.getGroup(groupName);
+		if (group == null) {
+			return false;
+		} else if (checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+				+ group.getGroupId())) {
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean isUserValid(String userLoginName) throws Exception {
+		User user = authorizationManager.getUser(userLoginName);
+		if (user == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public static void main(String[] args) {
 		try {
 			SecurityService service = new SecurityService(
