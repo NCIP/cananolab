@@ -439,8 +439,9 @@ public class BaseServiceLocalImpl implements BaseService {
 			throws SecurityException {
 		List<String> matchedGroupNames = new ArrayList<String>();
 		try {
-			List<String> allGroupNames = accessUtils.getAllGroups();
-			for (String groupName : allGroupNames) {
+			List<Group> allGroups = accessUtils.getAllGroups();
+			for (Group group : allGroups) {
+				String groupName = group.getGroupName();
 				// exclude Public and Curator
 				if (groupName.equals(AccessibilityBean.CSM_PUBLIC_GROUP)
 						|| groupName.equals(AccessibilityBean.CSM_DATA_CURATOR)) {
@@ -449,7 +450,12 @@ public class BaseServiceLocalImpl implements BaseService {
 				if (StringUtils.isEmpty(groupNameSearchStr)
 						|| groupName.toLowerCase().contains(
 								groupNameSearchStr.toLowerCase())) {
-					matchedGroupNames.add(groupName);
+					// check if user has read access
+					if (securityService
+							.checkReadPermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+									+ group.getGroupId())) {
+						matchedGroupNames.add(groupName);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -1226,16 +1232,16 @@ public class BaseServiceLocalImpl implements BaseService {
 		 * @return
 		 * @throws SecurityException
 		 */
-		public List<String> getAllGroups() throws SecurityException {
+		public List<Group> getAllGroups() throws SecurityException {
 			try {
-				List<String> groups = new ArrayList<String>();
+				List<Group> groups = new ArrayList<Group>();
 				Group dummy = new Group();
 				dummy.setGroupName("*");
 				SearchCriteria sc = new GroupSearchCriteria(dummy);
 				List results = authManager.getObjects(sc);
 				for (Object obj : results) {
 					Group doGroup = (Group) obj;
-					groups.add(doGroup.getGroupName());
+					groups.add(doGroup);
 				}
 				return groups;
 			} catch (Exception e) {
