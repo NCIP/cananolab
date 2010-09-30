@@ -34,6 +34,7 @@ import java.util.SortedSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -133,6 +134,8 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		checkOpenForms(theForm, request);
 		String browserDispatch = getBrowserDispatch(request);
 		// from cloning form
 		if (browserDispatch.equals("clone")) {
@@ -146,6 +149,20 @@ public class SampleAction extends BaseAnnotationAction {
 				return mapping.findForward("summaryEdit");
 			}
 		}
+	}
+
+	private void checkOpenForms(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openPOC = false;
+		if (dispatch.equals("input")
+				&& browserDispatch.equals("savePointOfContact")) {
+			openPOC = true;
+		}
+		session.setAttribute("openPOC", openPOC);
+		super.checkOpenAccessForm(theForm, request);
 	}
 
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
@@ -173,22 +190,27 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.checkOpenForms(theForm, request);
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
 		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
+				.getSession().getAttribute("securityService");
 		SampleBean sampleBean = setupSample(theForm, request);
-		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(
-						sampleBean.getDomain().getId().toString(), securityService);
+		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
+				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
+						.toString(), securityService);
 
 		if (selectedSampleDataAvailability != null
 				&& !selectedSampleDataAvailability.isEmpty()
 				&& selectedSampleDataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
 			sampleBean.setDataAvailability(selectedSampleDataAvailability);
-			calculateDataAvailabilityScore(sampleBean, selectedSampleDataAvailability);
-			//request.setAttribute("onloadJavascript", "manageDataAvailability('" + sampleBean.getDomain().getId() + "', 'sample', 'dataAvailabilityView')");
+			calculateDataAvailabilityScore(sampleBean,
+					selectedSampleDataAvailability);
+			// request.setAttribute("onloadJavascript",
+			// "manageDataAvailability('" + sampleBean.getDomain().getId() +
+			// "', 'sample', 'dataAvailabilityView')");
 		}
 
 		theForm.set("sampleBean", sampleBean);
@@ -243,10 +265,11 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
 		request.getSession().removeAttribute("sampleForm");
 		request.getSession().removeAttribute("updateSample");
 		setupLookups(request, null);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		checkOpenForms(theForm, request);
 		return mapping.findForward("createInput");
 	}
 
@@ -421,9 +444,10 @@ public class SampleAction extends BaseAnnotationAction {
 				sampleBean.getDomain(), request);
 		service.deleteSample(sampleBean.getDomain().getName());
 		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
-		if(sampleBean.getHasDataAvailability()){
-			dataAvailabilityService.deleteDataAvailability(sampleBean.getDomain().getId().toString(), securityService);
+				.getSession().getAttribute("securityService");
+		if (sampleBean.getHasDataAvailability()) {
+			dataAvailabilityService.deleteDataAvailability(sampleBean
+					.getDomain().getId().toString(), securityService);
 		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
@@ -468,19 +492,23 @@ public class SampleAction extends BaseAnnotationAction {
 		sampleBean.setHasDataAvailability(true);
 		calculateDataAvailabilityScore(sampleBean, dataAvailability);
 
-		/*Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage = (Map<String, List<DataAvailabilityBean>>) request
-				.getSession().getAttribute("dataAvailabilityMapPerPage");
-
-		if (dataAvailabilityMapPerPage != null) {
-			dataAvailabilityMapPerPage.remove(sampleBean.getDomain().getId()
-					.toString());
-			dataAvailabilityMapPerPage.put(sampleBean.getDomain().getId()
-					.toString(), dataAvailability);
-
-			request.getSession().setAttribute("dataAvailabilityMapPerPage",
-					dataAvailabilityMapPerPage);
-		}*/
-		request.setAttribute("onloadJavascript", "manageDataAvailability('" + sampleBean.getDomain().getId() + "', 'sample', 'dataAvailabilityView')");
+		/*
+		 * Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage =
+		 * (Map<String, List<DataAvailabilityBean>>) request
+		 * .getSession().getAttribute("dataAvailabilityMapPerPage");
+		 *
+		 * if (dataAvailabilityMapPerPage != null) {
+		 * dataAvailabilityMapPerPage.remove(sampleBean.getDomain().getId()
+		 * .toString());
+		 * dataAvailabilityMapPerPage.put(sampleBean.getDomain().getId()
+		 * .toString(), dataAvailability);
+		 *
+		 * request.getSession().setAttribute("dataAvailabilityMapPerPage",
+		 * dataAvailabilityMapPerPage); }
+		 */
+		request.setAttribute("onloadJavascript", "manageDataAvailability('"
+				+ sampleBean.getDomain().getId()
+				+ "', 'sample', 'dataAvailabilityView')");
 
 		return mapping.findForward("summaryEdit");
 	}
@@ -506,7 +534,7 @@ public class SampleAction extends BaseAnnotationAction {
 		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
-		//recalculate the score
+		// recalculate the score
 		calculateDataAvailabilityScore(sampleBean, dataAvailability);
 		return mapping.findForward("summaryEdit");
 	}
@@ -559,15 +587,16 @@ public class SampleAction extends BaseAnnotationAction {
 			String[] availableEntityNames = new String[dataAvailability.size()];
 			int i = 0;
 			for (DataAvailabilityBean bean : dataAvailability) {
-				availableEntityNames[i++] = bean.getAvailableEntityName().toLowerCase();
+				availableEntityNames[i++] = bean.getAvailableEntityName()
+						.toLowerCase();
 			}
 			request.setAttribute("availableEntityNames", availableEntityNames);
 		}
 		request.setAttribute("sampleBean", sampleBean);
 		String styleId = request.getParameter("styleId");
-		if(styleId != null){
+		if (styleId != null) {
 			return mapping.findForward("dataAvailabilityView");
-		}else{
+		} else {
 			return mapping.findForward("dataAvailabilityEdit");
 		}
 	}
@@ -698,51 +727,4 @@ public class SampleAction extends BaseAnnotationAction {
 			throws SecurityException {
 		return false;
 	}
-
-	/*public ActionForward generateBatchDataAvailability(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-
-		SecurityService securityService = (SecurityService) request
-		.getSession().getAttribute("securityService");
-
-		SampleService service = (SampleService) request.getSession()
-		.getAttribute("sampleService");
-
-		if(service == null){
-			service = setServiceInSession(request);
-		}
-
-		System.out.println("Generate data availability by batch ");
-		List<String> sampleIds = service.findSampleIdsBy("", "", null, null, null, null, null, null, null, null, null);
-		int sampleIdsSize = sampleIds.size();
-		int i=0;
-		System.out.println("sampleIdsSize: " + sampleIdsSize + " time start: " + System.currentTimeMillis());
-		if(sampleIdsSize > 30){
-			int subListValue = 30;
-			while(true){
-				List<String> tempSampleIds = sampleIds.subList(i, i+subListValue);
-				System.out.println("subList size: " + tempSampleIds.size());
-				dataAvailabilityService.generateBatch(securityService, tempSampleIds);
-				i = i + subListValue;
-				System.out.println("i = " + i);
-				if(i + subListValue > sampleIdsSize){
-					subListValue = sampleIdsSize - i;
-					System.out.println("subListValue = " + subListValue);
-				}
-				if(i == sampleIdsSize){
-					break;
-				}
-			}
-		}else{
-			dataAvailabilityService.generateBatch(securityService, sampleIds);
-		}
-		System.out.println("Time finish : " + System.currentTimeMillis() );
-		ActionMessages messages = new ActionMessages();
-		ActionMessage message = new ActionMessage("message.generateDataAvailability");
-		messages.add("message", message);
-		saveMessages(request, messages);
-		return mapping.findForward("manageCuration");
-
-	}*/
 }
