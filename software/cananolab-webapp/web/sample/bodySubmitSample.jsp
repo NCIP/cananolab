@@ -69,6 +69,9 @@
 					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
 					<c:set var="newPOCStyle" value="display:block" />
 				</c:if>
+				<c:if test="${openPOC eq true }">
+					<c:set var="newPOCStyle" value="display:block" />
+				</c:if>
 				<div style="${newPOCStyle}" id="newPointOfContact">
 					<a name="submitPointOfContact"><%@ include
 							file="bodySubmitPointOfContact.jsp"%></a>
