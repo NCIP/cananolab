@@ -34,7 +34,11 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		try {
 			List<Finding> findings = helper
 					.findFindingsByCharacterizationId(charId);
-			return findings.toArray(new Finding[0]);
+			if (findings != null && !findings.isEmpty()) {
+				return findings.toArray(new Finding[0]);
+			} else {
+				return new Finding[0];
+			}
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Error finding remote findings for characterization id.", e);
@@ -47,7 +51,11 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		try {
 			List<ExperimentConfig> configs = helper
 					.findExperimentConfigsByCharacterizationId(charId);
-			return configs.toArray(new ExperimentConfig[0]);
+			if (configs != null && !configs.isEmpty()) {
+				return configs.toArray(new ExperimentConfig[0]);
+			} else {
+				return new ExperimentConfig[0];
+			}
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Error finding remote experiment configs for characterization id");
@@ -59,7 +67,11 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		SampleServiceHelper helper = new SampleServiceHelper();
 		try {
 			List<Keyword> keywords = helper.findKeywordsBySampleId(sampleId);
-			return keywords.toArray(new Keyword[0]);
+			if (keywords != null && !keywords.isEmpty()) {
+				return keywords.toArray(new Keyword[0]);
+			} else {
+				return new Keyword[0];
+			}
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Error finding keywords by nanoparticle sample id.");
@@ -73,7 +85,11 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 		try {
 			List<File> files = helper.findFilesByCompositionInfoId(id,
 					className);
-			return files.toArray(new File[0]);
+			if (files != null && !files.isEmpty()) {
+				return files.toArray(new File[0]);
+			} else {
+				return new File[0];
+			}
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Error finding remote lab files by composition info", e);
@@ -112,7 +128,11 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			SampleServiceHelper helper = new SampleServiceHelper();
 			List<PointOfContact> pocList = helper
 					.findOtherPointOfContactsBySampleId(sampleId);
-			return pocList.toArray(new PointOfContact[0]);
+			if (pocList != null && !pocList.isEmpty()) {
+				return pocList.toArray(new PointOfContact[0]);
+			} else {
+				return new PointOfContact[0];
+			}
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Can't get other point of contacts by sample id", e);
@@ -138,7 +158,12 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 			PublicationServiceHelper helper = new PublicationServiceHelper();
 			List<Publication> publicationList = helper
 					.findPublicationsBySampleId(sampleId);
-			return publicationList.toArray(new Publication[0]);
+			if (publicationList != null && !publicationList.isEmpty()) {
+				return publicationList.toArray(new Publication[0]);
+			} else {
+				return new Publication[0];
+			}
+
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Can't get publications by the given sampleId", e);
@@ -158,7 +183,11 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 					samplePointOfContact, nanomaterialEntityClassNames, null,
 					functionalizingEntityClassNames, null, functionClassNames,
 					null, characterizationClassNames, null, words);
-			return sampleIds.toArray(new String[0]);
+			if (sampleIds != null && !sampleIds.isEmpty()) {
+				return sampleIds.toArray(new String[0]);
+			} else {
+				return new String[0];
+			}
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Can't get sample IDs by the given criteria", e);
@@ -206,7 +235,11 @@ public class CaNanoLabServiceImpl extends CaNanoLabServiceImplBase {
 					authors, nanomaterialEntityClassNames, null,
 					functionalizingEntityClassNames, null, functionClassNames,
 					null);
-			return publicationIds.toArray(new String[0]);
+			if (publicationIds != null && !publicationIds.isEmpty()) {
+				return publicationIds.toArray(new String[0]);
+			} else {
+				return new String[0];
+			}
 		} catch (Exception e) {
 			throw new RemoteException(
 					"Can't get publications by the given sampleId", e);
