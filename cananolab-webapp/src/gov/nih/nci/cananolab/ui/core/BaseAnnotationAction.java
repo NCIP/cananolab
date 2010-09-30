@@ -496,22 +496,24 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	protected Boolean validateAccess(HttpServletRequest request,
 			AccessibilityBean theAccess) throws Exception {
+		Boolean accessValid = true;
 		ActionMessages msgs = new ActionMessages();
 		if (!validateGroupAccess(request, theAccess)) {
 			ActionMessage msg = new ActionMessage("error.invalidGroup",
 					theAccess.getGroupName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			return false;
+			accessValid = false;
 		}
 		if (!validateUserAccess(request, theAccess)) {
 			ActionMessage msg = new ActionMessage("error.invalidUser",
 					theAccess.getUserBean().getLoginName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			return false;
+			accessValid = false;
 		}
-		return true;
+		request.getSession().setAttribute("accessValid", accessValid);
+		return accessValid;
 	}
 
 	protected void checkOpenAccessForm(DynaValidatorForm theForm,
@@ -519,10 +521,15 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
+		Boolean accessValid = true;
+		if (session.getAttribute("accessValid") != null) {
+			accessValid = (Boolean) session.getAttribute("accessValid");
+		}
 		Boolean openAccess = false;
-		if (dispatch.equals("input") && browserDispatch.equals("saveAccess")) {
+		if (dispatch.equals("input") && browserDispatch.equals("saveAccess") || !accessValid) {
 			openAccess = true;
 		}
 		session.setAttribute("openAccess", openAccess);
+		session.removeAttribute("accessValid");
 	}
 }
