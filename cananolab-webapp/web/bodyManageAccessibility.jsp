@@ -106,7 +106,10 @@
 <tr>
 	<td colspan="2">
 		<c:set var="newAccesstyle" value="display:none" />
-		<div style="${newAccesstyle}" id="newAccess">
+			<c:if test="${openAccess eq 'true'}">
+				<c:set var="newAccesstyle" value="display:block" />
+			</c:if>
+			<div style="${newAccesstyle}" id="newAccess">
 			<table class="subSubmissionView" width="85%" align="center">
 				<tr>
 					<th colspan="4">
@@ -189,7 +192,7 @@
 				<tr>
 					<td>
 						<input
-							id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('${parentAction}', ${parentPage});">
+							id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('${parentAction}', ${parentPage});" style="display: none;">
 					</td>
 					<td align="right" colspan="3">
 						<div align="right">
