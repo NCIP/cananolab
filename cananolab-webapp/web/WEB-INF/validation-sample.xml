@@ -11,8 +11,7 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((page!=1) and (sampleBean.cloningSampleName==null)) or
-						((page==1) and (sampleBean.cloningSampleName!=null)))
+						((page!=1) or ((page==1) and (*this*!=null)))
 					</var-value>
 				</var>
 			</field>
@@ -25,14 +24,20 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((sampleBean.thePOC.domain.organization.name!=null) or
-						(*this*!=null))
+						(((page!=2) and (page!=4)) or (((page==2) or (page==4))
+						and (*this*!=null)))
 					</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.name"
-				page="3" depends="required">
+				page="3" depends="validwhen">
 				<arg position="0" key="sampleForm.organizationName" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((page!=3) or ((page==3) and (*this*!=null)))
+					</var-value>
+				</var>
 			</field>
 			<field property="sampleBean.theAccess.accessBy" page="4"
 				depends="required">
