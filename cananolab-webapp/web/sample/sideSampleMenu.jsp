@@ -11,6 +11,7 @@
 <link rel="StyleSheet" type="text/css" href="css/sidemenu.css">
 <c:choose>
 	<c:when test="${!empty theSample}">
+	    <c:set var="theSample" value="${theSample}" scope="session"/>
 		<c:set var="sampleName" value="${theSample.domain.name}"
 			scope="session" />
 		<c:set var="sampleId" value="${theSample.domain.id}" scope="session" />
