@@ -234,6 +234,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationBean pubBean = new PublicationBean();
 		String sampleId = request.getParameter("sampleId");
 		PublicationForm theForm = (PublicationForm) form;
+		super.checkOpenAccessForm(theForm, request);
 		theForm.set("sampleId", sampleId);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
@@ -358,7 +359,8 @@ public class PublicationAction extends BaseAnnotationAction {
 			return summaryView(mapping, form, request, response);
 		}
 		this.prepareSummary(mapping, form, request, response);
-
+		PublicationForm theForm = (PublicationForm) form;
+		super.checkOpenAccessForm(theForm, request);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -472,7 +474,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		// save new entered other types
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		PublicationForm theForm = (PublicationForm) form;
-
+		super.checkOpenAccessForm(theForm, request);
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
 		// set empty year to null instead of the default 0

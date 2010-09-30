@@ -88,6 +88,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		super.checkOpenAccessForm(theForm, request);
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
 		this.setServiceInSession(request);
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
@@ -138,6 +139,8 @@ public class ProtocolAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("protocolForm");
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		super.checkOpenAccessForm(theForm, request);
 		setServiceInSession(request);
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		request.getSession().removeAttribute("protocolNamesByType");
@@ -151,13 +154,13 @@ public class ProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		super.checkOpenAccessForm(theForm, request);
 		String protocolId = request.getParameter("protocolId");
 		ProtocolService service = this.setServiceInSession(request);
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
 		theForm.set("protocol", protocolBean);
 		setupDynamicDropdowns(request, protocolBean);
 		request.getSession().setAttribute("updateProtocol", "true");
-
 		setUpSubmitForReviewButton(request, protocolBean.getDomain().getId()
 				.toString(), protocolBean.getPublicStatus());
 		return mapping.findForward("inputPage");
