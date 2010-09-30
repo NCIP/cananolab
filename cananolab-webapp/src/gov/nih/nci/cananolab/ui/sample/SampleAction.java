@@ -181,16 +181,16 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService.findDataAvailabilityBySampleId(
 						sampleBean.getDomain().getId().toString(), securityService);
-		
+
 		if (selectedSampleDataAvailability != null
 				&& !selectedSampleDataAvailability.isEmpty()
 				&& selectedSampleDataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
 			sampleBean.setDataAvailability(selectedSampleDataAvailability);
-			calculateDataAvailabilityScore(sampleBean, selectedSampleDataAvailability);	
+			calculateDataAvailabilityScore(sampleBean, selectedSampleDataAvailability);
 			//request.setAttribute("onloadJavascript", "manageDataAvailability('" + sampleBean.getDomain().getId() + "', 'sample', 'dataAvailabilityView')");
 		}
-		
+
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
 		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
@@ -459,7 +459,7 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
-		
+
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
@@ -481,7 +481,7 @@ public class SampleAction extends BaseAnnotationAction {
 					dataAvailabilityMapPerPage);
 		}*/
 		request.setAttribute("onloadJavascript", "manageDataAvailability('" + sampleBean.getDomain().getId() + "', 'sample', 'dataAvailabilityView')");
-		
+
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -555,7 +555,7 @@ public class SampleAction extends BaseAnnotationAction {
 		sampleBean.setDataAvailability(dataAvailability);
 		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
-			calculateDataAvailabilityScore(sampleBean, dataAvailability);			
+			calculateDataAvailabilityScore(sampleBean, dataAvailability);
 			String[] availableEntityNames = new String[dataAvailability.size()];
 			int i = 0;
 			for (DataAvailabilityBean bean : dataAvailability) {
@@ -610,6 +610,9 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		AccessibilityBean theAccess = sample.getTheAccess();
+		if (!super.validateAccess(request, theAccess)) {
+			return input(mapping, form, request, response);
+		}
 		SampleService service = this.setServiceInSession(request);
 		// if sample is public, the access is not public, retract public
 		// privilege would be handled in the service method
@@ -695,29 +698,29 @@ public class SampleAction extends BaseAnnotationAction {
 			throws SecurityException {
 		return false;
 	}
-	
+
 	/*public ActionForward generateBatchDataAvailability(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+
 		SecurityService securityService = (SecurityService) request
 		.getSession().getAttribute("securityService");
-		
+
 		SampleService service = (SampleService) request.getSession()
 		.getAttribute("sampleService");
-		
+
 		if(service == null){
 			service = setServiceInSession(request);
 		}
-		
+
 		System.out.println("Generate data availability by batch ");
 		List<String> sampleIds = service.findSampleIdsBy("", "", null, null, null, null, null, null, null, null, null);
 		int sampleIdsSize = sampleIds.size();
 		int i=0;
 		System.out.println("sampleIdsSize: " + sampleIdsSize + " time start: " + System.currentTimeMillis());
-		if(sampleIdsSize > 30){		
+		if(sampleIdsSize > 30){
 			int subListValue = 30;
-			while(true){				
+			while(true){
 				List<String> tempSampleIds = sampleIds.subList(i, i+subListValue);
 				System.out.println("subList size: " + tempSampleIds.size());
 				dataAvailabilityService.generateBatch(securityService, tempSampleIds);
@@ -732,7 +735,7 @@ public class SampleAction extends BaseAnnotationAction {
 				}
 			}
 		}else{
-			dataAvailabilityService.generateBatch(securityService, sampleIds);			
+			dataAvailabilityService.generateBatch(securityService, sampleIds);
 		}
 		System.out.println("Time finish : " + System.currentTimeMillis() );
 		ActionMessages messages = new ActionMessages();
@@ -740,6 +743,6 @@ public class SampleAction extends BaseAnnotationAction {
 		messages.add("message", message);
 		saveMessages(request, messages);
 		return mapping.findForward("manageCuration");
-		
+
 	}*/
 }
