@@ -4400,11 +4400,10 @@ span.Note
 span.Popup
 {
   border-bottom-color: Maroon;
-  border-bottom-style: dashed;
-  border-bottom-width: thin;
-  color: Maroon;
+  border-bottom-style: dotted;
+  color: #0000ff;
   font-family: Arial;
-  font-style: normal;
+  font-style: italic;
   font-variant: normal;
   font-weight: normal;
   text-transform: none;
