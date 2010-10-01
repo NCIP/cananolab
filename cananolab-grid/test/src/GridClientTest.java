@@ -291,7 +291,6 @@ public class GridClientTest {
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			Sample sample = null;
-			System.out.println("sample resutls: " + results + iter.hasNext());
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				sample = (Sample) obj;
@@ -481,8 +480,7 @@ public class GridClientTest {
 		//String charId = "21867791";
 		System.out.println("Testing testGetProtocolByCharacterizationId : " + charId);
 		try{
-			Protocol p = gridClient.getProtocolByCharacterizationId(charId);
-			
+			Protocol p = gridClient.getProtocolByCharacterizationId(charId);			
 			if(p != null){			
 				System.out.println("Protocol Id: " + p.getId() + "\tCreatedBy: " +p.getCreatedBy() + "\tName: "
 					+ p.getName() + "\tType: " + p.getType());
@@ -522,8 +520,7 @@ public class GridClientTest {
 				testGetPublicationBySampleId(id);
 				testGetKeywordsBySampleId(id);
 				testGetOtherPointOfContactsBySampleId(id);
-				testGetPrimaryPointOfContactBySampleId(id);
-				
+				testGetPrimaryPointOfContactBySampleId(id);			
 			}
 		}catch(Exception e){
 			System.out.println("Exception getting SampleIds: " + e);
