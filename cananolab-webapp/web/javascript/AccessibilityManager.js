@@ -32,6 +32,34 @@ function displayAccessNameLabel() {
 	}
 }
 
+function toggleAccessNameLabel() {
+	var byGroup = dwr.util.getValue("byGroup");
+	var byUser = dwr.util.getValue("byUser");
+	var byPublic = dwr.util.getValue("byPublic");
+	enablePublicAccess(false);
+	show("browseIcon");
+	if (byGroup == true && byUser == false && byPublic == false) {
+		dwr.util.setValue("accessNameLabel", "Collaboration Group Name *");
+		show("groupName");
+		hide("userName");
+	} else if (byGroup == false && byUser == true && byPublic == false) {
+		dwr.util.setValue("accessNameLabel", "User Login Name *");
+		hide("groupName");
+		show("userName");
+		alert('here');
+	} else if (byPublic == true && byGroup == false && byUser == false) {
+		dwr.util.setValue("accessNameLabel", "Group Name");
+		show("groupName");
+		dwr.util.setValue("groupName", publicGroup);
+		dwr.util.setValue("roleName", readRoleLabel);
+		dwr.util.setValue("hiddenRoleName", readRoleValue);
+		dwr.util.setValue("hiddenGroupName", publicGroup);
+		enablePublicAccess(true);
+		hide("userName");
+		hide("browseIcon");
+	}
+}
+
 function enablePublicAccess(enabled) {
 	if (enabled) {
 		document.getElementById("groupName").disabled = true;
