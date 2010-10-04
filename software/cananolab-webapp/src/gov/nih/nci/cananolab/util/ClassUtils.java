@@ -34,18 +34,25 @@ public class ClassUtils {
 	 */
 	public static Collection<Class> getDomainClasses() throws Exception {
 		Collection<Class> list = new ArrayList<Class>();
-		JarFile file = null;
+		File webInfDirectory = null;
 		URL url = Thread.currentThread().getContextClassLoader().getResource(
 				"hibernate.cfg.xml");
+		//for grid service, hibernate.cfg.xml is contained in a jar file in the lib directory under WEB-INF
+		if (url.getProtocol().equals("jar")) {
+			String libDirPath=(new File(url.getFile())).getParentFile().getParent();
+			//remove the extra file:\\ in the front
+			if (libDirPath.startsWith("file:\\")) {
+				libDirPath=libDirPath.replace("file:\\", "");
+			}
+			webInfDirectory = (new File(libDirPath)).getParentFile();
+		} else {
+			webInfDirectory = (new File(url.getPath())).getParentFile()
+					.getParentFile();
+		}
+		String fullJarFilePath = webInfDirectory.getPath() + File.separatorChar
+				+ "lib" + File.separatorChar + Constants.SDK_BEAN_JAR;
 
-		File webInfDirectory = (new File(url.getPath())).getParentFile()
-				.getParentFile();
-
-		String fullJarFilePath = webInfDirectory + File.separator + "lib"
-				+ File.separatorChar + Constants.SDK_BEAN_JAR;
-
-		file = new JarFile(fullJarFilePath);
-
+		JarFile file = new JarFile(fullJarFilePath);
 		if (file == null)
 			throw new Exception("Could not locate the bean jar");
 		Enumeration e = file.entries();
@@ -428,7 +435,7 @@ public class ClassUtils {
 	public static String getShortClassNameFromDisplayName(String displayName) {
 		// replace physico-chemical with physico chemical, in vivo with invivo,
 		// In vitro with invitro
-		displayName=displayName.replaceAll("physico-chemical",
+		displayName = displayName.replaceAll("physico-chemical",
 				"physico chemical").replaceAll("in vivo", "invivo").replaceAll(
 				"in vitro", "invitro");
 		String[] words = displayName.toLowerCase().split(" ");
