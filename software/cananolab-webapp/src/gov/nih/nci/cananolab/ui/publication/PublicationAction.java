@@ -261,6 +261,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
+		super.checkOpenAccessForm(theForm, request);
 		String publicationId = request.getParameter("publicationId");
 		String sampleId = request.getParameter("sampleId");
 		PublicationService publicationService = this
@@ -515,15 +516,14 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (pub.getPubMedId() != null && pub.getPubMedId() == 0) {
 			pub.setPubMedId(null);
 		}
-		// disable PubMed fields from parsing
+		// disable PubMed fields from parsing and toggle access name label
 		if (pub.getPubMedId() != null) {
 			request.setAttribute("onloadJavascript",
-					"updateSubmitFormBasedOnCategory();disableAutoFields()");
+					"updateSubmitFormBasedOnCategory();disableAutoFields(); toggleAccessNameLabel();");
 		} else {
 			request.setAttribute("onloadJavascript",
-					"updateSubmitFormBasedOnCategory();enableAutoFields()");
+					"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel();");
 		}
-
 		return mapping.findForward("publicationSubmitPublication");
 	}
 
