@@ -43,9 +43,9 @@ public class AccessibilityBean {
 	}
 
 	private UserBean userBean = new UserBean();
-	private String groupName;
-	private String roleName;
-	private String roleDisplayName;
+	private String groupName="";
+	private String roleName="";
+	private String roleDisplayName="";
 	private String accessBy = ACCESS_BY_GROUP;
 
 	public AccessibilityBean() {
