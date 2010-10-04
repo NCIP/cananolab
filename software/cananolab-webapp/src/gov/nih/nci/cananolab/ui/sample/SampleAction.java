@@ -197,6 +197,10 @@ public class SampleAction extends BaseAnnotationAction {
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		SampleBean sampleBean = setupSample(theForm, request);
+		if (sampleBean == null) {
+
+			return input(mapping, form, request, response);
+		}
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
@@ -438,17 +442,23 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SampleService service = this.setServiceInSession(request);
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
 		// remove all access associated with sample takes too long. Set up the
 		// delete job in scheduler
 		InitSampleSetup.getInstance().updateCSMCleanupEntriesInContext(
 				sampleBean.getDomain(), request);
-		service.deleteSample(sampleBean.getDomain().getName());
-		SecurityService securityService = (SecurityService) request
-				.getSession().getAttribute("securityService");
+
+		// update data review status to "DELETED"
+		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
+				sampleBean.getDomain().getId().toString(), sampleBean.getDomain()
+						.getName(), "sample");
 		if (sampleBean.getHasDataAvailability()) {
 			dataAvailabilityService.deleteDataAvailability(sampleBean
 					.getDomain().getId().toString(), securityService);
 		}
+		service.deleteSample(sampleBean.getDomain().getName());
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteSample",
 				sampleBean.getDomain().getName());
