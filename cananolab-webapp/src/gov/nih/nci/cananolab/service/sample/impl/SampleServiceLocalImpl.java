@@ -42,6 +42,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -1063,8 +1064,55 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 			;
 			Collection<Characterization> characterization = new ArrayList<Characterization>();
-
+			//SampleBean sampleBean = this.loadSampleBean(domain);
+			List<AccessibilityBean> userAccesses = super.findUserAccessibilities(sampleId);
+			List<AccessibilityBean> groupAccesses = super.findGroupAccessibilities(sampleId);
 			appService.saveOrUpdate(domain);
+			//load existing privilege 
+			// loadSample to load current user access
+			// copy first then modify the user to the newuser
+			List<AccessibilityBean> newUserAccesses = new ArrayList<AccessibilityBean>(userAccesses);
+			// save the new user access
+			//need to retrieve new user info
+			//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
+			//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
+			List<UserBean> newUserBean = super.findUserLoginNames(newOwner);
+			UserBean newUser=null;
+			if(!newUserBean.isEmpty()){
+				for(UserBean bean : newUserBean){
+					if(newOwner.equals(bean.getLoginName())){
+						newUser = bean;
+						break;
+					}
+				}
+			}
+			if(newUser == null){
+				throw new Exception("The new owner entered doesn't exist. " + newOwner);
+			}else if(!newUser.isCurator()){
+				if(userAccesses.isEmpty()){
+					AccessibilityBean newOwnerBean = new AccessibilityBean();
+					for(AccessibilityBean groupAccess : groupAccesses){
+						//System.out.println("group: " + groupAccess.getGroupName() + "\trole: " + groupAccess.getRoleName());
+						String role = groupAccess.getRoleName();
+						newOwnerBean.setRoleName(role);
+						newOwnerBean.setUserBean(newUser);					
+					}
+					this.assignAccessibility(newOwnerBean, domain);
+				}else{
+					for( AccessibilityBean newOwnerUser : newUserAccesses){
+						UserBean user = newOwnerUser.getUserBean();
+						//System.out.println("currentUser loginName: " + user.getLoginName());
+						String loginName = user.getLoginName();
+						if(currentOwner.endsWith(loginName)){
+							newOwnerUser.setUserBean(newUser);
+							System.out.println("currentowner match with user login name ");
+							//super.saveAccessibility(newOwnerUser, sampleId);
+							this.assignAccessibility(newOwnerUser, domain);
+						}
+					}
+				}
+			}
+			
 			if (sampleComposition != null) {
 				chemicalAssociation = sampleComposition
 						.getChemicalAssociationCollection();
