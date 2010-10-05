@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
@@ -403,6 +404,101 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			Protocol protocol = helper.findProtocolById(protocolId);
 			protocol.setCreatedBy(newOwner);
 			appService.saveOrUpdate(protocol);
+			handleAccessibility(currentOwner, newOwner, protocol);
 		}
+	}
+	
+	private void handleAccessibility(String currentOwner, String newOwner, 
+			Protocol protocol) throws Exception{
+		String protocolId = protocol.getId().toString();
+		List<AccessibilityBean> userAccesses = super.findUserAccessibilities(protocolId);
+		List<AccessibilityBean> groupAccesses = super.findGroupAccessibilities(protocolId);
+		
+		List<AccessibilityBean> newUserAccesses = new ArrayList<AccessibilityBean>(userAccesses);
+		// save the new user access
+		//need to retrieve new user info
+		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
+		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
+		List<UserBean> newUserBean = super.findUserLoginNames(newOwner);
+		UserBean newUser=null;
+		if(!newUserBean.isEmpty()){
+			for(UserBean bean : newUserBean){
+				if(newOwner.equals(bean.getLoginName())){
+					newUser = bean;
+					break;
+				}
+			}
+		}
+		if(newUser == null){
+			throw new Exception("The new owner entered doesn't exist. " + newOwner);
+		}else if(!newUser.isCurator()){
+			if(newUserAccesses.isEmpty()){
+				AccessibilityBean newOwnerBean = new AccessibilityBean();
+				for(AccessibilityBean groupAccess : groupAccesses){
+					//System.out.println("group: " + groupAccess.getGroupName() + "\trole: " + groupAccess.getRoleName());
+					String role = groupAccess.getRoleName();
+					newOwnerBean.setRoleName(role);
+					newOwnerBean.setUserBean(newUser);					
+				}
+				this.assignAccessibility(newOwnerBean, protocol);
+				//need to remove access for the previous owner if not a curator
+			}else{
+				for( AccessibilityBean newOwnerUser : newUserAccesses){
+					UserBean user = newOwnerUser.getUserBean();
+					//System.out.println("currentUser loginName: " + user.getLoginName());
+					String loginName = user.getLoginName();
+					if(currentOwner.endsWith(loginName)){
+						newOwnerUser.setUserBean(newUser);
+						System.out.println("currentowner match with user login name ");
+						//super.saveAccessibility(newOwnerUser, sampleId);
+						this.assignAccessibility(newOwnerUser, protocol);
+					}
+				}
+				
+			}
+		}
+		//need to remove access for the previous owner if not a curator
+		List<UserBean> previousUserBean = super.findUserLoginNames(currentOwner);
+		UserBean previousUser=null;
+		if(!previousUserBean.isEmpty()){
+			for(UserBean bean : previousUserBean){
+				if(currentOwner.equals(bean.getLoginName())){
+					previousUser = bean;
+					break;
+				}
+			}
+		}
+		if(previousUser == null){
+			throw new Exception("The current owner entered doesn't exist. " + currentOwner);
+		}else if(!previousUser.isCurator()){
+			if(userAccesses.isEmpty()){
+				AccessibilityBean previousOwnerBean = new AccessibilityBean();
+				for(AccessibilityBean groupAccess : groupAccesses){
+					//System.out.println("group: " + groupAccess.getGroupName() + "\trole: " + groupAccess.getRoleName());
+					UserBean user = groupAccess.getUserBean();
+					String loginName = user.getLoginName();
+					if(currentOwner.endsWith(loginName)){					
+						String role = groupAccess.getRoleName();
+						previousOwnerBean.setRoleName(role);
+						previousOwnerBean.setUserBean(user);	
+						
+					}
+				}
+				this.removeAccessibility(previousOwnerBean, protocol);
+			}else{
+				AccessibilityBean previousOwnerBean = new AccessibilityBean();
+				for( AccessibilityBean previousOwnerUser : userAccesses){
+					UserBean user = previousOwnerUser.getUserBean();
+					//System.out.println("currentUser loginName: " + user.getLoginName());
+					String loginName = user.getLoginName();
+					if(currentOwner.endsWith(loginName)){
+						previousOwnerBean.setUserBean(user);
+						System.out.println("currentowner match with user login name ");
+					}
+				}
+				this.removeAccessibility(previousOwnerBean, protocol);
+			}
+		}
+		
 	}
 }
