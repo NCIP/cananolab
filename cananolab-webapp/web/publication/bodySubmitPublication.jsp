@@ -462,9 +462,13 @@
 			value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
 	</c:if>
-    <c:if test="${review}">
+    <c:if test="${review && !empty param.sampleId}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.name}', 'publication')" />
+			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication')" />
+	</c:if>
+	 <c:if test="${review && empty param.sampleId}">
+		<c:set var="submitForReviewOnclick"
+			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication', 'publicationMessage')" />
 	</c:if>
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && publicationForm.map.publication.publicStatus}">
