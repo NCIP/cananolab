@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
@@ -158,6 +159,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 		String protocolId = request.getParameter("protocolId");
 		ProtocolService service = this.setServiceInSession(request);
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
+		if (protocolBean==null) {
+			throw new NotExistException("No such protocol in the database");
+		}
 		theForm.set("protocol", protocolBean);
 		setupDynamicDropdowns(request, protocolBean);
 		request.getSession().setAttribute("updateProtocol", "true");
@@ -195,6 +199,10 @@ public class ProtocolAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
 		ProtocolService service = this.setServiceInSession(request);
+		// update data review status to "DELETED"
+		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
+				protocolBean.getDomain().getId().toString(), protocolBean.getDomain()
+						.getName(), "protocol");
 		service.deleteProtocol(protocolBean.getDomain());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteProtocol",
