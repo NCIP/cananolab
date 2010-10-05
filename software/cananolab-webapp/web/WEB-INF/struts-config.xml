@@ -42,6 +42,9 @@
 			key="error.fileException" path="home.error"
 			type="gov.nih.nci.cananolab.exception.FileException" />
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.notexist" path="home.error"
+			type="gov.nih.nci.cananolab.exception.NotExistException" />
+		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.caNanoLabException" path="home.error" type="java.lang.BaseException" />
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.generalException" path="home.error" type="java.lang.Exception" />
