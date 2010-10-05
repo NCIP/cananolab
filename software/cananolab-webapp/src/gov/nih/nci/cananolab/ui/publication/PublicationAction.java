@@ -77,13 +77,12 @@ public class PublicationAction extends BaseAnnotationAction {
 					"message.updatePublication.retractFromPublic");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
+		} else {
+			ActionMessage msg = new ActionMessage("message.submitPublication",
+					publicationBean.getDomainFile().getTitle());
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
 		}
-
-		ActionMessage msg = new ActionMessage("message.submitPublication",
-				publicationBean.getDomainFile().getTitle());
-		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, messages);
-
 		if (!StringUtils.isEmpty(sampleId)) {
 			return summaryEdit(mapping, form, request, response);
 		} else {
@@ -217,6 +216,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService service = this.setServicesInSession(request);
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
+
+		// update data review status to "DELETED"
+		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
+				publicationBean.getDomainFile().getId().toString(),
+				publicationBean.getDomainFile().getTitle(), "publication");
 		service
 				.deletePublication((Publication) publicationBean
 						.getDomainFile());
@@ -518,11 +522,14 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 		// disable PubMed fields from parsing and toggle access name label
 		if (pub.getPubMedId() != null) {
-			request.setAttribute("onloadJavascript",
-					"updateSubmitFormBasedOnCategory();disableAutoFields(); toggleAccessNameLabel();");
+			request
+					.setAttribute(
+							"onloadJavascript",
+							"updateSubmitFormBasedOnCategory();disableAutoFields(); toggleAccessNameLabel();");
 		} else {
-			request.setAttribute("onloadJavascript",
-					"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel();");
+			request
+					.setAttribute("onloadJavascript",
+							"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel();");
 		}
 		return mapping.findForward("publicationSubmitPublication");
 	}
