@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
@@ -76,7 +77,11 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				.getAttribute("sampleService");
 
 		SampleBean sampleBean = service.findSampleById(sampleId, true);
+		if (sampleBean==null) {
+			throw new NotExistException("No such sample in the system");
+		}
 		request.setAttribute("theSample", sampleBean);
+
 		return sampleBean;
 	}
 
