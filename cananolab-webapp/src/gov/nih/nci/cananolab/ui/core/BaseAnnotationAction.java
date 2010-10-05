@@ -351,6 +351,11 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String dataId = request.getParameter("reviewDataId");
 		String dataType = request.getParameter("reviewDataType");
 		String dataName = request.getParameter("reviewDataName");
+		String forwardName= request.getParameter("forwardName");
+		//set default forward name to be summaryEdit
+		if (forwardName==null) {
+			forwardName="summaryEdit";
+		}
 		DataReviewStatusBean dataReviewStatusBean = new DataReviewStatusBean();
 		dataReviewStatusBean.setDataId(dataId);
 		dataReviewStatusBean.setDataName(dataName);
@@ -362,7 +367,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		dataReviewStatusBean.setSubmittedDate(new Date());
 		curationService.submitDataForReview(dataReviewStatusBean,
 				securityService);
-		String forwardName = "summaryEdit";
 
 		ActionMessages messages = new ActionMessages();
 		ActionMessage msg = null;
