@@ -3,9 +3,10 @@ package gov.nih.nci.cananolab.dto.common;
 import java.util.Date;
 
 public class DataReviewStatusBean {
-	public static final String PENDING_STATUS = "pending";
-	public static final String PUBLIC_STATUS = "public";
-	public static final String RETRACTED_STATUS = "retracted";
+	public static final String PENDING_STATUS = "pending"; //pending review
+	public static final String PUBLIC_STATUS = "public"; //passed review and assigned to public
+	public static final String RETRACTED_STATUS = "retracted"; //retracted from public
+	public static final String DELETED_STATUS = "deleted"; //delete from database
 
 	private String dataId;
 	private String dataName;
