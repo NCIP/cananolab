@@ -160,7 +160,7 @@
 	<c:set var="hiddenPage" value="1" />
 	<c:if test="${review}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(protocolForm, 'protocol', '${protocolForm.map.protocol.domain.id}', '${protocolForm.map.protocol.domain.name}', 'protocol')" />
+			value="submitReview(protocolForm, 'protocol', '${protocolForm.map.protocol.domain.id}', '${protocolForm.map.protocol.domain.name}', 'protocol', 'protocolMessage')" />
 	</c:if>
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && protocolForm.map.protocol.publicStatus}">
