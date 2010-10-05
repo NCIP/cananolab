@@ -1125,7 +1125,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					}
 				}
 			}
-			if(!previousUser.isCurator()){
+			if(previousUser == null){
+				throw new Exception("The current owner entered doesn't exist. " + currentOwner);
+			}else if(!previousUser.isCurator()){
 				if(userAccesses.isEmpty()){
 					AccessibilityBean previousOwnerBean = new AccessibilityBean();
 					for(AccessibilityBean groupAccess : groupAccesses){
