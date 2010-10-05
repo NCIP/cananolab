@@ -549,8 +549,13 @@ function generateBatchDataAvailability() {
 		return false;
 	}
 }
-function submitReview(form, actionName, dataId, dataName, dataType) {
-	form.action = actionName + ".do?dispatch=submitForReview&reviewDataId=" +dataId+"&reviewDataName="+dataName+"&reviewDataType="+dataType;
+function submitReview(form, actionName, dataId, dataName, dataType, forwardName) {
+	var actionStr=actionName + ".do?dispatch=submitForReview&reviewDataId=" +dataId+"&reviewDataName="+dataName+"&reviewDataType="+dataType;
+
+	if (forwardName!=null) {
+		actionStr=actionStr+"&forwardName="+forwardName;
+	}
+	form.action=actionStr;
 	form.submit();
 }
 
