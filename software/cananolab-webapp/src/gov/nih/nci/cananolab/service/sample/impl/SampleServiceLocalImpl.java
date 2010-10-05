@@ -1064,9 +1064,11 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 			;
 			Collection<Characterization> characterization = new ArrayList<Characterization>();
+			List<AccessibilityBean> userAccesses = super.findUserAccessibilities(sampleId);
+			List<AccessibilityBean> groupAccesses = super.findGroupAccessibilities(sampleId);
 			appService.saveOrUpdate(domain);
 			
-			handleAccessibility(currentOwner, newOwner, domain);
+			handleAccessibility(currentOwner, newOwner, domain, userAccesses, groupAccesses);
 			if (sampleComposition != null) {
 				chemicalAssociation = sampleComposition
 						.getChemicalAssociationCollection();
@@ -1133,10 +1135,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return ids;
 	}
 	//take care of accessibility when ownership has been transfered.
-	private void handleAccessibility(String currentOwner, String newOwner, Sample sample) throws Exception{
-		String sampleId = sample.getId().toString();
-		List<AccessibilityBean> userAccesses = super.findUserAccessibilities(sampleId);
-		List<AccessibilityBean> groupAccesses = super.findGroupAccessibilities(sampleId);
+	private void handleAccessibility(String currentOwner, String newOwner, Sample sample,
+			List<AccessibilityBean> userAccesses,List<AccessibilityBean> groupAccesses) throws Exception{
+			
 		
 		//load existing privilege 
 		// loadSample to load current user access
@@ -1148,7 +1149,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
 		List<UserBean> newUserBean = super.findUserLoginNames(newOwner);
 		UserBean newUser=null;
-		if(!newUserBean.isEmpty()){
+		if(newUserBean != null && !newUserBean.isEmpty()){
 			for(UserBean bean : newUserBean){
 				if(newOwner.equals(bean.getLoginName())){
 					newUser = bean;
@@ -1187,7 +1188,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		//need to remove access for the previous owner if not a curator
 		List<UserBean> previousUserBean = super.findUserLoginNames(currentOwner);
 		UserBean previousUser=null;
-		if(!previousUserBean.isEmpty()){
+		if(previousUserBean != null && !previousUserBean.isEmpty()){
 			for(UserBean bean : previousUserBean){
 				if(currentOwner.equals(bean.getLoginName())){
 					previousUser = bean;
@@ -1207,8 +1208,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					if(currentOwner.endsWith(loginName)){					
 						String role = groupAccess.getRoleName();
 						previousOwnerBean.setRoleName(role);
-						previousOwnerBean.setUserBean(user);	
-						
+						previousOwnerBean.setUserBean(user);						
 					}
 				}
 				this.removeAccessibility(previousOwnerBean, sample);
@@ -1223,6 +1223,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 						System.out.println("currentowner match with user login name ");
 					}
 				}
+				
 				this.removeAccessibility(previousOwnerBean, sample);
 			}
 		}
