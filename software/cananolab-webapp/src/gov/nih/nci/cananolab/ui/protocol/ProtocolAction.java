@@ -59,15 +59,13 @@ public class ProtocolAction extends BaseAnnotationAction {
 			msg = new ActionMessage("message.updateProtocol.retractFromPublic");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
-			setupDynamicDropdowns(request, protocolBean);
-			return mapping.findForward("inputPage");
+		} else {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage("message.submitProtocol",
+					protocolBean.getDisplayName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
 		}
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.submitProtocol",
-				protocolBean.getDisplayName());
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-
-		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		return forward;
 	}
@@ -159,7 +157,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		String protocolId = request.getParameter("protocolId");
 		ProtocolService service = this.setServiceInSession(request);
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
-		if (protocolBean==null) {
+		if (protocolBean == null) {
 			throw new NotExistException("No such protocol in the database");
 		}
 		theForm.set("protocol", protocolBean);
@@ -201,8 +199,8 @@ public class ProtocolAction extends BaseAnnotationAction {
 		ProtocolService service = this.setServiceInSession(request);
 		// update data review status to "DELETED"
 		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
-				protocolBean.getDomain().getId().toString(), protocolBean.getDomain()
-						.getName(), "protocol");
+				protocolBean.getDomain().getId().toString(), protocolBean
+						.getDomain().getName(), "protocol");
 		service.deleteProtocol(protocolBean.getDomain());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteProtocol",
