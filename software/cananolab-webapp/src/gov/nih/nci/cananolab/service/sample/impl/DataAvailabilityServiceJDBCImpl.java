@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,6 +44,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
  */
 public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		DataAvailabilityService {
+	private static Logger logger = Logger
+			.getLogger(DataAvailabilityServiceJDBCImpl.class);
 
 	// [data_availability] table columns.
 	private static final String SAMPLE_ID = "sample_id";
@@ -176,19 +179,27 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 
 	}
 
-	public void deleteBatchDataAvailability(List<String> sampleIds,
+	public int deleteBatchDataAvailability(List<String> sampleIds,
 			SecurityService securityService) throws Exception {
 		// delete all records from data_availability table
 
 		UserBean ub = securityService.getUserBean();
+		int i = 0;
 		if (!ub.isCurator()) {
 			throw new Exception("No permission to process the request");
 		} else {
 			for (String sampleId : sampleIds) {
-				deleteDataAvailability(sampleId, securityService);
+				try {
+					deleteDataAvailability(sampleId, securityService);
+				} catch (Exception e) {
+					logger.info(
+							"Error deleting data availablity metrics for sample: "
+									+ sampleId, e);
+					i++;
+				}
 			}
 		}
-
+		return i;
 	}
 
 	public Set<DataAvailabilityBean> saveDataAvailability(
@@ -240,19 +251,26 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		return results;
 	}
 
-	public void saveBatchDataAvailability(List<String> sampleIds,
+	public int saveBatchDataAvailability(List<String> sampleIds,
 			SecurityService securityService) throws Exception {
 		// find data availability for the sampleId,
 		// update if exist, otherwise insert
 
 		SampleService service = new SampleServiceLocalImpl(securityService);
-
+		int i = 0;
 		for (String sampleId : sampleIds) {
-			SampleBean sampleBean = service.findSampleById(sampleId, false);
-			if (sampleBean != null) {
-				saveDataAvailability(sampleBean, securityService);
+			try {
+				SampleBean sampleBean = service.findSampleById(sampleId, false);
+				if (sampleBean != null) {
+					saveDataAvailability(sampleBean, securityService);
+				}
+			} catch (Exception e) {
+				i++;
+				logger.info("Error saving data availability for sample: "
+						+ sampleId, e);
 			}
 		}
+		return i;
 	}
 
 	private Set<DataAvailabilityBean> insert(SampleBean sampleBean,
@@ -478,35 +496,29 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 	 */
 	private void insertBatch(final List<DataAvailabilityBean> data) {
 
-		for(DataAvailabilityBean bean: data){
-			Object[] args = { bean.getSampleId(),
-                    bean.getDatasourceName(),
-                    bean.getAvailableEntityName(),
-                    bean.getCreatedDate(),
-                    bean.getCreatedBy()};
-        int status = this.getJdbcTemplate().update(INSERT_SQL + INSERT_COLS, args);
-       // return status;
+		for (DataAvailabilityBean bean : data) {
+			Object[] args = { bean.getSampleId(), bean.getDatasourceName(),
+					bean.getAvailableEntityName(), bean.getCreatedDate(),
+					bean.getCreatedBy() };
+			int status = this.getJdbcTemplate().update(
+					INSERT_SQL + INSERT_COLS, args);
+			// return status;
 
 		}
 
-		/*getJdbcTemplate().batchUpdate(INSERT_SQL + INSERT_COLS,
-				new BatchPreparedStatementSetter() {
-
-					public void setValues(PreparedStatement ps, int i)
-							throws SQLException {
-						DataAvailabilityBean bean = data.get(i);
-						ps.setLong(1, bean.getSampleId());
-						ps.setString(2, bean.getDatasourceName());
-						ps.setString(3, bean.getAvailableEntityName());
-						ps.setDate(4, new java.sql.Date(bean.getCreatedDate()
-								.getTime()));
-						ps.setString(5, bean.getCreatedBy());
-					}
-
-					public int getBatchSize() {
-						return data.size();
-					}
-				});*/
+		/*
+		 * getJdbcTemplate().batchUpdate(INSERT_SQL + INSERT_COLS, new
+		 * BatchPreparedStatementSetter() {
+		 *
+		 * public void setValues(PreparedStatement ps, int i) throws
+		 * SQLException { DataAvailabilityBean bean = data.get(i); ps.setLong(1,
+		 * bean.getSampleId()); ps.setString(2, bean.getDatasourceName());
+		 * ps.setString(3, bean.getAvailableEntityName()); ps.setDate(4, new
+		 * java.sql.Date(bean.getCreatedDate() .getTime())); ps.setString(5,
+		 * bean.getCreatedBy()); }
+		 *
+		 * public int getBatchSize() { return data.size(); } });
+		 */
 	}
 
 	/**
@@ -517,39 +529,30 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 	 */
 	private void insertBatchOnUpdate(final List<DataAvailabilityBean> data) {
 
-		for(DataAvailabilityBean bean: data){
-			Object[] args = { bean.getSampleId(),
-                    bean.getDatasourceName(),
-                    bean.getAvailableEntityName(),
-                    bean.getCreatedDate(),
-                    bean.getCreatedBy(),
-                    bean.getUpdatedDate(),
-                    bean.getUpdatedBy()};
-        int status = this.getJdbcTemplate().update(INSERT_ON_UPDATE, args);
-       // return status;
+		for (DataAvailabilityBean bean : data) {
+			Object[] args = { bean.getSampleId(), bean.getDatasourceName(),
+					bean.getAvailableEntityName(), bean.getCreatedDate(),
+					bean.getCreatedBy(), bean.getUpdatedDate(),
+					bean.getUpdatedBy() };
+			int status = this.getJdbcTemplate().update(INSERT_ON_UPDATE, args);
+			// return status;
 
 		}
-		/*getJdbcTemplate().batchUpdate(INSERT_ON_UPDATE,
-				new BatchPreparedStatementSetter() {
-
-					public void setValues(PreparedStatement ps, int i)
-							throws SQLException {
-						DataAvailabilityBean bean = data.get(i);
-						ps.setLong(1, bean.getSampleId());
-						ps.setString(2, bean.getDatasourceName());
-						ps.setString(3, bean.getAvailableEntityName());
-						ps.setDate(4, new java.sql.Date(bean.getCreatedDate()
-								.getTime()));
-						ps.setString(5, bean.getCreatedBy());
-						ps.setDate(6, new java.sql.Date(bean.getUpdatedDate()
-								.getTime()));
-						ps.setString(7, bean.getUpdatedBy());
-					}
-
-					public int getBatchSize() {
-						return data.size();
-					}
-				});*/
+		/*
+		 * getJdbcTemplate().batchUpdate(INSERT_ON_UPDATE, new
+		 * BatchPreparedStatementSetter() {
+		 *
+		 * public void setValues(PreparedStatement ps, int i) throws
+		 * SQLException { DataAvailabilityBean bean = data.get(i); ps.setLong(1,
+		 * bean.getSampleId()); ps.setString(2, bean.getDatasourceName());
+		 * ps.setString(3, bean.getAvailableEntityName()); ps.setDate(4, new
+		 * java.sql.Date(bean.getCreatedDate() .getTime())); ps.setString(5,
+		 * bean.getCreatedBy()); ps.setDate(6, new
+		 * java.sql.Date(bean.getUpdatedDate() .getTime())); ps.setString(7,
+		 * bean.getUpdatedBy()); }
+		 *
+		 * public int getBatchSize() { return data.size(); } });
+		 */
 	}
 
 	/**
@@ -561,34 +564,26 @@ public class DataAvailabilityServiceJDBCImpl extends JdbcDaoSupport implements
 		// String sql =
 		// "UPDATE DATA_AVAILABILITY SET AVAILABLE_ENTITY_NAME=?, UPDATED_DATE=?, UPDATED_BY=? WHERE SAMPLE_ID=? and AVAILABLE_ENTITY_NAME=?";
 
-		for(DataAvailabilityBean bean: data){
-			Object[] args = {
-                    bean.getAvailableEntityName(),
-                    bean.getUpdatedDate(),
-                    bean.getUpdatedBy(),
-                    bean.getSampleId(),
-                    bean.getAvailableEntityName()};
+		for (DataAvailabilityBean bean : data) {
+			Object[] args = { bean.getAvailableEntityName(),
+					bean.getUpdatedDate(), bean.getUpdatedBy(),
+					bean.getSampleId(), bean.getAvailableEntityName() };
 			this.getJdbcTemplate().update(UPDATE_SQL, args);
 		}
-		/*getJdbcTemplate().batchUpdate(UPDATE_SQL,
-				new BatchPreparedStatementSetter() {
-
-					public void setValues(PreparedStatement ps, int i)
-							throws SQLException {
-						DataAvailabilityBean bean = data.get(i);
-
-						ps.setString(1, bean.getAvailableEntityName());
-						ps.setDate(2, new java.sql.Date(bean.getUpdatedDate()
-								.getTime()));
-						ps.setString(3, bean.getUpdatedBy());
-						ps.setLong(4, bean.getSampleId());
-						ps.setString(5, bean.getAvailableEntityName());
-					}
-
-					public int getBatchSize() {
-						return data.size();
-					}
-				});*/
+		/*
+		 * getJdbcTemplate().batchUpdate(UPDATE_SQL, new
+		 * BatchPreparedStatementSetter() {
+		 *
+		 * public void setValues(PreparedStatement ps, int i) throws
+		 * SQLException { DataAvailabilityBean bean = data.get(i);
+		 *
+		 * ps.setString(1, bean.getAvailableEntityName()); ps.setDate(2, new
+		 * java.sql.Date(bean.getUpdatedDate() .getTime())); ps.setString(3,
+		 * bean.getUpdatedBy()); ps.setLong(4, bean.getSampleId());
+		 * ps.setString(5, bean.getAvailableEntityName()); }
+		 *
+		 * public int getBatchSize() { return data.size(); } });
+		 */
 	}
 
 	/**
