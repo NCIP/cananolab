@@ -15,10 +15,18 @@ package gov.nih.nci.cananolab.ui.curation;
  * @author lethai, pansu
  */
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.service.common.LongRunningProcess;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +41,7 @@ import org.apache.struts.action.DynaActionForm;
 
 public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 	private DataAvailabilityService dataAvailabilityService;
+	private static final int CUT_OFF_NUM_SAMPLES = 50;
 
 	public DataAvailabilityService getDataAvailabilityService() {
 		return dataAvailabilityService;
@@ -53,7 +62,7 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 
 	// option1 - generate all: update existing one and generate new ones.
 	// option2 - re-generate for samples with existing data availability
-	// option3 - delete data availability for all samples
+	// option3 - delete existing data availability
 	public ActionForward generate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -62,18 +71,79 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		ActionMessages messages = new ActionMessages();
+		SecurityService securityService = new SecurityService(
+				AccessibilityBean.CSM_APP_NAME, user);
+		SampleService sampleService = new SampleServiceLocalImpl(
+				securityService);
+
+		List<String> sampleIdsToRun = new ArrayList<String>();
+		if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION1)) {
+			// find all sampleIds
+			sampleIdsToRun = sampleService.findSampleIdsBy("", "", null, null,
+					null, null, null, null, null, null, null);
+		} else {
+			// find samplesIds with existing data availability
+			sampleIdsToRun = dataAvailabilityService
+					.findSampleIdsWithDataAvailability(securityService);
+		}
+		// empty sampleIds
+		if (sampleIdsToRun.isEmpty()) {
+			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION2)
+					|| option
+							.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
+				ActionMessage msg = new ActionMessage(
+						"message.batchDataAvailability.empty.metrics");
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			} else {
+				ActionMessage msg = new ActionMessage(
+						"message.batchDataAvailability.nosamples");
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			}
+			saveMessages(request, messages);
+			return mapping.findForward("input");
+		}
+		// check how many samples to run, if less than the CUT_OFF_NUM_SAMPLES,
+		// we don't have to run batch in a separate thread
+		if (sampleIdsToRun.size() < CUT_OFF_NUM_SAMPLES) {
+			int i = 0;
+			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION1)
+					|| option
+							.equals(BatchDataAvailabilityProcess.BATCH_OPTION2)) {
+				i = dataAvailabilityService.saveBatchDataAvailability(
+						sampleIdsToRun, securityService);
+				ActionMessage msg = new ActionMessage(
+						"message.batchDataAvailability.generate.success",
+						sampleIdsToRun.size());
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			}
+			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
+				i = dataAvailabilityService.deleteBatchDataAvailability(
+						sampleIdsToRun, securityService);
+				ActionMessage msg = new ActionMessage(
+						"message.batchDataAvailability.delete.success",
+						sampleIdsToRun.size());
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			}
+			if (i > 0) {
+				ActionMessage msg = new ActionMessage(
+						"message.batchDataAvailability.failed", i);
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			}
+
+			saveMessages(request, messages);
+			return mapping.findForward("input");
+		}
+
+		// run in a separate thread
 		//
 		// We only want one BatchDataAvailabilityProcess per session.
 		//
 		BatchDataAvailabilityProcess batchProcess = (BatchDataAvailabilityProcess) session
 				.getAttribute("batchDataAvailabilityProcess");
-		if (batchProcess == null) {
-			session.setAttribute("hasResultsWaiting", true);
-			batchProcess = new BatchDataAvailabilityProcess(
-					dataAvailabilityService, option, user);
-			session.setAttribute("batchDataAvailabilityProcess", batchProcess);
-			session.setAttribute("processType", "dataAvailability");
-			batchProcess.process();
+		if (batchProcess == null || batchProcess.isComplete()) {
+			this.startThreadForBatchProcess(batchProcess, session,
+					sampleIdsToRun, dataAvailabilityService, securityService,
+					option, user);
 		} else {
 			if (!batchProcess.isComplete()) {
 				ActionMessage msg = new ActionMessage(
@@ -83,6 +153,37 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 				return mapping.findForward("input");
 			}
 		}
-		return mapping.findForward("batchDataAvailabilityResults");
+		String optionMessage = "generate";
+		if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
+			optionMessage = "delete";
+		}
+		ActionMessage msg = new ActionMessage(
+				"message.batchDataAvailability.longRunning", sampleIdsToRun
+						.size(), optionMessage);
+		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, messages);
+		return mapping.findForward("input");
+	}
+
+	private void startThreadForBatchProcess(
+			BatchDataAvailabilityProcess batchProcess, HttpSession session,
+			List<String> sampleIdsToRun,
+			DataAvailabilityService dataAvailabilityService,
+			SecurityService securityService, String option, UserBean user)
+			throws Exception {
+		session.setAttribute("hasResultsWaiting", true);
+		batchProcess = new BatchDataAvailabilityProcess(
+				dataAvailabilityService, securityService, sampleIdsToRun,
+				option, user);
+		batchProcess.process();
+		session.setAttribute("batchDataAvailabilityProcess", batchProcess);
+		// obtain the list of long running processes
+		List<LongRunningProcess> longRunningProcesses = new ArrayList<LongRunningProcess>();
+		if (session.getAttribute("longRunningProcesses") != null) {
+			longRunningProcesses = (List<LongRunningProcess>) session
+					.getAttribute("longRunningProcesses");
+		}
+		longRunningProcesses.add(batchProcess);
+		session.setAttribute("longRunningProcesses", longRunningProcesses);
 	}
 }
