@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
