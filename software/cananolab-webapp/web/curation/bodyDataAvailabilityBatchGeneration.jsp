@@ -31,11 +31,11 @@
 				Generate data availability for all samples
 				<br>
 				<html:radio styleId="option2" property="option" value="regenerate old" />
-				Re-generate data availability for samples with existing data
+				Regenerate data availability for samples with existing data
 				availability
 				<br>
 				<html:radio styleId="option3" property="option" value="delete all" />
-				Delete data availability for all samples
+				Delete existing data availability
 			</td>
 
 		</tr>
