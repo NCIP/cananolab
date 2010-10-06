@@ -26,7 +26,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.util.LabelValueBean;
-import org.directwebremoting.WebContextFactory;
 
 /**
  * This class sets up information required for characterization forms.
