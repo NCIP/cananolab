@@ -36,10 +36,12 @@ public interface DataAvailabilityService {
 	 * @return
 	 * @throws DataAvailabilityException
 	 */
-	
-	public Set<DataAvailabilityBean> saveDataAvailability(SampleBean sampleBean, SecurityService securityService)
-		throws DataAvailabilityException, NoAccessException,
+
+	public Set<DataAvailabilityBean> saveDataAvailability(
+			SampleBean sampleBean, SecurityService securityService)
+			throws DataAvailabilityException, NoAccessException,
 			SecurityException;
+
 	/**
 	 * save data availability for the sample and persist to database table
 	 *
@@ -47,13 +49,12 @@ public interface DataAvailabilityService {
 	 * @param user
 	 * @return
 	 * @throws DataAvailabilityException
-	 * @throws SampleException 
+	 * @throws SampleException
 	 */
-	public Set<DataAvailabilityBean> saveDataAvailability(String sampleId, SecurityService securityService)
-	throws DataAvailabilityException, NoAccessException,
-		SecurityException, SampleException;
-	
-	
+	public Set<DataAvailabilityBean> saveDataAvailability(String sampleId,
+			SecurityService securityService) throws DataAvailabilityException,
+			NoAccessException, SecurityException, SampleException;
+
 	/*
 	 * public List<DataAvailabilityBean> generateDataAvailability(SampleBean
 	 * sampleBean, UserBean user) throws DataAvailabilityException;
@@ -68,10 +69,11 @@ public interface DataAvailabilityService {
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	/*public Set<DataAvailabilityBean> generateDataAvailability(
-			SampleBean sampleBean, SecurityService securityService)
-			throws DataAvailabilityException, NoAccessException,
-			SecurityException;*/
+	/*
+	 * public Set<DataAvailabilityBean> generateDataAvailability( SampleBean
+	 * sampleBean, SecurityService securityService) throws
+	 * DataAvailabilityException, NoAccessException, SecurityException;
+	 */
 
 	/**
 	 * find update to data availability for the sample and persist to database
@@ -84,10 +86,11 @@ public interface DataAvailabilityService {
 	 * @throws NoAccessException
 	 * @throws SecurityException
 	 */
-	/*public Set<DataAvailabilityBean> saveDataAvailability(
-			SampleBean sampleBean, SecurityService securityService)
-			throws DataAvailabilityException, NoAccessException,
-			SecurityException;*/
+	/*
+	 * public Set<DataAvailabilityBean> saveDataAvailability( SampleBean
+	 * sampleBean, SecurityService securityService) throws
+	 * DataAvailabilityException, NoAccessException, SecurityException;
+	 */
 
 	/**
 	 * delete data availability for the sample from database table
@@ -102,12 +105,29 @@ public interface DataAvailabilityService {
 			SecurityService securityService) throws DataAvailabilityException,
 			NoAccessException, SecurityException;
 
-	public void saveBatchDataAvailability(List<String> sampleIds, SecurityService securityService) throws Exception;
+	/**
+	 *
+	 * @param sampleIds
+	 * @param securityService
+	 * @return number of samples that failed
+	 * @throws Exception
+	 */
+	public int saveBatchDataAvailability(List<String> sampleIds,
+			SecurityService securityService) throws Exception;
 
-	public void deleteBatchDataAvailability(SecurityService securityService) throws Exception;
-
-	public void deleteBatchDataAvailability(List<String> sampleIds, SecurityService securityService) throws Exception;
-
-	public List<String> findSampleIdsWithDataAvailability(SecurityService securityService)
+	public void deleteBatchDataAvailability(SecurityService securityService)
 			throws Exception;
+
+	/**
+	 *
+	 * @param sampleIds
+	 * @param securityService
+	 * @return number of samples that failed
+	 * @throws Exception
+	 */
+	public int deleteBatchDataAvailability(List<String> sampleIds,
+			SecurityService securityService) throws Exception;
+
+	public List<String> findSampleIdsWithDataAvailability(
+			SecurityService securityService) throws Exception;
 }
