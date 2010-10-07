@@ -41,7 +41,7 @@ import org.apache.struts.action.DynaActionForm;
 
 public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 	private DataAvailabilityService dataAvailabilityService;
-	private static final int CUT_OFF_NUM_SAMPLES = 50;
+	private static final int CUT_OFF_NUM_SAMPLES = 30;
 
 	public DataAvailabilityService getDataAvailabilityService() {
 		return dataAvailabilityService;
@@ -139,8 +139,8 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		// We only want one BatchDataAvailabilityProcess per session.
 		//
 		BatchDataAvailabilityProcess batchProcess = (BatchDataAvailabilityProcess) session
-				.getAttribute("batchDataAvailabilityProcess");
-		if (batchProcess == null || batchProcess.isComplete()) {
+				.getAttribute("BatchDataAvailabilityProcess");
+		if (batchProcess == null) {
 			this.startThreadForBatchProcess(batchProcess, session,
 					sampleIdsToRun, dataAvailabilityService, securityService,
 					option, user);
@@ -148,6 +148,12 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 			if (!batchProcess.isComplete()) {
 				ActionMessage msg = new ActionMessage(
 						"message.batchDataAvailability.duplicateRequest");
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, messages);
+				return mapping.findForward("input");
+			} else {
+				ActionMessage msg = new ActionMessage(
+						"message.batchDataAvailability.previousRequest.completed");
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, messages);
 				return mapping.findForward("input");
@@ -176,7 +182,7 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 				dataAvailabilityService, securityService, sampleIdsToRun,
 				option, user);
 		batchProcess.process();
-		session.setAttribute("batchDataAvailabilityProcess", batchProcess);
+		session.setAttribute("BatchDataAvailabilityProcess", batchProcess);
 		// obtain the list of long running processes
 		List<LongRunningProcess> longRunningProcesses = new ArrayList<LongRunningProcess>();
 		if (session.getAttribute("longRunningProcesses") != null) {
