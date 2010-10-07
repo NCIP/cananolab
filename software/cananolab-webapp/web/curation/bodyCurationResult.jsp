@@ -16,12 +16,12 @@
 </jsp:include>
 
 <c:choose>
-	<c:when test="${empty longRunningProcesses}">
+	<c:when test="${empty requestScope.previousLongRunningProcesses}">
 		<span class="welcomeContent">There are currently no pending
 			long running processes or pending results to view.</span>
 	</c:when>
 	<c:otherwise>
-		<display:table name="sessionScope.previousLongRunningProcesses"
+		<display:table name="requestScope.previousLongRunningProcesses"
 			id="process" requestURI="manageResult.do" pagesize="25"
 			class="displaytable">
 			<display:column title="Process Type" property="processType" />
