@@ -164,8 +164,7 @@ public class BaseServiceLocalImpl implements BaseService {
 				String roleName = entry.getValue();
 				AccessibilityBean access = new AccessibilityBean();
 				access.setRoleName(roleName);
-				// don't need user ID nor password
-				access.setUserBean(new UserBean(userLoginName, null));
+				access.setUserBean(new UserBean(userLoginName));
 				access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 				userAccesses.add(access);
 
@@ -232,8 +231,7 @@ public class BaseServiceLocalImpl implements BaseService {
 					userLoginName);
 			access = new AccessibilityBean();
 			access.setRoleName(roleName);
-			// don't need user id nor password
-			access.setUserBean(new UserBean(userLoginName, null));
+			access.setUserBean(new UserBean(userLoginName));
 			access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 		} catch (NoAccessException e) {
 			throw e;
