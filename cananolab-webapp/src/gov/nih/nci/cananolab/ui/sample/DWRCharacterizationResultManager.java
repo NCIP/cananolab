@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -164,6 +165,19 @@ public class DWRCharacterizationResultManager {
 	public String addColumnHeader(ColumnHeader header) {
 		WebContext wctx = WebContextFactory.get();
 		HttpSession session = wctx.getSession();
+		// store existing columns in the session to prevent entering of
+		// duplicate column
+		List<ColumnHeader> columnHeaders = (List<ColumnHeader>) session
+				.getAttribute("columnHeaders");
+		if (columnHeaders == null) {
+			columnHeaders = new ArrayList<ColumnHeader>();
+			session.setAttribute("columnHeaders", columnHeaders);
+		}
+		if (columnHeaders.contains(header)) {
+			return "duplicate column";
+		}
+		columnHeaders.add(header);
+
 		if (header.getColumnType().equals(FindingBean.DATUM_TYPE)) {
 			// remember other datum names in the session
 			SortedSet<String> datumColumnNames = (SortedSet<String>) session
@@ -238,7 +252,6 @@ public class DWRCharacterizationResultManager {
 			WebContextFactory.get().getSession().setAttribute(
 					"otherCharValueTypes", otherValueTypes);
 		}
-
 		return header.getDisplayName();
 	}
 
