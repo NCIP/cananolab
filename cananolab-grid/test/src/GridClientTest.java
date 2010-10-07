@@ -1,17 +1,28 @@
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
+import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
@@ -20,6 +31,14 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
+import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GridClientTest {
 	CaNanoLabServiceClient gridClient;
@@ -54,6 +73,8 @@ public class GridClientTest {
 						+ "\tDesc=" + ce.getDescription() + "\tName="
 						+ ce.getName());
 				// TODO add CQL for functions by composing element id
+				loadInherentFunctionsForComposingElement(ce);
+
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting ComposingElement for id="
@@ -157,6 +178,7 @@ public class GridClientTest {
 						+ "\tType=" + p.getType() + "\tVersion="
 						+ p.getVersion());
 				// add function for get protocol file by protocol id
+				testGetFileByProtocolId(p.getId().toString());
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Protocol for id=" + id + ": "
@@ -221,10 +243,96 @@ public class GridClientTest {
 						+ "\tTitle=" + p.getTitle());
 				// TODO add CQL for authors and keywords by publication
 				// id
+				loadAuthorsForPublication(p);
+				Collection<Author> authorCollection = p.getAuthorCollection();
+				for (java.util.Iterator<Author> itr = authorCollection
+						.iterator(); itr.hasNext();) {
+					Author a = itr.next();
+					System.out.println("Author First Name=" + a.getFirstName()
+							+ "\tLast Name=" + a.getLastName());
+				}
+				loadKeywordsForPublication(p);
+				Collection<Keyword> keywordCollection = p
+						.getKeywordCollection();
+				for (java.util.Iterator<Keyword> itr = keywordCollection
+						.iterator(); itr.hasNext();) {
+					Keyword k = itr.next();
+					System.out.println("Keyword Name=" + k.getName() + "\tId="
+							+ k.getId());
+				}
+
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Publication for id=" + id
 					+ ": " + e);
+		}
+	}
+
+	private void loadAuthorsForPublication(Publication publication) {
+		CQLQuery query = new CQLQuery();
+
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Author");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.common.Publication");
+		association.setRoleName("publicationCollection");
+
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(publication.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Author");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Author author = null;
+			publication.setAuthorCollection(new HashSet<Author>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				author = (Author) obj;
+				publication.getAuthorCollection().add(author);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting Authors for Publication id="
+					+ publication.getId() + ": " + e);
+		}
+	}
+
+	private void loadKeywordsForPublication(Publication publication) {
+		// load keywords for a file
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Keyword");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.common.File");
+		association.setRoleName("fileCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(publication.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Keyword");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Set<Keyword> keywords = new HashSet<Keyword>();
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				Keyword keyword = (Keyword) obj;
+				keywords.add(keyword);
+			}
+			publication.setKeywordCollection(keywords);
+		} catch (Exception e) {
+			System.out.println("Exception getting keyword for publication: "
+					+ e);
 		}
 	}
 
@@ -464,6 +572,11 @@ public class GridClientTest {
 						+ contact.getPhone() + "\tRole: " + contact.getRole()
 						+ "\tEmail: " + contact.getEmail());
 				// TODO add CQL for organization by POC id
+				System.out
+						.println("Getting Organization for point of contact id="
+								+ contact.getId());
+				loadOrganizationForPointOfContact(contact);
+
 			}
 		} catch (Exception e) {
 			System.out
@@ -473,6 +586,46 @@ public class GridClientTest {
 		System.out
 				.println("Finished printing getPrimaryPointOfContactBySampleId results for sampleId: "
 						+ sampleId);
+	}
+
+	private void loadOrganizationForPointOfContact(PointOfContact poc) {
+
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Organization");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.common.PointOfContact");
+		association.setRoleName("pointOfContactCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(poc.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Organization");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Organization org = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				org = (Organization) obj;
+				if (org != null) {
+					System.out.println("Organization: id=" + org.getId()
+							+ "\tName=" + org.getName() + "\tAddress="
+							+ org.getStreetAddress1() + " " + org.getCity()
+							+ " " + org.getState() + " " + org.getPostalCode());
+				}
+			}
+			poc.setOrganization(org);
+		} catch (Exception e) {
+			System.out
+					.println("Exception getting organization for point of contact id="
+							+ poc.getId() + ": " + e);
+		}
 	}
 
 	public void testGetOtherPointOfContactsBySampleId(String sampleId) {
@@ -493,6 +646,10 @@ public class GridClientTest {
 								+ contact.getRole() + "\tEmail: "
 								+ contact.getEmail());
 						// TODO add CQL for organization by POC id
+						System.out
+								.println("Getting Organization for other point of contact id="
+										+ contact.getId());
+						loadOrganizationForPointOfContact(contact);
 					}
 				}
 			}
@@ -515,13 +672,17 @@ public class GridClientTest {
 			ExperimentConfig[] experimentConfigs = gridClient
 					.getExperimentConfigsByCharacterizationId(charId);
 
-			for (ExperimentConfig exp : experimentConfigs) {
-				if (exp != null) {
-					System.out.println("ExperimentConfig Id: " + exp.getId()
-							+ "\tDesc: " + exp.getDescription());
-					// TODO add CQL for instruments and technique by experiment
-					// config id
-
+			if(experimentConfigs != null){
+				for (ExperimentConfig exp : experimentConfigs) {
+					if (exp != null) {
+						System.out.println("ExperimentConfig Id: " + exp.getId()
+								+ "\tDesc: " + exp.getDescription());
+						// TODO add CQL for instruments and technique by experiment
+						// config id
+						loadTechniqueForConfig(exp);
+						loadInstrumentsForConfig(exp);
+	
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -532,6 +693,88 @@ public class GridClientTest {
 		System.out
 				.println("Finished printing testGetExperimentConfigsByCharacterizationId results for charId: "
 						+ charId);
+	}
+
+	private void loadTechniqueForConfig(ExperimentConfig config) {
+		System.out.println("getting Technique for Config id=" + config.getId());
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Technique");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.common.ExperimentConfig");
+		association.setRoleName("experimentConfigCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(config.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Technique");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Technique technique = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				technique = (Technique) obj;
+				if (technique != null) {
+					System.out.println("Technique id=" + technique.getId()
+							+ "\tAbbreviation=" + technique.getAbbreviation()
+							+ "\tType=" + technique.getType());
+				}
+			}
+			config.setTechnique(technique);
+		} catch (Exception e) {
+			System.out
+					.println("Exception getting Technique for ExperimentConfig id="
+							+ config.getId() + ": " + e);
+		}
+	}
+
+	private void loadInstrumentsForConfig(ExperimentConfig config) {
+		System.out.println("Getting Instruments for Config id="
+				+ config.getId());
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Instrument");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.common.ExperimentConfig");
+		association.setRoleName("experimentConfigCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(config.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Instrument");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			config.setInstrumentCollection(new HashSet<Instrument>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				Instrument instrument = (Instrument) obj;
+				config.getInstrumentCollection().add(instrument);
+				if (instrument != null) {
+					System.out.println("Instrument id=" + instrument.getId()
+							+ "\tType=" + instrument.getType() + "\tModelName="
+							+ instrument.getModelName() + "\tManufacturer="
+							+ instrument.getManufacturer());
+				}
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Exception getting Instrument for ExperimentConfig id="
+							+ config.getId() + ": " + e);
+		}
 	}
 
 	public void testGetFindingsByCharacterizationId(String charId) {
@@ -548,6 +791,8 @@ public class GridClientTest {
 								+ "\tCreatedBy: " + f.getCreatedBy());
 						// TODO add CQL for data and files by finding id, and
 						// conditions by datum id
+						loadDataForFinding(f);
+						loadFilesForFinding(f);
 					}
 				}
 			}
@@ -559,6 +804,125 @@ public class GridClientTest {
 		System.out
 				.println("Finished printing testGetFindingsByCharacterizationId results for charId: "
 						+ charId);
+	}
+
+	private void loadDataForFinding(Finding finding) {
+		System.out.println("Getting Data for Finding id=" + finding.getId());
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Datum");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.common.Finding");
+		association.setRoleName("finding");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(finding.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Datum");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			finding.setDatumCollection(new HashSet<Datum>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				Datum datum = (Datum) obj;
+				if (datum != null) {
+					System.out.println("Datum id=" + datum.getId()+ "\tName="
+							+ datum.getName() + "\tValueType=" +datum.getValueType() + "\tValueUnit="
+							+ datum.getValueUnit() + "\tValue=" +datum.getValue());
+					loadConditionsForDatum(datum);
+					finding.getDatumCollection().add(datum);
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting Data for Finding id="
+					+ finding.getId() + ": " + e);
+		}
+	}
+
+	private void loadConditionsForDatum(Datum datum) {
+		System.out.println("Getting Condition for Datum id=" + datum.getId());
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Condition");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.common.Datum");
+		association.setRoleName("datumCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(datum.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Condition");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			datum.setConditionCollection(new HashSet<Condition>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				Condition condition = (Condition) obj;
+				if (condition != null) {
+					System.out.println("Condition id=" + condition.getId()
+							+ "\tName=" + condition.getName() + "\tProperty="
+							+ condition.getProperty() + "\tValue="
+							+ condition.getValue() + "\tValueType="
+							+ condition.getValueType() + "\tValueUnit="
+							+ condition.getValueUnit());
+				}
+				datum.getConditionCollection().add(condition);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting Conditions for Datum id="
+					+ datum.getId() + ": " + e);
+		}
+	}
+
+	private void loadFilesForFinding(Finding finding) {
+		System.out.println("Getting Files for Finding id=" + finding.getId());
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.File");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.common.Finding");
+		association.setRoleName("findingCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(finding.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			finding.setFileCollection(new HashSet<File>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				File file = (File) obj;
+				if (file != null) {
+					System.out.println("File id=" + file.getId() + "\tName="
+							+ file.getName() + "\tDesc="
+							+ file.getDescription() + "\tTitle="
+							+ file.getTitle() + "\tUri=" + file.getUri());
+				}
+				finding.getFileCollection().add(file);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting Files for Finding id="
+					+ finding.getId() + ": " + e);
+		}
 	}
 
 	public void testGetProtocolByCharacterizationId(String charId) {
@@ -597,6 +961,8 @@ public class GridClientTest {
 								+ p.getTitle());
 						// TODO add CQL for authors and keywords by publication
 						// id
+						loadKeywordsForPublication(p);
+						loadAuthorsForPublication(p);
 					}
 				}
 			}
@@ -619,6 +985,7 @@ public class GridClientTest {
 							+ "For every sample, test get Publication, keywords, primary contact and other contact.");
 			for (String id : sampleIds) {
 				testSample(id);
+				testGetCharacterizationsBySampleIdByCQLQuery(id);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting SampleIds: " + e);
@@ -627,9 +994,45 @@ public class GridClientTest {
 	}
 
 	public void testGetCharacterizationsBySampleIdByCQLQuery(String id) {
+		// TODO add this CQL and related functions for experiment configs,
+		// findings and point of contacts.
 		try {
-			// TODO add this CQL and related functions for experiment configs,
-			// findings and point of contacts.
+			CQLQuery query = new CQLQuery();
+			/*
+			 * QueryModifier modifier = new QueryModifier();
+			 * modifier.setCountOnly(true); query.setQueryModifier(modifier);
+			 */
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.Characterization");
+			Association association = new Association();
+			association.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+			association.setRoleName("sample");
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(id);
+			association.setAttribute(attribute);
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Characterization");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Characterization chara = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				chara = (Characterization) obj;
+				if (chara != null) {
+					testGetFindingsByCharacterizationId(chara.getId()
+							.toString());
+					testGetProtocolByCharacterizationId(chara.getId()
+							.toString());
+					testGetExperimentConfigsByCharacterizationId(chara.getId()
+							.toString());
+				}
+			}
+
 		} catch (Exception e) {
 			System.out
 					.println("Exception getting characterizations by Sample ID through CQL: "
@@ -644,10 +1047,373 @@ public class GridClientTest {
 			// id, and composing elements, functions by nanomaterial entity id,
 			// functions by functionalizing entity id, and function for files
 			// based on composition info id
+			// find all nanomaterial entity class names, functionalizing entity
+			// class names first
+			String[] sampleViewStrs = gridClient.getSampleViewStrs(id);
+			// column 8 contains characterization short class names
+			String[] nanoEntityClassNames = null;
+			if (sampleViewStrs.length > 5
+					&& !StringUtils.isEmpty(sampleViewStrs[5])) {
+				nanoEntityClassNames = sampleViewStrs[5]
+						.split(Constants.VIEW_CLASSNAME_DELIMITER);
+			}
+			String[] funcEntityClassNames = null;
+			if (sampleViewStrs.length > 6
+					&& !StringUtils.isEmpty(sampleViewStrs[6])) {
+				funcEntityClassNames = sampleViewStrs[6]
+						.split(Constants.VIEW_CLASSNAME_DELIMITER);
+			}
+			String[] assocClassNames = null;
+			if (sampleViewStrs.length > 8
+					&& !StringUtils.isEmpty(sampleViewStrs[8])) {
+				assocClassNames = sampleViewStrs[8]
+						.split(Constants.VIEW_CLASSNAME_DELIMITER);
+			}
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+			Association association = new Association();
+			association.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+			association.setRoleName("sample");
+
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(id);
+
+			association.setAttribute(attribute);
+
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			SampleComposition sampleComposition = null;
+			System.out.println("getting CompositionBySampleIdByCQLQuery... sampleId=" + id);
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				sampleComposition = (SampleComposition) obj;
+				System.out.println("SampleComposition id=" + sampleComposition.getId() );
+				sampleComposition.getChemicalAssociationCollection();
+				sampleComposition.getFunctionalizingEntityCollection();
+				sampleComposition.getNanomaterialEntityCollection();
+				// sampleComposition.
+				loadCompositionAssociations(sampleComposition,
+						nanoEntityClassNames, funcEntityClassNames,
+						assocClassNames);
+				// compositionBean = new CompositionBean(sampleComposition);
+			}
 		} catch (Exception e) {
 			System.out
 					.println("Exception getting composition by Sample ID through CQL: "
 							+ e);
+		}
+	}
+
+	private void loadCompositionAssociations(SampleComposition composition,
+			String[] nanoEntityClassNames, String[] funcEntityClassNames,
+			String[] assocClassNames) {
+		try {
+			loadNanomaterialEntitiesForComposition(composition,
+					nanoEntityClassNames);
+			loadFunctionalizingEntitiesForComposition(composition,
+					funcEntityClassNames);
+			loadChemicalAssociationsForComposition(composition, assocClassNames);
+			File[] files = gridClient.getFilesByCompositionInfoId(composition
+					.getId().toString(), ClassUtils
+					.getShortClassName("SampleComposition"));
+			if (files != null && files.length > 0) {
+				//loadKeywordsForFiles(files);
+				
+				composition.setFileCollection(new HashSet<File>(Arrays
+						.asList(files)));
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Exception loading Composition Associationsfor: "
+							+ e);
+		}
+	}
+
+	private void loadNanomaterialEntitiesForComposition(
+			SampleComposition composition, String[] nanoEntityClassNames) {
+		try {
+			if (nanoEntityClassNames != null) {
+				for (String name : nanoEntityClassNames) {
+					String fullClassName = null;
+					if (ClassUtils.getFullClass(name) != null) {
+						fullClassName = ClassUtils.getFullClass(name)
+								.getCanonicalName();
+					} else {
+						fullClassName = ClassUtils.getFullClass(
+								OtherNanomaterialEntity.class
+										.getCanonicalName()).getCanonicalName();
+					}
+					CQLQuery query = new CQLQuery();
+					gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+					target.setName(fullClassName);
+					Association association = new Association();
+					association
+							.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+					association.setRoleName("sampleComposition");
+
+					Attribute attribute = new Attribute();
+					attribute.setName("id");
+					attribute.setPredicate(Predicate.EQUAL_TO);
+					attribute.setValue(composition.getId().toString());
+					association.setAttribute(attribute);
+
+					target.setAssociation(association);
+					query.setTarget(target);
+					CQLQueryResults results = gridClient.query(query);
+					results.setTargetClassname(fullClassName);
+					CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+							results);
+					NanomaterialEntity nanoEntity = null;
+					composition
+							.setNanomaterialEntityCollection(new HashSet<NanomaterialEntity>());
+					while (iter.hasNext()) {
+						java.lang.Object obj = iter.next();
+						nanoEntity = (NanomaterialEntity) obj;
+						if (nanoEntity != null) {
+							System.out.println("NanomaterialEntity id="
+									+ nanoEntity.getId() + "\tDesc="
+									+ nanoEntity.getDescription());
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting nanomaterial for composition"
+					+ ": " + e);
+		}
+	}
+
+	private void loadFunctionalizingEntitiesForComposition(
+			SampleComposition composition, String[] funcEntityClassNames) {
+		try {
+			if (funcEntityClassNames != null) {
+				for (String name : funcEntityClassNames) {
+					String fullClassName = null;
+					if (ClassUtils.getFullClass(name) != null) {
+						fullClassName = ClassUtils.getFullClass(name)
+								.getCanonicalName();
+					} else {
+						fullClassName = ClassUtils.getFullClass(
+								OtherFunctionalizingEntity.class
+										.getCanonicalName()).getCanonicalName();
+					}
+					CQLQuery query = new CQLQuery();
+					gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+					target.setName(fullClassName);
+
+					Association association = new Association();
+					association
+							.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+					association.setRoleName("sampleComposition");
+
+					Attribute attribute = new Attribute();
+					attribute.setName("id");
+					attribute.setPredicate(Predicate.EQUAL_TO);
+					attribute.setValue(composition.getId().toString());
+					association.setAttribute(attribute);
+
+					target.setAssociation(association);
+					query.setTarget(target);
+					CQLQueryResults results = gridClient.query(query);
+					results.setTargetClassname(fullClassName);
+					CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+							results);
+					FunctionalizingEntity funcEntity = null;
+					composition
+							.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
+					while (iter.hasNext()) {
+						java.lang.Object obj = iter.next();
+						funcEntity = (FunctionalizingEntity) obj;
+						System.out.println("FunctionalizingEntity id=" + funcEntity.getId() + "\tName=" + funcEntity.getName() + 
+								"\tDesc=" + funcEntity.getDescription() + "\tMolecularFormula=" + funcEntity.getMolecularFormula() + 
+								"\tPubChemDataSourceName=" +funcEntity.getPubChemDataSourceName()+ "\tMolecularFormulaType=" +
+								funcEntity.getMolecularFormulaType() + "\tValueUnit=" + funcEntity.getValueUnit());
+						loadFunctionalizingEntityAssociations(funcEntity);
+						composition.getFunctionalizingEntityCollection().add(
+								funcEntity);
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Exception getting FunctionalizingEntity for Composition for id="
+							+ composition.getId() + ": " + e);
+		}
+	}
+
+	private void loadChemicalAssociationsForComposition(
+			SampleComposition composition, String[] assocClassNames) {
+		try {
+			if (assocClassNames != null) {
+				for (String name : assocClassNames) {
+					String fullClassName = null;
+					if (ClassUtils.getFullClass(name) != null) {
+						fullClassName = ClassUtils.getFullClass(name)
+								.getCanonicalName();
+					} else {
+						fullClassName = ClassUtils.getFullClass(
+								OtherChemicalAssociation.class
+										.getCanonicalName()).getCanonicalName();
+					}
+					CQLQuery query = new CQLQuery();
+					gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+					target.setName(fullClassName);
+
+					Association association = new Association();
+					association
+							.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+					association.setRoleName("sampleComposition");
+
+					Attribute attribute = new Attribute();
+					attribute.setName("id");
+					attribute.setPredicate(Predicate.EQUAL_TO);
+					attribute.setValue(composition.getId().toString());
+					association.setAttribute(attribute);
+
+					target.setAssociation(association);
+					query.setTarget(target);
+					CQLQueryResults results = gridClient.query(query);
+					results.setTargetClassname(fullClassName);
+					CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+							results);
+					ChemicalAssociation assoc = null;
+					composition
+							.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>());
+					while (iter.hasNext()) {
+						java.lang.Object obj = iter.next();
+						assoc = (ChemicalAssociation) obj;
+						System.out.println("ChemicalAssociation id=" + assoc.getId() + "\tDesc=" + assoc.getDescription());
+						loadChemicalAssociationAssociations(assoc);
+						composition.getChemicalAssociationCollection().add(
+								assoc);
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Exception loading ChemicalAssociation for Composition id="
+							+ composition.getId() + ": " + e);
+		}
+	}
+
+	private void loadChemicalAssociationAssociations(ChemicalAssociation assoc) {
+		try {
+			File[] files = gridClient.getFilesByCompositionInfoId(assoc.getId()
+					.toString(), "ChemicalAssociation");
+			if (files != null && files.length > 0) {
+				// loadKeywordsForFiles(files);
+				assoc
+						.setFileCollection(new HashSet<File>(Arrays
+								.asList(files)));
+			}
+			loadAssociatedElementsForChemicalAssociation(assoc, "A");
+			loadAssociatedElementsForChemicalAssociation(assoc, "B");
+		} catch (Exception e) {
+			System.out.println("Exception loading ChemicalAssociation for id="
+					+ assoc.getId() + ": " + e);
+		}
+	}
+
+	private void loadAssociatedElementsForChemicalAssociation(
+			ChemicalAssociation assoc, String elementNumber) {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.AssociatedElement");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+		String roleName = "chemicalAssociation" + elementNumber + "Collection";
+		association.setRoleName(roleName);
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(assoc.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.AssociatedElement");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				AssociatedElement element = (AssociatedElement) obj;
+				if (element instanceof ComposingElement) {
+					loadInherentFunctionsForComposingElement((ComposingElement) element);
+				} else if (element instanceof FunctionalizingEntity) {
+					loadFunctionalizingEntityAssociations((FunctionalizingEntity) element);
+				}
+				if (elementNumber.equals("A")) {
+					assoc.setAssociatedElementA(element);
+				} else if (elementNumber.equals("B")) {
+					assoc.setAssociatedElementB(element);
+				}
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Exception getting AssocatedElement for ChenicalAssociation: "
+							+ e);
+		}
+	}
+
+	private void loadFunctionalizingEntityAssociations(
+			FunctionalizingEntity entity) throws Exception {
+		File[] files = gridClient.getFilesByCompositionInfoId(entity.getId()
+				.toString(), "FunctionalizingEntity");
+		if (files != null && files.length > 0) {
+			for (File file : files) {
+				System.out.println("File desc: " + file.getDescription()
+						+ "\tName: " + file.getName() + "\tUri: "
+						+ file.getUri());
+				// TODO add CQL for keywords by file id
+				loadKeywordsForFile(file);
+			}
+		}
+	}
+
+	private void loadKeywordsForFile(File file) {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Keyword");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.common.File");
+		association.setRoleName("fileCollection");
+
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(file.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Keyword");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			file.setKeywordCollection(new HashSet<Keyword>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				Keyword keyword = (Keyword) obj;
+				if (keyword != null) {
+					System.out.println("Keyword id=" + keyword.getId()
+							+ "\tName=" + keyword.getName());
+				}
+				file.getKeywordCollection().add(keyword);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting keyword for file id="
+					+ file.getId() + ": " + e);
 		}
 	}
 
@@ -680,6 +1446,7 @@ public class GridClientTest {
 						+ "\tName: " + file.getName() + "\tUri: "
 						+ file.getUri());
 				// TODO add CQL for keywords by file id
+				loadKeywordsForFile(file);
 			}
 		} catch (Exception e) {
 			System.out
@@ -702,12 +1469,57 @@ public class GridClientTest {
 							+ "\tName: " + file.getName() + "\tUri: "
 							+ file.getUri());
 					// TODO add CQL for keywords by file id
+					loadKeywordsForFile(file);
 				}
 			}
 		} catch (Exception e) {
 			System.out
 					.println("Exception getting FilesByCompositionInfoId for id="
 							+ id + ", className=" + className + ": " + e);
+		}
+	}
+
+	/**
+	 * load all InherentFunction for an associated ComposingElement
+	 */
+	private void loadInherentFunctionsForComposingElement(
+			ComposingElement composingElement) {
+		CQLQuery query = new CQLQuery();
+
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.particle.Function");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.particle.ComposingElement");
+		association.setRoleName("composingElement");
+
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(composingElement.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Function");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			composingElement
+					.setInherentFunctionCollection(new HashSet<Function>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				Function function = (Function) obj;
+				composingElement.getInherentFunctionCollection().add(function);
+				System.out.println("Function for ComposingElement: id="
+						+ function.getId() + "\tDesc="
+						+ function.getDescription());
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Exception getting Funtion for ComposingElement for id="
+							+ composingElement.getId() + ": " + e);
 		}
 	}
 
@@ -718,10 +1530,14 @@ public class GridClientTest {
 				if (args[0].equals("-url")) {
 					CaNanoLabServiceClient client = new CaNanoLabServiceClient(
 							args[1]);
+
 					GridClientTest test = new GridClientTest(client);
 
 					test.testGetPrimaryPointOfContactBySampleId("10354688");
-					// these methods has loops to test other methods
+					/*test.testGetCharacterizationsBySampleIdByCQLQuery("9142300");
+					test.testGetCompositionBySampleIdByCQLQuery("9142300");
+					test.testGetPrimaryPointOfContactBySampleId("10354688");
+					 
 					test.testGetSampleIds();
 					test.testGetPublicationIdsBy();
 					test.testGetAllCharacterizationByCQLQuery();
@@ -744,7 +1560,7 @@ public class GridClientTest {
 					test.testSampleComposition("6160390");
 					test.testActivationMethod("3833872");
 					test.testProtocol("24390915");
-
+					*/
 				} else {
 					System.exit(1);
 				}
