@@ -28,6 +28,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,11 +73,9 @@ public class SecurityService {
 		this(applicationName);
 		if (userBean != null) {
 			try {
-				this.userBean = login(userBean.getLoginName(), userBean
+				User user = login(userBean.getLoginName(), userBean
 						.getPassword());
-				// check if userBean is curator and if userBean is admin
-				this.userBean.setAdmin(this.isAdmin(this.userBean));
-				this.userBean.setGroupNames(this.getUserGroups());
+				this.userBean = new UserBean(user);
 				// if user is not in Public group, add the user
 				if (!this.userBean.getGroupNames().contains(
 						AccessibilityBean.CSM_PUBLIC_GROUP)) {
@@ -96,21 +95,31 @@ public class SecurityService {
 	}
 
 	/**
-	 * Uses CSM to authenticate the given userBean and password. If userBean is
-	 * authenticated, check if the userBean is an admin or is a curator.
+	 * Uses CSM to authenticate the given user name and password.
 	 *
 	 * @return
 	 * @throws SecurityException
 	 */
-	public UserBean login(String loginName, String password)
+	public User login(String loginName, String password)
 			throws SecurityException, InvalidSessionException {
-		UserBean userBean = null;
 		try {
 			boolean authenticated = authenticationManager.login(loginName,
 					password);
 			if (authenticated) {
 				User user = authorizationManager.getUser(loginName);
-				userBean = new UserBean(user);
+				// load user groups
+				Set groups = authorizationManager.getGroups(user.getUserId()
+						.toString());
+				user.setGroups(groups);
+				// set CSM_APPLICATION to user protection element
+				if (isAdmin(user.getLoginName())) {
+					Set peSet = new HashSet();
+					ProtectionElement pe = this
+							.getProtectionElement(AccessibilityBean.CSM_APP_NAME);
+					peSet.add(pe);
+					user.setProtectionElements(peSet);
+				}
+				return user;
 			} else {
 				throw new SecurityException("Invalid Credentials");
 			}
@@ -119,7 +128,6 @@ public class SecurityService {
 			logger.error(error);
 			throw new SecurityException(error, e);
 		}
-		return userBean;
 	}
 
 	/**
@@ -128,17 +136,40 @@ public class SecurityService {
 	 * @param userBean
 	 * @return
 	 */
-	public boolean isAdmin(UserBean user) {
-		boolean adminStatus = this.authorizationManager.checkOwnership(user
-				.getLoginName(), this.applicationName);
+	public boolean isAdmin(String loginName) {
+		boolean adminStatus = this.authorizationManager.checkOwnership(
+				loginName, this.applicationName);
 		return adminStatus;
 	}
 
-	private SortedSet<String> getUserGroups() throws SecurityException {
+	/**
+	 * Check whether the given userBean is the admin of the application.
+	 *
+	 * @param userBean
+	 * @return
+	 */
+	public boolean isCurator(String loginName) {
+		User dbUser = this.authorizationManager.getUser(loginName);
+		if (dbUser != null) {
+			try {
+				SortedSet<String> groupNames = this.getUserGroupNames(dbUser
+						.getUserId().toString());
+				if (groupNames.contains(AccessibilityBean.CSM_DATA_CURATOR)) {
+					return true;
+				}
+			} catch (Exception e) {
+				logger.info("no groups were found for user.");
+				return false;
+			}
+		}
+		return false;
+	}
+
+	private SortedSet<String> getUserGroupNames(String userId)
+			throws SecurityException {
 		SortedSet<String> groupNames = new TreeSet<String>();
 		try {
-			Set groups = this.authorizationManager.getGroups(userBean
-					.getDomain().getUserId().toString());
+			Set groups = this.authorizationManager.getGroups(userId);
 			for (Object obj : groups) {
 				Group group = (Group) obj;
 				groupNames.add(group.getGroupName());
