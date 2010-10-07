@@ -314,6 +314,10 @@ function addColumnHeader(columnNumber) {
 		}
 	}
 	FindingManager.addColumnHeader(columnHeader, function(displayName) {
+		if (displayName=='duplicate column') {
+			alert("Such a column already exists.  Please enter a different column.");
+			return;
+		}
 		dwr.util.setValue("columnHeaderDisplayName" + columnNumber,
 				displayName, {
 					escapeHtml : false
