@@ -3,11 +3,11 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +123,7 @@ public class DWRAccessibilityManager {
 			throws Exception {
 		try {
 
-			List<UserBean> matchedUsers = getService().findUserLoginNames(
+			List<UserBean> matchedUsers = getService().findUserBeans(
 					searchStr);
 			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
 			// remove current user from the list
@@ -163,7 +163,7 @@ public class DWRAccessibilityManager {
 		String searchStr="";
 		try {
 		
-			List<UserBean> matchedUsers = getService().findUserLoginNames(
+			List<UserBean> matchedUsers = getService().findUserBeans(
 					searchStr);
 					
 			return matchedUsers.toArray(new UserBean[matchedUsers.size()]);

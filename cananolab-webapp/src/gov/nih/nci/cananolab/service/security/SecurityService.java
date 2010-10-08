@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.security;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -28,7 +27,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,9 +71,8 @@ public class SecurityService {
 		this(applicationName);
 		if (userBean != null) {
 			try {
-				User user = login(userBean.getLoginName(), userBean
+				this.userBean = login(userBean.getLoginName(), userBean
 						.getPassword());
-				this.userBean = new UserBean(user);
 				// if user is not in Public group, add the user
 				if (!this.userBean.getGroupNames().contains(
 						AccessibilityBean.CSM_PUBLIC_GROUP)) {
@@ -100,26 +97,21 @@ public class SecurityService {
 	 * @return
 	 * @throws SecurityException
 	 */
-	public User login(String loginName, String password)
+	public UserBean login(String loginName, String password)
 			throws SecurityException, InvalidSessionException {
 		try {
 			boolean authenticated = authenticationManager.login(loginName,
 					password);
 			if (authenticated) {
 				User user = authorizationManager.getUser(loginName);
-				// load user groups
-				Set groups = authorizationManager.getGroups(user.getUserId()
-						.toString());
-				user.setGroups(groups);
-				// set CSM_APPLICATION to user protection element
+				UserBean userBean = new UserBean(user);
 				if (isAdmin(user.getLoginName())) {
-					Set peSet = new HashSet();
-					ProtectionElement pe = this
-							.getProtectionElement(AccessibilityBean.CSM_APP_NAME);
-					peSet.add(pe);
-					user.setProtectionElements(peSet);
+					userBean.setAdmin(true);
 				}
-				return user;
+				if (isCurator(user.getLoginName())) {
+					userBean.setCurator(true);
+				}
+				return userBean;
 			} else {
 				throw new SecurityException("Invalid Credentials");
 			}

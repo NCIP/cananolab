@@ -4,13 +4,13 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -418,7 +418,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		//need to retrieve new user info
 		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
 		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
-		List<UserBean> newUserBean = super.findUserLoginNames(newOwner);
+		List<UserBean> newUserBean = super.findUserBeans(newOwner);
 		UserBean newUser=null;
 		if(!newUserBean.isEmpty()){
 			for(UserBean bean : newUserBean){
@@ -457,7 +457,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 		}
 		//need to remove access for the previous owner if not a curator
-		List<UserBean> previousUserBean = super.findUserLoginNames(currentOwner);
+		List<UserBean> previousUserBean = super.findUserBeans(currentOwner);
 		UserBean previousUser=null;
 		if(!previousUserBean.isEmpty()){
 			for(UserBean bean : previousUserBean){

@@ -20,7 +20,6 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -39,6 +38,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -1146,7 +1146,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		//need to retrieve new user info
 		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
 		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
-		List<UserBean> newUserBean = super.findUserLoginNames(newOwner);
+		List<UserBean> newUserBean = super.findUserBeans(newOwner);
 		UserBean newUser=null;
 		if(newUserBean != null && !newUserBean.isEmpty()){
 			for(UserBean bean : newUserBean){
@@ -1185,7 +1185,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 		}
 		//need to remove access for the previous owner if not a curator
-		List<UserBean> previousUserBean = super.findUserLoginNames(currentOwner);
+		List<UserBean> previousUserBean = super.findUserBeans(currentOwner);
 		UserBean previousUser=null;
 		if(previousUserBean != null && !previousUserBean.isEmpty()){
 			for(UserBean bean : previousUserBean){

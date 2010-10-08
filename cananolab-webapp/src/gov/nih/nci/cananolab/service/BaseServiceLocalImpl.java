@@ -18,12 +18,12 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -404,7 +404,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
-	public List<UserBean> findUserLoginNames(String loginNameSearchStr)
+	public List<UserBean> findUserBeans(String loginNameSearchStr)
 			throws SecurityException {
 		List<UserBean> matchedUsers = new ArrayList<UserBean>();
 		try {
@@ -1220,6 +1220,30 @@ public class BaseServiceLocalImpl implements BaseService {
 				return users;
 			} catch (Exception e) {
 				logger.error("Error in getting all users.", e);
+				throw new SecurityException();
+			}
+		}
+
+		/**
+		 * Get all users in the application
+		 *
+		 * @return
+		 * @throws SecurityException
+		 */
+		public List<String> getAllUserLoginNames() throws SecurityException {
+			try {
+				List<String> userLogins = new ArrayList<String>();
+				User dummy = new User();
+				dummy.setLoginName("*");
+				SearchCriteria sc = new UserSearchCriteria(dummy);
+				List results = authManager.getObjects(sc);
+				for (Object obj : results) {
+					User doUser = (User) obj;
+					userLogins.add(doUser.getLoginName());
+				}
+				return userLogins;
+			} catch (Exception e) {
+				logger.error("Error in getting all user logins.", e);
 				throw new SecurityException();
 			}
 		}
