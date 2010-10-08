@@ -35,14 +35,22 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 public class GridClientTest {
 	CaNanoLabServiceClient gridClient;
-
+	StringBuilder builder= new StringBuilder();
+	private static Logger logger = Logger.getLogger(GridClientTest.class);
+	
 	public GridClientTest(CaNanoLabServiceClient gridClient) {
 		this.gridClient = gridClient;
 	}
@@ -50,6 +58,8 @@ public class GridClientTest {
 	public void testComposingElement(String id) {
 		// "6062106"
 		System.out.println("Testing ComposingElement with id=" + id);
+		
+		builder.append("Testing ComposingElement with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -72,6 +82,9 @@ public class GridClientTest {
 				System.out.println("ComposingElement: id=" + ce.getId()
 						+ "\tDesc=" + ce.getDescription() + "\tName="
 						+ ce.getName());
+				builder.append("ComposingElement: id=" + ce.getId()
+						+ "\tDesc=" + ce.getDescription() + "\tName="
+						+ ce.getName() + "\n");
 				// TODO add CQL for functions by composing element id
 				loadInherentFunctionsForComposingElement(ce);
 
@@ -79,12 +92,16 @@ public class GridClientTest {
 		} catch (Exception e) {
 			System.out.println("Exception getting ComposingElement for id="
 					+ id + ": " + e);
+			builder.append("Exception getting ComposingElement for id="
+					+ id + ": " + e + "\n");
 		}
 	}
 
 	public void testSampleComposition(String id) {
 		// "6160390"
 		System.out.println("Testing SampleComposition with id=" + id);
+		
+		builder.append("Testing SampleComposition with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -105,10 +122,13 @@ public class GridClientTest {
 				java.lang.Object obj = iter.next();
 				sc = (SampleComposition) obj;
 				System.out.println("SampleComposition : id=" + sc.getId());
+				builder.append("SampleComposition : id=" + sc.getId());
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting SampleComposition for id="
 					+ id + ": " + e);
+			builder.append("Exception getting SampleComposition for id="
+					+ id + ": " + e + "\n");
 		}
 	}
 
@@ -132,6 +152,8 @@ public class GridClientTest {
 			System.out
 					.println("Testing GetAllCharacterizationByCQLQuery, for every characterization test \n"
 							+ "GetFinding, GetProtocol, GetExperimentConfigs, and Characterization.");
+			builder.append("Testing GetAllCharacterizationByCQLQuery, for every characterization test \n"
+							+ "GetFinding, GetProtocol, GetExperimentConfigs, and Characterization." + "\n");
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				chara = (Characterization) obj;
@@ -149,12 +171,15 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting all Characterization by CQLQuery: "
 							+ e);
+			builder.append("Exception getting all Characterization by CQLQuery: "
+							+ e + "\n");
 		}
 	}
 
 	public void testProtocol(String id) {
 
 		System.out.println("Test Protocol with id=" + id);
+		builder.append("Test Protocol with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
@@ -177,12 +202,18 @@ public class GridClientTest {
 						+ p.getName() + "\tAbbreviation=" + p.getAbbreviation()
 						+ "\tType=" + p.getType() + "\tVersion="
 						+ p.getVersion());
+				builder.append("Protocol: id=" + p.getId() + "\tName="
+						+ p.getName() + "\tAbbreviation=" + p.getAbbreviation()
+						+ "\tType=" + p.getType() + "\tVersion="
+						+ p.getVersion() + "\n");
 				// add function for get protocol file by protocol id
 				testGetFileByProtocolId(p.getId().toString());
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Protocol for id=" + id + ": "
 					+ e);
+			builder.append("Exception getting Protocol for id=" + id + ": "
+					+ e + "\n");
 		}
 	}
 
@@ -204,17 +235,23 @@ public class GridClientTest {
 						+ p.getName() + "\tAbbreviation=" + p.getAbbreviation()
 						+ "\tType=" + p.getType() + "\tVersion="
 						+ p.getVersion());
+				builder.append("Protocol: id=" + p.getId() + "\tName="
+						+ p.getName() + "\tAbbreviation=" + p.getAbbreviation()
+						+ "\tType=" + p.getType() + "\tVersion="
+						+ p.getVersion() + "\n");
 				// add function for get protocol file by protocol id
 				testGetFileByProtocolId(p.getId().toString());
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting all protocols: " + e);
+			builder.append("Exception getting all protocols: " + e + "\n");
 		}
 	}
 
 	public void testChemicalAssociation(String id) {
 		// "8847369"
 		System.out.println("Test ChemicalAssociation with id=" + id);
+		builder.append("Test ChemicalAssociation with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -236,16 +273,21 @@ public class GridClientTest {
 				ca = (ChemicalAssociation) obj;
 				System.out.println("ChemicalAssociation Desc: "
 						+ ca.getDescription() + ", id: " + ca.getId());
+				builder.append("ChemicalAssociation Desc: "
+						+ ca.getDescription() + ", id: " + ca.getId() + "\n");
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting ChemicalAssociation for id="
 					+ id + ": " + e);
+			builder.append("Exception getting ChemicalAssociation for id="
+					+ id + ": " + e + "\n");
 		}
 	}
 
 	public void testPublication(String id) {
 		// "8847369"
 		System.out.println("Test Publication with id=" + id);
+		builder.append("Test Publication with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Publication");
@@ -267,6 +309,9 @@ public class GridClientTest {
 				System.out.println("Publication: id=" + p.getId() + "\tName="
 						+ p.getName() + "\tDesc=" + p.getDescription()
 						+ "\tTitle=" + p.getTitle());
+				builder.append("Publication: id=" + p.getId() + "\tName="
+						+ p.getName() + "\tDesc=" + p.getDescription()
+						+ "\tTitle=" + p.getTitle() + "\n");
 				// TODO add CQL for authors and keywords by publication
 				// id
 				loadAuthorsForPublication(p);
@@ -276,6 +321,8 @@ public class GridClientTest {
 					Author a = itr.next();
 					System.out.println("Author First Name=" + a.getFirstName()
 							+ "\tLast Name=" + a.getLastName());
+					builder.append("Author First Name=" + a.getFirstName()
+							+ "\tLast Name=" + a.getLastName() + "\n");
 				}
 				loadKeywordsForPublication(p);
 				Collection<Keyword> keywordCollection = p
@@ -285,18 +332,22 @@ public class GridClientTest {
 					Keyword k = itr.next();
 					System.out.println("Keyword Name=" + k.getName() + "\tId="
 							+ k.getId());
+					builder.append("Keyword Name=" + k.getName() + "\tId="
+							+ k.getId() + "\n");
 				}
 
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Publication for id=" + id
 					+ ": " + e);
+			builder.append("Exception getting Publication for id=" + id
+					+ ": " + e + "\n");
 		}
 	}
 
 	private void loadAuthorsForPublication(Publication publication) {
 		CQLQuery query = new CQLQuery();
-
+		builder.append("Test get AuthorsForPublication id=" + publication.getId() + "\n");
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Author");
 		Association association = new Association();
@@ -321,11 +372,17 @@ public class GridClientTest {
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				author = (Author) obj;
+				System.out.println("Author id=" + author.getId() + "\tName=" + author.getFirstName() + 
+						" " + author.getLastName());
+				builder.append("Author id=" + author.getId() + "\tName=" + author.getFirstName() + 
+						" " + author.getLastName() + "\n");
 				publication.getAuthorCollection().add(author);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Authors for Publication id="
 					+ publication.getId() + ": " + e);
+			builder.append("Exception getting Authors for Publication id="
+					+ publication.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -351,20 +408,24 @@ public class GridClientTest {
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			Set<Keyword> keywords = new HashSet<Keyword>();
 			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
+				java.lang.Object obj = iter.next();				
 				Keyword keyword = (Keyword) obj;
+				builder.append("Keyword id=" +keyword.getId() + "\tName=" + keyword.getName() + "\n");
 				keywords.add(keyword);
 			}
 			publication.setKeywordCollection(keywords);
 		} catch (Exception e) {
 			System.out.println("Exception getting keyword for publication: "
 					+ e);
+			builder.append("Exception getting keyword for publication: "
+					+ e + "\n");
 		}
 	}
 
 	public void testActivationMethod(String id) {
 		// "3833872"
 		System.out.println("Testing ActivationMethod with id=" + id);
+		builder.append("Testing ActivationMethod with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -387,16 +448,22 @@ public class GridClientTest {
 				System.out.println("Activation Effect: id=" + am.getId()
 						+ "\tActivationEffect=" + am.getActivationEffect()
 						+ ", Type=" + am.getType());
+				builder.append("Activation Effect: id=" + am.getId()
+						+ "\tActivationEffect=" + am.getActivationEffect()
+						+ ", Type=" + am.getType() + "\n");
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting ActivationMethod for id="
 					+ id + ": " + e);
+			builder.append("Exception getting ActivationMethod for id="
+					+ id + ": " + e + "\n");
 		}
 	}
 
 	public void testNanomaterialEntity(String id) {
 		// "6160399"
 		System.out.println("Testing NanoMaterialEntity with id=" + id);
+		builder.append("Testing NanoMaterialEntity with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -420,15 +487,22 @@ public class GridClientTest {
 						+ nanoEntity.getId() + "\tDesc="
 						+ nanoEntity.getDescription() + "\tCreatedBy="
 						+ nanoEntity.getCreatedBy());
+				builder.append("NanoMaterial entity: id="
+						+ nanoEntity.getId() + "\tDesc="
+						+ nanoEntity.getDescription() + "\tCreatedBy="
+						+ nanoEntity.getCreatedBy() + "\n");
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting NanomaterialEntity for id="
 					+ id + ": " + e);
+			builder.append("Exception getting NanomaterialEntity for id="
+					+ id + ": " + e + "\n");
 		}
 	}
 
 	public void testSample(String id) {
 		System.out.println("Testing Sample with id=" + id);
+		builder.append("Testing Sample with id=" + id + "\n");
 		// "3735553"
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -454,6 +528,8 @@ public class GridClientTest {
 				sample = (Sample) obj;
 				System.out.println("Sample: Name=" + sample.getName() + ", id="
 						+ sample.getId());
+				builder.append("Sample: Name=" + sample.getName() + ", id="
+						+ sample.getId() + "\n");
 				testGetPublicationsBySampleId(id);
 				testGetKeywordsBySampleId(id);
 				testGetOtherPointOfContactsBySampleId(id);
@@ -464,12 +540,15 @@ public class GridClientTest {
 		} catch (Exception e) {
 			System.out.println("Exception getting Sample for id=" + id + ": "
 					+ e);
+			builder.append("Exception getting Sample for id=" + id + ": "
+					+ e + "\n");
 		}
 	}
 
 	public void testFunction(String id) {
 		// "10944705"
 		System.out.println("Testing Function with id=" + id);
+		builder.append("Testing Function with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.particle.Function");
@@ -490,16 +569,21 @@ public class GridClientTest {
 				fe = (Function) obj;
 				System.out.println("Function: desc=" + fe.getDescription()
 						+ "\tId=" + fe.getId());
+				builder.append("Function: desc=" + fe.getDescription()
+						+ "\tId=" + fe.getId() + "\n");
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Function for id=" + id + ": "
 					+ e);
+			builder.append("Exception getting Function for id=" + id + ": "
+					+ e + "\n");
 		}
 	}
 
 	public void testFunctionalizingEntity(String id) {
 		// "6225945"
 		System.out.println("Testing FunctionalizingEntity with id=" + id);
+		builder.append("Testing FunctionalizingEntity with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -521,17 +605,22 @@ public class GridClientTest {
 				fe = (FunctionalizingEntity) obj;
 				System.out.println("FunctionalizingEntity: name="
 						+ fe.getName() + "\tId=" + fe.getId());
+				builder.append("FunctionalizingEntity: name="
+						+ fe.getName() + "\tId=" + fe.getId() + "\n");
 			}
 		} catch (Exception e) {
 			System.out
 					.println("Exception getting FunctionalizaingEntity for id="
 							+ id + ": " + e);
+			builder.append("Exception getting FunctionalizaingEntity for id="
+					+ id + ": " + e + "\n");
 		}
 	}
 
 	public void testCharacterization(String id) {
 		// "10977286"
 		System.out.println("Testing characterization with id=" + id);
+		builder.append("Testing characterization with id=" + id + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -554,16 +643,23 @@ public class GridClientTest {
 				System.out.println("characterization: id=" + chara.getId()
 						+ "\tDesignMethodDesc: "
 						+ chara.getDesignMethodsDescription());
+				builder.append("characterization: id=" + chara.getId()
+						+ "\tDesignMethodDesc: "
+						+ chara.getDesignMethodsDescription() + "\n");
+				
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Characterization for id="
 					+ id + ": " + e);
+			builder.append("Exception getting Characterization for id="
+					+ id + ": " + e + "\n");
 		}
 	}
 
 	public void testGetKeywordsBySampleId(String sampleId) {
 		// String sampleId = "20917507";
 		System.out.println("Testing getKeyworkdsBySampleId: " + sampleId);
+		builder.append("Testing getKeyworkdsBySampleId: " + sampleId);
 		try {
 			Keyword[] keywords = gridClient.getKeywordsBySampleId(sampleId);
 			if (keywords != null) {
@@ -571,6 +667,8 @@ public class GridClientTest {
 					if (keyword != null) {
 						System.out.println("Keyword name: " + keyword.getName()
 								+ "\tId: " + keyword.getId());
+						builder.append("Keyword name: " + keyword.getName()
+								+ "\tId: " + keyword.getId() + "\n");
 					}
 				}
 			}
@@ -578,16 +676,22 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting KeywordsBySampleId for sampleId="
 							+ sampleId + ": " + e);
+			builder.append("Exception getting KeywordsBySampleId for sampleId="
+					+ sampleId + ": " + e + "\n");
 		}
 		System.out
 				.println("Finished printing getKeyworkdsBySampleId results for sampleId: "
 						+ sampleId);
+		builder.append("Finished printing getKeyworkdsBySampleId results for sampleId: "
+				+ sampleId + "\n");
 	}
 
 	public void testGetPrimaryPointOfContactBySampleId(String sampleId) {
 		// String sampleId = "20917507";
 		System.out.println("Testing getPrimaryPointOfContactBySampleId : "
 				+ sampleId);
+		builder.append("Testing getPrimaryPointOfContactBySampleId : "
+				+ sampleId + "\n");
 		try {
 			PointOfContact contact = gridClient
 					.getPrimaryPointOfContactBySampleId(sampleId);
@@ -597,10 +701,17 @@ public class GridClientTest {
 						+ "\tId: " + contact.getId() + "\tPhone: "
 						+ contact.getPhone() + "\tRole: " + contact.getRole()
 						+ "\tEmail: " + contact.getEmail());
+				builder.append("primary contact name: "
+						+ contact.getFirstName() + "\t" + contact.getLastName()
+						+ "\tId: " + contact.getId() + "\tPhone: "
+						+ contact.getPhone() + "\tRole: " + contact.getRole()
+						+ "\tEmail: " + contact.getEmail() + "\n");
 				// TODO add CQL for organization by POC id
 				System.out
 						.println("Getting Organization for point of contact id="
 								+ contact.getId());
+				builder.append("Getting Organization for point of contact id="
+						+ contact.getId() + "\n");
 				loadOrganizationForPointOfContact(contact);
 
 			}
@@ -608,10 +719,13 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting PrimaryPointOfContactBySampleId for sampleId="
 							+ sampleId + ": " + e);
+			builder.append("Exception getting PrimaryPointOfContactBySampleId for sampleId="
+					+ sampleId + ": " + e + "\n");
 		}
 		System.out
 				.println("Finished printing getPrimaryPointOfContactBySampleId results for sampleId: "
-						+ sampleId);
+						+ sampleId );
+		
 	}
 
 	private void loadOrganizationForPointOfContact(PointOfContact poc) {
@@ -644,6 +758,10 @@ public class GridClientTest {
 							+ "\tName=" + org.getName() + "\tAddress="
 							+ org.getStreetAddress1() + " " + org.getCity()
 							+ " " + org.getState() + " " + org.getPostalCode());
+					builder.append("Organization: id=" + org.getId()
+							+ "\tName=" + org.getName() + "\tAddress="
+							+ org.getStreetAddress1() + " " + org.getCity()
+							+ " " + org.getState() + " " + org.getPostalCode() + "\n");
 				}
 			}
 			poc.setOrganization(org);
@@ -651,6 +769,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting organization for point of contact id="
 							+ poc.getId() + ": " + e);
+			builder.append("Exception getting organization for point of contact id="
+					+ poc.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -658,6 +778,8 @@ public class GridClientTest {
 		// String sampleId = "3735553";
 		System.out.println("Testing getOtherPointOfContactsBySampleId : "
 				+ sampleId);
+		builder.append("Testing getOtherPointOfContactsBySampleId : "
+				+ sampleId + "\n");
 		try {
 			PointOfContact[] contacts = gridClient
 					.getOtherPointOfContactsBySampleId(sampleId);
@@ -671,10 +793,19 @@ public class GridClientTest {
 								+ contact.getPhone() + "\tRole: "
 								+ contact.getRole() + "\tEmail: "
 								+ contact.getEmail());
+						builder.append("primary contact name: "
+								+ contact.getFirstName() + "\t"
+								+ contact.getLastName() + "\tId: "
+								+ contact.getId() + "\tPhone: "
+								+ contact.getPhone() + "\tRole: "
+								+ contact.getRole() + "\tEmail: "
+								+ contact.getEmail() + "\n");
 						// TODO add CQL for organization by POC id
 						System.out
 								.println("Getting Organization for other point of contact id="
 										+ contact.getId());
+						builder.append("Getting Organization for other point of contact id="
+										+ contact.getId() + "\n");
 						loadOrganizationForPointOfContact(contact);
 					}
 				}
@@ -683,6 +814,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting OtherPointOfContactsBySampleId for sampleId="
 							+ sampleId + ": " + e);
+			builder.append("Exception getting OtherPointOfContactsBySampleId for sampleId="
+					+ sampleId + ": " + e + "\n");
 		}
 		System.out
 				.println("Finished printing getPrimaryPointOfContactBySampleId results for sampleId: "
@@ -694,6 +827,8 @@ public class GridClientTest {
 		System.out
 				.println("Testing testGetExperimentConfigsByCharacterizationId : "
 						+ charId);
+		builder.append("Testing testGetExperimentConfigsByCharacterizationId : "
+				+ charId + "\n");
 		try {
 			ExperimentConfig[] experimentConfigs = gridClient
 					.getExperimentConfigsByCharacterizationId(charId);
@@ -704,6 +839,9 @@ public class GridClientTest {
 						System.out.println("ExperimentConfig Id: "
 								+ exp.getId() + "\tDesc: "
 								+ exp.getDescription());
+						builder.append("ExperimentConfig Id: "
+								+ exp.getId() + "\tDesc: "
+								+ exp.getDescription() + "\n");
 						// TODO add CQL for instruments and technique by
 						// experiment
 						// config id
@@ -717,6 +855,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting ExperimentConfigsByCharacterizationId for charid="
 							+ charId + ": " + e);
+			builder.append("Exception getting ExperimentConfigsByCharacterizationId for charid="
+					+ charId + ": " + e + "\n");
 		}
 		System.out
 				.println("Finished printing testGetExperimentConfigsByCharacterizationId results for charId: "
@@ -725,6 +865,7 @@ public class GridClientTest {
 
 	private void loadTechniqueForConfig(ExperimentConfig config) {
 		System.out.println("getting Technique for Config id=" + config.getId());
+		builder.append("getting Technique for Config id=" + config.getId() + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Technique");
@@ -753,6 +894,9 @@ public class GridClientTest {
 					System.out.println("Technique id=" + technique.getId()
 							+ "\tAbbreviation=" + technique.getAbbreviation()
 							+ "\tType=" + technique.getType());
+					builder.append("Technique id=" + technique.getId()
+							+ "\tAbbreviation=" + technique.getAbbreviation()
+							+ "\tType=" + technique.getType() + "\n");
 				}
 			}
 			config.setTechnique(technique);
@@ -760,12 +904,16 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting Technique for ExperimentConfig id="
 							+ config.getId() + ": " + e);
+			builder.append("Exception getting Technique for ExperimentConfig id="
+					+ config.getId() + ": " + e + "\n");
 		}
 	}
 
 	private void loadInstrumentsForConfig(ExperimentConfig config) {
 		System.out.println("Getting Instruments for Config id="
 				+ config.getId());
+		builder.append("Getting Instruments for Config id="
+				+ config.getId() + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Instrument");
@@ -796,12 +944,18 @@ public class GridClientTest {
 							+ "\tType=" + instrument.getType() + "\tModelName="
 							+ instrument.getModelName() + "\tManufacturer="
 							+ instrument.getManufacturer());
+					builder.append("Instrument id=" + instrument.getId()
+							+ "\tType=" + instrument.getType() + "\tModelName="
+							+ instrument.getModelName() + "\tManufacturer="
+							+ instrument.getManufacturer() + "\n");
 				}
 			}
 		} catch (Exception e) {
 			System.out
 					.println("Exception getting Instrument for ExperimentConfig id="
 							+ config.getId() + ": " + e);
+			builder.append("Exception getting Instrument for ExperimentConfig id="
+					+ config.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -809,6 +963,8 @@ public class GridClientTest {
 		// String charId = "3932251";
 		System.out.println("Testing testGetFindingsByCharacterizationId : "
 				+ charId);
+		builder.append("Testing testGetFindingsByCharacterizationId : "
+				+ charId + "\n");
 		try {
 			Finding[] findings = gridClient
 					.getFindingsByCharacterizationId(charId);
@@ -817,6 +973,8 @@ public class GridClientTest {
 					if (f != null) {
 						System.out.println("Finding Id: " + f.getId()
 								+ "\tCreatedBy: " + f.getCreatedBy());
+						builder.append("Finding Id: " + f.getId()
+								+ "\tCreatedBy: " + f.getCreatedBy() + "\n");
 						// TODO add CQL for data and files by finding id, and
 						// conditions by datum id
 						loadDataForFinding(f);
@@ -828,6 +986,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting FindingsByCharacterizationId for charid="
 							+ charId + ": " + e);
+			builder.append("Exception getting FindingsByCharacterizationId for charid="
+					+ charId + ": " + e + "\n");
 		}
 		System.out
 				.println("Finished printing testGetFindingsByCharacterizationId results for charId: "
@@ -836,6 +996,7 @@ public class GridClientTest {
 
 	private void loadDataForFinding(Finding finding) {
 		System.out.println("Getting Data for Finding id=" + finding.getId());
+		builder.append("Getting Data for Finding id=" + finding.getId() + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Datum");
@@ -865,6 +1026,11 @@ public class GridClientTest {
 							+ datum.getValueType() + "\tValueUnit="
 							+ datum.getValueUnit() + "\tValue="
 							+ datum.getValue());
+					builder.append("Datum id=" + datum.getId() + "\tName="
+							+ datum.getName() + "\tValueType="
+							+ datum.getValueType() + "\tValueUnit="
+							+ datum.getValueUnit() + "\tValue="
+							+ datum.getValue() + "\n");
 					loadConditionsForDatum(datum);
 					finding.getDatumCollection().add(datum);
 				}
@@ -872,11 +1038,14 @@ public class GridClientTest {
 		} catch (Exception e) {
 			System.out.println("Exception getting Data for Finding id="
 					+ finding.getId() + ": " + e);
+			builder.append("Exception getting Data for Finding id="
+					+ finding.getId() + ": " + e + "\n");
 		}
 	}
 
 	private void loadConditionsForDatum(Datum datum) {
 		System.out.println("Getting Condition for Datum id=" + datum.getId());
+		builder.append("Getting Condition for Datum id=" + datum.getId() + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.Condition");
@@ -907,17 +1076,26 @@ public class GridClientTest {
 							+ condition.getValue() + "\tValueType="
 							+ condition.getValueType() + "\tValueUnit="
 							+ condition.getValueUnit());
+					builder.append("Condition id=" + condition.getId()
+							+ "\tName=" + condition.getName() + "\tProperty="
+							+ condition.getProperty() + "\tValue="
+							+ condition.getValue() + "\tValueType="
+							+ condition.getValueType() + "\tValueUnit="
+							+ condition.getValueUnit() + "\n");
 				}
 				datum.getConditionCollection().add(condition);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Conditions for Datum id="
 					+ datum.getId() + ": " + e);
+			builder.append("Exception getting Conditions for Datum id="
+					+ datum.getId() + ": " + e + "\n");
 		}
 	}
 
 	private void loadFilesForFinding(Finding finding) {
 		System.out.println("Getting Files for Finding id=" + finding.getId());
+		builder.append("Getting Files for Finding id=" + finding.getId() + "\n");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.File");
@@ -946,12 +1124,18 @@ public class GridClientTest {
 							+ file.getName() + "\tDesc="
 							+ file.getDescription() + "\tTitle="
 							+ file.getTitle() + "\tUri=" + file.getUri());
+					builder.append("File id=" + file.getId() + "\tName="
+							+ file.getName() + "\tDesc="
+							+ file.getDescription() + "\tTitle="
+							+ file.getTitle() + "\tUri=" + file.getUri() + "\n");
 				}
 				finding.getFileCollection().add(file);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Files for Finding id="
 					+ finding.getId() + ": " + e);
+			builder.append("Exception getting Files for Finding id="
+					+ finding.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -959,26 +1143,34 @@ public class GridClientTest {
 		// String charId = "21867791";
 		System.out.println("Testing testGetProtocolByCharacterizationId : "
 				+ charId);
+		builder.append("Testing testGetProtocolByCharacterizationId : "
+				+ charId + "\n");
 		try {
 			Protocol p = gridClient.getProtocolByCharacterizationId(charId);
 			if (p != null) {
 				System.out.println("Protocol Id: " + p.getId()
 						+ "\tCreatedBy: " + p.getCreatedBy() + "\tName: "
 						+ p.getName() + "\tType: " + p.getType());
+				builder.append("Protocol Id: " + p.getId()
+						+ "\tCreatedBy: " + p.getCreatedBy() + "\tName: "
+						+ p.getName() + "\tType: " + p.getType() + "\n");
 			}
 		} catch (Exception e) {
 			System.out
 					.println("Exception getting ProtocolByCharacterizationId for charid="
 							+ charId + ": " + e);
+			builder.append("Exception getting ProtocolByCharacterizationId for charid="
+					+ charId + ": " + e + "\n");
 		}
 		System.out
 				.println("Finished printing testGetProtocolByCharacterizationId results for charId: "
-						+ charId);
+						+ charId + "\n");
 	}
 
 	public void testGetPublicationsBySampleId(String sampleId) {
 		// String sampleId = "20917507";
 		System.out.println("Testing getPublicationBySampleId : " + sampleId);
+		builder.append("Testing getPublicationBySampleId : " + sampleId + "\n");
 		try {
 			Publication[] pubs = gridClient.getPublicationsBySampleId(sampleId);
 			if (pubs != null) {
@@ -989,6 +1181,11 @@ public class GridClientTest {
 								+ p.getName() + "\tJournalName: "
 								+ p.getJournalName() + "\tTitle: "
 								+ p.getTitle());
+						builder.append("Publication Id: " + p.getId()
+								+ "\tDesc: " + p.getDescription() + "\tName: "
+								+ p.getName() + "\tJournalName: "
+								+ p.getJournalName() + "\tTitle: "
+								+ p.getTitle() + "\n");
 						// TODO add CQL for authors and keywords by publication
 						// id
 						loadKeywordsForPublication(p);
@@ -1000,6 +1197,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception when testing getPublicationBySampleId for sampleId="
 							+ sampleId);
+			builder.append("Exception when testing getPublicationBySampleId for sampleId="
+					+ sampleId + "\n");
 		}
 		System.out
 				.println("Finished printing getPrimaryPointOfContactBySampleId results for sampleId: "
@@ -1013,12 +1212,16 @@ public class GridClientTest {
 			System.out
 					.println("Testing getSampleIds operation.... \n"
 							+ "For every sample, test get Publication, keywords, primary contact and other contact.");
+			builder.append("Testing getSampleIds operation.... \n"
+					+ "For every sample, test get Publication, keywords, primary contact and other contact." + "\n");
+			
 			for (String id : sampleIds) {
 				testSample(id);
 				testGetCharacterizationsBySampleIdByCQLQuery(id);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting SampleIds: " + e);
+			builder.append("Exception getting SampleIds: " + e + "\n");
 		}
 		System.out.println("\nFinished testing samples.... \n");
 	}
@@ -1067,6 +1270,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting characterizations by Sample ID through CQL: "
 							+ e);
+			builder.append("Exception getting characterizations by Sample ID through CQL: "
+							+ e + "\n");
 		}
 	}
 
@@ -1124,11 +1329,15 @@ public class GridClientTest {
 			System.out
 					.println("getting CompositionBySampleIdByCQLQuery... sampleId="
 							+ id);
+			builder.append("getting CompositionBySampleIdByCQLQuery... sampleId="
+					+ id + "\n");
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				sampleComposition = (SampleComposition) obj;
 				System.out.println("SampleComposition id="
 						+ sampleComposition.getId());
+				builder.append("SampleComposition id="
+						+ sampleComposition.getId() + "\n");
 				sampleComposition.getChemicalAssociationCollection();
 				sampleComposition.getFunctionalizingEntityCollection();
 				sampleComposition.getNanomaterialEntityCollection();
@@ -1142,6 +1351,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting composition by Sample ID through CQL: "
 							+ e);
+			builder.append("Exception getting composition by Sample ID through CQL: "
+					+ e + "\n");
 		}
 	}
 
@@ -1167,6 +1378,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception loading Composition Associationsfor: "
 							+ e);
+			builder.append("Exception loading Composition Associationsfor: "
+					+ e + "\n");
 		}
 	}
 
@@ -1214,6 +1427,9 @@ public class GridClientTest {
 							System.out.println("NanomaterialEntity id="
 									+ nanoEntity.getId() + "\tDesc="
 									+ nanoEntity.getDescription());
+							builder.append("NanomaterialEntity id="
+									+ nanoEntity.getId() + "\tDesc="
+									+ nanoEntity.getDescription() + "\n");
 						}
 					}
 				}
@@ -1221,6 +1437,8 @@ public class GridClientTest {
 		} catch (Exception e) {
 			System.out.println("Exception getting nanomaterial for composition"
 					+ ": " + e);
+			builder.append("Exception getting nanomaterial for composition"
+					+ ": " + e + "\n");
 		}
 	}
 
@@ -1276,6 +1494,17 @@ public class GridClientTest {
 								+ "\tMolecularFormulaType="
 								+ funcEntity.getMolecularFormulaType()
 								+ "\tValueUnit=" + funcEntity.getValueUnit());
+						builder.append("FunctionalizingEntity id="
+								+ funcEntity.getId() + "\tName="
+								+ funcEntity.getName() + "\tDesc="
+								+ funcEntity.getDescription()
+								+ "\tMolecularFormula="
+								+ funcEntity.getMolecularFormula()
+								+ "\tPubChemDataSourceName="
+								+ funcEntity.getPubChemDataSourceName()
+								+ "\tMolecularFormulaType="
+								+ funcEntity.getMolecularFormulaType()
+								+ "\tValueUnit=" + funcEntity.getValueUnit() + "\n");
 						loadFunctionalizingEntityAssociations(funcEntity);
 						composition.getFunctionalizingEntityCollection().add(
 								funcEntity);
@@ -1286,6 +1515,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting FunctionalizingEntity for Composition for id="
 							+ composition.getId() + ": " + e);
+			builder.append("Exception getting FunctionalizingEntity for Composition for id="
+					+ composition.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -1333,6 +1564,9 @@ public class GridClientTest {
 						System.out.println("ChemicalAssociation id="
 								+ assoc.getId() + "\tDesc="
 								+ assoc.getDescription());
+						builder.append("ChemicalAssociation id="
+								+ assoc.getId() + "\tDesc="
+								+ assoc.getDescription() + "\n");
 						loadChemicalAssociationAssociations(assoc);
 						composition.getChemicalAssociationCollection().add(
 								assoc);
@@ -1343,6 +1577,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception loading ChemicalAssociation for Composition id="
 							+ composition.getId() + ": " + e);
+			builder.append("Exception loading ChemicalAssociation for Composition id="
+					+ composition.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -1361,6 +1597,8 @@ public class GridClientTest {
 		} catch (Exception e) {
 			System.out.println("Exception loading ChemicalAssociation for id="
 					+ assoc.getId() + ": " + e);
+			builder.append("Exception loading ChemicalAssociation for id="
+					+ assoc.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -1405,6 +1643,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting AssocatedElement for ChenicalAssociation: "
 							+ e);
+			builder.append("Exception getting AssocatedElement for ChenicalAssociation: "
+					+ e + "\n");
 		}
 	}
 
@@ -1417,6 +1657,9 @@ public class GridClientTest {
 				System.out.println("File desc: " + file.getDescription()
 						+ "\tName: " + file.getName() + "\tUri: "
 						+ file.getUri());
+				builder.append("File desc: " + file.getDescription()
+				+ "\tName: " + file.getName() + "\tUri: "
+				+ file.getUri() + "\n");
 				// TODO add CQL for keywords by file id
 				loadKeywordsForFile(file);
 			}
@@ -1450,12 +1693,16 @@ public class GridClientTest {
 				if (keyword != null) {
 					System.out.println("Keyword id=" + keyword.getId()
 							+ "\tName=" + keyword.getName());
+					builder.append("Keyword id=" + keyword.getId()
+							+ "\tName=" + keyword.getName() + "\n");
 				}
 				file.getKeywordCollection().add(keyword);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting keyword for file id="
 					+ file.getId() + ": " + e);
+			builder.append("Exception getting keyword for file id="
+					+ file.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -1465,6 +1712,8 @@ public class GridClientTest {
 					null, null, null, null, null, null, null);
 			System.out.println("Testing getPublicationIdsBy operation.... \n "
 					+ "For every publication, test Publication");
+			builder.append("Testing getPublicationIdsBy operation.... \n "
+					+ "For every publication, test Publication" + "\n");
 			if (pubIds != null) {
 				for (String id : pubIds) {
 					if (id != null) {
@@ -1474,6 +1723,7 @@ public class GridClientTest {
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting PublicationIds: " + e);
+			builder.append("Exception getting PublicationIds: " + e + "\n");
 		}
 		System.out.println("\nFinished testing publications.....\n");
 	}
@@ -1481,12 +1731,16 @@ public class GridClientTest {
 	public void testGetFileByProtocolId(String protocolId) {
 		// String protocolId = "24390915";
 		System.out.println("Testing getFileByProtocolId: " + protocolId);
+		builder.append("Testing getFileByProtocolId: " + protocolId + "\n");
 		try {
 			File file = gridClient.getFileByProtocolId(protocolId);
 			if (file != null) {
 				System.out.println("File desc: " + file.getDescription()
 						+ "\tName: " + file.getName() + "\tUri: "
 						+ file.getUri());
+				builder.append("File desc: " + file.getDescription()
+						+ "\tName: " + file.getName() + "\tUri: "
+						+ file.getUri() + "\n");
 				// TODO add CQL for keywords by file id
 				loadKeywordsForFile(file);
 			}
@@ -1494,6 +1748,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting ExperimentConfigsByCharacterizationId for protocolid="
 							+ protocolId + ": " + e);
+			builder.append("Exception getting ExperimentConfigsByCharacterizationId for protocolid="
+					+ protocolId + ": " + e + "\n");
 		}
 	}
 
@@ -1502,6 +1758,8 @@ public class GridClientTest {
 		// String className="NanoMaterialEntity";
 		System.out.println("Test getFilesByCompositionInfoId: id=" + id
 				+ ", className=" + className);
+		builder.append("Test getFilesByCompositionInfoId: id=" + id
+				+ ", className=" + className + "\n");
 		try {
 			File[] files = gridClient
 					.getFilesByCompositionInfoId(id, className);
@@ -1510,6 +1768,9 @@ public class GridClientTest {
 					System.out.println("File desc: " + file.getDescription()
 							+ "\tName: " + file.getName() + "\tUri: "
 							+ file.getUri());
+					builder.append("File desc: " + file.getDescription()
+							+ "\tName: " + file.getName() + "\tUri: "
+							+ file.getUri() + "\n");
 					// TODO add CQL for keywords by file id
 					loadKeywordsForFile(file);
 				}
@@ -1518,6 +1779,8 @@ public class GridClientTest {
 			System.out
 					.println("Exception getting FilesByCompositionInfoId for id="
 							+ id + ", className=" + className + ": " + e);
+			builder.append("Exception getting FilesByCompositionInfoId for id="
+					+ id + ", className=" + className + ": " + e + "\n");
 		}
 	}
 
@@ -1557,11 +1820,16 @@ public class GridClientTest {
 				System.out.println("Function for ComposingElement: id="
 						+ function.getId() + "\tDesc="
 						+ function.getDescription());
+				builder.append("Function for ComposingElement: id="
+						+ function.getId() + "\tDesc="
+						+ function.getDescription() + "\n");
 			}
 		} catch (Exception e) {
 			System.out
 					.println("Exception getting Funtion for ComposingElement for id="
 							+ composingElement.getId() + ": " + e);
+			builder.append("Exception getting Funtion for ComposingElement for id="
+					+ composingElement.getId() + ": " + e + "\n");
 		}
 	}
 
@@ -1574,16 +1842,19 @@ public class GridClientTest {
 							args[1]);
 
 					GridClientTest test = new GridClientTest(client);
+					test.testGetSampleIds();
+					//test.testGetCharacterizationsBySampleIdByCQLQuery("9142300");
+					test.testGetPublicationIdsBy();
 					test.testGetAllProtocolsByCQLQuery();
+					
+					// test.testSampleComposition("6160390");						
 					// test.testGetPrimaryPointOfContactBySampleId("10354688");
-					// test.testGetCharacterizationsBySampleIdByCQLQuery("9142300");
 					// test.testGetCompositionBySampleIdByCQLQuery("9142300");
 					// test.testGetPrimaryPointOfContactBySampleId("10354688");
 
 					// test.testGetSampleIds();
-					// test.testGetPublicationIdsBy();
-					// // test.testGetAllCharacterizationByCQLQuery();
-					//
+					// 
+					// // test.testGetAllCharacterizationByCQLQuery();					//
 					// // these methods user can plug in any parameter
 					// test.testGetFindingsByCharacterizationId("3932251");
 					// test.testGetProtocolByCharacterizationId("3932251");
@@ -1602,6 +1873,8 @@ public class GridClientTest {
 					// test.testSampleComposition("6160390");
 					// test.testActivationMethod("3833872");
 					// test.testProtocol("24390915");
+					 
+					 test.writeOutput();
 
 				} else {
 					System.exit(1);
@@ -1612,6 +1885,38 @@ public class GridClientTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
+		}
+	}
+	
+	public void writeOutput(){
+		String fileName = "caNanoLabGridClientOutput.txt";
+		/*java.io.File outputFile = new java.io.File(".");
+		String dir = System.getProperty("java.io.tmpdir");
+		String path = dir + fileName;
+		System.out.println("path: " + path);
+		java.io.File file = new java.io.File(dir + fileName + java.io.File.separator + "test.txt");
+		
+		if(!file.exists()){
+			file.mkdirs();
+		}*/
+		DataOutputStream oStream = null;
+		try {
+			oStream = new DataOutputStream(new FileOutputStream(fileName));
+			oStream.writeBytes(builder.toString());
+			oStream.flush();
+			System.out.println("Finished writing output file.");
+		}  catch (FileNotFoundException ex) {
+		     System.out.println(ex);
+	    } catch (IOException ex) {
+	      System.out.println(ex);
+	    }
+		finally {
+			if (oStream != null) {
+				try {
+					oStream.close();
+				} catch (Exception e) {
+				}
+			}
 		}
 	}
 }
