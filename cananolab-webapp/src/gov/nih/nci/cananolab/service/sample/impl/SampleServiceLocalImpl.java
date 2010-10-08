@@ -51,7 +51,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -1035,67 +1034,16 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public Map<String, String> findSampleIdsByOwner(String currentOwner) {
-		Map<String, String> sampleIds = null;
+	public List<String> findSampleIdsByOwner(String currentOwner)
+			throws SampleException {
+		List<String> sampleIds = new ArrayList<String>();
 		try {
 			sampleIds = helper.findSampleIdsByOwner(currentOwner);
 		} catch (Exception e) {
-			e.printStackTrace();
+			String error = "Error in retrieving sampleIds by owner";
+			throw new SampleException(error, e);
 		}
 		return sampleIds;
-	}
-
-	public void transferOwner(Set<String> sampleIds, String currentOwner,
-			String newOwner) throws Exception {
-
-		if (!this.securityService.getUserBean().isAdmin()) {
-			throw new NoAccessException();
-		}
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		for (String sampleId : sampleIds) {
-			Sample domain = helper.findSampleById(sampleId);
-			domain.setCreatedBy(newOwner);
-			SampleComposition sampleComposition = domain.getSampleComposition();
-			Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
-			Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
-			Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
-			;
-			Collection<Characterization> characterization = new ArrayList<Characterization>();
-			List<AccessibilityBean> userAccesses = super.findUserAccessibilities(sampleId);
-			List<AccessibilityBean> groupAccesses = super.findGroupAccessibilities(sampleId);
-			appService.saveOrUpdate(domain);
-			
-			handleAccessibility(currentOwner, newOwner, domain, userAccesses, groupAccesses);
-			if (sampleComposition != null) {
-				chemicalAssociation = sampleComposition
-						.getChemicalAssociationCollection();
-				functionalizingEntity = sampleComposition
-						.getFunctionalizingEntityCollection();
-				nanomaterialEntity = sampleComposition
-						.getNanomaterialEntityCollection();
-				characterization = domain.getCharacterizationCollection();
-
-				for (ChemicalAssociation ca : chemicalAssociation) {
-					ca.setCreatedBy(newOwner);
-					appService.saveOrUpdate(ca);
-				}
-				for (FunctionalizingEntity fe : functionalizingEntity) {
-					fe.setCreatedBy(newOwner);
-					appService.saveOrUpdate(fe);
-				}
-				for (NanomaterialEntity ne : nanomaterialEntity) {
-					ne.setCreatedBy(newOwner);
-					appService.saveOrUpdate(ne);
-				}
-
-				for (Characterization c : characterization) {
-					c.setCreatedBy(newOwner);
-					appService.saveOrUpdate(c);
-				}
-			}
-		}
 	}
 
 	public List<String> removeAccesses(Sample sample, Boolean removeLater)
@@ -1132,99 +1080,5 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(error, e);
 		}
 		return ids;
-	}
-	//take care of accessibility when ownership has been transfered.
-	private void handleAccessibility(String currentOwner, String newOwner, Sample sample,
-			List<AccessibilityBean> userAccesses,List<AccessibilityBean> groupAccesses) throws Exception{
-			
-		
-		//load existing privilege 
-		// loadSample to load current user access
-		// copy first then modify the user to the newuser
-		List<AccessibilityBean> newUserAccesses = new ArrayList<AccessibilityBean>(userAccesses);
-		// save the new user access
-		//need to retrieve new user info
-		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
-		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
-		List<UserBean> newUserBean = super.findUserBeans(newOwner);
-		UserBean newUser=null;
-		if(newUserBean != null && !newUserBean.isEmpty()){
-			for(UserBean bean : newUserBean){
-				if(newOwner.equals(bean.getLoginName())){
-					newUser = bean;
-					break;
-				}
-			}
-		}
-		if(newUser == null){
-			throw new Exception("The new owner entered doesn't exist. " + newOwner);
-		}else if(!newUser.isCurator()){
-			if(newUserAccesses.isEmpty()){
-				AccessibilityBean newOwnerBean = new AccessibilityBean();
-				for(AccessibilityBean groupAccess : groupAccesses){
-					//System.out.println("group: " + groupAccess.getGroupName() + "\trole: " + groupAccess.getRoleName());
-					String role = groupAccess.getRoleName();
-					newOwnerBean.setRoleName(role);
-					newOwnerBean.setUserBean(newUser);					
-				}
-				this.assignAccessibility(newOwnerBean, sample);
-				//need to remove access for the previous owner if not a curator
-			}else{
-				for( AccessibilityBean newOwnerUser : newUserAccesses){
-					UserBean user = newOwnerUser.getUserBean();
-					//System.out.println("currentUser loginName: " + user.getLoginName());
-					String loginName = user.getLoginName();
-					if(currentOwner.endsWith(loginName)){
-						newOwnerUser.setUserBean(newUser);
-						System.out.println("currentowner match with user login name ");
-						//super.saveAccessibility(newOwnerUser, sampleId);
-						this.assignAccessibility(newOwnerUser, sample);
-					}
-				}
-				
-			}
-		}
-		//need to remove access for the previous owner if not a curator
-		List<UserBean> previousUserBean = super.findUserBeans(currentOwner);
-		UserBean previousUser=null;
-		if(previousUserBean != null && !previousUserBean.isEmpty()){
-			for(UserBean bean : previousUserBean){
-				if(currentOwner.equals(bean.getLoginName())){
-					previousUser = bean;
-					break;
-				}
-			}
-		}
-		if(previousUser == null){
-			throw new Exception("The current owner entered doesn't exist. " + currentOwner);
-		}else if(!previousUser.isCurator()){
-			if(userAccesses.isEmpty()){
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for(AccessibilityBean groupAccess : groupAccesses){
-					//System.out.println("group: " + groupAccess.getGroupName() + "\trole: " + groupAccess.getRoleName());
-					UserBean user = groupAccess.getUserBean();
-					String loginName = user.getLoginName();
-					if(currentOwner.endsWith(loginName)){					
-						String role = groupAccess.getRoleName();
-						previousOwnerBean.setRoleName(role);
-						previousOwnerBean.setUserBean(user);						
-					}
-				}
-				this.removeAccessibility(previousOwnerBean, sample);
-			}else{
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for( AccessibilityBean previousOwnerUser : userAccesses){
-					UserBean user = previousOwnerUser.getUserBean();
-					//System.out.println("currentUser loginName: " + user.getLoginName());
-					String loginName = user.getLoginName();
-					if(currentOwner.endsWith(loginName)){
-						previousOwnerBean.setUserBean(user);
-						System.out.println("currentowner match with user login name ");
-					}
-				}
-				
-				this.removeAccessibility(previousOwnerBean, sample);
-			}
-		}
 	}
 }

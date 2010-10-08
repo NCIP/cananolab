@@ -22,6 +22,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -192,4 +193,28 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		}
 		return protocolVersions;
 	}
+
+	public List<String> findProtocolIdsByOwner(String currentOwner)
+			throws Exception {
+		List<String> protocolIds = new ArrayList<String>();
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+				.setProjection(
+						Projections.projectionList().add(
+								Projections.property("id")));
+		crit.add(Restrictions.eq("createdBy", currentOwner));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			String protocolId = obj.toString();
+			if (getAccessibleData().contains(protocolId)) {
+				protocolIds.add(protocolId);
+			} else {
+				logger.debug("User doesn't have access to protocol of ID: "
+						+ protocolId);
+			}
+		}
+		return protocolIds;
+	}
+
 }

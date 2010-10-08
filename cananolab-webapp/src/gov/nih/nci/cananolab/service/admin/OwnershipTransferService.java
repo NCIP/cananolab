@@ -1,25 +1,27 @@
 package gov.nih.nci.cananolab.service.admin;
 
-import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.exception.AdministrationException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 
-import java.util.Set;
-
+import java.util.List;
 
 /**
  * Interface for transfer of ownership.
  */
 public interface OwnershipTransferService {
-	
-	public void transferOwner(SampleService sampleService, SecurityService securityService, Set<String> sampleIds, String currentOwner,
-			String newOwner) throws Exception ;
+	public static final String DATA_TYPE_SAMPLE = "sample";
+	public static final String DATA_TYPE_PROTOCOL = "protocol";
+	public static final String DATA_TYPE_PUBLICATION = "publication";
+	public static final String DATA_TYPE_GROUP = "colloboration group";
 
-	public void transferOwner(PublicationService publicationService, SecurityService securityService, Set<String> publicationIds, String currentOwner,
-			String newOwner) throws Exception ;
-	
-	public void transferOwner(ProtocolService protocolService, SecurityService securityService, Set<String> protocolIds, String currentOwner,
-			String newOwner) throws Exception ;
+	public void transferOwner(BaseService baseService, List<String> dataIds,
+			String currentOwner, String newOwner)
+			throws AdministrationException, NoAccessException;
 
-	}
+	public void transferOwner(SecurityService securityService,
+			List<String> dataIds, String dataType, String currentOwner,
+			String newOwner) throws AdministrationException, NoAccessException;
+
+}

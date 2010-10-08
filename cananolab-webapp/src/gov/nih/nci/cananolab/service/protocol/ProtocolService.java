@@ -8,8 +8,6 @@ import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This interface defines methods involved in creating and searching protocols
@@ -49,7 +47,7 @@ public interface ProtocolService extends BaseService {
 
 	public void removeAccessibility(AccessibilityBean access, Protocol protocol)
 			throws ProtocolException, NoAccessException;
-	public Map<String, String> findProtocolsByOwner(String currentOwner) throws Exception;
-	
-	public void transferOwner(Set<String> protocolIds, String currentOwner, String newOwner) throws Exception;
+
+	public List<String> findProtocolIdsByOwner(String currentOwner)
+			throws ProtocolException;
 }

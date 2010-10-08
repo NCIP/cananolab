@@ -605,6 +605,29 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		return publication;
 	}
 
+	public List<String> findPublicationIdsByOwner(String currentOwner)
+			throws Exception {
+		List<String> publicationIds = new ArrayList<String>();
+		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
+				.setProjection(
+						Projections.projectionList().add(
+								Projections.property("id")));
+		crit.add(Restrictions.eq("createdBy", currentOwner));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			String publicationId = obj.toString();
+			if (getAccessibleData().contains(publicationId)) {
+				publicationIds.add(publicationId);
+			} else {
+				logger.debug("User doesn't have access to publication of ID: "
+						+ publicationId);
+			}
+		}
+		return publicationIds;
+	}
+
 	private static class PublicationDateComparator implements
 			Comparator<Publication> {
 		public int compare(Publication pub1, Publication pub2) {

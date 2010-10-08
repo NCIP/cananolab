@@ -8,8 +8,6 @@ import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Interface defining methods invovled in submiting and searching publications.
@@ -32,10 +30,12 @@ public interface PublicationService extends BaseService {
 	public void savePublication(PublicationBean publicationBean)
 			throws PublicationException, NoAccessException;
 
-	public PublicationBean findPublicationById(String publicationId, Boolean loadAccessInfo)
-			throws PublicationException, NoAccessException;
+	public PublicationBean findPublicationById(String publicationId,
+			Boolean loadAccessInfo) throws PublicationException,
+			NoAccessException;
 
-	public PublicationBean findPublicationByKey(String keyName, Object keyValue, Boolean loadAccessInfo)
+	public PublicationBean findPublicationByKey(String keyName,
+			Object keyValue, Boolean loadAccessInfo)
 			throws PublicationException, NoAccessException;
 
 	public List<PublicationBean> findPublicationsBySampleId(String sampleId)
@@ -81,7 +81,7 @@ public interface PublicationService extends BaseService {
 	public void removeAccessibility(AccessibilityBean access,
 			Publication publication) throws PublicationException,
 			NoAccessException;
-	public Map<String, String> findPublicationsByOwner(String currentOwner) throws Exception;
 
-	public void transferOwner(Set<String> publicationIds, String currentOwner, String newOwner) throws Exception;
+	public List<String> findPublicationIdsByOwner(String currentOwner)
+			throws PublicationException;
 }

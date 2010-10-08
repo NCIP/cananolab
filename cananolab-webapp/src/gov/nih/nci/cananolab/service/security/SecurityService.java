@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 
 /**
- * This class extends CSM API with convenient methods
+ * This class extends CSM API with convenient methods to query access control information
  *
  * @author Pansu
  *
