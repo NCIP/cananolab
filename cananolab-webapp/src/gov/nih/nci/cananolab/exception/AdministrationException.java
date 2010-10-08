@@ -9,7 +9,7 @@ public class AdministrationException extends BaseException {
 	private static final long serialVersionUID = 1234567890L;
 
 	public AdministrationException() {
-		super("Exception working with curation related services");
+		super("Exception working with admin related services");
 	}
 
 	public AdministrationException(String message) {
