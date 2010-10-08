@@ -24,14 +24,14 @@
 								width="100%" height="100%" class="sidebarSection">
 								<tr>
 									<td class="sidebarTitle" height="20">
-										<c:out value="${fn:toUpperCase(item)}" /> LINKS
+										<c:out value="${fn:toUpperCase(item)}" />
+										LINKS
 									</td>
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<a href="javascript:openHelpWindow('/upt')">
-											Create User Accounts and Assign Privileges
-										</a>
+										<a href="javascript:openHelpWindow('/upt')"> Create User
+											Accounts and Assign Privileges </a>
 										<br>
 										Click to launch the NCI User Provisioning Tool (UPT) which
 										will assist in creating Users and Groups and associating
@@ -40,22 +40,24 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<a href="admin.do?dispatch=setupNew">
-											Configure Site Preferences
-										</a>
+										<a href="admin.do?dispatch=setupNew"> Configure Site
+											Preferences </a>
 										<br>
-										Click to configure site preferences including custom logos and site banners.
+										Click to configure site preferences including custom logos and
+										site banners.
 									</td>
 								</tr>
-								<tr>
-									<td class="sidebarContent">
-										<a href="transferOwner.do?dispatch=setupNew&page=0">
-											Transfer Data Ownership
-										</a>
-										<br>
-										Click to reassign ownership for samples, protocols, publications and collaboration groups.
-									</td>
-								</tr>
+								<c:if test="${!empty user && user.curator}">
+									<tr>
+										<td class="sidebarContent">
+											<a href="transferOwner.do?dispatch=setupNew&page=0">
+												Transfer Data Ownership </a>
+											<br>
+											Click to reassign ownership for samples, protocols,
+											publications and collaboration groups.
+										</td>
+									</tr>
+								</c:if>
 							</table>
 						</c:if>
 					</td>
