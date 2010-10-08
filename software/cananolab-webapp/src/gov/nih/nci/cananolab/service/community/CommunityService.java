@@ -7,8 +7,6 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public interface CommunityService extends BaseService {
 	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
@@ -24,9 +22,10 @@ public interface CommunityService extends BaseService {
 	public void deleteCollaborationGroup(
 			CollaborationGroupBean collaborationGroup)
 			throws CommunityException, NoAccessException;
-	
-	public Map<String, String> findCollaborationGroupByOwner(String owner)
-			throws Exception, NoAccessException;
-	public void transferOwner(Set<String> collaborationGroupIds, String currentOwner, String newOwner) 
+
+	public List<String> findCollaborationGroupIdsByOwner(String owner)
+			throws CommunityException;
+
+	public void assignOwner(String collaborationGroupId, String ownerLogin)
 			throws CommunityException, NoAccessException;
 }

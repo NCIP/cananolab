@@ -14,8 +14,6 @@ import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
 
 /**
@@ -46,8 +44,8 @@ public interface SampleService extends BaseService {
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException;
 
-	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo) throws SampleException,
-			NoAccessException;
+	public SampleBean findSampleById(String sampleId, Boolean loadAccessInfo)
+			throws SampleException, NoAccessException;
 
 	public SampleBean findSampleByName(String sampleName)
 			throws SampleException, NoAccessException;
@@ -92,12 +90,8 @@ public interface SampleService extends BaseService {
 			throws SampleException, NoAccessException;
 
 	public List<String> removeAccesses(Sample sample, Boolean removeLater)
-	throws SampleException, NoAccessException;
+			throws SampleException, NoAccessException;
 
-
-	public Map<String, String> findSampleIdsByOwner(String currentOwner);
-
-	public void transferOwner(Set<String> sampleIds, String currentOwner, String newOwner)
-	throws NoAccessException, Exception;
-
+	public List<String> findSampleIdsByOwner(String currentOwner)
+			throws SampleException;
 }

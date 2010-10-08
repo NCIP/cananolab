@@ -18,7 +18,6 @@ import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -228,6 +227,24 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		return collaborationGroups;
 	}
 
+	public void assignOwner(String collaborationGroupId, String ownerLogin)
+			throws CommunityException, NoAccessException {
+		// user needs to be both curator and admin
+		if (user.isCurator() && user.isAdmin()) {
+			throw new NoAccessException();
+		}
+		try {
+			this.accessUtils.assignOwner(
+					AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+							+ collaborationGroupId, ownerLogin);
+		} catch (Exception e) {
+			String error = "Error assigning an owner to the collaboration group by Id "
+					+ collaborationGroupId;
+			logger.error(error, e);
+			throw new CommunityException(error, e);
+		}
+	}
+
 	// set user accessibilities
 	private void setUserAccesses(CollaborationGroupBean cGroup)
 			throws Exception {
@@ -321,12 +338,9 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public Map<String, String> findCollaborationGroupByOwner(String owner)
-			throws Exception {
-		Map<String, String> groupsMap = new HashMap<String, String>();
-		if (!this.user.isAdmin()) {
-			throw new NoAccessException();
-		}
+	public List<String> findCollaborationGroupIdsByOwner(String owner)
+			throws CommunityException {
+		List<String> groupIds = new ArrayList<String>();
 		try {
 			User user = authManager.getUser(owner);
 			user.getUserId();
@@ -337,7 +351,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				if (securityService
 						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ groupId)) {
-					groupsMap.put(groupId, group.getGroupName());
+					groupIds.add(groupId);
 				} else {
 					String error = "User has no access to the collaboration group "
 							+ group.getGroupName();
@@ -345,35 +359,11 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 			}
 		} catch (Exception e) {
-			throw new Exception("Error finding CollaborationGroupByOwner: "
-					+ owner);
-		}
-
-		return groupsMap;
-	}
-
-	public void transferOwner(Set<String> collaborationGroupIds,
-			String currentOwner, String newOwner) throws CommunityException,
-			NoAccessException {
-		// remove collaboration group
-		if (user == null || (user != null && !user.isAdmin())) {
-			throw new NoAccessException();
-		}
-		try {
-			for (String id : collaborationGroupIds) {
-				CollaborationGroupBean bean = findCollaborationGroupById(id);
-				System.out.println("owner name: " + bean.getOwnerName());
-				// Doesn't seem to need to call this, assignOwner replaces the
-				// old association
-				// this.accessUtils.removeOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-				// + id, currentOwner);
-				this.accessUtils.assignOwner(
-						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX + id,
-						newOwner);
-			}
-		} catch (Exception e) {
-			String error = "Error changing the collaboration group owner";
+			String error = "Error finding CollaborationGroupByOwner: " + owner;
+			logger.error(error, e);
 			throw new CommunityException(error, e);
 		}
+
+		return groupIds;
 	}
 }

@@ -23,16 +23,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of PublicationService
@@ -519,138 +514,15 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleHelper;
 	}
 
-	public Map<String, String> findPublicationsByOwner(String currentOwner)
-			throws Exception {
-
-		Map<String, String> publications = new HashMap<String, String>();
-		Publication p = new Publication();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
-				.setProjection(
-						Projections.projectionList().add(
-								Projections.property("id")).add(
-								Projections.property("title")));
-		crit.add(Restrictions.eq("createdBy", currentOwner));
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			Object[] row = (Object[]) obj;
-			String id = row[0].toString();
-			String title = row[1].toString();
-			publications.put(id, title);
+	public List<String> findPublicationIdsByOwner(String currentOwner)
+			throws PublicationException {
+		List<String> publicationIds = new ArrayList<String>();
+		try {
+			publicationIds = helper.findPublicationIdsByOwner(currentOwner);
+		} catch (Exception e) {
+			String error = "Error in retrieving publicationIds by owner";
+			throw new PublicationException(error, e);
 		}
-		return publications;
+		return publicationIds;
 	}
-
-	public void transferOwner(Set<String> publicationIds, String currentOwner,
-			String newOwner) throws Exception {
-		if (!this.securityService.getUserBean().isAdmin()) {
-			throw new NoAccessException();
-		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		for (String publicationId : publicationIds) {
-			Publication publication = helper.findPublicationById(publicationId);
-			publication.setCreatedBy(newOwner);
-			appService.saveOrUpdate(publication);
-			
-			handleAccessibility(currentOwner, newOwner, publication);
-		}
-	}
-	
-	private void handleAccessibility( String currentOwner, String newOwner, 
-			Publication publication)throws Exception{
-		String publicationId = publication.getId().toString();
-		List<AccessibilityBean> userAccesses = super.findUserAccessibilities(publicationId);
-		List<AccessibilityBean> groupAccesses = super.findGroupAccessibilities(publicationId);
-		
-		List<AccessibilityBean> newUserAccesses = new ArrayList<AccessibilityBean>(userAccesses);
-		// save the new user access
-		//need to retrieve new user info
-		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
-		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
-		List<UserBean> newUserBean = super.findUserBeans(newOwner);
-		UserBean newUser=null;
-		if(!newUserBean.isEmpty()){
-			for(UserBean bean : newUserBean){
-				if(newOwner.equals(bean.getLoginName())){
-					newUser = bean;
-					break;
-				}
-			}
-		}
-		if(newUser == null){
-			throw new Exception("The new owner entered doesn't exist. " + newOwner);
-		}else if(!newUser.isCurator()){
-			if(newUserAccesses.isEmpty()){
-				AccessibilityBean newOwnerBean = new AccessibilityBean();
-				for(AccessibilityBean groupAccess : groupAccesses){
-					//System.out.println("group: " + groupAccess.getGroupName() + "\trole: " + groupAccess.getRoleName());
-					String role = groupAccess.getRoleName();
-					newOwnerBean.setRoleName(role);
-					newOwnerBean.setUserBean(newUser);					
-				}
-				this.assignAccessibility(newOwnerBean, publication);
-				//need to remove access for the previous owner if not a curator
-			}else{
-				for( AccessibilityBean newOwnerUser : newUserAccesses){
-					UserBean user = newOwnerUser.getUserBean();
-					//System.out.println("currentUser loginName: " + user.getLoginName());
-					String loginName = user.getLoginName();
-					if(currentOwner.endsWith(loginName)){
-						newOwnerUser.setUserBean(newUser);
-						System.out.println("currentowner match with user login name ");
-						//super.saveAccessibility(newOwnerUser, sampleId);
-						this.assignAccessibility(newOwnerUser, publication);
-					}
-				}
-				
-			}
-		}
-		//need to remove access for the previous owner if not a curator
-		List<UserBean> previousUserBean = super.findUserBeans(currentOwner);
-		UserBean previousUser=null;
-		if(!previousUserBean.isEmpty()){
-			for(UserBean bean : previousUserBean){
-				if(currentOwner.equals(bean.getLoginName())){
-					previousUser = bean;
-					break;
-				}
-			}
-		}
-		if(previousUser == null){
-			throw new Exception("The current owner entered doesn't exist. " + currentOwner);
-		}else if(!previousUser.isCurator()){
-			if(userAccesses.isEmpty()){
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for(AccessibilityBean groupAccess : groupAccesses){
-					//System.out.println("group: " + groupAccess.getGroupName() + "\trole: " + groupAccess.getRoleName());
-					UserBean user = groupAccess.getUserBean();
-					String loginName = user.getLoginName();
-					if(currentOwner.endsWith(loginName)){					
-						String role = groupAccess.getRoleName();
-						previousOwnerBean.setRoleName(role);
-						previousOwnerBean.setUserBean(user);	
-						
-					}
-				}
-				this.removeAccessibility(previousOwnerBean, publication);
-			}else{
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for( AccessibilityBean previousOwnerUser : userAccesses){
-					UserBean user = previousOwnerUser.getUserBean();
-					//System.out.println("currentUser loginName: " + user.getLoginName());
-					String loginName = user.getLoginName();
-					if(currentOwner.endsWith(loginName)){
-						previousOwnerBean.setUserBean(user);
-						System.out.println("currentowner match with user login name ");
-					}
-				}
-				this.removeAccessibility(previousOwnerBean, publication);
-			}
-		}
-		
-	}
-
 }
