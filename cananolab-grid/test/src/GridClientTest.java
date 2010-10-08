@@ -186,6 +186,32 @@ public class GridClientTest {
 		}
 	}
 
+	public void testGetAllProtocolsByCQLQuery() {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
+		query.setTarget(target);
+		try {
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Protocol");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Protocol p = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				p = (Protocol) obj;
+				System.out.println("Protocol: id=" + p.getId() + "\tName="
+						+ p.getName() + "\tAbbreviation=" + p.getAbbreviation()
+						+ "\tType=" + p.getType() + "\tVersion="
+						+ p.getVersion());
+				// add function for get protocol file by protocol id
+				testGetFileByProtocolId(p.getId().toString());
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting all protocols: " + e);
+		}
+	}
+
 	public void testChemicalAssociation(String id) {
 		// "8847369"
 		System.out.println("Test ChemicalAssociation with id=" + id);
@@ -672,16 +698,18 @@ public class GridClientTest {
 			ExperimentConfig[] experimentConfigs = gridClient
 					.getExperimentConfigsByCharacterizationId(charId);
 
-			if(experimentConfigs != null){
+			if (experimentConfigs != null) {
 				for (ExperimentConfig exp : experimentConfigs) {
 					if (exp != null) {
-						System.out.println("ExperimentConfig Id: " + exp.getId()
-								+ "\tDesc: " + exp.getDescription());
-						// TODO add CQL for instruments and technique by experiment
+						System.out.println("ExperimentConfig Id: "
+								+ exp.getId() + "\tDesc: "
+								+ exp.getDescription());
+						// TODO add CQL for instruments and technique by
+						// experiment
 						// config id
 						loadTechniqueForConfig(exp);
 						loadInstrumentsForConfig(exp);
-	
+
 					}
 				}
 			}
@@ -832,9 +860,11 @@ public class GridClientTest {
 				java.lang.Object obj = iter.next();
 				Datum datum = (Datum) obj;
 				if (datum != null) {
-					System.out.println("Datum id=" + datum.getId()+ "\tName="
-							+ datum.getName() + "\tValueType=" +datum.getValueType() + "\tValueUnit="
-							+ datum.getValueUnit() + "\tValue=" +datum.getValue());
+					System.out.println("Datum id=" + datum.getId() + "\tName="
+							+ datum.getName() + "\tValueType="
+							+ datum.getValueType() + "\tValueUnit="
+							+ datum.getValueUnit() + "\tValue="
+							+ datum.getValue());
 					loadConditionsForDatum(datum);
 					finding.getDatumCollection().add(datum);
 				}
@@ -1091,11 +1121,14 @@ public class GridClientTest {
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.SampleComposition");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			SampleComposition sampleComposition = null;
-			System.out.println("getting CompositionBySampleIdByCQLQuery... sampleId=" + id);
+			System.out
+					.println("getting CompositionBySampleIdByCQLQuery... sampleId="
+							+ id);
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				sampleComposition = (SampleComposition) obj;
-				System.out.println("SampleComposition id=" + sampleComposition.getId() );
+				System.out.println("SampleComposition id="
+						+ sampleComposition.getId());
 				sampleComposition.getChemicalAssociationCollection();
 				sampleComposition.getFunctionalizingEntityCollection();
 				sampleComposition.getNanomaterialEntityCollection();
@@ -1125,8 +1158,8 @@ public class GridClientTest {
 					.getId().toString(), ClassUtils
 					.getShortClassName("SampleComposition"));
 			if (files != null && files.length > 0) {
-				//loadKeywordsForFiles(files);
-				
+				// loadKeywordsForFiles(files);
+
 				composition.setFileCollection(new HashSet<File>(Arrays
 						.asList(files)));
 			}
@@ -1232,10 +1265,17 @@ public class GridClientTest {
 					while (iter.hasNext()) {
 						java.lang.Object obj = iter.next();
 						funcEntity = (FunctionalizingEntity) obj;
-						System.out.println("FunctionalizingEntity id=" + funcEntity.getId() + "\tName=" + funcEntity.getName() + 
-								"\tDesc=" + funcEntity.getDescription() + "\tMolecularFormula=" + funcEntity.getMolecularFormula() + 
-								"\tPubChemDataSourceName=" +funcEntity.getPubChemDataSourceName()+ "\tMolecularFormulaType=" +
-								funcEntity.getMolecularFormulaType() + "\tValueUnit=" + funcEntity.getValueUnit());
+						System.out.println("FunctionalizingEntity id="
+								+ funcEntity.getId() + "\tName="
+								+ funcEntity.getName() + "\tDesc="
+								+ funcEntity.getDescription()
+								+ "\tMolecularFormula="
+								+ funcEntity.getMolecularFormula()
+								+ "\tPubChemDataSourceName="
+								+ funcEntity.getPubChemDataSourceName()
+								+ "\tMolecularFormulaType="
+								+ funcEntity.getMolecularFormulaType()
+								+ "\tValueUnit=" + funcEntity.getValueUnit());
 						loadFunctionalizingEntityAssociations(funcEntity);
 						composition.getFunctionalizingEntityCollection().add(
 								funcEntity);
@@ -1290,7 +1330,9 @@ public class GridClientTest {
 					while (iter.hasNext()) {
 						java.lang.Object obj = iter.next();
 						assoc = (ChemicalAssociation) obj;
-						System.out.println("ChemicalAssociation id=" + assoc.getId() + "\tDesc=" + assoc.getDescription());
+						System.out.println("ChemicalAssociation id="
+								+ assoc.getId() + "\tDesc="
+								+ assoc.getDescription());
 						loadChemicalAssociationAssociations(assoc);
 						composition.getChemicalAssociationCollection().add(
 								assoc);
@@ -1532,35 +1574,35 @@ public class GridClientTest {
 							args[1]);
 
 					GridClientTest test = new GridClientTest(client);
+					test.testGetAllProtocolsByCQLQuery();
+					// test.testGetPrimaryPointOfContactBySampleId("10354688");
+					// test.testGetCharacterizationsBySampleIdByCQLQuery("9142300");
+					// test.testGetCompositionBySampleIdByCQLQuery("9142300");
+					// test.testGetPrimaryPointOfContactBySampleId("10354688");
 
-					test.testGetPrimaryPointOfContactBySampleId("10354688");
-					/*test.testGetCharacterizationsBySampleIdByCQLQuery("9142300");
-					test.testGetCompositionBySampleIdByCQLQuery("9142300");
-					test.testGetPrimaryPointOfContactBySampleId("10354688");
-					 
-					test.testGetSampleIds();
-					test.testGetPublicationIdsBy();
-					test.testGetAllCharacterizationByCQLQuery();
+					// test.testGetSampleIds();
+					// test.testGetPublicationIdsBy();
+					// // test.testGetAllCharacterizationByCQLQuery();
+					//
+					// // these methods user can plug in any parameter
+					// test.testGetFindingsByCharacterizationId("3932251");
+					// test.testGetProtocolByCharacterizationId("3932251");
+					// test
+					// .testGetExperimentConfigsByCharacterizationId("3932251");
+					// test.testCharacterization("3932251");
+					// test.testGetFileByProtocolId("24390915");
+					// test.testGetFilesByCompositionInfoId("21376285",
+					// "NanomaterialEntity");
+					// test.testNanomaterialEntity("6160399");
+					// test.testFunction("10944705");
+					// test.testComposingElement("6062106");
+					// test.testFunctionalizingEntity("6225945");
+					//
+					// test.testChemicalAssociation("8847369");
+					// test.testSampleComposition("6160390");
+					// test.testActivationMethod("3833872");
+					// test.testProtocol("24390915");
 
-					// these methods user can plug in any parameter
-					test.testGetFindingsByCharacterizationId("3932251");
-					test.testGetProtocolByCharacterizationId("3932251");
-					test
-							.testGetExperimentConfigsByCharacterizationId("3932251");
-					test.testCharacterization("3932251");
-					test.testGetFileByProtocolId("24390915");
-					test.testGetFilesByCompositionInfoId("21376285",
-							"NanomaterialEntity");
-					test.testNanomaterialEntity("6160399");
-					test.testFunction("10944705");
-					test.testComposingElement("6062106");
-					test.testFunctionalizingEntity("6225945");
-
-					test.testChemicalAssociation("8847369");
-					test.testSampleComposition("6160390");
-					test.testActivationMethod("3833872");
-					test.testProtocol("24390915");
-					*/
 				} else {
 					System.exit(1);
 				}
