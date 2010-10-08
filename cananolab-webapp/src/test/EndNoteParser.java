@@ -3,8 +3,8 @@
  */
 package test;
 
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.publication.EndNoteXMLHandler;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
