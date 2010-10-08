@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.exception.AdministrationException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseService;
@@ -60,14 +59,13 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					.getApplicationService();
 			for (String sampleId : sampleIds) {
 				Sample domain = sampleService.findSampleById(sampleId, false)
-						.getDomain(); // helper.findSampleById(sampleId);
+						.getDomain();
 				domain.setCreatedBy(newOwner);
 				SampleComposition sampleComposition = domain
 						.getSampleComposition();
 				Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
 				Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
 				Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
-				;
 				Collection<Characterization> characterization = new ArrayList<Characterization>();
 				List<AccessibilityBean> userAccesses = sampleService
 						.findUserAccessibilities(sampleId);
@@ -76,7 +74,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				appService.saveOrUpdate(domain);
 
 				assignAndRemoveAccessForSample(currentOwner, newOwner, domain,
-						userAccesses, groupAccesses, sampleService);
+						userAccesses, groupAccesses, sampleService, securityService);
 				if (sampleComposition != null) {
 					chemicalAssociation = sampleComposition
 							.getChemicalAssociationCollection();
@@ -116,7 +114,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	private void assignAndRemoveAccessForSample(String currentOwner,
 			String newOwner, Sample sample,
 			List<AccessibilityBean> userAccesses,
-			List<AccessibilityBean> groupAccesses, SampleService sampleService)
+			List<AccessibilityBean> groupAccesses, SampleService sampleService,
+			SecurityService securityService)
 			throws Exception {
 
 		// load existing privilege for current owner
@@ -136,31 +135,29 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		// currentOwner userBean with the newOwner userBean
 		List<UserBean> newUserBean = sampleService.findUserBeans(newOwner);
 		UserBean newUser = getUserBean(newOwner, newUserBean);
+		Boolean isNewOwnerCurator = securityService.isCurator(newOwner);
 		// assigning accessibility to newOwner
 		if (newUser == null) {
 			logger.error("The new owner entered doesn't exist: " + newOwner);
 			throw new Exception("The new owner entered doesn't exist. "
 					+ newOwner);
 
-		} else if (!newUser.isCurator()) {
-			if (newUserAccesses.isEmpty()) {
-				for (AccessibilityBean groupAccess : groupAccesses) {
-					AccessibilityBean newOwnerAccessibilityBean = getUserAccessiblityBeanForGroupAccesses(
-							groupAccess, newUser, currentOwner);
-					if (newOwnerAccessibilityBean != null) {
-						sampleService.assignAccessibility(
-								newOwnerAccessibilityBean, sample);
+		} else if (!isNewOwnerCurator) {
+			if(newUserAccesses.isEmpty()){
+				for(AccessibilityBean groupAccess : groupAccesses){
+					AccessibilityBean newOwnerAccessibilityBean = 
+						getUserAccessiblityBeanForGroupAccesses(groupAccess, newUser, currentOwner);					
+					if(newOwnerAccessibilityBean != null){
+						sampleService.assignAccessibility(newOwnerAccessibilityBean, sample);
 					}
 				}
-			} else {
-				for (AccessibilityBean newOwnerUser : newUserAccesses) {
-					AccessibilityBean newUserAccessibilityBean = getUserAccessiblityBeanForUserAccesses(
-							newOwnerUser, newUser, currentOwner);
-					if (newUserAccessibilityBean != null) {
-						sampleService.assignAccessibility(
-								newUserAccessibilityBean, sample);
+			}else{
+				for( AccessibilityBean newOwnerUser : newUserAccesses){
+					AccessibilityBean newUserAccessibilityBean = getUserAccessiblityBeanForUserAccesses(newOwnerUser, newUser, currentOwner);
+					if(newUserAccessibilityBean != null){ 
+						sampleService.assignAccessibility(newUserAccessibilityBean, sample);
 					}
-				}
+				}				
 			}
 		}
 		// need to remove access for the current owner
@@ -175,39 +172,29 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		List<UserBean> previousUserBean = sampleService
 				.findUserBeans(currentOwner);
 		UserBean previousUser = getUserBean(currentOwner, previousUserBean);
+		Boolean isCurrentOwnerCurator = securityService.isCurator(currentOwner);
 		if (previousUser == null) {
 			logger.error("The current owner entered doesn't exist: "
 					+ currentOwner);
 			throw new Exception("The current owner entered doesn't exist. "
 					+ currentOwner);
-		} else if (!previousUser.isCurator()) {
-			if (!userAccesses.isEmpty()) {
-				for (AccessibilityBean userAccess : userAccesses) {
-					AccessibilityBean userAccessibilityBean = getUserAccessiblityBeanForUserAccesses(
-							userAccess, previousUser, currentOwner);
-					if (userAccessibilityBean != null) {
-						sampleService.removeAccessibility(
-								userAccessibilityBean, sample);
+		} else if (!isCurrentOwnerCurator) {
+			if(!userAccesses.isEmpty()){
+				for( AccessibilityBean userAccess : userAccesses){
+					AccessibilityBean userAccessibilityBean = getUserAccessiblityBeanForUserAccesses(userAccess, previousUser, currentOwner);
+					if(userAccessibilityBean != null ){
+						sampleService.removeAccessibility(userAccessibilityBean, sample);
+					}
+				}				
+			}else{				
+				for(AccessibilityBean groupAccess : groupAccesses){
+					AccessibilityBean userAccessibilityBean = 
+						getUserAccessiblityBeanForGroupAccesses(groupAccess, newUser, currentOwner);					
+					if(userAccessibilityBean != null){					
+						sampleService.removeAccessibility(userAccessibilityBean, sample);
 					}
 				}
-			} else {
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for (AccessibilityBean groupAccess : groupAccesses) {
-					// System.out.println("group: " + groupAccess.getGroupName()
-					// + "\trole: " + groupAccess.getRoleName());
-					UserBean user = groupAccess.getUserBean();
-					String loginName = user.getLoginName();
-					if (currentOwner.endsWith(loginName)) {
-						String role = groupAccess.getRoleName();
-						previousOwnerBean.setRoleName(role);
-						previousOwnerBean.setUserBean(user);
-					}
-				}
-				if (previousOwnerBean.getUserBean() != null) {
-					sampleService
-							.removeAccessibility(previousOwnerBean, sample);
-				}
-			}
+			}			
 		}
 	}
 
@@ -233,7 +220,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				appService.saveOrUpdate(publication);
 
 				assignAndRemoveAccessForPublication(publicationService,
-						currentOwner, newOwner, publication);
+						currentOwner, newOwner, publication, securityService);
 			}
 		} catch (Exception e) {
 			String error = "Error transferring ownership for publications";
@@ -244,7 +231,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 
 	private void assignAndRemoveAccessForPublication(
 			PublicationService publicationService, String currentOwner,
-			String newOwner, Publication publication) throws Exception {
+			String newOwner, Publication publication, SecurityService securityService) throws Exception {
 		String publicationId = publication.getId().toString();
 		List<AccessibilityBean> userAccesses = publicationService
 				.findUserAccessibilities(publicationId);
@@ -253,102 +240,61 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 
 		List<AccessibilityBean> newUserAccesses = new ArrayList<AccessibilityBean>(
 				userAccesses);
-		// save the new user access
-		// need to retrieve new user info
-		// In another words, if user accesses return empty on the previous
-		// owner, we’d search for group accesses and
-		// copy the roles from the group accesses and generate new user accesses
-		// with the same roles for the new owner.
+	
 		List<UserBean> newUserBean = publicationService.findUserBeans(newOwner);
 		UserBean newUser = getUserBean(newOwner, newUserBean);
-
+		Boolean isNewOwnerCurator = securityService.isCurator(newOwner);
 		if (newUser == null) {
 			logger.error("The new owner entered doesn't exist: " + newOwner);
 			throw new Exception("The new owner entered doesn't exist. "
 					+ newOwner);
-		} else if (!newUser.isCurator()) {
-			if (newUserAccesses.isEmpty()) {
-				AccessibilityBean newOwnerBean = new AccessibilityBean();
-				for (AccessibilityBean groupAccess : groupAccesses) {
-					// System.out.println("group: " + groupAccess.getGroupName()
-					// + "\trole: " + groupAccess.getRoleName());
-					String role = groupAccess.getRoleName();
-					newOwnerBean.setRoleName(role);
-					newOwnerBean.setUserBean(newUser);
-				}
-				publicationService.assignAccessibility(newOwnerBean,
-						publication);
-			} else {
-				for (AccessibilityBean newOwnerUser : newUserAccesses) {
-					UserBean user = newOwnerUser.getUserBean();
-					// System.out.println("currentUser loginName: " +
-					// user.getLoginName());
-					String loginName = user.getLoginName();
-					if (currentOwner.endsWith(loginName)) {
-						newOwnerUser.setUserBean(newUser);
-						System.out
-								.println("currentowner match with user login name ");
-						// super.saveAccessibility(newOwnerUser, sampleId);
-						publicationService.assignAccessibility(newOwnerUser,
-								publication);
+		} else if (!isNewOwnerCurator) {
+			if(newUserAccesses.isEmpty()){
+				for(AccessibilityBean groupAccess : groupAccesses){
+					AccessibilityBean newOwnerAccessibilityBean = 
+						getUserAccessiblityBeanForGroupAccesses(groupAccess, newUser, currentOwner);					
+					if(newOwnerAccessibilityBean != null){
+						publicationService.assignAccessibility(newOwnerAccessibilityBean, publication);
 					}
 				}
-
+			}else{
+				for( AccessibilityBean newOwnerUser : newUserAccesses){
+					AccessibilityBean newUserAccessibilityBean = getUserAccessiblityBeanForUserAccesses(newOwnerUser, newUser, currentOwner);
+					if(newUserAccessibilityBean != null){ 
+						publicationService.assignAccessibility(newUserAccessibilityBean, publication);
+					}
+				}				
 			}
 		}
 		// need to remove access for the previous owner if not a curator
 		List<UserBean> previousUserBean = publicationService
 				.findUserBeans(currentOwner);
-		UserBean previousUser = null;
-		if (!previousUserBean.isEmpty()) {
-			for (UserBean bean : previousUserBean) {
-				if (currentOwner.equals(bean.getLoginName())) {
-					previousUser = bean;
-					break;
-				}
-			}
-		}
+		UserBean previousUser = getUserBean(currentOwner, previousUserBean);
+		Boolean isCurrentOwnerCurator = securityService.isCurator(currentOwner);
 		if (previousUser == null) {
-			logger
-					.error("The current owner entered doesn't exist: "
-							+ newOwner);
+			logger.error("The current owner entered doesn't exist: "
+					+ currentOwner);
 			throw new Exception("The current owner entered doesn't exist. "
 					+ currentOwner);
-		} else if (!previousUser.isCurator()) {
-			if (userAccesses.isEmpty()) {
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for (AccessibilityBean groupAccess : groupAccesses) {
-					// System.out.println("group: " + groupAccess.getGroupName()
-					// + "\trole: " + groupAccess.getRoleName());
-					UserBean user = groupAccess.getUserBean();
-					String loginName = user.getLoginName();
-					if (currentOwner.endsWith(loginName)) {
-						String role = groupAccess.getRoleName();
-						previousOwnerBean.setRoleName(role);
-						previousOwnerBean.setUserBean(user);
-
+		} else if (!isCurrentOwnerCurator) {
+			if(!userAccesses.isEmpty()){
+				for( AccessibilityBean userAccess : userAccesses){
+					AccessibilityBean userAccessibilityBean = getUserAccessiblityBeanForUserAccesses(userAccess, previousUser, currentOwner);
+					if(userAccessibilityBean != null ){
+						publicationService.removeAccessibility(userAccessibilityBean, publication);
+					}
+				}				
+			}else{
+				//AccessibilityBean previousOwnerBean = new AccessibilityBean();
+				//previousOwnerBean.setAccessBy("");
+				for(AccessibilityBean groupAccess : groupAccesses){
+					AccessibilityBean userAccessibilityBean = getUserAccessiblityBeanForGroupAccesses(groupAccess, previousUser, currentOwner);
+					if(userAccessibilityBean != null){
+						publicationService.removeAccessibility(userAccessibilityBean, publication);
 					}
 				}
-				publicationService.removeAccessibility(previousOwnerBean,
-						publication);
-			} else {
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for (AccessibilityBean previousOwnerUser : userAccesses) {
-					UserBean user = previousOwnerUser.getUserBean();
-					// System.out.println("currentUser loginName: " +
-					// user.getLoginName());
-					String loginName = user.getLoginName();
-					if (currentOwner.endsWith(loginName)) {
-						previousOwnerBean.setUserBean(user);
-						System.out
-								.println("currentowner match with user login name ");
-					}
-				}
-				publicationService.removeAccessibility(previousOwnerBean,
-						publication);
 			}
 		}
-
 	}
 
 	private void transferOwner(ProtocolService protocolService,
@@ -372,7 +318,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				protocol.setCreatedBy(newOwner);
 				appService.saveOrUpdate(protocol);
 				assignAndRemoveAccessForProtocol(protocolService, currentOwner,
-						newOwner, protocol);
+						newOwner, protocol, securityService);
 			}
 		} catch (Exception e) {
 			String error = "Error transferring ownership for protocols";
@@ -382,7 +328,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	}
 
 	private void assignAndRemoveAccessForProtocol(ProtocolService service,
-			String currentOwner, String newOwner, Protocol protocol)
+			String currentOwner, String newOwner, Protocol protocol, SecurityService securityService)
 			throws Exception {
 		String protocolId = protocol.getId().toString();
 		List<AccessibilityBean> userAccesses = service
@@ -391,91 +337,61 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				.findGroupAccessibilities(protocolId);
 
 		List<AccessibilityBean> newUserAccesses = new ArrayList<AccessibilityBean>(
-				userAccesses);
-		// save the new user access
-		// need to retrieve new user info
-		// In another words, if user accesses return empty on the previous
-		// owner, we’d search for group accesses and
-		// copy the roles from the group accesses and generate new user accesses
-		// with the same roles for the new owner.
+				userAccesses);		
 		List<UserBean> newUserBean = service.findUserBeans(newOwner);
 		UserBean newUser = getUserBean(newOwner, newUserBean);
+		Boolean isNewOwnerCurator = securityService.isCurator(newOwner);
 		if (newUser == null) {
 			logger.error("The new owner entered doesn't exist: " + newOwner);
 			throw new Exception("The new owner entered doesn't exist. "
 					+ newOwner);
-		} else if (!newUser.isCurator()) {
-			if (newUserAccesses.isEmpty()) {
-				AccessibilityBean newOwnerBean = new AccessibilityBean();
-				for (AccessibilityBean groupAccess : groupAccesses) {
-					// System.out.println("group: " + groupAccess.getGroupName()
-					// + "\trole: " + groupAccess.getRoleName());
-					String role = groupAccess.getRoleName();
-					newOwnerBean.setRoleName(role);
-					newOwnerBean.setUserBean(newUser);
-				}
-				service.assignAccessibility(newOwnerBean, protocol);
-				// need to remove access for the previous owner if not a curator
-			} else {
-				for (AccessibilityBean newOwnerUser : newUserAccesses) {
-					UserBean user = newOwnerUser.getUserBean();
-					// System.out.println("currentUser loginName: " +
-					// user.getLoginName());
-					String loginName = user.getLoginName();
-					if (currentOwner.endsWith(loginName)) {
-						newOwnerUser.setUserBean(newUser);
-						System.out
-								.println("currentowner match with user login name ");
-						// super.saveAccessibility(newOwnerUser, sampleId);
-						service.assignAccessibility(newOwnerUser, protocol);
+		} else if (!isNewOwnerCurator) {
+			if(newUserAccesses.isEmpty()){
+				for(AccessibilityBean groupAccess : groupAccesses){
+					AccessibilityBean newOwnerAccessibilityBean = 
+						getUserAccessiblityBeanForGroupAccesses(groupAccess, newUser, currentOwner);					
+					if(newOwnerAccessibilityBean != null){
+						service.assignAccessibility(newOwnerAccessibilityBean, protocol);
 					}
 				}
-
+			}else{
+				for( AccessibilityBean newOwnerUser : newUserAccesses){
+					AccessibilityBean newUserAccessibilityBean = getUserAccessiblityBeanForUserAccesses(newOwnerUser, newUser, currentOwner);
+					if(newUserAccessibilityBean != null){ 
+						service.assignAccessibility(newUserAccessibilityBean, protocol);
+					}
+				}				
 			}
 		}
 		// need to remove access for the previous owner if not a curator
 		List<UserBean> previousUserBean = service.findUserBeans(currentOwner);
 		UserBean previousUser = getUserBean(currentOwner, previousUserBean);
-
+		Boolean isCurrentOwnerCurator = securityService.isCurator(currentOwner);
 		if (previousUser == null) {
-			logger
-					.error("The current owner entered doesn't exist: "
-							+ newOwner);
+			logger.error("The current owner entered doesn't exist: "
+					+ currentOwner);
 			throw new Exception("The current owner entered doesn't exist. "
 					+ currentOwner);
-		} else if (!previousUser.isCurator()) {
-			if (userAccesses.isEmpty()) {
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for (AccessibilityBean groupAccess : groupAccesses) {
-					// System.out.println("group: " + groupAccess.getGroupName()
-					// + "\trole: " + groupAccess.getRoleName());
-					UserBean user = groupAccess.getUserBean();
-					String loginName = user.getLoginName();
-					if (currentOwner.endsWith(loginName)) {
-						String role = groupAccess.getRoleName();
-						previousOwnerBean.setRoleName(role);
-						previousOwnerBean.setUserBean(user);
-
+		} else if (!isCurrentOwnerCurator) {
+			if(!userAccesses.isEmpty()){
+				for( AccessibilityBean userAccess : userAccesses){
+					AccessibilityBean userAccessibilityBean = getUserAccessiblityBeanForUserAccesses(userAccess, previousUser, currentOwner);
+					if(userAccessibilityBean != null ){
+						service.removeAccessibility(userAccessibilityBean, protocol);
+					}
+				}				
+			}else{
+				//AccessibilityBean previousOwnerBean = new AccessibilityBean();
+				//previousOwnerBean.setAccessBy("");
+				for(AccessibilityBean groupAccess : groupAccesses){
+					AccessibilityBean userAccessibilityBean = getUserAccessiblityBeanForGroupAccesses(groupAccess, previousUser, currentOwner);
+					if(userAccessibilityBean != null){
+						service.removeAccessibility(userAccessibilityBean, protocol);
 					}
 				}
-				service.removeAccessibility(previousOwnerBean, protocol);
-			} else {
-				AccessibilityBean previousOwnerBean = new AccessibilityBean();
-				for (AccessibilityBean previousOwnerUser : userAccesses) {
-					UserBean user = previousOwnerUser.getUserBean();
-					// System.out.println("currentUser loginName: " +
-					// user.getLoginName());
-					String loginName = user.getLoginName();
-					if (currentOwner.endsWith(loginName)) {
-						previousOwnerBean.setUserBean(user);
-						System.out
-								.println("currentowner match with user login name ");
-					}
-				}
-				service.removeAccessibility(previousOwnerBean, protocol);
+				
 			}
 		}
-
 	}
 
 	private void transferOwner(CommunityService communityService,
@@ -532,12 +448,12 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			AccessibilityBean groupAccess, UserBean userBean,
 			String ownerLoginName) {
 		AccessibilityBean userAccessibilityBean = new AccessibilityBean();
-		UserBean user = groupAccess.getUserBean();
-		String loginName = user.getLoginName();
-		if (ownerLoginName.endsWith(loginName)) {
+		if(!groupAccess.getGroupName().equals(
+				AccessibilityBean.CSM_PUBLIC_GROUP)){
+			userAccessibilityBean.setAccessBy("");
 			String role = groupAccess.getRoleName();
 			userAccessibilityBean.setRoleName(role);
-			userAccessibilityBean.setUserBean(userBean);
+			userAccessibilityBean.setUserBean(userBean);	
 			return userAccessibilityBean;
 		}
 		return null;
@@ -548,9 +464,9 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	private AccessibilityBean getUserAccessiblityBeanForUserAccesses(
 			AccessibilityBean userAccess, UserBean userBean,
 			String ownerLoginName) {
-		UserBean user = userAccess.getUserBean();
+		UserBean user = userAccess.getUserBean();		
 		String loginName = user.getLoginName();
-		if (ownerLoginName.endsWith(loginName)) {
+		if(ownerLoginName.endsWith(loginName)){				
 			userAccess.setUserBean(userBean);
 			return userAccess;
 		}
