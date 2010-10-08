@@ -2,10 +2,10 @@ package gov.nih.nci.cananolab.ui.community;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.community.CommunityService;
 import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +88,7 @@ public class DWRCollaborationGroupManager {
 
 	public UserBean[] getMatchedUsers(String groupOwner, String searchStr) throws Exception {
 		try {
-			List<UserBean> matchedUsers = getService().findUserLoginNames(
+			List<UserBean> matchedUsers = getService().findUserBeans(
 					searchStr);
 			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
 			// remove current user from the list

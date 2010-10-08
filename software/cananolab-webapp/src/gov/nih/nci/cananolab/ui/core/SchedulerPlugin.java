@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.authorization.domainobjects.User;

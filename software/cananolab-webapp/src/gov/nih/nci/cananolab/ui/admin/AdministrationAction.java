@@ -16,9 +16,9 @@ package gov.nih.nci.cananolab.ui.admin;
  */
 import gov.nih.nci.cananolab.dto.admin.SitePreferenceBean;
 import gov.nih.nci.cananolab.dto.admin.VisitorCountBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.admin.AdminService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;

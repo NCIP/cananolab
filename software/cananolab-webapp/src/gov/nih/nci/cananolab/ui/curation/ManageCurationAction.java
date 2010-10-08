@@ -15,8 +15,8 @@ package gov.nih.nci.cananolab.ui.curation;
  * @author pansu
  */
 
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.AbstractForwardAction;
 
 import javax.servlet.http.HttpServletRequest;

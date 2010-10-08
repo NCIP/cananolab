@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.service.security.UserBean;
+
 
 public class AccessibilityBean {
 	public static final String CSM_APP_NAME = "caNanoLab";

@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
@@ -14,6 +13,7 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -570,7 +570,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		//need to retrieve new user info
 		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
 		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
-		List<UserBean> newUserBean = super.findUserLoginNames(newOwner);
+		List<UserBean> newUserBean = super.findUserBeans(newOwner);
 		UserBean newUser=null;
 		if(!newUserBean.isEmpty()){
 			for(UserBean bean : newUserBean){
@@ -609,7 +609,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 		}
 		//need to remove access for the previous owner if not a curator
-		List<UserBean> previousUserBean = super.findUserLoginNames(currentOwner);
+		List<UserBean> previousUserBean = super.findUserBeans(currentOwner);
 		UserBean previousUser=null;
 		if(!previousUserBean.isEmpty()){
 			for(UserBean bean : previousUserBean){

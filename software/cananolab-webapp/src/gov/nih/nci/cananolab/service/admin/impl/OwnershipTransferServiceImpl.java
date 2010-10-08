@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.admin.OwnershipTransferService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -18,6 +17,7 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -112,7 +112,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		// this means the current owner belongs to collaborator group
 		// if not a curator, currentOwner userAccesses is not empty, go through each one, replace the 
 		// currentOwner userBean with the newOwner userBean
-		List<UserBean> newUserBean = sampleService.findUserLoginNames(newOwner);
+		List<UserBean> newUserBean = sampleService.findUserBeans(newOwner);
 		UserBean newUser = getUserBean(newOwner, newUserBean);
 		//assigning accessibility to newOwner
 		if(newUser == null){
@@ -145,7 +145,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		// this is done by removeAccessibility for the userAccess
 		
 		// removing accessibility for currentOwner	
-		List<UserBean> previousUserBean = sampleService.findUserLoginNames(currentOwner);
+		List<UserBean> previousUserBean = sampleService.findUserBeans(currentOwner);
 		UserBean previousUser = getUserBean(currentOwner, previousUserBean);
 		if(previousUser == null){
 			logger.error("The current owner entered doesn't exist: " + currentOwner );
@@ -210,7 +210,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		//need to retrieve new user info
 		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
 		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
-		List<UserBean> newUserBean = publicationService.findUserLoginNames(newOwner);
+		List<UserBean> newUserBean = publicationService.findUserBeans(newOwner);
 		UserBean newUser=getUserBean(newOwner, newUserBean);
 		
 		if(newUser == null){
@@ -242,7 +242,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			}
 		}
 		//need to remove access for the previous owner if not a curator
-		List<UserBean> previousUserBean = publicationService.findUserLoginNames(currentOwner);
+		List<UserBean> previousUserBean = publicationService.findUserBeans(currentOwner);
 		UserBean previousUser=null;
 		if(!previousUserBean.isEmpty()){
 			for(UserBean bean : previousUserBean){
@@ -316,7 +316,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		//need to retrieve new user info
 		//In another words, if user accesses return empty on the previous owner, we’d search for group accesses and 
 		//copy the roles from the group accesses and generate new user accesses with the same roles for the new owner.
-		List<UserBean> newUserBean = service.findUserLoginNames(newOwner);
+		List<UserBean> newUserBean = service.findUserBeans(newOwner);
 		UserBean newUser = getUserBean(newOwner, newUserBean);
 		if(newUser == null){
 			logger.error("The new owner entered doesn't exist: " + newOwner );
@@ -348,7 +348,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			}
 		}
 		//need to remove access for the previous owner if not a curator
-		List<UserBean> previousUserBean = service.findUserLoginNames(currentOwner);
+		List<UserBean> previousUserBean = service.findUserBeans(currentOwner);
 		UserBean previousUser=getUserBean(currentOwner, previousUserBean);
 		
 		if(previousUser == null){

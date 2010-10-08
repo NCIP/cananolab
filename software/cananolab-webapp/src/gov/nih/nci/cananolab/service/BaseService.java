@@ -2,10 +2,10 @@ package gov.nih.nci.cananolab.service;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public interface BaseService {
 			String userLoginName, String protectedData)
 			throws SecurityException, NoAccessException;
 
-	public List<UserBean> findUserLoginNames(String loginNameSearchStr)
+	public List<UserBean> findUserBeans(String loginNameSearchStr)
 			throws SecurityException;
 
 	public List<String> findGroupNames(String groupNameSearchStr)

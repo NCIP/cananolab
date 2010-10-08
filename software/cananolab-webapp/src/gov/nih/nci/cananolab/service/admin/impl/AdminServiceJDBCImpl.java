@@ -2,9 +2,9 @@ package gov.nih.nci.cananolab.service.admin.impl;
 
 import gov.nih.nci.cananolab.dto.admin.SitePreferenceBean;
 import gov.nih.nci.cananolab.dto.admin.VisitorCountBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.admin.AdminService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

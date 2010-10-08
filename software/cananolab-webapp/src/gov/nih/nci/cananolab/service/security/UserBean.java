@@ -1,7 +1,5 @@
-package gov.nih.nci.cananolab.dto.common;
+package gov.nih.nci.cananolab.service.security;
 
-import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.SortedSet;
@@ -98,26 +96,6 @@ public class UserBean {
 		this.userId = user.getUserId().toString();
 		this.fullName = this.lastName + ", " + this.firstName;
 		this.domain = user;
-		if (user.getGroups() != null) {
-			for (Object obj : user.getGroups()) {
-				Group group = (Group) obj;
-				groupNames.add(group.getGroupName());
-			}
-		}
-		if (groupNames != null
-				&& groupNames.contains(AccessibilityBean.CSM_DATA_CURATOR)) {
-			curator = true;
-		}
-		if (user.getProtectionElements() != null) {
-			for (Object obj : user.getProtectionElements()) {
-				ProtectionElement pe = (ProtectionElement) obj;
-				if (pe.getProtectionElementName().equals(
-						AccessibilityBean.CSM_APP_NAME)) {
-					admin = true;
-					break;
-				}
-			}
-		}
 	}
 
 	public String getDepartment() {
@@ -249,5 +227,13 @@ public class UserBean {
 
 	public SortedSet<String> getGroupNames() {
 		return groupNames;
+	}
+
+	void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	void setCurator(boolean curator) {
+		this.curator = curator;
 	}
 }
