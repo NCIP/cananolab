@@ -37,7 +37,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 
 /**
- * This class extends CSM API with convenient methods to query access control information
+ * This class extends CSM API with convenient methods to query access control
+ * information
  *
  * @author Pansu
  *
@@ -787,6 +788,18 @@ public class SecurityService {
 			return true;
 		}
 		return false;
+	}
+
+	public Boolean isUserInGroup(String userLoginName, String groupName)
+			throws Exception {
+		User user = authorizationManager.getUser(userLoginName);
+		SortedSet<String> groupNames = this.getUserGroupNames(user.getUserId()
+				.toString());
+		if (groupNames.contains(groupName)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public Boolean isUserValid(String userLoginName) throws Exception {
