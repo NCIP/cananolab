@@ -119,7 +119,7 @@ public class TransferOwnerAction extends AbstractDispatchAction {
 			saveErrors(request, messages);
 			return mapping.findForward("input");
 		}
-		if (dataIds == null) {
+		if (dataIds == null || dataIds.isEmpty()) {
 			ActionMessage message = new ActionMessage(
 					"message.transferOwner.empty.data");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
