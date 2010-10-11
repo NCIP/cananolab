@@ -16,11 +16,11 @@ public interface OwnershipTransferService {
 	public static final String DATA_TYPE_PUBLICATION = "publication";
 	public static final String DATA_TYPE_GROUP = "colloboration group";
 
-	public void transferOwner(BaseService baseService, List<String> dataIds,
+	public int transferOwner(BaseService baseService, List<String> dataIds,
 			String currentOwner, String newOwner)
 			throws AdministrationException, NoAccessException;
 
-	public void transferOwner(SecurityService securityService,
+	public int transferOwner(SecurityService securityService,
 			List<String> dataIds, String dataType, String currentOwner,
 			String newOwner) throws AdministrationException, NoAccessException;
 
