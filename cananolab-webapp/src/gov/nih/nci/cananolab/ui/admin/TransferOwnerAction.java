@@ -29,6 +29,7 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 
 import java.util.ArrayList;
@@ -62,6 +63,22 @@ public class TransferOwnerAction extends AbstractDispatchAction {
 		SecurityService securityService = getSecurityService(request);
 		String currentOwner = (String) theForm.get("currentOwner");
 		String newOwner = (String) theForm.get("newOwner");
+		ActionMessages messages = new ActionMessages();
+		// validate owner names
+		if (!securityService.isUserValid(currentOwner)) {
+			ActionMessage message = new ActionMessage(
+					"message.transferOwner.invalid.currentOwner");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
+			saveErrors(request, messages);
+			return mapping.findForward("input");
+		}
+		if (!securityService.isUserValid(newOwner)) {
+			ActionMessage message = new ActionMessage(
+					"message.transferOwner.invalid.newOwner");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, message);
+			saveErrors(request, messages);
+			return mapping.findForward("input");
+		}
 		HttpSession session = request.getSession();
 
 		// String[] dataTypes = new String[0];
@@ -74,7 +91,6 @@ public class TransferOwnerAction extends AbstractDispatchAction {
 		String dataType = theForm.getString("dataType");
 		OwnershipTransferService transferService = new OwnershipTransferServiceImpl();
 		List<String> dataIds = null;
-		ActionMessages messages = new ActionMessages();
 		BaseService service = null;
 		if (dataType
 				.equalsIgnoreCase(OwnershipTransferService.DATA_TYPE_SAMPLE)) {
