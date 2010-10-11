@@ -53,8 +53,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		SecurityService securityService = ((SampleServiceLocalImpl) sampleService)
 				.getSecurityService();
 		// user needs to be both curator and admin
-		if (securityService.getUserBean().isCurator()
-				&& securityService.getUserBean().isAdmin()) {
+		if (!(securityService.getUserBean().isCurator() && securityService
+				.getUserBean().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
@@ -195,8 +195,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		SecurityService securityService = ((PublicationServiceLocalImpl) publicationService)
 				.getSecurityService();
 		// user needs to be both curator and admin
-		if (securityService.getUserBean().isCurator()
-				&& securityService.getUserBean().isAdmin()) {
+		if (!(securityService.getUserBean().isCurator() && securityService
+				.getUserBean().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
@@ -256,8 +256,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				.getSecurityService();
 		// user needs to be both curator and admin
 		// user needs to be both curator and admin
-		if (securityService.getUserBean().isCurator()
-				&& securityService.getUserBean().isAdmin()) {
+		if (!(securityService.getUserBean().isCurator() && securityService
+				.getUserBean().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
@@ -313,8 +313,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		SecurityService securityService = ((CommunityServiceLocalImpl) communityService)
 				.getSecurityService();
 		// user needs to be both curator and admin
-		if (securityService.getUserBean().isCurator()
-				&& securityService.getUserBean().isAdmin()) {
+		if (!(securityService.getUserBean().isCurator() && securityService
+				.getUserBean().isAdmin())) {
 			throw new NoAccessException();
 		}
 		int i = 0;
