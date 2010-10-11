@@ -16,6 +16,7 @@ package gov.nih.nci.cananolab.ui.core;
  */
 
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.admin.impl.BatchOwnershipTransferProcess;
 import gov.nih.nci.cananolab.service.common.LongRunningProcess;
 import gov.nih.nci.cananolab.service.sample.impl.BatchDataAvailabilityProcess;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -60,6 +61,9 @@ public class ManageResultAction extends AbstractForwardAction {
 					updatedProcesses.remove(i);
 					if (process instanceof BatchDataAvailabilityProcess) {
 						session.removeAttribute("BatchDataAvailabilityProcess");
+					} else if (process instanceof BatchOwnershipTransferProcess) {
+						session
+								.removeAttribute("BatchOwnershipTransferProcess");
 					}
 				}
 				i++;
