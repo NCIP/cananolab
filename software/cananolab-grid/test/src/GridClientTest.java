@@ -41,6 +41,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -335,7 +336,6 @@ public class GridClientTest {
 					builder.append("Keyword Name=" + k.getName() + "\tId="
 							+ k.getId() + "\n");
 				}
-
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Publication for id=" + id
@@ -530,12 +530,10 @@ public class GridClientTest {
 						+ sample.getId());
 				builder.append("Sample: Name=" + sample.getName() + ", id="
 						+ sample.getId() + "\n");
-				testGetPublicationsBySampleId(id);
+				//testGetPublicationsBySampleId(id);
 				testGetKeywordsBySampleId(id);
 				testGetOtherPointOfContactsBySampleId(id);
 				testGetPrimaryPointOfContactBySampleId(id);
-				testGetCharacterizationsBySampleIdByCQLQuery(id);
-				testGetCompositionBySampleIdByCQLQuery(id);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Sample for id=" + id + ": "
@@ -1186,10 +1184,7 @@ public class GridClientTest {
 								+ p.getName() + "\tJournalName: "
 								+ p.getJournalName() + "\tTitle: "
 								+ p.getTitle() + "\n");
-						// TODO add CQL for authors and keywords by publication
-						// id
-						loadKeywordsForPublication(p);
-						loadAuthorsForPublication(p);
+						
 					}
 				}
 			}
@@ -1217,7 +1212,6 @@ public class GridClientTest {
 			
 			for (String id : sampleIds) {
 				testSample(id);
-				testGetCharacterizationsBySampleIdByCQLQuery(id);
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting SampleIds: " + e);
@@ -1225,6 +1219,28 @@ public class GridClientTest {
 		}
 		System.out.println("\nFinished testing samples.... \n");
 	}
+	
+	public void testCharacterizationAndCompositionBySampleIds() {
+		try {
+			String[] sampleIds = gridClient.getSampleIds("", "", null, null,
+					null, null, null);
+			System.out
+					.println("Testing getSampleIds operation.... \n"
+							+ "For every sample, test get Publication, keywords, primary contact and other contact.");
+			builder.append("Testing getSampleIds operation.... \n"
+					+ "For every sample, test get Publication, keywords, primary contact and other contact." + "\n");
+			
+			for (String id : sampleIds) {
+				testGetCharacterizationsBySampleIdByCQLQuery(id);
+				testGetCompositionBySampleIdByCQLQuery(id);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception getting SampleIds: " + e);
+			builder.append("Exception getting SampleIds: " + e + "\n");
+		}
+		System.out.println("\nFinished testing samples.... \n");
+	}
+
 
 	public void testGetCharacterizationsBySampleIdByCQLQuery(String id) {
 		// TODO add this CQL and related functions for experiment configs,
@@ -1842,11 +1858,17 @@ public class GridClientTest {
 							args[1]);
 
 					GridClientTest test = new GridClientTest(client);
+					System.out.println(new Date());
+					long start = System.currentTimeMillis();
+					test.builder.append("Start time: " + new Date() + "\n" );
 					test.testGetSampleIds();
-					//test.testGetCharacterizationsBySampleIdByCQLQuery("9142300");
-					test.testGetPublicationIdsBy();
-					test.testGetAllProtocolsByCQLQuery();
-					
+					//test.testCharacterizationAndCompositionBySampleIds();					
+					//test.testGetPublicationIdsBy();
+					//test.testGetAllProtocolsByCQLQuery();
+					System.out.println(new Date());
+					long end = System.currentTimeMillis();
+					test.builder.append("End time: " + new Date()+ "\n"  );
+					test.builder.append("Total time: " + (end - start)/1000 + " seconds");
 					// test.testSampleComposition("6160390");						
 					// test.testGetPrimaryPointOfContactBySampleId("10354688");
 					// test.testGetCompositionBySampleIdByCQLQuery("9142300");
