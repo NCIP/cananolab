@@ -73,9 +73,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 					Collection<Characterization> characterization = new ArrayList<Characterization>();
-					this.assignAndRemoveAccessForSample(sampleService, domain,
-							currentOwner, currentOwnerIsCurator, newOwner,
-							newOwnerIsCurator);
+
 					if (sampleComposition != null) {
 						chemicalAssociation = sampleComposition
 								.getChemicalAssociationCollection();
@@ -104,6 +102,11 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 							appService.saveOrUpdate(c);
 						}
 					}
+					appService.saveOrUpdate(domain);
+					this.assignAndRemoveAccessForSample(sampleService, domain,
+							currentOwner, currentOwnerIsCurator, newOwner,
+							newOwnerIsCurator);
+
 				} catch (Exception e) {
 					i++;
 					String error = "Error transferring ownership for sample: "
