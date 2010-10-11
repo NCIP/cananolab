@@ -14,7 +14,7 @@ public interface OwnershipTransferService {
 	public static final String DATA_TYPE_SAMPLE = "sample";
 	public static final String DATA_TYPE_PROTOCOL = "protocol";
 	public static final String DATA_TYPE_PUBLICATION = "publication";
-	public static final String DATA_TYPE_GROUP = "colloboration group";
+	public static final String DATA_TYPE_GROUP = "collaboration group";
 
 	public int transferOwner(BaseService baseService, List<String> dataIds,
 			String currentOwner, String newOwner)
