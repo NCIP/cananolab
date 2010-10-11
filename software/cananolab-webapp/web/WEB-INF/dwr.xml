@@ -136,7 +136,7 @@
 			<include method="getUserAccess" />
 			<include method="resetTheAccess" />
 			<include method="getMatchedUsers"/>
-			<include method="getMatchedGroupNames"/>			
+			<include method="getMatchedGroupNames"/>
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
@@ -250,7 +250,7 @@
 			match="gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean"></convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.AccessibilityBean"></convert>
-		<convert converter="bean" match="gov.nih.nci.cananolab.dto.common.UserBean">
+		<convert converter="bean" match="gov.nih.nci.cananolab.service.security.UserBean">
 			<param name="exclude" value="domain"/>
 		</convert>
 		<convert converter="bean"
