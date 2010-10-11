@@ -534,6 +534,9 @@ public class GridClientTest {
 				testGetKeywordsBySampleId(id);
 				testGetOtherPointOfContactsBySampleId(id);
 				testGetPrimaryPointOfContactBySampleId(id);
+				testGetCharacterizationsBySampleIdByCQLQuery(id);
+				testGetCompositionBySampleIdByCQLQuery(id);
+				
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting Sample for id=" + id + ": "
@@ -1200,7 +1203,7 @@ public class GridClientTest {
 						+ sampleId);
 	}
 
-	public void testGetSampleIds() {
+	public void testGetSampleIds(int index) {
 		try {
 			String[] sampleIds = gridClient.getSampleIds("", "", null, null,
 					null, null, null);
@@ -1209,10 +1212,14 @@ public class GridClientTest {
 							+ "For every sample, test get Publication, keywords, primary contact and other contact.");
 			builder.append("Testing getSampleIds operation.... \n"
 					+ "For every sample, test get Publication, keywords, primary contact and other contact." + "\n");
-			
-			for (String id : sampleIds) {
+			int originalIndex = index;
+			while(index <= sampleIds.length){
+				//get the sample at location index
+				String id = sampleIds[index];
 				testSample(id);
-			}
+				index = index + originalIndex;
+				//System.out.println("index = " + index);
+			}			
 		} catch (Exception e) {
 			System.out.println("Exception getting SampleIds: " + e);
 			builder.append("Exception getting SampleIds: " + e + "\n");
@@ -1220,7 +1227,7 @@ public class GridClientTest {
 		System.out.println("\nFinished testing samples.... \n");
 	}
 	
-	public void testCharacterizationAndCompositionBySampleIds() {
+	/*public void testCharacterizationAndCompositionBySampleIds(int index) {
 		try {
 			String[] sampleIds = gridClient.getSampleIds("", "", null, null,
 					null, null, null);
@@ -1230,6 +1237,15 @@ public class GridClientTest {
 			builder.append("Testing getSampleIds operation.... \n"
 					+ "For every sample, test get Publication, keywords, primary contact and other contact." + "\n");
 			
+			int originalIndex = index;
+			while(index <= sampleIds.length){
+				//get the sample at location index
+				String id = sampleIds[index];
+				testGetCharacterizationsBySampleIdByCQLQuery(id);
+				testGetCompositionBySampleIdByCQLQuery(id);
+				index = index + originalIndex;
+				System.out.println("index = " + index);
+			}
 			for (String id : sampleIds) {
 				testGetCharacterizationsBySampleIdByCQLQuery(id);
 				testGetCompositionBySampleIdByCQLQuery(id);
@@ -1239,7 +1255,7 @@ public class GridClientTest {
 			builder.append("Exception getting SampleIds: " + e + "\n");
 		}
 		System.out.println("\nFinished testing samples.... \n");
-	}
+	}*/
 
 
 	public void testGetCharacterizationsBySampleIdByCQLQuery(String id) {
@@ -1722,7 +1738,7 @@ public class GridClientTest {
 		}
 	}
 
-	public void testGetPublicationIdsBy() {
+	public void testGetPublicationIdsBy(int index) {
 		try {
 			String[] pubIds = gridClient.getPublicationIdsBy("", "", "", null,
 					null, null, null, null, null, null, null);
@@ -1731,11 +1747,15 @@ public class GridClientTest {
 			builder.append("Testing getPublicationIdsBy operation.... \n "
 					+ "For every publication, test Publication" + "\n");
 			if (pubIds != null) {
-				for (String id : pubIds) {
-					if (id != null) {
-						testPublication(id);
-					}
+				int originalIndex = index;
+				while(index <= pubIds.length){
+					//get the sample at location index
+					String id = pubIds[index];
+					testPublication(id);
+					index = index + originalIndex;
+					//System.out.println("index = " + index);
 				}
+				
 			}
 		} catch (Exception e) {
 			System.out.println("Exception getting PublicationIds: " + e);
@@ -1852,19 +1872,19 @@ public class GridClientTest {
 	public static void main(String[] args) {
 		System.out.println("Running the Grid Service Client");
 		try {
-			if (!(args.length < 2)) {
+			if (!(args.length < 3)) {
 				if (args[0].equals("-url")) {
 					CaNanoLabServiceClient client = new CaNanoLabServiceClient(
 							args[1]);
+					int index = Integer.parseInt(args[2]);
 
 					GridClientTest test = new GridClientTest(client);
 					System.out.println(new Date());
 					long start = System.currentTimeMillis();
 					test.builder.append("Start time: " + new Date() + "\n" );
-					test.testGetSampleIds();
-					//test.testCharacterizationAndCompositionBySampleIds();					
-					//test.testGetPublicationIdsBy();
-					//test.testGetAllProtocolsByCQLQuery();
+					test.testGetSampleIds(index);					
+					test.testGetPublicationIdsBy(index);
+					test.testGetAllProtocolsByCQLQuery();
 					System.out.println(new Date());
 					long end = System.currentTimeMillis();
 					test.builder.append("End time: " + new Date()+ "\n"  );
@@ -1873,9 +1893,6 @@ public class GridClientTest {
 					// test.testGetPrimaryPointOfContactBySampleId("10354688");
 					// test.testGetCompositionBySampleIdByCQLQuery("9142300");
 					// test.testGetPrimaryPointOfContactBySampleId("10354688");
-
-					// test.testGetSampleIds();
-					// 
 					// // test.testGetAllCharacterizationByCQLQuery();					//
 					// // these methods user can plug in any parameter
 					// test.testGetFindingsByCharacterizationId("3932251");
