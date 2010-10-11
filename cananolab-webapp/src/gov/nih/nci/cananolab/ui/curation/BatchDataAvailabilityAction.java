@@ -105,11 +105,11 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 		// check how many samples to run, if less than the CUT_OFF_NUM_SAMPLES,
 		// we don't have to run batch in a separate thread
 		if (sampleIdsToRun.size() < CUT_OFF_NUM_SAMPLES) {
-			int i = 0;
+			int failures = 0;
 			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION1)
 					|| option
 							.equals(BatchDataAvailabilityProcess.BATCH_OPTION2)) {
-				i = dataAvailabilityService.saveBatchDataAvailability(
+				failures = dataAvailabilityService.saveBatchDataAvailability(
 						sampleIdsToRun, securityService);
 				ActionMessage msg = new ActionMessage(
 						"message.batchDataAvailability.generate.success",
@@ -117,16 +117,16 @@ public class BatchDataAvailabilityAction extends AbstractDispatchAction {
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			}
 			if (option.equals(BatchDataAvailabilityProcess.BATCH_OPTION3)) {
-				i = dataAvailabilityService.deleteBatchDataAvailability(
+				failures = dataAvailabilityService.deleteBatchDataAvailability(
 						sampleIdsToRun, securityService);
 				ActionMessage msg = new ActionMessage(
 						"message.batchDataAvailability.delete.success",
-						sampleIdsToRun.size());
+						sampleIdsToRun.size() - failures);
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			}
-			if (i > 0) {
+			if (failures > 0) {
 				ActionMessage msg = new ActionMessage(
-						"message.batchDataAvailability.failed", i);
+						"message.batchDataAvailability.failed", failures);
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			}
 
