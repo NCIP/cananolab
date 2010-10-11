@@ -45,7 +45,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	private static Logger logger = Logger
 			.getLogger(OwnershipTransferServiceImpl.class);
 
-	private void transferOwner(SampleService sampleService,
+	private int transferOwner(SampleService sampleService,
 			List<String> sampleIds, String currentOwner,
 			Boolean currentOwnerIsCurator, String newOwner,
 			Boolean newOwnerIsCurator) throws AdministrationException,
@@ -57,48 +57,57 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				&& securityService.getUserBean().isAdmin()) {
 			throw new NoAccessException();
 		}
+		int i = 0;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			for (String sampleId : sampleIds) {
-				Sample domain = sampleService.findSampleById(sampleId, false)
-						.getDomain();
-				domain.setCreatedBy(newOwner);
-				SampleComposition sampleComposition = domain
-						.getSampleComposition();
-				Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
-				Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
-				Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
-				Collection<Characterization> characterization = new ArrayList<Characterization>();
-				this.assignAndRemoveAccessForSample(sampleService, domain,
-						currentOwner, currentOwnerIsCurator, newOwner,
-						newOwnerIsCurator);
-				if (sampleComposition != null) {
-					chemicalAssociation = sampleComposition
-							.getChemicalAssociationCollection();
-					functionalizingEntity = sampleComposition
-							.getFunctionalizingEntityCollection();
-					nanomaterialEntity = sampleComposition
-							.getNanomaterialEntityCollection();
-					characterization = domain.getCharacterizationCollection();
+				try {
+					Sample domain = sampleService.findSampleById(sampleId,
+							false).getDomain();
+					domain.setCreatedBy(newOwner);
+					SampleComposition sampleComposition = domain
+							.getSampleComposition();
+					Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
+					Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
+					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
+					Collection<Characterization> characterization = new ArrayList<Characterization>();
+					this.assignAndRemoveAccessForSample(sampleService, domain,
+							currentOwner, currentOwnerIsCurator, newOwner,
+							newOwnerIsCurator);
+					if (sampleComposition != null) {
+						chemicalAssociation = sampleComposition
+								.getChemicalAssociationCollection();
+						functionalizingEntity = sampleComposition
+								.getFunctionalizingEntityCollection();
+						nanomaterialEntity = sampleComposition
+								.getNanomaterialEntityCollection();
+						characterization = domain
+								.getCharacterizationCollection();
 
-					for (ChemicalAssociation ca : chemicalAssociation) {
-						ca.setCreatedBy(newOwner);
-						appService.saveOrUpdate(ca);
-					}
-					for (FunctionalizingEntity fe : functionalizingEntity) {
-						fe.setCreatedBy(newOwner);
-						appService.saveOrUpdate(fe);
-					}
-					for (NanomaterialEntity ne : nanomaterialEntity) {
-						ne.setCreatedBy(newOwner);
-						appService.saveOrUpdate(ne);
-					}
+						for (ChemicalAssociation ca : chemicalAssociation) {
+							ca.setCreatedBy(newOwner);
+							appService.saveOrUpdate(ca);
+						}
+						for (FunctionalizingEntity fe : functionalizingEntity) {
+							fe.setCreatedBy(newOwner);
+							appService.saveOrUpdate(fe);
+						}
+						for (NanomaterialEntity ne : nanomaterialEntity) {
+							ne.setCreatedBy(newOwner);
+							appService.saveOrUpdate(ne);
+						}
 
-					for (Characterization c : characterization) {
-						c.setCreatedBy(newOwner);
-						appService.saveOrUpdate(c);
+						for (Characterization c : characterization) {
+							c.setCreatedBy(newOwner);
+							appService.saveOrUpdate(c);
+						}
 					}
+				} catch (Exception e) {
+					i++;
+					String error = "Error transferring ownership for sample: "
+							+ sampleId;
+					logger.error(error, e);
 				}
 			}
 		} catch (Exception e) {
@@ -106,6 +115,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			logger.error(error, e);
 			throw new AdministrationException(error, e);
 		}
+		return i;
 	}
 
 	private AccessibilityBean[] assignAndRemoveAccess(BaseService service,
@@ -177,7 +187,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 	}
 
-	private void transferOwner(PublicationService publicationService,
+	private int transferOwner(PublicationService publicationService,
 			List<String> publicationIds, String currentOwner,
 			Boolean currentOwnerIsCurator, String newOwner,
 			Boolean newOwnerIsCurator) throws AdministrationException,
@@ -189,25 +199,34 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				&& securityService.getUserBean().isAdmin()) {
 			throw new NoAccessException();
 		}
+		int i = 0;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			PublicationServiceHelper helper = new PublicationServiceHelper(
 					securityService);
 			for (String publicationId : publicationIds) {
-				Publication publication = helper
-						.findPublicationById(publicationId);
-				publication.setCreatedBy(newOwner);
-				appService.saveOrUpdate(publication);
-				this.assignAndRemoveAccessForPublication(publicationService,
-						publication, currentOwner, currentOwnerIsCurator,
-						newOwner, newOwnerIsCurator);
+				try {
+					Publication publication = helper
+							.findPublicationById(publicationId);
+					publication.setCreatedBy(newOwner);
+					appService.saveOrUpdate(publication);
+					this.assignAndRemoveAccessForPublication(
+							publicationService, publication, currentOwner,
+							currentOwnerIsCurator, newOwner, newOwnerIsCurator);
+				} catch (Exception e) {
+					i++;
+					String error = "Error transferring ownership for publication: "
+							+ publicationId;
+					logger.error(error, e);
+				}
 			}
 		} catch (Exception e) {
 			String error = "Error transferring ownership for publications";
 			logger.error(error, e);
 			throw new AdministrationException(error, e);
 		}
+		return i;
 	}
 
 	private void assignAndRemoveAccessForPublication(
@@ -228,7 +247,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 	}
 
-	private void transferOwner(ProtocolService protocolService,
+	private int transferOwner(ProtocolService protocolService,
 			List<String> protocolIds, String currentOwner,
 			Boolean currentOwnerIsCurator, String newOwner,
 			Boolean newOwnerIsCurator) throws AdministrationException,
@@ -241,24 +260,33 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				&& securityService.getUserBean().isAdmin()) {
 			throw new NoAccessException();
 		}
+		int i = 0;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			ProtocolServiceHelper helper = new ProtocolServiceHelper(
 					securityService);
 			for (String protocolId : protocolIds) {
-				Protocol protocol = helper.findProtocolById(protocolId);
-				protocol.setCreatedBy(newOwner);
-				appService.saveOrUpdate(protocol);
-				this.assignAndRemoveAccessForProtocol(protocolService,
-						protocol, currentOwner, currentOwnerIsCurator,
-						newOwner, newOwnerIsCurator);
+				try {
+					Protocol protocol = helper.findProtocolById(protocolId);
+					protocol.setCreatedBy(newOwner);
+					appService.saveOrUpdate(protocol);
+					this.assignAndRemoveAccessForProtocol(protocolService,
+							protocol, currentOwner, currentOwnerIsCurator,
+							newOwner, newOwnerIsCurator);
+				} catch (Exception e) {
+					i++;
+					String error = "Error transferring ownership for protocol: "
+							+ protocolId;
+					logger.error(error, e);
+				}
 			}
 		} catch (Exception e) {
 			String error = "Error transferring ownership for protocols";
 			logger.error(error, e);
 			throw new AdministrationException(error, e);
 		}
+		return i;
 	}
 
 	private void assignAndRemoveAccessForProtocol(ProtocolService service,
@@ -279,7 +307,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 	}
 
-	private void transferOwner(CommunityService communityService,
+	private int transferOwner(CommunityService communityService,
 			List<String> collaborationGroupIds, String currentOwner,
 			String newOwner) throws AdministrationException, NoAccessException {
 		SecurityService securityService = ((CommunityServiceLocalImpl) communityService)
@@ -289,19 +317,29 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				&& securityService.getUserBean().isAdmin()) {
 			throw new NoAccessException();
 		}
+		int i = 0;
 		try {
 			for (String id : collaborationGroupIds) {
-				communityService.assignOwner(id, newOwner);
+				try {
+					communityService.assignOwner(id, newOwner);
+				} catch (Exception e) {
+					i++;
+					String error = "Error transferring ownership for collaboration group: "
+							+ id;
+					logger.error(error, e);
+				}
 			}
 		} catch (Exception e) {
 			String error = "Error changing the collaboration group owner";
 			throw new AdministrationException(error, e);
 		}
+		return i;
 	}
 
-	public void transferOwner(SecurityService securityService,
+	public int transferOwner(SecurityService securityService,
 			List<String> dataIds, String dataType, String currentOwner,
 			String newOwner) throws AdministrationException, NoAccessException {
+		int numFailures = 0;
 		try {
 			BaseService service = null;
 			if (dataType
@@ -320,13 +358,15 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				throw new AdministrationException(
 						"No such transfer data type is supported.");
 			}
-			this.transferOwner(service, dataIds, currentOwner, newOwner);
+			numFailures = this.transferOwner(service, dataIds, currentOwner,
+					newOwner);
 		} catch (Exception e) {
 			String error = "Error in transfering ownership for type "
 					+ dataType;
 			logger.error(error, e);
 			throw new AdministrationException(error, e);
 		}
+		return numFailures;
 	}
 
 	// replace the current owner userAccess userBean with new owner userBean
@@ -370,7 +410,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		return null;
 	}
 
-	public void transferOwner(BaseService dataService, List<String> dataIds,
+	public int transferOwner(BaseService dataService, List<String> dataIds,
 			String currentOwner, String newOwner)
 			throws AdministrationException, NoAccessException {
 		SecurityService securityService = ((BaseServiceLocalImpl) dataService)
@@ -384,26 +424,31 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		if (securityService.isCurator(newOwner)) {
 			newOwnerIsCurator = true;
 		}
+		int numFailures = 0;
 		if (dataService instanceof SampleService) {
 			SampleService sampleService = (SampleService) dataService;
-			this.transferOwner(sampleService, dataIds, currentOwner,
-					currentOwnerIsCurator, newOwner, newOwnerIsCurator);
+			numFailures = this.transferOwner(sampleService, dataIds,
+					currentOwner, currentOwnerIsCurator, newOwner,
+					newOwnerIsCurator);
 		} else if (dataService instanceof ProtocolService) {
 			ProtocolService protocolService = (ProtocolService) dataService;
-			this.transferOwner(protocolService, dataIds, currentOwner,
-					currentOwnerIsCurator, newOwner, newOwnerIsCurator);
+			numFailures = this.transferOwner(protocolService, dataIds,
+					currentOwner, currentOwnerIsCurator, newOwner,
+					newOwnerIsCurator);
 		} else if (dataService instanceof PublicationService) {
 			PublicationService publicationService = (PublicationService) dataService;
-			this.transferOwner(publicationService, dataIds, currentOwner,
-					currentOwnerIsCurator, newOwner, newOwnerIsCurator);
+			numFailures = this.transferOwner(publicationService, dataIds,
+					currentOwner, currentOwnerIsCurator, newOwner,
+					newOwnerIsCurator);
 		} else if (dataService instanceof CommunityService) {
 			CommunityService communityService = (CommunityService) dataService;
-			this.transferOwner(communityService, dataIds, currentOwner,
-					newOwner);
+			numFailures = this.transferOwner(communityService, dataIds,
+					currentOwner, newOwner);
 		} else {
 			throw new AdministrationException(
 					"Not a supported service for transferring ownership");
 		}
+		return numFailures;
 	}
 
 }
