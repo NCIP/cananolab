@@ -68,6 +68,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					domain.setCreatedBy(newOwner);
 					SampleComposition sampleComposition = domain
 							.getSampleComposition();
+					appService.saveOrUpdate(domain);
 					Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
 					Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
