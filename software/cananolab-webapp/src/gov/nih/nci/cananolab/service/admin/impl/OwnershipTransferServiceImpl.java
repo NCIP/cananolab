@@ -125,6 +125,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	private AccessibilityBean[] assignAndRemoveAccess(BaseService service,
 			String dataId, String currentOwner, Boolean currentOwnerIsCurator,
 			String newOwner, Boolean newOwnerIsCurator) throws Exception {
+		SecurityService securityService = ((BaseServiceLocalImpl) service)
+				.getSecurityService();
 		List<AccessibilityBean> userAccesses = service
 				.findUserAccessibilities(dataId);
 		List<AccessibilityBean> groupAccesses = service
@@ -144,8 +146,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 								currentOwner, newOwner);
 			} else {
 				assignRemoveAccesses[0] = this
-						.getNewUserAccessFromGroupAccesses(groupAccesses,
-								currentOwner, newOwner);
+						.getNewUserAccessFromGroupAccesses(securityService,
+								groupAccesses, currentOwner, newOwner);
 			}
 		}
 
@@ -187,7 +189,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		// remove
 		if (assignRemoveAccesses[1] != null) {
-			sampleService.removeAccessibility(assignRemoveAccesses[0], sample);
+			sampleService.removeAccessibility(assignRemoveAccesses[1], sample);
 		}
 	}
 
@@ -395,22 +397,35 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	// replace the current owner groupAccess userBean with new owner userBean
 	// when the loginName match
 	private AccessibilityBean getNewUserAccessFromGroupAccesses(
+			SecurityService securityService,
 			List<AccessibilityBean> groupAccesses, String currentOwner,
-			String newOwner) {
+			String newOwner) throws Exception {
+		String newRoleName = null;
 		for (AccessibilityBean access : groupAccesses) {
-			if (!access.getGroupName().equals(
-					AccessibilityBean.CSM_PUBLIC_GROUP)) {
-				UserBean currentOwnerBean = access.getUserBean();
-				if (currentOwnerBean.getLoginName().equals(currentOwner)) {
-					UserBean newOwnerBean = new UserBean(newOwner);
-					AccessibilityBean newAccess = new AccessibilityBean();
-					newAccess.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
-					newAccess.setRoleName(access.getRoleName());
-					newAccess.setUserBean(newOwnerBean);
-					return newAccess;
+			String groupName = access.getGroupName();
+			if (!groupName.equals(AccessibilityBean.CSM_PUBLIC_GROUP)) {
+				// check if currentOwner a member of the group, if yes obtain
+				// the role. If role is CURD, break, otherwise continue
+				if (securityService.isUserInGroup(currentOwner, groupName)) {
+					String roleName = access.getRoleName();
+					if (roleName.equals(AccessibilityBean.CSM_CURD_ROLE)) {
+						newRoleName = roleName;
+						break;
+					} else {
+						newRoleName = roleName;
+					}
 				}
 			}
 		}
+		if (newRoleName != null) {
+			UserBean newOwnerBean = new UserBean(newOwner);
+			AccessibilityBean newAccess = new AccessibilityBean();
+			newAccess.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
+			newAccess.setRoleName(newRoleName);
+			newAccess.setUserBean(newOwnerBean);
+			return newAccess;
+		}
+
 		return null;
 	}
 
@@ -454,5 +469,4 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		return numFailures;
 	}
-
 }
