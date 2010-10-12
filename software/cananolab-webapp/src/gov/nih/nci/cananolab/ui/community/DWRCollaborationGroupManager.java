@@ -71,9 +71,17 @@ public class DWRCollaborationGroupManager {
 		CollaborationGroupBean group = (CollaborationGroupBean) (collaborationGroupForm
 				.get("group"));
 		// check whether user is a valid user
+		getService();
 		String userLogin = userAccess.getUserBean().getLoginName();
+		CollaborationGroupBean bogusGroup=new CollaborationGroupBean();
 		if (!securityService.isUserValid(userLogin)) {
-			group.setDescription("invalid user");
+			bogusGroup.setName("!!invalid user");
+			return bogusGroup;
+		}
+		// if the user is already a curator, don't add the user
+		else if (securityService.isCurator(userLogin)) {
+			bogusGroup.setName("!!user is a curator");
+			return bogusGroup;
 		}
 		group.addUserAccess(userAccess);
 		return group;
