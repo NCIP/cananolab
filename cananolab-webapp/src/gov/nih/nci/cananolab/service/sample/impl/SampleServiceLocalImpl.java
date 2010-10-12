@@ -925,12 +925,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void assignAccessibility(AccessibilityBean access, Sample sample)
 			throws SampleException, NoAccessException {
-		if (!isUserOwner(sample.getCreatedBy())) {
+		if (!isOwnerByCreatedBy(sample.getCreatedBy())) {
 			throw new NoAccessException();
 		}
 		String sampleId = sample.getId().toString();
 		try {
-			if (!isUserOwner(sample.getCreatedBy())) {
+			if (!isOwnerByCreatedBy(sample.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// get existing accessibilities
@@ -1004,7 +1004,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void removeAccessibility(AccessibilityBean access, Sample sample)
 			throws SampleException, NoAccessException {
-		if (!isUserOwner(sample.getCreatedBy())) {
+		if (!isOwnerByCreatedBy(sample.getCreatedBy())) {
 			throw new NoAccessException();
 		}
 		String sampleId = sample.getId().toString();

@@ -287,7 +287,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void assignAccessibility(AccessibilityBean access, Protocol protocol)
 			throws ProtocolException, NoAccessException {
-		if (!isUserOwner(protocol.getCreatedBy())) {
+		if (!isOwnerByCreatedBy(protocol.getCreatedBy())) {
 			throw new NoAccessException();
 		}
 		try {
@@ -345,7 +345,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public void removeAccessibility(AccessibilityBean access, Protocol protocol)
 			throws ProtocolException, NoAccessException {
-		if (!isUserOwner(protocol.getCreatedBy())) {
+		if (!isOwnerByCreatedBy(protocol.getCreatedBy())) {
 			throw new NoAccessException();
 		}
 		try {

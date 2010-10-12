@@ -698,7 +698,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignAccesses(ComposingElement composingElement)
 			throws CompositionException, NoAccessException {
 		try {
-			if (!isUserOwner(composingElement.getCreatedBy())) {
+			if (!isOwnerByCreatedBy(composingElement.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// find sample accesses, already contains owner for composing
@@ -744,7 +744,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignAccesses(Function function)
 			throws CompositionException, NoAccessException {
 		try {
-			if (!isUserOwner(function.getCreatedBy())) {
+			if (!isOwnerByCreatedBy(function.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// find sample accesses
@@ -788,7 +788,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignAccessibility(ChemicalAssociation assoc)
 			throws CompositionException, NoAccessException {
 		try {
-			if (!isUserOwner(assoc.getCreatedBy())) {
+			if (!isOwnerByCreatedBy(assoc.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// find sample accesses
@@ -811,7 +811,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignAccesses(SampleComposition comp, File file)
 			throws CompositionException, NoAccessException {
 		try {
-			if (!isUserOwner(file.getCreatedBy())) {
+			if (!isOwnerByCreatedBy(file.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// TODO check if file is in the comp fileCollection
