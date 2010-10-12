@@ -68,12 +68,11 @@ function populateUserAccesses(groupOwner) {
 			numberOfUserAccesses++;
 		}
 		userAccessCache[id] = userAccess;
-		//hide edit link
-		if (userAccess.userBean.loginName==groupOwner) {
-			hide("edit"+id);
-		}
-		else {
-			show("edit"+id);
+		// hide edit link
+		if (userAccess.userBean.loginName == groupOwner) {
+			hide("edit" + id);
+		} else {
+			show("edit" + id);
 		}
 	}
 	if (userAccesses.length > 0) {
@@ -112,17 +111,24 @@ function addUserAccess() {
 
 	dwr.util.getValues(userAccess);
 	if (userAccess.userBean.loginName != "" && userAccess.roleName != "") {
-		CollaborationGroupManager.addUserAccess(userAccess, function(group) {
-			if (group == null) {
-				sessionTimeout();
-			}
-			if (group.description="invalid user") {
-				alert("User login name is invalid.  Please enter/select a valid user name.");
-				return false;
-			}
-			currentGroup = group;
-		});
-		window.setTimeout("populateUserAccesses('"+currentGroup.ownerName+"')", 200);
+		CollaborationGroupManager
+				.addUserAccess(
+						userAccess,
+						function(group) {
+							if (group == null) {
+								sessionTimeout();
+							}
+							if (group.name == "!!invalid user") {
+								alert("The entered user login name is invalid. ");
+								return false;
+							} else if (group.name == "!!user is a curator") {
+								alert("The entered user is a curator.  Curators already have full access to all data.");
+								return false;
+							}
+							currentGroup = group;
+						});
+		window.setTimeout("populateUserAccesses('" + currentGroup.ownerName
+				+ "')", 200);
 		return true;
 	} else {
 		alert("Please fill in both fields.");
@@ -175,13 +181,13 @@ function showMatchedUserDropdown() {
 	hide("cancelBrowse");
 	var selected = dwr.util.getValue("matchedUserNameSelect");
 	var loginName = dwr.util.getValue("userBean.loginName");
-	if (currentGroup.ownerName==null) {
-		ownerName=""
+	if (currentGroup.ownerName == null) {
+		ownerName = ""
+	} else {
+		ownerName = currentGroup.ownerName;
 	}
-	else {
-		ownerName=currentGroup.ownerName;
-	}
-	CollaborationGroupManager.getMatchedUsers(ownerName, loginName, function(data) {
+	CollaborationGroupManager.getMatchedUsers(ownerName, loginName, function(
+			data) {
 		dwr.util.removeAllOptions("matchedUserNameSelect");
 		dwr.util.addOptions("matchedUserNameSelect", data, "loginName",
 				"fullName");
