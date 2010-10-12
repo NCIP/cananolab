@@ -84,24 +84,26 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				doGroup.setGroupDesc(collaborationGroup.getDescription());
 				authManager.createGroup(doGroup);
 				collaborationGroup.setId(doGroup.getGroupId().toString());
-				// assign CURD access to user who created the group
-				AccessibilityBean ownerAccess = new AccessibilityBean(
-						AccessibilityBean.ACCESS_BY_USER);
-				ownerAccess.setUserBean(user);
-				ownerAccess.setRoleName(AccessibilityBean.CSM_CURD_ROLE);
-				saveAccessibility(ownerAccess,
-						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ doGroup.getGroupId());
+				// assign CURD access to user who created the group if user is
+				// not curator
+				if (!user.isCurator()) {
+					AccessibilityBean ownerAccess = new AccessibilityBean(
+							AccessibilityBean.ACCESS_BY_USER);
+					ownerAccess.setUserBean(user);
+					ownerAccess.setRoleName(AccessibilityBean.CSM_CURD_ROLE);
+					saveAccessibility(ownerAccess,
+							AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+									+ doGroup.getGroupId());
+					collaborationGroup.getUserAccesses().add(ownerAccess);
+				}
 				// assign CURD access to Curator group
 				saveAccessibility(AccessibilityBean.CSM_DEFAULT_ACCESS,
 						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ doGroup.getGroupId());
-
 				// assign current user to be owner of the collaboration group
 				accessUtils.assignOwner(
 						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ doGroup.getGroupId(), user.getLoginName());
-				collaborationGroup.getUserAccesses().add(ownerAccess);
 				collaborationGroup.getGroupAccesses().add(
 						AccessibilityBean.CSM_DEFAULT_ACCESS);
 			}
@@ -161,9 +163,10 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (securityService
 					.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 							+ collaborationGroup.getId())) {
-				String[] userIds = new String[collaborationGroup
-						.getUserAccesses().size()];
-				int i = 0;
+				// if the current user is not a curator, he/she should already
+				// be in
+				// the userIds
+				List<String> userIds = new ArrayList<String>();
 				for (AccessibilityBean access : collaborationGroup
 						.getUserAccesses()) {
 					saveAccessibility(access,
@@ -172,18 +175,19 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 					User user = authManager.getUser(access.getUserBean()
 							.getLoginName());
 					String userId = user.getUserId().toString();
-					userIds[i] = userId;
-					i++;
+					userIds.add(userId);
 				}
-				// // add current user to the group if the current user is the
-				// // owner
-				// if (securityService
-				// .isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-				// + collaborationGroup.getId())) {
-				// userIds[i] = user.getUserId();
-				// }
+				// if the current user is a curator and is the owner
+				if (user.isCurator()
+						&& securityService
+								.isOwner(
+										user.getLoginName(),
+										AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+												+ collaborationGroup.getId())) {
+					userIds.add(user.getUserId().toString());
+				}
 				authManager.addUsersToGroup(doGroup.getGroupId().toString(),
-						userIds);
+						userIds.toArray(new String[0]));
 				// update userBean's associated group
 				if (!user.getGroupNames().contains(doGroup.getGroupName())) {
 					user.getGroupNames().add(doGroup.getGroupName());
@@ -241,6 +245,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			User user = authManager.getUser(ownerLogin);
 			authManager.addUsersToGroup(collaborationGroupId,
 					new String[] { user.getUserId().toString() });
+			//if ownerLogin is not a curator, save owner access
+			
 		} catch (Exception e) {
 			String error = "Error assigning an owner to the collaboration group by Id "
 					+ collaborationGroupId;
