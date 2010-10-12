@@ -144,7 +144,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				assignRemoveAccesses[0] = this
 						.getNewUserAccessFromUserAccesses(userAccesses,
 								currentOwner, newOwner);
-			} else {
+			}
+			if (assignRemoveAccesses[0]==null) {
 				assignRemoveAccesses[0] = this
 						.getNewUserAccessFromGroupAccesses(securityService,
 								groupAccesses, currentOwner, newOwner);
