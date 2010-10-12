@@ -52,7 +52,7 @@ public class BatchOwnershipTransferProcess extends LongRunningProcess {
 	 * Triggers the long running process.
 	 */
 	public void run() {
-		String message = "transfering ownership for data type: " + dataType;
+		String message = "transferring ownership for " + dataType.toLowerCase();
 		this.statusMessage = "Running " + message;
 		logger.info(statusMessage);
 		try {
@@ -66,8 +66,8 @@ public class BatchOwnershipTransferProcess extends LongRunningProcess {
 			long end = System.currentTimeMillis();
 			long duration = (end - start) / 1000;
 			int numSuccesses = dataIds.size() - numFailures;
-			this.statusMessage = "Completed " + message + "\" for "
-					+ numSuccesses + " out of " + dataIds.size() + " after "
+			this.statusMessage = "Completed transferring ownership for "
+					+ numSuccesses + " out of " + dataIds.size() + " "+ dataType.toLowerCase()+ " after "
 					+ duration + " seconds.";
 			logger.info(statusMessage);
 			this.complete = true;
