@@ -236,4 +236,8 @@ public class UserBean {
 	void setCurator(boolean curator) {
 		this.curator = curator;
 	}
+
+	void setGroupNames(SortedSet<String> groupNames) {
+		this.groupNames = groupNames;
+	}
 }
