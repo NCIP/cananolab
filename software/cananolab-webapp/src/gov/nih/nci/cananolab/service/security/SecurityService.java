@@ -112,6 +112,9 @@ public class SecurityService {
 				if (isCurator(user.getLoginName())) {
 					userBean.setCurator(true);
 				}
+				SortedSet<String> groupNames = this.getUserGroupNames(user
+						.getUserId().toString());
+				userBean.setGroupNames(groupNames);
 				return userBean;
 			} else {
 				throw new SecurityException("Invalid Credentials");
@@ -749,14 +752,15 @@ public class SecurityService {
 		return roleName;
 	}
 
-	public Boolean isOwner(String protectedData) throws SecurityException {
+	public Boolean isOwner(String loginName, String protectedData)
+			throws SecurityException {
 		Boolean isOwner = false;
 		try {
 			ProtectionElement pe = this.getProtectionElement(protectedData);
-			isOwner = authorizationManager.checkOwnership(userBean
-					.getLoginName(), pe.getObjectId());
+			isOwner = authorizationManager.checkOwnership(loginName, pe
+					.getObjectId());
 		} catch (Exception e) {
-			logger.error("Error in assigning an owner", e);
+			logger.error("Error in checking ownership", e);
 			throw new SecurityException();
 		}
 		return isOwner;
