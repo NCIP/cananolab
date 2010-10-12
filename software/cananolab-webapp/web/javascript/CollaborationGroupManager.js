@@ -116,6 +116,10 @@ function addUserAccess() {
 			if (group == null) {
 				sessionTimeout();
 			}
+			if (group.description="invalid user") {
+				alert("User login name is invalid.  Please enter/select a valid user name.");
+				return false;
+			}
 			currentGroup = group;
 		});
 		window.setTimeout("populateUserAccesses('"+currentGroup.ownerName+"')", 200);
