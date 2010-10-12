@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.community;
 
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.CollaborationGroupBean;
 import gov.nih.nci.cananolab.exception.CommunityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -28,4 +29,12 @@ public interface CommunityService extends BaseService {
 
 	public void assignOwner(String collaborationGroupId, String ownerLogin)
 			throws CommunityException, NoAccessException;
+
+	public void assignAccessibility(AccessibilityBean access,
+			String collaborationGroupId) throws CommunityException,
+			NoAccessException;
+
+	public void removeAccessibility(AccessibilityBean access,
+			String collaborationGroupId) throws CommunityException,
+			NoAccessException;
 }
