@@ -249,7 +249,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		// remove
 		if (assignRemoveAccesses[1] != null) {
-			service.removeAccessibility(assignRemoveAccesses[0], publication);
+			service.removeAccessibility(assignRemoveAccesses[1], publication);
 		}
 	}
 
@@ -309,7 +309,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		// remove
 		if (assignRemoveAccesses[1] != null) {
-			service.removeAccessibility(assignRemoveAccesses[0], protocol);
+			service.removeAccessibility(assignRemoveAccesses[1], protocol);
 		}
 	}
 
