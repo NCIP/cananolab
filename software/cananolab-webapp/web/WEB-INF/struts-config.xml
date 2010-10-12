@@ -75,7 +75,7 @@
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.securityException" path="canano.register"
 				type="gov.nih.nci.cananolab.exception.SecurityException" />
-			<forward name="success" path="/welcome.do" />
+			<forward name="success" path="home.message" />
 			<forward name="input" path="canano.register" />
 		</action>
 		<action path="/logout" scope="request"
@@ -159,4 +159,5 @@
 		<set-property property="contextConfigLocation"
 			value="/WEB-INF/classes/application-config-jdbc-client.xml" />
 	</plug-in>
+	
 </struts-config>
