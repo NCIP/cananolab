@@ -468,7 +468,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		return securityService;
 	}
 
-	public Boolean isUserOwner(String createdBy) {
+	public Boolean isOwnerByCreatedBy(String createdBy) {
 		// user is either a curator or the creator of the data
 		if (user != null
 				&& (user.getLoginName().equalsIgnoreCase(createdBy) || user

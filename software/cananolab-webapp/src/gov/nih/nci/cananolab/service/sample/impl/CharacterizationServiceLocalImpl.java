@@ -570,7 +570,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 	public void assignAccesses(Characterization achar, ExperimentConfig config)
 			throws CharacterizationException, NoAccessException {
 		try {
-			if (!isUserOwner(config.getCreatedBy())) {
+			if (!isOwnerByCreatedBy(config.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// find sample accesses, already contains owner for config
@@ -590,7 +590,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 	public void assignAccesses(Characterization achar, Finding finding)
 			throws CharacterizationException, NoAccessException {
 		try {
-			if (!isUserOwner(finding.getCreatedBy())) {
+			if (!isOwnerByCreatedBy(finding.getCreatedBy())) {
 				throw new NoAccessException();
 			}
 			// find sample accesses, already contains owner for finding

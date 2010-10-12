@@ -422,7 +422,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignAccessibility(AccessibilityBean access,
 			Publication publication) throws PublicationException,
 			NoAccessException {
-		if (!isUserOwner(publication.getCreatedBy())) {
+		if (!isOwnerByCreatedBy(publication.getCreatedBy())) {
 			throw new NoAccessException();
 		}
 		try {
@@ -486,7 +486,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void removeAccessibility(AccessibilityBean access,
 			Publication publication) throws PublicationException,
 			NoAccessException {
-		if (!isUserOwner(publication.getCreatedBy())) {
+		if (!isOwnerByCreatedBy(publication.getCreatedBy())) {
 			throw new NoAccessException();
 		}
 		try {
