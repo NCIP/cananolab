@@ -26,10 +26,11 @@ public class DWRCollaborationGroupManager {
 	private Logger logger = Logger
 			.getLogger(DWRCollaborationGroupManager.class);
 	private SecurityService securityService;
+
 	private CommunityService getService() throws Exception {
 		WebContext wctx = WebContextFactory.get();
-		securityService = (SecurityService) wctx.getSession()
-				.getAttribute("securityService");
+		securityService = (SecurityService) wctx.getSession().getAttribute(
+				"securityService");
 		service = new CommunityServiceLocalImpl(securityService);
 		return service;
 	}
@@ -69,6 +70,11 @@ public class DWRCollaborationGroupManager {
 		}
 		CollaborationGroupBean group = (CollaborationGroupBean) (collaborationGroupForm
 				.get("group"));
+		// check whether user is a valid user
+		String userLogin = userAccess.getUserBean().getLoginName();
+		if (!securityService.isUserValid(userLogin)) {
+			group.setDescription("invalid user");
+		}
 		group.addUserAccess(userAccess);
 		return group;
 	}
@@ -86,10 +92,10 @@ public class DWRCollaborationGroupManager {
 		return group;
 	}
 
-	public UserBean[] getMatchedUsers(String groupOwner, String searchStr) throws Exception {
+	public UserBean[] getMatchedUsers(String groupOwner, String searchStr)
+			throws Exception {
 		try {
-			List<UserBean> matchedUsers = getService().findUserBeans(
-					searchStr);
+			List<UserBean> matchedUsers = getService().findUserBeans(searchStr);
 			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
 			// remove current user from the list
 			WebContext wctx = WebContextFactory.get();
