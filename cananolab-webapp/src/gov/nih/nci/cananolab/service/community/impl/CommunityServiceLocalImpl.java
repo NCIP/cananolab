@@ -230,13 +230,17 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void assignOwner(String collaborationGroupId, String ownerLogin)
 			throws CommunityException, NoAccessException {
 		// user needs to be both curator and admin
-		if (user.isCurator() && user.isAdmin()) {
+		if (!(user.isCurator() && user.isAdmin())) {
 			throw new NoAccessException();
 		}
 		try {
 			this.accessUtils.assignOwner(
 					AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 							+ collaborationGroupId, ownerLogin);
+			// add new owner to the colloborationGroup
+			User user = authManager.getUser(ownerLogin);
+			authManager.addUsersToGroup(collaborationGroupId,
+					new String[] { user.getUserId().toString() });
 		} catch (Exception e) {
 			String error = "Error assigning an owner to the collaboration group by Id "
 					+ collaborationGroupId;
@@ -348,14 +352,10 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (Object obj : groups) {
 				Group group = (Group) obj;
 				String groupId = group.getGroupId().toString();
-				if (securityService
-						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+				if (securityService.isOwner(owner,
+						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ groupId)) {
 					groupIds.add(groupId);
-				} else {
-					String error = "User has no access to the collaboration group "
-							+ group.getGroupName();
-					logger.info(error);
 				}
 			}
 		} catch (Exception e) {
@@ -365,5 +365,49 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 
 		return groupIds;
+	}
+
+	public void assignAccessibility(AccessibilityBean access,
+			String collaborationGroupId) throws CommunityException,
+			NoAccessException {
+		try {
+			if (!user.isCurator()
+					&& !securityService.isOwner(user.getLoginName(),
+							AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+									+ collaborationGroupId)) {
+				throw new NoAccessException();
+			}
+			this.saveAccessibility(access,
+					AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+							+ collaborationGroupId);
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error assigning accessibility to collaboration group: "
+					+ collaborationGroupId;
+			throw new CommunityException(error, e);
+		}
+	}
+
+	public void removeAccessibility(AccessibilityBean access,
+			String collaborationGroupId) throws CommunityException,
+			NoAccessException {
+		try {
+			if (!user.isCurator()
+					&& !securityService.isOwner(user.getLoginName(),
+							AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+									+ collaborationGroupId)) {
+				throw new NoAccessException();
+			}
+			this.deleteAccessibility(access,
+					AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+							+ collaborationGroupId);
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error removing accessibility to collaboration group: "
+					+ collaborationGroupId;
+			throw new CommunityException(error, e);
+		}
 	}
 }
