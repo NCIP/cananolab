@@ -261,7 +261,6 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		SecurityService securityService = ((ProtocolServiceLocalImpl) protocolService)
 				.getSecurityService();
 		// user needs to be both curator and admin
-		// user needs to be both curator and admin
 		if (!(securityService.getUserBean().isCurator() && securityService
 				.getUserBean().isAdmin())) {
 			throw new NoAccessException();
@@ -315,7 +314,9 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 
 	private int transferOwner(CommunityService communityService,
 			List<String> collaborationGroupIds, String currentOwner,
-			String newOwner) throws AdministrationException, NoAccessException {
+			Boolean currentOwnerIsCurator, String newOwner,
+			Boolean newOwnerIsCurator) throws AdministrationException,
+			NoAccessException {
 		SecurityService securityService = ((CommunityServiceLocalImpl) communityService)
 				.getSecurityService();
 		// user needs to be both curator and admin
@@ -328,6 +329,23 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			for (String id : collaborationGroupIds) {
 				try {
 					communityService.assignOwner(id, newOwner);
+					AccessibilityBean[] assignRemoveAccesses = this
+							.assignAndRemoveAccess(
+									communityService,
+									AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+											+ id, currentOwner,
+									currentOwnerIsCurator, newOwner,
+									newOwnerIsCurator);
+					// assign
+					if (assignRemoveAccesses[0] != null) {
+						communityService.assignAccessibility(
+								assignRemoveAccesses[0], id);
+					}
+					// remove
+					if (assignRemoveAccesses[1] != null) {
+						communityService.removeAccessibility(
+								assignRemoveAccesses[1], id);
+					}
 				} catch (Exception e) {
 					i++;
 					String error = "Error transferring ownership for collaboration group: "
@@ -462,7 +480,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		} else if (dataService instanceof CommunityService) {
 			CommunityService communityService = (CommunityService) dataService;
 			numFailures = this.transferOwner(communityService, dataIds,
-					currentOwner, newOwner);
+					currentOwner, currentOwnerIsCurator, newOwner,
+					newOwnerIsCurator);
 		} else {
 			throw new AdministrationException(
 					"Not a supported service for transferring ownership");
