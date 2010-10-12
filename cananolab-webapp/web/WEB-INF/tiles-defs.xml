@@ -50,6 +50,10 @@
 		<put name="cananoContent" value="/bodyMessage.jsp" />
 		<put name="menu" value="home" />
 	</definition>
+	<definition name="home.message" extends="canano.base">
+		<put name="cananoContent" value="/bodyMessage.jsp" />
+		<put name="menu" value="home" />
+	</definition>
 	<definition name="canano.help" extends="canano.base">
 		<put name="cananoContent" value="/help/bodyOnlineHelp.jsp" />
 		<put name="menu" value="help" />
