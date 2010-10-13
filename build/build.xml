@@ -126,7 +126,7 @@
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 			<property name="lib.dir" location="${lib.dir}" />
-			<property name="admin.email" value="${admin.email}"/>
+			<property name="admin.email" value="${admin.email}" />
 			<property name="release.version" value="${release.version}" />
 			<property name="file.repository.dir" value="${file.repository.dir}" />
 		</ant>
@@ -226,7 +226,11 @@
 			<fileset dir="${common.dir}/resources/hibernate">
 				<include name="*.xml" />
 			</fileset>
-			<filterset refid="db.filterset" />
+			<filterset id="db.filterset">
+				<filter token="database.url" value="${database.url}" />
+				<filter token="database.user" value="${database.user}" />
+				<filter token="database.password" value="${database.password}" />
+			</filterset>
 		</copy>
 
 		<!-- replace hibernate.cfg.xml in caNanoLabSDK-orm.jar -->
