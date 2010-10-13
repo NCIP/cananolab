@@ -13,28 +13,45 @@
 	<property file="default.properties" />
 
 	<!-- Generic properties -->
+	<property name="ldap.authentication.enabled" value="false" />
 	<property name="database.type" value="mysql" />
 	<property name="jboss.server.dir" value="${jboss.server.dir}" />
 	<property name="jboss.conf.dir" value="${jboss.server.dir}/conf" />
 	<property name="jboss.deploy.dir" value="${jboss.server.dir}/deploy" />
 	<property name="jboss.lib.dir" value="${jboss.server.dir}/lib" />
 
-	<property name="env.name" value="local" />
 	<property name="log.dir" location="${basedir}/logs" />
 
 	<target name="dist:cananolab-webapp:resources">
-		<!--copy csm related configuration files and replace database connection info-->
-		<copy overwrite="true" todir="${common.dist.dir}" filtering="true">
-			<fileset dir="${common.dir}/resources/jboss-conf">
-				<include name="*.xml" />
-			</fileset>
-			<filterset>
+		<!--copy mysql-ds.xml and replace database connection info-->
+		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml" file="${common.dir}/resources/jboss-conf/mysql-ds.xml">
+			<!-- replace tokens with values from build properties -->
+			<filterset id="db.filterset">
 				<filter token="database.url" value="${database.url}" />
 				<filter token="database.user" value="${database.user}" />
 				<filter token="database.password" value="${database.password}" />
 			</filterset>
 		</copy>
-
+		<if>
+			<!--if use LDAP authentication, replace ldap tokens from build properties -->
+			<equals arg1="${ldap.authentication.enabled}" arg2="true" />
+			<then>
+				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml" file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">
+					<filterset>
+						<filter token="ldap.host.url" value="${ldap.host.url}" />
+						<filter token="ldap.searchable.base" value="${ldap.searchable.base}" />
+						<filter token="ldap.userId.label" value="${ldap.userId.label}" />
+					</filterset>
+				</copy>
+			</then>
+			<!--if use database authentication, replace database tokens from build properties -->
+			<else>
+				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml" file="${common.dir}/resources/jboss-conf/login-config-db.xml">
+					<!-- replace tokens with values from build properties -->
+					<filterset refid="db.filterset" />
+				</copy>
+			</else>
+		</if>
 		<!--copy upt.war -->
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/upt.war" />
 
