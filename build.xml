@@ -295,6 +295,7 @@
 			<property name="database.system.user" value="${database.system.user}" />
 			<property name="database.system.password" value="${database.system.password}" />
 		</ant>
+		<antcall target="update:cananolab-db:ldap:upt:superadmin" />
 	</target>
 
 	<target name="update:cananolab-db">
@@ -305,6 +306,23 @@
 		<property name="database.system.user" value="${database.system.user}" />
 		<property name="database.system.password" value="${database.system.password}" />
 		<property name="release.version" value="${release.version}" />
+		<antcall target="update:cananolab-db:ldap:upt:superadmin" />
+	</target>
+
+	<target name="update:cananolab-db:ldap:upt:superadmin">
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="update:ldap:upt:superadmin" dir="${cananolab-db.base.dir}">
+			<property name="dist.dir" value="${cananolab-db.dist.dir}" />
+			<property name="database.server" value="${database.server}" />
+			<property name="database.port" value="${database.port}" />
+			<property name="database.user" value="${database.user}" />
+			<property name="database.password" value="${database.port}" />
+			<property name="database.system.user" value="${database.system.user}" />
+			<property name="database.system.password" value="${database.system.password}" />
+			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
+			<property name="superadmin.login.name" value="${superadmin.login.name}" />
+			<property name="superadmin.first.name" value="${superadmin.first.name}" />
+			<property name="superadmin.last.name" value="${superadmin.last.name}" />
+		</ant>
 	</target>
 
 	<target name="dist:all" description="Builds all the sub projects, putting artifacts in the project level target directory, and distribute targets to make distributions" depends="dist:cananolab-webapp, dist:cananolab-grid">
