@@ -112,8 +112,9 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(charObj.designMethodsDescription)}">
+					<c:set var="designMethodsDesc" value="${fn:replace(charObj.designMethodsDescription, '<', '&lt;')}" />
 					<c:out
-						value="${fn:replace(charObj.designMethodsDescription, cr, '<br>')}"
+						value="${fn:replace(designMethodsDesc, cr, '<br>')}"
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
