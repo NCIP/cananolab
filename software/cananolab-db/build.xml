@@ -34,6 +34,11 @@
 	<target name="init" description="initialize target and dist directories">
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${lib.dir}" />
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<classpath>
+				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+			</classpath>
+		</taskdef>
 	</target>
 
 	<filterset id="db.filterset">
@@ -83,7 +88,7 @@
 
 	<target name="sync:update" depends="clean, init, prepare:changelog">
 		<!-- sync change log -->
-		<antcall target="sync:changelog"/>
+		<antcall target="sync:changelog" />
 		<!-- update database -->
 		<antcall target="update" />
 	</target>
@@ -102,5 +107,26 @@
 		</copy>
 		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
 		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+	</target>
+
+	<target name="update:ldap:upt:superadmin" depends="clean, init, prepare:changelog">
+		<if>
+			<!--if use LDAP authentication, replace ldap tokens from build properties -->
+			<equals arg1="${ldap.authentication.enabled}" arg2="true" />
+			<then>
+				<!-- replace tokens in create_database_and_user.sql with user info -->
+				<copy overwrite="true" todir="${dist.dir}" filtering="true">
+					<fileset dir="${src.dir}">
+						<include name="update_superadmin_for_ldap.sql" />
+					</fileset>
+					<filterset>
+						<filter token="superadmin.login.name" value="${superadmin.login.name}" />
+						<filter token="superadmin.first.name" value="${superadmin.first.name}" />
+						<filter token="superadmin.last.name" value="${superadmin.last.name}" />
+					</filterset>
+				</copy>
+				<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/update_superadmin_for_ldap.sql" classpathref="liquibase.dependencies.path" />
+			</then>
+		</if>
 	</target>
 </project>
