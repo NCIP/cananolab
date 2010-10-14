@@ -7,10 +7,15 @@
 
 	<!-- Property file related properties and tasks -->
 	<property environment="env" />
-	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. Typically properties that are related to the distribution directories, or files. -->
+
+	<!-- any properties to overwrite project.properties -->
 	<property file="local.properties" />
+	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. Typically properties that are related to the distribution directories, or files. -->
+	<property file="project.properties" />
+	<!-- load tier specific properties if tier is defined-->
+	<property file="${tier}.properties" />
 	<property file="deploy.properties" />
-	<!-- Default properties if not in local.properties and deploy.properties-->
+	<!-- Default properties if not in tier.properties or deploy.properties-->
 	<property file="default.properties" />
 
 	<property name="build.dir" location="." />
@@ -51,6 +56,14 @@
 	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
 	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
 	<property name="cananolab-app.dist.dir" location="${dist.exploded.dir}/cananolab-app" />
+
+	<!-- Paths -->
+	<path id="common.classpath">
+		<fileset dir="${common.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
 
 	<condition property="application.base.path" value="${application.base.path.linux}">
 		<or>
@@ -110,12 +123,6 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
-
-		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-			<classpath>
-				<pathelement location="${common.dir}/lib/ant-contrib-1.0b3.jar" />
-			</classpath>
-		</taskdef>
 	</target>
 
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="build:cananolab-webapp, build:cananolab-grid">
