@@ -7,9 +7,23 @@
 
 	<!-- Properties file related properties and tasks -->
 	<property environment="env" />
+	<!-- properties to overwrite any defined in other properties file-->
 	<property file="local.properties" />
-	<property file="deploy.properties" />
-	<!-- Default properties if not in local.properties and deploy.properties-->
+	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. -->
+	<property file="project.properties" />
+	<if>
+		<isset property="tier" />
+		<then>
+			<!-- if tier is defined, load tier specific properties for tier based installation -->
+			<property file="${tier}.properties" />
+			<echo message="loaded ${tier} tier properties."/>
+		</then>
+		<else>
+			<!-- load properties for non-tiered installation -->
+			<property file="deploy.properties" />
+		</else>
+	</if>
+	<!-- Default properties if not in tier.properties or deploy.properties-->
 	<property file="default.properties" />
 
 	<!-- Generic properties -->
