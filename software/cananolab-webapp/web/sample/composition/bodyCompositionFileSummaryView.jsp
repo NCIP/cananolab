@@ -67,10 +67,10 @@
 												Keywords
 											</td>
 											<td>
-
-												<c:out value="${fn:replace(file.keywordsStr, cr, '<br>')}"
+												<c:set var="keywordsStr" value="${fn:replace(file.keywordsStr, '<', '&lt;')}" />
+												<c:out
+													value="${fn:replace(keywordsStr, cr, '<br>')}"
 													escapeXml="false" />
-
 											</td>
 										</tr>
 									</c:if>
@@ -80,9 +80,9 @@
 												Description
 											</td>
 											<td>
-
+												<c:set var="desc" value="${fn:replace(file.domainFile.description, '<', '&lt;')}" />
 												<c:out
-													value="${fn:replace(file.domainFile.description, cr, '<br>')}"
+													value="${fn:replace(desc, cr, '<br>')}"
 													escapeXml="false" />
 											</td>
 										</tr>

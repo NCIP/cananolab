@@ -23,7 +23,9 @@
 				Description
 			</td>
 			<td>
-				<c:out value="${fn:replace(assoc.description, cr, '<br>')}"
+				<c:set var="desc" value="${fn:replace(assoc.description, '<', '&lt;')}" />
+				<c:out
+					value="${fn:replace(desc, cr, '<br>')}"
 					escapeXml="false" />
 			</td>
 		</tr>
