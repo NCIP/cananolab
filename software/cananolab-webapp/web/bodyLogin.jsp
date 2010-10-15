@@ -4,7 +4,7 @@
 
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Log into caNanoLab" />
-	<jsp:param name="topic" value="update_password_help" />
+	<jsp:param name="topic" value="welcome_login_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 
