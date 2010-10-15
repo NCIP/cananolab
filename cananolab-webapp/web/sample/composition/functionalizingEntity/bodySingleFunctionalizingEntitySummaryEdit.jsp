@@ -156,8 +156,9 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(functionalizingEntity.description)}">
+					<c:set var="desc" value="${fn:replace(functionalizingEntity.description, '<', '&lt;')}" />
 					<c:out
-						value="${fn:replace(functionalizingEntity.description, cr, '<br>')}"
+						value="${fn:replace(desc, cr, '<br>')}"
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A

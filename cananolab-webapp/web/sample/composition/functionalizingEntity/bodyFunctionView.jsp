@@ -50,8 +50,11 @@
 			</c:if>
 			<td>
 				<c:if test="${! empty function.description}">
-				${fn:replace(function.description, cr, "<br>")}
-			</c:if>
+					<c:set var="desc" value="${fn:replace(function.description, '<', '&lt;')}" />
+					<c:out
+						value="${fn:replace(desc, cr, '<br>')}"
+						escapeXml="false" />				
+				</c:if>
 			</td>
 			<c:if test="${edit eq 'true'}">
 				<td align="right">
