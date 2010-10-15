@@ -5,7 +5,7 @@
 	</description>
 
 	<property file="local.properties" />
-	<property file="default.properties" />
+	<property file="project.properties" />
 	<property file="build.properties" />
 	<property name="src.dir" location="${basedir}/src" />
 	<property name="webroot.dir" location="${basedir}/web" />
