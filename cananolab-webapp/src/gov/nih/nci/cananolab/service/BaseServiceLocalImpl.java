@@ -784,9 +784,11 @@ public class BaseServiceLocalImpl implements BaseService {
 			if (function != null) {
 				saveAccessibility(access, function.getId().toString());
 				if (function instanceof TargetingFunction) {
-					for (Target target : ((TargetingFunction) function)
-							.getTargetCollection()) {
-						saveAccessibility(access, target.getId().toString());
+					Collection<Target> targetCollection = ((TargetingFunction) function).getTargetCollection();
+					if(targetCollection != null){
+						for (Target target : targetCollection) {
+							saveAccessibility(access, target.getId().toString());
+						}
 					}
 				}
 			}
