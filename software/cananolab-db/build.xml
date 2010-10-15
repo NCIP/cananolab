@@ -8,8 +8,8 @@
 
 	<!-- Property file related properties and tasks -->
 	<property file="local.properties" />
+	<property file="project.properties" />
 	<property file="deploy.properties" />
-	<property file="default.properties" />
 
 	<property name="src.dir" location="${basedir}/sql/mysql" />
 	<property name="changelog.dir" location="${basedir}/changelog" />
@@ -26,6 +26,12 @@
 	<property name="database.system.password" value="${database.system.password}" />
 	<property name="release.version" value="${release.version}" />
 
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
 	<!-- Targets -->
 	<target name="clean">
 		<delete dir="${dist.dir}" />
@@ -34,11 +40,6 @@
 	<target name="init" description="initialize target and dist directories">
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${lib.dir}" />
-		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-			<classpath>
-				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
-			</classpath>
-		</taskdef>
 	</target>
 
 	<filterset id="db.filterset">
