@@ -311,7 +311,6 @@
 			<property name="database.system.user" value="${database.system.user}" />
 			<property name="database.system.password" value="${database.system.password}" />
 		</ant>
-		<antcall target="update:cananolab-db:ldap:upt:superadmin" />
 	</target>
 
 	<target name="update:cananolab-db">
@@ -322,7 +321,6 @@
 		<property name="database.system.user" value="${database.system.user}" />
 		<property name="database.system.password" value="${database.system.password}" />
 		<property name="release.version" value="${release.version}" />
-		<antcall target="update:cananolab-db:ldap:upt:superadmin" />
 	</target>
 
 	<target name="update:cananolab-db:ldap:upt:superadmin">
