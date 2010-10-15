@@ -117,8 +117,9 @@
 				Description
 			</td>
 			<td>
+				<c:set var="desc" value="${fn:replace(functionalizingEntity.description, '<', '&lt;')}" />
 				<c:out
-					value="${fn:replace(functionalizingEntity.description, cr, '<br>')}"
+					value="${fn:replace(desc, cr, '<br>')}"
 					escapeXml="false" />
 			</td>
 		</tr>
