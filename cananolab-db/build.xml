@@ -47,6 +47,7 @@
 	<!-- Targets -->
 	<target name="clean">
 		<delete dir="${dist.dir}" />
+		<delete dir="${lib.dir}" />
 	</target>
 
 	<target name="init" description="initialize target and dist directories">
@@ -71,11 +72,6 @@
 	</target>
 
 	<target name="sync:changelog" depends="prepare:changelog">
-		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-			<classpath>
-				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
-			</classpath>
-		</taskdef>
 		<copy overwrite="true" tofile="${dist.dir}/db-changelog-sync.xml" file="${changelog.dir}/db-upgrade.xml" />
 		<replaceregexp file="${dist.dir}/db-changelog-sync.xml" match=".+changelog/db-${release.version}.xml.+" replace="" byline="false" />
 		<changeLogSync changeLogFile="${dist.dir}/db-changelog-sync.xml" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" />
