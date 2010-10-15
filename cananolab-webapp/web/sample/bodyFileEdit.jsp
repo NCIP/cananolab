@@ -55,8 +55,10 @@
 			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(file.keywordsStr)}">
-						<c:out value="${fn:replace(file.keywordsStr, cr, '<br>')}"
-							escapeXml="false" />
+						<c:set var="keywordsStr" value="${fn:replace(file.keywordsStr, '<', '&lt;')}" />
+						<c:out
+							value="${fn:replace(keywordsStr, cr, '<br>')}"
+							escapeXml="false" />						
 					</c:when>
 					<c:otherwise>N/A
 												</c:otherwise>
@@ -65,8 +67,9 @@
 			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(file.domainFile.description)}">
+						<c:set var="desc" value="${fn:replace(file.domainFile.description, '<', '&lt;')}" />
 						<c:out
-							value="${fn:replace(file.domainFile.description, cr, '<br>')}"
+							value="${fn:replace(desc, cr, '<br>')}"
 							escapeXml="false" />
 					</c:when>
 					<c:otherwise>N/A
