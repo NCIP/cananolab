@@ -37,7 +37,9 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(assoc.description)}">
-					<c:out value="${fn:replace(assoc.description, cr, '<br>')}"
+					<c:set var="desc" value="${fn:replace(assoc.description, '<', '&lt;')}" />
+					<c:out
+						value="${fn:replace(desc, cr, '<br>')}"
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
