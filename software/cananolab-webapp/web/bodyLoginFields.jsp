@@ -1,10 +1,12 @@
 <tr>
 	<td class="sidebarTitle">
 		<a href="#" class="loginText" onClick="showhide('loginBlock');">Login</a>
-		&nbsp; &nbsp;
+		&nbsp;
+		<!--
 		<a href="#" class="loginText"
 			onClick="javascript:location.href='changePassword.jsp';">Update
 			Password</a>&nbsp;&nbsp;
+		-->
 		<a href="#" class="loginText"
 			onClick="javascript:location.href='register.jsp';">Register</a>&nbsp;&nbsp;
 		<a
