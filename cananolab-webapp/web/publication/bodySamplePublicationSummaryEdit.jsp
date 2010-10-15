@@ -178,8 +178,9 @@
 															<td>
 																<c:choose>
 																	<c:when test="${pubObj.description}">
+																		<c:set var="desc" value="${fn:replace(pubObj.deescription, '<', '&lt;')}" />
 																		<c:out
-																			value="${fn:replace(pubObj.description, cr, '<br>')}"
+																			value="${fn:replace(desc, cr, '<br>')}"
 																			escapeXml="false" />
 																&nbsp;</c:when>
 																	<c:otherwise>N/A</c:otherwise>
@@ -195,8 +196,9 @@
 															<td>
 																<c:choose>
 																	<c:when test="${pubBean.keywordsStr}">
+																		<c:set var="keywordsStr" value="${fn:replace(pubBean.keywordsStr, '<', '&lt;')}" />
 																		<c:out
-																			value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
+																			value="${fn:replace(keywordsStr, cr, '<br>')}"
 																			escapeXml="false" />
 																&nbsp;</c:when>
 																	<c:otherwise>N/A</c:otherwise>
