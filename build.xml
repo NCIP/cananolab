@@ -8,16 +8,6 @@
 	<!-- Property file related properties and tasks -->
 	<property environment="env" />
 
-	<!-- any properties to overwrite project.properties -->
-	<property file="local.properties" />
-	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. Typically properties that are related to the distribution directories, or files. -->
-	<property file="project.properties" />
-	<!-- load tier specific properties if tier is defined-->
-	<property file="${tier}.properties" />
-	<property file="deploy.properties" />
-	<!-- Default properties if not in tier.properties or deploy.properties-->
-	<property file="default.properties" />
-
 	<property name="build.dir" location="." />
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
@@ -27,6 +17,33 @@
 	<property name="dist.dir" location="${target.dir}/dist" />
 	<property name="temp.dir" location="${target.dir}/temp" />
 	<property name="download.dir" location="${target.dir}/download" />
+
+	<!-- Paths -->
+	<path id="common.classpath">
+		<fileset dir="${common.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
+
+	<!-- properties to overwrite any defined in other properties file-->
+	<property file="local.properties" />
+	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. -->
+	<property file="project.properties" />
+	<if>
+		<isset property="tier" />
+		<then>
+			<!-- if tier is defined, load tier specific properties for tier based installation -->
+			<property file="${tier}.properties" />
+			<echo message="loaded ${tier} tier properties." />
+		</then>
+		<else>
+			<!-- load properties for non-tiered installation -->
+			<property file="deploy.properties" />
+		</else>
+	</if>
+	<!-- Default properties if not in tier.properties or deploy.properties-->
+	<property file="default.properties" />
 
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
@@ -56,14 +73,6 @@
 	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
 	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
 	<property name="cananolab-app.dist.dir" location="${dist.exploded.dir}/cananolab-app" />
-
-	<!-- Paths -->
-	<path id="common.classpath">
-		<fileset dir="${common.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-	</path>
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
 
 	<condition property="application.base.path" value="${application.base.path.linux}">
 		<or>
