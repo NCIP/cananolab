@@ -20,8 +20,9 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(nanomaterialEntity.description)}">
+					<c:set var="desc" value="${fn:replace(nanomaterialEntity.description, '<', '&lt;')}" />
 					<c:out
-						value="${fn:replace(nanomaterialEntity.description, cr, '<br>')}"
+						value="${fn:replace(desc, cr, '<br>')}"
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A

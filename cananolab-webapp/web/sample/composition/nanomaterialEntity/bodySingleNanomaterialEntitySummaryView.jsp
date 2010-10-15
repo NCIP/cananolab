@@ -12,8 +12,9 @@
 				Description
 			</td>
 			<td>
+				<c:set var="desc" value="${fn:replace(nanomaterialEntity.description, '<', '&lt;')}" />
 				<c:out
-					value="${fn:replace(nanomaterialEntity.description, cr, '<br>')}"
+					value="${fn:replace(desc, cr, '<br>')}"
 					escapeXml="false" />
 			</td>
 		</tr>
