@@ -40,8 +40,9 @@
 					Description
 				</td>
 				<td>
+					<c:set var="desc" value="${fn:replace(composingElement.domain.description, '<', '&lt;')}" />
 					<c:out
-						value="${fn:replace(composingElement.domain.description, cr, '<br>')}"
+						value="${fn:replace(desc, cr, '<br>')}"
 						escapeXml="false" />
 				</td>
 			</tr>
