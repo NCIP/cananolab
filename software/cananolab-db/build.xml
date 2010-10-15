@@ -26,10 +26,22 @@
 	<property name="database.system.password" value="${database.system.password}" />
 	<property name="release.version" value="${release.version}" />
 
+	<!--set up liquibase required jars -->
+	<path id="liquibase.dependencies.path">
+		<fileset dir="${basedir}/lib">
+			<include name="liquibase-*.jar" />
+			<include name="mysql-connector*.jar" />
+			<include name="ant-contrib-1.0b3.jar" />
+		</fileset>
+		<pathelement path="${basedir}" />
+	</path>
+
+	<taskdef resource="liquibasetasks.properties">
+		<classpath refid="liquibase.dependencies.path" />
+	</taskdef>
+
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath>
-			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
-		</classpath>
+		<classpath refid="liquibase.dependencies.path" />
 	</taskdef>
 
 	<!-- Targets -->
@@ -56,20 +68,6 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
-
-		<!--set up liquibase required jars -->
-		<path id="liquibase.dependencies.path">
-			<fileset dir="${lib.dir}">
-				<include name="liquibase-*.jar" />
-				<include name="mysql-connector*.jar" />
-				<include name="ant-contrib-1.0b3.jar" />
-			</fileset>
-			<pathelement path="${basedir}" />
-		</path>
-
-		<taskdef resource="liquibasetasks.properties">
-			<classpath refid="liquibase.dependencies.path" />
-		</taskdef>
 	</target>
 
 	<target name="sync:changelog" depends="prepare:changelog">
@@ -85,6 +83,7 @@
 
 	<target name="update" depends="prepare:changelog">
 		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+		<antcall target="update:ldap:upt:superadmin" />
 	</target>
 
 	<target name="sync:update" depends="clean, init, prepare:changelog">
@@ -108,6 +107,7 @@
 		</copy>
 		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
 		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+		<antcall target="update:ldap:upt:superadmin" />
 	</target>
 
 	<target name="update:ldap:upt:superadmin" depends="clean, init, prepare:changelog">
