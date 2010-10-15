@@ -8,7 +8,8 @@ USE canano;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
 INSERT INTO csm_group(group_id, group_name, group_desc, update_date, application_id)
-VALUES (1, 'Public', 'caBIG and public', sysdate(), 2);
+VALUES (1, 'Public', 'caBIG and public', sysdate(), 2),
+	(2, 'Curator', 'caNanoLab curator group', sysdate(), 2);
 
 INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date)
 VALUES (1,1,3,sysdate()),
