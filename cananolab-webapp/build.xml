@@ -20,8 +20,15 @@
 	<property name="file.repository.dir" value="${file.repository.dir}" />
 	<property name="admin.email" value="${admin.email}" />
 
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${basedir}/lib/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
 	<target name="pre-clean">
 		<delete dir="${dist.dir}" />
+		<delete dir="${lib.dir}" />
 	</target>
 
 	<target name="post-clean">
@@ -105,12 +112,6 @@
 	</target>
 
 	<target name="war" depends="compile">
-		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-			<classpath>
-				<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar" />
-			</classpath>
-		</taskdef>
-
 		<!-- tag footer with release version and build tag -->
 		<property name="build_tag" value="dev" />
 		<propertyregex override="true" property="build_tag" input="${build.tag}" regexp="\$HeadURL\: .*/cananolab/tags/([^/]*)/.*" select="\1" />
