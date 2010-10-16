@@ -1,12 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.service.BaseService;
-import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.SecurityServiceProvider;
-import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.cananolab.service.CSMCleanupJob;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -39,7 +33,7 @@ public class SchedulerPlugin implements PlugIn {
 
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
-		System.out.println("Initializing Scheduler Plugin for Jobs...");
+		logger.info("Initializing Scheduler Plugin for Jobs...");
 		ServletContext context = actionServlet.getServletContext();
 		// Retrieve the factory from the ServletContext.
 		// It will be put there by the Quartz Servlet
@@ -112,14 +106,8 @@ public class SchedulerPlugin implements PlugIn {
 				intervalInMinutes = DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
 			}
 
-			AuthorizationManager authManager = SecurityServiceProvider
-					.getAuthorizationManager(AccessibilityBean.CSM_APP_NAME);
-			User adminUser = authManager.getUser("admin");
-			BaseService service = new BaseServiceLocalImpl(new UserBean(
-					adminUser));
 			JobDetail jobDetail = new JobDetail("CSMCleanupJob", null,
 					CSMCleanupJob.class);
-			jobDetail.getJobDataMap().put("csmCleanupService", service);
 			Trigger trigger = TriggerUtils.makeMinutelyTrigger(
 					"CSMCleanupJobTrigger", intervalInMinutes,
 					SimpleTrigger.REPEAT_INDEFINITELY);
