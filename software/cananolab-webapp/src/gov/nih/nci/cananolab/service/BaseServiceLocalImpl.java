@@ -497,16 +497,6 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
-	void packageRemoveAllAccesses(String protectedData) throws SecurityException {
-		try {
-			accessUtils.removeCSMEntries(protectedData);
-		} catch (Exception e) {
-			String error = "Error in remove all access";
-			throw new SecurityException(error, e);
-		}
-
-	}
-
 	protected List<AccessibilityBean> findSampleAccesses(String sampleId)
 			throws Exception {
 		List<AccessibilityBean> accesses = new ArrayList<AccessibilityBean>();
