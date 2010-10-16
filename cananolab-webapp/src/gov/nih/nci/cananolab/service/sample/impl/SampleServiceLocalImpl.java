@@ -264,7 +264,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	/**
 	 *
 	 * @param nanomaterialEntityClassNames
-	 * @param otherNanomaterialEntityTypes
 	 * @param functionalizingEntityClassNames
 	 * @param otherFunctionalizingEntityTypes
 	 * @param functionClassNames
@@ -356,13 +355,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 
 		// fully load composition
-		SampleComposition comp = compService.getHelper()
-				.findCompositionBySampleId(sample.getId().toString());
+		SampleComposition comp = this
+				.loadComposition(sample.getId().toString());
 		sample.setSampleComposition(comp);
 
 		// fully load characterizations
-		List<Characterization> chars = charService.getHelper()
-				.findCharacterizationsBySampleId(sample.getId().toString());
+		List<Characterization> chars = this.loadCharacterizations(sample
+				.getId().toString());
 		if (chars != null && !chars.isEmpty()) {
 			sample.setCharacterizationCollection(new HashSet<Characterization>(
 					chars));
@@ -370,6 +369,109 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			sample.setCharacterizationCollection(null);
 		}
 		return sample;
+	}
+
+	private SampleComposition loadComposition(String sampleId) throws Exception {
+		SampleComposition composition = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(SampleComposition.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode(
+				"nanomaterialEntityCollection.composingElementCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"functionalizingEntityCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"functionalizingEntityCollection.functionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.activationMethod",
+				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"chemicalAssociationCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementA",
+				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementB",
+				FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+
+		if (!result.isEmpty()) {
+			composition = (SampleComposition) result.get(0);
+		}
+		return composition;
+	}
+
+	private List<Characterization> loadCharacterizations(String sampleId)
+			throws Exception {
+		List<Characterization> chars = new ArrayList<Characterization>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(Characterization.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		// fully load characterization
+		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
+
+		for (Object obj : results) {
+			Characterization achar = (Characterization) obj;
+			chars.add(achar);
+		}
+		return chars;
 	}
 
 	private SampleBean loadSampleBean(Sample sample) throws Exception {
@@ -591,6 +693,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
 			saveClonedPOCs(newSampleBean);
+			saveClonedCharacterizations(null, null);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean);
 			saveClonedComposition(origSampleBean, newSampleBean);
 			saveClonedPublications(origSampleBean, newSampleBean);
@@ -603,10 +706,12 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (Exception e) {
 			// delete the already persisted new sample in case of error
 			try {
-				deleteSample(newSampleName);
+				this.deleteSampleWhenError(newSample0.getName());
 			} catch (Exception ex) {
-				logger
-						.error("Error deleting the sample created during cloning error");
+				String err = "Error in deleting the errored cloned-sample "
+						+ newSample0.getName();
+				logger.error(err, e);
+				throw new SampleException(err, ex);
 			}
 			String err = "Error in cloning the sample " + originalSampleName;
 			logger.error(err, e);
@@ -800,6 +905,38 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				// shared the same IDs with the source publications
 			}
 		}
+	}
+
+	private void deleteSampleWhenError(String sampleName) throws Exception {
+		Sample sample = this.findFullyLoadedSampleByName(sampleName);
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		// delete characterizations
+		if (sample.getCharacterizationCollection() != null) {
+			for (Characterization achar : sample
+					.getCharacterizationCollection()) {
+				charService.deleteCharacterization(achar);
+			}
+		}
+
+		// delete composition
+		if (sample.getSampleComposition() != null) {
+			compService.deleteComposition(sample.getSampleComposition());
+		}
+		sample.setSampleComposition(null);
+
+		// remove publication associations
+		if (sample.getPublicationCollection() != null) {
+			sample.setPublicationCollection(null);
+		}
+		// remove keyword associations
+		if (sample.getKeywordCollection() != null) {
+			sample.setKeywordCollection(null);
+		}
+		appService.saveOrUpdate(sample);
+		appService.delete(sample);
+		// remove all csm entries associated with sample
+		this.accessUtils.removeCSMEntries(sample.getId().toString());
 	}
 
 	public void deleteSample(String sampleName) throws SampleException,
