@@ -987,7 +987,7 @@ public class BaseServiceLocalImpl implements BaseService {
 			return ids;
 		}
 
-		private void removeCSMEntries(String objectName)
+		public void removeCSMEntries(String objectName)
 				throws SecurityException {
 			try {
 				ProtectionElement pe = securityService
