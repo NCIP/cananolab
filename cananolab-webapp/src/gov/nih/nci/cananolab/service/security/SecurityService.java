@@ -391,24 +391,6 @@ public class SecurityService {
 		}
 	}
 
-	public String[] getAccessibleGroups(String objectName, String privilegeName)
-			throws SecurityException {
-		List<String> groupNames = new ArrayList<String>();
-		try {
-			List groups = authorizationManager.getAccessibleGroups(objectName,
-					privilegeName);
-			if (groups != null)
-				for (Object obj : groups) {
-					Group group = (Group) obj;
-					groupNames.add(group.getGroupName());
-				}
-		} catch (Exception e) {
-			logger.error("Error in getting accessible groups", e);
-			throw new SecurityException();
-		}
-		return groupNames.toArray(new String[0]);
-	}
-
 	public void updateDatabaseConnectionForCSMApplications(String dbDialect,
 			String dbDriver, String dbURL, String dbUserName, String dbPassword)
 			throws SecurityException {
