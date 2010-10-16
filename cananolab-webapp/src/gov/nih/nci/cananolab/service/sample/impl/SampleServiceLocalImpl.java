@@ -330,16 +330,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		// join limitation
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("name").eq(sampleName).ignoreCase());
-		Sample sample = loadFullSample(crit);
-		return sample;
-	}
-
-	private Sample loadFullSample(DetachedCriteria crit) throws Exception {
 		Sample sample = null;
+
 		// load composition and characterization separate because of
 		// Hibernate join limitation
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -599,19 +593,24 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			saveClonedPOCs(newSampleBean);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean);
 			saveClonedComposition(origSampleBean, newSampleBean);
-			saveClonedPublications(origSample.getName(), newSampleBean);
+			saveClonedPublications(origSampleBean, newSampleBean);
 			saveSample(newSampleBean);
+
+			// assign accessibility for the new sample
+			for (AccessibilityBean access : newSampleBean.getAllAccesses()) {
+				this.assignAccessibility(access, newSampleBean.getDomain());
+			}
 		} catch (Exception e) {
 			// delete the already persisted new sample in case of error
-			deleteSample(newSampleName);
+			try {
+				deleteSample(newSampleName);
+			} catch (Exception ex) {
+				logger
+						.error("Error deleting the sample created during cloning error");
+			}
 			String err = "Error in cloning the sample " + originalSampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
-		}
-
-		// assign accessibility for the new sample
-		for (AccessibilityBean access : newSampleBean.getAllAccesses()) {
-			this.assignAccessibility(access, newSampleBean.getDomain());
 		}
 		return newSampleBean;
 	}
@@ -622,8 +621,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				&& !sampleBean.getOtherPOCBeans().isEmpty()) {
 			for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
 				savePointOfContact(pocBean);
-				// don't need to set access for POC for they are shared between
-				// source and copy
 			}
 		}
 	}
@@ -789,23 +786,18 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	private void saveClonedPublications(String origSampleName,
+	private void saveClonedPublications(SampleBean origSampleBean,
 			SampleBean sampleBean) throws Exception {
 		if (sampleBean.getDomain().getPublicationCollection() != null) {
 			for (Publication pub : sampleBean.getDomain()
 					.getPublicationCollection()) {
 				PublicationBean pubBean = new PublicationBean(pub);
-				String[] accessibleGroups = securityService
-						.getAccessibleGroups(pub.getId().toString(),
-								AccessibilityBean.CSM_READ_PRIVILEGE);
-				// pubBean.setVisibilityGroups(accessibleGroups);
-				// TODO set accessibility in copy
-				// to prevent overwriting sample associations
 				pubBean.setFromSamplePage(true);
-				// / / don't need to reset sample names because
-				// savePublication
-				// / / takes care of empty sample names.
+				// don't need to reset sample names because savePublication
+				// takes care of empty sample names.
 				publicationService.savePublication(pubBean);
+				// don't need to save access because the cloned publications
+				// shared the same IDs with the source publications
 			}
 		}
 	}
