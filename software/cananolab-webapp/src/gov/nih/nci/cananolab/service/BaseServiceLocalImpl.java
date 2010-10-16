@@ -497,6 +497,16 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
+	void packageRemoveAllAccesses(String protectedData) throws SecurityException {
+		try {
+			accessUtils.removeCSMEntries(protectedData);
+		} catch (Exception e) {
+			String error = "Error in remove all access";
+			throw new SecurityException(error, e);
+		}
+
+	}
+
 	protected List<AccessibilityBean> findSampleAccesses(String sampleId)
 			throws Exception {
 		List<AccessibilityBean> accesses = new ArrayList<AccessibilityBean>();
@@ -784,8 +794,9 @@ public class BaseServiceLocalImpl implements BaseService {
 			if (function != null) {
 				saveAccessibility(access, function.getId().toString());
 				if (function instanceof TargetingFunction) {
-					Collection<Target> targetCollection = ((TargetingFunction) function).getTargetCollection();
-					if(targetCollection != null){
+					Collection<Target> targetCollection = ((TargetingFunction) function)
+							.getTargetCollection();
+					if (targetCollection != null) {
 						for (Target target : targetCollection) {
 							saveAccessibility(access, target.getId().toString());
 						}
