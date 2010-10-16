@@ -106,7 +106,7 @@
 		<antcall target="update:ldap:upt:superadmin" />
 	</target>
 
-	<target name="update:ldap:upt:superadmin" depends="clean, init, prepare:changelog">
+	<target name="update:ldap:upt:superadmin" depends="init, prepare:changelog">
 		<if>
 			<!--if use LDAP authentication, replace ldap tokens from build properties -->
 			<equals arg1="${ldap.authentication.enabled}" arg2="true" />
