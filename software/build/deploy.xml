@@ -50,6 +50,7 @@
 			<!--if use LDAP authentication, replace ldap tokens from build properties -->
 			<equals arg1="${ldap.authentication.enabled}" arg2="true" />
 			<then>
+				<echo message="Using LDAP authenication"/>
 				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml" file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">
 					<filterset>
 						<filter token="ldap.host.url" value="${ldap.host.url}" />
