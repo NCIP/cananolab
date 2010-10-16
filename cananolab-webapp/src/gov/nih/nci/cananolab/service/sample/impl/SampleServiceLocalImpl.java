@@ -1054,6 +1054,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.toString())) {
 				throw new NoAccessException();
 			}
+			ids.add(sample.getId().toString());
 			// fully load sample
 			Sample fullSample = this.findFullyLoadedSampleByName(sample
 					.getName());
