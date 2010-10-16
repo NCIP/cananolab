@@ -307,7 +307,7 @@
 			<property name="database.server" value="${database.server}" />
 			<property name="database.port" value="${database.port}" />
 			<property name="database.user" value="${database.user}" />
-			<property name="database.password" value="${database.port}" />
+			<property name="database.password" value="${database.password}" />
 			<property name="database.system.user" value="${database.system.user}" />
 			<property name="database.system.password" value="${database.system.password}" />
 		</ant>
@@ -329,7 +329,7 @@
 			<property name="database.server" value="${database.server}" />
 			<property name="database.port" value="${database.port}" />
 			<property name="database.user" value="${database.user}" />
-			<property name="database.password" value="${database.port}" />
+			<property name="database.password" value="${database.password}" />
 			<property name="database.system.user" value="${database.system.user}" />
 			<property name="database.system.password" value="${database.system.password}" />
 			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
