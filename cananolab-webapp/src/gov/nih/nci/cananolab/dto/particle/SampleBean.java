@@ -2,9 +2,11 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
@@ -401,26 +403,26 @@ public class SampleBean extends SecuredDataBean {
 		}
 
 		// copy publications
-		// Collection<Publication> oldPublications = copy
-		// .getPublicationCollection();
-		// if (oldPublications == null || oldPublications.isEmpty()) {
-		// copy.setPublicationCollection(null);
-		// } else {
-		// copy.setPublicationCollection(new HashSet<Publication>(
-		// oldPublications));
-		// for (Publication pub : copy.getPublicationCollection()) {
-		// PublicationBean pubBean = new PublicationBean(pub);
-		// pubBean.resetDomainCopy(pub);
-		// }
-		// }
+		Collection<Publication> oldPublications = copy
+				.getPublicationCollection();
+		if (oldPublications == null || oldPublications.isEmpty()) {
+			copy.setPublicationCollection(null);
+		} else {
+			copy.setPublicationCollection(new HashSet<Publication>(
+					oldPublications));
+			for (Publication pub : copy.getPublicationCollection()) {
+				PublicationBean pubBean = new PublicationBean(pub);
+				pubBean.resetDomainCopy(pub);
+			}
+		}
 		return copy;
 	}
 
 	public void calculateDataAvailabilityScore(
 			Set<DataAvailabilityBean> dataAvailability,
 			SortedSet<String> minchar, Map<String, String> caNanoLab2MinCharMap) {
-		
-		int size = dataAvailability.size() ;
+
+		int size = dataAvailability.size();
 		int minCharSize = 0;
 		int totalMinCharSize = minchar.size();
 		List<String> caNanoForMincharEntities = new ArrayList<String>();
@@ -441,7 +443,8 @@ public class SampleBean extends SecuredDataBean {
 				}
 			}
 		}
-		Double caNanoLabScore = new Double(size * 100 / Constants.CANANOLAB_AVAILABLE_ENTITY); 
+		Double caNanoLabScore = new Double(size * 100
+				/ Constants.CANANOLAB_AVAILABLE_ENTITY);
 		Double minCharScore = new Double(minCharSize * 100 / totalMinCharSize);
 
 		this.setDataAvailabilityMetricsScore("caNanoLab: "
@@ -452,7 +455,8 @@ public class SampleBean extends SecuredDataBean {
 				+ minCharScore.intValue() + "%";
 		this.caNanoLabScore = caNanoLabScore.toString() + "% (" + size
 				+ " out of 30)";
-		this.setCaNanoLabScore(caNanoLabScore.toString() + "% (" + size	+ " out of 30)");
+		this.setCaNanoLabScore(caNanoLabScore.toString() + "% (" + size
+				+ " out of 30)");
 		this.mincharScore = minCharScore.toString() + "% (" + minCharSize
 				+ " out of " + totalMinCharSize + ")";
 		this.setMincharScore(minCharScore.toString() + "% (" + minCharSize
