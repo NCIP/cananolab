@@ -79,6 +79,16 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		// pass in page and size
 		List<SampleBean> sampleBeansPerPage = getSamplesPerPage(sampleBeans,
 				displayPage, Constants.DISPLAY_TAG_TABLE_SIZE, request);
+		// in case any samples has been filtered during loading of sample
+		// information. e.g. POC is missing
+		if (sampleBeansPerPage.isEmpty()) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.searchSample.noresult");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user != null) {
 			loadUserAccess(request, sampleBeansPerPage);
@@ -88,8 +98,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		// get the pagination to work
 		request.setAttribute("resultSize", new Integer(sampleBeans.size()));
 
-		//allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control","private");
+		// allow user to go back to the search results via the cache
+		response.setHeader("Cache-Control", "private");
 		return mapping.findForward("success");
 	}
 
