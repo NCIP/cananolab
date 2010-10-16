@@ -43,7 +43,7 @@ public class CSMCleanupJob implements Job {
 			logger.info("Deleting " + entries.size() + " CSM entries..");
 		}
 		for (String securedData : secureObjectsToRemove) {
-			service.packageRemoveAllAccesses(securedData);
+			service.accessUtils.removeCSMEntries(securedData);
 			entries.remove(securedData);
 		}
 		secureObjectsToRemove = entries;
