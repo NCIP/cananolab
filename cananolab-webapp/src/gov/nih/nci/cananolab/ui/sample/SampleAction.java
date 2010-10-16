@@ -8,6 +8,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
@@ -127,6 +128,9 @@ public class SampleAction extends BaseAnnotationAction {
 
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request);
+		if (hasNullPOC(request, sampleBean)) {
+			return mapping.findForward("sampleMessage");
+		}
 		theForm.set("sampleBean", sampleBean);
 		return mapping.findForward("summaryView");
 	}
@@ -176,6 +180,23 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.findForward("bareSummaryView");
 	}
 
+	private Boolean hasNullPOC(HttpServletRequest request, SampleBean sampleBean)
+			throws Exception {
+		if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
+			SampleService service = setServiceInSession(request);
+			service.deleteSample(sampleBean.getDomain().getName());
+			ActionMessages messages = new ActionMessages();
+			if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
+				ActionMessage msg = new ActionMessage(
+						"message.sample.null.POC.deleted");
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, messages);
+			}
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
 	 *
@@ -197,9 +218,8 @@ public class SampleAction extends BaseAnnotationAction {
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		SampleBean sampleBean = setupSample(theForm, request);
-		if (sampleBean == null) {
-
-			return input(mapping, form, request, response);
+		if (hasNullPOC(request, sampleBean)) {
+			return mapping.findForward("sampleMessage");
 		}
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
@@ -219,8 +239,9 @@ public class SampleAction extends BaseAnnotationAction {
 
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
-		setupLookups(request, sampleBean.getPrimaryPOCBean().getDomain()
-				.getOrganization().getName());
+
+		setupLookups(request);
+
 		//
 
 		// Feature request [26487] Deeper Edit Links.
@@ -271,7 +292,7 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("sampleForm");
 		request.getSession().removeAttribute("updateSample");
-		setupLookups(request, null);
+		setupLookups(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		checkOpenForms(theForm, request);
 		return mapping.findForward("createInput");
@@ -309,8 +330,7 @@ public class SampleAction extends BaseAnnotationAction {
 	 * @param sampleOrg
 	 * @throws Exception
 	 */
-	private void setupLookups(HttpServletRequest request, String sampleOrg)
-			throws Exception {
+	private void setupLookups(HttpServletRequest request) throws Exception {
 		InitSampleSetup.getInstance().setPOCDropdowns(request);
 	}
 
@@ -350,8 +370,7 @@ public class SampleAction extends BaseAnnotationAction {
 				"updateSample");
 		if (updateSample == null) {
 			forward = mapping.findForward("createInput");
-			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName());
+			setupLookups(request);
 			this.setAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
@@ -383,8 +402,7 @@ public class SampleAction extends BaseAnnotationAction {
 				"updateSample");
 		if (updateSample == null) {
 			forward = mapping.findForward("createInput");
-			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName());
+			setupLookups(request);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
 					.toString());
@@ -451,8 +469,8 @@ public class SampleAction extends BaseAnnotationAction {
 
 		// update data review status to "DELETED"
 		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
-				sampleBean.getDomain().getId().toString(), sampleBean.getDomain()
-						.getName(), "sample");
+				sampleBean.getDomain().getId().toString(), sampleBean
+						.getDomain().getName(), "sample");
 		if (sampleBean.getHasDataAvailability()) {
 			dataAvailabilityService.deleteDataAvailability(sampleBean
 					.getDomain().getId().toString(), securityService);
@@ -676,8 +694,7 @@ public class SampleAction extends BaseAnnotationAction {
 				"updateSample");
 		if (updateSample == null) {
 			forward = mapping.findForward("createInput");
-			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName());
+			setupLookups(request);
 			this.setAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
@@ -701,8 +718,7 @@ public class SampleAction extends BaseAnnotationAction {
 				"updateSample");
 		if (updateSample == null) {
 			forward = mapping.findForward("createInput");
-			setupLookups(request, sample.getPrimaryPOCBean().getDomain()
-					.getOrganization().getName());
+			setupLookups(request);
 			this.setAccesses(request, sample);
 		} else {
 			request.setAttribute("sampleId", sample.getDomain().getId()
