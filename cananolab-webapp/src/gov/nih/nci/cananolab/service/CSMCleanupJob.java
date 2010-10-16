@@ -1,6 +1,4 @@
-package gov.nih.nci.cananolab.ui.core;
-
-import gov.nih.nci.cananolab.service.BaseService;
+package gov.nih.nci.cananolab.service;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,22 +29,21 @@ public class CSMCleanupJob implements Job {
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
 		try {
-			BaseService service = (BaseService) context.getJobDetail()
-					.getJobDataMap().get("csmCleanupService");
+			BaseServiceLocalImpl service = new BaseServiceLocalImpl();
 			cleanUpCSM(service);
 		} catch (Exception e) {
 			logger.info("Error cleaning up CSM records after deletion.");
 		}
 	}
 
-	public void cleanUpCSM(BaseService service) throws Exception {
+	public void cleanUpCSM(BaseServiceLocalImpl service) throws Exception {
 		Set<String> entries = Collections.synchronizedSet(new HashSet<String>(
 				secureObjectsToRemove));
 		if (entries.size() > 0) {
 			logger.info("Deleting " + entries.size() + " CSM entries..");
 		}
 		for (String securedData : secureObjectsToRemove) {
-			service.removeAllAccesses(securedData);
+			service.packageRemoveAllAccesses(securedData);
 			entries.remove(securedData);
 		}
 		secureObjectsToRemove = entries;
