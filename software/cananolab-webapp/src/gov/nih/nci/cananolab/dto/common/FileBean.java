@@ -179,7 +179,6 @@ public class FileBean extends SecuredDataBean {
 		copy.getDomainFile().setDescription(domainFile.getDescription());
 		copy.getDomainFile().setUriExternal(domainFile.getUriExternal());
 		copy.setKeywordsStr(keywordsStr);
-		// TODO copy accessibility
 		copy.setUploadedFile(uploadedFile);
 		copy.setExternalUrl(externalUrl);
 		copy.getDomainFile().setId(domainFile.getId());
