@@ -106,6 +106,7 @@ public class SecurityService {
 			if (authenticated) {
 				User user = authorizationManager.getUser(loginName);
 				UserBean userBean = new UserBean(user);
+				userBean.setPassword(password);
 				if (isAdmin(user.getLoginName())) {
 					userBean.setAdmin(true);
 				}
