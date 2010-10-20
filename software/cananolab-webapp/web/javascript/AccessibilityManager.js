@@ -46,7 +46,6 @@ function toggleAccessNameLabel() {
 		dwr.util.setValue("accessNameLabel", "User Login Name *");
 		hide("groupName");
 		show("userName");
-		alert('here');
 	} else if (byPublic == true && byGroup == false && byUser == false) {
 		dwr.util.setValue("accessNameLabel", "Group Name");
 		show("groupName");
