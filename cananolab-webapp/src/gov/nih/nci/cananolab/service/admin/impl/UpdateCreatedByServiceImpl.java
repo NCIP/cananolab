@@ -56,7 +56,8 @@ public class UpdateCreatedByServiceImpl {
 							false).getDomain();
 					String existingOwner = domain.getCreatedBy();
 					System.out.println("ExistingOwner: " + existingOwner);
-					if(existingOwner.substring(0, 3).equalsIgnoreCase("COPY")){
+					String s = existingOwner.substring(0,4);
+					if(existingOwner.substring(0, 4).equalsIgnoreCase("COPY")){
 						domain.setCreatedBy(newCreatedBy + ":" + existingOwner);
 					}else{
 						String test = existingOwner.substring(0, currentCreatedBy.length());
@@ -77,7 +78,7 @@ public class UpdateCreatedByServiceImpl {
 					PointOfContact poc = domain.getPrimaryPointOfContact();
 					String existingPOC = poc.getCreatedBy();
 					System.out.println("ExistingOwner: " + existingPOC);
-					if(existingPOC.substring(0, 3).equalsIgnoreCase("COPY")){
+					if(existingPOC.substring(0, 4).equalsIgnoreCase("COPY")){
 						poc.setCreatedBy(newCreatedBy + ":" + existingPOC);
 					}else{
 						String test = existingPOC.substring(0, currentCreatedBy.length());
@@ -91,7 +92,7 @@ public class UpdateCreatedByServiceImpl {
 					Organization organization = poc.getOrganization(); 
 					String existingOrg = poc.getCreatedBy();
 					System.out.println("ExistingCreatedBy: " + existingOrg);
-					if(existingOrg.substring(0, 3).equalsIgnoreCase("COPY")){
+					if(existingOrg.substring(0, 4).equalsIgnoreCase("COPY")){
 						organization.setCreatedBy(newCreatedBy + ":" + existingOrg);
 					}else{
 						String test = existingOrg.substring(0, currentCreatedBy.length());
@@ -116,7 +117,7 @@ public class UpdateCreatedByServiceImpl {
 						for (ChemicalAssociation ca : chemicalAssociation) {
 							String existingChemicalAsso = ca.getCreatedBy();
 							System.out.println("ExistingCreatedBy: " + existingChemicalAsso);
-							if(existingChemicalAsso.substring(0, 3).equalsIgnoreCase("COPY")){
+							if(existingChemicalAsso.substring(0, 4).equalsIgnoreCase("COPY")){
 								ca.setCreatedBy(newCreatedBy + ":" + existingChemicalAsso);
 							}else{
 								String test = existingChemicalAsso.substring(0, currentCreatedBy.length());
@@ -131,7 +132,7 @@ public class UpdateCreatedByServiceImpl {
 						for (FunctionalizingEntity fe : functionalizingEntity) {
 							String existingFE = fe.getCreatedBy();
 							System.out.println("ExistingCreatedBy: " + existingFE);
-							if(existingFE.substring(0, 3).equalsIgnoreCase("COPY")){
+							if(existingFE.substring(0, 4).equalsIgnoreCase("COPY")){
 								fe.setCreatedBy(newCreatedBy + ":" + existingFE);
 							}else{
 								String test = existingFE.substring(0, currentCreatedBy.length());
@@ -146,7 +147,7 @@ public class UpdateCreatedByServiceImpl {
 						for (NanomaterialEntity ne : nanomaterialEntity) {
 							String existingNE = ne.getCreatedBy();
 							System.out.println("ExistingCreatedBy: " + existingNE);
-							if(existingNE.substring(0, 3).equalsIgnoreCase("COPY")){
+							if(existingNE.substring(0, 4).equalsIgnoreCase("COPY")){
 								ne.setCreatedBy(newCreatedBy + ":" + existingNE);
 							}else{
 								String test = existingNE.substring(0, currentCreatedBy.length());
@@ -162,7 +163,7 @@ public class UpdateCreatedByServiceImpl {
 						for (Characterization c : characterization) {
 							String existingChar = c.getCreatedBy();
 							System.out.println("ExistingCreatedBy: " + existingChar);
-							if(existingChar.substring(0, 3).equalsIgnoreCase("COPY")){
+							if(existingChar.substring(0, 4).equalsIgnoreCase("COPY")){
 								c.setCreatedBy(newCreatedBy + ":" + existingChar);
 							}else{
 								String test = existingChar.substring(0, currentCreatedBy.length());
@@ -208,7 +209,7 @@ public class UpdateCreatedByServiceImpl {
 							.findPublicationById(publicationId);
 					String existingCreatedBy = publication.getCreatedBy();
 					System.out.println("ExistingCreatedBy: " + existingCreatedBy);
-					if(existingCreatedBy.substring(0, 3).equalsIgnoreCase("COPY")){
+					if(existingCreatedBy.substring(0, 4).equalsIgnoreCase("COPY")){
 						publication.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 					}else{
 						String test = existingCreatedBy.substring(0, currentCreatedBy.length());
@@ -223,7 +224,7 @@ public class UpdateCreatedByServiceImpl {
 					for(Datum d : datumCollection){
 						String existingDatum = d.getCreatedBy();
 						System.out.println("ExistingCreatedBy: " + existingDatum);
-						if(existingDatum.substring(0, 3).equalsIgnoreCase("COPY")){
+						if(existingDatum.substring(0, 4).equalsIgnoreCase("COPY")){
 							d.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 						}else{
 							String test = existingDatum.substring(0, currentCreatedBy.length());
@@ -238,7 +239,7 @@ public class UpdateCreatedByServiceImpl {
 					for(Finding f : findingCollection){
 						String existingFinding = f.getCreatedBy();
 						System.out.println("ExistingCreatedBy: " + existingFinding);
-						if(existingFinding.substring(0, 3).equalsIgnoreCase("COPY")){
+						if(existingFinding.substring(0, 4).equalsIgnoreCase("COPY")){
 							f.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 						}else{
 							String test = existingFinding.substring(0, currentCreatedBy.length());
@@ -253,7 +254,7 @@ public class UpdateCreatedByServiceImpl {
 					for(Author a : authorCollection){
 						String existingAuthor = a.getCreatedBy();
 						System.out.println("ExistingCreatedBy: " + existingAuthor);
-						if(existingAuthor.substring(0, 3).equalsIgnoreCase("COPY")){
+						if(existingAuthor.substring(0, 4).equalsIgnoreCase("COPY")){
 							a.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 						}else{
 							String test = existingAuthor.substring(0, currentCreatedBy.length());
@@ -327,7 +328,7 @@ public class UpdateCreatedByServiceImpl {
 			String newCreatedBy) throws AdministrationException,
 			NoAccessException {		
 		String userLoginName = securityService.getUserBean().getLoginName();
-		if(!"lethai".equals(userLoginName) || !"pansu".equals(userLoginName)){
+		if(!("lethai".equals(userLoginName) || "pansu".equals(userLoginName))){
 			throw new NoAccessException();
 		}
 		int numFailures = 0;
