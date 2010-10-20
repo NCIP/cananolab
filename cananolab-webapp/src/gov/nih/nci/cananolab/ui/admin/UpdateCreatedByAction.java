@@ -15,29 +15,12 @@ package gov.nih.nci.cananolab.ui.admin;
  * @author pansu
  */
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.service.BaseService;
-import gov.nih.nci.cananolab.service.admin.OwnershipTransferService;
-import gov.nih.nci.cananolab.service.admin.impl.BatchOwnershipTransferProcess;
-import gov.nih.nci.cananolab.service.admin.impl.OwnershipTransferServiceImpl;
 import gov.nih.nci.cananolab.service.admin.impl.UpdateCreatedByServiceImpl;
-import gov.nih.nci.cananolab.service.common.LongRunningProcess;
-import gov.nih.nci.cananolab.service.community.CommunityService;
-import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
-import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
