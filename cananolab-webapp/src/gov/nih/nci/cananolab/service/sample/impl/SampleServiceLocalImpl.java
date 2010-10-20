@@ -693,7 +693,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
 			saveClonedPOCs(newSampleBean);
-			saveClonedCharacterizations(null, null);
 			saveClonedCharacterizations(origSample.getName(), newSampleBean);
 			saveClonedComposition(origSampleBean, newSampleBean);
 			saveClonedPublications(origSampleBean, newSampleBean);
