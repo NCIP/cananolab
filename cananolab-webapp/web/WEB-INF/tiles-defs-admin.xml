@@ -20,8 +20,9 @@
 		<put name="cananoContent" value="/admin/bodyTransferOwner.jsp" />
 		<put name="menu" value="ADMINISTRATION" />
 	</definition>
+	<!-- to be removed by 1.5.2 -->
 	<definition name="admin.updateCreatedBy" extends="canano.base">
 		<put name="cananoContent" value="/admin/bodyUpdateCreatedBy.jsp" />
-		<put name="menu" value="ADMINISTRATION" />
+		<put name="menu" value="HOME" />
 	</definition>
 </tiles-definitions>
