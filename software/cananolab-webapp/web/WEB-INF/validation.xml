@@ -66,10 +66,10 @@
 		</form>
 		<form name="transferOwnerForm">
 			<field property="currentOwner" page="1" depends="required">
-				<arg position="0" key="transferOwnerForm.currentOwner"/>
+				<arg position="0" key="transferOwnerForm.currentOwner" />
 			</field>
 			<field property="newOwner" page="1" depends="validwhenmatch">
-				<arg position="0" key="transferOwnerForm.newOwner"/>
+				<arg position="0" key="transferOwnerForm.newOwner" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -78,7 +78,22 @@
 				</var>
 			</field>
 			<field property="dataType" page="1" depends="required">
-				<arg position="0" key="transferOwnerForm.dataType"/>
+				<arg position="0" key="transferOwnerForm.dataType" />
+			</field>
+		</form>
+		<!-- to be removed after 1.5.2 -->
+		<form name="updateCreatedByForm">
+			<field property="currentCreatedBy" page="1" depends="required">
+				<arg position="0" key="updateCreatedByForm.currentCreatedBy" />
+			</field>
+			<field property="newCreatedBy" page="1" depends="required">
+				<arg position="0" key="updateCreatedByForm.newCreatedBy" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) and (newCreatedBy!=currentCreatedBy))
+					</var-value>
+				</var>
 			</field>
 		</form>
 	</formset>
