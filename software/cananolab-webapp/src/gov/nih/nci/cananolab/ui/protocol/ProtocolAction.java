@@ -155,6 +155,12 @@ public class ProtocolAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
 		String protocolId = request.getParameter("protocolId");
+		if (protocolId == null) {
+			protocolId = (String) request.getAttribute("protocolId");
+		}
+		if (protocolId == null) {
+			throw new NotExistException("No such protocol in the database");
+		}
 		ProtocolService service = this.setServiceInSession(request);
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
 		if (protocolBean == null) {
@@ -260,7 +266,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 			service.saveProtocol(protocol);
 		}
 		this.setAccesses(request, protocol);
-		return input(mapping, form, request, response);
+		request.setAttribute("protocolId", protocol.getDomain().getId()
+				.toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
@@ -272,7 +280,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 		ProtocolService service = this.setServiceInSession(request);
 		service.removeAccessibility(theAccess, protocol.getDomain());
 		this.setAccesses(request, protocol);
-		return input(mapping, form, request, response);
+		request.setAttribute("protocolId", protocol.getDomain().getId()
+				.toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	protected void removePublicAccess(DynaValidatorForm theForm,
