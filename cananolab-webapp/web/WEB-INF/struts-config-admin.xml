@@ -48,9 +48,10 @@
 			<forward name="input" path="admin.transferOwner" />
 			<forward name="success" path="admin.transferOwner" />
 		</action>
+		<!-- to be removed after 1.5.2 -->
 		<action path="/updateCreatedBy" name="updateCreatedByForm"
 			parameter="dispatch" type="gov.nih.nci.cananolab.ui.admin.UpdateCreatedByAction"
-			scope="request">
+			input="input" validate="true" scope="request">
 			<forward name="input" path="admin.updateCreatedBy" />
 			<forward name="success" path="admin.updateCreatedBy" />
 		</action>
