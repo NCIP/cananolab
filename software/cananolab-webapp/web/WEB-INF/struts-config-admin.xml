@@ -18,6 +18,14 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
+		<form-bean name="updateCreatedByForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="currentCreatedBy" type="java.lang.String" />
+			<form-property name="newCreatedBy" type="java.lang.String" />
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
 	</form-beans>
 	<global-exceptions>
 	</global-exceptions>
@@ -34,11 +42,17 @@
 			<forward name="cananoHeader" path="/layout/cananoHeader.jsp" />
 			<forward name="cananoSidemenu" path="/layout/cananoSidemenu.jsp" />
 		</action>
-		<action path="/transferOwner" name="transferOwnerForm" parameter="dispatch"
-			type="gov.nih.nci.cananolab.ui.admin.TransferOwnerAction" input="input"
-			validate="true" scope="request">
+		<action path="/transferOwner" name="transferOwnerForm"
+			parameter="dispatch" type="gov.nih.nci.cananolab.ui.admin.TransferOwnerAction"
+			input="input" validate="true" scope="request">
 			<forward name="input" path="admin.transferOwner" />
 			<forward name="success" path="admin.transferOwner" />
+		</action>
+		<action path="/updateCreatedBy" name="updateCreatedByForm"
+			parameter="dispatch" type="gov.nih.nci.cananolab.ui.admin.UpdateCreatedByAction"
+			scope="request">
+			<forward name="input" path="admin.updateCreatedBy" />
+			<forward name="success" path="admin.updateCreatedBy" />
 		</action>
 	</action-mappings>
 </struts-config>
