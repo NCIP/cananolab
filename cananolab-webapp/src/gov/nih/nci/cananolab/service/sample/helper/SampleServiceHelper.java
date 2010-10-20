@@ -927,8 +927,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		crit.setProjection(Projections.distinct(projectionList));
 
-		crit.add(Restrictions.eq("createdBy", currentOwner));
-
+		if("COPY".equalsIgnoreCase(currentOwner)){
+			crit.add(Restrictions.ilike("createdBy", currentOwner));
+		}else{
+			crit.add(Restrictions.eq("createdBy", currentOwner));
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
