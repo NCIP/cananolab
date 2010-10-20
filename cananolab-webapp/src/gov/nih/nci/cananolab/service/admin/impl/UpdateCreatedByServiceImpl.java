@@ -1,5 +1,10 @@
 package gov.nih.nci.cananolab.service.admin.impl;
 
+import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -35,13 +40,16 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods for transfer ownership.
  *
  * @author lethai, pansu
  */
-public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
+public class UpdateCreatedByServiceImpl {
 
 	private static Logger logger = Logger
 			.getLogger(UpdateCreatedByServiceImpl.class);
@@ -66,7 +74,17 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 				try {
 					Sample domain = sampleService.findSampleById(sampleId,
 							false).getDomain();
-					domain.setCreatedBy(newOwner);
+					String existingOwner = domain.getCreatedBy();
+					System.out.println("ExistingOwner: " + existingOwner);
+					if(existingOwner.substring(0, 3).equalsIgnoreCase("COPY")){
+						domain.setCreatedBy(newOwner + ":" + existingOwner);
+					}else{
+						String test = existingOwner.substring(0, currentOwner.length());
+						System.out.println("Test: " + test);
+						if(test.equals(currentOwner)){
+							domain.setCreatedBy(newOwner);
+						}
+					}
 					SampleComposition sampleComposition = domain
 							.getSampleComposition();
 					appService.saveOrUpdate(domain);
@@ -75,6 +93,36 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 					Collection<Characterization> characterization = new ArrayList<Characterization>();
 
+					//point of contact
+					PointOfContact poc = domain.getPrimaryPointOfContact();
+					String existingPOC = poc.getCreatedBy();
+					System.out.println("ExistingOwner: " + existingPOC);
+					if(existingPOC.substring(0, 3).equalsIgnoreCase("COPY")){
+						poc.setCreatedBy(newOwner + ":" + existingPOC);
+					}else{
+						String test = existingPOC.substring(0, currentOwner.length());
+						System.out.println("Test: " + test);
+						if(test.equals(currentOwner)){
+							poc.setCreatedBy(newOwner);
+						}
+					}
+					appService.saveOrUpdate(poc);
+					//organization
+					Organization organization = poc.getOrganization(); 
+					String existingOrg = poc.getCreatedBy();
+					System.out.println("ExistingOwner: " + existingOrg);
+					if(existingOrg.substring(0, 3).equalsIgnoreCase("COPY")){
+						organization.setCreatedBy(newOwner + ":" + existingOrg);
+					}else{
+						String test = existingOrg.substring(0, currentOwner.length());
+						System.out.println("Test: " + test);
+						if(test.equals(currentOwner)){
+							organization.setCreatedBy(newOwner);
+						}
+					}
+					appService.saveOrUpdate(organization);
+					
+					//updating Sample Composition
 					if (sampleComposition != null) {
 						chemicalAssociation = sampleComposition
 								.getChemicalAssociationCollection();
@@ -86,27 +134,71 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 								.getCharacterizationCollection();
 
 						for (ChemicalAssociation ca : chemicalAssociation) {
-							ca.setCreatedBy(newOwner);
+							String existingChemicalAsso = ca.getCreatedBy();
+							System.out.println("ExistingOwner: " + existingChemicalAsso);
+							if(existingChemicalAsso.substring(0, 3).equalsIgnoreCase("COPY")){
+								ca.setCreatedBy(newOwner + ":" + existingChemicalAsso);
+							}else{
+								String test = existingChemicalAsso.substring(0, currentOwner.length());
+								System.out.println("Test: " + test);
+								if(test.equals(currentOwner)){
+									ca.setCreatedBy(newOwner);
+								}
+							}
+							//ca.setCreatedBy(newOwner);
 							appService.saveOrUpdate(ca);
 						}
 						for (FunctionalizingEntity fe : functionalizingEntity) {
-							fe.setCreatedBy(newOwner);
+							String existingFE = fe.getCreatedBy();
+							System.out.println("ExistingOwner: " + existingFE);
+							if(existingFE.substring(0, 3).equalsIgnoreCase("COPY")){
+								fe.setCreatedBy(newOwner + ":" + existingFE);
+							}else{
+								String test = existingFE.substring(0, currentOwner.length());
+								System.out.println("Test: " + test);
+								if(test.equals(currentOwner)){
+									fe.setCreatedBy(newOwner);
+								}
+							}
+							//fe.setCreatedBy(newOwner);
 							appService.saveOrUpdate(fe);
 						}
 						for (NanomaterialEntity ne : nanomaterialEntity) {
-							ne.setCreatedBy(newOwner);
+							String existingNE = ne.getCreatedBy();
+							System.out.println("ExistingOwner: " + existingNE);
+							if(existingNE.substring(0, 3).equalsIgnoreCase("COPY")){
+								ne.setCreatedBy(newOwner + ":" + existingNE);
+							}else{
+								String test = existingNE.substring(0, currentOwner.length());
+								System.out.println("Test: " + test);
+								if(test.equals(currentOwner)){
+									ne.setCreatedBy(newOwner);
+								}
+							}
+							//ne.setCreatedBy(newOwner);
 							appService.saveOrUpdate(ne);
 						}
 
 						for (Characterization c : characterization) {
-							c.setCreatedBy(newOwner);
+							String existingChar = c.getCreatedBy();
+							System.out.println("ExistingOwner: " + existingChar);
+							if(existingChar.substring(0, 3).equalsIgnoreCase("COPY")){
+								c.setCreatedBy(newOwner + ":" + existingChar);
+							}else{
+								String test = existingChar.substring(0, currentOwner.length());
+								System.out.println("Test: " + test);
+								if(test.equals(currentOwner)){
+									c.setCreatedBy(newOwner);
+								}
+							}
+							//c.setCreatedBy(newOwner);
 							appService.saveOrUpdate(c);
 						}
 					}
-					appService.saveOrUpdate(domain);
+					/*appService.saveOrUpdate(domain);
 					this.assignAndRemoveAccessForSample(sampleService, domain,
 							currentOwner, currentOwnerIsCurator, newOwner,
-							newOwnerIsCurator);
+							newOwnerIsCurator);*/
 
 				} catch (Exception e) {
 					i++;
@@ -217,11 +309,66 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 				try {
 					Publication publication = helper
 							.findPublicationById(publicationId);
-					publication.setCreatedBy(newOwner);
+					String existingOwner = publication.getCreatedBy();
+					System.out.println("ExistingOwner: " + existingOwner);
+					if(existingOwner.substring(0, 3).equalsIgnoreCase("COPY")){
+						publication.setCreatedBy(newOwner + ":" + existingOwner);
+					}else{
+						String test = existingOwner.substring(0, currentOwner.length());
+						if(test.equals(currentOwner)){
+							publication.setCreatedBy(newOwner);
+						}
+					}
+										
 					appService.saveOrUpdate(publication);
-					this.assignAndRemoveAccessForPublication(
+					//datum
+					Collection<Datum> datumCollection = publication.getDatumCollection();
+					for(Datum d : datumCollection){
+						String existingDatum = d.getCreatedBy();
+						System.out.println("ExistingOwner: " + existingDatum);
+						if(existingDatum.substring(0, 3).equalsIgnoreCase("COPY")){
+							d.setCreatedBy(newOwner + ":" + existingOwner);
+						}else{
+							String test = existingDatum.substring(0, currentOwner.length());
+							if(test.equals(currentOwner)){
+								d.setCreatedBy(newOwner);
+							}
+						}
+						appService.saveOrUpdate(d);
+					}
+					//finding
+					Collection<Finding> findingCollection = publication.getFindingCollection();
+					for(Finding f : findingCollection){
+						String existingFinding = f.getCreatedBy();
+						System.out.println("ExistingOwner: " + existingFinding);
+						if(existingFinding.substring(0, 3).equalsIgnoreCase("COPY")){
+							f.setCreatedBy(newOwner + ":" + existingOwner);
+						}else{
+							String test = existingFinding.substring(0, currentOwner.length());
+							if(test.equals(currentOwner)){
+								f.setCreatedBy(newOwner);
+							}
+						}
+						appService.saveOrUpdate(f);
+					}
+					//author
+					Collection<Author> authorCollection = publication.getAuthorCollection();
+					for(Author a : authorCollection){
+						String existingAuthor = a.getCreatedBy();
+						System.out.println("ExistingOwner: " + existingAuthor);
+						if(existingAuthor.substring(0, 3).equalsIgnoreCase("COPY")){
+							a.setCreatedBy(newOwner + ":" + existingOwner);
+						}else{
+							String test = existingAuthor.substring(0, currentOwner.length());
+							if(test.equals(currentOwner)){
+								a.setCreatedBy(newOwner);
+							}
+						}
+						appService.saveOrUpdate(a);
+					}
+					/*this.assignAndRemoveAccessForPublication(
 							publicationService, publication, currentOwner,
-							currentOwnerIsCurator, newOwner, newOwnerIsCurator);
+							currentOwnerIsCurator, newOwner, newOwnerIsCurator);*/
 				} catch (Exception e) {
 					i++;
 					String error = "Error transferring ownership for publication: "
@@ -276,11 +423,21 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 			for (String protocolId : protocolIds) {
 				try {
 					Protocol protocol = helper.findProtocolById(protocolId);
-					protocol.setCreatedBy(newOwner);
+					String existingOwner = protocol.getCreatedBy();
+					System.out.println("ExistingOwner: " + existingOwner);
+					if(existingOwner.substring(0, 4).equalsIgnoreCase("COPY")){
+						protocol.setCreatedBy(newOwner + ":" + existingOwner);
+					}else{
+						String test = existingOwner.substring(0, currentOwner.length());
+						if(test.equals(currentOwner)){
+							protocol.setCreatedBy(newOwner);
+						}						
+					}
+				
 					appService.saveOrUpdate(protocol);
-					this.assignAndRemoveAccessForProtocol(protocolService,
+					/*this.assignAndRemoveAccessForProtocol(protocolService,
 							protocol, currentOwner, currentOwnerIsCurator,
-							newOwner, newOwnerIsCurator);
+							newOwner, newOwnerIsCurator);*/
 				} catch (Exception e) {
 					i++;
 					String error = "Error transferring ownership for protocol: "
@@ -362,7 +519,7 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 		return i;
 	}
 
-	public int transferOwner(SecurityService securityService,
+	public int update(SecurityService securityService,
 			List<String> dataIds, String dataType, String currentOwner,
 			String newOwner) throws AdministrationException, NoAccessException {
 		int numFailures = 0;
@@ -384,7 +541,7 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 				throw new AdministrationException(
 						"No such transfer data type is supported.");
 			}
-			numFailures = this.transferOwner(service, dataIds, currentOwner,
+			numFailures = this.update(service, dataIds, currentOwner,
 					newOwner);
 		} catch (Exception e) {
 			String error = "Error in transfering ownership for type "
@@ -449,7 +606,7 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 		return null;
 	}
 
-	public int transferOwner(BaseService dataService, List<String> dataIds,
+	public int update(BaseService dataService, List<String> dataIds,
 			String currentOwner, String newOwner)
 			throws AdministrationException, NoAccessException {
 		SecurityService securityService = ((BaseServiceLocalImpl) dataService)
@@ -490,4 +647,6 @@ public class UpdateCreatedByServiceImpl implements UpdateCreatedByService {
 		}
 		return numFailures;
 	}
+	
+	
 }
