@@ -612,7 +612,11 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 				.setProjection(
 						Projections.projectionList().add(
 								Projections.property("id")));
-		crit.add(Restrictions.eq("createdBy", currentOwner));
+		if("COPY".equalsIgnoreCase(currentOwner)){
+			crit.add(Restrictions.ilike("createdBy", currentOwner));
+		}else{
+			crit.add(Restrictions.eq("createdBy", currentOwner));
+		}
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
