@@ -390,18 +390,7 @@ public class BaseServiceLocalImpl implements BaseService {
 	}
 
 	protected Boolean checkUserOwner(String createdBy) {
-		if (user == null) {
-			return false;
-		}
-		if (user.isCurator()) {
-			return true;
-		}
-		// the creator of the data
-		if (user.getLoginName().equalsIgnoreCase(createdBy)) {
-			return true;
-		} else {
-			return false;
-		}
+		return this.isOwnerByCreatedBy(createdBy);
 	}
 
 	public List<UserBean> findUserBeans(String loginNameSearchStr)
@@ -469,9 +458,12 @@ public class BaseServiceLocalImpl implements BaseService {
 	}
 
 	public Boolean isOwnerByCreatedBy(String createdBy) {
-		// user is either a curator or the creator of the data
+		// user is either a curator or the creator of the data or if the data is
+		// created from COPY
 		if (user != null
-				&& (user.getLoginName().equalsIgnoreCase(createdBy) || user
+				&& (user.getLoginName().equalsIgnoreCase(createdBy)
+						|| createdBy
+								.contains(Constants.AUTO_COPY_ANNOTATION_PREFIX) || user
 						.isCurator())) {
 			return true;
 		} else {
