@@ -5,7 +5,6 @@
 	This is the build file for the caNanoLab database project.
 	</description>
 
-
 	<!-- Property file related properties and tasks -->
 	<property file="local.properties" />
 	<property file="project.properties" />
@@ -14,17 +13,8 @@
 	<property name="src.dir" location="${basedir}/sql/mysql" />
 	<property name="changelog.dir" location="${basedir}/changelog" />
 	<property name="target.dir" location="${basedir}/target" />
-	<property name="dist.dir" location="${target.dir}/dist" />
 	<property name="lib.dir" location="${target.dir}/lib" />
-
-	<!-- declare again to allow overwrite by the master build file -->
-	<property name="database.server" value="${database.server}" />
-	<property name="database.port" value="${database.port}" />
-	<property name="database.user" value="${database.user}" />
-	<property name="database.password" value="${database.port}" />
-	<property name="database.system.user" value="${database.system.user}" />
-	<property name="database.system.password" value="${database.system.password}" />
-	<property name="release.version" value="${release.version}" />
+	<property name="dist.dir" location="${target.dir}/dist" />
 
 	<!--set up liquibase required jars -->
 	<path id="liquibase.dependencies.path">
@@ -79,7 +69,6 @@
 
 	<target name="update" depends="prepare:changelog">
 		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
-		<antcall target="update:ldap:upt:superadmin" />
 	</target>
 
 	<target name="sync:update" depends="clean, init, prepare:changelog">
@@ -103,10 +92,9 @@
 		</copy>
 		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
 		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
-		<antcall target="update:ldap:upt:superadmin" />
 	</target>
 
-	<target name="update:ldap:upt:superadmin" depends="init, prepare:changelog">
+	<target name="update:ldap:upt:superadmin" depends="clean, init, prepare:changelog">
 		<if>
 			<!--if use LDAP authentication, replace ldap tokens from build properties -->
 			<equals arg1="${ldap.authentication.enabled}" arg2="true" />
