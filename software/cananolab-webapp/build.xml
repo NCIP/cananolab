@@ -15,11 +15,6 @@
 	<property name="lib.dir" location="${target.dir}/lib" />
 	<property name="dist.dir" location="${target.dir}/dist" />
 
-	<!-- declare again to allow overwrite by the master build file -->
-	<property name="release.version" value="${release.version}" />
-	<property name="file.repository.dir" value="${file.repository.dir}" />
-	<property name="admin.email" value="${admin.email}" />
-
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>
 			<pathelement location="${basedir}/lib/ant-contrib-1.0b3.jar" />
