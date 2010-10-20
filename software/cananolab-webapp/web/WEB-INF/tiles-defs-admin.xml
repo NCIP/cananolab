@@ -10,7 +10,7 @@
 		<put name="menu" value="ADMINISTRATION" />
 		<put name="item" value="Administration" />
 	</definition>
-	
+
 	<!-- definition for the site preference page -->
 	<definition name="admin.sitePreference" extends="canano.base">
 		<put name="cananoContent" value="/admin/bodySitePreference.jsp" />
@@ -19,5 +19,9 @@
 	<definition name="admin.transferOwner" extends="canano.base">
 		<put name="cananoContent" value="/admin/bodyTransferOwner.jsp" />
 		<put name="menu" value="ADMINISTRATION" />
-	</definition>	
+	</definition>
+	<definition name="admin.updateCreatedBy" extends="canano.base">
+		<put name="cananoContent" value="/admin/bodyUpdateCreatedBy.jsp" />
+		<put name="menu" value="ADMINISTRATION" />
+	</definition>
 </tiles-definitions>
