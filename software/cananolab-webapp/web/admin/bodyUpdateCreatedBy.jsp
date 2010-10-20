@@ -26,7 +26,7 @@
 				New Created By *
 			</td>
 			<td>
-				<html:text styleId="newOwner" property="newOwner" onchange="" />
+				<html:text styleId="newCreatedBy" property="newCreatedBy" onchange="" />
 			</td>
 		</tr>
 	</table>
