@@ -50,7 +50,6 @@
 	<property name="cananolab-webapp.base.dir" location="${software.dir}/cananolab-webapp" />
 	<property name="cananolab-grid.base.dir" location="${software.dir}/cananolab-grid" />
 	<property name="cananolab-db.base.dir" location="${software.dir}/cananolab-db" />
-	<property name="cananolab-app.base.dir" location="${software.dir}/cananolab-app" />
 
 	<!-- Build file names relative working dir above, if the basedir of the sub-project ant script is ".." you should set the *.basdir to and the build file should include the dir and build file name from the *.base.dir -->
 	<property name="cananolab-webapp.build.file" value="build.xml" />
@@ -72,7 +71,6 @@
 	<property name="common.dist.dir" location="${dist.exploded.dir}/common" />
 	<property name="jboss-conf.dist.dir" location="${dist.exploded.dir}/jboss-conf" />
 	<property name="cananolab-grid.temp.dir" location="${temp.dir}/cananolab-grid" />
-	<property name="cananolab-app.dist.dir" location="${dist.exploded.dir}/cananolab-app" />
 
 	<condition property="application.base.path" value="${application.base.path.linux}">
 		<or>
@@ -303,7 +301,8 @@
 
 	<target name="install:new:cananolab-db">
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
-			<property name="dist.dir" value="${cananolab-db.dist.dir}" />
+			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
+			<property name="lib.dir" location="${lib.dir}" />
 			<property name="database.server" value="${database.server}" />
 			<property name="database.port" value="${database.port}" />
 			<property name="database.user" value="${database.user}" />
@@ -314,22 +313,23 @@
 	</target>
 
 	<target name="update:cananolab-db">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}" />
-		<property name="dist.dir" value="${cananolab-db.dist.dir}" />
-		<property name="database.server" value="${database.server}" />
-		<property name="database.port" value="${database.port}" />
-		<property name="database.system.user" value="${database.system.user}" />
-		<property name="database.system.password" value="${database.system.password}" />
-		<property name="release.version" value="${release.version}" />
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}">
+			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
+			<property name="lib.dir" location="${lib.dir}" />
+			<property name="database.server" value="${database.server}" />
+			<property name="database.port" value="${database.port}" />
+			<property name="database.system.user" value="${database.system.user}" />
+			<property name="database.system.password" value="${database.system.password}" />
+			<property name="release.version" value="${release.version}" />
+		</ant>
 	</target>
 
 	<target name="update:cananolab-db:ldap:upt:superadmin">
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="update:ldap:upt:superadmin" dir="${cananolab-db.base.dir}">
-			<property name="dist.dir" value="${cananolab-db.dist.dir}" />
+			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
+			<property name="lib.dir" location="${lib.dir}" />
 			<property name="database.server" value="${database.server}" />
 			<property name="database.port" value="${database.port}" />
-			<property name="database.user" value="${database.user}" />
-			<property name="database.password" value="${database.password}" />
 			<property name="database.system.user" value="${database.system.user}" />
 			<property name="database.system.password" value="${database.system.password}" />
 			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
