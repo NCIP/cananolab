@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.service.admin.impl;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
@@ -9,6 +11,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -53,22 +56,9 @@ public class UpdateCreatedByServiceImpl {
 			for (String sampleId : sampleIds) {
 				try {
 					Sample domain = sampleService.findSampleById(sampleId,
-							false).getDomain();
-					String existingOwner = domain.getCreatedBy();
-					// System.out.println("ExistingOwner: " + existingOwner);
-					// String s = existingOwner.substring(0,4);
-					if (existingOwner.length() > 3
-							&& existingOwner.substring(0, 4).equalsIgnoreCase(
-									"COPY")) {
-						domain.setCreatedBy(newCreatedBy + ":" + existingOwner);
-					} else {
-						String test = existingOwner.substring(0,
-								currentCreatedBy.length());
-						// System.out.println("Test: " + test);
-						if (test.equals(currentCreatedBy)) {
-							domain.setCreatedBy(newCreatedBy);
-						}
-					}
+							false).getDomain();					
+					domain.setCreatedBy(newCreatedBy(domain.getCreatedBy(), currentCreatedBy, newCreatedBy));
+					
 					SampleComposition sampleComposition = domain
 							.getSampleComposition();
 					appService.saveOrUpdate(domain);
@@ -79,41 +69,16 @@ public class UpdateCreatedByServiceImpl {
 
 					// point of contact
 					PointOfContact poc = domain.getPrimaryPointOfContact();
-					if (poc != null) {
-						String existingPOC = poc.getCreatedBy();
-						// System.out.println("ExistingOwner: " + existingPOC);
-						if (existingPOC.length() > 3
-								&& existingPOC.substring(0, 4)
-										.equalsIgnoreCase("COPY")) {
-							poc.setCreatedBy(newCreatedBy + ":" + existingPOC);
-						} else {
-							String test = existingPOC.substring(0,
-									currentCreatedBy.length());
-							// System.out.println("Test: " + test);
-							if (test.equals(currentCreatedBy)) {
-								poc.setCreatedBy(newCreatedBy);
-							}
-						}
+					if (poc != null) {						
+						poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(), currentCreatedBy, newCreatedBy));
+						
 						appService.saveOrUpdate(poc);
 						// organization
 						Organization organization = poc.getOrganization();
-						String existingOrg = organization.getCreatedBy();
-						// System.out.println("ExistingCreatedBy: " +
-						// existingOrg);
-						if (existingOrg.length() > 3
-								&& existingOrg.substring(0, 4)
-										.equalsIgnoreCase("COPY")) {
-							organization.setCreatedBy(newCreatedBy + ":"
-									+ existingOrg);
-						} else {
-							String test = existingOrg.substring(0,
-									currentCreatedBy.length());
-							// System.out.println("Test: " + test);
-							if (test.equals(currentCreatedBy)) {
-								organization.setCreatedBy(newCreatedBy);
-							}
-						}
-						appService.saveOrUpdate(organization);
+						if(organization != null){
+							organization.setCreatedBy(newCreatedBy(organization.getCreatedBy(), currentCreatedBy, newCreatedBy));
+							appService.saveOrUpdate(organization);
+						}						
 					}
 					// updating Sample Composition
 					if (sampleComposition != null) {
@@ -126,87 +91,86 @@ public class UpdateCreatedByServiceImpl {
 						characterization = domain
 								.getCharacterizationCollection();
 
-						for (ChemicalAssociation ca : chemicalAssociation) {
-							String existingChemicalAsso = ca.getCreatedBy();
-							// System.out.println("ExistingCreatedBy: " +
-							// existingChemicalAsso);
-							if (existingChemicalAsso.length() > 3
-									&& existingChemicalAsso.substring(0, 4)
-											.equalsIgnoreCase("COPY")) {
-								ca.setCreatedBy(newCreatedBy + ":"
-										+ existingChemicalAsso);
-							} else {
-								String test = existingChemicalAsso.substring(0,
-										currentCreatedBy.length());
-								// System.out.println("Test: " + test);
-								if (test.equals(currentCreatedBy)) {
-									ca.setCreatedBy(newCreatedBy);
+						for (ChemicalAssociation ca : chemicalAssociation) {							
+							ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(), currentCreatedBy, newCreatedBy));
+							appService.saveOrUpdate(ca);							
+							Collection<File> fileCollection = ca.getFileCollection();
+							if(fileCollection != null){
+								for(File file:fileCollection){
+									if(file != null){
+										file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
+										appService.saveOrUpdate(file);		
+									}
 								}
 							}
-							// ca.setCreatedBy(newCreatedBy);
-							appService.saveOrUpdate(ca);
 						}
-						for (FunctionalizingEntity fe : functionalizingEntity) {
-							String existingFE = fe.getCreatedBy();
-							// System.out.println("ExistingCreatedBy: " +
-							// existingFE);
-							if (existingFE.length() > 3
-									&& existingFE.substring(0, 4)
-											.equalsIgnoreCase("COPY")) {
-								fe
-										.setCreatedBy(newCreatedBy + ":"
-												+ existingFE);
-							} else {
-								String test = existingFE.substring(0,
-										currentCreatedBy.length());
-								// System.out.println("Test: " + test);
-								if (test.equals(currentCreatedBy)) {
-									fe.setCreatedBy(newCreatedBy);
+						for (FunctionalizingEntity fe : functionalizingEntity) {							
+							fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(), currentCreatedBy, newCreatedBy));
+							appService.saveOrUpdate(fe);
+							Collection<File> fileCollection = fe.getFileCollection();
+							if(fileCollection != null){
+								for(File file:fileCollection){
+									if(file != null){
+										file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
+										appService.saveOrUpdate(file);		
+									}
 								}
 							}
-							// fe.setCreatedBy(newCreatedBy);
-							appService.saveOrUpdate(fe);
+							Collection<Function> functionCollection = fe.getFunctionCollection();
+							if(functionCollection != null){
+								for(Function f:functionCollection){
+									if(f != null){
+										f.setCreatedBy(newCreatedBy(f.getCreatedBy(), currentCreatedBy, newCreatedBy));
+										appService.saveOrUpdate(f);		
+									}
+								}
+							}
+							
 						}
 						for (NanomaterialEntity ne : nanomaterialEntity) {
-							String existingNE = ne.getCreatedBy();
-							// System.out.println("ExistingCreatedBy: " +
-							// existingNE);
-							if (existingNE.length() > 3
-									&& existingNE.substring(0, 4)
-											.equalsIgnoreCase("COPY")) {
-								ne
-										.setCreatedBy(newCreatedBy + ":"
-												+ existingNE);
-							} else {
-								String test = existingNE.substring(0,
-										currentCreatedBy.length());
-								// System.out.println("Test: " + test);
-								if (test.equals(currentCreatedBy)) {
-									ne.setCreatedBy(newCreatedBy);
+							ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(), currentCreatedBy, newCreatedBy));
+							appService.saveOrUpdate(ne);
+							Collection<File> fileCollection = ne.getFileCollection();
+							if(fileCollection != null){
+								for(File file:fileCollection){
+									if(file != null){
+										file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
+										appService.saveOrUpdate(file);		
+									}
 								}
 							}
-							// ne.setCreatedBy(newCreatedBy);
-							appService.saveOrUpdate(ne);
 						}
 
 						for (Characterization c : characterization) {
-							String existingChar = c.getCreatedBy();
-							// System.out.println("ExistingCreatedBy: " +
-							// existingChar);
-							if (existingChar.length() > 3
-									&& existingChar.substring(0, 4)
-											.equalsIgnoreCase("COPY")) {
-								c.setCreatedBy(newCreatedBy + ":"
-										+ existingChar);
-							} else {
-								String test = existingChar.substring(0,
-										currentCreatedBy.length());
-								// System.out.println("Test: " + test);
-								if (test.equals(currentCreatedBy)) {
-									c.setCreatedBy(newCreatedBy);
+							c.setCreatedBy(newCreatedBy(c.getCreatedBy(), currentCreatedBy, newCreatedBy));
+							appService.saveOrUpdate(c);
+							Collection<ExperimentConfig> experimentConfigCollection = c.getExperimentConfigCollection();
+							if(experimentConfigCollection != null){
+								for(ExperimentConfig expConfig : experimentConfigCollection){
+									if(expConfig != null){
+										expConfig.setCreatedBy(newCreatedBy(expConfig.getCreatedBy(), currentCreatedBy, newCreatedBy));
+										appService.saveOrUpdate(expConfig);		
+									}
 								}
 							}
-							appService.saveOrUpdate(c);
+							Collection<Finding> findingCollection = c.getFindingCollection();
+							if(findingCollection != null){
+								for(Finding f : findingCollection){
+									if(f != null){
+										f.setCreatedBy(newCreatedBy(f.getCreatedBy(), currentCreatedBy, newCreatedBy));
+										appService.saveOrUpdate(f);	
+										Collection<Datum> datumCollection = f.getDatumCollection();
+										if(datumCollection != null){
+											for(Datum d : datumCollection){
+												if(d != null){
+													d.setCreatedBy(newCreatedBy(d.getCreatedBy(), currentCreatedBy, newCreatedBy));
+													appService.saveOrUpdate(d);		
+												}
+											}
+										}
+									}
+								}								
+							}
 						}
 					}
 
@@ -241,44 +205,17 @@ public class UpdateCreatedByServiceImpl {
 			for (String publicationId : publicationIds) {
 				try {
 					Publication publication = helper
-							.findPublicationById(publicationId);
-					String existingCreatedBy = publication.getCreatedBy();
-					// System.out.println("ExistingCreatedBy: " +
-					// existingCreatedBy);
-					if (existingCreatedBy.length() > 3
-							&& existingCreatedBy.substring(0, 4)
-									.equalsIgnoreCase("COPY")) {
-						publication.setCreatedBy(newCreatedBy + ":"
-								+ existingCreatedBy);
-					} else {
-						String test = existingCreatedBy.substring(0,
-								currentCreatedBy.length());
-						if (test.equals(currentCreatedBy)) {
-							publication.setCreatedBy(newCreatedBy);
-						}
-					}
-
+							.findPublicationById(publicationId);					
+					publication.setCreatedBy(newCreatedBy(publication.getCreatedBy(), currentCreatedBy, newCreatedBy));						
 					appService.saveOrUpdate(publication);
 					// author
 					Collection<Author> authorCollection = publication
 							.getAuthorCollection();
 					for (Author a : authorCollection) {
-						String existingAuthor = a.getCreatedBy();
-						// System.out.println("ExistingCreatedBy: " +
-						// existingAuthor);
-						if (existingAuthor.length() > 3
-								&& existingAuthor.substring(0, 4)
-										.equalsIgnoreCase("COPY")) {
-							a.setCreatedBy(newCreatedBy + ":"
-									+ existingCreatedBy);
-						} else {
-							String test = existingAuthor.substring(0,
-									currentCreatedBy.length());
-							if (test.equals(currentCreatedBy)) {
-								a.setCreatedBy(newCreatedBy);
-							}
+						if(a != null ){
+							a.setCreatedBy(newCreatedBy(a.getCreatedBy(), currentCreatedBy, newCreatedBy));						
+							appService.saveOrUpdate(a);
 						}
-						appService.saveOrUpdate(a);
 					}
 
 				} catch (Exception e) {
@@ -312,24 +249,15 @@ public class UpdateCreatedByServiceImpl {
 					securityService);
 			for (String protocolId : protocolIds) {
 				try {
-					Protocol protocol = helper.findProtocolById(protocolId);
-					String existingCreatedBy = protocol.getCreatedBy();
-					// System.out.println("ExistingCreatedBy: " +
-					// existingCreatedBy);
-					if (existingCreatedBy.length() > 3
-							&& existingCreatedBy.substring(0, 4)
-									.equalsIgnoreCase("COPY")) {
-						protocol.setCreatedBy(newCreatedBy + ":"
-								+ existingCreatedBy);
-					} else {
-						String test = existingCreatedBy.substring(0,
-								currentCreatedBy.length());
-						if (test.equals(currentCreatedBy)) {
-							protocol.setCreatedBy(newCreatedBy);
-						}
-					}
-
+					Protocol protocol = helper.findProtocolById(protocolId);					
+					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(), currentCreatedBy, newCreatedBy));
 					appService.saveOrUpdate(protocol);
+					//file
+					File file = protocol.getFile();
+					if(file != null){
+						file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
+						appService.saveOrUpdate(file);
+					}
 
 				} catch (Exception e) {
 					i++;
@@ -381,5 +309,20 @@ public class UpdateCreatedByServiceImpl {
 			throw new AdministrationException(error, e);
 		}
 		return numFailures;
+	}
+	private String newCreatedBy(String existingOwner, String currentOwner, String newOwner){
+		int copyIndex = existingOwner.indexOf("COPY");
+		String newCreatedBy="";
+		if(copyIndex ==0){
+			newCreatedBy = newOwner + ":" + existingOwner.substring(copyIndex);
+		}else{
+			String test = existingOwner.substring(0, currentOwner.length());
+			if(test.equals(currentOwner)){
+				newCreatedBy = newOwner;
+			}else{
+				newCreatedBy = existingOwner;
+			}
+		}
+		return newCreatedBy;
 	}
 }
