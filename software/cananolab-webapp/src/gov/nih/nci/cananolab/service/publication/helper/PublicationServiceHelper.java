@@ -613,7 +613,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 						Projections.projectionList().add(
 								Projections.property("id")));
 		if("COPY".equalsIgnoreCase(currentOwner)){
-			crit.add(Restrictions.ilike("createdBy", currentOwner));
+			crit.add(Restrictions.like("createdBy", currentOwner, MatchMode.ANYWHERE));
 		}else{
 			crit.add(Restrictions.eq("createdBy", currentOwner));
 		}
