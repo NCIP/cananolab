@@ -388,11 +388,13 @@ public class UpdateCreatedByServiceImpl {
 		if(copyIndex ==0){
 			newCreatedBy = newOwner + ":" + existingOwner.substring(copyIndex);
 		}else{
-			String test = existingOwner.substring(0, currentOwner.length());
-			if(test.equals(currentOwner)){
-				newCreatedBy = newOwner;
-			}else{
-				newCreatedBy = existingOwner;
+			if(existingOwner.length() >= currentOwner.length()){
+				String test = existingOwner.substring(0, currentOwner.length());
+				if(test.equals(currentOwner)){
+					newCreatedBy = newOwner;
+				}else{
+					newCreatedBy = existingOwner;
+				}
 			}
 		}
 		return newCreatedBy;
