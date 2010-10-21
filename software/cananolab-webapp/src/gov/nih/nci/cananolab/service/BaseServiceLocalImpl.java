@@ -1451,7 +1451,7 @@ public class BaseServiceLocalImpl implements BaseService {
 				File dbFile = (File) appService.get(File.class, file.getId());
 				if (dbFile != null) {
 					// use original createdBy if it is not COPY
-					if (!dbFile.getCreatedBy().equals(
+					if (!dbFile.getCreatedBy().contains(
 							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 						file.setCreatedBy(dbFile.getCreatedBy());
 					}
