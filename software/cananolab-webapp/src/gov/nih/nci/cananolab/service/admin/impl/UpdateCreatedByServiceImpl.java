@@ -43,9 +43,9 @@ public class UpdateCreatedByServiceImpl {
 	private static Logger logger = Logger
 			.getLogger(UpdateCreatedByServiceImpl.class);
 
-	private int update(SampleService sampleService, List<String> sampleIds, String currentCreatedBy,
-			String newCreatedBy) throws AdministrationException,
-			NoAccessException {
+	private int update(SampleService sampleService, List<String> sampleIds,
+			String currentCreatedBy, String newCreatedBy)
+			throws AdministrationException, NoAccessException {
 		int i = 0;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -55,14 +55,17 @@ public class UpdateCreatedByServiceImpl {
 					Sample domain = sampleService.findSampleById(sampleId,
 							false).getDomain();
 					String existingOwner = domain.getCreatedBy();
-					//System.out.println("ExistingOwner: " + existingOwner);
-					//String s = existingOwner.substring(0,4);
-					if(existingOwner.length() > 3 && existingOwner.substring(0, 4).equalsIgnoreCase("COPY")){
+					// System.out.println("ExistingOwner: " + existingOwner);
+					// String s = existingOwner.substring(0,4);
+					if (existingOwner.length() > 3
+							&& existingOwner.substring(0, 4).equalsIgnoreCase(
+									"COPY")) {
 						domain.setCreatedBy(newCreatedBy + ":" + existingOwner);
-					}else{
-						String test = existingOwner.substring(0, currentCreatedBy.length());
-						//System.out.println("Test: " + test);
-						if(test.equals(currentCreatedBy)){
+					} else {
+						String test = existingOwner.substring(0,
+								currentCreatedBy.length());
+						// System.out.println("Test: " + test);
+						if (test.equals(currentCreatedBy)) {
 							domain.setCreatedBy(newCreatedBy);
 						}
 					}
@@ -74,36 +77,43 @@ public class UpdateCreatedByServiceImpl {
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 					Collection<Characterization> characterization = new ArrayList<Characterization>();
 
-					//point of contact
+					// point of contact
 					PointOfContact poc = domain.getPrimaryPointOfContact();
 					String existingPOC = poc.getCreatedBy();
-					//System.out.println("ExistingOwner: " + existingPOC);
-					if(existingPOC.length() > 3 && existingPOC.substring(0, 4).equalsIgnoreCase("COPY")){
+					// System.out.println("ExistingOwner: " + existingPOC);
+					if (existingPOC.length() > 3
+							&& existingPOC.substring(0, 4).equalsIgnoreCase(
+									"COPY")) {
 						poc.setCreatedBy(newCreatedBy + ":" + existingPOC);
-					}else{
-						String test = existingPOC.substring(0, currentCreatedBy.length());
-						//System.out.println("Test: " + test);
-						if(test.equals(currentCreatedBy)){
+					} else {
+						String test = existingPOC.substring(0, currentCreatedBy
+								.length());
+						// System.out.println("Test: " + test);
+						if (test.equals(currentCreatedBy)) {
 							poc.setCreatedBy(newCreatedBy);
 						}
 					}
 					appService.saveOrUpdate(poc);
-					//organization
-					Organization organization = poc.getOrganization(); 
+					// organization
+					Organization organization = poc.getOrganization();
 					String existingOrg = organization.getCreatedBy();
-					//System.out.println("ExistingCreatedBy: " + existingOrg);
-					if(existingOrg.length() > 3 && existingOrg.substring(0, 4).equalsIgnoreCase("COPY")){
-						organization.setCreatedBy(newCreatedBy + ":" + existingOrg);
-					}else{
-						String test = existingOrg.substring(0, currentCreatedBy.length());
-						//System.out.println("Test: " + test);
-						if(test.equals(currentCreatedBy)){
+					// System.out.println("ExistingCreatedBy: " + existingOrg);
+					if (existingOrg.length() > 3
+							&& existingOrg.substring(0, 4).equalsIgnoreCase(
+									"COPY")) {
+						organization.setCreatedBy(newCreatedBy + ":"
+								+ existingOrg);
+					} else {
+						String test = existingOrg.substring(0, currentCreatedBy
+								.length());
+						// System.out.println("Test: " + test);
+						if (test.equals(currentCreatedBy)) {
 							organization.setCreatedBy(newCreatedBy);
 						}
 					}
 					appService.saveOrUpdate(organization);
-					
-					//updating Sample Composition
+
+					// updating Sample Composition
 					if (sampleComposition != null) {
 						chemicalAssociation = sampleComposition
 								.getChemicalAssociationCollection();
@@ -116,59 +126,81 @@ public class UpdateCreatedByServiceImpl {
 
 						for (ChemicalAssociation ca : chemicalAssociation) {
 							String existingChemicalAsso = ca.getCreatedBy();
-							//System.out.println("ExistingCreatedBy: " + existingChemicalAsso);
-							if(existingChemicalAsso.length() > 3 && existingChemicalAsso.substring(0, 4).equalsIgnoreCase("COPY")){
-								ca.setCreatedBy(newCreatedBy + ":" + existingChemicalAsso);
-							}else{
-								String test = existingChemicalAsso.substring(0, currentCreatedBy.length());
-								//System.out.println("Test: " + test);
-								if(test.equals(currentCreatedBy)){
+							// System.out.println("ExistingCreatedBy: " +
+							// existingChemicalAsso);
+							if (existingChemicalAsso.length() > 3
+									&& existingChemicalAsso.substring(0, 4)
+											.equalsIgnoreCase("COPY")) {
+								ca.setCreatedBy(newCreatedBy + ":"
+										+ existingChemicalAsso);
+							} else {
+								String test = existingChemicalAsso.substring(0,
+										currentCreatedBy.length());
+								// System.out.println("Test: " + test);
+								if (test.equals(currentCreatedBy)) {
 									ca.setCreatedBy(newCreatedBy);
 								}
 							}
-							//ca.setCreatedBy(newCreatedBy);
+							// ca.setCreatedBy(newCreatedBy);
 							appService.saveOrUpdate(ca);
 						}
 						for (FunctionalizingEntity fe : functionalizingEntity) {
 							String existingFE = fe.getCreatedBy();
-							//System.out.println("ExistingCreatedBy: " + existingFE);
-							if(existingFE.length() > 3 && existingFE.substring(0, 4).equalsIgnoreCase("COPY")){
-								fe.setCreatedBy(newCreatedBy + ":" + existingFE);
-							}else{
-								String test = existingFE.substring(0, currentCreatedBy.length());
-								//System.out.println("Test: " + test);
-								if(test.equals(currentCreatedBy)){
+							// System.out.println("ExistingCreatedBy: " +
+							// existingFE);
+							if (existingFE.length() > 3
+									&& existingFE.substring(0, 4)
+											.equalsIgnoreCase("COPY")) {
+								fe
+										.setCreatedBy(newCreatedBy + ":"
+												+ existingFE);
+							} else {
+								String test = existingFE.substring(0,
+										currentCreatedBy.length());
+								// System.out.println("Test: " + test);
+								if (test.equals(currentCreatedBy)) {
 									fe.setCreatedBy(newCreatedBy);
 								}
 							}
-							//fe.setCreatedBy(newCreatedBy);
+							// fe.setCreatedBy(newCreatedBy);
 							appService.saveOrUpdate(fe);
 						}
 						for (NanomaterialEntity ne : nanomaterialEntity) {
 							String existingNE = ne.getCreatedBy();
-							//System.out.println("ExistingCreatedBy: " + existingNE);
-							if(existingNE.length() > 3 && existingNE.substring(0, 4).equalsIgnoreCase("COPY")){
-								ne.setCreatedBy(newCreatedBy + ":" + existingNE);
-							}else{
-								String test = existingNE.substring(0, currentCreatedBy.length());
-								//System.out.println("Test: " + test);
-								if(test.equals(currentCreatedBy)){
+							// System.out.println("ExistingCreatedBy: " +
+							// existingNE);
+							if (existingNE.length() > 3
+									&& existingNE.substring(0, 4)
+											.equalsIgnoreCase("COPY")) {
+								ne
+										.setCreatedBy(newCreatedBy + ":"
+												+ existingNE);
+							} else {
+								String test = existingNE.substring(0,
+										currentCreatedBy.length());
+								// System.out.println("Test: " + test);
+								if (test.equals(currentCreatedBy)) {
 									ne.setCreatedBy(newCreatedBy);
 								}
 							}
-							//ne.setCreatedBy(newCreatedBy);
+							// ne.setCreatedBy(newCreatedBy);
 							appService.saveOrUpdate(ne);
 						}
 
 						for (Characterization c : characterization) {
 							String existingChar = c.getCreatedBy();
-							//System.out.println("ExistingCreatedBy: " + existingChar);
-							if(existingChar.length() > 3 && existingChar.substring(0, 4).equalsIgnoreCase("COPY")){
-								c.setCreatedBy(newCreatedBy + ":" + existingChar);
-							}else{
-								String test = existingChar.substring(0, currentCreatedBy.length());
-								//System.out.println("Test: " + test);
-								if(test.equals(currentCreatedBy)){
+							// System.out.println("ExistingCreatedBy: " +
+							// existingChar);
+							if (existingChar.length() > 3
+									&& existingChar.substring(0, 4)
+											.equalsIgnoreCase("COPY")) {
+								c.setCreatedBy(newCreatedBy + ":"
+										+ existingChar);
+							} else {
+								String test = existingChar.substring(0,
+										currentCreatedBy.length());
+								// System.out.println("Test: " + test);
+								if (test.equals(currentCreatedBy)) {
 									c.setCreatedBy(newCreatedBy);
 								}
 							}
@@ -191,13 +223,14 @@ public class UpdateCreatedByServiceImpl {
 		return i;
 	}
 
-	private int update(PublicationService publicationService, List<String> publicationIds,
-			String currentCreatedBy, String newCreatedBy)
-			throws AdministrationException, NoAccessException {
-		
+	private int update(PublicationService publicationService,
+			List<String> publicationIds, String currentCreatedBy,
+			String newCreatedBy) throws AdministrationException,
+			NoAccessException {
+
 		SecurityService securityService = ((PublicationServiceLocalImpl) publicationService)
-		.getSecurityService();
-		int i=0;
+				.getSecurityService();
+		int i = 0;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -208,63 +241,44 @@ public class UpdateCreatedByServiceImpl {
 					Publication publication = helper
 							.findPublicationById(publicationId);
 					String existingCreatedBy = publication.getCreatedBy();
-					//System.out.println("ExistingCreatedBy: " + existingCreatedBy);
-					if(existingCreatedBy.length() > 3 && existingCreatedBy.substring(0, 4).equalsIgnoreCase("COPY")){
-						publication.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
-					}else{
-						String test = existingCreatedBy.substring(0, currentCreatedBy.length());
-						if(test.equals(currentCreatedBy)){
+					// System.out.println("ExistingCreatedBy: " +
+					// existingCreatedBy);
+					if (existingCreatedBy.length() > 3
+							&& existingCreatedBy.substring(0, 4)
+									.equalsIgnoreCase("COPY")) {
+						publication.setCreatedBy(newCreatedBy + ":"
+								+ existingCreatedBy);
+					} else {
+						String test = existingCreatedBy.substring(0,
+								currentCreatedBy.length());
+						if (test.equals(currentCreatedBy)) {
 							publication.setCreatedBy(newCreatedBy);
 						}
 					}
-										
+
 					appService.saveOrUpdate(publication);
-					//datum
-					Collection<Datum> datumCollection = publication.getDatumCollection();
-					for(Datum d : datumCollection){
-						String existingDatum = d.getCreatedBy();
-						//System.out.println("ExistingCreatedBy: " + existingDatum);
-						if(existingDatum.length() > 3 && existingDatum.substring(0, 4).equalsIgnoreCase("COPY")){
-							d.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
-						}else{
-							String test = existingDatum.substring(0, currentCreatedBy.length());
-							if(test.equals(currentCreatedBy)){
-								d.setCreatedBy(newCreatedBy);
-							}
-						}
-						appService.saveOrUpdate(d);
-					}
-					//finding
-					Collection<Finding> findingCollection = publication.getFindingCollection();
-					for(Finding f : findingCollection){
-						String existingFinding = f.getCreatedBy();
-						//System.out.println("ExistingCreatedBy: " + existingFinding);
-						if(existingFinding.length() > 3 && existingFinding.substring(0, 4).equalsIgnoreCase("COPY")){
-							f.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
-						}else{
-							String test = existingFinding.substring(0, currentCreatedBy.length());
-							if(test.equals(currentCreatedBy)){
-								f.setCreatedBy(newCreatedBy);
-							}
-						}
-						appService.saveOrUpdate(f);
-					}
-					//author
-					Collection<Author> authorCollection = publication.getAuthorCollection();
-					for(Author a : authorCollection){
+					// author
+					Collection<Author> authorCollection = publication
+							.getAuthorCollection();
+					for (Author a : authorCollection) {
 						String existingAuthor = a.getCreatedBy();
-						//System.out.println("ExistingCreatedBy: " + existingAuthor);
-						if(existingAuthor.length() > 3 && existingAuthor.substring(0, 4).equalsIgnoreCase("COPY")){
-							a.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
-						}else{
-							String test = existingAuthor.substring(0, currentCreatedBy.length());
-							if(test.equals(currentCreatedBy)){
+						// System.out.println("ExistingCreatedBy: " +
+						// existingAuthor);
+						if (existingAuthor.length() > 3
+								&& existingAuthor.substring(0, 4)
+										.equalsIgnoreCase("COPY")) {
+							a.setCreatedBy(newCreatedBy + ":"
+									+ existingCreatedBy);
+						} else {
+							String test = existingAuthor.substring(0,
+									currentCreatedBy.length());
+							if (test.equals(currentCreatedBy)) {
 								a.setCreatedBy(newCreatedBy);
 							}
 						}
 						appService.saveOrUpdate(a);
 					}
-					
+
 				} catch (Exception e) {
 					i++;
 					String error = "Error updating createdBy field for publication: "
@@ -278,15 +292,16 @@ public class UpdateCreatedByServiceImpl {
 			throw new AdministrationException(error, e);
 		}
 		return i;
-		
+
 	}
 
-	private int update(ProtocolService protocolService, List<String> protocolIds,
-			String currentCreatedBy, String newCreatedBy)
-			throws AdministrationException, NoAccessException {
+	private int update(ProtocolService protocolService,
+			List<String> protocolIds, String currentCreatedBy,
+			String newCreatedBy) throws AdministrationException,
+			NoAccessException {
 		SecurityService securityService = ((ProtocolServiceLocalImpl) protocolService)
-		.getSecurityService();
-		
+				.getSecurityService();
+
 		int i = 0;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -297,18 +312,23 @@ public class UpdateCreatedByServiceImpl {
 				try {
 					Protocol protocol = helper.findProtocolById(protocolId);
 					String existingCreatedBy = protocol.getCreatedBy();
-					//System.out.println("ExistingCreatedBy: " + existingCreatedBy);
-					if(existingCreatedBy.length() > 3 && existingCreatedBy.substring(0, 4).equalsIgnoreCase("COPY")){
-						protocol.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
-					}else{
-						String test = existingCreatedBy.substring(0, currentCreatedBy.length());
-						if(test.equals(currentCreatedBy)){
+					// System.out.println("ExistingCreatedBy: " +
+					// existingCreatedBy);
+					if (existingCreatedBy.length() > 3
+							&& existingCreatedBy.substring(0, 4)
+									.equalsIgnoreCase("COPY")) {
+						protocol.setCreatedBy(newCreatedBy + ":"
+								+ existingCreatedBy);
+					} else {
+						String test = existingCreatedBy.substring(0,
+								currentCreatedBy.length());
+						if (test.equals(currentCreatedBy)) {
 							protocol.setCreatedBy(newCreatedBy);
-						}						
+						}
 					}
-				
+
 					appService.saveOrUpdate(protocol);
-					
+
 				} catch (Exception e) {
 					i++;
 					String error = "Error updating createdBy field for protocol: "
@@ -326,30 +346,35 @@ public class UpdateCreatedByServiceImpl {
 
 	public int update(SecurityService securityService, String currentCreatedBy,
 			String newCreatedBy) throws AdministrationException,
-			NoAccessException {		
+			NoAccessException {
 		String userLoginName = securityService.getUserBean().getLoginName();
-		if(!("lethai".equals(userLoginName) || "pansu".equals(userLoginName))){
+		if (!("lethai".equals(userLoginName) || "pansu".equals(userLoginName))) {
 			throw new NoAccessException();
 		}
 		int numFailures = 0;
 		try {
-			SampleService sampleService = new SampleServiceLocalImpl(securityService);
-			List<String> sampleIds = sampleService.findSampleIdsByOwner(currentCreatedBy);
-			numFailures = this.update(sampleService, sampleIds, currentCreatedBy,
-					newCreatedBy);
-			
-			ProtocolService protocolService = new ProtocolServiceLocalImpl(securityService);
-			List<String> protocolIds = protocolService.findProtocolIdsByOwner(currentCreatedBy);
-			numFailures+= this.update(protocolService, protocolIds, currentCreatedBy,
-					newCreatedBy);
-			
-			PublicationService publicationService = new PublicationServiceLocalImpl(securityService);		
-			List<String> publicationIds = publicationService.findPublicationIdsByOwner(currentCreatedBy);
-			numFailures+= this.update(publicationService, publicationIds, currentCreatedBy,
-					newCreatedBy);
+			SampleService sampleService = new SampleServiceLocalImpl(
+					securityService);
+			List<String> sampleIds = sampleService
+					.findSampleIdsByOwner(currentCreatedBy);
+			numFailures = this.update(sampleService, sampleIds,
+					currentCreatedBy, newCreatedBy);
+
+			ProtocolService protocolService = new ProtocolServiceLocalImpl(
+					securityService);
+			List<String> protocolIds = protocolService
+					.findProtocolIdsByOwner(currentCreatedBy);
+			numFailures += this.update(protocolService, protocolIds,
+					currentCreatedBy, newCreatedBy);
+
+			PublicationService publicationService = new PublicationServiceLocalImpl(
+					securityService);
+			List<String> publicationIds = publicationService
+					.findPublicationIdsByOwner(currentCreatedBy);
+			numFailures += this.update(publicationService, publicationIds,
+					currentCreatedBy, newCreatedBy);
 		} catch (Exception e) {
-			String error = "Error in updating createBy field "
-					+ e;
+			String error = "Error in updating createBy field " + e;
 			logger.error(error, e);
 			throw new AdministrationException(error, e);
 		}
