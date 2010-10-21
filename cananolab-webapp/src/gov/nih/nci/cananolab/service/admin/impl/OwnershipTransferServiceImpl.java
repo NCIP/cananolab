@@ -124,11 +124,13 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						if (sampleComposition.getFileCollection() != null) {
 							for (File file : sampleComposition
 									.getFileCollection()) {
-								file
-										.setCreatedBy(newCreatedBy(file
-												.getCreatedBy(), currentOwner,
-												newOwner));
-								appService.saveOrUpdate(file);
+								if(file != null){
+									file
+											.setCreatedBy(newCreatedBy(file
+													.getCreatedBy(), currentOwner,
+													newOwner));
+									appService.saveOrUpdate(file);
+								}
 							}
 						}
 						chemicalAssociation = sampleComposition
@@ -139,69 +141,120 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 								.getNanomaterialEntityCollection();
 						characterization = domain
 								.getCharacterizationCollection();
-						for (ChemicalAssociation ca : chemicalAssociation) {
-							ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(),
-									currentOwner, newOwner));
-							if (ca.getFileCollection() != null) {
-								for (File file : ca.getFileCollection()) {
-									file.setCreatedBy(newCreatedBy(file
-											.getCreatedBy(), currentOwner,
-											newOwner));
+						if(chemicalAssociation != null){
+							for (ChemicalAssociation ca : chemicalAssociation) {
+								if(ca != null){
+									ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(),
+											currentOwner, newOwner));
+									if (ca.getFileCollection() != null) {
+										for (File file : ca.getFileCollection()) {
+											file.setCreatedBy(newCreatedBy(file
+													.getCreatedBy(), currentOwner,
+													newOwner));
+										}
+									}
+									appService.saveOrUpdate(ca);
 								}
 							}
-							appService.saveOrUpdate(ca);
 						}
-						for (FunctionalizingEntity fe : functionalizingEntity) {
-							fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(),
-									currentOwner, newOwner));
-							if (fe.getFileCollection() != null) {
-								for (File file : fe.getFileCollection()) {
-									file.setCreatedBy(newCreatedBy(file
-											.getCreatedBy(), currentOwner,
-											newOwner));
+						if(functionalizingEntity != null){
+							for (FunctionalizingEntity fe : functionalizingEntity) {
+								fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(),
+										currentOwner, newOwner));
+								if (fe.getFileCollection() != null) {
+									for (File file : fe.getFileCollection()) {
+										file.setCreatedBy(newCreatedBy(file
+												.getCreatedBy(), currentOwner,
+												newOwner));
+									}
 								}
-							}
-							if (fe.getFunctionCollection() != null) {
-								for (Function function : fe
-										.getFunctionCollection()) {
-									function.setCreatedBy(newCreatedBy(function
-											.getCreatedBy(), currentOwner,
-											newOwner));
+								if (fe.getFunctionCollection() != null) {
+									for (Function function : fe
+											.getFunctionCollection()) {
+										function.setCreatedBy(newCreatedBy(function
+												.getCreatedBy(), currentOwner,
+												newOwner));
+									}
+	
 								}
-
+								appService.saveOrUpdate(fe);
 							}
-							appService.saveOrUpdate(fe);
 						}
-						for (NanomaterialEntity ne : nanomaterialEntity) {
-							ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(),
-									currentOwner, newOwner));
-							if (ne.getFileCollection() != null) {
-								for (File file : ne.getFileCollection()) {
-									file.setCreatedBy(newCreatedBy(file
-											.getCreatedBy(), currentOwner,
-											newOwner));
+						if(nanomaterialEntity != null){
+							for (NanomaterialEntity ne : nanomaterialEntity) {
+								ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(),
+										currentOwner, newOwner));
+								if (ne.getFileCollection() != null) {
+									for (File file : ne.getFileCollection()) {
+										file.setCreatedBy(newCreatedBy(file
+												.getCreatedBy(), currentOwner,
+												newOwner));
+									}
 								}
+								if (ne.getComposingElementCollection() != null) {
+									for (ComposingElement ce : ne
+											.getComposingElementCollection()) {
+										ce.setCreatedBy(newCreatedBy(ce
+												.getCreatedBy(), currentOwner,
+												newOwner));
+										if (ce.getInherentFunctionCollection() != null) {
+											for (Function function : ce
+													.getInherentFunctionCollection()) {
+												function.setCreatedBy(newCreatedBy(
+														function.getCreatedBy(),
+														currentOwner, newOwner));
+												if (function instanceof TargetingFunction) {
+													TargetingFunction tFunc = (TargetingFunction) function;
+													if (tFunc.getTargetCollection() != null) {
+														for (Target target : tFunc
+																.getTargetCollection()) {
+															target
+																	.setCreatedBy(newCreatedBy(
+																			target
+																					.getCreatedBy(),
+																			currentOwner,
+																			newOwner));
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+								appService.saveOrUpdate(ne);
 							}
-							if (ne.getComposingElementCollection() != null) {
-								for (ComposingElement ce : ne
-										.getComposingElementCollection()) {
-									ce.setCreatedBy(newCreatedBy(ce
-											.getCreatedBy(), currentOwner,
-											newOwner));
-									if (ce.getInherentFunctionCollection() != null) {
-										for (Function function : ce
-												.getInherentFunctionCollection()) {
-											function.setCreatedBy(newCreatedBy(
-													function.getCreatedBy(),
-													currentOwner, newOwner));
-											if (function instanceof TargetingFunction) {
-												TargetingFunction tFunc = (TargetingFunction) function;
-												if (tFunc.getTargetCollection() != null) {
-													for (Target target : tFunc
-															.getTargetCollection()) {
-														target
+						}
+						// characterization
+						if(characterization != null){
+							for (Characterization c : characterization) {
+								c.setCreatedBy(newCreatedBy(c.getCreatedBy(),
+										currentOwner, newOwner));
+								if (c.getExperimentConfigCollection() != null) {
+									for (ExperimentConfig config : c
+											.getExperimentConfigCollection()) {
+										config.setCreatedBy(newCreatedBy(config
+												.getCreatedBy(), currentOwner,
+												newOwner));
+										appService.saveOrUpdate(config);
+									}
+								}
+								if (c.getFindingCollection() != null) {
+									for (Finding finding : c.getFindingCollection()) {
+										finding.setCreatedBy(newCreatedBy(finding
+												.getCreatedBy(), currentOwner,
+												newOwner));
+										if (finding.getDatumCollection() != null) {
+											for (Datum datum : finding
+													.getDatumCollection()) {
+												datum.setCreatedBy(newCreatedBy(
+														datum.getCreatedBy(),
+														currentOwner, newOwner));
+												if (datum.getConditionCollection() != null) {
+													for (Condition cond : datum
+															.getConditionCollection()) {
+														cond
 																.setCreatedBy(newCreatedBy(
-																		target
+																		cond
 																				.getCreatedBy(),
 																		currentOwner,
 																		newOwner));
@@ -209,61 +262,19 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 												}
 											}
 										}
-									}
-								}
-							}
-							appService.saveOrUpdate(ne);
-						}
-
-						// characterization
-						for (Characterization c : characterization) {
-							c.setCreatedBy(newCreatedBy(c.getCreatedBy(),
-									currentOwner, newOwner));
-							if (c.getExperimentConfigCollection() != null) {
-								for (ExperimentConfig config : c
-										.getExperimentConfigCollection()) {
-									config.setCreatedBy(newCreatedBy(config
-											.getCreatedBy(), currentOwner,
-											newOwner));
-									appService.saveOrUpdate(config);
-								}
-							}
-							if (c.getFindingCollection() != null) {
-								for (Finding finding : c.getFindingCollection()) {
-									finding.setCreatedBy(newCreatedBy(finding
-											.getCreatedBy(), currentOwner,
-											newOwner));
-									if (finding.getDatumCollection() != null) {
-										for (Datum datum : finding
-												.getDatumCollection()) {
-											datum.setCreatedBy(newCreatedBy(
-													datum.getCreatedBy(),
-													currentOwner, newOwner));
-											if (datum.getConditionCollection() != null) {
-												for (Condition cond : datum
-														.getConditionCollection()) {
-													cond
-															.setCreatedBy(newCreatedBy(
-																	cond
-																			.getCreatedBy(),
-																	currentOwner,
-																	newOwner));
-												}
+										if (finding.getFileCollection() != null) {
+											for (File file : finding
+													.getFileCollection()) {
+												file.setCreatedBy(newCreatedBy(file
+														.getCreatedBy(),
+														currentOwner, newOwner));
 											}
 										}
+										appService.saveOrUpdate(finding);
 									}
-									if (finding.getFileCollection() != null) {
-										for (File file : finding
-												.getFileCollection()) {
-											file.setCreatedBy(newCreatedBy(file
-													.getCreatedBy(),
-													currentOwner, newOwner));
-										}
-									}
-									appService.saveOrUpdate(finding);
 								}
+								appService.saveOrUpdate(c);
 							}
-							appService.saveOrUpdate(c);
 						}
 					}
 					appService.saveOrUpdate(domain);
