@@ -692,6 +692,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				} else {
 					newCreatedBy = existingOwner;
 				}
+			}else{
+				newCreatedBy = existingOwner;
 			}
 		}
 		return newCreatedBy;

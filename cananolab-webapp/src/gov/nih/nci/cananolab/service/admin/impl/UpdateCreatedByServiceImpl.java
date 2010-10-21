@@ -411,6 +411,8 @@ public class UpdateCreatedByServiceImpl {
 				}else{
 					newCreatedBy = existingOwner;
 				}
+			}else{
+				newCreatedBy = existingOwner;
 			}
 		}
 		return newCreatedBy;
