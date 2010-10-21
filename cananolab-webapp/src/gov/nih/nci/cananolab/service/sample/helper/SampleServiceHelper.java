@@ -928,7 +928,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		crit.setProjection(Projections.distinct(projectionList));
 
 		if("COPY".equalsIgnoreCase(currentOwner)){
-			crit.add(Restrictions.ilike("createdBy", currentOwner));
+			crit.add(Restrictions.like("createdBy", currentOwner, MatchMode.ANYWHERE));
 		}else{
 			crit.add(Restrictions.eq("createdBy", currentOwner));
 		}
