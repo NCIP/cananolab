@@ -79,40 +79,42 @@ public class UpdateCreatedByServiceImpl {
 
 					// point of contact
 					PointOfContact poc = domain.getPrimaryPointOfContact();
-					String existingPOC = poc.getCreatedBy();
-					// System.out.println("ExistingOwner: " + existingPOC);
-					if (existingPOC.length() > 3
-							&& existingPOC.substring(0, 4).equalsIgnoreCase(
-									"COPY")) {
-						poc.setCreatedBy(newCreatedBy + ":" + existingPOC);
-					} else {
-						String test = existingPOC.substring(0, currentCreatedBy
-								.length());
-						// System.out.println("Test: " + test);
-						if (test.equals(currentCreatedBy)) {
-							poc.setCreatedBy(newCreatedBy);
+					if (poc != null) {
+						String existingPOC = poc.getCreatedBy();
+						// System.out.println("ExistingOwner: " + existingPOC);
+						if (existingPOC.length() > 3
+								&& existingPOC.substring(0, 4)
+										.equalsIgnoreCase("COPY")) {
+							poc.setCreatedBy(newCreatedBy + ":" + existingPOC);
+						} else {
+							String test = existingPOC.substring(0,
+									currentCreatedBy.length());
+							// System.out.println("Test: " + test);
+							if (test.equals(currentCreatedBy)) {
+								poc.setCreatedBy(newCreatedBy);
+							}
 						}
-					}
-					appService.saveOrUpdate(poc);
-					// organization
-					Organization organization = poc.getOrganization();
-					String existingOrg = organization.getCreatedBy();
-					// System.out.println("ExistingCreatedBy: " + existingOrg);
-					if (existingOrg.length() > 3
-							&& existingOrg.substring(0, 4).equalsIgnoreCase(
-									"COPY")) {
-						organization.setCreatedBy(newCreatedBy + ":"
-								+ existingOrg);
-					} else {
-						String test = existingOrg.substring(0, currentCreatedBy
-								.length());
-						// System.out.println("Test: " + test);
-						if (test.equals(currentCreatedBy)) {
-							organization.setCreatedBy(newCreatedBy);
+						appService.saveOrUpdate(poc);
+						// organization
+						Organization organization = poc.getOrganization();
+						String existingOrg = organization.getCreatedBy();
+						// System.out.println("ExistingCreatedBy: " +
+						// existingOrg);
+						if (existingOrg.length() > 3
+								&& existingOrg.substring(0, 4)
+										.equalsIgnoreCase("COPY")) {
+							organization.setCreatedBy(newCreatedBy + ":"
+									+ existingOrg);
+						} else {
+							String test = existingOrg.substring(0,
+									currentCreatedBy.length());
+							// System.out.println("Test: " + test);
+							if (test.equals(currentCreatedBy)) {
+								organization.setCreatedBy(newCreatedBy);
+							}
 						}
+						appService.saveOrUpdate(organization);
 					}
-					appService.saveOrUpdate(organization);
-
 					// updating Sample Composition
 					if (sampleComposition != null) {
 						chemicalAssociation = sampleComposition
