@@ -273,7 +273,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 						.findExperimentConfigById(config.getId().toString());
 				if (dbConfig != null) {
 					// reuse original createdBy if it is not COPY
-					if (!dbConfig.getCreatedBy().equals(
+					if (!dbConfig.getCreatedBy().contains(
 							Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 						config.setCreatedBy(dbConfig.getCreatedBy());
 					}
@@ -431,7 +431,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				// create a deep copy
-				Characterization copy = charBean.getDomainCopy(copyData);
+				Characterization copy = charBean.getDomainCopy(user
+						.getLoginName(), copyData);
 				CharacterizationBean copyBean = new CharacterizationBean(copy);
 				// try {
 				// // copy file visibility

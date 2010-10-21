@@ -585,7 +585,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (SampleBean sampleBean : newSampleBeans) {
 				NanomaterialEntityBean copyBean = null;
 				try {
-					NanomaterialEntity copy = entityBean.getDomainCopy();
+					NanomaterialEntity copy = entityBean.getDomainCopy(user
+							.getLoginName());
 					copyBean = new NanomaterialEntityBean(copy);
 					// copy file file content
 					for (FileBean fileBean : copyBean.getFiles()) {
@@ -616,7 +617,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			for (SampleBean sampleBean : newSampleBeans) {
 				FunctionalizingEntityBean copyBean = null;
 				try {
-					FunctionalizingEntity copy = entityBean.getDomainCopy();
+					FunctionalizingEntity copy = entityBean.getDomainCopy(user
+							.getLoginName());
 					copyBean = new FunctionalizingEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
@@ -731,7 +733,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findSampleAccesses(entity.getSampleComposition()
 							.getSample().getId().toString());
 			for (AccessibilityBean access : sampleAccesses) {
-				accessUtils.removeAccessibility(access, composingElement, false);
+				accessUtils
+						.removeAccessibility(access, composingElement, false);
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -741,8 +744,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void assignAccesses(Function function)
-			throws CompositionException, NoAccessException {
+	public void assignAccesses(Function function) throws CompositionException,
+			NoAccessException {
 		try {
 			if (!isOwnerByCreatedBy(function.getCreatedBy())) {
 				throw new NoAccessException();
@@ -763,8 +766,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	public void removeAccesses(FunctionalizingEntity entity,
-			Function function) throws CompositionException, NoAccessException {
+	public void removeAccesses(FunctionalizingEntity entity, Function function)
+			throws CompositionException, NoAccessException {
 		try {
 			if (!securityService.checkCreatePermission(function.getId()
 					.toString())) {
