@@ -48,9 +48,9 @@ import org.hibernate.criterion.Subqueries;
 /**
  * Helper class providing implementations of advanced sample search methods
  * needed for both local implementation of SampleService and grid service *
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger
@@ -70,7 +70,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Find sample names based on advanced search parameters
-	 *
+	 * 
 	 * @param searchBean
 	 * @return
 	 * @throws Exception
@@ -140,7 +140,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	/**
 	 * Find sample details as an AdvancedSampleBean for the given sample name
 	 * and advanced search parameters
-	 *
+	 * 
 	 * @param sampleName
 	 * @param searchBean
 	 * @return
@@ -729,9 +729,9 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			}
 			// ignore the bogus place holder entered for emtpy datum/condition
 			// cells
-			charCrit = Restrictions.and(charCrit, Expression.ne(
-					"datum.createdBy",
-					Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY));
+			charCrit = Restrictions.and(charCrit, Expression.not(Expression
+					.ilike("datum.createdBy",
+							Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)));
 		}
 		return charCrit;
 	}
@@ -773,7 +773,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in composition queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -844,7 +844,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in function queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -884,7 +884,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in nanomaterial entity queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -925,7 +925,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in functionalizing entity queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1123,7 +1123,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Set the disjunction used in point of contact queries
-	 *
+	 * 
 	 * @param query
 	 * @return
 	 */
@@ -1171,7 +1171,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the sample name junction used in sample queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1198,7 +1198,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the sample disjunction used in sample queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1240,7 +1240,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the criterion used for sample name query
-	 *
+	 * 
 	 * @param query
 	 * @return
 	 */
@@ -1304,7 +1304,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria used for composition queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception
@@ -1438,7 +1438,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria for sample queries
-	 *
+	 * 
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception

@@ -662,7 +662,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			origSampleBean.setUserAccesses(userAccesses);
 
 			newSample0.setName(newSampleName);
-			newSample0.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+			newSample0.setCreatedBy(user.getLoginName() + ":"
+					+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
 			newSample0.setCreatedDate(new Date());
 			// save the sample so later up just update the cloned the
 			// associations.
@@ -684,7 +685,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			// clone the sample
-			Sample newSample = origSampleBean.getDomainCopy();
+			Sample newSample = origSampleBean
+					.getDomainCopy(user.getLoginName());
 			newSample.setName(newSampleName);
 			// keep the id
 			newSample.setId(newSample0.getId());
