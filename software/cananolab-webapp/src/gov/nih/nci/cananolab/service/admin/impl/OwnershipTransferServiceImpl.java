@@ -1,9 +1,20 @@
 package gov.nih.nci.cananolab.service.admin.impl;
 
+import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.function.Target;
+import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
@@ -11,6 +22,7 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.exception.AdministrationException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.admin.OwnershipTransferService;
@@ -31,9 +43,14 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 
 /**
  * Service methods for transfer ownership.
@@ -63,10 +80,10 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					.getApplicationService();
 			for (String sampleId : sampleIds) {
 				try {
-					Sample domain = sampleService.findSampleById(sampleId,
-							false).getDomain();
+					Sample domain = this.findFullyLoadedSampleById(sampleId);
 					String existingOwner = domain.getCreatedBy();
-					domain.setCreatedBy(newCreatedBy(existingOwner, currentOwner, newOwner));
+					domain.setCreatedBy(newCreatedBy(existingOwner,
+							currentOwner, newOwner));
 					appService.saveOrUpdate(domain);
 					SampleComposition sampleComposition = domain
 							.getSampleComposition();
@@ -74,8 +91,34 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 					Collection<Characterization> characterization = new ArrayList<Characterization>();
-
+					// poc
+					if (domain.getPrimaryPointOfContact() != null) {
+						domain.getPrimaryPointOfContact()
+								.setCreatedBy(
+										newCreatedBy(domain
+												.getPrimaryPointOfContact()
+												.getCreatedBy(), currentOwner,
+												newOwner));
+					}
+					if (domain.getOtherPointOfContactCollection() != null) {
+						for (PointOfContact poc : domain
+								.getOtherPointOfContactCollection()) {
+							poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(),
+									currentOwner, newOwner));
+						}
+					}
+					// composition
 					if (sampleComposition != null) {
+						if (sampleComposition.getFileCollection() != null) {
+							for (File file : sampleComposition
+									.getFileCollection()) {
+								file
+										.setCreatedBy(newCreatedBy(file
+												.getCreatedBy(), currentOwner,
+												newOwner));
+								appService.saveOrUpdate(file);
+							}
+						}
 						chemicalAssociation = sampleComposition
 								.getChemicalAssociationCollection();
 						functionalizingEntity = sampleComposition
@@ -84,22 +127,130 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 								.getNanomaterialEntityCollection();
 						characterization = domain
 								.getCharacterizationCollection();
-
-						for (ChemicalAssociation ca : chemicalAssociation) {													
-							ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(), currentOwner, newOwner));											
+						for (ChemicalAssociation ca : chemicalAssociation) {
+							ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(),
+									currentOwner, newOwner));
+							if (ca.getFileCollection() != null) {
+								for (File file : ca.getFileCollection()) {
+									file.setCreatedBy(newCreatedBy(file
+											.getCreatedBy(), currentOwner,
+											newOwner));
+								}
+							}
 							appService.saveOrUpdate(ca);
 						}
 						for (FunctionalizingEntity fe : functionalizingEntity) {
-							fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(), currentOwner, newOwner));							
+							fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(),
+									currentOwner, newOwner));
+							if (fe.getFileCollection() != null) {
+								for (File file : fe.getFileCollection()) {
+									file.setCreatedBy(newCreatedBy(file
+											.getCreatedBy(), currentOwner,
+											newOwner));
+								}
+							}
+							if (fe.getFunctionCollection() != null) {
+								for (Function function : fe
+										.getFunctionCollection()) {
+									function.setCreatedBy(newCreatedBy(function
+											.getCreatedBy(), currentOwner,
+											newOwner));
+								}
+
+							}
 							appService.saveOrUpdate(fe);
 						}
 						for (NanomaterialEntity ne : nanomaterialEntity) {
-							ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(), currentOwner, newOwner));
+							ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(),
+									currentOwner, newOwner));
+							if (ne.getFileCollection() != null) {
+								for (File file : ne.getFileCollection()) {
+									file.setCreatedBy(newCreatedBy(file
+											.getCreatedBy(), currentOwner,
+											newOwner));
+								}
+							}
+							if (ne.getComposingElementCollection() != null) {
+								for (ComposingElement ce : ne
+										.getComposingElementCollection()) {
+									ce.setCreatedBy(newCreatedBy(ce
+											.getCreatedBy(), currentOwner,
+											newOwner));
+									if (ce.getInherentFunctionCollection() != null) {
+										for (Function function : ce
+												.getInherentFunctionCollection()) {
+											function.setCreatedBy(newCreatedBy(
+													function.getCreatedBy(),
+													currentOwner, newOwner));
+											if (function instanceof TargetingFunction) {
+												TargetingFunction tFunc = (TargetingFunction) function;
+												if (tFunc.getTargetCollection() != null) {
+													for (Target target : tFunc
+															.getTargetCollection()) {
+														target
+																.setCreatedBy(newCreatedBy(
+																		target
+																				.getCreatedBy(),
+																		currentOwner,
+																		newOwner));
+													}
+												}
+											}
+										}
+									}
+								}
+							}
 							appService.saveOrUpdate(ne);
 						}
 
+						// characterization
 						for (Characterization c : characterization) {
-							c.setCreatedBy(newCreatedBy(c.getCreatedBy(), currentOwner, newOwner));
+							c.setCreatedBy(newCreatedBy(c.getCreatedBy(),
+									currentOwner, newOwner));
+							if (c.getExperimentConfigCollection() != null) {
+								for (ExperimentConfig config : c
+										.getExperimentConfigCollection()) {
+									config.setCreatedBy(newCreatedBy(config
+											.getCreatedBy(), currentOwner,
+											newOwner));
+									appService.saveOrUpdate(config);
+								}
+							}
+							if (c.getFindingCollection() != null) {
+								for (Finding finding : c.getFindingCollection()) {
+									finding.setCreatedBy(newCreatedBy(finding
+											.getCreatedBy(), currentOwner,
+											newOwner));
+									if (finding.getDatumCollection() != null) {
+										for (Datum datum : finding
+												.getDatumCollection()) {
+											datum.setCreatedBy(newCreatedBy(
+													datum.getCreatedBy(),
+													currentOwner, newOwner));
+											if (datum.getConditionCollection() != null) {
+												for (Condition cond : datum
+														.getConditionCollection()) {
+													cond
+															.setCreatedBy(newCreatedBy(
+																	cond
+																			.getCreatedBy(),
+																	currentOwner,
+																	newOwner));
+												}
+											}
+										}
+									}
+									if (finding.getFileCollection() != null) {
+										for (File file : finding
+												.getFileCollection()) {
+											file.setCreatedBy(newCreatedBy(file
+													.getCreatedBy(),
+													currentOwner, newOwner));
+										}
+									}
+									appService.saveOrUpdate(finding);
+								}
+							}
 							appService.saveOrUpdate(c);
 						}
 					}
@@ -146,7 +297,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						.getNewUserAccessFromUserAccesses(userAccesses,
 								currentOwner, newOwner);
 			}
-			if (assignRemoveAccesses[0]==null) {
+			if (assignRemoveAccesses[0] == null) {
 				assignRemoveAccesses[0] = this
 						.getNewUserAccessFromGroupAccesses(securityService,
 								groupAccesses, currentOwner, newOwner);
@@ -217,7 +368,14 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				try {
 					Publication publication = helper
 							.findPublicationById(publicationId);
-					publication.setCreatedBy(newCreatedBy(publication.getCreatedBy(), currentOwner, newOwner));
+					publication.setCreatedBy(newCreatedBy(publication
+							.getCreatedBy(), currentOwner, newOwner));
+					if (publication.getAuthorCollection() != null) {
+						for (Author author : publication.getAuthorCollection()) {
+							author.setCreatedBy(newCreatedBy(author
+									.getCreatedBy(), currentOwner, newOwner));
+						}
+					}
 					appService.saveOrUpdate(publication);
 					this.assignAndRemoveAccessForPublication(
 							publicationService, publication, currentOwner,
@@ -276,7 +434,13 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			for (String protocolId : protocolIds) {
 				try {
 					Protocol protocol = helper.findProtocolById(protocolId);
-					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(), currentOwner, newOwner));
+					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(),
+							currentOwner, newOwner));
+					if (protocol.getFile() != null) {
+						protocol.getFile().setCreatedBy(
+								newCreatedBy(protocol.getFile().getCreatedBy(),
+										currentOwner, newOwner));
+					}
 					appService.saveOrUpdate(protocol);
 					this.assignAndRemoveAccessForProtocol(protocolService,
 							protocol, currentOwner, currentOwnerIsCurator,
@@ -490,17 +654,171 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		return numFailures;
 	}
-	private String newCreatedBy(String existingOwner, String currentOwner, String newOwner){
+
+	private String newCreatedBy(String existingOwner, String currentOwner,
+			String newOwner) {
 		int copyIndex = existingOwner.indexOf("COPY");
-		String newCreatedBy="";
-		if(copyIndex >=0){
+		String newCreatedBy = "";
+		if (copyIndex >= 0) {
 			newCreatedBy = newOwner + ":" + existingOwner.substring(copyIndex);
-		}else{
+		} else {
 			String test = existingOwner.substring(0, currentOwner.length());
-			if(test.equals(currentOwner)){
+			if (test.equals(currentOwner)) {
 				newCreatedBy = newOwner;
 			}
 		}
 		return newCreatedBy;
+	}
+
+	private Sample findFullyLoadedSampleById(String sampleId) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		// load composition and characterization separate because of Hibernate
+		// join limitation
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		Sample sample = null;
+
+		// load composition and characterization separate because of
+		// Hibernate join limitation
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		if (sample == null) {
+			throw new NotExistException("Sample doesn't exist in the database");
+		}
+
+		// fully load composition
+		SampleComposition comp = this
+				.loadComposition(sample.getId().toString());
+		sample.setSampleComposition(comp);
+
+		// fully load characterizations
+		List<Characterization> chars = this.loadCharacterizations(sample
+				.getId().toString());
+		if (chars != null && !chars.isEmpty()) {
+			sample.setCharacterizationCollection(new HashSet<Characterization>(
+					chars));
+		} else {
+			sample.setCharacterizationCollection(null);
+		}
+		return sample;
+	}
+
+	private SampleComposition loadComposition(String sampleId) throws Exception {
+		SampleComposition composition = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(SampleComposition.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
+		crit.setFetchMode("nanomaterialEntityCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode(
+				"nanomaterialEntityCollection.composingElementCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"functionalizingEntityCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.functionCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"functionalizingEntityCollection.functionCollection.targetCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("functionalizingEntityCollection.activationMethod",
+				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.fileCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"chemicalAssociationCollection.fileCollection.keywordCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementA",
+				FetchMode.JOIN);
+		crit.setFetchMode("chemicalAssociationCollection.associatedElementB",
+				FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+
+		if (!result.isEmpty()) {
+			composition = (SampleComposition) result.get(0);
+		}
+		return composition;
+	}
+
+	private List<Characterization> loadCharacterizations(String sampleId)
+			throws Exception {
+		List<Characterization> chars = new ArrayList<Characterization>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(Characterization.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
+		// fully load characterization
+		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
+
+		for (Object obj : results) {
+			Characterization achar = (Characterization) obj;
+			chars.add(achar);
+		}
+		return chars;
 	}
 }
