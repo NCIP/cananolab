@@ -103,6 +103,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 											.getCreatedBy(), currentOwner,
 											newOwner));
 						}
+						appService.saveOrUpdate(primaryPOC);
 					}
 					if (domain.getOtherPointOfContactCollection() != null) {
 						for (PointOfContact poc : domain
@@ -115,6 +116,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 												.getCreatedBy(), currentOwner,
 												newOwner));
 							}
+							appService.saveOrUpdate(poc);
 						}
 					}
 					// composition
@@ -672,11 +674,11 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		if (copyIndex >= 0) {
 			newCreatedBy = newOwner + ":" + existingOwner.substring(copyIndex);
 		} else {
-			if(existingOwner.length() >= currentOwner.length()){
+			if (existingOwner.length() >= currentOwner.length()) {
 				String test = existingOwner.substring(0, currentOwner.length());
 				if (test.equals(currentOwner)) {
 					newCreatedBy = newOwner;
-				}else{
+				} else {
 					newCreatedBy = existingOwner;
 				}
 			}
