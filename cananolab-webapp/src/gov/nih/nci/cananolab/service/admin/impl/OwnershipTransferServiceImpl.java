@@ -65,10 +65,11 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				try {
 					Sample domain = sampleService.findSampleById(sampleId,
 							false).getDomain();
-					domain.setCreatedBy(newOwner);
+					String existingOwner = domain.getCreatedBy();
+					domain.setCreatedBy(newCreatedBy(existingOwner, currentOwner, newOwner));
+					appService.saveOrUpdate(domain);
 					SampleComposition sampleComposition = domain
 							.getSampleComposition();
-					appService.saveOrUpdate(domain);
 					Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
 					Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
@@ -84,21 +85,21 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						characterization = domain
 								.getCharacterizationCollection();
 
-						for (ChemicalAssociation ca : chemicalAssociation) {
-							ca.setCreatedBy(newOwner);
+						for (ChemicalAssociation ca : chemicalAssociation) {													
+							ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(), currentOwner, newOwner));											
 							appService.saveOrUpdate(ca);
 						}
 						for (FunctionalizingEntity fe : functionalizingEntity) {
-							fe.setCreatedBy(newOwner);
+							fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(), currentOwner, newOwner));							
 							appService.saveOrUpdate(fe);
 						}
 						for (NanomaterialEntity ne : nanomaterialEntity) {
-							ne.setCreatedBy(newOwner);
+							ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(), currentOwner, newOwner));
 							appService.saveOrUpdate(ne);
 						}
 
 						for (Characterization c : characterization) {
-							c.setCreatedBy(newOwner);
+							c.setCreatedBy(newCreatedBy(c.getCreatedBy(), currentOwner, newOwner));
 							appService.saveOrUpdate(c);
 						}
 					}
@@ -216,7 +217,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 				try {
 					Publication publication = helper
 							.findPublicationById(publicationId);
-					publication.setCreatedBy(newOwner);
+					publication.setCreatedBy(newCreatedBy(publication.getCreatedBy(), currentOwner, newOwner));
 					appService.saveOrUpdate(publication);
 					this.assignAndRemoveAccessForPublication(
 							publicationService, publication, currentOwner,
@@ -275,7 +276,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			for (String protocolId : protocolIds) {
 				try {
 					Protocol protocol = helper.findProtocolById(protocolId);
-					protocol.setCreatedBy(newOwner);
+					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(), currentOwner, newOwner));
 					appService.saveOrUpdate(protocol);
 					this.assignAndRemoveAccessForProtocol(protocolService,
 							protocol, currentOwner, currentOwnerIsCurator,
@@ -488,5 +489,18 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					"Not a supported service for transferring ownership");
 		}
 		return numFailures;
+	}
+	private String newCreatedBy(String existingOwner, String currentOwner, String newOwner){
+		int copyIndex = existingOwner.indexOf("COPY");
+		String newCreatedBy="";
+		if(copyIndex >=0){
+			newCreatedBy = newOwner + ":" + existingOwner.substring(copyIndex);
+		}else{
+			String test = existingOwner.substring(0, currentOwner.length());
+			if(test.equals(currentOwner)){
+				newCreatedBy = newOwner;
+			}
+		}
+		return newCreatedBy;
 	}
 }
