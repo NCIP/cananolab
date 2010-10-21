@@ -458,12 +458,12 @@ public class BaseServiceLocalImpl implements BaseService {
 	}
 
 	public Boolean isOwnerByCreatedBy(String createdBy) {
-		// user is either a curator or the creator of the data or if the data is
-		// created from COPY
+		// user is either a curator or the creator of the data
+		// or if the data created from COPY and contains the creator info
 		if (user != null
 				&& (user.getLoginName().equalsIgnoreCase(createdBy)
-						|| createdBy
-								.contains(Constants.AUTO_COPY_ANNOTATION_PREFIX) || user
+						|| createdBy.contains(createdBy + ":"
+								+ Constants.AUTO_COPY_ANNOTATION_PREFIX) || user
 						.isCurator())) {
 			return true;
 		} else {
