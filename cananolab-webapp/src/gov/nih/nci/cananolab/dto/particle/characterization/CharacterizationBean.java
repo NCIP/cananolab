@@ -155,17 +155,19 @@ public class CharacterizationBean {
 		updateName();
 	}
 
-	public Characterization getDomainCopy(boolean copyData) {
+	public Characterization getDomainCopy(String createdBy, boolean copyData) {
 		Characterization copy = (Characterization) ClassUtils
 				.deepCopy(domainChar);
-		resetDomainCopy(copy, copyData);
+		resetDomainCopy(createdBy, copy, copyData);
 		return copy;
 	}
 
-	public void resetDomainCopy(Characterization copy, boolean copyData) {
+	public void resetDomainCopy(String createdBy, Characterization copy,
+			boolean copyData) {
 		// clear Ids, reset createdBy add prefix to
 		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
 
 		// copy experiment config
 		Collection<ExperimentConfig> oldConfigs = copy
@@ -178,7 +180,7 @@ public class CharacterizationBean {
 			for (ExperimentConfig config : copy.getExperimentConfigCollection()) {
 				ExperimentConfigBean configBean = new ExperimentConfigBean(
 						config);
-				configBean.resetDomainCopy(config);
+				configBean.resetDomainCopy(createdBy, config);
 			}
 
 		}
@@ -191,7 +193,7 @@ public class CharacterizationBean {
 			copy.setFindingCollection(new HashSet<Finding>(oldFindings));
 			for (Finding finding : copy.getFindingCollection()) {
 				FindingBean findingBean = new FindingBean(finding);
-				findingBean.resetDomainCopy(finding, copyData);
+				findingBean.resetDomainCopy(createdBy, finding, copyData);
 			}
 		}
 	}

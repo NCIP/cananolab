@@ -112,12 +112,12 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 		}
 	}
 
-	public void resetDomainCopy(ChemicalAssociation copy) {
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-				+ copy.getId());
+	public void resetDomainCopy(String createdBy, ChemicalAssociation copy) {
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId());
 		// clear Id
 		copy.setId(null);
-		
+
 		// don't need to set associatedElement ID and createdBy because they are
 		// already set in composing elements and functionalizing entity copies
 
@@ -128,7 +128,7 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 			copy.setFileCollection(new HashSet<File>(oldFiles));
 			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
-				fileBean.resetDomainCopy(file);
+				fileBean.resetDomainCopy(createdBy, file);
 			}
 		}
 	}

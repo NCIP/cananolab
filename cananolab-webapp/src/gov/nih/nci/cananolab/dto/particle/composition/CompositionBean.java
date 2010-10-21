@@ -204,7 +204,8 @@ public class CompositionBean {
 		this.theFile = theFile;
 	}
 
-	public SampleComposition resetDomainCopy(SampleComposition copy) {
+	public SampleComposition resetDomainCopy(String createdBy,
+			SampleComposition copy) {
 		copy.setId(null);
 
 		// need to set chemical association copy first for associated element
@@ -222,7 +223,7 @@ public class CompositionBean {
 					.getChemicalAssociationCollection()) {
 				ChemicalAssociationBean assocBean = new ChemicalAssociationBean(
 						assoc);
-				assocBean.resetDomainCopy(assoc);
+				assocBean.resetDomainCopy(createdBy, assoc);
 			}
 		}
 		Collection<NanomaterialEntity> oldNanoEntities = copy
@@ -237,7 +238,7 @@ public class CompositionBean {
 					.getNanomaterialEntityCollection()) {
 				NanomaterialEntityBean entityBean = new NanomaterialEntityBean(
 						entity);
-				entityBean.resetDomainCopy(entity);
+				entityBean.resetDomainCopy(createdBy, entity);
 			}
 		}
 
@@ -253,7 +254,7 @@ public class CompositionBean {
 					.getFunctionalizingEntityCollection()) {
 				FunctionalizingEntityBean entityBean = new FunctionalizingEntityBean(
 						entity);
-				entityBean.resetDomainCopy(entity);
+				entityBean.resetDomainCopy(createdBy, entity);
 			}
 		}
 
@@ -264,7 +265,7 @@ public class CompositionBean {
 			copy.setFileCollection(new HashSet<File>(oldFiles));
 			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
-				fileBean.resetDomainCopy(file);
+				fileBean.resetDomainCopy(createdBy, file);
 			}
 		}
 

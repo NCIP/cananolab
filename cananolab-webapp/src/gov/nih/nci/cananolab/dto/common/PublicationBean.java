@@ -413,7 +413,7 @@ public class PublicationBean extends FileBean {
 		authors.remove(author);
 	}
 
-	public void resetDomainCopy(Publication copy) {
+	public void resetDomainCopy(String createdBy, Publication copy) {
 		// don't need to reset anything because publications can be shared
 	}
 

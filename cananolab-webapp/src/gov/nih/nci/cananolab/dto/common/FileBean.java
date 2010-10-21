@@ -202,9 +202,9 @@ public class FileBean extends SecuredDataBean {
 		this.newFileData = newFileData;
 	}
 
-	public void resetDomainCopy(File copy) {
+	public void resetDomainCopy(String createdBy, File copy) {
 		// append original ID to assist in copy
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+		copy.setCreatedBy(createdBy+":"+Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
 				+ copy.getId());
 		copy.setId(null);
 		Collection<Keyword> oldKeywords = copy.getKeywordCollection();

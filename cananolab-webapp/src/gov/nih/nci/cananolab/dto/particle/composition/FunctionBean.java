@@ -264,9 +264,10 @@ public class FunctionBean {
 		this.theTarget = theTarget;
 	}
 
-	public void resetDomainCopy(Function copy) {
+	public void resetDomainCopy(String createdBy, Function copy) {
 		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		if (copy instanceof TargetingFunction) {
 			if (((TargetingFunction) copy).getTargetCollection() == null
 					|| ((TargetingFunction) copy).getTargetCollection()
@@ -282,7 +283,8 @@ public class FunctionBean {
 				for (Target target : ((TargetingFunction) copy)
 						.getTargetCollection()) {
 					target.setId(null);
-					target.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+					target.setCreatedBy(createdBy + ":"
+							+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				}
 			}
 		}
