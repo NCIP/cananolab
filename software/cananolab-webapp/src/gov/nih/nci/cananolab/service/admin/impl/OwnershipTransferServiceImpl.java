@@ -92,19 +92,29 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
 					Collection<Characterization> characterization = new ArrayList<Characterization>();
 					// poc
-					if (domain.getPrimaryPointOfContact() != null) {
-						domain.getPrimaryPointOfContact()
-								.setCreatedBy(
-										newCreatedBy(domain
-												.getPrimaryPointOfContact()
-												.getCreatedBy(), currentOwner,
-												newOwner));
+					PointOfContact primaryPOC = domain
+							.getPrimaryPointOfContact();
+					if (primaryPOC != null) {
+						primaryPOC.setCreatedBy(newCreatedBy(primaryPOC
+								.getCreatedBy(), currentOwner, newOwner));
+						if (primaryPOC.getOrganization() != null) {
+							primaryPOC.getOrganization().setCreatedBy(
+									newCreatedBy(primaryPOC.getOrganization()
+											.getCreatedBy(), currentOwner,
+											newOwner));
+						}
 					}
 					if (domain.getOtherPointOfContactCollection() != null) {
 						for (PointOfContact poc : domain
 								.getOtherPointOfContactCollection()) {
 							poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(),
 									currentOwner, newOwner));
+							if (poc.getOrganization() != null) {
+								poc.getOrganization().setCreatedBy(
+										newCreatedBy(poc.getOrganization()
+												.getCreatedBy(), currentOwner,
+												newOwner));
+							}
 						}
 					}
 					// composition
