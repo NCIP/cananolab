@@ -55,13 +55,13 @@ public class UpdateCreatedByServiceImpl {
 					Sample domain = sampleService.findSampleById(sampleId,
 							false).getDomain();
 					String existingOwner = domain.getCreatedBy();
-					System.out.println("ExistingOwner: " + existingOwner);
-					String s = existingOwner.substring(0,4);
-					if(existingOwner.substring(0, 4).equalsIgnoreCase("COPY")){
+					//System.out.println("ExistingOwner: " + existingOwner);
+					//String s = existingOwner.substring(0,4);
+					if(existingOwner.length() > 3 && existingOwner.substring(0, 4).equalsIgnoreCase("COPY")){
 						domain.setCreatedBy(newCreatedBy + ":" + existingOwner);
 					}else{
 						String test = existingOwner.substring(0, currentCreatedBy.length());
-						System.out.println("Test: " + test);
+						//System.out.println("Test: " + test);
 						if(test.equals(currentCreatedBy)){
 							domain.setCreatedBy(newCreatedBy);
 						}
@@ -77,12 +77,12 @@ public class UpdateCreatedByServiceImpl {
 					//point of contact
 					PointOfContact poc = domain.getPrimaryPointOfContact();
 					String existingPOC = poc.getCreatedBy();
-					System.out.println("ExistingOwner: " + existingPOC);
-					if(existingPOC.substring(0, 4).equalsIgnoreCase("COPY")){
+					//System.out.println("ExistingOwner: " + existingPOC);
+					if(existingPOC.length() > 3 && existingPOC.substring(0, 4).equalsIgnoreCase("COPY")){
 						poc.setCreatedBy(newCreatedBy + ":" + existingPOC);
 					}else{
 						String test = existingPOC.substring(0, currentCreatedBy.length());
-						System.out.println("Test: " + test);
+						//System.out.println("Test: " + test);
 						if(test.equals(currentCreatedBy)){
 							poc.setCreatedBy(newCreatedBy);
 						}
@@ -90,13 +90,13 @@ public class UpdateCreatedByServiceImpl {
 					appService.saveOrUpdate(poc);
 					//organization
 					Organization organization = poc.getOrganization(); 
-					String existingOrg = poc.getCreatedBy();
-					System.out.println("ExistingCreatedBy: " + existingOrg);
-					if(existingOrg.substring(0, 4).equalsIgnoreCase("COPY")){
+					String existingOrg = organization.getCreatedBy();
+					//System.out.println("ExistingCreatedBy: " + existingOrg);
+					if(existingOrg.length() > 3 && existingOrg.substring(0, 4).equalsIgnoreCase("COPY")){
 						organization.setCreatedBy(newCreatedBy + ":" + existingOrg);
 					}else{
 						String test = existingOrg.substring(0, currentCreatedBy.length());
-						System.out.println("Test: " + test);
+						//System.out.println("Test: " + test);
 						if(test.equals(currentCreatedBy)){
 							organization.setCreatedBy(newCreatedBy);
 						}
@@ -116,12 +116,12 @@ public class UpdateCreatedByServiceImpl {
 
 						for (ChemicalAssociation ca : chemicalAssociation) {
 							String existingChemicalAsso = ca.getCreatedBy();
-							System.out.println("ExistingCreatedBy: " + existingChemicalAsso);
-							if(existingChemicalAsso.substring(0, 4).equalsIgnoreCase("COPY")){
+							//System.out.println("ExistingCreatedBy: " + existingChemicalAsso);
+							if(existingChemicalAsso.length() > 3 && existingChemicalAsso.substring(0, 4).equalsIgnoreCase("COPY")){
 								ca.setCreatedBy(newCreatedBy + ":" + existingChemicalAsso);
 							}else{
 								String test = existingChemicalAsso.substring(0, currentCreatedBy.length());
-								System.out.println("Test: " + test);
+								//System.out.println("Test: " + test);
 								if(test.equals(currentCreatedBy)){
 									ca.setCreatedBy(newCreatedBy);
 								}
@@ -131,12 +131,12 @@ public class UpdateCreatedByServiceImpl {
 						}
 						for (FunctionalizingEntity fe : functionalizingEntity) {
 							String existingFE = fe.getCreatedBy();
-							System.out.println("ExistingCreatedBy: " + existingFE);
-							if(existingFE.substring(0, 4).equalsIgnoreCase("COPY")){
+							//System.out.println("ExistingCreatedBy: " + existingFE);
+							if(existingFE.length() > 3 && existingFE.substring(0, 4).equalsIgnoreCase("COPY")){
 								fe.setCreatedBy(newCreatedBy + ":" + existingFE);
 							}else{
 								String test = existingFE.substring(0, currentCreatedBy.length());
-								System.out.println("Test: " + test);
+								//System.out.println("Test: " + test);
 								if(test.equals(currentCreatedBy)){
 									fe.setCreatedBy(newCreatedBy);
 								}
@@ -146,12 +146,12 @@ public class UpdateCreatedByServiceImpl {
 						}
 						for (NanomaterialEntity ne : nanomaterialEntity) {
 							String existingNE = ne.getCreatedBy();
-							System.out.println("ExistingCreatedBy: " + existingNE);
-							if(existingNE.substring(0, 4).equalsIgnoreCase("COPY")){
+							//System.out.println("ExistingCreatedBy: " + existingNE);
+							if(existingNE.length() > 3 && existingNE.substring(0, 4).equalsIgnoreCase("COPY")){
 								ne.setCreatedBy(newCreatedBy + ":" + existingNE);
 							}else{
 								String test = existingNE.substring(0, currentCreatedBy.length());
-								System.out.println("Test: " + test);
+								//System.out.println("Test: " + test);
 								if(test.equals(currentCreatedBy)){
 									ne.setCreatedBy(newCreatedBy);
 								}
@@ -162,12 +162,12 @@ public class UpdateCreatedByServiceImpl {
 
 						for (Characterization c : characterization) {
 							String existingChar = c.getCreatedBy();
-							System.out.println("ExistingCreatedBy: " + existingChar);
-							if(existingChar.substring(0, 4).equalsIgnoreCase("COPY")){
+							//System.out.println("ExistingCreatedBy: " + existingChar);
+							if(existingChar.length() > 3 && existingChar.substring(0, 4).equalsIgnoreCase("COPY")){
 								c.setCreatedBy(newCreatedBy + ":" + existingChar);
 							}else{
 								String test = existingChar.substring(0, currentCreatedBy.length());
-								System.out.println("Test: " + test);
+								//System.out.println("Test: " + test);
 								if(test.equals(currentCreatedBy)){
 									c.setCreatedBy(newCreatedBy);
 								}
@@ -208,8 +208,8 @@ public class UpdateCreatedByServiceImpl {
 					Publication publication = helper
 							.findPublicationById(publicationId);
 					String existingCreatedBy = publication.getCreatedBy();
-					System.out.println("ExistingCreatedBy: " + existingCreatedBy);
-					if(existingCreatedBy.substring(0, 4).equalsIgnoreCase("COPY")){
+					//System.out.println("ExistingCreatedBy: " + existingCreatedBy);
+					if(existingCreatedBy.length() > 3 && existingCreatedBy.substring(0, 4).equalsIgnoreCase("COPY")){
 						publication.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 					}else{
 						String test = existingCreatedBy.substring(0, currentCreatedBy.length());
@@ -223,8 +223,8 @@ public class UpdateCreatedByServiceImpl {
 					Collection<Datum> datumCollection = publication.getDatumCollection();
 					for(Datum d : datumCollection){
 						String existingDatum = d.getCreatedBy();
-						System.out.println("ExistingCreatedBy: " + existingDatum);
-						if(existingDatum.substring(0, 4).equalsIgnoreCase("COPY")){
+						//System.out.println("ExistingCreatedBy: " + existingDatum);
+						if(existingDatum.length() > 3 && existingDatum.substring(0, 4).equalsIgnoreCase("COPY")){
 							d.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 						}else{
 							String test = existingDatum.substring(0, currentCreatedBy.length());
@@ -238,8 +238,8 @@ public class UpdateCreatedByServiceImpl {
 					Collection<Finding> findingCollection = publication.getFindingCollection();
 					for(Finding f : findingCollection){
 						String existingFinding = f.getCreatedBy();
-						System.out.println("ExistingCreatedBy: " + existingFinding);
-						if(existingFinding.substring(0, 4).equalsIgnoreCase("COPY")){
+						//System.out.println("ExistingCreatedBy: " + existingFinding);
+						if(existingFinding.length() > 3 && existingFinding.substring(0, 4).equalsIgnoreCase("COPY")){
 							f.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 						}else{
 							String test = existingFinding.substring(0, currentCreatedBy.length());
@@ -253,8 +253,8 @@ public class UpdateCreatedByServiceImpl {
 					Collection<Author> authorCollection = publication.getAuthorCollection();
 					for(Author a : authorCollection){
 						String existingAuthor = a.getCreatedBy();
-						System.out.println("ExistingCreatedBy: " + existingAuthor);
-						if(existingAuthor.substring(0, 4).equalsIgnoreCase("COPY")){
+						//System.out.println("ExistingCreatedBy: " + existingAuthor);
+						if(existingAuthor.length() > 3 && existingAuthor.substring(0, 4).equalsIgnoreCase("COPY")){
 							a.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 						}else{
 							String test = existingAuthor.substring(0, currentCreatedBy.length());
@@ -297,8 +297,8 @@ public class UpdateCreatedByServiceImpl {
 				try {
 					Protocol protocol = helper.findProtocolById(protocolId);
 					String existingCreatedBy = protocol.getCreatedBy();
-					System.out.println("ExistingCreatedBy: " + existingCreatedBy);
-					if(existingCreatedBy.substring(0, 4).equalsIgnoreCase("COPY")){
+					//System.out.println("ExistingCreatedBy: " + existingCreatedBy);
+					if(existingCreatedBy.length() > 3 && existingCreatedBy.substring(0, 4).equalsIgnoreCase("COPY")){
 						protocol.setCreatedBy(newCreatedBy + ":" + existingCreatedBy);
 					}else{
 						String test = existingCreatedBy.substring(0, currentCreatedBy.length());
