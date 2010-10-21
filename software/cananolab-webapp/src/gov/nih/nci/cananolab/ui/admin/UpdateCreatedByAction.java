@@ -54,10 +54,11 @@ public class UpdateCreatedByAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage(
 					"message.updateCreatedBy.failed", failures);
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		} else {
+			ActionMessage msg = new ActionMessage(
+					"message.updateCreatedBy.success");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
-		ActionMessage msg = new ActionMessage("message.updateCreatedBy.success");
-		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-
 		saveMessages(request, messages);
 		return mapping.findForward("success");
 	}
