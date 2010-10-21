@@ -66,7 +66,7 @@ public class UpdateCreatedByServiceImpl {
 				try {
 					Sample domain = this.findFullyLoadedSampleById(sampleId);
 					domain.setCreatedBy(newCreatedBy(domain.getCreatedBy(), currentCreatedBy, newCreatedBy));
-					
+					appService.saveOrUpdate(domain);
 					SampleComposition sampleComposition = domain
 							.getSampleComposition();
 					
@@ -79,6 +79,7 @@ public class UpdateCreatedByServiceImpl {
 					PointOfContact poc = domain.getPrimaryPointOfContact();
 					if (poc != null) {						
 						poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(), currentCreatedBy, newCreatedBy));
+						appService.saveOrUpdate(poc);
 
 						// organization
 						Organization organization = poc.getOrganization();
@@ -86,7 +87,6 @@ public class UpdateCreatedByServiceImpl {
 							organization.setCreatedBy(newCreatedBy(organization.getCreatedBy(), currentCreatedBy, newCreatedBy));
 							appService.saveOrUpdate(organization);
 						}
-						appService.saveOrUpdate(poc);
 					}
 					if (domain.getOtherPointOfContactCollection() != null) {
 						for (PointOfContact otherpoc : domain
@@ -94,6 +94,11 @@ public class UpdateCreatedByServiceImpl {
 							otherpoc.setCreatedBy(newCreatedBy(otherpoc.getCreatedBy(),
 									currentCreatedBy, newCreatedBy));
 							appService.saveOrUpdate(otherpoc);
+							Organization organization1 = otherpoc.getOrganization();
+							if(organization1 != null){
+								organization1.setCreatedBy(newCreatedBy(organization1.getCreatedBy(), currentCreatedBy, newCreatedBy));
+								appService.saveOrUpdate(organization1);
+							}
 						}
 					}
 					// updating Sample Composition
@@ -240,7 +245,7 @@ public class UpdateCreatedByServiceImpl {
 							}
 						}
 					}
-					appService.saveOrUpdate(domain);
+					
 				} catch (Exception e) {
 					i++;
 					String error = "Error updating createdBy field for sample: "
