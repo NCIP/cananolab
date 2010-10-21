@@ -60,7 +60,9 @@ public class PublicationAction extends BaseAnnotationAction {
 				&& publicationBean.getDomainFile().getId() > 0) {
 			newPub = false;
 		}
-		this.savePublication(request, theForm);
+		if (!this.savePublication(request, theForm)) {
+			return input(mapping, form, request, response);
+		}
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = (String) theForm.get("sampleId");
@@ -90,7 +92,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 	}
 
-	private void savePublication(HttpServletRequest request,
+	private Boolean savePublication(HttpServletRequest request,
 			PublicationForm theForm) throws Exception {
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
@@ -103,6 +105,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			ActionMessage msg = new ActionMessage("publication.fileRequired");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
+			return false;
 		}
 		// validate associated sample names
 		if (StringUtils.isEmpty(sampleId)
@@ -111,6 +114,7 @@ public class PublicationAction extends BaseAnnotationAction {
 					"error.submitPublication.invalidSample");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
+			return false;
 		}
 
 		/**
@@ -155,6 +159,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			request.setAttribute("onloadJavascript", "showSummary('" + ind
 					+ "', " + allPublicationTypes.size() + ")");
 		}
+		return true;
 	}
 
 	private boolean validateAssociatedSamples(HttpServletRequest request,
