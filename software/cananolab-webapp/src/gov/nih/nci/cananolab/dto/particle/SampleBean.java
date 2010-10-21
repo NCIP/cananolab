@@ -346,10 +346,11 @@ public class SampleBean extends SecuredDataBean {
 		this.cloningSampleName = cloningSampleName;
 	}
 
-	public Sample getDomainCopy() {
+	public Sample getDomainCopy(String createdBy) {
 		Sample copy = (Sample) ClassUtils.deepCopy(domain);
 		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
 
 		// copy characterizations
 		Collection<Characterization> oldChars = copy
@@ -361,7 +362,7 @@ public class SampleBean extends SecuredDataBean {
 					oldChars));
 			for (Characterization achar : copy.getCharacterizationCollection()) {
 				CharacterizationBean charBean = new CharacterizationBean(achar);
-				charBean.resetDomainCopy(achar, true);
+				charBean.resetDomainCopy(createdBy, achar, true);
 			}
 		}
 
@@ -371,7 +372,7 @@ public class SampleBean extends SecuredDataBean {
 			copy.getSampleComposition().setSample(copy);
 			CompositionBean compBean = new CompositionBean(copy
 					.getSampleComposition());
-			compBean.resetDomainCopy(copy.getSampleComposition());
+			compBean.resetDomainCopy(createdBy, copy.getSampleComposition());
 		}
 
 		// copy keyword
@@ -387,7 +388,7 @@ public class SampleBean extends SecuredDataBean {
 		if (copy.getPrimaryPointOfContact() != null) {
 			PointOfContact poc = copy.getPrimaryPointOfContact();
 			PointOfContactBean pocBean = new PointOfContactBean(poc);
-			pocBean.resetDomainCopy(poc);
+			pocBean.resetDomainCopy(createdBy, poc);
 		}
 		Collection<PointOfContact> oldOtherPOCs = copy
 				.getOtherPointOfContactCollection();
@@ -398,7 +399,7 @@ public class SampleBean extends SecuredDataBean {
 					oldOtherPOCs));
 			for (PointOfContact poc : copy.getOtherPointOfContactCollection()) {
 				PointOfContactBean pocBean = new PointOfContactBean(poc);
-				pocBean.resetDomainCopy(poc);
+				pocBean.resetDomainCopy(createdBy, poc);
 			}
 		}
 
@@ -412,7 +413,7 @@ public class SampleBean extends SecuredDataBean {
 					oldPublications));
 			for (Publication pub : copy.getPublicationCollection()) {
 				PublicationBean pubBean = new PublicationBean(pub);
-				pubBean.resetDomainCopy(pub);
+				pubBean.resetDomainCopy(createdBy, pub);
 			}
 		}
 		return copy;

@@ -104,16 +104,17 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		updateType();
 	}
 
-	public NanomaterialEntity getDomainCopy() {
+	public NanomaterialEntity getDomainCopy(String createdBy) {
 		NanomaterialEntity copy = (NanomaterialEntity) ClassUtils.deepCopy(this
 				.getDomainEntity());
-		resetDomainCopy(copy);
+		resetDomainCopy(createdBy, copy);
 		return copy;
 	}
 
-	public void resetDomainCopy(NanomaterialEntity copy) {
+	public void resetDomainCopy(String createdBy, NanomaterialEntity copy) {
 		copy.setId(null);
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		Collection<ComposingElement> oldComposingElements = copy
 				.getComposingElementCollection();
 		if (oldComposingElements == null || oldComposingElements.isEmpty()) {
@@ -125,7 +126,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			for (ComposingElement ce : copy.getComposingElementCollection()) {
 				// append original ID in created by to aid in chemical
 				// association copy
-				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+				ce.setCreatedBy(createdBy + ":"
+						+ Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
 						+ ce.getId());
 				ce.setId(null);
 				Collection<Function> oldFunctions = ce
@@ -137,7 +139,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 							oldFunctions));
 					for (Function function : ce.getInherentFunctionCollection()) {
 						FunctionBean functionBean = new FunctionBean(function);
-						functionBean.resetDomainCopy(function);
+						functionBean.resetDomainCopy(createdBy, function);
 					}
 				}
 			}
@@ -150,7 +152,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			copy.setFileCollection(new HashSet<File>(oldFiles));
 			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
-				fileBean.resetDomainCopy(file);
+				fileBean.resetDomainCopy(createdBy, file);
 			}
 		}
 	}

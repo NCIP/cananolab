@@ -125,17 +125,17 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		updateType();
 	}
 
-	public FunctionalizingEntity getDomainCopy() {
+	public FunctionalizingEntity getDomainCopy(String createdBy) {
 		FunctionalizingEntity copy = (FunctionalizingEntity) ClassUtils
 				.deepCopy(domainEntity);
-		resetDomainCopy(copy);
+		resetDomainCopy(createdBy, copy);
 		return copy;
 	}
 
-	public void resetDomainCopy(FunctionalizingEntity copy) {
+	public void resetDomainCopy(String createdBy, FunctionalizingEntity copy) {
 		// append original ID to assist with chemical association copy
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-				+ copy.getId());
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId());
 		// clear Id
 		copy.setId(null);
 		// because activationMethod can't be shared.
@@ -149,7 +149,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			copy.setFunctionCollection(new HashSet<Function>(oldFunctions));
 			for (Function function : copy.getFunctionCollection()) {
 				FunctionBean functionBean = new FunctionBean(function);
-				functionBean.resetDomainCopy(function);
+				functionBean.resetDomainCopy(createdBy, function);
 			}
 		}
 		Collection<File> oldFiles = copy.getFileCollection();
@@ -159,7 +159,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 			copy.setFileCollection(new HashSet<File>(oldFiles));
 			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
-				fileBean.resetDomainCopy(file);
+				fileBean.resetDomainCopy(createdBy, file);
 			}
 		}
 	}

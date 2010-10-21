@@ -17,8 +17,8 @@ public class TableCell {
 	private String datumOrCondition;
 	private Datum datum = new Datum();
 	private Condition condition = new Condition();
-	
-	//FR# 26194, matrix column order.
+
+	// FR# 26194, matrix column order.
 	private Integer columnOrder;
 	private Date createdDate;
 
@@ -30,7 +30,7 @@ public class TableCell {
 		// display bogus placeholder datum as emtpy string
 		if (datum.getValue() == null
 				|| datum.getValue() == -1
-				&& datum.getCreatedBy().equals(
+				&& datum.getCreatedBy().contains(
 						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 			this.value = "";
 		}
@@ -53,9 +53,9 @@ public class TableCell {
 
 	public TableCell(Condition condition) {
 		this.datumOrCondition = "condition";
-		if (condition.getValue().equals(
+		if (condition.getValue().contains(
 				Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
-				&& condition.getCreatedBy().equals(
+				&& condition.getCreatedBy().contains(
 						Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 			this.value = "";
 		} else {

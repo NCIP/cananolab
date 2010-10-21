@@ -322,7 +322,9 @@ public class FindingBean {
 					if (StringUtils.isEmpty(cell.getValue())) {
 						datum.setValue(Float.valueOf(-1));
 						datum
-								.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
+								.setCreatedBy(createdBy
+										+ ":"
+										+ Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
 						datum.setValue(Float.valueOf(cell.getValue()));
 					}
@@ -336,10 +338,12 @@ public class FindingBean {
 					// Update createdBy if createdBy is empty or if copy
 					// or if bogus empty when the cell is not empty
 					if (StringUtils.isEmpty(datum.getCreatedBy())
-							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
-									.equals(datum.getCreatedBy())
-							|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-									.equals(datum.getCreatedBy())
+							|| datum.getCreatedBy().contains(
+									Constants.AUTO_COPY_ANNOTATION_PREFIX)
+							|| datum
+									.getCreatedBy()
+									.contains(
+											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
 							&& !StringUtils.isEmpty(cell.getValue())) {
 						datum.setCreatedBy(createdBy);
 					}
@@ -357,9 +361,13 @@ public class FindingBean {
 					Condition condition = cell.getCondition();
 					if (StringUtils.isEmpty(cell.getValue())) {
 						condition
-								.setValue(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
+								.setValue(createdBy
+										+ ":"
+										+ Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 						condition
-								.setCreatedBy(Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
+								.setCreatedBy(createdBy
+										+ ":"
+										+ Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY);
 					} else {
 						condition.setValue(cell.getValue());
 					}
@@ -373,10 +381,12 @@ public class FindingBean {
 					}
 					// Update createdBy if createdBy is empty or if copy
 					if (StringUtils.isEmpty(condition.getCreatedBy())
-							|| Constants.AUTO_COPY_ANNOTATION_PREFIX
-									.equals(condition.getCreatedBy())
-							|| Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-									.equals(condition.getCreatedBy())
+							|| condition.getCreatedBy().contains(
+									Constants.AUTO_COPY_ANNOTATION_PREFIX)
+							|| condition
+									.getCreatedBy()
+									.contains(
+											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
 							&& !StringUtils.isEmpty(cell.getValue())) {
 						condition.setCreatedBy(createdBy);
 					}
@@ -476,9 +486,9 @@ public class FindingBean {
 		this.theFileIndex = theFileIndex;
 	}
 
-	public void resetDomainCopy(Finding copy, Boolean copyData) {
-		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-				+ copy.getId());
+	public void resetDomainCopy(String createdBy, Finding copy, Boolean copyData) {
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId());
 		copy.setId(null);
 
 		// copy data and condition
@@ -497,12 +507,12 @@ public class FindingBean {
 					if (StringUtils.isEmpty(datum.getCreatedBy())
 							|| !datum
 									.getCreatedBy()
-									.equals(
+									.contains(
 											Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
 							&& datum.getValue() != -1) {
-						datum
-								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX
-										+ ":" + originalDatumId);
+						datum.setCreatedBy(createdBy + ":"
+								+ Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
+								+ originalDatumId);
 					}
 					// conditions
 					Collection<Condition> oldConditions = datum
@@ -525,15 +535,19 @@ public class FindingBean {
 							// keep the bogus place holder if empty
 							// condition
 							if (StringUtils.isEmpty(condition.getCreatedBy())
-									|| !Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY
-											.equals(condition.getCreatedBy())
+									|| !condition
+											.getCreatedBy()
+											.contains(
+													Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)
 									&& !condition
 											.getValue()
-											.equals(
+											.contains(
 													Constants.PLACEHOLDER_DATUM_CONDITION_CREATED_BY)) {
 								if (originalCondId != null)
 									condition
-											.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX
+											.setCreatedBy(createdBy
+													+ ":"
+													+ Constants.AUTO_COPY_ANNOTATION_PREFIX
 													+ ":" + originalCondId);
 							}
 						}
@@ -550,7 +564,7 @@ public class FindingBean {
 			copy.setFileCollection(new HashSet<File>(oldFiles));
 			for (File file : copy.getFileCollection()) {
 				FileBean fileBean = new FileBean(file);
-				fileBean.resetDomainCopy(file);
+				fileBean.resetDomainCopy(createdBy, file);
 			}
 		}
 	}
