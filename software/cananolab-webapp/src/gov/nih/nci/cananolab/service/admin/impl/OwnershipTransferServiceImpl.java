@@ -675,6 +675,8 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			String test = existingOwner.substring(0, currentOwner.length());
 			if (test.equals(currentOwner)) {
 				newCreatedBy = newOwner;
+			}else{
+				newCreatedBy = existingOwner;
 			}
 		}
 		return newCreatedBy;
