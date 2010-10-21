@@ -215,47 +215,48 @@ public class UpdateCreatedByServiceImpl {
 								}
 							}
 						}
-
-						for (Characterization c : characterization) {
-							if(c != null){
-								c.setCreatedBy(newCreatedBy(c.getCreatedBy(), currentCreatedBy, newCreatedBy));
-								appService.saveOrUpdate(c);
-								Collection<ExperimentConfig> experimentConfigCollection = c.getExperimentConfigCollection();
-								if(experimentConfigCollection != null){
-									for(ExperimentConfig expConfig : experimentConfigCollection){
-										if(expConfig != null){
-											expConfig.setCreatedBy(newCreatedBy(expConfig.getCreatedBy(), currentCreatedBy, newCreatedBy));
-											appService.saveOrUpdate(expConfig);		
+						if(characterization != null){
+							for (Characterization c : characterization) {
+								if(c != null){
+									c.setCreatedBy(newCreatedBy(c.getCreatedBy(), currentCreatedBy, newCreatedBy));
+									appService.saveOrUpdate(c);
+									Collection<ExperimentConfig> experimentConfigCollection = c.getExperimentConfigCollection();
+									if(experimentConfigCollection != null){
+										for(ExperimentConfig expConfig : experimentConfigCollection){
+											if(expConfig != null){
+												expConfig.setCreatedBy(newCreatedBy(expConfig.getCreatedBy(), currentCreatedBy, newCreatedBy));
+												appService.saveOrUpdate(expConfig);		
+											}
 										}
 									}
-								}
-								
-								Collection<Finding> findingCollection = c.getFindingCollection();						
-								if(findingCollection != null){
-									for(Finding f : findingCollection){
-										if(f != null){
-											f.setCreatedBy(newCreatedBy(f.getCreatedBy(), currentCreatedBy, newCreatedBy));
-											appService.saveOrUpdate(f);	
-											Collection<Datum> datumCollection = f.getDatumCollection();
-											if(datumCollection != null){
-												for(Datum d : datumCollection){
-													if(d != null){
-														d.setCreatedBy(newCreatedBy(d.getCreatedBy(), currentCreatedBy, newCreatedBy));
-														appService.saveOrUpdate(d);		
+									
+									Collection<Finding> findingCollection = c.getFindingCollection();						
+									if(findingCollection != null){
+										for(Finding f : findingCollection){
+											if(f != null){
+												f.setCreatedBy(newCreatedBy(f.getCreatedBy(), currentCreatedBy, newCreatedBy));
+												appService.saveOrUpdate(f);	
+												Collection<Datum> datumCollection = f.getDatumCollection();
+												if(datumCollection != null){
+													for(Datum d : datumCollection){
+														if(d != null){
+															d.setCreatedBy(newCreatedBy(d.getCreatedBy(), currentCreatedBy, newCreatedBy));
+															appService.saveOrUpdate(d);		
+														}
+													}
+												}
+												Collection<File> fileCollection = f.getFileCollection();
+												if(fileCollection != null){
+													for(File file:fileCollection){
+														if(file != null){
+															file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
+															appService.saveOrUpdate(file);		
+														}
 													}
 												}
 											}
-											Collection<File> fileCollection = f.getFileCollection();
-											if(fileCollection != null){
-												for(File file:fileCollection){
-													if(file != null){
-														file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
-														appService.saveOrUpdate(file);		
-													}
-												}
-											}
-										}
-									}								
+										}								
+									}
 								}
 							}
 						}
