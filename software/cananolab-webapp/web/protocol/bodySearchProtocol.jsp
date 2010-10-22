@@ -14,7 +14,7 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="searchProtocol">
-	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />	
+	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="120">
