@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
@@ -39,6 +40,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -124,11 +126,10 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						if (sampleComposition.getFileCollection() != null) {
 							for (File file : sampleComposition
 									.getFileCollection()) {
-								if(file != null){
-									file
-											.setCreatedBy(newCreatedBy(file
-													.getCreatedBy(), currentOwner,
-													newOwner));
+								if (file != null) {
+									file.setCreatedBy(newCreatedBy(file
+											.getCreatedBy(), currentOwner,
+											newOwner));
 									appService.saveOrUpdate(file);
 								}
 							}
@@ -141,23 +142,24 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 								.getNanomaterialEntityCollection();
 						characterization = domain
 								.getCharacterizationCollection();
-						if(chemicalAssociation != null){
+						if (chemicalAssociation != null) {
 							for (ChemicalAssociation ca : chemicalAssociation) {
-								if(ca != null){
-									ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(),
-											currentOwner, newOwner));
+								if (ca != null) {
+									ca.setCreatedBy(newCreatedBy(ca
+											.getCreatedBy(), currentOwner,
+											newOwner));
 									if (ca.getFileCollection() != null) {
 										for (File file : ca.getFileCollection()) {
 											file.setCreatedBy(newCreatedBy(file
-													.getCreatedBy(), currentOwner,
-													newOwner));
+													.getCreatedBy(),
+													currentOwner, newOwner));
 										}
 									}
 									appService.saveOrUpdate(ca);
 								}
 							}
 						}
-						if(functionalizingEntity != null){
+						if (functionalizingEntity != null) {
 							for (FunctionalizingEntity fe : functionalizingEntity) {
 								fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(),
 										currentOwner, newOwner));
@@ -171,16 +173,16 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 								if (fe.getFunctionCollection() != null) {
 									for (Function function : fe
 											.getFunctionCollection()) {
-										function.setCreatedBy(newCreatedBy(function
-												.getCreatedBy(), currentOwner,
-												newOwner));
+										function.setCreatedBy(newCreatedBy(
+												function.getCreatedBy(),
+												currentOwner, newOwner));
 									}
-	
+
 								}
 								appService.saveOrUpdate(fe);
 							}
 						}
-						if(nanomaterialEntity != null){
+						if (nanomaterialEntity != null) {
 							for (NanomaterialEntity ne : nanomaterialEntity) {
 								ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(),
 										currentOwner, newOwner));
@@ -200,12 +202,16 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 										if (ce.getInherentFunctionCollection() != null) {
 											for (Function function : ce
 													.getInherentFunctionCollection()) {
-												function.setCreatedBy(newCreatedBy(
-														function.getCreatedBy(),
-														currentOwner, newOwner));
+												function
+														.setCreatedBy(newCreatedBy(
+																function
+																		.getCreatedBy(),
+																currentOwner,
+																newOwner));
 												if (function instanceof TargetingFunction) {
 													TargetingFunction tFunc = (TargetingFunction) function;
-													if (tFunc.getTargetCollection() != null) {
+													if (tFunc
+															.getTargetCollection() != null) {
 														for (Target target : tFunc
 																.getTargetCollection()) {
 															target
@@ -225,7 +231,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 							}
 						}
 						// characterization
-						if(characterization != null){
+						if (characterization != null) {
 							for (Characterization c : characterization) {
 								c.setCreatedBy(newCreatedBy(c.getCreatedBy(),
 										currentOwner, newOwner));
@@ -235,21 +241,45 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 										config.setCreatedBy(newCreatedBy(config
 												.getCreatedBy(), currentOwner,
 												newOwner));
+										if (config.getTechnique() != null) {
+											config.getTechnique().setCreatedBy(
+													newCreatedBy(config
+															.getTechnique()
+															.getCreatedBy(),
+															currentOwner,
+															newOwner));
+										}
+										if (config.getInstrumentCollection() != null) {
+											for (Instrument instrument : config
+													.getInstrumentCollection()) {
+												instrument
+														.setCreatedBy(newCreatedBy(
+																instrument
+																		.getCreatedBy(),
+																currentOwner,
+																newOwner));
+											}
+										}
 										appService.saveOrUpdate(config);
 									}
 								}
 								if (c.getFindingCollection() != null) {
-									for (Finding finding : c.getFindingCollection()) {
-										finding.setCreatedBy(newCreatedBy(finding
-												.getCreatedBy(), currentOwner,
-												newOwner));
+									for (Finding finding : c
+											.getFindingCollection()) {
+										finding.setCreatedBy(newCreatedBy(
+												finding.getCreatedBy(),
+												currentOwner, newOwner));
 										if (finding.getDatumCollection() != null) {
 											for (Datum datum : finding
 													.getDatumCollection()) {
-												datum.setCreatedBy(newCreatedBy(
-														datum.getCreatedBy(),
-														currentOwner, newOwner));
-												if (datum.getConditionCollection() != null) {
+												datum
+														.setCreatedBy(newCreatedBy(
+																datum
+																		.getCreatedBy(),
+																currentOwner,
+																newOwner));
+												if (datum
+														.getConditionCollection() != null) {
 													for (Condition cond : datum
 															.getConditionCollection()) {
 														cond
@@ -265,9 +295,12 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 										if (finding.getFileCollection() != null) {
 											for (File file : finding
 													.getFileCollection()) {
-												file.setCreatedBy(newCreatedBy(file
-														.getCreatedBy(),
-														currentOwner, newOwner));
+												file
+														.setCreatedBy(newCreatedBy(
+																file
+																		.getCreatedBy(),
+																currentOwner,
+																newOwner));
 											}
 										}
 										appService.saveOrUpdate(finding);
@@ -680,23 +713,26 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 
 	private String newCreatedBy(String existingOwner, String currentOwner,
 			String newOwner) {
-		int copyIndex = existingOwner.indexOf("COPY");
-		String newCreatedBy = "";
-		if (copyIndex >= 0) {
-			newCreatedBy = newOwner + ":" + existingOwner.substring(copyIndex);
-		} else {
-			if (existingOwner.length() >= currentOwner.length()) {
-				String test = existingOwner.substring(0, currentOwner.length());
-				if (test.equals(currentOwner)) {
-					newCreatedBy = newOwner;
-				} else {
-					newCreatedBy = existingOwner;
-				}
-			}else{
-				newCreatedBy = existingOwner;
-			}
+		// if the existing createdBy is the same as currentOwner, replace with
+		// newOwner
+		if (existingOwner.equals(currentOwner)) {
+			return newOwner;
 		}
-		return newCreatedBy;
+		int copyIndex = existingOwner
+				.indexOf(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+		// if the existing createdBy is not the same as current owner and
+		// doesn't contain COPY, retain existingOwner
+		if (copyIndex == -1) {
+			return existingOwner;
+		}
+		// if the existing createdBy is not the same as current owner but
+		// contains COPY and contains existing createdBy, replace with newOwner
+		if (existingOwner.startsWith(currentOwner)) {
+			String newCreatedBy = existingOwner.replaceFirst(
+					currentOwner + ":", newOwner + ":");
+			return newCreatedBy;
+		}
+		return existingOwner;
 	}
 
 	private Sample findFullyLoadedSampleById(String sampleId) throws Exception {
