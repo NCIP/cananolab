@@ -157,15 +157,13 @@ public class DWRAccessibilityManager {
 			return null;
 		}
 	}
-	
-	public UserBean[] getUsers()
+
+	public UserBean[] getUsers(String searchStr)
 			throws Exception {
-		String searchStr="";
 		try {
-		
 			List<UserBean> matchedUsers = getService().findUserBeans(
 					searchStr);
-					
+
 			return matchedUsers.toArray(new UserBean[matchedUsers.size()]);
 		} catch (Exception e) {
 			logger.error("Problem getting user login names", e);
