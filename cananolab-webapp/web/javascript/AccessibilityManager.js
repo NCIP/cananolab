@@ -196,7 +196,7 @@ function showMatchedGroupOrUserDropdown(dataOwner) {
 			}
 			dwr.util.removeAllOptions("matchedUserNameSelect");
 			dwr.util.addOptions("matchedUserNameSelect", data, "loginName",
-					"fullName");
+					"displayName");
 			dwr.util.setValue("matchedUserNameSelect", selectedUser);
 			hide("loaderImg");
 			show("matchedUserNameSelect");
