@@ -742,8 +742,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward download(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		PublicationService service = (PublicationService) (request.getSession()
-				.getAttribute("publicationService"));
+		PublicationService service = this.setServicesInSession(request);
 		return downloadFile(service, mapping, form, request, response);
 	}
 }
