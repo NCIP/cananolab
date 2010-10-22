@@ -178,7 +178,7 @@
 															<td>
 																<c:choose>
 																	<c:when test="${pubObj.description}">
-																		<c:set var="desc" value="${fn:replace(pubObj.deescription, '<', '&lt;')}" />
+																		<c:set var="desc" value="${fn:replace(pubObj.description, '<', '&lt;')}" />
 																		<c:out
 																			value="${fn:replace(desc, cr, '<br>')}"
 																			escapeXml="false" />
