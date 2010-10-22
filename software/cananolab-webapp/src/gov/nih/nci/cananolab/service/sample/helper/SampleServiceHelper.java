@@ -41,6 +41,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -926,12 +927,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		projectionList.add(Projections.property("id"));
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		crit.setProjection(Projections.distinct(projectionList));
-
-		if("COPY".equalsIgnoreCase(currentOwner)){
-			crit.add(Restrictions.like("createdBy", currentOwner, MatchMode.ANYWHERE));
-		}else{
-			crit.add(Restrictions.eq("createdBy", currentOwner));
-		}
+		Criterion crit1 = Restrictions.eq("createdBy", currentOwner);
+		// in case of copy createdBy is like lijowskim:COPY
+		Criterion crit2 = Restrictions.like("createdBy", currentOwner + ":",
+				MatchMode.START);
+		crit.add(Expression.or(crit1, crit2));
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 

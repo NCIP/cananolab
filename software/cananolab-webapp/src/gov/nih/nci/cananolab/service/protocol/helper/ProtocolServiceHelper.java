@@ -20,7 +20,9 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -201,11 +203,12 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 				.setProjection(
 						Projections.projectionList().add(
 								Projections.property("id")));
-		if("COPY".equalsIgnoreCase(currentOwner)){
-			crit.add(Restrictions.like("createdBy", currentOwner, MatchMode.ANYWHERE));
-		}else{
-			crit.add(Restrictions.eq("createdBy", currentOwner));
-		}
+		Criterion crit1 = Restrictions.eq("createdBy", currentOwner);
+		// in case of copy createdBy is like lijowskim:COPY
+		Criterion crit2 = Restrictions.like("createdBy", currentOwner + ":",
+				MatchMode.START);
+		crit.add(Expression.or(crit1, crit2));
+
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
