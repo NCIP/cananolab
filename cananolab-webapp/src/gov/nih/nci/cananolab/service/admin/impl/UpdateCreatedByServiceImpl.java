@@ -68,6 +68,7 @@ public class UpdateCreatedByServiceImpl {
 		specialMappings.put("clogston", "clogstonj");
 		specialMappings.put("admin", "canano_admin");
 		specialMappings.put("janedoe", "canano_admin");
+		specialMappings.put("sharon", "gaheens");
 		specialMappings.put("johndoe", "canano_guest");
 		specialMappings.put("SPREAD_SHEET_PARSER_4_STANSHAW_DATA",
 				"canano_admin");
