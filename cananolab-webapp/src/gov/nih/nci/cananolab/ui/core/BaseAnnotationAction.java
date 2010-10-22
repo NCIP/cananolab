@@ -77,7 +77,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				.getAttribute("sampleService");
 
 		SampleBean sampleBean = service.findSampleById(sampleId, true);
-		if (sampleBean==null) {
+		if (sampleBean == null) {
 			throw new NotExistException("No such sample in the system");
 		}
 		request.setAttribute("theSample", sampleBean);
@@ -114,7 +114,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {
 			ExportUtils.prepareReponseForImage(response, fileBean
-					.getDomainFile().getName());
+					.getDomainFile().getUri());
 
 			InputStream in = null;
 			OutputStream out = null;
@@ -351,10 +351,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String dataId = request.getParameter("reviewDataId");
 		String dataType = request.getParameter("reviewDataType");
 		String dataName = request.getParameter("reviewDataName");
-		String forwardName= request.getParameter("forwardName");
-		//set default forward name to be summaryEdit
-		if (forwardName==null) {
-			forwardName="summaryEdit";
+		String forwardName = request.getParameter("forwardName");
+		// set default forward name to be summaryEdit
+		if (forwardName == null) {
+			forwardName = "summaryEdit";
 		}
 		DataReviewStatusBean dataReviewStatusBean = new DataReviewStatusBean();
 		dataReviewStatusBean.setDataId(dataId);
@@ -535,14 +535,13 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			accessValid = (Boolean) session.getAttribute("accessValid");
 		}
 		Boolean openAccess = false;
-		if (dispatch.equals("input") && browserDispatch.equals("saveAccess") || !accessValid) {
+		if (dispatch.equals("input") && browserDispatch.equals("saveAccess")
+				|| !accessValid) {
 			openAccess = true;
 		}
 		session.setAttribute("openAccess", openAccess);
 		session.removeAttribute("accessValid");
-		//in case of validation error still show access label correctly.
-		request
-				.setAttribute("onloadJavascript",
-						"toggleAccessNameLabel();");
+		// in case of validation error still show access label correctly.
+		request.setAttribute("onloadJavascript", "toggleAccessNameLabel();");
 	}
 }

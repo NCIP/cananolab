@@ -932,8 +932,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	public ActionForward download(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		CharacterizationService service = (CharacterizationService) (request
-				.getSession().getAttribute("characterizationService"));
+		CharacterizationService service = setServicesInSession(request);
 		return downloadFile(service, mapping, form, request, response);
 	}
 

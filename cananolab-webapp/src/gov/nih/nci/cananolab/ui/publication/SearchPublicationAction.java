@@ -79,8 +79,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		request
 				.setAttribute("resultSize",
 						new Integer(publicationBeans.size()));
-		//allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control","private");
+		// allow user to go back to the search results via the cache
+		response.setHeader("Cache-Control", "private");
 		return mapping.findForward("success");
 	}
 
@@ -126,8 +126,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			if (i < publicationBeans.size()) {
 				String publicationId = publicationBeans.get(i).getDomainFile()
 						.getId().toString();
-				PublicationBean pubBean = service
-						.findPublicationById(publicationId, false);
+				PublicationBean pubBean = service.findPublicationById(
+						publicationId, false);
 				if (pubBean != null) {
 					loadedPublicationBeans.add(pubBean);
 				}
@@ -279,12 +279,5 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("publicationService",
 				publicationService);
 		return publicationService;
-	}
-
-	public ActionForward download(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		PublicationService service = setServiceInSession(request);
-		return downloadFile(service, mapping, form, request, response);
 	}
 }
