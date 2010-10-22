@@ -653,14 +653,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			// fully load original sample
 			origSample = findFullyLoadedSampleByName(originalSampleName);
 			origSampleBean = new SampleBean(origSample);
-			// retrieve accessibilities of the original sample
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(origSample.getId().toString());
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(origSample.getId().toString());
-			origSampleBean.setGroupAccesses(groupAccesses);
-			origSampleBean.setUserAccesses(userAccesses);
-
 			newSample0.setName(newSampleName);
 			newSample0.setCreatedBy(user.getLoginName() + ":"
 					+ Constants.AUTO_COPY_ANNOTATION_PREFIX);
@@ -668,9 +660,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			// save the sample so later up just update the cloned the
 			// associations.
 			SampleBean newSampleBean0 = new SampleBean(newSample0);
-			// copy accessibility
-			newSampleBean0.setGroupAccesses(origSampleBean.getGroupAccesses());
-			newSampleBean0.setUserAccesses(origSampleBean.getUserAccesses());
 			// save the sample to get an ID before saving associations
 			saveSample(newSampleBean0);
 		} catch (NotExistException e) {
@@ -692,6 +681,14 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			newSample.setId(newSample0.getId());
 			newSampleBean = new SampleBean(newSample);
 
+			// retrieve accessibilities of the original sample
+			List<AccessibilityBean> groupAccesses = super
+					.findGroupAccessibilities(origSample.getId().toString());
+			List<AccessibilityBean> userAccesses = super
+					.findUserAccessibilities(origSample.getId().toString());
+			origSampleBean.setGroupAccesses(groupAccesses);
+			origSampleBean.setUserAccesses(userAccesses);
+
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
 			saveClonedPOCs(newSampleBean);
@@ -701,7 +698,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			saveSample(newSampleBean);
 
 			// assign accessibility for the new sample
-			for (AccessibilityBean access : newSampleBean.getAllAccesses()) {
+			for (AccessibilityBean access : origSampleBean.getAllAccesses()) {
 				this.assignAccessibility(access, newSampleBean.getDomain());
 			}
 		} catch (Exception e) {
@@ -742,8 +739,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (ExperimentConfigBean configBean : charBean
 							.getExperimentConfigs()) {
 						charService.saveExperimentConfig(configBean);
-						charService.assignAccesses(achar, configBean
-								.getDomain());
 					}
 				}
 				if (charBean.getFindings() != null) {
@@ -753,9 +748,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 									origSampleName, newSampleName);
 						}
 						charService.saveFinding(findingBean);
-						charService.assignAccesses(achar, findingBean
-								.getDomain());
-
 					}
 				}
 				charService.saveCharacterization(sampleBean, charBean);
@@ -766,9 +758,21 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	private void saveClonedComposition(SampleBean origSampleBean,
 			SampleBean sampleBean) throws Exception {
 		String origSampleName = origSampleBean.getDomain().getName();
+		String newSampleName = sampleBean.getDomain().getName();
 
 		if (sampleBean.getDomain().getSampleComposition() != null) {
-			String newSampleName = sampleBean.getDomain().getName();
+			// save files
+			if (sampleBean.getDomain().getSampleComposition()
+					.getFileCollection() != null) {
+				for (File file : sampleBean.getDomain().getSampleComposition()
+						.getFileCollection()) {
+					FileBean fileBean = new FileBean(file);
+					fileUtils.updateClonedFileInfo(fileBean, origSampleName,
+							newSampleName);
+					compService.saveCompositionFile(sampleBean, fileBean);
+				}
+			}
+
 			// save nanomaterial entities
 			if (sampleBean.getDomain().getSampleComposition()
 					.getNanomaterialEntityCollection() != null) {
@@ -780,18 +784,8 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (FileBean fileBean : entityBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
-						compService.assignAccesses(sampleBean.getDomain()
-								.getSampleComposition(), fileBean
-								.getDomainFile());
 					}
 					compService.saveNanomaterialEntity(sampleBean, entityBean);
-
-					if (entity.getComposingElementCollection() != null) {
-						for (ComposingElement composingElement : entity
-								.getComposingElementCollection()) {
-							compService.assignAccesses(composingElement);
-						}
-					}
 				}
 			}
 			// save functionalizing entities
@@ -805,30 +799,9 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (FileBean fileBean : entityBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
-						compService.assignAccesses(sampleBean.getDomain()
-								.getSampleComposition(), fileBean
-								.getDomainFile());
 					}
 					compService.saveFunctionalizingEntity(sampleBean,
 							entityBean);
-					if (entity.getFunctionCollection() != null) {
-						for (Function function : entity.getFunctionCollection()) {
-							compService.assignAccesses(function);
-						}
-					}
-				}
-			}
-			// save files
-			if (sampleBean.getDomain().getSampleComposition()
-					.getFileCollection() != null) {
-				for (File file : sampleBean.getDomain().getSampleComposition()
-						.getFileCollection()) {
-					FileBean fileBean = new FileBean(file);
-					fileUtils.updateClonedFileInfo(fileBean, origSampleName,
-							newSampleName);
-					compService.saveCompositionFile(sampleBean, fileBean);
-					compService.assignAccesses(sampleBean.getDomain()
-							.getSampleComposition(), file);
 				}
 			}
 			// save chemical association
@@ -849,9 +822,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					for (FileBean fileBean : assocBean.getFiles()) {
 						fileUtils.updateClonedFileInfo(fileBean,
 								origSampleName, newSampleName);
-						compService.assignAccesses(sampleBean.getDomain()
-								.getSampleComposition(), fileBean
-								.getDomainFile());
 					}
 					compService.saveChemicalAssociation(sampleBean, assocBean);
 				}
@@ -862,12 +832,25 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	private void updateAssociatedElementId(SampleComposition comp,
 			AssociatedElement associatedElement) {
 		if (associatedElement != null) {
-			String origId = associatedElement.getCreatedBy().substring(5);
+			int copyInd = associatedElement.getCreatedBy().indexOf(
+					Constants.AUTO_COPY_ANNOTATION_PREFIX);
+			String origId = null;
+			if (copyInd != -1) {
+				origId = associatedElement.getCreatedBy()
+						.substring(copyInd + 5);
+			}
+
 			// finding the matching functionalizing entity
 			if (associatedElement instanceof FunctionalizingEntity) {
 				for (FunctionalizingEntity entity : comp
 						.getFunctionalizingEntityCollection()) {
-					String entityOrigId = entity.getCreatedBy().substring(5);
+					int copyEInd = entity.getCreatedBy().indexOf(
+							Constants.AUTO_COPY_ANNOTATION_PREFIX);
+					String entityOrigId = null;
+					if (copyEInd != -1) {
+						entityOrigId = entity.getCreatedBy().substring(
+								copyEInd + 5);
+					}
 					if (entityOrigId.equals(origId)) {
 						associatedElement.setId(entity.getId());
 						break;
@@ -880,7 +863,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					if (entity.getComposingElementCollection() != null) {
 						for (ComposingElement ce : entity
 								.getComposingElementCollection()) {
-							String ceOrigId = ce.getCreatedBy().substring(5);
+							int copyCEInd = ce.getCreatedBy().indexOf(
+									Constants.AUTO_COPY_ANNOTATION_PREFIX);
+							String ceOrigId = null;
+							if (copyCEInd != -1) {
+								ceOrigId = ce.getCreatedBy().substring(
+										copyCEInd + 5);
+							}
 							if (ceOrigId.equals(origId)) {
 								associatedElement.setId(ce.getId());
 								break;

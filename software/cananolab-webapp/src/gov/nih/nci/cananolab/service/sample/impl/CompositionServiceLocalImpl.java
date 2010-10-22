@@ -342,10 +342,11 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			fileUtils.prepareSaveFile(file);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			SampleComposition comp = null;
-			if (sample.getSampleComposition() == null) {
+			SampleComposition comp = sample.getSampleComposition();
+			if (comp == null) {
 				comp = new SampleComposition();
 				comp.setSample(sampleBean.getDomain());
+			} else if (comp.getId() == null) {
 				comp.setFileCollection(new HashSet<File>());
 			} else {
 				newComp = false;
