@@ -44,7 +44,7 @@ public class ProtocolDecorator extends TableDecorator {
 			String fileName = file.getDomainFile().getName();
 			if (!StringUtils.isEmpty(file.getDomainFile().getName())) {
 				StringBuilder sb = new StringBuilder("<a href=");
-				sb.append("searchProtocol.do?dispatch=download&fileId=");
+				sb.append("protocol.do?dispatch=download&fileId=");
 				sb.append(file.getDomainFile().getId()).append(">");
 				String fileTitle = file.getDomainFile().getTitle();
 				if (StringUtils.isEmpty(fileTitle)) {
