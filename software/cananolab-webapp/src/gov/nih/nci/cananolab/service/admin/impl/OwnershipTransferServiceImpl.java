@@ -126,12 +126,11 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 						if (sampleComposition.getFileCollection() != null) {
 							for (File file : sampleComposition
 									.getFileCollection()) {
-								if (file != null) {
-									file.setCreatedBy(newCreatedBy(file
-											.getCreatedBy(), currentOwner,
-											newOwner));
-									appService.saveOrUpdate(file);
-								}
+								file
+										.setCreatedBy(newCreatedBy(file
+												.getCreatedBy(), currentOwner,
+												newOwner));
+								appService.saveOrUpdate(file);
 							}
 						}
 						chemicalAssociation = sampleComposition
@@ -144,19 +143,16 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 								.getCharacterizationCollection();
 						if (chemicalAssociation != null) {
 							for (ChemicalAssociation ca : chemicalAssociation) {
-								if (ca != null) {
-									ca.setCreatedBy(newCreatedBy(ca
-											.getCreatedBy(), currentOwner,
-											newOwner));
-									if (ca.getFileCollection() != null) {
-										for (File file : ca.getFileCollection()) {
-											file.setCreatedBy(newCreatedBy(file
-													.getCreatedBy(),
-													currentOwner, newOwner));
-										}
+								ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(),
+										currentOwner, newOwner));
+								if (ca.getFileCollection() != null) {
+									for (File file : ca.getFileCollection()) {
+										file.setCreatedBy(newCreatedBy(file
+												.getCreatedBy(), currentOwner,
+												newOwner));
 									}
-									appService.saveOrUpdate(ca);
 								}
+								appService.saveOrUpdate(ca);
 							}
 						}
 						if (functionalizingEntity != null) {
