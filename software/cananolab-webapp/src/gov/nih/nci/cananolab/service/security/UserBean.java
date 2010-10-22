@@ -1,11 +1,10 @@
 package gov.nih.nci.cananolab.service.security;
 
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.authorization.domainobjects.User;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This class represents properties of a user object to be shown in the view
@@ -245,12 +244,11 @@ public class UserBean {
 
 	public String getDisplayName() {
 		String displayName = "";
-		if (firstName != null && !StringUtils.isEmpty(firstName)
-				&& lastName != null && !StringUtils.isEmpty(lastName)) {
+		if (!StringUtils.isEmpty(firstName) && !StringUtils.isEmpty(lastName)) {
 			displayName = lastName + ", " + firstName;
-		} else if (firstName != null && !StringUtils.isEmpty(firstName)) {
+		} else if (!StringUtils.isEmpty(firstName)) {
 			displayName = firstName;
-		} else if (lastName != null && !StringUtils.isEmpty(lastName)) {
+		} else if (!StringUtils.isEmpty(lastName)) {
 			displayName = lastName;
 		} else {
 			displayName = loginName;
