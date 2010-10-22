@@ -64,6 +64,8 @@ public class UpdateCreatedByServiceImpl {
 	static {
 		specialMappings.put("michal", "lijowskim");
 		specialMappings.put("jennifer", "halljennifer");
+		specialMappings.put("skoczen", "skoczens");
+		specialMappings.put("clogston", "clogstonj");
 		specialMappings.put("admin", "canano_admin");
 		specialMappings.put("janedoe", "canano_admin");
 		specialMappings.put("johndoe", "canano_guest");
