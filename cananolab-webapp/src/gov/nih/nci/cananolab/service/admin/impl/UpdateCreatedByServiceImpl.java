@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Protocol;
@@ -32,12 +33,15 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -54,6 +58,21 @@ public class UpdateCreatedByServiceImpl {
 
 	private static Logger logger = Logger
 			.getLogger(UpdateCreatedByServiceImpl.class);
+	// special mappings for characterization and composition data that have
+	// different created_by than sample
+	private static Map<String, String> specialMappings = new HashMap<String, String>();
+	static {
+		specialMappings.put("michal", "lijowskim");
+		specialMappings.put("jennifer", "halljennifer");
+		specialMappings.put("admin", "canano_admin");
+		specialMappings.put("janedoe", "canano_admin");
+		specialMappings.put("johndoe", "canano_guest");
+		specialMappings.put("SPREAD_SHEET_PARSER_4_STANSHAW_DATA",
+				"canano_admin");
+		specialMappings.put("SPREAD_SHEET_PARSER_4_KELLY_DATA", "canano_admin");
+		specialMappings.put("DATA_MIGRATION", "canano_admin");
+		specialMappings.put("data_migration", "canano_admin");
+	}
 
 	private int update(SampleService sampleService, List<String> sampleIds,
 			String currentCreatedBy, String newCreatedBy)
@@ -65,11 +84,12 @@ public class UpdateCreatedByServiceImpl {
 			for (String sampleId : sampleIds) {
 				try {
 					Sample domain = this.findFullyLoadedSampleById(sampleId);
-					domain.setCreatedBy(newCreatedBy(domain.getCreatedBy(), currentCreatedBy, newCreatedBy));
+					domain.setCreatedBy(newCreatedBy(domain.getCreatedBy(),
+							currentCreatedBy, newCreatedBy));
 					appService.saveOrUpdate(domain);
 					SampleComposition sampleComposition = domain
 							.getSampleComposition();
-					
+
 					Collection<ChemicalAssociation> chemicalAssociation = new ArrayList<ChemicalAssociation>();
 					Collection<FunctionalizingEntity> functionalizingEntity = new ArrayList<FunctionalizingEntity>();
 					Collection<NanomaterialEntity> nanomaterialEntity = new ArrayList<NanomaterialEntity>();
@@ -77,30 +97,32 @@ public class UpdateCreatedByServiceImpl {
 
 					// point of contact
 					PointOfContact poc = domain.getPrimaryPointOfContact();
-					if (poc != null) {						
-						poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(), currentCreatedBy, newCreatedBy));
-						appService.saveOrUpdate(poc);
+					if (poc != null) {
+						poc.setCreatedBy(newCreatedBy(poc.getCreatedBy(),
+								currentCreatedBy, newCreatedBy));
 
 						// organization
 						Organization organization = poc.getOrganization();
-						if(organization != null){
-							organization.setCreatedBy(newCreatedBy(organization.getCreatedBy(), currentCreatedBy, newCreatedBy));
-							appService.saveOrUpdate(organization);
+						if (organization != null) {
+							organization.setCreatedBy(newCreatedBy(organization
+									.getCreatedBy(), currentCreatedBy,
+									newCreatedBy));
 						}
+						appService.saveOrUpdate(poc);
 					}
 					if (domain.getOtherPointOfContactCollection() != null) {
 						for (PointOfContact otherpoc : domain
 								.getOtherPointOfContactCollection()) {
-							if(otherpoc != null){
-								otherpoc.setCreatedBy(newCreatedBy(otherpoc.getCreatedBy(),
-										currentCreatedBy, newCreatedBy));
-								appService.saveOrUpdate(otherpoc);
-								Organization org = otherpoc.getOrganization();
-								if(org != null){
-									org.setCreatedBy(newCreatedBy(org.getCreatedBy(), currentCreatedBy, newCreatedBy));
-									appService.saveOrUpdate(org);
-								}
+							otherpoc.setCreatedBy(newCreatedBy(otherpoc
+									.getCreatedBy(), currentCreatedBy,
+									newCreatedBy));
+							Organization org = otherpoc.getOrganization();
+							if (org != null) {
+								org.setCreatedBy(newCreatedBy(org
+										.getCreatedBy(), currentCreatedBy,
+										newCreatedBy));
 							}
+							appService.saveOrUpdate(otherpoc);
 						}
 					}
 					// updating Sample Composition
@@ -108,10 +130,9 @@ public class UpdateCreatedByServiceImpl {
 						if (sampleComposition.getFileCollection() != null) {
 							for (File file : sampleComposition
 									.getFileCollection()) {
-								file
-										.setCreatedBy(newCreatedBy(file
-												.getCreatedBy(), currentCreatedBy,
-												newCreatedBy));
+								file.setCreatedBy(newCreatedBy(file
+										.getCreatedBy(), currentCreatedBy,
+										newCreatedBy));
 								appService.saveOrUpdate(file);
 							}
 						}
@@ -123,90 +144,100 @@ public class UpdateCreatedByServiceImpl {
 								.getNanomaterialEntityCollection();
 						characterization = domain
 								.getCharacterizationCollection();
-						if(chemicalAssociation != null){
+						if (chemicalAssociation != null) {
 							for (ChemicalAssociation ca : chemicalAssociation) {
-								if(ca != null){
-									ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(), currentCreatedBy, newCreatedBy));
-									Collection<File> fileCollection = ca.getFileCollection();
-									if(fileCollection != null){
-										for(File file:fileCollection){
-											if(file != null){
-												file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
-												appService.saveOrUpdate(file);		
-											}
-										}
-									}
-									appService.saveOrUpdate(ca);
-								}
-							}
-						}
-						if(functionalizingEntity != null){
-							for (FunctionalizingEntity fe : functionalizingEntity) {
-								if(fe != null){
-									fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(), currentCreatedBy, newCreatedBy));
-									Collection<File> fileCollection = fe.getFileCollection();
-									if(fileCollection != null){
-										for(File file:fileCollection){
-											if(file != null){
-												file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
-												appService.saveOrUpdate(file);		
-											}
-										}
-									}
-									Collection<Function> functionCollection = fe.getFunctionCollection();
-									if(functionCollection != null){
-										for(Function f:functionCollection){
-											if(f != null){
-												f.setCreatedBy(newCreatedBy(f.getCreatedBy(), currentCreatedBy, newCreatedBy));
-												appService.saveOrUpdate(f);		
-											}
-										}
-									}
-									appService.saveOrUpdate(fe);	
-								}
-							}
-						}
-						if(nanomaterialEntity != null){
-							for (NanomaterialEntity ne : nanomaterialEntity) {
-								if(ne != null){
-									ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(), currentCreatedBy, newCreatedBy));
-									Collection<File> fileCollection = ne.getFileCollection();
-									if(fileCollection != null){
-										for(File file:fileCollection){
-											if(file != null){
-												file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
-												appService.saveOrUpdate(file);		
-											}
-										}
-									}
-									if (ne.getComposingElementCollection() != null) {
-										for (ComposingElement ce : ne
-												.getComposingElementCollection()) {
-											ce.setCreatedBy(newCreatedBy(ce
-													.getCreatedBy(), currentCreatedBy,
+								ca.setCreatedBy(newCreatedBy(ca.getCreatedBy(),
+										currentCreatedBy, newCreatedBy));
+								Collection<File> fileCollection = ca
+										.getFileCollection();
+								if (fileCollection != null) {
+									for (File file : fileCollection) {
+										if (file != null) {
+											file.setCreatedBy(newCreatedBy(file
+													.getCreatedBy(),
+													currentCreatedBy,
 													newCreatedBy));
-											if (ce.getInherentFunctionCollection() != null) {
-												for (Function function : ce
-														.getInherentFunctionCollection()) {
-													function.setCreatedBy(newCreatedBy(
-															function.getCreatedBy(),
-															currentCreatedBy, newCreatedBy));
-													if (function instanceof TargetingFunction) {
-														TargetingFunction tFunc = (TargetingFunction) function;
-														if (tFunc.getTargetCollection() != null) {
-															for (Target target : tFunc
-																	.getTargetCollection()) {
-																target
-																		.setCreatedBy(newCreatedBy(
-																				target
-																						.getCreatedBy(),
-																				currentCreatedBy,
-																				newCreatedBy));
-																appService.saveOrUpdate(target);
-															}
+										}
+									}
+								}
+								appService.saveOrUpdate(ca);
+							}
+						}
+						if (functionalizingEntity != null) {
+							for (FunctionalizingEntity fe : functionalizingEntity) {
+								fe.setCreatedBy(newCreatedBy(fe.getCreatedBy(),
+										currentCreatedBy, newCreatedBy));
+								Collection<File> fileCollection = fe
+										.getFileCollection();
+								if (fileCollection != null) {
+									for (File file : fileCollection) {
+										file
+												.setCreatedBy(newCreatedBy(file
+														.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
+									}
+								}
+								Collection<Function> functionCollection = fe
+										.getFunctionCollection();
+								if (functionCollection != null) {
+									for (Function f : functionCollection) {
+										f
+												.setCreatedBy(newCreatedBy(f
+														.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
+									}
+								}
+								appService.saveOrUpdate(fe);
+							}
+						}
+						if (nanomaterialEntity != null) {
+							for (NanomaterialEntity ne : nanomaterialEntity) {
+								ne.setCreatedBy(newCreatedBy(ne.getCreatedBy(),
+										currentCreatedBy, newCreatedBy));
+								Collection<File> fileCollection = ne
+										.getFileCollection();
+								if (fileCollection != null) {
+									for (File file : fileCollection) {
+										file
+												.setCreatedBy(newCreatedBy(file
+														.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
+									}
+								}
+								if (ne.getComposingElementCollection() != null) {
+									for (ComposingElement ce : ne
+											.getComposingElementCollection()) {
+										ce
+												.setCreatedBy(newCreatedBy(ce
+														.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
+										if (ce.getInherentFunctionCollection() != null) {
+											for (Function function : ce
+													.getInherentFunctionCollection()) {
+												function
+														.setCreatedBy(newCreatedBy(
+																function
+																		.getCreatedBy(),
+																currentCreatedBy,
+																newCreatedBy));
+												if (function instanceof TargetingFunction) {
+													TargetingFunction tFunc = (TargetingFunction) function;
+													if (tFunc
+															.getTargetCollection() != null) {
+														for (Target target : tFunc
+																.getTargetCollection()) {
+															target
+																	.setCreatedBy(newCreatedBy(
+																			target
+																					.getCreatedBy(),
+																			currentCreatedBy,
+																			newCreatedBy));
 														}
 													}
-													appService.saveOrUpdate(function);
 												}
 											}
 										}
@@ -215,53 +246,83 @@ public class UpdateCreatedByServiceImpl {
 								}
 							}
 						}
-						if(characterization != null){
+						if (characterization != null) {
 							for (Characterization c : characterization) {
-								if(c != null){
-									c.setCreatedBy(newCreatedBy(c.getCreatedBy(), currentCreatedBy, newCreatedBy));
-									appService.saveOrUpdate(c);
-									Collection<ExperimentConfig> experimentConfigCollection = c.getExperimentConfigCollection();
-									if(experimentConfigCollection != null){
-										for(ExperimentConfig expConfig : experimentConfigCollection){
-											if(expConfig != null){
-												expConfig.setCreatedBy(newCreatedBy(expConfig.getCreatedBy(), currentCreatedBy, newCreatedBy));
-												appService.saveOrUpdate(expConfig);		
+								c.setCreatedBy(newCreatedBy(c.getCreatedBy(),
+										currentCreatedBy, newCreatedBy));
+								appService.saveOrUpdate(c);
+								Collection<ExperimentConfig> experimentConfigCollection = c
+										.getExperimentConfigCollection();
+								if (experimentConfigCollection != null) {
+									for (ExperimentConfig expConfig : experimentConfigCollection) {
+										expConfig
+												.setCreatedBy(newCreatedBy(
+														expConfig
+																.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
+										if (expConfig.getTechnique() != null) {
+											expConfig
+													.getTechnique()
+													.setCreatedBy(
+															newCreatedBy(
+																	expConfig
+																			.getTechnique()
+																			.getCreatedBy(),
+																	currentCreatedBy,
+																	newCreatedBy));
+										}
+										if (expConfig.getInstrumentCollection() != null) {
+											for (Instrument instrument : expConfig
+													.getInstrumentCollection()) {
+												instrument
+														.setCreatedBy(newCreatedBy(
+																instrument
+																		.getCreatedBy(),
+																currentCreatedBy,
+																newCreatedBy));
 											}
 										}
+										appService.saveOrUpdate(expConfig);
 									}
-									
-									Collection<Finding> findingCollection = c.getFindingCollection();						
-									if(findingCollection != null){
-										for(Finding f : findingCollection){
-											if(f != null){
-												f.setCreatedBy(newCreatedBy(f.getCreatedBy(), currentCreatedBy, newCreatedBy));
-												appService.saveOrUpdate(f);	
-												Collection<Datum> datumCollection = f.getDatumCollection();
-												if(datumCollection != null){
-													for(Datum d : datumCollection){
-														if(d != null){
-															d.setCreatedBy(newCreatedBy(d.getCreatedBy(), currentCreatedBy, newCreatedBy));
-															appService.saveOrUpdate(d);		
-														}
-													}
-												}
-												Collection<File> fileCollection = f.getFileCollection();
-												if(fileCollection != null){
-													for(File file:fileCollection){
-														if(file != null){
-															file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
-															appService.saveOrUpdate(file);		
-														}
-													}
-												}
+								}
+
+								Collection<Finding> findingCollection = c
+										.getFindingCollection();
+								if (findingCollection != null) {
+									for (Finding f : findingCollection) {
+										f
+												.setCreatedBy(newCreatedBy(f
+														.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
+										Collection<Datum> datumCollection = f
+												.getDatumCollection();
+										if (datumCollection != null) {
+											for (Datum d : datumCollection) {
+												d.setCreatedBy(newCreatedBy(d
+														.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
 											}
-										}								
+										}
+										Collection<File> fileCollection = f
+												.getFileCollection();
+										if (fileCollection != null) {
+											for (File file : fileCollection) {
+												file.setCreatedBy(newCreatedBy(
+														file.getCreatedBy(),
+														currentCreatedBy,
+														newCreatedBy));
+											}
+										}
+										appService.saveOrUpdate(f);
 									}
 								}
 							}
 						}
 					}
-					
+
 				} catch (Exception e) {
 					i++;
 					String error = "Error updating createdBy field for sample: "
@@ -293,15 +354,17 @@ public class UpdateCreatedByServiceImpl {
 			for (String publicationId : publicationIds) {
 				try {
 					Publication publication = helper
-							.findPublicationById(publicationId);					
-					publication.setCreatedBy(newCreatedBy(publication.getCreatedBy(), currentCreatedBy, newCreatedBy));						
+							.findPublicationById(publicationId);
+					publication.setCreatedBy(newCreatedBy(publication
+							.getCreatedBy(), currentCreatedBy, newCreatedBy));
 					appService.saveOrUpdate(publication);
 					// author
 					Collection<Author> authorCollection = publication
 							.getAuthorCollection();
 					for (Author a : authorCollection) {
-						if(a != null ){
-							a.setCreatedBy(newCreatedBy(a.getCreatedBy(), currentCreatedBy, newCreatedBy));						
+						if (a != null) {
+							a.setCreatedBy(newCreatedBy(a.getCreatedBy(),
+									currentCreatedBy, newCreatedBy));
 							appService.saveOrUpdate(a);
 						}
 					}
@@ -337,13 +400,15 @@ public class UpdateCreatedByServiceImpl {
 					securityService);
 			for (String protocolId : protocolIds) {
 				try {
-					Protocol protocol = helper.findProtocolById(protocolId);					
-					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(), currentCreatedBy, newCreatedBy));
+					Protocol protocol = helper.findProtocolById(protocolId);
+					protocol.setCreatedBy(newCreatedBy(protocol.getCreatedBy(),
+							currentCreatedBy, newCreatedBy));
 					appService.saveOrUpdate(protocol);
-					//file
+					// file
 					File file = protocol.getFile();
-					if(file != null){
-						file.setCreatedBy(newCreatedBy(file.getCreatedBy(), currentCreatedBy, newCreatedBy));
+					if (file != null) {
+						file.setCreatedBy(newCreatedBy(file.getCreatedBy(),
+								currentCreatedBy, newCreatedBy));
 						appService.saveOrUpdate(file);
 					}
 
@@ -398,26 +463,25 @@ public class UpdateCreatedByServiceImpl {
 		}
 		return numFailures;
 	}
-	private String newCreatedBy(String existingOwner, String currentOwner, String newOwner){
-		int copyIndex = existingOwner.indexOf("COPY");
-		String newCreatedBy="";
-		if(copyIndex ==0){
-			newCreatedBy = newOwner + ":" + existingOwner.substring(copyIndex);
-		}else{
-			if(existingOwner.length() >= currentOwner.length()){
-				String test = existingOwner.substring(0, currentOwner.length());
-				if(test.equals(currentOwner)){
-					newCreatedBy = newOwner;
-				}else{
-					newCreatedBy = existingOwner;
-				}
-			}else{
-				newCreatedBy = existingOwner;
-			}
+
+	private String newCreatedBy(String existingOwner, String currentOwner,
+			String newOwner) {
+		// if existingOwner starts with COPY, prefix it with newOwner
+		if (existingOwner.startsWith(Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			return newOwner + ":" + existingOwner;
 		}
-		return newCreatedBy;
+		// if existingOwner is the same as currentOwner
+		if (existingOwner.equals(currentOwner)) {
+			return newOwner;
+		}
+		// if existingOwner is not the same as currentOwner, check
+		// specialMappings
+		if (specialMappings.get(existingOwner) != null) {
+			return specialMappings.get(existingOwner);
+		}
+		return existingOwner;
 	}
-	
+
 	private Sample findFullyLoadedSampleById(String sampleId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
