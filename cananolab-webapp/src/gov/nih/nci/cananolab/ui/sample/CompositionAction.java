@@ -289,8 +289,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	public ActionForward download(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		CompositionService service = (CompositionService) (request.getSession()
-				.getAttribute("compositionService"));
+		CompositionService service = setServicesInSession(request);
 		return downloadFile(service, mapping, form, request, response);
 	}
 }
