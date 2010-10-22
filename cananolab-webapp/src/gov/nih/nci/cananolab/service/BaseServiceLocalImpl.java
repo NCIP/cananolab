@@ -1485,7 +1485,13 @@ public class BaseServiceLocalImpl implements BaseService {
 		public void updateClonedFileInfo(FileBean copy, String origSampleName,
 				String newSampleName) throws Exception {
 			// copy file content obtain original id from created by
-			String origId = copy.getDomainFile().getCreatedBy().substring(5);
+			int copyInd = copy.getDomainFile().getCreatedBy().indexOf(
+					Constants.AUTO_COPY_ANNOTATION_PREFIX);
+			String origId = null;
+			if (copyInd != -1) {
+				origId = copy.getDomainFile().getCreatedBy().substring(
+						copyInd + 5);
+			}
 			if (origId != null) {
 				byte[] content = this.getFileContent(new Long(origId));
 				copy.setNewFileData(content);
