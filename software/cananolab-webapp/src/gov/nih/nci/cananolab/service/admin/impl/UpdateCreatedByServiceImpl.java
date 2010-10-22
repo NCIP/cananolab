@@ -242,8 +242,8 @@ public class UpdateCreatedByServiceImpl {
 											}
 										}
 									}
-									appService.saveOrUpdate(ne);
 								}
+								appService.saveOrUpdate(ne);
 							}
 						}
 						if (characterization != null) {
