@@ -230,10 +230,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 				}
 				// if name information is changed, create a new POC
 				else if (domainPOC.getFirstName() != null
-						&& domainPOC.getFirstName().equalsIgnoreCase(
+						&& !domainPOC.getFirstName().equalsIgnoreCase(
 								dbPointOfContact.getFirstName())
 						|| domainPOC.getLastName() != null
-						&& domainPOC.getLastName().equalsIgnoreCase(
+						&& !domainPOC.getLastName().equalsIgnoreCase(
 								dbPointOfContact.getLastName())) {
 					newPOC = true;
 				} else {
