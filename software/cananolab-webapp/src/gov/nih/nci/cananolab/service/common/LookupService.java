@@ -31,7 +31,6 @@ import org.hibernate.criterion.Property;
  * @author pansu
  *
  */
-/* CVS $Id: LookupService.java,v 1.9 2008-09-16 15:54:50 tanq Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);

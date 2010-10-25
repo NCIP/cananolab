@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
  * @author pansu
  *
  */
-/* CVS $Id: StringUtils.java,v 1.9 2008-08-26 22:27:30 tanq Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);

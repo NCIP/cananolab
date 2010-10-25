@@ -6,8 +6,6 @@ package gov.nih.nci.cananolab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SearchSampleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
-
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
