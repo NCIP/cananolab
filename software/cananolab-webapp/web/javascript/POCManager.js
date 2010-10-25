@@ -83,9 +83,11 @@ function updatePersonInfo() {
 		POCManager.getPointOfContactByNameAndOrg(firstName, lastName, orgName,
 				function(data) {
 					if (data != null) {
-						dwr.util.setValues(data);
-					}
-				});
+						// load phone, email information
+				dwr.util.setValue("domain.phone", data.domain.phone);
+				dwr.util.setValue("domain.email", data.domain.email);
+			}
+		});
 	}
 }
 /* end of submit point of contact form */
