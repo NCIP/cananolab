@@ -26,6 +26,7 @@ public class ProtocolBean extends SecuredDataBean {
 
 	public ProtocolBean(Protocol protocol) {
 		domain = protocol;
+		this.createdBy = protocol.getCreatedBy();
 		if (protocol.getFile() != null) {
 			fileBean = new FileBean(protocol.getFile());
 		} else {

@@ -286,12 +286,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findUserAccessibilities(publication.getId().toString());
 			publicationBean.setUserAccesses(userAccesses);
 			publicationBean.setGroupAccesses(groupAccesses);
-			publicationBean.setUserUpdatable(this.checkUserUpdatable(
-					groupAccesses, userAccesses));
-			publicationBean.setUserDeletable(this.checkUserDeletable(
-					groupAccesses, userAccesses));
-			publicationBean.setUserIsOwner(this.checkUserOwner(publicationBean
-					.getDomainFile().getCreatedBy()));
+			publicationBean.setUser(user);
 		}
 		return publicationBean;
 	}

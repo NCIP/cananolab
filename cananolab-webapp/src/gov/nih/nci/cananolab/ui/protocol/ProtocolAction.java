@@ -185,6 +185,8 @@ public class ProtocolAction extends BaseAnnotationAction {
 						.toString());
 		protocolBean.setUserAccesses(userAccesses);
 		protocolBean.setGroupAccesses(groupAccesses);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		protocolBean.setUser(user);
 	}
 
 	/**

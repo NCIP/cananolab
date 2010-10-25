@@ -166,13 +166,12 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		SampleService sampleService = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		int i = 0;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (String other : otherSamples) {
 			SampleBean sampleBean = sampleService.findSampleByName(other);
 			sampleBean.setGroupAccesses(oldSampleBean.getGroupAccesses());
 			sampleBean.setUserAccesses(oldSampleBean.getUserAccesses());
-			sampleBean.setUserDeletable(oldSampleBean.getUserDeletable());
-			sampleBean.setUserUpdatable(oldSampleBean.getUserUpdatable());
-			sampleBean.setUserIsOwner(oldSampleBean.getUserIsOwner());
+			sampleBean.setUser(user);
 			sampleBeans[i] = sampleBean;
 			i++;
 		}

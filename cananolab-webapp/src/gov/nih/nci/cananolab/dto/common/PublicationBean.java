@@ -46,6 +46,7 @@ public class PublicationBean extends FileBean {
 	public PublicationBean(Publication publication) {
 		super(publication);
 		this.domainFile = publication;
+		this.createdBy = publication.getCreatedBy();
 
 		String researchAreasStr = publication.getResearchArea();
 		if (!StringUtils.isEmpty(researchAreasStr)) {
@@ -111,6 +112,7 @@ public class PublicationBean extends FileBean {
 		this.setSampleNames(source.getSampleNames());
 		this.setUserAccesses(source.getUserAccesses());
 		this.setGroupAccesses(source.getGroupAccesses());
+		this.setUser(source.getUser());
 		this.setUserUpdatable(source.getUserUpdatable());
 	}
 
@@ -140,7 +142,7 @@ public class PublicationBean extends FileBean {
 		this.setSampleNames(source.getSampleNames());
 		this.setUserAccesses(source.getUserAccesses());
 		this.setGroupAccesses(source.getGroupAccesses());
-		this.setUserUpdatable(source.getUserUpdatable());
+		this.setUser(source.getUser());
 		oldPub.setUri(dbPub.getUri());
 		oldPub.setUriExternal(dbPub.getUriExternal());
 	}

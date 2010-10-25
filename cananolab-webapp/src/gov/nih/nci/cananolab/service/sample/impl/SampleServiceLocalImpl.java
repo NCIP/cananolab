@@ -482,12 +482,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findUserAccessibilities(sample.getId().toString());
 			sampleBean.setUserAccesses(userAccesses);
 			sampleBean.setGroupAccesses(groupAccesses);
-			sampleBean.setUserUpdatable(this.checkUserUpdatable(groupAccesses,
-					userAccesses));
-			sampleBean.setUserDeletable(this.checkUserDeletable(groupAccesses,
-					userAccesses));
-			sampleBean.setUserIsOwner(this.checkUserOwner(sampleBean
-					.getDomain().getCreatedBy()));
+			sampleBean.setUser(user);
 		}
 		return sampleBean;
 	}
@@ -687,7 +682,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findUserAccessibilities(origSample.getId().toString());
 			origSampleBean.setGroupAccesses(groupAccesses);
 			origSampleBean.setUserAccesses(userAccesses);
-
+			
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
 			saveClonedPOCs(newSampleBean);
@@ -695,7 +690,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			saveClonedComposition(origSampleBean, newSampleBean);
 			saveClonedPublications(origSampleBean, newSampleBean);
 			saveSample(newSampleBean);
-
+			newSampleBean.setUser(user);
 			// assign accessibility for the new sample
 			for (AccessibilityBean access : origSampleBean.getAllAccesses()) {
 				this.assignAccessibility(access, newSampleBean.getDomain());

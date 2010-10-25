@@ -5,6 +5,7 @@ package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,9 @@ public class PublicationForm extends DynaValidatorForm {
 				pubBean.setResearchAreas(new String[0]);
 				pubBean.setGroupAccesses(new ArrayList<AccessibilityBean>());
 				pubBean.setUserAccesses(new ArrayList<AccessibilityBean>());
+				UserBean user = (UserBean) request.getSession().getAttribute(
+						"user");
+				pubBean.setUser(user);
 				pubBean.setSampleNames(new String[0]);
 				this.set("publication", pubBean);
 			}
