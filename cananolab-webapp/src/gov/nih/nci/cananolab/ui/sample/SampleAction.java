@@ -6,8 +6,6 @@ package gov.nih.nci.cananolab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
-
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.DataReviewStatusBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;

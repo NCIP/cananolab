@@ -6,8 +6,6 @@ package gov.nih.nci.cananolab.ui.sample;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
-
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;

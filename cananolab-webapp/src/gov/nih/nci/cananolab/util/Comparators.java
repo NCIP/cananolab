@@ -32,8 +32,6 @@ import java.util.Date;
  *
  */
 
-/* CVS $Id: Comparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
-
 public class Comparators {
 	public static class InstrumentDateComparator implements
 			Comparator<Instrument> {

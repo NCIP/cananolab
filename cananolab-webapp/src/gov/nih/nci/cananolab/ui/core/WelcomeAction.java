@@ -16,8 +16,6 @@ package gov.nih.nci.cananolab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: WelcomeAction.java,v 1.1 2008-09-30 18:44:48 pansu Exp $ */
-
 
 public class WelcomeAction extends AbstractForwardAction {
 	public boolean loginRequired() {

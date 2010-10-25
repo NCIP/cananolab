@@ -13,11 +13,9 @@ import org.apache.struts.action.ActionMessages;
 
 /**
  * This action logs user out of the current session
- * 
+ *
  * @author pansn
  */
-
-/* CVS $Id: */
 
 public class LogoutAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -36,7 +34,7 @@ public class LogoutAction extends Action {
 
 		forward = mapping.findForward("success");
 		resetToken(request);
-		
+
 		//FR# 26489,Visitor Count: set marker in request to avoid counting.
 		request.setAttribute("justLogout", Boolean.TRUE);
 		return forward;
