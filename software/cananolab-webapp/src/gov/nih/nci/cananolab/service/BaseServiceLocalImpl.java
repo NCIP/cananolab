@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -325,74 +326,6 @@ public class BaseServiceLocalImpl implements BaseService {
 		}
 	}
 
-	protected Boolean checkUserUpdatable(List<AccessibilityBean> groupAccesses,
-			List<AccessibilityBean> userAccesses) {
-		if (user == null) {
-			return false;
-		}
-		if (user.isCurator()) {
-			return true;
-		}
-		for (AccessibilityBean access : userAccesses) {
-			if (access.getUserBean().getLoginName().equals(user.getLoginName())
-					&& (access.getRoleName().equals(
-							AccessibilityBean.CSM_CURD_ROLE) || access
-							.getRoleName().equals(
-									AccessibilityBean.CSM_CUR_ROLE))) {
-				return true;
-			}
-		}
-		for (AccessibilityBean access : groupAccesses) {
-			for (String groupName : user.getGroupNames()) {
-				if (access.getGroupName().equals(groupName)
-						&& access.getRoleName().equals(
-								AccessibilityBean.CSM_CURD_ROLE)
-						|| access.getRoleName().equals(
-								AccessibilityBean.CSM_CUR_ROLE)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	protected Boolean checkUserDeletable(List<AccessibilityBean> groupAccesses,
-			List<AccessibilityBean> userAccesses) {
-		if (user == null) {
-			return false;
-		}
-		if (user.isCurator()) {
-			return true;
-		}
-		for (AccessibilityBean access : userAccesses) {
-			if (access.getUserBean().getLoginName().equals(user.getLoginName())
-					&& (access.getRoleName().equals(
-							AccessibilityBean.CSM_CURD_ROLE) || access
-							.getRoleName().equals(
-									AccessibilityBean.CSM_DELETE_ROLE))) {
-				return true;
-			}
-		}
-		for (AccessibilityBean access : groupAccesses) {
-			for (String groupName : user.getGroupNames()) {
-				if (access.getGroupName().equals(groupName)
-						&& access.getRoleName().equals(
-								AccessibilityBean.CSM_CURD_ROLE)
-						|| access.getRoleName().equals(
-								AccessibilityBean.CSM_DELETE_ROLE)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	protected Boolean checkUserOwner(String createdBy) {
-		return this.isOwnerByCreatedBy(createdBy);
-	}
-
 	public List<UserBean> findUserBeans(String loginNameSearchStr)
 			throws SecurityException {
 		List<UserBean> matchedUsers = new ArrayList<UserBean>();
@@ -458,17 +391,8 @@ public class BaseServiceLocalImpl implements BaseService {
 	}
 
 	public Boolean isOwnerByCreatedBy(String createdBy) {
-		// user is either a curator or the creator of the data
-		// or if the data created from COPY and contains the creator info
-		if (user != null
-				&& (user.getLoginName().equalsIgnoreCase(createdBy)
-						|| createdBy.contains(createdBy + ":"
-								+ Constants.AUTO_COPY_ANNOTATION_PREFIX) || user
-						.isCurator())) {
-			return true;
-		} else {
-			return false;
-		}
+		SecuredDataBean securedDataBean = new SecuredDataBean();
+		return securedDataBean.retrieveUserIsOwner(user, createdBy);
 	}
 
 	public void removeAllAccesses(String protectedData)

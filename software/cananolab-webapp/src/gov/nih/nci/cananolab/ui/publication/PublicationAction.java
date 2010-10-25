@@ -714,6 +714,8 @@ public class PublicationAction extends BaseAnnotationAction {
 						.getId().toString());
 		publicationBean.setUserAccesses(userAccesses);
 		publicationBean.setGroupAccesses(groupAccesses);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		publicationBean.setUser(user);
 	}
 
 	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,

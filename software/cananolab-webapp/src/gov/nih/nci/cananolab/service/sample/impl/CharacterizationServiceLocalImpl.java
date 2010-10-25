@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
@@ -144,23 +143,6 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			logger.error("Problem finding the characterization by id: "
 					+ charId, e);
 			throw new CharacterizationException();
-		}
-		return charBean;
-	}
-
-	private CharacterizationBean loadCharacterizationBean(Characterization achar)
-			throws Exception {
-		CharacterizationBean charBean = new CharacterizationBean(achar);
-		ProtocolBean protocolBean = charBean.getProtocolBean();
-		if (user != null && protocolBean.getDomain().getId() != null) {
-			List<AccessibilityBean> groupAccesses = super
-					.findGroupAccessibilities(protocolBean.getDomain().getId()
-							.toString());
-			List<AccessibilityBean> userAccesses = super
-					.findUserAccessibilities(protocolBean.getDomain().getId()
-							.toString());
-			protocolBean.setUserAccesses(userAccesses);
-			protocolBean.setGroupAccesses(groupAccesses);
 		}
 		return charBean;
 	}

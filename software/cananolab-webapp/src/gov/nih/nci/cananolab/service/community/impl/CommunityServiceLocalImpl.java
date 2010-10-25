@@ -246,7 +246,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			authManager.addUsersToGroup(collaborationGroupId,
 					new String[] { user.getUserId().toString() });
 			//if ownerLogin is not a curator, save owner access
-			
+
 		} catch (Exception e) {
 			String error = "Error assigning an owner to the collaboration group by Id "
 					+ collaborationGroupId;

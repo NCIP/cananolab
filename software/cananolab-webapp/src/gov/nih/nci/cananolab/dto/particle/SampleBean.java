@@ -81,6 +81,7 @@ public class SampleBean extends SecuredDataBean {
 
 	public SampleBean(Sample sample) {
 		this.domain = sample;
+		this.createdBy = sample.getCreatedBy();
 		if (sample.getKeywordCollection() != null) {
 			for (Keyword keyword : sample.getKeywordCollection()) {
 				keywordSet.add(keyword.getName());

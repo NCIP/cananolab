@@ -273,6 +273,8 @@ public class SampleAction extends BaseAnnotationAction {
 						.toString());
 		sampleBean.setUserAccesses(userAccesses);
 		sampleBean.setGroupAccesses(groupAccesses);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		sampleBean.setUser(user);
 	}
 
 	/**
