@@ -40,7 +40,7 @@ public class DWRPublicationManager {
 
 	public PublicationBean clearPublication() {
 		WebContext wctx = WebContextFactory.get();
-		PublicationForm form = (PublicationForm) wctx.getSession()
+		DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
 				.getAttribute("publicationForm");
 		PublicationBean pbean = new PublicationBean();
 		if (form != null) {
@@ -68,7 +68,7 @@ public class DWRPublicationManager {
 		if (user == null) {
 			return null;
 		}
-		PublicationForm form = (PublicationForm) wctx.getSession()
+		DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
 				.getAttribute("publicationForm");
 		if (form == null) {
 			return null;
@@ -116,7 +116,7 @@ public class DWRPublicationManager {
 		if (user == null) {
 			return null;
 		}
-		PublicationForm form = (PublicationForm) wctx.getSession()
+		DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
 				.getAttribute("publicationForm");
 		if (form == null) {
 			return null;
@@ -130,7 +130,7 @@ public class DWRPublicationManager {
 		if (user == null) {
 			return null;
 		}
-		PublicationForm form = (PublicationForm) wctx.getSession()
+		DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
 				.getAttribute("publicationForm");
 		if (form == null) {
 			return null;
@@ -260,7 +260,7 @@ public class DWRPublicationManager {
 		if (user == null) {
 			return null;
 		}
-		PublicationForm form = (PublicationForm) wctx.getSession()
+		DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
 				.getAttribute("publicationForm");
 		if (form == null) {
 			return null;
