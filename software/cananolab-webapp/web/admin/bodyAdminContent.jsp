@@ -30,12 +30,11 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<a href="javascript:openHelpWindow('/upt')"> Create User
+										<a href="javascript:showUPTWarning();"> Create User
 											Accounts and Assign Privileges </a>
 										<br>
 										Click to launch the NCI User Provisioning Tool (UPT) which
-										will assist in creating Users and Groups and associating
-										privileges and roles.
+										will assist in creating users.
 									</td>
 								</tr>
 								<tr>
