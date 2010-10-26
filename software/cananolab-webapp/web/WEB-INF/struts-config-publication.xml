@@ -3,7 +3,7 @@
 <struts-config>
 	<form-beans>
 		<form-bean name="publicationForm"
-			type="gov.nih.nci.cananolab.ui.publication.PublicationForm">
+			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
