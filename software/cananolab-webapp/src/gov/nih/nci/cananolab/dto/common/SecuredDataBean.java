@@ -160,7 +160,7 @@ public class SecuredDataBean {
 		// or if the data created from COPY and contains the creator info
 		if (user != null
 				&& (user.getLoginName().equalsIgnoreCase(createdBy)
-						|| createdBy.contains(createdBy + ":"
+						|| createdBy.contains(user.getLoginName() + ":"
 								+ Constants.AUTO_COPY_ANNOTATION_PREFIX) || user
 						.isCurator())) {
 			return true;
