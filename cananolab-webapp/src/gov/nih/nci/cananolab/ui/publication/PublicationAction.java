@@ -52,7 +52,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
 		Boolean newPub = true;
@@ -70,7 +70,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		// retract from public if updating an existing public record and not
 		// curator
-		if (!newPub && !user.isCurator()) {
+		if (!newPub && !user.isCurator() && publicationBean.getPublicStatus()) {
 			retractFromPublic(theForm, request, publicationBean.getDomainFile()
 					.getId().toString(), ((Publication) publicationBean
 					.getDomainFile()).getTitle(), "publication");
@@ -93,7 +93,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	}
 
 	private Boolean savePublication(HttpServletRequest request,
-			PublicationForm theForm) throws Exception {
+			DynaValidatorForm theForm) throws Exception {
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
 		PublicationService service = this.setServicesInSession(request);
@@ -168,9 +168,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		for (String sampleName : publicationBean.getSampleNames()) {
-			SampleBean sampleBean = service.findSampleByName(sampleName);
-			if (sampleBean == null) {
-				return false;
+			if (!StringUtils.isEmpty(sampleName)) {
+				SampleBean sampleBean = service.findSampleByName(sampleName);
+				if (sampleBean == null) {
+					return false;
+				}
 			}
 		}
 		return true;
@@ -189,7 +191,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward removeFromSample(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationService service = this.setServicesInSession(request);
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
@@ -217,7 +219,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationService service = this.setServicesInSession(request);
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
@@ -242,7 +244,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		PublicationBean pubBean = new PublicationBean();
 		String sampleId = request.getParameter("sampleId");
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
 		theForm.set("sampleId", sampleId);
 		// clear copy to otherSamples
@@ -269,7 +271,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
 		String publicationId = request.getParameter("publicationId");
 		String sampleId = request.getParameter("sampleId");
@@ -369,7 +371,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			return summaryView(mapping, form, request, response);
 		}
 		this.prepareSummary(mapping, form, request, response);
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
 		return mapping.findForward("summaryEdit");
 	}
@@ -431,7 +433,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		session.removeAttribute("publicationSummaryView");
 		session.removeAttribute("theSample");
 
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String sampleId = theForm.getString("sampleId");
 		PublicationService publicationService = this
 				.setServicesInSession(request);
@@ -473,7 +475,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, false);
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("publication", pubBean);
 		return mapping.findForward("publicationDetailPrintView");
 	}
@@ -483,7 +485,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		// save new entered other types
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
@@ -542,7 +544,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward addAuthor(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean pbean = (PublicationBean) theForm.get("publication");
 		pbean.addAuthor();
 
@@ -578,7 +580,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	// boolean noErrors = true;
 	// if (researchAreas == null || researchAreas.length == 0) {
 	// ActionMessage msg = new ActionMessage(
-	// "submitPublicationForm.publication.researchArea", "researchAreas");
+	// "submitDynaValidatorForm.publication.researchArea", "researchAreas");
 	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 	// this.saveErrors(request, msgs);
 	// noErrors = false;
@@ -598,7 +600,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, false);
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("publication", pubBean);
 		String title = pubBean.getDomainFile().getTitle();
 		if (!StringUtils.isEmpty(title)) {
@@ -663,7 +665,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publication = (PublicationBean) theForm
 				.get("publication");
 
@@ -721,7 +723,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publication = (PublicationBean) theForm
 				.get("publication");
 		AccessibilityBean theAccess = publication.getTheAccess();
