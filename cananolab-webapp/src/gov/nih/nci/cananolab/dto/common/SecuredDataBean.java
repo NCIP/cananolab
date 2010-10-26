@@ -62,6 +62,9 @@ public class SecuredDataBean {
 	}
 
 	public Boolean getUserUpdatable() {
+		if (userAccesses.isEmpty() && groupAccesses.isEmpty()) {
+			return userUpdatable;
+		}
 		userUpdatable = this.retrieveUserUpdatable(user);
 		return userUpdatable;
 	}
@@ -71,6 +74,9 @@ public class SecuredDataBean {
 	}
 
 	public Boolean getUserDeletable() {
+		if (userAccesses.isEmpty() && groupAccesses.isEmpty()) {
+			return userDeletable;
+		}
 		userDeletable = this.retrieveUserDeletable(user);
 		return userDeletable;
 	}
@@ -82,10 +88,6 @@ public class SecuredDataBean {
 	public Boolean getUserIsOwner() {
 		userIsOwner = this.retrieveUserIsOwner(user, createdBy);
 		return userIsOwner;
-	}
-
-	public void setUserIsOwner(Boolean userIsOwner) {
-		this.userIsOwner = userIsOwner;
 	}
 
 	private Boolean retrieveUserUpdatable(UserBean user) {
