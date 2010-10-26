@@ -568,3 +568,8 @@ function enableOuterButtons() {
 	var buttons=['submitButton', 'reviewButton', 'copyButton', 'deleteButton', 'reviewButton', 'deleteCollaborationGroup'];
 	enableButtons(buttons);
 }
+
+function showUPTWarning() {
+	alert("Please restrict the use of UPT for creating user accounts only.  For maintaining user groups and user assignments to user groups, please use the Manage Collaboration Group function within the application for the groups to be created correctly.  For user access privileges, please use the Add Access function within the application for the access control to be created correctly.")
+	openHelpWindow('/upt');
+}
