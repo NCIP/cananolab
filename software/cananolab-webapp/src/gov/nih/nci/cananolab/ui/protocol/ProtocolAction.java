@@ -50,7 +50,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// retract from public if updating an existing public record and not
 		// curator
-		if (!newProtocol && !user.isCurator()) {
+		if (!newProtocol && !user.isCurator() && protocolBean.getPublicStatus()) {
 			retractFromPublic(theForm, request, protocolBean.getDomain()
 					.getId().toString(), protocolBean.getDomain().getName(),
 					"protocol");
