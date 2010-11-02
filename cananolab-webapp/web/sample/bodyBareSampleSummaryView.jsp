@@ -24,7 +24,7 @@
 		<td>
 			<c:forEach var="keyword"
 				items="${sampleForm.map.sampleBean.keywordSet}">
-							${keyword}
+							<c:out value="${keyword}"/>
 							<br>
 			</c:forEach>
 		</td>

@@ -181,7 +181,7 @@
 				<c:if test="${!empty user.groupNames}">
 					<br>Associated Groups:<br/>
 					<c:forEach var="group" items="${user.groupNames}">
-						<span class="indented1"><i>${group}</i></span><br/>
+						<span class="indented1"><i><c:out value="${group}"/></i></span><br/>
 					</c:forEach>
 				</c:if>
 			</td>
