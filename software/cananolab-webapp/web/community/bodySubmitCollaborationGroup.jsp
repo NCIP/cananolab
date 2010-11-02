@@ -109,8 +109,7 @@
 							Access to the Group *
 						</td>
 						<td colspan="2">
-							<html:hidden property="group.theAccess.groupAccess" value="false"/>
-							<html:select property="group.theAccess.roleDisplayName"
+								<html:select property="group.theAccess.roleDisplayName"
 								styleId="roleName" onchange="">
 								<option></option>
 								<html:options collection="csmRoleNames" labelProperty="label" property="value"/>
