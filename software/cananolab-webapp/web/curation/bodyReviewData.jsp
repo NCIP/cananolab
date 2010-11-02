@@ -36,10 +36,10 @@
 						<c:forEach var="dataReview" items="${dataPendingReview}">
 							<tr valign="top">
 								<td>
-									${dataReview.dataType}
+									<c:out value="${dataReview.dataType}"/>
 								</td>
 								<td>
-									${dataReview.dataName}
+									<c:out value="${dataReview.dataName}"/>
 								</td>
 								<td align="right">
 									<a href="${dataReview.reviewLink}">Edit</a>&nbsp;
