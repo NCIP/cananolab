@@ -50,13 +50,13 @@
 						<c:forEach var="group" items="${existingCollaborationGroups}">
 							<tr valign="top">
 								<td>
-									${group.name}
+									<c:out value="${group.name}"/>
 								</td>
 								<td>
-									${group.description}
+									<c:out value="${group.description}"/>
 								</td>
 								<td>
-									${group.ownerName}
+									<c:out value="${group.ownerName}"/>
 								</td>
 								<td>
 									<c:forEach var="userAccess" items="${group.userAccesses}">
