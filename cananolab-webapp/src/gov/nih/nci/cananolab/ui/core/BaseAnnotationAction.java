@@ -325,7 +325,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request,
-			String protectedData) throws SecurityException {
+			String protectedData) throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user == null) {
 			return false;
@@ -333,6 +333,15 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (protectedData == null) {
 			return true;
 		} else {
+			// per app scan check id format
+			ActionMessages msgs = new ActionMessages();
+			if (protectedData != null
+					&& !protectedData.matches(Constants.NUMERIC_PATTERN)) {
+				ActionMessage msg = new ActionMessage("invalid.id");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
+				throw new NotExistException("Invalid ID format");
+			}
 			try {
 				SecurityService securityService = getSecurityServiceFromSession(request);
 				return securityService.checkCreatePermission(protectedData);
@@ -506,6 +515,30 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			AccessibilityBean theAccess) throws Exception {
 		Boolean accessValid = true;
 		ActionMessages msgs = new ActionMessages();
+		// per app scan, in case user submits parameters through URL instead of
+		// form
+		if (!theAccess.getAccessBy().equalsIgnoreCase(
+				AccessibilityBean.ACCESS_BY_GROUP)
+				&& !theAccess.getAccessBy().equalsIgnoreCase(
+						AccessibilityBean.ACCESS_BY_PUBLIC)
+				&& !theAccess.getAccessBy().equalsIgnoreCase(
+						AccessibilityBean.ACCESS_BY_USER)) {
+			ActionMessage msg = new ActionMessage("error.invalidAccessBy",
+					theAccess.getAccessBy());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			accessValid = false;
+		}
+		if (!theAccess.getRoleName().equalsIgnoreCase(
+				AccessibilityBean.CSM_CURD_ROLE)
+				&& !theAccess.getRoleName().equalsIgnoreCase(
+						AccessibilityBean.CSM_READ_ROLE)) {
+			ActionMessage msg = new ActionMessage("error.invalidRoleName",
+					theAccess.getRoleName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			accessValid = false;
+		}
 		if (!validateGroupAccess(request, theAccess)) {
 			ActionMessage msg = new ActionMessage("error.invalidGroup",
 					theAccess.getGroupName());
@@ -522,6 +555,22 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		request.getSession().setAttribute("accessValid", accessValid);
 		return accessValid;
+	}
+
+	protected String validateId(HttpServletRequest request, String idParameter)
+			throws Exception {
+		String id = request.getParameter(idParameter);
+		if (id == null) {
+			id = (String) request.getAttribute(idParameter);
+		}
+		if (id == null) {
+			throw new NotExistException("No such ID in the database");
+		}
+		// per app scan
+		if (!id.matches(Constants.NUMERIC_PATTERN)) {
+			throw new NotExistException("Invalid value for ID");
+		}
+		return id;
 	}
 
 	protected void checkOpenAccessForm(DynaValidatorForm theForm,
