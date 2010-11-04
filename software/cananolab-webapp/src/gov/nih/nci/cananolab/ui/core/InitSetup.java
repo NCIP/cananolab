@@ -61,21 +61,24 @@ public class InitSetup {
 	}
 
 	/**
-	 * Retrieve lookup Map from lookup table and store in the application context
+	 * Retrieve lookup Map from lookup table and store in the application
+	 * context
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param name
 	 * @return
 	 * @throws BaseException
 	 */
-	public Map<String, String> getLookupByName(
-			ServletContext appContext, String contextAttribute,String name) throws BaseException{
+	public Map<String, String> getLookupByName(ServletContext appContext,
+			String contextAttribute, String name) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
-		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable.get(name);
+		Map<String, SortedSet<String>> lookupByNameMap = defaultLookupTable
+				.get(name);
 		Map<String, String> lookupMap = new HashMap<String, String>();
 		Set<String> keySet = lookupByNameMap.keySet();
-		for(String key: keySet){
-			lookupMap.put(key, (String)lookupByNameMap.get(key).first());
+		for (String key : keySet) {
+			lookupMap.put(key, (String) lookupByNameMap.get(key).first());
 		}
 		appContext.setAttribute(contextAttribute, lookupMap);
 		return lookupMap;
@@ -281,6 +284,10 @@ public class InitSetup {
 			String attribute, String otherAttribute, String value)
 			throws BaseException {
 		if (value == null || value.length() == 0) {
+			return;
+		}
+		// if value contains special characters, do not save
+		if (!value.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 			return;
 		}
 		if (isLookupInContext(request, lookupName, attribute, otherAttribute,
