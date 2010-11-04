@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -682,7 +683,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findUserAccessibilities(origSample.getId().toString());
 			origSampleBean.setGroupAccesses(groupAccesses);
 			origSampleBean.setUserAccesses(userAccesses);
-			
+
 			// need to save associations one by one (except keywords)
 			// Hibernate mapping settings for most use cases
 			saveClonedPOCs(newSampleBean);
@@ -1071,9 +1072,10 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 						this.removeAccessibility(acc, sample);
 					}
 				}
+				SecuredDataBean securedDataBean = new SecuredDataBean();
 				for (AccessibilityBean acc : userAccesses) {
 					// remove accesses that are not owner
-					if (!acc.getUserBean().getLoginName().equals(
+					if (!securedDataBean.retrieveUserIsOwner(acc.getUserBean(),
 							sample.getCreatedBy())) {
 						this.removeAccessibility(acc, sample);
 					}

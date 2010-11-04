@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
@@ -311,9 +312,10 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 						this.removeAccessibility(acc, protocol);
 					}
 				}
+				SecuredDataBean securedDataBean = new SecuredDataBean();
 				for (AccessibilityBean acc : userAccesses) {
 					// remove accesses that are not owner
-					if (!acc.getUserBean().getLoginName().equals(
+					if (!securedDataBean.retrieveUserIsOwner(acc.getUserBean(),
 							protocol.getCreatedBy())) {
 						this.removeAccessibility(acc, protocol);
 					}
