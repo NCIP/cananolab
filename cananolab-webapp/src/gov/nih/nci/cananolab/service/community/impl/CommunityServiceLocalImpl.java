@@ -219,7 +219,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				if (securityService
 						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 								+ cGroup.getId())) {
-					setUserAccesses(cGroup);
+					setAccesses(cGroup);
 					collaborationGroups.add(cGroup);
 				}
 			}
@@ -245,7 +245,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			User user = authManager.getUser(ownerLogin);
 			authManager.addUsersToGroup(collaborationGroupId,
 					new String[] { user.getUserId().toString() });
-			//if ownerLogin is not a curator, save owner access
+			// if ownerLogin is not a curator, save owner access
 
 		} catch (Exception e) {
 			String error = "Error assigning an owner to the collaboration group by Id "
@@ -256,7 +256,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	// set user accessibilities
-	private void setUserAccesses(CollaborationGroupBean cGroup)
+	private void setAccesses(CollaborationGroupBean cGroup)
 			throws Exception {
 		// set user accessibilities
 		Set<User> users = authManager.getUsers(cGroup.getId().toString());
@@ -267,7 +267,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 		Map<String, String> userRoles = securityService
 				.getAllUserRoles(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
-		List<AccessibilityBean> accesses = new ArrayList<AccessibilityBean>();
+		List<AccessibilityBean> userAccesses = new ArrayList<AccessibilityBean>();
 		for (User aUser : users) {
 			if (userRoles.get(aUser.getLoginName()) != null) {
 				AccessibilityBean accessibility = new AccessibilityBean(
@@ -275,23 +275,16 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				accessibility.setGroupName(cGroup.getName());
 				accessibility.setRoleName(userRoles.get(aUser.getLoginName()));
 				accessibility.setUserBean(new UserBean(aUser));
-				accesses.add(accessibility);
-				// set user updatable
-				if (aUser.getLoginName().equalsIgnoreCase(user.getLoginName())) {
-					if (accessibility.getRoleName().equalsIgnoreCase(
-							AccessibilityBean.CSM_READ_ROLE)) {
-						cGroup.setUserUpdatable(false);
-					} else if (accessibility.getRoleName().equalsIgnoreCase(
-							AccessibilityBean.CSM_CURD_ROLE)) {
-						cGroup.setUserUpdatable(true);
-					}
-				}
+				userAccesses.add(accessibility);
 			}
 		}
+		cGroup.setUserAccesses(userAccesses);
+		List<AccessibilityBean> groupAccesses = new ArrayList<AccessibilityBean>();
 		if (user.isCurator()) {
-			cGroup.setUserUpdatable(true);
+			groupAccesses.add(AccessibilityBean.CSM_DEFAULT_ACCESS);
+			cGroup.setGroupAccesses(groupAccesses);
 		}
-		cGroup.setUserAccesses(accesses);
+		cGroup.setUser(user);
 		List<String> ownerNames = accessUtils
 				.getOwnerNames(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 						+ cGroup.getId());
@@ -307,7 +300,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 			String pe = AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
 					+ collaborationGroup.getId();
 			if (securityService.checkCreatePermission(pe)) {
-				setUserAccesses(collaborationGroup);
+				setAccesses(collaborationGroup);
 			} else {
 				String error = "User has no access to the collaboration group "
 						+ collaborationGroup.getName();
