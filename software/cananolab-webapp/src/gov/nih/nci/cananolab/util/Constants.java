@@ -67,7 +67,11 @@ public class Constants {
 
 	public static final String AUTO_COPY_ANNNOTATION_VIEW_COLOR = "red";
 
+	public static final String TEXTFIELD_WHITELIST_PATTERN = "^[a-zA-Z0-9\\-\\_\\s\\(\\)\\:\\.]*$";
 
+	public static final String ALPHANUMERIC_PATTERN = "^[a-zA-Z0-9]*$";
+
+	public static final String NUMERIC_PATTERN = "^[0-9]*$";
 
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
 
@@ -137,5 +141,5 @@ public class Constants {
 	public static final String PUBMED_XML_PREFIX = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
 
 	public static final String ISI_PREFIX = "http://apps.isiknowledge.com/InboundService.do?Func=Frame&product=WOS&action=retrieve&SrcApp=EndNote&Init=Yes&SrcAuth=ResearchSoft&mode=FullRecord&UT=";
-	public static final int CANANOLAB_AVAILABLE_ENTITY=30;
+	public static final int CANANOLAB_AVAILABLE_ENTITY = 30;
 }
