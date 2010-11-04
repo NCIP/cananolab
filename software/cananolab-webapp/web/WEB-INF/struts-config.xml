@@ -12,13 +12,12 @@
 			<form-property name="password" type="java.lang.String" />
 		</form-bean>
 		<!--
-		<form-bean name="updatePasswordForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="loginId" type="java.lang.String" />
-			<form-property name="password" type="java.lang.String" />
-			<form-property name="newPassword" type="java.lang.String" />
-			<form-property name="newPassword2" type="java.lang.String" />
-		</form-bean>
+			<form-bean name="updatePasswordForm"
+			type="org.apache.struts.validator.DynaValidatorForm"> <form-property
+			name="loginId" type="java.lang.String" /> <form-property
+			name="password" type="java.lang.String" /> <form-property
+			name="newPassword" type="java.lang.String" /> <form-property
+			name="newPassword2" type="java.lang.String" /> </form-bean>
 		-->
 		<form-bean name="registerUserForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -65,14 +64,15 @@
 			<forward name="changePassword" path="canano.password" />
 		</action>
 		<!--
-		<action name="updatePasswordForm" path="/updatePassword" scope="request"
-			type="gov.nih.nci.cananolab.ui.security.UpdatePasswordAction" input="input">
-			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.securityException" path="canano.password"
-				type="gov.nih.nci.cananolab.exception.SecurityException" />
-			<forward name="success" path="/welcome.do" />
-			<forward name="input" path="canano.password" />
-		</action>
+			<action name="updatePasswordForm" path="/updatePassword"
+			scope="request"
+			type="gov.nih.nci.cananolab.ui.security.UpdatePasswordAction"
+			input="input"> <exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.securityException" path="canano.password"
+			type="gov.nih.nci.cananolab.exception.SecurityException" /> <forward
+			name="success" path="/welcome.do" /> <forward name="input"
+			path="canano.password" /> </action>
 		-->
 		<action name="registerUserForm" path="/register" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.RegisterUserAction" input="input">
@@ -88,24 +88,12 @@
 		</action>
 		<action path="/welcome" type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
 			parameter="canano.home" scope="request">
-			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.autodiscover" path="canano.home"
-				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
+		</action>
+		<action path="/loginPage" type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
+			parameter="canano.login" scope="request">
 		</action>
 		<action path="/publicCount" parameter="dispatch"
 			type="gov.nih.nci.cananolab.ui.core.CountAction">
-			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.down" path="canano.home"
-				type="gov.nih.nci.cananolab.exception.GridDownException" />
-			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.document.query" path="canano.home"
-				type="gov.nih.nci.cananolab.exception.PublicationException" />
-			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.protocol.query" path="canano.home"
-				type="gov.nih.nci.cananolab.exception.ProtocolException" />
-			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.sample.query" path="canano.home"
-				type="gov.nih.nci.cananolab.exception.SampleException" />
 		</action>
 		<action path="/manageResult" type="gov.nih.nci.cananolab.ui.core.ManageResultAction"
 			parameter="curation.result" scope="request">
