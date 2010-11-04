@@ -362,7 +362,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		CompositionBean compositionBean = compService
 				.findCompositionBySampleId(sampleId);
 		setLookups(request, compositionBean);
-		String assocId = (String) getValueFromRequest(request, "dataId");
+		String assocId = super.validateId(request, "dataId");
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssociationById(assocId);
 		prepareEntityLists(assocBean, request);

@@ -154,13 +154,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
-		String protocolId = request.getParameter("protocolId");
-		if (protocolId == null) {
-			protocolId = (String) request.getAttribute("protocolId");
-		}
-		if (protocolId == null) {
-			throw new NotExistException("No such protocol in the database");
-		}
+		String protocolId = super.validateId(request, "protocolId");
 		ProtocolService service = this.setServiceInSession(request);
 		ProtocolBean protocolBean = service.findProtocolById(protocolId);
 		if (protocolBean == null) {

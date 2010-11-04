@@ -225,10 +225,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String entityId = request.getParameter("dataId");
-		if (entityId == null) {
-			entityId = (String) request.getAttribute("dataId");
-		}
+		String entityId = super.validateId(request, "dataId");
 		String sampleId = theForm.getString("sampleId");
 		// set up other particles with the same primary point of contact
 		CompositionService compService = this.setServicesInSession(request);
@@ -247,12 +244,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		HttpSession session = request.getSession();
-		String entityId = request.getParameter("dataId");
-		if (entityId == null) {
-			entityId = (String) request.getAttribute("dataId");
-		}
+		String entityId = super.validateId(request, "dataId");
 		CompositionService compService = this.setServicesInSession(request);
 
 		NanomaterialEntityBean entityBean = compService

@@ -116,11 +116,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getSession().getAttribute("compositionService");
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		Boolean newEntity=true;
+		Boolean newEntity = true;
 		try {
 			entityBean.setupDomainEntity(user.getLoginName());
-			if (entityBean.getDomainEntity().getId()!=null) {
-				newEntity=false;
+			if (entityBean.getDomainEntity().getId() != null) {
+				newEntity = false;
 			}
 		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
@@ -199,11 +199,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String entityId = request.getParameter("dataId");
-		if (entityId == null) {
-			entityId = (String) request.getAttribute("dataId");
-		}
+		String entityId = super.validateId(request, "dataId");
 		CompositionService compService = this.setServicesInSession(request);
 
 		FunctionalizingEntityBean entityBean = compService
@@ -222,15 +218,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		HttpSession session = request.getSession();
 		String sampleId = theForm.getString("sampleId");
 		CompositionService compService = this.setServicesInSession(request);
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-		String entityId = request.getParameter("dataId");
-		if (entityId == null) {
-			entityId = (String) request.getAttribute("dataId");
-		}
+		String entityId = super.validateId(request, "dataId");
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId);
 		theForm.set("functionalizingEntity", entityBean);
