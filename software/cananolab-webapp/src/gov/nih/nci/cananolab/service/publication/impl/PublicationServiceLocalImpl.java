@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
@@ -446,9 +447,10 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 						this.removeAccessibility(acc, publication);
 					}
 				}
+				SecuredDataBean securedDataBean = new SecuredDataBean();
 				for (AccessibilityBean acc : userAccesses) {
 					// remove accesses that are not owner
-					if (!acc.getUserBean().getLoginName().equals(
+					if (!securedDataBean.retrieveUserIsOwner(acc.getUserBean(),
 							publication.getCreatedBy())) {
 						this.removeAccessibility(acc, publication);
 					}
