@@ -3,6 +3,36 @@
 "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
 
 <form-validation>
+	<global>
+		<constant>
+			<constant-name>alphabetic</constant-name>
+			<constant-value>^[a-zA-Z]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>numeric</constant-name>
+			<constant-value>^[0-9]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>alphanumeric</constant-name>
+			<constant-value>^[a-zA-Z0-9]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>zip</constant-name>
+			<constant-value>^\d{5}(-\d{4})?$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>phone</constant-name>
+			<constant-value>^[0-9()-]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>email</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\:\.]+@[a-zA-Z0-9\-\_\:\.]+\.[a-zA-Z]{2,3}$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>textFieldWhitelist</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.]*$</constant-value>
+		</constant>
+	</global>
 	<formset>
 		<form name="loginForm">
 			<field property="loginId" depends="required">
