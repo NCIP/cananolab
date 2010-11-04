@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.displaytag.decorator.TableDecorator;
 
 /**
@@ -33,6 +34,19 @@ public class ProtocolDecorator extends TableDecorator {
 		String protocolName = protocol.getDomain().getName();
 		SortableName sortableLink = new SortableName(protocolName);
 		return sortableLink;
+	}
+
+	// per app scan, to filter out special characters
+	public String getFileDescription() {
+		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
+		String description = "";
+		if (protocol.getDomain().getFile() != null) {
+			description = protocol.getDomain().getFile().getDescription();
+			if (description != null) {
+				description = StringUtils.preserveLineBreaks(description);
+			}
+		}
+		return description;
 	}
 
 	public SortableName getDownloadURL() throws UnsupportedEncodingException {
