@@ -273,7 +273,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
-		String publicationId = request.getParameter("publicationId");
+		String publicationId = super.validateId(request, "publicationId");
 		String sampleId = request.getParameter("sampleId");
 		PublicationService publicationService = this
 				.setServicesInSession(request);

@@ -120,7 +120,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String fileId = request.getParameter("dataId");
+		String fileId = super.validateId(request, "dataId");
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
 		FileBean fileBean = compService.findFileById(fileId);

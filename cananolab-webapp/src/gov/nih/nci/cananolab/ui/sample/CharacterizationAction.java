@@ -190,7 +190,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationService charService = this
 				.setServicesInSession(request);
-		String charId = (String) getValueFromRequest(request, "charId");
+		String charId = super.validateId(request, "charId");
 		CharacterizationBean charBean = charService
 				.findCharacterizationById(charId);
 		// setup Characterization Name drop down.
@@ -357,7 +357,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationService service = this.setServicesInSession(request);
-		String charId = theForm.getString("charId");
+		String charId = super.validateId(request, "charId");
 		setupSample(theForm, request);
 		CharacterizationBean charBean = service
 				.findCharacterizationById(charId);
