@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -127,6 +128,35 @@ public class StringUtils {
 			}
 		}
 		return buffer.toString();
+	}
+
+	/**
+	 * Escape HTML but keep line breaks, useful in preserving line breaks in
+	 * descriptions
+	 *
+	 * @param text
+	 * @return
+	 */
+	public static String preserveLineBreaks(String text) {
+		if (text == null) {
+			return null;
+		}
+		List<String> lines = StringUtils.parseToWords(text, "\r\n");
+		StringBuffer newText = new StringBuffer();
+		int i = 0;
+		if (lines != null) {
+			for (String line : lines) {
+				String escapedLine = StringEscapeUtils.escapeHtml(line);
+				newText.append(escapedLine);
+				if (i < lines.size() - 1) {
+					newText.append("<br>");
+				}
+				i++;
+			}
+			return newText.toString();
+		} else {
+			return "";
+		}
 	}
 
 	public static Float convertToFloat(String floatStr) {
