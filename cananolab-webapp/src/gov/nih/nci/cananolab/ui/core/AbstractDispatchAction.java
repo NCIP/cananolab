@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
 public abstract class AbstractDispatchAction extends DispatchAction {
@@ -26,7 +28,16 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String dispatch = (String) getValueFromRequest(request, "dispatch");
+		String dispatch = (String) request.getParameter("dispatch");
+		String page = request.getParameter("page");
+		// per app scan, validate dispatch and page parameters
+		ActionMessages msgs = new ActionMessages();
+		if (page != null && !page.matches(Constants.NUMERIC_PATTERN)) {
+			ActionMessage msg = new ActionMessage("invalid.page");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			return super.execute(mapping, form, request, response);
+		}
 		UserBean user = (UserBean) session.getAttribute("user");
 		// private dispatch and session expired
 		boolean privateDispatch = isDispatchPublic(dispatch);
@@ -61,7 +72,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	 * @throws SecurityException
 	 */
 	public boolean canUserExecute(HttpServletRequest request, String dispatch,
-			String protectedData) throws SecurityException {
+			String protectedData) throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// private dispatch in public actions
 		boolean privateDispatch = isDispatchPublic(dispatch);
@@ -75,7 +86,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	}
 
 	public Boolean canUserExecutePrivateDispatch(HttpServletRequest request,
-			String protectedData) throws SecurityException {
+			String protectedData) throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user == null) {
 			return false;
