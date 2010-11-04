@@ -113,7 +113,6 @@ public class PublicationBean extends FileBean {
 		this.setUserAccesses(source.getUserAccesses());
 		this.setGroupAccesses(source.getGroupAccesses());
 		this.setUser(source.getUser());
-		this.setUserUpdatable(source.getUserUpdatable());
 	}
 
 	public void copyFromDatabase(PublicationBean source) {
