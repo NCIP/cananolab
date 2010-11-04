@@ -10,26 +10,42 @@
 				<msg name="mask" key="protocol.name.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+					<var-value>${textFieldWhitelist}</var-value>
 				</var>
 			</field>
-			<field property="protocol.domain.type" page="1" depends="required">
+			<field property="protocol.domain.type" page="1" depends="required, mask">
 				<arg position="0" key="protocol.type" bundle="protocol" />
+				<msg name="mask" key="protocol.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhitelist}</var-value>
+				</var>
 			</field>
-			<field property="protocol.domain.version" page="1" depends="required">
+			<field property="protocol.domain.version" page="1" depends="required, mask">
 				<arg position="0" key="protocol.version" bundle="protocol" />
+				<msg name="mask" key="protocol.version.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhitelist}</var-value>
+				</var>
+			</field>
+			<field property="protocol.domain.abbreviation" page="1"
+				depends="mask">
+				<msg name="mask" key="protocol.abbreviation.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhitelist}</var-value>
+				</var>
 			</field>
 			<field property="protocol.fileBean.domainFile.title" page="1"
 				depends="mask">
-				<arg position="0" key="protocol.title" bundle="protocol" />
 				<msg name="mask" key="protocol.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\.,/:\-\_\s\(\)]*$</var-value>
+					<var-value>${textFieldWhitelist}</var-value>
 				</var>
 			</field>
-			<field property="protocol.theAccess.accessBy" page="2"
-				depends="required">
+			<field property="protocol.theAccess.accessBy" page="2" depends="required">
 				<arg position="0" key="access.accessBy" bundle="protocol" />
 			</field>
 			<field property="protocol.theAccess.roleName" page="2" depends="required">
@@ -56,32 +72,6 @@
 						((protocol.theAccess.accessBy!='user') or
 						(*this*!=null))
 					</var-value>
-				</var>
-			</field>
-		</form>
-		<form name="searchProtocolForm">
-			<field property="protocolName" page="1" depends="mask">
-				<arg position="0" key="protocol.name" bundle="protocol" />
-				<msg name="mask" key="protocol.name.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
-				</var>
-			</field>
-			<field property="protocolType" page="1" depends="mask">
-				<arg position="0" key="protocol.type" bundle="protocol" />
-				<msg name="mask" key="protocol.type.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
-				</var>
-			</field>
-			<field property="fileTitle" page="1" depends="mask">
-				<arg position="0" key="protocol.title" bundle="protocol" />
-				<msg name="mask" key="protocol.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\.,/:\-\_\*\s\(\)]*$</var-value>
 				</var>
 			</field>
 		</form>
