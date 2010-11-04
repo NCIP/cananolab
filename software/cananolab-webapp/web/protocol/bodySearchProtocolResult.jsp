@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+
 <link rel="stylesheet" type="text/css" href="css/displaytag.css" />
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Protocol Search Results" />
@@ -20,16 +21,16 @@
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
 				<display:column title="" property="detailURL" />
 				<display:column title="Protocol Name" property="viewName"
-					sortable="true" />
+					sortable="true" escapeXml="true" />
 				<display:column title="Protocol Abbreviation"
-					property="domain.abbreviation" sortable="true" />
+					property="domain.abbreviation" sortable="true" escapeXml="true" />
 				<display:column title="Protocol Type" property="domain.type"
-					sortable="true" />
+					sortable="true" escapeXml="false" />
 				<display:column title="Version" property="domain.version"
-					sortable="true" />
+					sortable="true" escapeXml="true" />
 				<display:column title="File" property="downloadURL" sortable="true" />
 				<display:column title="Description"
-					property="fileBean.domainFile.description" sortable="false" />
+					property="fileDescription" sortable="false"/>
 				<display:column title="Protocol Created Date"
 					property="domain.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
