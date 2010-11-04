@@ -74,7 +74,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 					&& !doGroup.getGroupId().toString().equals(
 							collaborationGroup.getId())) {
 				throw new DuplicateEntriesException(
-						"Group name is already in use.");
+						"Group name is already in use");
 			}
 
 			// create a new group if none exists.
