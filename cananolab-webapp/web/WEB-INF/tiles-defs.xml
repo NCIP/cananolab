@@ -42,7 +42,7 @@
 			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
 			<item value="GLOSSARY"
 				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
-			<item value="LOGIN" link="gotoPage('login.jsp')" />
+			<item value="LOGIN" link="gotoPage('loginPage.do')" />
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
 		</putList>
 	</definition>
