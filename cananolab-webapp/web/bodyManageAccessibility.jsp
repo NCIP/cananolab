@@ -42,10 +42,10 @@
 					<c:forEach var="access" items="${groupAccesses}">
 						<tr valign="top">
 							<td>
-								${access.groupName}
+								<c:out value="${access.groupName}" />
 							</td>
 							<td>
-								${access.roleDisplayName}
+								<c:out value="${access.roleDisplayName}"/>
 							</td>
 							<td align="right">
 								<c:choose>
@@ -82,10 +82,10 @@
 					<c:forEach var="access" items="${userAccesses}">
 						<tr valign="top">
 							<td>
-								${access.userBean.loginName}
+								<c:out value="${access.userBean.loginName}"/>
 							</td>
 							<td>
-								${access.roleDisplayName}
+								<c:out value="${access.roleDisplayName}"/>
 							</td>
 							<td align="right">
 								<c:choose>
@@ -142,7 +142,7 @@
 						<c:set var="accessNameLabelValue"
 							value="Collaboration Group Name *" />
 						<td class="cellLabel" id="accessNameLabel">
-							${accessNameLabelValue}
+							<c:out value="${accessNameLabelValue}"/>
 						</td>
 						<td>
 							<html:text styleId="groupName"
@@ -185,7 +185,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" width="10%">
-							Access to the ${dataType} *
+							Access to the <c:out value="${dataType}"/> *
 						</td>
 						<td colspan="2">
 							<html:select property="${accessParent}.theAccess.roleName"
