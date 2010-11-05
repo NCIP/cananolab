@@ -29,13 +29,13 @@
 	<c:forEach var="function" items="${entity.functions}">
 		<tr>
 			<td>
-				<c:out value="${function.type}"/>
+				<c:out value="${function.type}" />
 			</td>
 			<c:if test="${entity.withImagingFunction eq 'true'}">
 				<td>
 					<c:if test="${! empty function.imagingFunction.modality }">
-					<c:out value="${function.imagingFunction.modality}"/>
-				</c:if>
+						<c:out value="${function.imagingFunction.modality}" />
+					</c:if>
 				</td>
 			</c:if>
 			<c:if test="${entity.withTargetingFunction eq 'true'}">
@@ -43,18 +43,17 @@
 					<c:if test="${! empty function.targetDisplayNames}">
 						<c:forEach var="targetDisplayName"
 							items="${function.targetDisplayNames}">
-							<c:out value="${targetDisplayName}"/><br><br>
+							<c:out value="${targetDisplayName}" />
+							<br>
+							<br>
 						</c:forEach>
 					</c:if>
 				</td>
 			</c:if>
 			<td>
 				<c:if test="${! empty function.description}">
-				<c:set var="desc" value="${fn:replace(function.description, '<', '&lt;')}" />
-				<c:out
-					value="${fn:replace(desc, cr, '<br>')}"
-					escapeXml="false" />
-			</c:if>
+					<c:out value="${function.description}" escapeXml="false" />
+				</c:if>
 			</td>
 			<c:if test="${edit eq 'true'}">
 				<td align="right">

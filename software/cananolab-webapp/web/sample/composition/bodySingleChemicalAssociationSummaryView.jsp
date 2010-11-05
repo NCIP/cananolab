@@ -23,10 +23,7 @@
 				Description
 			</td>
 			<td>
-				<c:set var="desc" value="${fn:replace(assoc.description, '<', '&lt;')}" />
-				<c:out
-					value="${fn:replace(desc, cr, '<br>')}"
-					escapeXml="false" />
+				<c:out value="${assoc.description}" escapeXml="false" />
 			</td>
 		</tr>
 	</c:if>
@@ -43,7 +40,7 @@
 						<c:choose>
 							<c:when
 								test="${! empty assoc.associatedElementA.composingElement.id }">
-											composing element of type <c:out value="${assoc.associatedElementA.composingElement.type}"/> 
+											composing element of type <c:out value="${assoc.associatedElementA.composingElement.type}"/>
 											<br>(name: <c:out value="${assoc.associatedElementA.composingElement.name}"/>)
 														</c:when>
 							<c:otherwise>

@@ -37,13 +37,10 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(assoc.description)}">
-					<c:set var="desc" value="${fn:replace(assoc.description, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(desc, cr, '<br>')}"
-						escapeXml="false" />
+					<c:out value="${assoc.description}" escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
-												</c:otherwise>
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -55,16 +52,19 @@
 			<table>
 				<tr>
 					<td width="250">
-						<c:out value="${assoc.associatedElementA.compositionType}"/>
-						<c:out value="${assoc.associatedElementA.entityDisplayName}"/>
+						<c:out value="${assoc.associatedElementA.compositionType}" />
+						<c:out value="${assoc.associatedElementA.entityDisplayName}" />
 						<c:choose>
 							<c:when
 								test="${! empty assoc.associatedElementA.composingElement.id }">
-											composing element of type <c:out value="${assoc.associatedElementA.composingElement.type}"/> 
-											<br>(name: <c:out value="${assoc.associatedElementA.composingElement.name}"/>)
+											composing element of type <c:out
+									value="${assoc.associatedElementA.composingElement.type}" />
+								<br>(name: <c:out
+									value="${assoc.associatedElementA.composingElement.name}" />)
 														</c:when>
 							<c:otherwise>
-								<br>(name: <c:out value="${assoc.associatedElementA.domainElement.name}"/>)
+								<br>(name: <c:out
+									value="${assoc.associatedElementA.domainElement.name}" />)
 															</c:otherwise>
 						</c:choose>
 					</td>
@@ -74,17 +74,20 @@
 						<strong>associated with</strong>
 					</td>
 					<td>
-						<c:out value="${assoc.associatedElementB.compositionType}"/>
-						<c:out value="${assoc.associatedElementB.entityDisplayName}"/>
+						<c:out value="${assoc.associatedElementB.compositionType}" />
+						<c:out value="${assoc.associatedElementB.entityDisplayName}" />
 						<c:choose>
 							<c:when
 								test="${! empty assoc.associatedElementB.composingElement.id }">
 
-composing element of type <c:out value="${assoc.associatedElementB.composingElement.type}"/>
- <br>(name: <c:out value="${assoc.associatedElementB.composingElement.name}"/>)
+composing element of type <c:out
+									value="${assoc.associatedElementB.composingElement.type}" />
+								<br>(name: <c:out
+									value="${assoc.associatedElementB.composingElement.name}" />)
 														</c:when>
 							<c:otherwise>
-								<br> (name: <c:out value="${assoc.associatedElementB.domainElement.name}"/>)
+								<br> (name: <c:out
+									value="${assoc.associatedElementB.domainElement.name}" />)
 															</c:otherwise>
 						</c:choose>
 					</td>
@@ -101,7 +104,7 @@ composing element of type <c:out value="${assoc.associatedElementB.composingElem
 				<c:when test="${! empty assoc.files}">
 					<c:set var="files" value="${assoc.files }" />
 					<c:set var="entityType" value="chemical association" />
-					<c:set var="downloadAction" value="composition"/>
+					<c:set var="downloadAction" value="composition" />
 					<%@include file="../bodyFileView.jsp"%>
 				</c:when>
 				<c:otherwise>

@@ -12,7 +12,7 @@
 				Name
 			</td>
 			<td>
-				<c:out value="${functionalizingEntity.name}"/>
+				<c:out value="${functionalizingEntity.name}" />
 			</td>
 		</tr>
 	</c:if>
@@ -23,8 +23,10 @@
 			</td>
 			<td>
 				<a href="${functionalizingEntity.pubChemLink}"
-					target="caNanoLab - View PubChem"><c:out value="${pubChemId}"/></a>
-				&nbsp;(<c:out value="${pubChemDS}"/>)
+					target="caNanoLab - View PubChem"><c:out value="${pubChemId}" />
+				</a> &nbsp;(
+				<c:out value="${pubChemDS}" />
+				)
 			</td>
 		</tr>
 	</c:if>
@@ -34,7 +36,8 @@
 				Amount
 			</td>
 			<td>
-				<c:out value="${functionalizingEntity.value}"/> <c:out value="${functionalizingEntity.valueUnit}"/>
+				<c:out value="${functionalizingEntity.value}" />
+				<c:out value="${functionalizingEntity.valueUnit}" />
 			</td>
 		</tr>
 	</c:if>
@@ -45,7 +48,7 @@
 				Molecular Formula
 			</td>
 			<td style="word-wrap: break-word; max-width: 280px;">
-				<c:out value="${functionalizingEntity.molecularFormulaDisplayName}"/>
+				<c:out value="${functionalizingEntity.molecularFormulaDisplayName}" />
 			</td>
 		</tr>
 	</c:if>
@@ -107,7 +110,7 @@
 				Activation Method
 			</td>
 			<td>
-				<c:out value="${functionalizingEntity.activationMethodDisplayName}"/>
+				<c:out value="${functionalizingEntity.activationMethodDisplayName}" />
 			</td>
 		</tr>
 	</c:if>
@@ -117,9 +120,7 @@
 				Description
 			</td>
 			<td>
-				<c:set var="desc" value="${fn:replace(functionalizingEntity.description, '<', '&lt;')}" />
-				<c:out
-					value="${fn:replace(desc, cr, '<br>')}"
+				<c:out value="${functionalizingEntity.description)}"
 					escapeXml="false" />
 			</td>
 		</tr>
@@ -132,7 +133,7 @@
 			<td>
 				<c:set var="files" value="${functionalizingEntity.files }" />
 				<c:set var="entityType" value="functionalizing entity" />
-				<c:set var="downloadAction" value="composition"/>
+				<c:set var="downloadAction" value="composition" />
 				<%@include file="../../bodyFileView.jsp"%>
 			</td>
 		</tr>
