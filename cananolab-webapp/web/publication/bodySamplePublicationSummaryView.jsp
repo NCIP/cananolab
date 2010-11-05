@@ -153,8 +153,7 @@
 															Keywords
 														</td>
 														<td>
-															<c:out
-																value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
+															<c:out value="${pubBean.keywordsDisplayName}"
 																escapeXml="false" />
 															&nbsp;
 														</td>

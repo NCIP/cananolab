@@ -55,8 +55,7 @@
 			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(file.keywordsStr)}">
-						<c:out value="${fn:replace(file.keywordsStr, cr, '<br>')}"
-							escapeXml="false" />
+						<c:out value="${file.keywordsDisplayName}" escapeXml="false" />
 					</c:when>
 					<c:otherwise>N/A
 					</c:otherwise>

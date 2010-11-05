@@ -34,7 +34,9 @@
 				varStatus="ind">
 				<a
 					href="javascript:showSummary(${ind.count}, ${fn:length(publicationCategories)})"
-					title="${type}"><span><c:out value="${type}"/></span></a>
+					title="${type}"><span><c:out value="${type}" />
+				</span>
+				</a>
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
@@ -99,11 +101,13 @@
 					<tr>
 						<th align="left">
 							<a name="${type}" id="${type}"><span
-								class="summaryViewHeading"><c:out value="${type}"/></span> </a>&nbsp;&nbsp;
+								class="summaryViewHeading"><c:out value="${type}" />
+							</span> </a>&nbsp;&nbsp;
 							<a
 								href="publication.do?dispatch=setupNew&sampleId=${sampleId}&type=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
-									border="0" /></a>&nbsp;&nbsp;
+									border="0" />
+							</a>&nbsp;&nbsp;
 						</th>
 					</tr>
 					<tr>
@@ -188,8 +192,7 @@
 															<td>
 																<c:choose>
 																	<c:when test="${pubBean.keywordsStr}">
-																		<c:out
-																			value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
+																		<c:out value="${pubBean.keywordsDisplayName}"
 																			escapeXml="false" />
 																&nbsp;</c:when>
 																	<c:otherwise>N/A</c:otherwise>
