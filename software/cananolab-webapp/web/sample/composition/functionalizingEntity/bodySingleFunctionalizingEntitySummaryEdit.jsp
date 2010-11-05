@@ -37,8 +37,8 @@
 		    <c:choose>
 					<c:when test="${!empty functionalizingEntity.pubChemLink}">
 						<a href="${functionalizingEntity.pubChemLink}"
-							target="caNanoLab - View PubChem"><c:out value="${functionalizingEntity.domainEntity.pubChemId}" escapeXml="false"/></a>
-						&nbsp;(<c:out value="${functionalizingEntity.domainEntity.pubChemDataSourceName}" escapeXml="false"/>)
+							target="caNanoLab - View PubChem"><c:out value="${functionalizingEntity.domainEntity.pubChemId}"/></a>
+						&nbsp;(<c:out value="${functionalizingEntity.domainEntity.pubChemDataSourceName}"/>)
 				</c:when>
 					<c:otherwise>N/A
 				</c:otherwise>

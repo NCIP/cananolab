@@ -23,8 +23,8 @@
 			</td>
 			<td>
 				<a href="${functionalizingEntity.pubChemLink}"
-					target="caNanoLab - View PubChem"><c:out value="${pubChemId}" escapeXml="false"/></a>
-				&nbsp;(<c:out value="${pubChemDS}" escapeXml="false"/>)
+					target="caNanoLab - View PubChem"><c:out value="${pubChemId}"/></a>
+				&nbsp;(<c:out value="${pubChemDS}"/>)
 			</td>
 		</tr>
 	</c:if>
