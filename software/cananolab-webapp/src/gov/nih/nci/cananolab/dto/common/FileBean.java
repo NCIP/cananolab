@@ -17,9 +17,9 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FileBean extends SecuredDataBean {
 	protected File domainFile = new File();
@@ -79,6 +79,11 @@ public class FileBean extends SecuredDataBean {
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
 		return keywordsStr;
+	}
+
+	public String getKeywordsDisplayName() {
+		String str = getKeywordsStr();
+		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 
 	public void setKeywordsStr(String keywordsStr) {
