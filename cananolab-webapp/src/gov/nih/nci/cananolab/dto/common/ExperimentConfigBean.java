@@ -23,6 +23,7 @@ import java.util.List;
 public class ExperimentConfigBean {
 	private ExperimentConfig domain = new ExperimentConfig();
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
+	private String description;
 
 	public ExperimentConfigBean() {
 		domain = new ExperimentConfig();
@@ -125,6 +126,13 @@ public class ExperimentConfigBean {
 				i++;
 			}
 		}
+	}
+
+	public String getDescription() {
+		// per app scan,
+		description = StringUtils.escapeXmlButPreserveLineBreaks(domain
+				.getDescription());
+		return description;
 	}
 
 	public boolean equals(Object obj) {
