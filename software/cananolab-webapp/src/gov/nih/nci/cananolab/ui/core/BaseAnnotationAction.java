@@ -253,7 +253,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (!StringUtils.isEmpty(value)) {
 			Collection<String> otherTypes = (Collection<String>) request
 					.getSession().getAttribute(sessionName);
-			if (otherTypes != null && !otherTypes.contains(value)) {
+			if (otherTypes != null && !otherTypes.contains(value)
+					&& value.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				otherTypes.add(value);
 			}
 		}
