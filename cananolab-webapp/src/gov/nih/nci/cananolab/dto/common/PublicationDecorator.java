@@ -37,7 +37,7 @@ public class PublicationDecorator extends TableDecorator {
 		File file = ((PublicationBean) getCurrentRowObject()).getDomainFile();
 		researchArea = ((Publication) file).getResearchArea();
 		if (!StringUtils.isEmpty(researchArea)) {
-			researchArea = researchArea.replaceAll(";", "<br>");
+			researchArea = researchArea.replaceAll(";", "\r\n");
 		}
 
 		SortableName sortableLink = new SortableName(researchArea);
@@ -67,12 +67,16 @@ public class PublicationDecorator extends TableDecorator {
 		if (sampleNames == null) {
 			return "";
 		}
-		return StringUtils.sortJoin(Arrays.asList(sampleNames), "<br>");
+		String sampleNamesStr = StringUtils.sortJoin(
+				Arrays.asList(sampleNames), "\r\n");
+		return StringUtils.escapeXmlButPreserveLineBreaks(sampleNamesStr);
 	}
 
 	public String getDescriptionDetail() {
 		PublicationBean publication = (PublicationBean) getCurrentRowObject();
-		String description = publication.getDomainFile().getDescription();
+		String description = StringUtils
+				.escapeXmlButPreserveLineBreaks(publication.getDomainFile()
+						.getDescription());
 		if (StringUtils.isEmpty(description)) {
 			return null;
 		}
