@@ -40,10 +40,7 @@
 					Description
 				</td>
 				<td>
-					<c:set var="desc" value="${fn:replace(composingElement.domain.description, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(desc, cr, '<br>')}"
-						escapeXml="false" />
+					<c:out value="${composingElement.description}" escapeXml="false" />
 				</td>
 			</tr>
 		</c:if>
@@ -55,7 +52,7 @@
 				<td>
 					<c:forEach var="function"
 						items="${composingElement.functionDisplayNames}" varStatus="ind">
-							<c:out value="${function}"/> <br/>							
+							<c:out value="${function}"/> <br/>
 					</c:forEach>
 				</td>
 			</tr>
