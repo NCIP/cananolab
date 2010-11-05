@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,7 @@ public class BaseCompositionEntityBean {
 	}
 
 	public String getDescription() {
+		description = StringUtils.escapeXmlButPreserveLineBreaks(description);
 		return description;
 	}
 
