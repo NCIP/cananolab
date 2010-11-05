@@ -60,7 +60,7 @@
 								</td>
 								<td>
 									<c:forEach var="userAccess" items="${group.userAccesses}">
-									${userAccess.userBean.loginName} (${userAccess.roleDisplayName})<br />
+									<c:out value="${userAccess.userBean.loginName}"/> (<c:out value="${userAccess.roleDisplayName}"/>)<br />
 									</c:forEach>
 								</td>
 								<td align="right">
