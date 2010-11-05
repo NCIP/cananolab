@@ -279,6 +279,10 @@ public class CharacterizationBean {
 	}
 
 	public String getDescription() {
+		return description;
+	}
+
+	public String getDescriptionDisplayName() {
 		return StringUtils.escapeXmlButPreserveLineBreaks(description);
 	}
 

@@ -41,9 +41,9 @@ public class ProtocolDecorator extends TableDecorator {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		String description = "";
 		if (protocol.getDomain().getFile() != null) {
-			description = protocol.getDomain().getFile().getDescription();
-			if (description != null) {
-				description = StringUtils.escapeXmlButPreserveLineBreaks(description);
+			String str = protocol.getDomain().getFile().getDescription();
+			if (str != null) {
+				description = StringUtils.escapeXmlButPreserveLineBreaks(str);
 			}
 		}
 		return description;

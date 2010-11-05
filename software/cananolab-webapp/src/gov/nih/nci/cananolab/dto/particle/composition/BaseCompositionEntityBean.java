@@ -56,8 +56,11 @@ public class BaseCompositionEntityBean {
 	}
 
 	public String getDescription() {
-		description = StringUtils.escapeXmlButPreserveLineBreaks(description);
 		return description;
+	}
+
+	public String getDescriptionDisplayName() {
+		return StringUtils.escapeXmlButPreserveLineBreaks(description);
 	}
 
 	public void setDescription(String description) {
