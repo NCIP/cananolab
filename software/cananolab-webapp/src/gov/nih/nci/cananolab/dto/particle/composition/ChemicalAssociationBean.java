@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -24,6 +25,11 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 	private AssociatedElementBean associatedElementB = new AssociatedElementBean();
 
 	public ChemicalAssociationBean() {
+	}
+
+	public String getDescription() {
+		return StringUtils.escapeXmlButPreserveLineBreaks(domainAssociation
+				.getDescription());
 	}
 
 	public ChemicalAssociationBean(ChemicalAssociation chemicalAssociation) {

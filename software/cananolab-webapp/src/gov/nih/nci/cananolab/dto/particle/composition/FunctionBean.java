@@ -71,6 +71,7 @@ public class FunctionBean {
 	}
 
 	public String getDescription() {
+		description = StringUtils.escapeXmlButPreserveLineBreaks(description);
 		return description;
 	}
 

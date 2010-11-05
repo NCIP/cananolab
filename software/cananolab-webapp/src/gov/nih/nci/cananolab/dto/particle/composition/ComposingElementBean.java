@@ -27,6 +27,11 @@ public class ComposingElementBean {
 
 	private String pubChemLink;
 
+	public String getDescription() {
+		return StringUtils.escapeXmlButPreserveLineBreaks(domain
+				.getDescription());
+	}
+
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.domain = composingElement;
 		if (composingElement.getInherentFunctionCollection() != null) {
