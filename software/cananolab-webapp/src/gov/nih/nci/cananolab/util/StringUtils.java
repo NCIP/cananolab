@@ -137,7 +137,7 @@ public class StringUtils {
 	 * @param text
 	 * @return
 	 */
-	public static String preserveLineBreaks(String text) {
+	public static String escapeXmlButPreserveLineBreaks(String text) {
 		if (text == null) {
 			return null;
 		}
@@ -146,7 +146,7 @@ public class StringUtils {
 		int i = 0;
 		if (lines != null) {
 			for (String line : lines) {
-				String escapedLine = StringEscapeUtils.escapeHtml(line);
+				String escapedLine = StringEscapeUtils.escapeXml(line);
 				newText.append(escapedLine);
 				if (i < lines.size() - 1) {
 					newText.append("<br>");

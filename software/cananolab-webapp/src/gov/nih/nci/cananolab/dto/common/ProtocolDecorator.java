@@ -43,7 +43,7 @@ public class ProtocolDecorator extends TableDecorator {
 		if (protocol.getDomain().getFile() != null) {
 			description = protocol.getDomain().getFile().getDescription();
 			if (description != null) {
-				description = StringUtils.preserveLineBreaks(description);
+				description = StringUtils.escapeXmlButPreserveLineBreaks(description);
 			}
 		}
 		return description;
