@@ -35,7 +35,7 @@
 			<li>
 				<a
 					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
-					title="${type}"><span>${type}</span></a>
+					title="${type}"><span><c:out value="${type}"/></span></a>
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
@@ -71,7 +71,7 @@
 				<li class="${selectedClass}">
 					<a
 						href="javascript:showSummary('${ind2.count}', ${fn:length(characterizationTypes)})"
-						title="${type}"><span>${type}</span> </a>
+						title="${type}"><span><c:out value="${type}"/></span> </a>
 				</li>
 			</c:forEach>
 			<li>
@@ -103,12 +103,12 @@
 						<c:if
 							test="${!empty characterizationSummaryView.type2CharacterizationNames[type]}">
 							<td align="left">
-								<b>${type}</b>
+								<b><c:out value="${type}"/></b>
 								<br />
 								<c:forEach var="charName"
 									items="${characterizationSummaryView.type2CharacterizationNames[type]}">
-									<a href="#${charName}">${charName}
-										(${characterizationSummaryView.charName2Counts[charName]})</a> &nbsp;
+									<a href="#${charName}"><c:out value="${charName}"/>
+										(<c:out value="${characterizationSummaryView.charName2Counts[charName]}"/>)</a> &nbsp;
 	            </c:forEach>
 							</td>
 						</c:if>
@@ -149,7 +149,7 @@
 										<table width="99%" align="center" class="summaryViewNoGrid" bgcolor="#dbdbdb">
 											<tr>
 												<th align="left">
-													${charName}
+													<c:out value="${charName}"/>
 												</th>
 											</tr>
 											<tr>
