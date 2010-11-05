@@ -73,7 +73,8 @@ public class SampleDecorator extends TableDecorator {
 				}
 			}
 		}
-		return StringUtils.join(compEntityNames, "<br>");
+		String str=StringUtils.join(compEntityNames, "\r\n");
+		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 
 	public String getFunctionStr() throws BaseException {
@@ -89,7 +90,8 @@ public class SampleDecorator extends TableDecorator {
 				}
 			}
 		}
-		return StringUtils.join(functionNames, "<br>");
+		String str=StringUtils.join(functionNames, "\r\n");
+		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 
 	public String getCharacterizationStr() throws BaseException {
@@ -101,7 +103,8 @@ public class SampleDecorator extends TableDecorator {
 				charNames.add(displayName);
 			}
 		}
-		return StringUtils.join(charNames, "<br>");
+		String str=StringUtils.join(charNames, "\r\n");
+		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 
 	public String getPointOfContactName() throws BaseException {
