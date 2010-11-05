@@ -168,7 +168,7 @@
 														Publication Status
 													</td>
 													<td>
-														${pubObj.status}&nbsp;
+														<c:out value="${pubObj.status}" />&nbsp;
 													</td>
 												</tr>
 											</table>
