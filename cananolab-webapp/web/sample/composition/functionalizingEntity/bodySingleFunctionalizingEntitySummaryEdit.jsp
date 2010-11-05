@@ -34,13 +34,16 @@
 			PubChem ID
 		</td>
 		<td colspan="2">
-		    <c:choose>
-					<c:when test="${!empty functionalizingEntity.pubChemLink}">
-						<a href="${functionalizingEntity.pubChemLink}"
-							target="caNanoLab - View PubChem"><c:out value="${functionalizingEntity.domainEntity.pubChemId}"/></a>
-						&nbsp;(<c:out value="${functionalizingEntity.domainEntity.pubChemDataSourceName}"/>)
+			<c:choose>
+				<c:when test="${!empty functionalizingEntity.pubChemLink}">
+					<a href="${functionalizingEntity.pubChemLink}"
+						target="caNanoLab - View PubChem"><c:out
+							value="${functionalizingEntity.domainEntity.pubChemId}" />
+					</a>
+						&nbsp;(<c:out
+						value="${functionalizingEntity.domainEntity.pubChemDataSourceName}" />)
 				</c:when>
-					<c:otherwise>N/A
+				<c:otherwise>N/A
 				</c:otherwise>
 			</c:choose>
 		</td>
@@ -53,7 +56,8 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty functionalizingEntity.value}">
-						<c:out value="${functionalizingEntity.value}"/> <c:out value="${functionalizingEntity.valueUnit}"/>
+					<c:out value="${functionalizingEntity.value}" />
+					<c:out value="${functionalizingEntity.valueUnit}" />
 				</c:when>
 				<c:otherwise>
 						N/A
@@ -69,7 +73,7 @@
 			<c:choose>
 				<c:when
 					test="${!empty functionalizingEntity.molecularFormulaDisplayName}">
-							<c:out value="${functionalizingEntity.molecularFormulaDisplayName}"/>
+					<c:out value="${functionalizingEntity.molecularFormulaDisplayName}" />
 				</c:when>
 				<c:otherwise>
 						N/A
@@ -141,7 +145,7 @@
 			<c:choose>
 				<c:when
 					test="${!empty functionalizingEntity.activationMethodDisplayName}">
-							<c:out value="${functionalizingEntity.activationMethodDisplayName}"/>
+					<c:out value="${functionalizingEntity.activationMethodDisplayName}" />
 				</c:when>
 				<c:otherwise>
 						N/A
@@ -156,9 +160,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(functionalizingEntity.description)}">
-					<c:set var="desc" value="${fn:replace(functionalizingEntity.description, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(desc, cr, '<br>')}"
+					<c:out value="${functionalizingEntity.description)}"
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
@@ -175,7 +177,7 @@
 				<c:when test="${! empty functionalizingEntity.files}">
 					<c:set var="files" value="${functionalizingEntity.files }" />
 					<c:set var="entityType" value="functionalizing entity" />
-					<c:set var="downloadAction" value="composition"/>
+					<c:set var="downloadAction" value="composition" />
 					<%@include file="../../bodyFileView.jsp"%>
 				</c:when>
 				<c:otherwise>

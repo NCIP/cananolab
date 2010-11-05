@@ -20,7 +20,7 @@
 					bgcolor="#dbdbdb">
 					<tr>
 						<th align="left">
-							<c:out value="${fileType}"/>
+							<c:out value="${fileType}" />
 						</th>
 					</tr>
 					<tr>
@@ -39,13 +39,14 @@
 												<c:when test="${file.domainFile.uriExternal}">
 													<a
 														href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-														<c:out value="${file.domainFile.uri}" escapeXml="false"/></a>
+														<c:out value="${file.domainFile.uri}" escapeXml="false" />
+													</a>
 												</c:when>
 												<c:otherwise>
 													<c:choose>
 														<c:when test="${file.image eq 'true'}">
-						 				<c:out value="${file.domainFile.title}"/>
-										<br>
+															<c:out value="${file.domainFile.title}" />
+															<br>
 															<a href="#"
 																onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
 																	src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}"
@@ -54,7 +55,8 @@
 														<c:otherwise>
 															<a
 																href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-																<c:out value="${file.domainFile.title}" escapeXml="false"/></a>
+																<c:out value="${file.domainFile.title}"
+																	escapeXml="false" /> </a>
 														</c:otherwise>
 													</c:choose>
 												</c:otherwise>
@@ -67,9 +69,7 @@
 												Keywords
 											</td>
 											<td>
-												<c:set var="keywordsStr" value="${fn:replace(file.keywordsStr, '<', '&lt;')}" />
-												<c:out
-													value="${fn:replace(keywordsStr, cr, '<br>')}"
+												<c:out value="${fn:replace(file.keywordsStr, cr, '<br>')}"
 													escapeXml="false" />
 											</td>
 										</tr>
@@ -80,10 +80,7 @@
 												Description
 											</td>
 											<td>
-												<c:set var="desc" value="${fn:replace(file.domainFile.description, '<', '&lt;')}" />
-												<c:out
-													value="${fn:replace(desc, cr, '<br>')}"
-													escapeXml="false" />
+												<c:out value="${file.description}" escapeXml="false" />
 											</td>
 										</tr>
 									</c:if>
