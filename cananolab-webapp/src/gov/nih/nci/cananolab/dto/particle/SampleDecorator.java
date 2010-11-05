@@ -23,10 +23,10 @@ public class SampleDecorator extends TableDecorator {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
 		String dispatch = "summaryView";
-		String linkLabel="View";
+		String linkLabel = "View";
 		if (sample.getUserUpdatable()) {
 			dispatch = "summaryEdit";
-			linkLabel="Edit";
+			linkLabel = "Edit";
 		}
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=").append(dispatch).append(
@@ -46,8 +46,7 @@ public class SampleDecorator extends TableDecorator {
 	public String getKeywordStr() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String keywordsStr = sample.getKeywordsStr();
-		String[] strs = keywordsStr.split("\r\n");
-		return StringUtils.join(strs, "<br>");
+		return StringUtils.escapeXmlButPreserveLineBreaks(keywordsStr);
 	}
 
 	public String getCompositionStr() throws BaseException {
@@ -73,7 +72,7 @@ public class SampleDecorator extends TableDecorator {
 				}
 			}
 		}
-		String str=StringUtils.join(compEntityNames, "\r\n");
+		String str = StringUtils.join(compEntityNames, "\r\n");
 		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 
@@ -90,7 +89,7 @@ public class SampleDecorator extends TableDecorator {
 				}
 			}
 		}
-		String str=StringUtils.join(functionNames, "\r\n");
+		String str = StringUtils.join(functionNames, "\r\n");
 		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 
@@ -103,7 +102,7 @@ public class SampleDecorator extends TableDecorator {
 				charNames.add(displayName);
 			}
 		}
-		String str=StringUtils.join(charNames, "\r\n");
+		String str = StringUtils.join(charNames, "\r\n");
 		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 

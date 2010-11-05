@@ -121,6 +121,10 @@ public class SampleBean extends SecuredDataBean {
 		return this.keywordsStr;
 	}
 
+	public String getKeywordsDisplayName() {
+		return StringUtils.escapeXmlButPreserveLineBreaks(keywordsStr);
+	}
+
 	public Sample getDomain() {
 		return domain;
 	}
