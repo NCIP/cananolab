@@ -25,7 +25,7 @@
 							bgcolor="#dbdbdb">
 							<tr>
 								<th align="left">
-									<c:out value="${fileType}" escapeXml="false"/>
+									<c:out value="${fileType}"/>
 								</th>
 							</tr>
 							<tr>
