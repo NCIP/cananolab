@@ -27,10 +27,10 @@
 				Yes
 			</td>
 			<td>
-				<c:out value="${primaryPOC.personDisplayName}"/>
+				<c:out value="${primaryPOC.personDisplayName}" escapeXml="false"/>
 			</td>
 			<td>
-				<c:out value="${primaryPOC.organizationDisplayName}"/>
+				<c:out value="${primaryPOC.organizationDisplayName}" escapeXml="false"/>
 			</td>
 			<td>
 				<c:out value="${primaryPOC.domain.role}"/>
