@@ -59,10 +59,10 @@
 							No
 						</td>
 						<td>
-							<c:out value="${poc.personDisplayName}"/>
+							<c:out value="${poc.personDisplayName}" escapeXml="false"/>
 						</td>
 						<td>
-							<c:out value="${poc.organizationDisplayName}"/>
+							<c:out value="${poc.organizationDisplayName}" escapeXml="false"/>
 						</td>
 						<td>
 							<c:out value="${poc.domain.role}"/>
