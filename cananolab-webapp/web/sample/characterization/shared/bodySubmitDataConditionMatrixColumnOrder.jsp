@@ -17,10 +17,10 @@
 			<td class="cellLabel">
 				<c:choose>
 					<c:when test="${!empty col.displayName}">
-						<span id="colOrderName${cInd}">${col.displayName}</span>
+						<span id="colOrderName${cInd}"><c:out value="${col.displayName}"/></span>
 					</c:when>
 					<c:otherwise>
-						<span id="colOrderName${cInd}">Column ${cInd+1}</span>
+						<span id="colOrderName${cInd}">Column <c:out value="${cInd+1}"/></span>
 					</c:otherwise>
 				</c:choose>
 			</td>

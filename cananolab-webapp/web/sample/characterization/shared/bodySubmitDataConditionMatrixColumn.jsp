@@ -71,13 +71,13 @@
 					<option value=""></option>
 					<logic:iterate id="vtype" name="datumConditionValueTypes">
 						<option value="${vtype}">
-							${vtype}
+							<c:out value="${vtype}"/>
 						</option>
 					</logic:iterate>
 					<c:if test="${!empty otherCharValueTypes }">
 					<logic:iterate id="vtype" name="otherCharValueTypes">
 						<option value="${vtype}">
-							${vtype}
+							<c:out value="${vtype}"/>
 						</option>
 					</logic:iterate>
 					</c:if>

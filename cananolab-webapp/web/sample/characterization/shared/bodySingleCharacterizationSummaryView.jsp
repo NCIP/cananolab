@@ -17,7 +17,7 @@
 					Assay Type
 				</td>
 				<td>
-					${charObj.assayType}
+					<c:out value="${charObj.assayType}"/>
 				</td>
 			</tr>
 		</c:when>
@@ -29,7 +29,7 @@
 						Assay Type
 					</td>
 					<td>
-						${charName}
+						<c:out value="${charName}"/>
 					</td>
 				</tr>
 			</c:if>
@@ -41,7 +41,7 @@
 				Point of Contact
 			</td>
 			<td>
-				${charBean.pocBean.displayName}
+				<c:out value="${charBean.pocBean.displayName}"/>
 			</td>
 		</tr>
 	</c:if>
@@ -51,7 +51,7 @@
 				Characterization Date
 			</td>
 			<td>
-				${charBean.dateString}
+				<c:out value="${charBean.dateString}"/>
 			</td>
 		</tr>
 	</c:if>
@@ -61,7 +61,7 @@
 				Protocol
 			</td>
 			<td>
-				${charBean.protocolBean.displayName}
+				<c:out value="${charBean.protocolBean.displayName}"/>
 			</td>
 		</tr>
 	</c:if>
@@ -131,7 +131,7 @@
 				Analysis and Conclusion
 			</td>
 			<td>
-				${charBean.conclusion}
+				<c:out value="${charBean.conclusion}"/>
 			</td>
 		</tr>
 	</c:if>	

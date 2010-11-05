@@ -15,10 +15,10 @@
 						href="javascript:openColumnForm('${characterizationForm.map.achar.characterizationName}', ${cInd});"><span
 						id="columnHeaderDisplayName${cInd}"> <c:choose>
 								<c:when test="${!empty col.displayName}">
-								${col.displayName}
+								<c:out value="${col.displayName}"/>
 								</c:when>
 								<c:otherwise>
-						Column ${cInd+1}
+						Column <c:out value="${cInd+1}"/>
 						</c:otherwise>
 							</c:choose> </span> </a>
 					<html:hidden
