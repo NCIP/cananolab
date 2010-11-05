@@ -134,8 +134,8 @@
 										<th></th>
 
 									</tr>
-									<tr><td>${sampleForm.map.sampleBean.caNanoLabScore}</td>
-										<td>${sampleForm.map.sampleBean.mincharScore}</td>
+									<tr><td><c:out value="${sampleForm.map.sampleBean.caNanoLabScore}"/></td>
+										<td><c:out value="${sampleForm.map.sampleBean.mincharScore}"/></td>
 										<td><a href="#"	onclick="javascript:manageDataAvailability('${sampleForm.map.sampleBean.domain.id}', 'sample', 'dataAvailabilityView');">
 											Edit</a>
 										</td>

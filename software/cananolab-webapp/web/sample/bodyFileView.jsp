@@ -27,12 +27,12 @@
 							<c:otherwise>
 								<a style="white-space: normal;"
 									href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-									${file.domainFile.title}</a>
+									<c:out value="${file.domainFile.title}"/></a>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
 				</c:choose>
-				(${file.domainFile.type})
+				(<c:out value="${file.domainFile.type}"/>)
 			</td>
 			<td>
 				<c:choose>
