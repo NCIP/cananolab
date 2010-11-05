@@ -151,7 +151,7 @@
 																Bibliography Info
 															</td>
 															<td>
-																${pubBean.displayName}&nbsp;
+																<c:out value="${pubBean.displayName}" escapeXml="false"/>&nbsp;
 															</td>
 															<td></td>
 														</tr>
