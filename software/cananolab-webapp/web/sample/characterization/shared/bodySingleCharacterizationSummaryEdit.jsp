@@ -25,14 +25,14 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charObj.assayType}">
-																${charObj.assayType}
-															</c:when>
+						<c:out value="${charObj.assayType}"/>
+				</c:when>
 				<c:otherwise>
 					<c:choose>
 						<c:when
 							test="${charBean.characterizationType eq 'physico chemical characterization'}">
-																	${charName}
-																</c:when>
+									<c:out value="${charName}"/>
+						</c:when>
 						<c:otherwise>N/A</c:otherwise>
 					</c:choose>
 				</c:otherwise>
@@ -46,11 +46,11 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charBean.pocBean.displayName}">
-																${charBean.pocBean.displayName}
-															</c:when>
+						<c:out value="${charBean.pocBean.displayName}"/>
+				</c:when>
 				<c:otherwise>
-															N/A
-															</c:otherwise>
+					N/A
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -61,11 +61,11 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charBean.dateString}">
-																${charBean.dateString}
-															</c:when>
+						<c:out value="${charBean.dateString}"/>
+				</c:when>
 				<c:otherwise>
-															N/A
-															</c:otherwise>
+						N/A
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -76,11 +76,11 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charBean.protocolBean.displayName}">
-																${charBean.protocolBean.displayName}
-																</c:when>
+						<c:out value="${charBean.protocolBean.displayName}"/>
+				</c:when>
 				<c:otherwise>
-																N/A
-																</c:otherwise>
+						N/A
+				</c:otherwise>
 			</c:choose>
 
 		</td>
@@ -118,7 +118,7 @@
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
-															</c:otherwise>
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -133,7 +133,7 @@
 					<%@ include file="bodyExperimentConfigView.jsp"%>
 				</c:when>
 				<c:otherwise>N/A
-																</c:otherwise>
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -156,7 +156,7 @@
 		</td>
 		<td colspan="2">
 			<c:choose>
-				<c:when test="${!empty charBean.conclusion}">${charBean.conclusion}															</c:when>
+				<c:when test="${!empty charBean.conclusion}"><c:out value="${charBean.conclusion}"/>															</c:when>
 				<c:otherwise>N/A</c:otherwise>
 			</c:choose>
 		</td>

@@ -22,13 +22,13 @@
 		varStatus="configIndex">
 		<tr>
 			<td>
-				${experimentConfig.techniqueDisplayName}
+				<c:out value="${experimentConfig.techniqueDisplayName}"/>
 			</td>
 			<td>
 				<c:if test="${! empty experimentConfig.instrumentDisplayNames}">
 					<c:forEach var="instrumentDisplayName"
 						items="${experimentConfig.instrumentDisplayNames}">
-							${instrumentDisplayName}<br>
+							<c:out value="${instrumentDisplayName}"/><br>
 					</c:forEach>
 				</c:if>
 			</td>

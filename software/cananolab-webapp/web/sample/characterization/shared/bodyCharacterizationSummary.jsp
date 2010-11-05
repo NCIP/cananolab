@@ -56,7 +56,7 @@
 						test="${characterizationForm.map.achar.characterizationType eq 'physico chemical characterization'}">
 						<option
 							value="${characterizationForm.map.achar.characterizationName}" selected="selected">
-							${characterizationForm.map.achar.characterizationName}
+							<c:out value="${characterizationForm.map.achar.characterizationName}"/>
 						</option>
 					</c:if>
 					<c:if test="${!empty charNameAssays }">

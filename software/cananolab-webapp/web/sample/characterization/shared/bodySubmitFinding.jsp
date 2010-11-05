@@ -51,7 +51,7 @@
 					varStatus="ind">
 					<tr>
 						<td>
-							${file.domainFile.uri}
+							<c:out value="${file.domainFile.uri}"/>
 						</td>
 						<td>
 							<a href="javascript:setTheFile(${ind.count-1})">Edit</a>
