@@ -17,9 +17,9 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class FileBean extends SecuredDataBean {
 	protected File domainFile = new File();
@@ -35,6 +35,11 @@ public class FileBean extends SecuredDataBean {
 	private byte[] newFileData; // data from uploadedFile if upload happened
 
 	private String createdDateStr;
+
+	public String getDescription() {
+		return StringUtils.escapeXmlButPreserveLineBreaks(domainFile
+				.getDescription());
+	}
 
 	public FileBean() {
 		domainFile.setUriExternal(false);
@@ -204,8 +209,8 @@ public class FileBean extends SecuredDataBean {
 
 	public void resetDomainCopy(String createdBy, File copy) {
 		// append original ID to assist in copy
-		copy.setCreatedBy(createdBy+":"+Constants.AUTO_COPY_ANNOTATION_PREFIX + ":"
-				+ copy.getId());
+		copy.setCreatedBy(createdBy + ":"
+				+ Constants.AUTO_COPY_ANNOTATION_PREFIX + ":" + copy.getId());
 		copy.setId(null);
 		Collection<Keyword> oldKeywords = copy.getKeywordCollection();
 		if (oldKeywords == null || oldKeywords.isEmpty()) {

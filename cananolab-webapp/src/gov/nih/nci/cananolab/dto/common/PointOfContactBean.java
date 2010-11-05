@@ -125,7 +125,8 @@ public class PointOfContactBean {
 		nameStrs.add(name);
 		nameStrs.add(domain.getEmail());
 		nameStrs.add(domain.getPhone());
-		return StringUtils.join(nameStrs, "<br>");
+		String str = StringUtils.join(nameStrs, "\r\n");
+		return StringUtils.escapeXmlButPreserveLineBreaks(str);
 	}
 
 	public String getOrganizationDisplayName() {
@@ -145,7 +146,8 @@ public class PointOfContactBean {
 			addressStrs.add(domain.getOrganization().getCountry());
 
 			orgStrs.add(StringUtils.join(addressStrs, " "));
-			return StringUtils.join(orgStrs, "<br>");
+			String str = StringUtils.join(orgStrs, "\r\n");
+			return StringUtils.escapeXmlButPreserveLineBreaks(str);
 		} else {
 			return "";
 		}
