@@ -42,7 +42,8 @@
 							<div id="details${sample.domain.id}" style="position: relative">
 								<a id="detailLink${sample.domain.id}" 
 											href="#"
-											onclick="showDetailView('${sample.domain.id}', 'sample.do?dispatch=dataAvailabilityView&sampleId=${sample.domain.id}'); return false;">${sample.dataAvailabilityMetricsScore}</a>
+											onclick="showDetailView('${sample.domain.id}', 'sample.do?dispatch=dataAvailabilityView&sampleId=${sample.domain.id}'); return false;">
+											<c:out value="${sample.dataAvailabilityMetricsScore}"/></a>
 									<img src="images/ajax-loader.gif" border="0" class="counts"	id="loaderImg${sample.domain.id}" style="display: none">
 									<table
 										id="detailView${sample.domain.id}"

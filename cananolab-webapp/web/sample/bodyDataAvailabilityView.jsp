@@ -17,7 +17,7 @@
 			MINChar
 		</td>
 		<td class="cellLabel" align="center">
-			${sampleBean.domain.name}
+			<c:out value="${sampleBean.domain.name}"/>
 		</td>
 	</tr>
 	<tr>
@@ -95,7 +95,7 @@
 	<c:forEach var="chem" items="${chemicalAssocs}">
 	<tr>		
 		<td>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${chem}
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<c:out value="${chem}"/>
 		</td>		
 		<td>
 			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
@@ -137,7 +137,7 @@
 	<c:when test="${char eq 'surface'}">
 		<tr>
 			<td>
-				&nbsp;&nbsp;${char}
+				&nbsp;&nbsp;<c:out value="${char}"/>
 			</td>
 			<td></td>
 			<td align="center">
@@ -199,7 +199,7 @@
 	</c:when>
 		<c:otherwise>
 		<tr>
-		<td>&nbsp;&nbsp;${char}</td>
+		<td>&nbsp;&nbsp;<c:out value="${char}"/></td>
 		<td>
 			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
 		    		<c:set var="nano" value="${nano2minchar.key }"/>
@@ -226,7 +226,7 @@
 	</tr>
 	<c:forEach var="char" items="${invitroChars}">
 		<tr>
-		<td>&nbsp;&nbsp;${char}</td>
+		<td>&nbsp;&nbsp;<c:out value="${char}"/></td>
 		<td>
 			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
 		    		<c:set var="nano" value="${nano2minchar.key }"/>
@@ -250,7 +250,7 @@
 	</tr>
 	<c:forEach var="char" items="${invivoChars}">
 		<tr>
-		<td>&nbsp;&nbsp;${char}</td>
+		<td>&nbsp;&nbsp;<c:out value="${char}"/></td>
 		<td>
 			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
 		    		<c:set var="nano" value="${nano2minchar.key }"/>

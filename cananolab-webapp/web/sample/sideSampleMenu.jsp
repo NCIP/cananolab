@@ -177,7 +177,7 @@
 		<tr>
 			<td class="subMenuCommentText" height="20">
 				Logged in as
-				<i>${user.loginName}</i>
+				<i><c:out value="${user.loginName}"/></i>
 				<c:if test="${!empty user.groupNames}">
 					<br>Associated Groups:<br/>
 					<c:forEach var="group" items="${user.groupNames}">

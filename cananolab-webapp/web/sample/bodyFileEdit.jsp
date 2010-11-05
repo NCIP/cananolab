@@ -24,19 +24,19 @@
 	<c:forEach var="file" items="${files}">
 		<tr>
 			<td>
-				${file.domainFile.type}
+				<c:out value="${file.domainFile.type}"/>
 			</td>
 			<td>
 				<c:choose>
 					<c:when test="${file.domainFile.uriExternal}">
 						<a  style="white-space: normal;"
 							href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-							${file.domainFile.uri}</a>
+							<c:out value="${file.domainFile.uri}"/></a>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${file.image eq 'true'}">
-						 				${file.domainFile.title}
+						 				<c:out value="${file.domainFile.title}"/>
 										<br>
 								<a href="#"
 									onclick="popImage(event, '${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
@@ -46,7 +46,7 @@
 							<c:otherwise>
 								<a  style="white-space: normal;"
 									href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-									${file.domainFile.title}</a>
+									<c:out value="${file.domainFile.title}"/></a>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
