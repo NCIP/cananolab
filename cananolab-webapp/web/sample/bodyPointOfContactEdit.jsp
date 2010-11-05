@@ -35,13 +35,13 @@
 						Yes
 					</td>
 					<td>
-						${primaryPOC.personDisplayName}
+						<c:out value="${primaryPOC.personDisplayName}"/>
 					</td>
 					<td>
-						${primaryPOC.organizationDisplayName}
+						<c:out value="${primaryPOC.organizationDisplayName}"/>
 					</td>
 					<td>
-						${primaryPOC.domain.role}
+						<c:out value="${primaryPOC.domain.role}"/>
 					</td>
 					<c:if test="${edit eq 'true'}">
 						<td align="right">
@@ -59,13 +59,13 @@
 							No
 						</td>
 						<td>
-							${poc.personDisplayName}
+							<c:out value="${poc.personDisplayName}"/>
 						</td>
 						<td>
-							${poc.organizationDisplayName}
+							<c:out value="${poc.organizationDisplayName}"/>
 						</td>
 						<td>
-							${poc.domain.role}
+							<c:out value="${poc.domain.role}"/>
 						</td>
 						<c:if test="${edit eq 'true'}">
 							<td align="right">
