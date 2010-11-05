@@ -26,7 +26,7 @@
 							bgcolor="#dbdbdb">
 							<tr>
 								<th align="left">
-									${entityType}
+									<c:out value="${entityType}"/>
 								</th>
 							</tr>
 							<tr>

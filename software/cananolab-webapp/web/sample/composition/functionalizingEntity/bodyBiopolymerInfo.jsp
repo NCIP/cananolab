@@ -16,10 +16,10 @@
 			</tr>
 			<tr>
 				<td>
-					${functionalizingEntity.biopolymer.type}
+					<c:out value="${functionalizingEntity.biopolymer.type}"/>
 				</td>
 				<td>
-					${functionalizingEntity.biopolymer.sequence}
+					<c:out value="${functionalizingEntity.biopolymer.sequence}"/>
 				</td>
 			</tr>
 		</table>
@@ -46,12 +46,12 @@
 									<c:when
 										test="${type eq compositionForm.map.functionalizingEntity.biopolymer.type}">
 										<option value="${type}" selected>
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${type}">
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>

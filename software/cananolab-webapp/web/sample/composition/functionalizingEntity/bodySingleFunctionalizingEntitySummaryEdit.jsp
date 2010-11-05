@@ -37,8 +37,8 @@
 		    <c:choose>
 					<c:when test="${!empty functionalizingEntity.pubChemLink}">
 						<a href="${functionalizingEntity.pubChemLink}"
-							target="caNanoLab - View PubChem">${functionalizingEntity.domainEntity.pubChemId}</a>
-						&nbsp;(${functionalizingEntity.domainEntity.pubChemDataSourceName})
+							target="caNanoLab - View PubChem"><c:out value="${functionalizingEntity.domainEntity.pubChemId}"/></a>
+						&nbsp;(<c:out value="${functionalizingEntity.domainEntity.pubChemDataSourceName}"/>)
 				</c:when>
 					<c:otherwise>N/A
 				</c:otherwise>
@@ -53,11 +53,11 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty functionalizingEntity.value}">
-													${functionalizingEntity.value} ${functionalizingEntity.valueUnit}
-													</c:when>
+						<c:out value="${functionalizingEntity.value}"/> <c:out value="${functionalizingEntity.valueUnit}"/>
+				</c:when>
 				<c:otherwise>
-														N/A
-												</c:otherwise>
+						N/A
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -69,11 +69,11 @@
 			<c:choose>
 				<c:when
 					test="${!empty functionalizingEntity.molecularFormulaDisplayName}">
-													${functionalizingEntity.molecularFormulaDisplayName}
-													</c:when>
+							<c:out value="${functionalizingEntity.molecularFormulaDisplayName}"/>
+				</c:when>
 				<c:otherwise>
-														N/A
-												</c:otherwise>
+						N/A
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
@@ -141,11 +141,11 @@
 			<c:choose>
 				<c:when
 					test="${!empty functionalizingEntity.activationMethodDisplayName}">
-													${functionalizingEntity.activationMethodDisplayName}
-													</c:when>
+							<c:out value="${functionalizingEntity.activationMethodDisplayName}"/>
+				</c:when>
 				<c:otherwise>
-														N/A
-												</c:otherwise>
+						N/A
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>

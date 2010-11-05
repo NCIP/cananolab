@@ -29,12 +29,12 @@
 	<c:forEach var="function" items="${entity.functions}">
 		<tr>
 			<td>
-				${function.type}
+				<c:out value="${function.type}"/>
 			</td>
 			<c:if test="${entity.withImagingFunction eq 'true'}">
 				<td>
 					<c:if test="${! empty function.imagingFunction.modality }">
-					${function.imagingFunction.modality}
+					<c:out value="${function.imagingFunction.modality}"/>
 				</c:if>
 				</td>
 			</c:if>
@@ -43,7 +43,7 @@
 					<c:if test="${! empty function.targetDisplayNames}">
 						<c:forEach var="targetDisplayName"
 							items="${function.targetDisplayNames}">
-							${targetDisplayName}<br><br>
+							<c:out value="${targetDisplayName}"/><br><br>
 						</c:forEach>
 					</c:if>
 				</td>
