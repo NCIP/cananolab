@@ -16,10 +16,10 @@
 			</tr>
 			<tr>
 				<td>
-					${nanomaterialEntity.liposome.polymerized}
+					<c:out value="${nanomaterialEntity.liposome.polymerized}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.liposome.polymerName}
+					<c:out value="${nanomaterialEntity.liposome.polymerName}"/>
 				</td>
 			</tr>
 		</table>

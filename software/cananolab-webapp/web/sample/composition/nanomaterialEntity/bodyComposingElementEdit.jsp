@@ -10,7 +10,7 @@
 	<c:forEach var="composingElement" items="${entity.composingElements}">
 		<tr>
 			<td class="cellLabel" colspan="2">
-				${composingElement.displayName}
+				<c:out value="${composingElement.displayName}"/>
 			</td>
 			<td align="right" width="3%">
 				<a href="#submitComposingElement"
@@ -25,8 +25,8 @@
 				<c:choose>
 					<c:when test="${!empty composingElement.pubChemLink}">
 						<a href="${composingElement.pubChemLink}"
-							target="caNanoLab - View PubChem">${composingElement.domain.pubChemId}</a>
-						&nbsp;(${composingElement.domain.pubChemDataSourceName})					
+							target="caNanoLab - View PubChem"><c:out value="${composingElement.domain.pubChemId}"/></a>
+						&nbsp;(<c:out value="${composingElement.domain.pubChemDataSourceName}"/>)					
 				</c:when>
 					<c:otherwise>N/A
 				</c:otherwise>
@@ -42,7 +42,7 @@
 				<c:when
 					test="${!empty composingElement.molecularFormulaDisplayName}">
 					<td style="word-wrap: break-word; max-width: 280px;">
-						${composingElement.molecularFormulaDisplayName}
+						<c:out value="${composingElement.molecularFormulaDisplayName}"/>
 					</td>
 				</c:when>
 				<c:otherwise>
@@ -79,7 +79,7 @@
 					<c:when test="${!empty composingElement.functionDisplayNames}">
 						<c:forEach var="function"
 							items="${composingElement.functionDisplayNames}" varStatus="ind">
-				${function}
+				<c:out value="${function}"/>
 				<c:if
 								test="${ind.count !=fn:length(composingElement.functionDisplayNames)}">
 ;&nbsp;</c:if>

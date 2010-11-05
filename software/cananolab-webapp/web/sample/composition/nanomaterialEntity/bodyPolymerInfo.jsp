@@ -19,13 +19,13 @@
 			</tr>
 			<tr>
 				<td>
-					${nanomaterialEntity.polymer.initiator}
+					<c:out value="${nanomaterialEntity.polymer.initiator}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.polymer.crossLinked}
+					<c:out value="${nanomaterialEntity.polymer.crossLinked}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.polymer.crossLinkDegree}
+					<c:out value="${nanomaterialEntity.polymer.crossLinkDegree}"/>
 				</td>
 			</tr>
 		</table>

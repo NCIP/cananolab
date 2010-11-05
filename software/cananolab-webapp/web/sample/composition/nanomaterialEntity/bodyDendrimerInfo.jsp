@@ -16,10 +16,10 @@
 			</tr>
 			<tr>
 				<td>
-					${nanomaterialEntity.dendrimer.branch}
+					<c:out value="${nanomaterialEntity.dendrimer.branch}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.dendrimer.generation}
+					<c:out value="${nanomaterialEntity.dendrimer.generation}"/>
 				</td>
 			</tr>
 		</table>

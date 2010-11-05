@@ -18,10 +18,10 @@
 					</tr>
 					<tr>
 						<td>
-							${nanomaterialEntity.emulsion.polymerized}
+							<c:out value="${nanomaterialEntity.emulsion.polymerized}"/>
 						</td>
 						<td>
-							${nanomaterialEntity.emulsion.polymerName}
+							<c:out value="${nanomaterialEntity.emulsion.polymerName}"/>
 						</td>
 					</tr>
 				</table>

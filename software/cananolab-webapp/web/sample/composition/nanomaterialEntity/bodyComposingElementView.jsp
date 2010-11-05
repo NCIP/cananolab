@@ -7,7 +7,7 @@
 	<c:forEach var="composingElement" items="${entity.composingElements}">
 		<tr>
 			<td class="cellLabel" colspan="2">
-				${composingElement.displayName}
+				<c:out value="${composingElement.displayName}"/>
 			</td>
 		</tr>
 		<c:if test="${!empty composingElement.pubChemLink}">
@@ -17,8 +17,8 @@
 				</td>
 				<td>
 					<a href="${composingElement.pubChemLink}"
-						target="caNanoLab - View PubChem">${composingElement.domain.pubChemId}</a>
-					&nbsp;(${composingElement.domain.pubChemDataSourceName})
+						target="caNanoLab - View PubChem"><c:out value="${composingElement.domain.pubChemId}"/></a>
+					&nbsp;(<c:out value="${composingElement.domain.pubChemDataSourceName}"/>)
 				</td>
 			</tr>
 		</c:if>
@@ -29,7 +29,7 @@
 					Molecular Formula
 				</td>
 				<td>
-					${composingElement.molecularFormulaDisplayName}
+					<c:out value="${composingElement.molecularFormulaDisplayName}"/>
 				</td>
 			</tr>
 		</c:if>
@@ -55,7 +55,7 @@
 				<td>
 					<c:forEach var="function"
 						items="${composingElement.functionDisplayNames}" varStatus="ind">
-							${function} <br/>							
+							<c:out value="${function}"/> <br/>							
 					</c:forEach>
 				</td>
 			</tr>

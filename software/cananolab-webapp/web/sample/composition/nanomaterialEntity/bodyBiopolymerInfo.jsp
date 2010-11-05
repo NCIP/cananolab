@@ -20,13 +20,13 @@
 			</tr>
 			<tr>
 				<td>
-					${nanomaterialEntity.biopolymer.name}
+					<c:out value="${nanomaterialEntity.biopolymer.name}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.biopolymer.type}
+					<c:out value="${nanomaterialEntity.biopolymer.type}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.biopolymer.sequence}
+					<c:out value="${nanomaterialEntity.biopolymer.sequence}"/>
 				</td>
 			</tr>
 		</table>
@@ -60,12 +60,12 @@
 									<c:when
 										test="${type eq compositionForm.map.nanomaterialEntity.biopolymer.type}">
 										<option value="${type}" selected="selected">
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${type}">
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
