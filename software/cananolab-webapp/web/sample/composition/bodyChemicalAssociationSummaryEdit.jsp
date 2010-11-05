@@ -26,7 +26,7 @@
 							bgcolor="#dbdbdb">
 							<tr>
 								<th align="left">
-									${assocType}
+									<c:out value="${assocType}"/>
 								</th>
 							</tr>
 							<tr>

@@ -55,15 +55,16 @@
 			<table>
 				<tr>
 					<td width="250">
-						${assoc.associatedElementA.compositionType}
-						${assoc.associatedElementA.entityDisplayName}
+						<c:out value="${assoc.associatedElementA.compositionType}"/>
+						<c:out value="${assoc.associatedElementA.entityDisplayName}"/>
 						<c:choose>
 							<c:when
 								test="${! empty assoc.associatedElementA.composingElement.id }">
-											composing element of type ${assoc.associatedElementA.composingElement.type} <br>(name: ${assoc.associatedElementA.composingElement.name})
+											composing element of type <c:out value="${assoc.associatedElementA.composingElement.type}"/> 
+											<br>(name: <c:out value="${assoc.associatedElementA.composingElement.name}"/>)
 														</c:when>
 							<c:otherwise>
-								<br>(name: ${assoc.associatedElementA.domainElement.name})
+								<br>(name: <c:out value="${assoc.associatedElementA.domainElement.name}"/>)
 															</c:otherwise>
 						</c:choose>
 					</td>
@@ -73,16 +74,17 @@
 						<strong>associated with</strong>
 					</td>
 					<td>
-						${assoc.associatedElementB.compositionType}
-						${assoc.associatedElementB.entityDisplayName}
+						<c:out value="${assoc.associatedElementB.compositionType}"/>
+						<c:out value="${assoc.associatedElementB.entityDisplayName}"/>
 						<c:choose>
 							<c:when
 								test="${! empty assoc.associatedElementB.composingElement.id }">
 
-composing element of type ${assoc.associatedElementB.composingElement.type} <br>(name: ${assoc.associatedElementB.composingElement.name})
+composing element of type <c:out value="${assoc.associatedElementB.composingElement.type}"/>
+ <br>(name: <c:out value="${assoc.associatedElementB.composingElement.name}"/>)
 														</c:when>
 							<c:otherwise>
-								<br> (name: ${assoc.associatedElementB.domainElement.name})
+								<br> (name: <c:out value="${assoc.associatedElementB.domainElement.name}"/>)
 															</c:otherwise>
 						</c:choose>
 					</td>

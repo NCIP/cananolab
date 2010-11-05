@@ -25,7 +25,7 @@
 							bgcolor="#dbdbdb">
 							<tr>
 								<th align="left">
-									${fileType}
+									<c:out value="${fileType}"/>
 								</th>
 							</tr>
 							<tr>
@@ -52,12 +52,12 @@
 														<c:when test="${file.domainFile.uriExternal}">
 															<a
 																href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-																${file.domainFile.uri}</a>
+																<c:out value="${file.domainFile.uri}"/></a>
 														</c:when>
 														<c:otherwise>
 															<c:choose>
 																<c:when test="${file.image eq 'true'}">
-						 				${file.domainFile.title}
+						 				<c:out value="${file.domainFile.title}"/>
 										<br>
 																	<a href="#"
 																		onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
@@ -67,7 +67,7 @@
 																<c:otherwise>
 																	<a
 																		href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-																		${file.domainFile.title}</a>
+																		<c:out value="${file.domainFile.title}"/></a>
 																</c:otherwise>
 															</c:choose>
 														</c:otherwise>
