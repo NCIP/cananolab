@@ -119,7 +119,8 @@
 														Bibliography Info
 													</td>
 													<td>
-														<c:out value="${pubBean.displayName}" escapeXml="false"/>&nbsp;
+														<c:out value="${pubBean.displayName}" escapeXml="false" />
+														&nbsp;
 													</td>
 												</tr>
 												<c:if test="${!empty pubObj.researchArea}">
@@ -141,10 +142,7 @@
 															Description
 														</td>
 														<td>
-															<c:set var="desc" value="${fn:replace(pubObj.description, '<', '&lt;')}" />
-															<c:out
-																value="${fn:replace(desc, cr, '<br>')}"
-																escapeXml="false" />
+															<c:out value="${pubBean.description}" escapeXml="false" />
 															&nbsp;
 														</td>
 													</tr>
@@ -155,9 +153,8 @@
 															Keywords
 														</td>
 														<td>
-															<c:set var="keywordsStr" value="${fn:replace(pubBean.keywordsStr, '<', '&lt;')}" />
 															<c:out
-																value="${fn:replace(keywordsStr, cr, '<br>')}"
+																value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
 																escapeXml="false" />
 															&nbsp;
 														</td>
@@ -168,7 +165,8 @@
 														Publication Status
 													</td>
 													<td>
-														<c:out value="${pubObj.status}" />&nbsp;
+														<c:out value="${pubObj.status}" />
+														&nbsp;
 													</td>
 												</tr>
 											</table>
