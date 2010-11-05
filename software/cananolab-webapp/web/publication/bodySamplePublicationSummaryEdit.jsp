@@ -212,7 +212,7 @@
 																Publication Status
 															</td>
 															<td>
-																${pubObj.status}&nbsp;
+																<c:out value="${pubObj.status}"/>&nbsp;
 															</td>
 															<td></td>
 														</tr>
@@ -225,7 +225,7 @@
 											</td>
 										</tr>
 										<tr>
-											<th valign="top" align="left" height="6">
+											<th valign="top" align="left" height="6">:
 											</th>
 										</tr>
 									</table>
