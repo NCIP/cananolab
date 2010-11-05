@@ -31,7 +31,7 @@
 					<c:when test="${file.domainFile.uriExternal}">
 						<a  style="white-space: normal;"
 							href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-							<c:out value="${file.domainFile.uri}"/></a>
+							<c:out value="${file.domainFile.uri}" escapeXml="false"/></a>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
