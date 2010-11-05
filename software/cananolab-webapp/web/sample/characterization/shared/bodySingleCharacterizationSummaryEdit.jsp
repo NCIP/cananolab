@@ -25,13 +25,13 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charObj.assayType}">
-						<c:out value="${charObj.assayType}"/>
+					<c:out value="${charObj.assayType}" />
 				</c:when>
 				<c:otherwise>
 					<c:choose>
 						<c:when
 							test="${charBean.characterizationType eq 'physico chemical characterization'}">
-									<c:out value="${charName}"/>
+							<c:out value="${charName}" />
 						</c:when>
 						<c:otherwise>N/A</c:otherwise>
 					</c:choose>
@@ -46,7 +46,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charBean.pocBean.displayName}">
-						<c:out value="${charBean.pocBean.displayName}"/>
+					<c:out value="${charBean.pocBean.displayName}" />
 				</c:when>
 				<c:otherwise>
 					N/A
@@ -61,7 +61,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charBean.dateString}">
-						<c:out value="${charBean.dateString}"/>
+					<c:out value="${charBean.dateString}" />
 				</c:when>
 				<c:otherwise>
 						N/A
@@ -76,7 +76,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty charBean.protocolBean.displayName}">
-						<c:out value="${charBean.protocolBean.displayName}"/>
+					<c:out value="${charBean.protocolBean.displayName}" />
 				</c:when>
 				<c:otherwise>
 						N/A
@@ -112,10 +112,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(charObj.designMethodsDescription)}">
-					<c:set var="designMethodsDesc" value="${fn:replace(charObj.designMethodsDescription, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(designMethodsDesc, cr, '<br>')}"
-						escapeXml="false" />
+					<c:out value="${charBean.description}" escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
 				</c:otherwise>
@@ -156,7 +153,9 @@
 		</td>
 		<td colspan="2">
 			<c:choose>
-				<c:when test="${!empty charBean.conclusion}"><c:out value="${charBean.conclusion}"/>															</c:when>
+				<c:when test="${!empty charBean.conclusion}">
+					<c:out value="${charBean.conclusion}" />
+				</c:when>
 				<c:otherwise>N/A</c:otherwise>
 			</c:choose>
 		</td>
