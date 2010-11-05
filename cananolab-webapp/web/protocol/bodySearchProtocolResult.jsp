@@ -25,7 +25,7 @@
 				<display:column title="Protocol Abbreviation"
 					property="domain.abbreviation" sortable="true" escapeXml="true" />
 				<display:column title="Protocol Type" property="domain.type"
-					sortable="true" escapeXml="false" />
+					sortable="true" escapeXml="true" />
 				<display:column title="Version" property="domain.version"
 					sortable="true" escapeXml="true" />
 				<display:column title="File" property="downloadURL" sortable="true" />
