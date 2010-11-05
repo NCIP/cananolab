@@ -69,8 +69,7 @@
 												Keywords
 											</td>
 											<td>
-												<c:out value="${fn:replace(file.keywordsStr, cr, '<br>')}"
-													escapeXml="false" />
+												<c:out value="${file.keywordsDisplayName}" escapeXml="false" />
 											</td>
 										</tr>
 									</c:if>
