@@ -119,7 +119,7 @@
 														Bibliography Info
 													</td>
 													<td>
-														<c:out value="${pubBean.displayName}"/>&nbsp;
+														<c:out value="${pubBean.displayName}" escapeXml="false"/>&nbsp;
 													</td>
 												</tr>
 												<c:if test="${!empty pubObj.researchArea}">
