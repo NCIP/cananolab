@@ -112,7 +112,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(charObj.designMethodsDescription)}">
-					<c:out value="${charBean.description}" escapeXml="false" />
+					<c:out value="${charBean.descriptionDisplayName}" escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
 				</c:otherwise>

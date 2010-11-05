@@ -52,7 +52,7 @@
 			</c:if>
 			<td>
 				<c:if test="${! empty function.description}">
-					<c:out value="${function.description}" escapeXml="false" />
+					<c:out value="${function.descriptionDisplayName}" escapeXml="false" />
 				</c:if>
 			</td>
 			<c:if test="${edit eq 'true'}">

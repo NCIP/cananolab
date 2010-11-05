@@ -159,7 +159,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(functionalizingEntity.description)}">
-					<c:out value="${functionalizingEntity.description}"
+					<c:out value="${functionalizingEntity.descriptionDisplayName}"
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
