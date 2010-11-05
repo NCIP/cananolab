@@ -22,22 +22,20 @@
 		varStatus="configIndex">
 		<tr>
 			<td>
-				<c:out value="${experimentConfig.techniqueDisplayName}"/>
+				<c:out value="${experimentConfig.techniqueDisplayName}" />
 			</td>
 			<td>
 				<c:if test="${! empty experimentConfig.instrumentDisplayNames}">
 					<c:forEach var="instrumentDisplayName"
 						items="${experimentConfig.instrumentDisplayNames}">
-							<c:out value="${instrumentDisplayName}"/><br>
+						<c:out value="${instrumentDisplayName}" />
+						<br>
 					</c:forEach>
 				</c:if>
 			</td>
 			<td>
 				<c:if test="${! empty experimentConfig.domain.description}">
-					<c:set var="desc" value="${fn:replace(experimentConfig.domain.description, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(desc, cr, '<br>')}"
-						escapeXml="false" />
+					<c:out value="${experimentConfig.description}" escapeXml="false" />
 				</c:if>
 			</td>
 			<c:if test="${edit eq 'true'}">

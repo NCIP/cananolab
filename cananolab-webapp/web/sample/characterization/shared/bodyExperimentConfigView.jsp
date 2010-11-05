@@ -34,10 +34,7 @@
 			</td>
 			<td>
 				<c:if test="${! empty experimentConfig.domain.description}">
-					<c:set var="desc" value="${fn:replace(experimentConfig.domain.description, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(desc, cr, '<br>')}"
-						escapeXml="false" />
+					<c:out value="${experimentConfig.description}" escapeXml="false" />
 				</c:if>
 			</td>
 			<c:if test="${edit eq 'true'}">
