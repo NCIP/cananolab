@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * A class representing a string displayed as a link
+ *
  * @author pansu
  *
  */
@@ -35,7 +36,9 @@ public class LinkableItem {
 	}
 
 	public String getDisplayName() {
-		displayName = StringUtils.join(displayStrings, "<br>");
+		String str = StringUtils.join(displayStrings, "\r\n");
+		//per app scan
+		displayName = StringUtils.escapeXmlButPreserveLineBreaks(str);
 		return displayName;
 	}
 }
