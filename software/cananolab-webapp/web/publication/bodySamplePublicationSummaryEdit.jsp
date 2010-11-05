@@ -34,8 +34,7 @@
 				varStatus="ind">
 				<a
 					href="javascript:showSummary(${ind.count}, ${fn:length(publicationCategories)})"
-					title="${type}"><span>${type}</span>
-				</a>
+					title="${type}"><span><c:out value="${type}"/></span></a>
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
@@ -100,17 +99,11 @@
 					<tr>
 						<th align="left">
 							<a name="${type}" id="${type}"><span
-								class="summaryViewHeading">${type}</span></a>&nbsp;&nbsp;
+								class="summaryViewHeading"><c:out value="${type}"/></span> </a>&nbsp;&nbsp;
 							<a
 								href="publication.do?dispatch=setupNew&sampleId=${sampleId}&type=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
 									border="0" /></a>&nbsp;&nbsp;
-							<%--
-							<c:if test="${! empty publicationSummaryView.category2Publications[type]}">
-								<a><img align="middle" src="images/btn_delete.gif"
-										border="0" /> </a>
-							</c:if>
-							--%>
 						</th>
 					</tr>
 					<tr>
@@ -151,7 +144,8 @@
 																Bibliography Info
 															</td>
 															<td>
-																<c:out value="${pubBean.displayName}" escapeXml="false"/>&nbsp;
+																<c:out value="${pubBean.displayName}" escapeXml="false" />
+																&nbsp;
 															</td>
 															<td></td>
 														</tr>
@@ -178,9 +172,7 @@
 															<td>
 																<c:choose>
 																	<c:when test="${pubObj.description}">
-																		<c:set var="desc" value="${fn:replace(pubObj.description, '<', '&lt;')}" />
-																		<c:out
-																			value="${fn:replace(desc, cr, '<br>')}"
+																		<c:out value="${pubBean.description}"
 																			escapeXml="false" />
 																&nbsp;</c:when>
 																	<c:otherwise>N/A</c:otherwise>
@@ -196,9 +188,8 @@
 															<td>
 																<c:choose>
 																	<c:when test="${pubBean.keywordsStr}">
-																		<c:set var="keywordsStr" value="${fn:replace(pubBean.keywordsStr, '<', '&lt;')}" />
 																		<c:out
-																			value="${fn:replace(keywordsStr, cr, '<br>')}"
+																			value="${fn:replace(pubBean.keywordsStr, cr, '<br>')}"
 																			escapeXml="false" />
 																&nbsp;</c:when>
 																	<c:otherwise>N/A</c:otherwise>
@@ -212,7 +203,8 @@
 																Publication Status
 															</td>
 															<td>
-																<c:out value="${pubObj.status}"/>&nbsp;
+																<c:out value="${pubObj.status}" />
+																&nbsp;
 															</td>
 															<td></td>
 														</tr>
@@ -225,7 +217,7 @@
 											</td>
 										</tr>
 										<tr>
-											<th valign="top" align="left" height="6">:
+											<th valign="top" align="left" height="6">
 											</th>
 										</tr>
 									</table>
