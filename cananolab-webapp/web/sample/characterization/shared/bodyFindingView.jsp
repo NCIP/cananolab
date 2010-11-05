@@ -19,7 +19,7 @@
 							<tr>
 								<c:forEach var="col" items="${finding.columnHeaders}">
 									<td class="cellLabel">
-										<c:out value="${col.displayName}"/>
+										<c:out value="${col.displayName}" escapeXml="false"/>
 									</td>
 								</c:forEach>
 							</tr>
