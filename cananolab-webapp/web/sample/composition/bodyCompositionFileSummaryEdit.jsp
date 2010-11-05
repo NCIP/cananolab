@@ -11,7 +11,8 @@
 			composition file &nbsp;&nbsp;&nbsp;
 			<a href="compositionFile.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" /></a>
+					border="0" />
+			</a>
 		</th>
 	</tr>
 	<tr>
@@ -25,7 +26,7 @@
 							bgcolor="#dbdbdb">
 							<tr>
 								<th align="left">
-									<c:out value="${fileType}"/>
+									<c:out value="${fileType}" />
 								</th>
 							</tr>
 							<tr>
@@ -52,13 +53,14 @@
 														<c:when test="${file.domainFile.uriExternal}">
 															<a
 																href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-																<c:out value="${file.domainFile.uri}" escapeXml="false"/></a>
+																<c:out value="${file.domainFile.uri}" escapeXml="false" />
+															</a>
 														</c:when>
 														<c:otherwise>
 															<c:choose>
 																<c:when test="${file.image eq 'true'}">
-						 				<c:out value="${file.domainFile.title}"/>
-										<br>
+																	<c:out value="${file.domainFile.title}" />
+																	<br>
 																	<a href="#"
 																		onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
 																			src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}"
@@ -67,7 +69,8 @@
 																<c:otherwise>
 																	<a
 																		href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-																		<c:out value="${file.domainFile.title}"/></a>
+																		<c:out value="${file.domainFile.title}" />
+																	</a>
 																</c:otherwise>
 															</c:choose>
 														</c:otherwise>
@@ -82,8 +85,7 @@
 												<td>
 													<c:choose>
 														<c:when test="${!empty fn:trim(file.keywordsStr)}">
-															<c:out
-																value="${fn:replace(file.keywordsStr, cr, '<br>')}"
+															<c:out value="${file.keywordsDisplayName}"
 																escapeXml="false" />
 														</c:when>
 														<c:otherwise>N/A
@@ -100,8 +102,7 @@
 													<c:choose>
 														<c:when
 															test="${!empty fn:trim(file.domainFile.description)}">
-															<c:out
-																value="${file.description}" escapeXml="false" />
+															<c:out value="${file.description}" escapeXml="false" />
 														</c:when>
 														<c:otherwise>N/A
 												</c:otherwise>
