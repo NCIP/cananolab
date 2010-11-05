@@ -17,7 +17,7 @@
 					Assay Type
 				</td>
 				<td>
-					<c:out value="${charObj.assayType}"/>
+					<c:out value="${charObj.assayType}" />
 				</td>
 			</tr>
 		</c:when>
@@ -29,7 +29,7 @@
 						Assay Type
 					</td>
 					<td>
-						<c:out value="${charName}"/>
+						<c:out value="${charName}" />
 					</td>
 				</tr>
 			</c:if>
@@ -41,7 +41,7 @@
 				Point of Contact
 			</td>
 			<td>
-				<c:out value="${charBean.pocBean.displayName}"/>
+				<c:out value="${charBean.pocBean.displayName}" />
 			</td>
 		</tr>
 	</c:if>
@@ -51,7 +51,7 @@
 				Characterization Date
 			</td>
 			<td>
-				<c:out value="${charBean.dateString}"/>
+				<c:out value="${charBean.dateString}" />
 			</td>
 		</tr>
 	</c:if>
@@ -61,7 +61,7 @@
 				Protocol
 			</td>
 			<td>
-				<c:out value="${charBean.protocolBean.displayName}"/>
+				<c:out value="${charBean.protocolBean.displayName}" />
 			</td>
 		</tr>
 	</c:if>
@@ -93,14 +93,11 @@
 			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(charObj.designMethodsDescription)}">
-						<c:set var="designMethodsDesc" value="${fn:replace(charObj.designMethodsDescription, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(designMethodsDesc, cr, '<br>')}"
-						escapeXml="false" />
+						<c:out value="${charBean.description}" escapeXml="false" />
 					</c:when>
 					<c:otherwise>
-												N/A
-											</c:otherwise>
+						N/A
+					</c:otherwise>
 				</c:choose>
 			</td>
 		</tr>
@@ -131,8 +128,8 @@
 				Analysis and Conclusion
 			</td>
 			<td>
-				<c:out value="${charBean.conclusion}"/>
+				<c:out value="${charBean.conclusion}" />
 			</td>
 		</tr>
-	</c:if>	
+	</c:if>
 </table>
