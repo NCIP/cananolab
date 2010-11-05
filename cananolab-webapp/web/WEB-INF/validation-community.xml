@@ -5,18 +5,25 @@
 <form-validation>
 	<formset>
 		<form name="collaborationGroupForm">
-			<field property="group.name" page="1" depends="required">
+			<field property="group.name" page="1" depends="required, mask">
 				<arg position="0" key="group.name" bundle="community" />
+				<msg name="mask" key="group.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-			<field property="group.theUserAccessibility.userBean.loginName"
-				page="3" depends="required">
-				<arg position="0" key="group.theUserAccessibility.userBean.loginName"
-					bundle="community" />
+			<field property="group.theAccess.userBean.loginName" page="3"
+				depends="required, mask">
+				<arg position="0" key="login.name" bundle="community" />
+				<msg name="mask" key="login.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-			<field property="group.theUserAccessibility.roleName" page="3"
-				depends="required">
-				<arg position="0" key="group.theUserAccessibility.roleName"
-					bundle="community" />
+			<field property="group.theAccess.roleName" page="3" depends="required">
+				<arg position="0" key="group.theAccess.roleName" bundle="community" />
 			</field>
 		</form>
 	</formset>

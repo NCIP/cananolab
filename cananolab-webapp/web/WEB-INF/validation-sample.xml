@@ -6,17 +6,27 @@
 	<formset>
 		<form name="sampleForm">
 			<field property="sampleBean.cloningSampleName" page="1"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="sampleBean.cloningSampleName" bundle="sample" />
+				<msg name="mask" key="cloningSample.name.invalid" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
 						((page!=1) or ((page==1) and (*this*!=null)))
 					</var-value>
 				</var>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-			<field property="sampleBean.domain.name" page="1" depends="required">
+			<field property="sampleBean.domain.name" page="1" depends="required, mask">
 				<arg position="0" key="sampleForm.sampleName" bundle="sample" />
+				<msg name="mask" key="sample.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="sampleBean.primaryPOCBean.domain.id" page="2"
 				depends="validwhen">
@@ -30,13 +40,121 @@
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.name"
-				page="3" depends="validwhen">
+				page="3" depends="validwhen, mask">
 				<arg position="0" key="sampleForm.organizationName" bundle="sample" />
+				<msg name="mask" key="organization.name.invalid" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
 						((page!=3) or ((page==3) and (*this*!=null)))
 					</var-value>
+				</var>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.organization.streetAddress1"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.address1.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhitelist}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.organization.streetAddress2"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.address2.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.organization.city"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.city.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.organization.state"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.state.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.organization.country"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.country.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.organization.postalCode"
+				page="3" depends="mask">
+				<msg name="mask" key="postalCode.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${zip}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.role" page="3"
+				depends="mask">
+				<msg name="mask" key="role.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.firstName" page="3"
+				depends="mask">
+				<msg name="mask" key="firstName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.lastName" page="3"
+				depends="mask">
+				<msg name="mask" key="lastName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.middleInitial" page="3"
+				depends="mask">
+				<msg name="mask" key="middleInitial.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.phone" page="3"
+				depends="mask">
+				<msg name="mask" key="phone.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${phone}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.thePOC.domain.email" page="3"
+				depends="mask">
+				<msg name="mask" key="email.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${email}</var-value>
+				</var>
+			</field>
+			<field property="sampleBean.keywordsStr" page="1" depends="mask">
+				<msg name="mask" key="keyword.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.theAccess.accessBy" page="4"
@@ -72,16 +190,27 @@
 			</field>
 		</form>
 		<form name="/chemicalAssociation">
-			<field property="assoc.type" page="1" depends="required">
+			<field property="assoc.type" page="1" depends="required,mask">
 				<arg position="0" key="chemicalAssociationType" bundle="sample" />
+				<msg name="mask" key="chemicalAssociation.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-			<field property="assoc.attachment.bondType" page="1" depends="validwhen">
+			<field property="assoc.attachment.bondType" page="1"
+				depends="validwhen, mask">
 				<arg position="0" key="chemicalAssociationBondType" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
 						((assoc.type!='attachment') or (*this*!=null))
 					</var-value>
+				</var>
+				<msg name="mask" key="chemicalAssociation.bondType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="assoc.associatedElementA.entityId" page="1"
@@ -133,7 +262,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="assoc.theFile.externalUrl" page="3" depends="validwhen">
+			<field property="assoc.theFile.externalUrl" page="3"
+				depends="validwhen, mask">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -143,10 +273,20 @@
 						(assoc.theFile.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
+				<msg name="mask" key="externalUrl.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${url}</var-value>
+				</var>
 			</field>
 			<field property="assoc.theFile.domainFile.type" page="3"
-				depends="required">
+				depends="required,mask">
 				<arg position="0" key="file.type" bundle="sample" />
+				<msg name="mask" key="file.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="assoc.theFile.domainFile.title" page="3"
 				depends="required, mask">
@@ -154,16 +294,21 @@
 				<msg name="mask" key="file.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\(\)]*$</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 		</form>
 		<form name="/nanomaterialEntity">
-			<field property="nanomaterialEntity.type" page="1" depends="required">
+			<field property="nanomaterialEntity.type" page="1" depends="required, mask">
 				<arg position="0" key="nanomaterialEntityType" bundle="sample" />
+				<msg name="mask" key="nanomaterialEntityType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.biopolymer.name" page="1"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.name"
 					bundle="sample" />
 				<var>
@@ -173,9 +318,14 @@
 						(*this*!=null))
 					</var-value>
 				</var>
+				<msg name="mask" key="nanomaterialEntityForm.biopolymer.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.biopolymer.type" page="1"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.type"
 					bundle="sample" />
 				<var>
@@ -185,9 +335,14 @@
 						(*this*!=null))
 					</var-value>
 				</var>
+				<msg name="mask" key="nanomaterialEntityForm.biopolymer.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.liposome.polymerName" page="1"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="nanomaterialEntityForm.liposome.polymerName"
 					bundle="sample" />
 				<var>
@@ -199,9 +354,14 @@
 						(nanomaterialEntity.type != "liposome"))
 					</var-value>
 				</var>
+				<msg name="mask" key="nanomaterialEntityForm.liposome.polymerName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.emulsion.polymerName" page="1"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="nanomaterialEntityForm.emulsion.polymerName"
 					bundle="sample" />
 				<var>
@@ -213,9 +373,14 @@
 						(nanomaterialEntity.type != "emulsion"))
 					</var-value>
 				</var>
+				<msg name="mask" key="nanomaterialEntityForm.emulsion.polymerName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.polymer.crossLinkDegree"
-				page="1" depends="validwhen">
+				page="1" depends="validwhen, mask">
 				<arg position="0" key="nanomaterialEntityForm.polymer.crossLinkDegree"
 					bundle="sample" />
 				<var>
@@ -226,9 +391,39 @@
 						(*this*!=null)))
 					</var-value>
 				</var>
+				<msg name="mask"
+					key="nanomaterialEntityForm.polymer.crossLinkDegree.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${number}</var-value>
+				</var>
+			</field>
+			<field property="nanomaterialEntity.polymer.initiator" page="1"
+				depends="mask">
+				<msg name="mask" key="nanomaterialEntityForm.polymer.initiator.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="nanomaterialEntity.dendrimer.branch" page="1"
+				depends="mask">
+				<msg name="mask" key="nanomaterialEntityForm.dendrimer.branch.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="nanomaterialEntity.dendrimer.generation" page="1"
+				depends="mask">
+				<msg name="mask" key="nanomaterialEntityForm.dendrimer.generation.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.theComposingElement.domain.type"
-				page="2" depends="validwhen">
+				page="2" depends="validwhen, mask">
 				<arg position="0" key="composingElement.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -238,9 +433,14 @@
 						(*this*!=null))
 					</var-value>
 				</var>
+				<msg name="mask" key="composingElement.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.theComposingElement.domain.name"
-				page="2" depends="validwhen">
+				page="2" depends="validwhen, mask">
 				<arg position="0" key="composingElement.chemicalName" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -249,6 +449,44 @@
 						(dispatch!='removeComposingElement')) or
 						(*this*!=null))
 					</var-value>
+				</var>
+				<msg name="mask" key="composingElement.chemicalName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="nanomaterialEntity.theComposingElement.domain.pubChemId"
+				page="2" depends="mask">
+				<msg name="mask" key="composingElement.pubChemId.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${numeric}</var-value>
+				</var>
+			</field>
+			<field property="nanomaterialEntity.theComposingElement.domain.value"
+				page="2" depends="mask">
+				<msg name="mask" key="composingElement.value.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${number}</var-value>
+				</var>
+			</field>
+			<field property="nanomaterialEntity.theComposingElement.domain.valueUnit"
+				page="2" depends="mask">
+				<msg name="mask" key="composingElement.valueUnit.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${unit}</var-value>
+				</var>
+			</field>
+			<field
+				property="nanomaterialEntity.theComposingElement.domain.molecularFormulaType"
+				page="2" depends="mask">
+				<msg name="mask" key="composingElement.molecularFormulaType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="nanomaterialEntity.theFile.uploadedFile" page="3"
@@ -267,7 +505,7 @@
 				</var>
 			</field>
 			<field property="nanomaterialEntity.theFile.externalUrl" page="3"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -277,10 +515,20 @@
 						(nanomaterialEntity.theFile.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
+				<msg name="mask" key="externalUrl.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${url}</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.theFile.domainFile.type"
-				page="3" depends="required">
+				page="3" depends="required, mask">
 				<arg position="0" key="file.type" bundle="sample" />
+				<msg name="mask" key="file.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>textFieldWhiteList</var-value>
+				</var>
 			</field>
 			<field property="nanomaterialEntity.theFile.domainFile.title"
 				page="3" depends="required, mask">
@@ -288,16 +536,58 @@
 				<msg name="mask" key="file.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\(\)]*$</var-value>
+					<var-value>textFieldWhiteList</var-value>
 				</var>
 			</field>
 		</form>
 		<form name="/functionalizingEntity">
 			<field property="functionalizingEntity.type" page="1" depends="required">
 				<arg position="0" key="functionalizingEntity.type" bundle="sample" />
+				<msg name="mask" key="functionalizingEntity.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-			<field property="functionalizingEntity.name" page="1" depends="required">
+			<field property="functionalizingEntity.name" page="1"
+				depends="required, mask">
 				<arg position="0" key="functionalizingEntity.name" bundle="sample" />
+				<msg name="mask" key="functionalizingEntity.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="functionalizingEntity.domain.pubChemId" page="1"
+				depends="mask">
+				<msg name="mask" key="functionalizingEntity.pubChemId.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${numeric}</var-value>
+				</var>
+			</field>
+			<field property="functionalizingEntity.value" page="1" depends="mask">
+				<msg name="mask" key="functionalizingEntity.value.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${number}</var-value>
+				</var>
+			</field>
+			<field property="functionalizingEntity.valueUnit" page="1"
+				depends="mask">
+				<msg name="mask" key="functionalizingEntity.valueUnit.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${unit}</var-value>
+				</var>
+			</field>
+			<field property="functionalizingEntity.molecularFormulaType"
+				page="2" depends="mask">
+				<msg name="mask" key="functionalizingEntity.molecularFormulaType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="functionalizingEntity.theFunction.type" page="2"
 				depends="validwhen">
@@ -309,6 +599,19 @@
 						(dispatch!='removeFunction')) or
 						(*this*!=null))
 					</var-value>
+				</var>
+				<msg name="mask" key="function.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="functionalizingEntity.theFunction.imagingFunction.modality"
+				page="2" depends="mask">
+				<msg name="mask" key="imagingFunction.modality.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="functionalizingEntity.theFile.uploadedFile"
@@ -327,7 +630,7 @@
 				</var>
 			</field>
 			<field property="functionalizingEntity.theFile.externalUrl"
-				page="3" depends="validwhen">
+				page="3" depends="validwhen, mask">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -337,10 +640,20 @@
 						(functionalizingEntity.theFile.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
+				<msg name="mask" key="externalUrl.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${url}</var-value>
+				</var>
 			</field>
 			<field property="functionalizingEntity.theFile.domainFile.type"
-				page="3" depends="required">
+				page="3" depends="required, mask">
 				<arg position="0" key="file.type" bundle="sample" />
+				<msg name="mask" key="file.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="functionalizingEntity.theFile.domainFile.title"
 				page="3" depends="required, mask">
@@ -348,7 +661,7 @@
 				<msg name="mask" key="file.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\(\)]*$</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 		</form>
@@ -366,7 +679,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="comp.theFile.externalUrl" page="1" depends="validwhen">
+			<field property="comp.theFile.externalUrl" page="1"
+				depends="validwhen, mask">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -376,6 +690,11 @@
 						(comp.theFile.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
+				<msg name="mask" key="externalUrl.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${url}</var-value>
+				</var>
 			</field>
 			<field property="comp.theFile.domainFile.title" page="1"
 				depends="required,mask">
@@ -383,17 +702,23 @@
 				<msg name="mask" key="file.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\(\)]*$</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="comp.theFile.domainFile.type" page="1"
-				depends="required">
+				depends="required, mask">
 				<arg position="0" key="file.type" bundle="sample" />
+				<msg name="mask" key="file.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 		</form>
 		<form name="characterizationForm">
 			<!-- 1.Mandatory properties: Char Type and Char Name -->
-			<field property="achar.characterizationType" page="1" depends="validwhen">
+			<field property="achar.characterizationType" page="1"
+				depends="validwhen, mask">
 				<arg position="0" key="achar.characterizationType" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -401,8 +726,14 @@
 						((*this* != null) or (dispatch == "addFile"))
 					</var-value>
 				</var>
+				<msg name="mask" key="achar.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-			<field property="achar.characterizationName" page="1" depends="validwhen">
+			<field property="achar.characterizationName" page="1"
+				depends="validwhen, mask">
 				<arg position="0" key="achar.characterizationName" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -410,12 +741,30 @@
 						((*this* != null) or (dispatch == "addFile"))
 					</var-value>
 				</var>
+				<msg name="mask" key="achar.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-
+			<field property="achar.characterizationName" page="1" depends="mask">
+				<msg name="mask" key="achar.assayType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="achar.date" page="1" depends="date">
+				<arg position="0" key="achar.date" bundle="sample" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
 			<!--
 				1.Mandatory properties: Shape Type required if Char Name is Shape
 			-->
-			<field property="achar.shape.type" page="1" depends="validwhen">
+			<field property="achar.shape.type" page="1" depends="validwhen, mask">
 				<arg position="0" key="shape.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -425,11 +774,53 @@
 						(achar.characterizationName != 'Shape'))
 					</var-value>
 				</var>
+				<msg name="mask" key="achar.shape.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-
+			<field property="achar.physicalState.type" page="1" depends="mask">
+				<msg name="mask" key="achar.physicalState.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="achar.solubility.solvent" page="1" depends="mask">
+				<msg name="mask" key="achar.solubility.solvent.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="achar.solubility.critialConcentration" page="1"
+				depends="mask">
+				<msg name="mask" key="achar.solubility.critialConcentration.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${number}</var-value>
+				</var>
+			</field>
+			<field property="achar.solubility.critialConcentrationUnit"
+				page="1" depends="mask">
+				<msg name="mask" key="achar.solubility.critialConcentrationUnit.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${unit}</var-value>
+				</var>
+			</field>
+			<field property="achar.enzymeInduction.enzyme" page="1"
+				depends="mask">
+				<msg name="mask" key="achar.enzymeInduction.enzyme.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 			<!-- 2.Optional properties: Technique and Instrument form -->
 			<field property="achar.theExperimentConfig.domain.technique.type"
-				page="2" depends="validwhen">
+				page="2" depends="validwhen, mask">
 				<arg position="0" key="achar.technique.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -439,6 +830,19 @@
 						((dispatch!='saveExperimentConfig') and
 						(dispatch!='deleteExperimentConfig')))
 					</var-value>
+				</var>
+				<msg name="mask" key="achar.technique.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="achar.theExperimentConfig.domain.technique.abbreviation" page="1"
+				depends="mask">
+				<msg name="mask" key="achar.technique.abbreviation.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 
@@ -459,7 +863,7 @@
 				</var>
 			</field>
 			<field property="achar.theFinding.theFile.externalUrl" page="3"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -470,15 +874,25 @@
 						(achar.theFinding.theFile.domainFile.uriExternal=="false")))
 					</var-value>
 				</var>
+				<msg name="mask" key="externalUrl.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${url}</var-value>
+				</var>
 			</field>
 			<field property="achar.theFinding.theFile.domainFile.type"
-				page="3" depends="validwhen">
+				page="3" depends="validwhen, mask">
 				<arg position="0" key="file.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
 						((dispatch!="addFile") or (*this*!=null))
 					</var-value>
+				</var>
+				<msg name="mask" key="file.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="achar.theFinding.theFile.domainFile.title"
@@ -493,17 +907,7 @@
 				<msg name="mask" key="file.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\(\)]*$</var-value>
-				</var>
-			</field>
-		</form>
-		<form name="searchSampleForm">
-			<field property="text" page="1" depends="mask">
-				<arg position="0" key="text" bundle="sample" />
-				<msg name="mask" key="text.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 		</form>

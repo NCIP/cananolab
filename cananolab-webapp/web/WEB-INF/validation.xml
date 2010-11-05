@@ -29,8 +29,20 @@
 			<constant-value>^[a-zA-Z0-9\-\_\:\.]+@[a-zA-Z0-9\-\_\:\.]+\.[a-zA-Z]{2,3}$</constant-value>
 		</constant>
 		<constant>
-			<constant-name>textFieldWhitelist</constant-name>
+			<constant-name>textFieldWhiteList</constant-name>
 			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>url</constant-name>
+			<constant-value>^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>number</constant-name>
+			<constant-value>^[-+]?[0-9]*\.?[0-9]+$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>unit</constant-name>
+			<constant-value>^[a-zA-Z\%\/\-\_\s\(\)]*$</constant-value>
 		</constant>
 	</global>
 	<formset>

@@ -10,7 +10,7 @@
 				<msg name="mask" key="protocol.name.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhitelist}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="protocol.domain.type" page="1" depends="required, mask">
@@ -18,7 +18,7 @@
 				<msg name="mask" key="protocol.type.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhitelist}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="protocol.domain.version" page="1" depends="required, mask">
@@ -26,7 +26,7 @@
 				<msg name="mask" key="protocol.version.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhitelist}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="protocol.domain.abbreviation" page="1"
@@ -34,7 +34,7 @@
 				<msg name="mask" key="protocol.abbreviation.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhitelist}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="protocol.fileBean.domainFile.title" page="1"
@@ -42,7 +42,7 @@
 				<msg name="mask" key="protocol.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhitelist}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="protocol.theAccess.accessBy" page="2" depends="required">
