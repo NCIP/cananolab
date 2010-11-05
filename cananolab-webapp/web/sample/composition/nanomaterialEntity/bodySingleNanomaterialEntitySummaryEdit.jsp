@@ -20,10 +20,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(nanomaterialEntity.description)}">
-					<c:set var="desc" value="${fn:replace(nanomaterialEntity.description, '<', '&lt;')}" />
-					<c:out
-						value="${fn:replace(desc, cr, '<br>')}"
-						escapeXml="false" />
+					<c:out value="${nanomaterialEntity.description}" escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
 												</c:otherwise>
@@ -88,7 +85,7 @@
 				<c:when test="${! empty nanomaterialEntity.files}">
 					<c:set var="files" value="${nanomaterialEntity.files }" />
 					<c:set var="entityType" value="nanomaterial entity" />
-					<c:set var="downloadAction" value="composition"/>
+					<c:set var="downloadAction" value="composition" />
 					<%@include file="../../bodyFileView.jsp"%>
 				</c:when>
 				<c:otherwise>
