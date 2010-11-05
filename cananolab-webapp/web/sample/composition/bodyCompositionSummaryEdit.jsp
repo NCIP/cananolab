@@ -35,7 +35,7 @@
 			<li>
 				<a
 					href="javascript:showSummary('${ind.count}', ${fn:length(compositionSections)})"
-					title="${type}"> <span>${type}</span> </a>
+					title="${type}"> <span><c:out value="${type}"/></span> </a>
 				<a href="javascript:printPage('${printUrl}&type=${type}')"
 					id="printUrl${ind.count}" style="display: none;"></a>
 				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
@@ -64,7 +64,7 @@
 				<li class="${selectedClass}">
 					<a
 						href="javascript:showSummary('${ind.count}', ${fn:length(compositionSections)})"
-						title="${type}"> <span>${type}</span> </a>
+						title="${type}"> <span><c:out value="${type}"/></span> </a>
 				</li>
 			</c:forEach>
 		</ul>
