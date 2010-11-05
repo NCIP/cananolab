@@ -120,7 +120,7 @@
 				Description
 			</td>
 			<td>
-				<c:out value="${functionalizingEntity.description)}"
+				<c:out value="${functionalizingEntity.description}"
 					escapeXml="false" />
 			</td>
 		</tr>

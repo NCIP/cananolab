@@ -38,8 +38,7 @@
 				<c:when test="${!empty functionalizingEntity.pubChemLink}">
 					<a href="${functionalizingEntity.pubChemLink}"
 						target="caNanoLab - View PubChem"><c:out
-							value="${functionalizingEntity.domainEntity.pubChemId}" />
-					</a>
+							value="${functionalizingEntity.domainEntity.pubChemId}" /> </a>
 						&nbsp;(<c:out
 						value="${functionalizingEntity.domainEntity.pubChemDataSourceName}" />)
 				</c:when>
@@ -160,7 +159,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(functionalizingEntity.description)}">
-					<c:out value="${functionalizingEntity.description)}"
+					<c:out value="${functionalizingEntity.description}"
 						escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
