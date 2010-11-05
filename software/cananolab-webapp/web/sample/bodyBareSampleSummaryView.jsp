@@ -22,11 +22,8 @@
 			<i>(one keyword per line)</i>
 		</td>
 		<td>
-			<c:forEach var="keyword"
-				items="${sampleForm.map.sampleBean.keywordSet}">
-							<c:out value="${keyword}"/>
-							<br>
-			</c:forEach>
+			<c:out value="${sampleForm.map.sampleBean.keywordsDisplayName}"
+				escapeXml="false" />
 		</td>
 	</tr>
 	<c:if
