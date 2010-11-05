@@ -22,18 +22,18 @@
 			</tr>
 			<tr>
 				<td>
-					${nanomaterialEntity.carbonNanotube.averageLength}
-					${nanomaterialEntity.carbonNanotube.averageLengthUnit}
+					<c:out value="${nanomaterialEntity.carbonNanotube.averageLength}"/>
+					<c:out value="${nanomaterialEntity.carbonNanotube.averageLengthUnit}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.carbonNanotube.chirality}
+					<c:out value="${nanomaterialEntity.carbonNanotube.chirality}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.carbonNanotube.diameter}
-					${nanomaterialEntity.carbonNanotube.diameterUnit}
+					<c:out value="${nanomaterialEntity.carbonNanotube.diameter}"/>
+					<c:out value="${nanomaterialEntity.carbonNanotube.diameterUnit}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.carbonNanotube.wallType}
+					<c:out value="${nanomaterialEntity.carbonNanotube.wallType}"/>
 				</td>
 			</tr>
 		</table>
@@ -70,12 +70,12 @@
 									<c:when
 										test="${unit eq compositionForm.map.nanomaterialEntity.carbonNanotube.averageLengthUnit}">
 										<option value="${unit}" selected="selected">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${unit}">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
@@ -120,12 +120,12 @@
 									<c:when
 										test="${unit eq compositionForm.map.nanomaterialEntity.carbonNanotube.diameterUnit}">
 										<option value="${unit}" selected="selected">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${unit}">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
@@ -148,12 +148,12 @@
 								<c:when
 									test="${type eq compositionForm.map.nanomaterialEntity.carbonNanotube.wallType}">
 									<option value="${type}" selected="selected">
-										${type}
+										<c:out value="${type}"/>
 									</option>
 								</c:when>
 								<c:otherwise>
 									<option value="${type}">
-										${type}
+										<c:out value="${type}"/>
 									</option>
 								</c:otherwise>
 							</c:choose>

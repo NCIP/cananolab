@@ -16,11 +16,11 @@
 			</tr>
 			<tr>
 				<td>
-					${nanomaterialEntity.fullerene.averageDiameter}
-					${nanomaterialEntity.fullerene.averageDiameterUnit}
+					<c:out value="${nanomaterialEntity.fullerene.averageDiameter}"/>
+					<c:out value="${nanomaterialEntity.fullerene.averageDiameterUnit}"/>
 				</td>
 				<td>
-					${nanomaterialEntity.fullerene.numberOfCarbon}
+					<c:out value="${nanomaterialEntity.fullerene.numberOfCarbon}"/>
 				</td>
 			</tr>
 		</table>
@@ -56,12 +56,12 @@
 									<c:when
 										test="${unit eq compositionForm.map.nanomaterialEntity.fullerene.averageDiameterUnit}">
 										<option value="${unit}" selected="selected">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${unit}">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
