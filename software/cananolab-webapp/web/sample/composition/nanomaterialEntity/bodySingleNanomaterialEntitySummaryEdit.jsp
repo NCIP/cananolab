@@ -20,7 +20,7 @@
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(nanomaterialEntity.description)}">
-					<c:out value="${nanomaterialEntity.description}" escapeXml="false" />
+					<c:out value="${nanomaterialEntity.descriptionDisplayName}" escapeXml="false" />
 				</c:when>
 				<c:otherwise>N/A
 												</c:otherwise>

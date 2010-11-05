@@ -12,7 +12,7 @@
 				Description
 			</td>
 			<td>
-				<c:out value="${nanomaterialEntity.description}" escapeXml="false" />
+				<c:out value="${nanomaterialEntity.descriptionDisplayName}" escapeXml="false" />
 			</td>
 		</tr>
 	</c:if>
