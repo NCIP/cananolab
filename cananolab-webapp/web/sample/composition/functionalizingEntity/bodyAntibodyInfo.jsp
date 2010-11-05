@@ -19,13 +19,13 @@
 			</tr>
 			<tr>
 				<td>
-					${functionalizingEntity.antibody.type}
+					<c:out value="${functionalizingEntity.antibody.type}"/>
 				</td>
 				<td>
-					${functionalizingEntity.antibody.isotype}
+					<c:out value="${functionalizingEntity.antibody.isotype}"/>
 				</td>
 				<td>
-					${functionalizingEntity.antibody.species}
+					<c:out value="${functionalizingEntity.antibody.species}"/>
 				</td>
 			</tr>
 		</table>
@@ -52,12 +52,12 @@
 										<c:when
 											test="${type eq compositionForm.map.functionalizingEntity.antibody.type}">
 											<option value="${type}" selected="selected">
-												${type}
+												<c:out value="${type}"/>
 											</option>
 										</c:when>
 										<c:otherwise>
 											<option value="${type}">
-												${type}
+												<c:out value="${type}"/>
 											</option>
 										</c:otherwise>
 									</c:choose>
@@ -82,12 +82,12 @@
 										<c:when
 											test="${type eq compositionForm.map.functionalizingEntity.antibody.isotype}">
 											<option value="${type}" selected="selected">
-												${type}
+												<c:out value="${type}"/>
 											</option>
 										</c:when>
 										<c:otherwise>
 											<option value="${type}">
-												${type}
+												<c:out value="${type}"/>
 											</option>
 										</c:otherwise>
 									</c:choose>
@@ -112,12 +112,12 @@
 										<c:when
 											test="${species eq compositionForm.map.functionalizingEntity.antibody.species}">
 											<option value="${species}" selected="selected">
-												${species}
+												<c:out value="${species}"/>
 											</option>
 										</c:when>
 										<c:otherwise>
 											<option value="${species}">
-												${species}
+												<c:out value="${species}"/>
 											</option>
 										</c:otherwise>
 									</c:choose>

@@ -12,7 +12,7 @@
 				Name
 			</td>
 			<td>
-				${functionalizingEntity.name}
+				<c:out value="${functionalizingEntity.name}"/>
 			</td>
 		</tr>
 	</c:if>
@@ -23,8 +23,8 @@
 			</td>
 			<td>
 				<a href="${functionalizingEntity.pubChemLink}"
-					target="caNanoLab - View PubChem">${pubChemId}</a>
-				&nbsp;(${pubChemDS})
+					target="caNanoLab - View PubChem"><c:out value="${pubChemId}"/></a>
+				&nbsp;(<c:out value="${pubChemDS}"/>)
 			</td>
 		</tr>
 	</c:if>
@@ -34,7 +34,7 @@
 				Amount
 			</td>
 			<td>
-				${functionalizingEntity.value} ${functionalizingEntity.valueUnit}
+				<c:out value="${functionalizingEntity.value}"/> <c:out value="${functionalizingEntity.valueUnit}"/>
 			</td>
 		</tr>
 	</c:if>
@@ -45,7 +45,7 @@
 				Molecular Formula
 			</td>
 			<td style="word-wrap: break-word; max-width: 280px;">
-				${functionalizingEntity.molecularFormulaDisplayName}
+				<c:out value="${functionalizingEntity.molecularFormulaDisplayName}"/>
 			</td>
 		</tr>
 	</c:if>
@@ -107,7 +107,7 @@
 				Activation Method
 			</td>
 			<td>
-				${functionalizingEntity.activationMethodDisplayName}"
+				<c:out value="${functionalizingEntity.activationMethodDisplayName}"/>
 			</td>
 		</tr>
 	</c:if>

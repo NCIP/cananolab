@@ -11,7 +11,7 @@
 					Alternate Name
 				</td>			
 				<td>
-					${functionalizingEntity.smallMolecule.alternateName}
+					<c:out value="${functionalizingEntity.smallMolecule.alternateName}"/>
 				</td>
 			</tr>
 		</table>
