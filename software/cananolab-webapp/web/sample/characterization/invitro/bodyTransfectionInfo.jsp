@@ -13,7 +13,7 @@
 							Cell Line
 						</td>
 						<td>
-							${charBean.transfection.cellLine}
+							<c:out value="${charBean.transfection.cellLine}"/>
 						</td>
 					</tr>
 				</table>
@@ -34,7 +34,7 @@
 					Cell Line
 				</td>
 				<td>
-					<textarea name="achar.transfection.cellLine" rows="2" cols="80">${characterizationForm.map.achar.transfection.cellLine}
+					<textarea name="achar.transfection.cellLine" rows="2" cols="80"><c:out value="${characterizationForm.map.achar.transfection.cellLine}"/>
 			</textarea>
 				</td>
 			</tr>

@@ -14,7 +14,7 @@
 							Cell Line
 						</td>
 						<td>
-							${charBean.cytotoxicity.cellLine}
+							<c:out value="${charBean.cytotoxicity.cellLine}"/>
 						</td>
 					</tr>
 				</table>
@@ -35,7 +35,7 @@
 					Cell Line
 				</td>
 				<td>
-					<textarea name="achar.cytotoxicity.cellLine" rows="2" cols="80">${characterizationForm.map.achar.cytotoxicity.cellLine}
+					<textarea name="achar.cytotoxicity.cellLine" rows="2" cols="80"><c:out value="${characterizationForm.map.achar.cytotoxicity.cellLine}"/>
 			</textarea>
 				</td>
 			</tr>

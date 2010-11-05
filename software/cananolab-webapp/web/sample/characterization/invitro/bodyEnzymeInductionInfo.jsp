@@ -13,7 +13,7 @@
 							Enzyme Name
 						</td>
 						<td>
-							${charBean.enzymeInduction.enzyme}
+							<c:out value="${charBean.enzymeInduction.enzyme}"/>
 						</td>
 					</tr>
 				</table>
@@ -43,12 +43,12 @@
 									<c:when
 										test="${name eq characterizationForm.map.achar.enzymeInduction.enzyme}">
 										<option value="${name}" selected="selected">
-											${name}
+											<c:out value="${name}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${name}">
-											${name}
+											<c:out value="${name}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
