@@ -14,7 +14,7 @@
 							Is Hydrophobic?
 						</td>					
 						<td>
-							${charBean.surface.isHydrophobic}
+							<c:out value="${charBean.surface.isHydrophobic}"/>
 						</td>
 					</tr>
 				</table>

@@ -22,14 +22,14 @@
 					</tr>
 					<tr>
 						<td>
-							${charBean.solubility.solvent}
+							<c:out value="${charBean.solubility.solvent}"/>
 						</td>
 						<td>
-							${charBean.solubility.isSoluble}
+							<c:out value="${charBean.solubility.isSoluble}"/>
 						</td>
 						<td>
-							${charBean.solubility.criticalConcentration}
-							${charBean.solubility.criticalConcentrationUnit}
+							<c:out value="${charBean.solubility.criticalConcentration}"/>
+							<c:out value="${charBean.solubility.criticalConcentrationUnit}"/>
 						</td>
 					</tr>
 				</table>
@@ -58,10 +58,10 @@
 								<c:choose>
 									<c:when
 										test="${type eq characterizationForm.map.achar.solubility.solvent}">
-										<option value="${type}" selected="selected">${type}</option>
+										<option value="${type}" selected="selected"><c:out value="${type}"/></option>
 									</c:when>
 									<c:otherwise>
-										<option value="${type}"/>${type}</option>
+										<option value="${type}"/><c:out value="${type}"/></option>
 									</c:otherwise>
 								</c:choose>						
 							</c:forEach>
@@ -118,12 +118,12 @@
 									<c:when
 										test="${unit eq characterizationForm.map.achar.solubility.criticalConcentrationUnit}">
 										<option value="${unit}" selected="selected">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${unit}">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>

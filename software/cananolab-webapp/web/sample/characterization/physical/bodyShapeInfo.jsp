@@ -25,16 +25,16 @@
 					</tr>
 					<tr>
 						<td>
-							${charBean.shape.type}
+							<c:out value="${charBean.shape.type}"/>
 						</td>
 						<td>
-							${charBean.shape.aspectRatio}
+							<c:out value="${charBean.shape.aspectRatio}"/>
 						</td>
 						<td>
-							${charBean.shape.minDimension} ${charBean.shape.minDimensionUnit}
+							<c:out value="${charBean.shape.minDimension} ${charBean.shape.minDimensionUnit}"/>
 						</td>
 						<td>
-							${charBean.shape.maxDimension} ${charBean.shape.maxDimensionUnit}
+							<c:out value="${charBean.shape.maxDimension} ${charBean.shape.maxDimensionUnit}"/>
 						</td>
 					</tr>
 				</table>
@@ -64,12 +64,12 @@
 									<c:when
 										test="${type eq characterizationForm.map.achar.shape.type}">
 										<option value="${type}" selected="selected">
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${type}">
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
@@ -108,12 +108,12 @@
 									<c:when
 										test="${unit eq characterizationForm.map.achar.shape.minDimensionUnit}">
 										<option value="${unit}" selected="selected">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${unit}">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
@@ -141,12 +141,12 @@
 									<c:when
 										test="${unit eq characterizationForm.map.achar.shape.maxDimensionUnit}">
 										<option value="${unit}" selected="selected">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${unit}">
-											${unit}
+											<c:out value="${unit}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>

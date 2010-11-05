@@ -14,7 +14,7 @@
 							Type
 						</td>
 						<td>
-							${charBean.physicalState.type}
+							<c:out value="${charBean.physicalState.type}"/>
 						</td>
 					</tr>
 				</table>
@@ -44,12 +44,12 @@
 									<c:when
 										test="${type eq characterizationForm.map.achar.physicalState.type}">
 										<option value="${type}" selected="selected">
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:when>
 									<c:otherwise>
 										<option value="${type}">
-											${type}
+											<c:out value="${type}"/>
 										</option>
 									</c:otherwise>
 								</c:choose>
