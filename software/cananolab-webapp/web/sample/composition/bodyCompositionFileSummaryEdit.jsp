@@ -25,7 +25,7 @@
 							bgcolor="#dbdbdb">
 							<tr>
 								<th align="left">
-									<c:out value="${fileType}"/>
+									<c:out value="${fileType}" escapeXml="false"/>
 								</th>
 							</tr>
 							<tr>
@@ -52,7 +52,7 @@
 														<c:when test="${file.domainFile.uriExternal}">
 															<a
 																href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-																<c:out value="${file.domainFile.uri}"/></a>
+																<c:out value="${file.domainFile.uri}" escapeXml="false"/></a>
 														</c:when>
 														<c:otherwise>
 															<c:choose>
