@@ -279,7 +279,7 @@ public class CharacterizationBean {
 	}
 
 	public String getDescription() {
-		return this.description;
+		return StringUtils.escapeXmlButPreserveLineBreaks(description);
 	}
 
 	public void setDescription(String description) {
