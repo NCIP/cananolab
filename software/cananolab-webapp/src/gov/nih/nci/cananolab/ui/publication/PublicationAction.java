@@ -118,9 +118,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 
 		/**
-		 * Set associated samples if from sample publication page
+		 * add current sample to associated samples if from sample publication
+		 * page
 		 */
 		if (!StringUtils.isEmpty(sampleId)) {
+			publicationBean.setFromSamplePage(true);
 			Set<String> sampleNames = new HashSet<String>();
 			SampleBean sampleBean = setupSample(theForm, request);
 			sampleNames.add(sampleBean.getDomain().getName());
@@ -134,8 +136,8 @@ public class PublicationAction extends BaseAnnotationAction {
 			}
 			publicationBean.setSampleNames(sampleNames
 					.toArray(new String[sampleNames.size()]));
-			publicationBean.setFromSamplePage(true);
-		} else {
+		}
+		else {
 			publicationBean.setFromSamplePage(false);
 		}
 
