@@ -370,7 +370,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(new Long(sampleName)));
+				Property.forName("name").eq(sampleName));
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
@@ -403,9 +403,10 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(new Long(sampleName)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
+		if (!StringUtils.isEmpty(sampleName)) {
+			crit.add(Property.forName("name").eq(sampleName));
+		}
 		// join composition
 		if (nanomaterialEntityClassNames != null
 				&& nanomaterialEntityClassNames.length > 0
