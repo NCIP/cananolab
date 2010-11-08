@@ -150,13 +150,6 @@
 					<var-value>${email}</var-value>
 				</var>
 			</field>
-			<field property="sampleBean.keywordsStr" page="1" depends="mask">
-				<msg name="mask" key="keyword.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
-			</field>
 			<field property="sampleBean.theAccess.accessBy" page="4"
 				depends="required">
 				<arg position="0" key="access.accessBy" bundle="sample" />
@@ -299,7 +292,7 @@
 			</field>
 		</form>
 		<form name="/nanomaterialEntity">
-			<field property="nanomaterialEntity.type" page="1" depends="required, mask">
+			<field property="nanomaterialEntity.type" page="1" depends="required">
 				<arg position="0" key="nanomaterialEntityType" bundle="sample" />
 				<msg name="mask" key="nanomaterialEntityType.invalid" />
 				<var>
@@ -308,7 +301,7 @@
 				</var>
 			</field>
 			<field property="nanomaterialEntity.biopolymer.name" page="1"
-				depends="validwhen, mask">
+				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.name"
 					bundle="sample" />
 				<var>
@@ -318,14 +311,9 @@
 						(*this*!=null))
 					</var-value>
 				</var>
-				<msg name="mask" key="nanomaterialEntityForm.biopolymer.name.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
 			</field>
 			<field property="nanomaterialEntity.biopolymer.type" page="1"
-				depends="validwhen, mask">
+				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.biopolymer.type"
 					bundle="sample" />
 				<var>
@@ -334,11 +322,6 @@
 						((nanomaterialEntity.type!='biopolymer') or
 						(*this*!=null))
 					</var-value>
-				</var>
-				<msg name="mask" key="nanomaterialEntityForm.biopolymer.type.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="nanomaterialEntity.liposome.polymerName" page="1"
@@ -837,8 +820,8 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="achar.theExperimentConfig.domain.technique.abbreviation" page="1"
-				depends="mask">
+			<field property="achar.theExperimentConfig.domain.technique.abbreviation"
+				page="1" depends="mask">
 				<msg name="mask" key="achar.technique.abbreviation.invalid" />
 				<var>
 					<var-name>mask</var-name>
