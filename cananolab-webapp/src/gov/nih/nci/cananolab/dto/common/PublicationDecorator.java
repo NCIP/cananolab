@@ -39,8 +39,8 @@ public class PublicationDecorator extends TableDecorator {
 		if (!StringUtils.isEmpty(researchArea)) {
 			researchArea = researchArea.replaceAll(";", "\r\n");
 		}
-
-		SortableName sortableLink = new SortableName(researchArea);
+		SortableName sortableLink = new SortableName(StringUtils
+				.escapeXmlButPreserveLineBreaks(researchArea));
 		return sortableLink;
 	}
 
