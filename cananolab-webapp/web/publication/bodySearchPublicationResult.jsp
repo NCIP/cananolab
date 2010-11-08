@@ -26,18 +26,18 @@
 				<u> </u>
 				<display:column title="" property="detailURL" />
 				<display:column title="Bibliography Info" property="displayName"
-					sortable="true"/>
+					sortable="true" />
 				<display:column title="Publication<br>Type"
 					property="publicationType" sortable="true" escapeXml="true" />
 				<display:column title="Research<br>Category" property="researchArea"
-					sortable="true" escapeXml="true" />
-				<display:column title="Associated<br>Sample Names"
-					property="sampleNames" sortable="true"/>
+					sortable="true"/>
+				<display:column title="Associated Sample Names"
+					property="sampleNames" sortable="true" />
 				<display:column title="Description" property="descriptionDetail"
 					sortable="true" />
 				<display:column title="Created<br>Date"
 					property="domainFile.createdDate" sortable="true"
-					format="{0,date,MM-dd-yyyy}" escapeXml="true" />
+					format="{0,date,MM-dd-yyyy}" />
 				<display:column title="Publication<br>Status"
 					property="domainFile.status" sortable="true" escapeXml="true" />
 			</display:table>
