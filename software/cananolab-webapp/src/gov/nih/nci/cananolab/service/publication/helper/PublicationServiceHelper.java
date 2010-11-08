@@ -532,21 +532,24 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			crit.add(disjunction);
 		}
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			sample = (Sample) result.get(0);
+		List results = appService.query(crit);
+		for (Object result : results) {
+			sample = (Sample) result;
 			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
 					.getId().toString())) {
-				return publications;
-			}
-			for (Object obj : sample.getPublicationCollection()) {
-				Publication pub = (Publication) obj;
-				if (getAccessibleData().contains(pub.getId().toString())) {
-					publications.add(pub);
-				} else {
-					logger
-							.debug("User doesn't have access ot publication with id "
-									+ pub.getId());
+				logger.debug("User doesn't have access to sample with id "
+						+ sample.getId());
+
+			} else {
+				for (Object obj : sample.getPublicationCollection()) {
+					Publication pub = (Publication) obj;
+					if (getAccessibleData().contains(pub.getId().toString())) {
+						publications.add(pub);
+					} else {
+						logger
+								.debug("User doesn't have access to publication with id "
+										+ pub.getId());
+					}
 				}
 			}
 		}
