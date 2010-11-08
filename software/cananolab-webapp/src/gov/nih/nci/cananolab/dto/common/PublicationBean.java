@@ -25,7 +25,7 @@ import java.util.List;
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
 
-	private String[] sampleNames = new String[] { "" };
+	private String[] sampleNames = new String[0];
 	private String[] researchAreas;
 	private List<Author> authors = new ArrayList<Author>();
 	private Author theAuthor = new Author();
