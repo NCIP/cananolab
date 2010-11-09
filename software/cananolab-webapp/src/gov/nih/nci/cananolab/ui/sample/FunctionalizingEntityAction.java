@@ -39,18 +39,12 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		if (!validateTargets(request, entityBean)) {
+		if (!validateInputs(request, entityBean)) {
 			return mapping.getInputForward();
 		}
-
-		if (!validateEntityFile(request, entityBean)) {
-			return mapping.getInputForward();
-		}
-
+		this.saveEntity(request, theForm, entityBean);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
-
-		this.saveEntity(request, theForm, entityBean);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
@@ -65,32 +59,20 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	}
 
 	private boolean validateTargets(HttpServletRequest request,
-			FunctionalizingEntityBean entityBean) throws Exception {
+			FunctionalizingEntityBean entityBean) {
 		for (FunctionBean funcBean : entityBean.getFunctions()) {
 			if ("TargetingFunction".equals(funcBean.getClassName())) {
 				for (TargetBean targetBean : funcBean.getTargets()) {
 					if (targetBean.getType() == null
 							|| targetBean.getType().trim().length() == 0) {
-
 						ActionMessages msgs = new ActionMessages();
 						ActionMessage msg = new ActionMessage(
 								"errors.required", "Target type");
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						this.saveErrors(request, msgs);
-
 						return false;
 					}
-					// if (targetBean.getName() == null
-					// || targetBean.getName().trim().length() == 0) {
-					//
-					// ActionMessages msgs = new ActionMessages();
-					// ActionMessage msg = new ActionMessage(
-					// "errors.required", "Target name");
-					// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					// this.saveErrors(request, msgs);
-					//
-					// return false;
-					// }
+
 				}
 			}
 		}
@@ -98,7 +80,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	}
 
 	private boolean validateEntityFile(HttpServletRequest request,
-			FunctionalizingEntityBean entityBean) throws Exception {
+			FunctionalizingEntityBean entityBean) {
 		ActionMessages msgs = new ActionMessages();
 		for (FileBean filebean : entityBean.getFiles()) {
 			if (!validateFileBean(request, msgs, filebean)) {
@@ -243,6 +225,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		function.setupDomainFunction(user.getLoginName(), 0);
 		entity.addFunction(function);
+		if (!validateInputs(request, entity)) {
+			return mapping.getInputForward();
+		}
 		this.saveEntity(request, theForm, entity);
 
 		// comp service has already been created
@@ -264,6 +249,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.get("functionalizingEntity");
 		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
+		if (!validateInputs(request, entity)) {
+			return mapping.getInputForward();
+		}
 		this.saveEntity(request, theForm, entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
@@ -295,6 +283,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		restoreUploadedFile(request, theFile);
 
 		// save the functionalizing entity
+		if (!validateInputs(request, entity)) {
+			return mapping.getInputForward();
+		}
 		this.saveEntity(request, theForm, entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
@@ -318,6 +309,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		entity.removeFile(theFile);
 		request.setAttribute("anchor", "file");
 		// save the functionalizing entity
+		if (!validateInputs(request, entity)) {
+			return mapping.getInputForward();
+		}
 		this.saveEntity(request, theForm, entity);
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
@@ -327,6 +321,66 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
+	}
+
+	// per app scan, can not easily validate in the validation.xml
+	private boolean validateEntity(HttpServletRequest request,
+			FunctionalizingEntityBean entityBean) {
+		ActionMessages msgs = new ActionMessages();
+		boolean status = true;
+		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
+			if (!entityBean.getBiopolymer().getType().matches(
+					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"functionalizingEntity.biopolymer.type.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+		}
+		if (entityBean.getType().equalsIgnoreCase("antibody")) {
+			if (!entityBean.getAntibody().getType().matches(
+					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"functionalizingEntity.antibody.type.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+			if (!entityBean.getAntibody().getIsotype().matches(
+					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"functionalizingEntity.antibody.isotype.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+		}
+		if (entityBean.getType().equalsIgnoreCase("small molecule")) {
+			if (!entityBean.getSmallMolecule().getAlternateName().matches(
+					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"functionalizingEntity.smallMolecule.alternateName.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+		}
+		return status;
+	}
+
+	private Boolean validateInputs(HttpServletRequest request,
+			FunctionalizingEntityBean entityBean) {
+		if (!validateEntity(request, entityBean)) {
+			return false;
+		}
+		if (!validateTargets(request, entityBean)) {
+			return false;
+		}
+		if (!validateEntityFile(request, entityBean)) {
+			return false;
+		}
+		return true;
 	}
 
 	public ActionForward input(ActionMapping mapping, ActionForm form,
