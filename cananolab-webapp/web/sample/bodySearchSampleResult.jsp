@@ -26,9 +26,9 @@
     			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
 				<display:column title="" property="detailURL" />
 				<display:column title="Sample Name" property="sampleName"
-					sortable="true" />
+					sortable="true" escapeXml="true" />
 				<display:column title="Primary<br>Point Of Contact"
-					property="pointOfContactName" sortable="true" />
+					property="pointOfContactName" sortable="true" escapeXml="true" />
 				<display:column title="Composition" property="compositionStr"
 					sortable="true" />
 				<display:column title="Functions" property="functionStr" />
@@ -40,7 +40,7 @@
 						</c:when>
 						<c:otherwise>
 							<div id="details${sample.domain.id}" style="position: relative">
-								<a id="detailLink${sample.domain.id}" 
+								<a id="detailLink${sample.domain.id}"
 											href="#"
 											onclick="showDetailView('${sample.domain.id}', 'sample.do?dispatch=dataAvailabilityView&sampleId=${sample.domain.id}'); return false;">
 											<c:out value="${sample.dataAvailabilityMetricsScore}"/></a>
@@ -56,9 +56,9 @@
 											</td>
 										</tr>
 									</table>
-							</div>	
+							</div>
 						</c:otherwise>
-					</c:choose>					
+					</c:choose>
 				</display:column>
 			</display:table>
 		</td>
