@@ -484,7 +484,8 @@
 			</field>
 		</form>
 		<form name="/functionalizingEntity">
-			<field property="functionalizingEntity.type" page="1" depends="required, mask">
+			<field property="functionalizingEntity.type" page="1"
+				depends="required, mask">
 				<arg position="0" key="functionalizingEntity.type" bundle="sample" />
 				<msg name="mask" key="functionalizingEntity.type.invalid" />
 				<var>
@@ -540,8 +541,17 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
+			<field property="functionalizingEntity.activationMethod.activationEffect"
+				page="1" depends="mask">
+				<msg name="mask"
+					key="functionalizingEntity.activationMethod.activationEffect.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 			<field property="functionalizingEntity.theFunction.type" page="2"
-				depends="validwhen">
+				depends="validwhen, mask">
 				<arg position="0" key="function.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -698,14 +708,14 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="achar.characterizationName" page="1" depends="mask">
+			<field property="achar.assayType" page="1" depends="mask">
 				<msg name="mask" key="achar.assayType.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="achar.date" page="1" depends="date">
+			<field property="achar.dateString" page="1" depends="date">
 				<arg position="0" key="achar.date" bundle="sample" />
 				<var>
 					<var-name>datePattern</var-name>
@@ -715,7 +725,7 @@
 			<!--
 				1.Mandatory properties: Shape Type required if Char Name is Shape
 			-->
-			<field property="achar.shape.type" page="1" depends="validwhen, mask">
+			<field property="achar.shape.type" page="1" depends="validwhen">
 				<arg position="0" key="shape.type" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -724,49 +734,6 @@
 						or
 						(achar.characterizationName != 'Shape'))
 					</var-value>
-				</var>
-				<msg name="mask" key="achar.shape.type.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
-			</field>
-			<field property="achar.physicalState.type" page="1" depends="mask">
-				<msg name="mask" key="achar.physicalState.type.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
-			</field>
-			<field property="achar.solubility.solvent" page="1" depends="mask">
-				<msg name="mask" key="achar.solubility.solvent.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
-			</field>
-			<field property="achar.solubility.critialConcentration" page="1"
-				depends="mask">
-				<msg name="mask" key="achar.solubility.critialConcentration.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${number}</var-value>
-				</var>
-			</field>
-			<field property="achar.solubility.critialConcentrationUnit"
-				page="1" depends="mask">
-				<msg name="mask" key="achar.solubility.critialConcentrationUnit.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${unit}</var-value>
-				</var>
-			</field>
-			<field property="achar.enzymeInduction.enzyme" page="1"
-				depends="mask">
-				<msg name="mask" key="achar.enzymeInduction.enzyme.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<!-- 2.Optional properties: Technique and Instrument form -->
@@ -778,7 +745,8 @@
 					<var-value>
 						((*this*!=null)
 						or
-						((dispatch!='saveExperimentConfig') and
+						((dispatch!='saveExperimentConfig')
+						and
 						(dispatch!='deleteExperimentConfig')))
 					</var-value>
 				</var>
@@ -796,7 +764,29 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-
+			<field property="achar.theInstrument.manufacturer" page="1"
+				depends="mask">
+				<msg name="mask" key="achar.instrument.manufacturer.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="achar.theInstrument.modelName" page="1"
+				depends="mask">
+				<msg name="mask" key="achar.instrument.modelName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="achar.theInstrument.type" page="1" depends="mask">
+				<msg name="mask" key="achar.instrument.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 			<!-- 3.Optional properties: Finding - Upload File form -->
 			<field property="achar.theFinding.theFile.uploadedFile" page="3"
 				depends="validwhen">
