@@ -237,6 +237,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		if (domainEntity == null) {
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
 		}
+		this.updateEmptyFieldsToNull();
 		if (domainEntity instanceof OtherFunctionalizingEntity) {
 			((OtherFunctionalizingEntity) domainEntity).setType(type);
 		} else if (domainEntity instanceof Antibody) {
@@ -250,18 +251,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		domainEntity.setMolecularFormula(molecularFormula);
 		domainEntity.setMolecularFormulaType(molecularFormulaType);
 		domainEntity.setName(name);
-		if (!StringUtils.isEmpty(value)) {
-			domainEntity.setValue(new Float(value));
-		} else {
-			domainEntity.setValue(null);
-		}
 		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setPubChemDataSourceName(pubChemDataSourceName);
-		if (!StringUtils.isEmpty(pubChemId)) {
-			domainEntity.setPubChemId(new Long(pubChemId));
-		} else {
-			domainEntity.setPubChemId(null);
-		}
 		if (activationMethod != null
 				&& ((activationMethod.getActivationEffect() != null && activationMethod
 						.getActivationEffect().trim().length() > 0) || (activationMethod
@@ -483,6 +474,19 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		sb.append('=').append(pubChemId);
 
 		return sb.toString();
+	}
+
+	public void updateEmptyFieldsToNull() {
+		if (!StringUtils.isEmpty(value)) {
+			domainEntity.setValue(new Float(value));
+		} else {
+			domainEntity.setValue(null);
+		}
+		if (!StringUtils.isEmpty(pubChemId)) {
+			domainEntity.setPubChemId(new Long(pubChemId));
+		} else {
+			domainEntity.setPubChemId(null);
+		}
 	}
 
 }

@@ -213,6 +213,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		if (domainEntity == null) {
 			domainEntity = (NanomaterialEntity) clazz.newInstance();
 		}
+		this.updateEmptyFieldsToNull();
 		if (domainEntity instanceof OtherNanomaterialEntity) {
 			((OtherNanomaterialEntity) domainEntity).setType(type);
 		} else if (domainEntity instanceof Biopolymer) {
@@ -223,25 +224,10 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			domainEntity = carbonNanotube;
 		} else if (domainEntity instanceof Liposome) {
 			domainEntity = liposome;
-			if (!StringUtils.isEmpty(isPolymerized)) {
-				emulsion.setPolymerized(new Boolean(isPolymerized));
-			} else {
-				emulsion.setPolymerized(null);
-			}
 		} else if (domainEntity instanceof Emulsion) {
 			domainEntity = emulsion;
-			if (!StringUtils.isEmpty(isPolymerized)) {
-				emulsion.setPolymerized(new Boolean(isPolymerized));
-			} else {
-				emulsion.setPolymerized(null);
-			}
 		} else if (domainEntity instanceof Polymer) {
 			domainEntity = polymer;
-			if (!StringUtils.isEmpty(isCrossLinked)) {
-				polymer.setCrossLinked(new Boolean(isCrossLinked));
-			} else {
-				polymer.setCrossLinked(null);
-			}
 		} else if (domainEntity instanceof Fullerene) {
 			domainEntity = fullerene;
 		}
@@ -347,5 +333,65 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	public void setIsCrossLinked(String isCrossLinked) {
 		this.isCrossLinked = isCrossLinked;
+	}
+
+	public void updateEmptyFieldsToNull() {
+		if (theComposingElement.getDomain().getPubChemId() != null
+				&& theComposingElement.getDomain().getPubChemId() == 0) {
+			theComposingElement.getDomain().setPubChemId(null);
+		}
+		if (theComposingElement.getDomain().getValue() != null
+				&& theComposingElement.getDomain().getValue() == 0) {
+			theComposingElement.getDomain().setValue(null);
+		}
+		if (liposome != null) {
+			if (StringUtils.isEmpty(isPolymerized)) {
+				liposome.setPolymerized(null);
+			} else {
+				liposome.setPolymerized(new Boolean(isPolymerized));
+			}
+		}
+		if (emulsion != null) {
+			if (StringUtils.isEmpty(isPolymerized)) {
+				emulsion.setPolymerized(null);
+			} else {
+				emulsion.setPolymerized(new Boolean(isPolymerized));
+			}
+		}
+		if (dendrimer != null && dendrimer.getGeneration() != null
+				&& dendrimer.getGeneration() == 0) {
+			dendrimer.setGeneration(null);
+		}
+		if (carbonNanotube != null) {
+			if (carbonNanotube.getAverageLength() != null
+					&& carbonNanotube.getAverageLength() == 0) {
+				carbonNanotube.setAverageLength(null);
+			}
+			if (carbonNanotube.getDiameter() != null
+					&& carbonNanotube.getDiameter() == 0) {
+				carbonNanotube.setDiameter(null);
+			}
+		}
+		if (fullerene != null) {
+			if (fullerene.getAverageDiameter() != null
+					&& fullerene.getAverageDiameter() == 0) {
+				fullerene.setAverageDiameter(null);
+			}
+			if (fullerene.getNumberOfCarbon() != null
+					&& fullerene.getNumberOfCarbon() == 0) {
+				fullerene.setNumberOfCarbon(null);
+			}
+		}
+		if (polymer != null) {
+			if (polymer.getCrossLinkDegree() != null
+					&& polymer.getCrossLinkDegree() == 0) {
+				polymer.setCrossLinkDegree(null);
+			}
+			if (StringUtils.isEmpty(isCrossLinked)) {
+				polymer.setCrossLinked(null);
+			} else {
+				polymer.setCrossLinked(new Boolean(isCrossLinked));
+			}
+		}
 	}
 }
