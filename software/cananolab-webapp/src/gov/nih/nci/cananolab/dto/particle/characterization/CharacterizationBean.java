@@ -86,6 +86,8 @@ public class CharacterizationBean {
 
 	private String isSoluble; // Data holder for Boolean field in Solubility.
 
+	private String isHydrophobic;
+
 	public CharacterizationBean() {
 		// initialize finding matrix
 		// theFinding.setNumberOfColumns(1);
@@ -136,9 +138,15 @@ public class CharacterizationBean {
 		} else if (chara instanceof Solubility) {
 			solubility = (Solubility) chara;
 			withProperties = true;
+			if (solubility.getIsSoluble() != null) {
+				isSoluble = solubility.getIsSoluble().toString();
+			}
 		} else if (chara instanceof Surface) {
 			surface = (Surface) chara;
 			withProperties = true;
+			if (surface.getIsHydrophobic() != null) {
+				isHydrophobic = surface.getIsHydrophobic().toString();
+			}
 		} else if (chara instanceof Cytotoxicity) {
 			cytotoxicity = (Cytotoxicity) chara;
 			withProperties = true;
@@ -208,6 +216,7 @@ public class CharacterizationBean {
 		if (domainChar == null) {
 			domainChar = (Characterization) clazz.newInstance();
 		}
+		this.updateEmptyFieldsToNull();
 		if (domainChar instanceof OtherCharacterization) {
 			((OtherCharacterization) domainChar).setName(characterizationName);
 			((OtherCharacterization) domainChar)
@@ -520,5 +529,41 @@ public class CharacterizationBean {
 
 	public void setIsSoluble(String isSoluble) {
 		this.isSoluble = isSoluble;
+	}
+
+	public String getIsHydrophobic() {
+		return isHydrophobic;
+	}
+
+	public void setIsHydrophobic(String isHydrophobic) {
+		this.isHydrophobic = isHydrophobic;
+	}
+
+	public void updateEmptyFieldsToNull() {
+		if (shape != null) {
+			if (shape.getMaxDimension() != null && shape.getMaxDimension() == 0) {
+				shape.setMaxDimension(null);
+			}
+			if (shape.getMinDimension() != null && shape.getMinDimension() == 0) {
+				shape.setMinDimension(null);
+			}
+			if (shape.getAspectRatio() != null && shape.getAspectRatio() == 0) {
+				shape.setAspectRatio(null);
+			}
+		}
+		if (solubility != null) {
+			if (solubility.getCriticalConcentration() != null
+					&& solubility.getCriticalConcentration() == 0) {
+				solubility.setCriticalConcentration(null);
+			}
+			if (StringUtils.isEmpty(isSoluble)) {
+				solubility.setIsSoluble(null);
+			}
+		}
+		if (surface != null) {
+			if (StringUtils.isEmpty(isHydrophobic)) {
+				surface.setIsHydrophobic(null);
+			}
+		}
 	}
 }
