@@ -599,25 +599,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		request.setAttribute("entityDetailPage", detailPage);
 	}
 
-	/**
-	 * Copy "polymerized" property from entityBean to Emulsion or Liposome.
-	 *
-	 * @param entityBean
-	 */
-	private void copyIsPolymerized(NanomaterialEntityBean entityBean) {
-		Boolean polymerized = null;
-		String isPolymerized = entityBean.getIsPolymerized();
-		if (!StringUtils.isEmpty(isPolymerized)) {
-			polymerized = Boolean.valueOf(isPolymerized);
-		}
-		String entityType = entityBean.getType();
-		if ("emulsion".equals(entityType)) {
-			entityBean.getEmulsion().setPolymerized(polymerized);
-		} else if ("liposome".equals(entityType)) {
-			entityBean.getLiposome().setPolymerized(polymerized);
-		}
-	}
-
 	private CompositionService setServicesInSession(HttpServletRequest request)
 			throws Exception {
 		SecurityService securityService = super
