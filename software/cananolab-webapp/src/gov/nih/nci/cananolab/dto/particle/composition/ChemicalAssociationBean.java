@@ -27,11 +27,6 @@ public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 	public ChemicalAssociationBean() {
 	}
 
-	public String getDescription() {
-		return StringUtils.escapeXmlButPreserveLineBreaks(domainAssociation
-				.getDescription());
-	}
-
 	public ChemicalAssociationBean(ChemicalAssociation chemicalAssociation) {
 		domainAssociation = chemicalAssociation;
 		if (chemicalAssociation instanceof Attachment) {
