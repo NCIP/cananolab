@@ -69,6 +69,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
+		if (!validateInputs(request, charBean)) {
+			return mapping.getInputForward();
+		}
 		this.saveCharacterization(request, theForm, charBean);
 
 		ActionMessages msgs = new ActionMessages();
@@ -93,6 +96,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
+		charBean.updateEmptyFieldsToNull();
 		this.checkOpenForms(charBean, theForm, request);
 
 		// Save uploaded data in session to avoid asking user to upload again.
@@ -535,6 +539,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		service.saveExperimentConfig(configBean);
 		achar.addExperimentConfig(configBean);
 		// also save characterization
+		if (!validateInputs(request, achar)) {
+			return mapping.getInputForward();
+		}
 		this.saveCharacterization(request, theForm, achar);
 		service.assignAccesses(achar.getDomainChar(), configBean.getDomain());
 		this.checkOpenForms(achar, theForm, request);
@@ -596,14 +603,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		if (!validateEmptyFinding(findingBean)) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"achar.theFinding.emptyFinding");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-			return mapping.getInputForward();
-		}
 		String theFindingId = (String) request.getAttribute("theFindingId");
 		if (!StringUtils.isEmpty(theFindingId)) {
 			findingBean.getDomain().setId(Long.valueOf(theFindingId));
@@ -622,6 +621,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.addFinding(findingBean);
 
 		// also save characterization
+		if (!validateInputs(request, achar)) {
+			return mapping.getInputForward();
+		}
 		this.saveCharacterization(request, theForm, achar);
 		service.assignAccesses(achar.getDomainChar(), findingBean.getDomain());
 		this.checkOpenForms(achar, theForm, request);
@@ -766,7 +768,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		achar.removeExperimentConfig(configBean);
 		// also save characterization
+		if (!validateInputs(request, achar)) {
+			return mapping.getInputForward();
+		}
 		this.saveCharacterization(request, theForm, achar);
+
 		service.removeAccesses(achar.getDomainChar(), configBean.getDomain());
 		this.checkOpenForms(achar, theForm, request);
 		return mapping.findForward("inputForm");
@@ -792,6 +798,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private void checkOpenForms(CharacterizationBean achar,
 			DynaValidatorForm theForm, HttpServletRequest request)
 			throws Exception {
+		achar.updateEmptyFieldsToNull();
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
@@ -862,9 +869,104 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return charTypes;
 	}
 
-	private boolean validateEmptyFinding(FindingBean finding) {
+	private boolean validateCharacterization(HttpServletRequest request,
+			CharacterizationBean achar) {
+		ActionMessages msgs = new ActionMessages();
+		boolean status = true;
+		if (achar.getCharacterizationName().equalsIgnoreCase("shape")) {
+			if (achar.getShape().getType() != null
+					&& !achar.getShape().getType().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"achar.shape.type.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+			if (achar.getShape().getMaxDimensionUnit() != null
+					&& !achar.getShape().getMaxDimensionUnit().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"achar.shape.maxDimensionUnit.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+			if (achar.getShape().getMinDimensionUnit() != null
+					&& !achar.getShape().getMinDimensionUnit().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"achar.shape.minDimensionUnit.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+				"physical state")) {
+			if (achar.getPhysicalState().getType() != null
+					&& !achar.getPhysicalState().getType().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"achar.physicalState.type.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+				"solubility")) {
+			if (achar.getSolubility().getSolvent() != null
+					&& !achar.getSolubility().getSolvent().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"achar.solubility.solvent.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+			if (achar.getSolubility().getCriticalConcentrationUnit() != null
+					&& !achar.getSolubility().getCriticalConcentrationUnit()
+							.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"achar.solubility.criticalConcentrationUnit.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+		} else if (achar.getCharacterizationName().equalsIgnoreCase(
+				"enzyme induction")) {
+			if (achar.getEnzymeInduction().getEnzyme() != null
+					&& !achar.getSolubility().getSolvent().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+				ActionMessage msg = new ActionMessage(
+						"achar.enzymeInduction.enzyme.invalid");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveErrors(request, msgs);
+				status = false;
+			}
+		}
+		return status;
+	}
+
+	private Boolean validateInputs(HttpServletRequest request,
+			CharacterizationBean achar) {
+		if (!validateCharacterization(request, achar)) {
+			return false;
+		}
+		if (!validateEmptyFinding(request, achar.getTheFinding())) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateEmptyFinding(HttpServletRequest request,
+			FindingBean finding) {
 		if (finding.getFiles().isEmpty()
 				&& finding.getColumnHeaders().isEmpty()) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"achar.theFinding.emptyFinding");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
 			return false;
 		} else {
 			return true;
