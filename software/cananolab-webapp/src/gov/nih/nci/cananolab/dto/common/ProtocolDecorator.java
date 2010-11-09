@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.displaytag.decorator.TableDecorator;
 
 /**
