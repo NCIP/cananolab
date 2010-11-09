@@ -19,13 +19,13 @@
 			</tr>
 			<tr>
 				<td>
-					<c:out value="${nanomaterialEntity.polymer.initiator}"/>
+					<c:out value="${nanomaterialEntity.polymer.initiator}" />
 				</td>
 				<td>
-					<c:out value="${nanomaterialEntity.polymer.crossLinked}"/>
+					<c:out value="${nanomaterialEntity.polymer.crossLinked}" />
 				</td>
 				<td>
-					<c:out value="${nanomaterialEntity.polymer.crossLinkDegree}"/>
+					<c:out value="${nanomaterialEntity.polymer.crossLinkDegree}" />
 				</td>
 			</tr>
 		</table>
@@ -49,43 +49,38 @@
 					Is Cross Linked
 				</td>
 				<td class="cellLabel">
-					<select name="nanomaterialEntity.polymer.crossLinked">
-						<option value="">
+					<c:choose>
+						<c:when
+							test="${empty compositionForm.map.nanomaterialEntity.isCrossLinked}">
+							<c:set var="selectNoneStr" value='selected="selected"' />
+						</c:when>
+						<c:otherwise>
+							<c:choose>
+								<c:when
+									test="${compositionForm.map.nanomaterialEntity.isCrossLinked eq 'true'}">
+									<c:set var="selectYesStr" value='selected="selected"' />
+								</c:when>
+								<c:otherwise>
+									<c:set var="selectNoStr" value='selected="selected"' />
+								</c:otherwise>
+							</c:choose>
+						</c:otherwise>
+					</c:choose>
+					<select name="nanomaterialEntity.isCrossLinked">
+						<option value=""${selectNoneStr}></option>
+						<option value="true"${selectYesStr}>
+							Yes
 						</option>
-						<c:choose>
-							<c:when
-								test="${compositionForm.map.nanomaterialEntity.polymer.crossLinked eq 'true'}">
-								<option value="1" selected="selected">
-									Yes
-								</option>
-							</c:when>
-							<c:otherwise>
-								<option value="1">
-									Yes
-								</option>
-							</c:otherwise>
-						</c:choose>
-						<c:choose>
-							<c:when
-								test="${compositionForm.map.nanomaterialEntity.polymer.crossLinked eq 'false'}">
-								<option value="0" selected="selected">
-									No
-								</option>
-							</c:when>
-							<c:otherwise>
-								<option value="0">
-									No
-								</option>
-							</c:otherwise>
-						</c:choose>
+						<option value="false"${selectNoStr}>
+							No
+						</option>
 					</select>
 				</td>
 				<td class="cellLabel">
 					Cross Link Degree
 				</td>
 				<td class="cellLabel">
-					<input type="text"
-						id="crossLinkDegree"
+					<input type="text" id="crossLinkDegree"
 						name="nanomaterialEntity.polymer.crossLinkDegree"
 						<%--onkeydown="return filterFloatNumber(event)"--%>
 						value="${compositionForm.map.nanomaterialEntity.polymer.crossLinkDegree}" />
