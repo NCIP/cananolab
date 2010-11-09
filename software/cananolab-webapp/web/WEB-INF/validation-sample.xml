@@ -292,7 +292,7 @@
 			</field>
 		</form>
 		<form name="/nanomaterialEntity">
-			<field property="nanomaterialEntity.type" page="1" depends="required">
+			<field property="nanomaterialEntity.type" page="1" depends="required, mask">
 				<arg position="0" key="nanomaterialEntityType" bundle="sample" />
 				<msg name="mask" key="nanomaterialEntityType.invalid" />
 				<var>
@@ -325,7 +325,7 @@
 				</var>
 			</field>
 			<field property="nanomaterialEntity.liposome.polymerName" page="1"
-				depends="validwhen, mask">
+				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.liposome.polymerName"
 					bundle="sample" />
 				<var>
@@ -337,14 +337,9 @@
 						(nanomaterialEntity.type != "liposome"))
 					</var-value>
 				</var>
-				<msg name="mask" key="nanomaterialEntityForm.liposome.polymerName.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
 			</field>
 			<field property="nanomaterialEntity.emulsion.polymerName" page="1"
-				depends="validwhen, mask">
+				depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.emulsion.polymerName"
 					bundle="sample" />
 				<var>
@@ -356,14 +351,9 @@
 						(nanomaterialEntity.type != "emulsion"))
 					</var-value>
 				</var>
-				<msg name="mask" key="nanomaterialEntityForm.emulsion.polymerName.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
 			</field>
 			<field property="nanomaterialEntity.polymer.crossLinkDegree"
-				page="1" depends="validwhen, mask">
+				page="1" depends="validwhen">
 				<arg position="0" key="nanomaterialEntityForm.polymer.crossLinkDegree"
 					bundle="sample" />
 				<var>
@@ -373,36 +363,6 @@
 						((nanomaterialEntity.polymer.crossLinkDegree==0) or
 						(*this*!=null)))
 					</var-value>
-				</var>
-				<msg name="mask"
-					key="nanomaterialEntityForm.polymer.crossLinkDegree.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${number}</var-value>
-				</var>
-			</field>
-			<field property="nanomaterialEntity.polymer.initiator" page="1"
-				depends="mask">
-				<msg name="mask" key="nanomaterialEntityForm.polymer.initiator.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
-			</field>
-			<field property="nanomaterialEntity.dendrimer.branch" page="1"
-				depends="mask">
-				<msg name="mask" key="nanomaterialEntityForm.dendrimer.branch.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
-				</var>
-			</field>
-			<field property="nanomaterialEntity.dendrimer.generation" page="1"
-				depends="mask">
-				<msg name="mask" key="nanomaterialEntityForm.dendrimer.generation.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="nanomaterialEntity.theComposingElement.domain.type"
@@ -524,7 +484,7 @@
 			</field>
 		</form>
 		<form name="/functionalizingEntity">
-			<field property="functionalizingEntity.type" page="1" depends="required">
+			<field property="functionalizingEntity.type" page="1" depends="required, mask">
 				<arg position="0" key="functionalizingEntity.type" bundle="sample" />
 				<msg name="mask" key="functionalizingEntity.type.invalid" />
 				<var>
@@ -565,8 +525,16 @@
 				</var>
 			</field>
 			<field property="functionalizingEntity.molecularFormulaType"
-				page="2" depends="mask">
+				page="1" depends="mask">
 				<msg name="mask" key="functionalizingEntity.molecularFormulaType.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="functionalizingEntity.activationMethod.type"
+				page="1" depends="mask">
+				<msg name="mask" key="functionalizingEntity.activationMethod.type.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>${textFieldWhiteList}</var-value>
