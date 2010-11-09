@@ -90,69 +90,13 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-
+		entityBean.updateEmptyFieldsToNull();
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entityBean.getTheFile();
 		preserveUploadedFile(request, theFile, "nanomaterialEntity");
 
 		this.checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
-	}
-
-	private void updateEmptyFieldsToNull(HttpServletRequest request,
-			NanomaterialEntityBean entityBean) {
-		ComposingElementBean ce = entityBean.getTheComposingElement();
-		if (ce.getDomain().getPubChemId() != null
-				&& ce.getDomain().getPubChemId() == 0) {
-			ce.getDomain().setPubChemId(null);
-		}
-		if (ce.getDomain().getValue() != null && ce.getDomain().getValue() == 0) {
-			ce.getDomain().setValue(null);
-		}
-		if (entityBean.getLiposome() != null) {
-			if (StringUtils.isEmpty(entityBean.getIsPolymerized())) {
-				entityBean.getLiposome().setPolymerized(null);
-			}
-		}
-		if (entityBean.getEmulsion() != null) {
-			if (StringUtils.isEmpty(entityBean.getIsPolymerized())) {
-				entityBean.getEmulsion().setPolymerized(null);
-			}
-		}
-		if (entityBean.getDendrimer() != null
-				&& entityBean.getDendrimer().getGeneration() != null
-				&& entityBean.getDendrimer().getGeneration() == 0) {
-			entityBean.getDendrimer().setGeneration(null);
-		}
-		if (entityBean.getCarbonNanotube() != null) {
-			if (entityBean.getCarbonNanotube().getAverageLength() != null
-					&& entityBean.getCarbonNanotube().getAverageLength() == 0) {
-				entityBean.getCarbonNanotube().setAverageLength(null);
-			}
-			if (entityBean.getCarbonNanotube().getDiameter() != null
-					&& entityBean.getCarbonNanotube().getDiameter() == 0) {
-				entityBean.getCarbonNanotube().setDiameter(null);
-			}
-		}
-		if (entityBean.getFullerene() != null) {
-			if (entityBean.getFullerene().getAverageDiameter() != null
-					&& entityBean.getFullerene().getAverageDiameter() == 0) {
-				entityBean.getFullerene().setAverageDiameter(null);
-			}
-			if (entityBean.getFullerene().getNumberOfCarbon() != null
-					&& entityBean.getFullerene().getNumberOfCarbon() == 0) {
-				entityBean.getFullerene().setNumberOfCarbon(null);
-			}
-		}
-		if (entityBean.getPolymer() != null) {
-			if (entityBean.getPolymer().getCrossLinkDegree() != null
-					&& entityBean.getPolymer().getCrossLinkDegree() == 0) {
-				entityBean.getPolymer().setCrossLinkDegree(null);
-			}
-			if (StringUtils.isEmpty(entityBean.getIsCrossLinked())) {
-				entityBean.getPolymer().setCrossLinked(null);
-			}
-		}
 	}
 
 	private void saveEntity(HttpServletRequest request,
@@ -162,7 +106,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Boolean newEntity = true;
 		try {
-			this.updateEmptyFieldsToNull(request, entityBean);
 			entityBean.setupDomainEntity(user.getLoginName());
 			if (entityBean.getDomainEntity().getId() != null) {
 				newEntity = false;
@@ -217,12 +160,18 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.getComposingElements()) {
 			for (FunctionBean functionBean : composingElementBean
 					.getInherentFunctions()) {
-				if (functionBean.getType() == null
-						|| functionBean.getType().trim().length() == 0) {
-
+				if (StringUtils.isEmpty(functionBean.getType())) {
 					ActionMessages msgs = new ActionMessages();
 					ActionMessage msg = new ActionMessage("errors.required",
 							"Inherent function type");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					return false;
+				} else if (functionBean.getType().matches(
+						Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					ActionMessages msgs = new ActionMessages();
+					ActionMessage msg = new ActionMessage(
+							"function.type.invalid");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
 					return false;
@@ -561,7 +510,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
-		this.updateEmptyFieldsToNull(request, entity);
 		Boolean openFile = false, openComposingElement = false;
 		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
 			openFile = true;

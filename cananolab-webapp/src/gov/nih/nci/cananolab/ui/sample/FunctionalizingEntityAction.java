@@ -63,16 +63,22 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		for (FunctionBean funcBean : entityBean.getFunctions()) {
 			if ("TargetingFunction".equals(funcBean.getClassName())) {
 				for (TargetBean targetBean : funcBean.getTargets()) {
-					if (targetBean.getType() == null
-							|| targetBean.getType().trim().length() == 0) {
+					if (StringUtils.isEmpty(targetBean.getType())) {
 						ActionMessages msgs = new ActionMessages();
 						ActionMessage msg = new ActionMessage(
 								"errors.required", "Target type");
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						this.saveErrors(request, msgs);
 						return false;
+					} else if (targetBean.getType().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+						ActionMessages msgs = new ActionMessages();
+						ActionMessage msg = new ActionMessage(
+								"functionalizingEntity.target.type.invalid");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						this.saveErrors(request, msgs);
+						return false;
 					}
-
 				}
 			}
 		}
