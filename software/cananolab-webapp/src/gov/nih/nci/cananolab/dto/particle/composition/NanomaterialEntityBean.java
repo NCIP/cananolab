@@ -56,6 +56,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	private String isPolymerized;
 
+	private String isCrossLinked;
+
 	public NanomaterialEntityBean() {
 	}
 
@@ -74,12 +76,21 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		} else if (domainEntity instanceof Liposome) {
 			liposome = (Liposome) domainEntity;
 			withProperties = true;
+			if (liposome.getPolymerized() != null) {
+				this.isPolymerized = liposome.getPolymerized().toString();
+			}
 		} else if (domainEntity instanceof Emulsion) {
 			emulsion = (Emulsion) domainEntity;
+			if (emulsion.getPolymerized() != null) {
+				this.isPolymerized = emulsion.getPolymerized().toString();
+			}
 			withProperties = true;
 		} else if (domainEntity instanceof Polymer) {
 			polymer = (Polymer) domainEntity;
 			withProperties = true;
+			if (polymer.getCrossLinked() != null) {
+				this.isCrossLinked = polymer.getCrossLinked().toString();
+			}
 		} else if (domainEntity instanceof Fullerene) {
 			fullerene = (Fullerene) domainEntity;
 			withProperties = true;
@@ -212,10 +223,25 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 			domainEntity = carbonNanotube;
 		} else if (domainEntity instanceof Liposome) {
 			domainEntity = liposome;
+			if (!StringUtils.isEmpty(isPolymerized)) {
+				emulsion.setPolymerized(new Boolean(isPolymerized));
+			} else {
+				emulsion.setPolymerized(null);
+			}
 		} else if (domainEntity instanceof Emulsion) {
 			domainEntity = emulsion;
+			if (!StringUtils.isEmpty(isPolymerized)) {
+				emulsion.setPolymerized(new Boolean(isPolymerized));
+			} else {
+				emulsion.setPolymerized(null);
+			}
 		} else if (domainEntity instanceof Polymer) {
 			domainEntity = polymer;
+			if (!StringUtils.isEmpty(isCrossLinked)) {
+				polymer.setCrossLinked(new Boolean(isCrossLinked));
+			} else {
+				polymer.setCrossLinked(null);
+			}
 		} else if (domainEntity instanceof Fullerene) {
 			domainEntity = fullerene;
 		}
@@ -313,5 +339,13 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	public void setIsPolymerized(String isPolymerized) {
 		this.isPolymerized = isPolymerized;
+	}
+
+	public String getIsCrossLinked() {
+		return isCrossLinked;
+	}
+
+	public void setIsCrossLinked(String isCrossLinked) {
+		this.isCrossLinked = isCrossLinked;
 	}
 }
