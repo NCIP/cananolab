@@ -95,8 +95,12 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		FileBean theFile = entityBean.getTheFile();
 		preserveUploadedFile(request, theFile, "nanomaterialEntity");
 
-		// set pubChemId and value for composing element to be null
-		// if they were default to zero from the form
+		this.checkOpenForms(entityBean, request);
+		return mapping.findForward("inputForm");
+	}
+
+	private void updateEmptyFieldsToNull(HttpServletRequest request,
+			NanomaterialEntityBean entityBean) {
 		ComposingElementBean ce = entityBean.getTheComposingElement();
 		if (ce.getDomain().getPubChemId() != null
 				&& ce.getDomain().getPubChemId() == 0) {
@@ -105,8 +109,50 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		if (ce.getDomain().getValue() != null && ce.getDomain().getValue() == 0) {
 			ce.getDomain().setValue(null);
 		}
-		this.checkOpenForms(entityBean, request);
-		return mapping.findForward("inputForm");
+		if (entityBean.getLiposome() != null) {
+			if (StringUtils.isEmpty(entityBean.getIsPolymerized())) {
+				entityBean.getLiposome().setPolymerized(null);
+			}
+		}
+		if (entityBean.getEmulsion() != null) {
+			if (StringUtils.isEmpty(entityBean.getIsPolymerized())) {
+				entityBean.getEmulsion().setPolymerized(null);
+			}
+		}
+		if (entityBean.getDendrimer() != null
+				&& entityBean.getDendrimer().getGeneration() != null
+				&& entityBean.getDendrimer().getGeneration() == 0) {
+			entityBean.getDendrimer().setGeneration(null);
+		}
+		if (entityBean.getCarbonNanotube() != null) {
+			if (entityBean.getCarbonNanotube().getAverageLength() != null
+					&& entityBean.getCarbonNanotube().getAverageLength() == 0) {
+				entityBean.getCarbonNanotube().setAverageLength(null);
+			}
+			if (entityBean.getCarbonNanotube().getDiameter() != null
+					&& entityBean.getCarbonNanotube().getDiameter() == 0) {
+				entityBean.getCarbonNanotube().setDiameter(null);
+			}
+		}
+		if (entityBean.getFullerene() != null) {
+			if (entityBean.getFullerene().getAverageDiameter() != null
+					&& entityBean.getFullerene().getAverageDiameter() == 0) {
+				entityBean.getFullerene().setAverageDiameter(null);
+			}
+			if (entityBean.getFullerene().getNumberOfCarbon() != null
+					&& entityBean.getFullerene().getNumberOfCarbon() == 0) {
+				entityBean.getFullerene().setNumberOfCarbon(null);
+			}
+		}
+		if (entityBean.getPolymer() != null) {
+			if (entityBean.getPolymer().getCrossLinkDegree() != null
+					&& entityBean.getPolymer().getCrossLinkDegree() == 0) {
+				entityBean.getPolymer().setCrossLinkDegree(null);
+			}
+			if (StringUtils.isEmpty(entityBean.getIsCrossLinked())) {
+				entityBean.getPolymer().setCrossLinked(null);
+			}
+		}
 	}
 
 	private void saveEntity(HttpServletRequest request,
@@ -115,9 +161,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Boolean newEntity = true;
-		// Copy "polymerized" property from entity bean to mapping bean.
-		this.copyIsPolymerized(entityBean);
 		try {
+			this.updateEmptyFieldsToNull(request, entityBean);
 			entityBean.setupDomainEntity(user.getLoginName());
 			if (entityBean.getDomainEntity().getId() != null) {
 				newEntity = false;
@@ -180,7 +225,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 							"Inherent function type");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
-
 					return false;
 				}
 			}
@@ -194,16 +238,18 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		boolean status = true;
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
-			if (!entityBean.getBiopolymer().getName().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getBiopolymer().getName() != null
+					&& !entityBean.getBiopolymer().getName().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.biopolymer.name.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveErrors(request, msgs);
 				status = false;
 			}
-			if (!entityBean.getBiopolymer().getType().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getBiopolymer().getType() != null
+					&& !entityBean.getBiopolymer().getType().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.biopolymer.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -211,8 +257,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("liposome")) {
-			if (!entityBean.getLiposome().getPolymerName().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getLiposome().getPolymerName() != null
+					&& !entityBean.getLiposome().getPolymerName().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.liposome.polymerName.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -220,8 +267,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("emulsion")) {
-			if (!entityBean.getLiposome().getPolymerName().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getEmulsion().getPolymerName() != null
+					&& !entityBean.getEmulsion().getPolymerName().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.emulsion.polymerName.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -229,8 +277,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("polymer")) {
-			if (!entityBean.getPolymer().getInitiator().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getPolymer().getInitiator() != null
+					&& !entityBean.getPolymer().getInitiator().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.polymer.initiator.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -238,8 +287,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("dendrimer")) {
-			if (!entityBean.getDendrimer().getBranch().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getDendrimer().getBranch() != null
+					&& !entityBean.getDendrimer().getBranch().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.dendrimer.branch.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -247,30 +297,27 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("carbon nanotube")) {
-			if (entityBean.getCarbonNanotube().getAverageLength() == 0.0) {
-				entityBean.getCarbonNanotube().setAverageLength(null);
-			}
-			if (entityBean.getCarbonNanotube().getDiameter() == 0.0) {
-				entityBean.getCarbonNanotube().setDiameter(null);
-			}
-			if (!entityBean.getCarbonNanotube().getAverageLengthUnit().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getCarbonNanotube().getAverageLengthUnit() != null
+					&& !entityBean.getCarbonNanotube().getAverageLengthUnit()
+							.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.carbonNanotube.averageLengthUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveErrors(request, msgs);
 				status = false;
 			}
-			if (!entityBean.getCarbonNanotube().getChirality().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getCarbonNanotube().getChirality() != null
+					&& !entityBean.getCarbonNanotube().getChirality().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.carbonNanotube.chirality.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveErrors(request, msgs);
 				status = false;
 			}
-			if (!entityBean.getCarbonNanotube().getDiameterUnit().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getCarbonNanotube().getDiameterUnit() != null
+					&& !entityBean.getCarbonNanotube().getDiameterUnit()
+							.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.carbonNanotube.diameterUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -278,11 +325,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 		} else if (entityBean.getType().equalsIgnoreCase("fullerene")) {
-			if (entityBean.getFullerene().getAverageDiameter() == 0.0) {
-				entityBean.getFullerene().setAverageDiameter(null);
-			}
-			if (!entityBean.getFullerene().getAverageDiameterUnit().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getFullerene().getAverageDiameterUnit() != null
+					&& !entityBean.getFullerene().getAverageDiameterUnit()
+							.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"nanomaterialEntityForm.fullerene.averageDiameterUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -352,7 +397,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		theForm.set("nanomaterialEntity", entityBean);
 		theForm.set("otherSamples", new String[0]);
 		this.setLookups(request);
-		this.setupIsPolymerized(entityBean);
 		this.checkOpenForms(entityBean, request);
 		return mapping.findForward("inputForm");
 	}
@@ -517,6 +561,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();
+		this.updateEmptyFieldsToNull(request, entity);
 		Boolean openFile = false, openComposingElement = false;
 		if (dispatch.equals("input") && browserDispatch.equals("saveFile")) {
 			openFile = true;
@@ -570,26 +615,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			entityBean.getEmulsion().setPolymerized(polymerized);
 		} else if ("liposome".equals(entityType)) {
 			entityBean.getLiposome().setPolymerized(polymerized);
-		}
-	}
-
-	/**
-	 * Setup "polymerized" property in entityBean from Emulsion or Liposome.
-	 *
-	 * @param entityBean
-	 */
-	private void setupIsPolymerized(NanomaterialEntityBean entityBean) {
-		Boolean polymerized = null;
-		String entityType = entityBean.getType();
-		if ("emulsion".equals(entityType)) {
-			polymerized = entityBean.getEmulsion().getPolymerized();
-		} else if ("liposome".equals(entityType)) {
-			polymerized = entityBean.getLiposome().getPolymerized();
-		}
-		if (polymerized == null) {
-			entityBean.setIsPolymerized(null);
-		} else {
-			entityBean.setIsPolymerized(polymerized.toString());
 		}
 	}
 
