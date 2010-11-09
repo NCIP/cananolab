@@ -198,6 +198,7 @@ function addComposingElement(publicRetract, actionName) {
 			&& validateTubeInfo()
 			&& validateFullereneInfo()
 			&& validatePolymerInfo()
+			&& validateDendrimerInfo()
 			&& validateSavingTheData('newInherentFunction', 'Inherent Function')) {
 		submitAction(document.forms[0], actionName, "saveComposingElement", 2);
 		return true;
@@ -245,6 +246,15 @@ function validatePolymerInfo() {
 	if (inputField != null && inputField.value != ""
 			&& !validFloatNumber(inputField.value)) {
 		alert("Please enter a valid number for Cross Link Degree.");
+		return false;
+	}
+	return true;
+}
+function validateDendrimerInfo() {
+	var inputField = document.getElementById("generation");
+	if (inputField != null && inputField.value != ""
+			&& !validFloatNumber(inputField.value)) {
+		alert("Please enter a valid number for Generation.");
 		return false;
 	}
 	return true;
