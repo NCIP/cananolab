@@ -329,8 +329,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		boolean status = true;
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
-			if (!entityBean.getBiopolymer().getType().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getBiopolymer().getType() != null
+					&& !entityBean.getBiopolymer().getType().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.biopolymer.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -339,16 +340,18 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			}
 		}
 		if (entityBean.getType().equalsIgnoreCase("antibody")) {
-			if (!entityBean.getAntibody().getType().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getAntibody().getType() != null
+					&& !entityBean.getAntibody().getType().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.antibody.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveErrors(request, msgs);
 				status = false;
 			}
-			if (!entityBean.getAntibody().getIsotype().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getAntibody().getIsotype() != null
+					&& !entityBean.getAntibody().getIsotype().matches(
+							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.antibody.isotype.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -357,8 +360,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			}
 		}
 		if (entityBean.getType().equalsIgnoreCase("small molecule")) {
-			if (!entityBean.getSmallMolecule().getAlternateName().matches(
-					Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			if (entityBean.getSmallMolecule().getAlternateName() != null
+					&& !entityBean.getSmallMolecule().getAlternateName()
+							.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.smallMolecule.alternateName.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
