@@ -32,9 +32,6 @@
 						</c:choose>
 					</c:otherwise>
 				</c:choose>
-				(
-				<c:out value="${file.domainFile.type}" />
-				)
 			</td>
 			<td>
 				<c:choose>
