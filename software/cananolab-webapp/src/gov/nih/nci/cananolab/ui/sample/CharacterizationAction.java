@@ -607,6 +607,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (!StringUtils.isEmpty(theFindingId)) {
 			findingBean.getDomain().setId(Long.valueOf(theFindingId));
 		}
+		if (!validateEmptyFinding(request, findingBean)) {
+			return mapping.getInputForward();
+		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -950,9 +953,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private Boolean validateInputs(HttpServletRequest request,
 			CharacterizationBean achar) {
 		if (!validateCharacterization(request, achar)) {
-			return false;
-		}
-		if (!validateEmptyFinding(request, achar.getTheFinding())) {
 			return false;
 		}
 		return true;
