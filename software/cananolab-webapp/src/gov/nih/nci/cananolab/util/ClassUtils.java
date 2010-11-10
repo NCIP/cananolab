@@ -39,6 +39,8 @@ public class ClassUtils {
 				"hibernate.cfg.xml");
 		//for grid service, hibernate.cfg.xml is contained in a jar file in the lib directory under WEB-INF
 		if (url.getProtocol().equals("jar")) {
+			System.out.println(url);
+			System.out.println(url.getFile());
 			String libDirPath=(new File(url.getFile())).getParentFile().getParent();
 			//remove the extra file:\\ in the front
 			if (libDirPath.startsWith("file:\\")) {
@@ -476,7 +478,7 @@ public class ClassUtils {
 
 			// List<Report> reportLists = ClassUtils.mapObjects(null, null);
 			// System.out.println("report ========="+reportLists.get(0).getCategory());
-			System.out.println(ClassUtils.getFullClass("Characterization"));
+			System.out.println(ClassUtils.getFullClass("SampleComposition"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
