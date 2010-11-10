@@ -159,17 +159,18 @@ public class PublicationBean extends FileBean {
 	}
 
 	public String[] getSampleNames() {
-		if (sampleNames.length == 0) {
-			if (!StringUtils.isEmpty(sampleNamesStr)) {
-				sampleNames = sampleNamesStr.split("\r\n");
-			}
+		if (sampleNamesStr != null) {
+			sampleNames = sampleNamesStr.split("\r\n");
+		}
+		if (sampleNames.length == 1 && StringUtils.isEmpty(sampleNames[0])) {
+			sampleNames = new String[0];
 		}
 		return sampleNames;
 	}
 
 	public void setSampleNames(String[] sampleNames) {
 		this.sampleNames = sampleNames;
-		sampleNamesStr = StringUtils.join(sampleNames, "\r\n");
+		this.sampleNamesStr = StringUtils.join(sampleNames, "\r\n");
 	}
 
 	/**
