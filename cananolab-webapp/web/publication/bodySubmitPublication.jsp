@@ -22,8 +22,7 @@
 			value="${sampleName} ${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="publicationTitle"
-			value="${sampleName} Publication" />
+		<c:set var="publicationTitle" value="${sampleName} Publication" />
 	</c:otherwise>
 </c:choose>
 <jsp:include page="/bodyTitle.jsp">
@@ -87,7 +86,7 @@
 				<br>
 				<html:text property="publication.domainFile.pubMedId" size="50"
 					styleId="domainFile.pubMedId"
-					onchange="javascript:fillPubMedInfo('true', 'setupUpdate')" />
+					onchange="javascript:fillPubMedInfo()" />
 				<br>
 				<i> clicking outside of the text field after entering a valid
 					PubMed ID enables auto-population of PubMed related fields</i>
@@ -100,7 +99,7 @@
 			<td>
 				<html:text property="publication.domainFile.digitalObjectId"
 					styleId="domainFile.digitalObjectId" size="30"
-					onchange="javascript:updateWithExistingDOI('true')" />
+					onchange="javascript:updateWithExistingDOI()" />
 				&nbsp;
 			</td>
 		</tr>
@@ -318,14 +317,14 @@
 					<span id="load"> <html:file
 							property="publication.uploadedFile" styleId="uploadedFileField"
 							size="60"
-							onchange="javascript:updateWithExistingNonPubMedDOIPublication('true', '${applicationOwner}', '${publicationForm.map.publication.domainFile.uri}');" />
+							onchange="javascript:updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}');" />
 						&nbsp;&nbsp; </span>
 					<br>
 					<br>
 					<span id="link" style=""><html:text
 							property="publication.externalUrl" styleId="externalUrlField"
 							size="60"
-							onchange="javascript:updateWithExistingNonPubMedDOIPublication('true', '${applicationOwner}', '${publicationForm.map.publication.domainFile.uri}');" />
+							onchange="javascript:updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}');" />
 					</span>&nbsp;
 				</td>
 			</tr>
@@ -339,25 +338,26 @@
 				<tr>
 					<td colspan="3">
 						<div id="existingFileInfoFromUpdate" style="display: block">
-						<c:choose>
-							<c:when test="${publicationForm.map.publication.image eq 'true'}">
+							<c:choose>
+								<c:when
+									test="${publicationForm.map.publication.image eq 'true'}">
 						 				${publicationForm.map.publication.domainFile.title}<br>
-								<br>
-								<a href="#"
-									onclick="popImage(event, 'publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}',
+									<br>
+									<a href="#"
+										onclick="popImage(event, 'publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}',
 														${publicationForm.map.publication.domainFile.id})"><img
-										src="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
-										border="0" width="150"> </a>
-							</c:when>
-							<c:otherwise>
+											src="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
+											border="0" width="150"> </a>
+								</c:when>
+								<c:otherwise>
 											Submitted Publication &nbsp;&nbsp;
 										<a
-									href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
-									target="${publicationForm.map.publication.urlTarget}">
-									${publicationForm.map.publication.domainFile.uri}</a>
-								<br>
-							</c:otherwise>
-						</c:choose>
+										href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
+										target="${publicationForm.map.publication.urlTarget}">
+										${publicationForm.map.publication.domainFile.uri}</a>
+									<br>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</td>
 				</tr>
@@ -418,33 +418,39 @@
 		</c:otherwise>
 	</c:choose>
 	<br>
-	<table width="100%" align="center" class="submissionView" id="accessBlock">
-	<c:set var="groupAccesses"
-		value="${publicationForm.map.publication.groupAccesses}" />
-	<c:set var="userAccesses"
-		value="${publicationForm.map.publication.userAccesses}" />
-	<c:set var="accessParent" value="publication" />
-	<c:set var="dataType" value="Publication" />
-	<c:set var="parentForm" value="publicationForm" />
-	<c:set var="parentAction" value="publication" />
-	<c:set var="parentPage" value="2"/>
-	<c:set var="protectedData"  value="${publicationForm.map.publication.domainFile.id}" />
-	<c:set var="isPublic" value="${publicationForm.map.publication.publicStatus}"/>
-    <c:set var="isOwner" value="${publicationForm.map.publication.userIsOwner}"/>
-    <c:set var="ownerName" value="${publicationForm.map.publication.domainFile.createdBy}"/>
-	<c:set var="newData" value="true"/>
-	<c:if test="${updatePublication}">
-		<c:set var="newData" value="false" />
-	</c:if>
-	<%@include file="../bodyManageAccessibility.jsp"%>
+	<table width="100%" align="center" class="submissionView"
+		id="accessBlock">
+		<c:set var="groupAccesses"
+			value="${publicationForm.map.publication.groupAccesses}" />
+		<c:set var="userAccesses"
+			value="${publicationForm.map.publication.userAccesses}" />
+		<c:set var="accessParent" value="publication" />
+		<c:set var="dataType" value="Publication" />
+		<c:set var="parentForm" value="publicationForm" />
+		<c:set var="parentAction" value="publication" />
+		<c:set var="parentPage" value="2" />
+		<c:set var="protectedData"
+			value="${publicationForm.map.publication.domainFile.id}" />
+		<c:set var="isPublic"
+			value="${publicationForm.map.publication.publicStatus}" />
+		<c:set var="isOwner"
+			value="${publicationForm.map.publication.userIsOwner}" />
+		<c:set var="ownerName"
+			value="${publicationForm.map.publication.domainFile.createdBy}" />
+		<c:set var="newData" value="true" />
+		<c:if test="${updatePublication}">
+			<c:set var="newData" value="false" />
+		</c:if>
+		<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
 	<br>
 	<c:set var="updateId" value="${param.publicationId}" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="1" />
-	<c:set var="resetSampleIdStr" value=""/>
+	<c:set var="resetSampleIdStr" value="" />
 	<c:if test="${!empty publicationForm.map.sampleId}">
-	   <c:set var="resetSampleIdStr" value="&sampleId=${publicationForm.map.sampleId}"/>
+		<c:set var="resetSampleIdStr"
+			value="&sampleId=${publicationForm.map.sampleId}" />
 	</c:if>
 	<c:set var="resetOnclick"
 		value="javascript: location.href = 'publication.do?dispatch=setupNew&page=0${resetSampleIdStr}'" />
@@ -462,21 +468,23 @@
 			value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
 	</c:if>
-    <c:if test="${review && !empty param.sampleId}">
+	<c:if test="${review && !empty param.sampleId}">
 		<c:set var="submitForReviewOnclick"
 			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication')" />
 	</c:if>
-	 <c:if test="${review && empty param.sampleId}">
+	<c:if test="${review && empty param.sampleId}">
 		<c:set var="submitForReviewOnclick"
 			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication', 'publicationMessage')" />
 	</c:if>
 	<c:set var="validate" value="false" />
-	<c:if test="${!user.curator && publicationForm.map.publication.publicStatus}">
+	<c:if
+		test="${!user.curator && publicationForm.map.publication.publicStatus}">
 		<c:set var="validate" value="true" />
 	</c:if>
-	<c:set var="showDelete" value="false"/>
-	<c:if test="${publicationForm.map.publication.userDeletable && !empty param.publicationId}">
-	   <c:set var="showDelete" value="true"/>
+	<c:set var="showDelete" value="false" />
+	<c:if
+		test="${publicationForm.map.publication.userDeletable && !empty param.publicationId}">
+		<c:set var="showDelete" value="true" />
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
