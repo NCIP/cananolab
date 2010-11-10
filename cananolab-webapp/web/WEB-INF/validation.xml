@@ -33,6 +33,10 @@
 			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.]*$</constant-value>
 		</constant>
 		<constant>
+			<constant-name>doi</constant-name>
+			<constant-value>^[a-zA-Z0-9\/\-\_\s\(\)\:\.]*$</constant-value>
+		</constant>
+		<constant>
 			<constant-name>url</constant-name>
 			<constant-value>^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$</constant-value>
 		</constant>
