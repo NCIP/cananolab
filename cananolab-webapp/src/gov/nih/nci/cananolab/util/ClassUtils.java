@@ -46,9 +46,9 @@ public class ClassUtils {
 			System.out.println(url.getFile());
 			String libDirPath=(new File(url.getFile())).getParentFile().getParent();
 			System.out.println(libDirPath);
-			//remove the extra file:\\ in the front
+			//remove the extra file:/ in the front
 			if (libDirPath.startsWith("file:"+File.separatorChar)) {
-				libDirPath=libDirPath.replace("file:"+File.separatorChar, "");
+				libDirPath=libDirPath.replace("file:", "");
 			}
 			System.out.println(libDirPath);
 			webInfDirectory = (new File(libDirPath)).getParentFile();
