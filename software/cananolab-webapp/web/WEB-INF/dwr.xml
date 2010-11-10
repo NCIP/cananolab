@@ -105,7 +105,6 @@
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
 			<include method="searchPubMedById" />
 			<include method="retrievePubMedInfo" />
-			<include method="updatePubMedWithExistingPublication" />
 			<include method="retrieveCurrentPub" />
 			<include method="addAuthor" />
 			<include method="deleteAuthor" />
@@ -114,8 +113,10 @@
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />
 			<include method="getPublicCounts" />
-			<include method="updateWithExistingDOIPublication" />
-			<include method="updateWithExistingNonPubMedDOIPublication" />
+			<include method="getExistingDOIPublication"/>
+			<include method="getExistingPubMedPublication"/>
+			<include method="getExistingNonPubMedDOIPublication"/>
+			<include method="getExistingPublicationById"/>
 		</create>
 		<create creator="new" javascript="CollaborationGroupManager"
 			scope="session">
