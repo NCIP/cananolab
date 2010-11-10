@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 
 public class CollaborationGroupBean extends SecuredDataBean {
@@ -12,6 +13,10 @@ public class CollaborationGroupBean extends SecuredDataBean {
 		for (AccessibilityBean access : this.getUserAccesses()) {
 			access.setAccessBy(AccessibilityBean.ACCESS_BY_USER);
 		}
+	}
+
+	public String getDescriptionDisplayName() {
+		return StringUtils.escapeXmlButPreserveLineBreaks(description);
 	}
 
 	public CollaborationGroupBean(Group group) {
