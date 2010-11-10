@@ -6,23 +6,72 @@
 	<formset>
 		<form name="publicationForm">
 			<field property="publication.domainFile.category" page="1"
-				depends="required">
+				depends="required, mask">
 				<arg position="0" key="submitPublicationForm.publication.category"
 					bundle="publication" />
+				<msg name="mask" key="publication.category.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="publication.domainFile.status" page="1"
-				depends="required">
+				depends="required, mask">
 				<arg position="0" key="submitPublicationForm.publication.status"
 					bundle="publication" />
+				<msg name="mask" key="publication.status.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
 			<field property="publication.domainFile.title" page="1"
-				depends="required">
+				depends="required, mask">
 				<arg position="0" key="publication.title" bundle="publication" />
+				<msg name="mask" key="publication.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
 			</field>
-			<field property="publication.theAccess.accessBy" page="2" depends="required">
+			<field property="publication.theAuthor.firstName" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.author.firstName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="publication.theAuthor.lastName" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.author.lastName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="publication.theAuthor.initials" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.author.initials.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="publication.domainFile.digitalObjectId" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.doi.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${doi}</var-value>
+				</var>
+			</field>
+			<field property="publication.theAccess.accessBy" page="2"
+				depends="required">
 				<arg position="0" key="access.accessBy" bundle="publication" />
 			</field>
-			<field property="publication.theAccess.roleName" page="2" depends="required">
+			<field property="publication.theAccess.roleName" page="2"
+				depends="required">
 				<arg position="0" key="access.roleName" bundle="publication" />
 			</field>
 			<field property="publication.theAccess.groupName" page="2"
@@ -37,8 +86,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="publication.theAccess.userBean.loginName" page="2"
-				depends="validwhen">
+			<field property="publication.theAccess.userBean.loginName"
+				page="2" depends="validwhen">
 				<arg position="0" key="access.userName" bundle="publication" />
 				<var>
 					<var-name>test</var-name>
@@ -46,33 +95,6 @@
 						((publication.theAccess.accessBy!='user') or
 						(*this*!=null))
 					</var-value>
-				</var>
-			</field>
-		</form>
-
-		<form name="searchPublicationForm">
-			<field property="title" page="1" depends="mask">
-				<arg position="0" key="publication.title" bundle="publication" />
-				<msg name="mask" key="publication.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\./,:\-\_\*\s]*$</var-value>
-				</var>
-			</field>
-			<field property="authorsStr" page="1" depends="mask">
-				<arg position="0" key="authorsStr" bundle="publication" />
-				<msg name="mask" key="authorsStr.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
-				</var>
-			</field>
-			<field property="keywordsStr" page="1" depends="mask">
-				<arg position="0" key="keywordsStr" bundle="publication" />
-				<msg name="mask" key="keywordsStr.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
 				</var>
 			</field>
 		</form>
