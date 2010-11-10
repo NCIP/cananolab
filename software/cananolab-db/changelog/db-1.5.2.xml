@@ -27,4 +27,8 @@
 		<comment>changes related to curator data review</comment>
 		<sqlFile path="sql/mysql/1.5.2/data_review_status.sql" />
 	</changeSet>
+	<changeSet id="1.5.2-6" author="pansu">
+		<comment>changes related to cleaning up obsoleted data</comment>
+		<sqlFile path="sql/mysql/1.5.2/data_cleanup.sql" />
+	</changeSet>
 </databaseChangeLog>
