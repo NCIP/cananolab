@@ -50,17 +50,19 @@
 						<c:forEach var="group" items="${existingCollaborationGroups}">
 							<tr valign="top">
 								<td>
-									<c:out value="${group.name}"/>
+									<c:out value="${group.name}" />
 								</td>
 								<td>
-									<c:out value="${group.description}"/>
+									<c:out value="${group.descriptionDisplayName}"
+										escapeXml="false" />
 								</td>
 								<td>
-									<c:out value="${group.ownerName}"/>
+									<c:out value="${group.ownerName}" />
 								</td>
 								<td>
 									<c:forEach var="userAccess" items="${group.userAccesses}">
-									<c:out value="${userAccess.userBean.loginName}"/> (<c:out value="${userAccess.roleDisplayName}"/>)<br />
+										<c:out value="${userAccess.userBean.loginName}" /> (<c:out
+											value="${userAccess.roleDisplayName}" />)<br />
 									</c:forEach>
 								</td>
 								<td align="right">
