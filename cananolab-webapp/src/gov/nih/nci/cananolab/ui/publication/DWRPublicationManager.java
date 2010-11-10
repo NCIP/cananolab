@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -83,16 +84,13 @@ public class DWRPublicationManager {
 		return publicationBean;
 	}
 
-	public PublicationBean updatePubMedWithExistingPublication(String pubmedID) {
-		PublicationBean publicationBean = this.retrievePubMedInfo(pubmedID);
-		// search database record for pubMed ID
+	public String getExistingPubMedPublication(String pubmedID) {
+		String publicationId = null;
 		try {
-			PublicationBean dbPubBean = getService().findPublicationByKey(
-					"pubMedId", new Long(pubmedID), true);
-			if (dbPubBean != null) {
-				// update form publication with data stored in the databbase
-				publicationBean.copyNonPubMedFieldsFromDatabase(dbPubBean);
-				return publicationBean;
+			Publication publication = getService().getHelper()
+					.findPublicationByKey("pubMedId", new Long(pubmedID));
+			if (publication != null) {
+				publicationId = publication.getId().toString();
 			}
 		} catch (NoAccessException ne) {
 			logger.info("User can't access the publication with Pub Med ID "
@@ -101,7 +99,54 @@ public class DWRPublicationManager {
 			logger.info("Error in retrieving publication with Pub Med ID "
 					+ pubmedID);
 		}
-		return null;
+		return publicationId;
+	}
+
+	public String getExistingDOIPublication(String doi) {
+		String publicationId = null;
+		try {
+			Publication publication = getService().getHelper()
+					.findPublicationByKey("digitalObjectId", doi);
+			if (publication != null) {
+				publicationId = publication.getId().toString();
+			}
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication with DOI " + doi);
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication with DOI " + doi);
+		}
+		return publicationId;
+	}
+
+	public String getExistingNonPubMedDOIPublication(String category,
+			String title, Author firstAuthor) {
+		String publicationId = null;
+		try {
+			Publication publication = getService().getHelper()
+					.findNonPubMedNonDOIPublication(category, title,
+							firstAuthor.getFirstName(),
+							firstAuthor.getLastName());
+			if (publication != null) {
+				publicationId = publication.getId().toString();
+			}
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication");
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication");
+		}
+		return publicationId;
+	}
+
+	public PublicationBean getExistingPublicationById(String id) {
+		PublicationBean dbPubBean = null;
+		try {
+			dbPubBean = getService().findPublicationById(id, false);
+		} catch (NoAccessException ne) {
+			logger.info("User can't access the publication with ID " + id);
+		} catch (Exception e) {
+			logger.info("Error in retrieving publication with ID " + id);
+		}
+		return dbPubBean;
 	}
 
 	/**
@@ -122,37 +167,6 @@ public class DWRPublicationManager {
 			return null;
 		}
 		return (PublicationBean) form.get("publication");
-	}
-
-	public PublicationBean updateWithExistingDOIPublication(String doi) {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user == null) {
-			return null;
-		}
-		DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
-				.getAttribute("publicationForm");
-		if (form == null) {
-			return null;
-		}
-		PublicationBean publicationBean = (PublicationBean) form
-				.get("publication");
-
-		// search database record for DOI
-		try {
-			PublicationBean dbPubBean = getService().findPublicationByKey(
-					"digitalObjectId", doi, true);
-			if (dbPubBean != null) {
-				// update form publication with data stored in the databbase
-				publicationBean.copyFromDatabase(dbPubBean);
-				return publicationBean;
-			}
-		} catch (NoAccessException ne) {
-			logger.info("User can't access the publication with DOI " + doi);
-		} catch (Exception e) {
-			logger.info("Error in retrieving publication with DOI " + doi);
-		}
-		return null;
 	}
 
 	public String[] getPublicationCategories(String searchLocations) {
@@ -251,39 +265,5 @@ public class DWRPublicationManager {
 					.error("Error obtaining counts of public publications from local site.");
 		}
 		return counts.toString() + " Publications";
-	}
-
-	public PublicationBean updateWithExistingNonPubMedDOIPublication(
-			String category, String title, Author firstAuthor) throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user == null) {
-			return null;
-		}
-		DynaValidatorForm form = (DynaValidatorForm) wctx.getSession()
-				.getAttribute("publicationForm");
-		if (form == null) {
-			return null;
-		}
-		PublicationBean publicationBean = (PublicationBean) form
-				.get("publication");
-
-		// check whether a publication exists based on the publication type,
-		// title, first author
-		String firstName = null;
-		String lastName = null;
-		if (firstAuthor != null) {
-			firstName = firstAuthor.getFirstName();
-			lastName = firstAuthor.getLastName();
-		}
-		PublicationBean dbPubBean = getService()
-				.findNonPubMedNonDOIPublication(category, title, lastName,
-						firstName);
-		if (dbPubBean != null) {
-			publicationBean.copyFromDatabase(dbPubBean);
-			return publicationBean;
-		} else {
-			return null;
-		}
 	}
 }
