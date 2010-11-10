@@ -136,8 +136,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			}
 			publicationBean.setSampleNames(sampleNames
 					.toArray(new String[sampleNames.size()]));
-		}
-		else {
+		} else {
 			publicationBean.setFromSamplePage(false);
 		}
 
@@ -286,12 +285,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
 
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		// request
-		// .setAttribute("onloadJavascript",
-		// "updateSubmitFormBasedOnCategory();fillPubMedInfo('false', null)");
 		request.setAttribute("onloadJavascript",
-				"updateSubmitFormBasedOnCategory();");
-
+				"updateSubmitFormBasedOnCategory();updateFormFields('"
+						+ publicationId + "');");
 		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
 				.toString(), pubBean.getPublicStatus());
 		request.getSession().setAttribute("updatePublication", "true");
