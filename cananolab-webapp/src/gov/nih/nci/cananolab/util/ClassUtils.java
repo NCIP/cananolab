@@ -38,14 +38,19 @@ public class ClassUtils {
 		URL url = Thread.currentThread().getContextClassLoader().getResource(
 				"hibernate.cfg.xml");
 		//for grid service, hibernate.cfg.xml is contained in a jar file in the lib directory under WEB-INF
+
+		// url=jar:file:/usr/local/jboss-4.0.5.GA/server/ncicb-core/./tmp/deploy/tmp59187wsrf-canano-exp.war/WEB-INF/lib/caNanoLabSDK-orm.jar!/hibernate.cfg.xml
+		// file:/usr/local/jboss-4.0.5.GA/server/ncicb-core/./tmp/deploy/tmp59187wsrf-canano-exp.war/WEB-INF/lib/caNanoLabSDK-orm.jar!/hibernate.cfg.xml
 		if (url.getProtocol().equals("jar")) {
 			System.out.println(url);
 			System.out.println(url.getFile());
 			String libDirPath=(new File(url.getFile())).getParentFile().getParent();
+			System.out.println(libDirPath);
 			//remove the extra file:\\ in the front
-			if (libDirPath.startsWith("file:\\")) {
-				libDirPath=libDirPath.replace("file:\\", "");
+			if (libDirPath.startsWith("file:"+File.separatorChar)) {
+				libDirPath=libDirPath.replace("file:"+File.separatorChar, "");
 			}
+			System.out.println(libDirPath);
 			webInfDirectory = (new File(libDirPath)).getParentFile();
 		} else {
 			webInfDirectory = (new File(url.getPath())).getParentFile()
