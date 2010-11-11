@@ -6,7 +6,7 @@
 	<global>
 		<constant>
 			<constant-name>alphabetic</constant-name>
-			<constant-value>^[a-zA-Z]*$</constant-value>
+			<constant-value>^[a-zA-Z\s]*$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>numeric</constant-name>
@@ -14,11 +14,11 @@
 		</constant>
 		<constant>
 			<constant-name>alphanumeric</constant-name>
-			<constant-value>^[a-zA-Z0-9]*$</constant-value>
+			<constant-value>^[a-zA-Z0-9\s]*$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>zip</constant-name>
-			<constant-value>^\d{5}(-\d{4})?$</constant-value>
+			<constant-value>^(\d{5}(-\d{4})?)|([a-zA-Z0-9\s])$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>phone</constant-name>
@@ -31,6 +31,10 @@
 		<constant>
 			<constant-name>textFieldWhiteList</constant-name>
 			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>relaxedTextFieldWhiteList</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\,]*$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>doi</constant-name>
@@ -140,7 +144,7 @@
 				<msg name="mask" key="organization.name.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
+					<var-value>${relaxedTextFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="comment" depends="maxlength">
