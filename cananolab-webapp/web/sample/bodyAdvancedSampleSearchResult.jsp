@@ -70,28 +70,33 @@
 					varStatus="ind1">
 					<display:column title="${entry.key}" sortable="true">
 						<c:forEach var="item" items="${entry.value}" varStatus="ind2">
+							<c:if test="${!empty item.displayName}">
 						    ${item.displayName}&nbsp;
 						 	<div id="details${sample.sampleId}:${ind1.count}:${ind2.count}"
-								style="position: relative">
-								<%--<a href="${item.action}" target="detailView">View Details</a>--%>
-								<a id="detailLink${sample.sampleId}:${ind1.count}:${ind2.count}"
-									href="#"
-									onclick="showDetailView('${sample.sampleId}:${ind1.count}:${ind2.count}', '${item.action}'); return false;">Details</a>
-								<img src="images/ajax-loader.gif" border="0" class="counts"	id="loaderImg${sample.sampleId}:${ind1.count}:${ind2.count}" style="display: none">
-								<table
-									id="detailView${sample.sampleId}:${ind1.count}:${ind2.count}"
-									style="display: none; position: absolute; left: -250px; top: 20px; z-index: 5; width: 500px; font-size: 10px; background-color: #FFFFFF"
-									class="promptbox">
-									<tr>
-										<td>
-											<div
-												id="content${sample.sampleId}:${ind1.count}:${ind2.count}"></div>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<br />
-							<br />
+									style="position: relative">
+									<%--<a href="${item.action}" target="detailView">View Details</a>--%>
+									<a
+										id="detailLink${sample.sampleId}:${ind1.count}:${ind2.count}"
+										href="#"
+										onclick="showDetailView('${sample.sampleId}:${ind1.count}:${ind2.count}', '${item.action}'); return false;">Details</a>
+									<img src="images/ajax-loader.gif" border="0" class="counts"
+										id="loaderImg${sample.sampleId}:${ind1.count}:${ind2.count}"
+										style="display: none">
+									<table
+										id="detailView${sample.sampleId}:${ind1.count}:${ind2.count}"
+										style="display: none; position: absolute; left: -250px; top: 20px; z-index: 5; width: 500px; font-size: 10px; background-color: #FFFFFF"
+										class="promptbox">
+										<tr>
+											<td>
+												<div
+													id="content${sample.sampleId}:${ind1.count}:${ind2.count}"></div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<br />
+								<br />
+							</c:if>
 						</c:forEach>
 					</display:column>
 				</c:forEach>
