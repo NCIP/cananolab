@@ -1,0 +1,196 @@
+<!DOCTYPE form-validation PUBLIC
+"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<global>
+		<constant>
+			<constant-name>alphabetic</constant-name>
+			<constant-value>^[a-zA-Z\s]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>numeric</constant-name>
+			<constant-value>^[0-9]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>alphanumeric</constant-name>
+			<constant-value>^[a-zA-Z0-9\s]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>loginName</constant-name>
+			<constant-value>^[a-zA-Z0-9\s\_]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>zip</constant-name>
+			<constant-value>^(\d{5}(-\d{4})?)|([a-zA-Z0-9\s])$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>phone</constant-name>
+			<constant-value>^[0-9()-]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>email</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\:\.]+@[a-zA-Z0-9\-\_\:\.]+\.[a-zA-Z]{2,3}$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>textFieldWhiteList</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>relaxedTextFieldWhiteList</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\,]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>doi</constant-name>
+			<constant-value>^[a-zA-Z0-9\/\-\_\s\(\)\:\.]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>url</constant-name>
+			<constant-value>^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>number</constant-name>
+			<constant-value>^[-+]?[0-9]*\.?[0-9]+$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>unit</constant-name>
+			<constant-value>^[a-zA-Z\%\/\-\_\s\(\)]*$</constant-value>
+		</constant>
+	</global>
+	<formset>
+		<form name="loginForm">
+			<field property="loginId" depends="required, mask">
+				<arg position="0" key="loginForm.loginId" />
+				<msg name="mask" key="loginId.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${loginName}</var-value>
+				</var>
+			</field>
+			<field property="password" depends="required">
+				<arg position="0" key="loginForm.password" />
+			</field>
+		</form>
+		<form name="updatePasswordForm">
+			<field property="loginId" depends="required, mask">
+				<arg position="0" key="updatePasswordForm.loginId" />
+				<msg name="mask" key="loginId.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${loginName}</var-value>
+				</var>
+			</field>
+			<field property="password" depends="required">
+				<arg position="0" key="updatePasswordForm.password" />
+			</field>
+			<field property="newPassword" depends="validwhenmatch">
+				<arg position="0" key="updatePasswordForm.newPassword" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* != null) and (newPassword != password))
+					</var-value>
+				</var>
+			</field>
+			<field property="newPassword2" depends="validwhenmatch">
+				<arg position="0" key="updatePasswordForm.newPassword2" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* != null) and (newPassword ==
+						newPassword2))
+					</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="registerUserForm">
+			<field property="firstName" depends="required, mask">
+				<arg position="0" key="registerUserForm.firstName" />
+				<msg name="mask" key="firstName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="lastName" depends="required, mask">
+				<arg position="0" key="registerUserForm.lastName" />
+				<msg name="mask" key="lastName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="email" depends="required,mask">
+				<arg position="0" key="registerUserForm.email" />
+				<msg name="mask" key="email.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${email}</var-value>
+				</var>
+			</field>
+			<field property="phone" depends="required, mask">
+				<arg position="0" key="registerUserForm.phone" />
+				<msg name="mask" key="phone.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${phone}</var-value>
+				</var>
+			</field>
+			<field property="fax" depends="mask">
+				<msg name="mask" key="fax.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${phone}</var-value>
+				</var>
+			</field>
+			<field property="organization" depends="required, mask">
+				<arg position="0" key="registerUserForm.organization" />
+				<msg name="mask" key="organization.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedTextFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="comment" depends="maxlength">
+				<arg0 key="registerUserForm.comment" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>4000</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="transferOwnerForm">
+			<field property="currentOwner" page="1" depends="required">
+				<arg position="0" key="transferOwnerForm.currentOwner" />
+			</field>
+			<field property="newOwner" page="1" depends="validwhenmatch">
+				<arg position="0" key="transferOwnerForm.newOwner" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) and (newOwner!=currentOwner))
+					</var-value>
+				</var>
+			</field>
+			<field property="dataType" page="1" depends="required">
+				<arg position="0" key="transferOwnerForm.dataType" />
+			</field>
+		</form>
+		<!-- to be removed after 1.5.2 -->
+		<form name="updateCreatedByForm">
+			<field property="currentCreatedBy" page="1" depends="required">
+				<arg position="0" key="updateCreatedByForm.currentCreatedBy" />
+			</field>
+			<field property="newCreatedBy" page="1" depends="required">
+				<arg position="0" key="updateCreatedByForm.newCreatedBy" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) and (newCreatedBy!=currentCreatedBy))
+					</var-value>
+				</var>
+			</field>
+		</form>
+	</formset>
+</form-validation>
