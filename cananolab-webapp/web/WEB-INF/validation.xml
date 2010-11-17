@@ -57,10 +57,10 @@
 		<form name="loginForm">
 			<field property="loginId" depends="required, mask">
 				<arg position="0" key="loginForm.loginId" />
-				<msg name="mask" key="loginForm.loginId.invalid" />
+				<msg name="mask" key="loginId.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9]*$</var-value>
+					<var-value>${alphanumeric}</var-value>
 				</var>
 			</field>
 			<field property="password" depends="required">
@@ -70,10 +70,10 @@
 		<form name="updatePasswordForm">
 			<field property="loginId" depends="required, mask">
 				<arg position="0" key="updatePasswordForm.loginId" />
-				<msg name="mask" key="updatePasswordForm.loginId.invalid" />
+				<msg name="mask" key="loginId.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9]*$</var-value>
+					<var-value>${alphanumeric}</var-value>
 				</var>
 			</field>
 			<field property="password" depends="required">
