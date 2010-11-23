@@ -88,7 +88,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			forward = mapping.getInputForward();
 		}
 		//allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control","cache");
+		response.setHeader("Cache-Control","private");
 
 		return forward;
 	}
