@@ -100,7 +100,11 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected ActionForward downloadFile(BaseService service,
 			ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		response.setHeader("Cache-Control","cache");
+		response.setHeader("Pragma", "");
+		response.setHeader("Cache-Control", "private");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE,5);
+		response.setDateHeader("Expires", cal.getTimeInMillis());
 		String fileId = request.getParameter("fileId");
 		FileBean fileBean = service.findFileById(fileId);
 		if (fileBean != null) {
