@@ -58,6 +58,7 @@ public class LoginAction extends Action {
 		request.getSession().setAttribute("user", service.getUserBean());
 		forward = mapping.findForward("success");
 		resetToken(request);
+		response.setHeader("Cache-Control","no-cache");
 		return forward;
 	}
 }
