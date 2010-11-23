@@ -100,6 +100,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected ActionForward downloadFile(BaseService service,
 			ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		response.setHeader("Cache-Control","cache");
 		String fileId = request.getParameter("fileId");
 		FileBean fileBean = service.findFileById(fileId);
 		if (fileBean != null) {
@@ -140,7 +141,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throw new FileException("File " + fileBean.getDomainFile().getUri()
 					+ " doesn't exist on the server");
 		}
-		response.setHeader("Cache-Control","cache");
 		return null;
 	}
 
