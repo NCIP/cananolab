@@ -140,6 +140,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throw new FileException("File " + fileBean.getDomainFile().getUri()
 					+ " doesn't exist on the server");
 		}
+		response.setHeader("Cache-Control","cache");
 		return null;
 	}
 
