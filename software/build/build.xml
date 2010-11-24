@@ -263,9 +263,12 @@
 			</fileset>
 		</jar>
 
+		<!-- replace downloaded server-config.wsdd with the one that has logicalHost parameter -->
+		<copy overwrite="true" tofile="${cananolab-grid.temp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" file="${common.dir}/resources/jboss-conf/server-config.wsdd" />
 		<!-- replace grid service hostname -->
 		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
-
+		<!-- replace grid service hostname -->
+		<replace file="${cananolab-grid.temp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
 		<!-- replace grid service port -->
 		<replace file="${cananolab-grid.temp.dir}/WEB-INF/web.xml" token=">8080" value=">${grid.service.port}" />
 		<!-- replace grid service protocol -->
