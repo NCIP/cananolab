@@ -32,8 +32,9 @@ public class ExportUtils {
 	 */
 	public static final String IMAGE_CONTENT_TYPE = "application/octet-stream";
 	public static final String EXCEL_CONTENT_TYPE = "application/vnd.ms-execel";
-	public static final String CACHE_CONTROL = "cache-control";
-	public static final String PRIVATE = "Private";
+	public static final String CACHE_CONTROL = "Cache-Control";
+	public static final String PRIVATE_CACHE = "private";
+	public static final String CACHE="cache";
 	public static final String CONTENT_DISPOSITION = "Content-disposition";
 	public static final String ATTACHMENT = "attachment;filename=\"";
 	public static final String EXCEL_EXTENTION = ".xls\"";
@@ -68,11 +69,10 @@ public class ExportUtils {
 	 * @param fileName String
 	 */
 	public static void prepareReponseForExcel(HttpServletResponse response, String fileName) {
+		prepareDownloadResponse(response);
 		StringBuilder sb = new StringBuilder();
 		sb.append(ATTACHMENT).append(fileName).append(EXCEL_EXTENTION);
-
 		response.setContentType(EXCEL_CONTENT_TYPE);
-		response.setHeader(CACHE_CONTROL, PRIVATE);
 		response.setHeader(CONTENT_DISPOSITION, sb.toString());
 	}
 
@@ -83,12 +83,19 @@ public class ExportUtils {
 	 * @param fileName String
 	 */
 	public static void prepareReponseForImage(HttpServletResponse response, String fileName) {
+		prepareDownloadResponse(response);
 		StringBuilder sb = new StringBuilder();
 		sb.append(ATTACHMENT).append(fileName).append("\"");
-
 		response.setContentType(IMAGE_CONTENT_TYPE);
-		response.setHeader(CACHE_CONTROL, PRIVATE);
 		response.setHeader(CONTENT_DISPOSITION, sb.toString());
+	}
+
+	private static void prepareDownloadResponse(HttpServletResponse response) {
+		response.setHeader("Pragma", "");
+		response.setHeader(CACHE_CONTROL, PRIVATE_CACHE);
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MINUTE,5);
+		response.setDateHeader("Expires", cal.getTimeInMillis());
 	}
 
 	public static int loadPicture(String path, HSSFWorkbook wb) throws IOException {
