@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nano-ML identifier="">
+	<!-- only one InvestigationFile per nano-ML -->
+	<InvestigationFile>
+		<!--  zero or more OntologySourceReference as multiple columns -->
+		<OntologySourceReference name="" version="" description="" file="">			
+		</OntologySourceReference>
+		<!-- zero or one Investigateion -->
+		<Investigation identifer="" title="" description=""
+			submissionDate="" publicReleaseDate="" outcome="">
+			<!--  zero or more Diseases as multiple columns-->
+			<Disease name="" nameTermAccessionNumber="" nameTermSourceReference=""></Disease>
+			<!--  zero or more Publications as multiple columns-->
+			<Publication pubMedID="" doi="" title="" status=""
+				statusTermAccessionNumber="" statusTermSourceReference="">
+				<!--  one or more Author as semicolon separated-->
+				<Author firstName="" lastName="" middleInitials="">
+				</Author>
+			</Publication>
+			<!--  one or more PointOfContact as multiple columns-->
+			<PointOfContact firstName="" lastName=""
+				middleInitials="" email="" phone="" fax="" isPrimary="">
+				<Affiliation name="" address=""></Affiliation>
+				<!--  one or more PointOfContact as semicolon separated-->
+				<Role name="" nameTermAccessionNumber="" nameTermSourceReference=""></Role>
+			</PointOfContact>
+		</Investigation>
+		<!--  one or more Study as repeatable blocks-->
+		<Study identifier="" title="" submissionDate=""
+			publicReleaseDate="" description="" outcome="">
+			<!--  zero or more Design as in multiple columns -->
+			<Design type="" typeTermAccessionNumber=""
+				typeTermSourceReference="">
+			</Design>
+			<!--  zero or more Disease as multiple columns -->
+			<Disease name="" nameTermAccessionNumber="" nameTermSourceReference=""></Disease>
+			<!--  one or more File as multiple columns -->
+			<File name="" fileUri="" version=""
+				description="" type="" typeTermAccessionNumber=""
+				typeTermSourceReference="">
+			</File>
+			<!--  zero or more Publication as multiple columns-->
+			<Publication pubMedID="" doi="" title="" status=""
+				statusTermAccessNumber="" statusTermSourceReference="">
+				<!--  one or more Author as semicolon separated-->
+				<Author firstName="" lastName="" middleInitials="">
+				</Author>
+			</Publication>
+			<!--  zero or more Factor as multiple columns-->
+			<Factor name="" type="" typeTermAccessionNumber=""
+				typeTermSourceReference="">
+			</Factor>
+			<!--  one or more Assay as multiple columns-->
+			<Assay fileName="">
+				<!--  one Measurement per assay, is this true in nano-TAB ? -->
+				<Measurement type="" typeTermAccessionNumber=""
+					typeTermSourceReference="">
+				</Measurement>
+				<!--  zero or one Technology per assay, is this true in nano-TAB ? -->
+				<Technology platform="" type="" typeTermAccessionNumber=""
+					typeTermSourceReference="">
+				</Technology>
+			</Assay>
+			<!--  one or more Protocol as in multiple columns-->
+			<Protocol name="" description="" uri="" version="" type=""
+				typeTermAccessionNumber="" typeTermSourceReference="">
+				<!--  zero or more Parameter as semicolon separated-->
+				<Parameter name="" nameTermAccessionNumber=""
+					nameTermSourceReference="">
+				</Parameter>
+				<!--  zero or more Component as semicolon separated-->
+				<Component type="" typeTermAccessionNumber=""
+					typeTermSourceReference="">
+				</Component>
+			</Protocol>
+			<!--  one or more PointOfContact as multiple columns-->
+			<PointOfContact firstName="" lastName=""
+				middleInitials="" email="" phone="" fax="" isPrimary="">
+				<Affiliation name="" address=""></Affiliation>
+				<!--  one or more Role as semicolon separated-->
+				<Role name="" nameTermAccessionNumber="" nameTermSourceReference=""></Role>
+			</PointOfContact>
+		</Study>
+	</InvestigationFile>
+	<SpecimenFile>		
+		<!-- one or more Specimen Sample as multiple rows -->
+		<SpecimenSample name="">
+			<!--  zero or one Source -->
+			<Source name="">					
+			</Source>
+			<!--
+				one of more Characteristic as multiple columns
+			-->
+			<Characteristic name="" nameTermAccessionNumber=""
+				nameTermSourceReference="" unit="" unitTermAccessionNumber=""
+				unitTermSourceReference="">
+			</Characteristic>
+			<ProtocolReference name="" performer="" date="">
+				<ParameterValue name="" nameTermAccessionNumber=""
+					nameTermSourceReference="" value="" unit=""
+					unitTermAccessionNumber="" unitTermSourceReference="">
+				</ParameterValue>
+			</ProtocolReference>				
+		</SpecimenSample>		
+	</SpecimenFile>
+	<AssayFile>       
+		<Assay name="">
+			<!-- one or more SpecimenSample as multiple rows -->            
+			<SpecimenSample name="">
+				<!-- one or more MaterialSample per SpecimenSample as multiple rows-->
+				<MaterialSample name="">                    
+				</MaterialSample>
+				<!-- one or more Measurement as muliptle columns-->
+				<MeasurementValue name="" value="" unit="" unitTermAccessionNumber="" unitTermSourceReference="" statistic="" statisticTermAccessionNumber="" statisticTermSourceReference="">
+					<!-- zero or more Factors per Measurement as mulitple columns-->
+					<FactorValue name="" value="" unit="" unitTermsAccessionNumber="" unitTermSourceReference="">                      
+					</FactorValue>
+				</MeasurementValue>                                
+			</SpecimenSample>
+			<!-- zero or more Protocol Parameter as multiple columns -->
+			<ProtocolReference name="" performer="" date="">
+				<ParameterValue name="" nameTermAccessionNumber=""
+					nameTermSourceReference="" value="" unit=""
+					unitTermAccessionNumber="" unitTermSourceReference="">
+				</ParameterValue>
+			</ProtocolReference>            
+			<DerivedDataFile name="">
+			</DerivedDataFile>
+		</Assay>        
+	</AssayFile>
+	<!-- zero or more MaterialFiles if each MaterialFile only captures one MaterialSample -->
+	<MaterialFile>
+		<!-- only one MaterialSample per MaterialFile, can we consider repeatable blocks to capture multiple material samples in the same file -->
+		<MaterialSample sourceName="" name="" description=""
+			synthesis="" materialType="" materialTypeTermAccessionNumber="" materialTypeTermSourceReference="" designRationale="" designRationaleTermAccessionNumber="" designRationalTermSourceReference="">
+			<!-- zero or more Characteristic as multiple columns -->			
+			<Characteristic name="" nameTermAccessionNumber=""
+				nameTermSourceReference="" unit="" unitTermAccessionNumber=""
+				unitTermSourceReference="">
+			</Characteristic>
+			<!-- zero or more IntendedApplication as multiple columns -->
+			<IntendedApplication name="" nameTermAccessionNumber=""
+				nameTermSourceReference="">				
+			</IntendedApplication>
+			<!-- zero or more File as multiple columns -->
+			<File name="" location="" version="" description="" type="" typeTermAccessionNumber="" typeTermSourceReference="">
+			</File>
+			<!-- one or more MaterialComponent as multiple columns -->
+			<MaterialComponent name="" description="" type="" typeTermAccessionNumber="" typeTermSourceReference="" chemicalName="" chemicalNameTermAccessionNumber=""
+				chemicalNameTermSourceReference="">	
+				<!-- zero or more Characteristic as semicolon separated -->				
+				<Characteristic name="" nameTermAccessionNumber=""
+					nameTermSourceReference="" unit="" unitTermAccessionNumber=""
+					unitTermSourceReference="">
+				</Characteristic>
+				<!-- zero or more IntendedApplication as semicolon separated -->
+				<IntendedApplication name="" nameTermAccessionNumber=""
+					nameTermSourceReference="">				
+				</IntendedApplication>
+				<!-- zero or more File as semicolon separated -->
+				<File name="" location="" version="" description=""  type="" typeTermAccessionNumber="" typeTermSourceReference="">
+				</File>
+			</MaterialComponent>
+			<!-- zero ore more MaterialLinkage as multiple columns -->
+			<MaterialLinkage name="" type="" typeTermAccessionNumber="" typeTermSourceReference="" componentLocation="" componentLocationTermAccessionNumber="" componentLocationTermSourceReference="">
+				<ComponentA name=""></ComponentA>
+				<ComponentB name=""></ComponentB>			  
+				<!-- zero or more Characteristic as semicolon separated -->
+				<Characteristic name="" nameTermAccessionNumber=""
+					nameTermSourceReference="" unit="" unitTermAccessionNumber=""
+					unitTermSourceReference="">
+				</Characteristic>
+			</MaterialLinkage>
+		</MaterialSample>
+	</MaterialFile>
+</nano-ML>

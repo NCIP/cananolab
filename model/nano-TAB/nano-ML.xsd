@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="nano-ML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="InvestigationFile"/>
+        <xs:element ref="SpecimenFile" />
+        <xs:element ref="AssayFile" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="MaterialFile" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="identifier" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InvestigationFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="OntologySourceReference" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="Investigation" minOccurs="0"/>
+        <xs:element ref="Study" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OntologySourceReference">
+    <xs:complexType>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="file" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="version" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Investigation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Disease" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="Publication" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="PointOfContact" maxOccurs="unbounded" minOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="identifer" use="required"/>
+      <xs:attribute name="outcome" use="optional"/>
+      <xs:attribute name="publicReleaseDate" use="optional"/>
+      <xs:attribute name="submissionDate" use="optional"/>
+      <xs:attribute name="title" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Study">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Design" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="Disease" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="File" maxOccurs="unbounded"/>
+        <xs:element ref="Publication" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="Factor" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="Assay" maxOccurs="unbounded"/>
+        <xs:element ref="Protocol" maxOccurs="unbounded"/>
+        <xs:element ref="PointOfContact" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="identifier" use="required"/>
+      <xs:attribute name="outcome" use="optional"/>
+      <xs:attribute name="publicReleaseDate" use="optional"/>
+      <xs:attribute name="submissionDate" use="optional"/>
+      <xs:attribute name="title" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Design">
+    <xs:complexType>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="File">
+    <xs:complexType>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="fileUri" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+      <xs:attribute name="version" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Factor">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Assay">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Measurement" maxOccurs="1"/>
+        <xs:element ref="Technology" maxOccurs="1" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="fileName" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Measurement">
+    <xs:complexType>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Technology">
+    <xs:complexType>
+      <xs:attribute name="platform" use="required"/>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Protocol">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Parameter" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="Component" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+      <xs:attribute name="uri" use="optional"/>
+      <xs:attribute name="version" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Parameter">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="nameTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Component">
+    <xs:complexType>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Disease">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="nameTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Publication">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Author" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="doi" use="optional"/>
+      <xs:attribute name="pubMedID" use="optional"/>
+      <xs:attribute name="status" use="required"/>
+      <xs:attribute name="statusTermAccessionNumber" use="optional"/>
+      <xs:attribute name="statusTermSourceReference" use="optional"/>
+      <xs:attribute name="title" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Author">
+    <xs:complexType>
+      <xs:attribute name="firstName" use="required"/>
+      <xs:attribute name="lastName" use="required"/>
+      <xs:attribute name="middleInitials" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PointOfContact">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Affiliation"/>
+        <xs:element ref="Role" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="email" use="required"/>
+      <xs:attribute name="fax" use="optional"/>
+      <xs:attribute name="firstName" use="required"/>
+      <xs:attribute name="isPrimary" use="required"/>
+      <xs:attribute name="lastName" use="required"/>
+      <xs:attribute name="middleInitials" use="required"/>
+      <xs:attribute name="phone" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Affiliation">
+    <xs:complexType>
+      <xs:attribute name="address" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Role">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTermSourceReference" use="optional"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SpecimenFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="SpecimenSampleName" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SpecimenSampleName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Source" maxOccurs="1" minOccurs="0"/>
+        <xs:element ref="Characteristic" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="ProtocolReference" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Source">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Characteristic">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="nameTermSourceReference" use="optional"/>
+      <xs:attribute name="unit" use="optional"/>
+      <xs:attribute name="unitTermAccessionNumber" use="optional"/>
+      <xs:attribute name="unitTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProtocolReference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ParameterValue" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="performer" use="optional"/>
+      <xs:attribute name="date" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ParameterValue">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="nameTermSourceReference" use="optional"/>
+      <xs:attribute name="unit" use="optional"/>
+      <xs:attribute name="unitTermAccessionNumber" use="optional"/>
+      <xs:attribute name="unitTermSourceReference" use="optional"/>
+      <xs:attribute name="value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssayFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AssayName"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssayName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="SpecimenSample" maxOccurs="unbounded"/>
+        <xs:element ref="ProtocolReference" minOccurs="0"/>
+        <xs:element ref="DerivedDataFile" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SpecimenSample">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="MaterialSampleName" maxOccurs="unbounded"/>
+        <xs:element ref="MeasurementValue" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaterialSampleName">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MeasurementValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="FactorValue" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="value" use="required"/>
+      <xs:attribute name="statistic" use="optional"/>
+      <xs:attribute name="statisticTermAccessionNumber" use="optional"/>
+      <xs:attribute name="statisticTermSourceReference" use="optional"/>
+      <xs:attribute name="unit" use="optional"/>
+      <xs:attribute name="unitTermAccessionNumber" use="optional"/>
+      <xs:attribute name="unitTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FactorValue">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="value" use="required"/>
+      <xs:attribute name="unit" use="optional"/>
+      <xs:attribute name="unitTermSourceReference" use="optional"/>
+      <xs:attribute name="unitTermsAccessionNumber" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DerivedDataFile">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaterialFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="MaterialSample" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaterialSample">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Characteristic" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="IntendedApplication" maxOccurs="unbounded"/>
+        <xs:element ref="File" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="MaterialComponent" maxOccurs="unbounded" minOccurs="1"/>
+        <xs:element ref="MaterialLinkage" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="designRationale" use="optional"/>
+      <xs:attribute name="designRationaleTermAccessionNumber" use="optional"/>
+      <xs:attribute name="designRationalTermSourceReference" use="optional"/>
+      <xs:attribute name="materialType" use="required"/>
+      <xs:attribute name="materialTypeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="materialTypeTermSourceReference" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="sourceName" use="optional"/>
+      <xs:attribute name="synthesis" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaterialComponent">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Characteristic" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="IntendedApplication" maxOccurs="unbounded"/>
+        <xs:element ref="File" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="chemicalName" use="required"/>
+      <xs:attribute name="chemicalNameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="chemicalNameTermSourceReference" use="optional"/>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MaterialLinkage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ComponentA"/>
+        <xs:element ref="ComponentB"/>
+        <xs:element ref="Characteristic" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="componentLocation" use="optional"/>
+      <xs:attribute name="componentLocationTermAccessionNumber" use="optional"/>
+      <xs:attribute name="componentLocationTermSourceReference" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute name="typeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="typeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ComponentA">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ComponentB">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IntendedApplication">
+    <xs:complexType>
+      <xs:attribute name="name"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="nameTerSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

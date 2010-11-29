@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="nano-ML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AssayFile_isa"/>
+      </xs:sequence>
+      <xs:attribute name="identifier" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssayFile_isa">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="AssayName"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssayName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Sample" maxOccurs="unbounded"/>
+        <xs:element ref="ProtocolReference" minOccurs="0"/>
+        <xs:element ref="FactorValue" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="ImageFile" minOccurs="0"/>
+        <xs:element ref="RawDataFile" minOccurs="0"/>
+        <xs:element ref="DerivedDataFile" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Sample">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Characteristic" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="ProtocolReference" maxOccurs="1" minOccurs="0"/>
+        <xs:element ref="ExtractedSample" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="materialType" use="optional"/>
+      <xs:attribute name="materialTypeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="materialTypeTermSourceReference" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Characteristic">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="nameTermSourceReference" use="optional"/>
+      <xs:attribute name="unit" use="required"/>
+      <xs:attribute name="unitTermAccessionNumber" use="optional"/>
+      <xs:attribute name="unitTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExtractedSample">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="LabeledExtractedSample" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="ProtocolReference" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="materialType" use="optional"/>
+      <xs:attribute name="materialTypeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="materialTypeTermSourceReference" use="optional"/>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LabeledExtractedSample">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ProtocolReference" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="description" use="optional"/>
+      <xs:attribute name="label" use="required"/>
+      <xs:attribute name="materialType" use="optional"/>
+      <xs:attribute name="materialTypeTermAccessionNumber" use="optional"/>
+      <xs:attribute name="materialTypeTermSourceReference" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FactorValue">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTerSourceRefernce" use="optional"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="unit" use="optional"/>
+      <xs:attribute name="unitTermAccessionNumber" use="optional"/>
+      <xs:attribute name="unitTermSourceReference" use="optional"/>
+      <xs:attribute name="value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ImageFile">
+    <xs:complexType>
+      <xs:attribute name="comment" use="required"/>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RawDataFile">
+    <xs:complexType>
+      <xs:attribute name="comment" use="required"/>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DerivedDataFile">
+    <xs:complexType>
+      <xs:attribute name="comment" use="required"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="normalizationName" use="optional"/>
+      <xs:attribute name="transformationName" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProtocolReference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ParameterValue" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="date" use="optional"/>
+      <xs:attribute name="performer" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ParameterValue">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="nameTermAccessionNumber" use="optional"/>
+      <xs:attribute name="nameTermSourceReference" use="optional"/>
+      <xs:attribute name="unit" use="optional"/>
+      <xs:attribute name="unitTermAccessionNumber" use="optional"/>
+      <xs:attribute name="unitTermSourceReference" use="optional"/>
+      <xs:attribute name="value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nano-ML identifier="">	
+	<StudyFile>		
+		<!-- one or more Sample material as multiple rows -->
+		<Sample name="" materialType=""
+				materialTypeTermAccessionNumber="" materialTypeTermSourceReference=""
+				description="" comment="">
+				<!--  zero or one Source material -->
+				<Source name="" materialType=""
+					materialTypeTermAccessionNumber="" materialTypeTermSourceReference=""
+					provider="" providerSTDMStudyId="" description="" comment="">
+					<!--
+						zero of more Characteristic as multiple columns
+					-->
+					<Characteristic name="" nameTermAccessionNumber=""
+						nameTermSourceReference="" unit="" unitTermAccessionNumber=""
+						unitTermSourceReference="">
+					</Characteristic>
+					<!-- zero or more Protocol parameters as mulitple columns -->
+					<ProtocolReference name="" performer="" date="">
+						<ParameterValue name="" nameTermAccessionNumber=""
+							nameTermSourceReference="" value="" unit=""
+							unitTermAccessionNumber="" unitTermSourceReference="">
+						</ParameterValue>
+					</ProtocolReference>
+				</Source>
+				<!--
+					zero of more Characteristic per Sample as multiple columns
+				-->
+				<Characteristic name="" nameTermAccessionNumber=""
+					nameTermSourceReference="" unit="" unitTermAccessionNumber=""
+					unitTermSourceReference="">
+				</Characteristic>
+				<!-- zero of more Protocol parameters as mulitple columns -->
+			    <ProtocolReference name="" performer="" date="">
+					<ParameterValue name="" nameTermAccessionNumber=""
+						nameTermSourceReference="" value="" unit=""
+						unitTermAccessionNumber="" unitTermSourceReference="">
+					</ParameterValue>
+				</ProtocolReference>
+				<!-- zero or more Factor value as mulitple columns -->
+				<FactorValue name="" value="" nameTermAccessionNumber="" nameTerSourceRefernce="" unit=""
+					unitTermAccessionNumber="" unitTermSourceReference="">                
+				</FactorValue>			
+		</Sample>		
+	</StudyFile>
+</nano-ML>
