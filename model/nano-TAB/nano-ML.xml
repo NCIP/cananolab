@@ -3,7 +3,7 @@
 	<!-- only one InvestigationFile per nano-ML -->
 	<InvestigationFile>
 		<!--  zero or more OntologySourceReference as multiple columns -->
-		<OntologySourceReference name="" version="" description="" file="">			
+		<OntologySourceReference name="" version="" description="" file="">
 		</OntologySourceReference>
 		<!-- zero or one Investigateion -->
 		<Investigation identifer="" title="" description=""
@@ -82,15 +82,13 @@
 			</PointOfContact>
 		</Study>
 	</InvestigationFile>
-	<SpecimenFile>		
+	<SpecimenFile>
 		<!-- one or more Specimen Sample as multiple rows -->
 		<SpecimenSample name="">
 			<!--  zero or one Source -->
-			<Source name="">					
+			<Source name="">
 			</Source>
-			<!--
-				one of more Characteristic as multiple columns
-			-->
+			<!-- one of more Characteristic as multiple columns	-->
 			<Characteristic name="" nameTermAccessionNumber=""
 				nameTermSourceReference="" unit="" unitTermAccessionNumber=""
 				unitTermSourceReference="">
@@ -100,22 +98,22 @@
 					nameTermSourceReference="" value="" unit=""
 					unitTermAccessionNumber="" unitTermSourceReference="">
 				</ParameterValue>
-			</ProtocolReference>				
-		</SpecimenSample>		
+			</ProtocolReference>
+		</SpecimenSample>
 	</SpecimenFile>
-	<AssayFile>       
+	<AssayFile>
 		<Assay name="">
-			<!-- one or more SpecimenSample as multiple rows -->            
+			<!-- one or more SpecimenSample as multiple rows -->
 			<SpecimenSample name="">
 				<!-- one or more MaterialSample per SpecimenSample as multiple rows-->
-				<MaterialSample name="">                    
+				<MaterialSample name="">
 				</MaterialSample>
 				<!-- one or more Measurement as muliptle columns-->
 				<MeasurementValue name="" value="" unit="" unitTermAccessionNumber="" unitTermSourceReference="" statistic="" statisticTermAccessionNumber="" statisticTermSourceReference="">
 					<!-- zero or more Factors per Measurement as mulitple columns-->
-					<FactorValue name="" value="" unit="" unitTermsAccessionNumber="" unitTermSourceReference="">                      
+					<FactorValue name="" value="" unit="" unitTermsAccessionNumber="" unitTermSourceReference="">
 					</FactorValue>
-				</MeasurementValue>                                
+				</MeasurementValue>
 			</SpecimenSample>
 			<!-- zero or more Protocol Parameter as multiple columns -->
 			<ProtocolReference name="" performer="" date="">
@@ -123,39 +121,39 @@
 					nameTermSourceReference="" value="" unit=""
 					unitTermAccessionNumber="" unitTermSourceReference="">
 				</ParameterValue>
-			</ProtocolReference>            
+			</ProtocolReference>
 			<DerivedDataFile name="">
 			</DerivedDataFile>
-		</Assay>        
+		</Assay>
 	</AssayFile>
 	<!-- zero or more MaterialFiles if each MaterialFile only captures one MaterialSample -->
 	<MaterialFile>
-		<!-- only one MaterialSample per MaterialFile, can we consider repeatable blocks to capture multiple material samples in the same file -->
+		<!-- only one MaterialSample per MaterialFile -->
 		<MaterialSample sourceName="" name="" description=""
 			synthesis="" materialType="" materialTypeTermAccessionNumber="" materialTypeTermSourceReference="" designRationale="" designRationaleTermAccessionNumber="" designRationalTermSourceReference="">
-			<!-- zero or more Characteristic as multiple columns -->			
+			<!-- zero or more Characteristic as multiple columns -->
 			<Characteristic name="" nameTermAccessionNumber=""
 				nameTermSourceReference="" unit="" unitTermAccessionNumber=""
 				unitTermSourceReference="">
 			</Characteristic>
 			<!-- zero or more IntendedApplication as multiple columns -->
 			<IntendedApplication name="" nameTermAccessionNumber=""
-				nameTermSourceReference="">				
+				nameTermSourceReference="">
 			</IntendedApplication>
 			<!-- zero or more File as multiple columns -->
 			<File name="" location="" version="" description="" type="" typeTermAccessionNumber="" typeTermSourceReference="">
 			</File>
 			<!-- one or more MaterialComponent as multiple columns -->
 			<MaterialComponent name="" description="" type="" typeTermAccessionNumber="" typeTermSourceReference="" chemicalName="" chemicalNameTermAccessionNumber=""
-				chemicalNameTermSourceReference="">	
-				<!-- zero or more Characteristic as semicolon separated -->				
+				chemicalNameTermSourceReference="">
+				<!-- zero or more Characteristic as semicolon separated -->
 				<Characteristic name="" nameTermAccessionNumber=""
 					nameTermSourceReference="" unit="" unitTermAccessionNumber=""
 					unitTermSourceReference="">
 				</Characteristic>
 				<!-- zero or more IntendedApplication as semicolon separated -->
 				<IntendedApplication name="" nameTermAccessionNumber=""
-					nameTermSourceReference="">				
+					nameTermSourceReference="">
 				</IntendedApplication>
 				<!-- zero or more File as semicolon separated -->
 				<File name="" location="" version="" description=""  type="" typeTermAccessionNumber="" typeTermSourceReference="">
@@ -164,7 +162,7 @@
 			<!-- zero ore more MaterialLinkage as multiple columns -->
 			<MaterialLinkage name="" type="" typeTermAccessionNumber="" typeTermSourceReference="" componentLocation="" componentLocationTermAccessionNumber="" componentLocationTermSourceReference="">
 				<ComponentA name=""></ComponentA>
-				<ComponentB name=""></ComponentB>			  
+				<ComponentB name=""></ComponentB>
 				<!-- zero or more Characteristic as semicolon separated -->
 				<Characteristic name="" nameTermAccessionNumber=""
 					nameTermSourceReference="" unit="" unitTermAccessionNumber=""
