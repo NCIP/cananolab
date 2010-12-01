@@ -167,7 +167,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
 					return false;
-				} else if (functionBean.getType().matches(
+				} else if (!functionBean.getType().matches(
 						Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 					ActionMessages msgs = new ActionMessages();
 					ActionMessage msg = new ActionMessage(
