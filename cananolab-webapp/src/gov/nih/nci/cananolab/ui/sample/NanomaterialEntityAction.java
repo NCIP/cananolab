@@ -407,7 +407,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		CompositionServiceLocalImpl compService = (CompositionServiceLocalImpl) (this
 				.setServicesInSession(request));
 		if (!compService.checkChemicalAssociationBeforeDelete(entity
-				.getDomainEntity())) {
+				.getDomainEntity().getSampleComposition(), composingElement
+				.getDomain())) {
 			throw new ChemicalAssociationViolationException(
 					"The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
 		}
