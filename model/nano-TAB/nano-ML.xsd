@@ -4,9 +4,9 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="InvestigationFile"/>
-        <xs:element ref="SpecimenFile" />
-        <xs:element ref="AssayFile" maxOccurs="unbounded" minOccurs="0"/>
-        <xs:element ref="MaterialFile" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="SpecimenFile" maxOccurs="unbounded"/>
+        <xs:element ref="AssayFile" maxOccurs="unbounded" minOccurs="1"/>
+        <xs:element ref="MaterialFile" maxOccurs="unbounded" minOccurs="1"/>
       </xs:sequence>
       <xs:attribute name="identifier" use="required"/>
     </xs:complexType>
