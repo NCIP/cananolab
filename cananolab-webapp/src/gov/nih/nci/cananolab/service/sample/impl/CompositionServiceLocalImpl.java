@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -465,7 +466,8 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		if (user == null) {
 			throw new NoAccessException();
 		}
-		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity);
+		Boolean canDelete = this.checkChemicalAssociationBeforeDelete(entity
+				.getSampleComposition(), entity);
 		if (!canDelete) {
 			throw new ChemicalAssociationViolationException(
 					"The functionalizing entity "
@@ -521,7 +523,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 	}
 
-	// check if any composing elements of the nanomaterial entity is invovled in
+	// check if any composing elements of the nanomaterial entity is involved in
 	// the chemical association
 	public boolean checkChemicalAssociationBeforeDelete(
 			NanomaterialEntity entity) {
@@ -542,18 +544,18 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		return true;
 	}
 
-	// check if the composing element is invovled in the chemical
+	// check if the associated element is involved in the chemical
 	// association
-	private boolean checkChemicalAssociationBeforeDelete(
-			FunctionalizingEntity entity) {
+	public boolean checkChemicalAssociationBeforeDelete(SampleComposition comp,
+			AssociatedElement assocElement) {
 		// need to delete chemical associations first if associated elements
-		// are functionalizing entities
-		Collection<ChemicalAssociation> assocSet = entity
-				.getSampleComposition().getChemicalAssociationCollection();
+		// are functionalizing entities or composing elements
+		Collection<ChemicalAssociation> assocSet = comp
+				.getChemicalAssociationCollection();
 		if (assocSet != null) {
 			for (ChemicalAssociation assoc : assocSet) {
-				if (entity.equals(assoc.getAssociatedElementA())
-						|| entity.equals(assoc.getAssociatedElementB())) {
+				if (assocElement.equals(assoc.getAssociatedElementA())
+						|| assocElement.equals(assoc.getAssociatedElementB())) {
 					return false;
 				}
 			}
