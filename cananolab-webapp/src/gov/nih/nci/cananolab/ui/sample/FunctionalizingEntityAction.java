@@ -70,7 +70,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						this.saveErrors(request, msgs);
 						return false;
-					} else if (targetBean.getType().matches(
+					} else if (!targetBean.getType().matches(
 							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 						ActionMessages msgs = new ActionMessages();
 						ActionMessage msg = new ActionMessage(

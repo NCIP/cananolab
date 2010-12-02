@@ -167,7 +167,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
 					return false;
-				} else if (functionBean.getType().matches(
+				} else if (!functionBean.getType().matches(
 						Constants.TEXTFIELD_WHITELIST_PATTERN)) {
 					ActionMessages msgs = new ActionMessages();
 					ActionMessage msg = new ActionMessage(
@@ -407,7 +407,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		CompositionServiceLocalImpl compService = (CompositionServiceLocalImpl) (this
 				.setServicesInSession(request));
 		if (!compService.checkChemicalAssociationBeforeDelete(entity
-				.getDomainEntity())) {
+				.getDomainEntity().getSampleComposition(), composingElement
+				.getDomain())) {
 			throw new ChemicalAssociationViolationException(
 					"The composing element is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
 		}
