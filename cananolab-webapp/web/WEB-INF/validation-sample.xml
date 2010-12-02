@@ -502,7 +502,7 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="functionalizingEntity.domain.pubChemId" page="1"
+			<field property="functionalizingEntity.domainEntity.pubChemId" page="1"
 				depends="mask">
 				<msg name="mask" key="functionalizingEntity.pubChemId.invalid" />
 				<var>
