@@ -125,7 +125,8 @@
                    /WEB-INF/tiles-defs-sample.xml,
                    /WEB-INF/tiles-defs-publication.xml,
                    /WEB-INF/tiles-defs-community.xml,
-                   /WEB-INF/tiles-defs-curation.xml" />
+                   /WEB-INF/tiles-defs-curation.xml,
+                   /WEB-INF/tiles-defs-study.xml" />
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details"
 			value="2" />
