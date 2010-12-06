@@ -93,18 +93,5 @@
 			<br>
 		</td>
 	</tr>
-	<%--to be removed after 1.5.2 --%>
-	<c:if
-		test="${!empty user && (user.loginName eq 'pansu'||user.loginName eq 'lethai')}">
-		<tr>
-			<td class="sidebarContent">
-				<a href="updateCreatedBy.do?dispatch=setupNew&page=0"> Update
-					Created By </a>
-				<br>
-				Click to update the createdBy field for samples, protocols and
-				publications.
-			</td>
-		</tr>
-	</c:if>
 </table>
 
