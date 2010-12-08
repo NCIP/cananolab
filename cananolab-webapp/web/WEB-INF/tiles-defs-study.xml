@@ -13,7 +13,7 @@
 	
 	<definition name="study.annotationHome" extends="canano.base">
 		<put name="cananoSidemenu" value="/study/sideStudyMenu.jsp" />
-		<put name="menu" value="samples" />
+		<put name="menu" value="studies" />
 	</definition>
 
 	<!-- Definition for study info related pages, Start -->
@@ -26,6 +26,15 @@
 		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<definition name="study.summaryView" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudySummaryView.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	<definition name="study.summaryEdit" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudySummaryEdit.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	
 	<!-- Definition for study info related pages, End -->
 	
 	<!-- Definition for the study search related page, Start -->
@@ -39,6 +48,8 @@
 		<put name="menu" value="STUDY" />
 	</definition>
 	<!-- Definition for study search related pages, End -->
+	
+	
 	
 	<!-- Definition for sample related pages, Start -->
 	<definition name="study.sample.summaryEdit" extends="study.annotationHome">
