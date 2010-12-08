@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.ui.study;
 /**
  * This class sets up the submit a new study page and submits a new study.
  *
- * @author houyh
+ * @author houyh, lethai
  */
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 
@@ -39,4 +39,15 @@ public class StudyAction extends BaseAnnotationAction {
 		return mapping.findForward("studyEdit");
 	}
 
+	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return mapping.findForward("summaryEdit");
+	}
+	
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return mapping.findForward("summaryView");
+	}
 }
