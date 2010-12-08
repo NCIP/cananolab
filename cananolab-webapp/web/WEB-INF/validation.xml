@@ -54,7 +54,7 @@
 		</constant>
 		<constant>
 			<constant-name>unit</constant-name>
-			<constant-value>^[a-zA-Z\%\/\-\_\s\(\)]*$</constant-value>
+			<constant-value>^[a-zA-Z\%\/\-\_\s\(\)\^]*$</constant-value>
 		</constant>
 	</global>
 	<formset>
