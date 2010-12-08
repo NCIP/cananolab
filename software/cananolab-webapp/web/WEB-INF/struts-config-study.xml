@@ -12,6 +12,22 @@
 			<form-property name="endDateString" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
+	<form-beans>
+		<form-bean name="studySearchForm"
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="studyName" type="java.lang.String" />
+			<form-property name="nameOperand" type="java.lang.String" />
+			<form-property name="studyType" type="java.lang.String" />	
+			<form-property name="isAnimalModel" type="java.lang.Boolean" initial="true" />
+			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="studyPointOfContact" type="java.lang.String" />
+			<form-property name="pocOperand" type="java.lang.String" />
+			<form-property name="diseaseName" type="java.lang.String" />
+			<form-property name="text" type="java.lang.String" />
+			<form-property name="studyOwner" type="java.lang.String" />
+		</form-bean>
+	</form-beans>
 	<global-exceptions>
 	</global-exceptions>
 	<global-forwards>
@@ -29,10 +45,12 @@
 			<forward name="input" path="/study.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="study.input" />
 			<forward name="setupUpdate" path="study.studyInfo" />
+			<forward name="summaryEdit" path="study.summaryEdit" />
+			<forward name="summaryView" path="study.summaryView" />
 		</action>
 
 		<action path="/searchStudy"
-			name="studyForm"
+			name="studySearchForm"
 			type="gov.nih.nci.cananolab.ui.study.SearchStudyAction"
 			parameter="dispatch" input="input" scope="request">
 			<forward name="input" path="/searchStudy.do?dispatch=input&amp;page=0" />
