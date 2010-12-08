@@ -34,11 +34,11 @@
 		</constant>
 		<constant>
 			<constant-name>textFieldWhiteList</constant-name>
-			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\/]*$</constant-value>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\/\?]*$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>relaxedTextFieldWhiteList</constant-name>
-			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\,\/]*$</constant-value>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\,\/\?]*$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>doi</constant-name>
