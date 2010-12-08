@@ -27,21 +27,41 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=study" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td width="16%" class="cellLabel">
+			<td width="15%" class="cellLabel">
 				Study Name
 			</td>
 			<td>
-				<SELECT >
-					<option value="contains">contains</option>
-					<option value="equals">equals</option>
-				</SELECT>
+				<html:select property="nameOperand" styleId="nameOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>				
 			</td>			
 			<td >
-				<input type="text" size="80" value="Efficacy of nanoparticle"/>				
+				<html:text property="studyName" size="60" />
+				<!-- input type="text" size="80" value="Efficacy of nanoparticle"/-->				
 			</td>
 		</tr>
+		
 		<tr>
-			<td width="16%" class="cellLabel">
+			<td class="cellLabel" width="15%">
+				Study Point of Contact
+			</td>
+			<td >
+				<!-- input type="text" size="100"/-->			
+
+				<html:select property="pocOperand" styleId="pocOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td>
+					<html:text property="studyPointOfContact" size="60" />
+					<br />
+					<em>searching organization name or person name</em>
+			</td>				
+		</tr>
+		<tr>
+			<td width="15%" class="cellLabel">
 				Study Type
 			</td>
 			<td colspan="2">
@@ -57,54 +77,39 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
+			<td width="15%" class="cellLabel">
 				Sample Name
 			</td>
 			<td colspan="2">
-				<input type="text" size="100"/>
+				<html:text property="sampleName" size="60" />
+				<!-- input type="text" size="100"/-->
 			</td>
 		</tr>
+		
+		
 		<tr>
-			<td class="cellLabel" width="20%">
-				Point of Contact
-			</td>
-			<td colspan="2">
-				<input type="text" size="100"/>				
-				<br>
-				<em>searching organization name or person name</em>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3">
-				<div style="display:none" id="newPointOfContact">
-					<a name="submitPointOfContact"><jsp:include
-							page="bodyStudySubmitPointOfContact.jsp"/></a>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
+			<td width="15%" class="cellLabel">
 				Disease Name
 			</td>
 			<td colspan="2">
-				<input type="text" size="100"/>
+				<html:text property="diseaseName" size="60" />
+				<!-- input type="text" size="100"/-->
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
+			<td width="15%" class="cellLabel">
 				Keyword / Text
 			</td>
 			<td colspan="2">
-				<textarea rows="5" cols="97">
-				</textarea>
+				<html:textarea property="text" rows="3" cols="57" />
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
+			<td width="15%" class="cellLabel">
 				Study Owner
 			</td>
 			<td colspan="2">
-				<input type="text" size="100"/>
+				<html:text property="studyOwner" size="60" />
 			</td>
 		</tr>
 	</table>

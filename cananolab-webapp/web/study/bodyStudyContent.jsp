@@ -17,8 +17,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td valign="top">
-						<c:if test="${!empty user && user.admin}">
+					<td valign="top">						
 							<table summary="" cellpadding="0" cellspacing="0" border="0"
 								width="100%" height="100%" class="sidebarSection">
 								<tr>
@@ -26,6 +25,7 @@
 										<c:out value="${fn:toUpperCase(item)}" /> LINKS
 									</td>
 								</tr>
+								<c:if test="${!empty user && user.admin}">
 								<tr>
 									<td class="sidebarContent">
 										<a href="study.do?dispatch=setupNew">
@@ -35,6 +35,7 @@
 										Click to submit a new study.
 									</td>
 								</tr>
+								</c:if>
 								<tr>
 									<td class="sidebarContent">
 										<a href="searchStudy.do?dispatch=setupNew">
@@ -45,7 +46,6 @@
 									</td>
 								</tr>
 							</table>
-						</c:if>
 					</td>
 				</tr>
 			</table>
