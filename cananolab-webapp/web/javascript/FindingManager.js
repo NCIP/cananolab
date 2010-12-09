@@ -16,10 +16,6 @@ function setNameOptionsByCharName(columnNumber) {
 					dwr.util.addOptions("columnName" + columnNumber, data);
 					dwr.util.addOptions("columnName" + columnNumber,
 							[ "[other]" ]);
-					// add the current value to the list if not in the list
-					if (currentColumnName!="" && data.toString().indexOf(currentColumnName)==-1) {
-						dwr.util.addOptions("columnName"+columnNumber,[currentColumnName]);
-					}
 				});
 	} else {
 		if (columnType == "condition") {
@@ -33,10 +29,6 @@ function setNameOptionsByCharName(columnNumber) {
 						dwr.util.addOptions("columnName" + columnNumber, data);
 						dwr.util.addOptions("columnName" + columnNumber,
 								[ "[other]" ]);
-						// add the current value to the list if not in the list
-						if (currentColumnName!="" && data.toString().indexOf(currentColumnName)==-1) {
-							dwr.util.addOptions("columnName"+columnNumber,[currentColumnName]);
-						}
 					});
 		} else {
 			hide("conditionPropertyPrompt" + columnNumber);
@@ -63,10 +55,6 @@ function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
 							data);
 					dwr.util.addOptions("conditionProperty" + columnNumber,
 							[ "[other]" ]);
-					// add the current value to the list if not in the list
-					if (currentConditionProperty!="" && data.toString().indexOf(currentConditionProperty)==-1) {
-						dwr.util.addOptions("conditionProperty"+columnNumber,[currentConditionProperty]);
-					}
 				});
 	}
 }
@@ -83,10 +71,6 @@ function setColumnValueUnit(columnNumber) {
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "" ]);
 		dwr.util.addOptions("valueUnit" + columnNumber, data);
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "[other]" ]);
-		// add the current value to the list if not in the list
-		if (currentValueUnit!="" && data.toString().indexOf(currentValueUnit)==-1) {
-			dwr.util.addOptions("valueUnit"+columnNumber,[currentValueUnit]);
-		}
 	});
 }
 function resetTheFinding(form) {
