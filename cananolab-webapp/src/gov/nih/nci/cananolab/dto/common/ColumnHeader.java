@@ -8,9 +8,9 @@ import java.util.Date;
 
 /**
  * View bean representing a column header in a matrix column
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ColumnHeader {
 	private String columnName;
@@ -20,8 +20,8 @@ public class ColumnHeader {
 	private String columnType;
 	private String displayName;
 	private String constantValue;
-	
-	//FR# 26194, matrix column order.
+
+	// FR# 26194, matrix column order.
 	private Integer columnOrder;
 	private Date createdDate;
 
@@ -113,13 +113,14 @@ public class ColumnHeader {
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
-	 * 
+	 *
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof ColumnHeader) {
 			ColumnHeader c = (ColumnHeader) obj;
-			if (getDisplayName().equals(c.getDisplayName()))
+			if (getDisplayName().equals(c.getDisplayName())
+					&& this.getConstantValue().equals(c.getConstantValue()))
 				return true;
 		}
 		return false;
