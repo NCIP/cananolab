@@ -69,6 +69,8 @@ public class Constants {
 
 	public static final String TEXTFIELD_WHITELIST_PATTERN = "^[a-zA-Z0-9\\-\\_\\s\\(\\)\\:\\.\\/\\?\\*]*$";
 
+	public static final String UNIT_PATTERN = "^[a-zA-Z\\%\\/\\-\\_\\s\\(\\)\\^]*$";
+
 	public static final String ALPHANUMERIC_PATTERN = "^[a-zA-Z0-9]*$";
 
 	public static final String NUMERIC_PATTERN = "^[0-9]*$";
