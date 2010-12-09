@@ -274,6 +274,9 @@ public class DWRCharacterizationResultManager {
 		if (!header.getValueUnit().matches(Constants.UNIT_PATTERN)) {
 			return false;
 		}
+		if (!header.getConstantValue().matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
 		return true;
 	}
 
