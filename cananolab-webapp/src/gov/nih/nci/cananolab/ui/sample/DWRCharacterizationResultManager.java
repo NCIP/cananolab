@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
@@ -163,6 +164,9 @@ public class DWRCharacterizationResultManager {
 	}
 
 	public String addColumnHeader(ColumnHeader header) {
+		if (!validateColumnHeader(header)) {
+			return "contain special characters";
+		}
 		WebContext wctx = WebContextFactory.get();
 		HttpSession session = wctx.getSession();
 		// store existing columns in the session to prevent entering of
@@ -253,6 +257,24 @@ public class DWRCharacterizationResultManager {
 					"otherCharValueTypes", otherValueTypes);
 		}
 		return header.getDisplayName();
+	}
+
+	private boolean validateColumnHeader(ColumnHeader header) {
+		if (!header.getColumnName().matches(
+				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
+		if (!header.getConditionProperty().matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
+		if (!header.getValueType().matches(
+				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
+		if (!header.getValueUnit().matches(Constants.UNIT_PATTERN)) {
+			return false;
+		}
+		return true;
 	}
 
 	public String getSubmitColumnPage(int columnNumber)
