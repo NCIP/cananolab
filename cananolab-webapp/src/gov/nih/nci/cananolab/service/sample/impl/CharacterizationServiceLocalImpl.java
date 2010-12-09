@@ -454,6 +454,14 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 					}
 				}
 				this.saveCharacterization(sampleBean, copyBean);
+				// save associated accessibility for the copied characterization
+				// find sample accesses
+				List<AccessibilityBean> sampleAccesses = super
+						.findSampleAccesses(copy.getSample().getId().toString());
+				// save sample accesses
+				for (AccessibilityBean access : sampleAccesses) {
+					this.accessUtils.assignAccessibility(access, copy);
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
