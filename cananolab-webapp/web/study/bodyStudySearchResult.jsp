@@ -17,7 +17,7 @@
 		<display:table name="studies" id="study"
 				requestURI="searchStudy.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
-    			decorator="gov.nih.nci.cananolab.dto.study.StudyDecorator">
+    			decorator="gov.nih.nci.cananolab.dto.common.StudyDecorator">
 				<display:column title="" property="detailURL" />
 				<display:column title="Study Name" property="studyName"
 					sortable="true" escapeXml="true" />
