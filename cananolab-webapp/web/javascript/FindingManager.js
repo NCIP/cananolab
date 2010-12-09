@@ -318,6 +318,10 @@ function addColumnHeader(columnNumber) {
 			alert("Such a column already exists.  Please enter a different column.");
 			return;
 		}
+		if (displayName=='contain special characters') {
+			alert("At least one field contains unallowed special characters.  Please remove the special characters.");
+			return;
+		}
 		dwr.util.setValue("columnHeaderDisplayName" + columnNumber,
 				displayName, {
 					escapeHtml : false
