@@ -31,4 +31,8 @@
 		<comment>changes related to cleaning up obsoleted data</comment>
 		<sqlFile path="sql/mysql/1.5.2/data_cleanup.sql" />
 	</changeSet>
+	<changeSet id="1.5.2-7" author="pansu">
+		<comment>changes related to updating special characters to words</comment>
+		<sqlFile path="sql/mysql/1.5.2/update_special_characters.sql" />
+	</changeSet>
 </databaseChangeLog>
