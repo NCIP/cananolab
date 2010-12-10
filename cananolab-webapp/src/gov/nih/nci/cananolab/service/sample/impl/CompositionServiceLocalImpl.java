@@ -587,9 +587,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				NanomaterialEntityBean copyBean = null;
+				NanomaterialEntity copy = entityBean.getDomainCopy(user
+						.getLoginName());
 				try {
-					NanomaterialEntity copy = entityBean.getDomainCopy(user
-							.getLoginName());
 					copyBean = new NanomaterialEntityBean(copy);
 					// copy file file content
 					for (FileBean fileBean : copyBean.getFiles()) {
@@ -601,8 +601,18 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					String error = "Error in copying the nanomaterial entity.";
 					throw new CompositionException(error, e);
 				}
-				if (copyBean != null)
+				if (copyBean != null) {
 					saveNanomaterialEntity(sampleBean, copyBean);
+					// save associated accessibility for the copied entity
+					// find sample accesses
+					List<AccessibilityBean> sampleAccesses = super
+							.findSampleAccesses(copy.getSampleComposition()
+									.getSample().getId().toString());
+					// save sample accesses
+					for (AccessibilityBean access : sampleAccesses) {
+						this.accessUtils.assignAccessibility(access, copy);
+					}
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
@@ -619,9 +629,9 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			for (SampleBean sampleBean : newSampleBeans) {
 				FunctionalizingEntityBean copyBean = null;
+				FunctionalizingEntity copy = entityBean.getDomainCopy(user
+						.getLoginName());
 				try {
-					FunctionalizingEntity copy = entityBean.getDomainCopy(user
-							.getLoginName());
 					copyBean = new FunctionalizingEntityBean(copy);
 					// copy file visibility and file content
 					for (FileBean fileBean : copyBean.getFiles()) {
@@ -633,8 +643,18 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					String error = "Error in copying the functionalizing entity.";
 					throw new CompositionException(error, e);
 				}
-				if (copyBean != null)
+				if (copyBean != null) {
 					saveFunctionalizingEntity(sampleBean, copyBean);
+					// save associated accessibility for the copied entity
+					// find sample accesses
+					List<AccessibilityBean> sampleAccesses = super
+							.findSampleAccesses(copy.getSampleComposition()
+									.getSample().getId().toString());
+					// save sample accesses
+					for (AccessibilityBean access : sampleAccesses) {
+						this.accessUtils.assignAccessibility(access, copy);
+					}
+				}
 			}
 		} catch (NoAccessException e) {
 			throw e;
