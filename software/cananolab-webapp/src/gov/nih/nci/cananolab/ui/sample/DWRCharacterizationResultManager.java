@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.IOException;
@@ -163,6 +164,9 @@ public class DWRCharacterizationResultManager {
 	}
 
 	public String addColumnHeader(ColumnHeader header) {
+		if (!validateColumnHeader(header)) {
+			return "contain special characters";
+		}
 		WebContext wctx = WebContextFactory.get();
 		HttpSession session = wctx.getSession();
 		// store existing columns in the session to prevent entering of
@@ -218,7 +222,8 @@ public class DWRCharacterizationResultManager {
 				otherConditionProperties = (SortedSet<String>) session
 						.getAttribute("otherCharConditionProperties");
 			}
-			if (!conditionProperties.contains(header.getConditionProperty())) {
+			if (!conditionProperties.contains(header.getConditionProperty())
+					&& !StringUtils.isEmpty(header.getConditionProperty())) {
 				otherConditionProperties.add(header.getConditionProperty());
 				WebContextFactory.get().getSession().setAttribute(
 						"otherCharConditionProperties",
@@ -233,7 +238,8 @@ public class DWRCharacterizationResultManager {
 			otherValueUnits = (SortedSet<String>) session
 					.getAttribute("otherCharValueUnits");
 		}
-		if (!valueUnits.contains(header.getValueUnit())) {
+		if (!valueUnits.contains(header.getValueUnit())
+				&& !StringUtils.isEmpty(header.getValueUnit())) {
 			otherValueUnits.add(header.getValueUnit());
 			WebContextFactory.get().getSession().setAttribute(
 					"otherCharValueUnits", otherValueUnits);
@@ -247,12 +253,36 @@ public class DWRCharacterizationResultManager {
 			otherValueTypes = (SortedSet<String>) session
 					.getAttribute("otherCharValueTypes");
 		}
-		if (!valueTypes.contains(header.getValueType())) {
+		if (!valueTypes.contains(header.getValueType())
+				&& !StringUtils.isEmpty(header.getValueType())) {
 			otherValueTypes.add(header.getValueType());
 			WebContextFactory.get().getSession().setAttribute(
 					"otherCharValueTypes", otherValueTypes);
 		}
 		return header.getDisplayName();
+	}
+
+	private boolean validateColumnHeader(ColumnHeader header) {
+		if (!header.getColumnName().matches(
+				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
+		if (!header.getConditionProperty().matches(
+				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
+		if (!header.getValueType().matches(
+				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
+		if (!header.getValueUnit().matches(Constants.UNIT_PATTERN)) {
+			return false;
+		}
+		if (!header.getConstantValue().matches(
+				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			return false;
+		}
+		return true;
 	}
 
 	public String getSubmitColumnPage(int columnNumber)
