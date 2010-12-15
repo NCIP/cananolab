@@ -32,7 +32,7 @@
 								<option value="CP_UCLA_CalTech">CP_UCLA_CalTech</option>
 								<option value="CWRU">CWRU</option>
 								<option value="GATECH">GATECH</option>
-								
+
 								<option value="GATECH_EMORY">GATECH_EMORY</option>
 								<option value="GATECH_UCSF">GATECH_UCSF</option>
 								<option value="JSTA_FHU_NEC_MU_AIST_JAPAN">JSTA_FHU_NEC_MU_AIST_JAPAN</option>
@@ -42,7 +42,7 @@
 								<option value="MIT_UC_BBIC_HST_CU">MIT_UC_BBIC_HST_CU</option>
 								<option value="MSKCC_CU_UA">MSKCC_CU_UA</option>
 								<option value="NCL">NCL</option>
-								
+
 								<option value="NEU">NEU</option>
 								<option value="NEU_MGH_UP_FCCC">NEU_MGH_UP_FCCC</option>
 								<option value="NEU_MIT_MGH">NEU_MIT_MGH</option>
@@ -52,7 +52,7 @@
 								<option value="SNU_CHINA">SNU_CHINA</option>
 								<option value="STANFORD">STANFORD</option>
 								<option value="TTU">TTU</option>
-								
+
 								<option value="UAM_CSIC_IMDEA">UAM_CSIC_IMDEA</option>
 								<option value="UCSD_MIT_MGH">UCSD_MIT_MGH</option>
 								<option value="UC_HU_UEN_GERMANY">UC_HU_UEN_GERMANY</option>
@@ -213,79 +213,16 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
-			<table>
-
-				<tr>
-					<td class="cellLabel">
-						Visibility
-					</td>
-					<td colspan="5">
-						<select name="sampleBean.thePOC.visibilityGroups" multiple="multiple" size="6" id="visibilityGroups"><option value="Public">Public</option>
-<option value="BROWN_STANFORD">BROWN_STANFORD</option>
-<option value="CAS_VT_VCU">CAS_VT_VCU</option>
-<option value="CLM_UHA_CDS_INSERM">CLM_UHA_CDS_INSERM</option>
-
-<option value="CP_UCLA_CalTech">CP_UCLA_CalTech</option>
-<option value="CTRAIN">CTRAIN</option>
-<option value="CWRU">CWRU</option>
-<option value="GATECH">GATECH</option>
-<option value="GATECH_EMORY">GATECH_EMORY</option>
-<option value="GATECH_UCSF">GATECH_UCSF</option>
-<option value="JSTA_FHU_NEC_MU_AIST_JAPAN">JSTA_FHU_NEC_MU_AIST_JAPAN</option>
-<option value="JST_AIST_FHU_TU_NEC_MU_JAPAN">JST_AIST_FHU_TU_NEC_MU_JAPAN</option>
-<option value="KU_JSTC_JAPAN">KU_JSTC_JAPAN</option>
-
-<option value="MIT_MGH">MIT_MGH</option>
-<option value="MIT_UCBBIC_HST_CU">MIT_UCBBIC_HST_CU</option>
-<option value="MIT_UC_BBIC_HST_CU">MIT_UC_BBIC_HST_CU</option>
-<option value="MSKCC_CU_UA">MSKCC_CU_UA</option>
-<option value="NCL">NCL</option>
-<option value="NCL_DataCurator">NCL_DataCurator</option>
-<option value="NCL_Researcher">NCL_Researcher</option>
-<option value="NEU">NEU</option>
-<option value="NEU_MGH_UP_FCCC">NEU_MGH_UP_FCCC</option>
-
-<option value="NEU_MIT_MGH">NEU_MIT_MGH</option>
-<option value="NIOSH">NIOSH</option>
-<option value="NWU">NWU</option>
-<option value="PURDUE">PURDUE</option>
-<option value="SNU_CHINA">SNU_CHINA</option>
-<option value="STANFORD">STANFORD</option>
-<option value="TTU">TTU</option>
-<option value="UAM-CSIC-IMDEA">UAM-CSIC-IMDEA</option>
-<option value="UAM_CSIC_IMDEA">UAM_CSIC_IMDEA</option>
-
-<option value="UCSD_MIT_MGH">UCSD_MIT_MGH</option>
-<option value="UC_HU_UEN_GERMANY">UC_HU_UEN_GERMANY</option>
-<option value="UI">UI</option>
-<option value="UM">UM</option>
-<option value="UNC">UNC</option>
-<option value="VCU_VT_EHC">VCU_VT_EHC</option>
-<option value="WSU">WSU</option>
-<option value="WUSTL">WUSTL</option>
-<option value="WU_SU_CHINA">WU_SU_CHINA</option></select>
-
-						<br>
-						<i>(WUSTL_Researcher,
-							WUSTL_DataCurator, and the organization name are
-							always selected by default.)</i>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
 
 		<td>
 			<table width="100%">
 				<tr>
 					<td>
-						
+
 							<input type="button" value="Remove"
 								onclick="removePointOfContact('sample');clearPointOfContact();"
 								id="deletePointOfContact" style="display: none;" />
-						
+
 					</td>
 					<td>
 						<div align="right">
