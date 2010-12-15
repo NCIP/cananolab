@@ -28,7 +28,7 @@ public class SearchStudyAction extends BaseAnnotationAction {
 			throws Exception {
 		return mapping.findForward("inputForm");
 	}
-	
+
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -38,17 +38,17 @@ public class SearchStudyAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
+
 		StudyBean study1 = new StudyBean();
-		study1.setStudyName("study 1");
+		study1.setName("study 1");
 		//SampleBean studySample = new SampleBean();
 		//studySample.se
 		study1.setStudySample(new SampleBean());
 		study1.setOwnerName("Guest");
 		study1.setPointOfContact("Guest");
-		
+
 		StudyBean study2 = new StudyBean();
-		study1.setStudyName("study 1");
+		study1.setName("study 1");
 		//SampleBean studySample = new SampleBean();
 		//studySample.se
 		study2.setStudySample(new SampleBean());
@@ -63,5 +63,5 @@ public class SearchStudyAction extends BaseAnnotationAction {
 		request.setAttribute("resultSize", new Integer(20));
 		return mapping.findForward("searchResult");
 	}
-	
+
 }
