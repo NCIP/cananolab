@@ -19,7 +19,7 @@ public class ColumnHeader {
 	private String valueUnit;
 	private String columnType;
 	private String displayName;
-	private String constantValue;
+	private String constantValue="";
 
 	// FR# 26194, matrix column order.
 	private Integer columnOrder;
