@@ -17,7 +17,7 @@
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=study" />
 
-<table width="100%" align="center" class="summaryViewLayer2">
+<table width="100%" align="center" class="summaryViewWithGrid">
 	<tr>
 		<th align="left">
 			Protocol &nbsp;&nbsp;&nbsp;
@@ -28,7 +28,7 @@
 	</tr>
 	<tr>
 		<td>
-			<table width="100%" align="center" class="summaryViewLayer3">
+			<table width="100%" align="center" class="summaryView">
 				<tr>
 					<th valign="top" align="left" width="20%">
 						Protocol Information

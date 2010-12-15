@@ -45,7 +45,7 @@
 		</li>
 	</ul>
 </div>
-<table class="summaryViewLayer1" width="100%">
+<table class="summaryViewNoGrid" width="100%">
 	<tr>
 		<td>
 		<table id="summarySection${ind.count}" width="100%" align="center"
