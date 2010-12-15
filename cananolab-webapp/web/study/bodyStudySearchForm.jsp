@@ -34,20 +34,20 @@
 				<html:select property="nameOperand" styleId="nameOperand">
 					<html:options collection="stringOperands" property="value"
 						labelProperty="label" />
-				</html:select>				
-			</td>			
+				</html:select>
+			</td>
 			<td >
 				<html:text property="studyName" size="60" />
-				<!-- input type="text" size="80" value="Efficacy of nanoparticle"/-->				
+				<!-- input type="text" size="80" value="Efficacy of nanoparticle"/-->
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td class="cellLabel" width="15%">
 				Study Point of Contact
 			</td>
 			<td >
-				<!-- input type="text" size="100"/-->			
+				<!-- input type="text" size="100"/-->
 
 				<html:select property="pocOperand" styleId="pocOperand">
 					<html:options collection="stringOperands" property="value"
@@ -58,7 +58,7 @@
 					<html:text property="studyPointOfContact" size="60" />
 					<br />
 					<em>searching organization name or person name</em>
-			</td>				
+			</td>
 		</tr>
 		<tr>
 			<td width="15%" class="cellLabel">
@@ -66,50 +66,89 @@
 			</td>
 			<td colspan="2">
 				<SELECT >
-					<option value="Reproductive">Reproductive</option>
-					<option value="Continuous Breeding">Continuous Breeding</option>
-					<option value="Developmental">Developmental</option>
-					<option value="Cancer Bioassay">Cancer Bioassay</option>
+					<option value=""></option>
+					<option value="reproductive">reproductive</option>
+					<option value="continuous breeding">continuous breeding</option>
+					<option value="developmental">developmental</option>
+					<option value="cancer bioassay">cancer bioassay</option>
 				</SELECT>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				Is Animal Study?&nbsp;
-				<input type="checkbox" checked="checked">
 			</td>
 		</tr>
+		<tr>
+			<td width="15%" class="cellLabel">
+				Study Design Type
+			</td>
+			<td colspan="2">
+				<SELECT >
+					<option value="parallel group">parallel group</option>
+					<option value="crossover">crossover</option>
+				</SELECT>
+			</td>
+		</tr>
+		<tr>
+			<td width="15%" class="cellLabel">
+				Animal Study?
+			</td>
+			<td colspan="2">
+				Yes <input type="radio" value="yes"/> No<input type="radio" value="no"/>
+			</td>
+		</tr>
+
 		<tr>
 			<td width="15%" class="cellLabel">
 				Sample Name
 			</td>
-			<td colspan="2">
+			<td>
+				<html:select property="nameOperand" styleId="nameOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td >
 				<html:text property="sampleName" size="60" />
-				<!-- input type="text" size="100"/-->
+				<!-- input type="text" size="80" value="Efficacy of nanoparticle"/-->
 			</td>
 		</tr>
-		
-		
 		<tr>
 			<td width="15%" class="cellLabel">
 				Disease Name
 			</td>
-			<td colspan="2">
+			<td>
+				<html:select property="nameOperand" styleId="nameOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td >
 				<html:text property="diseaseName" size="60" />
-				<!-- input type="text" size="100"/-->
+				<!-- input type="text" size="80" value="Efficacy of nanoparticle"/-->
 			</td>
 		</tr>
 		<tr>
 			<td width="15%" class="cellLabel">
-				Keyword / Text
+				Keywords
 			</td>
 			<td colspan="2">
 				<html:textarea property="text" rows="3" cols="57" />
+				<br>
+				<em>searching study descriptions and outcomes</em>
+				<br>
+				<em>enter one keyword per line</em>
 			</td>
 		</tr>
 		<tr>
 			<td width="15%" class="cellLabel">
 				Study Owner
 			</td>
-			<td colspan="2">
+			<td>
+				<html:select property="nameOperand" styleId="nameOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>
+			</td>
+			<td >
 				<html:text property="studyOwner" size="60" />
+				<!-- input type="text" size="80" value="Efficacy of nanoparticle"/-->
 			</td>
 		</tr>
 	</table>
@@ -118,9 +157,6 @@
 		cellspacing="0" class="topBorderOnly" summary="">
 		<tr>
 			<td width="30%">
-				<span class="formMessage"> <em>Search is case insensitive. Enter * for wildcard search. Searching without any
-						parameters would return all studies. </em> </span>
-				<br>
 				<table width="498" height="15" border="0" align="right"
 					cellpadding="4" cellspacing="0">
 					<tr>
