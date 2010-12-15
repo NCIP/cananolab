@@ -3,12 +3,9 @@
 <struts-config>
 	<form-beans>
 		<form-bean name="studyForm" type="org.apache.struts.action.DynaActionForm">
+			<form-property name="studyBean" type="gov.nih.nci.cananolab.dto.common.StudyBean"/>
 			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="conclusion" type="java.lang.String" />
-			<form-property name="description" type="java.lang.String" />
-			<form-property name="name" type="java.lang.String" />
-			<form-property name="startDateString" type="java.lang.String" />
-			<form-property name="endDateString" type="java.lang.String" />
+			<form-property name="page" type="java.lang.String"/>
 		</form-bean>
 		<form-bean name="studySearchForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="dispatch" type="java.lang.String" />
