@@ -5,7 +5,7 @@
 <tiles-definitions>
 	<!-- definition for the Study home page -->
 	<definition name="study.home" extends="canano.base">
-		<put name="itemDescription"	value="/study/bodyStudyDescription.jsp" />
+		<put name="itemDescription" value="/study/bodyStudyDescription.jsp" />
 		<put name="cananoContent" value="/study/bodyStudyContent.jsp" />
 		<put name="menu" value="STUDY" />
 		<put name="item" value="Study" />
@@ -56,6 +56,10 @@
 		<put name="cananoContent" value="/study/bodyStudySampleSummaryEdit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<definition name="study.sample.summaryView" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudySampleSummaryView.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
 
 	<definition name="study.sample.add" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudySampleAdd.jsp" />
@@ -76,8 +80,12 @@
 	<!-- Definition for animal info related pages, End -->
 
 	<!-- Definition for characterization related pages, Start -->
-	<definition name="study.char.summary" extends="study.annotationHome">
+	<definition name="study.char.summaryEdit" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudyCharSummaryEdit.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	<definition name="study.char.summaryView" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyCharSummaryView.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 
