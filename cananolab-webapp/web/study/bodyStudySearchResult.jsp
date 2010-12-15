@@ -22,10 +22,10 @@
 				<display:column title="Study Name" property="studyName"
 					sortable="true" escapeXml="true" />
 				<display:column title="Sample Name" property="sampleName"
-					sortable="true" escapeXml="true" />
+					sortable="true"  />
 				<display:column title="Primary<br>Point Of Contact"
 					property="pointOfContactName" sortable="true" escapeXml="true" />
-				<display:column title="Is Animal Study" property="isAnimalStudyStr"
+				<display:column title="Diseases" property="diseasesStr"
 					sortable="true" />
 				<display:column title="Owned By" property="ownerStr" />
 			</display:table>
