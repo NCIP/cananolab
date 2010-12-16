@@ -158,6 +158,18 @@
 			</c:otherwise>
 		</c:choose>
 	</tr>
+		<tr>
+		<c:url var="studyUrl" value="study.do">
+			<<c:param name="dispatch" value="${dispatch}" />
+			<c:param name="page" value="0" />
+		</c:url>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			onclick="gotoPage('${studyUrl}')" height="20">
+			<a class="subMenuSecondary">STUDY</a>
+		</td>
+	</tr>
 	<tr>
 		<td class="subMenuFill" height="50">
 			&nbsp;
