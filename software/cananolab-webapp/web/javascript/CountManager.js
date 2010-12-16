@@ -108,6 +108,7 @@ function getStudyCounts(){
 	ProtocolManager.getPublicCounts(function(data) {
 		if (data != null) {
 			hide("studyLoaderImg");
+			data="2 Studies";
 			var link = "<a href=javascript:gotoStudies('search')>" + data
 					+ "</a>";
 			dwr.util.setValue("studyCount", link, {
