@@ -111,7 +111,7 @@
 		</tr>
 		<tr>
 			<td width="15%" class="cellLabel">
-				Disease Name
+				Disease
 			</td>
 			<td>
 				<html:select property="nameOperand" styleId="nameOperand">
