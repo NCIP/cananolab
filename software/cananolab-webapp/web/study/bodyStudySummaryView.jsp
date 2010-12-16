@@ -17,7 +17,7 @@
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=study" />
 
-<table class="summaryViewWithGrid" width="100%" align="center"
+<table class="summaryViewNoGrid" width="100%" align="center"
 	bgcolor="#dbdbdb">
 	<tr>
 		<th valign="top" align="left" height="6">
