@@ -40,7 +40,7 @@ public class StudyDecorator extends TableDecorator {
 	}
 	public SortableName getSampleName() {
 		//SampleBean sample = (SampleBean) getCurrentRowObject();
-		String sampleName = "study sample name"; //sample.getDomain().getName();
+		String sampleName = "NCL-23-1<br>NCL-23-2"; //sample.getDomain().getName();
 		return new SortableName(sampleName);
 	}
 	
@@ -49,9 +49,9 @@ public class StudyDecorator extends TableDecorator {
 		return "Guest";
 	}
 
-	public String getIsAnimalStudyStr() throws BaseException {
+	public String getDiseasesStr() throws BaseException {
 		
-		return "Yes";
+		return "Lung Cancer<br>Heart cancer";
 	}
 
 	public String getPointOfContactName() throws BaseException {
