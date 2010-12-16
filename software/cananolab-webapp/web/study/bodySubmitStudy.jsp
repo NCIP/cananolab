@@ -286,5 +286,8 @@
 		<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
 	<br />
+	<c:if test="${!empty updateStudy}">
+		<c:set var="updateId" value="0" />
+	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
