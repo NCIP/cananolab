@@ -29,7 +29,7 @@ public class SearchStudyAction extends BaseAnnotationAction {
 		return mapping.findForward("inputForm");
 	}
 
-	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
+	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		return mapping.getInputForward();
