@@ -17,7 +17,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td valign="top">						
+					<td valign="top">
 							<table summary="" cellpadding="0" cellspacing="0" border="0"
 								width="100%" height="100%" class="sidebarSection">
 								<tr>
@@ -38,7 +38,7 @@
 								</c:if>
 								<tr>
 									<td class="sidebarContent">
-										<a href="searchStudy.do?dispatch=setupNew">
+										<a href="searchStudy.do?dispatch=setup">
 											Search Existing Studies
 										</a>
 										<br>

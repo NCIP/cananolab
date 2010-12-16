@@ -7,7 +7,7 @@ package gov.nih.nci.cananolab.ui.study;
  */
 import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +19,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-public class SearchStudyAction extends BaseAnnotationAction {
+public class SearchStudyAction extends AbstractDispatchAction {
 	// logger
 	// private static Logger logger = Logger.getLogger(StudyAction.class);
-
-	public ActionForward input(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return mapping.findForward("inputForm");
-	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -63,5 +57,4 @@ public class SearchStudyAction extends BaseAnnotationAction {
 		request.setAttribute("resultSize", new Integer(20));
 		return mapping.findForward("searchResult");
 	}
-
 }

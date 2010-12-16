@@ -108,9 +108,9 @@ function getStudyCounts(){
 	ProtocolManager.getPublicCounts(function(data) {
 		if (data != null) {
 			hide("studyLoaderImg");
-			var link = "<a href=javascript:gotoProtocols('search')>" + data
+			var link = "<a href=javascript:gotoStudies('search')>" + data
 					+ "</a>";
-			dwr.util.setValue("studyCount", "0 Studies", {
+			dwr.util.setValue("studyCount", link, {
 				escapeHtml : false
 			});
 			show("studyCount");
@@ -138,7 +138,7 @@ function gotoProtocols(dispatch) {
 	return false;
 }
 
-function gotoStudy(dispatch) {
+function gotoStudies(dispatch) {
 	var url = "/caNanoLab/searchStudy.do?dispatch=" + dispatch;
 	gotoPage(url);
 	return false;

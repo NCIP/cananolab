@@ -44,8 +44,7 @@
 		<action path="/searchStudy" name="studySearchForm"
 			type="gov.nih.nci.cananolab.ui.study.SearchStudyAction" parameter="dispatch"
 			input="input" scope="request">
-			<forward name="input" path="/searchStudy.do?dispatch=input&amp;page=0" />
-			<forward name="inputForm" path="study.search.input" />
+			<forward name="input" path="study.search.input" />
 			<forward name="searchResult" path="study.search.result" />
 		</action>
 
