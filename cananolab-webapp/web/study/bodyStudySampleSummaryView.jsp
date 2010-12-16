@@ -20,6 +20,10 @@
 <table width="100%" align="center" class="summaryViewNoGrid"
 	bgcolor="#dbdbdb">	
 	<tr>
+		<th valign="top" align="left" height="6">
+		</th>
+	</tr>
+	<tr>
 		<td>
 			<table width="99%" align="center" class="summaryViewNoGrid"
 				bgcolor="#F5F5f5">				
@@ -50,9 +54,17 @@ Superparamagnetic iron oxide core, crosslinked dextran coat, and fluorophore con
 		</td>
 	</tr>
 	<tr>
+		<th valign="top" align="left" height="6">
+		</th>
+	</tr>
+	<tr>
 		<td>
 			<table width="99%" align="center" class="summaryViewNoGrid"
-				bgcolor="#F5F5f5">				
+				bgcolor="#F5F5f5">
+				<tr>
+		<th valign="top" align="left" height="6">
+		</th>
+	</tr>				
 				<tr>
 					<td class="cellLabel" width="20%">
 						Sample Name
@@ -73,5 +85,9 @@ Superparamagnetic iron oxide core, crosslinked dextran coat, and fluorophore con
 				</tr>				
 			</table>
 		</td>
+	</tr>
+	<tr>
+		<th valign="top" align="left" height="6">
+		</th>
 	</tr>
 </table>
