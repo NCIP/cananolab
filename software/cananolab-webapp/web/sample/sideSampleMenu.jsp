@@ -160,7 +160,11 @@
 	</tr>
 		<tr>
 		<c:url var="studyUrl" value="study.do">
-			<<c:param name="dispatch" value="${dispatch}" />
+			<c:set var="studyDispatch" value="summaryViewPerSample"/>
+			<c:if test="${!empty user}">
+				<c:set var="studyDispatch" value="summaryEditPerSample" />
+			</c:if>
+			<c:param name="dispatch" value="${studyDispatch}" />
 			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
