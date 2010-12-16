@@ -188,7 +188,7 @@
 								alt="Search Publications" /> </a>
 					</td>
 					<td>
-						<a href="#" onclick=gotoStudy('setupNew');><b>Search
+						<a href="#" onclick=gotoStudy('setup');><b>Search
 								Studies</b> </a>
 					</td>
 				</tr>
