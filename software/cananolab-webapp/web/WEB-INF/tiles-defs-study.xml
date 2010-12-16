@@ -31,7 +31,7 @@
 		<put name="menu" value="STUDY" />
 	</definition>
 	<definition name="study.summaryEdit" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudySummaryEdit.jsp" />
+		<put name="cananoContent" value="/study/bodySubmitStudy.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 
