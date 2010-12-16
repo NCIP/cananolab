@@ -183,12 +183,12 @@
 			<table class="gridtableNoBorder">
 				<tr>
 					<td rowspan="2">
-						<a href="#" onclick="gotoStudy('setupNew')"> <img
+						<a href="#" onclick="gotoStudies('setup')"> <img
 								src="images/icon_report_48x.gif" style="border-style: none;"
 								alt="Search Publications" /> </a>
 					</td>
 					<td>
-						<a href="#" onclick=gotoStudy('setup');><b>Search
+						<a href="#" onclick=gotoStudies('setup');><b>Search
 								Studies</b> </a>
 					</td>
 				</tr>
