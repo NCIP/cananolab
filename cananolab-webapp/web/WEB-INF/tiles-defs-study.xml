@@ -23,7 +23,7 @@
 	</definition>
 
 	<definition name="study.input" extends="canano.base">
-		<put name="cananoContent" value="/study/bodyStudySumaryEdit.jsp" />
+		<put name="cananoContent" value="/study/bodySubmitStudy.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	<definition name="study.summaryView" extends="study.annotationHome">
@@ -31,7 +31,7 @@
 		<put name="menu" value="STUDY" />
 	</definition>
 	<definition name="study.summaryEdit" extends="study.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudyInfo.jsp" />
+		<put name="cananoContent" value="/study/bodySubmitStudy.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 
@@ -47,15 +47,7 @@
 		<put name="cananoContent" value="/study/bodyStudySearchResult.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
-	<definition name="study.searchStudy" extends="canano.base">
-		<put name="cananoContent" value="/study/bodyStudySearchForm.jsp" />
-		<put name="menu" value="STUDY" />
-	</definition>
-
-	<definition name="study.searchStudyResult" extends="canano.base">
-		<put name="cananoContent" value="/study/bodyStudySearchResult.jsp" />
-		<put name="menu" value="STUDY" />
-	</definition>
+	
 	<!-- Definition for study search related pages, End -->
 
 
