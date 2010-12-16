@@ -11,7 +11,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Study Efficacy of nanoparticle Sample" />
+	<jsp:param name="pageTitle" value="Study Efficacy of nanoparticle " />
 	<jsp:param name="topic" value="study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
