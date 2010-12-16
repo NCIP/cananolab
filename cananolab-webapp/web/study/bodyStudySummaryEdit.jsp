@@ -11,7 +11,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="WUSTL Study Efficacy of nanoparticle Protocol Summary" />
+	<jsp:param name="pageTitle" value="Study Efficacy of nanoparticle Protocol Summary" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -20,7 +20,7 @@
 <table width="100%" align="center" class="summaryViewWithGrid">
 	<tr>
 		<th align="left">
-			Protocol &nbsp;&nbsp;&nbsp;
+			Study Information&nbsp;&nbsp;&nbsp;
 			<a href="study.do?dispatch=sampleAdd"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" /></a>
