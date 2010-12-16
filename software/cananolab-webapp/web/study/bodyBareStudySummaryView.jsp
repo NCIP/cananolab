@@ -12,12 +12,7 @@
 <table width="99%" align="center" class="summaryViewNoGrid"
 	bgcolor="#F5F5f5">
 	<tr>
-		<th valign="top" align="left" width="20%">
-			Study Information
-		</th>					
-	</tr>
-	<tr>
-		<td class="cellLabel" width="20%" >
+		<td class="cellLabel" width="20%">
 			Study Name
 		</td>
 		<td colspan="3">
@@ -26,45 +21,23 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Study Title			
+			Title
 		</td>
 		<td colspan="3">
-			Study Title
+			study title
 		</td>
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Study Description		
-		</td>
-		<td colspan="3">
-			Description information about the study
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel">
-			Study Outcome		
-		</td>
-		<td colspan="3">
-			Study Outcome informaiton
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel">
-			Disease		
-		</td>
-		<td colspan="3">
-			Disease 1 <br/>disease 2
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel">Study Type			
+			Type
 		</td>
 		<td colspan="3">
 			reproductive
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel">Study Design Type			
+		<td class="cellLabel">
+			Design Types
 		</td>
 		<td colspan="3">
 			crossover
@@ -72,16 +45,42 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Study Start Date			
+			Diseases
 		</td>
-		<td class="cellLabel">
-			12/15/2010
+		<td colspan="3">
+			Disease 1, Disease 2
 		</td>
+	</tr>
+	<tr>
 		<td class="cellLabel">
-			Study End Date			
+			Factors
 		</td>
+		<td colspan="3">
+			Factor 1, Factor2
+		</td>
+	</tr>
+	<tr>
 		<td class="cellLabel">
-			12/15/2010
+			Description
+		</td>
+		<td colspan="3">
+			Description information about the study
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Outcome
+		</td>
+		<td colspan="3">
+			Study Outcome informaiton
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Date Range
+		</td>
+		<td colspan="3">
+			12/15/2010 - 12/15/2010
 		</td>
 	</tr>
 	<tr>
@@ -89,35 +88,37 @@
 			Point of Contact
 		</td>
 		<td colspan="3">
-		<table class="summaryViewLayer4" align="center" width="100%">
-			<tbody><tr>
-				<th>
-					Primary Contact?
-				</th>
-				<th>
-					Contact Person
-				</th>
-				<th>
-					Organization
-				</th>
-				<th>
-					Role
-				</th>
-				<th></th>
-			</tr>
-				<tr>
-					<td>
-						Yes
-					</td>
-					<td>
-					</td>
-					<td>
-						MIT_MGH
-					</td>
-					<td>
-					</td>
-				</tr>
-		</tbody></table>
+			<table class="invisibleTable" align="center" width="100%">
+				<tbody>
+					<tr>
+						<td class="cellLabel">
+							Primary Contact?
+						</td>
+						<td class="cellLabel">
+							Contact Person
+						</td>
+						<td class="cellLabel">
+							Organization
+						</td>
+						<td class="cellLabel">
+							Role
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							Yes
+						</td>
+						<td>
+						</td>
+						<td>
+							MIT_MGH
+						</td>
+						<td>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</td>
 	</tr>
 </table>
