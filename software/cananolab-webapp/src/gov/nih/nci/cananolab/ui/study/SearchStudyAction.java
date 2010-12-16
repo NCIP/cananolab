@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.study;
 
 /**
- * This class sets up the submit a new study page and submits a new study.
+ * This class sets up the search study.
  *
- * @author houyh
+ * @author lethai
  */
 import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -34,7 +34,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			throws Exception {
 
 		StudyBean study1 = new StudyBean();
-		study1.setName("study 1");
+		study1.setName("Efficacy of nanoparticle");
 		//SampleBean studySample = new SampleBean();
 		//studySample.se
 		study1.setStudySample(new SampleBean());
@@ -42,7 +42,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 		study1.setPointOfContact("Guest");
 
 		StudyBean study2 = new StudyBean();
-		study1.setName("study 1");
+		study1.setName("Efficacy of nanoparticle Sample");
 		//SampleBean studySample = new SampleBean();
 		//studySample.se
 		study2.setStudySample(new SampleBean());
@@ -55,6 +55,6 @@ public class SearchStudyAction extends AbstractDispatchAction {
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
 		request.setAttribute("resultSize", new Integer(20));
-		return mapping.findForward("searchResult");
+		return mapping.findForward("searchResult");//mapping.findForward("success");//
 	}
 }
