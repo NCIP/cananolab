@@ -11,32 +11,18 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="WUSTL Study Efficacy of nanoparticle Sample" />
+	<jsp:param name="pageTitle" value="Efficacy of nanoparticle" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=study" />
 
-<table width="100%" align="center" class="summaryViewWithGrid">
-	<tr>
-		<th align="left">
-			Sample &nbsp;&nbsp;&nbsp;
-			<a href="studySample.do?dispatch=setupNew"
-				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" /></a>
-		</th>
-	</tr>
+<table width="100%" align="center" class="summaryViewNoGrid"
+	bgcolor="#dbdbdb">	
 	<tr>
 		<td>
-			<table width="100%" align="center" class="summaryViewLayer3">
-				<tr>
-					<th valign="top" align="left" width="20%">
-						&nbsp;
-					</th>
-					<th valign="top" align="right" width="80%">
-						<a href="sample.do?dispatch=summaryEdit&page=0&sampleId=11337747">Edit</a>
-					</th>
-				</tr>
+			<table width="99%" align="center" class="summaryViewNoGrid"
+				bgcolor="#F5F5f5">				
 				<tr>
 					<td class="cellLabel" width="20%">
 						Sample Name
@@ -44,160 +30,48 @@
 					<td>
 						MIT_MGH-KKellyIB2009-01
 					</td>
+					<td width="5%" align="right"><a href="sample.do?dispatch=summaryEdit&page=0&sampleId=11337747">Edit</a></td>
 				</tr>
 				<tr>
 					<td class="cellLabel">
-						Keywords
-						<br>
-						<i>(one keyword per line)</i>
+						Description						
 					</td>
 					<td>
-						DEXTRAN
-						<br>
-						ENDOTHELIAL CELLS
-						<br>
-						EX VIVO
-						<br>
-						FITC
-						<br>
-						FITC IMMUNOASSAY
-						<br>
-						FLUORESCENCE
-						<br>
-						HUMAN CAROTID
-						<br>
-						IN VIVO
-						<br>
-						IRON OXIDE
-						<br>
-						MACROPHAGE
-						<br>
-						SUPERPARAMAGNETIC
+						This nanoparticle is described in
+Kelly KA, Shaw SY, Nahrendorf M, Kristoff K, Aikawa E, Schreiber SL, Clemons PA and Weissleder R.
+Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries.
+Integr Biol 1:311-317 (2009).
+
+Superparamagnetic iron oxide core, crosslinked dextran coat, and fluorophore conjugate
+						
 					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Point of Contact
-					</td>
-					<td>
-					<table class="summaryViewLayer4" align="center" width="95%">
-						<tbody><tr>
-							<th>
-								Primary Contact?
-							</th>
-							<th>
-								Contact Person
-							</th>
-							<th>
-								Organization
-							</th>
-							<th>
-								Role
-							</th>
-							<th></th>
-						</tr>
-							<tr>
-								<td>
-									Yes
-								</td>
-								<td>
-								</td>
-								<td>
-									MIT_MGH
-								</td>
-								<td>
-								</td>
-							</tr>
-					</tbody></table>
-					</td>
-				</tr>
+				</tr>				
 			</table>
-			<br>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<table width="100%" align="center" class="summaryViewLayer3">
-				<tr>
-					<th valign="top" align="left" width="20%">
-						&nbsp;
-					</th>
-					<th valign="top" align="right" width="80%">
-						<a href="sample.do?dispatch=summaryEdit&page=0&sampleId=11337748">Edit</a>
-					</th>
-				</tr>
+			<table width="99%" align="center" class="summaryViewNoGrid"
+				bgcolor="#F5F5f5">				
 				<tr>
 					<td class="cellLabel" width="20%">
 						Sample Name
 					</td>
 					<td>
-						MIT_MGH-KKellyIB2009-02
+						NCL-23-1
 					</td>
+					<td width="5%" align="right"><a href="sample.do?dispatch=summaryEdit&page=0&sampleId=11337748">Edit</a></td>
 				</tr>
 				<tr>
 					<td class="cellLabel">
-						Keywords
-						<br>
-						<i>(one keyword per line)</i>
+						Description						
 					</td>
 					<td>
-						ANHYDRIDE
-						<br>
-						DEXTRAN
-						<br>
-						ENDOTHELIAL CELLS
-						<br>
-						FITC
-						<br>
-						FITC IMMUNOASSAY
-						<br>
-						FLUORESCENCE
-						<br>
-						IRON OXIDE
-						<br>
-						MACROPHAGE
-						<br>
-						SUPERPARAMAGNETIC
+						G4.5 COONa terminated PAMAM dendrimer-Magnevist® complex
+						
 					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Point of Contact
-					</td>
-					<td>
-					<table class="summaryViewLayer4" align="center" width="95%">
-						<tbody><tr>
-							<th>
-								Primary Contact?
-							</th>
-							<th>
-								Contact Person
-							</th>
-							<th>
-								Organization
-							</th>
-							<th>
-								Role
-							</th>
-							<th></th>
-						</tr>
-							<tr>
-								<td>
-									Yes
-								</td>
-								<td>
-								</td>
-								<td>
-									MIT_MGH
-								</td>
-								<td>
-								</td>
-							</tr>
-					</tbody></table>
-					</td>
-				</tr>
+				</tr>				
 			</table>
-			<br>
 		</td>
 	</tr>
 </table>
