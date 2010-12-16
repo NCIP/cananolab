@@ -10,11 +10,9 @@
 	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <c:set var="title" value="Submit" />
-<%--
-<c:if test="${!empty updateSample}">
+<c:if test="${!empty updateStudy}">
 	<c:set var="title" value="Update" />
 </c:if>
---%>
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="${title} Study" />
 	<jsp:param name="topic" value="submit_sample_help" />
