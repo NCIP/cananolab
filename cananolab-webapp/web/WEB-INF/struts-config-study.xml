@@ -39,6 +39,8 @@
 			<forward name="setupUpdate" path="study.studyInfo" />
 			<forward name="summaryEdit" path="study.summaryEdit" />
 			<forward name="summaryView" path="study.summaryView" />
+			<forward name="summaryEditPerSample" path="sample.study.summaryEdit" />
+			<forward name="summaryViewPerSample" path="sample.study.summaryView" />
 		</action>
 
 		<action path="/searchStudy" name="studySearchForm"
