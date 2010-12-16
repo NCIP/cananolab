@@ -52,10 +52,16 @@ public class StudyAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryView");
 	}
 
-	public ActionForward sampleSummaryEdit(ActionMapping mapping, ActionForm form,
+	public ActionForward summaryEditPerSample(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.setAttribute("updateStudy", true);
 		return mapping.findForward("summaryEditPerSample");
+	}
+
+	public ActionForward summaryViewPerSample(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return mapping.findForward("summaryViewPerSample");
 	}
 }
