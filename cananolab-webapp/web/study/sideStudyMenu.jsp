@@ -56,12 +56,24 @@
 			<<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="page" value="0" />
 		</c:url>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			onclick="gotoPage('${sampleUrl}')" height="20">
-			<a class="subMenuSecondary">SAMPLE</a>
-		</td>
+		<c:choose>
+			<c:when test="${actionPath eq '/studySample.do'}">
+				<td class="subMenuSecondaryTitleSelected"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+					onclick="gotoPage('${sampleUrl}')" height="20">
+					<a class="subMenuSecondary">SAMPLE</a>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="subMenuSecondaryTitle"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+					onclick="gotoPage('${sampleUrl}')" height="20">
+					<a class="subMenuSecondary">SAMPLE</a>
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<c:url var="characterizationUrl" value="studyCharacterization.do">
@@ -69,12 +81,24 @@
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL"/>
 		</c:url>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			onclick="gotoPage('${characterizationUrl}')" height="20">
-			<a class="subMenuSecondary">CHARACTERIZATION</a>
-		</td>
+		<c:choose>
+			<c:when test="${actionPath eq '/studyCharacterization.do'}">
+				<td class="subMenuSecondaryTitleSelected"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+					onclick="gotoPage('${characterizationUrl}')" height="20">
+					<a class="subMenuSecondary">CHARACTERIZATION</a>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="subMenuSecondaryTitle"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+					onclick="gotoPage('${characterizationUrl}')" height="20">
+					<a class="subMenuSecondary">CHARACTERIZATION</a>
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<c:url var="publicationUrl" value="studyPublication.do">
@@ -82,24 +106,48 @@
 			<c:param name="page" value="0" />
 			<c:param name="tab" value="ALL" />
 		</c:url>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			onclick="gotoPage('${publicationUrl}')" height="20">
-			<a class="subMenuSecondary">PUBLICATION</a>
-		</td>
+		<c:choose>
+			<c:when test="${actionPath eq '/studyPublication.do'}">
+				<td class="subMenuSecondaryTitleSelected"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+					onclick="gotoPage('${publicationUrl}')" height="20">
+					<a class="subMenuSecondary">PUBLICATION</a>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="subMenuSecondaryTitle"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+					onclick="gotoPage('${publicationUrl}')" height="20">
+					<a class="subMenuSecondary">PUBLICATION</a>
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<c:url var="protocolUrl" value="studyProtocol.do">
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="page" value="0" />
 		</c:url>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			onclick="gotoPage('${protocolUrl}')" height="20">
-			<a class="subMenuSecondary">PROTOCOL</a>
-		</td>
+		<c:choose>
+			<c:when test="${actionPath eq '/studyProtocol.do'}">
+				<td class="subMenuSecondaryTitleSelected"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+					onclick="gotoPage('${protocolUrl}')" height="20">
+					<a class="subMenuSecondary">PROTOCOL</a>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="subMenuSecondaryTitle"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+					onclick="gotoPage('${protocolUrl}')" height="20">
+					<a class="subMenuSecondary">PROTOCOL</a>
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<td class="subMenuFill" height="50">
