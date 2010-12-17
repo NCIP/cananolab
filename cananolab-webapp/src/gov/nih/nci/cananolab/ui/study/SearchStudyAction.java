@@ -34,12 +34,13 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			throws Exception {
 
 		StudyBean study1 = new StudyBean();
-		study1.setName("Efficacy of nanoparticle");
+		study1.setName("MIT_KELLY");
+		study1.setTitle("in vitro profiling of nanoparticle libraries");
 		//SampleBean studySample = new SampleBean();
 		//studySample.se
 		study1.setStudySample(new SampleBean());
-		study1.setOwnerName("Guest");
-		study1.setPointOfContact("Guest");
+		study1.setOwnerName("michal");
+		study1.setPointOfContact("MIT_MGH (Stanley Y Shaw)");
 
 		StudyBean study2 = new StudyBean();
 		study1.setName("Efficacy of nanoparticle Sample");

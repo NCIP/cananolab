@@ -12,28 +12,29 @@
 <table width="99%" align="center" class="summaryViewNoGrid"
 	bgcolor="#F5F5f5">
 	<c:if test="${edit eq 'true'}">
-	<tr>
-		<td></td>
-		<td width="95%"></td>
-		<td align="right">
-			<a href="study.do?dispatch=setupUpdate">Edit</a>
-		</td>
-	</tr>
+		<tr>
+			<td></td>
+			<td width="95%"></td>
+			<td align="right">
+				<a href="study.do?dispatch=summaryEdit">Edit</a>
+			</td>
+		</tr>
+	</c:if>
+	<c:if test="${viewDetail eq 'true'}">
+		<tr>
+			<td></td>
+			<td width="95%"></td>
+			<td align="right">
+				<a href="study.do?dispatch=summaryView">View</a>
+			</td>
+		</tr>
 	</c:if>
 	<tr>
-		<td class="cellLabel" width="20%">
-			Study Name
-		</td>
-		<td colspan="3">
-			MIT_MGH-KKellyIB2009-01
-		</td>
-	</tr>
-	<tr>
 		<td class="cellLabel">
-			Title
+			Study Title
 		</td>
 		<td colspan="3">
-			study title
+			in vitro profiling of nanoparticle libraries
 		</td>
 	</tr>
 	<tr>
@@ -41,7 +42,7 @@
 			Type
 		</td>
 		<td colspan="3">
-			reproductive
+			cancer bioassay
 		</td>
 	</tr>
 	<tr>
@@ -49,7 +50,7 @@
 			Design Types
 		</td>
 		<td colspan="3">
-			crossover
+			parallel group
 		</td>
 	</tr>
 	<tr>
@@ -57,7 +58,7 @@
 			Diseases
 		</td>
 		<td colspan="3">
-			Disease 1, Disease 2
+			Lung Cancer
 		</td>
 	</tr>
 	<tr>
@@ -97,36 +98,66 @@
 			Point of Contact
 		</td>
 		<td colspan="3">
-			<table class="invisibleTable" align="center" width="100%">
-				<tbody>
-					<tr>
-						<td class="cellLabel">
-							Primary Contact?
-						</td>
-						<td class="cellLabel">
-							Contact Person
-						</td>
-						<td class="cellLabel">
-							Organization
-						</td>
-						<td class="cellLabel">
-							Role
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							Yes
-						</td>
-						<td>
-						</td>
-						<td>
-							MIT_MGH
-						</td>
-						<td>
-						</td>
-					</tr>
-				</tbody>
+			<table align="left" class="invisibleTable">
+				<tr>
+					<td class="cellLabel">
+						Primary Contact?
+					</td>
+					<td class="cellLabel">
+
+						Contact Person
+					</td>
+					<td class="cellLabel">
+						Organization
+					</td>
+					<td class="cellLabel">
+						Role
+					</td>
+				</tr>
+
+
+				<tr>
+
+					<td>
+						Yes
+					</td>
+					<td>
+						Stanley Y Shaw
+						<br>
+						shaw.stanley@mgh.harvard.edu
+					</td>
+					<td>
+						MIT_MGH
+						<br>
+						MA
+					</td>
+
+					<td>
+						investigator
+					</td>
+				</tr>
+
+
+
+				<tr>
+					<td>
+						No
+					</td>
+					<td>
+						Ralph Weissleder
+						<br>
+						weissleder@helix.mgh.harvard.edu
+					</td>
+
+					<td>
+						MIT_MGH
+						<br>
+						MA
+					</td>
+					<td>
+						investigator
+					</td>
+				</tr>
 			</table>
 		</td>
 	</tr>
