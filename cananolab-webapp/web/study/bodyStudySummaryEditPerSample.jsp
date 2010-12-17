@@ -37,7 +37,8 @@
 				</tr>
 				<tr>
 					<td>
-						<jsp:include page="bodyBareStudySummaryView.jsp" />
+					<c:set var="edit" value="true"/>
+					<%@ include file="bodyBareStudySummaryView.jsp" %>
 					</td>
 				</tr>
 				<tr>
