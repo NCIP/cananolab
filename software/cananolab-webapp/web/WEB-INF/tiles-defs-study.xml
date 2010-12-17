@@ -104,6 +104,10 @@
 		<put name="cananoContent" value="/study/bodyStudyProtocolSummaryView.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
+	<definition name="study.protocol.add" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyProtocolAdd.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
 	<!-- Definition for protocol related pages, End -->
 
 	<!-- Definition for the publication related page, Start -->
@@ -113,6 +117,10 @@
 	</definition>
 	<definition name="study.publication.summaryView" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudyPublicationSummaryView.jsp" />
+		<put name="menu" value="STUDY" />
+	</definition>
+	<definition name="study.publication.add" extends="study.annotationHome">
+		<put name="cananoContent" value="/study/bodyStudyPublicationAdd.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	<!-- Definition for publication related pages, End -->
