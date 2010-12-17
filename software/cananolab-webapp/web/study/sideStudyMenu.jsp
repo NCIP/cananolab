@@ -16,7 +16,10 @@
 		<c:set var="studyId" value="${theStudy.domain.id}" scope="session" />
 	</c:when>
 </c:choose>
-<c:set var="dispatch" value="${param.dispatch}" />
+<c:set var="dispatch" value="summaryView" />
+<c:if test="${!empty user }">
+  <c:set var="dispatch" value="summaryEdit" />
+</c:if>
 
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%" width="150">
