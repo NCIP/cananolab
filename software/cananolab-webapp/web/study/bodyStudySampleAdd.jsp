@@ -21,12 +21,12 @@
 	<tr>
 		<td class="cellLabel">
 		<input type="radio" name="type" value="false" onclick="javascript:hide('selectStudySample');show('newStudySample');show('submitButtons');">
-		Create new Sample
+		Create a new sample
 		<br>
 		&nbsp;&nbsp;or
 		<br>
 		<input type="radio" name="type" value="true" onclick="javascript:hide('newStudySample');show('selectStudySample');show('submitButtons');">
-		Select an existing Sample
+		Select an existing sample<br/><br/>
 		</td>
 	</tr>
 	<tr>
@@ -39,7 +39,7 @@
 	<tr>
 		<td>
 			<div style="display:none" id="selectStudySample">
-			<table width="100%" align="left" class="summaryViewLayer2">
+			<table width="100%" align="left" class="submissionView">
 				<tr>
 					<td class="cellLabel" width="20%">
 						Sample Name
