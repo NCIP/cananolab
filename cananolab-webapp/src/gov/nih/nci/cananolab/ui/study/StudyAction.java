@@ -43,6 +43,8 @@ public class StudyAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.setAttribute("updateStudy", true);
+		request.setAttribute("showDelete", true);
+		request.setAttribute("deleteButtonName", "Delete");
 		return mapping.findForward("summaryEdit");
 	}
 
