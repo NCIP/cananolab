@@ -21,12 +21,10 @@
 	width="100%" align="center">
 	<tr>
 		<th align="left">
-			<a name="${type}" id="${type}"><span class="summaryViewHeading">Study</span></a>&nbsp;&nbsp;
-			<a
-				href="study.do?dispatch=setupNew"
-				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" />
+			<a name="${type}" id="${type}"><span class="summaryViewHeading">Study</span>
 			</a>&nbsp;&nbsp;
+			<a href="study.do?dispatch=setupNew" class="addlink"><img
+					align="middle" src="images/btn_add.gif" border="0" /></a>&nbsp;&nbsp;
 		</th>
 	</tr>
 	<tr>
@@ -43,14 +41,10 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<jsp:include page="bodyBareStudySummaryView.jsp" />
-					</td>
-				</tr>
-				<tr>
 					<th valign="top" align="left" height="6">
 					</th>
 				</tr>
 			</table>
 		</td>
 	</tr>
+</table>
