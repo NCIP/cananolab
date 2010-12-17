@@ -58,7 +58,7 @@
 			Diseases
 		</td>
 		<td colspan="3">
-			Lung Cancer
+			lung cancer, arthritis
 		</td>
 	</tr>
 	<tr>
@@ -66,7 +66,7 @@
 			Factors
 		</td>
 		<td colspan="3">
-			Factor 1, Factor2
+			temperature, pH
 		</td>
 	</tr>
 	<tr>
@@ -82,7 +82,7 @@
 			Outcome
 		</td>
 		<td colspan="3">
-			Study Outcome informaiton
+			outcome description
 		</td>
 	</tr>
 	<tr>
