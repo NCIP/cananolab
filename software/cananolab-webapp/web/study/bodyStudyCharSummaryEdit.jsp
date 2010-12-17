@@ -397,7 +397,7 @@
 						<th align="left">
 							<span class="summaryViewHeading">physico-chemical characterization</span>&nbsp;&nbsp;
 							<a
-								href="characterization.do?dispatch=setupNew&sampleId=11337747&charType=physico-chemical characterization"
+								href="characterization.do?dispatch=setupNew&fromStudyPage=true&sampleId=11337747&charType=physico-chemical characterization"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
 									border="0" /></a>
 

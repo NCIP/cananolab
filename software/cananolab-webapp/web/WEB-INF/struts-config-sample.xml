@@ -189,6 +189,7 @@
 			<forward name="input"
 				path="/characterization.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="sample.submitCharacterization" />
+			<forward name="studyCharInputForm" path="study.submitCharacterization" />
 			<forward name="success"
 				path="/characterization.do?dispatch=summaryEdit&amp;page=0" />
 			<forward name="singleSummaryView"
