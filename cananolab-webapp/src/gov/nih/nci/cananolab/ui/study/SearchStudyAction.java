@@ -55,7 +55,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 		request.setAttribute("studies", studyBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
-		request.setAttribute("resultSize", new Integer(20));
-		return mapping.findForward("searchResult");//mapping.findForward("success");//
+		request.setAttribute("resultSize", new Integer(2));
+		return mapping.findForward("searchResult");
 	}
 }
