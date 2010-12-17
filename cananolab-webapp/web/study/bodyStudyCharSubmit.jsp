@@ -23,16 +23,16 @@
 			<div id="assayTypePrompt">
 				<select name="achar.assayType" multiple="true" onchange="javascript:callPrompt('Assay Type', 'assayType', 'assayTypePrompt');" id="assayType">
 					<option	value="size" selected="selected">
-						MIT_MGH-AWangCMC2008-01
+						MIT_MGH-KKellyIB2009-01
 					</option>
 					<option	value="size">
-						MIT_MGH-AWangCMC2008-02
+						MIT_MGH-KKellyIB2009-02
 					</option>
 					<option	value="size" selected="selected">
-						MIT_MGH-AWangCMC2008-03
+						MIT_MGH-KKellyIB2009-03
 					</option>
 					<option	value="size">
-						MIT_MGH-AWangCMC2008-04
+						MIT_MGH-KKellyIB2009-04
 					</option>
 				</select>
 			</div>
@@ -101,7 +101,7 @@
 </script>
 	<div id="characterizationDetail">
 	</div>
-	<a name="designAndMethod"> 
+	<a name="designAndMethod">
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel">
@@ -140,41 +140,41 @@
 		<th>
 		</th>
 	</tr>
-	
+
 		<tr>
 			<td>
 
 				dynamic light scattering(DLS)
 			</td>
 			<td>
-				
+
 			</td>
 			<td>
-				
+
 				Zetasizer 4
-				
+
 			</td>
-			
+
 				<td align="right">
 					<a
 						href="javascript:setTheExperimentConfig(22);">Edit</a>&nbsp;
 
 				</td>
-			
+
 		</tr>
-	
+
 </table>
 
-			
+
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			
-			
+
+
 			<div id="newExperimentConfig" style="display:none">
 
-				
+
 
 
 
@@ -403,11 +403,11 @@
 	</tr>
 	<tr>
 		<td>
-			
+
 				<input style="display: none;" id="deleteExperimentConfig"
 					type="button" value="Remove"
 					onclick="javascript:deleteTheExperimentConfig()">
-			
+
 		</td>
 
 		<td align="right">
@@ -427,11 +427,11 @@
 	</tr>
 </table>
 <br></a>
-	<a name="result"> 
+	<a name="result">
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel" width="20%">
-			Result	 
+			Result
 		</td>
 		<td>
 			<a style="display:block" id="addFinding"
@@ -468,11 +468,11 @@
 							</tr>
 							<tr>
 								<td>179.0</td>
-								<td>MIT_MGH-AWangCMC2008-01</td>
+								<td>MIT_MGH-KKellyIB2009-01</td>
 							</tr>
 							<tr>
 								<td>129.0</td>
-								<td>MIT_MGH-AWangCMC2008-03</td>
+								<td>MIT_MGH-KKellyIB2009-02</td>
 							</tr>
 						</table>
 				<br />
@@ -487,26 +487,26 @@
 		<tr>
 
 			<td>
-				
-					
-					
+
+
+
 						N/A
-					
-				
+
+
 			</td>
 		</tr>
 	</table>
 	<br />
 
 <br>
-			
+
 		</td>
 	</tr>
 
 	<tr>
 		<td colspan="2">
-			
-			
+
+
 			<div id="newFinding" style="display:none">
 				<a name="submitFinding">
 
@@ -534,7 +534,7 @@
 	<tr>
 		<td valign="top" colspan="2">
 			<div id="newMatrix">
-				
+
 
 
 
@@ -544,10 +544,10 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table class="promptbox" width="85%" align="center" id="matrix">
 	<tr>
-		
+
 		<td></td>
 	</tr>
-	
+
 </table>
 
 <input type="hidden" name="numberOfRows" value="0" id="matrixRowNum">
@@ -561,12 +561,12 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			File 
+			File
 		</td>
 		<td>
 
-			
-			
+
+
 			<a style="display:block" id="addFile"
 				href="javascript:clearFile();openSubmissionForm('File');">Add</a>
 		</td>
@@ -574,21 +574,16 @@
 	<tr>
 		<td colspan="2">
 			<table class="submissionView" width="85%" align="center">
-				
+
 			</table>
 		</td>
 
 	</tr>
 	<tr>
 		<td colspan="2">
-			
-			
+
+
 			<div style="display:none" id="newFile">
-				
-				
-				
-				
-				
 
 
 
@@ -599,20 +594,25 @@
 
 
 
-	
-	
-	
+
+
+
+
+
+
+
+
 
 
 <table class="promptbox" width="85%"
 	align="center">
-	
-		
-		
-			
-			
-		
-	
+
+
+
+
+
+
+
 	<tr>
 		<td class="cellLabel">
 			<input type="radio" name="achar.theFinding.theFile.domainFile.uriExternal" value="false" checked="checked" onclick="displayFileRadioButton();" id="external0">
@@ -628,8 +628,8 @@
 		<td colspan="2">
 			<span id="load" style="display: block"> <input type="file" name="achar.theFinding.theFile.uploadedFile" size="60" value="" id="uploadedFile"> &nbsp;&nbsp;</span>
 
-			
-			
+
+
 			<span id="uploadedUri" style="display:none"></span>
 			<span id="link" style="display: none"><input type="text" name="achar.theFinding.theFile.externalUrl" size="60" value="" id="externalUrl"> </span>&nbsp;
 		</td>
@@ -739,20 +739,20 @@
 					selected)</i>
 			</td>
 		</tr>
-		
+
 			<input type="hidden" name="achar.theFinding.theFile.domainFile.id" value="" id="hiddenFileId">
 
 			<input type="hidden" name="achar.theFinding.theFile.domainFile.uri" value="" id="hiddenFileUri">
 			<input type="hidden" name="achar.theFinding.theFileIndex" value="-1" id="hiddenFileIndex">
-		
-		
+
+
 			<tr>
 				<td>
-					
+
 						<input class="promptButton" type="button" value="Remove"
 							onclick="removeFile('characterization', characterizationForm)"
 							id="deleteFile" style="display: none;" />
-					
+
 				</td>
 				<td>
 					<div align="right">
@@ -764,7 +764,7 @@
 					</div>
 				</td>
 			</tr>
-		
+
 </table>
 
 				&nbsp;
@@ -774,11 +774,11 @@
 	</tr>
 	<tr>
 		<td>
-			
+
 		</td>
 		<td>
 			<div align="right">
-				
+
 				<input type="button" value="Save"
 					onclick="javascript:saveFinding('characterization');">
 				<input type="button" value="Cancel"	onclick="javascript:closeSubmissionForm('Finding');">
@@ -795,7 +795,7 @@
 </table>
 <br>
 </a>
-	
+
 
 
 
@@ -814,14 +814,14 @@
 	</tr>
 </table>
 <br>
-	
+
 
 
 
 <table width="100%" align="center" class="submissionView">
 	<tbody>
-		
-			
+
+
 				<tr>
 					<td width="20%">
 						<strong>Copy to other samples with the same primary point
@@ -947,24 +947,24 @@
 					</td>
 					<td>
 
-						
+
 							<input type="checkbox" name="copyData" value="on">
 							<strong>Also copy finding data and conditions ?</strong>
-						
+
 						&nbsp;
 					</td>
 				</tr>
-			
-			
-		
+
+
+
 	</tbody>
 </table>
 
-	
-	
-	
-	
-	
+
+
+
+
+
 
 
 
@@ -975,8 +975,8 @@
 
 	<tr>
 		<td width="30%">
-			
-				
+
+
 					<table height="32" border="0" align="left" cellpadding="4"
 						cellspacing="0">
 						<tr>
@@ -989,8 +989,8 @@
 
 						</tr>
 					</table>
-				
-			
+
+
 			<table width="498" height="32" border="0" align="right"
 				cellpadding="4" cellspacing="0">
 				<tr>

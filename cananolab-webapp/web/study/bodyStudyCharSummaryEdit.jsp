@@ -448,6 +448,15 @@
 				href="characterization.do?dispatch=setupUpdate&sampleId=11337747&charId=15499607&charClassName=Relaxivity&charType=physico-chemical characterization">Edit</a>
 		</td>
 	</tr>
+			    <tr>
+				<td class="cellLabel" width="10%">
+					Sample Names
+				</td>
+				<td>
+					MIT_MGH-KKellyIB2009-01, MIT_MGH-KKellyIB2009-02
+				</td>
+			</tr>
+
 	<tr>
 		<td class="cellLabel" width="10%">
 			Assay Type
@@ -552,31 +561,53 @@
 
 
 						<table class="summaryViewWithGrid" align="left">
-							<tr>
+																<tr>
 
-									<td class="cellLabel">
-										R1<br>(1/mM 1/s)
-									</td>
+																	<td class="cellLabel">
+																		R1
+																		<br>
+																		(1/mM 1/s)
+																	</td>
 
-									<td class="cellLabel">
-										R2<br>(1/mM 1/s)
-									</td>
+																	<td class="cellLabel">
+																		R2
+																		<br>
+																		(1/mM 1/s)
+																	</td>
+																	<td class="cellLabel">
+																		Sample Name
+																	</td>
+																</tr>
 
-							</tr>
+																<tr>
 
-								<tr>
+																	<td>
+																		21.0
+																	</td>
 
-										<td>
-											21.0
-										</td>
+																	<td>
+																		62.0
+																	</td>
+																	<td>
+																		MIT_MGH-KKellyIB2009-01
+																	</td>
+																</tr>
+																<tr>
 
-										<td>
-											62.0
-										</td>
+																	<td>
+																		21.0
+																	</td>
 
-								</tr>
+																	<td>
+																		62.0
+																	</td>
+																	<td>
+																		MIT_MGH-KKellyIB2009-02
+																	</td>
+																</tr>
 
-						</table>
+															</table>
+
 
 
 			</td>
@@ -664,6 +695,15 @@
 				href="characterization.do?dispatch=setupUpdate&sampleId=11337747&charId=11567108&charClassName=Size&charType=physico-chemical characterization">Edit</a>
 		</td>
 	</tr>
+			    <tr>
+				<td class="cellLabel" width="10%">
+					Sample Names
+				</td>
+				<td>
+					MIT_MGH-KKellyIB2009-01, MIT_MGH-KKellyIB2009-02
+				</td>
+			</tr>
+
 	<tr>
 		<td class="cellLabel" width="10%">
 			Assay Type
@@ -770,24 +810,39 @@
 			<td>
 
 
-						<table class="summaryViewWithGrid" align="left">
-							<tr>
+					<table class="summaryViewWithGrid" align="left">
+																<tr>
 
-									<td class="cellLabel">
-										Diameter<br>(nm)
-									</td>
+																	<td class="cellLabel">
+																		Diameter
+																		<br>
+																		(nm)
+																	</td>
+																	<td class="cellLabel">
+																		Sample Name
+																	</td>
+																</tr>
 
-							</tr>
+																<tr>
 
-								<tr>
+																	<td>
+																		38.0
+																	</td>
+																	<td>
+																		MIT_MGH-KKellyIB2009-01
+																	</td>
+																</tr>
+																<tr>
 
-										<td>
-											38.0
-										</td>
+																	<td>
+																		38.0
+																	</td>
+																	<td>
+																		MIT_MGH-KKellyIB2009-02
+																	</td>
+																</tr>
 
-								</tr>
-
-						</table>
+															</table>
 
 
 			</td>
