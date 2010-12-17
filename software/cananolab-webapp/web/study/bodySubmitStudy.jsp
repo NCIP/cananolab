@@ -28,7 +28,7 @@
 				Study Name *
 			</td>
 			<td colspan="3">
-				<html:text property="studyBean.name" size="50" />
+				<html:text property="studyBean.name" size="50" value="MIT_MGH-KKellyIB"/>
 				<%--
 				<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
 					<html:hidden styleId="sampleId" property="sampleBean.domain.id"
@@ -42,7 +42,7 @@
 				Study Title *
 			</td>
 			<td colspan="3">
-				<html:text property="studyBean.title" size="80" />
+				<html:text property="studyBean.title" size="100" value="Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries"/>
 			</td>
 		</tr>
 		<tr>
@@ -61,7 +61,7 @@
 						<option value="Developmental">
 							developmental
 						</option>
-						<option value="Cancer Bioassay">
+						<option value="Cancer Bioassay" selected>
 							cancer bioassay
 						</option>
 						<option value="other">
@@ -73,7 +73,7 @@
 				Is Animal Study?
 			</td>
 			<td>
-				<input type="checkbox" checked="checked">
+				<input type="checkbox">
 			</td>
 		</tr>
 
@@ -82,7 +82,7 @@
 				Study Design Types
 			</td>
 			<td>
-				<html:textarea property="studyBean.designTypes" cols="30" rows="2" />
+				<html:textarea property="studyBean.designTypes" cols="30" rows="2" value="parallel group"/>
 				<br>
 				<em>one type per line</em>
 			</td>
@@ -122,7 +122,7 @@
 			<td colspan="3">
 				<html:select property="studyBean.diseaseType">
 					<option value=""></option>
-					<option value="">
+					<option value="" selected>
 						cancer
 					</option>
 					<option value="other">
@@ -136,7 +136,7 @@
 				Disease Names
 			</td>
 			<td>
-				<html:textarea property="studyBean.diseaseNames" cols="30" rows="2" />
+				<html:textarea property="studyBean.diseaseNames" cols="30" rows="2" value="lung cancer" />
 				<br>
 				<em>one name per line</em>
 			</td>
@@ -174,7 +174,7 @@
 				Start Date
 			</td>
 			<td>
-				<html:text property="studyBean.startDate" size="10" />
+				<html:text property="studyBean.startDate" size="10" value="12-15-2010"/>
 				<a href="javascript:cal1.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
@@ -184,7 +184,7 @@
 				End Date
 			</td>
 			<td>
-				<html:text property="studyBean.endDate" size="10" />
+				<html:text property="studyBean.endDate" size="10" value="12-15-2010"/>
 				<a href="javascript:cal1.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
@@ -218,7 +218,7 @@
 				Study Description
 			</td>
 			<td colspan="3">
-				<html:textarea property="studyBean.description" rows="6" cols="80" />
+				<html:textarea property="studyBean.description" rows="6" cols="80" value="Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries"/>
 			</td>
 		</tr>
 		<tr>
@@ -258,6 +258,82 @@
 						src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
+		<tr>
+			<td colspan="4">
+				<table class="editTableWithGrid" width="95%" align="center">
+					<tr>
+						<th>
+							Primary Contact?
+						</th>
+						<th>
+							Contact Person
+						</th>
+						<th>
+							Organization
+						</th>
+						<th>
+							Role
+						</th>
+						<th></th>
+					</tr>
+
+					<tr>
+						<td>
+							Yes
+						</td>
+						<td>
+							Stanley Y Shaw
+							<br>
+							shaw.stanley@mgh.harvard.edu
+						</td>
+						<td>
+							MIT_MGH
+							<br>
+							MA
+						</td>
+						<td>
+							investigator
+						</td>
+
+						<td align="right">
+							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
+						</td>
+
+					</tr>
+
+
+
+					<tr>
+						<td>
+							No
+						</td>
+						<td>
+							Ralph Weissleder
+							<br>
+							weissleder@helix.mgh.harvard.edu
+						</td>
+						<td>
+							MIT_MGH
+							<br>
+							MA
+						</td>
+						<td>
+							investigator
+						</td>
+
+						<td align="right">
+							<a href="javascript:setThePointOfContact(15695885, false);">Edit</a>&nbsp;
+						</td>
+
+					</tr>
+
+
+				</table>
+
+
+			</td>
+		</tr>
+
 		<tr>
 			<td colspan="4">
 				<div style="display: none" id="newPointOfContact">

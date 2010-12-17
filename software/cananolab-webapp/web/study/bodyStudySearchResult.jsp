@@ -14,22 +14,24 @@
 <table width="100%" align="center">
 	<tr>
 		<td colspan="2">
-		<display:table name="studies" id="study"
-				requestURI="searchStudy.do" pagesize="25" class="displaytable"
-				partialList="true" size="resultSize"
-    			decorator="gov.nih.nci.cananolab.dto.common.StudyDecorator">
+			<display:table name="studies" id="study" requestURI="searchStudy.do"
+				pagesize="25" class="displaytable" partialList="true"
+				size="resultSize"
+				decorator="gov.nih.nci.cananolab.dto.common.StudyDecorator">
 				<display:column title="" property="detailURL" />
 				<display:column title="Study Name" property="studyName"
 					sortable="true" escapeXml="true" />
+				<display:column title="Study Title" property="studyTitle"
+					sortable="true" escapeXml="true" />
 				<display:column title="Sample Name" property="sampleName"
-					sortable="true"  />
+					sortable="true" />
 				<display:column title="Primary<br>Point Of Contact"
 					property="pointOfContactName" sortable="true" escapeXml="true" />
 				<display:column title="Diseases" property="diseasesStr"
 					sortable="true" />
 				<display:column title="Owned By" property="ownerStr" />
 			</display:table>
-			
+
 		</td>
 	</tr>
 </table>

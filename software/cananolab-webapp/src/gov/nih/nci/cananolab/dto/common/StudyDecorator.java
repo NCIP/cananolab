@@ -14,11 +14,11 @@ import org.displaytag.decorator.TableDecorator;
  *
  */
 public class StudyDecorator extends TableDecorator {
- 
+
 	public String getDetailURL() {
 		UserBean user = (UserBean)this.getPageContext().getSession().getAttribute("user");
-		
-		
+
+
 		//SampleBean sample = (SampleBean) getCurrentRowObject();
 		//String sampleId = sample.getDomain().getId().toString();
 		String dispatch = "summaryView";
@@ -33,32 +33,35 @@ public class StudyDecorator extends TableDecorator {
 		sb.append("1").append('>');
 		sb.append(linkLabel).append("</a>");
 		String link = sb.toString();
-		
+
 		return link;
 	}
 
 	public SortableName getStudyName() {
-		String studyName = "Efficacy of nanoparticle";
+		String studyName = "MIT_MGH-KKellyIB";
 		return new SortableName(studyName);
 	}
 	public SortableName getSampleName() {
 		//SampleBean sample = (SampleBean) getCurrentRowObject();
-		String sampleName = "NCL-23-1<br>NCL-23-2"; //sample.getDomain().getName();
+		String sampleName = "MIT_MGH-KKellyIB2009-01<br>MIT_MGH-KKellyIB2009-02<br>"; //sample.getDomain().getName();
 		return new SortableName(sampleName);
 	}
-	
+
+	public String getStudyTitle() {
+		return "Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries";
+	}
+
 	public String getOwnerStr() throws BaseException {
-		
-		return "Guest";
+		return "michal";
 	}
 
 	public String getDiseasesStr() throws BaseException {
-		
-		return "Lung Cancer<br>Heart cancer";
+
+		return "lung cancer";
 	}
 
 	public String getPointOfContactName() throws BaseException {
 		//SampleBean sample = (SampleBean) getCurrentRowObject();
-		return "leth";
+		return "MIT_MGH (Stanley Y Shaw)";
 	}
 }

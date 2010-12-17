@@ -11,14 +11,14 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Study Efficacy of nanoparticle " />
+	<jsp:param name="pageTitle" value="Samples for Study MIT_MGH_Kelly " />
 	<jsp:param name="topic" value="study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=study" />
 
 <table width="100%" align="center" class="summaryViewNoGrid"
-	bgcolor="#dbdbdb">	
+	bgcolor="#dbdbdb">
 	<tr>
 		<th valign="top" align="left" height="6">
 		</th>
@@ -26,32 +26,38 @@
 	<tr>
 		<td>
 			<table width="99%" align="center" class="summaryViewNoGrid"
-				bgcolor="#F5F5f5">				
+				bgcolor="#F5F5f5">
+				<tr>
+					<td></td><td></td>
+					<td width="5%" align="right">
+						<a href="sample.do?dispatch=summaryView&page=0&sampleId=11337748">View</a>
+					</td>
+				</tr>
 				<tr>
 					<td class="cellLabel" width="20%">
 						Sample Name
 					</td>
-					<td>
+					<td colspan="2">
 						MIT_MGH-KKellyIB2009-01
 					</td>
-					<td width="5%" align="right"><a href="sample.do?dispatch=summaryView&page=0&sampleId=11337747">View</a></td>
 				</tr>
 				<tr>
 					<td class="cellLabel">
-						Description						
+						Description
 					</td>
-					<td>
-						This nanoparticle is described in
-Kelly KA, Shaw SY, Nahrendorf M, Kristoff K, Aikawa E, Schreiber SL, Clemons PA and Weissleder R.
-Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries.
-Integr Biol 1:311-317 (2009).
+					<td colspan="2">
+						This nanoparticle is described in Kelly KA, Shaw SY, Nahrendorf M,
+						Kristoff K, Aikawa E, Schreiber SL, Clemons PA and Weissleder R.
+						Unbiased discovery of in vivo imaging probes through in vitro
+						profiling of nanoparticle libraries. Integr Biol 1:311-317 (2009).
 
-Superparamagnetic iron oxide core, crosslinked dextran coat, and fluorophore conjugate
-						
+						Superparamagnetic iron oxide core, crosslinked dextran coat, and
+						fluorophore conjugate
+
 					</td>
-				</tr>				
+				</tr>
 			</table>
-		</td>
+	</td>
 	</tr>
 	<tr>
 		<th valign="top" align="left" height="6">
@@ -62,27 +68,36 @@ Superparamagnetic iron oxide core, crosslinked dextran coat, and fluorophore con
 			<table width="99%" align="center" class="summaryViewNoGrid"
 				bgcolor="#F5F5f5">
 				<tr>
-		<th valign="top" align="left" height="6">
-		</th>
-	</tr>				
+					<th valign="top" align="left" height="6">
+					</th>
+				</tr>
+				<tr>
+					<td></td><td></td>
+					<td width="5%" align="right">
+						<a href="sample.do?dispatch=summaryView&page=0&sampleId=11337748">View</a>
+					</td>
+				</tr>
 				<tr>
 					<td class="cellLabel" width="20%">
 						Sample Name
 					</td>
-					<td>
-						NCL-23-1
+					<td colspan="2">
+						MIT_MGH-KKellyIB2009-02
 					</td>
-					<td width="5%" align="right"><a href="sample.do?dispatch=summaryView&page=0&sampleId=11337748">View</a></td>
 				</tr>
 				<tr>
 					<td class="cellLabel">
-						Description						
+						Description
 					</td>
-					<td>
-						G4.5 COONa terminated PAMAM dendrimer-Magnevist® complex
-						
+					<td colspan="2">
+						This nanoparticle is described in Kelly KA, Shaw SY, Nahrendorf M,
+						Kristoff K, Aikawa E, Schreiber SL, Clemons PA and Weissleder R.
+						Unbiased discovery of in vivo imaging probes through in vitro
+						profiling of nanoparticle libraries. Integr Biol 1:311-317 (2009).
+						Superparamagnetic iron oxide core, crosslinked dextran coat,
+						fluorophore, and anhydride conjugate
 					</td>
-				</tr>				
+				</tr>
 			</table>
 		</td>
 	</tr>
