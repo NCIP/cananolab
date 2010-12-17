@@ -11,193 +11,181 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="WUSTL Study Efficacy of nanoparticle Protocol Summary" />
+	<jsp:param name="pageTitle" value="Study Efficacy of nanoparticle Protocol" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=study" />
-
-<table width="100%" align="center" class="summaryViewLayer2">
+<table  class="summaryViewNoGrid"
+					align="center" width="100%">
 	<tr>
-		<th align="left">
-			Protocol &nbsp;&nbsp;&nbsp;
-			<a href="study.do?dispatch=sampleAdd"
+		<th align="left" valign="baseline">
+			Protocol &nbsp;&nbsp;
+			<a href="studyProtocol.do?dispatch=add"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" /></a>
 		</th>
 	</tr>
 	<tr>
-		<td>
-			<table width="100%" align="center" class="summaryViewLayer3">
-				<tr>
-					<th valign="top" align="left" width="20%">
-						Protocol Information
-					</th>
-					<th valign="top" align="right" width="80%">
-						<a href="submitProtocol.do?dispatch=setupUpdate&protocolId=16318464&location=WUSTL">Edit</a>
-					</th>
-				</tr>
-				<tr>
-					<td class="cellLabel" width="20%">
-						Protocol Name
-					</td>
-					<td>
-						MIT_MGH-KKellyIB2009-01
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Keywords
-						<br>
-						<i>(one keyword per line)</i>
-					</td>
-					<td>
-						DEXTRAN
-						<br>
-						ENDOTHELIAL CELLS
-						<br>
-						EX VIVO
-						<br>
-						FITC
-						<br>
-						FITC IMMUNOASSAY
-						<br>
-						FLUORESCENCE
-						<br>
-						HUMAN CAROTID
-						<br>
-						IN VIVO
-						<br>
-						IRON OXIDE
-						<br>
-						MACROPHAGE
-						<br>
-						SUPERPARAMAGNETIC
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Point of Contact
-					</td>
-					<td>
-					<table class="summaryViewLayer4" align="center" width="95%">
-						<tbody><tr>
-							<th>
-								Primary Contact?
-							</th>
-							<th>
-								Contact Person
-							</th>
-							<th>
-								Organization
-							</th>
-							<th>
-								Role
-							</th>
-							<th></th>
-						</tr>
-							<tr>
-								<td>
-									Yes
-								</td>
-								<td>
-								</td>
-								<td>
-									MIT_MGH
-								</td>
-								<td>
-								</td>
-							</tr>
-					</tbody></table>
-					</td>
-				</tr>
-			</table>
-			<br>
-		</td>
+		<th align="left"">
+		</th>
 	</tr>
 	<tr>
 		<td>
-			<table width="100%" align="center" class="summaryViewLayer3">
+			<table width="100%" align="center" class="summaryViewNoGrid"
+				bgcolor="#dbdbdb">
 				<tr>
-					<th valign="top" align="left" width="20%">
-						Protocol Information
-					</th>
-					<th valign="top" align="right" width="80%">
-						<a href="submitProtocol.do?dispatch=setupUpdate&protocolId=16318464&location=WUSTL">Edit</a>
+					<th valign="top" align="left" height="6">
 					</th>
 				</tr>
 				<tr>
-					<td class="cellLabel" width="20%">
-						Protocol Name
+					<td>										
+							<table class="summaryViewNoGrid" width="99%" align="center"
+								bgcolor="#F5F5f5">
+								<tr>
+									<td class="cellLabel" width="10%">
+										Name
+									</td>
+									<td>
+										GTA-1
+									</td>
+									<td><a href="protocol.do?dispatch=setupUpdate&protocolId=22129928">Edit</a></td>
+								</tr>
+								
+									<tr>
+										<td class="cellLabel" width="10%">
+											Abbreviation
+										</td>
+										<td colspan="2">
+											GTA-1  
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="cellLabel" width="10%">
+											Type
+										</td>
+										<td>
+											in vitro assay
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="cellLabel" width="10%">
+											Version
+										</td>
+										<td>
+											1.0
+										</td>
+									</tr>
+									<tr>
+									<td class="cellLabel" width="10%">
+										File
+									</td>
+									<td>
+										MTT AND LDH RELEASE (PORCINE RENAL PROXIMAL TUBULE CELL)
+									</td>
+								</tr>
+								
+								<tr>
+									<td class="cellLabel" width="10%">
+										Description
+									</td>
+									<td>
+										
+									</td>
+								</tr>
+								<tr>
+									<td class="cellLabel" width="10%">
+										Created Date
+									</td>
+									<td>
+										08-31-2007
+									</td>
+								</tr>
+							</table>
+							
 					</td>
-					<td>
-						MIT_MGH-KKellyIB2009-02
+				</tr>
+				
+				<tr>
+					<th valign="top" align="left" height="6">
+					</th>
+				</tr>
+				<tr>
+					<td>										
+							<table class="summaryViewNoGrid" width="99%" align="center"
+								bgcolor="#F5F5f5">
+								<tr>
+									<td class="cellLabel" width="10%">
+										Name
+									</td>
+									<td>
+										GTA-1
+									</td>
+									<td><a href="protocol.do?dispatch=setupUpdate&protocolId=22129928">Edit</a></td>
+								</tr>
+								
+									<tr>
+										<td class="cellLabel" width="10%">
+											Abbreviation
+										</td>
+										<td colspan="2">
+											GTA-1  
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="cellLabel" width="10%">
+											Type
+										</td>
+										<td>
+											in vitro assay
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="cellLabel" width="10%">
+											Version
+										</td>
+										<td>
+											1.0
+										</td>
+									</tr>
+									<tr>
+									<td class="cellLabel" width="10%">
+										File
+									</td>
+									<td>
+										MTT AND LDH RELEASE (PORCINE RENAL PROXIMAL TUBULE CELL)
+									</td>
+								</tr>
+								
+								<tr>
+									<td class="cellLabel" width="10%">
+										Description
+									</td>
+									<td>
+										
+									</td>
+								</tr>
+								<tr>
+									<td class="cellLabel" width="10%">
+										Created Date
+									</td>
+									<td>
+										08-31-2007
+									</td>
+								</tr>
+							</table>
+							
 					</td>
 				</tr>
 				<tr>
-					<td class="cellLabel">
-						Keywords
-						<br>
-						<i>(one keyword per line)</i>
-					</td>
-					<td>
-						ANHYDRIDE
-						<br>
-						DEXTRAN
-						<br>
-						ENDOTHELIAL CELLS
-						<br>
-						FITC
-						<br>
-						FITC IMMUNOASSAY
-						<br>
-						FLUORESCENCE
-						<br>
-						IRON OXIDE
-						<br>
-						MACROPHAGE
-						<br>
-						SUPERPARAMAGNETIC
-					</td>
-				</tr>
-				<tr>
-					<td class="cellLabel">
-						Point of Contact
-					</td>
-					<td>
-					<table class="summaryViewLayer4" align="center" width="95%">
-						<tbody><tr>
-							<th>
-								Primary Contact?
-							</th>
-							<th>
-								Contact Person
-							</th>
-							<th>
-								Organization
-							</th>
-							<th>
-								Role
-							</th>
-							<th></th>
-						</tr>
-							<tr>
-								<td>
-									Yes
-								</td>
-								<td>
-								</td>
-								<td>
-									MIT_MGH
-								</td>
-								<td>
-								</td>
-							</tr>
-					</tbody></table>
-					</td>
+					<th valign="top" align="left" height="6">
+					</th>
 				</tr>
 			</table>
-			<br>
 		</td>
 	</tr>
 </table>
