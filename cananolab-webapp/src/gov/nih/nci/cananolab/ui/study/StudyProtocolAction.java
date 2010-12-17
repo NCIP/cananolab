@@ -41,4 +41,11 @@ public class StudyProtocolAction extends BaseAnnotationAction {
 		request.setAttribute("pageTitle", "Submit Study Protocol");
 		return mapping.getInputForward();
 	}
+	
+	public ActionForward add(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.setAttribute("pageTitle", "Add Study Protocol");
+		return mapping.findForward("add");
+	}
 }
