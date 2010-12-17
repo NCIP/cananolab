@@ -138,6 +138,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
 		clearCopy(theForm);
+
+		if (request.getParameter("fromStudyPage").equals("true")) {
+			return mapping.findForward("studyCharInputForm");
+		}
 		return mapping.findForward("inputForm");
 	}
 

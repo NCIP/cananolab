@@ -47,7 +47,7 @@
 		<put name="cananoContent" value="/study/bodyStudySearchResult.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
-	
+
 	<!-- Definition for study search related pages, End -->
 
 
@@ -90,12 +90,11 @@
 		<put name="menu" value="STUDY" />
 	</definition>
 
-	<definition name="study.char.edit" extends="study.annotationHome">
+	<definition name="study.submitCharacterization" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudyCharSubmit.jsp" />
 		<put name="menu" value="STUDY" />
 	</definition>
 	<!-- Definition for animal info related pages, End -->
-
 	<!-- Definition for the protocol related page, Start -->
 	<definition name="study.protocol.summaryEdit" extends="study.annotationHome">
 		<put name="cananoContent" value="/study/bodyStudyProtocolSummaryEdit.jsp" />
