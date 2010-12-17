@@ -30,7 +30,7 @@
 						<div align="right">
 							<input type="button" value="Save" onclick="addFactor('study')" />
 							<input type="button" value="Cancel"
-								onclick="clearFactor();closeSubmissionForm('Factor');" />
+								onclick="closeSubmissionForm('Factor');" />
 						</div>
 					</td>
 				</tr>
