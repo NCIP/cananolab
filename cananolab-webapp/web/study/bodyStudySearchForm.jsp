@@ -80,6 +80,7 @@
 			</td>
 			<td colspan="2">
 				<SELECT >
+				<option value=""></option>
 					<option value="parallel group">parallel group</option>
 					<option value="crossover">crossover</option>
 				</SELECT>
