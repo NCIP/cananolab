@@ -41,4 +41,11 @@ public class StudyPublicationAction extends BaseAnnotationAction {
 		request.setAttribute("pageTitle", "Submit Study");
 		return mapping.getInputForward();
 	}
+	
+	public ActionForward add(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		request.setAttribute("pageTitle", "Add Study Publication");
+		return mapping.findForward("add");
+	}
 }
