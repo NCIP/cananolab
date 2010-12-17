@@ -87,6 +87,7 @@
 			<forward name="inputForm" path="study.protocol.input" />
 			<forward name="summaryEdit" path="study.protocol.summaryEdit" />
 			<forward name="summaryView" path="study.protocol.summaryView" />
+			<forward name="add" path="study.protocol.add" />
 		</action>
 
 		<action path="/studyPublication" name="studyForm"
@@ -97,6 +98,7 @@
 			<forward name="inputForm" path="study.publication.input" />
 			<forward name="summaryEdit" path="study.publication.summaryEdit" />
 			<forward name="summaryView" path="study.publication.summaryView" />
+			<forward name="add" path="study.publication.add" />
 		</action>
 	</action-mappings>
 </struts-config>
