@@ -16,11 +16,19 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=study" />
-
-<table width="100%" align="center" class="summaryViewNoGrid"
-	bgcolor="#dbdbdb">
+<table  width="100%" align="center" class="summaryViewNoGrid">
+	<tr><th valign="middle">Sample&nbsp;&nbsp;&nbsp;<a	href="studySample.do?dispatch=sampleAdd"
+			class="addlink"><img align="middle" src="images/btn_add.gif"
+				border="0" /></a>
+		</th>
+	</tr>
 	<tr>
-		<th valign="top" align="left" height="6">
+	<td>
+	<table width="100%" align="center" class="summaryViewNoGrid"
+	bgcolor="#dbdbdb">
+	
+	<tr>
+		<th valign="top" align="left" >		
 		</th>
 	</tr>
 	<tr>
@@ -106,3 +114,7 @@
 		</th>
 	</tr>
 </table>
+	</td>
+	</tr>
+</table>
+
