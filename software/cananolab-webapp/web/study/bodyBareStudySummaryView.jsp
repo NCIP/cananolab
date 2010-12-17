@@ -11,6 +11,15 @@
 
 <table width="99%" align="center" class="summaryViewNoGrid"
 	bgcolor="#F5F5f5">
+	<c:if test="${edit eq 'true'}">
+	<tr>
+		<td></td>
+		<td width="95%"></td>
+		<td align="right">
+			<a href="study.do?dispatch=setupUpdate">Edit</a>
+		</td>
+	</tr>
+	</c:if>
 	<tr>
 		<td class="cellLabel" width="20%">
 			Study Name
