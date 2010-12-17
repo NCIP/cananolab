@@ -167,12 +167,24 @@
 			<c:param name="dispatch" value="${studyDispatch}" />
 			<c:param name="page" value="0" />
 		</c:url>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-			onclick="gotoPage('${studyUrl}')" height="20">
-			<a class="subMenuSecondary">STUDY</a>
-		</td>
+		<c:choose>
+			<c:when test="${actionPath eq '/study.do'}">
+				<td class="subMenuSecondaryTitleSelected"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+					onclick="gotoPage('${studyUrl}')" height="20">
+					<a class="subMenuSecondary">STUDY</a>
+				</td>
+			</c:when>
+			<c:otherwise>
+				<td class="subMenuSecondaryTitle"
+					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+					onmouseout="changeMenuStyle(this, 'subMenuSecondaryTitle'), hideCursor();"
+					onclick="gotoPage('${studyUrl}')" height="20">
+					<a class="subMenuSecondary">STUDY</a>
+				</td>
+			</c:otherwise>
+		</c:choose>
 	</tr>
 	<tr>
 		<td class="subMenuFill" height="50">
