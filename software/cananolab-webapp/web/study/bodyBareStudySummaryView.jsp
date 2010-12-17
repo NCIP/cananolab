@@ -34,7 +34,7 @@
 			Study Title
 		</td>
 		<td colspan="3">
-			in vitro profiling of nanoparticle libraries
+			Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries
 		</td>
 	</tr>
 	<tr>
@@ -74,7 +74,7 @@
 			Description
 		</td>
 		<td colspan="3">
-			Description information about the study
+			Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries
 		</td>
 	</tr>
 	<tr>
