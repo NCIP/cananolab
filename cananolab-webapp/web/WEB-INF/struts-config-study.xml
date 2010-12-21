@@ -10,16 +10,19 @@
 		<form-bean name="studySearchForm" type="org.apache.struts.action.DynaActionForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="studyName" type="java.lang.String" />
-			<form-property name="nameOperand" type="java.lang.String" />
+			<form-property name="studyNameOperand" type="java.lang.String" />
 			<form-property name="studyType" type="java.lang.String" />
-			<form-property name="isAnimalModel" type="java.lang.Boolean"
-				initial="true" />
+			<form-property name="studyDesignType" type="java.lang.String" />
+			<form-property name="isAnimalModel" type="java.lang.String" />
 			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="sampleNameOperand" type="java.lang.String" />
 			<form-property name="studyPointOfContact" type="java.lang.String" />
 			<form-property name="pocOperand" type="java.lang.String" />
-			<form-property name="diseaseName" type="java.lang.String" />
+			<form-property name="disease" type="java.lang.String" />
+			<form-property name="diseaseOperand" type="java.lang.String" />
 			<form-property name="text" type="java.lang.String" />
 			<form-property name="studyOwner" type="java.lang.String" />
+			<form-property name="ownerOperand" type="java.lang.String" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
