@@ -31,7 +31,7 @@
 				Study Name
 			</td>
 			<td>
-				<html:select property="nameOperand" styleId="nameOperand">
+				<html:select property="studyNameOperand" styleId="studyNameOperand">
 					<html:options collection="stringOperands" property="value"
 						labelProperty="label" />
 				</html:select>
@@ -91,7 +91,10 @@
 				Animal Study?
 			</td>
 			<td colspan="2">
-				Yes <input type="radio" value="yes"/> No<input type="radio" value="no"/>
+				<html:radio styleId="option1" property="isAnimalModel" value="yes" />
+				Yes
+				<html:radio styleId="option2" property="isAnimalModel" value="no" />
+				No
 			</td>
 		</tr>
 
@@ -100,7 +103,7 @@
 				Sample Name
 			</td>
 			<td>
-				<html:select property="nameOperand" styleId="nameOperand">
+				<html:select property="sampleNameOperand" styleId="sampleNameOperand">
 					<html:options collection="stringOperands" property="value"
 						labelProperty="label" />
 				</html:select>
@@ -115,13 +118,13 @@
 				Disease
 			</td>
 			<td>
-				<html:select property="nameOperand" styleId="nameOperand">
+				<html:select property="diseaseOperand" styleId="diseaseOperand">
 					<html:options collection="stringOperands" property="value"
 						labelProperty="label" />
 				</html:select>
 			</td>
 			<td >
-				<html:text property="diseaseName" size="60" />
+				<html:text property="disease" size="60" />
 				<!-- input type="text" size="80" value="Efficacy of nanoparticle"/-->
 			</td>
 		</tr>
@@ -142,7 +145,7 @@
 				Study Owner
 			</td>
 			<td>
-				<html:select property="nameOperand" styleId="nameOperand">
+				<html:select property="ownerOperand" styleId="ownerOperand">
 					<html:options collection="stringOperands" property="value"
 						labelProperty="label" />
 				</html:select>
@@ -165,7 +168,7 @@
 							<div align="right">
 								<div align="right">
 									<input type="reset" value="Clear"
-										onclick="javascript:location.href='searchStudy.do?dispatch=setupNew&page=0'">
+										onclick="javascript:location.href='searchStudy.do?dispatch=setup&page=0'">
 									<input type="hidden" name="dispatch" value="search">
 									<input type="hidden" name="page" value="2">
 									<html:submit value="Search"/>
