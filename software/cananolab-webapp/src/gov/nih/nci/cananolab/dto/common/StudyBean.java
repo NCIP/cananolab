@@ -5,6 +5,8 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import java.util.Date;
 
 public class StudyBean extends SecuredDataBean {
+	
+	//private Study study;
 
 	private String name;
 	private String title;
@@ -24,6 +26,14 @@ public class StudyBean extends SecuredDataBean {
 	private String description;
 	private String factorType;
 	private String factorName;
+	
+	public StudyBean(){
+		
+	}
+	public StudyBean(String id){
+		
+	}
+	
 
 	public Date getStartDate() {
 		return startDate;
