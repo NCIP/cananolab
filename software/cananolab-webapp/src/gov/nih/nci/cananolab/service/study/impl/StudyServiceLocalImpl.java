@@ -60,18 +60,23 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements Study
 	
 	}
 
-	@Override
+
 	public StudyBean findStudyById(String id, Boolean loadAccessInfo)
 			throws StudyException, NoAccessException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public List<String> findStudyIdsBy() throws StudyException,
-			NoAccessException {
+
+	public List<String> findStudyIdsBy() throws StudyException{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	public int getNumberOfPublicStudies() throws StudyException {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
