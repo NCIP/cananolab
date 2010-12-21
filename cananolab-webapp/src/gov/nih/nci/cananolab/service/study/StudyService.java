@@ -17,6 +17,7 @@ public interface StudyService {
 		throws StudyException, NoAccessException;
 	
 	public List<String> findStudyIdsBy() 
-		throws StudyException, NoAccessException;
-
+		throws StudyException;
+	
+	public int getNumberOfPublicStudies() throws StudyException;
 }
