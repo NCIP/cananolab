@@ -244,7 +244,7 @@
 
 					<tr>
 						<td>
-							Temperature
+							Stressor Condition
 						</td>
 						<td>
 							pH
@@ -252,10 +252,7 @@
 						<td align="right">
 							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
 						</td>
-
 					</tr>
-
-
 				</table>
 			</td>
 		</tr>
