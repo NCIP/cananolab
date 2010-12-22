@@ -139,13 +139,8 @@ public class PublicDataCQL2ParameterizedHQL {
 	 *
 	 */
 	private void handleQueryModifier(QueryModifier mods, StringBuilder hql) {
-		// most data in caNanoLab were secured based on ids except Sample, which
-		// is secured by the
-		// sample name.
+		// data in caNanoLab were secured based on ids
 		String secureAttribute = "id";
-		if (hql.indexOf("particle.Sample ") != -1) {
-			secureAttribute = "name";
-		}
 		StringBuilder prepend = new StringBuilder();
 		if (mods.isCountOnly()) {
 			prepend.append("select ");
