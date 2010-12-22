@@ -247,6 +247,17 @@
 							Stressor Condition
 						</td>
 						<td>
+							temperature
+						</td>
+						<td align="right">
+							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Stressor Condition
+						</td>
+						<td>
 							pH
 						</td>
 						<td align="right">
@@ -396,7 +407,7 @@
 			<td>
 
 				<a href="#"
-					onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'sampleForm\', \'Sample\')');"
+					onclick="openSubmissionForm('Access');"
 					id="addAccess" style="display: block"><img align="top"
 						src="images/btn_add.gif" border="0" /> </a>
 			</td>
@@ -565,7 +576,7 @@
 									<input type="button" value="Save"
 										onclick="javascript:addAccess('sample', 4, true);" />
 									<input type="button" value="Cancel"
-										onclick="javascript:clearAccess('sampleForm', 'Sample');closeSubmissionForm('Access');">
+										onclick="javascript:closeSubmissionForm('Access');">
 								</div>
 							</td>
 						</tr>
