@@ -119,62 +119,42 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Disease
+				Diseases
 			</td>
-			<td colspan="3">
-				<a href="#" onclick="javascript:openSubmissionForm('Disease');"
-					id="addDisease" style="display: block"><img align="top"
-						src="images/btn_add.gif" border="0" /> </a>
+			<td>
+				<html:textarea property="studyBean.diseaseNames" cols="30" rows="2"
+					value="lung cancer" />
+				<em>one name per line</em>
 			</td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<table class="editTableWithGrid" width="95%" align="center">
-					<tr>
-						<th>
-							Disease Type
-						</th>
-						<th>
-							Disease Name
-						</th>
-						<th></th>
-					</tr>
-
+			<td>
+				<table class="invisibleTable">
 					<tr>
 						<td>
-							cancer
+							<a href="#sampleNameField" onclick="()"><img
+									src="images/icon_browse.jpg" align="middle"
+									alt="search EVS disease names" border="0" /> </a>
+							<br>
+							<em>browse EVS</em>
 						</td>
 						<td>
-							lung cancer
+							<img src="images/ajax-loader.gif" border="0" class="counts"
+								id="loaderImg" style="display: none">
 						</td>
-						<td align="right">
-							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
+						<td>
+							<select size="3" style="display: none">
+								<option>
+									EVS choices
+								</option>
+								<option>
+									EVS choices
+								</option>
+							</select>
 						</td>
-
+						<td>
+							<a href="#" id="selectMatchedSampleButton" style="display: none">select</a>
+						</td>
 					</tr>
-					<tr>
-						<td>
-							autoimmune disease
-						</td>
-						<td>
-							arthritis
-						</td>
-						<td align="right">
-							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
-						</td>
-
-					</tr>
-
-
 				</table>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<div style="display: none" id="newDisease">
-					<a name="submitDisease"><jsp:include
-							page="bodyStudySubmitDisease.jsp" /></a>
-				</div>
 			</td>
 		</tr>
 		<tr>
