@@ -3,6 +3,7 @@ import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
+import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
@@ -1227,6 +1228,86 @@ public class GridClientTest {
 		System.out.println("\nFinished testing samples.... \n");
 	}
 	
+	public void testGetSamplesCount() {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+			
+			query.setTarget(target);
+			QueryModifier queryModifier = new QueryModifier();
+			queryModifier.setCountOnly(true);
+			query.setQueryModifier(queryModifier);
+			try {
+				CQLQueryResults results = gridClient.query(query);
+				System.out.println("Total sample count: " +results.getCountResult().getCount());
+				builder.append("Total sample count: " +results.getCountResult().getCount());
+			} catch (Exception e) {
+				System.out.println("Exception getting Sample count: "
+						+ e);
+				builder.append("Exception getting Sample count: "
+						+ e + "\n");
+			}		
+		} catch (Exception e) {
+			System.out.println("Exception getting SampleIds: " + e);
+			builder.append("Exception getting SampleIds: " + e + "\n");
+		}
+		System.out.println("\nFinished testGetSamplesCount... \n");
+	}
+	public void testGetPublicationCount() {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
+			
+			query.setTarget(target);
+			QueryModifier queryModifier = new QueryModifier();
+			queryModifier.setCountOnly(true);
+			query.setQueryModifier(queryModifier);
+			try {
+				CQLQueryResults results = gridClient.query(query);
+				System.out.println("Total Publication count: " +results.getCountResult().getCount());
+				builder.append("Total Puplication count: " +results.getCountResult().getCount());
+			} catch (Exception e) {
+				System.out.println("Exception getting Publication count: "
+						+ e);
+				builder.append("Exception getting Publication count: "
+						+ e + "\n");
+			}		
+		} catch (Exception e) {
+			System.out.println("Exception getting Publication: " + e);
+			builder.append("Exception getting Publication: " + e + "\n");
+		}
+		System.out.println("\nFinished testGetPublicationCount.... \n");
+	}
+	
+	public void testGetProtocolCount() {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
+			
+			query.setTarget(target);
+			QueryModifier queryModifier = new QueryModifier();
+			queryModifier.setCountOnly(true);
+			query.setQueryModifier(queryModifier);
+			try {
+				CQLQueryResults results = gridClient.query(query);
+				System.out.println("Total Protocol count: " +results.getCountResult().getCount());
+				builder.append("Total Protocol count: " +results.getCountResult().getCount());
+			} catch (Exception e) {
+				System.out.println("Exception getting Protocol count: "
+						+ e);
+				builder.append("Exception getting Protocol count: "
+						+ e + "\n");
+			}		
+		} catch (Exception e) {
+			System.out.println("Exception getting Protocol count: " + e);
+			builder.append("Exception getting Protocol count: " + e + "\n");
+		}
+		System.out.println("\nFinished testGetProtocolCount.... \n");
+	}
+	
 	/*public void testCharacterizationAndCompositionBySampleIds(int index) {
 		try {
 			String[] sampleIds = gridClient.getSampleIds("", "", null, null,
@@ -1882,9 +1963,15 @@ public class GridClientTest {
 					System.out.println(new Date());
 					long start = System.currentTimeMillis();
 					test.builder.append("Start time: " + new Date() + "\n" );
+					//test.testGetCompositionBySampleIdByCQLQuery("20917507");
+					
+					
 					test.testGetSampleIds(index);					
 					test.testGetPublicationIdsBy(index);
 					test.testGetAllProtocolsByCQLQuery();
+					test.testGetSamplesCount();
+					test.testGetProtocolCount();
+					test.testGetPublicationCount();
 					System.out.println(new Date());
 					long end = System.currentTimeMillis();
 					test.builder.append("End time: " + new Date()+ "\n"  );
@@ -1913,7 +2000,7 @@ public class GridClientTest {
 					// test.testActivationMethod("3833872");
 					// test.testProtocol("24390915");
 					 
-					 test.writeOutput();
+					// test.writeOutput();
 
 				} else {
 					System.exit(1);
