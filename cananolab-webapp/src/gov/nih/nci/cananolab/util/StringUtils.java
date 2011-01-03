@@ -138,13 +138,19 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String escapeXmlButPreserveLineBreaks(String text) {
-		if (text == null) {
-			return null;
+		if (isEmpty(text)) {
+			return "";
 		}
-		List<String> lines = StringUtils.parseToWords(text, "\r\n");
+		
+		String[] words = text.trim().split("\r\n");
+		List<String> lines = new ArrayList<String>();
+		for (String word : words) {			
+			lines.add(word.trim());			
+		}
+		
 		StringBuffer newText = new StringBuffer();
 		int i = 0;
-		if (lines != null) {
+		if (lines != null) {			
 			for (String line : lines) {
 				String escapedLine = StringEscapeUtils.escapeXml(line);
 				newText.append(escapedLine);
@@ -156,7 +162,7 @@ public class StringUtils {
 			return newText.toString();
 		} else {
 			return "";
-		}
+		}		
 	}
 
 	public static Float convertToFloat(String floatStr) {
