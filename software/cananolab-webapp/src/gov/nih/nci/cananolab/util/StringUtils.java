@@ -138,10 +138,16 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String escapeXmlButPreserveLineBreaks(String text) {
-		if (text == null) {
-			return null;
+		if (isEmpty(text)) {
+			return "";
 		}
-		List<String> lines = StringUtils.parseToWords(text, "\r\n");
+		
+		String[] words = text.trim().split("\r\n");
+		List<String> lines = new ArrayList<String>();
+		for (String word : words) {	
+			lines.add(word.trim());
+		}
+		
 		StringBuffer newText = new StringBuffer();
 		int i = 0;
 		if (lines != null) {
@@ -341,6 +347,8 @@ public class StringUtils {
 		for (String word : words) {
 			if (!isEmpty(word)) {
 				wordList.add(word.trim());
+			}else{
+				wordList.add("");
 			}
 		}
 		return wordList;
