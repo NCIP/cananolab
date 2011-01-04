@@ -347,8 +347,6 @@ public class StringUtils {
 		for (String word : words) {
 			if (!isEmpty(word)) {
 				wordList.add(word.trim());
-			}else{
-				wordList.add("");
 			}
 		}
 		return wordList;
