@@ -12,7 +12,7 @@
 			<select
 				name="achar.theFinding.columnHeaders[${param.cInd}].columnType"
 				id="columnType${param.cInd}"
-				onchange="javascript:setNameOptionsByCharName(${param.cInd});">
+				onchange="javascript:setNameOptionsByCharName('${characterizationForm.map.achar.characterizationType}', '${characterizationForm.map.achar.characterizationName}', ${param.cInd});">
 				<option value="">
 				</option>
 				<option value="datum">

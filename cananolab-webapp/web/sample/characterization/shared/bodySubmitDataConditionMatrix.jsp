@@ -12,7 +12,7 @@
 			<td class="cellLabel">
 				<div id="column${cInd}" style="position: relative">
 					<a
-						href="javascript:openColumnForm('${characterizationForm.map.achar.characterizationName}', ${cInd});"><span
+						href="javascript:openColumnForm('${characterizationForm.map.achar.characterizationType}', '${characterizationForm.map.achar.characterizationName}', ${cInd});"><span
 						id="columnHeaderDisplayName${cInd}"> <c:choose>
 								<c:when test="${!empty col.displayName}">
 								<c:out value="${col.displayName}" escapeXml="false"/>
