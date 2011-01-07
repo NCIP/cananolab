@@ -52,10 +52,18 @@ public class LoginAction extends Action {
 			session.invalidate();
 		}
 		UserBean user = new UserBean(loginName, password);
-		SecurityService service = new SecurityService(AccessibilityBean.CSM_APP_NAME,
-				user);
-		request.getSession().setAttribute("securityService", service);
-		request.getSession().setAttribute("user", service.getUserBean());
+		try {
+			SecurityService service = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME, user);
+			request.getSession().setAttribute("securityService", service);
+			request.getSession().setAttribute("user", service.getUserBean());
+		} catch (Exception e) {
+			ActionMessage msg = new ActionMessage(
+					"erros.login.failed");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.findForward("input");
+		}
 		forward = mapping.findForward("success");
 		resetToken(request);
 		return forward;
