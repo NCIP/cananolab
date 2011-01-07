@@ -51,7 +51,7 @@
 				</var>
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${relaxedTextFieldWhiteList}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.streetAddress1"
@@ -59,7 +59,7 @@
 				<msg name="mask" key="organization.address1.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${relaxedTextFieldWhiteList}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.streetAddress2"
@@ -67,7 +67,7 @@
 				<msg name="mask" key="organization.address2.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${relaxedTextFieldWhiteList}</var-value>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.city"
