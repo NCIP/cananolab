@@ -141,13 +141,13 @@ public class StringUtils {
 		if (isEmpty(text)) {
 			return "";
 		}
-		
+
 		String[] words = text.trim().split("\r\n");
 		List<String> lines = new ArrayList<String>();
-		for (String word : words) {	
+		for (String word : words) {
 			lines.add(word.trim());
 		}
-		
+
 		StringBuffer newText = new StringBuffer();
 		int i = 0;
 		if (lines != null) {
@@ -398,6 +398,22 @@ public class StringUtils {
 		} catch (Exception e) {
 			logger.error(e);
 		}
+
+		try {
+			//filter out patterns such as /etc/password, /bin/id, *.ini, ../, ..\, \', \", background:expression, <, >, &#, %followed by at least one number, ;vol|, id|, AVAK$(RETURN_CODE)OS, sys.dba_user, +select+, +and+, =",
+			String regex="^(?!.*(\\=\"|\\+and\\+|\\+select\\+|sys\\.dba\\_user|AVAK\\$\\(RETURN\\_CODE\\)OS|id\\||;vol\\||&#|%\\d+|\\>|\\<|\\.\\.\\\\|\\.\\.\\/|\\.ini|javascript\\:|\\/etc\\/passwd|\\/bin\\/id|\\\'|\\\"|background\\:expression)).*$";
+			String text="this is a test =\" of in a sentence";
+			if (text.matches(regex)) {
+				System.out.println("match");
+			}
+			else {
+				System.out.println("no match");
+			}
+		}
+		catch (Exception e) {
+			logger.error(e);
+		}
+
 	}
 
 	public static String[] removeFromArray(String[] oldArray,
