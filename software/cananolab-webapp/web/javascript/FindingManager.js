@@ -1,6 +1,4 @@
-function setNameOptionsByCharName(columnNumber) {
-	var charName = dwr.util.getValue("charName");
-	var charType = dwr.util.getValue("charType");
+function setNameOptionsByCharName(charType, charName, columnNumber) {
 	var assayType = dwr.util.getValue("assayType");
 	var columnType = dwr.util.getValue("columnType" + columnNumber);
 	var currentColumnName = dwr.util.getValue("theColumnName"+columnNumber);
@@ -209,7 +207,7 @@ function reduceMatrix(form, type, index) {
 			+ type + "=" + index;
 	form.submit();
 }
-function openColumnForm(characterizationName, columnNumber) {
+function openColumnForm(characterizationType, characterizationName, columnNumber) {
 	var promptbox = document.createElement("div");
 	promptbox.setAttribute("id", "newColumn" + columnNumber);
 	document.getElementById("column" + columnNumber).appendChild(promptbox);
@@ -222,7 +220,7 @@ function openColumnForm(characterizationName, columnNumber) {
 						// timeout to populate drop down first
 						dwr.util.setValue("columnType" + columnNumber, dwr.util
 								.getValue("theColumnType" + columnNumber));
-						setNameOptionsByCharName(columnNumber);
+						setNameOptionsByCharName(characterizationType, characterizationName, columnNumber);
 						window.setTimeout("delaySetColumnName(" + columnNumber
 								+ ")", 100);
 						dwr.util.setValue("valueType" + columnNumber, dwr.util
@@ -297,7 +295,7 @@ function addColumnHeader(columnNumber) {
 					columnHeader.constantValue);
 		}
 	}
-	FindingManager.addColumnHeader(columnHeader, function(displayName) {
+	FindingManager.addColumnHeader(columnHeader, columnNumber, function(displayName) {
 		if (displayName=='duplicate column') {
 			alert("Such a column already exists.  Please enter a different column.");
 			return;
