@@ -163,7 +163,10 @@ public class DWRCharacterizationResultManager {
 		return fileBean;
 	}
 
-	public String addColumnHeader(ColumnHeader header) {
+	public String addColumnHeader(ColumnHeader header, int columnNumber) {
+		if (!validateColumnHeader(header)) {
+			return "contain special characters";
+		}
 		if (!validateColumnHeader(header)) {
 			return "contain special characters";
 		}
@@ -177,7 +180,7 @@ public class DWRCharacterizationResultManager {
 			columnHeaders = new ArrayList<ColumnHeader>();
 			session.setAttribute("columnHeaders", columnHeaders);
 		}
-		if (columnHeaders.contains(header)) {
+		if (columnHeaders.contains(header) && columnHeaders.indexOf(header)!=columnNumber) {
 			return "duplicate column";
 		}
 		columnHeaders.add(header);
