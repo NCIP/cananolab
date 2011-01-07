@@ -577,6 +577,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			request.setAttribute("onloadJavascript", "setTheFile(0)");
 		}
 		request.setAttribute("disableOuterButtons", true);
+		//remove columnHeaders stored in the session;
+		request.getSession().removeAttribute("columnHeaders");
 		return mapping.findForward("inputForm");
 	}
 
@@ -595,6 +597,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, theForm, request);
 		request.setAttribute("disableOuterButtons", true);
+		request.getSession().removeAttribute("columnHeaders");
 		return mapping.findForward("inputForm");
 	}
 
