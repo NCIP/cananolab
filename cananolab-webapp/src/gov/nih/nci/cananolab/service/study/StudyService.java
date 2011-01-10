@@ -20,4 +20,7 @@ public interface StudyService {
 		throws StudyException;
 	
 	public int getNumberOfPublicStudies() throws StudyException;
+	public void deleteStudy(String id) throws StudyException;
+	public void saveStudy(StudyBean studyBean) throws StudyException;
+	public StudyBean cloneStudy(String orginalName,String newName) throws StudyException;
 }
