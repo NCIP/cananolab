@@ -58,20 +58,53 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements Study
 
 	public StudyBean findStudyById(String id, Boolean loadAccessInfo)
 			throws StudyException, NoAccessException {
-		// TODO Auto-generated method stub
+		StudyBean studyBean = new StudyBean();
+		
+	//	studyBean.set
 		return new StudyBean();
 	}
 
 
 	public List<String> findStudyIdsBy() throws StudyException{
-		// TODO Auto-generated method stub
-		return new ArrayList<String>();
+		List<String> results = new ArrayList<String>();
+		results.add("1");
+		results.add("2");
+		results.add("3");
+		results.add("4");
+		results.add("5");
+		results.add("6");
+		results.add("7");
+		results.add("8");
+		results.add("9");
+		results.add("10");
+		results.add("11");
+		results.add("12");
+		return results;
 	}
 
 
 	public int getNumberOfPublicStudies() throws StudyException {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public StudyBean cloneStudy(String orginalName, String newName)
+			throws StudyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteStudy(String id) throws StudyException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void saveStudy(StudyBean studyBean) throws StudyException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
