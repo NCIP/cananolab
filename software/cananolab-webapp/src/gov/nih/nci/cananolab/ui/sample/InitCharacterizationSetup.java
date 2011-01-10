@@ -159,7 +159,7 @@ public class InitCharacterizationSetup {
 				charBean.getEnzymeInduction().getEnzyme());
 		InitSetup.getInstance().persistLookup(request,
 				charBean.getCharacterizationName(), "assayType",
-				"otherAssayType", charBean.getAssayType());
+				"otherAssayType", charBean.getAssayName());
 		if (charBean.getTheFinding().getDomain().getDatumCollection() != null) {
 			for (Datum datum : charBean.getTheFinding().getDomain()
 					.getDatumCollection()) {

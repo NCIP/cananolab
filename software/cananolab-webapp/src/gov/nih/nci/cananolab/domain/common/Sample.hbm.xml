@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="Sample" table="sample" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="sample_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the Sample class -->
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="name" type="string" column="sample_name"/>
+		<!-- Associations mapping for the Sample class -->
+		<set name="keywordCollection" table="keyword_sample" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="sample_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Keyword" column="keyword_pk_id" />
+		</set>
+		<set name="studyCollection" table="study_sample" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="sample_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Study" column="study_pk_id" />
+		</set>
+		<one-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.common.SampleComposition" property-ref="sample" />
+		<many-to-one name="primaryPointOfContact" class="gov.nih.nci.cananolab.domain.common.PointOfContact" column="primary_contact_pk_id" lazy="proxy" />
+		<set name="publicationCollection" table="sample_publication" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="sample_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Publication" column="publication_pk_id" />
+		</set>
+		<set name="otherPointOfContactCollection" table="sample_other_poc" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="sample_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.PointOfContact" column="poc_pk_id" />
+		</set>
+		<set name="characterizationCollection" table="characterization_sample" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="sample_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Characterization" column="characterization_pk_id" />
+		</set>
+	</class>
+</hibernate-mapping>

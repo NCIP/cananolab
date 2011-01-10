@@ -1,15 +1,15 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
-import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
+import gov.nih.nci.cananolab.domain.common.ActivationMethod;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.function.ImagingFunction;
-import gov.nih.nci.cananolab.domain.function.TargetingFunction;
-import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.common.Function;
+import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.material.ImagingFunction;
+import gov.nih.nci.cananolab.domain.material.TargetingFunction;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.Antibody;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;

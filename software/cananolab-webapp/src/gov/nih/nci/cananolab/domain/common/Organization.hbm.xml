@@ -20,7 +20,7 @@
 		<property name="streetAddress1" type="string" column="streetAddress1"/>
 		<property name="streetAddress2" type="string" column="streetAddress2"/>
 		<!-- Associations mapping for the Organization class -->
-		<set name="pointOfContactCollection" lazy="true" inverse="true">
+		<set name="pointOfContactCollection" lazy="true">
 			<cache usage="read-write" />
 			<key column="organization_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.PointOfContact"/>

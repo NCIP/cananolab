@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.function.ImagingFunction;
-import gov.nih.nci.cananolab.domain.function.OtherFunction;
-import gov.nih.nci.cananolab.domain.function.Target;
-import gov.nih.nci.cananolab.domain.function.TargetingFunction;
-import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.common.Function;
+import gov.nih.nci.cananolab.domain.material.ImagingFunction;
+import gov.nih.nci.cananolab.domain.material.OtherFunction;
+import gov.nih.nci.cananolab.domain.material.Target;
+import gov.nih.nci.cananolab.domain.material.TargetingFunction;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;

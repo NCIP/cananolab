@@ -14,11 +14,12 @@
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="description" type="string" column="description"/>
 		<!-- Associations mapping for the ExperimentConfig class -->
-		<set name="instrumentCollection" table="experiment_config_instrument" lazy="true" inverse="false" cascade="save-update">
+		<many-to-one name="characterization" class="gov.nih.nci.cananolab.domain.common.Characterization" column="characterization_pk_id" lazy="proxy" />
+		<many-to-one name="technique" class="gov.nih.nci.cananolab.domain.common.Technique" column="technique_pk_id" lazy="proxy" />
+		<set name="instrumentCollection" table="experiment_config_instrument" lazy="true" inverse="false">
 			<cache usage="read-write" />
 			<key column="experiment_config_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Instrument" column="instrument_pk_id" />
 		</set>
-		<many-to-one name="technique" class="gov.nih.nci.cananolab.domain.common.Technique" column="technique_pk_id" lazy="proxy" cascade="save-update"/>
 	</class>
 </hibernate-mapping>

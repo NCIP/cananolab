@@ -13,15 +13,16 @@
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<!-- Associations mapping for the Finding class -->
-		<set name="fileCollection" table="finding_file" lazy="true" cascade="all-delete-orphan">
-			<cache usage="read-write" />
-			<key column="finding_pk_id" />
-			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true"/>
-		</set>
-		<set name="datumCollection" lazy="true" cascade="all-delete-orphan">
+		<set name="datumCollection" lazy="true">
 			<cache usage="read-write" />
 			<key column="finding_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.Datum"/>
+		</set>
+		<many-to-one name="characterization" class="gov.nih.nci.cananolab.domain.common.Characterization" column="characterization_pk_id" lazy="proxy" />
+		<set name="fileCollection" table="finding_file" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="finding_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
 		</set>
 	</class>
 </hibernate-mapping>

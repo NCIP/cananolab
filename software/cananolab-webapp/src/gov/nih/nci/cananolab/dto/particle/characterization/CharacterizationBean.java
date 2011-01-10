@@ -8,11 +8,11 @@ import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
@@ -44,7 +44,7 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private String assayType;
+	private String assayName;
 
 	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
 
@@ -100,7 +100,7 @@ public class CharacterizationBean {
 		domainChar = chara;
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDesignMethodsDescription();
-		this.assayType = chara.getAssayType();
+		this.assayName = chara.getAssayName();
 		this.conclusion = chara.getAnalysisConclusion();
 		if (chara != null) {
 			PointOfContact poc = chara.getPointOfContact();
@@ -108,7 +108,7 @@ public class CharacterizationBean {
 				pocBean = new PointOfContactBean(poc);
 		}
 
-		this.dateString = DateUtils.convertDateToString(chara.getDate(),
+		this.dateString = DateUtils.convertDateToString(chara.getStartDate(),
 				Constants.DATE_FORMAT);
 
 		if (chara.getFindingCollection() != null) {
@@ -218,9 +218,9 @@ public class CharacterizationBean {
 		}
 		this.updateEmptyFieldsToNull();
 		if (domainChar instanceof OtherCharacterization) {
-			((OtherCharacterization) domainChar).setName(characterizationName);
+			((OtherCharacterization) domainChar).setCharacterizationName(characterizationName);
 			((OtherCharacterization) domainChar)
-					.setAssayCategory(characterizationType);
+					.setCharacterizationCategory(characterizationType);
 		} else if (domainChar instanceof Shape) {
 			domainChar = shape;
 		} else if (domainChar instanceof Solubility) {
@@ -250,7 +250,7 @@ public class CharacterizationBean {
 			domainChar.setCreatedBy(createdBy);
 		}
 		domainChar.setDesignMethodsDescription(description);
-		domainChar.setAssayType(assayType);
+		domainChar.setAssayName(assayName);
 		domainChar.setAnalysisConclusion(conclusion);
 		if (pocBean != null && pocBean.getDomain().getId() != null
 				&& pocBean.getDomain().getId() != 0) {
@@ -258,7 +258,7 @@ public class CharacterizationBean {
 		} else {
 			domainChar.setPointOfContact(null);
 		}
-		domainChar.setDate(DateUtils.convertToDate(dateString,
+		domainChar.setStartDate(DateUtils.convertToDate(dateString,
 				Constants.DATE_FORMAT));
 
 		if (domainChar.getExperimentConfigCollection() != null) {
@@ -465,12 +465,12 @@ public class CharacterizationBean {
 		this.conclusion = conclusion;
 	}
 
-	public String getAssayType() {
-		return assayType;
+	public String getAssayName() {
+		return assayName;
 	}
 
-	public void setAssayType(String assayType) {
-		this.assayType = assayType;
+	public void setAssayName(String assayName) {
+		this.assayName = assayName;
 	}
 
 	public EnzymeInduction getEnzymeInduction() {
@@ -504,7 +504,7 @@ public class CharacterizationBean {
 	public void updateType() {
 		if (domainChar instanceof OtherCharacterization) {
 			characterizationType = ((OtherCharacterization) domainChar)
-					.getAssayCategory();
+					.getCharacterizationCategory();
 		} else {
 			String superClassShortName = ClassUtils
 					.getShortClassName(domainChar.getClass().getSuperclass()
@@ -517,7 +517,7 @@ public class CharacterizationBean {
 	public void updateName() {
 		if (domainChar instanceof OtherCharacterization) {
 			characterizationName = ((OtherCharacterization) domainChar)
-					.getName();
+					.getCharacterizationName();
 		} else {
 			characterizationName = ClassUtils.getDisplayName(className);
 		}

@@ -40,7 +40,7 @@ public class KellyDataLoader {
 
 	public final static String SAMPLE_NAME_PREFIX = "MIT_MGH-KKellyIB2009-";
 
-	public final static String ASSAY_TYPE = "immunoassay";
+	public final static String ASSAY_NAME = "immunoassay";
 
 	public final static String CELL_LINE_PREFIX = "CELL  LINE: ";
 
@@ -87,22 +87,22 @@ public class KellyDataLoader {
 		// 1.find & save assay type.
 		valueSet = LookupService.getDefaultAndOtherLookupTypes("targeting",
 				"assayType", "otherAssayType");
-		if (valueSet != null && !valueSet.contains(ASSAY_TYPE)) {
+		if (valueSet != null && !valueSet.contains(ASSAY_NAME)) {
 			LookupService.saveOtherType("targeting", "otherAssayType",
-					ASSAY_TYPE);
+					ASSAY_NAME);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Lookup saved: targeting, otherAssaytype, "
-						+ ASSAY_TYPE);
+						+ ASSAY_NAME);
 			}
 		}
 		// 2.find & save datum name.
 		valueSet = LookupService.getDefaultAndOtherLookupTypes("targeting",
 				"datumName", "otherDatumName");
 		if (valueSet != null && !valueSet.contains(DATUM_NAME)) {
-			LookupService.saveOtherType(ASSAY_TYPE, "otherDatumName",
+			LookupService.saveOtherType(ASSAY_NAME, "otherDatumName",
 					DATUM_NAME);
 			if (logger.isDebugEnabled()) {
-				logger.debug("Lookup saved: " + ASSAY_TYPE
+				logger.debug("Lookup saved: " + ASSAY_NAME
 						+ ", otherDatumName, " + DATUM_NAME);
 			}
 		}
@@ -182,7 +182,7 @@ public class KellyDataLoader {
 				achar.setCreatedBy(USER_NAME);
 				achar.setCreatedDate(currentDate);
 				achar.setDesignMethodsDescription(CELL_LINE_PREFIX + cellLine);
-				achar.setAssayType(ASSAY_TYPE);
+				achar.setAssayName(ASSAY_NAME);
 				achar.setFindingCollection(new HashSet<Finding>());
 
 				// 2b.create 1 Finding for each CellLine.

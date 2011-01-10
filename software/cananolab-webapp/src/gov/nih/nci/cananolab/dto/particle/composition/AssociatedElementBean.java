@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.common.AssociatedElement;
+import gov.nih.nci.cananolab.domain.common.ComposingElement;
+import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 public class AssociatedElementBean {
