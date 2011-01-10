@@ -50,6 +50,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 				&& !StringUtils.isEmpty(studyName)) {
 			studyName = "*" + studyName + "*";
 		}
+		System.out.println("studyName: " + studyName);
 		String studyPointOfContact = (String) theForm
 		.get("studyPointOfContact");
 		// strip wildcards at either end if entered by user
@@ -59,6 +60,8 @@ public class SearchStudyAction extends AbstractDispatchAction {
 				&& !StringUtils.isEmpty(studyPointOfContact)) {
 			studyPointOfContact = "*" + studyPointOfContact + "*";
 		}
+		System.out.println("studyPOCName: " + studyPointOfContact
+				);
 		String sampleName = (String) theForm.get("sampleName");
 		// strip wildcards at either end if entered by user
 		sampleName = StringUtils.stripWildcards(sampleName);
@@ -67,6 +70,8 @@ public class SearchStudyAction extends AbstractDispatchAction {
 				&& !StringUtils.isEmpty(sampleName)) {
 			sampleName = "*" + sampleName + "*";
 		}
+		
+		System.out.println("sampleName: " + sampleName);
 		
 		String disease = (String) theForm.get("disease");
 		// strip wildcards at either end if entered by user
@@ -77,6 +82,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			disease = "*" + disease + "*";
 		}
 		
+		System.out.println("disease: " + disease);
 		String studyOwner = (String) theForm.get("studyOwner");
 		// strip wildcards at either end if entered by user
 		studyOwner = StringUtils.stripWildcards(studyOwner);
@@ -86,7 +92,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			studyOwner = "*" + studyOwner + "*";
 		}
 		
-		System.out.println();
+		System.out.println("studyOwner: " + studyOwner);
 		
 		StudyService studyService = setServiceInSession(request);
 		List<String> studyIds = studyService.findStudyIdsBy();
