@@ -219,6 +219,7 @@
 				<html:textarea property="studyBean.outcome" rows="6" cols="80" />
 			</td>
 		</tr>
+		<%--
 		<tr>
 			<td class="cellLabel">
 				Factor
@@ -267,6 +268,7 @@
 				</table>
 			</td>
 		</tr>
+		--%>
 		<tr>
 			<td colspan="4">
 				<div style="display: none" id="newFactor">
