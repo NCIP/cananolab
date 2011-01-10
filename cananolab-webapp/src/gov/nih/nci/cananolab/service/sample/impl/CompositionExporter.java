@@ -1,19 +1,19 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
-import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
+import gov.nih.nci.cananolab.domain.common.ComposingElement;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
-import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
-import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
-import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
-import gov.nih.nci.cananolab.domain.nanomaterial.Fullerene;
-import gov.nih.nci.cananolab.domain.nanomaterial.Liposome;
-import gov.nih.nci.cananolab.domain.nanomaterial.Polymer;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.material.Biopolymer;
+import gov.nih.nci.cananolab.domain.material.CarbonNanotube;
+import gov.nih.nci.cananolab.domain.material.Dendrimer;
+import gov.nih.nci.cananolab.domain.material.Emulsion;
+import gov.nih.nci.cananolab.domain.material.Fullerene;
+import gov.nih.nci.cananolab.domain.material.Liposome;
+import gov.nih.nci.cananolab.domain.material.Polymer;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.Antibody;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -427,7 +427,7 @@ public class CompositionExporter {
 	 * @return
 	 */
 	private static int outputFuncProperties(
-			gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer entityBean,
+			gov.nih.nci.cananolab.domain.material.agentmaterial.Biopolymer entityBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
@@ -556,9 +556,9 @@ public class CompositionExporter {
 							rowIndex = outputFuncProperties(
 									(SmallMolecule) domainEntity, sheet,
 									headerStyle, rowIndex);
-						} else if (domainEntity instanceof gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer) {
+						} else if (domainEntity instanceof gov.nih.nci.cananolab.domain.material.agentmaterial.Biopolymer) {
 							rowIndex = outputFuncProperties(
-									(gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer) domainEntity,
+									(gov.nih.nci.cananolab.domain.material.agentmaterial.Biopolymer) domainEntity,
 									sheet, headerStyle, rowIndex);
 						}
 						rowIndex++; // Create one empty line as separator.

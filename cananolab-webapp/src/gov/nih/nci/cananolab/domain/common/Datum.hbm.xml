@@ -17,12 +17,12 @@
 		<property name="valueType" type="string" column="value_type"/>
 		<property name="valueUnit" type="string" column="value_unit"/>
 		<!-- Associations mapping for the Datum class -->
-		<set name="conditionCollection" table="datum_condition" lazy="true" inverse="false"  cascade="save-update">
+		<many-to-one name="finding" class="gov.nih.nci.cananolab.domain.common.Finding" column="finding_pk_id" lazy="proxy" />
+		<set name="conditionCollection" table="datum_condition" lazy="true" inverse="false">
 			<cache usage="read-write" />
 			<key column="datum_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Condition" column="condition_pk_id" />
 		</set>
-		<many-to-one name="finding" class="gov.nih.nci.cananolab.domain.common.Finding" column="finding_pk_id" lazy="proxy" />
 		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" lazy="proxy" />
 	</class>
 </hibernate-mapping>

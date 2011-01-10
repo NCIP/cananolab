@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
+	<class name="SampleComposition" table="composition" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="composition_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the SampleComposition class -->
+		<!-- Associations mapping for the SampleComposition class -->
+		<set name="nanomaterialEntityCollection" lazy="true">
+			<cache usage="read-write" />
+			<key column="composition_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.NanomaterialEntity"/>
+		</set>
+		<set name="functionalizingEntityCollection" lazy="true">
+			<cache usage="read-write" />
+			<key column="composition_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.FunctionalizingEntity"/>
+		</set>
+		<many-to-one name="sample" class="gov.nih.nci.cananolab.domain.common.Sample" column="sample_pk_id" unique="true" lazy="proxy" />
+		<set name="chemicalAssociationCollection" lazy="true">
+			<cache usage="read-write" />
+			<key column="composition_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.ChemicalAssociation"/>
+		</set>
+		<set name="fileCollection" table="composition_file" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="composition_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
+		</set>
+	</class>
+</hibernate-mapping>

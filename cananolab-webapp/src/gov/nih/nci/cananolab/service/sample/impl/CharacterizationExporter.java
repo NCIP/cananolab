@@ -6,9 +6,9 @@ import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -209,15 +209,15 @@ public class CharacterizationExporter {
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		Characterization charactization = (Characterization) charBean
 				.getDomainChar();
-		// 3. Output Assay Type (2, 0).
+		// 3. Output Assay Name (2, 0).
 		StringBuilder sb = new StringBuilder();
-		if (StringUtils.isEmpty(charactization.getAssayType())) {
+		if (StringUtils.isEmpty(charactization.getAssayName())) {
 			if (Constants.PHYSICOCHEMICAL_CHARACTERIZATION.equals(charBean
 					.getCharacterizationType())) {
 				sb.append(charBean.getCharacterizationName());
 			}
 		} else {
-			sb.append(charactization.getAssayType());
+			sb.append(charactization.getAssayName());
 		}
 		if (sb.length() > 0) {
 			HSSFRow row = sheet.createRow(rowIndex++);

@@ -1,13 +1,13 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
+import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Function;
+import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
 import gov.nih.nci.cananolab.dto.particle.CharacterizationQueryBean;
@@ -48,9 +48,9 @@ import org.hibernate.criterion.Subqueries;
 /**
  * Helper class providing implementations of advanced sample search methods
  * needed for both local implementation of SampleService and grid service *
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger
@@ -70,7 +70,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Find sample names based on advanced search parameters
-	 * 
+	 *
 	 * @param searchBean
 	 * @return
 	 * @throws Exception
@@ -140,7 +140,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	/**
 	 * Find sample details as an AdvancedSampleBean for the given sample name
 	 * and advanced search parameters
-	 * 
+	 *
 	 * @param sampleName
 	 * @param searchBean
 	 * @return
@@ -773,7 +773,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in composition queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -844,7 +844,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in function queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -884,7 +884,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in nanomaterial entity queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -925,7 +925,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the junction used in functionalizing entity queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1123,7 +1123,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Set the disjunction used in point of contact queries
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -1171,7 +1171,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the sample name junction used in sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1198,7 +1198,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the sample disjunction used in sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @return
@@ -1240,7 +1240,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Get the criterion used for sample name query
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -1304,7 +1304,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria used for composition queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception
@@ -1438,7 +1438,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 
 	/**
 	 * Set the DetachedCriteria for sample queries
-	 * 
+	 *
 	 * @param searchBean
 	 * @param crit
 	 * @throws Exception

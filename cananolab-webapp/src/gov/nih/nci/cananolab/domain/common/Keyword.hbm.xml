@@ -12,6 +12,11 @@
 		<!-- Attributes mapping for the Keyword class -->
 		<property name="name" type="string" column="name"/>
 		<!-- Associations mapping for the Keyword class -->
+		<set name="sampleCollection" table="keyword_sample" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="keyword_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Sample" column="sample_pk_id" />
+		</set>
 		<set name="fileCollection" table="keyword_file" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="keyword_pk_id" />

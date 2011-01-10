@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.system.applicationservice.impl;
 
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.system.dao.CustomizedORMDAO;

@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.function.Antigen;
-import gov.nih.nci.cananolab.domain.function.OtherTarget;
-import gov.nih.nci.cananolab.domain.function.Target;
+import gov.nih.nci.cananolab.domain.material.OtherTarget;
+import gov.nih.nci.cananolab.domain.material.Target;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.Antigen;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;

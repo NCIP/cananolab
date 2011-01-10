@@ -1,13 +1,13 @@
 package gov.nih.nci.cananolab.util;
 
+import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -300,11 +300,11 @@ public class Comparators {
 			String name1 = chara1.getCharacterizationName();
 			String name2 = chara2.getCharacterizationName();
 			if (name1.compareTo(name2) == 0) {
-				String assay1 = chara1.getAssayType();
+				String assay1 = chara1.getAssayName();
 				if (assay1 == null) {
 					assay1 = "";
 				}
-				String assay2 = chara2.getAssayType();
+				String assay2 = chara2.getAssayName();
 				if (assay2 == null) {
 					assay2 = "";
 				}
@@ -332,11 +332,11 @@ public class Comparators {
 			String name1 = chara1.getClass().getName();
 			String name2 = chara2.getClass().getName();
 			if (name1.compareTo(name2) == 0) {
-				String assay1 = chara1.getAssayType();
+				String assay1 = chara1.getAssayName();
 				if (assay1 == null) {
 					assay1 = "";
 				}
-				String assay2 = chara2.getAssayType();
+				String assay2 = chara2.getAssayName();
 				if (assay2 == null) {
 					assay2 = "";
 				}

@@ -16,7 +16,7 @@
 		<property name="modelName" type="string" column="model_name"/>
 		<property name="type" type="string" column="type"/>
 		<!-- Associations mapping for the Instrument class -->
-		<set name="experimentConfigCollection" table="experiment_config_instrument" lazy="true" inverse="true">
+		<set name="experimentConfigCollection" table="experiment_config_instrument" lazy="true" inverse="false">
 			<cache usage="read-write" />
 			<key column="instrument_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.ExperimentConfig" column="experiment_config_pk_id" />

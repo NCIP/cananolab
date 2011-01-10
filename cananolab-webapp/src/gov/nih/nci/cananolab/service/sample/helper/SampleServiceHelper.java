@@ -1,20 +1,20 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
+import gov.nih.nci.cananolab.domain.common.Characterization;
+import gov.nih.nci.cananolab.domain.common.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.common.ComposingElement;
+import gov.nih.nci.cananolab.domain.common.Function;
+import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.function.OtherFunction;
-import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
+import gov.nih.nci.cananolab.domain.material.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.material.OtherFunction;
+import gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity;
+import gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -469,7 +469,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			for (Characterization achar : sample
 					.getCharacterizationCollection()) {
 				if (achar instanceof OtherCharacterization) {
-					storedChars.add(((OtherCharacterization) achar).getName());
+					storedChars.add(((OtherCharacterization) achar).getCharacterizationName());
 				} else {
 					storedChars.add(ClassUtils.getShortClassName(achar
 							.getClass().getCanonicalName()));

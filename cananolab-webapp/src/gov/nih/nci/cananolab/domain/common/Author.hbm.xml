@@ -16,7 +16,7 @@
 		<property name="initial" type="string" column="initial"/>
 		<property name="lastName" type="string" column="last_name"/>
 		<!-- Associations mapping for the Author class -->
-		<set name="publicationCollection" table="author_publication" lazy="true">
+		<set name="publicationCollection" table="author_publication" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="author_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Publication" column="publication_pk_id" />

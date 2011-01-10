@@ -1,14 +1,14 @@
 package gov.nih.nci.cananolab.dto.particle;
 
+import gov.nih.nci.cananolab.domain.common.Characterization;
+import gov.nih.nci.cananolab.domain.common.ComposingElement;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Function;
+import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.LinkableItem;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -251,9 +251,9 @@ public class AdvancedSampleBean {
 									.getDisplayName(ClassUtils
 											.getShortClassName(chara.getClass()
 													.getName()));
-							if (!StringUtils.isEmpty(chara.getAssayType())) {
+							if (!StringUtils.isEmpty(chara.getAssayName())) {
 								item.getDisplayStrings().add(
-										charName + ":" + chara.getAssayType());
+										charName + ":" + chara.getAssayName());
 							} else {
 								item.getDisplayStrings().add(charName);
 							}
