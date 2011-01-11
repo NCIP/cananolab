@@ -75,7 +75,7 @@
 				<msg name="mask" key="organization.city.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.state"
@@ -83,7 +83,7 @@
 				<msg name="mask" key="organization.state.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.country"
@@ -91,7 +91,7 @@
 				<msg name="mask" key="organization.country.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.organization.postalCode"
@@ -115,7 +115,7 @@
 				<msg name="mask" key="firstName.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.lastName" page="3"
@@ -123,7 +123,7 @@
 				<msg name="mask" key="lastName.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.middleInitial" page="3"
@@ -131,7 +131,7 @@
 				<msg name="mask" key="middleInitial.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.phone" page="3"

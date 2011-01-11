@@ -9,6 +9,10 @@
 			<constant-value>^[a-zA-Z\s]*$</constant-value>
 		</constant>
 		<constant>
+			<constant-name>relaxedAlphabetic</constant-name>
+			<constant-value>^[a-zA-Z\s\-\.]*$</constant-value>
+		</constant>
+		<constant>
 			<constant-name>numeric</constant-name>
 			<constant-value>^[0-9]*$</constant-value>
 		</constant>
