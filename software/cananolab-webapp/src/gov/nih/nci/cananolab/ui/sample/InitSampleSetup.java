@@ -33,16 +33,16 @@ public class InitSampleSetup {
 			throws Exception {
 		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
 				"defaultFunctionTypes", "functionTypes",
-				"gov.nih.nci.cananolab.domain.particle.Function",
-				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
+				"gov.nih.nci.cananolab.domain.common.Function",
+				"gov.nih.nci.cananolab.domain.material.OtherFunction", true);
 		InitSetup
 				.getInstance()
 				.getDefaultAndOtherTypesByReflection(
 						request,
 						"defaultNanomaterialEntityTypes",
 						"nanomaterialEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
-						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
+						"gov.nih.nci.cananolab.domain.common.NanomaterialEntity",
+						"gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity",
 						true);
 		InitSetup
 				.getInstance()
@@ -50,8 +50,8 @@ public class InitSampleSetup {
 						request,
 						"defaultFunctionalizingEntityTypes",
 						"functionalizingEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
-						"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+						"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity",
+						"gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity",
 						true);
 		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
 				request);

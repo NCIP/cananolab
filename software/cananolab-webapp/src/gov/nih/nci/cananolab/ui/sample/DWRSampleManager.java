@@ -53,24 +53,24 @@ public class DWRSampleManager {
 						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultNanomaterialEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
-								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity");
+								"gov.nih.nci.cananolab.domain.common.NanomaterialEntity",
+								"gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity");
 			} else if (compType.equals("functionalizing entity")) {
 				types = InitSetup
 						.getInstance()
 						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultFunctionalizingEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
-								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity");
+								"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity",
+								"gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity");
 			} else if (compType.equals("function")) {
 				types = InitSetup
 						.getInstance()
 						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultFunctionTypes",
-								"gov.nih.nci.cananolab.domain.particle.Function",
-								"gov.nih.nci.cananolab.domain.function.OtherFunction");
+								"gov.nih.nci.cananolab.domain.common.Function",
+								"gov.nih.nci.cananolab.domain.material.OtherFunction");
 			}
 		} catch (Exception e) {
 			return null;
@@ -89,8 +89,8 @@ public class DWRSampleManager {
 							request,
 							"defaultNanomaterialEntityTypes",
 							"nanomaterialEntityTypes",
-							"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
-							"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
+							"gov.nih.nci.cananolab.domain.common.NanomaterialEntity",
+							"gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity",
 							true);
 
 			String[] eleArray = new String[types.size()];
@@ -113,8 +113,8 @@ public class DWRSampleManager {
 							request,
 							"defaultFunctionalizingEntityTypes",
 							"functionalizingEntityTypes",
-							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
-							"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+							"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity",
+							"gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity",
 							true);
 
 			String[] eleArray = new String[types.size()];
@@ -138,8 +138,8 @@ public class DWRSampleManager {
 							request,
 							"defaultFunctionTypes",
 							"functionTypes",
-							"gov.nih.nci.cananolab.domain.particle.Function",
-							"gov.nih.nci.cananolab.domain.function.OtherFunction",
+							"gov.nih.nci.cananolab.domain.common.Function",
+							"gov.nih.nci.cananolab.domain.material.OtherFunction",
 							true);
 
 			String[] eleArray = new String[types.size()];

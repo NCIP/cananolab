@@ -33,21 +33,21 @@ public class CustomPlugIn implements PlugIn {
 					.getInstance()
 					.getDefaultTypesByReflection(appContext,
 							"defaultFunctionalizingEntityTypes",
-							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+							"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity");
 			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
 					"defaultNanomaterialEntityTypes",
-					"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
+					"gov.nih.nci.cananolab.domain.common.NanomaterialEntity");
 			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
 					"defaultFunctionTypes",
-					"gov.nih.nci.cananolab.domain.particle.Function");
+					"gov.nih.nci.cananolab.domain.common.Function");
 			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
 					"defaultTargetTypes",
-					"gov.nih.nci.cananolab.domain.function.Target");
+					"gov.nih.nci.cananolab.domain.material.Target");
 			InitSetup
 					.getInstance()
 					.getDefaultTypesByReflection(appContext,
 							"defaultChemicalAssociationTypes",
-							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+							"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
 
 			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
 					"speciesTypes", "species", "type");
@@ -88,7 +88,7 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup
 					.getInstance()
 					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
-							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+							"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
