@@ -35,8 +35,8 @@ public class InitCompositionSetup {
 		getEmulsionComposingElementTypes(request);
 		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
 				"defaultFunctionTypes", "functionTypes",
-				"gov.nih.nci.cananolab.domain.particle.Function",
-				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
+				"gov.nih.nci.cananolab.domain.common.Function",
+				"gov.nih.nci.cananolab.domain.material.OtherFunction", true);
 
 		InitSetup
 				.getInstance()
@@ -44,8 +44,8 @@ public class InitCompositionSetup {
 						request,
 						"defaultNanomaterialEntityTypes",
 						"nanomaterialEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
-						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
+						"gov.nih.nci.cananolab.domain.common.NanomaterialEntity",
+						"gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity",
 						true);
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"biopolymerTypes", "biopolymer", "type", "otherType", true);
@@ -117,8 +117,8 @@ public class InitCompositionSetup {
 		// reload function types
 		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
 				"defaultFunctionTypes", "functionTypes",
-				"gov.nih.nci.cananolab.domain.particle.Function",
-				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
+				"gov.nih.nci.cananolab.domain.common.Function",
+				"gov.nih.nci.cananolab.domain.material.OtherFunction", true);
 
 		InitSetup
 				.getInstance()
@@ -126,13 +126,13 @@ public class InitCompositionSetup {
 						request,
 						"defaultFunctionalizingEntityTypes",
 						"functionalizingEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
-						"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+						"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity",
+						"gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity",
 						true);
 		InitSetup.getInstance().getDefaultAndOtherTypesByReflection(request,
 				"defaultTargetTypes", "targetTypes",
-				"gov.nih.nci.cananolab.domain.function.Target",
-				"gov.nih.nci.cananolab.domain.function.OtherTarget", true);
+				"gov.nih.nci.cananolab.domain.material.Target",
+				"gov.nih.nci.cananolab.domain.material.OtherTarget", true);
 
 		InitSetup.getInstance().getDefaultAndOtherTypesByLookup(request,
 				"antibodyTypes", "antibody", "type", "otherType", true);
@@ -201,8 +201,8 @@ public class InitCompositionSetup {
 						request,
 						"defaultChemicalAssociationTypes",
 						"chemicalAssociationTypes",
-						"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation",
-						"gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation",
+						"gov.nih.nci.cananolab.domain.common.ChemicalAssociation",
+						"gov.nih.nci.cananolab.domain.material.OtherChemicalAssociation",
 						true);
 	}
 
