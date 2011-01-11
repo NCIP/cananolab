@@ -664,7 +664,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 		List<String> publicData = appService.getAllPublicData();
 		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
+				"select id from gov.nih.nci.cananolab.domain.common.Sample");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {
@@ -867,9 +867,9 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select other.name, other.id from gov.nih.nci.cananolab.domain.particle.Sample as other "
+				"select other.name, other.id from gov.nih.nci.cananolab.domain.common.Sample as other "
 						+ "where exists ("
-						+ "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample "
+						+ "select sample.name from gov.nih.nci.cananolab.domain.common.Sample as sample "
 						+ "where sample.primaryPointOfContact.organization.name=other.primaryPointOfContact.organization.name and sample.id="
 						+ sampleId + " and other.name!=sample.name)");
 		List results = appService.query(crit);
