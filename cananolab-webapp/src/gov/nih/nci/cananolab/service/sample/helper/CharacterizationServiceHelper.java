@@ -57,7 +57,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		Protocol protocol = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.particle.Characterization aChar where aChar.id="
+		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.common.Characterization aChar where aChar.id="
 				+ characterizationId;
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);

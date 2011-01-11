@@ -306,7 +306,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		}
 		// check if user have access to publication first
 
-		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
+		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.common.Sample as sample join sample.publicationCollection as pub where pub.id='"
 				+ publicationId + "'";
 		HQLCriteria crit = new HQLCriteria(query);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
