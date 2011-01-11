@@ -26,7 +26,7 @@
 		</constant>
 		<constant>
 			<constant-name>phone</constant-name>
-			<constant-value>^[0-9()-]*$</constant-value>
+			<constant-value>^[0-9()\-\s\+]*$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>email</constant-name>
