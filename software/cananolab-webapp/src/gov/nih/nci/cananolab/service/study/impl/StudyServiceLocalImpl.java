@@ -88,20 +88,19 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements Study
 		return 0;
 	}
 
-	@Override
+
 	public StudyBean cloneStudy(String orginalName, String newName)
 			throws StudyException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public void deleteStudy(String id) throws StudyException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+
 	public void saveStudy(StudyBean studyBean) throws StudyException {
 		// TODO Auto-generated method stub
 		
