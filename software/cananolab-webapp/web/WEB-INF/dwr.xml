@@ -148,7 +148,7 @@
 			<param name="include" value="domain, inherentFunctions, displayName, domainId" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
+			match="gov.nih.nci.cananolab.domain.common.ComposingElement">
 			<param name="include"
 				value="id, type, name, pubChemDataSourceName, pubChemId, value, valueUnit, molecularFormula, molecularFormulaType, description" />
 		</convert>
@@ -157,7 +157,7 @@
 			<param name="include" value="id, description, type, imagingFunction, targets" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.function.ImagingFunction">
+			match="gov.nih.nci.cananolab.domain.material.ImagingFunction">
 			<param name="include" value="modality" />
 		</convert>
 		<convert converter="bean"
@@ -165,7 +165,7 @@
 			<param name="include" value="id, description, type, name, antigen" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.function.Antigen">
+			match="gov.nih.nci.cananolab.domain.material.agentmaterial.Antigen">
 			<param name="include" value="species" />
 		</convert>
 		<convert converter="bean"
