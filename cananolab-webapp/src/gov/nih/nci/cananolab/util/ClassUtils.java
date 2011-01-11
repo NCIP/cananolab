@@ -455,7 +455,7 @@ public class ClassUtils {
 	public static void main(String[] args) {
 		try {
 			List<String> names = ClassUtils
-					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+					.getChildClassNames("gov.nih.nci.cananolab.domain.common.FunctionalizingEntity");
 			for (String name : names) {
 				System.out.println(name);
 			}
