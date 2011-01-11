@@ -9,4 +9,5 @@
 	</preConditions>
 	<include file="changelog/db-1.5.1.xml" />
     <include file="changelog/db-1.5.2.xml" />
+    <include file="changelog/db-1.6.xml"/>
 </databaseChangeLog>
