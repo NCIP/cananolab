@@ -49,25 +49,7 @@ public class CompositionAction extends BaseAnnotationAction {
 			throws Exception {
 		// Call shared function to prepare CompositionBean for editing.
 		this.prepareSummary(mapping, form, request, response);
-		// forward to appropriate tab
-		String tab = (String) getValueFromRequest(request, "tab");
-		if (tab == null) {
-			tab = "ALL"; // default tab to all;
-		}
-		//per app scan
-		if (!tab.contains(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
-			tab="ALL";
-		}
-		if (tab.equals("ALL")) {
-			request.getSession().removeAttribute("onloadJavascript");
-			request.getSession().removeAttribute("tab");
-		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ CompositionBean.ALL_COMPOSITION_SECTIONS.length
-							+ ")");
-		}
+		setSummaryTab(request, CompositionBean.ALL_COMPOSITION_SECTIONS.length);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -89,24 +71,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 		CompositionBean compBean = (CompositionBean) request.getSession()
 				.getAttribute("compBean");
-		// forward to appropriate tab
-		String tab = (String) getValueFromRequest(request, "tab");
-		if (tab == null) {
-			tab = "ALL"; // default tab to all;
-		}
-		//per app scan
-		if (!tab.contains(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
-			tab="ALL";
-		}
-		if (tab.equals("ALL")) {
-			request.getSession().removeAttribute("onloadJavascript");
-			request.getSession().removeAttribute("tab");
-		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ compBean.getCompositionSections().size() + ")");
-		}
+		setSummaryTab(request, compBean.getCompositionSections().size());
 		return mapping.findForward("summaryView");
 	}
 

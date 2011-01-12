@@ -440,23 +440,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
-		String tab = (String) getValueFromRequest(request, "tab");
-		if (tab == null) {
-			tab = "ALL"; // default tab to all;
-		}
-		//per app scan
-		if (!tab.contains(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
-			tab="ALL";
-		}
-		if (tab.equals("ALL")) {
-			request.getSession().removeAttribute("onloadJavascript");
-			request.getSession().removeAttribute("tab");
-		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ characterizationTypes.size() + ")");
-		}
+		setSummaryTab(request, characterizationTypes.size());
 	}
 
 	/**
@@ -577,7 +561,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			request.setAttribute("onloadJavascript", "setTheFile(0)");
 		}
 		request.setAttribute("disableOuterButtons", true);
-		//remove columnHeaders stored in the session;
+		// remove columnHeaders stored in the session;
 		request.getSession().removeAttribute("columnHeaders");
 		return mapping.findForward("inputForm");
 	}
