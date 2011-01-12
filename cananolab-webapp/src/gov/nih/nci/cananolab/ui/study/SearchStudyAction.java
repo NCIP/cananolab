@@ -5,12 +5,14 @@ package gov.nih.nci.cananolab.ui.study;
  *
  * @author lethai
  */
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.service.study.impl.StudyServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -35,6 +37,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaActionForm theForm = (DynaActionForm) form;
 		theForm.set("isAnimalStudy", false);
+		request.getSession().removeAttribute("studySearchResults");
 		return mapping.getInputForward();
 	}
 
@@ -68,6 +71,37 @@ public class SearchStudyAction extends AbstractDispatchAction {
 				return mapping.getInputForward();
 			}
 		}
+		//testing
+		/*Study domain = new Study();
+		domain.setId(1L);
+		domain.setName("MIT_KELLY")
+		StudyBean study1 = new StudyBean();
+		study1.setName("MIT_KELLY");
+		study1.setTitle("in vitro profiling of nanoparticle libraries");
+		study1.setStudySample(new SampleBean());
+		study1.setOwnerName("michal");
+		study1.setPointOfContact("MIT_MGH (Stanley Y Shaw)");
+
+		StudyBean study2 = new StudyBean();
+		study1.setName("Efficacy of nanoparticle Sample");
+		//SampleBean studySample = new SampleBean();
+		//studySample.se
+		study2.setStudySample(new SampleBean());
+		study2.setOwnerName("Guest2");
+		study2.setPointOfContact("Guest2");
+		List<StudyBean> studyBeansPerPage = new ArrayList<StudyBean>();
+		studyBeansPerPage.add(study1);
+		studyBeansPerPage.add(study2);
+		request.setAttribute("studies", studyBeansPerPage);*/
+		// get the total size of collection , required for display tag to
+		// get the pagination to work
+		/*request.setAttribute("resultSize", new Integer(2));
+		return mapping.findForward("searchResult");*/
+		
+		
+		//end testing.... 
+		
+		
 		// load studyBean details 25 at a time for displaying
 		// pass in page and size
 		List<StudyBean> studyBeansPerPage = getStudiesPerPage(studyBeans,
@@ -95,28 +129,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 		response.setHeader("Cache-Control", "private");
 		return mapping.findForward("searchResult");
 
-		/*StudyBean study1 = new StudyBean();
-		study1.setName("MIT_KELLY");
-		study1.setTitle("in vitro profiling of nanoparticle libraries");
-		study1.setStudySample(new SampleBean());
-		study1.setOwnerName("michal");
-		study1.setPointOfContact("MIT_MGH (Stanley Y Shaw)");
-
-		StudyBean study2 = new StudyBean();
-		study1.setName("Efficacy of nanoparticle Sample");
-		//SampleBean studySample = new SampleBean();
-		//studySample.se
-		study2.setStudySample(new SampleBean());
-		study2.setOwnerName("Guest2");
-		study2.setPointOfContact("Guest2");
-		List<StudyBean> studyBeansPerPage = new ArrayList<StudyBean>();
-		studyBeansPerPage.add(study1);
-		studyBeansPerPage.add(study2);
-		request.setAttribute("studies", studyBeansPerPage);
-		// get the total size of collection , required for display tag to
-		// get the pagination to work
-		request.setAttribute("resultSize", new Integer(2));
-		return mapping.findForward("searchResult");*/
+		
 	}
 	/**
 	 * load the study ids with the given parameters
@@ -218,9 +231,35 @@ public class SearchStudyAction extends AbstractDispatchAction {
 	 * @throws Exception
 	 */
 	private List<StudyBean> getStudiesPerPage(List<StudyBean> studyBeans,
-			int displayPage, int pageSize, HttpServletRequest request)
+			int page, int pageSize, HttpServletRequest request)
 			throws Exception {
-		return new ArrayList<StudyBean>();
+		List<StudyBean> loadedStudyBeans = new ArrayList<StudyBean>();
+		StudyService service = null;
+		if (request.getSession().getAttribute("studyService") != null) {
+			service = (StudyService) request.getSession().getAttribute(
+					"studyService");
+		} else {
+			service = this.setServiceInSession(request);
+		}
+		SecurityService securityService = (SecurityService) request
+				.getSession().getAttribute("securityService");
+		if (securityService == null) {
+			securityService = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME);
+		}
+		
+		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
+			if(i<studyBeans.size()){
+				String studyId = studyBeans.get(i).getDomain().getId()
+				.toString();
+				StudyBean studyBean = service.findStudyById(studyId, false);
+				if(studyBean != null){
+					loadedStudyBeans.add(studyBean);
+				}
+			}
+		}
+		
+		return loadedStudyBeans;
 	}
 	private StudyService setServiceInSession(HttpServletRequest request)
 		throws Exception {
