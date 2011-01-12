@@ -1,12 +1,11 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.Study;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
 import java.util.Date;
 
 public class StudyBean extends SecuredDataBean {
-	
-	//private Study study;
 
 	private String name;
 	private String title;
@@ -26,12 +25,22 @@ public class StudyBean extends SecuredDataBean {
 	private String description;
 	private String factorType;
 	private String factorName;
+	private Study domain = new Study();
 	
+	public Study getDomain() {
+		return domain;
+	}
+	public void setDomain(Study domain) {
+		this.domain = domain;
+	}
 	public StudyBean(){
 		
 	}
-	public StudyBean(String id){
-		
+	public StudyBean(String studyId){
+		domain.setId(new Long(studyId));
+	}
+	public StudyBean(Study study){
+		this.domain = study;
 	}
 	
 
