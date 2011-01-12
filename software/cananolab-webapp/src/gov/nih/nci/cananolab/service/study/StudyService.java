@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.study;
 import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.StudyException;
+import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
 
@@ -11,8 +12,16 @@ import java.util.List;
  * @author lethai
  *
  */
-public interface StudyService {
+public interface StudyService extends BaseService{
 	
+	/**
+	 * find study detail information
+	 * @param id
+	 * @param loadAccessInfo
+	 * @return
+	 * @throws StudyException
+	 * @throws NoAccessException
+	 */
 	public StudyBean findStudyById(String id, Boolean loadAccessInfo)
 		throws StudyException, NoAccessException;
 	/**
@@ -31,7 +40,7 @@ public interface StudyService {
 	 */
 	public List<String> findStudyIdsBy(String studyName, String studyPointOfContact, String studyType, String studyDesignType,
 			String sampleName, Boolean isAnimalStudy, String diseases, String[] wordList, String studyOwner) 
-		throws StudyException;
+		throws Exception;
 	
 	public int getNumberOfPublicStudies() throws StudyException;
 	public void deleteStudy(String id) throws StudyException;
