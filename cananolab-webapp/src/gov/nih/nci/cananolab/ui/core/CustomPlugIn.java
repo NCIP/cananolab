@@ -15,7 +15,7 @@ import org.apache.struts.config.ModuleConfig;
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
  *
- * @author pansu
+ * @author pansu, lethai
  *
  */
 public class CustomPlugIn implements PlugIn {
@@ -89,6 +89,11 @@ public class CustomPlugIn implements PlugIn {
 					.getInstance()
 					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
 							"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
+			//study type and design type drop down list
+			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+					"studyTypes", "study", "type");
+			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
+					"studyDesignTypes", "study", "designType");
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
