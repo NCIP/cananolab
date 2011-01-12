@@ -448,6 +448,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (tab == null) {
 			tab = "ALL"; // default tab to all;
 		}
+		//per app scan
+		if (!tab.contains(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			tab="ALL";
+		}
 		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
 			request.getSession().removeAttribute("tab");
