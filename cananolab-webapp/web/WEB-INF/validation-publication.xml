@@ -39,7 +39,7 @@
 				<msg name="mask" key="publication.author.firstName.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="publication.theAuthor.lastName" page="1"
@@ -47,15 +47,15 @@
 				<msg name="mask" key="publication.author.lastName.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
-			<field property="publication.theAuthor.initials" page="1"
+			<field property="publication.theAuthor.initial" page="1"
 				depends="mask">
 				<msg name="mask" key="publication.author.initials.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${alphabetic}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="publication.domainFile.digitalObjectId" page="1"
