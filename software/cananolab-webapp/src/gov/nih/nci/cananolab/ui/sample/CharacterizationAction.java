@@ -209,7 +209,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
-				charBean.getCharacterizationName(), charBean.getAssayType());
+				charBean.getCharacterizationName(), charBean.getAssayName());
 
 		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
@@ -827,7 +827,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String currentCharName = achar.getCharacterizationName();
 		setOtherValueOption(request, currentCharName, "charTypeChars");
 
-		String currentAssayType = achar.getAssayType();
+		String currentAssayType = achar.getAssayName();
 		setOtherValueOption(request, currentAssayType, "charNameAssays");
 
 		// setup detail page
