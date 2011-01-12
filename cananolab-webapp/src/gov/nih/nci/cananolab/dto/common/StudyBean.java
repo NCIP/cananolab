@@ -1,17 +1,19 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Study;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
 import java.util.Date;
+import java.util.List;
 
 public class StudyBean extends SecuredDataBean {
 
 	private String name;
 	private String title;
 	private String type;
-	private SampleBean studySample;
-	private String pointOfContact;
+	private List<SampleBean> studySamples;
+	private PointOfContactBean primaryPOCBean = new PointOfContactBean();
 	private String diseaseNames;
 	private String diseaseType;
 	private String ownerName;
@@ -32,6 +34,10 @@ public class StudyBean extends SecuredDataBean {
 	}
 	public void setDomain(Study domain) {
 		this.domain = domain;
+		this.name = domain.getName();
+		PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
+		this.primaryPOCBean = new PointOfContactBean(primaryPOC);
+		this.title = domain.getTitle();
 	}
 	public StudyBean(){
 		
@@ -116,20 +122,20 @@ public class StudyBean extends SecuredDataBean {
 		this.type = type;
 	}
 
-	public SampleBean getStudySample() {
-		return studySample;
+	public List<SampleBean> getStudySamples() {
+		return studySamples;
 	}
 
-	public void setStudySample(SampleBean studySample) {
-		this.studySample = studySample;
+	public void setStudySample(List<SampleBean> studySamples) {
+		this.studySamples = studySamples;
 	}
 
-	public String getPointOfContact() {
-		return pointOfContact;
+	public PointOfContactBean getPrimaryPOCBean() {
+		return primaryPOCBean;
 	}
 
-	public void setPointOfContact(String pointOfContact) {
-		this.pointOfContact = pointOfContact;
+	public void setPrimaryPOCBean(PointOfContactBean primaryPOCBean) {
+		this.primaryPOCBean = primaryPOCBean;
 	}
 
 	public String getDiseaseNames() {
