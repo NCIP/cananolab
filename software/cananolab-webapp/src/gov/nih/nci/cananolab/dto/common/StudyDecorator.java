@@ -18,9 +18,8 @@ public class StudyDecorator extends TableDecorator {
 	public String getDetailURL() {
 		UserBean user = (UserBean)this.getPageContext().getSession().getAttribute("user");
 
-
-		//SampleBean sample = (SampleBean) getCurrentRowObject();
-		//String sampleId = sample.getDomain().getId().toString();
+		StudyBean study = (StudyBean)getCurrentRowObject();
+		String studyId = study.getDomain().getId().toString();
 		String dispatch = "summaryView";
 		String linkLabel = "View";
 		if (user!= null) {
@@ -30,7 +29,7 @@ public class StudyDecorator extends TableDecorator {
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("study.do?dispatch=").append(dispatch).append(
 				"&page=0&studyId=");
-		sb.append("1").append('>');
+		sb.append(studyId).append('>');
 		sb.append(linkLabel).append("</a>");
 		String link = sb.toString();
 
@@ -38,7 +37,8 @@ public class StudyDecorator extends TableDecorator {
 	}
 
 	public SortableName getStudyName() {
-		String studyName = "MIT_MGH-KKellyIB";
+		StudyBean study = (StudyBean)getCurrentRowObject();		
+		String studyName = study.getDomain().getName(); //"MIT_MGH-KKellyIB";
 		return new SortableName(studyName);
 	}
 	public SortableName getSampleName() {
@@ -48,20 +48,27 @@ public class StudyDecorator extends TableDecorator {
 	}
 
 	public String getStudyTitle() {
-		return "Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries";
+		StudyBean study = (StudyBean)getCurrentRowObject();		
+		String studyTitle = study.getDomain().getTitle();
+		return studyTitle; 
+		// "Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries";
 	}
 
 	public String getOwnerStr() throws BaseException {
-		return "michal";
+		StudyBean study = (StudyBean)getCurrentRowObject();
+		String studyOwner = study.getDomain().getCreatedBy();
+		return studyOwner; //"michal";
 	}
 
 	public String getDiseasesStr() throws BaseException {
-
-		return "lung cancer";
+		StudyBean study = (StudyBean)getCurrentRowObject();
+		String diseases = study.getDiseaseNames();
+		return diseases; //"lung cancer";
 	}
 
 	public String getPointOfContactName() throws BaseException {
-		//SampleBean sample = (SampleBean) getCurrentRowObject();
-		return "MIT_MGH (Stanley Y Shaw)";
+		StudyBean study = (StudyBean)getCurrentRowObject();
+		String poc = study.getPrimaryPOCBean().getDisplayName();
+		return poc; // "MIT_MGH (Stanley Y Shaw)";
 	}
 }
