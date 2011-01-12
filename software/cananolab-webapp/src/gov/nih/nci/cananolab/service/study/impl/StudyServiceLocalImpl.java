@@ -65,7 +65,8 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements Study
 	}
 
 
-	public List<String> findStudyIdsBy() throws StudyException{
+	public List<String> findStudyIdsBy(String studyName, String studyPointOfContact, String studyType, String studyDesignType,
+			String sampleName, Boolean isAnimalStudy, String diseases, String[] wordList, String studyOwner) throws StudyException{
 		List<String> results = new ArrayList<String>();
 		results.add("1");
 		results.add("2");
