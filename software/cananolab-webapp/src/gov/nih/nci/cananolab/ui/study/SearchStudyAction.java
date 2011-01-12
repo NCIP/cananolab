@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.service.study.impl.StudyServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
