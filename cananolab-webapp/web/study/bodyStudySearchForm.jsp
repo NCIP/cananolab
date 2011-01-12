@@ -91,9 +91,9 @@
 				Animal Study?
 			</td>
 			<td colspan="2">
-				<html:radio styleId="option1" property="isAnimalModel" value="yes" />
+				<html:radio styleId="option1" property="isAnimalStudy" value="true" />
 				Yes
-				<html:radio styleId="option2" property="isAnimalModel" value="no" />
+				<html:radio styleId="option2" property="isAnimalStudy" value="false" />
 				No
 			</td>
 		</tr>
