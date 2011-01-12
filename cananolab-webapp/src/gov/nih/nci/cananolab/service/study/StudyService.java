@@ -15,8 +15,22 @@ public interface StudyService {
 	
 	public StudyBean findStudyById(String id, Boolean loadAccessInfo)
 		throws StudyException, NoAccessException;
-	
-	public List<String> findStudyIdsBy() 
+	/**
+	 * Find the study ids with the given criteria
+	 * @param studyName
+	 * @param studyPointOfContact
+	 * @param studyType
+	 * @param studyDesignType
+	 * @param sampleName
+	 * @param isAnimalStudy
+	 * @param diseases
+	 * @param text - study descriptions and outcomes
+	 * @param studyOwner - owner of the study
+	 * @return
+	 * @throws StudyException
+	 */
+	public List<String> findStudyIdsBy(String studyName, String studyPointOfContact, String studyType, String studyDesignType,
+			String sampleName, Boolean isAnimalStudy, String diseases, String[] wordList, String studyOwner) 
 		throws StudyException;
 	
 	public int getNumberOfPublicStudies() throws StudyException;
