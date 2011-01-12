@@ -2,12 +2,14 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="studyForm" type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="studyForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="studyBean" type="gov.nih.nci.cananolab.dto.common.StudyBean"/>
 			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.String"/>
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="studyId" type="java.lang.String" />
 		</form-bean>
-		<form-bean name="studySearchForm" type="org.apache.struts.action.DynaActionForm">
+		<form-bean name="studySearchForm" type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="studyName" type="java.lang.String" />
 			<form-property name="studyNameOperand" type="java.lang.String" />
@@ -23,6 +25,8 @@
 			<form-property name="text" type="java.lang.String" />
 			<form-property name="studyOwner" type="java.lang.String" />
 			<form-property name="ownerOperand" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
