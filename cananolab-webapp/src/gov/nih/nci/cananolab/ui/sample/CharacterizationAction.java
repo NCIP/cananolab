@@ -138,10 +138,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		this.checkOpenForms(charBean, theForm, request);
 		// clear copy to otherSamples
 		clearCopy(theForm);
-
-		if (request.getParameter("fromStudyPage").equals("true")) {
-			return mapping.findForward("studyCharInputForm");
-		}
 		return mapping.findForward("inputForm");
 	}
 
@@ -213,7 +209,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// TODO: Find out usage of "charNameDatumNames", not used in any JSPs.
 		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
 				request, charBean.getCharacterizationType(),
-				charBean.getCharacterizationName(), charBean.getAssayName());
+				charBean.getCharacterizationName(), charBean.getAssayType());
 
 		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
@@ -324,19 +320,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// prepare characterization tabs and forward to appropriate tab
 		List<String> allCharacterizationTypes = InitCharacterizationSetup
 				.getInstance().getCharacterizationTypes(request);
-		String tab = (String) getValueFromRequest(request, "tab");
-		if (tab == null) {
-			tab = "ALL"; // default tab to all;
-		}
-		if (tab.equals("ALL")) {
-			request.getSession().removeAttribute("onloadJavascript");
-			request.getSession().removeAttribute("tab");
-		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ allCharacterizationTypes.size() + ")");
-		}
+		setSummaryTab(request, allCharacterizationTypes.size());
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -355,8 +339,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		// Prepare data.
-		this.prepareSummary(mapping, form, request, response);
-		this.prepareCharacterizationTypes(mapping, form, request, response);
+		prepareSummary(mapping, form, request, response);
+		List<String> charTypes = prepareCharacterizationTypes(mapping, form,
+				request, response);
+		setSummaryTab(request, charTypes.size());
 		return mapping.findForward("summaryView");
 	}
 
@@ -419,7 +405,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	private void prepareCharacterizationTypes(ActionMapping mapping,
+	private List<String> prepareCharacterizationTypes(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean) request
@@ -444,23 +430,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
-		String tab = (String) getValueFromRequest(request, "tab");
-		if (tab == null) {
-			tab = "ALL"; // default tab to all;
-		}
-		//per app scan
-		if (!tab.contains(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
-			tab="ALL";
-		}
-		if (tab.equals("ALL")) {
-			request.getSession().removeAttribute("onloadJavascript");
-			request.getSession().removeAttribute("tab");
-		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ characterizationTypes.size() + ")");
-		}
+		return characterizationTypes;
 	}
 
 	/**
@@ -484,8 +454,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			charSummaryBean = (CharacterizationSummaryViewBean) request
 					.getSession().getAttribute("characterizationSummaryView");
 		}
-		this.prepareCharacterizationTypes(mapping, form, request, response);
-		this.filterType(request); // Filter out un-selected types.
+		List<String> charTypes = prepareCharacterizationTypes(mapping, form,
+				request, response);
+		this.filterType(request, charTypes); // Filter out un-selected types.
 
 		// Marker that indicates page is for printing only, hide tabs/links.
 		request.setAttribute("printView", Boolean.TRUE);
@@ -518,18 +489,23 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			charSummaryBean = (CharacterizationSummaryViewBean) request
 					.getSession().getAttribute("characterizationSummaryView");
 		}
-		this.prepareCharacterizationTypes(mapping, form, request, response);
-		List<String> charTypes = this.filterType(request);
+		List<String> charTypes = prepareCharacterizationTypes(mapping, form,
+				request, response);
+		List<String> filteredCharTypes = this.filterType(request, charTypes);
 
 		String type = request.getParameter("type");
+		// per app scan
+		if (!type.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			type = "";
+		}
 		String sampleName = sampleBean.getDomain().getName();
 		String fileName = ExportUtils.getExportFileName(sampleName,
 				"CharacterizationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
 
 		StringBuilder sb = getDownloadUrl(request);
-		CharacterizationExporter.exportSummary(charTypes, charSummaryBean, sb
-				.toString(), response.getOutputStream());
+		CharacterizationExporter.exportSummary(filteredCharTypes,
+				charSummaryBean, sb.toString(), response.getOutputStream());
 
 		return null;
 	}
@@ -581,7 +557,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			request.setAttribute("onloadJavascript", "setTheFile(0)");
 		}
 		request.setAttribute("disableOuterButtons", true);
-		//remove columnHeaders stored in the session;
+		// remove columnHeaders stored in the session;
 		request.getSession().removeAttribute("columnHeaders");
 		return mapping.findForward("inputForm");
 	}
@@ -851,7 +827,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String currentCharName = achar.getCharacterizationName();
 		setOtherValueOption(request, currentCharName, "charTypeChars");
 
-		String currentAssayType = achar.getAssayName();
+		String currentAssayType = achar.getAssayType();
 		setOtherValueOption(request, currentAssayType, "charNameAssays");
 
 		// setup detail page
@@ -872,14 +848,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param request
 	 * @param compBean
 	 */
-	private List<String> filterType(HttpServletRequest request) {
-		List<String> charTypes = (List<String>) request
-				.getAttribute("characterizationTypes");
+	private List<String> filterType(HttpServletRequest request,
+			List<String> charTypes) {
 		String type = request.getParameter("type");
-		if (!StringUtils.isEmpty(type)) {
-			charTypes.clear();
-			charTypes.add(type);
+		List<String> filteredTypes = new ArrayList<String>();
+		if (!StringUtils.isEmpty(type) && charTypes.contains(type)) {
+			filteredTypes.add(type);
 		}
+		request.setAttribute("characterizationTypes", filteredTypes);
 		return charTypes;
 	}
 

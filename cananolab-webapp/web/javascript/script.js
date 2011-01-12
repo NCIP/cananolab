@@ -295,6 +295,10 @@ function hide(layer_ref) {
 	layerBlock.style.display = "none";
 }
 function showSummary(layer_ref, totalLayers) {
+	//per app scan
+	if (layer_ref=="ALL"||isNaN(layer_ref)||layer_ref>totalLayers||layer_ref<=0) {
+		layer_ref="ALL";
+	}
 	var printLink = document.getElementById("printLink");
 	// var printUrl = document.getElementById("printUrlAll");
 	var exportLink = document.getElementById("exportLink");

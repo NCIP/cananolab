@@ -131,7 +131,6 @@
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="page" value="0" />
-					<c:param name="tab" value="ALL" />
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/publication.do'}">

@@ -598,4 +598,22 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		// in case of validation error still show access label correctly.
 		request.setAttribute("onloadJavascript", "toggleAccessNameLabel();");
 	}
+
+	protected void setSummaryTab(HttpServletRequest request, int numTabs) {
+		String tab = (String) getValueFromRequest(request, "tab");
+		// per app scan default tab to all;
+		if (tab == null || tab.equals("ALL")
+				|| !tab.matches(Constants.NUMERIC_PATTERN)) {
+			tab = "ALL";
+		}
+		if (tab.equals("ALL")) {
+			request.getSession().removeAttribute("onloadJavascript");
+			request.getSession().removeAttribute("tab");
+		} else {
+			request.getSession().setAttribute(
+					"onloadJavascript",
+					"showSummary('" + tab + "', "
+							+ numTabs + ")");
+		}
+	}
 }
