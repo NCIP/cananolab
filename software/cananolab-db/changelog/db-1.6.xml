@@ -15,4 +15,8 @@
 		<comment>updated characterization table and relationship to sample</comment>
 		<sqlFile path="sql/mysql/1.6/characterization.sql" />
 	</changeSet>
+	<changeSet id="1.6-3" author="lethai">
+		<comment>updated common_lookup table to insert study type and study design type</comment>
+		<sqlFile path="sql/mysql/1.6/update_common_lookup.sql" />
+	</changeSet>
 </databaseChangeLog>
