@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -53,6 +54,10 @@ public class CompositionAction extends BaseAnnotationAction {
 		if (tab == null) {
 			tab = "ALL"; // default tab to all;
 		}
+		//per app scan
+		if (!tab.contains(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			tab="ALL";
+		}
 		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
 			request.getSession().removeAttribute("tab");
@@ -88,6 +93,10 @@ public class CompositionAction extends BaseAnnotationAction {
 		String tab = (String) getValueFromRequest(request, "tab");
 		if (tab == null) {
 			tab = "ALL"; // default tab to all;
+		}
+		//per app scan
+		if (!tab.contains(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			tab="ALL";
 		}
 		if (tab.equals("ALL")) {
 			request.getSession().removeAttribute("onloadJavascript");
