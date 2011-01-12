@@ -142,6 +142,10 @@ public class CompositionAction extends BaseAnnotationAction {
 
 		// Get sample name for constructing file name.
 		String type = request.getParameter("type");
+		//per app scan
+		if (!type.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+			type="";
+		}
 		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
 				.getName(), "CompositionSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
