@@ -6,8 +6,8 @@ package gov.nih.nci.cananolab.ui.study;
  * @author lethai
  */
 import gov.nih.nci.cananolab.dto.common.StudyBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.service.study.impl.StudyServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
@@ -19,21 +19,22 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 public class SearchStudyAction extends AbstractDispatchAction {
-	// logger
-	// private static Logger logger = Logger.getLogger(StudyAction.class);
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaActionForm theForm = (DynaActionForm) form;
-		theForm.set("isAnimalModel", "yes");
+		theForm.set("isAnimalStudy", false);
 		return mapping.getInputForward();
 	}
 
@@ -41,9 +42,93 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		
+		HttpSession session = request.getSession();
+		// get the page number from request
+		int displayPage = getDisplayPage(request);
+
+		// use one local impl to improve performance
+		this.setServiceInSession(request);
+
+		List<StudyBean> studyBeans = new ArrayList<StudyBean>();
+		// retrieve from session if it's not null and not first page
+		if (session.getAttribute("studySearchResults") != null
+				&& displayPage > 0) {
+			studyBeans = new ArrayList<StudyBean>((List) session
+					.getAttribute("studySearchResults"));
+		} else {
+			studyBeans = queryStudyIds(form, request);
+			if (studyBeans != null && !studyBeans.isEmpty()) {
+				session.setAttribute("studySearchResults", studyBeans);
+			} else {
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage(
+						"message.searchStudy.noresult");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, msgs);
+				return mapping.getInputForward();
+			}
+		}
+		// load studyBean details 25 at a time for displaying
+		// pass in page and size
+		List<StudyBean> studyBeansPerPage = getStudiesPerPage(studyBeans,
+				displayPage, Constants.DISPLAY_TAG_TABLE_SIZE, request);
+		// in case any samples has been filtered during loading of sample
+		// information. e.g. POC is missing
+		if (studyBeansPerPage.isEmpty()) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.searchStudy.noresult");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user != null) {
+			//loadUserAccess(request, studyBeansPerPage);
+		}
+		request.setAttribute("studies", studyBeansPerPage);
+		// get the total size of collection , required for display tag to
+		// get the pagination to work
+		request.setAttribute("resultSize", new Integer(studyBeans.size()));
+
+		// allow user to go back to the search results via the cache
+		response.setHeader("Cache-Control", "private");
+		return mapping.findForward("searchResult");
+
+		/*StudyBean study1 = new StudyBean();
+		study1.setName("MIT_KELLY");
+		study1.setTitle("in vitro profiling of nanoparticle libraries");
+		study1.setStudySample(new SampleBean());
+		study1.setOwnerName("michal");
+		study1.setPointOfContact("MIT_MGH (Stanley Y Shaw)");
+
+		StudyBean study2 = new StudyBean();
+		study1.setName("Efficacy of nanoparticle Sample");
+		//SampleBean studySample = new SampleBean();
+		//studySample.se
+		study2.setStudySample(new SampleBean());
+		study2.setOwnerName("Guest2");
+		study2.setPointOfContact("Guest2");
+		List<StudyBean> studyBeansPerPage = new ArrayList<StudyBean>();
+		studyBeansPerPage.add(study1);
+		studyBeansPerPage.add(study2);
+		request.setAttribute("studies", studyBeansPerPage);
+		// get the total size of collection , required for display tag to
+		// get the pagination to work
+		request.setAttribute("resultSize", new Integer(2));
+		return mapping.findForward("searchResult");*/
+	}
+	/**
+	 * load the study ids with the given parameters
+	 * @param form
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	private List<StudyBean> queryStudyIds(ActionForm form,
+			HttpServletRequest request) throws Exception {
 		DynaActionForm theForm = (DynaActionForm) form;
 		List<StudyBean> studyBeans = new ArrayList<StudyBean>();
-		
 		String studyName =(String) theForm.get("studyName");
 		String studyNameOperand = (String) theForm.get("studyNameOperand");
 		if (studyNameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
@@ -62,6 +147,10 @@ public class SearchStudyAction extends AbstractDispatchAction {
 		}
 		System.out.println("studyPOCName: " + studyPointOfContact
 				);
+		String studyType = (String)theForm.get("studyType");
+		String studyDesignType = (String)theForm.get("studyDesignType");
+		Boolean isAnimalStudy = (Boolean)theForm.get("isAnimalStudy");
+		System.out.println("isAnimalStudy: " + isAnimalStudy);
 		String sampleName = (String) theForm.get("sampleName");
 		// strip wildcards at either end if entered by user
 		sampleName = StringUtils.stripWildcards(sampleName);
@@ -83,6 +172,18 @@ public class SearchStudyAction extends AbstractDispatchAction {
 		}
 		
 		System.out.println("disease: " + disease);
+		
+		String texts="";
+		
+		if(theForm != null){
+			texts  = ((String) theForm.get("text")).trim();
+		}
+		List<String> wordList = StringUtils.parseToWords(texts, "\r\n");
+		String[] words = null;
+		if (wordList != null) {
+			words = new String[wordList.size()];
+			wordList.toArray(words);
+		}
 		String studyOwner = (String) theForm.get("studyOwner");
 		// strip wildcards at either end if entered by user
 		studyOwner = StringUtils.stripWildcards(studyOwner);
@@ -90,12 +191,14 @@ public class SearchStudyAction extends AbstractDispatchAction {
 		if (ownerOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(studyOwner)) {
 			studyOwner = "*" + studyOwner + "*";
-		}
-		
+		}		
 		System.out.println("studyOwner: " + studyOwner);
 		
 		StudyService studyService = setServiceInSession(request);
-		List<String> studyIds = studyService.findStudyIdsBy();
+		//String studyName, String studyPointOfContact, String studyType, String studyDesignType,
+		//String sampleName, Boolean isAnimalStudy, String diseases, String text, String studyOwner
+		List<String> studyIds = studyService.findStudyIdsBy(studyName, studyPointOfContact, studyType,
+				studyDesignType,sampleName,isAnimalStudy, disease, words, studyOwner );
 		
 		for (String id : studyIds) {
 			// empty studyBean that only has id;
@@ -103,37 +206,29 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			studyBeans.add(studyBean);
 		}
 
-		StudyBean study1 = new StudyBean();
-		study1.setName("MIT_KELLY");
-		study1.setTitle("in vitro profiling of nanoparticle libraries");
-		study1.setStudySample(new SampleBean());
-		study1.setOwnerName("michal");
-		study1.setPointOfContact("MIT_MGH (Stanley Y Shaw)");
-
-		StudyBean study2 = new StudyBean();
-		study1.setName("Efficacy of nanoparticle Sample");
-		//SampleBean studySample = new SampleBean();
-		//studySample.se
-		study2.setStudySample(new SampleBean());
-		study2.setOwnerName("Guest2");
-		study2.setPointOfContact("Guest2");
-		List<StudyBean> studyBeansPerPage = new ArrayList<StudyBean>();
-		studyBeansPerPage.add(study1);
-		studyBeansPerPage.add(study2);
-		request.setAttribute("studies", studyBeansPerPage);
-		// get the total size of collection , required for display tag to
-		// get the pagination to work
-		request.setAttribute("resultSize", new Integer(2));
-		return mapping.findForward("searchResult");
+		return studyBeans;
 	}
-	
+	/**
+	 * load the study detail for each pape
+	 * @param studyBeans
+	 * @param displayPage
+	 * @param pageSize
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	private List<StudyBean> getStudiesPerPage(List<StudyBean> studyBeans,
+			int displayPage, int pageSize, HttpServletRequest request)
+			throws Exception {
+		return new ArrayList<StudyBean>();
+	}
 	private StudyService setServiceInSession(HttpServletRequest request)
 		throws Exception {
-	SecurityService securityService = super
-			.getSecurityServiceFromSession(request);
-	StudyService studyService = new StudyServiceLocalImpl(
-			securityService);
-	request.getSession().setAttribute("studyService", studyService);
-	return studyService;
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+		StudyService studyService = new StudyServiceLocalImpl(
+				securityService);
+		request.getSession().setAttribute("studyService", studyService);
+		return studyService;
 	}
 }
