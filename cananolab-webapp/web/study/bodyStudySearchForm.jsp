@@ -65,13 +65,11 @@
 				Study Type
 			</td>
 			<td colspan="2">
-				<SELECT >
-					<option value=""></option>
-					<option value="reproductive">reproductive</option>
-					<option value="continuous breeding">continuous breeding</option>
-					<option value="developmental">developmental</option>
-					<option value="cancer bioassay">cancer bioassay</option>
-				</SELECT>
+				<html:select styleId="studyType"
+					property="studyType" >
+					<html:option value=""/>
+					<html:options name="studyTypes" />
+				</html:select>
 			</td>
 		</tr>
 		<tr>
@@ -79,11 +77,11 @@
 				Study Design Type
 			</td>
 			<td colspan="2">
-				<SELECT >
-				<option value=""></option>
-					<option value="parallel group">parallel group</option>
-					<option value="crossover">crossover</option>
-				</SELECT>
+				<html:select styleId="studyDesignType"
+					property="studyDesignType" >
+					<html:option value=""/>
+					<html:options name="studyDesignTypes" />
+				</html:select>				
 			</td>
 		</tr>
 		<tr>
