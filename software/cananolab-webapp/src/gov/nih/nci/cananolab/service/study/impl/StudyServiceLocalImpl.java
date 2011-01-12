@@ -3,7 +3,12 @@
  */
 package gov.nih.nci.cananolab.service.study.impl;
 
+import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Sample;
+import gov.nih.nci.cananolab.domain.common.Study;
 import gov.nih.nci.cananolab.dto.common.StudyBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.StudyException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
@@ -59,9 +64,37 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements Study
 	public StudyBean findStudyById(String id, Boolean loadAccessInfo)
 			throws StudyException, NoAccessException {
 		StudyBean studyBean = new StudyBean();
+		//testing
+		Study domain = new Study();
+		domain.setId(new Long(id));
+		domain.setName("MIT_KELLY");		
+		domain.setTitle("in vitro profiling of nanoparticle libraries");
+		//study1.setStudySample(new SampleBean());
+		domain.setCreatedBy("michal");
+		PointOfContact primaryPoc = new PointOfContact();
+		primaryPoc.setFirstName("Stanley");
+		primaryPoc.setLastName("Saw");
+		Organization org = new Organization();
+		org.setName("MIT_MGH");
+		primaryPoc.setOrganization(org);
 		
-	//	studyBean.set
-		return new StudyBean();
+		domain.setPrimaryPointOfContact(primaryPoc);
+		
+		List<SampleBean> studySamples = new ArrayList<SampleBean>();
+		Sample sample1 = new Sample();
+		sample1.setName("MIT_MGH-KKellyIB2009-01");
+		SampleBean sampleBean1 = new SampleBean();
+		sampleBean1.setDomain(sample1);
+		
+		Sample sample2 = new Sample();
+		sample1.setName("MIT_MGH-KKellyIB2009-02");
+		SampleBean sampleBean2 = new SampleBean();
+		sampleBean2.setDomain(sample2);
+		studySamples.add(sampleBean1);
+		studySamples.add(sampleBean2);
+		studyBean.setDomain(domain);
+		studyBean.setStudySample(studySamples);
+		return studyBean;
 	}
 
 
