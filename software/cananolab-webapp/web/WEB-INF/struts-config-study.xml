@@ -13,7 +13,7 @@
 			<form-property name="studyNameOperand" type="java.lang.String" />
 			<form-property name="studyType" type="java.lang.String" />
 			<form-property name="studyDesignType" type="java.lang.String" />
-			<form-property name="isAnimalModel" type="java.lang.String" />
+			<form-property name="isAnimalStudy" type="java.lang.Boolean" />
 			<form-property name="sampleName" type="java.lang.String" />
 			<form-property name="sampleNameOperand" type="java.lang.String" />
 			<form-property name="studyPointOfContact" type="java.lang.String" />
