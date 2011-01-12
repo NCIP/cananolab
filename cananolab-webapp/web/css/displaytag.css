@@ -1,0 +1,128 @@
+table.displaytable {
+	border: 1px solid #666;
+	margin: 20px 0 20px 0 !important;
+	width:100%;
+}
+
+table.displaytable thead tr {
+	background-color: #6a8989;
+	text-align: left;
+	vertical-align: top;
+	font-size: 0.7em;
+	color: white;
+}
+
+table.displaytable th,table.displaytable td {
+	padding: 2px 10px 2px 4px;
+	vertical-align: top;
+}
+
+table.displaytable th.sorted {
+	background-color: #2a8989;
+}
+
+table.displaytable th a,table.displaytable th a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+table.displaytable th a:hover {
+	text-decoration: underline;
+	color: white;
+}
+
+table.displaytable th.sorted a,table.displaytable th.sortable a {
+	background-position: right;
+	background-repeat: no-repeat;
+	display: block;
+	padding: 2px 10px 2px 4px;
+}
+
+table.displaytable th.sortable a {
+	background-image: url(../images/displaytag/arrow_off.png);
+}
+
+table.displaytable th.order1 a {
+	background-image: url(../images/displaytag/arrow_down.png);
+}
+
+table.displaytable th.order2 a {
+	background-image: url(../images/displaytag/arrow_up.png);
+}
+
+table.displaytable tr.odd {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	color: #000000; /* constant: black */
+	background-color: #cccccc; /* constant: light gray */
+}
+
+table.displaytable tr.tableRowEven,table.displaytable tr.even {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	color: #000000; /* constant: black */
+	/* background-color: #ffffff; */ /* constant: white*/
+	background-color: #eeeeee;
+}
+
+div.exportlinks {
+	background-color: #eee;
+	border: none;
+	padding: 2px 4px 2px 4px;
+	margin: 2px 0 10px 0;
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.8em;
+}
+
+span.export {
+	padding: 0 4px 1px 20px;
+	/* display: inline-block;  */ /* value error, commented out */
+	cursor: pointer;
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.8em;
+}
+
+span.excel {
+	background-image: url(../images/displaytag/ico_file_excel.png);
+	background-repeat: no-repeat;
+}
+
+span.csv {
+	background-image: url(../images/displaytag/ico_file_csv.png);
+	background-repeat: no-repeat;
+}
+
+span.xml {
+	background-image: url(../images/displaytag/ico_file_xml.png);
+	background-repeat: no-repeat;
+}
+
+span.pdf {
+	background-image: url(../images/displaytag/ico_file_pdf.png);
+	background-repeat: no-repeat;
+}
+
+span.rtf {
+	background-image: url(../images/displaytag/ico_file_rtf.png);
+	background-repeat: no-repeat;
+}
+
+span.pagebanner {
+	background-color: #eee;
+	padding: 2px 4px 2px 4px;
+	margin-top: 10px;
+	display: block;
+	border: none;
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.8em;
+}
+
+span.pagelinks {
+	background-color: #eee;
+	padding: 2px 4px 2px 4px;
+	display: block;
+	border: none;
+	margin-bottom: -5px;
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.8em;
+}

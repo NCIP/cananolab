@@ -1,0 +1,22 @@
+function FileData_Pairs(x)
+{
+x.t("available","download");
+x.t("managing","publications");
+x.t("download","publication");
+x.t("field","means");
+x.t("editing","publication");
+x.t("link","available");
+x.t("proper","permissions");
+x.t("publication","managing");
+x.t("publication","download");
+x.t("publication","field");
+x.t("publication","link");
+x.t("publication","publication");
+x.t("publication","downloading");
+x.t("publication","uploaded");
+x.t("permissions","download");
+x.t("means","download");
+x.t("publications","editing");
+x.t("downloading","publication");
+x.t("uploaded","proper");
+}
