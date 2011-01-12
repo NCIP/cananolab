@@ -28,13 +28,14 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchStudyAction extends AbstractDispatchAction {
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaActionForm theForm = (DynaActionForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("isAnimalStudy", false);
 		request.getSession().removeAttribute("studySearchResults");
 		return mapping.getInputForward();
@@ -139,7 +140,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 	 */
 	private List<StudyBean> queryStudyIds(ActionForm form,
 			HttpServletRequest request) throws Exception {
-		DynaActionForm theForm = (DynaActionForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		List<StudyBean> studyBeans = new ArrayList<StudyBean>();
 		String studyName =(String) theForm.get("studyName");
 		String studyNameOperand = (String) theForm.get("studyNameOperand");
