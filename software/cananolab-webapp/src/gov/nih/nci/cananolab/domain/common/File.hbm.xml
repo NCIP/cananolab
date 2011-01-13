@@ -19,12 +19,12 @@
 		<property name="uri" type="string" column="file_uri"/>
 		<property name="uriExternal" type="boolean" column="is_uri_external"/>
 		<!-- Associations mapping for the File class -->
-		<set name="keywordCollection" table="keyword_file" lazy="true" inverse="false">
+		<set name="keywordCollection" table="keyword_file" lazy="true">
 			<cache usage="read-write" />
 			<key column="file_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Keyword" column="keyword_pk_id" />
 		</set>
-		<set name="findingCollection" table="finding_file" lazy="true" inverse="false">
+		<set name="findingCollection" table="finding_file" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="file_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Finding" column="finding_pk_id" />
@@ -53,12 +53,12 @@
 				<key column="publication_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.Study" column="study_pk_id" />
 			</set>
-			<set name="sampleCollection" table="sample_publication" lazy="true" inverse="false">
+			<set name="sampleCollection" table="sample_publication" lazy="true">
 				<cache usage="read-write" />
 				<key column="publication_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.Sample" column="sample_pk_id" />
 			</set>
-			<set name="authorCollection" table="author_publication" lazy="true" inverse="true">
+			<set name="authorCollection" table="author_publication" lazy="true" cascade="all-delete-orphan">
 				<cache usage="read-write" />
 				<key column="publication_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.Author" column="author_pk_id" />
