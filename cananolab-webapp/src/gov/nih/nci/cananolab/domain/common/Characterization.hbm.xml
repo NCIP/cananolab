@@ -19,12 +19,12 @@
 		<property name="endDate" type="java.util.Date" column="end_date"/>
 		<property name="startDate" type="java.util.Date" column="start_date"/>
 		<!-- Associations mapping for the Characterization class -->
-		<set name="experimentConfigCollection" lazy="true">
+		<set name="experimentConfigCollection" lazy="true" cascade="delete">
 			<cache usage="read-write" />
 			<key column="characterization_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.ExperimentConfig"/>
 		</set>
-		<set name="findingCollection" lazy="true">
+		<set name="findingCollection" lazy="true" cascade="delete">
 			<cache usage="read-write" />
 			<key column="characterization_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.Finding"/>
