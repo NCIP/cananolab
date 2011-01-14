@@ -295,7 +295,7 @@ function hide(layer_ref) {
 	layerBlock.style.display = "none";
 }
 function showSummary(layer_ref, totalLayers) {
-	//per app scan
+	// per app scan
 	if (layer_ref=="ALL"||isNaN(layer_ref)||layer_ref>totalLayers||layer_ref<=0) {
 		layer_ref="ALL";
 	}
@@ -577,4 +577,35 @@ function showUPTWarning() {
 	if (confirm("Warning:  Please restrict the use of UPT to creating user accounts only.  DO NOT use UPT to create collaboration groups nor to assign users/groups accesses to data.  To set up collaboration groups properly, go to the Community tab and click on Manage Collaboration Groups.  To set up data access privileges, go to data submission forms and click on Add Access.")) {
 		openHelpWindow('/upt');
 	}
+}
+
+function populateTextAreaWithSelection(textAreaElementId, selectionElementId) {
+	var selected = dwr.util.getValue(selectionElementId);
+	if (selected.length == 0) {
+		return;
+	}
+	var existingValues=dwr.util.getValue(textAreaElementId);
+	var values="";
+	if (existingValues=="") {
+		values=existingValues;
+	}
+	else {
+		values=existingValues+"\n";
+	}
+	if (selected.length==1) {
+		if (values.indexOf(selected, 0)==-1) {
+		   values=values+selected;
+		}
+	}
+	else {
+	  for (var i=0; i<selected.length-1; i++) {
+		 if (values.indexOf(selected[i], 0)==-1) {
+		    values=values+selected[i]+"\n";
+		 }
+	  }
+	  values=values+selected[i];
+	}
+	dwr.util.setValue(textAreaElementId, values, {
+		escapeHtml : false
+	});
 }
