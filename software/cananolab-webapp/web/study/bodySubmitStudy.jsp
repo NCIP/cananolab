@@ -66,6 +66,7 @@
 			--%>
 		</tr>
 		<tr>
+		    <c:set var="ind" value="1"/>
 			<td class="cellLabel">
 				Study Design Types
 			</td>
@@ -74,52 +75,35 @@
 				<em>one type per line</em>
 			</td>
 			<td>
-				<a href="#designTypeField" onclick="show('termBrowser')"><img
+				<a href="#designTypeField" onclick="show('termBrowser${ind}')"><img
 						src="images/icon_browse.jpg" align="middle"
 						alt="search existing design types" border="0" /> </a>
 			</td>
 			<td>
-				<c:set var="searchFunction" value="showMatchedDesignTypes();"/>
-				<c:set var="addFunction" value="populateDesignTypes();"/>
+				<c:set var="searchFunction" value="showMatchedDesignTypes(${ind});"/>
+				<c:set var="addFunction" value="populateDesignTypes(${ind});"/>
 				<%@include file="../bodySelectMatchedTerms.jsp" %>
 			</td>
 		</tr>
 		<tr>
+		    <c:set var="ind" value="2"/>
 			<td class="cellLabel">
 				Diseases
 			</td>
 			<td>
 				<html:textarea property="studyBean.domain.diseases" cols="40"
-					rows="3" value="lung cancer" />
+					rows="3" styleId="diseases"/>
 				<em>one name per line</em>
 			</td>
 			<td>
-				<table class="invisibleTable">
-					<tr>
-						<td>
-							<a href="#sampleNameField" onclick="()"><img
-									src="images/icon_browse.jpg" align="middle"
-									alt="search EVS disease names" border="0" /> </a>
-						</td>
-						<td>
-							<img src="images/ajax-loader.gif" border="0" class="counts"
-								id="loaderImg" style="display: none">
-						</td>
-						<td>
-							<select size="3" style="display: none">
-								<option>
-									EVS choices
-								</option>
-								<option>
-									EVS choices
-								</option>
-							</select>
-						</td>
-						<td>
-							<a href="#" id="selectMatchedSampleButton" style="display: none">select</a>
-						</td>
-					</tr>
-				</table>
+				<a href="#diseaseField" onclick="show('termBrowser${ind}')"><img
+						src="images/icon_browse.jpg" align="middle"
+						alt="search diseases in EVS" border="0" /> </a>
+			</td>
+			<td>
+				<c:set var="searchFunction" value="showMatchedDiseases(${ind});"/>
+				<c:set var="addFunction" value="populateDiseases(${ind});"/>
+				<%@include file="../bodySelectMatchedTerms.jsp" %>
 			</td>
 		</tr>
 		<tr>
