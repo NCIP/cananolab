@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Study;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class StudyBean extends SecuredDataBean {
 	private String factorType;
 	private String factorName;
 	private Study domain = new Study();
-	
+	private PointOfContactBean thePOC = new PointOfContactBean();
+	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
+
 	public Study getDomain() {
 		return domain;
 	}
@@ -40,7 +43,7 @@ public class StudyBean extends SecuredDataBean {
 		this.title = domain.getTitle();
 	}
 	public StudyBean(){
-		
+
 	}
 	public StudyBean(String studyId){
 		domain.setId(new Long(studyId));
@@ -48,7 +51,7 @@ public class StudyBean extends SecuredDataBean {
 	public StudyBean(Study study){
 		this.domain = study;
 	}
-	
+
 
 	public Date getStartDate() {
 		return startDate;
@@ -192,5 +195,17 @@ public class StudyBean extends SecuredDataBean {
 
 	public void setFactorName(String factorName) {
 		this.factorName = factorName;
+	}
+	public PointOfContactBean getThePOC() {
+		return thePOC;
+	}
+	public void setThePOC(PointOfContactBean thePOC) {
+		this.thePOC = thePOC;
+	}
+	public List<PointOfContactBean> getOtherPOCBeans() {
+		return otherPOCBeans;
+	}
+	public void setOtherPOCBeans(List<PointOfContactBean> otherPOCBeans) {
+		this.otherPOCBeans = otherPOCBeans;
 	}
 }

@@ -8,9 +8,11 @@ package gov.nih.nci.cananolab.ui.study;
 import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.service.study.impl.StudyServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +37,10 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		InitStudySetup.getInstance().setStudyDropdowns(request);
+		UserBean user=(UserBean)request.getSession().getAttribute("user");
+		InitSampleSetup.getInstance().getAllOrganizationNames(request, user);
+		InitSampleSetup.getInstance().setPOCDropdowns(request);
 		request.setAttribute(PAGE_TITLE, "Submit New Study");
 		return mapping.getInputForward();
 	}
@@ -58,10 +64,10 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServiceInSession(request);
-		
+
 		String studyId = request.getParameter("studyId");
 		if (!StringUtils.isEmpty(studyId)) {
 			theForm.set("studyId", studyId);
@@ -80,30 +86,29 @@ public class StudyAction extends BaseAnnotationAction {
 			throw new NotExistException("No such study in the system");
 		}
 		request.setAttribute("theStudy", studyBean);
-		
+
 		theForm.set("studyBean", studyBean);
 		return mapping.findForward("summaryView");
 	}
 
-	public ActionForward summaryEditPerSample(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward summaryEditPerSample(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		request.setAttribute("updateStudy", true);
 		return mapping.findForward("summaryEditPerSample");
 	}
 
-	public ActionForward summaryViewPerSample(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward summaryViewPerSample(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		return mapping.findForward("summaryViewPerSample");
 	}
-	
+
 	private StudyService setServiceInSession(HttpServletRequest request)
-		throws Exception {
+			throws Exception {
 		SecurityService securityService = super
 				.getSecurityServiceFromSession(request);
-		StudyService studyService = new StudyServiceLocalImpl(
-				securityService);
+		StudyService studyService = new StudyServiceLocalImpl(securityService);
 		request.getSession().setAttribute("studyService", studyService);
 		return studyService;
 	}

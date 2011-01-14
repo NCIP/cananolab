@@ -43,11 +43,9 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
 					"defaultTargetTypes",
 					"gov.nih.nci.cananolab.domain.material.Target");
-			InitSetup
-					.getInstance()
-					.getDefaultTypesByReflection(appContext,
-							"defaultChemicalAssociationTypes",
-							"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
+			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+					"defaultChemicalAssociationTypes",
+					"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
 
 			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
 					"speciesTypes", "species", "type");
@@ -85,15 +83,9 @@ public class CustomPlugIn implements PlugIn {
 					.getDefaultTypesByReflection(appContext, "invivoChars",
 							"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
 
-			InitSetup
-					.getInstance()
-					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
-							"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
-			//study type and design type drop down list
-			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
-					"studyTypes", "study", "type");
-			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
-					"studyDesignTypes", "study", "designType");
+			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
+					"chemicalAssocs",
+					"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
