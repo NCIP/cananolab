@@ -2,12 +2,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript" src="javascript/calendar2.js"></script>
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-<script type='text/javascript' src='javascript/SampleManager.js'></script>
+<script type='text/javascript' src='javascript/StudyManager.js'></script>
 <script type="text/javascript"
-	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
+	src="/caNanoLab/dwr/interface/StudyManager.js"></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <c:set var="title" value="Submit" />
 <c:if test="${!empty updateStudy}">
@@ -24,12 +25,11 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=study" />
 	<table width="100%" align="center" class="submissionView" border="0">
 		<tr>
-			<td class="cellLabel" width="15%">
+			<td class="cellLabel" width="20%">
 				Study Name *
 			</td>
 			<td colspan="3">
-				<html:text property="studyBean.name" size="50"
-					value="MIT_MGH-KKellyIB" />
+				<html:text property="studyBean.domain.name" size="50" />
 				<%--
 				<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
 					<html:hidden styleId="sampleId" property="sampleBean.domain.id"
@@ -43,78 +43,45 @@
 				Study Title *
 			</td>
 			<td colspan="3">
-				<html:text property="studyBean.title" size="100"
-					value="Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries" />
+				<html:text property="studyBean.domain.title" size="100" />
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
 				Study Type
 			</td>
-			<td width="20%">
-				<html:select property="studyBean.type">
-					<option value="" />
-						<option value="Reproductive">
-							reproductive
-						</option>
-						<option value="Continuous Breeding">
-							continuous breeding
-						</option>
-						<option value="Developmental">
-							developmental
-						</option>
-						<option value="Cancer Bioassay" selected>
-							cancer bioassay
-						</option>
-						<option value="other">
-							[other]
-						</option>
+			<td colspan="3">
+				<html:select property="studyBean.domain.type">
+					<option />
+						<html:options name="studyTypes" />
 				</html:select>
 			</td>
+			<%--
 			<td class="cellLabel" width="15%">
 				Is Animal Study?
 			</td>
 			<td>
 				<input type="checkbox">
 			</td>
+			--%>
 		</tr>
-
 		<tr>
 			<td class="cellLabel">
 				Study Design Types
 			</td>
-			<td>
-				<html:textarea property="studyBean.designTypes" cols="30" rows="2"
-					value="parallel group" />
+			<td width="30%">
+				<html:textarea property="studyBean.designTypes" cols="40" rows="3" styleId="designTypes" />
 				<em>one type per line</em>
 			</td>
-			<td colspan="2">
-				<table class="invisibleTable">
-					<tr>
-						<td>
-							<a href="#sampleNameField" onclick="()"><img
-									src="images/icon_browse.jpg" align="middle"
-									alt="search existing design types" border="0" /> </a>
-						</td>
-						<td>
-							<img src="images/ajax-loader.gif" border="0" class="counts"
-								id="loaderImg" style="display: none">
-						</td>
-						<td>
-							<select multiple="true" size="2" style="display: none">
-								<option>
-									parallel group
-								</option>
-								<option>
-									crossover
-								</option>
-							</select>
-						</td>
-						<td>
-							<a href="#" id="selectMatchedSampleButton" style="display: none">select</a>
-						</td>
-					</tr>
-				</table>
+			<td>
+				<a href="#designTypeField" onclick="show('termBrowser')"><img
+						src="images/icon_browse.jpg" align="middle"
+						alt="search existing design types" border="0" /> </a>
+			</td>
+			<td>
+				<c:set var="searchFunction" value="showMatchedDesignTypes();"/>
+				<c:set var="addFunction" value="populateDesignTypes();"/>
+				<%@include file="../bodySelectMatchedTerms.jsp" %>
 			</td>
 		</tr>
 		<tr>
@@ -122,8 +89,8 @@
 				Diseases
 			</td>
 			<td>
-				<html:textarea property="studyBean.diseaseNames" cols="30" rows="2"
-					value="lung cancer" />
+				<html:textarea property="studyBean.domain.diseases" cols="40"
+					rows="3" value="lung cancer" />
 				<em>one name per line</em>
 			</td>
 			<td>
@@ -133,8 +100,6 @@
 							<a href="#sampleNameField" onclick="()"><img
 									src="images/icon_browse.jpg" align="middle"
 									alt="search EVS disease names" border="0" /> </a>
-							<br>
-							<em>browse EVS</em>
 						</td>
 						<td>
 							<img src="images/ajax-loader.gif" border="0" class="counts"
@@ -163,18 +128,18 @@
 			</td>
 			<td>
 				<html:text property="studyBean.startDate" size="10"
-					value="12-15-2010" />
+					styleId="startDate" />
 				<a href="javascript:cal1.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
 						title="Click Here to Pick up the date" align="top"> </a>
 			</td>
-			<td class="cellLabel">
+			<td class="cellLabel" width="15%">
 				End Date
 			</td>
 			<td>
-				<html:text property="studyBean.endDate" size="10" value="12-15-2010" />
-				<a href="javascript:cal1.popup();"><img
+				<html:text property="studyBean.endDate" size="10" styleId="endDate" />
+				<a href="javascript:cal2.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
 						title="Click Here to Pick up the date" align="top"> </a>
@@ -185,8 +150,9 @@
 				Public Release Date
 			</td>
 			<td>
-				<html:text property="studyBean.publicReleaseDate" size="10" />
-				<a href="javascript:cal1.popup();"><img
+				<html:text property="studyBean.publicReleaseDate" size="10"
+					styleId="publicReleaseDate" />
+				<a href="javascript:cal3.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
 						title="Click Here to Pick up the date" align="top"> </a>
@@ -195,8 +161,9 @@
 				Submission Date
 			</td>
 			<td>
-				<html:text property="studyBean.submissionDate" size="10" />
-				<a href="javascript:cal1.popup();"><img
+				<html:text property="studyBean.submissionDate" size="10"
+					styleId="submissionDate" />
+				<a href="javascript:cal4.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
 						title="Click Here to Pick up the date" align="top"> </a>
@@ -207,8 +174,8 @@
 				Study Description
 			</td>
 			<td colspan="3">
-				<html:textarea property="studyBean.description" rows="6" cols="80"
-					value="Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries" />
+				<html:textarea property="studyBean.domain.description" rows="6"
+					cols="80" />
 			</td>
 		</tr>
 		<tr>
@@ -216,65 +183,8 @@
 				Study Outcome
 			</td>
 			<td colspan="3">
-				<html:textarea property="studyBean.outcome" rows="6" cols="80" />
-			</td>
-		</tr>
-		<%--
-		<tr>
-			<td class="cellLabel">
-				Factor
-			</td>
-			<td colspan="3">
-				<a href="#" onclick="javascript:openSubmissionForm('Factor');"
-					id="addFactor" style="display: block"><img align="top"
-						src="images/btn_add.gif" border="0" /> </a>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<table class="editTableWithGrid" width="95%" align="center">
-					<tr>
-						<th>
-							Factor Type
-						</th>
-						<th>
-							Factor Name
-						</th>
-						<th></th>
-					</tr>
-
-					<tr>
-						<td>
-							Stressor Condition
-						</td>
-						<td>
-							temperature
-						</td>
-						<td align="right">
-							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Stressor Condition
-						</td>
-						<td>
-							pH
-						</td>
-						<td align="right">
-							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		--%>
-		<tr>
-			<td colspan="4">
-				<div style="display: none" id="newFactor">
-					<a name="submitFactor"><jsp:include
-							page="bodyStudySubmitFactor.jsp" /></a>
-				</div>
+				<html:textarea property="studyBean.domain.outcome" rows="6"
+					cols="80" />
 			</td>
 		</tr>
 		<tr>
@@ -367,8 +277,10 @@
 		<tr>
 			<td colspan="4">
 				<div style="display: none" id="newPointOfContact">
-					<a name="submitPointOfContact"><jsp:include
-							page="bodyStudySubmitPointOfContact.jsp" /></a>
+					<a name="submitPointOfContact"> <c:set var="pocForm"
+							value="studyForm" /> <c:set var="poc" value="studyBean.thePOC" />
+						<c:set var="source" value="study" /> <%@include
+							file="../bodySubmitPointOfContact.jsp"%>
 				</div>
 			</td>
 		</tr>
@@ -408,9 +320,8 @@
 			</td>
 			<td>
 
-				<a href="#"
-					onclick="openSubmissionForm('Access');"
-					id="addAccess" style="display: block"><img align="top"
+				<a href="#" onclick="openSubmissionForm('Access');" id="addAccess"
+					style="display: block"><img align="top"
 						src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
@@ -640,12 +551,29 @@
 			</td>
 		</tr>
 	</table>
-
-	</form>
-	</table>
 	<br />
 	<c:if test="${!empty updateStudy}">
 		<c:set var="updateId" value="0" />
 	</c:if>
 	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
+<script language="JavaScript">
+	<!-- //
+		var cal1 = new calendar2(document.getElementById('startDate'));
+	    cal1.year_scroll = true;
+		cal1.time_comp = false;
+		cal1.context = '${pageContext.request.contextPath}';
+		var cal2 = new calendar2(document.getElementById('endDate'));
+	    cal2.year_scroll = true;
+		cal2.time_comp = false;
+		cal2.context = '${pageContext.request.contextPath}';
+		var cal3 = new calendar2(document.getElementById('publicReleaseDate'));
+	    cal3.year_scroll = true;
+		cal3.time_comp = false;
+		cal3.context = '${pageContext.request.contextPath}';
+		var cal4 = new calendar2(document.getElementById('submissionDate'));
+	    cal4.year_scroll = true;
+		cal4.time_comp = false;
+		cal4.context = '${pageContext.request.contextPath}';
+  	//-->
+</script>

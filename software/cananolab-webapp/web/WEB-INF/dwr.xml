@@ -139,6 +139,10 @@
 			<include method="getMatchedUsers"/>
 			<include method="getMatchedGroupNames"/>
 		</create>
+		<create creator="new" javascript="StudyManager" scope="session">
+			<param name="class" value="gov.nih.nci.cananolab.ui.study.DWRStudyManager" />
+			<include method="getMatchedDesignTypes" />
+		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
 			<param name="include" value="displayName, domainId" />
