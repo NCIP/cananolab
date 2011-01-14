@@ -27,7 +27,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SearchStudyAction extends AbstractDispatchAction {
@@ -37,6 +36,7 @@ public class SearchStudyAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("isAnimalStudy", false);
+		InitStudySetup.getInstance().setStudyDropdowns(request);
 		request.getSession().removeAttribute("studySearchResults");
 		return mapping.getInputForward();
 	}
