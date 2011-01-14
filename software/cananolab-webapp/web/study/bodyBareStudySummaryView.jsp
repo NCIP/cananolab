@@ -34,7 +34,7 @@
 			Study Title
 		</td>
 		<td colspan="3">
-			Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries
+			<bean:write name="studyForm" property="studyBean.title" />
 		</td>
 	</tr>
 	<tr>
@@ -42,7 +42,7 @@
 			Type
 		</td>
 		<td colspan="3">
-			cancer bioassay
+			<c:out value="${theStudy.type}" />			
 		</td>
 	</tr>
 	<tr>
@@ -50,7 +50,7 @@
 			Design Types
 		</td>
 		<td colspan="3">
-			parallel group
+			<c:out value="${theStudy.designTypes}" />
 		</td>
 	</tr>
 	<tr>
@@ -58,10 +58,10 @@
 			Diseases
 		</td>
 		<td colspan="3">
-			lung cancer, arthritis
+			<c:out value="${theStudy.diseaseNames}" />
 		</td>
 	</tr>
-	<tr>
+	<!-- <tr>
 		<td class="cellLabel">
 			Factors
 		</td>
@@ -69,12 +69,13 @@
 			temperature, pH
 		</td>
 	</tr>
+	-->
 	<tr>
 		<td class="cellLabel">
 			Description
 		</td>
 		<td colspan="3">
-			Unbiased discovery of in vivo imaging probes through in vitro profiling of nanoparticle libraries
+			<c:out value="${theStudy.description}" />
 		</td>
 	</tr>
 	<tr>
@@ -82,7 +83,7 @@
 			Outcome
 		</td>
 		<td colspan="3">
-			outcome description
+			<c:out value="${theStudy.outcome}" />
 		</td>
 	</tr>
 	<tr>
@@ -93,72 +94,16 @@
 			12/15/2010 - 12/15/2010
 		</td>
 	</tr>
-	<tr>
-		<td class="cellLabel">
-			Point of Contact
-		</td>
-		<td colspan="3">
-			<table align="left" class="invisibleTable">
-				<tr>
-					<td class="cellLabel">
-						Primary Contact?
-					</td>
-					<td class="cellLabel">
-
-						Contact Person
-					</td>
-					<td class="cellLabel">
-						Organization
-					</td>
-					<td class="cellLabel">
-						Role
-					</td>
-				</tr>
-
-
-				<tr>
-
-					<td>
-						Yes
-					</td>
-					<td>
-						Stanley Y Shaw
-						<br>
-						shaw.stanley@mgh.harvard.edu
-					</td>
-					<td>
-						MIT_MGH
-						<br>
-						MA
-					</td>
-
-					<td>
-						investigator
-					</td>
-				</tr>
-
-
-
-				<tr>
-					<td>
-						No
-					</td>
-					<td>
-						Ralph Weissleder
-						<br>
-						weissleder@helix.mgh.harvard.edu
-					</td>
-
-					<td>
-						MIT_MGH
-						<br>
-						MA
-					</td>
-					<td>
-						investigator
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
+	<c:if
+		test="${!empty studyForm.map.studyBean.primaryPOCBean.domain.id || ! empty studyForm.map.studyBean.otherPOCBeans}">
+		<tr>
+			<td class="cellLabel">
+				Point of Contact
+			</td>
+			<td colspan="3">
+				<c:set var="edit" value="false" />
+				<%@ include file="bodyStudyPointOfContactView.jsp"%>
+			</td>
+		</tr>
+	</c:if>	
 </table>
