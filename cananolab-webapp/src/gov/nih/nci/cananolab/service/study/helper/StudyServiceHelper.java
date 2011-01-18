@@ -1,19 +1,11 @@
 package gov.nih.nci.cananolab.service.study.helper;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
-
+import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.domain.common.Study;
+import gov.nih.nci.cananolab.dto.common.StudyBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.StudyException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -23,6 +15,20 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 
 public class StudyServiceHelper extends BaseServiceHelper {
 
@@ -107,16 +113,117 @@ public class StudyServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			String id = (obj.toString()).trim();
-			studyIds.add(id);
-			/*
-			 * if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
-			 * studyIds.add(id); } else {
-			 * logger.debug("User doesn't have access to sample of ID: " + id);
-			 * }
-			 */
+			studyIds.add(id);			
+			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
+				studyIds.add(id); 
+			}else {
+				logger.debug("User doesn't have access to study of ID: " + id);
+			}
+			 
 		}
 		return studyIds;
 	}
+	public Study findStudyById(String studyId) throws Exception{
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
+			throw new NoAccessException("User has no access to the study "
+					+ studyId);
+		}
+		Study study = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
+				Property.forName("id").eq(new Long(studyId)));
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleCollection", FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("protocolCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"childStudyCollection",
+						FetchMode.JOIN);		
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			study = (Study) result.get(0);
+		}
+		return study;
+	}
+	
+	public List<Sample> findSamplesByStudyId(String studyId)
+	throws Exception {
+
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
+			throw new NoAccessException("User has no access to the study "
+					+ studyId);
+		}
+		List<Sample> samples = new ArrayList<Sample>();
+		Study study = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
+				Property.forName("id").eq(new Long(studyId)));
+		crit.setFetchMode("sampleCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			study = (Study) result.get(0);
+		}
+		for (Object obj : study.getSampleCollection()) {
+			Sample sample = (Sample) obj;
+			if (getAccessibleData().contains(sample.getId().toString())) {
+				samples.add(sample);
+			} else {
+				logger.debug("User doesn't have access to sample with id "
+						+ sample.getId());
+			}
+		}
+		return samples;
+}
+	
+	public List<Publication> findPublicationsByStudyId(String studyId)
+	throws Exception {
+
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
+			throw new NoAccessException("User has no access to the study "
+					+ studyId);
+		}
+		List<Publication> pubs = new ArrayList<Publication>();
+		Study study = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
+				Property.forName("id").eq(new Long(studyId)));
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.keywordCollection",
+				FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			study = (Study) result.get(0);
+		}
+		for (Object obj : study.getPublicationCollection()) {
+			Publication pub = (Publication) obj;
+			if (getAccessibleData().contains(pub.getId().toString())) {
+				pubs.add(pub);
+			} else {
+				logger.debug("User doesn't have access to publication with id "
+						+ pub.getId());
+			}
+		}
+		return pubs;
+}
+	
 	public int getNumberOfPublicStudies() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
