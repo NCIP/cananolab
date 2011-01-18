@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.service.study;
 
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.StudyBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.StudyException;
 import gov.nih.nci.cananolab.service.BaseService;
@@ -46,4 +48,6 @@ public interface StudyService extends BaseService{
 	public void deleteStudy(String id) throws StudyException;
 	public void saveStudy(StudyBean studyBean) throws StudyException;
 	public StudyBean cloneStudy(String orginalName,String newName) throws StudyException;
+	public List<SampleBean> findSamplesByStudyId(String studyId) throws StudyException;
+	public List<PublicationBean> findPublicationsByStudyId(String studyId) throws StudyException ;
 }
