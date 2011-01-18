@@ -55,6 +55,31 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.setServiceInSession(request);
+
+		String studyId = request.getParameter("studyId");
+		if (!StringUtils.isEmpty(studyId)) {
+			theForm.set("studyId", studyId);
+		} else {
+			studyId = (String) request.getAttribute("studyId");
+			if (studyId == null) {
+				studyId = theForm.getString("studyId");
+			}
+		}
+		// study service has been created earlier
+		StudyService service = (StudyService) request.getSession()
+				.getAttribute("studyService");
+
+		StudyBean studyBean = service.findStudyById(studyId, true);
+		if (studyBean == null) {
+			throw new NotExistException("No such study in the system");
+		}
+		request.setAttribute("theStudy", studyBean);
+
+		theForm.set("studyBean", studyBean);
+		
 		request.setAttribute("updateStudy", true);
 		request.setAttribute("showDelete", true);
 		request.setAttribute("deleteButtonName", "Delete");
