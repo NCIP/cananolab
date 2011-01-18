@@ -28,6 +28,10 @@ public class StudyBean extends SecuredDataBean {
 	private String description;
 	private String factorType;
 	private String factorName;
+	private Boolean hasPublications = false;
+	private Boolean hasSamples = false;
+	private Boolean hasProtocols = false;
+	private Boolean hasCharacterizations = false;
 	private Study domain = new Study();
 	private PointOfContactBean thePOC = new PointOfContactBean();
 	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
@@ -50,6 +54,23 @@ public class StudyBean extends SecuredDataBean {
 	}
 	public StudyBean(Study study){
 		this.domain = study;
+		
+		if (study.getSampleCollection() != null
+				&& !study.getSampleCollection().isEmpty()) {
+			hasSamples = true;
+		}
+		if (study.getCharacterizationCollection() != null
+				&& !study.getCharacterizationCollection().isEmpty()) {
+			hasCharacterizations = true;
+		}
+		if (study.getPublicationCollection() != null
+				&& !study.getPublicationCollection().isEmpty()) {
+			hasPublications = true;
+		}
+		if (study.getProtocolCollection() != null
+				&& !study.getProtocolCollection().isEmpty()) {
+			hasProtocols = true;
+		}
 	}
 
 
@@ -129,6 +150,30 @@ public class StudyBean extends SecuredDataBean {
 		return studySamples;
 	}
 
+	public Boolean getHasPublications() {
+		return hasPublications;
+	}
+	public void setHasPublications(Boolean hasPublications) {
+		this.hasPublications = hasPublications;
+	}
+	public Boolean getHasSamples() {
+		return hasSamples;
+	}
+	public void setHasSamples(Boolean hasSamples) {
+		this.hasSamples = hasSamples;
+	}
+	public Boolean getHasProtocols() {
+		return hasProtocols;
+	}
+	public void setHasProtocols(Boolean hasProtocols) {
+		this.hasProtocols = hasProtocols;
+	}
+	public Boolean getHasCharacterizations() {
+		return hasCharacterizations;
+	}
+	public void setHasCharacterizations(Boolean hasCharacterizations) {
+		this.hasCharacterizations = hasCharacterizations;
+	}
 	public void setStudySample(List<SampleBean> studySamples) {
 		this.studySamples = studySamples;
 	}
