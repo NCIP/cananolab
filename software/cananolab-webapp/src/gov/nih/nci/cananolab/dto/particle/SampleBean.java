@@ -1,10 +1,14 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Characterization;
+import gov.nih.nci.cananolab.domain.common.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Sample;
+import gov.nih.nci.cananolab.domain.common.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
@@ -71,6 +75,7 @@ public class SampleBean extends SecuredDataBean {
 	private String dataAvailabilityMetricsScore = Constants.EMPTY;
 	private String caNanoLabScore;
 	private String mincharScore;
+	private String compositionSummary;
 
 	public SampleBean() {
 	}
@@ -105,6 +110,32 @@ public class SampleBean extends SecuredDataBean {
 		}
 		if (sample.getSampleComposition() != null
 				&& sample.getSampleComposition().getId() != null) {
+			SampleComposition sc = sample.getSampleComposition();
+			Collection<NanomaterialEntity> nanomaterialEntityCollection = sc.getNanomaterialEntityCollection();
+			StringBuilder sb = new StringBuilder();
+			if(nanomaterialEntityCollection != null && !nanomaterialEntityCollection.isEmpty()){
+				
+				for(NanomaterialEntity ne:nanomaterialEntityCollection){
+					sb.append(ne.getDescription() + "\r\n");
+				}
+			}
+			Collection<ChemicalAssociation> chemicalAssociationCollection = sc.getChemicalAssociationCollection();
+			Collection<FunctionalizingEntity> functionalizingEntityCollection = sc.getFunctionalizingEntityCollection();
+			if(chemicalAssociationCollection != null && !chemicalAssociationCollection.isEmpty()){
+				
+				for(ChemicalAssociation ne:chemicalAssociationCollection){
+					sb.append(ne.getDescription() + "\r\n");
+				}
+			}
+			if(functionalizingEntityCollection != null && !functionalizingEntityCollection.isEmpty()){
+				
+				for(FunctionalizingEntity ne:functionalizingEntityCollection){
+					sb.append(ne.getDescription() + "\r\n");
+				}
+				
+			}
+			compositionSummary = StringUtils.escapeXmlButPreserveLineBreaks(sb.toString());
+			System.out.println("composition Summary: " + compositionSummary);
 			hasComposition = true;
 		}
 		if (sample.getCharacterizationCollection() != null
@@ -115,6 +146,10 @@ public class SampleBean extends SecuredDataBean {
 				&& !sample.getPublicationCollection().isEmpty()) {
 			hasPublications = true;
 		}
+	}
+
+	public String getCompositionSummary() {
+		return compositionSummary;
 	}
 
 	public String getKeywordsStr() {
