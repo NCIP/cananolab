@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.common.Study;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -195,6 +196,37 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		return chars;
 	}
 
+	public List<Characterization> findCharacterizationsByStudyId(
+			String studyId) throws Exception {
+		List<Characterization> chars = new ArrayList<Characterization>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(Study.class);
+		Study study = null;
+		crit.createAlias("study", "study");
+		crit.add(Property.forName("id").eq(new Long(studyId)));
+		// fully load characterization
+		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		List results = appService.query(crit);
+
+		if (!results.isEmpty()) {
+			study = (Study) results.get(0);
+		}
+		for (Object obj : study.getCharacterizationCollection()) {
+			Characterization achar = (Characterization) obj;
+			if (getAccessibleData().contains(achar.getId().toString())) {
+				checkAssociatedVisibility(achar);
+				chars.add(achar);
+			} else {
+				logger
+						.debug("User doesn't have access ot characterization with id "
+								+ achar.getId());
+			}
+		}
+		return chars;
+	}
 	public Characterization findCharacterizationById(String charId)
 			throws Exception {
 		if (!getAccessibleData().contains(charId)) {

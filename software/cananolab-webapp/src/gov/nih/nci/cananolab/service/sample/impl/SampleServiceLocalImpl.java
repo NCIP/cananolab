@@ -64,7 +64,7 @@ import org.hibernate.criterion.Property;
 /**
  * Service methods involving samples
  *
- * @author pansu
+ * @author pansu, lethai
  *
  */
 public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
@@ -1161,6 +1161,39 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleIds;
 	}
 
+	public List<SampleBean> findSamplesByStudyId(String studyId)
+			throws SampleException {
+		List<SampleBean> samplesBean = new ArrayList<SampleBean>();
+
+		
+		try {
+			List<Sample> samples = helper.findSamplesByStudyId(studyId);
+			if (samples != null) {
+				for (Sample sample : samples) {
+					SampleBean sampleBean = new SampleBean(sample);
+					samplesBean.add(sampleBean);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Problem finding the samples by study id: " + studyId;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+
+		// for testing
+		SampleServiceHelper sampleHelper = new SampleServiceHelper(
+				this.securityService);
+		try {
+			Sample sample1 = sampleHelper.findSampleById("11337748");
+			Sample sample2 = sampleHelper.findSampleById("11337748");
+			samplesBean.add(new SampleBean(sample1));
+			samplesBean.add(new SampleBean(sample2));
+		} catch (Exception e) {
+		}
+		return samplesBean;
+
+	}
+
 	public List<String> removeAccesses(Sample sample, Boolean removeLater)
 			throws SampleException, NoAccessException {
 		List<String> ids = new ArrayList<String>();
@@ -1196,5 +1229,25 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(error, e);
 		}
 		return ids;
+	}
+
+
+	public List<SampleBean> findSamplesByCharacterizationId(
+			String characterizationId) throws SampleException {
+		List<SampleBean> samplesBean = new ArrayList<SampleBean>();		
+		try {
+			List<Sample> samples = helper.findSamplesByCharacterizationId(characterizationId);
+			if (samples != null) {
+				for (Sample sample : samples) {
+					SampleBean sampleBean = new SampleBean(sample);
+					samplesBean.add(sampleBean);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Problem finding the samples by characterization id: " + characterizationId;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+		return samplesBean;
 	}
 }

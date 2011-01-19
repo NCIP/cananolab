@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
+import gov.nih.nci.cananolab.exception.StudyException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
@@ -94,4 +95,6 @@ public interface SampleService extends BaseService {
 
 	public List<String> findSampleIdsByOwner(String currentOwner)
 			throws SampleException;
+	public List<SampleBean> findSamplesByStudyId(String studyId) throws SampleException;
+	public List<SampleBean> findSamplesByCharacterizationId(String characterizationId) throws SampleException;
 }

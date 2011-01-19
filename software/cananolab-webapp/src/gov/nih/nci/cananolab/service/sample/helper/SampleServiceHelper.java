@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Sample;
+import gov.nih.nci.cananolab.domain.common.Study;
 import gov.nih.nci.cananolab.domain.material.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.material.OtherFunction;
 import gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity;
@@ -946,4 +947,79 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		return sampleIds;
 	}
+	public List<Sample> findSamplesByStudyId(String studyId)
+	throws Exception {
+
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
+			throw new NoAccessException("User has no access to the study "
+					+ studyId);
+		}
+		List<Sample> samples = new ArrayList<Sample>();
+		Study study = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
+				Property.forName("id").eq(new Long(studyId)));
+		crit.setFetchMode("sampleCollection", FetchMode.JOIN);/*
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);*/
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			study = (Study) result.get(0);
+		}
+		for (Object obj : study.getSampleCollection()) {
+			Sample sample = (Sample) obj;
+			if (getAccessibleData().contains(sample.getId().toString())) {
+				samples.add(sample);
+			} else {
+				logger.debug("User doesn't have access to sample with id "
+						+ sample.getId());
+			}
+		}
+		return samples;
+	}
+	
+	public List<Sample> findSamplesByCharacterizationId(String characterizationId)
+	throws Exception {
+
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), characterizationId)) {
+			throw new NoAccessException("User has no access to the characterization "
+					+ characterizationId);
+		}
+		List<Sample> samples = new ArrayList<Sample>();
+		Characterization characterization = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).add(
+				Property.forName("id").eq(new Long(characterizationId)));
+		crit.setFetchMode("sampleCollection", FetchMode.JOIN);/*
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);*/
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			characterization = (Characterization) result.get(0);
+		}
+		for (Object obj : characterization.getSampleCollection()) {
+			Sample sample = (Sample) obj;
+			if (getAccessibleData().contains(sample.getId().toString())) {
+				samples.add(sample);
+			} else {
+				logger.debug("User doesn't have access to sample with id "
+						+ sample.getId());
+			}
+		}
+		return samples;
+	}
+	
+	
 }
