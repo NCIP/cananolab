@@ -5,8 +5,13 @@ package gov.nih.nci.cananolab.ui.study;
  *
  * @author houyh
  */
+import java.util.List;
+
 import gov.nih.nci.cananolab.dto.common.StudyBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NotExistException;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.service.study.impl.StudyServiceLocalImpl;
@@ -41,28 +46,28 @@ public class StudySampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		this.setServiceInSession(request);
+		
 
-		String studyId = request.getParameter("studyId");
+		String studyId = request.getSession().getAttribute("studyId").toString();
+		//String studyName = (String)request.getSession().getAttribute("studyName");
+		//System.out.println("studyName: " +studyName);
 		if (!StringUtils.isEmpty(studyId)) {
 			theForm.set("studyId", studyId);
 		} else {
 			studyId = (String) request.getAttribute("studyId");
 			if (studyId == null) {
-				studyId = theForm.getString("studyId");
+				studyId = request.getSession().getAttribute("studyId").toString();
 			}
 		}
-		// study service has been created earlier
-		StudyService service = (StudyService) request.getSession()
-				.getAttribute("studyService");
-
-		StudyBean studyBean = service.findStudyById(studyId, true);
-		if (studyBean == null) {
+		
+		// sample service has been created earlier
+		SampleService service = this.setServiceInSession(request);
+		List<SampleBean> samplesBean = service.findSamplesByStudyId(studyId);
+		if (samplesBean == null) {
 			throw new NotExistException("No such study in the system");
 		}
-		request.setAttribute("theStudy", studyBean);
-
-		theForm.set("studyBean", studyBean);
+		
+		request.setAttribute("studySamples",samplesBean);
 		return mapping.findForward("summaryView");
 	}
 	
@@ -84,12 +89,17 @@ public class StudySampleAction extends BaseAnnotationAction {
 			throws Exception {
 		return mapping.findForward("sampleAdd");
 	}
-	private StudyService setServiceInSession(HttpServletRequest request)
-		throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		StudyService studyService = new StudyServiceLocalImpl(securityService);
-		request.getSession().setAttribute("studyService", studyService);
-		return studyService;
+	
+	private SampleService setServiceInSession(HttpServletRequest request)
+	throws Exception {
+	SecurityService securityService = super
+			.getSecurityServiceFromSession(request);
+	SampleService service = (SampleService) request.getSession()
+	.getAttribute("sampleService");
+	if(service == null){
+		service = new SampleServiceLocalImpl(securityService);
+	}
+	request.getSession().setAttribute("sampleService", service);
+	return service;
 	}
 }
