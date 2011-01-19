@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
@@ -87,6 +88,9 @@ public class CharacterizationBean {
 	private String isSoluble; // Data holder for Boolean field in Solubility.
 
 	private String isHydrophobic;
+	
+	//private List<String> sampleNames = new ArrayList<String>();
+	private String sampleNames;
 
 	public CharacterizationBean() {
 		// initialize finding matrix
@@ -114,6 +118,17 @@ public class CharacterizationBean {
 		if (chara.getFindingCollection() != null) {
 			for (Finding finding : chara.getFindingCollection()) {
 				findings.add(new FindingBean(finding));
+			}
+		}
+		if(chara.getSampleCollection() != null){
+			StringBuilder names = new StringBuilder();
+			for(Sample sample:chara.getSampleCollection()){
+				names.append(sample.getName() + ", ");
+			}
+			String namesString = names.toString().trim();
+			System.out.println("namesString: " + namesString);
+			if(namesString.lastIndexOf(",") == namesString.length() - 1){
+				sampleNames = namesString.substring(0, namesString.length() - 1);
 			}
 		}
 		Collections.sort(findings, new Comparators.FindingBeanDateComparator());
@@ -161,6 +176,15 @@ public class CharacterizationBean {
 		}
 		updateType();
 		updateName();
+	}
+
+	
+	public String getSampleNames() {
+		return sampleNames;
+	}
+
+	public void setSampleNames(String sampleNames) {
+		this.sampleNames = sampleNames;
 	}
 
 	public Characterization getDomainCopy(String createdBy, boolean copyData) {
