@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.StudyException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -521,5 +522,57 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new PublicationException(error, e);
 		}
 		return publicationIds;
+	}
+	
+	public List<PublicationBean> findPublicationsByStudyId(String studyId)
+			throws PublicationException {
+		List<PublicationBean> publicationsBean = new ArrayList<PublicationBean>();
+		/*
+		 * try { List<Publication> publications = helper
+		 * .findPublicationsByStudyId(studyId);
+		 * 
+		 * if (publications != null) { for (Publication pub : publications) {
+		 * PublicationBean pubBean = new PublicationBean(pub);
+		 * publicationsBean.add(pubBean); } } } catch (Exception e) { String err
+		 * = "Problem finding the study by id: " + studyId; logger.error(err,
+		 * e); throw new StudyException(err, e); }
+		 */
+		// for testing
+		PublicationServiceHelper pubHelper = new PublicationServiceHelper(
+				this.securityService);
+		try {
+			List<Publication> publications = pubHelper
+					.findPublicationsBySampleId("8912896");
+			List<Publication> publications2 = pubHelper
+					.findPublicationsBySampleId("10780678");
+
+			List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
+			if (publications != null) {
+				for (Publication publication : publications) {
+					// retrieve sampleNames
+
+					PublicationBean pubBean = new PublicationBean(publication);
+					// pubBean.setSampleNames(sampleNames);
+					publicationsBean.add(pubBean);
+
+				}
+			}
+			if (publications2 != null) {
+				for (Publication publication : publications2) {
+					// retrieve sampleNames
+
+					PublicationBean pubBean = new PublicationBean(publication);
+					// pubBean.setSampleNames(sampleNames);
+					publicationsBean.add(pubBean);
+
+				}
+			}
+			// pubsBean.add(new PublicationBean().setDomainFile(domainFile));
+			// samplesBean.add(new SampleBean(sample2));
+		} catch (Exception e) {
+		}
+
+		return publicationsBean;
+
 	}
 }
