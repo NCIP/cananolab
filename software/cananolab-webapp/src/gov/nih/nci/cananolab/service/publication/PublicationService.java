@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.StudyException;
 import gov.nih.nci.cananolab.service.BaseService;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Interface defining methods invovled in submiting and searching publications.
  *
- * @author tanq
+ * @author tanq, lethai
  *
  */
 public interface PublicationService extends BaseService {
@@ -84,4 +85,5 @@ public interface PublicationService extends BaseService {
 
 	public List<String> findPublicationIdsByOwner(String currentOwner)
 			throws PublicationException;
+	public List<PublicationBean> findPublicationsByStudyId(String studyId) throws PublicationException ;
 }
