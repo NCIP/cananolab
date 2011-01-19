@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * This interface defines methods involved in creating and searching protocols
  *
- * @author pansu
+ * @author pansu, lethai
  *
  */
 public interface ProtocolService extends BaseService {
@@ -20,6 +20,8 @@ public interface ProtocolService extends BaseService {
 	public ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;
 
+	public List<ProtocolBean> findProtocolByStudyId(String studyId)
+	throws ProtocolException;
 	/**
 	 * Persist a new protocol or update an existing protocol
 	 *
