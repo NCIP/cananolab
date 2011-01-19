@@ -29,7 +29,7 @@ import org.hibernate.criterion.Property;
 /**
  * Local implementation of ProtocolService
  *
- * @author pansu
+ * @author pansu, lethai
  *
  */
 public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
@@ -373,5 +373,12 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public ProtocolServiceHelper getHelper() {
 		return helper;
+	}
+
+	
+	public List<ProtocolBean> findProtocolByStudyId(String studyId)
+			throws ProtocolException {
+		
+		return null;
 	}
 }
