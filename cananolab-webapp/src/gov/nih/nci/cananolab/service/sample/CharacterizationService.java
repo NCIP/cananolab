@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Interface defining service methods involving characterizations
  *
- * @author pansu, tanq
+ * @author pansu, tanq, lethai
  *
  */
 public interface CharacterizationService extends BaseService {
@@ -35,6 +35,8 @@ public interface CharacterizationService extends BaseService {
 			String sampleId) throws CharacterizationException,
 			NoAccessException;
 
+	public List<CharacterizationBean> findCharacterizationsByStudyId(
+			String studyId) throws CharacterizationException;
 	public void saveFinding(FindingBean findingBean)
 			throws CharacterizationException, NoAccessException;
 

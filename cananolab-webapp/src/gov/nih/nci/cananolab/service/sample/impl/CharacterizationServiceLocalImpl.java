@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -40,7 +41,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Service methods involving local characterizations
  *
- * @author tanq, pansu
+ * @author tanq, pansu, lethai
  *
  */
 public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
@@ -650,5 +651,27 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			String error = "Error in removing finding accessibility";
 			throw new CharacterizationException(error, e);
 		}
+	}
+
+	
+	public List<CharacterizationBean> findCharacterizationsByStudyId(
+			String studyId) throws CharacterizationException {
+		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
+	//	SampleServiceHelper sampleHelper = new SampleServiceHelper(this.securityService);
+		try {
+			List<Characterization> chars = helper
+					.findCharacterizationsByStudyId(studyId);
+			for (Characterization achar : chars) {
+				//List<Sample> samplesByCharacterizationId = sampleHelper.findSamplesByCharacterizationId(achar.getId().toString());				
+				CharacterizationBean charBean = new CharacterizationBean(achar);
+				charBeans.add(charBean);
+			}
+			return charBeans;
+		} catch (Exception e) {
+			String err = "Error finding characterization by study ID "
+					+ studyId;
+			logger.error(err, e);
+			throw new CharacterizationException(err);
+		}		
 	}
 }
