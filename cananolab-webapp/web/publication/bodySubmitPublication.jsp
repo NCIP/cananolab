@@ -12,21 +12,17 @@
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
-<c:set var="action" value="Submit" scope="request" />
-<c:if test="${param.dispatch eq 'setupUpdate'}">
-	<c:set var="action" value="Update" scope="request" />
+<c:set var="sampleTitle" value=""/>
+<c:if test="${!empty param.sampleId}">
+	<c:set var="sampleTitle" value="for ${sampleName}"/>
 </c:if>
-<c:choose>
-	<c:when test="${!empty publicationForm.map.publication.domainFile.id}">
-		<c:set var="publicationTitle"
-			value="${sampleName} ${fn:toUpperCase(publicationForm.map.publication.domainFile.category)}" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="publicationTitle" value="${sampleName} Publication" />
-	</c:otherwise>
-</c:choose>
+<c:set var="title" value="Submit Publication ${sampleTitle}" />
+<c:if test="${param.dispatch eq 'setupUpdate'}">
+	<c:set var="title" value="Update Publication ${sampleTitle}" />
+</c:if>
+
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="${publicationTitle}" />
+	<jsp:param name="pageTitle" value="${title}" />
 	<jsp:param name="topic" value="submit_publication_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
