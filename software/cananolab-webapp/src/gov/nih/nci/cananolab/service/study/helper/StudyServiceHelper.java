@@ -3,9 +3,7 @@ package gov.nih.nci.cananolab.service.study.helper;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.domain.common.Study;
-import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.StudyException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -158,71 +156,6 @@ public class StudyServiceHelper extends BaseServiceHelper {
 		return study;
 	}
 	
-	public List<Sample> findSamplesByStudyId(String studyId)
-	throws Exception {
-
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
-			throw new NoAccessException("User has no access to the study "
-					+ studyId);
-		}
-		List<Sample> samples = new ArrayList<Sample>();
-		Study study = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
-				Property.forName("id").eq(new Long(studyId)));
-		crit.setFetchMode("sampleCollection", FetchMode.JOIN);
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			study = (Study) result.get(0);
-		}
-		for (Object obj : study.getSampleCollection()) {
-			Sample sample = (Sample) obj;
-			if (getAccessibleData().contains(sample.getId().toString())) {
-				samples.add(sample);
-			} else {
-				logger.debug("User doesn't have access to sample with id "
-						+ sample.getId());
-			}
-		}
-		return samples;
-}
-	
-	public List<Publication> findPublicationsByStudyId(String studyId)
-	throws Exception {
-
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
-			throw new NoAccessException("User has no access to the study "
-					+ studyId);
-		}
-		List<Publication> pubs = new ArrayList<Publication>();
-		Study study = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
-				Property.forName("id").eq(new Long(studyId)));
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.authorCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.keywordCollection",
-				FetchMode.JOIN);
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			study = (Study) result.get(0);
-		}
-		for (Object obj : study.getPublicationCollection()) {
-			Publication pub = (Publication) obj;
-			if (getAccessibleData().contains(pub.getId().toString())) {
-				pubs.add(pub);
-			} else {
-				logger.debug("User doesn't have access to publication with id "
-						+ pub.getId());
-			}
-		}
-		return pubs;
-}
 	
 	public int getNumberOfPublicStudies() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
