@@ -569,13 +569,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			Sample sample = (Sample) obj;
 			poc = sample.getPrimaryPointOfContact();
 		}
-		if (poc != null) {
-			if (!getAccessibleData().contains(poc.getId().toString())) {
-				throw new NoAccessException(
-						"User has no access to the point of contact "
-								+ poc.getId());
-			}
-		}
 		return poc;
 	}
 
@@ -600,13 +593,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
 			for (PointOfContact poc : otherPOCs) {
-				if (getAccessibleData().contains(poc.getId().toString())) {
-					pointOfContacts.add(poc);
-				} else { // ignore no access exception
-					logger
-							.debug("User doesn't have access to the POC with org name "
-									+ poc.getOrganization().getName());
-				}
+				pointOfContacts.add(poc);
 			}
 		}
 		return pointOfContacts;
@@ -794,24 +781,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		for (Object obj : results) {
 			Sample sample = (Sample) obj;
 			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
-			if (getAccessibleData().contains(primaryPOC.getId().toString())) {
-				pointOfContacts.add(primaryPOC);
-			} else { // ignore no access exception
-				logger
-						.debug("User doesn't have access to the primary POC with org name "
-								+ primaryPOC.getOrganization().getName());
-			}
+			pointOfContacts.add(primaryPOC);
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
-			for (PointOfContact poc : otherPOCs) {
-				if (getAccessibleData().contains(poc.getId().toString())) {
-					pointOfContacts.add(poc);
-				} else { // ignore no access exception
-					logger
-							.debug("User doesn't have access to the POC with org name "
-									+ poc.getOrganization().getName());
-				}
-			}
+			pointOfContacts.addAll(otherPOCs);
 		}
 		return pointOfContacts;
 	}
@@ -906,12 +879,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			poc = (PointOfContact) obj;
-			if (getAccessibleData().contains(poc.getId().toString())) {
-				return poc;
-			} else {
-				throw new NoAccessException(
-						"User has no access to the point of contact");
-			}
 		}
 		return poc;
 	}
