@@ -8,461 +8,146 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
+<c:url var="printUrl" value="studyCharacterization.do" scope="session">
+	<c:param name="dispatch" value="summaryPrint" />
+	<c:param name="studyId" value="${studyId}" />
+</c:url>
+<c:url var="exportUrl" value="studyCharacterization.do" scope="session">
+	<c:param name="dispatch" value="summaryExport" />
+	<c:param name="studyId" value="${studyId}" />
+</c:url>
 
-<%--TODO: create online help topic for this page.--%>
-<jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle"
-		value="Characterizations in Study MIT_MGH_Kelly" />
-	<jsp:param name="topic" value="submit_study_help" />
-	<jsp:param name="glossaryTopic" value="glossary_help" />
-</jsp:include>
-<jsp:include page="/bodyMessage.jsp?bundle=study" />
+	<jsp:include page="/bodyTitle.jsp">
+		<jsp:param name="pageTitle"
+			value="Characterizations in Study ${studyName}" />
+		<jsp:param name="topic" value="char_all_tab_help" />
+		<jsp:param name="glossaryTopic" value="glossary_help" />
+		<jsp:param name="printLink"	value="${printUrl}" />
+		<jsp:param name="exportLink" value="${exportUrl}" />
+	</jsp:include>
+
+<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 <div class="shadetabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
-			<a href="javascript:showSummary('ALL', 1)" title="All"><span>All</span>
-			</a>
+			<a	href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
+				title="All"><span>All</span></a>
 		</li>
-
-		<li>
-			<a href="javascript:showSummary('1', 1)"
-				title="physico-chemical characterization"><span>physico-chemical
-					characterization</span> </a>
-			<a
-				href="javascript:printPage('characterization.do?dispatch=summaryPrint&sampleId=11337747&type=physico-chemical characterization')"
-				id="printUrl1" style="display: none;"></a>
-			<a
-				href="characterization.do?dispatch=summaryExport&sampleId=11337747&type=physico-chemical characterization"
-				id="exportUrl1" style="display: none;"></a>
-		</li>
-
+		<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
+			<li>
+				<a
+					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
+					title="${type}"><span><c:out value="${type}"/></span>
+				</a>
+				<a href="javascript:printPage('${printUrl}&type=${type}')"
+					id="printUrl${ind.count}" style="display: none;"></a>
+				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
+					style="display: none;"></a>
+			</li>
+		</c:forEach>
 	</ul>
 </div>
-
-<div class="shadetabs" id="summaryTab1" style="display: none;">
-	<ul>
-		<li>
-			<a href="javascript:showSummary('ALL',1)" title="All"><span>All</span>
-			</a>
-		</li>
-
-
-
-
-
-
-
-		<li class="selected">
-			<a href="javascript:showSummary('1', 1)"
-				title="physico-chemical characterization"><span>physico-chemical
-					characterization</span> </a>
-		</li>
-
-	</ul>
-</div>
-
+<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
+	<div class="shadetabs" id="summaryTab${ind.count}"
+		style="display: none;">
+		<ul>
+			<li>
+				<a	href="javascript:showSummary('ALL',${fn:length(characterizationTypes)})"
+					title="All"><span>All</span></a>
+			</li>
+			<c:forEach var="type" items="${characterizationTypes}" varStatus="ind2">
+				<c:choose>
+					<c:when test="${ind.count eq ind2.count }">
+						<c:set var="selectedClass" value="selected" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="selectedClass" value="" />
+					</c:otherwise>
+				</c:choose>
+				<li class="${selectedClass}">
+					<a	href="javascript:showSummary('${ind2.count}', ${fn:length(characterizationTypes)})"
+						title="${type}"><span><c:out value="${type}"/></span></a>
+				</li>
+			</c:forEach>
+		</ul>
+	</div>
+</c:forEach>
 <table class="summaryViewNoTop" width="100%">
 
 	<tr>
 		<td>
-
-			<table id="summarySectionHeader1" width="100%" align="center"
-				style="display: block" class="summaryViewHeader">
-				<tr>
-					<td align="left">
-						<b>physico-chemical characterization</b>
-						<br />
-
-						<a href="#relaxivity">relaxivity (1)</a> &nbsp;
-
-						<a href="#size">size (1)</a> &nbsp;
-
-					</td>
-				</tr>
-			</table>
-			<div id="summaryHeaderSeparator1">
-			</div>
-
-			<br />
-
-
-
-
-
-
-
-			<table id="summarySection1" width="100%" align="center"
-				style="display: block" class="summaryViewNoGrid">
-				<tr>
-					<th align="left">
-						<span class="summaryViewHeading">physico-chemical
-							characterization</span>
-					</th>
-				</tr>
-				<tr>
-					<td>
-
-						<a name="relaxivity"></a>
-						<table width="99%" align="center" class="summaryViewNoGrid"
-							bgcolor="#dbdbdb">
-							<tr>
-								<th align="left">
-									relaxivity
-								</th>
-							</tr>
-							<tr>
-								<td>
-
-
-
-
-
-
-
-
-
-
-									<script type="text/javascript"
-										src="javascript/SampleManager.js"></script>
-									<script type="text/javascript"
-										src="/caNanoLab/dwr/interface/SampleManager.js"></script>
-									<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
-									<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-
-
-
-
-
-
-									<table class="summaryViewNoGrid" width="99%" align="center"
-										bgcolor="#F5F5f5">
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Sample Names
-											</td>
-											<td>
-												MIT_MGH-KKellyIB2009-01, MIT_MGH-KKellyIB2009-02
-											</td>
-										</tr>
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Assay Type
-											</td>
-											<td>
-												relaxivity
-											</td>
-										</tr>
-
-
-
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Point of Contact
-											</td>
-											<td>
-												MIT_MGH (Stanley Y Shaw)
-											</td>
-										</tr>
-
-
-
-
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Design Description
-											</td>
-											<td>
-
-
-												37 C 0.5 T
-
-
-
-											</td>
-										</tr>
-
-
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Characterization Results
-											</td>
-											<td>
-
-
-
-
-
-
-												<table align="center" width="100%" class="summaryViewNoGrid">
-													<tr>
-														<td class="cellLabel">
-															Data and Conditions
-														</td>
-													</tr>
-													<tr>
-														<td>
-
-
-															<table class="summaryViewWithGrid" align="left">
-																<tr>
-
-																	<td class="cellLabel">
-																		R1
-																		<br>
-																		(1/mM 1/s)
-																	</td>
-
-																	<td class="cellLabel">
-																		R2
-																		<br>
-																		(1/mM 1/s)
-																	</td>
-																	<td class="cellLabel">
-																		Sample Name
-																	</td>
-																</tr>
-
-																<tr>
-
-																	<td>
-																		21.0
-																	</td>
-
-																	<td>
-																		62.0
-																	</td>
-																	<td>
-																		MIT_MGH-KKellyIB2009-01
-																	</td>
-																</tr>
-																<tr>
-
-																	<td>
-																		21.0
-																	</td>
-
-																	<td>
-																		62.0
-																	</td>
-																	<td>
-																		MIT_MGH-KKellyIB2009-02
-																	</td>
-																</tr>
-
-															</table>
-
-
-														</td>
-													</tr>
-													<tr>
-														<td class="cellLabel">
-
-														</td>
-													</tr>
-													<tr>
-														<td>
-
-
-
-														</td>
-													</tr>
-												</table>
-
-												<br>
-											</td>
-										</tr>
-
-
-									</table>
-
-
-								</td>
-							</tr>
-							<tr>
-								<th valign="top" align="left" height="6">
-								</th>
-							</tr>
-						</table>
-						<br />
-
-						<a name="size"></a>
-						<table width="99%" align="center" class="summaryViewNoGrid"
-							bgcolor="#dbdbdb">
-							<tr>
-								<th align="left">
-									size
-								</th>
-							</tr>
-							<tr>
-								<td>
-
-
-
-
-
-
-
-
-
-
-									<script type="text/javascript"
-										src="javascript/SampleManager.js"></script>
-									<script type="text/javascript"
-										src="/caNanoLab/dwr/interface/SampleManager.js"></script>
-									<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
-									<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-
-
-
-
-
-
-									<table class="summaryViewNoGrid" width="99%" align="center"
-										bgcolor="#F5F5f5">
-
-
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Sample Names
-											</td>
-											<td>
-												MIT_MGH-KKellyIB2009-01, MIT_MGH-KKellyIB2009-02
-											</td>
-										</tr>
-
-
-
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Point of Contact
-											</td>
-											<td>
-												MIT_MGH
-											</td>
-										</tr>
-
-
-
-
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Design Description
-											</td>
-											<td>
-
-
-												Overall size (volume weighted) in aqueous solution of
-												dextran coated iron oxide particle
-
-
-
-											</td>
-										</tr>
-
-
-
-										<tr>
-											<td class="cellLabel" width="10%">
-												Characterization Results
-											</td>
-											<td>
-												<table align="center" width="100%" class="summaryViewNoGrid">
-													<tr>
-														<td class="cellLabel">
-															Data and Conditions
-														</td>
-													</tr>
-													<tr>
-														<td>
-
-
-															<table class="summaryViewWithGrid" align="left">
-																<tr>
-
-																	<td class="cellLabel">
-																		Diameter
-																		<br>
-																		(nm)
-																	</td>
-																	<td class="cellLabel">
-																		Sample Name
-																	</td>
-																</tr>
-
-																<tr>
-
-																	<td>
-																		38.0
-																	</td>
-																	<td>
-																		MIT_MGH-KKellyIB2009-01
-																	</td>
-																</tr>
-																<tr>
-
-																	<td>
-																		38.0
-																	</td>
-																	<td>
-																		MIT_MGH-KKellyIB2009-02
-																	</td>
-																</tr>
-
-															</table>
-
-
-														</td>
-													</tr>
-													<tr>
-														<td class="cellLabel">
-
-														</td>
-													</tr>
-													<tr>
-														<td>
-
-
-
-														</td>
-													</tr>
-												</table>
-
-												<br>
-											</td>
-										</tr>
-
-
-									</table>
-
-
-								</td>
-							</tr>
-							<tr>
-								<th valign="top" align="left" height="6">
-								</th>
-							</tr>
-						</table>
-						<br />
-
-					</td>
-				</tr>
-				<tr>
-					<th valign="top" align="left" height="6">
-					</th>
-				</tr>
-			</table>
-			<div id="summarySeparator1">
-				<br>
-			</div>
-
+			<c:forEach var="type" items="${characterizationTypes}"
+				varStatus="ind">
+				<table id="summarySectionHeader${ind.count}" width="100%"
+					align="center" style="display: block" class="summaryViewHeader">
+					<tr>
+						<td align="left">
+							<b>${type}</b>
+							<br />
+							<c:forEach var="charName"
+								items="${studyCharacterizationSummaryView.type2CharacterizationNames[type]}">
+								<a href="#${charName}"><c:out value="${charName}"/>
+									(<c:out value="${studyCharacterizationSummaryView.charName2Counts[charName]}"/>)</a> &nbsp;
+	            			</c:forEach>
+						</td>
+					</tr>
+				</table>
+				<div id="summaryHeaderSeparator${ind.count}">
+				</div>
+			</c:forEach>
+			<br/>
+			<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
+				<table id="summarySection${ind.count}" width="100%" align="center"
+					style="display: block" class="summaryViewNoGrid">
+					<tr>
+						<th align="left">
+							<span class="summaryViewHeading">${type}</span>
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<c:forEach var="charName"
+								items="${studyCharacterizationSummaryView.type2CharacterizationNames[type]}">
+								<a name="${charName}"></a>
+								<table width="99%" align="center" class="summaryViewNoGrid"
+									bgcolor="#dbdbdb">
+									<tr>
+										<th align="left">
+											${charName}
+										</th>
+									</tr>
+									<tr>
+										<td>
+											<c:forEach var="charBean"
+												items="${studyCharacterizationSummaryView.charName2Characterizations[charName]}"
+												varStatus="charBeanInd">
+												<%@ include file="bodySingleCharacterizationSummaryView.jsp"%>
+												<c:if
+													test="${charBeanInd.count<fn:length(studyCharacterizationSummaryView.charName2Characterizations[charName])}">
+													<br />
+												</c:if>
+											</c:forEach>
+										</td>
+									</tr>
+									<tr>
+										<th valign="top" align="left" height="6">
+										</th>
+									</tr>
+								</table>
+								<br/>					
+							</c:forEach>
+						</td>
+					</tr>
+					<tr>
+						<th valign="top" align="left" height="6">
+						</th>
+					</tr>
+				</table>
+				<div id="summarySeparator${ind.count}">
+					<br>
+				</div>
+			</c:forEach>
+			<jsp:include page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />
 		</td>
 	</tr>
 </table>
