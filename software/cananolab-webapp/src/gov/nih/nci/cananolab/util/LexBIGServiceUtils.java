@@ -31,6 +31,7 @@ public class LexBIGServiceUtils {
 	private static String evsService = "EvsServiceInfo";
 	private static String serviceUrl = "http://lexevsapi51.nci.nih.gov/lexevsapi51";
 	public static final String NCI_THESAURUS_SCHEME = "NCI_Thesaurus";
+	public static final String NPO_SCHEME="NPO";
 	public static final String EXACT_MATCH_ALGORITHM = "exact match";
 	public static final String CONTAINS_ALGORITHM = "contains";
 	public static final String STARTS_WITH_ALGORITHM = "starts with";
@@ -67,9 +68,10 @@ public class LexBIGServiceUtils {
 		LexBIGService service = LexBIGServiceUtils.createLexBIGService();
 		List<String> matchedSynonyms = new ArrayList<String>();
 		String algorithm = null;
-		if (searchTerm.equals(LexBIGServiceUtils.CONTAINS_ALGORITHM)) {
+		if (matchAlgorithm.equals(LexBIGServiceUtils.CONTAINS_ALGORITHM)) {
 			algorithm = MatchAlgorithms.contains.toString();
-		} else if (searchTerm.equals(LexBIGServiceUtils.STARTS_WITH_ALGORITHM)) {
+		} else if (matchAlgorithm
+				.equals(LexBIGServiceUtils.STARTS_WITH_ALGORITHM)) {
 			algorithm = MatchAlgorithms.startsWith.toString();
 		} else {
 			algorithm = MatchAlgorithms.exactMatch.toString();
@@ -81,7 +83,7 @@ public class LexBIGServiceUtils {
 			codedNodeSet = codedNodeSet.restrictToStatus(
 					ActiveOption.ACTIVE_ONLY, null);
 			codedNodeSet = codedNodeSet.restrictToMatchingDesignations(
-					searchTerm, SearchDesignationOption.PREFERRED_ONLY,
+					searchTerm, SearchDesignationOption.ALL,
 					algorithm, null);
 
 			// Sort by search engine recommendation & code ...
