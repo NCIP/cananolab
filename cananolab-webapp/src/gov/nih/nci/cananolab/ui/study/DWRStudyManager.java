@@ -2,7 +2,9 @@ package gov.nih.nci.cananolab.ui.study;
 
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.LexBIGServiceUtils;
 
+import java.util.List;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
@@ -21,9 +23,10 @@ public class DWRStudyManager {
 		}
 		String[] typeArray = new String[] { "" };
 		try {
-			SortedSet<String>types=InitSetup.getInstance().getDefaultAndOtherTypesByLookup(wctx.getHttpServletRequest(),
-					"studyDesignTypes", "study", "designType",
-					"otherType", true);
+			SortedSet<String> types = InitSetup.getInstance()
+					.getDefaultAndOtherTypesByLookup(
+							wctx.getHttpServletRequest(), "studyDesignTypes",
+							"study", "designType", "otherType", true);
 
 			if (!types.isEmpty()) {
 				typeArray = types.toArray(new String[types.size()]);
@@ -32,5 +35,26 @@ public class DWRStudyManager {
 			logger.error("Problem getting matched design types", e);
 		}
 		return typeArray;
+	}
+
+	public String[] getMatchedDiseases(String searchStr, String matchAlgorithm)
+			throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+		String[] termArray = new String[] { "" };
+		try {
+			List<String> terms = LexBIGServiceUtils.getSynonyms(
+					LexBIGServiceUtils.NCI_THESAURUS_SCHEME, searchStr,
+					matchAlgorithm);
+			if (!terms.isEmpty()) {
+				termArray = terms.toArray(new String[terms.size()]);
+			}
+		} catch (Exception e) {
+			logger.error("Problem getting matched diseases", e);
+		}
+		return termArray;
 	}
 }
