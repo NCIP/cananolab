@@ -142,6 +142,7 @@
 		<create creator="new" javascript="StudyManager" scope="session">
 			<param name="class" value="gov.nih.nci.cananolab.ui.study.DWRStudyManager" />
 			<include method="getMatchedDesignTypes" />
+			<include method="getMatchedDiseases" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
