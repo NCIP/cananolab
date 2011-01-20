@@ -7,7 +7,7 @@
 	<table class="promptbox" id="termBrowser${ind}"
 		style="display: none; position: absolute; z-index: 10; left: -50px; top: -10px;">
 		<tr>
-			<td></td>
+			<td class="cellLabel">Searching against ${source}</td>
 			<td></td>
 			<td align="right">
 				<img src="images/delete.gif" onclick="hide('termBrowser${ind}');">
