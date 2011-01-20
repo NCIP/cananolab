@@ -24,10 +24,10 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="20%">
+			<td class="cellLabel" width="15%">
 				Sample Name *
 			</td>
-			<td>
+			<td colspan="3">
 				<html:text property="sampleBean.domain.name" size="80" />
 				<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
 					<html:hidden styleId="sampleId" property="sampleBean.domain.id"
@@ -39,7 +39,7 @@
 			<td class="cellLabel">
 				Point of Contact *
 			</td>
-			<td>
+			<td colspan="3">
 			    <c:set var="disableOuterButtons" value="false"/>
 				<c:set var="newAddPOCButtonStyle" value="display:block" />
 				<c:if
@@ -56,14 +56,14 @@
 		<c:if
 			test="${!empty sampleForm.map.sampleBean.primaryPOCBean.domain.id || ! empty sampleForm.map.sampleBean.otherPOCBeans }">
 			<tr>
-				<td colspan="2">
+				<td colspan="4">
 					<c:set var="edit" value="true" />
 					<%@ include file="bodyPointOfContactEdit.jsp"%>
 				</td>
 			</tr>
 		</c:if>
 		<tr>
-			<td colspan="2">
+			<td colspan="4">
 				<c:set var="newPOCStyle" value="display:none" />
 				<c:if
 					test="${empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
@@ -79,12 +79,23 @@
 			</td>
 		</tr>
 		<tr>
+		    <c:set var="ind" value="1"/>
 			<td class="cellLabel">
 				Keywords
-				<i>(one keyword per line)</i>
 			</td>
-			<td>
-				<html:textarea property="sampleBean.keywordsStr" rows="6" cols="80" />
+			<td width="40%">
+				<html:textarea property="sampleBean.keywordsStr" rows="6" cols="60" styleId="keywordsStr"></html:textarea>
+				<em>one keyword per line</em>
+			</td>
+			<td width="15%">
+				<a href="#keywordField" onclick="show('termBrowser${ind}')"><img
+						src="images/icon_browse.jpg" align="middle"
+						alt="search terms in NPO" border="0" /> </a>
+			</td>
+			<td><c:set var="source" value="NPO"/>
+				<c:set var="searchFunction" value="showMatchedKeywords(${ind});"/>
+				<c:set var="addFunction" value="populateKeywords(${ind});"/>
+				<%@include file="../bodySelectMatchedTerms.jsp" %>
 			</td>
 		</tr>
 		<c:set var="groupAccesses" value="${sampleForm.map.sampleBean.groupAccesses}"/>
@@ -145,7 +156,7 @@
 			</tr>
 			</c:if>
 			<tr>
-			<td colspan="2" align="center">
+			<td colspan="4" align="center">
 				<c:set var="dataAvailabilityStyle" value="display:none" />
 				<div style="${dataAvailabilityStyle}" id="dataAvailability" ></div>
 			</td>

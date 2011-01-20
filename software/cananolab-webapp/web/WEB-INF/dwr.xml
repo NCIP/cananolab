@@ -82,6 +82,7 @@
 			<include method="getCharacterizationOperandOptions" />
 			<include method="getMatchedSampleNames" />
 			<include method="getDetailContent" />
+			<include method="getMatchedKeywords"/>
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
