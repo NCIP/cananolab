@@ -80,6 +80,7 @@
 						alt="search existing design types" border="0" /> </a>
 			</td>
 			<td>
+			    <c:set var="source" value="caNanoLab database"/>
 				<c:set var="searchFunction" value="showMatchedDesignTypes(${ind});"/>
 				<c:set var="addFunction" value="populateDesignTypes(${ind});"/>
 				<%@include file="../bodySelectMatchedTerms.jsp" %>
@@ -103,6 +104,7 @@
 			<td>
 				<c:set var="searchFunction" value="showMatchedDiseases(${ind});"/>
 				<c:set var="addFunction" value="populateDiseases(${ind});"/>
+				<c:set var="source" value="NCI Thesaurus"/>
 				<%@include file="../bodySelectMatchedTerms.jsp" %>
 			</td>
 		</tr>
