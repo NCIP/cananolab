@@ -212,11 +212,11 @@ public class UserBean {
 		if (obj instanceof UserBean) {
 			UserBean u = (UserBean) obj;
 			if (u.getLastName().equals(this.getLastName())) {
-				return u.getFirstName().toLowerCase().compareTo(
-						this.getFirstName().toLowerCase());
+				return this.getFirstName().toLowerCase().compareTo(
+						u.getFirstName().toLowerCase());
 			} else {
-				return u.getLastName().toLowerCase().compareTo(
-						this.getLastName().toLowerCase());
+				return this.getLastName().toLowerCase().compareTo(
+						u.getLastName().toLowerCase());
 			}
 		}
 		return diff;

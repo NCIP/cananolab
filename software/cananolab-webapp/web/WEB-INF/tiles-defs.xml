@@ -5,7 +5,7 @@
 <tiles-definitions>
 	<!--  Main layout definition for the login page of caNanoLab -->
 	<definition name="canano.home" path="/layout/mainLayoutNoContentSpace.jsp">
-		<put name="title" value="caNanoLab Home" />
+		<put name="title" value="caNanoLab" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
 		<put name="cananoSidemenu" value="/admin.do?dispatch=getCaNanoSidemenu" />
@@ -22,7 +22,7 @@
 	</definition>
 	<!--  Main layout definition for pages after log in-->
 	<definition name="canano.base" path="/layout/mainLayout.jsp">
-		<put name="title" value="caNanoLab Home" />
+		<put name="title" value="caNanoLab" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
 		<put name="cananoSidemenu" value="/layout/cananoSidemenu.jsp" />
