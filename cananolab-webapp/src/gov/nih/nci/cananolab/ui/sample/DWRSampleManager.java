@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.LexBIGServiceUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,8 +68,7 @@ public class DWRSampleManager {
 				types = InitSetup
 						.getInstance()
 						.getDefaultAndOtherTypesByReflectionAsOptions(
-								appContext,
-								"defaultFunctionTypes",
+								appContext, "defaultFunctionTypes",
 								"gov.nih.nci.cananolab.domain.common.Function",
 								"gov.nih.nci.cananolab.domain.material.OtherFunction");
 			}
@@ -300,5 +300,25 @@ public class DWRSampleManager {
 			logger.error("Problem getting matched sample names", e);
 		}
 		return nameArray;
+	}
+
+	public String[] getMatchedKeywords(String searchStr, String matchAlgorithm)
+			throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		if (user == null) {
+			return null;
+		}
+		String[] termArray = new String[] { "" };
+		try {
+			List<String> terms = LexBIGServiceUtils.getSynonyms(
+					LexBIGServiceUtils.NPO_SCHEME, searchStr, matchAlgorithm);
+			if (!terms.isEmpty()) {
+				termArray = terms.toArray(new String[terms.size()]);
+			}
+		} catch (Exception e) {
+			logger.error("Problem getting matched keywords", e);
+		}
+		return termArray;
 	}
 }
