@@ -25,7 +25,7 @@
 										<c:out value="${fn:toUpperCase(item)}" /> LINKS
 									</td>
 								</tr>
-								<c:if test="${!empty user && user.admin}">
+								<c:if test="${!empty user}">
 								<tr>
 									<td class="sidebarContent">
 										<a href="study.do?dispatch=setupNew">
