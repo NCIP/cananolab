@@ -13,7 +13,10 @@ import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.service.study.impl.StudyServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.util.LexBIGServiceUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +41,7 @@ public class StudyAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitStudySetup.getInstance().setStudyDropdowns(request);
-		UserBean user=(UserBean)request.getSession().getAttribute("user");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitSampleSetup.getInstance().getAllOrganizationNames(request, user);
 		InitSampleSetup.getInstance().setPOCDropdowns(request);
 		request.setAttribute(PAGE_TITLE, "Submit New Study");
@@ -55,7 +58,7 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		this.setServiceInSession(request);
 
@@ -79,7 +82,7 @@ public class StudyAction extends BaseAnnotationAction {
 		request.setAttribute("theStudy", studyBean);
 
 		theForm.set("studyBean", studyBean);
-		
+
 		request.setAttribute("updateStudy", true);
 		request.setAttribute("showDelete", true);
 		request.setAttribute("deleteButtonName", "Delete");
