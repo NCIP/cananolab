@@ -90,7 +90,7 @@ public class LexBIGServiceUtils {
 			SortOptionList sortCriteria = Constructors
 					.createSortOptionList(new String[] { "matchToQuery", "code" });
 			ResolvedConceptReferenceList matches = codedNodeSet.resolveToList(
-					sortCriteria, null, null, 10);
+					sortCriteria, null, null, 500);
 
 			if (matches.getResolvedConceptReferenceCount() > 0) {
 				for (Enumeration refs = matches
