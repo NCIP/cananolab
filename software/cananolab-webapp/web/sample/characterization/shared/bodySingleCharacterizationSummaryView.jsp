@@ -11,13 +11,13 @@
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
 	<c:choose>
-		<c:when test="${!empty charObj.assayType}">
+		<c:when test="${!empty charObj.assayName}">
 			<tr>
 				<td class="cellLabel" width="10%">
-					Assay Type
+					Assay Name
 				</td>
 				<td>
-					<c:out value="${charObj.assayType}" />
+					<c:out value="${charObj.assayName}" />
 				</td>
 			</tr>
 		</c:when>
