@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
-import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -87,15 +86,15 @@ public class StudyPublicationAction extends BaseAnnotationAction {
 	}
 	
 	private PublicationService setServiceInSession(HttpServletRequest request)
-	throws Exception {
-	SecurityService securityService = super
-			.getSecurityServiceFromSession(request);
-	PublicationService service = (PublicationService) request.getSession()
-	.getAttribute("publicationService");
-	if(service == null){
-		service = new PublicationServiceLocalImpl(securityService);
+			throws Exception {
+		SecurityService securityService = super
+				.getSecurityServiceFromSession(request);
+		PublicationService service = (PublicationService) request.getSession()
+				.getAttribute("publicationService");
+		if (service == null) {
+			service = new PublicationServiceLocalImpl(securityService);
+		}
+		request.getSession().setAttribute("publicationService", service);
+		return service;
 	}
-	request.getSession().setAttribute("publicationService", service);
-	return service;
-}
 }
