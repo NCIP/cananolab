@@ -19,4 +19,12 @@
 		<comment>updated common_lookup table to insert study type and study design type</comment>
 		<sqlFile path="sql/mysql/1.6/update_common_lookup.sql" />
 	</changeSet>
+	<changeSet id="1.6-4" author="lethai">
+		<comment>populate characterization_sample table with existing data</comment>
+		<sql>
+			insert into characterization_sample(characterization_pk_id, sample_pk_id)
+				select characterization_pk_id, sample_pk_id from characterization;
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>
