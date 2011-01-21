@@ -20,7 +20,7 @@ public interface ProtocolService extends BaseService {
 	public ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException, NoAccessException;
 
-	public List<ProtocolBean> findProtocolByStudyId(String studyId)
+	public List<ProtocolBean> findProtocolsByStudyId(String studyId)
 	throws ProtocolException;
 	/**
 	 * Persist a new protocol or update an existing protocol

@@ -100,7 +100,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		return protocols;
 	}
 	
-	public List<Protocol> findProtocolByStudyId(String studyId)
+	public List<Protocol> findProtocolsByStudyId(String studyId)
 			throws Exception {
 		List<Protocol> protocols = new ArrayList<Protocol>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider

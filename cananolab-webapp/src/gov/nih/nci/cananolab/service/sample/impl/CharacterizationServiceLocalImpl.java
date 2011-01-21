@@ -657,21 +657,35 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 	public List<CharacterizationBean> findCharacterizationsByStudyId(
 			String studyId) throws CharacterizationException {
 		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
-	//	SampleServiceHelper sampleHelper = new SampleServiceHelper(this.securityService);
 		try {
-			List<Characterization> chars = helper
+			/*List<Characterization> chars = helper
 					.findCharacterizationsByStudyId(studyId);
 			for (Characterization achar : chars) {
 				//List<Sample> samplesByCharacterizationId = sampleHelper.findSamplesByCharacterizationId(achar.getId().toString());				
 				CharacterizationBean charBean = new CharacterizationBean(achar);
 				charBeans.add(charBean);
-			}
-			return charBeans;
+			}*/
+			
 		} catch (Exception e) {
 			String err = "Error finding characterization by study ID "
 					+ studyId;
 			logger.error(err, e);
 			throw new CharacterizationException(err);
-		}		
+		}
+		//testing
+		try {
+			List<Characterization> chars = helper.findCharacterizationsBySampleId("10780678"); //"10780678"
+			for (Characterization achar : chars) {
+				//List<Sample> samplesByCharacterizationId = sampleHelper.findSamplesByCharacterizationId(achar.getId().toString());				
+				CharacterizationBean charBean = new CharacterizationBean(achar);
+				charBeans.add(charBean);
+			}
+		} catch (Exception e) {
+			String err = "Error finding characterization by study ID "
+					+ studyId;
+			logger.error(err, e);
+			throw new CharacterizationException(err);
+		}	
+		return charBeans;
 	}
 }

@@ -961,8 +961,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
 				Property.forName("id").eq(new Long(studyId)));
-		crit.setFetchMode("sampleCollection", FetchMode.JOIN);/*
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+		crit.setFetchMode("sampleCollection", FetchMode.JOIN);
+		/*crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
@@ -998,13 +998,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).add(
 				Property.forName("id").eq(new Long(characterizationId)));
-		crit.setFetchMode("sampleCollection", FetchMode.JOIN);/*
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);*/
+		crit.setFetchMode("sampleCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			characterization = (Characterization) result.get(0);
