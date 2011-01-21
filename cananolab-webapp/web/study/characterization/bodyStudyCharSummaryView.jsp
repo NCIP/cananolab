@@ -3,11 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
-<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
-<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type='text/javascript' src='dwr/engine.js'></script>
-<script type='text/javascript' src='dwr/util.js'></script>
 <c:url var="printUrl" value="studyCharacterization.do" scope="session">
 	<c:param name="dispatch" value="summaryPrint" />
 	<c:param name="studyId" value="${studyId}" />
@@ -17,16 +12,16 @@
 	<c:param name="studyId" value="${studyId}" />
 </c:url>
 
-	<jsp:include page="/bodyTitle.jsp">
-		<jsp:param name="pageTitle"
-			value="Characterizations in Study ${studyName}" />
-		<jsp:param name="topic" value="char_all_tab_help" />
-		<jsp:param name="glossaryTopic" value="glossary_help" />
-		<jsp:param name="printLink"	value="${printUrl}" />
-		<jsp:param name="exportLink" value="${exportUrl}" />
-	</jsp:include>
+<jsp:include page="/bodyTitle.jsp">
+	<jsp:param name="pageTitle"
+		value="Characterizations in Study ${studyName}" />
+	<jsp:param name="topic" value="char_all_tab_help" />
+	<jsp:param name="glossaryTopic" value="glossary_help" />
+	<jsp:param name="printLink"	value="${printUrl}" />
+	<jsp:param name="exportLink" value="${exportUrl}" />
+</jsp:include>
 
-<jsp:include page="/bodyMessage.jsp?bundle=sample" />
+<jsp:include page="/bodyMessage.jsp?bundle=study" />
 <div class="shadetabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
@@ -73,7 +68,6 @@
 	</div>
 </c:forEach>
 <table class="summaryViewNoTop" width="100%">
-
 	<tr>
 		<td>
 			<c:forEach var="type" items="${characterizationTypes}"
@@ -121,7 +115,7 @@
 											<c:forEach var="charBean"
 												items="${studyCharacterizationSummaryView.charName2Characterizations[charName]}"
 												varStatus="charBeanInd">
-												<%@ include file="bodySingleCharacterizationSummaryView.jsp"%>
+												<%@ include file="/study/characterization/bodyStudySingleCharacterizationSummaryView.jsp"%>
 												<c:if
 													test="${charBeanInd.count<fn:length(studyCharacterizationSummaryView.charName2Characterizations[charName])}">
 													<br />
@@ -146,8 +140,7 @@
 				<div id="summarySeparator${ind.count}">
 					<br>
 				</div>
-			</c:forEach>
-			<jsp:include page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />
+			</c:forEach>			
 		</td>
 	</tr>
 </table>

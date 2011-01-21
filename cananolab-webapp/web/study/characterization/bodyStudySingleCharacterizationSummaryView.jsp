@@ -19,13 +19,13 @@
 		</td>
 	</tr>
 	<c:choose>
-		<c:when test="${!empty charObj.assayType}">
+		<c:when test="${!empty charObj.assayName}">
 			<tr>
 				<td class="cellLabel" width="10%">
-					Assay Type
+					Assay Name
 				</td>
 				<td>
-					<c:out value="${charObj.assayType}" />
+					<c:out value="${charObj.assayName}" />
 				</td>
 			</tr>
 		</c:when>
@@ -116,7 +116,7 @@
 				Experiment Configurations
 			</td>
 			<td>
-				<%@ include file="bodyExperimentConfigView.jsp"%>
+				<%@ include file="/study/characterization/bodyExperimentConfigView.jsp"%>
 			</td>
 		</tr>
 	</c:if>
@@ -126,7 +126,7 @@
 				Characterization Results
 			</td>
 			<td>
-				<%@ include file="bodyFindingView.jsp"%>
+				<%@ include file="/study/characterization/bodyFindingView.jsp"%>
 			</td>
 		</tr>
 	</c:if>
