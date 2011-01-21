@@ -162,4 +162,23 @@
 		<jsp:include page="/html/cananoBaseSidemenu.html"/>
 		</td>
 	</tr>
+	<c:if test="${!empty user}">
+		<tr>
+			<td class="subMenuCommentText" height="20">
+				Logged in as
+				<i><c:out value="${user.loginName}"/></i>
+				<c:if test="${!empty user.groupNames}">
+					<br>Associated Groups:<br/>
+					<c:forEach var="group" items="${user.groupNames}">
+						<span class="indented1"><i><c:out value="${group}"/></i></span><br/>
+					</c:forEach>
+				</c:if>
+			</td>
+		</tr>
+	</c:if>
+	<tr>
+		<td class="subMenuFill" height="100%">
+			&nbsp;
+		</td>
+	</tr>
 </table>

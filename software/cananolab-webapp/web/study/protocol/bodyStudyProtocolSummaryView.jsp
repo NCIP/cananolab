@@ -11,7 +11,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="WUSTL Study Efficacy of nanoparticle Protocol Summary" />
+	<jsp:param name="pageTitle" value="Protocols for Study ${studyName}" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -22,6 +22,7 @@
 		<th align="left"">
 		</th>
 	</tr>
+	<c:forEach var="protocolBean" items="${studyProtocols}">
 	<tr>
 		<td>
 			<table width="99%" align="center" class="summaryViewNoGrid"
@@ -39,7 +40,7 @@
 										Name
 									</td>
 									<td>
-										GTA-1
+										${protocolBean.displayName}
 									</td>
 								</tr>
 								
@@ -48,7 +49,7 @@
 											Abbreviation
 										</td>
 										<td colspan="2">
-											GTA-1  
+											${protocolBean.domain.abbreviation}
 										</td>
 									</tr>
 								
@@ -57,7 +58,7 @@
 											Type
 										</td>
 										<td>
-											in vitro assay
+											${protocolBean.domain.type}
 										</td>
 									</tr>
 								
@@ -66,7 +67,7 @@
 											Version
 										</td>
 										<td>
-											1.0
+											${protocolBean.domain.version}
 										</td>
 									</tr>
 									<tr>
@@ -74,7 +75,7 @@
 										File
 									</td>
 									<td>
-										MTT AND LDH RELEASE (PORCINE RENAL PROXIMAL TUBULE CELL)
+										${protocolBean.fileBean.keywordsStr}
 									</td>
 								</tr>
 								
@@ -83,7 +84,7 @@
 										Description
 									</td>
 									<td>
-										
+										${protocolBean.fileBean.description}
 									</td>
 								</tr>
 								<tr>
@@ -91,7 +92,7 @@
 										Created Date
 									</td>
 									<td>
-										08-31-2007
+										${protocolBean.domain.createdDate}
 									</td>
 								</tr>
 							</table>
@@ -105,5 +106,6 @@
 			</table>
 		</td>
 	</tr>
+	</c:forEach>
 </table>
 
