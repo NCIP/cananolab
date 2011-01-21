@@ -70,7 +70,7 @@
 		<action path="/studyCharacterization" name="studyForm"
 			type="gov.nih.nci.cananolab.ui.study.StudyCharaterizationAction" parameter="dispatch"
 			input="input" scope="request">
-			<forward name="input" path="/studySample.do?dispatch=input&amp;page=0" />
+			<forward name="input" path="/studyCharacterization.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="study.sample.add" />
 			<forward name="summaryEdit" path="study.char.summaryEdit" />
 			<forward name="summaryView" path="study.char.summaryView" />
