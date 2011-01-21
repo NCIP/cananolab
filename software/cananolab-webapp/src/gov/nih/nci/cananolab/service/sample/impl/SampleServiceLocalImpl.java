@@ -1167,13 +1167,13 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 		
 		try {
-			List<Sample> samples = helper.findSamplesByStudyId(studyId);
-			if (samples != null) {
-				for (Sample sample : samples) {
-					SampleBean sampleBean = new SampleBean(sample);
-					samplesBean.add(sampleBean);
-				}
-			}
+			//List<Sample> samples = helper.findSamplesByStudyId(studyId);
+			//if (samples != null) {
+			//	for (Sample sample : samples) {
+			//		SampleBean sampleBean = new SampleBean(sample);
+			//		samplesBean.add(sampleBean);
+			//	}
+			//}
 		} catch (Exception e) {
 			String err = "Problem finding the samples by study id: " + studyId;
 			logger.error(err, e);

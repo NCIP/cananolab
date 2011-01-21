@@ -376,9 +376,36 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	
-	public List<ProtocolBean> findProtocolByStudyId(String studyId)
+	public List<ProtocolBean> findProtocolsByStudyId(String studyId)
 			throws ProtocolException {
+		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
+		try {
+			List<Protocol> protocols = helper.findProtocolsByStudyId(studyId);
+			for(Protocol protocol: protocols){
+				ProtocolBean bean = new ProtocolBean(protocol);
+				protocolBeans.add(bean);
+			}
+			
+		} catch (Exception e) {
+			String error = "Error in retrieving protocols by study id " + studyId;
+			throw new ProtocolException(error, e);
+		}
 		
-		return null;
+		//testing - get protocols need to remove later
+		
+		try {
+			List<Protocol> protocols =helper.findProtocolsBy("", "", "", "");
+			for(Protocol protocol: protocols){
+				ProtocolBean bean = new ProtocolBean(protocol);
+				protocolBeans.add(bean);
+			}
+			
+		} catch (Exception e) {
+			String error = "Error in retrieving protocols";
+			throw new ProtocolException(error, e);
+		}
+		
+		
+		return protocolBeans;
 	}
 }
