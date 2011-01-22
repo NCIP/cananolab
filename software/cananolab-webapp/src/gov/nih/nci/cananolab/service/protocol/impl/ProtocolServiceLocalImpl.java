@@ -380,11 +380,11 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
-			List<Protocol> protocols = helper.findProtocolsByStudyId(studyId);
+			/*List<Protocol> protocols = helper.findProtocolsByStudyId(studyId);
 			for(Protocol protocol: protocols){
 				ProtocolBean bean = new ProtocolBean(protocol);
 				protocolBeans.add(bean);
-			}
+			}*/
 			
 		} catch (Exception e) {
 			String error = "Error in retrieving protocols by study id " + studyId;
