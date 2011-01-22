@@ -91,7 +91,7 @@
 			Date Range
 		</td>
 		<td colspan="3">
-			12/15/2010 - 12/15/2010
+			${theStudy.startDateStr} - ${theStudy.endDateStr}
 		</td>
 	</tr>
 	<c:if
