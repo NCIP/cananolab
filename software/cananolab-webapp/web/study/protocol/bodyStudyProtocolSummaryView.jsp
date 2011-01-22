@@ -92,7 +92,7 @@
 										Created Date
 									</td>
 									<td>
-										${protocolBean.domain.createdDate}
+										 ${protocolBean.createdDateStr}
 									</td>
 								</tr>
 							</table>
