@@ -3,6 +3,8 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Study;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +37,17 @@ public class StudyBean extends SecuredDataBean {
 	private Study domain = new Study();
 	private PointOfContactBean thePOC = new PointOfContactBean();
 	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
+	private String startDateStr;
+	private String endDateStr;
+	
+	public String getStartDateStr() {
+		startDateStr = DateUtils.convertDateToString(this.startDate, Constants.DATE_FORMAT);
+		return startDateStr;
+	}
+	public String getEndDateStr() {
+		endDateStr = DateUtils.convertDateToString(this.endDate, Constants.DATE_FORMAT);
+		return endDateStr;
+	}
 
 	public Study getDomain() {
 		return domain;
@@ -45,6 +58,8 @@ public class StudyBean extends SecuredDataBean {
 		PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
 		this.primaryPOCBean = new PointOfContactBean(primaryPOC);
 		this.title = domain.getTitle();
+		this.startDate = domain.getStartDate();
+		this.endDate = domain.getEndDate();
 	}
 	public StudyBean(){
 
