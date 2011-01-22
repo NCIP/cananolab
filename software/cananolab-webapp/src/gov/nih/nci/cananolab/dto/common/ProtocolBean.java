@@ -4,6 +4,8 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -18,6 +20,7 @@ public class ProtocolBean extends SecuredDataBean {
 	private FileBean fileBean = new FileBean();
 	private Protocol domain = new Protocol();
 	private String[] visibilityGroups = new String[0];
+	private String createdDateStr;
 
 	public ProtocolBean() {
 		if (fileBean.getDomainFile() != null)
@@ -32,6 +35,11 @@ public class ProtocolBean extends SecuredDataBean {
 		} else {
 			fileBean = new FileBean();
 		}
+	}
+	
+	public String getCreatedDateStr() {
+		createdDateStr = DateUtils.convertDateToString(domain.getCreatedDate(), Constants.DATE_FORMAT);
+		return createdDateStr;
 	}
 
 	public String getDisplayName() {
