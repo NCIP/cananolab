@@ -34,7 +34,7 @@
 				test="${'physico chemical characterization' eq charBean.characterizationType}">
 				<tr>
 					<td class="cellLabel" width="10%">
-						Assay Type
+						Assay Name
 					</td>
 					<td>
 						<c:out value="${charName}" />
