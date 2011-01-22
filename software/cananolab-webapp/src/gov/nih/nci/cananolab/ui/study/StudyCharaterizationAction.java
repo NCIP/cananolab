@@ -11,9 +11,12 @@ import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +48,8 @@ public class StudyCharaterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		
 		request.getSession().removeAttribute("studyCharacterizationSummaryView");
+		request.getSession().removeAttribute("studyCharacterizations");
+		
 		String studyId = request.getSession().getAttribute("studyId").toString();
 		if (!StringUtils.isEmpty(studyId)) {
 			theForm.set("studyId", studyId);
@@ -62,6 +67,10 @@ public class StudyCharaterizationAction extends BaseAnnotationAction {
 		// Save result bean in session for later use - export/print.
 		request.getSession().setAttribute("studyCharacterizationSummaryView",
 				summaryView);
+		
+		List<String> charTypes = prepareCharacterizationTypes(mapping, form,
+				request, response);
+		setSummaryTab(request, charTypes.size());
 	
 		request.setAttribute("studyCharacterizations",charBeans);
 		return mapping.findForward("summaryView");
@@ -91,5 +100,45 @@ public class StudyCharaterizationAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("characterizationService", service);
 		return service;
 
+	}
+	
+	/**
+	 * Shared function for summaryView() and summaryPrint(). Keep submitted
+	 * characterization types in the correct display order. Should be called
+	 * after calling prepareSummary(), to avoid session timeout issue.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
+	private List<String> prepareCharacterizationTypes(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean) request
+				.getSession().getAttribute("studyCharacterizationSummaryView");
+		// Keep submitted characterization types in the correct display order
+		// prepare characterization tabs and forward to appropriate tab
+		List<String> allCharacterizationTypes = InitCharacterizationSetup
+				.getInstance().getCharacterizationTypes(request);
+		Set<String> foundTypes = summaryView.getCharacterizationTypes();
+		List<String> characterizationTypes = new ArrayList<String>();
+		for (String charType : allCharacterizationTypes) {
+			if (foundTypes.contains(charType)
+					&& !characterizationTypes.contains(charType)) {
+				characterizationTypes.add(charType);
+			}
+		}
+		// other types that are not in allCharacterizationTypes, e.g. other
+		// types from grid search
+		for (String type : foundTypes) {
+			if (!characterizationTypes.contains(type)) {
+				characterizationTypes.add(type);
+			}
+		}
+		request.setAttribute("characterizationTypes", characterizationTypes);
+		return characterizationTypes;
 	}
 }
