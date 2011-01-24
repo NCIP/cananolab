@@ -370,6 +370,75 @@ public class StringUtils {
 		return newString;
 	}
 
+	public static Boolean xssValidate(String inputString) {
+		// the input string can't contain patterns like <script>, javascript:
+		// and their HEX representation and unicode version, HTML entity
+		// encoded version, UTF-7 encoded version
+		String[] scriptPatterns = new String[] {
+				"\\<script",
+				"\\<\\%00script",
+				"\\%3C\\%73\\%63\\%72\\%69\\%70\\%74", // hex encoded for
+				// URL for <script
+				"&#x3C;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;", // hex
+				// encoded
+				// version
+				// of
+				// <script
+				"&#60;&#115;&#99;&#114;&#105;&#112;&#116;", // unicode
+				// version
+				// of
+				// <script
+				"&#60;&#37;&#48;&#48;&#115;&#99;&#114;&#105;&#112;&#116;", // html
+				// entity
+				// encoded
+				// version
+				// of
+				// <%00script
+				"\\%uff1cscript\\%uff1e",
+				"\\%BC\\%F3\\%E3\\%F2\\%E9\\%F0\\%F4", // hex version of
+				// <script
+				"\\+ADw\\-SCRIPT\\+AD4", "\\\\u003Cscript" }; // <script
+
+		String[] javascriptPatterns = new String[] { "javascript\\:",
+				"\\%6A\\%61\\%76\\%61\\%73\\%63%\\%72\\%69\\%70\\%74\\%3A", // hex
+				// version
+				// of
+				// javascript:
+				"&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3a;", // hex
+				// encoded
+				// version
+				// of
+				// javascript:
+				"&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;" }; // HTML
+		// entity
+		// encoded
+		// version
+		// of
+		// javascript:
+
+		String[] otherPatterns = new String[] { "etc/passwd", "/bin/id",
+				"\\.ini", ";vol\\|", "id\\|",
+				"AVAK\\$\\(RETURN_CODE\\)OS", "sys\\.dba_user", "\\+select\\+",
+				"\\+and\\+", "WFXSSProbe", "TEXT/VBSCRIPT", "=\"", "\\.\\./",
+				"\\.\\.\\\\", "\\\\\'", "\\\\\\\"", "background\\:", "\\'\\+",
+				"\\\"\\+", "%\\d+"};
+
+		String patternStr = StringUtils.join(scriptPatterns, "|") + "|"
+				+ StringUtils.join(javascriptPatterns, "|") + "|"
+				+ StringUtils.join(otherPatterns, "|");
+
+		String regex = "^(?!.*(" + patternStr + ")).*$";
+		// String regex =
+		// "^(?!.*(TEXT\\/VBSCRIPT|%uff1cscript%uff1e|WFXSSProbe|\\=\"|\\+and\\+|\\+select\\+|sys\\.dba\\_user|AVAK\\$\\(RETURN\\_CODE\\)OS|id\\||;vol\\||&#|%\\d+|\\>|\\<|\\.\\.\\\\|\\.\\.\\/|\\.ini|javascript\\:|\\/etc\\/passwd|\\/bin\\/id|\\\'|\\\"|background\\:expression)).*$";
+
+//		System.out.println(regex);
+		if (inputString.matches(regex)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * Return true for Null or empty string, false otherwise.
 	 */
@@ -379,41 +448,33 @@ public class StringUtils {
 
 	public static void main(String[] args) {
 		try {
-			String texts = "this is 'a test' of \"parsing words\"";
-			System.out.println(texts);
-			List<String> words = StringUtils.parseToWords(texts);
+			String text = "this is 'a test' of \"parsing words\"";
+			System.out.println(text);
+			List<String> words = StringUtils.parseToWords(text);
 			for (String word : words) {
 				System.out.println(word);
 			}
 
-			String texts2 = "thomas\r\nshukla";
-			System.out.println(texts);
-			List<String> words2 = StringUtils.parseToWords(texts2, "\r\n");
+			String text2 = "thomas\r\nshukla";
+			System.out.println(text2);
+			List<String> words2 = StringUtils.parseToWords(text2, "\r\n");
 			for (String word : words2) {
 				System.out.println(word);
 			}
 
-			String testString = "*NCL-100**";
-			System.out.println(stripWildcards(testString));
+			String text3 = "*NCL-100**";
+			System.out.println(stripWildcards(text3));
+
+			String text4 = "this is a test \\u003Cscript\\u003Ealert\\u0028613067\\u0029\u003C/script\u003E in a sentence";
+
+			if (StringUtils.xssValidate(text4)) {
+				System.out.println("pass xss validation");
+			} else {
+				System.out.println("didn't pass xss validation");
+			}
 		} catch (Exception e) {
 			logger.error(e);
 		}
-
-		try {
-			//filter out patterns such as /etc/password, /bin/id, *.ini, ../, ..\, \', \", background:expression, <, >, &#, %followed by at least one number, ;vol|, id|, AVAK$(RETURN_CODE)OS, sys.dba_user, +select+, +and+, =",
-			String regex="^(?!.*(\\=\"|\\+and\\+|\\+select\\+|sys\\.dba\\_user|AVAK\\$\\(RETURN\\_CODE\\)OS|id\\||;vol\\||&#|%\\d+|\\>|\\<|\\.\\.\\\\|\\.\\.\\/|\\.ini|javascript\\:|\\/etc\\/passwd|\\/bin\\/id|\\\'|\\\"|background\\:expression)).*$";
-			String text="this is a test =\" of in a sentence";
-			if (text.matches(regex)) {
-				System.out.println("match");
-			}
-			else {
-				System.out.println("no match");
-			}
-		}
-		catch (Exception e) {
-			logger.error(e);
-		}
-
 	}
 
 	public static String[] removeFromArray(String[] oldArray,
