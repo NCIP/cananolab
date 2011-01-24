@@ -100,6 +100,11 @@ public class DWRProtocolManager {
 		try {
 			ProtocolBean protocolBean = getService().findProtocolBy(
 					protocolType, protocolName, protocolVersion);
+			if (protocolBean.getDomain().getFile() != null
+					&& !StringUtils.xssValidate(protocolBean.getDomain()
+							.getFile().getUri())) {
+				return null;
+			}
 			return protocolBean;
 		} catch (Exception e) {
 			logger.info("Error in retrieving the protocol " + protocolName);
