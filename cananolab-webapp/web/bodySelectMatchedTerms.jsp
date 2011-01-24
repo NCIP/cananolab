@@ -9,7 +9,7 @@
 		<tr>
 			<td class="cellLabel">Searching against ${source}</td>
 			<td></td>
-			<td align="right">
+			<td align="right" width="5%">
 				<img src="images/delete.gif" onclick="hide('termBrowser${ind}');">
 			</td>
 		</tr>
@@ -39,7 +39,7 @@
 			<td colspan="3" align="right">
 				<img src="images/ajax-loader.gif" border="0" class="counts"
 					id="loaderImg${ind}" style="display: none">
-				<select multiple size="5" id="matchedTermSelect${ind}"
+				<select multiple size="10" id="matchedTermSelect${ind}"
 					style="display: none">
 				</select>
 				<span id="searchMessage${ind}" style="display: none">No
