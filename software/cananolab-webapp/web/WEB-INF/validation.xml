@@ -38,6 +38,11 @@
 		</constant>
 		<constant>
 			<constant-name>textFieldWhiteList</constant-name>
+			<constant-value>^(?!.*(&lt;script|&lt;%00script|\%3C\%73\%63\%72\%69\%70\%74|&#x3C;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;|&#60;&#115;&#99;&#114;&#105;&#112;&#116;|&#60;&#37;&#48;&#48;&#115;&#99;&#114;&#105;&#112;&#116;|\%uff1cscript\%uff1e|\%BC\%F3\%E3\%F2\%E9\%F0\%F4|\+ADw\-SCRIPT\+AD4|\\u003Cscript|javascript\:|\%6A\%61\%76\%61\%73\%63%\%72\%69\%70\%74\%3A|&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3a;|&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;|etc/passwd|/bin/id|\.ini|;vol\||id\||AVAK\$\(RETURN_CODE\)OS|sys\.dba_user|\+select\+|\+and\+|WFXSSProbe|TEXT/VBSCRIPT|="|\.\./|\.\.\\|\\'|\\\"|background\:|\'\+|\"\+|%\d+)).*$
+			</constant-value>
+		</constant>
+		<constant>
+			<constant-name>textFieldWhiteList1</constant-name>
 			<constant-value>^(?!.*(\="|\+and\+|\+select\+|sys\.dba\_user|AVAK\$\(RETURN\_CODE\)OS|id\||;vol\||%\d+|\&#60;|\>|\|\.\.\\|\.\.\/|\.ini|javascript\:|\/etc\/passwd|\/bin\/id|\\\'|\\\"|background\:expression)).*$</constant-value>
 		</constant>
 		<constant>

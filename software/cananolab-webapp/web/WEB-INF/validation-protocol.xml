@@ -45,6 +45,22 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
+			<field property="protocol.fileBean.domainFile.name" page="1"
+				depends="mask">
+				<msg name="mask" key="protocol.file.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.fileBean.domainFile.uri" page="1"
+				depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 			<field property="protocol.theAccess.accessBy" page="2" depends="required">
 				<arg position="0" key="access.accessBy" bundle="protocol" />
 			</field>
