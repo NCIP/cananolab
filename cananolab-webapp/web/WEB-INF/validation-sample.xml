@@ -290,6 +290,14 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
+			<field property="assoc.theFile.domainFile.uri"
+				page="3" depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="/nanomaterialEntity">
 			<field property="nanomaterialEntity.type" page="1" depends="required, mask">
@@ -482,6 +490,14 @@
 					<var-value>textFieldWhiteList</var-value>
 				</var>
 			</field>
+			<field property="nanomaterialEntity.theFile.domainFile.uri"
+				page="3" depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="/functionalizingEntity">
 			<field property="functionalizingEntity.type" page="1"
@@ -625,6 +641,14 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
+			<field property="functionalizingEntity.theFile.domainFile.uri"
+				page="3" depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="/compositionFile">
 			<field property="comp.theFile.uploadedFile" page="1" depends="validwhen">
@@ -670,6 +694,14 @@
 				depends="required, mask">
 				<arg position="0" key="file.type" bundle="sample" />
 				<msg name="mask" key="file.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="comp.theFile.domainFile.uri"
+				page="1" depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>${textFieldWhiteList}</var-value>
@@ -734,6 +766,14 @@
 						or
 						(achar.characterizationName != 'Shape'))
 					</var-value>
+				</var>
+			</field>
+			<field property="achar.protocolBean.fileBean.domainFile.uri"
+				page="1" depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 			<!-- 2.Optional properties: Technique and Instrument form -->
@@ -849,6 +889,14 @@
 				<var>
 					<var-name>mask</var-name>
 					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="achar.theFinding.theFile.uri" page="3"
+				depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${url}</var-value>
 				</var>
 			</field>
 		</form>
