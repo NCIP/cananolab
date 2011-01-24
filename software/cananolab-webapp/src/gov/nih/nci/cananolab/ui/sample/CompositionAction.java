@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -143,7 +142,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		// Get sample name for constructing file name.
 		String type = request.getParameter("type");
 		//per app scan
-		if (!type.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+		if (!StringUtils.xssValidate(type)) {
 			type="";
 		}
 		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
