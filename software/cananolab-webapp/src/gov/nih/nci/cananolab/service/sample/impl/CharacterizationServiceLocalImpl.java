@@ -19,7 +19,6 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -498,10 +497,16 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
+			/*DetachedCriteria crit = DetachedCriteria.forClass(
 					OtherCharacterization.class).add(
 					Property.forName("assayCategory").eq(assayCategory)
+							.ignoreCase());*/
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					OtherCharacterization.class).add(
+					Property.forName("characterizationCategory").eq(assayCategory)
 							.ignoreCase());
+			
+			
 			List result = appService.query(crit);
 			for (Object obj : result) {
 				String charName = ((OtherCharacterization) obj).getCharacterizationName();
