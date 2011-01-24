@@ -70,8 +70,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						this.saveErrors(request, msgs);
 						return false;
-					} else if (!targetBean.getType().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					} else if (!StringUtils.xssValidate(targetBean.getType())) {
 						ActionMessages msgs = new ActionMessages();
 						ActionMessage msg = new ActionMessage(
 								"functionalizingEntity.target.type.invalid");
@@ -336,8 +335,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		boolean status = true;
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
 			if (entityBean.getBiopolymer().getType() != null
-					&& !entityBean.getBiopolymer().getType().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(entityBean.getBiopolymer().getType())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.biopolymer.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -347,8 +345,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 		if (entityBean.getType().equalsIgnoreCase("antibody")) {
 			if (entityBean.getAntibody().getType() != null
-					&& !entityBean.getAntibody().getType().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(entityBean.getAntibody().getType())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.antibody.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -356,8 +353,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 			if (entityBean.getAntibody().getIsotype() != null
-					&& !entityBean.getAntibody().getIsotype().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(entityBean.getAntibody().getIsotype())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.antibody.isotype.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -367,8 +363,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 		if (entityBean.getType().equalsIgnoreCase("small molecule")) {
 			if (entityBean.getSmallMolecule().getAlternateName() != null
-					&& !entityBean.getSmallMolecule().getAlternateName()
-							.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(entityBean.getSmallMolecule().getAlternateName())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.smallMolecule.alternateName.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

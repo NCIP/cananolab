@@ -254,7 +254,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			Collection<String> otherTypes = (Collection<String>) request
 					.getSession().getAttribute(sessionName);
 			if (otherTypes != null && !otherTypes.contains(value)
-					&& value.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& StringUtils.xssValidate(value)) {
 				otherTypes.add(value);
 			}
 		}
@@ -605,10 +605,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			request.getSession().removeAttribute("onloadJavascript");
 			request.getSession().removeAttribute("tab");
 		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ numTabs + ")");
+			request.getSession().setAttribute("onloadJavascript",
+					"showSummary('" + tab + "', " + numTabs + ")");
 		}
 	}
 }

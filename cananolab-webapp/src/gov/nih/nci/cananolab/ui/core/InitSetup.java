@@ -287,7 +287,7 @@ public class InitSetup {
 			return;
 		}
 		// if value contains special characters, do not save
-		if (!value.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+		if (!StringUtils.xssValidate(value)) {
 			return;
 		}
 		if (isLookupInContext(request, lookupName, attribute, otherAttribute,
