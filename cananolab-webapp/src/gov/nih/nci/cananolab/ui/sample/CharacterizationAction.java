@@ -495,7 +495,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		String type = request.getParameter("type");
 		// per app scan
-		if (!type.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+		if (!StringUtils.xssValidate(type)) {
 			type = "";
 		}
 		String sampleName = sampleBean.getDomain().getName();
@@ -865,8 +865,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		boolean status = true;
 		if (achar.getCharacterizationName().equalsIgnoreCase("shape")) {
 			if (achar.getShape().getType() != null
-					&& !achar.getShape().getType().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(achar.getShape().getType())) {
 				ActionMessage msg = new ActionMessage(
 						"achar.shape.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -875,7 +874,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 			if (achar.getShape().getMaxDimensionUnit() != null
 					&& !achar.getShape().getMaxDimensionUnit().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+							Constants.UNIT_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"achar.shape.maxDimensionUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -884,7 +883,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 			if (achar.getShape().getMinDimensionUnit() != null
 					&& !achar.getShape().getMinDimensionUnit().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+							Constants.UNIT_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"achar.shape.minDimensionUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -894,8 +893,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else if (achar.getCharacterizationName().equalsIgnoreCase(
 				"physical state")) {
 			if (achar.getPhysicalState().getType() != null
-					&& !achar.getPhysicalState().getType().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(achar.getPhysicalState().getType())) {
 				ActionMessage msg = new ActionMessage(
 						"achar.physicalState.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -905,8 +903,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else if (achar.getCharacterizationName().equalsIgnoreCase(
 				"solubility")) {
 			if (achar.getSolubility().getSolvent() != null
-					&& !achar.getSolubility().getSolvent().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(achar.getSolubility().getSolvent())) {
 				ActionMessage msg = new ActionMessage(
 						"achar.solubility.solvent.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -915,7 +912,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 			if (achar.getSolubility().getCriticalConcentrationUnit() != null
 					&& !achar.getSolubility().getCriticalConcentrationUnit()
-							.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+							.matches(Constants.UNIT_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"achar.solubility.criticalConcentrationUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -925,8 +922,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else if (achar.getCharacterizationName().equalsIgnoreCase(
 				"enzyme induction")) {
 			if (achar.getEnzymeInduction().getEnzyme() != null
-					&& !achar.getSolubility().getSolvent().matches(
-							Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& !StringUtils.xssValidate(achar.getSolubility().getSolvent())) {
 				ActionMessage msg = new ActionMessage(
 						"achar.enzymeInduction.enzyme.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

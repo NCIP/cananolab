@@ -167,9 +167,6 @@ public class DWRCharacterizationResultManager {
 		if (!validateColumnHeader(header)) {
 			return "contain special characters";
 		}
-		if (!validateColumnHeader(header)) {
-			return "contain special characters";
-		}
 		WebContext wctx = WebContextFactory.get();
 		HttpSession session = wctx.getSession();
 		// store existing columns in the session to prevent entering of
@@ -266,23 +263,19 @@ public class DWRCharacterizationResultManager {
 	}
 
 	private boolean validateColumnHeader(ColumnHeader header) {
-		if (!header.getColumnName().matches(
-				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+		if (!StringUtils.xssValidate(header.getColumnName())) {
 			return false;
 		}
-		if (!header.getConditionProperty().matches(
-				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+		if (!StringUtils.xssValidate(header.getConditionProperty())) {
 			return false;
 		}
-		if (!header.getValueType().matches(
-				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+		if (!StringUtils.xssValidate(header.getValueType())) {
 			return false;
 		}
 		if (!header.getValueUnit().matches(Constants.UNIT_PATTERN)) {
 			return false;
 		}
-		if (!header.getConstantValue().matches(
-				Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+		if (!StringUtils.xssValidate(header.getConstantValue())) {
 			return false;
 		}
 		return true;
