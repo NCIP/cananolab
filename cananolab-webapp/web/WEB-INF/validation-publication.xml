@@ -34,6 +34,14 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
+			<field property="publication.domainFile.uri"
+				page="1" depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
 			<field property="publication.theAuthor.firstName" page="1"
 				depends="mask">
 				<msg name="mask" key="publication.author.firstName.invalid" />
