@@ -100,11 +100,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected ActionForward downloadFile(BaseService service,
 			ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		response.setHeader("Pragma", "");
-		response.setHeader("Cache-Control", "private");
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE,5);
-		response.setDateHeader("Expires", cal.getTimeInMillis());
 		String fileId = request.getParameter("fileId");
 		FileBean fileBean = service.findFileById(fileId);
 		if (fileBean != null) {
@@ -259,7 +254,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			Collection<String> otherTypes = (Collection<String>) request
 					.getSession().getAttribute(sessionName);
 			if (otherTypes != null && !otherTypes.contains(value)
-					&& value.matches(Constants.TEXTFIELD_WHITELIST_PATTERN)) {
+					&& StringUtils.xssValidate(value)) {
 				otherTypes.add(value);
 			}
 		}
@@ -610,10 +605,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			request.getSession().removeAttribute("onloadJavascript");
 			request.getSession().removeAttribute("tab");
 		} else {
-			request.getSession().setAttribute(
-					"onloadJavascript",
-					"showSummary('" + tab + "', "
-							+ numTabs + ")");
+			request.getSession().setAttribute("onloadJavascript",
+					"showSummary('" + tab + "', " + numTabs + ")");
 		}
 	}
 }
