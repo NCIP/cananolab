@@ -75,7 +75,7 @@
 										File
 									</td>
 									<td>
-										${protocolBean.fileBean.keywordsStr}
+										${protocolBean.downloadUrl}
 									</td>
 								</tr>
 								
