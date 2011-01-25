@@ -60,6 +60,7 @@ public class StudyBean extends SecuredDataBean {
 		this.title = domain.getTitle();
 		this.startDate = domain.getStartDate();
 		this.endDate = domain.getEndDate();
+		this.diseaseNames = domain.getDiseases();
 	}
 	public StudyBean(){
 
