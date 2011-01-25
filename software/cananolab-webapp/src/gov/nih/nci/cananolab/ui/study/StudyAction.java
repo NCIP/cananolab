@@ -129,6 +129,34 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward summaryViewPerSample(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		this.setServiceInSession(request);
+		
+		//get studies by sample id
+		
+		String sampleId = request.getParameter("sampleId");
+
+		//String studyId = request.getParameter("studyId");
+		//String studyId = request.getSession().getAttribute("studyId").toString();
+		if (!StringUtils.isEmpty(sampleId)) {
+		///	theForm.set("sampleId", sampleId);
+		} else {
+			sampleId = (String) request.getAttribute("sampleId");
+			if (sampleId == null) {
+				//sampleId = theForm.getString("sampleId");
+			}
+		}
+		// study service has been created earlier
+		StudyService service = (StudyService) request.getSession()
+				.getAttribute("studyService");
+		List <StudyBean> studiesBean = service.findStudiesBySampleId(sampleId);
+		if (studiesBean == null) {
+			throw new NotExistException("No such study in the system");
+		}
+		request.setAttribute("studies", studiesBean);
+
+		request.setAttribute("sampleStudiesView", true);
+		//theForm.set("studiesBean", studyBean);
 		return mapping.findForward("summaryViewPerSample");
 	}
 

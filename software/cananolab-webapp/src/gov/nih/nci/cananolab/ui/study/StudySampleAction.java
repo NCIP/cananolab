@@ -64,7 +64,7 @@ public class StudySampleAction extends BaseAnnotationAction {
 		SampleService service = this.setServiceInSession(request);
 		List<SampleBean> samplesBean = service.findSamplesByStudyId(studyId);
 		if (samplesBean == null) {
-			throw new NotExistException("No such study in the system");
+			throw new NotExistException("No such sample in the system");
 		}
 		
 		request.setAttribute("studySamples",samplesBean);
