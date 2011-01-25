@@ -29,7 +29,7 @@
 			</td>
 		</tr>
 	</c:if>
-	<c:if test="${sampleStudiesView eq 'true'}">
+	<c:if test="${sampleStudies eq 'true'}">
 	<tr>
 		<td class="cellLabel">
 			Study Name
