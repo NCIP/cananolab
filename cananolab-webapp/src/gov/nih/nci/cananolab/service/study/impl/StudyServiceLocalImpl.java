@@ -102,49 +102,7 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements
 
 		// testing
 		
-		StudyBean studyBean = new StudyBean();
-		Study domain = new Study();
-		domain.setId(new Long(id));
-		domain.setName("MIT_KELLY");
-		domain.setTitle("in vitro profiling of nanoparticle libraries"); //
-		//studyBean.setStudySample(new SampleBean());
-		domain.setCreatedBy("michal");
-		PointOfContact primaryPoc = new PointOfContact();
-		primaryPoc.setId(new Long(2));
-		primaryPoc.setFirstName("Stanley");
-		primaryPoc.setLastName("Saw");
-		Organization org = new Organization();
-		org.setId(2L);
-		org.setName("MIT_MGH");
-		primaryPoc.setOrganization(org);
-
-		domain.setPrimaryPointOfContact(primaryPoc);
-
-		List<SampleBean> studySamples = new ArrayList<SampleBean>();
-		Sample sample1 = new Sample();
-		sample1.setName("MIT_MGH-KKellyIB2009-01");
-		SampleBean sampleBean1 = new SampleBean();
-		sampleBean1.setDomain(sample1);
-
-		Sample sample2 = new Sample();
-		sample1.setName("MIT_MGH-KKellyIB2009-02");
-		SampleBean sampleBean2 = new SampleBean();
-		sampleBean2.setDomain(sample2);
-
-		Publication pub = new Publication();
-		pub.setId(new Long(1));
-		pub.setDescription("Testing data");
-		pub.setName("Publication name");
-		pub.setType("report");
-		pub.setStatus("published");
-		List<Publication> studyPublications = new ArrayList<Publication>();
-		studyPublications.add(pub);
-		domain.setPublicationCollection(studyPublications);
-
-		studySamples.add(sampleBean1);
-		studySamples.add(sampleBean2);
-		studyBean.setDomain(domain);
-		studyBean.setStudySample(studySamples);
+		StudyBean studyBean = test(id);		
 		return studyBean;
 		 
 	}
@@ -232,6 +190,84 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements
 			studyBean.setGroupAccesses(groupAccesses);
 			studyBean.setUser(user);
 		}
+		return studyBean;
+	}
+
+	
+	public List<StudyBean> findStudiesBySampleId(String sampleId)
+			throws StudyException {
+		List<StudyBean> studiesBean = new ArrayList<StudyBean>();
+
+		
+		try {
+			//List<Study> studies = helper.findStudiesBySampleId(sampleId);
+			//if (studies != null) {
+			//	for (Study study : studies) {
+			//		StudyBean studyBean = new StudyBean(study);
+			//		studiesBean.add(studyBean);
+			//	}
+			//}
+		} catch (Exception e) {
+			String err = "Problem finding the studies by sample id: " + sampleId;
+			logger.error(err, e);
+			throw new StudyException(err, e);
+		}
+		
+		//testing 
+		StudyBean study1 = test("1");
+		studiesBean.add(study1);
+		
+		StudyBean study2 = test("2");
+		studiesBean.add(study2);
+		
+		return studiesBean;
+	}
+	
+	private StudyBean test(String id) {
+		StudyBean studyBean = new StudyBean();
+		Study domain = new Study();
+		domain.setId(new Long(1));
+		domain.setName("MIT_KELLY");
+		domain.setTitle("in vitro profiling of nanoparticle libraries"); //
+		//studyBean.setStudySample(new SampleBean());
+		domain.setCreatedBy("michal");
+		PointOfContact primaryPoc = new PointOfContact();
+		primaryPoc.setId(new Long(2));
+		primaryPoc.setFirstName("Stanley");
+		primaryPoc.setLastName("Saw");
+		Organization org = new Organization();
+		org.setId(2L);
+		org.setName("MIT_MGH");
+		primaryPoc.setOrganization(org);
+
+		domain.setPrimaryPointOfContact(primaryPoc);
+
+		List<SampleBean> studySamples = new ArrayList<SampleBean>();
+		Sample sample1 = new Sample();
+		sample1.setName("MIT_MGH-KKellyIB2009-01");
+		SampleBean sampleBean1 = new SampleBean();
+		sampleBean1.setDomain(sample1);
+
+		Sample sample2 = new Sample();
+		sample1.setName("MIT_MGH-KKellyIB2009-02");
+		SampleBean sampleBean2 = new SampleBean();
+		sampleBean2.setDomain(sample2);
+
+		Publication pub = new Publication();
+		pub.setId(new Long(1));
+		pub.setDescription("Testing data");
+		pub.setName("Publication name");
+		pub.setType("report");
+		pub.setStatus("published");
+		List<Publication> studyPublications = new ArrayList<Publication>();
+		studyPublications.add(pub);
+		domain.setPublicationCollection(studyPublications);
+
+		studySamples.add(sampleBean1);
+		studySamples.add(sampleBean2);
+		studyBean.setDomain(domain);
+		studyBean.setStudySample(studySamples);
+		
 		return studyBean;
 	}
 
