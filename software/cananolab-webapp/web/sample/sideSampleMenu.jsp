@@ -164,6 +164,7 @@
 				<c:set var="studyDispatch" value="summaryEditPerSample" />
 			</c:if>
 			<c:param name="dispatch" value="${studyDispatch}" />
+			<c:param name="sampleId" value="${sampleId}" />
 			<c:param name="page" value="0" />
 		</c:url>
 		<c:choose>
