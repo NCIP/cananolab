@@ -37,6 +37,27 @@ public class StudyProtocolAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		String studyId = request.getSession().getAttribute("studyId").toString();
+		
+		if (!StringUtils.isEmpty(studyId)) {
+			theForm.set("studyId", studyId);
+		} else {
+			studyId = (String) request.getAttribute("studyId");
+			if (studyId == null) {
+				studyId = request.getSession().getAttribute("studyId").toString();
+			}
+		}
+		
+		// protocol service has been created earlier
+		ProtocolService service = this.setServiceInSession(request);
+		
+		List<ProtocolBean> protocolBeans = service.findProtocolsByStudyId(studyId);
+		if (protocolBeans == null) {
+			throw new NotExistException("No such protocol for the study in the system");
+		}		
+		request.setAttribute("studyProtocols", protocolBeans);
 		return mapping.findForward("summaryEdit");
 	}
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
