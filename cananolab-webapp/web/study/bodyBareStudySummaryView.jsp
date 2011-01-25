@@ -29,12 +29,22 @@
 			</td>
 		</tr>
 	</c:if>
+	<c:if test="${sampleStudiesView eq 'true'}">
+	<tr>
+		<td class="cellLabel">
+			Study Name
+		</td>
+		<td colspan="3">
+			${theStudy.name }
+		</td>
+	</tr>
+	</c:if>
 	<tr>
 		<td class="cellLabel">
 			Study Title
 		</td>
 		<td colspan="3">
-			<bean:write name="studyForm" property="studyBean.title" />
+			${theStudy.title }
 		</td>
 	</tr>
 	<tr>
@@ -42,7 +52,7 @@
 			Type
 		</td>
 		<td colspan="3">
-			<c:out value="${theStudy.type}" />			
+			<c:out value="${theStudy.domain.type}" />			
 		</td>
 	</tr>
 	<tr>
@@ -50,7 +60,7 @@
 			Design Types
 		</td>
 		<td colspan="3">
-			<c:out value="${theStudy.designTypes}" />
+			<c:out value="${theStudy.domain.designTypes}" />
 		</td>
 	</tr>
 	<tr>
@@ -75,7 +85,7 @@
 			Description
 		</td>
 		<td colspan="3">
-			<c:out value="${theStudy.description}" />
+			<c:out value="${theStudy.domain.description}" />
 		</td>
 	</tr>
 	<tr>
@@ -83,7 +93,7 @@
 			Outcome
 		</td>
 		<td colspan="3">
-			<c:out value="${theStudy.outcome}" />
+			<c:out value="${theStudy.domain.outcome}" />
 		</td>
 	</tr>
 	<tr>
