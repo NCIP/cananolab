@@ -37,6 +37,32 @@ public class StudyPublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+
+		String studyId = request.getSession().getAttribute("studyId").toString();
+		
+		if (!StringUtils.isEmpty(studyId)) {
+			theForm.set("studyId", studyId);
+		} else {
+			studyId = (String) request.getAttribute("studyId");
+			if (studyId == null) {
+				studyId = request.getSession().getAttribute("studyId").toString();
+			}
+		}
+		
+		// publication service has been created earlier
+		PublicationService service = this.setServiceInSession(request);
+		
+		List<PublicationBean> pubsBean = service.findPublicationsByStudyId(studyId);
+		if (pubsBean == null) {
+			throw new NotExistException("No such publication for the study in the system");
+		}
+		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
+				pubsBean);
+
+		// Save sample & publication bean in session for printing/exporting.
+		request.getSession().setAttribute("studyPublicationSummaryView", summaryView);
+		request.setAttribute("studyPublications", pubsBean);
 		return mapping.findForward("summaryEdit");
 	}
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,

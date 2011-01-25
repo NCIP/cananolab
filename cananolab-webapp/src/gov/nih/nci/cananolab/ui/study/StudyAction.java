@@ -27,8 +27,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class StudyAction extends BaseAnnotationAction {
-	// logger
-	// private static Logger logger = Logger.getLogger(StudyAction.class);
 	public static final String PAGE_TITLE = "pageTitle";
 
 	public ActionForward input(ActionMapping mapping, ActionForm form,
@@ -60,7 +58,6 @@ public class StudyAction extends BaseAnnotationAction {
 			throws Exception {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		this.setServiceInSession(request);
 
 		String studyId = request.getParameter("studyId");
 		if (!StringUtils.isEmpty(studyId)) {
@@ -122,30 +119,11 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward summaryEditPerSample(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		request.setAttribute("updateStudy", true);
-		return mapping.findForward("summaryEditPerSample");
-	}
-
-	public ActionForward summaryViewPerSample(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		this.setServiceInSession(request);
 		
 		//get studies by sample id
 		
 		String sampleId = request.getParameter("sampleId");
-
-		//String studyId = request.getParameter("studyId");
-		//String studyId = request.getSession().getAttribute("studyId").toString();
-		if (!StringUtils.isEmpty(sampleId)) {
-		///	theForm.set("sampleId", sampleId);
-		} else {
-			sampleId = (String) request.getAttribute("sampleId");
-			if (sampleId == null) {
-				//sampleId = theForm.getString("sampleId");
-			}
-		}
+		
 		// study service has been created earlier
 		StudyService service = (StudyService) request.getSession()
 				.getAttribute("studyService");
@@ -155,8 +133,29 @@ public class StudyAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("studies", studiesBean);
 
-		request.setAttribute("sampleStudiesView", true);
-		//theForm.set("studiesBean", studyBean);
+		request.setAttribute("sampleStudies", true);
+		request.setAttribute("updateStudy", true);
+		return mapping.findForward("summaryEditPerSample");
+	}
+
+	public ActionForward summaryViewPerSample(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		//get studies by sample id
+		
+		String sampleId = request.getParameter("sampleId");
+
+		// study service has been created earlier
+		StudyService service = (StudyService) request.getSession()
+				.getAttribute("studyService");
+		List <StudyBean> studiesBean = service.findStudiesBySampleId(sampleId);
+		if (studiesBean == null) {
+			throw new NotExistException("No such study in the system");
+		}
+		request.setAttribute("studies", studiesBean);
+
+		request.setAttribute("sampleStudies", true);
 		return mapping.findForward("summaryViewPerSample");
 	}
 
