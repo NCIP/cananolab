@@ -157,6 +157,36 @@ public class StudyServiceHelper extends BaseServiceHelper {
 	}
 	
 	
+	public List<Study> findStudiesBySampleId(String sampleId) throws Exception{
+		if (!StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
+			throw new NoAccessException("User has no access to the sample "
+					+ sampleId);
+		}
+		List<Study> studies = new ArrayList<Study>();
+		Sample sample = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("studyCollection", FetchMode.JOIN);
+		
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		for (Object obj : sample.getStudyCollection()) {
+			Study study = (Study) obj;
+			if (getAccessibleData().contains(study.getId().toString())) {
+				studies.add(study);
+			} else {
+				logger.debug("User doesn't have access to study with id "
+						+ study.getId());
+			}
+		}
+		return studies;
+	}
+	
 	public int getNumberOfPublicStudies() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
