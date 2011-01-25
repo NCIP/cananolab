@@ -6,6 +6,7 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -21,6 +22,7 @@ public class ProtocolBean extends SecuredDataBean {
 	private Protocol domain = new Protocol();
 	private String[] visibilityGroups = new String[0];
 	private String createdDateStr;
+	private String downloadUrl;
 
 	public ProtocolBean() {
 		if (fileBean.getDomainFile() != null)
@@ -42,6 +44,35 @@ public class ProtocolBean extends SecuredDataBean {
 		return createdDateStr;
 	}
 
+	public String getDownloadUrl(){
+		SortableName sortableLink=null;
+		
+		if (fileBean != null) {
+			String fileName = fileBean.getDomainFile().getName();
+			if (!StringUtils.isEmpty(fileName)) {
+				StringBuilder sb = new StringBuilder("<a href=");
+				sb.append("protocol.do?dispatch=download&fileId=");
+				sb.append(fileBean.getDomainFile().getId()).append(">");
+				String fileTitle = fileBean.getDomainFile().getTitle();
+				if (StringUtils.isEmpty(fileTitle)) {
+					fileTitle = fileBean.getDomainFile().getUri();
+				}
+				sb.append(fileTitle);
+				sb.append("</a>");
+				sortableLink = new SortableName(fileName, sb.toString());
+			} else {
+				String fileTitle = fileBean.getDomainFile().getTitle();
+				if (!StringUtils.isEmpty(fileTitle)) {
+					sortableLink = new SortableName(fileTitle);
+				} else {
+					sortableLink = new SortableName("");
+				}
+			}
+		} else {
+			sortableLink = new SortableName("");
+		}
+		return sortableLink.toString();
+	}
 	public String getDisplayName() {
 		String displayName = "";
 		if (!StringUtils.isEmpty(domain.getName())) {
@@ -59,10 +90,8 @@ public class ProtocolBean extends SecuredDataBean {
 		if (obj instanceof ProtocolBean) {
 			ProtocolBean c = (ProtocolBean) obj;
 			Long thisId = domain.getFile().getId();
-			// String name = this.getName();
 			if (thisId != null
-					&& thisId.equals(c.getFileBean().getDomainFile().getId())) { // &&
-				// name != null && name.equals(c.getName())) {
+					&& thisId.equals(c.getFileBean().getDomainFile().getId())) {
 				eq = true;
 			}
 		}
