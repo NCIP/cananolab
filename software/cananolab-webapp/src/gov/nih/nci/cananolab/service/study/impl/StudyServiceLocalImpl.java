@@ -226,7 +226,7 @@ public class StudyServiceLocalImpl extends BaseServiceLocalImpl implements
 	private StudyBean test(String id) {
 		StudyBean studyBean = new StudyBean();
 		Study domain = new Study();
-		domain.setId(new Long(1));
+		domain.setId(new Long(id));
 		domain.setName("MIT_KELLY");
 		domain.setTitle("in vitro profiling of nanoparticle libraries"); //
 		//studyBean.setStudySample(new SampleBean());
