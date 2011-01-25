@@ -19,93 +19,82 @@
 <table  class="summaryViewNoGrid"
 					align="center" width="99%">
 	<tr>
-		<th align="left"">
+		<th align="left" height="6">
 		</th>
 	</tr>
 	<c:forEach var="protocolBean" items="${studyProtocols}">
 	<tr>
-		<td>
-			<table width="99%" align="center" class="summaryViewNoGrid"
-				bgcolor="#dbdbdb">
+		<td>													
+			<table class="summaryViewNoGrid" width="99%" align="center"
+				bgcolor="#F5F5f5">
 				<tr>
-					<th valign="top" align="left" height="6">
-					</th>
+					<td class="cellLabel" width="10%">
+						Name
+					</td>
+					<td>
+						${protocolBean.displayName}
+					</td>
 				</tr>
+				
+					<tr>
+						<td class="cellLabel" width="10%">
+							Abbreviation
+						</td>
+						<td colspan="2">
+							${protocolBean.domain.abbreviation}
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="cellLabel" width="10%">
+							Type
+						</td>
+						<td>
+							${protocolBean.domain.type}
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="cellLabel" width="10%">
+							Version
+						</td>
+						<td>
+							${protocolBean.domain.version}
+						</td>
+					</tr>
+					<tr>
+					<td class="cellLabel" width="10%">
+						File
+					</td>
+					<td>
+						${protocolBean.downloadUrl}
+					</td>
+				</tr>
+				
 				<tr>
-					<td>										
-							<table class="summaryViewNoGrid" width="99%" align="center"
-								bgcolor="#F5F5f5">
-								<tr>
-									<td class="cellLabel" width="10%">
-										Name
-									</td>
-									<td>
-										${protocolBean.displayName}
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Abbreviation
-										</td>
-										<td colspan="2">
-											${protocolBean.domain.abbreviation}
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Type
-										</td>
-										<td>
-											${protocolBean.domain.type}
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Version
-										</td>
-										<td>
-											${protocolBean.domain.version}
-										</td>
-									</tr>
-									<tr>
-									<td class="cellLabel" width="10%">
-										File
-									</td>
-									<td>
-										${protocolBean.downloadUrl}
-									</td>
-								</tr>
-								
-								<tr>
-									<td class="cellLabel" width="10%">
-										Description
-									</td>
-									<td>
-										${protocolBean.fileBean.description}
-									</td>
-								</tr>
-								<tr>
-									<td class="cellLabel" width="10%">
-										Created Date
-									</td>
-									<td>
-										 ${protocolBean.createdDateStr}
-									</td>
-								</tr>
-							</table>
-							
+					<td class="cellLabel" width="10%">
+						Description
+					</td>
+					<td>
+						${protocolBean.fileBean.description}
 					</td>
 				</tr>
 				<tr>
-					<th valign="top" align="left" height="6">
-					</th>
+					<td class="cellLabel" width="10%">
+						Created Date
+					</td>
+					<td>
+						 ${protocolBean.createdDateStr}
+					</td>
 				</tr>
-			</table>
+			</table>							
 		</td>
 	</tr>
+	<tr>
+		<th valign="top" align="left" height="6">
+		</th>
+	</tr>
+
 	</c:forEach>
 </table>
 

@@ -11,7 +11,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Study Efficacy of nanoparticle Protocol" />
+	<jsp:param name="pageTitle" value="Protocols for Study ${studyName}" />
 	<jsp:param name="topic" value="submit_study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -25,11 +25,7 @@
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" /></a>
 		</th>
-	</tr>
-	<tr>
-		<th align="left"">
-		</th>
-	</tr>
+	</tr>	
 	<tr>
 		<td>
 			<table width="100%" align="center" class="summaryViewNoGrid"
@@ -38,153 +34,81 @@
 					<th valign="top" align="left" height="6">
 					</th>
 				</tr>
+				<c:forEach var="protocolBean" items="${studyProtocols}">
 				<tr>
-					<td>										
-							<table class="summaryViewNoGrid" width="99%" align="center"
-								bgcolor="#F5F5f5">
-								<tr>
-									<td class="cellLabel" width="10%">
-										Name
-									</td>
-									<td>
-										GTA-1
-									</td>
-									<td><a href="protocol.do?dispatch=setupUpdate&protocolId=22129928">Edit</a></td>
-								</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Abbreviation
-										</td>
-										<td colspan="2">
-											GTA-1  
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Type
-										</td>
-										<td>
-											in vitro assay
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Version
-										</td>
-										<td>
-											1.0
-										</td>
-									</tr>
-									<tr>
-									<td class="cellLabel" width="10%">
-										File
-									</td>
-									<td>
-										MTT AND LDH RELEASE (PORCINE RENAL PROXIMAL TUBULE CELL)
-									</td>
-								</tr>
-								
-								<tr>
-									<td class="cellLabel" width="10%">
-										Description
-									</td>
-									<td>
-										
-									</td>
-								</tr>
-								<tr>
-									<td class="cellLabel" width="10%">
-										Created Date
-									</td>
-									<td>
-										08-31-2007
-									</td>
-								</tr>
-							</table>
+					<td>																
+						<table class="summaryViewNoGrid" width="99%" align="center"
+							bgcolor="#F5F5f5">
+							<tr>
+								<td class="cellLabel" width="10%">
+									Name
+								</td>
+								<td>
+									${protocolBean.displayName}
+								</td>
+								<td align="right" width="25"><a href="protocol.do?dispatch=setupUpdate&protocolId=${protocolBean.domain.id}">Edit</a></td>
+							</tr>
 							
-					</td>
-				</tr>
-				
-				<tr>
-					<th valign="top" align="left" height="6">
-					</th>
-				</tr>
-				<tr>
-					<td>										
-							<table class="summaryViewNoGrid" width="99%" align="center"
-								bgcolor="#F5F5f5">
 								<tr>
 									<td class="cellLabel" width="10%">
-										Name
+										Abbreviation
 									</td>
-									<td>
-										GTA-1
-									</td>
-									<td><a href="protocol.do?dispatch=setupUpdate&protocolId=22129928">Edit</a></td>
-								</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Abbreviation
-										</td>
-										<td colspan="2">
-											GTA-1  
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Type
-										</td>
-										<td>
-											in vitro assay
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="cellLabel" width="10%">
-											Version
-										</td>
-										<td>
-											1.0
-										</td>
-									</tr>
-									<tr>
-									<td class="cellLabel" width="10%">
-										File
-									</td>
-									<td>
-										MTT AND LDH RELEASE (PORCINE RENAL PROXIMAL TUBULE CELL)
+									<td colspan="2">
+										${protocolBean.domain.abbreviation}
 									</td>
 								</tr>
-								
-								<tr>
-									<td class="cellLabel" width="10%">
-										Description
-									</td>
-									<td>
-										
-									</td>
-								</tr>
-								<tr>
-									<td class="cellLabel" width="10%">
-										Created Date
-									</td>
-									<td>
-										08-31-2007
-									</td>
-								</tr>
-							</table>
 							
+								<tr>
+									<td class="cellLabel" width="10%">
+										Type
+									</td>
+									<td>
+										${protocolBean.domain.type}
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="cellLabel" width="10%">
+										Version
+									</td>
+									<td>
+										${protocolBean.domain.version}
+									</td>
+								</tr>
+								<tr>
+								<td class="cellLabel" width="10%">
+									File
+								</td>
+								<td>
+									${protocolBean.downloadUrl}
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="cellLabel" width="10%">
+									Description
+								</td>
+								<td>
+									${protocolBean.fileBean.description}
+								</td>
+							</tr>
+							<tr>
+								<td class="cellLabel" width="10%">
+									Created Date
+								</td>
+								<td>
+									 ${protocolBean.createdDateStr}
+								</td>
+							</tr>
+						</table>
+										
 					</td>
-				</tr>
+				</tr>						
+				</c:forEach>
 				<tr>
-					<th valign="top" align="left" height="6">
+					<th valign="top" align="left" height="6" >
 					</th>
-				</tr>
+				</tr>			
 			</table>
 		</td>
 	</tr>
