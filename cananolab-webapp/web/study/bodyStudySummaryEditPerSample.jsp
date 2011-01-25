@@ -35,6 +35,7 @@
 					<th valign="top" align="left" height="6">
 					</th>
 				</tr>
+				<c:forEach var="theStudy" items="${studies}">
 				<tr>
 					<td>
 					<c:set var="edit" value="true"/>
@@ -45,6 +46,7 @@
 					<th valign="top" align="left" height="6">
 					</th>
 				</tr>
+				</c:forEach>
 			</table>
 		</td>
 	</tr>
