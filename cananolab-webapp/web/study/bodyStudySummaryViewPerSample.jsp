@@ -11,7 +11,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Studies associated with NCL-23" />
+	<jsp:param name="pageTitle" value="Studies associated with ${theSample.domain.name}" />
 	<jsp:param name="topic" value="study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -23,6 +23,7 @@
 		<th valign="top" align="left" height="6">
 		</th>
 	</tr>
+	<c:forEach var="theStudy" items="${studies}">
 	<tr>
 		<td>
 			<c:set var="viewDetail" value="true"/>
@@ -33,4 +34,5 @@
 		<th valign="top" align="left" height="6">
 		</th>
 	</tr>
+	</c:forEach>
 </table>
