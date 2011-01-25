@@ -11,7 +11,7 @@
 
 <%--TODO: create online help topic for this page.--%>
 <jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="Samples for Study MIT_MGH_Kelly" />
+	<jsp:param name="pageTitle" value="Samples for Study ${studyName}" />
 	<jsp:param name="topic" value="study_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
@@ -30,16 +30,15 @@
 					<th valign="top" align="left" height="6">
 					</th>
 				</tr>
+				<c:forEach var="sampleBean" items="${studySamples}">
 				<tr>
 					<td>
 						<table width="99%" align="center" class="summaryViewNoGrid"
-							bgcolor="#F5F5f5">
+							bgcolor="#F5F5f5">				
 							<tr>
-								<td></td>
-								<td></td>
+								<td></td><td></td>
 								<td width="5%" align="right">
-									<a
-										href="sample.do?dispatch=summaryEdit&page=0&sampleId=11337748">Edit</a>
+									<a href="sample.do?dispatch=summaryEdit&page=0&sampleId=${sampleBean.domain.id}">Edit</a>
 								</td>
 							</tr>
 							<tr>
@@ -47,76 +46,29 @@
 									Sample Name
 								</td>
 								<td colspan="2">
-									MIT_MGH-KKellyIB2009-01
+									${sampleBean.domain.name}
 								</td>
 							</tr>
 							<tr>
 								<td class="cellLabel">
-									Description
+									Composition Summary
 								</td>
 								<td colspan="2">
-									This nanoparticle is described in Kelly KA, Shaw SY, Nahrendorf
-									M, Kristoff K, Aikawa E, Schreiber SL, Clemons PA and
-									Weissleder R. Unbiased discovery of in vivo imaging probes
-									through in vitro profiling of nanoparticle libraries. Integr
-									Biol 1:311-317 (2009). Superparamagnetic iron oxide core,
-									crosslinked dextran coat, and fluorophore conjugate
-
+									<c:if test="${sampleBean.hasComposition}">
+									<c:out value="${sampleBean.compositionSummary }" escapeXml="false"	/>
+									</c:if>		
 								</td>
 							</tr>
 						</table>
-					</td>
+				</td>
 				</tr>
 				<tr>
 					<th valign="top" align="left" height="6">
 					</th>
 				</tr>
-				<tr>
-					<td>
-						<table width="99%" align="center" class="summaryViewNoGrid"
-							bgcolor="#F5F5f5">
-							<tr>
-								<th valign="top" align="left" height="6">
-								</th>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td width="5%" align="right">
-									<a
-										href="sample.do?dispatch=summaryView&page=0&sampleId=11337748">Edit</a>
-								</td>
-							</tr>
-							<tr>
-								<td class="cellLabel" width="20%">
-									Sample Name
-								</td>
-								<td colspan="2">
-									MIT_MGH-KKellyIB2009-02
-								</td>
-							</tr>
-							<tr>
-								<td class="cellLabel">
-									Description
-								</td>
-								<td colspan="2">
-									This nanoparticle is described in Kelly KA, Shaw SY, Nahrendorf
-									M, Kristoff K, Aikawa E, Schreiber SL, Clemons PA and
-									Weissleder R. Unbiased discovery of in vivo imaging probes
-									through in vitro profiling of nanoparticle libraries. Integr
-									Biol 1:311-317 (2009). Superparamagnetic iron oxide core,
-									crosslinked dextran coat, fluorophore, and anhydride conjugate
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<th valign="top" align="left" height="6">
-					</th>
-				</tr>
+				</c:forEach>				
 			</table>
 		</td>
-	</tr>
+	</tr>	
 </table>
 
