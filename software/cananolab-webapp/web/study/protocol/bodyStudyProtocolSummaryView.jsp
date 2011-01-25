@@ -17,12 +17,12 @@
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=study" />
 <table  class="summaryViewNoGrid"
-					align="center" width="99%">
+					align="center" width="99%" bgcolor="#dbdbdb">
 	<tr>
 		<th align="left" height="6">
 		</th>
 	</tr>
-	<c:forEach var="protocolBean" items="${studyProtocols}">
+	<c:forEach var="protocolBean" items="${studyProtocols}">	
 	<tr>
 		<td>													
 			<table class="summaryViewNoGrid" width="99%" align="center"
