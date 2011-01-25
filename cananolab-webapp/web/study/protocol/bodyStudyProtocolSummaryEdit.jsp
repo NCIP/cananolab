@@ -104,11 +104,11 @@
 										
 					</td>
 				</tr>						
-				</c:forEach>
 				<tr>
 					<th valign="top" align="left" height="6" >
 					</th>
-				</tr>			
+				</tr>	
+				</c:forEach>
 			</table>
 		</td>
 	</tr>
