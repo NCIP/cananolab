@@ -493,7 +493,7 @@ function validateSavingTheData(dataStyleId, dataName) {
 	}
 }
 // Feature request [26487] Deeper Edit Links.
-function confirmAddNew(otherStyleIds, styleId, newObjectName, cleanupFunction) {
+function confirmAddNew(otherStyleIds, styleId, newObjectName, cleanupFunction, cleanupFunctionParam) {
 	if (otherStyleIds!=null) {
 		for(var i=0; i<otherStyleIds.length; i++) {
 			var element=document.getElementById("new"+otherStyleIds[i]);
@@ -510,12 +510,15 @@ function confirmAddNew(otherStyleIds, styleId, newObjectName, cleanupFunction) {
 	if (form != null) {
 		var answer = true;
 		if (form.style.display == "block") {
-			answer = confirm("Please save your data before adding new "
+			answer = onfirm("Please save your data before adding new "
 					+ newObjectName
 					+ ", otherwise all unsaved data will be lost.\nProceed to add new "
 					+ newObjectName + "?");
 		}
 		if (answer) {
+			if (cleanupFunctionParam!=null||cleanupFunctionParam!="") {
+				cleanupFunction=cleanupFunction.replace("()", "('"+cleanupFunctionParam+"')");
+			}
 			eval(cleanupFunction);
 			openSubmissionForm(styleId);
 		}
