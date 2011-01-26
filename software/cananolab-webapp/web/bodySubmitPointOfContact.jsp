@@ -200,7 +200,7 @@
 							<input type="button" value="Save"
 								onclick="addPointOfContact('${source}')" />
 							<input type="button" value="Cancel"
-								onclick="clearPointOfContact(${source});closeSubmissionForm('PointOfContact');" />
+								onclick="clearPointOfContact('${source}');closeSubmissionForm('PointOfContact');" />
 							<html:hidden styleId="domain.id"
 								property="${poc}.domain.id" />
 							<html:hidden styleId="primaryStatus"
