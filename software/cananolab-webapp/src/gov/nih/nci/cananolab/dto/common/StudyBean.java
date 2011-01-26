@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class StudyBean extends SecuredDataBean {
@@ -23,10 +22,6 @@ public class StudyBean extends SecuredDataBean {
 	private Boolean isAnimalStudy;
 	private String designTypes;
 	private String outcome;
-	private Date startDate;
-	private Date endDate;
-	private Date publicReleaseDate;
-	private Date submissionDate;
 	private String description;
 	private String factorType;
 	private String factorName;
@@ -39,38 +34,41 @@ public class StudyBean extends SecuredDataBean {
 	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
 	private String startDateStr;
 	private String endDateStr;
-	
-	public String getStartDateStr() {
-		startDateStr = DateUtils.convertDateToString(this.startDate, Constants.DATE_FORMAT);
-		return startDateStr;
-	}
-	public String getEndDateStr() {
-		endDateStr = DateUtils.convertDateToString(this.endDate, Constants.DATE_FORMAT);
-		return endDateStr;
-	}
+	private String submissionDateStr;
+	private String publicReleaseDateStr;
 
 	public Study getDomain() {
 		return domain;
 	}
+
 	public void setDomain(Study domain) {
 		this.domain = domain;
 		this.name = domain.getName();
 		PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
 		this.primaryPOCBean = new PointOfContactBean(primaryPOC);
 		this.title = domain.getTitle();
-		this.startDate = domain.getStartDate();
-		this.endDate = domain.getEndDate();
+		startDateStr = DateUtils.convertDateToString(domain.getStartDate(),
+				Constants.DATE_FORMAT);
+		endDateStr = DateUtils.convertDateToString(domain.getEndDate(),
+				Constants.DATE_FORMAT);
+		submissionDateStr = DateUtils.convertDateToString(domain
+				.getSubmissionDate(), Constants.DATE_FORMAT);
+		publicReleaseDateStr = DateUtils.convertDateToString(domain
+				.getPublicReleaseDate(), Constants.DATE_FORMAT);
 		this.diseaseNames = domain.getDiseases();
 	}
-	public StudyBean(){
+
+	public StudyBean() {
 
 	}
-	public StudyBean(String studyId){
+
+	public StudyBean(String studyId) {
 		domain.setId(new Long(studyId));
 	}
-	public StudyBean(Study study){
+
+	public StudyBean(Study study) {
 		this.domain = study;
-		
+
 		if (study.getSampleCollection() != null
 				&& !study.getSampleCollection().isEmpty()) {
 			hasSamples = true;
@@ -89,45 +87,12 @@ public class StudyBean extends SecuredDataBean {
 		}
 	}
 
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public Date getPublicReleaseDate() {
-		return publicReleaseDate;
-	}
-
-	public void setPublicReleaseDate(Date publicReleaseDate) {
-		this.publicReleaseDate = publicReleaseDate;
-	}
-
 	public String getDiseaseType() {
 		return diseaseType;
 	}
 
 	public void setDiseaseType(String diseaseType) {
 		this.diseaseType = diseaseType;
-	}
-
-	public Date getSubmissionDate() {
-		return submissionDate;
-	}
-
-	public void setSubmissionDate(Date submissionDate) {
-		this.submissionDate = submissionDate;
 	}
 
 	public String getDescription() {
@@ -169,27 +134,35 @@ public class StudyBean extends SecuredDataBean {
 	public Boolean getHasPublications() {
 		return hasPublications;
 	}
+
 	public void setHasPublications(Boolean hasPublications) {
 		this.hasPublications = hasPublications;
 	}
+
 	public Boolean getHasSamples() {
 		return hasSamples;
 	}
+
 	public void setHasSamples(Boolean hasSamples) {
 		this.hasSamples = hasSamples;
 	}
+
 	public Boolean getHasProtocols() {
 		return hasProtocols;
 	}
+
 	public void setHasProtocols(Boolean hasProtocols) {
 		this.hasProtocols = hasProtocols;
 	}
+
 	public Boolean getHasCharacterizations() {
 		return hasCharacterizations;
 	}
+
 	public void setHasCharacterizations(Boolean hasCharacterizations) {
 		this.hasCharacterizations = hasCharacterizations;
 	}
+
 	public void setStudySample(List<SampleBean> studySamples) {
 		this.studySamples = studySamples;
 	}
@@ -257,16 +230,48 @@ public class StudyBean extends SecuredDataBean {
 	public void setFactorName(String factorName) {
 		this.factorName = factorName;
 	}
+
 	public PointOfContactBean getThePOC() {
 		return thePOC;
 	}
+
 	public void setThePOC(PointOfContactBean thePOC) {
 		this.thePOC = thePOC;
 	}
+
 	public List<PointOfContactBean> getOtherPOCBeans() {
 		return otherPOCBeans;
 	}
+
 	public void setOtherPOCBeans(List<PointOfContactBean> otherPOCBeans) {
 		this.otherPOCBeans = otherPOCBeans;
+	}
+
+	public String getSubmissionDateStr() {
+		return submissionDateStr;
+	}
+
+	public void setSubmissionDateStr(String submissionDateStr) {
+		this.submissionDateStr = submissionDateStr;
+	}
+
+	public String getPublicReleaseDateStr() {
+		return publicReleaseDateStr;
+	}
+
+	public void setPublicReleaseDateStr(String publicReleaseDateStr) {
+		this.publicReleaseDateStr = publicReleaseDateStr;
+	}
+
+	public void setEndDateStr(String endDateStr) {
+		this.endDateStr = endDateStr;
+	}
+
+	public String getStartDateStr() {
+		return startDateStr;
+	}
+
+	public String getEndDateStr() {
+		return endDateStr;
 	}
 }
