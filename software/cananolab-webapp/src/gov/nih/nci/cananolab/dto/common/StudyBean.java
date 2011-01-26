@@ -37,29 +37,7 @@ public class StudyBean extends SecuredDataBean {
 	private String submissionDateStr;
 	private String publicReleaseDateStr;
 
-	public Study getDomain() {
-		return domain;
-	}
-
-	public void setDomain(Study domain) {
-		this.domain = domain;
-		this.name = domain.getName();
-		PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
-		this.primaryPOCBean = new PointOfContactBean(primaryPOC);
-		this.title = domain.getTitle();
-		startDateStr = DateUtils.convertDateToString(domain.getStartDate(),
-				Constants.DATE_FORMAT);
-		endDateStr = DateUtils.convertDateToString(domain.getEndDate(),
-				Constants.DATE_FORMAT);
-		submissionDateStr = DateUtils.convertDateToString(domain
-				.getSubmissionDate(), Constants.DATE_FORMAT);
-		publicReleaseDateStr = DateUtils.convertDateToString(domain
-				.getPublicReleaseDate(), Constants.DATE_FORMAT);
-		this.diseaseNames = domain.getDiseases();
-	}
-
 	public StudyBean() {
-
 	}
 
 	public StudyBean(String studyId) {
@@ -274,4 +252,26 @@ public class StudyBean extends SecuredDataBean {
 	public String getEndDateStr() {
 		return endDateStr;
 	}
+
+	public Study getDomain() {
+		return domain;
+	}
+
+	public void setDomain(Study domain) {
+		this.domain = domain;
+		this.name = domain.getName();
+		PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
+		this.primaryPOCBean = new PointOfContactBean(primaryPOC);
+		this.title = domain.getTitle();
+		startDateStr = DateUtils.convertDateToString(domain.getStartDate(),
+				Constants.DATE_FORMAT);
+		endDateStr = DateUtils.convertDateToString(domain.getEndDate(),
+				Constants.DATE_FORMAT);
+		submissionDateStr = DateUtils.convertDateToString(domain
+				.getSubmissionDate(), Constants.DATE_FORMAT);
+		publicReleaseDateStr = DateUtils.convertDateToString(domain
+				.getPublicReleaseDate(), Constants.DATE_FORMAT);
+		this.diseaseNames = domain.getDiseases();
+	}
+
 }
