@@ -86,7 +86,7 @@
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.sample.DWRPointOfContactManager" />
+				value="gov.nih.nci.cananolab.ui.core.DWRPointOfContactManager" />
 			<include method="getPointOfContactById" />
 			<include method="resetThePointOfContact" />
 			<include method="getOrganizationByName" />
