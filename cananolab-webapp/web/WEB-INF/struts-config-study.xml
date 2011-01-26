@@ -40,7 +40,7 @@
 
 		<action path="/study" name="studyForm"
 			type="gov.nih.nci.cananolab.ui.study.StudyAction" parameter="dispatch"
-			input="input" scope="request">
+			input="input">
 			<forward name="input" path="/study.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="study.input" />
 			<forward name="setupUpdate" path="study.studyInfo" />
