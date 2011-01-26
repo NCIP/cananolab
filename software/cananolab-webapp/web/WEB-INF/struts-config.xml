@@ -143,6 +143,7 @@
 			      /WEB-INF/validation-publication.xml,
 			      /WEB-INF/validation-protocol.xml,
 			      /WEB-INF/validation-community.xml,
+			      /WEB-INF/validation-study.xml,
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
 	<plug-in className="gov.nih.nci.cananolab.ui.core.CustomPlugIn" />
