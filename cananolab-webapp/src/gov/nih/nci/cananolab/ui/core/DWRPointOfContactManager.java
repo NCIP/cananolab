@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.common.PointOfContactServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
@@ -70,15 +69,15 @@ public class DWRPointOfContactManager {
 				poc.setPrimaryStatus(false);
 			}
 		} else if (parent.equals("study")) {
-			DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
-					.get().getSession().getAttribute("sampleForm"));
-			if (sampleForm == null) {
+			DynaValidatorForm studyForm = (DynaValidatorForm) (WebContextFactory
+					.get().getSession().getAttribute("studyForm"));
+			if (studyForm == null) {
 				return null;
 			}
-			SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
-			sample.setThePOC(poc);
+			StudyBean study = (StudyBean) studyForm.get("studyBean");
+			study.setThePOC(poc);
 			// if primary POC already exists, the POC is secondary
-			if (sample.getPrimaryPOCBean().getDomain().getId() != null) {
+			if (study.getPrimaryPOCBean().getDomain().getId() != null) {
 				poc.setPrimaryStatus(false);
 			}
 		}
