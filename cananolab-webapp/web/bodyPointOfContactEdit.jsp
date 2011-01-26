@@ -4,11 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<c:set var="primaryPOC"
-	value="${sampleForm.map.sampleBean.primaryPOCBean}" />
 <c:choose>
 	<c:when
-		test="${empty primaryPOC.domain.organization.name && empty sampleForm.map.sampleBean.otherPOCBeans}">
+		test="${empty primaryPOC.domain.organization.name && empty otherPOCs}">
 	N/A
 	</c:when>
 	<c:otherwise>
@@ -28,20 +26,20 @@
 				</th>
 				<th></th>
 			</tr>
-			<c:if
-				test="${! empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
+			<c:if test="${! empty primaryPOC.domain.id}">
 				<tr>
 					<td>
 						Yes
 					</td>
 					<td>
-						<c:out value="${primaryPOC.personDisplayName}" escapeXml="false"/>
+						<c:out value="${primaryPOC.personDisplayName}" escapeXml="false" />
 					</td>
 					<td>
-						<c:out value="${primaryPOC.organizationDisplayName}" escapeXml="false"/>
+						<c:out value="${primaryPOC.organizationDisplayName}"
+							escapeXml="false" />
 					</td>
 					<td>
-						<c:out value="${primaryPOC.domain.role}"/>
+						<c:out value="${primaryPOC.domain.role}" />
 					</td>
 					<c:if test="${edit eq 'true'}">
 						<td align="right">
@@ -51,26 +49,25 @@
 					</c:if>
 				</tr>
 			</c:if>
-			<c:if test="${!empty sampleForm.map.sampleBean.otherPOCBeans}">
-				<c:forEach var="poc"
-					items="${sampleForm.map.sampleBean.otherPOCBeans}">
+			<c:if test="${!empty otherPOCs}">
+				<c:forEach var="poc" items="${otherPOCs}">
 					<tr>
 						<td>
 							No
 						</td>
 						<td>
-							<c:out value="${poc.personDisplayName}" escapeXml="false"/>
+							<c:out value="${poc.personDisplayName}" escapeXml="false" />
 						</td>
 						<td>
-							<c:out value="${poc.organizationDisplayName}" escapeXml="false"/>
+							<c:out value="${poc.organizationDisplayName}" escapeXml="false" />
 						</td>
 						<td>
-							<c:out value="${poc.domain.role}"/>
+							<c:out value="${poc.domain.role}" />
 						</td>
 						<c:if test="${edit eq 'true'}">
 							<td align="right">
 								<a
-									href="javascript:setThePointOfContact(${poc.domain.id}, false);">Edit</a>&nbsp;
+									href="javascript:setThePointOfContact(${poc.domain.id}, false, ${source});">Edit</a>&nbsp;
 							</td>
 						</c:if>
 					</tr>
