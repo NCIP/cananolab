@@ -2,7 +2,7 @@
 	<td colspan="2">
 		<%--TODO: create online help topic for this page.--%>
 		<jsp:include page="/bodyTitle.jsp">
-			<jsp:param name="pageTitle" value="Study" />
+			<jsp:param name="pageTitle" value="Manage Studies" />
 			<jsp:param name="topic" value="study_help" />
 			<jsp:param name="glossaryTopic" value="glossary_help" />
 		</jsp:include>
