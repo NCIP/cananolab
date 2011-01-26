@@ -32,7 +32,7 @@
 		<put name="menu" value="home" />
 		<putList name="items">
 			<item value="HOME" link="gotoPage('home.jsp')" />
-			<item value="STUDY" link="gotoPage('manageStudy.do')" />
+			<item value="STUDIES" link="gotoPage('manageStudy.do')" />
 			<item value="SAMPLES" link="gotoPage('manageSample.do')" />
 			<item value="PROTOCOLS" link="gotoPage('manageProtocol.do')" />
 			<item value="PUBLICATIONS" link="gotoPage('managePublication.do')" />
