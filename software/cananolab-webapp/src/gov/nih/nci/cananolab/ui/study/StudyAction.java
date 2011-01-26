@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.ui.study;
 /**
  * This class sets up the submit a new study page and submits a new study.
  *
- * @author houyh, lethai
+ * @author houy, lethai, pansu
  */
 import gov.nih.nci.cananolab.dto.common.StudyBean;
 import gov.nih.nci.cananolab.exception.NotExistException;
@@ -13,13 +13,13 @@ import gov.nih.nci.cananolab.service.study.StudyService;
 import gov.nih.nci.cananolab.service.study.impl.StudyServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
-import gov.nih.nci.cananolab.util.LexBIGServiceUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -32,7 +32,29 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return mapping.findForward("inputForm");
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		checkOpenForms(theForm, request);
+		String updateStudy = (String) request.getSession().getAttribute(
+				"updateStudy");
+		if (updateStudy == null) {
+			return mapping.findForward("inputForm");
+		} else {
+			return mapping.findForward("summaryEdit");
+		}
+	}
+
+	private void checkOpenForms(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		String dispatch = request.getParameter("dispatch");
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean openPOC = false;
+		if (dispatch.equals("input")
+				&& browserDispatch.equals("savePointOfContact")) {
+			openPOC = true;
+		}
+		session.setAttribute("openPOC", openPOC);
+		super.checkOpenAccessForm(theForm, request);
 	}
 
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
@@ -42,7 +64,6 @@ public class StudyAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitSampleSetup.getInstance().getAllOrganizationNames(request, user);
 		InitSampleSetup.getInstance().setPOCDropdowns(request);
-		request.setAttribute(PAGE_TITLE, "Submit New Study");
 		return mapping.getInputForward();
 	}
 
@@ -119,15 +140,15 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward summaryEditPerSample(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
-		//get studies by sample id
-		
+
+		// get studies by sample id
+
 		String sampleId = request.getParameter("sampleId");
-		
+
 		// study service has been created earlier
 		StudyService service = (StudyService) request.getSession()
 				.getAttribute("studyService");
-		List <StudyBean> studiesBean = service.findStudiesBySampleId(sampleId);
+		List<StudyBean> studiesBean = service.findStudiesBySampleId(sampleId);
 		if (studiesBean == null) {
 			throw new NotExistException("No such study in the system");
 		}
@@ -141,15 +162,15 @@ public class StudyAction extends BaseAnnotationAction {
 	public ActionForward summaryViewPerSample(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
-		//get studies by sample id
-		
+
+		// get studies by sample id
+
 		String sampleId = request.getParameter("sampleId");
 
 		// study service has been created earlier
 		StudyService service = (StudyService) request.getSession()
 				.getAttribute("studyService");
-		List <StudyBean> studiesBean = service.findStudiesBySampleId(sampleId);
+		List<StudyBean> studiesBean = service.findStudiesBySampleId(sampleId);
 		if (studiesBean == null) {
 			throw new NotExistException("No such study in the system");
 		}
