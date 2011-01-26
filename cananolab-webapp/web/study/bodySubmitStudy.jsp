@@ -113,7 +113,7 @@
 				Start Date
 			</td>
 			<td>
-				<html:text property="studyBean.startDate" size="10"
+				<html:text property="studyBean.startDateStr" size="10"
 					styleId="startDate" />
 				<a href="javascript:cal1.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
@@ -124,7 +124,7 @@
 				End Date
 			</td>
 			<td>
-				<html:text property="studyBean.endDate" size="10" styleId="endDate" />
+				<html:text property="studyBean.endDateStr" size="10" styleId="endDate" />
 				<a href="javascript:cal2.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
 						alt="Click Here to Pick up the date"
@@ -136,7 +136,7 @@
 				Public Release Date
 			</td>
 			<td>
-				<html:text property="studyBean.publicReleaseDate" size="10"
+				<html:text property="studyBean.publicReleaseDateStr" size="10"
 					styleId="publicReleaseDate" />
 				<a href="javascript:cal3.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
@@ -147,7 +147,7 @@
 				Submission Date
 			</td>
 			<td>
-				<html:text property="studyBean.submissionDate" size="10"
+				<html:text property="studyBean.submissionDateStr" size="10"
 					styleId="submissionDate" />
 				<a href="javascript:cal4.popup();"><img
 						src="images/calendar-icon.gif" width="22" height="18" border="0"
@@ -184,88 +184,26 @@
 						src="images/btn_add.gif" border="0" /> </a>
 			</td>
 		</tr>
-		<tr>
-			<td colspan="4">
-				<table class="editTableWithGrid" width="95%" align="center">
-					<tr>
-						<th>
-							Primary Contact?
-						</th>
-						<th>
-							Contact Person
-						</th>
-						<th>
-							Organization
-						</th>
-						<th>
-							Role
-						</th>
-						<th></th>
-					</tr>
-
-					<tr>
-						<td>
-							Yes
-						</td>
-						<td>
-							Stanley Y Shaw
-							<br>
-							shaw.stanley@mgh.harvard.edu
-						</td>
-						<td>
-							MIT_MGH
-							<br>
-							MA
-						</td>
-						<td>
-							investigator
-						</td>
-
-						<td align="right">
-							<a href="javascript:setThePointOfContact(15695892, true);">Edit</a>&nbsp;
-						</td>
-
-					</tr>
-
-
-
-					<tr>
-						<td>
-							No
-						</td>
-						<td>
-							Ralph Weissleder
-							<br>
-							weissleder@helix.mgh.harvard.edu
-						</td>
-						<td>
-							MIT_MGH
-							<br>
-							MA
-						</td>
-						<td>
-							investigator
-						</td>
-
-						<td align="right">
-							<a href="javascript:setThePointOfContact(15695885, false);">Edit</a>&nbsp;
-						</td>
-
-					</tr>
-
-
-				</table>
-
-
-			</td>
-		</tr>
-
+		<c:set var="source" value="study" />
+		<c:if
+			test="${!empty studyForm.map.studyBeanBean.primaryPOCBean.domain.id || ! empty studyForm.map.studyBeanBean.otherPOCBeans }">
+			<tr>
+				<td colspan="4">
+					<c:set var="primaryPOC"
+						value="${studyForm.map.studyBeanBean.primaryPOCBean}" />
+					<c:set var="otherPOCs"
+						value="${studyForm.map.studyBeanBean.otherPOCBeans}" />
+					<c:set var="edit" value="true" />
+					<%@ include file="../bodyPointOfContactEdit.jsp"%>
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td colspan="4">
 				<div style="display: none" id="newPointOfContact">
 					<a name="submitPointOfContact"> <c:set var="pocForm"
 							value="studyForm" /> <c:set var="poc" value="studyBean.thePOC" />
-						<c:set var="source" value="study" /> <%@include
+						<%@include
 							file="../bodySubmitPointOfContact.jsp"%>
 				</div>
 			</td>
