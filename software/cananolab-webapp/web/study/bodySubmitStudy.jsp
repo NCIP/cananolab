@@ -174,6 +174,7 @@
 			</td>
 		</tr>
 		<tr>
+		    <c:set var="source" value="study" />
 			<td class="cellLabel">
 				Point of Contact *
 			</td>
@@ -186,12 +187,11 @@
 					<c:set var="disableOuterButtons" value="true"/>
 				</c:if>
 				<a href="#"
-					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
+					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()', '${source}');"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
 						align="top" src="images/btn_add.gif" border="0" /></a>
 			</td>
 		</tr>
-		<c:set var="source" value="study" />
 		<c:if
 			test="${!empty studyForm.map.studyBeanBean.primaryPOCBean.domain.id || ! empty studyForm.map.studyBeanBean.otherPOCBeans }">
 			<tr>
