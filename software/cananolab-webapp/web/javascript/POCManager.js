@@ -1,18 +1,20 @@
 /* set the submit point of contact form */
-function clearPointOfContact() {
+function clearPointOfContact(parent) {
 	// go to server and clean form bean
-	POCManager.resetThePointOfContact(populatePointOfContact);
+	POCManager.resetThePointOfContact(parent, populatePointOfContact);
 	hide("deletePointOfContact");
 }
 
-function setThePointOfContact(id, isPrimary) {
+function setThePointOfContact(id, isPrimary, parent) {
 	// add a timeout to allow correct refresh order
-	window.setTimeout("fillPointOfContact(" + id + ", " + isPrimary + ")", 100);
+	window.setTimeout("fillPointOfContact(" + id + ", " + isPrimary + ", "
+			+ parent + ")", 100);
 	disableOuterButtons();
 }
 
-function fillPointOfContact(id, isPrimary) {
-	POCManager.getPointOfContactById(id, isPrimary, populatePointOfContact);
+function fillPointOfContact(id, isPrimary, parent) {
+	POCManager.getPointOfContactById(id, isPrimary, parent,
+			populatePointOfContact);
 	// openSubmissionForm("PointOfContact");
 	show("addPointOfContact");
 	show("newPointOfContact");
