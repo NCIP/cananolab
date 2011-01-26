@@ -21,6 +21,34 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
+			<field property="studyBean.startDateStr" page="1" depends="date">
+				<arg position="0" key="study.startDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="studyBean.endDateStr" page="1" depends="date">
+				<arg position="0" key="study.endDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="studyBean.submissionDateStr" page="1" depends="date">
+				<arg position="0" key="study.submissionDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="studyBean.publicReleaseDateStr" page="1" depends="date">
+				<arg position="0" key="study.publicReleaseDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
 			<field property="studyBean.primaryPOCBean.domain.id" page="2"
 				depends="validwhen">
 				<arg position="0" key="studyBean.primaryPOC" bundle="study" />
