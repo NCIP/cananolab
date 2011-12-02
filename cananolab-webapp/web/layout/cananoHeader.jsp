@@ -13,13 +13,13 @@
 		<tr>
 			<td class="subhdrBG" align="left" width="543" background="images/background.gif" height="60">
 				<div align="left">
-					<img width="304" height="83" src="images/appLogo-nanolab.gif">
+					<img width="304" height="83" src="images/appLogo-nanolab.gif" alt="caNanoLab">
 				</div>
 			</td>
 			<c:if test="${hasSiteLogo}">
 				<td class="subhdrBG" align="left" width="543" background="images/background.gif" >
 					<div align="right">
-						<img src="admin.do?dispatch=getSiteLogo">
+						<img src="admin.do?dispatch=getSiteLogo" alt="Local Site Logo">
 					</div>
 				</td>
 			</c:if>
