@@ -1,0 +1,207 @@
+<!DOCTYPE form-validation PUBLIC
+"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<formset>
+		<form name="studyForm">
+			<field property="studyBean.domain.name" page="1" depends="required, mask">
+				<arg position="0" key="studyForm.studyName" bundle="study" />
+				<msg name="mask" key="study.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.domain.title" page="1" depends="required, mask">
+				<arg position="0" key="studyForm.studyTitle" bundle="study" />
+				<msg name="mask" key="study.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.startDateStr" page="1" depends="date">
+				<arg position="0" key="study.startDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="studyBean.endDateStr" page="1" depends="date">
+				<arg position="0" key="study.endDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="studyBean.submissionDateStr" page="1" depends="date">
+				<arg position="0" key="study.submissionDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="studyBean.publicReleaseDateStr" page="1" depends="date">
+				<arg position="0" key="study.publicReleaseDate" bundle="study" />
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>MM/dd/yyyy</var-value>
+				</var>
+			</field>
+			<field property="studyBean.primaryPOCBean.domain.id" page="2"
+				depends="validwhen">
+				<arg position="0" key="studyBean.primaryPOC" bundle="study" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((page!=2) and (page!=4)) or (((page==2) or (page==4))
+						and (*this*!=null)))
+					</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.organization.name"
+				page="3" depends="validwhen, mask">
+				<arg position="0" key="organization.name" bundle="study" />
+				<msg name="mask" key="organization.name.invalid" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((page!=3) or ((page==3) and (*this*!=null)))
+					</var-value>
+				</var>
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.organization.streetAddress1"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.address1.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.organization.streetAddress2"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.address2.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.organization.city"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.city.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.organization.state"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.state.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.organization.country"
+				page="3" depends="mask">
+				<msg name="mask" key="organization.country.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.organization.postalCode"
+				page="3" depends="mask">
+				<msg name="mask" key="postalCode.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${zip}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.role" page="3"
+				depends="mask">
+				<msg name="mask" key="role.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.firstName" page="3"
+				depends="mask">
+				<msg name="mask" key="firstName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.lastName" page="3"
+				depends="mask">
+				<msg name="mask" key="lastName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.middleInitial" page="3"
+				depends="mask">
+				<msg name="mask" key="middleInitial.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.phone" page="3"
+				depends="mask">
+				<msg name="mask" key="phone.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${phone}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.thePOC.domain.email" page="3"
+				depends="mask">
+				<msg name="mask" key="email.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${email}</var-value>
+				</var>
+			</field>
+			<field property="studyBean.theAccess.accessBy" page="4"
+				depends="required">
+				<arg position="0" key="access.accessBy" bundle="sample" />
+			</field>
+			<field property="studyBean.theAccess.roleName" page="4"
+				depends="required">
+				<arg position="0" key="access.roleName" bundle="sample" />
+			</field>
+			<field property="studyBean.theAccess.groupName" page="4"
+				depends="validwhen">
+				<arg position="0" key="access.groupName" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((studyBean.theAccess.accessBy!='group') and
+						(studyBean.theAccess.accessBy!='public')) or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field property="studyBean.theAccess.userBean.loginName" page="4"
+				depends="validwhen">
+				<arg position="0" key="access.userName" bundle="sample" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((studyBean.theAccess.accessBy!='user') or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+		</form>
+	</formset>
+</form-validation>

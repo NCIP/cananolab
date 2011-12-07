@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="studyForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="studyBean" type="gov.nih.nci.cananolab.dto.common.StudyBean"/>
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="studyId" type="java.lang.String" />
+		</form-bean>
+		<form-bean name="studySearchForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="studyName" type="java.lang.String" />
+			<form-property name="studyNameOperand" type="java.lang.String" />
+			<form-property name="studyType" type="java.lang.String" />
+			<form-property name="studyDesignType" type="java.lang.String" />
+			<form-property name="isAnimalStudy" type="java.lang.Boolean" />
+			<form-property name="sampleName" type="java.lang.String" />
+			<form-property name="sampleNameOperand" type="java.lang.String" />
+			<form-property name="studyPointOfContact" type="java.lang.String" />
+			<form-property name="pocOperand" type="java.lang.String" />
+			<form-property name="disease" type="java.lang.String" />
+			<form-property name="diseaseOperand" type="java.lang.String" />
+			<form-property name="text" type="java.lang.String" />
+			<form-property name="studyOwner" type="java.lang.String" />
+			<form-property name="ownerOperand" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+	</global-exceptions>
+	<global-forwards>
+	</global-forwards>
+	<action-mappings>
+		<action path="/manageStudy" type="org.apache.struts.actions.ForwardAction"
+			parameter="study.home" scope="request">
+		</action>
+
+		<action path="/study" name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudyAction" parameter="dispatch"
+			input="input">
+			<forward name="input" path="/study.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.input" />
+			<forward name="setupUpdate" path="study.studyInfo" />
+			<forward name="summaryEdit" path="study.summaryEdit" />
+			<forward name="summaryView" path="study.summaryView" />
+			<forward name="summaryEditPerSample" path="sample.study.summaryEdit" />
+			<forward name="summaryViewPerSample" path="sample.study.summaryView" />
+		</action>
+
+		<action path="/searchStudy" name="studySearchForm"
+			type="gov.nih.nci.cananolab.ui.study.SearchStudyAction" parameter="dispatch"
+			input="input" scope="request">
+			<forward name="input" path="study.search.input" />
+			<forward name="searchResult" path="study.search.result" />
+		</action>
+
+		<action path="/studySample" name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudySampleAction" parameter="dispatch"
+			input="input" scope="request">
+			<forward name="input" path="/studySample.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.sample.add" />
+			<forward name="summaryEdit" path="study.sample.summaryEdit" />
+			<forward name="summaryView" path="study.sample.summaryView" />
+			<forward name="sampleAdd" path="study.sample.add" />
+		</action>
+
+		<action path="/studyCharacterization" name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudyCharaterizationAction" parameter="dispatch"
+			input="input" scope="request">
+			<forward name="input" path="/studyCharacterization.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.sample.add" />
+			<forward name="summaryEdit" path="study.char.summaryEdit" />
+			<forward name="summaryView" path="study.char.summaryView" />
+			<forward name="charAdd" path="study.char.add" />
+		</action>
+
+		<action path="/studyAnimalModel" name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudyAnimalModelAction"
+			parameter="dispatch" input="input" scope="request">
+			<forward name="input"
+				path="/studyAnimalModel.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.animal.input" />
+			<forward name="summaryEdit" path="study.animal.summaryEdit" />
+			<forward name="summaryView" path="study.animal.summaryView" />
+		</action>
+
+		<action path="/studyProtocol" name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudyProtocolAction" parameter="dispatch"
+			input="input" scope="request">
+			<forward name="input" path="/studyProtocol.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.protocol.input" />
+			<forward name="summaryEdit" path="study.protocol.summaryEdit" />
+			<forward name="summaryView" path="study.protocol.summaryView" />
+			<forward name="add" path="study.protocol.add" />
+		</action>
+
+		<action path="/studyPublication" name="studyForm"
+			type="gov.nih.nci.cananolab.ui.study.StudyPublicationAction"
+			parameter="dispatch" input="input" scope="request">
+			<forward name="input"
+				path="/studyPublication.do?dispatch=input&amp;page=0" />
+			<forward name="inputForm" path="study.publication.input" />
+			<forward name="summaryEdit" path="study.publication.summaryEdit" />
+			<forward name="summaryView" path="study.publication.summaryView" />
+			<forward name="add" path="study.publication.add" />
+		</action>
+	</action-mappings>
+</struts-config>
