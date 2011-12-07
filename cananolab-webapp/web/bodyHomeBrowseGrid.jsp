@@ -178,33 +178,4 @@
 			<span id="publicationCount"></span>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			<table class="gridtableNoBorder">
-				<tr>
-					<td rowspan="2">
-						<a href="#" onclick="gotoStudies('setup')"> <img
-								src="images/icon_report_48x.gif" style="border-style: none;"
-								alt="Search Publications" /> </a>
-					</td>
-					<td>
-						<a href="#" onclick=gotoStudies('setup');><b>Search
-								Studies</b> </a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Search for information on nanotechnology publications including
-						peer reviewed articles, reviews, and other types of reports
-						related to the use of nanotechnology in biomedicine.
-					</td>
-				</tr>
-			</table>
-		</td>
-		<td style="padding-left: 22px">
-			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="studyLoaderImg" style="display: block" >
-			<span id="studyCount"></span>
-		</td>
-	</tr>
 </table>

@@ -61,7 +61,7 @@ public class DWRCharacterizationManager {
 			// setup Assay Type drop down.
 			List<LabelValueBean> assayTypes = InitSetup.getInstance()
 					.getDefaultAndOtherTypesByLookupAsOptions(charName,
-							"assayName", "otherAssayType");
+							"assayType", "otherAssayType");
 			if (!assayTypes.isEmpty()) {
 				charNamesWithAssayTypes.add(bean);
 				for (LabelValueBean assayTypeBean : assayTypes) {

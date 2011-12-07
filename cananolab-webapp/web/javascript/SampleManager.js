@@ -711,34 +711,3 @@ function manageDataAvailability(sampleId, actionName, dispatch){
 	 editDataAvailability(actionName + ".do?dispatch=" + dispatch + "&sampleId=" + sampleId);
 }
 
-
-function showMatchedKeywords(ind) {
-	// display progress.gif while waiting for the response.
-	show("loaderImg" + ind);
-	hide("matchedTermSelect" + ind);
-	hide("selectButton" + ind);
-	hide("searchMessage" + ind);
-	var searchStr = dwr.util.getValue("searchStr" + ind);
-	var algorithm = dwr.util.getValue("algorithm" + ind);
-	SampleManager.getMatchedKeywords(searchStr, algorithm, function(data) {
-		if (data.length > 0) {
-			dwr.util.removeAllOptions("matchedTermSelect" + ind);
-			dwr.util.addOptions("matchedTermSelect" + ind, data);
-			hide("loaderImg" + ind);
-			hide("searchMessage" + ind);
-			show("matchedTermSelect" + ind);
-			show("addButton" + ind);
-		} else {
-			show("searchMessage" + ind);
-		}
-	});
-}
-
-function populateKeywords(ind) {
-	// display progress.gif while waiting for the response.
-	hide("termBrowser" + ind);
-	hide("matchedTermSelect" + ind);
-	hide("addButton" + ind);
-	populateTextAreaWithSelection("keywordsStr", "matchedTermSelect" + ind);
-}
-

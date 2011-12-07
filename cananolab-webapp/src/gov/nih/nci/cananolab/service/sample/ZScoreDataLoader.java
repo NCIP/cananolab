@@ -197,7 +197,7 @@ public class ZScoreDataLoader {
 				AssayCondition ac = assayMap.get(assayStr);
 				this.saveLookupValue(ac);
 				if (ac != null) {
-					String acStr = ac.getCellType() + "||" + ac.getAssayName();
+					String acStr = ac.getCellType() + "||" + ac.getAssayType();
 					achar = charMap.get(acStr);
 					if (achar != null) {
 						for (Finding aFinding : achar.getFindingCollection()) {
@@ -210,7 +210,7 @@ public class ZScoreDataLoader {
 						achar.setCreatedBy(USER_NAME);
 						achar.setCreatedDate(currentDate);
 						achar.setCellLine(ac.getCellType());
-						achar.setAssayName(ac.getAssayName());// TODO
+						achar.setAssayType(ac.getAssayType());// TODO
 						achar.setFindingCollection(new HashSet<Finding>());
 						achar.setDesignMethodsDescription(ac
 								.getAssayDesciption());
@@ -225,7 +225,7 @@ public class ZScoreDataLoader {
 					datum.setCreatedBy(USER_NAME);
 					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 					datum.setValue(data.get(assayStr).floatValue());
-					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayName()));// TODO
+					datum.setName(DATUM_TYPE_MAP.get(ac.getAssayType()));// TODO
 					datum.setValueType("Z-score");
 					Condition condition = new Condition();
 					condition.setCreatedBy(USER_NAME);
@@ -281,7 +281,7 @@ public class ZScoreDataLoader {
 	protected void saveLookupValue(AssayCondition ac) throws BaseException {
 		Set<String> valueSet = null;
 		// 1.find & save assay type.
-		String assayType = ac.getAssayName();
+		String assayType = ac.getAssayType();
 		valueSet = LookupService.getDefaultAndOtherLookupTypes("cytotoxicity",
 				"assayType", "otherAssayType");
 		if (valueSet != null && !valueSet.contains(assayType)) {
@@ -368,20 +368,20 @@ public class ZScoreDataLoader {
 
 class AssayCondition {
 	private String cellType;
-	private String assayName;
+	private String assayType;
 	private Double conditionValue;
 	private String conditionUnit;
 	private Double conditionValue2;
 	private String conditionUnit2;
 	private String assayDesciption;
 
-	public AssayCondition(String cellType, String assayName,
+	public AssayCondition(String cellType, String assayType,
 			Double conditionValue, String conditionUnit,
 			Double conditionValue2, String conditionUnit2,
 			String assayDesciption) {
 		super();
 		this.cellType = cellType;
-		this.assayName = assayName;
+		this.assayType = assayType;
 		this.conditionValue = conditionValue;
 		this.conditionUnit = conditionUnit;
 		this.conditionValue2 = conditionValue2;
@@ -397,12 +397,12 @@ class AssayCondition {
 		this.cellType = cellType;
 	}
 
-	public String getAssayName() {
-		return assayName;
+	public String getAssayType() {
+		return assayType;
 	}
 
-	public void setAssayType(String assayName) {
-		this.assayName = assayName;
+	public void setAssayType(String assayType) {
+		this.assayType = assayType;
 	}
 
 	public Double getConditionValue() {

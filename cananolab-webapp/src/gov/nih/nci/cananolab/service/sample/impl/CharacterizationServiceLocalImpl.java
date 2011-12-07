@@ -1,12 +1,12 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
-import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.Sample;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -40,7 +40,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Service methods involving local characterizations
  *
- * @author tanq, pansu, lethai
+ * @author tanq, pansu
  *
  */
 public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
@@ -97,9 +97,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			// sample
 			// .setCharacterizationCollection(new HashSet<Characterization>());
 			// }
-			//TODO check for 1.6
-			achar.getSampleCollection().add(sample);
-			//achar.setSample(sample);
+			achar.setSample(sample);
 			// sample.getCharacterizationCollection().add(achar);
 
 			// save file data to file system
@@ -113,11 +111,9 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				}
 			}
 			appService.saveOrUpdate(achar);
-
-			//TODO check for 1.6
 			// find sample accesses
 			List<AccessibilityBean> sampleAccesses = super
-					.findSampleAccesses(sampleBean.getDomain().getId().toString());
+					.findSampleAccesses(achar.getSample().getId().toString());
 			// save sample accesses
 			for (AccessibilityBean access : sampleAccesses) {
 				if (newChar) {
@@ -460,9 +456,8 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				this.saveCharacterization(sampleBean, copyBean);
 				// save associated accessibility for the copied characterization
 				// find sample accesses
-				//TODO check for 1.6
 				List<AccessibilityBean> sampleAccesses = super
-						.findSampleAccesses(sampleBean.getDomain().getId().toString());
+						.findSampleAccesses(copy.getSample().getId().toString());
 				// save sample accesses
 				for (AccessibilityBean access : sampleAccesses) {
 					this.accessUtils.assignAccessibility(access, copy);
@@ -497,19 +492,13 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			/*DetachedCriteria crit = DetachedCriteria.forClass(
-					OtherCharacterization.class).add(
-					Property.forName("assayCategory").eq(assayCategory)
-							.ignoreCase());*/
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					OtherCharacterization.class).add(
-					Property.forName("characterizationCategory").eq(assayCategory)
+					Property.forName("assayCategory").eq(assayCategory)
 							.ignoreCase());
-			
-			
 			List result = appService.query(crit);
 			for (Object obj : result) {
-				String charName = ((OtherCharacterization) obj).getCharacterizationName();
+				String charName = ((OtherCharacterization) obj).getName();
 				if (!charNames.contains(charName)) {
 					charNames.add(charName);
 				}
@@ -535,12 +524,11 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 				throw new NoAccessException();
 			}
 			// find sample accesses
-			//TODO check for 1.6
-//			List<AccessibilityBean> sampleAccesses = super
-//					.findSampleAccesses(achar.getSample().getId().toString());
-//			for (AccessibilityBean access : sampleAccesses) {
-//				accessUtils.assignAccessibility(access, achar);
-//			}
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.assignAccessibility(access, achar);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -556,13 +544,12 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 					.checkCreatePermission(achar.getId().toString())) {
 				throw new NoAccessException();
 			}
-			//TODO check for 1.6
 			// find sample accesses
-//			List<AccessibilityBean> sampleAccesses = super
-//					.findSampleAccesses(achar.getSample().getId().toString());
-//			for (AccessibilityBean access : sampleAccesses) {
-//				accessUtils.removeAccessibility(access, achar, false);
-//			}
+			List<AccessibilityBean> sampleAccesses = super
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, achar, false);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -577,13 +564,12 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			if (!isOwnerByCreatedBy(config.getCreatedBy())) {
 				throw new NoAccessException();
 			}
-			//TODO check for 1.6
 			// find sample accesses, already contains owner for config
-//			List<AccessibilityBean> sampleAccesses = this
-//					.findSampleAccesses(achar.getSample().getId().toString());
-//			for (AccessibilityBean access : sampleAccesses) {
-//				accessUtils.assignAccessibility(access, config);
-//			}
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.assignAccessibility(access, config);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -598,14 +584,12 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			if (!isOwnerByCreatedBy(finding.getCreatedBy())) {
 				throw new NoAccessException();
 			}
-			//TODO check for 1.6
 			// find sample accesses, already contains owner for finding
-
-//			List<AccessibilityBean> sampleAccesses = this
-//					.findSampleAccesses(achar.getSample().getId().toString());
-//			for (AccessibilityBean access : sampleAccesses) {
-//				accessUtils.assignAccessibility(access, finding);
-//			}
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.assignAccessibility(access, finding);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -621,13 +605,12 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 					.toString())) {
 				throw new NoAccessException();
 			}
-			//TODO check for 1.6
 			// find sample accesses, already contains owner for config
-//			List<AccessibilityBean> sampleAccesses = this
-//					.findSampleAccesses(achar.getSample().getId().toString());
-//			for (AccessibilityBean access : sampleAccesses) {
-//				accessUtils.removeAccessibility(access, config, false);
-//			}
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, config, false);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
@@ -643,54 +626,17 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 					.toString())) {
 				throw new NoAccessException();
 			}
-			//TODO check for 1.6
 			// find sample accesses, already contains owner for finding
-//			List<AccessibilityBean> sampleAccesses = this
-//					.findSampleAccesses(achar.getSample().getId().toString());
-//			for (AccessibilityBean access : sampleAccesses) {
-//				accessUtils.removeAccessibility(access, finding, false);
-//			}
+			List<AccessibilityBean> sampleAccesses = this
+					.findSampleAccesses(achar.getSample().getId().toString());
+			for (AccessibilityBean access : sampleAccesses) {
+				accessUtils.removeAccessibility(access, finding, false);
+			}
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
 			String error = "Error in removing finding accessibility";
 			throw new CharacterizationException(error, e);
 		}
-	}
-
-	
-	public List<CharacterizationBean> findCharacterizationsByStudyId(
-			String studyId) throws CharacterizationException {
-		List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
-		try {
-			/*List<Characterization> chars = helper
-					.findCharacterizationsByStudyId(studyId);
-			for (Characterization achar : chars) {
-				//List<Sample> samplesByCharacterizationId = sampleHelper.findSamplesByCharacterizationId(achar.getId().toString());				
-				CharacterizationBean charBean = new CharacterizationBean(achar);
-				charBeans.add(charBean);
-			}*/
-			
-		} catch (Exception e) {
-			String err = "Error finding characterization by study ID "
-					+ studyId;
-			logger.error(err, e);
-			throw new CharacterizationException(err);
-		}
-		//testing
-		try {
-			List<Characterization> chars = helper.findCharacterizationsBySampleId("10780678"); //"10780678"
-			for (Characterization achar : chars) {
-				//List<Sample> samplesByCharacterizationId = sampleHelper.findSamplesByCharacterizationId(achar.getId().toString());				
-				CharacterizationBean charBean = new CharacterizationBean(achar);
-				charBeans.add(charBean);
-			}
-		} catch (Exception e) {
-			String err = "Error finding characterization by study ID "
-					+ studyId;
-			logger.error(err, e);
-			throw new CharacterizationException(err);
-		}	
-		return charBeans;
 	}
 }

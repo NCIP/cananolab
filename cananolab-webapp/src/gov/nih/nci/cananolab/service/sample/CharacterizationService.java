@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.service.sample;
 
-import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Interface defining service methods involving characterizations
  *
- * @author pansu, tanq, lethai
+ * @author pansu, tanq
  *
  */
 public interface CharacterizationService extends BaseService {
@@ -35,8 +35,6 @@ public interface CharacterizationService extends BaseService {
 			String sampleId) throws CharacterizationException,
 			NoAccessException;
 
-	public List<CharacterizationBean> findCharacterizationsByStudyId(
-			String studyId) throws CharacterizationException;
 	public void saveFinding(FindingBean findingBean)
 			throws CharacterizationException, NoAccessException;
 

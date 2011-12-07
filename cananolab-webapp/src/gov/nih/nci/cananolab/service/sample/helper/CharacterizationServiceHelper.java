@@ -1,12 +1,10 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
-import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.Sample;
-import gov.nih.nci.cananolab.domain.common.Study;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -32,7 +30,7 @@ import org.hibernate.criterion.Property;
 /**
  * Service methods involving characterizations
  *
- * @author tanq, pansu, lethai
+ * @author tanq, pansu
  */
 public class CharacterizationServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger
@@ -59,7 +57,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		Protocol protocol = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.common.Characterization aChar where aChar.id="
+		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.particle.Characterization aChar where aChar.id="
 				+ characterizationId;
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
@@ -156,72 +154,34 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		List<Characterization> chars = new ArrayList<Characterization>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();		
-		DetachedCriteria crit = DetachedCriteria
-		.forClass(Sample.class);
-		crit.add(Property.forName("id").eq(new Long(sampleId)));
-		
-		// fully load characterization
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.pointOfContact", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.pointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.protocol", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.protocol.file", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.protocol.file.keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.experimentConfigCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.experimentConfigCollection.technique",
-				FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.experimentConfigCollection.instrumentCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.findingCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.findingCollection.datumCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"characterizationCollection.findingCollection.datumCollection.conditionCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.findingCollection.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.findingCollection.fileCollection.keywordCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.sampleCollection",
-				FetchMode.JOIN);
-		
-		List results = appService.query(crit);
-		Sample sample = null;
-		if (!results.isEmpty()) {
-			sample = (Sample) results.get(0);
-		}
-		for (Object obj : sample.getCharacterizationCollection()) {
-			Characterization achar = (Characterization) obj;
-			if (getAccessibleData().contains(achar.getId().toString())) {
-				checkAssociatedVisibility(achar);
-				chars.add(achar);
-			} else {
-				logger
-						.debug("User doesn't have access ot characterization with id "
-								+ achar.getId());
-			}
-		}
-		return chars;
-	}
-
-	public List<Characterization> findCharacterizationsByStudyId(
-			String studyId) throws Exception {
-		List<Characterization> chars = new ArrayList<Characterization>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
-				.forClass(Study.class);
-		Study study = null;
-		crit.createAlias("study", "study");
-		crit.add(Property.forName("id").eq(new Long(studyId)));
+				.forClass(Characterization.class);
+		crit.createAlias("sample", "sample");
+		crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 		// fully load characterization
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 
-		if (!results.isEmpty()) {
-			study = (Study) results.get(0);
-		}
-		for (Object obj : study.getCharacterizationCollection()) {
+		for (Object obj : results) {
 			Characterization achar = (Characterization) obj;
 			if (getAccessibleData().contains(achar.getId().toString())) {
 				checkAssociatedVisibility(achar);
@@ -234,6 +194,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		}
 		return chars;
 	}
+
 	public Characterization findCharacterizationById(String charId)
 			throws Exception {
 		if (!getAccessibleData().contains(charId)) {

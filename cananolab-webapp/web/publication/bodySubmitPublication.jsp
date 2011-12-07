@@ -414,28 +414,31 @@
 		</c:otherwise>
 	</c:choose>
 	<br>
-	<c:set var="groupAccesses"
-		value="${publicationForm.map.publication.groupAccesses}" />
-	<c:set var="userAccesses"
-		value="${publicationForm.map.publication.userAccesses}" />
-	<c:set var="accessParent" value="publication" />
-	<c:set var="dataType" value="Publication" />
-	<c:set var="parentForm" value="publicationForm" />
-	<c:set var="parentAction" value="publication" />
-	<c:set var="parentPage" value="2" />
-	<c:set var="protectedData"
-		value="${publicationForm.map.publication.domainFile.id}" />
-	<c:set var="isPublic"
-		value="${publicationForm.map.publication.publicStatus}" />
-	<c:set var="isOwner"
-		value="${publicationForm.map.publication.userIsOwner}" />
-	<c:set var="ownerName"
-		value="${publicationForm.map.publication.domainFile.createdBy}" />
-	<c:set var="newData" value="true" />
-	<c:if test="${updatePublication}">
-		<c:set var="newData" value="false" />
-	</c:if>
-	<%@include file="../bodyManageAccessibility.jsp"%>
+	<table width="100%" align="center" class="submissionView"
+		id="accessBlock">
+		<c:set var="groupAccesses"
+			value="${publicationForm.map.publication.groupAccesses}" />
+		<c:set var="userAccesses"
+			value="${publicationForm.map.publication.userAccesses}" />
+		<c:set var="accessParent" value="publication" />
+		<c:set var="dataType" value="Publication" />
+		<c:set var="parentForm" value="publicationForm" />
+		<c:set var="parentAction" value="publication" />
+		<c:set var="parentPage" value="2" />
+		<c:set var="protectedData"
+			value="${publicationForm.map.publication.domainFile.id}" />
+		<c:set var="isPublic"
+			value="${publicationForm.map.publication.publicStatus}" />
+		<c:set var="isOwner"
+			value="${publicationForm.map.publication.userIsOwner}" />
+		<c:set var="ownerName"
+			value="${publicationForm.map.publication.domainFile.createdBy}" />
+		<c:set var="newData" value="true" />
+		<c:if test="${updatePublication}">
+			<c:set var="newData" value="false" />
+		</c:if>
+		<%@include file="../bodyManageAccessibility.jsp"%>
+	</table>
 	<br>
 	<c:set var="updateId" value="${param.publicationId}" />
 	<c:set var="hiddenDispatch" value="create" />

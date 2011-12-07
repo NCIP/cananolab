@@ -1,8 +1,7 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Sample;
-import gov.nih.nci.cananolab.domain.common.Study;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -307,7 +306,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		}
 		// check if user have access to publication first
 
-		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.common.Sample as sample join sample.publicationCollection as pub where pub.id='"
+		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
 				+ publicationId + "'";
 		HQLCriteria crit = new HQLCriteria(query);
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -361,40 +360,6 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			}
 		}
 		return publications;
-	}
-	
-	public List<Publication> findPublicationsByStudyId(String studyId) throws Exception {
-
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
-			throw new NoAccessException("User has no access to the study "
-					+ studyId);
-		}
-		List<Publication> pubs = new ArrayList<Publication>();
-		Study study = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
-				Property.forName("id").eq(new Long(studyId)));
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.authorCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.keywordCollection",
-				FetchMode.JOIN);
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			study = (Study) result.get(0);
-		}
-		for (Object obj : study.getPublicationCollection()) {
-			Publication pub = (Publication) obj;
-			if (getAccessibleData().contains(pub.getId().toString())) {
-				pubs.add(pub);
-			} else {
-				logger.debug("User doesn't have access to publication with id "
-						+ pub.getId());
-			}
-		}
-		return pubs;
 	}
 
 	private List<Publication> findPublicationsBySampleName(String sampleName)

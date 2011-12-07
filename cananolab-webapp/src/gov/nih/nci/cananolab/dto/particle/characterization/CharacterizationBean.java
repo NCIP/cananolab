@@ -8,12 +8,11 @@ import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
-import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.Sample;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
@@ -45,7 +44,7 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private String assayName;
+	private String assayType;
 
 	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
 
@@ -88,9 +87,6 @@ public class CharacterizationBean {
 	private String isSoluble; // Data holder for Boolean field in Solubility.
 
 	private String isHydrophobic;
-	
-	//private List<String> sampleNames = new ArrayList<String>();
-	private String sampleNames;
 
 	public CharacterizationBean() {
 		// initialize finding matrix
@@ -104,7 +100,7 @@ public class CharacterizationBean {
 		domainChar = chara;
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDesignMethodsDescription();
-		this.assayName = chara.getAssayName();
+		this.assayType = chara.getAssayType();
 		this.conclusion = chara.getAnalysisConclusion();
 		if (chara != null) {
 			PointOfContact poc = chara.getPointOfContact();
@@ -112,23 +108,12 @@ public class CharacterizationBean {
 				pocBean = new PointOfContactBean(poc);
 		}
 
-		this.dateString = DateUtils.convertDateToString(chara.getStartDate(),
+		this.dateString = DateUtils.convertDateToString(chara.getDate(),
 				Constants.DATE_FORMAT);
 
 		if (chara.getFindingCollection() != null) {
 			for (Finding finding : chara.getFindingCollection()) {
 				findings.add(new FindingBean(finding));
-			}
-		}
-		if(chara.getSampleCollection() != null){
-			StringBuilder names = new StringBuilder();
-			for(Sample sample:chara.getSampleCollection()){
-				names.append(sample.getName() + ", ");
-			}
-			String namesString = names.toString().trim();
-			System.out.println("namesString: " + namesString);
-			if(namesString.lastIndexOf(",") == namesString.length() - 1){
-				sampleNames = namesString.substring(0, namesString.length() - 1);
 			}
 		}
 		Collections.sort(findings, new Comparators.FindingBeanDateComparator());
@@ -176,15 +161,6 @@ public class CharacterizationBean {
 		}
 		updateType();
 		updateName();
-	}
-
-	
-	public String getSampleNames() {
-		return sampleNames;
-	}
-
-	public void setSampleNames(String sampleNames) {
-		this.sampleNames = sampleNames;
 	}
 
 	public Characterization getDomainCopy(String createdBy, boolean copyData) {
@@ -242,9 +218,9 @@ public class CharacterizationBean {
 		}
 		this.updateEmptyFieldsToNull();
 		if (domainChar instanceof OtherCharacterization) {
-			((OtherCharacterization) domainChar).setCharacterizationName(characterizationName);
+			((OtherCharacterization) domainChar).setName(characterizationName);
 			((OtherCharacterization) domainChar)
-					.setCharacterizationCategory(characterizationType);
+					.setAssayCategory(characterizationType);
 		} else if (domainChar instanceof Shape) {
 			domainChar = shape;
 		} else if (domainChar instanceof Solubility) {
@@ -274,7 +250,7 @@ public class CharacterizationBean {
 			domainChar.setCreatedBy(createdBy);
 		}
 		domainChar.setDesignMethodsDescription(description);
-		domainChar.setAssayName(assayName);
+		domainChar.setAssayType(assayType);
 		domainChar.setAnalysisConclusion(conclusion);
 		if (pocBean != null && pocBean.getDomain().getId() != null
 				&& pocBean.getDomain().getId() != 0) {
@@ -282,7 +258,7 @@ public class CharacterizationBean {
 		} else {
 			domainChar.setPointOfContact(null);
 		}
-		domainChar.setStartDate(DateUtils.convertToDate(dateString,
+		domainChar.setDate(DateUtils.convertToDate(dateString,
 				Constants.DATE_FORMAT));
 
 		if (domainChar.getExperimentConfigCollection() != null) {
@@ -489,12 +465,12 @@ public class CharacterizationBean {
 		this.conclusion = conclusion;
 	}
 
-	public String getAssayName() {
-		return assayName;
+	public String getAssayType() {
+		return assayType;
 	}
 
-	public void setAssayName(String assayName) {
-		this.assayName = assayName;
+	public void setAssayType(String assayType) {
+		this.assayType = assayType;
 	}
 
 	public EnzymeInduction getEnzymeInduction() {
@@ -528,7 +504,7 @@ public class CharacterizationBean {
 	public void updateType() {
 		if (domainChar instanceof OtherCharacterization) {
 			characterizationType = ((OtherCharacterization) domainChar)
-					.getCharacterizationCategory();
+					.getAssayCategory();
 		} else {
 			String superClassShortName = ClassUtils
 					.getShortClassName(domainChar.getClass().getSuperclass()
@@ -541,7 +517,7 @@ public class CharacterizationBean {
 	public void updateName() {
 		if (domainChar instanceof OtherCharacterization) {
 			characterizationName = ((OtherCharacterization) domainChar)
-					.getCharacterizationName();
+					.getName();
 		} else {
 			characterizationName = ClassUtils.getDisplayName(className);
 		}

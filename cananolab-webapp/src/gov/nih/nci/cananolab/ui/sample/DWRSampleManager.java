@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
-import gov.nih.nci.cananolab.util.LexBIGServiceUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,23 +53,24 @@ public class DWRSampleManager {
 						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultNanomaterialEntityTypes",
-								"gov.nih.nci.cananolab.domain.common.NanomaterialEntity",
-								"gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity");
+								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
+								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity");
 			} else if (compType.equals("functionalizing entity")) {
 				types = InitSetup
 						.getInstance()
 						.getDefaultAndOtherTypesByReflectionAsOptions(
 								appContext,
 								"defaultFunctionalizingEntityTypes",
-								"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity",
-								"gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity");
+								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
+								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity");
 			} else if (compType.equals("function")) {
 				types = InitSetup
 						.getInstance()
 						.getDefaultAndOtherTypesByReflectionAsOptions(
-								appContext, "defaultFunctionTypes",
-								"gov.nih.nci.cananolab.domain.common.Function",
-								"gov.nih.nci.cananolab.domain.material.OtherFunction");
+								appContext,
+								"defaultFunctionTypes",
+								"gov.nih.nci.cananolab.domain.particle.Function",
+								"gov.nih.nci.cananolab.domain.function.OtherFunction");
 			}
 		} catch (Exception e) {
 			return null;
@@ -89,8 +89,8 @@ public class DWRSampleManager {
 							request,
 							"defaultNanomaterialEntityTypes",
 							"nanomaterialEntityTypes",
-							"gov.nih.nci.cananolab.domain.common.NanomaterialEntity",
-							"gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity",
+							"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
+							"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
 							true);
 
 			String[] eleArray = new String[types.size()];
@@ -113,8 +113,8 @@ public class DWRSampleManager {
 							request,
 							"defaultFunctionalizingEntityTypes",
 							"functionalizingEntityTypes",
-							"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity",
-							"gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity",
+							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
+							"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
 							true);
 
 			String[] eleArray = new String[types.size()];
@@ -138,8 +138,8 @@ public class DWRSampleManager {
 							request,
 							"defaultFunctionTypes",
 							"functionTypes",
-							"gov.nih.nci.cananolab.domain.common.Function",
-							"gov.nih.nci.cananolab.domain.material.OtherFunction",
+							"gov.nih.nci.cananolab.domain.particle.Function",
+							"gov.nih.nci.cananolab.domain.function.OtherFunction",
 							true);
 
 			String[] eleArray = new String[types.size()];
@@ -300,25 +300,5 @@ public class DWRSampleManager {
 			logger.error("Problem getting matched sample names", e);
 		}
 		return nameArray;
-	}
-
-	public String[] getMatchedKeywords(String searchStr, String matchAlgorithm)
-			throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
-		if (user == null) {
-			return null;
-		}
-		String[] termArray = new String[] { "" };
-		try {
-			List<String> terms = LexBIGServiceUtils.getSynonyms(
-					LexBIGServiceUtils.NPO_SCHEME, searchStr, matchAlgorithm);
-			if (!terms.isEmpty()) {
-				termArray = terms.toArray(new String[terms.size()]);
-			}
-		} catch (Exception e) {
-			logger.error("Problem getting matched keywords", e);
-		}
-		return termArray;
 	}
 }

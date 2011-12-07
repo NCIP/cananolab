@@ -82,11 +82,10 @@
 			<include method="getCharacterizationOperandOptions" />
 			<include method="getMatchedSampleNames" />
 			<include method="getDetailContent" />
-			<include method="getMatchedKeywords"/>
 		</create>
 		<create creator="new" javascript="POCManager" scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.core.DWRPointOfContactManager" />
+				value="gov.nih.nci.cananolab.ui.sample.DWRPointOfContactManager" />
 			<include method="getPointOfContactById" />
 			<include method="resetThePointOfContact" />
 			<include method="getOrganizationByName" />
@@ -140,11 +139,6 @@
 			<include method="getMatchedUsers"/>
 			<include method="getMatchedGroupNames"/>
 		</create>
-		<create creator="new" javascript="StudyManager" scope="session">
-			<param name="class" value="gov.nih.nci.cananolab.ui.study.DWRStudyManager" />
-			<include method="getMatchedDesignTypes" />
-			<include method="getMatchedDiseases" />
-		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
 			<param name="include" value="displayName, domainId" />
@@ -154,7 +148,7 @@
 			<param name="include" value="domain, inherentFunctions, displayName, domainId" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.ComposingElement">
+			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
 			<param name="include"
 				value="id, type, name, pubChemDataSourceName, pubChemId, value, valueUnit, molecularFormula, molecularFormulaType, description" />
 		</convert>
@@ -163,7 +157,7 @@
 			<param name="include" value="id, description, type, imagingFunction, targets" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.material.ImagingFunction">
+			match="gov.nih.nci.cananolab.domain.function.ImagingFunction">
 			<param name="include" value="modality" />
 		</convert>
 		<convert converter="bean"
@@ -171,7 +165,7 @@
 			<param name="include" value="id, description, type, name, antigen" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.material.agentmaterial.Antigen">
+			match="gov.nih.nci.cananolab.domain.function.Antigen">
 			<param name="include" value="species" />
 		</convert>
 		<convert converter="bean"

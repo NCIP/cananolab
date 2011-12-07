@@ -15,7 +15,7 @@ import org.apache.struts.config.ModuleConfig;
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
  *
- * @author pansu, lethai
+ * @author pansu
  *
  */
 public class CustomPlugIn implements PlugIn {
@@ -33,19 +33,21 @@ public class CustomPlugIn implements PlugIn {
 					.getInstance()
 					.getDefaultTypesByReflection(appContext,
 							"defaultFunctionalizingEntityTypes",
-							"gov.nih.nci.cananolab.domain.common.FunctionalizingEntity");
+							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
 					"defaultNanomaterialEntityTypes",
-					"gov.nih.nci.cananolab.domain.common.NanomaterialEntity");
+					"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
 					"defaultFunctionTypes",
-					"gov.nih.nci.cananolab.domain.common.Function");
+					"gov.nih.nci.cananolab.domain.particle.Function");
 			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
 					"defaultTargetTypes",
-					"gov.nih.nci.cananolab.domain.material.Target");
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
-					"defaultChemicalAssociationTypes",
-					"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
+					"gov.nih.nci.cananolab.domain.function.Target");
+			InitSetup
+					.getInstance()
+					.getDefaultTypesByReflection(appContext,
+							"defaultChemicalAssociationTypes",
+							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
 			InitSetup.getInstance().getDefaultTypesByLookup(appContext,
 					"speciesTypes", "species", "type");
@@ -83,9 +85,10 @@ public class CustomPlugIn implements PlugIn {
 					.getDefaultTypesByReflection(appContext, "invivoChars",
 							"gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization");
 
-			InitSetup.getInstance().getDefaultTypesByReflection(appContext,
-					"chemicalAssocs",
-					"gov.nih.nci.cananolab.domain.common.ChemicalAssociation");
+			InitSetup
+					.getInstance()
+					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
+							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}

@@ -1,21 +1,20 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
-import gov.nih.nci.cananolab.domain.common.Characterization;
-import gov.nih.nci.cananolab.domain.common.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.common.ComposingElement;
-import gov.nih.nci.cananolab.domain.common.Function;
-import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.Sample;
-import gov.nih.nci.cananolab.domain.common.Study;
-import gov.nih.nci.cananolab.domain.material.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.material.OtherFunction;
-import gov.nih.nci.cananolab.domain.material.OtherNanomaterialEntity;
-import gov.nih.nci.cananolab.domain.material.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.function.OtherFunction;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
@@ -470,7 +469,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			for (Characterization achar : sample
 					.getCharacterizationCollection()) {
 				if (achar instanceof OtherCharacterization) {
-					storedChars.add(((OtherCharacterization) achar).getCharacterizationName());
+					storedChars.add(((OtherCharacterization) achar).getName());
 				} else {
 					storedChars.add(ClassUtils.getShortClassName(achar
 							.getClass().getCanonicalName()));
@@ -570,13 +569,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			Sample sample = (Sample) obj;
 			poc = sample.getPrimaryPointOfContact();
 		}
-		if (poc != null) {
-			if (!getAccessibleData().contains(poc.getId().toString())) {
-				throw new NoAccessException(
-						"User has no access to the point of contact "
-								+ poc.getId());
-			}
-		}
 		return poc;
 	}
 
@@ -601,13 +593,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
 			for (PointOfContact poc : otherPOCs) {
-				if (getAccessibleData().contains(poc.getId().toString())) {
-					pointOfContacts.add(poc);
-				} else { // ignore no access exception
-					logger
-							.debug("User doesn't have access to the POC with org name "
-									+ poc.getOrganization().getName());
-				}
+				pointOfContacts.add(poc);
 			}
 		}
 		return pointOfContacts;
@@ -665,7 +651,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				.getApplicationService();
 		List<String> publicData = appService.getAllPublicData();
 		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.common.Sample");
+				"select id from gov.nih.nci.cananolab.domain.particle.Sample");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {
@@ -795,24 +781,10 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		for (Object obj : results) {
 			Sample sample = (Sample) obj;
 			PointOfContact primaryPOC = sample.getPrimaryPointOfContact();
-			if (getAccessibleData().contains(primaryPOC.getId().toString())) {
-				pointOfContacts.add(primaryPOC);
-			} else { // ignore no access exception
-				logger
-						.debug("User doesn't have access to the primary POC with org name "
-								+ primaryPOC.getOrganization().getName());
-			}
+			pointOfContacts.add(primaryPOC);
 			Collection<PointOfContact> otherPOCs = sample
 					.getOtherPointOfContactCollection();
-			for (PointOfContact poc : otherPOCs) {
-				if (getAccessibleData().contains(poc.getId().toString())) {
-					pointOfContacts.add(poc);
-				} else { // ignore no access exception
-					logger
-							.debug("User doesn't have access to the POC with org name "
-									+ poc.getOrganization().getName());
-				}
-			}
+			pointOfContacts.addAll(otherPOCs);
 		}
 		return pointOfContacts;
 	}
@@ -868,9 +840,9 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select other.name, other.id from gov.nih.nci.cananolab.domain.common.Sample as other "
+				"select other.name, other.id from gov.nih.nci.cananolab.domain.particle.Sample as other "
 						+ "where exists ("
-						+ "select sample.name from gov.nih.nci.cananolab.domain.common.Sample as sample "
+						+ "select sample.name from gov.nih.nci.cananolab.domain.particle.Sample as sample "
 						+ "where sample.primaryPointOfContact.organization.name=other.primaryPointOfContact.organization.name and sample.id="
 						+ sampleId + " and other.name!=sample.name)");
 		List results = appService.query(crit);
@@ -907,12 +879,6 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			poc = (PointOfContact) obj;
-			if (getAccessibleData().contains(poc.getId().toString())) {
-				return poc;
-			} else {
-				throw new NoAccessException(
-						"User has no access to the point of contact");
-			}
 		}
 		return poc;
 	}
@@ -947,73 +913,4 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		return sampleIds;
 	}
-	public List<Sample> findSamplesByStudyId(String studyId)
-	throws Exception {
-
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
-			throw new NoAccessException("User has no access to the study "
-					+ studyId);
-		}
-		List<Sample> samples = new ArrayList<Sample>();
-		Study study = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
-				Property.forName("id").eq(new Long(studyId)));
-		crit.setFetchMode("sampleCollection", FetchMode.JOIN);
-		/*crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);*/
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			study = (Study) result.get(0);
-		}
-		for (Object obj : study.getSampleCollection()) {
-			Sample sample = (Sample) obj;
-			if (getAccessibleData().contains(sample.getId().toString())) {
-				samples.add(sample);
-			} else {
-				logger.debug("User doesn't have access to sample with id "
-						+ sample.getId());
-			}
-		}
-		return samples;
-	}
-	
-	public List<Sample> findSamplesByCharacterizationId(String characterizationId)
-	throws Exception {
-
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), characterizationId)) {
-			throw new NoAccessException("User has no access to the characterization "
-					+ characterizationId);
-		}
-		List<Sample> samples = new ArrayList<Sample>();
-		Characterization characterization = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Characterization.class).add(
-				Property.forName("id").eq(new Long(characterizationId)));
-		crit.setFetchMode("sampleCollection", FetchMode.JOIN);
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			characterization = (Characterization) result.get(0);
-		}
-		for (Object obj : characterization.getSampleCollection()) {
-			Sample sample = (Sample) obj;
-			if (getAccessibleData().contains(sample.getId().toString())) {
-				samples.add(sample);
-			} else {
-				logger.debug("User doesn't have access to sample with id "
-						+ sample.getId());
-			}
-		}
-		return samples;
-	}
-	
-	
 }

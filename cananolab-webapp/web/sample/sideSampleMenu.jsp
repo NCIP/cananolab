@@ -157,35 +157,6 @@
 			</c:otherwise>
 		</c:choose>
 	</tr>
-		<tr>
-		<c:url var="studyUrl" value="study.do">
-			<c:set var="studyDispatch" value="summaryViewPerSample"/>
-			<c:if test="${!empty user}">
-				<c:set var="studyDispatch" value="summaryEditPerSample" />
-			</c:if>
-			<c:param name="dispatch" value="${studyDispatch}" />
-			<c:param name="sampleId" value="${sampleId}" />
-			<c:param name="page" value="0" />
-		</c:url>
-		<c:choose>
-			<c:when test="${actionPath eq '/study.do'}">
-				<td class="subMenuSecondaryTitleSelected"
-					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
-					onclick="gotoPage('${studyUrl}')" height="20">
-					<a class="subMenuSecondary">STUDY</a>
-				</td>
-			</c:when>
-			<c:otherwise>
-				<td class="subMenuSecondaryTitle"
-					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-					onmouseout="changeMenuStyle(this, 'subMenuSecondaryTitle'), hideCursor();"
-					onclick="gotoPage('${studyUrl}')" height="20">
-					<a class="subMenuSecondary">STUDY</a>
-				</td>
-			</c:otherwise>
-		</c:choose>
-	</tr>
 	<tr>
 		<td class="subMenuFill" height="50">
 			&nbsp;

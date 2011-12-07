@@ -2,11 +2,7 @@ package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.Sample;
-import gov.nih.nci.cananolab.domain.common.Study;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
@@ -97,39 +93,6 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 						+ protocol.getId());
 			}
 		}
-		return protocols;
-	}
-	
-	public List<Protocol> findProtocolsByStudyId(String studyId)
-			throws Exception {
-		List<Protocol> protocols = new ArrayList<Protocol>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		if (!StringUtils.containsIgnoreCase(getAccessibleData(), studyId)) {
-			throw new NoAccessException("User has no access to the study "
-					+ studyId);
-		}
-
-		Study study = null;
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Study.class).add(
-				Property.forName("id").eq(new Long(studyId)));
-		crit.setFetchMode("protocolCollection", FetchMode.JOIN);
-
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			study = (Study) result.get(0);
-		}
-		for (Object obj : study.getProtocolCollection()) {
-			Protocol protocol = (Protocol) obj;
-			if (getAccessibleData().contains(protocol.getId().toString())) {
-				protocols.add(protocol);
-			} else {
-				logger.debug("User doesn't have access to protocol with id "
-						+ protocol.getId());
-			}
-		}
-
 		return protocols;
 	}
 

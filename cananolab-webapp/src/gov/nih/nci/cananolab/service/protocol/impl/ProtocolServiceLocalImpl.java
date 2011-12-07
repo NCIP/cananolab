@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.service.protocol.impl;
 
-import gov.nih.nci.cananolab.domain.common.Characterization;
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.SecuredDataBean;
@@ -29,7 +29,7 @@ import org.hibernate.criterion.Property;
 /**
  * Local implementation of ProtocolService
  *
- * @author pansu, lethai
+ * @author pansu
  *
  */
 public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
@@ -373,39 +373,5 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	public ProtocolServiceHelper getHelper() {
 		return helper;
-	}
-
-	
-	public List<ProtocolBean> findProtocolsByStudyId(String studyId)
-			throws ProtocolException {
-		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
-		try {
-			/*List<Protocol> protocols = helper.findProtocolsByStudyId(studyId);
-			for(Protocol protocol: protocols){
-				ProtocolBean bean = new ProtocolBean(protocol);
-				protocolBeans.add(bean);
-			}*/
-			
-		} catch (Exception e) {
-			String error = "Error in retrieving protocols by study id " + studyId;
-			throw new ProtocolException(error, e);
-		}
-		
-		//testing - get protocols need to remove later
-		
-		try {
-			List<Protocol> protocols =helper.findProtocolsBy("", "", "", "");
-			for(Protocol protocol: protocols){
-				ProtocolBean bean = new ProtocolBean(protocol);
-				protocolBeans.add(bean);
-			}
-			
-		} catch (Exception e) {
-			String error = "Error in retrieving protocols";
-			throw new ProtocolException(error, e);
-		}
-		
-		
-		return protocolBeans;
 	}
 }

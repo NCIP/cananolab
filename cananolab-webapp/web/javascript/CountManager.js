@@ -2,7 +2,6 @@ function getPublicCounts() {
 	getProtocolCounts();
 	getSampleCounts();
 	getPublicationCounts();
-	getStudyCounts();
 }
 
 function getProtocolCounts() {
@@ -102,25 +101,6 @@ function getPublicationCounts() {
 	});
 }
 
-function getStudyCounts(){
-	show("studyLoaderImg");
-	hide("studyCount");
-	ProtocolManager.getPublicCounts(function(data) {
-		if (data != null) {
-			hide("studyLoaderImg");
-			data="2 Studies";
-			var link = "<a href=javascript:gotoStudies('search')>" + data
-					+ "</a>";
-			dwr.util.setValue("studyCount", link, {
-				escapeHtml : false
-			});
-			show("studyCount");
-		} else {
-			show("studyLoaderImg");
-		}
-	});
-}
-
 function gotoSamples(dispatch) {
 	var url = "/caNanoLab/searchSample.do?dispatch=" + dispatch;
 	gotoPage(url);
@@ -135,12 +115,6 @@ function gotoPublications(dispatch) {
 
 function gotoProtocols(dispatch) {
 	var url = "/caNanoLab/searchProtocol.do?dispatch=" + dispatch;
-	gotoPage(url);
-	return false;
-}
-
-function gotoStudies(dispatch) {
-	var url = "/caNanoLab/searchStudy.do?dispatch=" + dispatch;
 	gotoPage(url);
 	return false;
 }

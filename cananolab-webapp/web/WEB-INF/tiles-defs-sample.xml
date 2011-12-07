@@ -65,16 +65,6 @@
 		<put name="menu" value="samples" />
 	</definition>
 
-	<definition name="sample.study.summaryView" extends="sample.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudySummaryViewPerSample.jsp" />
-		<put name="menu" value="samples" />
-	</definition>
-
-	<definition name="sample.study.summaryEdit" extends="sample.annotationHome">
-		<put name="cananoContent" value="/study/bodyStudySummaryEditPerSample.jsp" />
-		<put name="menu" value="samples" />
-	</definition>
-
 	<definition name="sample.submitCharacterization" extends="sample.annotationHome">
 		<put name="cananoContent"
 			value="/sample/characterization/bodySubmitCharacterization.jsp" />

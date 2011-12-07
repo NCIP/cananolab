@@ -130,29 +130,26 @@
 					cols="80" />
 			</td>
 		</tr>
+		<c:set var="groupAccesses"
+			value="${protocolForm.map.protocol.groupAccesses}" />
+		<c:set var="userAccesses"
+			value="${protocolForm.map.protocol.userAccesses}" />
+		<c:set var="accessParent" value="protocol" />
+		<c:set var="dataType" value="Protocol" />
+		<c:set var="parentAction" value="protocol" />
+		<c:set var="parentForm" value="protocolForm" />
+		<c:set var="parentPage" value="2"/>
+		<c:set var="protectedData"
+			value="${protocolForm.map.protocol.domain.id}" />
+		<c:set var="newData" value="true"/>
+		<c:if test="${updateProtocol}">
+		   <c:set var="newData" value="false"/>
+		</c:if>
+		<c:set var="isPublic" value="${protocolForm.map.protocol.publicStatus}"/>
+		<c:set var="isOwner" value="${protocolForm.map.protocol.userIsOwner}"/>
+		<c:set var="ownerName" value="${protocolForm.map.protocol.domain.createdBy}"/>
+		<%@include file="../bodyManageAccessibility.jsp"%>
 	</table>
-	<br />
-	<c:set var="groupAccesses"
-		value="${protocolForm.map.protocol.groupAccesses}" />
-	<c:set var="userAccesses"
-		value="${protocolForm.map.protocol.userAccesses}" />
-	<c:set var="accessParent" value="protocol" />
-	<c:set var="dataType" value="Protocol" />
-	<c:set var="parentAction" value="protocol" />
-	<c:set var="parentForm" value="protocolForm" />
-	<c:set var="parentPage" value="2" />
-	<c:set var="protectedData"
-		value="${protocolForm.map.protocol.domain.id}" />
-	<c:set var="newData" value="true" />
-	<c:if test="${updateProtocol}">
-		<c:set var="newData" value="false" />
-	</c:if>
-	<c:set var="isPublic" value="${protocolForm.map.protocol.publicStatus}"/>
-	<c:set var="isOwner" value="${protocolForm.map.protocol.userIsOwner}" />
-	<c:set var="ownerName"
-		value="${protocolForm.map.protocol.domain.createdBy}" />
-	<%@include file="../bodyManageAccessibility.jsp"%>
-
 	<br>
 	<c:set var="updateId" value="${param.protocolId}" />
 	<c:set var="resetOnclick" value="this.form.reset();" />

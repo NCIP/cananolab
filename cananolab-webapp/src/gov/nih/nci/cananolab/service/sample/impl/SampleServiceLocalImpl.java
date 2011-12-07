@@ -1,18 +1,18 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
-import gov.nih.nci.cananolab.domain.common.AssociatedElement;
-import gov.nih.nci.cananolab.domain.common.Characterization;
-import gov.nih.nci.cananolab.domain.common.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.common.ComposingElement;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Sample;
-import gov.nih.nci.cananolab.domain.common.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -64,7 +64,7 @@ import org.hibernate.criterion.Property;
 /**
  * Service methods involving samples
  *
- * @author pansu, lethai
+ * @author pansu
  *
  */
 public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
@@ -1161,39 +1161,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		return sampleIds;
 	}
 
-	public List<SampleBean> findSamplesByStudyId(String studyId)
-			throws SampleException {
-		List<SampleBean> samplesBean = new ArrayList<SampleBean>();
-
-		
-		try {
-			//List<Sample> samples = helper.findSamplesByStudyId(studyId);
-			//if (samples != null) {
-			//	for (Sample sample : samples) {
-			//		SampleBean sampleBean = new SampleBean(sample);
-			//		samplesBean.add(sampleBean);
-			//	}
-			//}
-		} catch (Exception e) {
-			String err = "Problem finding the samples by study id: " + studyId;
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-
-		// for testing
-		SampleServiceHelper sampleHelper = new SampleServiceHelper(
-				this.securityService);
-		try {
-			Sample sample1 = sampleHelper.findSampleById("11337748");
-			Sample sample2 = sampleHelper.findSampleById("11337748");
-			samplesBean.add(new SampleBean(sample1));
-			samplesBean.add(new SampleBean(sample2));
-		} catch (Exception e) {
-		}
-		return samplesBean;
-
-	}
-
 	public List<String> removeAccesses(Sample sample, Boolean removeLater)
 			throws SampleException, NoAccessException {
 		List<String> ids = new ArrayList<String>();
@@ -1229,25 +1196,5 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new SampleException(error, e);
 		}
 		return ids;
-	}
-
-
-	public List<SampleBean> findSamplesByCharacterizationId(
-			String characterizationId) throws SampleException {
-		List<SampleBean> samplesBean = new ArrayList<SampleBean>();		
-		try {
-			List<Sample> samples = helper.findSamplesByCharacterizationId(characterizationId);
-			if (samples != null) {
-				for (Sample sample : samples) {
-					SampleBean sampleBean = new SampleBean(sample);
-					samplesBean.add(sampleBean);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Problem finding the samples by characterization id: " + characterizationId;
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-		return samplesBean;
 	}
 }
