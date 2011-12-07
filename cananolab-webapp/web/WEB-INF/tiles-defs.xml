@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+	<!--  Main layout definition for the login page of caNanoLab -->
+	<definition name="canano.home" path="/layout/mainLayoutNoContentSpace.jsp">
+		<put name="title" value="caNanoLab" />
+		<put name="nciHeader" value="/html/nciHeader.html" />
+		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
+		<put name="cananoSidemenu" value="/admin.do?dispatch=getCaNanoSidemenu" />
+		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
+		<put name="cananoContent" value="/bodyHome.jsp" />
+		<put name="cananoFooter" value="/html/cananoFooter.html" />
+		<put name="nciFooter" value="/html/nciFooter.html" />
+		<put name="menu" value="home" />
+		<putList name="items">
+			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
+			<item value="GLOSSARY"
+				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
+		</putList>
+	</definition>
+	<!--  Main layout definition for pages after log in-->
+	<definition name="canano.base" path="/layout/mainLayout.jsp">
+		<put name="title" value="caNanoLab" />
+		<put name="nciHeader" value="/html/nciHeader.html" />
+		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
+		<put name="cananoSidemenu" value="/layout/cananoSidemenu.jsp" />
+		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
+		<put name="cananoFooter" value="/html/cananoFooter.html" />
+		<put name="nciFooter" value="/html/nciFooter.html" />
+		<put name="menu" value="home" />
+		<putList name="items">
+			<item value="HOME" link="gotoPage('home.jsp')" />
+			<item value="PROTOCOLS" link="gotoPage('manageProtocol.do')" />
+			<item value="SAMPLES" link="gotoPage('manageSample.do')" />
+			<item value="PUBLICATIONS" link="gotoPage('managePublication.do')" />
+			<item value="COMMUNITY" link="gotoPage('manageCommunity.do')" />
+			<item value="CURATION" link="gotoPage('manageCuration.do')" />
+			<item value="RESULTS" link="gotoPage('manageResult.do')" />
+			<item value="ADMINISTRATION" link="gotoPage('adminHome.do')" />
+			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
+			<item value="GLOSSARY"
+				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
+			<item value="LOGIN" link="gotoPage('loginPage.do')" />
+			<item value="LOGOUT" link="gotoPage('logout.do')" />
+		</putList>
+	</definition>
+	<definition name="home.error" extends="canano.base">
+		<put name="cananoContent" value="/bodyMessage.jsp" />
+		<put name="menu" value="home" />
+	</definition>
+	<definition name="home.message" extends="canano.base">
+		<put name="cananoContent" value="/bodyMessage.jsp" />
+		<put name="menu" value="home" />
+	</definition>
+	<definition name="canano.help" extends="canano.base">
+		<put name="cananoContent" value="/help/bodyOnlineHelp.jsp" />
+		<put name="menu" value="help" />
+	</definition>
+	<definition name="canano.welcome" extends="canano.base">
+		<put name="cananoContent" value="/bodyWelcome.jsp" />
+		<put name="menu" value="home" />
+	</definition>
+	<definition name="canano.password" extends="canano.base">
+		<put name="cananoContent" value="/bodyUpdatePassword.jsp" />
+		<put name="menu" value="home" />
+	</definition>
+	<definition name="canano.register" extends="canano.base">
+		<put name="cananoContent" value="/bodyRegister.jsp" />
+		<put name="menu" value="home" />
+	</definition>
+	<definition name="canano.login" extends="canano.base">
+		<put name="cananoContent" value="/bodyLogin.jsp" />
+		<put name="menu" value="home" />
+	</definition>
+	<definition name="canano.disclaimer" path="/layout/disclaimerLayout.jsp">
+		<put name="title" value="caNanoLab Home" />
+		<put name="nciHeader" value="/html/nciHeader.html" />
+		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
+		<put name="cananoContent" value="/bodyDisclaimer.jsp" />
+		<put name="cananoFooter" value="/bodyMessage.jsp" />
+		<put name="nciFooter" value="/html/nciFooter.html" />
+	</definition>
+	<definition name="curation.result"
+		extends="canano.base">
+		<put name="cananoContent" value="/curation/bodyCurationResult.jsp" />
+		<put name="menu" value="results" />
+	</definition>
+</tiles-definitions>

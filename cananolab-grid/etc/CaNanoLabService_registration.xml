@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ServiceGroupRegistrationParameters xmlns:sgc="http://mds.globus.org/servicegroup/client"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing"
+  xmlns:agg="http://mds.globus.org/aggregator/types"
+  xmlns="http://mds.globus.org/servicegroup/client">
+  <!-- The ServiceGroupEPR defines the servicegroup to which registrations will be made -->
+  <ServiceGroupEPR>
+    <wsa:Address>INDEX_SERVICE_URL</wsa:Address>
+  </ServiceGroupEPR>
+  <!-- Specifies that the registration will be renewed every 10 minutes -->
+  <RefreshIntervalSecs>REGISTRATION_REFRESH</RefreshIntervalSecs>
+  <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
+    <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
+      <agg:GetMultipleResourcePropertiesPollType
+			xmlns:ns15="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery"
+			xmlns:ns12="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"
+			xmlns:ns19="http://gov.nih.nci.cagrid.data/DataServiceExceptions"
+			xmlns:ns18="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:ns7="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization"
+			xmlns:ns2="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage"
+			xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security"
+			xmlns:ns14="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common"
+			xmlns:ns13="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service"
+			xmlns:ns8="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial"
+			xmlns:ns10="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo"
+			xmlns:ns16="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet"
+			xmlns:ns4="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical"
+			xmlns:ns5="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro"
+			xmlns:ns17="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/CQLResultTypes"
+			xmlns:ns3="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial"
+			xmlns:ns9="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle"
+			xmlns:ns11="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common"
+			xmlns:ns6="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function"
+			xmlns:ns0="http://cananolab.cagrid.nci.nih.gov/CaNanoLabService/types">
+        <!-- Specifies that the index should refresh information
+            every 300000 milliseconds (once every 5 minutes) -->
+        <agg:PollIntervalMillis>INDEX_REFRESH</agg:PollIntervalMillis>
+        <!-- specifies all Resource Properties that should be retrieved from the service -->
+		<agg:ResourcePropertyNames>ns18:DomainModel</agg:ResourcePropertyNames>
+	
+		<agg:ResourcePropertyNames>ns12:ServiceMetadata</agg:ResourcePropertyNames>
+	
+      </agg:GetMultipleResourcePropertiesPollType>
+    </agg:AggregatorConfig>
+    <agg:AggregatorData/>
+  </Content>
+</ServiceGroupRegistrationParameters>

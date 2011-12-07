@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle" auto-import="false">
+	<class name="Characterization" table="characterization" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="characterization_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<discriminator column="discriminator" type="string"/>
+		<!-- Attributes mapping for the Characterization class -->
+		<property name="analysisConclusion" type="string" column="analysis_conclusion"/>
+		<property name="assayType" type="string" column="assay_type"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="date" type="java.util.Date" column="characterization_date"/>
+		<property name="designMethodsDescription" type="string" column="design_method_description"/>
+		<!-- Associations mapping for the Characterization class -->
+		<many-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol" column="protocol_pk_id" lazy="proxy" />
+		<set name="experimentConfigCollection" lazy="true" cascade="delete">
+			<cache usage="read-write" />
+			<key column="characterization_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.ExperimentConfig"/>
+		</set>
+		<many-to-one name="pointOfContact" class="gov.nih.nci.cananolab.domain.common.PointOfContact" column="poc_pk_id" lazy="proxy" />
+		<set name="findingCollection" lazy="true" cascade="delete">
+			<cache usage="read-write" />
+			<key column="characterization_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.common.Finding"/>
+		</set>
+		<many-to-one name="sample" class="gov.nih.nci.cananolab.domain.particle.Sample" column="sample_pk_id" lazy="proxy" />
+		<subclass name="gov.nih.nci.cananolab.domain.characterization.OtherCharacterization" discriminator-value="OtherCharacterization">
+			<!-- Attributes mapping for the OtherCharacterization class -->
+			<property name="assayCategory" type="string" column="other_char_assay_category"/>
+			<property name="name" type="string" column="other_char_name"/>
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization" discriminator-value="InvitroCharacterization">
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.MetabolicStability" discriminator-value="MetabolicStability">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.OxidativeStress" discriminator-value="OxidativeStress">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction" discriminator-value="EnzymeInduction">
+				<!-- Attributes mapping for the EnzymeInduction class -->
+				<property name="enzyme" type="string" column="enzyme_induction_enzyme"/>
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.Sterility" discriminator-value="Sterility">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.ImmuneCellFunction" discriminator-value="ImmuneCellFunction">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity" discriminator-value="Cytotoxicity">
+				<!-- Attributes mapping for the Cytotoxicity class -->
+				<property name="cellLine" type="string" column="cytotoxicity_cell_line"/>
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.Targeting" discriminator-value="Targeting">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact" discriminator-value="BloodContact">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.Transfection" discriminator-value="Transfection">
+				<!-- Attributes mapping for the Transfection class -->
+				<property name="cellLine" type="string" column="transfection_cell_line"/>
+			</subclass>
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization" discriminator-value="InvivoCharacterization">
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics" discriminator-value="Pharmacokinetics">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invivo.Toxicology" discriminator-value="Toxicology">
+
+			</subclass>
+
+		</subclass>
+		<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization" discriminator-value="PhysicalCharacterization">
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Purity" discriminator-value="Purity">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Size" discriminator-value="Size">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Shape" discriminator-value="Shape">
+				<join table="shape">
+					<key column="shape_pk_id" />
+				<!-- Attributes mapping for the Shape class -->
+				<property name="aspectRatio" type="float" column="aspect_ratio"/>
+				<property name="maxDimension" type="float" column="max_dimension"/>
+				<property name="maxDimensionUnit" type="string" column="max_dimension_unit"/>
+				<property name="minDimension" type="float" column="min_dimension"/>
+				<property name="minDimensionUnit" type="string" column="min_dimension_unit"/>
+				<property name="type" type="string" column="type"/>
+
+				</join>
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState" discriminator-value="PhysicalState">
+				<join table="physical_state">
+					<key column="physical_state_pk_id" />
+				<!-- Attributes mapping for the PhysicalState class -->
+				<property name="type" type="string" column="type"/>
+
+				</join>
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Solubility" discriminator-value="Solubility">
+				<join table="solubility">
+					<key column="solubility_pk_id" />
+				<!-- Attributes mapping for the Solubility class -->
+				<property name="criticalConcentration" type="float" column="critical_concentration"/>
+				<property name="criticalConcentrationUnit" type="string" column="critical_concentration_unit"/>
+				<property name="isSoluble" type="boolean" column="is_soluble"/>
+				<property name="solvent" type="string" column="solvent"/>
+
+				</join>
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Relaxivity" discriminator-value="Relaxivity">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.MolecularWeight" discriminator-value="MolecularWeight">
+
+			</subclass>
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.physical.Surface" discriminator-value="Surface">
+				<!-- Attributes mapping for the Surface class -->
+				<property name="isHydrophobic" type="boolean" column="surface_is_hydrophobic"/>
+
+			</subclass>
+
+		</subclass>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+	http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+	<preConditions>
+		<dbms type="mysql" />
+	</preConditions>
+	<changeSet id="1.5.2-1" author="lethai">
+		<comment>common lookup changes related to data availability</comment>
+		<sqlFile path="sql/mysql/1.5.2/update_common_lookup.sql" />
+	</changeSet>
+	<changeSet id="1.5.2-2" author="lethai">
+		<comment>schema changes related to data availability</comment>
+		<sqlFile path="sql/mysql/1.5.2/data_availability.sql" />
+	</changeSet>
+	<changeSet id="1.5.2-3" author="pansu">
+		<comment>CSM data changes related to curation account management</comment>
+		<sqlFile path="sql/mysql/1.5.2/update_app_csm.sql" />
+	</changeSet>
+	<changeSet id="1.5.2-4" author="pansu">
+		<comment>changes related to curator access</comment>
+		<sqlFile path="sql/mysql/1.5.2/update_curator_access.sql" />
+	</changeSet>
+	<changeSet id="1.5.2-5" author="pansu">
+		<comment>changes related to curator data review</comment>
+		<sqlFile path="sql/mysql/1.5.2/data_review_status.sql" />
+	</changeSet>
+	<changeSet id="1.5.2-6" author="pansu">
+		<comment>changes related to cleaning up obsoleted data</comment>
+		<sqlFile path="sql/mysql/1.5.2/data_cleanup.sql" />
+	</changeSet>
+</databaseChangeLog>
