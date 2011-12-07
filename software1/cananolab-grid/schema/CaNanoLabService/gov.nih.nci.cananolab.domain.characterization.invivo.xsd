@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" xmlns:gov.nih.nci.cananolab.domain.agentmaterial="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" xmlns:gov.nih.nci.cananolab.domain.characterization="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" xmlns:gov.nih.nci.cananolab.domain.characterization.invitro="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" xmlns:gov.nih.nci.cananolab.domain.characterization.physical="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" xmlns:gov.nih.nci.cananolab.domain.common="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" xmlns:gov.nih.nci.cananolab.domain.function="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" xmlns:gov.nih.nci.cananolab.domain.linkage="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" xmlns:gov.nih.nci.cananolab.domain.nanomaterial="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" xmlns:gov.nih.nci.cananolab.domain.particle="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" targetNamespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" elementFormDefault="qualified">
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" schemaLocation="gov.nih.nci.cananolab.domain.agentmaterial.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" schemaLocation="gov.nih.nci.cananolab.domain.characterization.invitro.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" schemaLocation="gov.nih.nci.cananolab.domain.characterization.physical.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" schemaLocation="gov.nih.nci.cananolab.domain.characterization.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" schemaLocation="gov.nih.nci.cananolab.domain.common.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" schemaLocation="gov.nih.nci.cananolab.domain.function.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" schemaLocation="gov.nih.nci.cananolab.domain.linkage.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" schemaLocation="gov.nih.nci.cananolab.domain.nanomaterial.xsd" />
+  <xs:import namespace="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" schemaLocation="gov.nih.nci.cananolab.domain.particle.xsd" />
+  <xs:element name="Pharmacokinetics" type="Pharmacokinetics" />
+  <xs:complexType name="Pharmacokinetics">
+    <xs:complexContent>
+      <xs:extension base="InvivoCharacterization">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Toxicology" type="Toxicology" />
+  <xs:complexType name="Toxicology">
+    <xs:complexContent>
+      <xs:extension base="InvivoCharacterization">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvivoCharacterization" type="InvivoCharacterization" />
+  <xs:complexType name="InvivoCharacterization">
+    <xs:complexContent>
+      <xs:extension base="gov.nih.nci.cananolab.domain.particle:Characterization">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+
