@@ -37,10 +37,15 @@
 			<property file="${tier}.properties" />
 			<echo message="loaded ${tier} tier properties." />
 		</then>
-		<else>
-			<!-- load properties for non-tiered installation -->
-			<property file="deploy.properties" />
-		</else>
+		<elseif>
+			<!-- load properties for non-tiered installation or non-local installation-->
+			<not>
+				<available file="local.properties" />
+			</not>
+			<then>
+				<property file="deploy.properties" />
+			</then>
+		</elseif>
 	</if>
 	<!-- Default properties if not in tier.properties or deploy.properties-->
 	<property file="default.properties" />
