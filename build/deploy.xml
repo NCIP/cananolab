@@ -16,12 +16,17 @@
 		<then>
 			<!-- if tier is defined, load tier specific properties for tier based installation -->
 			<property file="${tier}.properties" />
-			<echo message="loaded ${tier} tier properties."/>
+			<echo message="loaded ${tier} tier properties." />
 		</then>
-		<else>
-			<!-- load properties for non-tiered installation -->
-			<property file="deploy.properties" />
-		</else>
+		<elseif>
+			<!-- load properties for non-tiered installation or non-local installation-->
+			<not>
+				<available file="local.properties" />
+			</not>
+			<then>
+				<property file="deploy.properties" />
+			</then>
+		</elseif>
 	</if>
 	<!-- Default properties if not in tier.properties or deploy.properties-->
 	<property file="default.properties" />
@@ -50,7 +55,7 @@
 			<!--if use LDAP authentication, replace ldap tokens from build properties -->
 			<equals arg1="${ldap.authentication.enabled}" arg2="true" />
 			<then>
-				<echo message="Using LDAP authenication"/>
+				<echo message="Using LDAP authenication" />
 				<copy overwrite="true" tofile="${common.dist.dir}/login-config.xml" file="${common.dir}/resources/jboss-conf/login-config-ldap.xml">
 					<filterset>
 						<filter token="ldap.host.url" value="${ldap.host.url}" />
@@ -71,7 +76,11 @@
 		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/upt.war" />
 
 		<!-- copy database jdbc driver -->
-		<copy overwrite="true" todir="${common.dist.dir}" file="${lib.dir}/mysql-connector-java-5.0.7-bin.jar" />
+		<copy todir="${common.dist.dir}" overwrite="true">
+			<fileset dir="${lib.dir}">
+				<include name="mysql-connector-java*.jar" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="deploy:cananolab-webapp">
@@ -86,7 +95,11 @@
 			</fileset>
 		</copy>
 		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml" />
-		<copy todir="${jboss.lib.dir}" overwrite="true" file="${common.dist.dir}/mysql-connector-java-5.0.7-bin.jar" />
+		<copy todir="${jboss.lib.dir}" overwrite="true">
+			<fileset dir="${common.dist.dir}">
+				<include name="mysql-connector-java*.jar" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="deploy:cananolab-grid">
