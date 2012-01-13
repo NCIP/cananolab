@@ -68,13 +68,26 @@
 			<version>1.1.2</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.5-FINAL</version>
+		</dependency>
+		<dependency>
 			<groupId>displaytag</groupId>
-			<artifactId>displaytag</artifactId>
+			<artifactId>displaytag-export-poi</artifactId>
 			<version>1.2</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-collections</artifactId>
 					<groupId>commons-collections</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>slf4j-log4j12</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jcl104-over-slf4j</artifactId>
+					<groupId>org.slf4j</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -89,17 +102,9 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-scratchpad</artifactId>
-			<version>3.7</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-collections</artifactId>
-					<groupId>commons-collections</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi-scratchpad</artifactId> 
+			<version>3.7</version> <exclusions> <exclusion> <artifactId>commons-collections</artifactId> 
+			<groupId>commons-collections</groupId> </exclusion> </exclusions> </dependency> -->
 		<dependency>
 			<groupId>quartz</groupId>
 			<artifactId>quartz</artifactId>
