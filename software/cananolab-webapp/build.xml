@@ -30,8 +30,8 @@
 
 	<!--set up required dependencies jars for compile time and run time thru Maven -->
 	<artifact:pom id="cananolab-webapp-pom" file="pom.xml" />
-	<artifact:dependencies pathId="dependency.classpath" filesetId="runtime.dependency.fileset" pomRefId="cananolab-webapp-pom" useScope="runtime" />
-	<artifact:dependencies pathId="dependency.classpath" filesetId="compiletime.dependency.fileset" pomRefId="cananolab-webapp-pom" useScope="compile" />
+	<artifact:dependencies pathId="runtime.dependency.classpath" filesetId="runtime.dependency.fileset" pomRefId="cananolab-webapp-pom" useScope="runtime" />
+	<artifact:dependencies pathId="compiletime.dependency.classpath" filesetId="compiletime.dependency.fileset" pomRefId="cananolab-webapp-pom" useScope="compile" />
 
 	<target name="clean">
 		<delete dir="${dist.dir}" />
@@ -165,13 +165,6 @@
 			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
 		</copy>
 	</target>
-
-	<property environment="env" />
-	<property name="jboss.server.name" value="default" />
-	<property name="jboss.server.dir" value="${env.JBOSS_HOME}/server/${jboss.server.name}" />
-	<property name="jboss.conf.dir" value="${jboss.server.dir}/conf" />
-	<property name="jboss.deploy.dir" value="${jboss.server.dir}/deploy" />
-	<property name="jboss.lib.dir" value="${jboss.server.dir}/lib" />
 
 	<target name="deploy" depends="dist">
 		<!-- deploy WAR to JBOSS deploy location-->
