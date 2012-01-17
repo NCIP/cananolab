@@ -4,7 +4,6 @@
 	This is the build file for the caNanoLab webapp project.
 	</description>
 
-	<property file="local.properties" />
 	<property file="project.properties" />
 	<property file="build.properties" />
 	<property file="default.properties" />
