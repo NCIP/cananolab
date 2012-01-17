@@ -7,12 +7,11 @@
 
 	<!-- Property file related properties and tasks -->
 	<property environment="env" />
-
 	<property name="build.dir" location="." />
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
 	<property name="target.dir" location="${software.dir}/target" />
-	<property name="lib.dir" location="${target.dir}/lib" />
+	<property name="lib.dir" location="${common.dir}/lib" />
 	<property name="log.dir" location="${target.dir}/logs" />
 	<property name="dist.dir" location="${target.dir}/dist" />
 	<property name="temp.dir" location="${target.dir}/temp" />
@@ -28,7 +27,7 @@
 
 	<!-- properties to overwrite any defined in other properties file-->
 	<property file="local.properties" />
-	<!-- The project.properties stores properties that are shared between both build.xml and deploy.xml. -->
+	<!-- The project.properties stores properties that are shared between both build.xml -->
 	<property file="project.properties" />
 	<if>
 		<isset property="tier" />
@@ -63,9 +62,8 @@
 	<property name="cananolab-app.build.file" value="build-app.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
-	<property name="cananolab-webapp.build.target" value="run" />
+	<property name="cananolab-webapp.build.target" value="dist" />
 	<property name="cananolab-grid.build.target" value="distWebApp" />
-	<property name="cananolab-app.build.target" value="run" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
        		Use project.propertie relative dir names becasue they are used by install also-->
@@ -98,23 +96,22 @@
 	<available file="${ws-core.dest.file}" property="ws-core.tools.exists" />
 	<available file="${application.base.path}/${ws-core.relative.dir}" property="ws-core.install.exists" />
 
-	<!-- Start logging -->
-	<mkdir dir="${log.dir}" />
+	<!-- Start logging -->	
 	<tstamp>
 		<format property="install.time" pattern="yyyy-MM-dd-HH-mm-ss" />
 	</tstamp>
+	<!--
 	<record name="${log.dir}/install-${install.time}.log" action="start" />
+	-->
 
 	<!-- Targets -->
 	<target name="clean">
 		<delete dir="${dist.dir}" />
 		<delete dir="${temp.dir}" />
-		<delete dir="${lib.dir}" />
 	</target>
 
 	<target name="init" description="Sets up build are and initalizes variables">
-		<mkdir dir="${dist.dir}" />
-		<mkdir dir="${lib.dir}" />
+		<mkdir dir="${dist.dir}" />		
 		<mkdir dir="${temp.dir}" />
 		<mkdir dir="${dist.exploded.dir}" />
 		<mkdir dir="${cananolab-webapp.dist.dir}" />
@@ -127,14 +124,6 @@
 			<filter token="database.user" value="${database.user}" />
 			<filter token="database.password" value="${database.password}" />
 		</filterset>
-
-		<!-- copy lib into lib.dir -->
-		<!-- replace with ivy in the future -->
-		<copy todir="${lib.dir}">
-			<fileset dir="${common.dir}/lib">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
 	</target>
 
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="build:cananolab-webapp, build:cananolab-grid">
@@ -144,35 +133,29 @@
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-			<property name="lib.dir" location="${lib.dir}" />
 			<property name="admin.email" value="${admin.email}" />
 			<property name="release.version" value="${release.version}" />
 			<property name="file.repository.dir" value="${file.repository.dir}" />
 		</ant>
 	</target>
 
-	<target name="dist:cananolab-webapp" depends="build:cananolab-webapp">
-		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="dist:cananolab-webapp:resources" dir="${build.dir}">
+	<target name="dist:cananolab-webapp">
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="dist" dir="${cananolab-webapp.base.dir}">
 			<property name="common.dir" location="${common.dir}" />
 			<property name="common.dist.dir" location="${common.dist.dir}" />
-			<property name="lib.dir" location="${lib.dir}" />
 		</ant>
 	</target>
 
-	<target name="deploy:cananolab-webapp" depends="dist:cananolab-webapp">
-		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-webapp" dir="${build.dir}">
-			<property name="cananolab-webapp.dist.dir" location="${cananolab-webapp.dist.dir}" />
+	<target name="deploy:cananolab-webapp">
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="deploy" dir="${cananolab-webapp.base.dir}">
+			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 			<property name="common.dist.dir" location="${common.dist.dir}" />
+			<property name="jboss.deploy.dir" location="${jboss.deploy.dir}"/>
+			<property name="jboss.conf.dir" location="${jboss.conf.dir}"/>
+			<property name="jboss.lib.dir" location="${jboss.lib.dir}"/>
 		</ant>
 	</target>
-
-	<target name="deploy:cananolab-grid" depends="dist:cananolab-grid">
-		<ant inheritAll="false" inheritRefs="false" antfile="${build.dir}/deploy.xml" target="deploy:cananolab-grid" dir="${build.dir}">
-			<property name="cananolab-grid.dist.dir" location="${cananolab-grid.dist.dir}" />
-			<property name="common.dist.dir" location="${common.dist.dir}" />
-		</ant>
-	</target>
-
+	
 	<!-- retrieve cagrid required tools from tech stack -->
 	<target name="dist:tools:retrieve:cagrid-libs" unless="cagrid-libs.tools.exists" description="Downloads caGrid ws-core 4.0.3 libs from binary repository">
 		<get src="${cagrid-libs.src.url}" dest="${cagrid-libs.dest.file}" />
@@ -307,6 +290,21 @@
 		</unzip>
 	</target>
 
+	<target name="deploy:cananolab-grid" depends="dist:cananolab-grid">
+		<!-- deploy WAR to JBOSS deploy direction -->
+		<copy todir="${jboss.deploy.dir}" overwrite="true">
+			<fileset dir="${cananolab-grid.dist.dir}">
+				<include name="wsrf-canano.war" />
+			</fileset>
+		</copy>
+		<!-- copy globus libs to JBoss lib direction -->
+		<copy todir="${jboss.lib.dir}" overwrite="true">
+			<fileset dir="${common.dist.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+	
 	<target name="install:new:cananolab-db">
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
 			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
