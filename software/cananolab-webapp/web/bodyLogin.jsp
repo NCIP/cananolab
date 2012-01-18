@@ -12,18 +12,18 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">
-				Login ID
-			</td>
+				<label for="login ID">Login ID</label>
+			</td>					
 			<td>
-				<input type="text" name="loginId" size="30" />
+				<input type="text" name="loginId" size="30" id="login ID"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Password
+				<label for="password">Password</label>
 			</td>
 			<td>
-				<input type="password" name="password" size="30" />
+				<input type="password" name="password" size="30" id="password"/>
 			</td>
 		</tr>
 	</table>

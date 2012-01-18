@@ -24,18 +24,18 @@
 		<table id="loginBlock" style="display: none">
 			<tr>
 				<td align="right" class="sidebarContent">
-					LOGIN ID
+					<label for="login ID">LOGIN ID</label>
 				</td>
 				<td>
-					<input type="text" name="loginId" size="14" />
+					<input type="text" name="loginId" size="14" id="login ID"/>
 				</td>
 			</tr>
 			<tr>
 				<td align="right" class="sidebarContent">
-					PASSWORD
+					<label for="password">PASSWORD</label>
 				</td>
 				<td>
-					<input type="password" name="password" size="14" />
+					<input type="password" name="password" size="14" id="password" />
 				</td>
 			</tr>
 			<tr>
