@@ -144,6 +144,10 @@
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 			<property name="common.dir" location="${common.dir}" />
 			<property name="common.dist.dir" location="${common.dist.dir}" />
+			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
+			<property name="ldap.host.url" value="${ldap.host.url}" />
+			<property name="ldap.searchable.base" value="${ldap.searchable.base}" />
+			<property name="ldap.userId.label" value="${ldap.userId.label}" />
 		</ant>
 	</target>
 
@@ -154,6 +158,10 @@
 			<property name="jboss.deploy.dir" location="${jboss.deploy.dir}" />
 			<property name="jboss.conf.dir" location="${jboss.conf.dir}" />
 			<property name="jboss.lib.dir" location="${jboss.lib.dir}" />
+			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
+			<property name="ldap.host.url" value="${ldap.host.url}" />
+			<property name="ldap.searchable.base" value="${ldap.searchable.base}" />
+			<property name="ldap.userId.label" value="${ldap.userId.label}" />
 		</ant>
 	</target>
 
