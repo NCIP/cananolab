@@ -32,7 +32,7 @@
 		</td>
 		<td style="padding-left: 22px">
 			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="protocolLoaderImg" style="display: block">
+				id="protocolLoaderImg" style="display: block" alt="protocol count">
 			<span id="protocolCount"></span>
 		</td>
 	</tr>
@@ -69,7 +69,7 @@
 		</td>
 		<td style="padding-left: 22px">
 			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="sampleLoaderImg" style="display: block">
+				id="sampleLoaderImg" style="display: block" alt="sample count">
 			<div id="sampleCounts">
 				<table class="invisibleTable">
 					<tr>
@@ -86,7 +86,7 @@
 				</table>
 				<br />
 				<img src="images/ajax-loader.gif" border="0" class="counts"
-					id="sampleRelatedLoaderImg" style="display: none">
+					id="sampleRelatedLoaderImg" style="display: none" alt="sample related info count">
 				<div id="sampleRelatedCounts" style="display: none">
 					<table class="invisibleTable" style="color: #5F7C7C">
 						<tr>
@@ -174,7 +174,7 @@
 		</td>
 		<td style="padding-left: 22px">
 			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="publicationLoaderImg" style="display: block">
+				id="publicationLoaderImg" style="display: block" alt="publication count">
 			<span id="publicationCount"></span>
 		</td>
 	</tr>

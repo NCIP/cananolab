@@ -6,7 +6,7 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0"  height="100%">
 	<tr>
 		<td valign="top" height="100%">
-			<img src="images/bannerhome.jpg">
+			<img src="images/bannerhome.jpg" alt="caNanoLab banner image">
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
 				width="600">
 				<tr>
