@@ -96,7 +96,7 @@
 	<available file="${ws-core.dest.file}" property="ws-core.tools.exists" />
 	<available file="${application.base.path}/${ws-core.relative.dir}" property="ws-core.install.exists" />
 
-	<!-- Start logging -->	
+	<!-- Start logging -->
 	<tstamp>
 		<format property="install.time" pattern="yyyy-MM-dd-HH-mm-ss" />
 	</tstamp>
@@ -111,7 +111,7 @@
 	</target>
 
 	<target name="init" description="Sets up build are and initalizes variables">
-		<mkdir dir="${dist.dir}" />		
+		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${temp.dir}" />
 		<mkdir dir="${dist.exploded.dir}" />
 		<mkdir dir="${cananolab-webapp.dist.dir}" />
@@ -141,6 +141,7 @@
 
 	<target name="dist:cananolab-webapp">
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="dist" dir="${cananolab-webapp.base.dir}">
+			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 			<property name="common.dir" location="${common.dir}" />
 			<property name="common.dist.dir" location="${common.dist.dir}" />
 		</ant>
@@ -150,12 +151,12 @@
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="deploy" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 			<property name="common.dist.dir" location="${common.dist.dir}" />
-			<property name="jboss.deploy.dir" location="${jboss.deploy.dir}"/>
-			<property name="jboss.conf.dir" location="${jboss.conf.dir}"/>
-			<property name="jboss.lib.dir" location="${jboss.lib.dir}"/>
+			<property name="jboss.deploy.dir" location="${jboss.deploy.dir}" />
+			<property name="jboss.conf.dir" location="${jboss.conf.dir}" />
+			<property name="jboss.lib.dir" location="${jboss.lib.dir}" />
 		</ant>
 	</target>
-	
+
 	<!-- retrieve cagrid required tools from tech stack -->
 	<target name="dist:tools:retrieve:cagrid-libs" unless="cagrid-libs.tools.exists" description="Downloads caGrid ws-core 4.0.3 libs from binary repository">
 		<get src="${cagrid-libs.src.url}" dest="${cagrid-libs.dest.file}" />
@@ -304,7 +305,7 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="install:new:cananolab-db">
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
 			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
