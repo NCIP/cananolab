@@ -14,8 +14,8 @@
 						<td class="subMenuPrimaryTitle" height="22">
 							QUICK LINKS
 							<!-- anchor to skip sub menu -->
-							<a href="#content"><img height="1" alt="Skip Menu"
-									src="images/shim.gif" width="1" border="0"> </a>
+							<img height="1" alt="Skip Menu"
+									src="images/shim.gif" width="1" border="0">
 						</td>
 					</tr>
 				</table>
