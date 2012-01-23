@@ -6,14 +6,12 @@
 	</description>
 
 	<!-- Property file related properties and tasks -->
+	<property file="build.properties" />
 	<property file="project.properties" />
-	<property file="deploy.properties" />
 	<property name="src.dir" location="${basedir}/sql/mysql" />
 	<property name="changelog.dir" location="${basedir}/changelog" />
-	<property name="target.dir" location="${basedir}/target" />
-	<property name="dist.dir" location="${target.dir}/dist" />
-	<property name="common.dir" location="../common" />
-
+	<property name="common.dir" location="${basedir}/../common" />
+	<property name="dist.dir" location="${basedir}/target/dist" />
 	<!-- antcontrib task-->
 	<path id="common.classpath">
 		<fileset dir="${common.dir}">
@@ -32,11 +30,11 @@
 
 	<!--set up liquibase classpath -->
 	<path id="liquibase.dependencies.path">
-		<fileset refid="dependency.fileset"/>
+		<fileset refid="dependency.fileset" />
 		<!--include base directory so relative file path is recognized -->
 		<pathelement path="${basedir}" />
 	</path>
-	
+
 	<taskdef resource="liquibasetasks.properties">
 		<classpath refid="liquibase.dependencies.path" />
 	</taskdef>
@@ -46,7 +44,7 @@
 		<delete dir="${dist.dir}" />
 	</target>
 
-	<target name="init" description="initialize dist directories">
+	<target name="init" depends="clean" description="initialize dist directories">
 		<mkdir dir="${dist.dir}" />
 	</target>
 
@@ -56,6 +54,7 @@
 		<filter token="database.password" value="${database.password}" />
 	</filterset>
 
+	<!-- mark the database as changelog sync, required for the first time when migrating to liquibase-->
 	<target name="sync:changelog">
 		<copy overwrite="true" tofile="${dist.dir}/db-changelog-sync.xml" file="${changelog.dir}/db-upgrade.xml" />
 		<replaceregexp file="${dist.dir}/db-changelog-sync.xml" match=".+changelog/db-${release.version}.xml.+" replace="" byline="false" />
@@ -69,7 +68,6 @@
 	<target name="sync:update" depends="clean, init">
 		<!-- sync change log -->
 		<antcall target="sync:changelog" />
-		<!-- update database -->
 		<antcall target="update" />
 	</target>
 
