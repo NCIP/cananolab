@@ -91,7 +91,7 @@
 					<table class="invisibleTable" style="color: #5F7C7C">
 						<tr>
 							<th width="10">
-								<img src="images/diamond_list_item.gif" />
+								<img src="images/diamond_list_item.gif" alt="list symbol"/>
 							</th>
 							<td>
 								<span id="sampleSourceCount"></span>
@@ -99,7 +99,7 @@
 						</tr>
 						<tr>
 							<th width="10">
-								<img src="images/diamond_list_item.gif" />
+								<img src="images/diamond_list_item.gif" alt="list symbol" />
 							</th>
 							<td>
 								<span id="CharacterizationCount"></span>
