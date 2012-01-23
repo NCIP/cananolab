@@ -12,7 +12,8 @@ function displayAccessNameLabel() {
 	dwr.util.setValue("roleName", "");
 	show("browseIcon");
 	if (byGroup == true && byUser == false && byPublic == false) {
-		dwr.util.setValue("accessNameLabel", "Collaboration Group Name *");
+		//dwr.util.setValue("accessNameLabel", "Collaboration Group Name *");
+		dwr.util.setValue("accessNameLabelValue", "Collaboration Group Name 3*");
 		show("groupName");
 		hide("userName");
 	} else if (byGroup == false && byUser == true && byPublic == false) {
@@ -163,7 +164,9 @@ function showMatchedGroupOrUserDropdown(dataOwner) {
 	// display progress.gif while waiting for the response.
 	show("loaderImg");
 	hide("matchedUserNameSelect");
+	hide("userNameSelectLabel");
 	hide("matchedGroupNameSelect");
+	hide("groupNameSelectLabel");
 	hide("cancelBrowse");
 	var byGroup = dwr.util.getValue("byGroup");
 	var byUser = dwr.util.getValue("byUser");
@@ -182,6 +185,7 @@ function showMatchedGroupOrUserDropdown(dataOwner) {
 			dwr.util.setValue("matchedGroupNameSelect", selectedGroup);
 			hide("loaderImg");
 			show("matchedGroupNameSelect");
+			show("groupNameSelectLabel");
 			show("cancelBrowse");
 		});
 	} else {
@@ -200,6 +204,7 @@ function showMatchedGroupOrUserDropdown(dataOwner) {
 			dwr.util.setValue("matchedUserNameSelect", selectedUser);
 			hide("loaderImg");
 			show("matchedUserNameSelect");
+			show("userNameSelectLabel");
 			show("cancelBrowse");
 		});
 	}
@@ -208,6 +213,8 @@ function showMatchedGroupOrUserDropdown(dataOwner) {
 function cancelBrowseSelect() {
 	hide("matchedUserNameSelect");
 	hide("matchedGroupNameSelect");
+	hide("userNameSelectLabel");
+	hide("groupNameSelectLabel");
 	hide("cancelBrowse");
 }
 
@@ -215,6 +222,7 @@ function updateUserLoginName() {
 	var selected = dwr.util.getValue("matchedUserNameSelect");
 	dwr.util.setValue("userName", selected);
 	hide("matchedUserNameSelect");
+	hide("userNameSelectLabel");
 	hide("cancelBrowse");
 }
 
@@ -222,5 +230,6 @@ function updateGroupName() {
 	var selected = dwr.util.getValue("matchedGroupNameSelect");
 	dwr.util.setValue("groupName", selected);
 	hide("matchedGroupNameSelect");
+	hide("groupNameSelectLabel");
 	hide("cancelBrowse");
 }
