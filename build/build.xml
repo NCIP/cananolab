@@ -6,8 +6,6 @@
 	</description>
 
 	<!-- Property file related properties and tasks -->
-	<property environment="env" />
-	<property name="build.dir" location="." />
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
 	<property name="target.dir" location="${software.dir}/target" />
@@ -25,10 +23,7 @@
 	</path>
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
 
-	<!-- properties to overwrite any defined in other properties file-->
-	<property file="local.properties" />
-	<!-- The project.properties stores properties that are shared between both build.xml -->
-	<property file="project.properties" />
+	<!--<property name="tier" value="qa"/>-->
 	<if>
 		<isset property="tier" />
 		<then>
@@ -36,18 +31,13 @@
 			<property file="${tier}.properties" />
 			<echo message="loaded ${tier} tier properties." />
 		</then>
-		<elseif>
-			<!-- load properties for non-tiered installation or non-local installation-->
-			<not>
-				<available file="local.properties" />
-			</not>
-			<then>
-				<property file="deploy.properties" />
-			</then>
-		</elseif>
+		<else>
+			<property file="build.properties" />
+			<echo message="loaded build.properties" />
+		</else>
 	</if>
-	<!-- Default properties if not in tier.properties or deploy.properties-->
 	<property file="default.properties" />
+	<property file="project.properties" />
 
 	<!-- Properties that relate to how to call build targets from sub-projects-->
 	<!-- Working directory passed to Ant tasks -->
@@ -119,6 +109,7 @@
 		<mkdir dir="${cananolab-db.dist.dir}" />
 		<mkdir dir="${common.dist.dir}" />
 		<mkdir dir="${download.dir}" />
+		<echo message="${database.url}" />
 		<filterset id="db.filterset">
 			<filter token="database.url" value="${database.url}" />
 			<filter token="database.user" value="${database.user}" />
@@ -129,25 +120,18 @@
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="build:cananolab-webapp, build:cananolab-grid">
 	</target>
 
-	<target name="build:cananolab-webapp" depends="clean, init" description="Call webapp sub-project build target to produce artifiacts">
+	<target name="build:cananolab-webapp" depends="clean, init" description="Call webapp sub-project build target to produce build artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-			<property name="admin.email" value="${admin.email}" />
-			<property name="release.version" value="${release.version}" />
-			<property name="file.repository.dir" value="${file.repository.dir}" />
 		</ant>
 	</target>
 
-	<target name="dist:cananolab-webapp">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="dist" dir="${cananolab-webapp.base.dir}">
+	<target name="dist:cananolab-webapp" description="Call webapp sub-project dist target to produce distribution artifacts">
+		<ant antfile="${cananolab-webapp.build.file}" target="dist" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 			<property name="common.dir" location="${common.dir}" />
 			<property name="common.dist.dir" location="${common.dist.dir}" />
-			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
-			<property name="ldap.host.url" value="${ldap.host.url}" />
-			<property name="ldap.searchable.base" value="${ldap.searchable.base}" />
-			<property name="ldap.userId.label" value="${ldap.userId.label}" />
 		</ant>
 	</target>
 
