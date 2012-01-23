@@ -25,7 +25,7 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel">
-				Protocol Type*
+				<label for="protocolType">Protocol Type*</label>
 			</td>
 			<td>
 				<div id="protocolTypePrompt">
@@ -42,7 +42,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Protocol Name*
+				<label for="protocolName">Protocol Name*</label>
 			</td>
 			<td>
 				<div id="protocolNamePrompt">
@@ -61,7 +61,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Protocol Version*
+				<label for="protocolVersion">Protocol Version*</label>
 			</td>
 			<td>
 				<div id="protocolVersionPrompt">
@@ -81,7 +81,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel" width="20%">
-				Protocol Abbreviation
+				<label for="protocolAbbreviation">Protocol Abbreviation</label>
 			</td>
 			<td>
 				<html:text styleId="protocolAbbreviation"
@@ -90,10 +90,10 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Protocol File
+				<label for="protocolFile">Protocol File</label>
 			</td>
 			<td>
-				<html:file property="protocol.fileBean.uploadedFile"
+				<html:file styleId="protocolFile" property="protocol.fileBean.uploadedFile"
 					onchange="javascript:writeLink(null);" />
 				&nbsp;&nbsp;
 				<span id="protocolFileLink"> <c:if
@@ -113,7 +113,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				File Title
+				<label for="fileTitle">File Title</label>
 			</td>
 			<td>
 				<html:text styleId="fileTitle"
@@ -122,7 +122,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Description
+				<label for="fileDescription">Description</label>
 			</td>
 			<td>
 				<html:textarea styleId="fileDescription"
