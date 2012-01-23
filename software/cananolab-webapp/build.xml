@@ -3,10 +3,9 @@
 	<description>
 	This is the build file for the caNanoLab webapp project.
 	</description>
-
-	<property file="project.properties" />
+	
 	<property file="build.properties" />
-	<property file="default.properties" />
+	<property file="project.properties" />
 	<property name="src.dir" location="${basedir}/src" />
 	<property name="webroot.dir" location="${basedir}/web" />
 	<property name="build.dir" location="${basedir}/build" />
@@ -34,8 +33,8 @@
 
 	<target name="clean">
 		<delete dir="${dist.dir}" />
-		<delete dir="${lib.dir}" />
-		<delete dir="${build.dir}" />
+		<delete dir="${common.dist.dir}"/>
+		<!--<delete dir="${build.dir}" />-->
 	</target>
 
 	<target name="init">
@@ -198,19 +197,5 @@
 	<target name="jar:orm">
 		<!-- package jar file -->
 		<jar destfile="${dist.dir}/caNanoLabSDK-orm.jar" basedir="${src.dir}" includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml" />
-	</target>
-
-	<target name="update:csm_application:db" depends="compile">
-		<java classname="gov.nih.nci.cananolab.service.security.AuthorizationService" fork="true">
-			<classpath refid="class.path" />
-			<sysproperty key="gov.nih.nci.security.configFile" value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
-			<arg value="org.hibernate.dialect.MySQLDialect" />
-			<arg value="com.mysql.jdbc.Driver" />
-			<arg value="jdbc:mysql://${database.host}:${database.port}/canano" />
-			<arg value="${database.user}" />
-			<arg value="${database.password}" />
-		</java>
-		<!-- remove tmp directory -->
-		<delete dir="${tmp.dir}" />
 	</target>
 </project>
