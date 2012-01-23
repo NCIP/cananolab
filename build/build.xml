@@ -52,7 +52,7 @@
 	<property name="cananolab-app.build.file" value="build-app.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
-	<property name="cananolab-webapp.build.target" value="dist" />
+	<property name="cananolab-webapp.build.target" value="war" />
 	<property name="cananolab-grid.build.target" value="distWebApp" />
 
 	<!-- Distribution Structure properties, used to copy files into the distribution area.
@@ -117,35 +117,26 @@
 		</filterset>
 	</target>
 
-	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="build:cananolab-webapp, build:cananolab-grid">
+	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="clean, build:cananolab-webapp, build:cananolab-grid">
 	</target>
 
-	<target name="build:cananolab-webapp" depends="clean, init" description="Call webapp sub-project build target to produce build artifiacts">
+	<target name="build:cananolab-webapp" description="Call webapp sub-project build target to produce build artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
+		<ant antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
+			<!--overwrite distribution directory for the war file-->
+			<property name="dist.dir" location="${cananolab-web.dist.dir}" />
 		</ant>
 	</target>
 
 	<target name="dist:cananolab-webapp" description="Call webapp sub-project dist target to produce distribution artifacts">
 		<ant antfile="${cananolab-webapp.build.file}" target="dist" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-			<property name="common.dir" location="${common.dir}" />
-			<property name="common.dist.dir" location="${common.dist.dir}" />
 		</ant>
 	</target>
 
 	<target name="deploy:cananolab-webapp">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="deploy" dir="${cananolab-webapp.base.dir}">
+		<ant antfile="${cananolab-webapp.build.file}" target="deploy" dir="${cananolab-webapp.base.dir}">
 			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
-			<property name="common.dist.dir" location="${common.dist.dir}" />
-			<property name="jboss.deploy.dir" location="${jboss.deploy.dir}" />
-			<property name="jboss.conf.dir" location="${jboss.conf.dir}" />
-			<property name="jboss.lib.dir" location="${jboss.lib.dir}" />
-			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
-			<property name="ldap.host.url" value="${ldap.host.url}" />
-			<property name="ldap.searchable.base" value="${ldap.searchable.base}" />
-			<property name="ldap.userId.label" value="${ldap.userId.label}" />
 		</ant>
 	</target>
 
@@ -191,20 +182,21 @@
 
 	<target name="build:cananolab-grid:webapp:jars">
 		<!-- build the caNanoLab-helpers.jar -->
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:helpers" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
-			<property name="lib.dir" value="${lib.dir}" />
+		<ant antfile="${cananolab-webapp.build.file}" target="jar:helpers" dir="${cananolab-webapp.base.dir}">
+			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 		</ant>
 		<!-- build the caNanoLabSDK-orm.jar -->
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-webapp.build.file}" target="jar:orm" dir="${cananolab-webapp.base.dir}">
-			<property name="dist.dir" value="${cananolab-grid.base.dir}/lib" />
-			<property name="lib.dir" value="${lib.dir}" />
+		<ant antfile="${cananolab-webapp.build.file}" target="jar:orm" dir="${cananolab-webapp.base.dir}">
+			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 		</ant>
 	</target>
 
-	<target name="build:cananolab-grid" depends="clean, init, build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war, install:ws-core" description="Call grid sub-project build target to produce artifiacts">
+	<target name="build:cananolab-grid" depends="build:cananolab-grid:webapp:jars, dist:tools:retrieve:cagrid-libs, dist:tools:retrieve:cagrid-base-war, install:ws-core" description="Call grid sub-project build target to produce artifiacts">
 		<!--unpack base globus wsrf war into wsrf-canano.war directory -->
 		<unzip dest="${cananolab-grid.temp.dir}" src="${cagrid-base-war.dest.file}" />
+
+		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="clean" dir="${cananolab-grid.base.dir}">
+		</ant>
 		<!-- setting the property in the ant call overerides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-grid.build.file}" target="${cananolab-grid.build.target}" dir="${cananolab-grid.base.dir}">
 			<property name="dist.dir" value="${cananolab-grid.temp.dir}" />
@@ -212,6 +204,7 @@
 		</ant>
 		<antcall target="build:cananolab-grid:properties" />
 		<!-- repackage grid WAR file -->
+		<mkdir dir="${cananolab-grid.dist.dir}" />
 		<jar destfile="${cananolab-grid.dist.dir}/wsrf-canano.war" basedir="${cananolab-grid.temp.dir}" />
 	</target>
 
@@ -299,39 +292,20 @@
 	</target>
 
 	<target name="install:new:cananolab-db">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
+		<ant antfile="${cananolab-db.build.file}" target="install:new" dir="${cananolab-db.base.dir}">
 			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
-			<property name="database.server" value="${database.server}" />
-			<property name="database.port" value="${database.port}" />
-			<property name="database.user" value="${database.user}" />
-			<property name="database.password" value="${database.password}" />
-			<property name="database.system.user" value="${database.system.user}" />
-			<property name="database.system.password" value="${database.system.password}" />
 		</ant>
 	</target>
 
 	<target name="update:cananolab-db">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}">
+		<ant antfile="${cananolab-db.build.file}" target="sync:update" dir="${cananolab-db.base.dir}">
 			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
-			<property name="database.server" value="${database.server}" />
-			<property name="database.port" value="${database.port}" />
-			<property name="database.system.user" value="${database.system.user}" />
-			<property name="database.system.password" value="${database.system.password}" />
-			<property name="release.version" value="${release.version}" />
 		</ant>
 	</target>
 
 	<target name="update:cananolab-db:ldap:upt:superadmin">
-		<ant inheritAll="false" inheritRefs="false" antfile="${cananolab-db.build.file}" target="update:ldap:upt:superadmin" dir="${cananolab-db.base.dir}">
+		<ant antfile="${cananolab-db.build.file}" target="update:ldap:upt:superadmin" dir="${cananolab-db.base.dir}">
 			<property name="dist.dir" location="${cananolab-db.dist.dir}" />
-			<property name="database.server" value="${database.server}" />
-			<property name="database.port" value="${database.port}" />
-			<property name="database.system.user" value="${database.system.user}" />
-			<property name="database.system.password" value="${database.system.password}" />
-			<property name="ldap.authentication.enabled" value="${ldap.authentication.enabled}" />
-			<property name="superadmin.login.name" value="${superadmin.login.name}" />
-			<property name="superadmin.first.name" value="${superadmin.first.name}" />
-			<property name="superadmin.last.name" value="${superadmin.last.name}" />
 		</ant>
 	</target>
 
