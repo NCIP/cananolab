@@ -18,7 +18,7 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="120">
-				Protocol Type
+				<label for="protocolType">Protocol Type</label>
 			</td>
 			<td>
 				<html:select styleId="protocolType" property="protocolType">
@@ -29,19 +29,19 @@
 		</tr>
 		<tr>
 			<td class="cellLabel" width="120">
-				Protocol Name
+				<label for="protocolName">Protocol Name</label>
 			</td>
 			<td>
 				<table class="invisibleTable">
 					<tr>
-						<td>
+						<td><label for="nameOperand" style="display:none">Name Operand</label>
 							<html:select property="nameOperand" styleId="nameOperand">
 								<html:options collection="stringOperands" property="value"
 									labelProperty="label" />
 							</html:select>
 						</td>
 						<td>
-							<html:text property="protocolName" size="80" />
+							<html:text styleId="protocolName" property="protocolName" size="80" />
 						</td>
 					</tr>
 				</table>
@@ -49,12 +49,12 @@
 		</tr>
 		<tr>
 			<td class="cellLabel" width="120">
-				Protocol Abbreviation
+				<label for="protocolAbbreviation">Protocol Abbreviation</label>
 			</td>
 			<td>
 				<table class="invisibleTable">
 					<tr>
-						<td>
+						<td><label for="abbreviationOperand" style="display:none">Abbreviation Operand</label>
 							<html:select property="abbreviationOperand"
 								styleId="abbreviationOperand">
 								<html:options collection="stringOperands" property="value"
@@ -62,7 +62,7 @@
 							</html:select>
 						</td>
 						<td>
-							<html:text property="protocolAbbreviation" size="80" />
+							<html:text styleId="protocolAbbreviation" property="protocolAbbreviation" size="80" />
 						</td>
 					</tr>
 				</table>
@@ -70,19 +70,19 @@
 		</tr>
 		<tr>
 			<td class="cellLabel" width="120">
-				Protocol File Title
+				<label for="fileTitle">Protocol File Title</label>
 			</td>
 			<td>
 				<table class="invisibleTable">
 					<tr>
-						<td>
+						<td><label for="titleOperand" style="display:none">Title Operand</label>
 							<html:select property="titleOperand" styleId="titleOperand">
 								<html:options collection="stringOperands" property="value"
 									labelProperty="label" />
 							</html:select>
 						</td>
 						<td>
-							<html:text property="fileTitle" size="80" />
+							<html:text styleId="fileTitle" property="fileTitle" size="80" />
 						</td>
 					</tr>
 				</table>
