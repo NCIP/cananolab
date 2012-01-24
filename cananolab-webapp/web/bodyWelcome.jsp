@@ -8,7 +8,7 @@
 	<jsp:param name="topic" value="welcome_workflow" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<table>
+<table summary="layout">
 	<tr>
 		<jsp:include page="/bodyMessage.jsp" />
 	</tr>

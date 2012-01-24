@@ -1,4 +1,4 @@
-<table class="gridtable" width="98%" align="center">
+<table class="gridtable" width="98%" align="center" summary="layout">
 	<tr>
 		<th width="60%">
 			Data Type
@@ -10,7 +10,7 @@
 	<tr align="left">
 
 		<td>
-			<table class="gridtableNoBorder">
+			<table class="gridtableNoBorder" summary="layout">
 				<tr>
 					<td rowspan="2">
 						<a href="#" onclick="gotoProtocols('setup')"> <img
@@ -38,7 +38,7 @@
 	</tr>
 	<tr class="alt">
 		<td>
-			<table class="gridtableNoBorder">
+			<table class="gridtableNoBorder" summary="layout">
 				<tr>
 					<td rowspan="2">
 						<a href="#" onclick="gotoSamples('setup')"> <img
@@ -71,7 +71,7 @@
 			<img src="images/ajax-loader.gif" border="0" class="counts"
 				id="sampleLoaderImg" style="display: block" alt="sample count">
 			<div id="sampleCounts">
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td>
 							<span id="sampleCount"></span>
@@ -88,7 +88,7 @@
 				<img src="images/ajax-loader.gif" border="0" class="counts"
 					id="sampleRelatedLoaderImg" style="display: none" alt="sample related info count">
 				<div id="sampleRelatedCounts" style="display: none">
-					<table class="invisibleTable" style="color: #5F7C7C">
+					<table class="invisibleTable" style="color: #5F7C7C" summary="layout">
 						<tr>
 							<th width="10">
 								<img src="images/diamond_list_item.gif" alt="list symbol"/>
@@ -108,7 +108,7 @@
 						<tr>
 							<th></th>
 							<td>
-								<table class="invisibleTable" style="color: #5F7C7C">
+								<table class="invisibleTable" style="color: #5F7C7C" summary="layout">
 									<tr>
 										<th width="10">
 											-
@@ -151,7 +151,7 @@
 	</tr>
 	<tr>
 		<td>
-			<table class="gridtableNoBorder">
+			<table class="gridtableNoBorder" summary="layout">
 				<tr>
 					<td rowspan="2">
 						<a href="#" onclick="gotoPublications('setup')"> <img

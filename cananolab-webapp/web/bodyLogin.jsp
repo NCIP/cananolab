@@ -9,7 +9,7 @@
 </jsp:include>
 
 <html:form action="/login">
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="20%">
 				<label for="login ID">Login ID</label>
