@@ -22,7 +22,7 @@
 </jsp:include>
 <html:form action="/protocol" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel">
 				<label for="protocolType">Protocol Type*</label>
