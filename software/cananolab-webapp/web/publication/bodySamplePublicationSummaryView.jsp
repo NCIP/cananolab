@@ -75,7 +75,7 @@
 		</div>
 	</c:forEach>
 </c:if>
-<table class="summaryViewNoTop" width="100%">
+<table class="summaryViewNoTop" width="100%" summary="layout">
 	<%--
 	<c:if test="${! empty publicationCategories && empty printView}">
 		<tr>
@@ -91,7 +91,7 @@
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
 				<table id="summarySection${ind.count}" class="summaryViewNoGrid"
-					align="center" width="99%">
+					align="center" width="99%" summary="layout">
 					<tr>
 						<th align="left"">
 							<a name="${type}" id="${type}"><span
@@ -101,7 +101,7 @@
 					<tr>
 						<td>
 							<table width="99%" align="center" class="summaryViewNoGrid"
-								bgcolor="#dbdbdb">
+								bgcolor="#dbdbdb" summary="layout">
 								<tr>
 									<th valign="top" align="left" height="6">
 									</th>
@@ -115,7 +115,7 @@
 											<table class="summaryViewNoGrid" width="99%" align="center"
 												bgcolor="#F5F5f5">
 												<tr>
-													<td class="cellLabel" width="10%">
+													<td class="cellLabel" width="10%" scope="row">
 														Bibliography Info
 													</td>
 													<td>
@@ -125,7 +125,7 @@
 												</tr>
 												<c:if test="${!empty pubObj.researchArea}">
 													<tr>
-														<td class="cellLabel" width="10%">
+														<td class="cellLabel" width="10%" scope="row">
 															Research Category
 														</td>
 														<td colspan="2">
@@ -138,7 +138,7 @@
 												</c:if>
 												<c:if test="${!empty pubObj.description}">
 													<tr>
-														<td class="cellLabel" width="10%">
+														<td class="cellLabel" width="10%" scope="row">
 															Description
 														</td>
 														<td>
@@ -149,7 +149,7 @@
 												</c:if>
 												<c:if test="${!empty pubBean.keywordsStr}">
 													<tr>
-														<td class="cellLabel" width="10%">
+														<td class="cellLabel" width="10%" scope="row">
 															Keywords
 														</td>
 														<td>
@@ -160,7 +160,7 @@
 													</tr>
 												</c:if>
 												<tr>
-													<td class="cellLabel" width="10%">
+													<td class="cellLabel" width="10%" scope="row">
 														Publication Status
 													</td>
 													<td>
