@@ -10,7 +10,7 @@
 	<jsp:param name="topic" value="publications_search_results_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<table width="100%" align="center">
+<table width="100%" align="center" summary="layout">
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=publication" />
@@ -26,20 +26,20 @@
 				<u> </u>
 				<display:column title="" property="detailURL" />
 				<display:column title="Bibliography Info" property="displayName"
-					sortable="true" />
+					sortable="true" headerScope="col"/>
 				<display:column title="Publication<br>Type"
-					property="publicationType" sortable="true" escapeXml="true" />
+					property="publicationType" sortable="true" escapeXml="true" headerScope="col" />
 				<display:column title="Research<br>Category" property="researchArea"
-					sortable="true"/>
+					sortable="true" headerScope="col"/>
 				<display:column title="Associated Sample Names"
-					property="sampleNames" sortable="true" />
+					property="sampleNames" sortable="true" headerScope="col" />
 				<display:column title="Description" property="descriptionDetail"
-					sortable="true" />
+					sortable="true" headerScope="col"/>
 				<display:column title="Created<br>Date"
 					property="domainFile.createdDate" sortable="true"
-					format="{0,date,MM-dd-yyyy}" />
+					format="{0,date,MM-dd-yyyy}" headerScope="col" />
 				<display:column title="Publication<br>Status"
-					property="domainFile.status" sortable="true" escapeXml="true" />
+					property="domainFile.status" sortable="true" escapeXml="true" headerScope="col" />
 			</display:table>
 		</td>
 	</tr>
