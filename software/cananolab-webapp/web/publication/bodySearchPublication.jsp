@@ -16,10 +16,10 @@
 </jsp:include>
 <html:form action="searchPublication">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />	
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="15%">
-				Publication Type
+				<label for="publicationCategory">Publication Type</label>
 			</td>
 			<td colspan="2">
 				<html:select property="category" styleId="publicationCategory"
@@ -31,7 +31,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Research Category
+				<label for="researchArea">Research Category</label>
 			</td>
 			<td colspan="2">
 				<c:forEach var="data" items="${publicationResearchAreas}">
@@ -43,7 +43,7 @@
 		</tr>
 		<tr id="pubMedRow">
 			<td class="cellLabel">
-				PubMed ID
+				<label for="pubMedId">PubMed ID</label>
 			</td>
 			<td colspan="2">
 				<html:text styleId="pubMedId" property="pubMedId" size="30" />
@@ -52,28 +52,28 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Digital Object ID
+				<label for="digitalObjectId">Digital Object ID</label>
 			</td>
 			<td colspan="2">
-				<html:text property="digitalObjectId" size="30" />
+				<html:text property="digitalObjectId" size="30" styleId="digitalObjectId" />
 				<em>exact match</em>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Publication Title
+				<label for="title">Publication Title</label>
 			</td>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
-						<td>
+						<td><label for="titleOperand" style="display:none">Title Operand</label>
 							<html:select property="titleOperand" styleId="titleOperand">
 								<html:options collection="stringOperands" property="value"
 									labelProperty="label" />
 							</html:select>
 						</td>
 						<td align="left">
-							<html:text property="title" size="80" />
+							<html:text property="title" size="80" styleId="title" />
 						</td>
 					</tr>
 				</table>
@@ -81,7 +81,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Authors
+				<label for="authorsStr">Authors</label>
 			</td>
 			<td colspan="2">
 				<html:textarea property="authorsStr" cols="77" rows="3"
@@ -92,7 +92,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Keywords
+				<label for="keywordsStr">Keywords</label>
 			</td>
 			<td colspan="2">
 				<html:textarea property="keywordsStr" cols="77" rows="3"
@@ -103,21 +103,21 @@
 		</tr>
 	</table>
 	<br>
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel">
-				Sample Name
+				<label for="sampleName">Sample Name</label>
 			</td>
 			<td valign="top" colspan="4">
-				<html:text property="sampleName" size="80" />
+				<html:text property="sampleName" size="80" styleId="sampleName" />
 				<em>exact match</em>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Composition
+				<label for="nanomaterialEntityTypes">Composition
 				<br>
-				Nanomaterial Entity
+				Nanomaterial Entity</label>
 			</td>
 			<td>
 				<html:select property="nanomaterialEntityTypes"
@@ -126,9 +126,9 @@
 				</html:select>
 			</td>
 			<td class="cellLabel">
-				Composition
+				<label for="functionalizingEntityTypes">Composition
 				<br>
-				Functionalizing Entity
+				Functionalizing Entity</label>
 			</td>
 			<td>
 				<html:select styleId="functionalizingEntityTypes"
@@ -137,7 +137,7 @@
 				</html:select>
 			</td>
 			<td class="cellLabel">
-				Function
+				<label for="functionTypes">Function</label>
 			</td>
 			<td>
 				<html:select property="functionTypes" styleId="functionTypes"
