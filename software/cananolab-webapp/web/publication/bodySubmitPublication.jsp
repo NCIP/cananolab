@@ -29,13 +29,13 @@
 <jsp:include page="/bodyMessage.jsp?bundle=publication" />
 <html:form action="/publication" enctype="multipart/form-data"
 	onsubmit="return validateSavingTheData('newAuthor', 'Authors');">
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="100">
-				Publication Type *
+				<label for="category">Publication Type *</label>
 			</td>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td>
 							<div id="categoryPrompt">
@@ -52,7 +52,7 @@
 							</div>
 						</td>
 						<td class="cellLabel">
-							Publication Status*
+							<label for="status">Publication Status*</label>
 						</td>
 						<td colspan="3">
 							<div id="statusPrompt">
@@ -73,7 +73,7 @@
 		</tr>
 		<tr id="pubMedRow" style="display: none">
 			<td class="cellLabel">
-				PubMed ID
+				<label for="domainFile.pubMedId">PubMed ID</label>
 			</td>
 			<td>
 				<a
@@ -90,7 +90,7 @@
 		</tr>
 		<tr id="doiRow" style="display: none">
 			<td class="cellLabel">
-				Digital Object ID
+				<label for="domainFile.digitalObjectId">Digital Object ID</label>
 			</td>
 			<td>
 				<html:text property="publication.domainFile.digitalObjectId"
@@ -101,7 +101,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Title*
+				<label for="domainFile.title">Title*</label>
 			</td>
 			<td>
 				<html:text property="publication.domainFile.title"
@@ -110,7 +110,7 @@
 		</tr>
 		<tr id="journalRow" style="display: none">
 			<td class="cellLabel">
-				Journal&nbsp;
+				<label for="domainFile.journalName">Journal&nbsp;</label>
 			</td>
 			<td>
 				<html:text property="publication.domainFile.journalName"
@@ -120,7 +120,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Year of Publication
+				<label for="domainFile.year">Year of Publication</label>
 			</td>
 			<td>
 				<html:text property="publication.domainFile.year" size="5"
@@ -129,10 +129,10 @@
 		</tr>
 		<tr id="volumePageRow" style="display: none">
 			<td class="cellLabel">
-				Volume
+				<label for="domainFile.volume">Volume</label>
 			</td>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td>
 							<html:text property="publication.domainFile.volume" size="8"
@@ -140,7 +140,7 @@
 							&nbsp;
 						</td>
 						<td class="cellLabel">
-							Start Page
+							<label for="domainFile.startPage">Start Page</label>
 						</td>
 						<td>
 							<html:text property="publication.domainFile.startPage" size="8"
@@ -148,7 +148,7 @@
 							&nbsp;
 						</td>
 						<td class="cellLabel">
-							<strong id="epageTitle" style="">End Page&nbsp; </strong>
+							<label for="domainFile.endPage"><strong id="epageTitle" style="">End Page&nbsp; </strong></label>
 						</td>
 						<td>
 							<html:text property="publication.domainFile.endPage" size="8"
@@ -172,13 +172,13 @@
 						style="display: none;">
 						<tbody id="authorRows">
 							<tr id="patternHeader">
-								<td class="cellLabel">
+								<td class="cellLabel" scope="col">
 									First Name
 								</td>
-								<td class="cellLabel">
+								<td class="cellLabel" scope="col">
 									Last Name
 								</td>
-								<td class="cellLabel">
+								<td class="cellLabel" scope="col">
 									Initials
 								</td>
 								<td>
@@ -202,26 +202,26 @@
 							</tr>
 						</tbody>
 					</table>
-					<table id="newAuthor" style="display: none;" class="promptbox">
+					<table id="newAuthor" style="display: none;" class="promptbox" summary="layout">
 						<tbody>
 							<tr>
 								<html:hidden property="publication.theAuthor.id" styleId="id" />
 								<td class="cellLabel">
-									First Name
+									<label for="firstName">First Name</label>
 								</td>
 								<td>
 									<html:text property="publication.theAuthor.firstName"
 										styleId="firstName" />
 								</td>
 								<td class="cellLabel">
-									Last Name
+									<label for="lastName">Last Name</label>
 								</td>
 								<td>
 									<html:text property="publication.theAuthor.lastName"
 										styleId="lastName" />
 								</td>
 								<td class="cellLabel">
-									Initials
+									<label for="initial">Initials</label>Initials
 								</td>
 								<td>
 									<html:text property="publication.theAuthor.initial"
@@ -250,7 +250,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Keywords
+				<label for="keywordsStr">Keywords</label>
 				<br>
 				<i>(one keyword per line)</i>
 			</td>
@@ -261,7 +261,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Description
+				<label for="domainFile.description">Description</label>
 			</td>
 			<td>
 				<html:textarea styleId="domainFile.description"
@@ -270,7 +270,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Research Category
+				<label for="researchAreas">Research Category</label>
 			</td>
 			<td>
 				<html:select property="publication.researchAreas" multiple="true"
@@ -283,7 +283,7 @@
 	</table>
 	<div id="fileSection" style="display: block">
 		<br>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<c:choose>
 				<c:when
 					test="${publicationForm.map.publication.domainFile.uriExternal eq 'true' }">
@@ -297,17 +297,19 @@
 			</c:choose>
 			<tr>
 				<td class="cellLabel" width="110">
+					<label for="external0" style="display:none">File</label>
 					<html:radio styleId="external0"
 						property="publication.domainFile.uriExternal" value="false"
 						onclick="displayFileRadioButton()" />
-					Upload File
+					<label for="uploadedFileField">Upload File</label>
 					<br>
 					&nbsp;&nbsp;or
 					<br>
+					<label for="external1" style="display:none">URL</label>
 					<html:radio styleId="external1"
 						property="publication.domainFile.uriExternal" value="true"
 						onclick="displayFileRadioButton()" />
-					Enter File URL
+					<label for="externalUrlField">Enter File URL</label>
 				</td>
 				<td colspan="2">
 					<span id="load"> <html:file
@@ -364,13 +366,13 @@
 	<c:choose>
 		<c:when test="${empty publicationForm.map.sampleId}">
 			<a name="sampleNameField"></a>
-			<table width="100%" align="center" class="submissionView">
+			<table width="100%" align="center" class="submissionView" summary="layout">
 				<tr>
 					<td class="cellLabel" width="110">
-						Sample Name
+						<label for="associatedSampleNames">Sample Name</label>
 					</td>
 					<td>
-						<table class="invisibleTable">
+						<table class="invisibleTable" summary="layout">
 							<tr>
 								<td>
 									<html:textarea property="publication.sampleNamesStr" cols="60"
@@ -385,19 +387,19 @@
 											alt="search existing samples" border="0" /> </a>
 								</td>
 								<td>
-									<table class="invisibleTable">
+									<table class="invisibleTable" summary="layout">
 										<tr>
 											<td>
 												<img src="images/ajax-loader.gif" border="0" class="counts"
-													id="loaderImg" style="display: none">
+													id="loaderImg" style="display: none" alt="load existing samples">												
 												<html:select property="publication.sampleNamesStr"
 													multiple="true" size="5" styleId="matchedSampleSelect"
 													style="display: none">
 												</html:select>
 											</td>
-											<td>
+											<td><label for="matchedSampleSelect">
 												<a href="#" onclick="updateAssociatedSamples()"
-													id="selectMatchedSampleButton" style="display: none">select</a>
+													id="selectMatchedSampleButton" style="display: none">select</a></label>
 											</td>
 										</tr>
 									</table>
@@ -414,7 +416,7 @@
 		</c:otherwise>
 	</c:choose>
 	<br>
-	<table width="100%" align="center" class="submissionView"
+	<table width="100%" align="center" class="submissionView" summary="layout"
 		id="accessBlock">
 		<c:set var="groupAccesses"
 			value="${publicationForm.map.publication.groupAccesses}" />
