@@ -3,13 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<table summary="" cellpadding="0" cellspacing="0" border="0"
+<table summary="layout" cellpadding="0" cellspacing="0" border="0"
 	width="100%" height="100%">
 	<jsp:include page="${itemDescription}" />
 	<tr>
 		<td valign="top" width="40%">
 			<!-- sidebar begins -->
-			<table summary="" cellpadding="0" cellspacing="0" border="0"
+			<table summary="layout" cellpadding="0" cellspacing="0" border="0"
 				height="100%">
 				<tr>
 					<td height="30">
@@ -18,7 +18,7 @@
 				</tr>
 				<tr>
 					<td valign="top">
-						<table summary="" cellpadding="0" cellspacing="0" border="0"
+						<table summary="layout" cellpadding="0" cellspacing="0" border="0"
 							width="100%" height="100%" class="sidebarSection">
 							<tr>
 								<td height="20" class="sidebarTitle">
