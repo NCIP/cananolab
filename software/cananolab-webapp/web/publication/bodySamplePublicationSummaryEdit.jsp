@@ -80,7 +80,7 @@
 		</ul>
 	</div>
 </c:forEach>
-<table class="summaryViewNoTop" width="100%">
+<table class="summaryViewNoTop" width="100%" summary="layout">
 	<%--
 	<c:if test="${! empty publicationCategories && empty printView}">
 		<tr>
@@ -105,7 +105,7 @@
 							<a
 								href="publication.do?dispatch=setupNew&sampleId=${sampleId}&type=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
-									border="0" /></a>&nbsp;&nbsp;
+									border="0" alt="add new ${type}"/></a>&nbsp;&nbsp;
 						</th>
 					</tr>
 					<tr>
@@ -114,7 +114,7 @@
 								<c:when
 									test="${! empty publicationSummaryView.category2Publications[type]}">
 									<table width="99%" align="center" class="summaryViewNoGrid"
-										bgcolor="#dbdbdb">
+										bgcolor="#dbdbdb" summary="layout">
 										<tr>
 											<th valign="top" align="left" height="6">
 											</th>
@@ -142,7 +142,7 @@
 															</td>
 														</tr>
 														<tr>
-															<td class="cellLabel" width="10%">
+															<td class="cellLabel" width="10%" scope="row">
 																Bibliography Info
 															</td>
 															<td>
@@ -152,7 +152,7 @@
 															<td></td>
 														</tr>
 														<tr>
-															<td class="cellLabel" width="10%">
+															<td class="cellLabel" width="10%" scope="row">
 																Research Category
 															</td>
 															<td colspan="2">
@@ -168,7 +168,7 @@
 															</td>
 														</tr>
 														<tr>
-															<td class="cellLabel" width="10%">
+															<td class="cellLabel" width="10%" scope="row">
 																Description
 															</td>
 															<td>
@@ -184,7 +184,7 @@
 															<td></td>
 														</tr>
 														<tr>
-															<td class="cellLabel" width="10%">
+															<td class="cellLabel" width="10%" scope="row">
 																Keywords
 															</td>
 															<td>
@@ -200,7 +200,7 @@
 															<td></td>
 														</tr>
 														<tr>
-															<td class="cellLabel" width="10%">
+															<td class="cellLabel" width="10%" scope="row">
 																Publication Status
 															</td>
 															<td>
