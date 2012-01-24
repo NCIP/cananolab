@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table cellspacing="0" cellpadding="0" summary="" border="0">
+<table cellspacing="0" cellpadding="0" summary="layout" border="0">
 	<tbody>
 		<tr>
 			<logic:present name="items">

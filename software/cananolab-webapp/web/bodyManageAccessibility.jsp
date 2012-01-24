@@ -21,8 +21,7 @@
 			<a href="#"
 				onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')');"
 				id="addAccess" style="${newAddAccessButtonStyle}"><img
-					align="top" src="images/btn_add.gif" border="0" />
-			</a>
+					align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a>
 		</td>
 	</tr>
 	<tr>
@@ -125,16 +124,16 @@
 							<html:radio styleId="byGroup"
 								property="${accessParent}.theAccess.accessBy" value="group"
 								onclick="displayAccessNameLabel();" />
-							Collaboration Group
+							<label for="byGroup">Collaboration Group</label>
 							<html:radio styleId="byUser"
 								property="${accessParent}.theAccess.accessBy" value="user"
 								onclick="displayAccessNameLabel();" />
-							User&nbsp;&nbsp;
+							<label for="byUser">User&nbsp;&nbsp;</label>
 							<c:if test="${user.curator}">
 								<html:radio styleId="byPublic"
 									property="${accessParent}.theAccess.accessBy" value="public"
 									onclick="displayAccessNameLabel();" />
-							Public
+							<label for="byPublic">Public</label>
 							</c:if>
 						</td>
 					</tr>
@@ -143,10 +142,12 @@
 							value="Collaboration Group Name *" />
 						<td class="cellLabel" id="accessNameLabel">
 							<c:out value="${accessNameLabelValue}"/>
+							
 						</td>
-						<td>
+						<td><label for="groupName" style="display:none">Group Name</label>
 							<html:text styleId="groupName"
 								property="${accessParent}.theAccess.groupName" />
+							<label for="userName" style="display:none">Login Name</label>
 							<html:text styleId="userName"
 								property="${accessParent}.theAccess.userBean.loginName"
 								style="display:none" />
@@ -155,21 +156,23 @@
 							<a href="#userNameField" id="browseIcon"
 								onclick="javascript:showMatchedGroupOrUserDropdown('${ownerName}')"><img
 									src="images/icon_browse.jpg" align="middle"
-									alt="search existing collaboration groups" border="0" /> </a>
+									alt="search existing collaboration groups" border="0" /></a>
 						</td>
 						<td width="50%">
 							<table class="invisibleTable">
 								<tr>
 									<td>
 										<img src="images/ajax-loader.gif" border="0" class="counts"
-											id="loaderImg" style="display: none">
+											id="loaderImg" style="display: none" alt="collaboration groups or user login names">										
 									</td>
 									<td>
+									    <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
 										<html:select
 											property="${accessParent}.theAccess.userBean.loginName"
 											size="10" styleId="matchedUserNameSelect"
 											style="display: none" onclick="updateUserLoginName()">
-										</html:select>
+										</html:select>										
+										<label for="matchedGroupNameSelect" style="display:none">Select a group</label>
 										<html:select property="${accessParent}.theAccess.groupName"
 											size="10" styleId="matchedGroupNameSelect"
 											style="display: none" onclick="updateGroupName()">
@@ -185,7 +188,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" width="10%">
-							Access to the <c:out value="${dataType}"/> *
+							Access to the <label for="roleName"><c:out value="${dataType}"/> *</label>
 						</td>
 						<td colspan="2">
 							<html:select property="${accessParent}.theAccess.roleName"
@@ -198,8 +201,7 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td>
-							<input id="deleteAccess" type="button" value="Remove"
+						<td><input id="deleteAccess" type="button" value="Remove"
 								onclick="javascript:deleteTheAccess('${parentAction}', ${parentPage});"
 								style="display: none;">
 						</td>
