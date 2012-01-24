@@ -13,7 +13,7 @@
 	</head>
 	<tiles:importAttribute scope="session" />
 	<body>
-		<table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="" border="0" align="center">
+		<table height="100%" cellspacing="0" cellpadding="0" width="100%" summary="layout" border="0" align="center">
 			<!-- nci hdr begins -->
 			<tbody>
 				<tr>

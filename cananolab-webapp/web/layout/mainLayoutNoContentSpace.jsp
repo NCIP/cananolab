@@ -30,7 +30,7 @@
 	<tiles:importAttribute scope="session" />
 	<body style="cursor: default" onload="getPublicCounts();">
 		<table cellspacing="0" cellpadding="0" width="100%"
-			summary="" border="0" align="center">
+			summary="layout" border="0" align="center">
 			<!-- nci hdr begins -->
 			<tbody>
 				<tr>
@@ -41,7 +41,7 @@
 				</tr>
 				<tr>
 					<td valign="top">
-						<table height="100%" cellspacing="0" cellpadding="0" summary=""
+						<table height="100%" cellspacing="0" cellpadding="0" summary="layout"
 							border="0" width="100%">
 							<tbody>
 								<tr>
@@ -57,7 +57,7 @@
 									</td>
 									<td valign="top">
 										<table cellspacing="0" cellpadding="0"
-											summary="" border="0" width="800">
+											summary="layout" border="0" width="800">
 											<tbody>
 												<tr>
 													<td class="mainMenu" width="100%" height="20">

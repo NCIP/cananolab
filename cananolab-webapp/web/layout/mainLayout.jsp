@@ -41,7 +41,7 @@
 		<body style="cursor: default"">
 	</c:if>
 	<table height="100%" cellspacing="0" cellpadding="0" width="100%"
-		summary="" border="0" align="center">
+		summary="layout" border="0" align="center">
 		<!-- nci hdr begins -->
 		<tbody>
 			<tr>
@@ -52,7 +52,7 @@
 			</tr>
 			<tr>
 				<td valign="top" height="100%">
-					<table height="100%" cellspacing="0" cellpadding="0" summary=""
+					<table height="100%" cellspacing="0" cellpadding="0" summary="layout"
 						width="100%" border="0">
 						<tbody>
 							<tr>
@@ -67,7 +67,7 @@
 									<tiles:insert attribute="cananoSidemenu" />
 								</td>
 								<td valign="top">
-									<table cellspacing="0" cellpadding="0" summary="" border="0"
+									<table cellspacing="0" cellpadding="0" summary="layout" border="0"
 										width="800">
 										<tbody>
 											<tr>
@@ -78,7 +78,7 @@
 											<tr>
 												<td valign="top">
 													<%-- include caNanoLab main content --%>
-													<table border="0" width="100%">
+													<table border="0" width="100%" summary="layout">
 														<tr>
 															<td width="15">
 																&nbsp;

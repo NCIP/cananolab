@@ -1,7 +1,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="gov.nih.nci.cananolab.util.Constants"%>
 <%@page import="gov.nih.nci.cananolab.util.PropertyUtils"%>
-<table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0">
+<table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout">
 	<tbody>
 		<c:if test="${!empty siteName}">
 			<tr>
