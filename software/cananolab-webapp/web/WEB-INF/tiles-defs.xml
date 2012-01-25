@@ -74,14 +74,6 @@
 		<put name="cananoContent" value="/bodyLogin.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="canano.disclaimer" path="/layout/disclaimerLayout.jsp">
-		<put name="title" value="caNanoLab Home" />
-		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
-		<put name="cananoContent" value="/bodyDisclaimer.jsp" />
-		<put name="cananoFooter" value="/bodyMessage.jsp" />
-		<put name="nciFooter" value="/html/nciFooter.html" />
-	</definition>
 	<definition name="curation.result"
 		extends="canano.base">
 		<put name="cananoContent" value="/curation/bodyCurationResult.jsp" />
