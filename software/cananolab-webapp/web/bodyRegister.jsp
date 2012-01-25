@@ -9,7 +9,7 @@
 <html:form action="/register">
 	<jsp:include page="/bodyMessage.jsp" />
 	
-	<table width="100%" align="center" class="submissionView">		
+	<table width="100%" align="center" class="submissionView" summary="layout">		
 		<tr>
 			<td class="cellLabel" width="30%"><label for="title">Title</label><br/>
 					<html:select property="title" styleId="title">
@@ -28,7 +28,7 @@
 		</tr>	
 	</table>
 	<br/>
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		
 		<tr>
 			<td class="cellLabel">
@@ -50,7 +50,7 @@
 		</tr>
 	</table>
 	<br/>
-	<table width="100%" align="center" class="submissionView">		
+	<table width="100%" align="center" class="submissionView" summary="layout">		
 		<tr>
 			<td  class="cellLabel"><label for="description">Brief Description of your request<br/>
 			<html:textarea property="comment" rows="8" cols="100" styleId="description"/>
@@ -61,7 +61,7 @@
 		</tr>
 	</table>
 	<br/>
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel">
 				<html:multibox styleId="register user group list" property="registerToUserList">
@@ -72,10 +72,10 @@
 	</table>
 	<br/>
 	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0">
+		cellspacing="0" summary="layout">
 		<tr>
 			<td width="30%">
-				<table border="0" align="right" cellpadding="4" cellspacing="0">
+				<table border="0" align="right" cellpadding="4" cellspacing="0" summary="layout">
 					<tr>
 						<td>
 							<div align="right">
