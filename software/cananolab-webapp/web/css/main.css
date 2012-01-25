@@ -132,6 +132,19 @@ td.subMenuPrimarySubTitle {
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+th.subMenuPrimarySubTitle {
+	/* for the subtitle elements of the sub menu (left-side) */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding-left: 0.8em;
+	background-color: #7a7a7a; /* constant: darker gray */
+	color: #ffffff; /* constant: white */
+	border-top: 1px solid #7a7a7a; /* constant: medium gray */
+	border-bottom: 1px solid #7a7a7a; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
+	text-align:left;
+}
 td.subMenuPrimaryItems {
 	/* for the items under the sub-menu title elements */
 	font-family: arial, helvetica, verdana, sans-serif;
