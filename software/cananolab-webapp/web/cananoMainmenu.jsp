@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table cellspacing="0" cellpadding="0" summary="layout" border="0">
+<table cellspacing="0" cellpadding="0" border="0">
 	<tbody>
 		<tr>
 			<logic:present name="items">
@@ -29,10 +29,10 @@
 							<td></td>
 						</c:when>
 						<c:otherwise>
-							<td class="${style}" onclick="${item.link}"
+							<th class="${style}" onclick="${item.link}" scope="row"
 								onmouseover="changeMenuStyle(this, 'mainMenuItemOver');" onmouseout="changeMenuStyle(this,'${style}')" height="20">
 								<a class="mainMenuLink" href="#">${item.value}</a>
-							</td>
+							</th>
 							<td>
 								<img height="16" alt="" src="images/mainMenuSeparator.gif"
 									width="1">

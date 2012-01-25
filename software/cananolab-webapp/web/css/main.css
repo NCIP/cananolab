@@ -73,6 +73,30 @@ td.mainMenuItemOver {
 	padding-right: 1em;
 }
 
+th.mainMenu {
+	background-color: #5c5c5c; /* constant: dark gray */
+	font-family: arial, helvetica, verdana, sans-serif;
+	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-top: 1px solid #cccccc; /* constant: medium gray */
+}
+
+th.mainMenuItem { /* for the off state of the main menu (top) cells */
+	font-size: 0.7em;
+	font-weight: bold;
+	background-color: #5c5c5c; /* constant: dark gray */
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+th.mainMenuItemOver {
+	/* for the over state of the main menu (top) cells */
+	font-size: 0.7em;
+	font-weight: bold;
+	background-color: #6a8989; /* darker */
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
 td.footerMenu {
 	/* for the basic style of the footer menu (bottom) area */
 	background-color: #5c5c5c; /* constant: dark gray */
@@ -119,6 +143,20 @@ td.subMenuPrimaryTitle {
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+th.subMenuPrimaryTitle {
+	/* for the title elements of the sub menu (left-side) */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding-left: 0.8em;
+	background-color: #5c5c5c; /* constant: dark gray */
+	color: #ffffff; /* constant: white */
+	border-top: 1px solid #cccccc; /* constant: medium gray */
+	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
+	text-align:left;
+}
+
 td.subMenuPrimarySubTitle {
 	/* for the subtitle elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -132,19 +170,6 @@ td.subMenuPrimarySubTitle {
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-th.subMenuPrimarySubTitle {
-	/* for the subtitle elements of the sub menu (left-side) */
-	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
-	font-weight: bold;
-	padding-left: 0.8em;
-	background-color: #7a7a7a; /* constant: darker gray */
-	color: #ffffff; /* constant: white */
-	border-top: 1px solid #7a7a7a; /* constant: medium gray */
-	border-bottom: 1px solid #7a7a7a; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
-	text-align:left;
-}
 td.subMenuPrimaryItems {
 	/* for the items under the sub-menu title elements */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -237,11 +262,13 @@ td.subMenuFooter {
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.footerVersion { /* for the items under the sub-menu title elements */
+.footerVersion { /* for the items under the sub-menu title elements */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.6em;
+	font-weight: normal;
 	background-color: #ffffff; /* constant: white */
 	color: #000000; /* constant: black */
+	text-align:center;
 }
 
 /*###############

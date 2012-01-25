@@ -1,9 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="contentTitle" align="center" width="100%" border="0">
 	<tr height="20">
-		<td>
+		<th scope="col" align="left">
 			${param.pageTitle}
-		</td>
+		</th>
 		<c:if test="${empty printView}">
 			<td align="right" width="30%">
 				<jsp:include page="/helpGlossary.jsp">
