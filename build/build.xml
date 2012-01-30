@@ -2,14 +2,13 @@
 
 <project name="cananolab" default="dist:all" basedir=".">
 	<description>
-	This is the master build file for the caNanoLab project.  caNanoLab web application and caNanoLab grid service are two sub-projects
+	This is the master build file for the caNanoLab project.  caNanoLab web application, caNanoLab database, and caNanoLab grid service are three sub-projects
 	</description>
 
 	<!-- Property file related properties and tasks -->
 	<property name="software.dir" location=".." />
 	<property name="common.dir" location="${software.dir}/common" />
 	<property name="target.dir" location="${software.dir}/target" />
-	<property name="lib.dir" location="${common.dir}/lib" />
 	<property name="log.dir" location="${target.dir}/logs" />
 	<property name="dist.dir" location="${target.dir}/dist" />
 	<property name="temp.dir" location="${target.dir}/temp" />
