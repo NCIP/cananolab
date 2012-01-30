@@ -108,7 +108,6 @@
 		<mkdir dir="${cananolab-db.dist.dir}" />
 		<mkdir dir="${common.dist.dir}" />
 		<mkdir dir="${download.dir}" />
-		<echo message="${database.url}" />
 	</target>
 
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="clean, build:cananolab-webapp, build:cananolab-grid">
