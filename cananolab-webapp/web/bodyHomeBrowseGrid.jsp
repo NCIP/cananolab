@@ -71,19 +71,9 @@
 			<img src="images/ajax-loader.gif" border="0" class="counts"
 				id="sampleLoaderImg" style="display: block" alt="sample count">
 			<div id="sampleCounts">
-				<table class="invisibleTable" summary="layout">
-					<tr>
-						<td>
-							<span id="sampleCount"></span>
-						</td>
-						<td width="30"></td>
-						<td>
-							<a id="moreStats" onclick="getMoreSamplesStats()"
+			    <span id="sampleCount"></span>&nbsp; &nbsp; &nbsp;<a id="moreStats" onclick="getMoreSamplesStats()"
 								onmouseOver="showCursor();" onmouseOut="hideCursor()"><span
 								class="moreLink">More Stats</span> </a>
-						</td>
-					</tr>
-				</table>
 				<br />
 				<img src="images/ajax-loader.gif" border="0" class="counts"
 					id="sampleRelatedLoaderImg" style="display: none" alt="sample related info count">
