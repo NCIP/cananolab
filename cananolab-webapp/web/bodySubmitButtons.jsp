@@ -6,7 +6,7 @@
 <c:if test="${disableOuterButtons eq 'true'}">
 	<c:set var="disableButtonStr" value="disabled" />
 </c:if>
-<table width="100%" class="invisibleTable">
+<table width="100%" class="invisibleTable" summary="layout">
 	<tr>
 		<td align="left" width="600">
 			<c:if test="${showDelete eq 'true'}">

@@ -25,11 +25,12 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">
-				Sample Name *
+				<label for="sampleName">Sample Name *</label>
 			</td>
 			<td>
-				<html:text property="sampleBean.domain.name" size="80" />
+				<html:text property="sampleBean.domain.name" size="80" styleId="sampleName"/>
 				<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
+					<label for="sampleId" style="display:none">Sample ID</label>
 					<html:hidden styleId="sampleId" property="sampleBean.domain.id"
 						value="${sampleForm.map.sampleBean.domain.id}" />
 				</c:if>
@@ -80,11 +81,11 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Keywords
+				<label for="keyword">Keywords</label>
 				<i>(one keyword per line)</i>
 			</td>
 			<td>
-				<html:textarea property="sampleBean.keywordsStr" rows="6" cols="80" />
+				<html:textarea property="sampleBean.keywordsStr" rows="6" cols="80" styleId="keyword"/>
 			</td>
 		</tr>
 		<c:set var="groupAccesses" value="${sampleForm.map.sampleBean.groupAccesses}"/>
@@ -125,14 +126,13 @@
 			<tr>
 				<td colspan="2"><table class="editTableWithGrid" width="95%" align="center">
 									<tr>
-										<th>
+										<th scope="row">
 											caNanoLab Availability Score
 										</th>
-										<th>
+										<th scope="row">
 											MINChar Availability Score
 										</th>
-										<th></th>
-
+										<th scope="row"></th>
 									</tr>
 									<tr><td><c:out value="${sampleForm.map.sampleBean.caNanoLabScore}"/></td>
 										<td><c:out value="${sampleForm.map.sampleBean.mincharScore}"/></td>

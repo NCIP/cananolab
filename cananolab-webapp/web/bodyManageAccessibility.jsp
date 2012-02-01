@@ -30,10 +30,10 @@
 			<c:if test="${!empty groupAccesses}">
 				<table class="editTableWithGrid" width="95%" align="center">
 					<tr>
-						<th width="40%">
+						<th width="40%" scope="col">
 							Group Name
 						</th>
-						<th width="55%">
+						<th width="55%" scope="col">
 							Access
 						</th>
 						<th></th>
@@ -70,10 +70,10 @@
 			<c:if test="${!empty userAccesses}">
 				<table class="editTableWithGrid" width="95%" align="center">
 					<tr>
-						<th width="40%">
+						<th width="40%" scope="col">
 							User Login Name
 						</th>
-						<th width="55%">
+						<th width="55%" scope="col">
 							Access
 						</th>
 						<th></th>
@@ -110,11 +110,11 @@
 				<c:set var="newAccesstyle" value="display:block" />
 			</c:if>
 			<div style="${newAccesstyle}" id="newAccess">
-				<table class="subSubmissionView" width="85%" align="center">
+				<table class="subSubmissionView" width="85%" align="center" summary="layout">
 					<tr>
-						<th colspan="4">
+						<td colspan="4">
 							Access Information
-						</th>
+						</td>
 					</tr>
 					<tr>
 						<td class="cellLabel" width="25%">
