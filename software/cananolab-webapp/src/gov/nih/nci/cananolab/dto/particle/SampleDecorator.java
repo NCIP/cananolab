@@ -22,6 +22,7 @@ public class SampleDecorator extends TableDecorator {
 	public String getDetailURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
+		String sampleName = sample.getDomain().getName();
 		String dispatch = "summaryView";
 		String linkLabel = "View";
 		if (sample.getUserUpdatable()) {
@@ -29,9 +30,10 @@ public class SampleDecorator extends TableDecorator {
 			linkLabel = "Edit";
 		}
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("sample.do?dispatch=").append(dispatch).append(
+		sb.append("'sample.do?dispatch=").append(dispatch).append(
 				"&page=0&sampleId=");
-		sb.append(sampleId).append('>');
+		sb.append(sampleId).append("'");
+		sb.append(" title='summary for sample ").append(sampleName).append("'>");
 		sb.append(linkLabel).append("</a>");
 		String link = sb.toString();
 		return link;
