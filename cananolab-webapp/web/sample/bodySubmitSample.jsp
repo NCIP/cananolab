@@ -51,7 +51,7 @@
 				<a href="#"
 					onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()');"
 					id="addPointOfContact" style="${newAddPOCButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" /></a>
+						align="top" src="images/btn_add.gif" border="0" alt="add point of contact"/></a>
 			</td>
 		</tr>
 		<c:if
@@ -116,7 +116,7 @@
 				<td>
 					<c:if
 						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability }">
-						<input type="image" value="Generate" src="images/btn_generate.gif"
+						<input type="image" value="Generate" src="images/btn_generate.gif" alt="generate data availability matrix"
 							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
 					</c:if>
 				</td>
