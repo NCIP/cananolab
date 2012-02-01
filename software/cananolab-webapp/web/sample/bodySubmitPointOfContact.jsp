@@ -8,20 +8,20 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
-<table class="subSubmissionView" width="85%" align="center">
+<table class="subSubmissionView" width="85%" align="center" summary="layout">
 	<tr>
-		<th>
+		<td>
 			<span id="primaryTitle" style="display: none">Primary</span><span
 				id="secondaryTitle" style="display: none">Secondary</span> Point of
 			Contact Information
-		</th>
+		</td>
 	</tr>
 	<tr>
 		<td>
 			<table>
 				<tr>
 					<td class="cellLabel">
-						Organization Name*
+						<label for="domain.organization.name">Organization Name*</label>
 					</td>
 					<td>
 						<div id="orgNamePrompt">
@@ -38,7 +38,7 @@
 						</div>
 					</td>
 					<td class="cellLabel" valign="top">
-						Role
+						<label for="domain.role">Role</label>
 					</td>
 					<td valign="top" colspan="4">
 						<div id="rolePrompt">
@@ -62,7 +62,7 @@
 			<table>
 				<tr>
 					<td class="cellLabel">
-						Address Line1
+						<label for="domain.organization.streetAddress1">Address Line1</label>
 					</td>
 					<td colspan="5">
 						<html:text
@@ -73,7 +73,7 @@
 				</tr>
 				<tr>
 					<td class="cellLabel">
-						Address Line2
+						<label for="domain.organization.streetAddress2">Address Line2</label>
 					</td>
 					<td colspan="5">
 						<html:text
@@ -90,7 +90,7 @@
 			<table>
 				<tr>
 					<td class="cellLabel">
-						City
+						<label for="domain.organization.city">City</label>
 					</td>
 					<td>
 						<html:text property="sampleBean.thePOC.domain.organization.city"
@@ -98,7 +98,7 @@
 						&nbsp;
 					</td>
 					<td class="cellLabel">
-						State/Province
+						<label for="domain.organization.state">State/Province</label>
 					</td>
 					<td>
 						<html:text property="sampleBean.thePOC.domain.organization.state"
@@ -106,7 +106,7 @@
 						&nbsp;
 					</td>
 					<td class="cellLabel">
-						Zip/Postal Code
+						<label for="domain.organization.postalCode">Zip/Postal Code</label>
 					</td>
 					<td>
 						<html:text
@@ -122,7 +122,7 @@
 			<table>
 				<tr>
 					<td class="cellLabel">
-						Country
+						<label for="domain.organization.country">Country</label>
 					</td>
 					<td>
 						<html:text
@@ -138,21 +138,21 @@
 			<table>
 				<tr>
 					<td class="cellLabel" valign="top">
-						First Name
+						<label for="domain.firstName">First Name</label>
 					</td>
 					<td valign="top">
 						<html:text property="sampleBean.thePOC.domain.firstName" size="15"
 							styleId="domain.firstName" />
 					</td>
 					<td class="cellLabel" valign="top">
-						Middle Initial
+						<label for="domain.middleInitial">Middle Initial</label>
 					</td>
 					<td valign="top">
 						<html:text property="sampleBean.thePOC.domain.middleInitial"
 							size="5" styleId="domain.middleInitial" />
 					</td>
 					<td class="cellLabel" valign="top">
-						Last Name
+						<label for="domain.lastName">Last Name</label>
 					</td>
 					<td valign="top">
 						<html:text property="sampleBean.thePOC.domain.lastName" size="15"
@@ -167,14 +167,14 @@
 			<table>
 				<tr>
 					<td class="cellLabel" valign="top">
-						Phone Number
+						<label for="domain.phone">Phone Number</label>
 					</td>
 					<td valign="top">
 						<html:text property="sampleBean.thePOC.domain.phone" size="30"
 							styleId="domain.phone" />
 					</td>
 					<td class="cellLabel" valign="top">
-						Email
+						<label for="domain.email">Email</label>
 					</td>
 					<td valign="top" colspan="4">
 						<html:text property="sampleBean.thePOC.domain.email" size="30"
