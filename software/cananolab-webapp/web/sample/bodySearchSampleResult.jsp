@@ -24,17 +24,17 @@
 				requestURI="searchSample.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
     			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-				<display:column title="" property="detailURL" />
+				<display:column title="" property="detailURL" headerScope="col"/>
 				<display:column title="Sample Name" property="sampleName"
-					sortable="true" escapeXml="true" />
+					sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Primary<br>Point Of Contact"
-					property="pointOfContactName" sortable="true" escapeXml="true" />
+					property="pointOfContactName" sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Composition" property="compositionStr"
-					sortable="true" />
-				<display:column title="Functions" property="functionStr" />
+					sortable="true"  headerScope="col"/>
+				<display:column title="Functions" property="functionStr" headerScope="col"/>
 				<display:column title="Characterizations"
-					property="characterizationStr" />
-				<display:column title="Data Availability" >
+					property="characterizationStr" headerScope="col"/>
+				<display:column title="Data Availability" headerScope="col">
 				    <c:choose>
 						<c:when test="${sample.dataAvailabilityMetricsScore ==  'N/A' }">${sample.dataAvailabilityMetricsScore}
 						</c:when>
