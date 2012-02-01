@@ -27,10 +27,10 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="110">
-				Keywords
+				<label for="keywords">Keywords</label>
 			</td>
 			<td>
-				<html:textarea property="text" rows="3" cols="60" />
+				<html:textarea property="text" rows="3" cols="60" styleId="keywords"/>
 				<br>
 				<em>searching characterization keywords, publication keywords
 					and text in characterization descriptions</em>
@@ -46,16 +46,16 @@
 				<table class="invisibleTable">
 					<tr>
 						<td class="cellLabel" width="100">
-							Sample Name
+							<label for="sampleName">Sample Name</label>
 						</td>
-						<td>
+						<td><label for="nameOperand" style="display:none">name operand</label>
 							<html:select property="nameOperand" styleId="nameOperand">
 								<html:options collection="stringOperands" property="value"
 									labelProperty="label" />
 							</html:select>
 						</td>
 						<td>
-							<html:text property="sampleName" size="60" />
+							<html:text property="sampleName" size="60" styleId="sampleName"/>
 						</td>
 					</tr>
 				</table>
@@ -66,16 +66,16 @@
 				<table class="invisibleTable">
 					<tr>
 						<td class="cellLabel" width="100">
-							Sample Point of Contact
+							<label for="samplePOC">Sample Point of Contact</label>
 						</td>
-						<td>
+						<td><label for="pocOperand" style="display:none">POC Operand</label>
 							<html:select property="pocOperand" styleId="pocOperand">
 								<html:options collection="stringOperands" property="value"
 									labelProperty="label" />
 							</html:select>
 						</td>
 						<td>
-							<html:text property="samplePointOfContact" size="60" />
+							<html:text property="samplePointOfContact" size="60" styleId="samplePOC"/>
 							<br />
 							<em>searching organization name or person name</em>
 						</td>
@@ -88,7 +88,7 @@
 				<table class="invisibleTable">
 					<tr>
 						<td class="cellLabel" width="100">
-							Nanomaterial Entity
+							<label for="nanomaterialEntityTypes">Nanomaterial Entity</label>
 						</td>
 						<td>
 							<html:select styleId="nanomaterialEntityTypes"
@@ -97,7 +97,7 @@
 							</html:select>
 						</td>
 						<td class="cellLabel">
-							Functionalizing Entity
+							<label for="functionalizingEntityTypes">Functionalizing Entity</label>
 						</td>
 						<td>
 							<html:select styleId="functionalizingEntityTypes"
@@ -106,7 +106,7 @@
 							</html:select>
 						</td>
 						<td class="cellLabel">
-							Function
+							<label for="functionTypes">Function</label>
 						</td>
 						<td>
 							<html:select styleId="functionTypes" property="functionTypes"
@@ -123,7 +123,8 @@
 				<table class="invisibleTable">
 					<tr>
 						<td class="cellLabel" width="100">
-							Characterization Type
+							<label for="charType">Characterization Type</label>
+							<label for="characterizationType" style="display:none">hidden char type</label>
 							<html:hidden styleId="characterizationType"
 								property="characterizationType" />
 						</td>
@@ -135,7 +136,7 @@
 							</html:select>
 						</td>
 						<td class="cellLabel">
-							Characterization
+							<label for="charName">Characterization</label>
 						</td>
 						<td colspan="3">
 							<html:select property="characterizations" styleId="charName"
