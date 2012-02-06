@@ -32,20 +32,20 @@
 			<html:radio styleId="external0"
 				property="${fileParent}.theFile.domainFile.uriExternal"
 				value="false" onclick="displayFileRadioButton();" />
-			Upload
+			<label for="external0">Upload</label>
 		</td>
 		<td class="cellLabel">
 			<html:radio styleId="external1"
 				property="${fileParent}.theFile.domainFile.uriExternal" value="true"
 				onclick="displayFileRadioButton();" />
-			Enter File URL
+			<label for="external1">Enter File URL</label>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
 			<span id="load" style="${loadStyle}"> <html:file
 					property="${fileParent}.theFile.uploadedFile" size="60"
-					styleId="uploadedFile" /> &nbsp;&nbsp;</span>
+					styleId="uploadedFile" /></span><label for="uploadedFile">&nbsp;&nbsp;</label>
 			<c:set var="uploadedUriStyle" value="display:none" />
 			<c:if
 				test="${! empty theFile.domainFile.uri && theFile.domainFile.uriExternal eq false}">
@@ -60,7 +60,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			File Type*
+			<label for="fileType">File Type*</label>
 		</td>
 		<td>
 			<div id="fileTypePrompt">
@@ -78,7 +78,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			File Title*
+			<label for="fileTitle">File Title*</label>
 		</td>
 		<td>
 			<html:text property="${fileParent}.theFile.domainFile.title"
@@ -87,7 +87,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" valign="top">
-			Keywords
+			<label for="fileKeywords">Keywords</label>
 		</td>
 		<td>
 			<html:textarea property="${fileParent}.theFile.keywordsStr" rows="3"
@@ -98,7 +98,7 @@
 	</tr>
 	<tr>
 			<td class="cellLabel" valign="top">
-				Description
+				<label for="fileDescription">Description</label>
 			</td>
 			<td>
 				<html:textarea

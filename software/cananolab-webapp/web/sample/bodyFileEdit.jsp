@@ -6,18 +6,18 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table class="editTableWithGrid" align="center" width="95%">
 	<tr>
-		<td class="cellLabel" width="20%">
+		<th class="cellLabel" width="20%" scope="col">
 			File Type
-		</td>
-		<td width="33%" class="cellLabel">
+		</th>
+		<th width="33%" class="cellLabel" scope="col">
 			Title and Download Link
-		</td>
-		<td class="cellLabel">
+		</th>
+		<th class="cellLabel" scope="col">
 			Keywords
-		</td>
-		<td class="cellLabel">
+		</th>
+		<th class="cellLabel" scope="col">
 			Description
-		</td>
+		</th>
 		<td>
 		</td>
 	</tr>

@@ -40,14 +40,14 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Name*
+					<label for="biopolymerName">Name*</label>
 				</td>
 				<td class="cellLabel">
 					<input type="text" name="nanomaterialEntity.biopolymer.name"
-						value="${compositionForm.map.nanomaterialEntity.biopolymer.name}">
+						value="${compositionForm.map.nanomaterialEntity.biopolymer.name}" id="biopolymerName">
 				</td>
 				<td class="cellLabel">
-					Biopolymer Type*
+					<label for="biopolymerType">Biopolymer Type*</label>
 				</td>
 				<td class="cellLabel">
 					<div id="biopolymerTypePrompt">
@@ -79,10 +79,10 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Sequence
+					<label for="biopolymerSequence">Sequence</label>
 				</td>
 				<td class="cellLabel" colspan="3">
-					<textarea name="nanomaterialEntity.biopolymer.sequence" cols="80"
+					<textarea id="biopolymerSequence" name="nanomaterialEntity.biopolymer.sequence" cols="80"
 						rows="3"><c:out value="${compositionForm.map.nanomaterialEntity.biopolymer.sequence}" escapeXml="false"/></textarea>
 				</td>
 			</tr>

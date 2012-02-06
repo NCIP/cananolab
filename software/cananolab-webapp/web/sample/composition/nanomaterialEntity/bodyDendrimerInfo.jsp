@@ -33,14 +33,14 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Branch
+					<label for="dendrimerBranch">Branch</label>
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="nanomaterialEntity.dendrimer.branch"
+					<input id="dendrimerBranch" type="text" name="nanomaterialEntity.dendrimer.branch"
 						value="${compositionForm.map.nanomaterialEntity.dendrimer.branch}" />
 				</td>
 				<td class="cellLabel">
-					Generation
+					<label for="dendrimerGeneration">Generation</label>
 				</td>
 				<td class="cellLabel">
 					<input id="generation" type="text" name="nanomaterialEntity.dendrimer.generation"
