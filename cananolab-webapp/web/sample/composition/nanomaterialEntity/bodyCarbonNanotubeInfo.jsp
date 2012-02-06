@@ -47,7 +47,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Average Length
+					<label for="averageLength">Average Length</label>
 				</td>
 				<td class="cellLabel">
 					<input type="text"
@@ -57,7 +57,7 @@
 						<%-- onkeydown="return filterFloatNumber(event)" /--%>
 				</td>
 				<td class="cellLabel">
-					Average Length Unit
+					<label for="averageLengthUnit">Average Length Unit</label>
 				</td>
 				<td class="cellLabel">
 					<div id="averageLengthUnitPrompt">
@@ -87,17 +87,17 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Chirality
+					<label for="chirality">Chirality</label>
 				</td>
 				<td class="cellLabel">
-					<input type="text"
+					<input id="chirality" type="text"
 						name="nanomaterialEntity.carbonNanotube.chirality"
 						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.chirality}" />
 				</td>
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Diameter
+					<label for="tubeDiameter">Diameter</label>
 				</td>
 				<td class="cellLabel">
 					<input type="text"
@@ -107,7 +107,7 @@
 						<%-- onkeydown="return filterFloatNumber(event)" /--%>
 				</td>
 				<td class="cellLabel">
-					Diameter Unit
+					<label for="diameterUnit">Diameter Unit</label>
 				</td>
 				<td class="cellLabel">
 					<div id="diameterUnitPrompt">
@@ -137,7 +137,7 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Wall Type
+					<label for="wallType">Wall Type</label>
 				</td>
 				<td class="cellLabel">
 					<select name="nanomaterialEntity.carbonNanotube.wallType"

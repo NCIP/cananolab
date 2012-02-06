@@ -33,7 +33,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Is Polymerized
+					<label for="liposomeIsPolymerized">Is Polymerized</label>
 				</td>
 				<td class="cellLabel">
 					<c:choose>
@@ -53,7 +53,7 @@
 							</c:choose>
 						</c:otherwise>
 					</c:choose>
-					<select name="nanomaterialEntity.isPolymerized">
+					<select name="nanomaterialEntity.isPolymerized" id="liposomeIsPolymerized">
 						<option value="" ${selectNoneStr}></option>
 						<option value="true" ${selectYesStr}>
 							Yes
@@ -64,10 +64,10 @@
 					</select>
 				</td>
 				<td class="cellLabel">
-					Polymer Name
+					<label for="liposomePolymerName">Polymer Name</label>
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="nanomaterialEntity.liposome.polymerName"
+					<input type="text" name="nanomaterialEntity.liposome.polymerName" id="liposomePolymerName"
 						value="${compositionForm.map.nanomaterialEntity.liposome.polymerName}" />
 				</td>
 			</tr>

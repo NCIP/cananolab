@@ -4,13 +4,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
-		<th colspan="4" align="left">
+		<th colspan="4" align="left" scope="col">
 			Composing Element Info
 		</th>
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Type*
+			<label for="elementType">Type*</label>
 		</td>
 		<td>
 			<div id="elementTypePrompt">
@@ -33,7 +33,7 @@
 			</div>
 		</td>
 		<td class="cellLabel">
-			Chemical Name*
+			<label for="elementName">Chemical Name*</label>
 		</td>
 		<td>
 			<html:text
@@ -43,7 +43,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			PubChem DataSource
+			<label for="pubChemDataSource">PubChem DataSource</label>
 		</td>
 		<td>
 			<div id="pubChemDataSourcePrompt">
@@ -56,7 +56,7 @@
 			</div>
 		</td>
 		<td class="cellLabel">
-			PubChem Id
+			<label for="pubChemId">PubChem Id</label>
 		</td>
 		<td>
 			<html:text
@@ -67,7 +67,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Amount
+			<label for="elementValue">Amount</label>
 		</td>
 		<td>
 			<html:text
@@ -76,7 +76,7 @@
 				<%--onkeydown="return filterFloatNumber(event)" --%>
 		</td>
 		<td class="cellLabel">
-			Amount Unit
+			<label for="elementValueUnit">Amount Unit</label>
 		</td>
 		<td valign="top">
 			<div id="elementValueUnitPrompt">
@@ -94,7 +94,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Molecular Formula Type
+			<label for="molFormulaType">Molecular Formula Type</label>
 		</td>
 		<td>
 			<div id="molFormulaTypePrompt">
@@ -110,7 +110,7 @@
 			</div>
 		</td>
 		<td class="cellLabel">
-			Molecular Formula
+			<label for="molFormula">Molecular Formula</label>
 		</td>
 		<td>
 			<html:textarea
@@ -120,7 +120,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Description
+			<label for="elementDescription">Description</label>
 		</td>
 		<td colspan="3">
 			<html:textarea
@@ -144,17 +144,17 @@
 					style="display: none;">
 					<tbody id="functionRows">
 						<tr id="patternHeader">
-							<td width="30%" class="cellLabel">
+							<th width="30%" class="cellLabel" scope="col">
 								Function Type
-							</td>
-							<td width="30%" class="cellLabel">
+							</th>
+							<th width="30%" class="cellLabel" scope="col">
 								<div id="modalityHeader" style="display: none">
 									Imaging Modality
 								</div>
-							</td>
-							<td width="30%" class="cellLabel">
+							</th>
+							<th width="30%" class="cellLabel" scope="col">
 								Description
-							</td>
+							</th>
 							<td>
 							</td>
 						</tr>
@@ -184,8 +184,8 @@
 							<html:hidden
 								property="nanomaterialEntity.theComposingElement.theFunction.id"
 								styleId="functionId" />
-							<td class="cellLabel">
-								Function Type
+							<th class="cellLabel">
+								<label for="functionType">Function Type</label>
 							</td>
 							<td>
 								<div id="functionTypePrompt">
@@ -203,7 +203,7 @@
 							</td>
 							<td class="cellLabel">
 								<div id="modalityLabel" style="display: none">
-									Imaging Modality Type
+									<label for="imagingModality">Imaging Modality Type</label>
 								</div>
 							</td>
 							<td>
@@ -223,7 +223,7 @@
 						</tr>
 						<tr>
 							<td class="cellLabel">
-								Description
+								<label for="functionDescription">Description</label>
 							</td>
 							<td colspan="3">
 								<html:textarea

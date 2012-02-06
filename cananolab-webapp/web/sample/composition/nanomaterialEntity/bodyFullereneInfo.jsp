@@ -34,7 +34,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Average Diameter
+					<label for="averageDiameter">Average Diameter</label>
 				</td>
 				<td class="cellLabel">
 					<input type="text" name="nanomaterialEntity.fullerene.averageDiameter"
@@ -73,7 +73,7 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Number of Carbons
+					<label for="numberOfCarbon">Number of Carbons</label>
 				</td>
 				<td class="cellLabel">
 					<input type="text" name="nanomaterialEntity.fullerene.numberOfCarbon"

@@ -39,14 +39,14 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Initiator
+					<label for="polymerInitiator">Initiator</label>
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="nanomaterialEntity.polymer.initiator"
+					<input type="text" name="nanomaterialEntity.polymer.initiator" id="polymerInitiator"
 						value="${compositionForm.map.nanomaterialEntity.polymer.initiator}" />
 				</td>
 				<td class="cellLabel">
-					Is Cross Linked
+					<label for="polymerIsCrossLinked">Is Cross Linked</label>
 				</td>
 				<td class="cellLabel">
 					<c:choose>
@@ -66,7 +66,7 @@
 							</c:choose>
 						</c:otherwise>
 					</c:choose>
-					<select name="nanomaterialEntity.isCrossLinked">
+					<select name="nanomaterialEntity.isCrossLinked" id="polymerIsCrossLinked">
 						<option value=""${selectNoneStr}></option>
 						<option value="true"${selectYesStr}>
 							Yes
@@ -77,7 +77,7 @@
 					</select>
 				</td>
 				<td class="cellLabel">
-					Cross Link Degree
+					<label for="crossLinkDegree">Cross Link Degree</label>
 				</td>
 				<td class="cellLabel">
 					<input type="text" id="crossLinkDegree"

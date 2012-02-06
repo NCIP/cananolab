@@ -38,12 +38,12 @@
 	onsubmit="return validateTubeInfo() && validateFullereneInfo() && validatePolymerInfo() &&
 	validateSavingTheData('newComposingElement', 'Composing Element') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<c:if
 			test="${empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
 			<tr>
 				<td class="cellLabel">
-					Nanomaterial Entity Type*
+					<label for="peType">Nanomaterial Entity Type*</label>
 				</td>
 				<td>
 					<div id="peTypePrompt">
@@ -62,11 +62,11 @@
 		</c:if>
 		<tr>
 			<td class="cellLabel">
-				Description
+				<label for="neDescription">Description</label>
 			</td>
 			<td>
 				<html:textarea property="nanomaterialEntity.description" rows="3"
-					cols="100" />
+					cols="100" styleId="neDescription"/>
 			</td>
 		</tr>
 	</table>
@@ -78,9 +78,9 @@
 	</div>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td class="cellLabel" width="15%">
+			<th class="cellLabel" width="15%">
 				Composing Element
-			</td>
+			</th>
 			<td>
 			    <c:set var="disableOuterButtons" value="false"/>
 				<c:set var="newAddCEButtonStyle" value="display:block" />
@@ -91,7 +91,7 @@
 				<a style="${newAddCEButtonStyle}" id="addComposingElement"
 					href="#submitComposingElement"
 					onclick="javascript:clearComposingElement(); openSubmissionForm('ComposingElement');"><img
-						align="top" src="images/btn_add.gif" border="0" /> </a>
+						align="top" src="images/btn_add.gif" border="0" alt="add composing element"/> </a>
 			</td>
 		</tr>
 		<tr>
@@ -137,7 +137,7 @@
 					</c:if>
 					<a style="${addFileButtonStyle}" id="addFile"
 						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
-							align="top" src="images/btn_add.gif" border="0" /> </a>
+							align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"/> </a>
 				</td>
 			</tr>
 			<tr>
