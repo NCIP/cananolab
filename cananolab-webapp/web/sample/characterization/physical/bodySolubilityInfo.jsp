@@ -10,12 +10,12 @@
 			<c:when test="${! empty charBean.solubility.solvent}">
 				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<td class="cellLabel">
+						<th scope="col" class="cellLabel">
 							Solvent
-						</td>
-						<td class="cellLabel">
+						</th>
+						<th scope="row" class="cellLabel">
 							Is Soluble?
-						</td>
+						</th>
 						<td class="cellLabel">
 							Critical Concentration
 						</td>

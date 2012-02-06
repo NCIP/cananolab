@@ -6,15 +6,15 @@
 <table class="summaryViewNoGrid" width="99%" align="left">
 	<c:forEach var="composingElement" items="${entity.composingElements}">
 		<tr>
-			<td class="cellLabel" colspan="2">
+			<th class="cellLabel" colspan="2" scope="row">
 				<c:out value="${composingElement.displayName}"/>
-			</td>
+			</th>
 		</tr>
 		<c:if test="${!empty composingElement.pubChemLink}">
 			<tr>
-				<td>
+				<th scope="row">
 					PubChem ID
-				</td>
+				</th>
 				<td>
 					<a href="${composingElement.pubChemLink}"
 						target="caNanoLab - View PubChem"><c:out value="${composingElement.domain.pubChemId}"/></a>
@@ -25,9 +25,9 @@
 		<c:if test="${!empty composingElement.molecularFormulaDisplayName}">
 			<tr>
 
-				<td>
+				<th scope="row">
 					Molecular Formula
-				</td>
+				</th>
 				<td>
 					<c:out value="${composingElement.molecularFormulaDisplayName}"/>
 				</td>
@@ -36,9 +36,9 @@
 
 		<c:if test="${!empty composingElement.domain.description}">
 			<tr>
-				<td>
+				<th scope="row">
 					Description
-				</td>
+				</th>
 				<td>
 					<c:out value="${composingElement.description}" escapeXml="false" />
 				</td>
@@ -46,9 +46,9 @@
 		</c:if>
 		<c:if test="${!empty composingElement.functionDisplayNames}">
 			<tr>
-				<td>
+				<th scope="row">
 					Function
-				</td>
+				</th>
 				<td>
 					<c:forEach var="function"
 						items="${composingElement.functionDisplayNames}" varStatus="ind">

@@ -7,7 +7,7 @@
 <table class="summaryViewNoGrid" align="left">
 	<c:forEach var="file" items="${files}">
 		<tr>
-			<td>
+			<th scope="row">
 				<c:choose>
 					<c:when test="${file.domainFile.uriExternal}">
 						<a style="white-space: normal;"
@@ -22,7 +22,7 @@
 								<a href="#"
 									onclick="popImage(event, '${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
 										src="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}"
-										border="0" width="150"> </a>
+										border="0" width="150" alt="uploaded image"> </a>
 							</c:when>
 							<c:otherwise>
 								<a style="white-space: normal;"
@@ -32,7 +32,7 @@
 						</c:choose>
 					</c:otherwise>
 				</c:choose>
-			</td>
+			</th>
 			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(file.keywordsStr)}">

@@ -91,9 +91,9 @@
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
 				<table id="summarySection${ind.count}" class="summaryViewNoGrid"
-					align="center" width="99%" summary="layout">
+					align="center" width="99%">
 					<tr>
-						<th align="left"">
+						<th align="left" scope="col">
 							<a name="${type}" id="${type}"><span
 								class="summaryViewHeading">${type}</span> </a>
 						</th>
@@ -115,9 +115,9 @@
 											<table class="summaryViewNoGrid" width="99%" align="center"
 												bgcolor="#F5F5f5">
 												<tr>
-													<td class="cellLabel" width="10%" scope="row">
+													<th scope="row" class="cellLabel" width="10%" scope="row">
 														Bibliography Info
-													</td>
+													</th>
 													<td>
 														<c:out value="${pubBean.displayName}" escapeXml="false" />
 														&nbsp;
@@ -125,9 +125,9 @@
 												</tr>
 												<c:if test="${!empty pubObj.researchArea}">
 													<tr>
-														<td class="cellLabel" width="10%" scope="row">
+														<th scope="row" class="cellLabel" width="10%" scope="row">
 															Research Category
-														</td>
+														</th>
 														<td colspan="2">
 															<c:out
 																value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
@@ -138,9 +138,9 @@
 												</c:if>
 												<c:if test="${!empty pubObj.description}">
 													<tr>
-														<td class="cellLabel" width="10%" scope="row">
+														<th scope="row" class="cellLabel" width="10%" scope="row">
 															Description
-														</td>
+														</th>
 														<td>
 															<c:out value="${pubBean.description}" escapeXml="false" />
 															&nbsp;
@@ -149,9 +149,9 @@
 												</c:if>
 												<c:if test="${!empty pubBean.keywordsStr}">
 													<tr>
-														<td class="cellLabel" width="10%" scope="row">
+														<th scope="row" class="cellLabel" width="10%" scope="row">
 															Keywords
-														</td>
+														</th>
 														<td>
 															<c:out value="${pubBean.keywordsDisplayName}"
 																escapeXml="false" />
@@ -160,9 +160,9 @@
 													</tr>
 												</c:if>
 												<tr>
-													<td class="cellLabel" width="10%" scope="row">
+													<th scope="row" class="cellLabel" width="10%" scope="row">
 														Publication Status
-													</td>
+													</th>
 													<td>
 														<c:out value="${pubObj.status}" />
 														&nbsp;

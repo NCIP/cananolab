@@ -10,18 +10,18 @@
 			<c:when test="${! empty charBean.shape.type}">
 				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<td class="cellLabel">
+						<th scope="col" class="cellLabel">
 							Type
-						</td>
-						<td class="cellLabel">
+						</th>
+						<th scope="col" class="cellLabel">
 							Aspect Ratio
-						</td>
-						<td class="cellLabel">
+						</th>
+						<th scope="col" class="cellLabel">
 							Minimum Dimension
-						</td>
-						<td class="cellLabel">
+						</th>
+						<th scope="col" class="cellLabel">
 							Maximum Dimension
-						</td>
+						</th>
 					</tr>
 					<tr>
 						<td>

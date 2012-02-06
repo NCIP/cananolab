@@ -7,24 +7,24 @@
 
 <table class="summaryViewNoGrid" align="left">
 	<tr>
-		<td class="cellLabel">
+		<th scope="col" class="cellLabel">
 			Type
-		</td>
+		</th>
 		<c:if test="${entity.withImagingFunction eq 'true'}">
-			<td class="cellLabel">
+			<th scope="col" class="cellLabel">
 				Image Modality
-			</td>
+			</th>
 		</c:if>
 		<c:if test="${entity.withTargetingFunction eq 'true'}">
-			<td class="cellLabel" width="30%">
+			<tdh scope="row" class="cellLabel" width="30%">
 				Targets
-			</td>
+			</th>
 		</c:if>
-		<td class="cellLabel">
+		<th scope="row" class="cellLabel">
 			Description
-		</td>
-		<td>
-		</td>
+		</th>
+		<th>
+		</th>
 	</tr>
 	<c:forEach var="function" items="${entity.functions}">
 		<tr>

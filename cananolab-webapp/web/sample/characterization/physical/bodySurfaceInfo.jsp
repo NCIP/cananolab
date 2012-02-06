@@ -9,9 +9,9 @@
 			<c:when test="${! empty charBean.surface.isHydrophobic}">
 				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<td class="cellLabel">
+						<th scope="row" class="cellLabel">
 							Is Hydrophobic?
-						</td>
+						</th>
 						<td>
 							<c:out value="${charBean.surface.isHydrophobic}" />
 						</td>

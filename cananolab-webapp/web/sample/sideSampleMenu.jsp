@@ -21,12 +21,12 @@
 <c:if test="${theSample.userUpdatable}">
 	<c:set var="dispatch" value="summaryEdit" />
 </c:if>
-<table summary="" cellpadding="0" cellspacing="0" border="0"
-	height="100%">
+<table cellpadding="0" cellspacing="0" border="0"
+	height="100%" width="150">
 	<tr>
-		<td class="subMenuPrimaryTitle" height="22">
+		<th class="subMenuPrimaryTitle" height="22" scope="col">
 			NAVIGATION TREE
-		</td>
+		</th>
 	</tr>
 	<tr>
 		<c:url var="sampleUrl" value="sample.do">

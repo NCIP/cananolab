@@ -8,19 +8,17 @@
 <table width="99%" align="center" class="summaryViewNoGrid"
 	bgcolor="#F5F5f5">
 	<tr>
-		<td class="cellLabel" width="20%">
+		<th scope="row" class="cellLabel" width="20%">
 			Sample Name
-		</td>
+		</th>
 		<td>
 			<bean:write name="sampleForm" property="sampleBean.domain.name" />
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel">
-			Keywords
-			<br>
-			<i>(one keyword per line)</i>
-		</td>
+		<th scope="row" class="cellLabel">
+			Keywords		
+		</th>
 		<td>
 			<c:out value="${sampleForm.map.sampleBean.keywordsDisplayName}"
 				escapeXml="false" />
@@ -29,9 +27,9 @@
 	<c:if
 		test="${!empty sampleForm.map.sampleBean.primaryPOCBean.domain.id || ! empty sampleForm.map.sampleBean.otherPOCBeans}">
 		<tr>
-			<td class="cellLabel">
+			<th scope="row" class="cellLabel">
 				Point of Contact
-			</td>
+			</th>
 			<td>
 				<c:set var="edit" value="false" />
 				<%@ include file="bodyPointOfContactView.jsp"%>

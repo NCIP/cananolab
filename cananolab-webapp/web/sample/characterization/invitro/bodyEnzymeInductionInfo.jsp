@@ -9,9 +9,9 @@
 			<c:when test="${! empty charBean.enzymeInduction.enzyme}">
 				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<td class="cellLabel">
+						<th scope="row" class="cellLabel">
 							Enzyme Name
-						</td>
+						</th>
 						<td>
 							<c:out value="${charBean.enzymeInduction.enzyme}"/>
 						</td>

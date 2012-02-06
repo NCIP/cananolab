@@ -12,7 +12,7 @@
 			<a
 				href="functionalizingEntity.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" /></a>
+					border="0" alt="add functionalizing entity"/></a>
 		</th>
 	</tr>
 	<tr>

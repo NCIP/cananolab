@@ -12,7 +12,7 @@
 			<a
 				href="chemicalAssociation.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" /></a>
+					border="0" alt="add chemical association"/></a>
 		</th>
 	</tr>
 	<tr>

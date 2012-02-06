@@ -7,12 +7,12 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<td class="cellLabel">
+				<th scope="row" class="cellLabel">
 					Is Polymerized
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="row" class="cellLabel">
 					Polymer Name
-				</td>
+				</th>
 			</tr>
 			<tr>
 				<td>

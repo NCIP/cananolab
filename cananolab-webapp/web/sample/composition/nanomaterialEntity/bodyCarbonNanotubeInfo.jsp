@@ -7,18 +7,18 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<td class="cellLabel">
+				<th scope="row" class="cellLabel">
 					Average Length
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="row" class="cellLabel">
 					Chirality
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="row" class="cellLabel">
 					Diameter
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="row" class="cellLabel">
 					Wall Type
-				</td>
+				</th>
 			</tr>
 			<tr>
 				<td>

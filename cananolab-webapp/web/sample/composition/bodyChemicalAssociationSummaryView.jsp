@@ -7,7 +7,7 @@
 <table id="summarySection${index}" width="100%" align="center"
 	style="display: block" class="summaryViewNoGrid">
 	<tr>
-		<th align="left">
+		<th align="left" scope="col">
 			<span class="summaryViewHeading">chemical association</span>
 		</th>
 	</tr>
@@ -19,7 +19,7 @@
 				<table width="99%" align="center" class="summaryViewNoGrid"
 					bgcolor="#dbdbdb">
 					<tr>
-						<th align="left">
+						<th align="left" scope="row">
 							<c:out value="${assocType}"/>
 						</th>
 					</tr>

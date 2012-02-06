@@ -5,18 +5,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <table align="left" class="invisibleTable">
 	<tr>
-		<td class="cellLabel">
+		<th scope="col" class="cellLabel">
 			Primary Contact?
-		</td>
-		<td class="cellLabel">
+		</th>
+		<th scope="col" class="cellLabel">
 			Contact Person
-		</td>
-		<td class="cellLabel">
+		</th>
+		<th scope="col" class="cellLabel">
 			Organization
-		</td>
-		<td class="cellLabel">
+		</th>
+		<th scope="col" class="cellLabel">
 			Role
-		</td>
+		</th>
 	</tr>
 	<c:if
 		test="${! empty sampleForm.map.sampleBean.primaryPOCBean.domain.id}">
@@ -28,7 +28,6 @@
 			</td>
 			<td>
 				<c:out value="${primaryPOC.personDisplayName}" escapeXml="false"/>
-			</td>
 			<td>
 				<c:out value="${primaryPOC.organizationDisplayName}" escapeXml="false"/>
 			</td>
@@ -49,7 +48,6 @@
 				</td>
 				<td>
 					<c:out value="${poc.organizationDisplayName}" escapeXml="false"/>
-				</td>
 				<td>
 					<c:out value="${poc.domain.role}"/>
 				</td>

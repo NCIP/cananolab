@@ -10,9 +10,9 @@
 			<c:when test="${! empty charBean.physicalState.type}">
 				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<td class="cellLabel">
+						<th scope="row" class="cellLabel">
 							Type
-						</td>
+						</th>
 						<td>
 							<c:out value="${charBean.physicalState.type}"/>
 						</td>

@@ -8,9 +8,9 @@
 	bgcolor="#F5F5f5">
 	<c:if test="${!empty functionalizingEntity.name}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Name
-			</td>
+			</th>
 			<td>
 				<c:out value="${functionalizingEntity.name}" />
 			</td>
@@ -18,9 +18,9 @@
 	</c:if>
 	<c:if test="${!empty functionalizingEntity.pubChemId}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				PubChem ID
-			</td>
+			</th>
 			<td>
 				<a href="${functionalizingEntity.pubChemLink}"
 					target="caNanoLab - View PubChem"><c:out value="${pubChemId}" />
@@ -32,9 +32,9 @@
 	</c:if>
 	<c:if test="${!empty functionalizingEntity.value}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Amount
-			</td>
+			</th>
 			<td>
 				<c:out value="${functionalizingEntity.value}" />
 				<c:out value="${functionalizingEntity.valueUnit}" />
@@ -44,9 +44,9 @@
 	<c:if
 		test="${!empty functionalizingEntity.molecularFormulaDisplayName}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Molecular Formula
-			</td>
+			</th>
 			<td style="word-wrap: break-word; max-width: 280px;">
 				<c:out value="${functionalizingEntity.molecularFormulaDisplayName}" />
 			</td>
@@ -55,9 +55,9 @@
 	<c:choose>
 		<c:when test="${!empty entityDetailPage}">
 			<tr>
-				<td class="cellLabel" width="10%">
+				<th scope="row" class="cellLabel" width="10%">
 					Properties
-				</td>
+				</th>
 				<td>
 					<c:set var="functionalizingEntity" value="${functionalizingEntity}"
 						scope="session" />
@@ -70,9 +70,9 @@
 		<c:otherwise>
 			<c:if test="${functionalizingEntity.withProperties }">
 				<tr>
-					<td class="cellLabel" width="10%">
+					<th scope="row" class="cellLabel" width="10%">
 						Properties
-					</td>
+					</th>
 					<td>
 						<%
 							String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
@@ -94,9 +94,9 @@
 	</c:choose>
 	<c:if test="${!empty functionalizingEntity.functions}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Function(s)
-			</td>
+			</th>
 			<td>
 				<c:set var="entity" value="${functionalizingEntity }" />
 				<%@ include file="bodyFunctionView.jsp"%>
@@ -106,9 +106,9 @@
 	<c:if
 		test="${!empty functionalizingEntity.activationMethodDisplayName}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Activation Method
-			</td>
+			</th>
 			<td>
 				<c:out value="${functionalizingEntity.activationMethodDisplayName}" />
 			</td>
@@ -116,9 +116,9 @@
 	</c:if>
 	<c:if test="${!empty fn:trim(functionalizingEntity.description)}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Description
-			</td>
+			</th>
 			<td>
 				<c:out value="${functionalizingEntity.descriptionDisplayName}"
 					escapeXml="false" />
@@ -127,9 +127,9 @@
 	</c:if>
 	<c:if test="${! empty functionalizingEntity.files}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Files
-			</td>
+			</th>
 			<td>
 				<c:set var="files" value="${functionalizingEntity.files }" />
 				<c:set var="entityType" value="functionalizing entity" />
