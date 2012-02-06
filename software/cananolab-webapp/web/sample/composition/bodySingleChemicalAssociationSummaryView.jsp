@@ -9,9 +9,9 @@
 	<c:if
 		test="${! empty assoc.attachment.id && ! empty assoc.attachment.bondType}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Bond Type
-			</td>
+			</th>
 			<td>
 				<c:out value="${assoc.attachment.bondType}"/>
 			</td>
@@ -19,22 +19,22 @@
 	</c:if>
 	<c:if test="${!empty fn:trim(assoc.description)}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Description
-			</td>
+			</th>
 			<td>
 				<c:out value="${assoc.description}" escapeXml="false" />
 			</td>
 		</tr>
 	</c:if>
 	<tr>
-		<td class="cellLabel" width="10%">
+		<th scope="row" class="cellLabel" width="10%">
 			Associated Elements
-		</td>
+		</th>
 		<td>
 			<table>
 				<tr>
-					<td width="250">
+					<th scope="row" width="250">
 						<c:out value="${assoc.associatedElementA.compositionType}"/>
 						<c:out value="${assoc.associatedElementA.entityDisplayName}"/>
 						<c:choose>
@@ -47,9 +47,9 @@
 								<br>(name: <c:out value="${assoc.associatedElementA.domainElement.name}"/>)
 															</c:otherwise>
 						</c:choose>
-					</td>
+					</th>
 					<td style="border: 0; vertical-align: top; text-align: center;">
-						<img src="images/arrow_left_right_gray.gif" id="assocImg" />
+						<img src="images/arrow_left_right_gray.gif" id="assocImg" alt="${assoc.domainAssociation.id} association"/>
 						<br>
 						<strong>associated with</strong>
 					</td>
@@ -73,9 +73,9 @@ composing element of type <c:out value="${assoc.associatedElementB.composingElem
 	</tr>
 	<c:if test="${! empty assoc.files}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Files
-			</td>
+			</th>
 			<td>
 				<c:set var="files" value="${assoc.files }" />
 				<c:set var="entityType" value="chemical association" />

@@ -69,7 +69,7 @@
 						</c:choose>
 					</td>
 					<td style="border: 0; vertical-align: top; text-align: center;">
-						<img src="images/arrow_left_right_gray.gif" id="assocImg" />
+						<img src="images/arrow_left_right_gray.gif" id="assocImg" alt="associated with"/>
 						<br>
 						<strong>associated with</strong>
 					</td>

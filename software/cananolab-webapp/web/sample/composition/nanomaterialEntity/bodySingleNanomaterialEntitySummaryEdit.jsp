@@ -6,17 +6,17 @@
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
 	<tr>
-		<td></td>
+		<th scope="row"></th>
 		<td width="95%"></td>
-		<td align="right">
+		<td colspan="3" align="right">
 			<a
 				href="nanomaterialEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${nanomaterialEntity.domainEntity.id}">Edit</a>
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel" width="10%">
+		<th class="cellLabel" width="10%" scope="row">
 			Description
-		</td>
+		</th>
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${!empty fn:trim(nanomaterialEntity.description)}">
@@ -30,9 +30,9 @@
 	<c:choose>
 		<c:when test="${!empty entityDetailPage}">
 			<tr>
-				<td class="cellLabel" width="10%">
+				<th class="cellLabel" width="10%" scope="row">
 					Properties
-				</td>
+				</th>
 				<td>
 					<c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
 						scope="session" />
@@ -45,9 +45,9 @@
 		<c:otherwise>
 			<c:if test="${nanomaterialEntity.withProperties }">
 				<tr>
-					<td class="cellLabel" width="10%">
+					<th class="cellLabel" width="10%" scope="row">
 						Properties
-					</td>
+					</th>
 					<td colspan="2">
 						<%
 							String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
@@ -77,9 +77,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel" width="10%">
+		<th class="cellLabel" width="10%" scope="row">
 			Files
-		</td>
+		</th>
 		<td colspan="2">
 			<c:choose>
 				<c:when test="${! empty nanomaterialEntity.files}">

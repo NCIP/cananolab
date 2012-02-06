@@ -7,12 +7,12 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<td class="cellLabel">
+				<th scope="col" class="cellLabel">
 					Branch
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="col" class="cellLabel">
 					Generation
-				</td>
+				</th>
 			</tr>
 			<tr>
 				<td>

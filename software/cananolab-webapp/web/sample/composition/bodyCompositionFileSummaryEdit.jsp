@@ -11,7 +11,7 @@
 			composition file &nbsp;&nbsp;&nbsp;
 			<a href="compositionFile.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" />
+					border="0" alt="add composition file"/>
 			</a>
 		</th>
 	</tr>
@@ -64,7 +64,7 @@
 																	<a href="#"
 																		onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
 																			src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}"
-																			border="0" width="150"> </a>
+																			border="0" width="150" alt="composition image"> </a>
 																</c:when>
 																<c:otherwise>
 																	<a

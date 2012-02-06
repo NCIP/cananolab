@@ -128,7 +128,7 @@
 							<a
 								href="characterization.do?dispatch=setupNew&sampleId=${sampleId}&charType=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
-									border="0" /></a>
+									border="0" alt="add characterization"/></a>
 							<%--
 							<c:if
 								test="${!empty characterizationSummaryView.type2Characterizations[type]}">

@@ -7,9 +7,9 @@
 	items="${charBean.findings}">
 	<table align="center" width="100%" class="summaryViewNoGrid">
 		<tr>
-			<td class="cellLabel">
+			<th scope="col" class="cellLabel">
 				<c:if test="${! empty finding.rows}">Data and Conditions</c:if>
-			</td>
+			</th>
 		</tr>
 		<tr>
 			<td>
@@ -18,9 +18,9 @@
 						<table class="summaryViewWithGrid" align="left">
 							<tr>
 								<c:forEach var="col" items="${finding.columnHeaders}">
-									<td class="cellLabel">
+									<th scope="col" class="cellLabel">
 										<c:out value="${col.displayName}" escapeXml="false"/>
-									</td>
+									</th>
 								</c:forEach>
 							</tr>
 							<c:forEach var="row" items="${finding.rows}">

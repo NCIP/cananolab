@@ -9,9 +9,9 @@
 			<c:when test="${! empty charBean.transfection.cellLine}">
 				<table class="summaryViewNoGrid" align="left">
 					<tr>
-						<td class="cellLabel">
+						<th scope="row" class="cellLabel">
 							Cell Line
-						</td>
+						</th>
 						<td>
 							<c:out value="${charBean.transfection.cellLine}"/>
 						</td>

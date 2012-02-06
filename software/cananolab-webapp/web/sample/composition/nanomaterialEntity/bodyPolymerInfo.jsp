@@ -7,15 +7,15 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<td class="cellLabel">
+				<th scope="row" class="cellLabel">
 					Initiator
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="row" class="cellLabel">
 					Is Cross Linked
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="row" class="cellLabel">
 					Cross Link Degree
-				</td>
+				</th>
 			</tr>
 			<tr>
 				<td>

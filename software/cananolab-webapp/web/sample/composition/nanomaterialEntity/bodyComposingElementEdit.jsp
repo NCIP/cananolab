@@ -9,18 +9,18 @@
 	</tr>
 	<c:forEach var="composingElement" items="${entity.composingElements}">
 		<tr>
-			<td class="cellLabel" colspan="2">
+			<th class="cellLabel" colspan="2" scope="row">
 				<c:out value="${composingElement.displayName}" />
-			</td>
+			</th>
 			<td align="right" width="3%">
 				<a href="#submitComposingElement"
 					onclick="javascript:setTheComposingElement(${composingElement.domain.id});">Edit</a>&nbsp;
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<th scope="row">
 				PubChem ID
-			</td>
+			</th>
 			<td>
 				<c:choose>
 					<c:when test="${!empty composingElement.pubChemLink}">
@@ -38,9 +38,9 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td>
+			<th scope="row">
 				Molecular Formula
-			</td>
+			</th>
 			<c:choose>
 				<c:when
 					test="${!empty composingElement.molecularFormulaDisplayName}">
@@ -57,9 +57,9 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td>
+			<th scope="row">
 				Description
-			</td>
+			</th>
 			<td>
 				<c:choose>
 					<c:when test="${!empty composingElement.domain.description}">
@@ -71,9 +71,9 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td>
+			<th scope="row">
 				Function
-			</td>
+			</th>
 			<td>
 				<c:choose>
 					<c:when test="${!empty composingElement.functionDisplayNames}">

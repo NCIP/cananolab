@@ -7,12 +7,12 @@
 <table id="summarySection1" width="100%" align="center"
 	style="display: block" class="summaryViewNoGrid">
 	<tr>
-		<th align="left">
+		<th align="left" scope="col">
 			<span class="summaryViewHeading">nanomaterial entity</span>&nbsp;&nbsp;
 			<a
 				href="nanomaterialEntity.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" /></a>
+					border="0" alt="add nanomaterial entity"/></a>
 		</th>
 	</tr>
 	<tr>
@@ -26,7 +26,7 @@
 						<table width="99%" align="center" class="summaryViewNoGrid"
 							bgcolor="#dbdbdb">
 							<tr>
-								<th align="left">
+								<th align="left" scope="col">
 									<c:out value="${entityType}"/>
 								</th>
 							</tr>

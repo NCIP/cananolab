@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table width="100%" class="invisibleTable">
+<table width="100%" class="invisibleTable" summary="layout">
 	<tr>
 		<td align="center">
 			<span class="formMessage"> <em>Searching without any

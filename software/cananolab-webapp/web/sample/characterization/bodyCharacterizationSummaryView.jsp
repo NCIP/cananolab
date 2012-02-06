@@ -86,7 +86,7 @@
 				<table id="summarySectionHeader${ind.count}" width="100%"
 					align="center" style="display: block" class="summaryViewHeader">
 					<tr>
-						<td align="left">
+						<th scope="col" align="left">
 							<b>${type}</b>
 							<br />
 							<c:forEach var="charName"
@@ -94,7 +94,7 @@
 								<a href="#${charName}"><c:out value="${charName}"/>
 									(<c:out value="${characterizationSummaryView.charName2Counts[charName]}"/>)</a> &nbsp;
 	            </c:forEach>
-						</td>
+						</th>
 					</tr>
 				</table>
 				<div id="summaryHeaderSeparator${ind.count}">

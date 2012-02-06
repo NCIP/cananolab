@@ -7,15 +7,15 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<td class="cellLabel">
+				<th scope="col" class="cellLabel">
 					Type
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="col" class="cellLabel">
 					Isotype
-				</td>
-				<td class="cellLabel">
+				</th>
+				<th scope="col" class="cellLabel">
 					Species
-				</td>
+				</th>
 			</tr>
 			<tr>
 				<td>

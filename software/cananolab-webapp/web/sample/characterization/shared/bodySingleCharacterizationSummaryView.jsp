@@ -13,9 +13,9 @@
 	<c:choose>
 		<c:when test="${!empty charObj.assayType}">
 			<tr>
-				<td class="cellLabel" width="10%">
+				<th scope="row" class="cellLabel" width="10%">
 					Assay Type
-				</td>
+				</th>
 				<td>
 					<c:out value="${charObj.assayType}" />
 				</td>
@@ -25,9 +25,9 @@
 			<c:if
 				test="${'physico chemical characterization' eq charBean.characterizationType}">
 				<tr>
-					<td class="cellLabel" width="10%">
+					<th scope="row" class="cellLabel" width="10%">
 						Assay Type
-					</td>
+					</th>
 					<td>
 						<c:out value="${charName}" />
 					</td>
@@ -37,9 +37,9 @@
 	</c:choose>
 	<c:if test="${!empty charBean.pocBean.displayName}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Point of Contact
-			</td>
+			</th>
 			<td>
 				<c:out value="${charBean.pocBean.displayName}" />
 			</td>
@@ -47,9 +47,9 @@
 	</c:if>
 	<c:if test="${!empty charBean.dateString}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Characterization Date
-			</td>
+			</th>
 			<td>
 				<c:out value="${charBean.dateString}" />
 			</td>
@@ -57,9 +57,9 @@
 	</c:if>
 	<c:if test="${!empty charBean.protocolBean.displayName}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Protocol
-			</td>
+			</th>
 			<td>
 				<c:out value="${charBean.protocolBean.displayName}" />
 			</td>
@@ -67,9 +67,9 @@
 	</c:if>
 	<c:if test="${charBean.withProperties }">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Properties
-			</td>
+			</th>
 			<td>
 				<%
 					String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup
@@ -87,9 +87,9 @@
 	</c:if>
 	<c:if test="${!empty fn:trim(charObj.designMethodsDescription)}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Design Description
-			</td>
+			</th>
 			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(charObj.designMethodsDescription)}">
@@ -104,9 +104,9 @@
 	</c:if>
 	<c:if test="${!empty charBean.experimentConfigs}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Experiment Configurations
-			</td>
+			</th>
 			<td>
 				<%@ include file="bodyExperimentConfigView.jsp"%>
 			</td>
@@ -114,9 +114,9 @@
 	</c:if>
 	<c:if test="${!empty charBean.findings}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Characterization Results
-			</td>
+			</th>
 			<td>
 				<%@ include file="bodyFindingView.jsp"%>
 			</td>
@@ -124,9 +124,9 @@
 	</c:if>
 	<c:if test="${!empty charBean.conclusion}">
 		<tr>
-			<td class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%">
 				Analysis and Conclusion
-			</td>
+			</th>
 			<td>
 				<c:out value="${charBean.conclusion}" />
 			</td>

@@ -7,9 +7,9 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left" >
 			<tr>
-				<td class="cellLabel">
+				<th scope="row" class="cellLabel">
 					Alternate Name
-				</td>			
+				</th>			
 				<td>
 					<c:out value="${functionalizingEntity.smallMolecule.alternateName}"/>
 				</td>
@@ -19,14 +19,14 @@
 	<c:otherwise>
 		<table width="100%" align="center" class="submissionView">
 			<tr>
-				<th colspan="4">
+				<th colspan="4" scope="col">
 					Small Molecule Properties
 				</th>
 			</tr>
 			<tr>
-				<td class="cellLabel">
+				<th scope="row" class="cellLabel">
 					<strong>Alternate Name</strong>
-				</td>
+				</th>
 				<td>
 					<input type="text"
 						name="functionalizingEntity.smallMolecule.alternateName" size="90" 
