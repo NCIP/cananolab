@@ -19,7 +19,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td><label for="compositionType${elementNumber}">&nbsp;</label>
 			<html:select styleId="compositionType${elementNumber}"
 				property="assoc.associatedElement${elementNumber}.compositionType"
 				onchange="getAssociatedElementOptions('${elementNumber}');">
@@ -28,6 +28,7 @@
 			</html:select>
 			<div id="entitySelect${elementNumber}" style="${entitySelectStyle}">
 				<br>
+				<label for="entityId${elementNumber}">&nbsp;</label>
 				<html:select styleId="entityId${elementNumber}"
 					property="assoc.associatedElement${elementNumber}.entityId"
 					onchange="getComposingElementOptions('${elementNumber}');">
@@ -40,6 +41,7 @@
 			</div>
 			<div id="composingElementSelect${elementNumber}" style="${composingElementSelectStyle}">
 				<br>
+				<label for="composingElementId${elementNumber}">&nbsp;</label>
 				<html:select styleId="composingElementId${elementNumber}"
 					property="assoc.associatedElement${elementNumber}.composingElement.id">
 					<option value="" />
