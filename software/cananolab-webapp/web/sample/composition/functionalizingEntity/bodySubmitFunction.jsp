@@ -10,7 +10,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Type *
+			<label for="functionType">Type *</label>
 		</td>
 		<td>
 			<div id="functionTypePrompt">
@@ -27,7 +27,7 @@
 		</td>
 		<td class="cellLabel">
 			<div id="modalityLabel" style="display: none">
-				Imaging Modality Type
+				<label for="imagingModality">Imaging Modality Type</label>
 			</div>
 		</td>
 		<td>
@@ -47,7 +47,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Description
+			<label for="functionDescription">Description</label>
 		</td>
 		<td colspan="3">
 			<html:textarea
@@ -72,20 +72,20 @@
 				<table id="targetTable" class="editTableWithGrid" width="85%" style="display: none;">
 					<tbody id="targetRows">
 						<tr id="patternHeader">
-							<td width="25%" class="cellLabel">
+							<th width="25%" class="cellLabel" scope="col">
 								Type
-							</td>
-							<td width="25%" class="cellLabel">
+							</th>
+							<th width="25%" class="cellLabel" scope="col">
 								<span id="antigenSpeciesHeader" style="display: none">Species</span>
-							</td>
-							<td width="25%" class="cellLabel">
+							</th>
+							<th width="25%" class="cellLabel" scope="col">
 								Name
-							</td>
-							<td class="cellLabel">
+							</th>
+							<th class="cellLabel" scope="col">
 								Description
-							</td>
-							<td>
-							</td>
+							</th>
+							<th>
+							</th>
 						</tr>
 						<tr id="pattern" style="display: none;">
 							<td>
@@ -114,7 +114,7 @@
 					<tbody>
 						<tr>
 							<td class="cellLabel" width="15%">
-								Type *
+								<label for="targetType">Type *</label>
 							</td>
 							<td>
 								<div id="targetTypePrompt">
@@ -134,7 +134,7 @@
 						<tr>
 							<td class="cellLabel" width="15%">
 								<div id="antigenSpeciesLabel" style="display: none">
-									Species
+									<label for="antigenSpecies">Species</label>
 								</div>
 							</td>
 							<td>
@@ -150,7 +150,7 @@
 						</tr>
 						<tr>
 							<td class="cellLabel" width="15%">
-								Name
+								<label for="targetName">Name</label>
 							</td>
 							<td>
 								<html:text
@@ -160,7 +160,7 @@
 						</tr>
 						<tr>
 							<td class="cellLabel" width="15%">
-								Description
+								<label for="targetDescription">Description</label>
 							</td>
 							<td>
 								<html:textarea

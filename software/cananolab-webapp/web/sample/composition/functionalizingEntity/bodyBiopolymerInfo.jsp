@@ -7,10 +7,10 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<th scope="col" class="cellLabel">
+				<th scope="col" class="cellLabel" scope="col">
 					Type
 				</th>
-				<th scope="col" class="cellLabel">
+				<th scope="col" class="cellLabel" scope="col">
 					Isotype
 				</th>
 			</tr>
@@ -33,7 +33,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Type*
+					<label for="biopolymerType">Type*</label>
 				</td>
 				<td colspan="2">
 					<div id="biopolymerTypePrompt">
@@ -65,10 +65,10 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Sequence
+					<label for="biopolymerSequence">Sequence</label>
 				</td>
 				<td colspan="2">
-					<textarea name="functionalizingEntity.biopolymer.sequence"
+					<textarea name="functionalizingEntity.biopolymer.sequence" id="biopolymerSequence"
 						cols="80" rows="3"><c:out value="${compositionForm.map.functionalizingEntity.biopolymer.sequence}" escapeXml="false"/></textarea>
 				</td>
 			</tr>

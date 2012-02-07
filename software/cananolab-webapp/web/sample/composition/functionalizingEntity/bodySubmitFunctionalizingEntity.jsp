@@ -39,12 +39,12 @@
 	onsubmit="return validateAmountValue() &&
 	validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<c:if
 			test="${empty compositionForm.map.functionalizingEntity.domainEntity.id}">
 			<tr>
 				<td class="cellLabel">
-					Functionalizing Entity Type*
+					<label for="feType">Functionalizing Entity Type*</label>
 				</td>
 				<td colspan="3">
 					<div id="feTypePrompt">
@@ -63,15 +63,15 @@
 		</c:if>
 		<tr>
 			<td class="cellLabel">
-				Chemical Name*
+				<label for="feChemicalName">Chemical Name*</label>
 			</td>
 			<td colspan="4">
-				<html:text property="functionalizingEntity.name" size="70" />
+				<html:text property="functionalizingEntity.name" styleId="feChemicalName" size="70" />
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				PubChem DataSource
+				<label for="pubChemDataSource">PubChem DataSource</label>
 			</td>
 			<td>
 				<div id="pubChemDataSourcePrompt">
@@ -84,7 +84,7 @@
 				</div>
 			</td>
 			<td class="cellLabel">
-				PubChem Id
+				<label for="pubChemId">PubChem Id</label>
 			</td>
 			<td>
 				<html:text property="functionalizingEntity.pubChemId"
@@ -94,7 +94,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Amount
+				<label for="amountValue">Amount</label>
 			</td>
 			<td>
 				<html:text property="functionalizingEntity.value"
@@ -102,7 +102,7 @@
 					<%-- onkeydown="return filterFloatNumber(event)" /--%>
 			</td>
 			<td class="cellLabel">
-				Amount Unit
+				<label for="feUnit">Amount Unit</label>
 			</td>
 			<td>
 				<div id="feUnitPrompt">
@@ -120,7 +120,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Molecular Formula Type
+				<label for="mfType">Molecular Formula Type</label>
 			</td>
 			<td>
 				<div id="mfTypePrompt">
@@ -137,17 +137,17 @@
 				&nbsp;
 			</td>
 			<td class="cellLabel">
-				Molecular Formula
+				<label for="molecularFormula">Molecular Formula</label>
 			</td>
 			<td>
-				<html:textarea property="functionalizingEntity.molecularFormula"
+				<html:textarea property="functionalizingEntity.molecularFormula" styleId="molecularFormula"
 					rows="2" cols="80" />
 				&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Activation Method
+				<label for="feaMethod">Activation Method</label>
 			</td>
 			<td>
 				<div id="feaMethodPrompt">
@@ -163,20 +163,20 @@
 				</div>
 			</td>
 			<td class="cellLabel">
-				Activation Effect
+				<label for="activationEffect">Activation Effect</label>
 			</td>
 			<td>
-				<html:text
+				<html:text styleId="activationEffect"
 					property="functionalizingEntity.activationMethod.activationEffect"
 					size="70" />
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Description
+				<label for="description">Description</label>
 			</td>
 			<td colspan="3">
-				<html:textarea property="functionalizingEntity.description" rows="2"
+				<html:textarea styleId="description" property="functionalizingEntity.description" rows="2"
 					cols="80" />
 			</td>
 		</tr>
@@ -188,9 +188,9 @@
 		<jsp:include page="${entityDetailPage}" />
 	</c:if>
 	</div>
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
-			<td class="cellLabel" width="15%">
+			<td class="cellLabel" width="15%" scope="col">
 				Function
 			</td>
 			<td>
@@ -203,7 +203,7 @@
 				</c:if>
 				<a style="${newaddFuncButtonStyle}" id="addFunction"
 					href="javascript:clearFunction();openSubmissionForm('Function');disableOuterButtons();"><img
-						align="top" src="images/btn_add.gif" border="0" /> </a>
+						align="top" src="images/btn_add.gif" border="0" alt="add function"/></a>
 			</td>
 		</tr>
 		<tr>
@@ -247,7 +247,7 @@
 					</c:if>
 					<a style="${addFileButtonStyle }" id="addFile"
 						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');disableOuterButtons();"><img
-							align="top" src="images/btn_add.gif" border="0" /> </a>
+							align="top" src="images/btn_add.gif" border="0" alt="add file"/></a>
 				</td>
 			</tr>
 			<tr>

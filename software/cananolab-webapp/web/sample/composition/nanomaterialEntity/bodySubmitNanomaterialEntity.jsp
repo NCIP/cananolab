@@ -76,11 +76,11 @@
 		<jsp:include page="${entityDetailPage}" />
 	</c:if>
 	</div>
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
-			<th class="cellLabel" width="15%">
+			<td class="cellLabel" width="15%">
 				Composing Element
-			</th>
+			</td>
 			<td>
 			    <c:set var="disableOuterButtons" value="false"/>
 				<c:set var="newAddCEButtonStyle" value="display:block" />

@@ -7,13 +7,13 @@
 	<c:when test="${param.summary eq 'true'}">
 		<table class="summaryViewNoGrid" align="left">
 			<tr>
-				<th scope="col" class="cellLabel">
+				<th scope="col" class="cellLabel" scope="col">
 					Type
 				</th>
-				<th scope="col" class="cellLabel">
+				<th scope="col" class="cellLabel" scope="col">
 					Isotype
 				</th>
-				<th scope="col" class="cellLabel">
+				<th scope="col" class="cellLabel" scope="col">
 					Species
 				</th>
 			</tr>
@@ -39,7 +39,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Type
+					<label for="antibodyType">Type</label>
 				</td>
 				<td>
 					<div id="antibodyTypePrompt">
@@ -69,7 +69,7 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Isotype
+					<label for="antibodyIsotype">Isotype</label>
 				</td>
 				<td>
 					<div id="isotypePrompt">
@@ -99,7 +99,7 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Species
+					<label for="antibodySpecies">Species</label>
 				</td>
 				<td>
 					<div id="speciesPrompt">
