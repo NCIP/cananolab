@@ -55,7 +55,7 @@
 				}</span>
 			<span id="link" style="${linkStyle }"><html:text
 					property="${fileParent}.theFile.externalUrl" size="60"
-					styleId="externalUrl" /> </span>&nbsp;
+					styleId="externalUrl" /> </span><label for="externalUrl">&nbsp;</label>
 		</td>
 	</tr>
 	<tr>

@@ -61,7 +61,7 @@
 		<c:if test="${empty compositionForm.map.assoc.domainAssociation.id}">
 			<tr>
 				<td class="cellLabel">
-					Association Type*
+					<label for="assoType">Association Type*</label>
 				</td>
 				<td>
 					<div id="assocTypePrompt">
@@ -84,7 +84,7 @@
 				<c:set var="bondTypeStyle" value="display:block" />
 			</c:if>
 			<td class="cellLabel">
-				<span id="bondTypeLabel" style="${bondTypeStyle}">Bond Type*</span>
+				<span id="bondTypeLabel" style="${bondTypeStyle}"><label for="bondType">Bond Type*</label></span>
 			</td>
 			<td>
 				<div id="bondTypePrompt" style="${bondTypeStyle}">
@@ -102,10 +102,10 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Description
+				<label for="associationDescription">Description</label>
 			</td>
 			<td>
-				<html:textarea property="assoc.description" rows="3" cols="60" />
+				<html:textarea property="assoc.description" styleId="associationDescription" rows="3" cols="60" />
 			</td>
 		</tr>
 	</table>
@@ -133,7 +133,7 @@
 				<%@include file="bodySubmitAssociatedElement.jsp"%>
 			</td>
 			<td>
-				<img src="images/arrow_left_right_gray.gif" id="assocImg" />
+				<img src="images/arrow_left_right_gray.gif" id="assocImg" alt="associated with"/>
 				<br>
 				associated with
 			</td>
@@ -171,7 +171,7 @@
 				<td>
 					<a style="display:block" id="addFile"
 						href="javascript:confirmAddNew('File', 'File', 'clearFile(\'${fileParent}\')'); ">
-						<img align="top" src="images/btn_add.gif" border="0" />
+						<img align="top" src="images/btn_add.gif" border="0" alt="add file"/>
 					</a>
 				</td>
 			</tr>
