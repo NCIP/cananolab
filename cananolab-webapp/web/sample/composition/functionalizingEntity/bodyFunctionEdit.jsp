@@ -7,20 +7,20 @@
 
 <table class="editTableWithGrid" align="center" width="95%">
 	<tr>
-		<th>
+		<th scope="col">
 			Type
 		</th>
 		<c:if test="${entity.withImagingFunction eq 'true'}">
-			<th class="cellLabel">
+			<th class="cellLabel" scope="col">
 				Image Modality
 			</th>
 		</c:if>
 		<c:if test="${entity.withTargetingFunction eq 'true'}">
-			<th class="cellLabel">
+			<th class="cellLabel" scope="col">
 				Targets
 			</th>
 		</c:if>
-		<th>
+		<th scope="col">
 			Description
 		</th>
 		<th>

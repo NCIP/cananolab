@@ -25,10 +25,10 @@
 			</tr>
 			<tr>
 				<th scope="row" class="cellLabel">
-					<strong>Alternate Name</strong>
+					<strong><label for="smallMoleculeAlternateName">Alternate Name</label></strong>
 				</th>
 				<td>
-					<input type="text"
+					<input type="text" id="smallMoleculeAlternateName"
 						name="functionalizingEntity.smallMolecule.alternateName" size="90" 
 						value="${compositionForm.map.functionalizingEntity.smallMolecule.alternateName}" />
 				</td>
