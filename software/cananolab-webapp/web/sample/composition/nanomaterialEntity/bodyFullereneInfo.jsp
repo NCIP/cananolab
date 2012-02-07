@@ -43,7 +43,7 @@
 						<%--onkeydown="return filterFloatNumber(event)"--%>
 				</td>
 				<td class="cellLabel">
-					Average Diameter Unit
+					<label for="averageDiameterUnit">Average Diameter Unit</label>
 				</td>
 				<td class="cellLabel">
 					<div id="averageDiameterUnitPrompt">

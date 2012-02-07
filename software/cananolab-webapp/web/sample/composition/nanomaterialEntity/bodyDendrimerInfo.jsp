@@ -43,7 +43,7 @@
 					<label for="dendrimerGeneration">Generation</label>
 				</td>
 				<td class="cellLabel">
-					<input id="generation" type="text" name="nanomaterialEntity.dendrimer.generation"
+					<input id="dendrimerGeneration" type="text" name="nanomaterialEntity.dendrimer.generation"
 						value="${compositionForm.map.nanomaterialEntity.dendrimer.generation}" />
 				</td>
 			</tr>
