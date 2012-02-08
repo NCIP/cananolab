@@ -22,7 +22,7 @@
 	</path>
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
 
-	<!--<property name="tier" value="qa"/>-->
+	<!--property name="tier" value="qa"/> -->
 	<if>
 		<isset property="tier" />
 		<then>
@@ -48,14 +48,12 @@
 	<property name="cananolab-webapp.build.file" value="build.xml" />
 	<property name="cananolab-grid.build.file" value="build.xml" />
 	<property name="cananolab-db.build.file" value="build.xml" />
-	<property name="cananolab-app.build.file" value="build-app.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
 	<property name="cananolab-webapp.build.target" value="war" />
 	<property name="cananolab-grid.build.target" value="distWebApp" />
 
-	<!-- Distribution Structure properties, used to copy files into the distribution area.
-       		Use project.propertie relative dir names becasue they are used by install also-->
+	<!-- Distribution Structure properties, used to copy files into the distribution area. -->
 	<property name="dist.exploded.dir" location="${dist.dir}/exploded" />
 	<property name="cananolab-webapp.dist.dir" location="${dist.exploded.dir}/cananolab-webapp" />
 	<property name="cananolab-grid.dist.dir" location="${dist.exploded.dir}/cananolab-grid" />
@@ -85,14 +83,6 @@
 	<available file="${ws-core.dest.file}" property="ws-core.tools.exists" />
 	<available file="${application.base.path}/${ws-core.relative.dir}" property="ws-core.install.exists" />
 
-	<!-- Start logging -->
-	<tstamp>
-		<format property="install.time" pattern="yyyy-MM-dd-HH-mm-ss" />
-	</tstamp>
-	<!--
-	<record name="${log.dir}/install-${install.time}.log" action="start" />
-	-->
-
 	<target name="clean">
 		<delete dir="${dist.dir}" />
 		<delete dir="${temp.dir}" />
@@ -116,7 +106,7 @@
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant antfile="${cananolab-webapp.build.file}" target="${cananolab-webapp.build.target}" dir="${cananolab-webapp.base.dir}">
 			<!--overwrite distribution directory for the war file-->
-			<property name="dist.dir" location="${cananolab-web.dist.dir}" />
+			<property name="dist.dir" location="${cananolab-webapp.dist.dir}" />
 		</ant>
 	</target>
 
