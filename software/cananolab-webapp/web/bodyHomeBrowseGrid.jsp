@@ -50,10 +50,7 @@
 								Samples</b> </a>
 					</td>
 				</tr>
-				<tr>
-					<c:url var="advanceSearchUrl" value="advancedSampleSearch.do">
-						<c:param name="dispatch" value="setup" />
-					</c:url>
+				<tr>					
 					<td>
 						Search for information on nanomaterials including the composition
 						of the nanomaterial, results of physico-chemical,
@@ -61,7 +58,7 @@
 						publications.
 						<br>
 						See also
-						<a href="${advanceSearchUrl}" id="advanceSearch">Advanced
+						<a href="advancedSampleSearch.do?dispatch=setup&page=0" id="advanceSearch">Advanced
 							Sample Search</a>.
 					</td>
 				</tr>
