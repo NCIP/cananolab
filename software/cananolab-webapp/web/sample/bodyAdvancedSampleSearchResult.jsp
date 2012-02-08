@@ -41,7 +41,7 @@
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 			<table class="editTableWithGrid" width="100%">
 				<tr>
-					<th style="text-align: center">
+					<th style="text-align: center" scope="col">
 						Selected Criteria
 					</th>
 					<td style="text-align: right">
@@ -65,10 +65,10 @@
 				class="displaytable" partialList="true" size="resultSize"
 				decorator="gov.nih.nci.cananolab.dto.particle.AdvancedSampleDecorator">
 				<display:column title="Sample Name" property="${sampleURL}"
-					sortable="true" />
+					sortable="true" headerScope="col"/>
 				<c:forEach var="entry" items="${sample.attributeMap}"
 					varStatus="ind1">
-					<display:column title="${entry.key}" sortable="true">
+					<display:column title="${entry.key}" sortable="true" headerScope="col">
 						<c:forEach var="item" items="${entry.value}" varStatus="ind2">
 							<c:if test="${!empty item.displayName}">
 						    ${item.displayName}&nbsp;
@@ -81,7 +81,7 @@
 										onclick="showDetailView('${sample.sampleId}:${ind1.count}:${ind2.count}', '${item.action}'); return false;">Details</a>
 									<img src="images/ajax-loader.gif" border="0" class="counts"
 										id="loaderImg${sample.sampleId}:${ind1.count}:${ind2.count}"
-										style="display: none">
+										style="display: none" alt="load detail">
 									<table
 										id="detailView${sample.sampleId}:${ind1.count}:${ind2.count}"
 										style="display: none; position: absolute; left: -250px; top: 20px; z-index: 5; width: 500px; font-size: 10px; background-color: #FFFFFF"
