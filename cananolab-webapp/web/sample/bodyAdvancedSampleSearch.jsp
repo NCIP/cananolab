@@ -30,14 +30,14 @@
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<th>
+			<th scope="col">
 				Sample Criteria
 			</th>
 		</tr>
 		<tr>
 			<td>
 				<table id="sampleQueryTable" class="editTableWithGrid" width="85%"
-					style="display: none;">
+					style="display: none;" summary="layout">
 					<tbody id="sampleQueryRows">
 						<tr id="samplePattern" style="display: none;">
 							<td>
@@ -60,11 +60,12 @@
 		</tr>
 		<tr>
 			<td>
-				<table id="newSampleQuery" style="display: block;" class="promptbox">
+				<table id="newSampleQuery" style="display: block;" class="promptbox" summary="layout">
 					<tr>
 						<td>
 							<html:hidden property="searchBean.theSampleQuery.id"
 								styleId="sampleQueryId" />
+							<label for="nameType">&nbsp;</label>
 							<html:select property="searchBean.theSampleQuery.nameType"
 								styleId="nameType">
 								<option value="">
@@ -79,6 +80,7 @@
 							</html:select>
 						</td>
 						<td>
+						    <label for="sampleOperand">&nbsp;</label>
 							<html:select property="searchBean.theSampleQuery.operand"
 								styleId="sampleOperand">
 								<option value="">
@@ -89,13 +91,14 @@
 							</html:select>
 						</td>
 						<td>
+						    <label for="name">&nbsp;</label>
 							<html:text property="searchBean.theSampleQuery.name"
 								styleId="name" size="50" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="3">
-							<table cellspacing="0" align="left">
+							<table cellspacing="0" align="left" summary="layout">
 								<tr>
 									<td>
 										<input class="promptButton" type="button" value="Add"
@@ -120,10 +123,10 @@
 		<tr>
 			<td>
 				<div id="sampleLogicalOperator" style="display: none">
-					<html:radio property="searchBean.sampleLogicalOperator" value="and" />
-					AND
-					<html:radio property="searchBean.sampleLogicalOperator" value="or" />
-					OR
+					<html:radio property="searchBean.sampleLogicalOperator" value="and" styleId="sampleLogicalOperatorAnd" />
+					<label for="sampleLogicalOperatorAnd">AND</label>
+					<html:radio property="searchBean.sampleLogicalOperator" value="or" styleId="sampleLogicalOperatorOr" />
+					<label for="sampleLogicalOperatorOr">OR</label>
 				</div>
 			</td>
 		</tr>
@@ -131,14 +134,14 @@
 	<br />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<th>
+			<th scope="col">
 				Composition Criteria
 			</th>
 		</tr>
 		<tr>
 			<td>
 				<table id="compositionQueryTable" class="editTableWithGrid"
-					width="85%" style="display: none;">
+					width="85%" style="display: none;" summary="layout">
 					<tbody id="compositionQueryRows">
 						<tr id="compPattern" style="display: none;">
 							<td width="25%">
@@ -165,11 +168,12 @@
 		<tr>
 			<td>
 				<table id="newCompositionQuery" style="display: block;"
-					class="promptbox">
+					class="promptbox" summary="layout">
 					<tr>
 						<td>
 							<html:hidden property="searchBean.theCompositionQuery.id"
 								styleId="compQueryId" />
+							<label for="compType">&nbsp;</label>
 							<html:select
 								property="searchBean.theCompositionQuery.compositionType"
 								styleId="compType"
@@ -189,6 +193,7 @@
 							</html:select>
 						</td>
 						<td>
+							<label for="entityType">&nbsp;</label>
 							<html:select property="searchBean.theCompositionQuery.entityType"
 								styleId="entityType">
 								<option value="">
@@ -197,9 +202,10 @@
 							</html:select>
 						</td>
 						<td class="cellLabel">
-							<span id="compChemicalNameLabel">with chemical name</span>
+							<span id="compChemicalNameLabel"><label for="chemicalName">with chemical name</span></label>
 						</td>
 						<td>
+							<label for="compOperand">&nbsp;</label>
 							<html:select property="searchBean.theCompositionQuery.operand"
 								styleId="compOperand">
 								<option value="">
@@ -242,11 +248,11 @@
 			<td>
 				<div id="compositionLogicalOperator" style="display: none">
 					<html:radio property="searchBean.compositionLogicalOperator"
-						value="and" />
-					AND
+						value="and" styleId="compositionLogicalOperatorAnd"/>
+					<label for="compositionLogicalOperatorAnd">AND</label>
 					<html:radio property="searchBean.compositionLogicalOperator"
-						value="or" />
-					OR
+						value="or" styleId="compositionLogicalOperatorOr"/>
+					<label for="compositionLogicalOperatorOr">OR</label>
 				</div>
 			</td>
 		</tr>
@@ -254,14 +260,14 @@
 	<br />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<th>
+			<th scope="col">
 				Characterization Criteria
 			</th>
 		</tr>
 		<tr>
 			<td>
 				<table id="characterizationQueryTable" class="editTableWithGrid"
-					width="85%" style="display: none;">
+					width="85%" style="display: none;" summary="layout">
 					<tbody id="characterizationQueryRows">
 						<tr id="charPattern" style="display: none;">
 							<td width="15%">
@@ -294,11 +300,12 @@
 		<tr>
 			<td>
 				<table id="newCharacterizationQuery" style="display: block;"
-					class="promptbox">
+					class="promptbox" summary="layout">
 					<tr>
 						<td>
 							<html:hidden property="searchBean.theCharacterizationQuery.id"
 								styleId="charQueryId" />
+							<label for="charType">&nbsp;</label>
 							<html:select
 								property="searchBean.theCharacterizationQuery.characterizationType"
 								styleId="charType"
@@ -310,7 +317,7 @@
 									labelProperty="label" property="value" />
 							</html:select>
 						</td>
-						<td>
+						<td><label for="charName">&nbsp;</label>
 							<html:select
 								property="searchBean.theCharacterizationQuery.characterizationName"
 								styleId="charName"
@@ -320,7 +327,7 @@
 								</option>
 							</html:select>
 						</td>
-						<td>
+						<td><label for="datumName">&nbsp;</label>
 							<html:select
 								property="searchBean.theCharacterizationQuery.datumName"
 								styleId="datumName"
@@ -330,7 +337,7 @@
 								</option>
 							</html:select>
 						</td>
-						<td>
+						<td><label for="charOperand">&nbsp;</label>
 							<html:select
 								property="searchBean.theCharacterizationQuery.operand"
 								styleId="charOperand">
@@ -343,12 +350,14 @@
 						</td>
 						<td>
 							<div id="datumValueTextBlock" style="display:none">
+								<label for="datumValue">&nbsp;</label>
 								<html:text
 									property="searchBean.theCharacterizationQuery.datumValue"
 									styleId="datumValue" size="10" />
 								<%--onkeydown="return filterFloatNumber(event)" /--%>
 							</div>
 							<div id="datumValueSelectBlock" style="display:none">
+								<label for="datumValueSelect">&nbsp;</label>
 								<html:select
 									property="searchBean.theCharacterizationQuery.datumValue"
 									styleId="datumValueSelect">
@@ -362,6 +371,7 @@
 						</td>
 						<td>
 							<div id="datumValueUnitBlock" style="display: none">
+							    <label for="datumValueUnit">&nbsp;</label>
 								<html:select
 									property="searchBean.theCharacterizationQuery.datumValueUnit"
 									styleId="datumValueUnit">
@@ -373,7 +383,7 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							<table cellspacing="0" align="left">
+							<table cellspacing="0" align="left" summary="layout">
 								<tr>
 									<td>
 										<input class="promptButton" type="button" value="Add"
@@ -399,11 +409,11 @@
 			<td>
 				<div id="characterizationLogicalOperator" style="display: none">
 					<html:radio property="searchBean.characterizationLogicalOperator"
-						value="and" />
-					AND
+						value="and" styleId="characterizationLogicalOperatorAnd"/>
+					<label for="characterizationLogicalOperatorAnd">AND</label>
 					<html:radio property="searchBean.characterizationLogicalOperator"
-						value="or" />
-					OR
+						value="or" styleId="characterizationLogicalOperatorOr"/>
+					<label for="characterizationLogicalOperatorOr">OR</label>
 				</div>
 			</td>
 		</tr>
@@ -414,10 +424,10 @@
 		<tr>
 			<td>
 				<div id="logicalOperator" style="display: block">
-					<html:radio property="searchBean.logicalOperator" value="and" />
-					AND
-					<html:radio property="searchBean.logicalOperator" value="or" />
-					OR
+					<html:radio property="searchBean.logicalOperator" value="and" styleId="masterLogicalOperatorAnd"/>
+					<label for="masterLogicalOperatorAnd">AND</label>
+					<html:radio property="searchBean.logicalOperator" value="or" styleId="masterLogicalOperatorOr" />
+					<label for="masterLogicalOperatorOr">OR</label>
 				</div>
 			</td>
 		</tr>
