@@ -776,6 +776,7 @@ img.img { /* for images that need a border */
 	font-weight: bold;
 	text-decoration: underline;
 	font-size: 0.8em;
+	cursor:pointer;
 }
 .addLink {
 	color: #a90101; /* constant: red */
