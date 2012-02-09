@@ -54,10 +54,10 @@ td.mainMenu {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
+	height:20px;
 }
 
 td.mainMenuItem { /* for the off state of the main menu (top) cells */
-	font-size: 0.7em;
 	font-weight: bold;
 	background-color: #5c5c5c; /* constant: dark gray */
 	padding-left: 1em;
@@ -66,7 +66,6 @@ td.mainMenuItem { /* for the off state of the main menu (top) cells */
 
 td:hover.mainMenuItem {
 	/* for the over state of the main menu (top) cells */
-	font-size: 0.7em;
 	font-weight: bold;
 	background-color: #6a8989; /* darker */
 	padding-left: 1em;
@@ -81,7 +80,6 @@ th.mainMenu {
 }
 
 th.mainMenuItem { /* for the off state of the main menu (top) cells */
-	font-size: 0.7em;
 	font-weight: bold;
 	background-color: #5c5c5c; /* constant: dark gray */
 	padding-left: 1em;
@@ -90,7 +88,6 @@ th.mainMenuItem { /* for the off state of the main menu (top) cells */
 
 th:hover.mainMenuItem {
 	/* for the over state of the main menu (top) cells */
-	font-size: 0.7em;
 	font-weight: bold;
 	background-color: #6a8989; /* darker */
 	padding-left: 1em;
@@ -107,7 +104,7 @@ td.footerMenu {
 
 td.footerMenuItem {
 	/* for the off state of the footer menu (bottom) cells */
-	font-size: 0.6em;
+	font-size: 0.9em;
 	font-weight: bold;
 	background-color: #5c5c5c; /* constant: dark gray */
 	padding-left: 1em;
@@ -117,7 +114,7 @@ td.footerMenuItem {
 
 td:hover.footerMenuItem {
 	/* for the over state of the footer menu (bottom) cells */
-	font-size: 0.6em;
+	font-size: 0.9em;
 	font-weight: bold;
 	background-color: #6a8989; /* darker */
 	padding-left: 1em;
@@ -126,43 +123,53 @@ td:hover.footerMenuItem {
 }
 
 td.sideMenu { /* for the basic style of the side-menu area */
-	background-color: #98b7b7; /* lighter */
+	background-color: #6A8989; /* darker */
+	font-family: arial, helvetica, verdana, sans-serif;
+	width: 180px;
+	height: 100%;
+}
+
+td.mainContent {
 	font-family: arial, helvetica, verdana, sans-serif;
 }
 
+td.mainContentHomePage {
+	font-family: arial, helvetica, verdana, sans-serif;
+	width: 588px;
+}
 td.subMenuPrimaryTitle {
 	/* for the title elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
-	padding-left: 0.8em;
+	padding-left: 1em;
+	padding-right: 1em;
 	background-color: #5c5c5c; /* constant: dark gray */
 	color: #ffffff; /* constant: white */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
+	height: 20px;
 }
 
 th.subMenuPrimaryTitle {
 	/* for the title elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
-	padding-left: 0.8em;
+	padding-left: 1em;
 	background-color: #5c5c5c; /* constant: dark gray */
 	color: #ffffff; /* constant: white */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
+	height:20px;
 	text-align:left;
 }
 
 td.subMenuPrimarySubTitle {
 	/* for the subtitle elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
-	padding-left: 0.8em;
+	padding-left: 1em;
 	background-color: #7a7a7a; /* constant: darker gray */
 	color: #ffffff; /* constant: white */
 	border-top: 1px solid #7a7a7a; /* constant: medium gray */
@@ -173,10 +180,9 @@ td.subMenuPrimarySubTitle {
 td.subMenuPrimaryItems {
 	/* for the items under the sub-menu title elements */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	background-color: #ffffff; /* constant: white */
 	font-weight: bold;
-	padding-top: 0.8em;
+	padding-top: 1em;
 	padding-bottom: 0.8em;
 	padding-left: 0.3em;
 	border-right: 1px solid #cccccc; /* constant: medium gray */
@@ -185,7 +191,6 @@ td.subMenuPrimaryItems {
 td.subMenuSecondaryTitleFill {
 	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	padding-left: 0.8em;
 	background-color: #6A8989; /* darker */
@@ -196,7 +201,6 @@ td.subMenuSecondaryTitleFill {
 td.subMenuCommentText {
 	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	padding-left: 0.8em;
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
@@ -206,7 +210,6 @@ td.subMenuCommentText {
 td.subMenuSecondaryTitle {
 	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	padding-left: 1.5em;
 	background-color: #6A8989; /* darker */
@@ -218,7 +221,6 @@ td.subMenuSecondaryTitle {
 td:hover.subMenuSecondaryTitle {
 	/* for the over state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	padding-left: 1.5em;
 	background-color: #98B7B7; /* lighter */
@@ -230,7 +232,6 @@ td:hover.subMenuSecondaryTitle {
 td.subMenuSecondaryTitleSelected {
 	/* for the over state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	padding-left: 1.5em;
 	background-color: #FFFFFF; /* white */
@@ -491,7 +492,6 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 
 .welcomeTitle { /* for titles of sections inside the content area */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 	font-weight: bold;
 	padding-left: 1em;
 	background-color: #cccccc; /* constant: medium gray */
@@ -501,7 +501,6 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 .welcomeContent {
 	/* for the area below the title content of the home page */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 	line-height: 1.5em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
@@ -511,7 +510,6 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 .contentTitle { /* for title on top of the content area */
 	background-color: #cccccc; /* constant: medium gray */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 	font-weight: bold;
 	padding-left: 0.2em;
 }
@@ -577,7 +575,6 @@ div.logindiv {
 
 .gridtable th {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 	padding: 5px 30px 10px 30px;
 	border-style: solid;
 	border-width: 1px;
@@ -586,7 +583,6 @@ div.logindiv {
 
 .gridtable td {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 	padding: 5px 0 5px 5px;
 	border-width: 1px;
 	border-color: #dedede;
@@ -661,7 +657,6 @@ div.logindiv {
 
 .gridtableNoBorder td {
 	border-width: 0px;
-	font-size: 0.8em;
 	border-style: none;
 	vertical-align: middle;
 	border-style: none;
