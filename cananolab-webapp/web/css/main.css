@@ -64,7 +64,7 @@ td.mainMenuItem { /* for the off state of the main menu (top) cells */
 	padding-right: 1em;
 }
 
-td.mainMenuItemOver {
+td:hover.mainMenuItem {
 	/* for the over state of the main menu (top) cells */
 	font-size: 0.7em;
 	font-weight: bold;
@@ -88,7 +88,7 @@ th.mainMenuItem { /* for the off state of the main menu (top) cells */
 	padding-right: 1em;
 }
 
-th.mainMenuItemOver {
+th:hover.mainMenuItem {
 	/* for the over state of the main menu (top) cells */
 	font-size: 0.7em;
 	font-weight: bold;
@@ -115,7 +115,7 @@ td.footerMenuItem {
 	text-align:center;
 }
 
-td.footerMenuItemOver {
+td:hover.footerMenuItem {
 	/* for the over state of the footer menu (bottom) cells */
 	font-size: 0.6em;
 	font-weight: bold;
@@ -215,7 +215,7 @@ td.subMenuSecondaryTitle {
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
-td.subMenuSecondaryTitleOver {
+td:hover.subMenuSecondaryTitle {
 	/* for the over state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
