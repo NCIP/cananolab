@@ -4,16 +4,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table height="100%" width="150" cellspacing="0" cellpadding="0"
-	border="0">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>
-		<th class="subMenuPrimaryTitle" height="22" scope="col">QUICK
-			LINKS <!-- anchor to skip sub menu --> <img height="1"
-			alt="Skip Menu" src="images/shim.gif" width="1" border="0"></th>
+		<th class="subMenuPrimaryTitle" scope="col">QUICK
+			LINKS</th>
 	</tr>
 	<jsp:include page="/html/cananoBaseSidemenu.html" />
 	<tr>
-		<td class="subMenuFill" height="5">&nbsp;</td>
+		<td class="subMenuFill">&nbsp;</td>
 	</tr>
 	<c:if test="${showVisitorCount}">
 		<tr>
@@ -54,7 +52,4 @@
 				</c:if></td>
 		</tr>
 	</c:if>
-	<tr>
-		<td class="subMenuFill" height="100%">&nbsp;</td>
-	</tr>
 </table>
