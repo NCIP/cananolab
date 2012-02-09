@@ -8,15 +8,7 @@
 		<tr>
 			<logic:present name="items">
 				<logic:iterate name="items" id="item"
-					type="org.apache.struts.tiles.beans.MenuItem">
-					<c:choose>
-						<c:when test="${fn:toUpperCase(menu) eq item.value}">
-							<c:set var="style" value="mainMenuItemOver" />
-						</c:when>
-						<c:otherwise>
-							<c:set var="style" value="mainMenuItem" />
-						</c:otherwise>
-					</c:choose>
+					type="org.apache.struts.tiles.beans.MenuItem">					
 					<c:choose>
 						<c:when
 							test="${item.value eq 'LOGOUT' && sessionScope.user == null ||
@@ -29,8 +21,7 @@
 							<td></td>
 						</c:when>
 						<c:otherwise>
-							<th class="${style}" onclick="${item.link}" scope="row"
-								onmouseover="changeMenuStyle(this, 'mainMenuItemOver');" onmouseout="changeMenuStyle(this,'${style}')" height="20">
+							<th class="mainMenuItem" onclick="${item.link}" scope="row">
 								<a class="mainMenuLink" href="#">${item.value}</a>
 							</th>
 							<td>
