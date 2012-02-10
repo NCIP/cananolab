@@ -46,6 +46,10 @@ HDR AND FTR BEGINS
 	padding-top: 0.4em;
 }
 
+.imgNoBorder {
+	border-style: none;
+}
+
 /*###############
 MENU BEGINS
 ###############*/
@@ -54,7 +58,7 @@ td.mainMenu {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
-	height:20px;
+	height: 20px;
 }
 
 td.mainMenuItem { /* for the off state of the main menu (top) cells */
@@ -77,6 +81,7 @@ th.mainMenu {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
+	height: 20px;
 }
 
 th.mainMenuItem { /* for the off state of the main menu (top) cells */
@@ -109,7 +114,7 @@ td.footerMenuItem {
 	background-color: #5c5c5c; /* constant: dark gray */
 	padding-left: 1em;
 	padding-right: 1em;
-	text-align:center;
+	text-align: center;
 }
 
 td:hover.footerMenuItem {
@@ -119,14 +124,15 @@ td:hover.footerMenuItem {
 	background-color: #6a8989; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
-	text-align:center;
+	text-align: center;
 }
 
 td.sideMenu { /* for the basic style of the side-menu area */
 	background-color: #6A8989; /* darker */
 	font-family: arial, helvetica, verdana, sans-serif;
-	width: 180px;
+	width: 160px;
 	height: 100%;
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.mainContent {
@@ -135,8 +141,9 @@ td.mainContent {
 
 td.mainContentHomePage {
 	font-family: arial, helvetica, verdana, sans-serif;
-	width: 588px;
+	width: 600px;
 }
+
 td.subMenuPrimaryTitle {
 	/* for the title elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -147,7 +154,6 @@ td.subMenuPrimaryTitle {
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 	height: 20px;
 }
 
@@ -160,9 +166,8 @@ th.subMenuPrimaryTitle {
 	color: #ffffff; /* constant: white */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
-	height:20px;
-	text-align:left;
+	height: 20px;
+	text-align: left;
 }
 
 td.subMenuPrimarySubTitle {
@@ -172,9 +177,7 @@ td.subMenuPrimarySubTitle {
 	padding-left: 1em;
 	background-color: #7a7a7a; /* constant: darker gray */
 	color: #ffffff; /* constant: white */
-	border-top: 1px solid #7a7a7a; /* constant: medium gray */
 	border-bottom: 1px solid #7a7a7a; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuPrimaryItems {
@@ -185,7 +188,6 @@ td.subMenuPrimaryItems {
 	padding-top: 1em;
 	padding-bottom: 0.8em;
 	padding-left: 0.3em;
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuSecondaryTitleFill {
@@ -195,7 +197,6 @@ td.subMenuSecondaryTitleFill {
 	padding-left: 0.8em;
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuCommentText {
@@ -204,7 +205,6 @@ td.subMenuCommentText {
 	padding-left: 0.8em;
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuSecondaryTitle {
@@ -215,7 +215,6 @@ td.subMenuSecondaryTitle {
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td:hover.subMenuSecondaryTitle {
@@ -226,7 +225,6 @@ td:hover.subMenuSecondaryTitle {
 	background-color: #98B7B7; /* lighter */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuSecondaryTitleSelected {
@@ -241,7 +239,6 @@ td.subMenuSecondaryTitleSelected {
 }
 
 td.subMenuFill { /* for the empty cell below the sub-menu items */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
 	background-color: #6A8989;
 }
 
@@ -269,7 +266,7 @@ td.subMenuFooter {
 	font-weight: normal;
 	background-color: #ffffff; /* constant: white */
 	color: #000000; /* constant: black */
-	text-align:center;
+	text-align: center;
 }
 
 /*###############
@@ -389,40 +386,29 @@ SIDEBAR BEGINS
 	border-collapse: collapse;
 	border-width: 1px;
 }
+
 .sidebarSectionNoBorder { /* for the individual sidebar sections */
 	font-family: arial, helvetica, verdana, sans-serif;
 	background-color: #f4f4f5; /* constant: light gray */
 	border-collapse: collapse;
 }
 
-.sidebarSectionNoBottom { /* for the individual sidebar sections */
-	font-family: arial, helvetica, verdana, sans-serif;
-	background-color: #f4f4f5; /* constant: light gray */
-	border-collapse: collapse;
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-left: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
-}
-
 /* for the list inside "WHAT'S NEW" on the Welcome Content */
-.sidebarSectionNoBottom ul {
+.sidebarSection ul {
 	list-style-image: url(../images/diamond_list_item.gif);
-	font-family: arial, helvetica, verdana, sans-serif;
-	font-weight: normal;
 	word-wrap: break-word;
 	margin: 0.5em 2em 0.5em 2em;
+	font-size: 1em;
 	padding: 0px;
-	/*text-indent: -1em;*/
 }
 
-.sidebarSectionNoBottom li {
+.sidebarSection li {
 	padding: 0 0 0.3em 0;
 }
 
 .sidebarTitle {
 	/* for the subtitle elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	padding-left: 0.8em;
 	padding-right: 0.8em;
@@ -433,10 +419,9 @@ SIDEBAR BEGINS
 	border: 1px solid #7a7a7a; /* constant: medium gray */
 }
 
-.sidebarContent {
+td.sidebarContent {
 	/* for the areas under the sidebar titles and requires text */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	padding: 0.5em;
 }
 
@@ -473,7 +458,7 @@ h3,.h3 { /* for title of page */
 }
 
 p,.p { /* for paragraphs */ /* padding-left: 1em; */
-
+	
 }
 
 .bannerHome { /* for the banner area of the home page */
@@ -502,9 +487,9 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 	/* for the area below the title content of the home page */
 	font-family: arial, helvetica, verdana, sans-serif;
 	line-height: 1.5em;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
+	padding-left: 0.5em; 
 	text-align: justify;
+	padding-right: 0.5em;
 }
 
 .contentTitle { /* for title on top of the content area */
@@ -566,6 +551,42 @@ div.logindiv {
 	padding-left: 50px;
 }
 
+.gridtableHomePage {
+	font-family: arial, helvetica, verdana, sans-serif;
+	border-style: solid;
+	border-collapse: collapse;
+	border-width: 0px;
+	width:95%;
+	padding:0px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.gridtableHomePage th {
+	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 5px 30px 10px 30px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #dedede;
+}
+
+th.dataTypeHomePage {
+	width: 60%;
+}
+
+.hidden {
+	display:none;
+}
+
+.gridtableHomePage td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 5px 0 5px 5px;
+	border-width: 1px;
+	border-color: #dedede;
+	border-style: solid;
+	vertical-align: top;
+}
+
 .gridtable {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-style: solid;
@@ -590,7 +611,6 @@ div.logindiv {
 	vertical-align: top;
 }
 
-
 .gridTableData {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-style: solid;
@@ -600,7 +620,6 @@ div.logindiv {
 	color: #5C5C5C;
 	background-color: #D3E4DE;
 }
-
 
 .gridTableData th {
 	font-size: 0.7em;
@@ -627,9 +646,7 @@ div.logindiv {
 	border-width: 1px;
 	color: #5C5C5C;
 	background-color: #F5F5f5;
-
 }
-
 
 .gridTableDataView th {
 	font-size: 0.7em;
@@ -673,6 +690,12 @@ div.logindiv {
 	padding-right: 9px;
 	margin-left: 0;
 	margin-right: 0;
+}
+
+.counts {
+	display: block;
+	margin-left: 22px;
+	margin-right: auto;
 }
 
 .countsLink {
@@ -771,8 +794,9 @@ img.img { /* for images that need a border */
 	font-weight: bold;
 	text-decoration: underline;
 	font-size: 0.8em;
-	cursor:pointer;
+	cursor: pointer;
 }
+
 .addLink {
 	color: #a90101; /* constant: red */
 	font-weight: bold;
@@ -938,6 +962,28 @@ ul,ol {
 	line-height: 14px;
 }
 
+.sampleStatsTable {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: 0px;
+	padding: 0px;
+	font-color: #5F7C7C; 
+}
+
+.sampleStatsTable th {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	padding: 0 3 0 0;
+	border: 0px;
+}
+
+.sampleStatsTable td {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	padding: 0 5 0 0;
+	border: 0px;
+}
+
 .invisibleTable {
 	border-collapse: collapse;
 	border-spacing: 0px;
@@ -945,16 +991,16 @@ ul,ol {
 	padding: 0px;
 }
 
-.invisibleTable th{
+.invisibleTable th {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0 3 0 0;
-	border:0px;
+	border: 0px;
 }
 
-.invisibleTable td{
+.invisibleTable td {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0 15 0 0;
-	border:0px;
+	border: 0px;
 }

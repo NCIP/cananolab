@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table cellspacing="0" cellpadding="0" border="0" width="160px">
 	<tr>
 		<th class="subMenuPrimaryTitle" scope="col">QUICK
 			LINKS</th>
@@ -52,4 +52,7 @@
 				</c:if></td>
 		</tr>
 	</c:if>
+	<tr>
+		<td class="subMenuFill">&nbsp;</td>
+	</tr>
 </table>

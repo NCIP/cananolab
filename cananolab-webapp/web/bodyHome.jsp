@@ -3,12 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html:form action="/login">
-
-	<table summary="layout" cellpadding="0" cellspacing="0" border="0"
-		height="100%">
+	<table summary="layout" cellpadding="0" cellspacing="0" border="0">
 		<tr>
-			<td valign="top" height="100%"><img src="images/bannerhome.jpg"
-				alt="caNanoLab banner image">
+			<td valign="top" class="mainContentHomePage">
+			    <img src="images/bannerhome.jpg" border="0" width="600px" alt="caNanoLab banner image">			    
 				<div class="welcomeTitle">Welcome to caNanoLab</div> <br>
 				<div class="welcomeContent">
 					Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
@@ -24,8 +22,9 @@
 				<div class="welcomeTitle">Browse caNanoLab</div> <br> 
 				<%@include file="bodyHomeBrowseGrid.jsp"%>
 			</td>
-			<td valign="top" height="100%">
-				<!-- right sidebar begins --> <%@include file="bodyHomeRightSideBar.jsp"%></td>
+			<td valign="top" class="rightSideBar">			
+				<!-- right sidebar begins --> <%@include file="bodyHomeRightSideBar.jsp"%>
+			</td>
 		</tr>
 	</table>
 </html:form>

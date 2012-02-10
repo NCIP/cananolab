@@ -37,16 +37,16 @@
 		<c:choose>
 			<c:when test="${actionPath eq '/sample.do'}">
 				<td class="subMenuSecondaryTitleSelected"
-					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+					onmouseover="showCursor()"
+					onmouseout="hideCursor()"
 					onclick="gotoPage('${sampleUrl}')" height="20">
 					<a class="subMenuSecondary">GENERAL INFO</a>
 				</td>
 			</c:when>
 			<c:otherwise>
 				<td class="subMenuSecondaryTitle"
-					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+					onmouseover="showCursor()"
+					onmouseout="hideCursor()"
 					onclick="gotoPage('${sampleUrl}')" height="20">
 					<a class="subMenuSecondary">GENERAL INFO</a>
 				</td>
@@ -66,16 +66,16 @@
 					<c:when
 						test="${actionPath eq '/composition.do' || actionPath eq '/nanomaterialEntity.do' || actionPath eq '/functionalizingEntity.do' ||actionPath eq '/chemicalAssociation.do' ||actionPath eq '/compositionFile.do'}">
 						<td class="subMenuSecondaryTitleSelected"
-							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+							onmouseover="showCursor()"
+							onmouseout="hideCursor()"
 							onclick="gotoPage('${compUrl}')" height="20">
 							<a class="subMenuSecondary">COMPOSITION</a>
 						</td>
 					</c:when>
 					<c:otherwise>
 						<td class="subMenuSecondaryTitle"
-							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+							onmouseover="showCursor()"
+							onmouseout="hideCursor()"
 							onclick="gotoPage('${compUrl}')" height="20">
 							<a class="subMenuSecondary">COMPOSITION</a>
 						</td>
@@ -101,16 +101,16 @@
 				<c:choose>
 					<c:when test="${actionPath eq '/characterization.do'}">
 						<td class="subMenuSecondaryTitleSelected"
-							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+							onmouseover="showCursor()"
+							onmouseout="hideCursor()"
 							onclick="gotoPage('${charUrl}')" height="20">
 							<a class="subMenuSecondary">CHARACTERIZATION</a>
 						</td>
 					</c:when>
 					<c:otherwise>
 						<td class="subMenuSecondaryTitle"
-							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+							onmouseover="showCursor()"
+							onmouseout="hideCursor()"
 							onclick="gotoPage('${charUrl}')" height="20">
 							<a class="subMenuSecondary">CHARACTERIZATION</a>
 						</td>
@@ -135,16 +135,16 @@
 				<c:choose>
 					<c:when test="${actionPath eq '/publication.do'}">
 						<td class="subMenuSecondaryTitleSelected"
-							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout="changeMenuStyle(this,'subMenuSecondaryTitleSelected'), hideCursor()"
+							onmouseover="showCursor()"
+							onmouseout="hideCursor()"
 							onclick="gotoPage('${pubUrl}')" height="20">
 							<a class="subMenuSecondary">PUBLICATION</a>
 						</td>
 					</c:when>
 					<c:otherwise>
 						<td class="subMenuSecondaryTitle"
-							onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-							onmouseout="changeMenuStyle(this, 'subMenuSecondaryTitle'), hideCursor();" onclick="gotoPage('${pubUrl}')" height="20">
+							onmouseover="showCursor()"
+							onmouseout="hideCursor();" onclick="gotoPage('${pubUrl}')" height="20">
 							<a class="subMenuSecondary">PUBLICATION</a>
 						</td>
 					</c:otherwise>

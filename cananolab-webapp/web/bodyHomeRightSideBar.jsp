@@ -1,4 +1,4 @@
-<table class="sidebarSectionNoBottom" summary="layout" cellpadding="0" cellspacing="0" border="0" height="100%">
+<table summary="layout" cellpadding="0" cellspacing="0" border="0" width="150px" class="sidebarSection">
 	<!-- login begins -->
     <%@include file="bodyLoginFields.jsp" %>
 	<tr>
@@ -9,7 +9,7 @@
 	<tr>
 		<td class="sidebarContent">
 			<b>caNanoLab provides access to information on:</b>
-			<ul class="indented0">
+			<ul class="sidebarContent">
 				<li>
 					Nanotechnology protocols in biomedicine
 				</li>
@@ -35,10 +35,9 @@
 				</li>
 			</ul>
 			<b>Primary caNanoLab features include:</b>
-			<ul class="indented0">
+			<ul>
 				<li>
-					<a href="sample.do?dispatch=setupNew&page=0">Secure submission</a>
-					of protocols, samples (nanomaterials), and publications
+					Secure submission of protocols, samples (nanomaterials), and publications
 				</li>
 				<li>
 					Basic search facilities for searching for
@@ -74,7 +73,7 @@
 			<br />
 			<br />
 			<span class="boldAndUnderlined">Functional</span>
-			<ul class="indented0">
+			<ul>
 				<li>
 					<a href="searchProtocol.do?dispatch=setup&page=0">How do I find
 						nanotechnology protocols?</a>
@@ -99,7 +98,7 @@
 				</li>
 			</ul>
 			<span class="boldAndUnderlined">General</span>
-			<ul class="indented0">
+			<ul>
 				<li>
 					<a href="#"
 						onClick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How
@@ -130,7 +129,7 @@
 	</tr>
 	<tr>
 		<td class="sidebarContent">
-			<b>caNanoLab 1.5.2 is now available for </b><a target="_blank"
+			<b>caNanoLab 1.5.3 is now available for </b><a target="_blank"
 				href="http://ncicb.nci.nih.gov/download/downloadcalab.jsp">download</a><b>.
 				For information on caNanoLab release, please refer to the </b>
 			<a target="_blank" href="https://gforge.nci.nih.gov/frs/?group_id=69">caNanoLab
