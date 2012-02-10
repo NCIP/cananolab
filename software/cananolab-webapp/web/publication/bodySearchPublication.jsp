@@ -63,7 +63,7 @@
 			<td class="cellLabel">
 				<label for="title">Publication Title</label>
 			</td>
-			<td>
+			<td colspan="2">
 				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td><label for="titleOperand" style="display:none">Title Operand</label>
@@ -108,7 +108,7 @@
 			<td class="cellLabel">
 				<label for="sampleName">Sample Name</label>
 			</td>
-			<td valign="top" colspan="4">
+			<td valign="top" colspan="5">
 				<html:text property="sampleName" size="80" styleId="sampleName" />
 				<em>exact match</em>
 			</td>

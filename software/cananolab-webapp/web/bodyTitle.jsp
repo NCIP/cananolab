@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="contentTitle" align="center" width="100%" border="0">
-	<tr height="20">
+<div class="spacer"/>
+<table class="contentTitle" width="100%" border="0" summary="layout">
+	<tr>
 		<th scope="col" align="left">
 			${param.pageTitle}
 		</th>

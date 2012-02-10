@@ -112,9 +112,9 @@
 			<div style="${newAccesstyle}" id="newAccess">
 				<table class="subSubmissionView" width="85%" align="center" summary="layout">
 					<tr>
-						<td colspan="4">
+						<th colspan="4">
 							Access Information
-						</td>
+						</th>
 					</tr>
 					<tr>
 						<td class="cellLabel" width="25%">
