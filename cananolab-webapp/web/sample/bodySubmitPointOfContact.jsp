@@ -10,11 +10,11 @@
 
 <table class="subSubmissionView" width="85%" align="center" summary="layout">
 	<tr>
-		<td>
+		<th>
 			<span id="primaryTitle" style="display: none">Primary</span><span
 				id="secondaryTitle" style="display: none">Secondary</span> Point of
 			Contact Information
-		</td>
+		</th>
 	</tr>
 	<tr>
 		<td>

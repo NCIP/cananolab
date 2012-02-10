@@ -68,8 +68,7 @@
 			    <span id="sampleCount"></span>&nbsp; &nbsp; &nbsp; &nbsp;<a id="moreStats" onclick="getMoreSamplesStats()"><span
 								class="moreLink">More Stats</span></a>
 				<br />
-				<img src="images/ajax-loader.gif" border="0" class="hidden"
-					id="sampleRelatedLoaderImg" alt="sample related info count">
+				<img src="images/ajax-loader.gif" border="0" id="sampleRelatedLoaderImg" alt="sample related info count" style="display:none">
 				<div id="sampleRelatedCounts" class="indented1">
 					<span id="sampleSourceCount"></span><br> <span
 						id="CharacterizationCount"></span><br>

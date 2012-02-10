@@ -1,4 +1,4 @@
-<table summary="layout" cellpadding="0" cellspacing="0" border="0" width="150px" class="sidebarSection">
+<table summary="layout" cellpadding="0" cellspacing="0" border="0" class="sidebarSection">
 	<!-- login begins -->
     <%@include file="bodyLoginFields.jsp" %>
 	<tr>
@@ -9,7 +9,7 @@
 	<tr>
 		<td class="sidebarContent">
 			<b>caNanoLab provides access to information on:</b>
-			<ul class="sidebarContent">
+			<ul>
 				<li>
 					Nanotechnology protocols in biomedicine
 				</li>

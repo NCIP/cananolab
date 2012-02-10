@@ -10,12 +10,10 @@
 
 .summaryViewNoTop th {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 }
 
 .summaryViewNoTop td {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	vertical-align: top;
 	text-align: left;
 }
@@ -31,14 +29,12 @@
 
 .summaryViewHeader th {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	padding: 0 0 0 0;
 	color: #5C5C5C;
 }
 
 .summaryViewHeader td {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.75em;
 	vertical-align: top;
 	text-align: left;
 	color: #5C5C5C;
@@ -46,7 +42,6 @@
 
 .summaryViewNoTop th {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	border-color: #cccccc;
 	padding: 5px 5px 5px 5px;
 	color: #5C5C5C;
@@ -54,7 +49,6 @@
 
 .summaryViewNoTop td {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	padding: 5px 5px 5px 5px;
 	border-color: #cccccc;
 	vertical-align: top;
@@ -73,7 +67,6 @@
 }
 
 .summaryViewNoGrid th {
-	font-size: 0.7em;
 	color: #5C5C5C;
 	font-weight: bold;
 	text-align:left;
@@ -83,7 +76,6 @@
 
 .summaryViewNoGrid td {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	padding: 2px 3px 2px 3px;
 	vertical-align: top;
 	text-align: left;
@@ -132,13 +124,11 @@
 
 .editTableWithGrid caption {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	color: #5C5C5C;
 }
 
 .editTableWithGrid th {
-	font-size: 0.7em;
 	padding: 3px 3px 3px 3px;
 	font-weight: bold;
 	background-color: #FFFFFF;
@@ -146,7 +136,6 @@
 }
 
 .editTableWithGrid td {
-	font-size: 0.7em;
 	padding: 3px 3px 3px 3px;
 	border-width: 0px;
 	border-color: #cccccc;

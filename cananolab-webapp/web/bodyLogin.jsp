@@ -1,15 +1,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle" value="Log into caNanoLab" />
 	<jsp:param name="topic" value="welcome_login_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-
 <html:form action="/login">
-	<table width="100%" align="center" class="submissionView" summary="layout">
+	<table width="100%" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="20%">
 				<label for="login ID">Login ID</label>

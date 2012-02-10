@@ -119,7 +119,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td>
 				<table class="invisibleTable">
 					<tr>
 						<td class="cellLabel" width="100">

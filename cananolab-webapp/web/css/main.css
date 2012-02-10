@@ -59,6 +59,7 @@ td.mainMenu {
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	height: 20px;
+	vertical-align: top;
 }
 
 td.mainMenuItem { /* for the off state of the main menu (top) cells */
@@ -82,6 +83,7 @@ th.mainMenu {
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	height: 20px;
+	vertical-align: top;
 }
 
 th.mainMenuItem { /* for the off state of the main menu (top) cells */
@@ -132,16 +134,13 @@ td.sideMenu { /* for the basic style of the side-menu area */
 	font-family: arial, helvetica, verdana, sans-serif;
 	width: 160px;
 	height: 100%;
+	vertical-align: top;
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.mainContent {
 	font-family: arial, helvetica, verdana, sans-serif;
-}
-
-td.mainContentHomePage {
-	font-family: arial, helvetica, verdana, sans-serif;
-	width: 600px;
+	vertical-align: top;
 }
 
 td.subMenuPrimaryTitle {
@@ -265,7 +264,6 @@ td.subMenuFooter {
 
 .footerVersion { /* for the items under the sub-menu title elements */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.6em;
 	font-weight: normal;
 	background-color: #ffffff; /* constant: white */
 	color: #000000; /* constant: black */
@@ -374,7 +372,6 @@ input.noBorderButton {
 
 .formMessage { /* for messages above the form */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	color: #000000; /* constant: black */
 }
 
@@ -400,7 +397,7 @@ SIDEBAR BEGINS
 .sidebarSection ul {
 	list-style-image: url(../images/diamond_list_item.gif);
 	word-wrap: break-word;
-	margin: 0.5em 2em 0.5em 2em;
+	margin: 0.2em 0em 0.2em 2em;
 	font-size: 1em;
 	padding: 0px;
 }
@@ -409,14 +406,18 @@ SIDEBAR BEGINS
 	padding: 0 0 0.3em 0;
 }
 
+.loginBlock {
+	text-align: right;
+	margin-left: 2em;
+}
+
 .sidebarTitle {
 	/* for the subtitle elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
 	padding-left: 0.8em;
-	padding-right: 0.8em;
-	padding-top: 0.3 em;
-	padding-bottom: 0.3 em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
 	background-color: #7a7a7a; /* constant: darker gray */
 	color: #ffffff; /* constant: white */
 	border: 1px solid #7a7a7a; /* constant: medium gray */
@@ -425,7 +426,9 @@ SIDEBAR BEGINS
 td.sidebarContent {
 	/* for the areas under the sidebar titles and requires text */
 	font-family: arial, helvetica, verdana, sans-serif;
-	padding: 0.5em;
+	padding-left: 0.8em;		
+	line-height: 1.5em; 
+	padding-right: 0.5em;
 }
 
 .boldAndUnderlined {
@@ -494,17 +497,16 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 	text-align: justify;
 	padding-right: 0.5em;
 }
-
 .contentTitle { /* for title on top of the content area */
 	background-color: #cccccc; /* constant: medium gray */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
 	padding-left: 0.2em;
+	font-size:1.1em;
 }
 
 .disclaimerTitle { /* for titles of sections inside the content area */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	padding-left: 1em;
 	color: #000000;
@@ -515,7 +517,6 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 .disclaimerContent {
 	/* for the area below the title content of the home page */
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	color: #000000;
 	line-height: 1.5em;
 	padding-top: 1.5em;
@@ -575,10 +576,6 @@ div.logindiv {
 
 th.dataTypeHomePage {
 	width: 60%;
-}
-
-.hidden {
-	display:none;
 }
 
 .gridtableHomePage td {
@@ -696,7 +693,6 @@ th.dataTypeHomePage {
 }
 
 .counts {
-	display: block;
 	margin-left: 22px;
 	margin-right: auto;
 }
@@ -870,7 +866,6 @@ input,textArea,submit,reset,option,select {
 
 .submissionView caption {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.75em;
 	font-weight: bold;
 	background-color: #CCCCCC;
 	color: #333333;
@@ -878,7 +873,6 @@ input,textArea,submit,reset,option,select {
 
 .submissionView th {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.75em;
 	padding: 3px 3px 3px 3px;
 	color: #5C5C5C;
 	/*background-color: #5C5C5C;*/
@@ -888,7 +882,6 @@ input,textArea,submit,reset,option,select {
 
 .submissionView td {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	padding: 3px 3px 3px 3px;
 	vertical-align: top;
 	text-align: left;
@@ -907,14 +900,12 @@ input,textArea,submit,reset,option,select {
 
 .subSubmissionView caption {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	font-weight: bold;
 	color: #5C5C5C;
 }
 
 .subSubmissionView th {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.70em;
 	padding: 3px 3px 3px 3px;
 	/*	color: #FFFFFF;*/
 	font-weight: bold;
@@ -924,7 +915,6 @@ input,textArea,submit,reset,option,select {
 
 .subSubmissionView td {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.70em;
 	padding: 3px 3px 3px 3px;
 	border-width: 0px;
 	border-color: #cccccc;
@@ -937,7 +927,6 @@ input,textArea,submit,reset,option,select {
 .cellLabel {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
-	font-size: 0.7em;
 	/*text-transform: uppercase;*/
 }
 
@@ -990,20 +979,24 @@ ul,ol {
 .invisibleTable {
 	border-collapse: collapse;
 	border-spacing: 0px;
-	border: 0px;
 	padding: 0px;
+	border: 1px;
 }
 
 .invisibleTable th {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0 3 0 0;
-	border: 0px;
+	border: 1px;
 }
 
 .invisibleTable td {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0 15 0 0;
-	border: 0px;
+	border: 1px;
+}
+
+.spacer {
+	padding: 0.5em;
 }

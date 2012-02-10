@@ -72,7 +72,7 @@
 
 		<%-- Submit Samples (Others) --%>
 		<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
-			coords="332,152,428,189" alt="rectangle" />
+			coords="332,152,428,189" alt="rectangle" class=""/>
 		<area href="sample.do?dispatch=setupNew&page=0" shape="rect"
 			coords="332,333,428,371" alt="rectangle" />
 		<area href="sample.do?dispatch=setupNew&page=0" shape="rect"

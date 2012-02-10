@@ -85,7 +85,7 @@
 			<td class="cellLabel">
 				Data Type *
 			</td>
-			<td>
+			<td colspan="3">
 				<html:select styleId="dataType" property="dataType" >
 					<option value=""></option>
 					<html:option value="Sample" />

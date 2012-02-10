@@ -42,92 +42,58 @@
 	<c:if test="${empty onloadJavascript && empty anchor}">
 		<body style="cursor: default"">
 	</c:if>
-	<table height="100%" cellspacing="0" cellpadding="0" width="100%"
-		summary="layout" border="0" align="center">
+	<table cellspacing="0" cellpadding="0" summary="layout" border="0" width="100%">
 		<!-- nci hdr begins -->
 		<tbody>
 			<tr>
-				<td>
-					<%-- include NCI header --%>
-					<tiles:insert attribute="nciHeader" />
+				<td colspan="2">
+					<%-- include NCI header --%> <tiles:insert attribute="nciHeader" />
 				</td>
 			</tr>
 			<tr>
-				<td valign="top" height="100%">
-					<table height="100%" cellspacing="0" cellpadding="0" summary="layout"
-						width="100%" border="0">
+				<td colspan="2">
+					<%-- include caNanoLab header --%> <tiles:insert
+						attribute="cananoHeader" /></td>
+			</tr>
+			<tr>
+				<td class="sideMenu">
+					<%-- include sidemenu on the left --%>					 
+					<tiles:insert
+						attribute="cananoSidemenu" /></td>					
+				<td class="mainContent">
+					<table cellspacing="0" cellpadding="0" summary="layout" border="0" width="800px">
 						<tbody>
 							<tr>
-								<td colspan="2" height="50">
-									<%-- include caNanoLab header --%>
-									<tiles:insert attribute="cananoHeader" />
+								<td colspan="2" class="mainMenu">
+									<%-- include caNanoLab main menu --%> 
+									<tiles:insert
+										attribute="cananoMainmenu" />
 								</td>
 							</tr>
 							<tr>
-								<td class="sideMenu" valign="top" width="150">
-									<%-- include sidemenu on the left --%>
-									<tiles:insert attribute="cananoSidemenu" />
-								</td>
-								<td valign="top">
-									<table cellspacing="0" cellpadding="0" summary="layout" border="0"
-										width="800">
-										<tbody>
-											<tr>
-												<td class="mainMenu" width="100%" height="20">
-													<%-- include caNanoLab main menu --%>
-													<tiles:insert attribute="cananoMainmenu" />
-												</td>
-											<tr>
-												<td valign="top">
-													<%-- include caNanoLab main content --%>
-													<table border="0" width="100%" summary="layout">
-														<tr>
-															<td width="15">
-																&nbsp;
-															</td>
-															<td valign="top">
-																<%--main content starts --%>
-																<tiles:insert attribute="cananoContent" />
-															</td>
-															<td width="15">
-																&nbsp;
-															</td>
-														</tr>
-														<tr>
-															<td width="15" height="15">
-																&nbsp;
-															</td>
-															<td>
-																&nbsp;
-															</td>
-															<td width="15">
-																&nbsp;
-															</td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+								<td></td>
+								<td class="mainContent">
+									<%-- include caNanoLab main content --%>									
+									<tiles:insert attribute="cananoContent" /> 									 
 								</td>
 							</tr>
 							<tr>
-								<td class="footerMenu">
-									&nbsp;
-								</td>
-								<td class="footerMenu">
-									<%-- include caNanoLab footer --%>
-									<tiles:insert attribute="cananoFooter" />
-								</td>
+								<td colspan="2">&nbsp;</td>
 							</tr>
 						</tbody>
 					</table>
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<%-- include NCI footer --%>
-					<tiles:insert attribute="nciFooter" />
+				<td class="footerMenu">&nbsp;</td>
+				<td class="footerMenu">
+					<%-- include caNanoLab footer --%> 
+					<tiles:insert
+						attribute="cananoFooter" /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<%-- include NCI footer --%> <tiles:insert attribute="nciFooter" />
 				</td>
 			</tr>
 		</tbody>
