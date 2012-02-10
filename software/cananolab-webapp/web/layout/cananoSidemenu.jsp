@@ -11,7 +11,7 @@
 	</tr>
 	<jsp:include page="/html/cananoBaseSidemenu.html" />
 	<tr>
-		<td class="subMenuFill">&nbsp;</td>
+		<td>&nbsp;</td>
 	</tr>
 	<c:if test="${showVisitorCount}">
 		<tr>
