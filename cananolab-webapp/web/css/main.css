@@ -197,6 +197,7 @@ td.subMenuSecondaryTitleFill {
 	padding-left: 0.8em;
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
+	height: 20px;
 }
 
 td.subMenuCommentText {
@@ -215,6 +216,7 @@ td.subMenuSecondaryTitle {
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	height: 20px;
 }
 
 td:hover.subMenuSecondaryTitle {
@@ -225,6 +227,7 @@ td:hover.subMenuSecondaryTitle {
 	background-color: #98B7B7; /* lighter */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	height: 20px;
 }
 
 td.subMenuSecondaryTitleSelected {
