@@ -62,7 +62,7 @@
 							<tr>
 								<td align="left" valign="top" class="mainContent">
 									<%-- include caNanoLab main content --%>									
-									<tiles:insert attribute="cananoContent" />									 
+									<tiles:insert attribute="cananoContent" /> 									 
 								</td>
 							</tr>
 						</tbody>

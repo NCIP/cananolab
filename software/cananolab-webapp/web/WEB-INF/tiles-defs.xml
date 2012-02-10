@@ -4,7 +4,7 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<!--  Main layout definition for the login page of caNanoLab -->
-	<definition name="canano.home" path="/layout/mainLayoutNoContentSpace.jsp">
+	<definition name="canano.home" path="/layout/mainLayoutHomePage.jsp">
 		<put name="title" value="caNanoLab" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
 		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
@@ -53,10 +53,6 @@
 	<definition name="home.message" extends="canano.base">
 		<put name="cananoContent" value="/bodyMessage.jsp" />
 		<put name="menu" value="home" />
-	</definition>
-	<definition name="canano.help" extends="canano.base">
-		<put name="cananoContent" value="/help/bodyOnlineHelp.jsp" />
-		<put name="menu" value="help" />
 	</definition>
 	<definition name="canano.welcome" extends="canano.base">
 		<put name="cananoContent" value="/bodyWelcome.jsp" />

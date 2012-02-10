@@ -1,39 +1,36 @@
-<table class="gridtable" width="98%" align="center" summary="layout">
+<table class="gridtableHomePage">
 	<tr>
-		<th width="60%">
+		<th class="dataTypeHomePage" scope="col">
 			Data Type
 		</th>
-		<th id="results">
+		<th id="results" scope="col">
 			Public Results
 		</th>
 	</tr>
 	<tr align="left">
-
 		<td>
 			<table class="gridtableNoBorder" summary="layout">
 				<tr>
 					<td rowspan="2">
 						<a href="#" onclick="gotoProtocols('setup')"> <img
-								src="images/icon_protocol_48x.jpg" style="border-style: none;"
-								alt="Search Protocols" /> </a>
+								src="images/icon_protocol_48x.jpg" class="imgNoBorder" alt="Search Protocols" /></a>
 					</td>
 					<td>
 						<a href="#" onclick="gotoProtocols('setup')"><b>Search
-								Protocols</b> </a>
+								Protocols</b></a>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						Search for nanotechnology protocols leveraged in performing
-						nanomaterial characterization assays.
+						Search for nanotechnology protocols leveraged in performing	nanomaterial characterization assays.
 					</td>
 				</tr>
 			</table>
 		</td>
-		<td style="padding-left: 22px">
+		<td>
 			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="protocolLoaderImg" style="display: block" alt="protocol count">
-			<span id="protocolCount"></span>
+				id="protocolLoaderImg" alt="protocol count">
+			<span class="counts" id="protocolCount"></span>
 		</td>
 	</tr>
 	<tr class="alt">
@@ -43,7 +40,7 @@
 					<td rowspan="2">
 						<a href="#" onclick="gotoSamples('setup')"> <img
 								src="images/icon_nanoparticle_48x.jpg"
-								style="border-style: none;" alt="Search Samples" /> </a>
+								 class="imgNoBorder" alt="Search Samples" /></a>
 					</td>
 					<td>
 						<a href="#" onclick="gotoSamples('setup')"><b>Search
@@ -64,74 +61,24 @@
 				</tr>
 			</table>
 		</td>
-		<td style="padding-left: 22px">
+		<td>
 			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="sampleLoaderImg" style="display: block" alt="sample count">
-			<div id="sampleCounts">
-			    <span id="sampleCount"></span>&nbsp; &nbsp; &nbsp;<a id="moreStats" onclick="getMoreSamplesStats()"
-								onmouseOver="showCursor();" onmouseOut="hideCursor()"><span
-								class="moreLink">More Stats</span> </a>
+				id="sampleLoaderImg" alt="sample count">
+			<div id="sampleCounts" class="counts" >
+			    <span id="sampleCount"></span>&nbsp; &nbsp; &nbsp; &nbsp;<a id="moreStats" onclick="getMoreSamplesStats()"><span
+								class="moreLink">More Stats</span></a>
 				<br />
-				<img src="images/ajax-loader.gif" border="0" class="counts"
-					id="sampleRelatedLoaderImg" style="display: none" alt="sample related info count">
-				<div id="sampleRelatedCounts" style="display: none">
-					<table class="invisibleTable" style="color: #5F7C7C" summary="layout">
-						<tr>
-							<th width="10">
-								<img src="images/diamond_list_item.gif" alt="list symbol"/>
-							</th>
-							<td>
-								<span id="sampleSourceCount"></span>
-							</td>
-						</tr>
-						<tr>
-							<th width="10">
-								<img src="images/diamond_list_item.gif" alt="list symbol" />
-							</th>
-							<td>
-								<span id="CharacterizationCount"></span>
-							</td>
-						</tr>
-						<tr>
-							<th></th>
-							<td>
-								<table class="invisibleTable" style="color: #5F7C7C" summary="layout">
-									<tr>
-										<th width="10">
-											-
-										</th>
-										<td>
-											<span id="PhysicoChemicalCharacterizationCount"></span>
-										</td>
-									</tr>
-									<tr>
-										<th width="10">
-											-
-										</th>
-										<td>
-											<span id="InvitroCharacterizationCount"></span>
-										</td>
-									</tr>
-									<tr>
-										<th width="10">
-											-
-										</th>
-										<td>
-											<span id="InvivoCharacterizationCount"></span>
-										</td>
-									</tr>
-									<tr>
-										<th width="10">
-											-
-										</th>
-										<td>
-											<span id="OtherCharacterizationCount"></span>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
+				<img src="images/ajax-loader.gif" border="0" class="hidden"
+					id="sampleRelatedLoaderImg" alt="sample related info count">
+				<div id="sampleRelatedCounts" class="indented1">
+					<span id="sampleSourceCount"></span><br> <span
+						id="CharacterizationCount"></span><br>
+					<div class="indented2">
+						<span id="PhysicoChemicalCharacterizationCount"></span><br> <span
+							id="InvitroCharacterizationCount"></span><br> <span
+							id="InvivoCharacterizationCount"></span><br> <span
+							id="OtherCharacterizationCount"></span><br>
+					</div>
 				</div>
 			</div>
 		</td>
@@ -142,7 +89,7 @@
 				<tr>
 					<td rowspan="2">
 						<a href="#" onclick="gotoPublications('setup')"> <img
-								src="images/icon_report_48x.gif" style="border-style: none;"
+								src="images/icon_report_48x.gif" class="imgNoBorder"
 								alt="Search Publications" /> </a>
 					</td>
 					<td>
@@ -159,10 +106,10 @@
 				</tr>
 			</table>
 		</td>
-		<td style="padding-left: 22px">
+		<td>
 			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="publicationLoaderImg" style="display: block" alt="publication count">
-			<span id="publicationCount"></span>
+				id="publicationLoaderImg" alt="publication count">
+			<span id="publicationCount" class="counts"></span>
 		</td>
 	</tr>
 </table>

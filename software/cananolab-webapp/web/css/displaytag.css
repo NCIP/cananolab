@@ -8,7 +8,6 @@ table.displaytable thead tr {
 	background-color: #6a8989;
 	text-align: left;
 	vertical-align: top;
-	font-size: 0.7em;
 	color: white;
 }
 
@@ -52,14 +51,12 @@ table.displaytable th.order2 a {
 
 table.displaytable tr.odd {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	color: #000000; /* constant: black */
 	background-color: #cccccc; /* constant: light gray */
 }
 
 table.displaytable tr.tableRowEven,table.displaytable tr.even {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
 	color: #000000; /* constant: black */
 	/* background-color: #ffffff; */ /* constant: white*/
 	background-color: #eeeeee;
@@ -79,7 +76,6 @@ span.export {
 	/* display: inline-block;  */ /* value error, commented out */
 	cursor: pointer;
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 }
 
 span.excel {
@@ -114,7 +110,6 @@ span.pagebanner {
 	display: block;
 	border: none;
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 }
 
 span.pagelinks {
@@ -124,5 +119,4 @@ span.pagelinks {
 	border: none;
 	margin-bottom: -5px;
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.8em;
 }
