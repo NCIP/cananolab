@@ -239,14 +239,6 @@ td.subMenuSecondaryTitleSelected {
 	height:20px;
 }
 
-.subMenuFillBig { /* for the empty cell below the sub-menu items */
-	background-color: #6A8989;
-	height:100%;
-	overflow: auto;
-	border-right: 1px solid #cccccc; /* constant: medium gray */
-	valign: top;
-}
-
 td.subMenuFill { /* for the empty cell below the sub-menu items */
 	background-color: #6A8989;
 	border-right: 1px solid #cccccc; /* constant: medium gray */
