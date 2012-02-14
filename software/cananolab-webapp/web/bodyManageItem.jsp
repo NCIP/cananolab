@@ -8,7 +8,7 @@
 <table summary="layout" cellpadding="0" cellspacing="0" border="0"
 	width="40%" height="100%" class="sidebarSection">
 	<tr>
-		<th height="20" class="sidebarTitle" scope="col" align="left"><c:out
+		<th class="sidebarTitle" scope="col" align="left"><c:out
 				value="${fn:toUpperCase(item)}" /> LINKS</th>
 	</tr>
 	<c:choose>

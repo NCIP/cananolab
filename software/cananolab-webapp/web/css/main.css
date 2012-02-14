@@ -56,10 +56,10 @@ MENU BEGINS
 td.mainMenu {
 	background-color: #5c5c5c; /* constant: dark gray */
 	font-family: arial, helvetica, verdana, sans-serif;
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	height: 20px;
 	vertical-align: top;
+	border-top: 1px solid #cccccc; /* constant: medium gray */
+	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	height: 20px;
 }
 
 td.mainMenuItem { /* for the off state of the main menu (top) cells */
@@ -75,15 +75,6 @@ td:hover.mainMenuItem {
 	background-color: #6a8989; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
-}
-
-th.mainMenu {
-	background-color: #5c5c5c; /* constant: dark gray */
-	font-family: arial, helvetica, verdana, sans-serif;
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	height: 20px;
-	vertical-align: top;
 }
 
 th.mainMenuItem { /* for the off state of the main menu (top) cells */
@@ -133,9 +124,8 @@ td.sideMenu { /* for the basic style of the side-menu area */
 	background-color: #6A8989; /* darker */
 	font-family: arial, helvetica, verdana, sans-serif;
 	width: 160px;
-	height: 100%;
 	vertical-align: top;
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	height:100%;
 }
 
 td.mainContent {
@@ -153,6 +143,7 @@ td.subMenuPrimaryTitle {
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 	height: 20px;
 }
 
@@ -165,6 +156,7 @@ th.subMenuPrimaryTitle {
 	color: #ffffff; /* constant: white */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 	height: 20px;
 	text-align: left;
 }
@@ -174,9 +166,11 @@ td.subMenuPrimarySubTitle {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
 	padding-left: 1em;
+	height: 20px;
 	background-color: #7a7a7a; /* constant: darker gray */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #7a7a7a; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuPrimaryItems {
@@ -197,6 +191,7 @@ td.subMenuSecondaryTitleFill {
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
 	height: 20px;
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuCommentText {
@@ -205,6 +200,7 @@ td.subMenuCommentText {
 	padding-left: 0.8em;
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 td.subMenuSecondaryTitle {
@@ -215,6 +211,7 @@ td.subMenuSecondaryTitle {
 	background-color: #6A8989; /* darker */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 	height: 20px;
 }
 
@@ -226,7 +223,9 @@ td:hover.subMenuSecondaryTitle {
 	background-color: #98B7B7; /* lighter */
 	color: #ffffff; /* constant: white */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 	height: 20px;
+	cursor: pointer;
 }
 
 td.subMenuSecondaryTitleSelected {
@@ -237,11 +236,22 @@ td.subMenuSecondaryTitleSelected {
 	background-color: #FFFFFF; /* white */
 	color: #5C5C5C; /* constant: dark gray */
 	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #FFFFFF; /* constant: medium gray */
+	height:20px;
+}
+
+.subMenuFillBig { /* for the empty cell below the sub-menu items */
+	background-color: #6A8989;
+	height:100%;
+	overflow: auto;
+	border-right: 1px solid #cccccc; /* constant: medium gray */
+	valign: top;
 }
 
 td.subMenuFill { /* for the empty cell below the sub-menu items */
 	background-color: #6A8989;
+	border-right: 1px solid #cccccc; /* constant: medium gray */
+	height:5px;
+	valign: top;
 }
 
 td.loginMenuFill {
@@ -381,10 +391,18 @@ SIDEBAR BEGINS
 .sidebarSection { /* for the individual sidebar sections */
 	font-family: arial, helvetica, verdana, sans-serif;
 	background-color: #f4f4f5; /* constant: light gray */
-	border-color: #cccccc;
-	border-style: solid;
-	border-collapse: collapse;
-	border-width: 1px;
+	border-top: 1px solid #cccccc; /* constant: medium gray */
+	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-left: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
+}
+
+.sidebarSectionNoTop { /* for the individual sidebar sections */
+	font-family: arial, helvetica, verdana, sans-serif;
+	background-color: #f4f4f5; /* constant: light gray */
+	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-left: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
 .sidebarSectionNoBorder { /* for the individual sidebar sections */
@@ -411,7 +429,7 @@ SIDEBAR BEGINS
 	margin-left: 2em;
 }
 
-.sidebarTitle {
+td.sidebarTitle {
 	/* for the subtitle elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
@@ -420,9 +438,22 @@ SIDEBAR BEGINS
 	padding-bottom: 0.2em;
 	background-color: #7a7a7a; /* constant: darker gray */
 	color: #ffffff; /* constant: white */
-	border: 1px solid #7a7a7a; /* constant: medium gray */
+	height: 20px;
+	border: 0px;
 }
 
+th.sidebarTitle {
+	/* for the subtitle elements of the sub menu (left-side) */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-weight: bold;
+	padding-left: 0.8em;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	background-color: #7a7a7a; /* constant: darker gray */
+	color: #ffffff; /* constant: white */
+	height: 20px;
+	border: 0px;
+}
 td.sidebarContent {
 	/* for the areas under the sidebar titles and requires text */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -980,21 +1011,19 @@ ul,ol {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0px;
-	border: 1px;
+	border: 0px;
 }
 
 .invisibleTable th {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0 3 0 0;
-	border: 1px;
 }
 
 .invisibleTable td {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	padding: 0 15 0 0;
-	border: 1px;
 }
 
 .spacer {
