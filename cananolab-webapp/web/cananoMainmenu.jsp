@@ -25,7 +25,7 @@
 								<a class="mainMenuLink" href="#">${item.value}</a>
 							</th>
 							<td>
-								<img height="16" alt="" src="images/mainMenuSeparator.gif"
+								<img height="16" alt="menu separator" src="images/mainMenuSeparator.gif"
 									width="1">
 							</td>
 						</c:otherwise>

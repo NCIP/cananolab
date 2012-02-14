@@ -1,4 +1,4 @@
-<table summary="layout" cellpadding="0" cellspacing="0" border="0" class="sidebarSection">
+<table summary="layout" cellpadding="0" cellspacing="0" border="0" class="sidebarSectionNoTop">
 	<!-- login begins -->
     <%@include file="bodyLoginFields.jsp" %>
 	<tr>

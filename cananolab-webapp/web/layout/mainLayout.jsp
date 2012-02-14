@@ -71,7 +71,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td></td>
+								<td class="spacer"></td>
 								<td class="mainContent">
 									<%-- include caNanoLab main content --%>									
 									<tiles:insert attribute="cananoContent" /> 									 

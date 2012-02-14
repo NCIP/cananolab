@@ -21,10 +21,9 @@
 <c:if test="${theSample.userUpdatable}">
 	<c:set var="dispatch" value="summaryEdit" />
 </c:if>
-<table cellpadding="0" cellspacing="0" border="0"
-	height="100%" width="150">
+<table cellpadding="0" cellspacing="0" border="0" width="160">
 	<tr>
-		<th class="subMenuPrimaryTitle" height="22" scope="col">
+		<th class="subMenuPrimaryTitle" scope="col">
 			NAVIGATION TREE
 		</th>
 	</tr>
@@ -36,18 +35,13 @@
 		</c:url>
 		<c:choose>
 			<c:when test="${actionPath eq '/sample.do'}">
-				<td class="subMenuSecondaryTitleSelected"
-					onmouseover="showCursor()"
-					onmouseout="hideCursor()"
-					onclick="gotoPage('${sampleUrl}')" height="20">
-					<a class="subMenuSecondary">GENERAL INFO</a>
+				<td class="subMenuSecondaryTitleSelected">
+					GENERAL INFO
 				</td>
 			</c:when>
 			<c:otherwise>
 				<td class="subMenuSecondaryTitle"
-					onmouseover="showCursor()"
-					onmouseout="hideCursor()"
-					onclick="gotoPage('${sampleUrl}')" height="20">
+					onclick="gotoPage('${sampleUrl}')">
 					<a class="subMenuSecondary">GENERAL INFO</a>
 				</td>
 			</c:otherwise>
@@ -65,18 +59,13 @@
 				<c:choose>
 					<c:when
 						test="${actionPath eq '/composition.do' || actionPath eq '/nanomaterialEntity.do' || actionPath eq '/functionalizingEntity.do' ||actionPath eq '/chemicalAssociation.do' ||actionPath eq '/compositionFile.do'}">
-						<td class="subMenuSecondaryTitleSelected"
-							onmouseover="showCursor()"
-							onmouseout="hideCursor()"
-							onclick="gotoPage('${compUrl}')" height="20">
-							<a class="subMenuSecondary">COMPOSITION</a>
+						<td class="subMenuSecondaryTitleSelected">
+							COMPOSITION
 						</td>
 					</c:when>
 					<c:otherwise>
 						<td class="subMenuSecondaryTitle"
-							onmouseover="showCursor()"
-							onmouseout="hideCursor()"
-							onclick="gotoPage('${compUrl}')" height="20">
+							onclick="gotoPage('${compUrl}')">
 							<a class="subMenuSecondary">COMPOSITION</a>
 						</td>
 					</c:otherwise>
@@ -100,18 +89,13 @@
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/characterization.do'}">
-						<td class="subMenuSecondaryTitleSelected"
-							onmouseover="showCursor()"
-							onmouseout="hideCursor()"
-							onclick="gotoPage('${charUrl}')" height="20">
-							<a class="subMenuSecondary">CHARACTERIZATION</a>
+						<td class="subMenuSecondaryTitleSelected">
+							CHARACTERIZATION
 						</td>
 					</c:when>
 					<c:otherwise>
-						<td class="subMenuSecondaryTitle"
-							onmouseover="showCursor()"
-							onmouseout="hideCursor()"
-							onclick="gotoPage('${charUrl}')" height="20">
+						<td class="subMenuSecondaryTitle"							
+							onclick="gotoPage('${charUrl}')">
 							<a class="subMenuSecondary">CHARACTERIZATION</a>
 						</td>
 					</c:otherwise>
@@ -134,17 +118,13 @@
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/publication.do'}">
-						<td class="subMenuSecondaryTitleSelected"
-							onmouseover="showCursor()"
-							onmouseout="hideCursor()"
-							onclick="gotoPage('${pubUrl}')" height="20">
-							<a class="subMenuSecondary">PUBLICATION</a>
+						<td class="subMenuSecondaryTitleSelected">
+							PUBLICATION
 						</td>
 					</c:when>
 					<c:otherwise>
 						<td class="subMenuSecondaryTitle"
-							onmouseover="showCursor()"
-							onmouseout="hideCursor();" onclick="gotoPage('${pubUrl}')" height="20">
+							onclick="gotoPage('${pubUrl}')">
 							<a class="subMenuSecondary">PUBLICATION</a>
 						</td>
 					</c:otherwise>
@@ -187,7 +167,7 @@
 		</tr>
 	</c:if>
 	<tr>
-		<td class="subMenuFill" height="100%">
+		<td class="subMenuFill">
 			&nbsp;
 		</td>
 	</tr>

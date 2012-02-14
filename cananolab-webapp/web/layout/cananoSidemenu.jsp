@@ -4,21 +4,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table cellspacing="0" cellpadding="0" border="0" width="160px">
+<table cellspacing="0" cellpadding="0" width="160px" id="sideMenuTable">
 	<tr>
 		<th class="subMenuPrimaryTitle" scope="col">QUICK
 			LINKS</th>
 	</tr>
 	<jsp:include page="/html/cananoBaseSidemenu.html" />
 	<tr>
-		<td>&nbsp;</td>
+		<td class="subMenuFill">&nbsp;</td>
 	</tr>
 	<c:if test="${showVisitorCount}">
 		<tr>
-			<td class="subMenuSecondaryTitleFill" height="20">Visitor Count</td>
+			<td class="subMenuSecondaryTitleFill">Visitor Count</td>
 		</tr>
 		<tr>
-			<td class="subMenuSecondaryTitleFill" height="20"><c:choose>
+			<td class="subMenuSecondaryTitleFill"><c:choose>
 					<c:when test="${fn:length(countString) > 1}">
 						<%--Do NOT reformat code style below, otherwise it will introduce gaps between counter images--%>
 						<c:forEach var="index" begin="0"
@@ -36,13 +36,13 @@
 				</c:choose></td>
 		</tr>
 		<tr>
-			<td class="subMenuCommentText" height="30"><em>Since
+			<td class="subMenuCommentText"><em>Since
 					${counterStartDate}</em></td>
 		</tr>
 	</c:if>
 	<c:if test="${!empty user}">
 		<tr>
-			<td class="subMenuCommentText" height="20">Logged in as <i>${user.loginName}</i>
+			<td class="subMenuCommentText">Logged in as <i>${user.loginName}</i>
 				<c:if test="${!empty user.groupNames}">
 					<br>Associated Groups:<br />
 					<c:forEach var="group" items="${user.groupNames}">
@@ -52,7 +52,4 @@
 				</c:if></td>
 		</tr>
 	</c:if>
-	<tr>
-		<td class="subMenuFill">&nbsp;</td>
-	</tr>
 </table>
