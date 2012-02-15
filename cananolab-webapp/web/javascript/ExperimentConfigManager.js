@@ -123,7 +123,7 @@ function deleteTheExperimentConfig(publicRetract) {
 	if (validateRetract) {
 		var answer = confirmDelete("experiment config");
 		if (answer != 0) {
-			submitAction(document.forms[0], "characterization",
+			submitAction("charForm", "characterization",
 					"deleteExperimentConfig", 2);
 		}
 	}
@@ -136,7 +136,7 @@ function validateSaveConfig(publicRetract, actionName) {
 	if (validateRetract) {
 		if (validateShapeInfo() && validateSolubilityInfo()
 				&& validateSavingTheData('newInstrument', 'Instrument')) {
-			submitAction(document.forms[0], actionName, "saveExperimentConfig",
+			submitAction("charForm", actionName, "saveExperimentConfig",
 					2);
 			return true;
 		} else {

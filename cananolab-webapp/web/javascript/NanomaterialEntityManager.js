@@ -200,7 +200,7 @@ function addComposingElement(publicRetract, actionName) {
 			&& validatePolymerInfo()
 			&& validateDendrimerInfo()
 			&& validateSavingTheData('newInherentFunction', 'Inherent Function')) {
-		submitAction(document.forms[0], actionName, "saveComposingElement", 2);
+		submitAction("nanoEntityForm", actionName, "saveComposingElement", 2);
 		return true;
 	} else {
 		return false;
@@ -213,7 +213,7 @@ function removeComposingElement(publicRetract, actionName) {
 		validateRetract = confirmPublicDataUpdate();
 	}
 	if (validateRetract) {
-		submitAction(document.forms[0], actionName, "removeComposingElement", 2);
+		submitAction("nanoEntityForm", actionName, "removeComposingElement", 2);
 	}
 }
 /* end of submit composing element form */

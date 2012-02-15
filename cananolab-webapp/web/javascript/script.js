@@ -87,11 +87,12 @@ function resetSelect(selectObj) {
 function removeSelectOptions(selectObj) {
 	selectObj.options.length = 0;
 }
-function submitAction(form, actionName, dispatchName, page) {
+
+function submitAction(formName, actionName, dispatchName, page) {
+	var form=document.getElementById(formName);
 	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=" + page;
 	form.submit();
 }
-
 
 function getElement(form, elementName) {
 	var element;
@@ -342,7 +343,7 @@ function showSummary(layer_ref, totalLayers) {
 	printLink.href = printUrl.href;
 	exportLink.href = exportUrl.href;
 }
-function addFile(publicRetract, actionName, form) {
+function addFile(publicRetract, actionName, formName) {
 	var validateRetract = true;
 	if (publicRetract == "true") {
 		validateRetract = confirmPublicDataUpdate();
@@ -370,7 +371,8 @@ function addFile(publicRetract, actionName, form) {
 				return false;
 			}
 		}
-		submitAction(form, actionName, dispatch, 3);
+		alert(formName);
+		submitAction(formName, actionName, dispatch, 3);
 	}
 }
 function confirmDelete(type) {
@@ -378,7 +380,7 @@ function confirmDelete(type) {
 	return answer;
 }
 
-function removeFile(publicRetract, actionName, form, index) {
+function removeFile(publicRetract, actionName, formName, index) {
 	var validateRetract = true;
 	if (publicRetract == "true") {
 		validateRetract = confirmPublicDataUpdate();
@@ -386,7 +388,7 @@ function removeFile(publicRetract, actionName, form, index) {
 	if (validateRetract) {
       var answer = confirmDelete("file");
 	  if (answer != 0) {
-		 submitAction(form, actionName, "removeFile", 3);
+		 submitAction(formName, actionName, "removeFile", 3);
 	  }
 	}
 }
@@ -444,10 +446,10 @@ function displayFileRadioButton() {
 		}
 	}
 }
-function deleteData(type, form, actionName, dispatch) {
+function deleteData(type, formName, actionName, dispatch) {
 	var answer = confirmDelete(type);
 	if (answer) {
-		submitAction(form, actionName, dispatch, 0);
+		submitAction(formName, actionName, dispatch, 0);
 	}
 }
 function sessionTimeout() {
@@ -553,12 +555,14 @@ function generateBatchDataAvailability() {
 		return false;
 	}
 }
-function submitReview(form, actionName, dataId, dataName, dataType, forwardName) {
+
+function submitReview(formName, actionName, dataId, dataName, dataType, forwardName) {
 	var actionStr=actionName + ".do?dispatch=submitForReview&reviewDataId=" +dataId+"&reviewDataName="+dataName+"&reviewDataType="+dataType;
 
 	if (forwardName!=null) {
 		actionStr=actionStr+"&forwardName="+forwardName;
 	}
+	var form=document.getElementById(formName);
 	form.action=actionStr;
 	form.submit();
 }
