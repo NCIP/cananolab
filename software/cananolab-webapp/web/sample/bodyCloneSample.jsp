@@ -18,15 +18,15 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/sample"
-	onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
+	onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');" styleId="cloneSampleForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td>
 				<table>
 					<tr>
 						<td class="cellLabel" width="200">
-							Existing Sample *
+							<label for="cloningSampleName">Existing Sample *</label>
 						</td>
 						<td width="100">
 							<html:text property="sampleBean.cloningSampleName" size="50" styleId="cloningSampleName"/>
@@ -38,10 +38,10 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" valign="top">
-							New Sample Name *
+							<label for="newSampleName">New Sample Name *</label>
 						</td>
 						<td colspan="2" valign="top">
-							<html:text property="sampleBean.domain.name" size="50" />
+							<html:text property="sampleBean.domain.name" size="50" styleId="newSampleName"/>
 						</td>
 					</tr>
 				</table>
@@ -50,7 +50,8 @@
 				<table class="invisibleTable">
 					<tr>
 						<td valign="top"><img src="images/ajax-loader.gif" border="0" class="counts"
-								id="loaderImg" style="display: none">							
+								id="loaderImg" style="display: none" alt="loading existing sample">
+							<label for="matchedSampleSelect">&nbsp;</label>							
 							<html:select property="sampleBean.cloningSampleName"
 								styleId="matchedSampleSelect" size="5" style="display:none" onclick="updateCloningSample()">							
 							</html:select>							
@@ -62,7 +63,7 @@
 	</table>
 	<br>	
 	<c:set var="resetOnclick" value="this.form.reset();hide('loaderImg'); hide('matchedSampleSelect');"/>	
-	<c:set var="submitOnclick" value="submitAction(sampleForm, 'sample', 'clone', 1);show('waitMessage')"/>	
+	<c:set var="submitOnclick" value="submitAction('sampleForm', 'sample', 'clone', 1);show('waitMessage')"/>	
 	<%@include file="../bodySubmitButtons.jsp"%>
 	<br />
 	<span id="waitMessage" style="display: none" class="welcomeContent"><img
