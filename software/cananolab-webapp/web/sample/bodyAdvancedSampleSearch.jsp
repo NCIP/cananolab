@@ -26,7 +26,7 @@
 		value="searchSample.do?dispatch=setup" />
 </jsp:include>
 <html:form action="/advancedSampleSearch" enctype="multipart/form-data"
-	onsubmit="return validateDatumValue()">
+	onsubmit="return validateDatumValue()" styleId="advancedSampleSearchForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
