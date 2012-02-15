@@ -137,14 +137,14 @@ function searchPublication() {
 	if (pubMedId != null && pubMedId != 0) {
 		PublicationManager.searchPubMedById(pubMedId, validatePubMedInfo);
 	} else {
-		submitAction("publicationForm", "searchPublication", "search", 1);
+		submitAction("searchPublicationForm", "searchPublication", "search", 1);
 	}
 }
 function validatePubMedInfo(publication) {
 	if (publication.domainFile.pubMedId == null) {
 		alert("Invalid PubMed ID entered.");
 	} else {
-		submitAction("publicationForm", "searchPublication", "search", 1);
+		submitAction("searchPublicationForm", "searchPublication", "search", 1);
 	}
 }
 
