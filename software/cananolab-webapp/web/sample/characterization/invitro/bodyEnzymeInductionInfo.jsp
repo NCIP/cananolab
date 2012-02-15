@@ -23,7 +23,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="2">
 					Enzyme Induction Properties
@@ -31,7 +31,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel" width="20%">
-					Enzyme Name
+					<label for="enzyme">Enzyme Name</label>
 				</td>
 				<td>
 					<div id="enzymePrompt">

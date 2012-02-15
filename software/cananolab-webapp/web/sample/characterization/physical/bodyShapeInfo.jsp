@@ -44,7 +44,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="4">
 					Shape Properties
@@ -52,7 +52,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Type *
+					<label for="shapeType">Type *</label>
 				</td>
 				<td>
 					<div id="shapeTypePrompt">
@@ -81,7 +81,7 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Aspect Ratio
+					<label for="aspectRatio">Aspect Ratio</label>
 				</td>
 				<td>
 					<input type="text" name="achar.shape.aspectRatio" id="aspectRatio"
@@ -92,7 +92,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Minimum Dimension
+					<label for="shapeMinDimension">Minimum Dimension</label>
 				</td>
 				<td>
 					<input type="text" name="achar.shape.minDimension"
@@ -100,6 +100,7 @@
 						value="${characterizationForm.map.achar.shape.minDimension}" />
 					<%-- onkeydown="return filterFloatNumber(event)" /--%>
 					<div id="minDimensionUnitPrompt">
+					<label for="minDimensionUnit">&nbsp;</label>
 						<select name="achar.shape.minDimensionUnit" id="minDimensionUnit"
 							onchange="callPrompt('Unit', 'minDimensionUnit', 'minDimensionUnitPrompt')">
 							<option value=""></option>
@@ -125,7 +126,7 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Maximum Dimension
+					<label for="shapeMaxDimension">Maximum Dimension</label>
 				</td>
 				<td>
 					<input type="text" name="achar.shape.maxDimension"
@@ -133,6 +134,7 @@
 						value="${characterizationForm.map.achar.shape.maxDimension}" />
 					<%-- onkeydown="return filterFloatNumber(event)" /--%>
 					<div id="maxDimensionUnitPrompt">
+					<label for="maxDimensionUnit"></label>
 						<select name="achar.shape.maxDimensionUnit" id="maxDimensionUnit"
 							onchange="callPrompt('Unit', 'maxDimensionUnit', 'maxDimensionUnitPrompt')">
 							<option value=""></option>

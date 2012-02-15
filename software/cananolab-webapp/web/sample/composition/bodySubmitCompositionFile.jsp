@@ -19,9 +19,9 @@
 	<jsp:param name="topic" value="compo_file_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/compositionFile" enctype="multipart/form-data">
+<html:form action="/compositionFile" enctype="multipart/form-data" styleId="compFileForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<c:set var="fileForm" value="compositionForm" />
+	<c:set var="fileFormName" value="compFileForm" />
 	<c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
 	<c:set var="actionName" value="compositionFile" />
 	<%@include file="../bodySubmitFile.jsp"%>
@@ -32,7 +32,7 @@
 	<c:set var="resetOnclick"
 		value="this.form.reset();displayFileRadioButton();" />
 	<c:set var="deleteOnclick"
-		value="deleteData('composition file', compositionForm, 'compositionFile', 'delete')" />
+		value="deleteData('composition file', 'compFileForm', 'compositionFile', 'delete')" />
 	<c:set var="deleteButtonName" value="Delete" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="2" />

@@ -29,7 +29,7 @@
 	<tr>
 		<logic:iterate id="col" name="characterizationForm"
 			property="achar.theFinding.columnHeaders" indexId="cInd">
-			<td>
+			<td><label for="columnOrder${cInd}">&nbsp;</label>
 				<html:text styleId="columnOrder${cInd}" size="5"
 					property="achar.theFinding.columnHeaders[${cInd}].columnOrder"
 					onkeydown="return filterInteger(event)" />
@@ -40,7 +40,7 @@
 		<td colspan="${characterizationForm.map.achar.theFinding.numberOfColumns}">
 			<div align="right">
 				<input class="promptButton" type="button" value="Save"
-					onclick="javascript:updateColumnOrder(characterizationForm);" />
+					onclick="javascript:updateColumnOrder();" />
 				<input class="promptButton" type="button" value="Cancel"
 					onclick="javascript:show('updateMatrixLink');show('newMatrix');hide('newColumnOrder');" />
 			</div>

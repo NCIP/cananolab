@@ -119,14 +119,14 @@
 				<td>
 					<c:if test="${theSample.userDeletable eq 'true'}">
 						<input class="${buttonStyle}" type="button" value="Remove"
-							onclick="removeFile('${validate}', '${actionName}', ${fileForm})"
+							onclick="removeFile('${validate}', '${actionName}', '${fileFormName}')"
 							id="deleteFile" style="display: none;" />
 					</c:if>
 				</td>
 				<td>
 					<div align="right">
 						<input class="${buttonStyle}" type="button" value="Save"
-							onclick="addFile('${validate}', '${actionName}', ${fileForm});" />
+							onclick="addFile('${validate}', '${actionName}', '${fileFormName}');" />
 						<input class="${buttonStyle}" type="button" value="Cancel"
 							onclick="clearFile('${fileParent }');closeSubmissionForm('File');" />
 					</div>

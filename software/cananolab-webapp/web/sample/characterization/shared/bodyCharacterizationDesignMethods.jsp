@@ -7,10 +7,10 @@
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel">
-			Design and Methods Description
+			<label for="charDescription">Design and Methods Description</label>
 		</td>
 		<td>
-			<html:textarea property="achar.description" cols="120" rows="3" />
+			<html:textarea property="achar.description" cols="120" rows="3" styleId="charDescription"/>
 		</td>
 	</tr>
 	<tr>
@@ -24,7 +24,7 @@
 			</c:if>
 			<a style="${addExpermentConfigButtonStyle}" id="addExperimentConfig"
 				href="javascript:clearExperimentConfig();openSubmissionForm('ExperimentConfig');"><img
-					align="top" src="images/btn_add.gif" border="0" /> </a>
+					align="top" src="images/btn_add.gif" border="0" alt="add experiment config"/></a>
 		</td>
 	</tr>
 	<tr>

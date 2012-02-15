@@ -23,7 +23,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="2">
 					Surface Properties
@@ -31,7 +31,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel" width="20%">
-					Is Hydrophobic?
+					<label for="surfaceIsHydrophobic">Is Hydrophobic?</label>
 				</td>
 				<td>
 					<c:choose>
@@ -51,7 +51,7 @@
 							</c:choose>
 						</c:otherwise>
 					</c:choose>
-					<select name="achar.isHydrophobic">
+					<select name="achar.isHydrophobic" id="surfaceIsHydrophobic">
 						<option value=""${selectNoneStr}></option>
 						<option value="true"${selectYesStr}>
 							Yes

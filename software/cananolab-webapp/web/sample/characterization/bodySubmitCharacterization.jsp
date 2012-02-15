@@ -65,7 +65,7 @@
 <html:form action="/characterization" enctype="multipart/form-data"
 	onsubmit="return validateShapeInfo() && validateSolubilityInfo() &&
 	validateSavingTheData('newExperimentConfig', 'Technique and Instrument') &&
-	validateSavingTheData('newFinding', 'Finding');">
+	validateSavingTheData('newFinding', 'Finding');" styleId="charForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<jsp:include
 		page="shared/bodyCharacterizationSummary.jsp" />
@@ -85,7 +85,7 @@
 	<br/>
 	<c:set var="updateId" value="${characterizationForm.map.achar.domainChar.id}"/>
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
-	<c:set var="deleteOnclick" value="deleteData('characterization', characterizationForm, 'characterization', 'delete')"/>
+	<c:set var="deleteOnclick" value="deleteData('characterization', 'charForm' 'characterization', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>

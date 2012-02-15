@@ -31,7 +31,7 @@
 		</table>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="6">
 					Antibody Properties

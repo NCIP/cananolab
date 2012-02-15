@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<table class="subSubmissionView" width="85%" align="center">
+<table class="subSubmissionView" width="85%" align="center" summary="layout">
 	<tr>
 		<th colspan="2">
 			Technique and Instrument Info
@@ -12,7 +12,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Technique*
+			<label for="techniqueType">Technique*</label>
 		</td>
 		<td>
 			<div id="techniqueTypePrompt">
@@ -31,7 +31,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Abbreviation
+			<label for="techniqueAbbr"></label>Abbreviation
 		</td>
 		<td>
 			<html:text styleId="techniqueAbbr"
@@ -91,7 +91,7 @@
 				<table class="promptbox" width="85%">
 					<tr>
 						<td class="cellLabel" width="15%">
-							Manufacturer
+							<label for="manufacturer">Manufacturer</label>
 						</td>
 						<td>
 							<div id="manufacturerPrompt">
@@ -110,7 +110,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" width="15%">
-							Model Name
+							<label for="modelName">Model Name</label>
 						</td>
 						<td>
 							<html:text property="achar.theInstrument.modelName" size="30"
@@ -119,7 +119,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" width="15%">
-							Type
+							<label for="type">Type</label>
 						</td>
 						<td>
 							<div id="instrumentTypePrompt">
@@ -154,7 +154,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Description
+			<label for="configDescription">Description</label>
 		</td>
 		<td>
 			<html:textarea styleId="configDescription"

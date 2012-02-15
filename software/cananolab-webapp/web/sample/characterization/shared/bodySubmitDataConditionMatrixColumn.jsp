@@ -6,7 +6,7 @@
 <table id="columnDesign" class="promptbox">
 	<tr>
 		<td class="cellLabel">
-			Column Type*
+			<label for="columnType${param.cInd}">Column Type*</label>
 		</td>
 		<td>
 			<select
@@ -26,7 +26,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Column Name*
+			<label for="columnName${param.cInd}">Column Name*</label>
 		</td>
 		<td>
 			<div id="columnNamePrompt${param.cInd}">
@@ -45,7 +45,7 @@
 	<tr>
 		<td class="cellLabel">
 			<div id="conditionPropertyLabel${param.cInd}" style="display: none">
-				Condition Property
+				<label for="conditionProperty${param.cInd}">Condition Property</label>
 			</div>
 		</td>
 		<td>
@@ -60,7 +60,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Column Value Type
+			<label for="valueType${param.cInd}">Column Value Type</label>
 		</td>
 		<td>
 			<div id="columnValueTypePrompt${param.cInd}">
@@ -90,7 +90,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Column Value Unit
+			<label for="valueUnit${param.cInd}">Column Value Unit</label>
 		</td>
 		<td>
 			<div id="columnValueUnitPrompt${param.cInd}">
@@ -104,7 +104,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Constant Value?
+			<label for="constantValue${param.cInd}">Constant Value?</label>
 		</td>
 		<td>
 			<input type="text"
@@ -118,7 +118,7 @@
 	<tr>
 		<td>
 			<input class="promptButton" type="button" value="Remove"
-				onclick="reduceMatrix(characterizationForm, 'Column', ${param.cInd});" />
+				onclick="reduceMatrix('Column', ${param.cInd});" />
 		</td>
 		<td>
 			<div align="right">

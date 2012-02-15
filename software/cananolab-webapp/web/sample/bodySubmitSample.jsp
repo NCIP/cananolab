@@ -20,7 +20,7 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/sample"
-	onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');">
+	onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');" styleId="sampleForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -93,7 +93,7 @@
 		<c:set var="accessParent" value="sampleBean"/>
 		<c:set var="dataType" value="Sample"/>
 		<c:set var="parentAction" value="sample"/>
-		<c:set var="parentForm" value="sampleForm"/>
+		<c:set var="parentFormName" value="sampleForm"/>
 		<c:set var="parentPage" value="4"/>
 		<c:set var="protectedData" value="${sampleForm.map.sampleBean.domain.id}"/>
 		<c:set var="newData" value="true"/>
@@ -117,7 +117,7 @@
 					<c:if
 						test="${!empty user && !sampleForm.map.sampleBean.hasDataAvailability }">
 						<input type="image" value="Generate" src="images/btn_generate.gif" alt="generate data availability matrix"
-							onclick="javascript:generateDataAvailability(sampleForm, 'sample', 'generateDataAvailability');">
+							onclick="javascript:generateDataAvailability('sample', 'generateDataAvailability');">
 					</c:if>
 				</td>
 			</tr>
@@ -158,7 +158,7 @@
 	</c:if>
 	<c:set var="resetOnclick" value="this.form.reset();" />
 	<c:set var="deleteOnclick"
-		value="deleteData('sample', sampleForm, 'sample', 'delete')" />
+		value="deleteData('sample', 'sampleForm', 'sample', 'delete')" />
 	<c:set var="deleteButtonName" value="Delete" />
 	<c:set var="cloneOnclick"
 		value="gotoPage('sample.do?dispatch=setupClone&page=0&cloningSample=${sampleForm.map.sampleBean.domain.name}')" />
@@ -166,7 +166,7 @@
 	<c:set var="hiddenPage" value="2" />
 	<c:if test="${review}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(sampleForm, 'sample', '${sampleForm.map.sampleBean.domain.id}', '${sampleForm.map.sampleBean.domain.name}', 'sample')" />
+			value="submitReview('sampleForm', 'sample', '${sampleForm.map.sampleBean.domain.id}', '${sampleForm.map.sampleBean.domain.name}', 'sample')" />
 	</c:if>
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && sampleForm.map.sampleBean.publicStatus}">

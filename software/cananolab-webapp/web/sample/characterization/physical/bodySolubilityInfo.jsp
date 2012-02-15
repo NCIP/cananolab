@@ -39,7 +39,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="4">
 					Solubility Properties
@@ -47,7 +47,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Solvent
+					<label for="solvent">Solvent</label>
 				</td>
 				<td>
 					<div id="solventPrompt">
@@ -72,7 +72,7 @@
 					</div>
 				</td>
 				<td class="cellLabel">
-					Is Soluble
+					<label for="isSoluble">Is Soluble</label>
 				</td>
 				<td>
 					<c:choose>
@@ -92,7 +92,7 @@
 							</c:choose>
 						</c:otherwise>
 					</c:choose>
-					<select name="achar.isSoluble">
+					<select name="achar.isSoluble" id="isSoluble">
 						<option value="" ${selectNoneStr}></option>
 						<option value="true" ${selectYesStr}>Yes</option>
 						<option value="false" ${selectNoStr}>No</option>
@@ -101,7 +101,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Critical Concentration
+					<label for="criticalConcentration">Critical Concentration</label>
 				</td>
 				<td>
 					<input type="text" name="achar.solubility.criticalConcentration"
@@ -109,6 +109,7 @@
 						value="${characterizationForm.map.achar.solubility.criticalConcentration}" />
 						<%-- onkeydown="return filterFloatNumber(event)" --%>
 					<div id="concentrationUnitPrompt">
+						<label for="concentrationUnit">&nbsp;</label>
 						<select name="achar.solubility.criticalConcentrationUnit"
 							id="concentrationUnit"
 							onchange="callPrompt('Concentration Unit', 'concentrationUnit', 'concentrationUnitPrompt')">

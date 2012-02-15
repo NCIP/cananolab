@@ -144,17 +144,17 @@
 					style="display: none;">
 					<tbody id="functionRows">
 						<tr id="patternHeader">
-							<th width="30%" class="cellLabel" scope="col">
+							<td width="30%" class="cellLabel" scope="col">
 								Function Type
-							</th>
-							<th width="30%" class="cellLabel" scope="col">
+							</td>
+							<td width="30%" class="cellLabel" scope="col">
 								<div id="modalityHeader" style="display: none">
 									Imaging Modality
 								</div>
-							</th>
-							<th width="30%" class="cellLabel" scope="col">
+							</td>
+							<td width="30%" class="cellLabel" scope="col">
 								Description
-							</th>
+							</td>
 							<td>
 							</td>
 						</tr>
@@ -184,7 +184,7 @@
 							<html:hidden
 								property="nanomaterialEntity.theComposingElement.theFunction.id"
 								styleId="functionId" />
-							<th class="cellLabel">
+							<td class="cellLabel">
 								<label for="functionType">Function Type</label>
 							</td>
 							<td>

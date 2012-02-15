@@ -10,7 +10,7 @@
 			<tr>
 				<th style="text-align: right">
 					<a
-						href="javascript:setTheFinding(characterizationForm, 'characterization', ${finding.domain.id});">Edit</a>&nbsp;
+						href="javascript:setTheFinding('characterization', ${finding.domain.id});">Edit</a>&nbsp;
 				</th>
 			</tr>
 		</c:if>

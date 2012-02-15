@@ -23,7 +23,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="2">
 					Transfection Properties
@@ -31,10 +31,10 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Cell Line
+					<label for="transfectionCellLine">Cell Line</label>
 				</td>
 				<td>
-					<textarea name="achar.transfection.cellLine" rows="2" cols="80"><c:out value="${characterizationForm.map.achar.transfection.cellLine}"/>
+					<textarea name="achar.transfection.cellLine" rows="2" cols="80" id="transfectionCellLine"><c:out value="${characterizationForm.map.achar.transfection.cellLine}"/>
 			</textarea>
 				</td>
 			</tr>

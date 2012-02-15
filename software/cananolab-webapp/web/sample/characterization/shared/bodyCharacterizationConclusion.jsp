@@ -6,10 +6,10 @@
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<td class="cellLabel">
-			Analysis and Conclusion
+			<label for="charConclusion">Analysis and Conclusion</label>
 		</td>
 		<td>
-			<html:textarea property="achar.conclusion" cols="120" rows="3" />
+			<html:textarea property="achar.conclusion" cols="120" rows="3" styleId="charConclusion"/>
 			&nbsp;
 		</td>
 	</tr>

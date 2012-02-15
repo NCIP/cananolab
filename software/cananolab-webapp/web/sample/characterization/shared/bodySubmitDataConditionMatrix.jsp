@@ -49,7 +49,7 @@
 		<tr>
 			<logic:iterate id="cell" name="characterizationForm"
 				property="achar.theFinding.rows[${rInd}].cells" indexId="cInd">
-				<td>
+				<td><label for="cellValue${rInd}:${cInd}">&nbsp;</label>
 					<html:text
 						property="achar.theFinding.rows[${rInd}].cells[${cInd}].value"
 						size="15" styleId="cellValue${rInd}:${cInd}" />
@@ -58,7 +58,7 @@
 			</logic:iterate>
 			<td>
 				<a
-					href="javascript:reduceMatrix(characterizationForm, 'Row', ${rInd})">Delete</a>
+					href="javascript:reduceMatrix('Row', ${rInd})">Delete</a>
 			</td>
 		</tr>
 	</logic:iterate>

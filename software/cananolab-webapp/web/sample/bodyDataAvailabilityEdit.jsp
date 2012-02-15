@@ -38,7 +38,7 @@
 			</td>
 			<td ></td>
 			<td align="center">
-				<img src="images/icon_checkMark.png"/>
+				<img src="images/icon_checkMark.png" alt="check mark"/>
 			</td>
 		</tr>
 		<tr>
@@ -51,7 +51,7 @@
 			<td align="center">
 			<c:forEach var="data" items="${availableEntityNames}">
 			<c:if test="${data eq 'sample composition'}" >
-			<img src="images/icon_checkMark.png" /></c:if>
+			<img src="images/icon_checkMark.png" alt="check mark"/></c:if>
 			</c:forEach>
 			</td>
 		</tr>
@@ -64,7 +64,7 @@
 			<td align="center">
 			<c:forEach var="data" items="${availableEntityNames}">
 			<c:if test="${data eq 'nanomaterial entities'}" >
-			<img src="images/icon_checkMark.png" /></c:if>
+			<img src="images/icon_checkMark.png" alt="check mark"/></c:if>
 			</c:forEach>
 			</td>
 		</tr>
@@ -77,7 +77,7 @@
 			<td align="center">
 			<c:forEach var="data" items="${availableEntityNames}">
 			<c:if test="${data eq 'functionalizing entities'}" >
-			<img src="images/icon_checkMark.png" /></c:if>
+			<img src="images/icon_checkMark.png" alt="check mark"/></c:if>
 			</c:forEach>
 			</td>
 		</tr>
@@ -90,7 +90,7 @@
 			<td align="center">
 			<c:forEach var="data" items="${availableEntityNames}">
 			<c:if test="${data eq 'chemical associations'}" >
-			<img src="images/icon_checkMark.png" /></c:if>
+			<img src="images/icon_checkMark.png" alt="check mark"/></c:if>
 			</c:forEach>
 			</td>
 		</tr>
@@ -109,7 +109,7 @@
 			<td align="center">
 			<c:forEach var="data" items="${availableEntityNames}">
 			<c:if test="${data eq chem}" >
-			<img src="images/icon_checkMark.png" /></c:if>
+			<img src="images/icon_checkMark.png" alt="check mark"/></c:if>
 			</c:forEach>
 			</td>
 		</tr>
@@ -124,7 +124,7 @@
 			<td align="center">
 			<c:forEach var="data" items="${availableEntityNames}">
 			<c:if test="${data eq 'sample function'}" >
-			<img src="images/icon_checkMark.png" /></c:if>
+			<img src="images/icon_checkMark.png" alt="check mark"/></c:if>
 			</c:forEach>
 			</td>
 		</tr>
@@ -145,7 +145,7 @@
 				<td align="center">
 					<c:forEach var="data" items="${availableEntityNames}">
 						<c:if test="${data eq char}">
-							<img src="images/icon_checkMark.png" />
+							<img src="images/icon_checkMark.png" alt="check mark"/>
 						</c:if>
 					</c:forEach>
 				</td>
@@ -161,7 +161,7 @@
 			<td align="center">
 				<c:forEach var="data" items="${availableEntityNames}">
 					<c:if test="${data eq 'surface area'}">
-						<img src="images/icon_checkMark.png" />
+						<img src="images/icon_checkMark.png" alt="check mark"/>
 					</c:if>
 			</c:forEach>
 			</td>
@@ -177,7 +177,7 @@
 			<td align="center">
 				<c:forEach var="data" items="${availableEntityNames}">
 					<c:if test="${data == 'surface charge'}">
-						<img src="images/icon_checkMark.png" />
+						<img src="images/icon_checkMark.png" alt="check mark"/>
 					</c:if>
 			</c:forEach>
 			</td>
@@ -193,7 +193,7 @@
 			<td align="center">
 				<c:forEach var="data" items="${availableEntityNames}">
 					<c:if test="${data == 'zeta potential'}">
-						<img src="images/icon_checkMark.png" />
+						<img src="images/icon_checkMark.png" alt="check mark"/>
 					</c:if>
 			</c:forEach>
 			</td>
@@ -212,7 +212,7 @@
 			<td align="center">
 				<c:forEach var="data" items="${availableEntityNames}">
 					<c:if test="${data == char}">
-						<img src="images/icon_checkMark.png" />
+						<img src="images/icon_checkMark.png" alt="check mark"/>
 					</c:if>
 			</c:forEach>
 			</td>
@@ -239,7 +239,7 @@
 			<td  align="center">
 				<c:forEach var="data" items="${availableEntityNames}">
 					<c:if test="${data == char}">
-						<img src="images/icon_checkMark.png" />
+						<img src="images/icon_checkMark.png" alt="check mark"/>
 					</c:if>
 			</c:forEach>
 			</td>
@@ -263,7 +263,7 @@
 			<td align="center">
 				<c:forEach var="data" items="${availableEntityNames}">
 					<c:if test="${data == char}">
-						<img src="images/icon_checkMark.png" />
+						<img src="images/icon_checkMark.png" alt="check mark"/>
 					</c:if>
 			</c:forEach>
 			</td>
@@ -277,7 +277,7 @@
 			<td align="center">
 				<c:forEach var="data" items="${availableEntityNames}">
 					<c:if test="${data == 'publications'}">
-						<img src="images/icon_checkMark.png" />
+						<img src="images/icon_checkMark.png" alt="check mark"/>
 					</c:if>
 			</c:forEach>
 			</td>
@@ -285,12 +285,12 @@
 		<tr><td colspan="3"><c:if test="${!empty updateSample && empty param.styleId}">
 			<table class="invisibleTable"  width="100%" >
 				<tr><td align="left"><input type="button" value="Delete"
-								onclick="javascript:deleteDataAvailability('Data Availability for the sample', sampleForm, 'sample', 'deleteDataAvailability');" />
+								onclick="javascript:deleteDataAvailability('Data Availability for the sample', 'sample', 'deleteDataAvailability');" />
 					</td>
 					<td >
 						<div align="right">
 							<input type="button" value="Regenerate"
-								onclick="javascript:updateDataAvailability(sampleForm, 'sample', 'updateDataAvailability');" />
+								onclick="javascript:updateDataAvailability('sample', 'updateDataAvailability');" />
 							<input type="button" value="Cancel"
 								onclick="javascript:hide('dataAvailability');enableOuterButtons();" />
 						</div>

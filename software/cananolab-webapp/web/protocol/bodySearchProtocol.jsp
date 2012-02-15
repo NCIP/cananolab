@@ -13,7 +13,7 @@
 	<jsp:param name="topic" value="search_protocol_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="searchProtocol">
+<html:form action="searchProtocol" styleId="searchProtocolForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>

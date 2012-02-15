@@ -6,7 +6,7 @@
 
 <c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
 	<table id="summarySection${ind.count}" width="100%" align="center"
-		style="display: block" class="summaryViewNoGrid">
+		style="display: block" class="summaryViewNoGrid" summary="layout">
 		<tr>
 			<th align="left">
 				<span class="summaryViewHeading">${type}</span>

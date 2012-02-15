@@ -20,7 +20,7 @@
 	<jsp:param name="topic" value="submit_protocol_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/protocol" enctype="multipart/form-data">
+<html:form action="/protocol" enctype="multipart/form-data" styleId="protocolForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
@@ -137,7 +137,7 @@
 		<c:set var="accessParent" value="protocol" />
 		<c:set var="dataType" value="Protocol" />
 		<c:set var="parentAction" value="protocol" />
-		<c:set var="parentForm" value="protocolForm" />
+		<c:set var="parentFormName" value="protocolForm" />
 		<c:set var="parentPage" value="2"/>
 		<c:set var="protectedData"
 			value="${protocolForm.map.protocol.domain.id}" />
@@ -155,12 +155,12 @@
 	<c:set var="resetOnclick" value="this.form.reset();" />
 	<c:set var="deleteButtonName" value="Delete" />
 	<c:set var="deleteOnclick"
-		value="deleteData('protocol', protocolForm, 'protocol', 'delete')" />
+		value="deleteData('protocol', 'protocolForm', 'protocol', 'delete')" />
 	<c:set var="hiddenDispatch" value="create" />
 	<c:set var="hiddenPage" value="1" />
 	<c:if test="${review}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(protocolForm, 'protocol', '${protocolForm.map.protocol.domain.id}', '${protocolForm.map.protocol.domain.name}', 'protocol', 'protocolMessage')" />
+			value="submitReview('protocolForm', 'protocol', '${protocolForm.map.protocol.domain.id}', '${protocolForm.map.protocol.domain.name}', 'protocol', 'protocolMessage')" />
 	</c:if>
 	<c:set var="validate" value="false" />
 	<c:if test="${!user.curator && protocolForm.map.protocol.publicStatus}">
