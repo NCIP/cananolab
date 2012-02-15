@@ -5,7 +5,7 @@ var emptyOption = [ {
 function retrieveProtocolNames() {
 	var protocolType = document.getElementById("protocolType").value;
 	if (protocolType == "") {
-		gotoSubmitNewPage();
+		NewPage();
 	}
 	ProtocolManager.getProtocolNames(protocolType, populateProtocolNames);
 }
@@ -113,20 +113,20 @@ function writeLink(protocol) {
 }
 
 function gotoUpdatePage(protocol) {
-	var form = document.forms[0];
+	var form=document.getElementById("protocolForm");
 	form.action = "protocol.do?dispatch=setupUpdate&page=0&protocolId="
 			+ protocol.domain.id;
 	form.submit();
 }
 
-function gotoSubmitNewPage() {
-	var form = document.forms[0];
+function NewPage() {
+	var form=document.getElementById("protocolForm");
 	form.action = "protocol.do?dispatch=setupNew&page=0";
 	form.submit();
 }
 
 function gotoInputPage() {
-	var form = document.forms[0];
+	var form=document.getElementById("protocolForm");
 	form.action = "protocol.do?dispatch=input&page=0";
 	form.submit();
 }

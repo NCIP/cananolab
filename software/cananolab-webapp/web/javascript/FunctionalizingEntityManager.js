@@ -207,7 +207,7 @@ function addFunction(publicRetract, actionName) {
 	}
 	if (validateRetract) {
 		if (validateAmountValue()) {
-			submitAction(document.forms[0], actionName, "saveFunction", 2);
+			submitAction("funcEntityForm", actionName, "saveFunction", 2);
 			return true;
 		} else {
 			return false;
@@ -220,7 +220,7 @@ function removeFunction(publicRetract, actionName) {
 		validateRetract = confirmPublicDataUpdate();
 	}
 	if (validateRetract) {
-		submitAction(document.forms[0], actionName, "removeFunction", 2);
+		submitAction("funcEntityForm", actionName, "removeFunction", 2);
 	}
 }
 /* end of submit composing element form */

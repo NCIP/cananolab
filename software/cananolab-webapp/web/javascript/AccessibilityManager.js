@@ -131,15 +131,15 @@ function populateAccess(access) {
 	}
 }
 
-function addAccess(actionName, page, isPublic) {
+function addAccess(parentFormName, actionName, page, isPublic) {
 	if (isPublic) {
 		if (confirm("Data is already public.  Assigning a different accessibility will retract it from public.  Continue?")) {
 			enableOuterButtons();
-			submitAction(document.forms[0], actionName, "saveAccess", page);
+			submitAction(parentFormName, actionName, "saveAccess", page);
 		}
 	} else {
 		enableOuterButtons();
-		submitAction(document.forms[0], actionName, "saveAccess", page);
+		submitAction(parentFormName, actionName, "saveAccess", page);
 	}
 }
 
@@ -152,10 +152,10 @@ function clearAccess(parentFormName, parentType) {
 	enableAccessBy(true);
 }
 
-function deleteTheAccess(actionName, page) {
+function deleteTheAccess(parentFormName, actionName, page) {
 	var answer = confirmDelete("access");
 	if (answer != 0) {
-		submitAction(document.forms[0], actionName, "deleteAccess", page);
+		submitAction(parentFormName, actionName, "deleteAccess", page);
 	}
 	enableOuterButtons();
 }

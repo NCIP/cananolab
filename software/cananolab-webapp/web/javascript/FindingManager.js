@@ -71,11 +71,13 @@ function setColumnValueUnit(columnNumber) {
 		dwr.util.addOptions("valueUnit" + columnNumber, [ "[other]" ]);
 	});
 }
-function resetTheFinding(form) {
+function resetTheFinding() {
+	var form=document.getElementById("charForm");
 	form.action = "characterization.do?dispatch=resetFinding&page=0";
 	form.submit();
 }
-function setTheFinding(form, actionName, findingId) {
+function setTheFinding(actionName, findingId) {
+	var form=document.getElementById("charForm");
 	form.action = actionName + ".do?dispatch=getFinding&findingId=" + findingId
 			+ "&page=0";
 	form.submit();
@@ -96,7 +98,7 @@ function saveFinding(publicRetract, actionName) {
 				if (validateMatrix() && validateShapeInfo() && validateSolubilityInfo() &&
 					validateSavingTheData('newExperimentConfig', 'Technique and Instrument')
 					) {
-				    submitAction(document.forms[0], actionName, "saveFinding", 4);
+				    submitAction("charForm", actionName, "saveFinding", 4);
 					return true;
 				} else {
 					return false;
@@ -177,7 +179,7 @@ function validateMatrix() {
 	}
 	return true;
 }
-function deleteTheFinding(publicRetract, form) {
+function deleteTheFinding(publicRetract) {
 	var validateRetract = true;
 	if (publicRetract == "true") {
 		validateRetract = confirmPublicDataUpdate();
@@ -185,16 +187,18 @@ function deleteTheFinding(publicRetract, form) {
 	if (validateRetract) {
 		var answer = confirmDelete("finding");
 		if (answer != 0) {
+			var form=document.getElementById("charForm");
 			form.action = "characterization.do?dispatch=deleteFinding&page=2";
 			form.submit();
 		}
 	}
 }
-function updateMatrix(form) {
+function updateMatrix() {
 	var colNum = dwr.util.getValue("colNum");
 	var rowNum = dwr.util.getValue("rowNum");
 	if (colNum > 0 && rowNum > 0) {
 		if (document.getElementById("newColumnOrder").style.display != "block") {
+			var form=document.getElementById("charForm");
 			form.action = "characterization.do?dispatch=drawMatrix&page=0";
 			form.submit();
 		} else {
@@ -202,7 +206,8 @@ function updateMatrix(form) {
 		}
 	}
 }
-function reduceMatrix(form, type, index) {
+function reduceMatrix(type, index) {
+	var form=document.getElementById("charForm");
 	form.action = "characterization.do?dispatch=drawMatrix&page=0&remove"
 			+ type + "=" + index;
 	form.submit();
@@ -375,7 +380,7 @@ function setColumnOrder() {
 	}
 }
 // "Save" button on 'bodySubmitDataConditionMatrixColumnOrder.jsp'.
-function updateColumnOrder(form) {
+function updateColumnOrder() {
 	var colNum = dwr.util.getValue("colNum");
 	if (colNum > 1) {
 		var orderValid = true;
@@ -392,6 +397,7 @@ function updateColumnOrder(form) {
 			}
 		}
 		if (orderValid) {
+			var form=document.getElementById("charForm");
 			form.action = "characterization.do?dispatch=updateColumnOrder&page=0";
 			form.submit();
 		}

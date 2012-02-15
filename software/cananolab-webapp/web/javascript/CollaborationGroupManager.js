@@ -95,7 +95,7 @@ function clearCollaborationGroup() {
 function deleteTheCollaborationGroup() {
 	var answer = confirmDelete("collaboration group");
 	if (answer != 0) {
-		submitAction(document.forms[0], "collaborationGroup", "delete", 2);
+		submitAction("collaborationGroupForm", "collaborationGroup", "delete", 2);
 	}
 }
 

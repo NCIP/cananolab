@@ -137,14 +137,14 @@ function searchPublication() {
 	if (pubMedId != null && pubMedId != 0) {
 		PublicationManager.searchPubMedById(pubMedId, validatePubMedInfo);
 	} else {
-		submitAction(document.forms[0], "searchPublication", "search", 1);
+		submitAction("publicationForm", "searchPublication", "search", 1);
 	}
 }
 function validatePubMedInfo(publication) {
 	if (publication.domainFile.pubMedId == null) {
 		alert("Invalid PubMed ID entered.");
 	} else {
-		submitAction(document.forms[0], "searchPublication", "search", 1);
+		submitAction("publicationForm", "searchPublication", "search", 1);
 	}
 }
 
@@ -404,20 +404,20 @@ function deleteTheAuthor() {
 }
 
 function gotoUpdatePage(publicationId) {
-	var form = document.forms[0];
+	var form=document.getElementById("publicationForm");
 	form.action = "publication.do?dispatch=setupUpdate&page=0&publicationId="
 			+ publicationId;
 	form.submit();
 }
 
 function gotoSubmitNewPage() {
-	var form = document.forms[0];
+	var form=document.getElementById("publicationForm");
 	form.action = "publication.do?dispatch=setupNew&page=0";
 	form.submit();
 }
 
 function gotoInputPage() {
-	var form = document.forms[0];
+	var form=document.getElementById("publicationForm");
 	form.action = "publication.do?dispatch=input&page=0";
 	form.submit();
 }
