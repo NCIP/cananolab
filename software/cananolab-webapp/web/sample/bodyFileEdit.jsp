@@ -18,8 +18,7 @@
 		<th class="cellLabel" scope="col">
 			Description
 		</th>
-		<td>
-		</td>
+		<th></th>
 	</tr>
 	<c:forEach var="file" items="${files}">
 		<tr>
@@ -41,7 +40,7 @@
 								<a href="#"
 									onclick="popImage(event, '${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
 										src="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}"
-										border="0" width="150"> </a>
+										border="0" width="150" alt="image ${file.domainFile.id}"> </a>
 							</c:when>
 							<c:otherwise>
 								<a style="white-space: normal;"
