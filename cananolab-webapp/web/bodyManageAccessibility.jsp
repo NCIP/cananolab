@@ -19,7 +19,7 @@
 		<td>
 			<c:set var="newAddAccessButtonStyle" value="display:block" />
 			<a href="#"
-				onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentForm}\', \'${dataType}\')');"
+				onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'${parentFormName}\', \'${dataType}\')');"
 				id="addAccess" style="${newAddAccessButtonStyle}"><img
 					align="top" src="images/btn_add.gif" border="0" alt="add accessibility"/></a>
 		</td>
@@ -53,7 +53,7 @@
 									</c:when>
 									<c:otherwise>
 										<a
-											href="javascript:setTheAccess('${parentForm}', 'group', '${access.groupName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
+											href="javascript:setTheAccess('${parentFormName}', 'group', '${access.groupName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
 							    </c:otherwise>
 								</c:choose>
 							</td>
@@ -92,7 +92,7 @@
 									</c:when>
 									<c:otherwise>
 										<a
-											href="javascript:setTheAccess('${parentForm}', 'user', '${access.userBean.loginName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
+											href="javascript:setTheAccess('${parentFormName}', 'user', '${access.userBean.loginName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
 							    </c:otherwise>
 								</c:choose>
 							</td>
@@ -212,9 +212,9 @@
 								<html:hidden property="${accessParent}.theAccess.groupName"
 									styleId="hiddenGroupName" />
 								<input type="button" value="Save"
-									onclick="javascript:addAccess('${parentAction}', ${parentPage}, ${isPublic});" />
+									onclick="javascript:addAccess('${parentFormName}', '${parentAction}', ${parentPage}, ${isPublic});" />
 								<input type="button" value="Cancel"
-									onclick="javascript:clearAccess('${parentForm}', '${dataType}');closeSubmissionForm('Access');">
+									onclick="javascript:clearAccess('${parentFormName}', '${dataType}');closeSubmissionForm('Access');">
 							</div>
 						</td>
 					</tr>
