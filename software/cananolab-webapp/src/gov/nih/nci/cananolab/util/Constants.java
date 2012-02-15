@@ -142,7 +142,8 @@ public class Constants {
 
 	public static final String PUBMED_PREFIX = "http://www.ncbi.nlm.nih.gov/pubmed/";
 
-	public static final String PUBMED_XML_PREFIX = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
+	//public static final String PUBMED_XML_PREFIX = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
+	public static final String PUBMED_XML_PREFIX="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=xml&id=";	
 
 	public static final String ISI_PREFIX = "http://apps.isiknowledge.com/InboundService.do?Func=Frame&product=WOS&action=retrieve&SrcApp=EndNote&Init=Yes&SrcAuth=ResearchSoft&mode=FullRecord&UT=";
 	public static final int CANANOLAB_AVAILABLE_ENTITY = 30;
