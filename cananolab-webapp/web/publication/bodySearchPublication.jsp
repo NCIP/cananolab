@@ -14,7 +14,7 @@
 	<jsp:param name="topic" value="search_publications_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="searchPublication">
+<html:form action="searchPublication" styleId="searchPublicationForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=publication" />	
 	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>

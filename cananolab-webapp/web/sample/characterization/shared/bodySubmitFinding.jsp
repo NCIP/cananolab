@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<table class="subSubmissionView" width="85%" align="center">
+<table class="subSubmissionView" width="85%" align="center" summary="layout">
 	<tr>
 		<th colspan="2">
 			Finding Info
@@ -14,11 +14,11 @@
 			Data and Conditions &nbsp;&nbsp;
 			<html:text property="achar.theFinding.numberOfColumns" size="1"
 				styleId="colNum" onkeydown="return filterInteger(event)" />
-			columns
+			<label for="colNum">columns</label>
 			<html:text property="achar.theFinding.numberOfRows" size="1"
 				styleId="rowNum" onkeydown="return filterInteger(event)" />
-			rows &nbsp;&nbsp;
-			<a href="javascript:updateMatrix(characterizationForm)">Update</a>
+			<label for="rowNum">rows</label> &nbsp;&nbsp;
+			<a href="javascript:updateMatrix()">Update</a>
 			&nbsp;&nbsp;
 			<a href="javascript:setColumnOrder()">Set Column Order</a>
 		</td>
@@ -68,7 +68,7 @@
 				<c:set var="newFileStyle" value="display:block" />
 			</c:if>
 			<div style="${newFileStyle}" id="newFile">
-				<c:set var="fileForm" value="characterizationForm" />
+				<c:set var="fileFormName" value="charForm" />
 				<c:set var="fileParent" value="achar.theFinding" />
 				<c:set var="actionName" value="characterization" />
 				<c:set var="theFile"
@@ -83,7 +83,7 @@
 			<c:if
 				test="${theSample.userDeletable && not empty characterizationForm.map.achar.theFinding.domain.id}">
 				<input type="button" value="Remove" id="deleteFinding"
-					onclick="javascript: deleteTheFinding('${param.validate}', characterizationForm);">
+					onclick="javascript: deleteTheFinding('${param.validate}');">
 			</c:if>
 		</td>
 		<td>

@@ -84,7 +84,7 @@
 			<c:forEach var="type" items="${characterizationTypes}"
 				varStatus="ind">
 				<table id="summarySectionHeader${ind.count}" width="100%"
-					align="center" style="display: block" class="summaryViewHeader">
+					align="center" style="display: block" class="summaryViewHeader" summary="layout">
 					<tr>
 						<th scope="col" align="left">
 							<b>${type}</b>

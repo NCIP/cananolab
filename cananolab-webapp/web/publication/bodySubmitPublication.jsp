@@ -28,7 +28,7 @@
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=publication" />
 <html:form action="/publication" enctype="multipart/form-data"
-	onsubmit="return validateSavingTheData('newAuthor', 'Authors');">
+	onsubmit="return validateSavingTheData('newAuthor', 'Authors');" styleId="publicationForm">
 	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="100">
@@ -424,7 +424,7 @@
 			value="${publicationForm.map.publication.userAccesses}" />
 		<c:set var="accessParent" value="publication" />
 		<c:set var="dataType" value="Publication" />
-		<c:set var="parentForm" value="publicationForm" />
+		<c:set var="parentFormName" value="publicationForm" />
 		<c:set var="parentAction" value="publication" />
 		<c:set var="parentPage" value="2" />
 		<c:set var="protectedData"
@@ -457,22 +457,22 @@
 			value="javascript: location.href = 'publication.do?dispatch=setupUpdate&page=0&publicationId=${param.publicationId}${resetSampleIdStr}'" />
 	</c:if>
 	<c:set var="deleteOnclick"
-		value="deleteData('publication', publicationForm, 'publication', 'delete')" />
+		value="deleteData('publication', 'publicationForm', 'publication', 'delete')" />
 	<c:set var="deleteButtonName" value="Delete" />
 
 	<c:if test="${!empty param.sampleId}">
 		<c:set var="deleteButtonName" value="Remove from Sample" />
 		<c:set var="deleteOnclick"
-			value="deleteData('sample publication association', publicationForm, 'publication', 'removeFromSample')" />
+			value="deleteData('sample publication association', 'publicationForm', 'publication', 'removeFromSample')" />
 		<html:hidden property="sampleId" value="${param.sampleId}" />
 	</c:if>
 	<c:if test="${review && !empty param.sampleId}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication')" />
+			value="submitReview('publicationForm', 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication')" />
 	</c:if>
 	<c:if test="${review && empty param.sampleId}">
 		<c:set var="submitForReviewOnclick"
-			value="submitReview(publicationForm, 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication', 'publicationMessage')" />
+			value="submitReview('publicationForm', 'publication', '${publicationForm.map.publication.domainFile.id}', '${publicationForm.map.publication.domainFile.title}', 'publication', 'publicationMessage')" />
 	</c:if>
 	<c:set var="validate" value="false" />
 	<c:if

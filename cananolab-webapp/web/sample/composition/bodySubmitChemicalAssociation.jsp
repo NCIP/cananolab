@@ -55,7 +55,7 @@
 	<jsp:param name="topic" value="chem_association_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/chemicalAssociation" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFile', 'file');">
+<html:form action="/chemicalAssociation" enctype="multipart/form-data" onsubmit="return validateSavingTheData('newFile', 'file');" styleId="chemAssocForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<c:if test="${empty compositionForm.map.assoc.domainAssociation.id}">
@@ -192,7 +192,7 @@
 					    <c:set var="newFileStyle" value="display:block"/>
 					</c:if>
 					<div style="${newFileStyle}" id="newFile">
-						<c:set var="fileForm" value="compositionForm" />
+						<c:set var="fileFormName" value="chemAssocForm" />
 						<c:set var="theFile" value="${compositionForm.map.assoc.theFile}" />
 						<%@include file="../bodySubmitFile.jsp"%>
 						&nbsp;
@@ -204,7 +204,7 @@
     <html:hidden property="sampleId" value="${param.sampleId}" />
 	<c:set var="updateId" value="${compositionForm.map.assoc.domainAssociation.id}"/>
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
-	<c:set var="deleteOnclick" value="deleteData('chemical association', compositionForm, 'chemicalAssociation', 'delete')"/>
+	<c:set var="deleteOnclick" value="deleteData('chemical association', 'chemAssocForm', 'chemicalAssociation', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>

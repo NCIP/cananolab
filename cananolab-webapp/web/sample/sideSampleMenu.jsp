@@ -35,7 +35,8 @@
 		</c:url>
 		<c:choose>
 			<c:when test="${actionPath eq '/sample.do'}">
-				<td class="subMenuSecondaryTitleSelected">
+				<td class="subMenuSecondaryTitleSelected"
+				    onclick="gotoPage('${sampleUrl}')">
 					GENERAL INFO
 				</td>
 			</c:when>
@@ -59,7 +60,8 @@
 				<c:choose>
 					<c:when
 						test="${actionPath eq '/composition.do' || actionPath eq '/nanomaterialEntity.do' || actionPath eq '/functionalizingEntity.do' ||actionPath eq '/chemicalAssociation.do' ||actionPath eq '/compositionFile.do'}">
-						<td class="subMenuSecondaryTitleSelected">
+						<td class="subMenuSecondaryTitleSelected"
+						    onclick="gotoPage('${compUrl}')">
 							COMPOSITION
 						</td>
 					</c:when>
@@ -89,7 +91,8 @@
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/characterization.do'}">
-						<td class="subMenuSecondaryTitleSelected">
+						<td class="subMenuSecondaryTitleSelected" 
+						    onclick="gotoPage('${charUrl}')">
 							CHARACTERIZATION
 						</td>
 					</c:when>
@@ -118,7 +121,8 @@
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/publication.do'}">
-						<td class="subMenuSecondaryTitleSelected">
+						<td class="subMenuSecondaryTitleSelected"
+						    onclick="gotoPage('${pubUrl}')">
 							PUBLICATION
 						</td>
 					</c:when>

@@ -24,7 +24,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="2">
 					Cytotoxicity Properties
@@ -32,10 +32,10 @@
 			</tr>
 			<tr>
 				<td class="cellLabel">
-					Cell Line
+					<label for="cytotoxicityCellLine">Cell Line</label>
 				</td>
 				<td>
-					<textarea name="achar.cytotoxicity.cellLine" rows="2" cols="80"><c:out value="${characterizationForm.map.achar.cytotoxicity.cellLine}"/>
+					<textarea name="achar.cytotoxicity.cellLine" rows="2" cols="80" id="cytotoxicityCellLine"><c:out value="${characterizationForm.map.achar.cytotoxicity.cellLine}"/>
 			</textarea>
 				</td>
 			</tr>

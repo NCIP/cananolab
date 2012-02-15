@@ -24,7 +24,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="4">
 					Physical State Properties
@@ -32,7 +32,7 @@
 			</tr>
 			<tr>
 				<td class="cellLabel" width="20%">
-					Type
+					<label for="physicalStateType">Type</label>
 				</td>
 				<td>
 					<div id="physicalStateTypePrompt">

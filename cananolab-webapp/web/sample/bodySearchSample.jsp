@@ -21,7 +21,7 @@
 	<jsp:param name="otherLink"
 		value="advancedSampleSearch.do?dispatch=setup" />
 </jsp:include>
-<html:form action="searchSample">
+<html:form action="searchSample" styleId="searchSampleForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>

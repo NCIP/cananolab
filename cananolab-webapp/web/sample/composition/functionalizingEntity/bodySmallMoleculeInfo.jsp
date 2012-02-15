@@ -17,16 +17,16 @@
 		</table>
 	</c:when>
 	<c:otherwise>
-		<table width="100%" align="center" class="submissionView">
+		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
 				<th colspan="4" scope="col">
 					Small Molecule Properties
 				</th>
 			</tr>
 			<tr>
-				<th scope="row" class="cellLabel">
+				<td class="cellLabel">
 					<strong><label for="smallMoleculeAlternateName">Alternate Name</label></strong>
-				</th>
+				</td>
 				<td>
 					<input type="text" id="smallMoleculeAlternateName"
 						name="functionalizingEntity.smallMolecule.alternateName" size="90" 

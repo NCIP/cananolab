@@ -37,7 +37,7 @@
 </jsp:include>
 <html:form action="/functionalizingEntity" enctype="multipart/form-data"
 	onsubmit="return validateAmountValue() &&
-	validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');">
+	validateSavingTheData('newFunction', 'function') && validateSavingTheData('newFile', 'file');" styleId="funcEntityForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 	<table width="100%" align="center" class="submissionView" summary="layout">
 		<c:if
@@ -269,7 +269,7 @@
 						<c:set var="newFileStyle" value="display:block"/>
 					</c:if>
 					<div style="${newFileStyle}" id="newFile">
-						<c:set var="fileForm" value="compositionForm" />
+						<c:set var="fileFormName" value="funcEntityForm" />
 						<c:set var="theFile"
 							value="${compositionForm.map.functionalizingEntity.theFile}" />
 						<c:set var="actionName" value="functionalizingEntity" />
@@ -286,7 +286,7 @@
 	<c:set var="updateId"
 		value="${compositionForm.map.functionalizingEntity.domainEntity.id}" />
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
-	<c:set var="deleteOnclick" value="deleteData('functionalizing entity', compositionForm, 'functionalizingEntity', 'delete')"/>
+	<c:set var="deleteOnclick" value="deleteData('functionalizing entity', 'funcEntityForm', 'functionalizingEntity', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>

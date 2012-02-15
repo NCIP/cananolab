@@ -8,7 +8,7 @@
 	<c:if test="${empty characterizationForm.map.achar.domainChar.id}">
 		<tr>
 			<td class="cellLabel">
-				Characterization Type *
+				<label for="charType">Characterization Type *</label>
 			</td>
 			<td>
 				<div id="charTypePrompt">
@@ -24,7 +24,7 @@
 				</div>
 			</td>
 			<td class="cellLabel">
-				Characterization Name *
+				<label for="charName">Characterization Name *</label>
 			</td>
 			<td>
 				<div id="charNamePrompt">
@@ -45,7 +45,7 @@
 	</c:if>
 	<tr>
 		<td class="cellLabel">
-			Assay Type
+			<label for="assayType">Assay Type</label>
 		</td>
 		<td>
 			<div id="assayTypePrompt">
@@ -69,7 +69,7 @@
 			</div>
 		</td>
 		<td class="cellLabel">
-			Protocol Name - Version
+			<label for="protocolId">Protocol Name - Version</label>
 		</td>
 		<html:hidden styleId="updatedUri"
 			property="achar.protocolBean.fileBean.domainFile.uri" />
@@ -94,7 +94,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Characterization Source
+			<label for="charSource">Characterization Source</label>
 		</td>
 		<td>
 			<html:select property="achar.pocBean.domain.id" styleId="charSource">
@@ -104,7 +104,7 @@
 			</html:select>
 		</td>
 		<td class="cellLabel">
-			Characterization Date
+			<label for="charDate">Characterization Date</label>
 		</td>
 		<td>
 			<html:text property="achar.dateString" size="10" styleId="charDate" />
