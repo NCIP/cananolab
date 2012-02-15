@@ -19,8 +19,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
 
-public class PubMedXMLHandler {
-	private static final String PUBMED_URL = Constants.PUBMED_XML_PREFIX;
+public class PubMedXMLHandler {	
 	private static PubMedXMLHandler onlyInstance = null;
 
 	private PublicationBean publicationBean = null;
@@ -49,7 +48,8 @@ public class PubMedXMLHandler {
 	private boolean foundPubmedArticle = false;
 	private Keyword keyword = null;
 	private Set<Keyword> keywordSet = null;
-
+	private String pubmedURL;
+	
 	public static synchronized PubMedXMLHandler getInstance() {
 		if (onlyInstance == null)
 			onlyInstance = new PubMedXMLHandler();
@@ -64,7 +64,8 @@ public class PubMedXMLHandler {
 		publicationBean = pubBean;
 		publication = (Publication) publicationBean.getDomainFile();
 		try {
-			go(PUBMED_URL + pubMedId);
+			pubmedURL=Constants.PUBMED_XML_PREFIX+pubMedId;
+			go(pubmedURL);
 		} catch (Exception ex) {
 			System.out.println("Exception in parsePubMedXML, ");
 			ex.printStackTrace();
