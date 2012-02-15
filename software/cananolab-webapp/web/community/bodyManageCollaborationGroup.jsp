@@ -17,8 +17,8 @@
 	<jsp:param name="topic" value="manage_collaboration_groups_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/collaborationGroup">
-	<jsp:include page="/bodyMessage.jsp?bundle=community" />
+<html:form action="/collaborationGroup" styleId="collaborationGroupForm">
+	<jsp:include page="/bodyMessage.jsp?bundle=community"/>
 
 	<table width="100%" align="center" class="submissionView">
 		<c:if test="${!empty existingCollaborationGroups}">
