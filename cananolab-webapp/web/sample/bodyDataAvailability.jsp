@@ -38,7 +38,7 @@
 		</td>
 		<td ></td>
 		<td align="center">
-			<img src="images/checkMark.jpg"  width=11%"/>
+			<img src="images/checkMark.jpg"  width=11%" alt="check mark"/>
 		</td>
 	</tr>
 	<tr>
@@ -289,12 +289,12 @@
 <c:if test="${!empty updateSample && empty param.styleId}">	
 <table class="invisibleTable" width="95%" align="center">
 	<tr><td align="left"><input type="button" value="Delete"
-					onclick="javascript:deleteDataAvailability('Data Availability for the sample', sampleForm, 'sample', 'deleteDataAvailability');" />
+					onclick="javascript:deleteDataAvailability('Data Availability for the sample', 'sample', 'deleteDataAvailability');" />
 		</td>
 		<td colspan="2" align="right"> 
 			<div>			
 				<input type="button" value="Update"
-					onclick="javascript:updateDataAvailability(sampleForm, 'sample', 'updateDataAvailability');" />
+					onclick="javascript:updateDataAvailability('sample', 'updateDataAvailability');" />
 				<input type="button" value="Cancel"
 					onclick="javascript:hide('dataAvailability');show('editDataAvailability');" />	
 			</div>		
