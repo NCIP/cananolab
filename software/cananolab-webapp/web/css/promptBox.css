@@ -27,7 +27,7 @@ input.promptButton {
 table.promptbox {
 	border: 1px solid #ccccff;
 	background-color: #F4F4F5;
-	color: black;
+	color: #5C5C5C;
 	padding-left: 2px;
 	padding-right: 2px;
 	padding-bottom: 3px;
@@ -40,8 +40,9 @@ input.promptbox {
 	width: 100%;
 	font-family: arial;
 	font-size: 10px;
-	color: black;
+	color: #5C5C5C;
 }
+
 /**
 #newInstrument {
 	position: absolute;
