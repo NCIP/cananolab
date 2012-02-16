@@ -21,7 +21,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Comparators.SampleDateComparator;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -343,7 +343,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			}
 		}
 		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
-		Collections.sort(orderedSamples, new SampleDateComparator());
+		Collections.sort(orderedSamples,
+				Collections.reverseOrder(new Comparators.SampleDateComparator()));
 
 		for (Sample sample : orderedSamples) {
 			sampleIds.add(sample.getId().toString());

@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -38,7 +39,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of PublicationService and grid service *
- *
+ * 
  * @author tanq, pansu
  */
 public class PublicationServiceHelper extends BaseServiceHelper {
@@ -108,19 +109,21 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		//
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.setProjection(
-						Projections.projectionList().add(
-								Projections.property("id")).add(
-								Projections.property("createdDate")));
+						Projections.projectionList()
+								.add(Projections.property("id"))
+								.add(Projections.property("createdDate")));
 
 		if (!StringUtils.isEmpty(title)) {
 			TextMatchMode titleMatchMode = new TextMatchMode(title);
-			crit.add(Restrictions.ilike("title", titleMatchMode
-					.getUpdatedText(), titleMatchMode.getMatchMode()));
+			crit.add(Restrictions.ilike("title",
+					titleMatchMode.getUpdatedText(),
+					titleMatchMode.getMatchMode()));
 		}
 		if (!StringUtils.isEmpty(category)) {
 			TextMatchMode categoryMatchMode = new TextMatchMode(category);
-			crit.add(Restrictions.ilike("category", categoryMatchMode
-					.getUpdatedText(), categoryMatchMode.getMatchMode()));
+			crit.add(Restrictions.ilike("category",
+					categoryMatchMode.getUpdatedText(),
+					categoryMatchMode.getMatchMode()));
 		}
 
 		// pubMedId
@@ -222,7 +225,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		// order publications by createdDate
 		List<Publication> orderedPubs = new ArrayList<Publication>(
 				allPublications);
-		Collections.sort(orderedPubs, new PublicationDateComparator());
+		Collections.sort(orderedPubs, Collections
+				.reverseOrder(new Comparators.PublicationDateComparator()));
 		// get ordered ids
 		List<String> orderedPubIds = new ArrayList<String>();
 		for (Publication pub : orderedPubs) {
@@ -320,9 +324,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			if (StringUtils.containsIgnoreCase(getAccessibleData(), sampleId)) {
 				names.add(sampleName);
 			} else {
-				logger
-						.debug("User doesn't have access to sample "
-								+ sampleName);
+				logger.debug("User doesn't have access to sample " + sampleName);
 			}
 		}
 		return names.toArray(new String[0]);
@@ -521,12 +523,12 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 				disjunction.add(funcCrit1).add(funcCrit2);
 			}
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-				Criterion otherFuncCrit1 = Restrictions.and(Restrictions.eq(
-						"inFunc.class", "OtherFunction"), Restrictions.in(
-						"inFunc.type", otherFunctionTypes));
-				Criterion otherFuncCrit2 = Restrictions.and(Restrictions.eq(
-						"func.class", "OtherFunction"), Restrictions.in(
-						"func.type", otherFunctionTypes));
+				Criterion otherFuncCrit1 = Restrictions.and(
+						Restrictions.eq("inFunc.class", "OtherFunction"),
+						Restrictions.in("inFunc.type", otherFunctionTypes));
+				Criterion otherFuncCrit2 = Restrictions.and(
+						Restrictions.eq("func.class", "OtherFunction"),
+						Restrictions.in("func.type", otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
 			crit.add(disjunction);
@@ -546,9 +548,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 					if (getAccessibleData().contains(pub.getId().toString())) {
 						publications.add(pub);
 					} else {
-						logger
-								.debug("User doesn't have access to publication with id "
-										+ pub.getId());
+						logger.debug("User doesn't have access to publication with id "
+								+ pub.getId());
 					}
 				}
 			}
