@@ -28,9 +28,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of ProtocolService
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		ProtocolService {
@@ -88,7 +88,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	/**
 	 * Persist a new protocol file or update an existing protocol file
-	 *
+	 * 
 	 * @param protocolBean
 	 * @throws Exception
 	 */
@@ -184,8 +184,8 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
 					protocolName, protocolAbbreviation, fileTitle);
-			Collections.sort(protocols,
-					new Comparators.ProtocolDateComparator());
+			Collections.sort(protocols, Collections
+					.reverseOrder(new Comparators.ProtocolDateComparator()));
 			for (Protocol protocol : protocols) {
 				// don't need to load accessibility
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
