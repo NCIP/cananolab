@@ -31,7 +31,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			<label for="techniqueAbbr"></label>Abbreviation
+			<label for="techniqueAbbr">Abbreviation</label>
 		</td>
 		<td>
 			<html:text styleId="techniqueAbbr"
