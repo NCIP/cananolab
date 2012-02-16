@@ -22,9 +22,11 @@
 			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
 			<display:table name="samples" id="sample"
 				requestURI="searchSample.do" pagesize="25" class="displaytable"
-				partialList="true" size="resultSize"
+				partialList="true" size="resultSize" 
     			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-				<display:column title="" property="detailURL" headerScope="col"/>
+    			<c:if test="${!empty user}">
+					<display:column title="" property="detailURL" headerScope="col"/>
+				</c:if>
 				<display:column title="Sample Name" property="sampleName"
 					sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Primary<br>Point Of Contact"
@@ -60,7 +62,9 @@
 						</c:otherwise>
 					</c:choose>
 				</display:column>
-				<display:column title="Created Date" property="createdDateStr" sortable="true" escapeXml="true" headerScope="col"/>
+				<display:column title="Created Date"
+					property="domain.createdDate" sortable="true"
+					format="{0,date,MM-dd-yyyy}" headerScope="col"/>
 			</display:table>
 		</td>
 	</tr>
