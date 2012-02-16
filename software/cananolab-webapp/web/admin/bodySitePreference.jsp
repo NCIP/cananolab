@@ -10,39 +10,27 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <html:form action="/admin" enctype="multipart/form-data">
-	<table width="100%" align="center">
+	<jsp:include page="/bodyMessage.jsp" />
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
-			<td colspan="4">
-				<jsp:include page="/bodyMessage.jsp" />
-				<table width="100%" align="center" class="submissionView">
-					<tr>
-						<td class="cellLabel">
-							Upload Logo File
-						</td>
-						<td colspan="3">
-							<html:file property="siteLogo" /><br/>
-							<em>(Recommended image dimension: 304 x 83 pixels, maximum image size: <%=Constants.MAX_LOGO_SIZE%> bytes)</em>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Site Name
-						</td>
-						<td colspan="3">
-							<html:text styleId="fileTitle" property="siteName" size="50" />
-						</td>
-					</tr>
-				</table>
-				<br>
-				<c:set var="updateId" value="bogus"/>
-				<c:set var="hiddenDispatch" value="update" />
-				<c:set var="resetOnclick"
-					value="javascript:location.href='admin.do?dispatch=setupNew'" />
-				<c:set var="deleteOnclick"
-					value="javascript:location.href='admin.do?dispatch=remove'" />
-				<c:set var="deleteButtonName" value="Delete" />
-				<%@include file="../bodySubmitButtons.jsp"%>
-			</td>
+			<td class="cellLabel"><label for="siteLogo">Upload Logo File</label></td>
+			<td colspan="3"><html:file property="siteLogo" styleId="siteLogo"/><br /> <em>(Recommended
+					image dimension: 304 x 83 pixels, maximum image size: <%=Constants.MAX_LOGO_SIZE%>
+					bytes)</em></td>
+		</tr>
+		<tr>
+			<td class="cellLabel"><label for="fileTitle">Site Name</label></td>
+			<td colspan="3"><html:text styleId="fileTitle"
+					property="siteName" size="50" /></td>
 		</tr>
 	</table>
+	<br>
+	<c:set var="updateId" value="bogus" />
+	<c:set var="hiddenDispatch" value="update" />
+	<c:set var="resetOnclick"
+		value="javascript:location.href='admin.do?dispatch=setupNew'" />
+	<c:set var="deleteOnclick"
+		value="javascript:location.href='admin.do?dispatch=remove'" />
+	<c:set var="deleteButtonName" value="Delete" />
+	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>

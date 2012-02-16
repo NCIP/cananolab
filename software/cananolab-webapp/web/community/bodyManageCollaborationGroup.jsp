@@ -33,13 +33,13 @@
 					<c:set var="edit" value="true" />
 					<table class="editTableWithGrid" width="95%" align="center">
 						<tr>
-							<th>
+							<th scope="col">
 								Name
 							</th>
-							<th width="33%">
+							<th width="33%" scope="col">
 								Description
 							</th>
-							<th>
+							<th scope="col">
 								Owner
 							</th>
 							<th>
@@ -87,7 +87,7 @@
 				<a href="#"
 					onclick="javascript:clearCollaborationGroup();openSubmissionForm('CollaborationGroup');"
 					id="addCollaborationGroup" style="${newAddCGButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" /> </a>
+						align="top" src="images/btn_add.gif" border="0" alt="add collaboration group"/> </a>
 			</td>
 		</tr>
 		<tr>
