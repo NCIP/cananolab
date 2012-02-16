@@ -60,6 +60,7 @@
 						</c:otherwise>
 					</c:choose>
 				</display:column>
+				<display:column title="Created Date" property="createdDateStr" sortable="true" escapeXml="true" headerScope="col"/>
 			</display:table>
 		</td>
 	</tr>
