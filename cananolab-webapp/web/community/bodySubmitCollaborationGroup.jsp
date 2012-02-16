@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<table class="subSubmissionView" width="85%" align="center">
+<table class="subSubmissionView" width="85%" align="center" summary="layout">
 	<tr>
 		<th colspan="2">
 			Collaboration Group Information
@@ -12,7 +12,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Name*
+			<label for="groupName">Name*</label>
 		</td>
 		<td>
 			<html:text styleId="groupName" property="group.name" size="30"/>
@@ -20,7 +20,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="15%">
-			Description
+			<label for="groupDescription">Description</label>
 		</td>
 		<td>
 			<html:textarea styleId="groupDescription"
@@ -35,14 +35,14 @@
 			<div id="userSection">
 				<a style="display:block" id="addUser" href="javascript:show('newUser');clearUserAccess();">Add</a>
 				<br />
-				<table id="userTable" class="editTableWithGrid" width="85%"
+				<table id="userTable" class="editTableWithGrid" width="70%"
 					style="display: none;">
 					<tbody id="userRows">
 						<tr id="patternHeader">
-							<td width="30%" class="cellLabel">
+							<td width="30%" class="cellLabel" scope="col">
 								Login Name
 							</td>
-							<td width="30%" class="cellLabel">
+							<td width="30%" class="cellLabel" scope="col">
 								Access to the Group
 							</td>
 							<td>
@@ -71,10 +71,10 @@
 		</td>
 		<td>
 			<div id="newUser" style="display: none">
-				<table class="promptbox" width="85%">
+				<table class="promptbox" width="85%" summary="layout">
 					<tr>
 						<td class="cellLabel" width="30%">
-							User Login Name *
+							<label for="userBean.loginName">User Login Name *</label>
 						</td>
 						<td>
 							<html:text property="group.theAccess.userBean.loginName"
@@ -87,13 +87,13 @@
 											alt="search existing users" border="0" /></a>
 						</td>
 						<td width="50%">
-							<table class="invisibleTable">
+							<table class="invisibleTable" summary="layout">
 								<tr>
 									<td>
 										<img src="images/ajax-loader.gif" border="0" class="counts"
-											id="loaderImg" style="display: none">
+											id="loaderImg" style="display: none" alt="load existing users">
 									</td>
-									<td>
+									<td><label for="matchedUserNameSelect">&nbsp;</label>
 										<html:select
 											property="group.theAccess.userBean.loginName"
 											size="10" styleId="matchedUserNameSelect" style="display: none" onclick="updateUserLoginName()">
@@ -106,7 +106,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" width="30%">
-							Access to the Group *
+							<label for="roleName">Access to the Group *</label>
 						</td>
 						<td colspan="2">
 								<html:select property="group.theAccess.roleDisplayName"

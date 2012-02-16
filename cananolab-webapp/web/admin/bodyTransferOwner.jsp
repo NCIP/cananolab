@@ -17,10 +17,10 @@
 </jsp:include>
 <html:form action="/transferOwner">
 	<jsp:include page="/bodyMessage.jsp" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="30%">
-				Current Owner Login Name *
+				<label for="currentOwner">Current Owner Login Name *</label>
 			</td>
 			<td>
 				<html:text styleId="currentOwner" property="currentOwner" onchange="" />
@@ -32,13 +32,13 @@
 								alt="search existing users" border="0" /></a>
 			</td>
 			<td width="50%">
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td>
 							<img src="images/ajax-loader.gif" border="0" class="counts"
-								id="loaderImg" style="display: none">
+								id="loaderImg" style="display: none" alt="load existing users for current owner">
 						</td>
-						<td>
+						<td><label for="matchedCurrentOwnerSelect">&nbsp;</label>
 							<html:select
 								property="currentOwner"
 								size="10" styleId="matchedCurrentOwnerSelect" style="display: none" onclick="updateOwnerLoginName('currentOwner','matchedCurrentOwnerSelect','cancelCurrentOwnerBrowse')">
@@ -51,7 +51,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				New Owner Login Name *
+				<label for="newOwner">New Owner Login Name *</label>
 			</td>
 			<td>
 				<html:text styleId="newOwner" property="newOwner" onchange=""/>
@@ -63,13 +63,13 @@
 								alt="search existing users" border="0" /></a>
 			</td>
 			<td width="50%">
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td>
 							<img src="images/ajax-loader.gif" border="0" class="counts"
-								id="loaderImg" style="display: none">
+								id="loaderImg" style="display: none" alt="load existing users for new owner">
 						</td>
-						<td>
+						<td><label for="matchedNewOwnerSelect">&nbsp;</label>
 							<html:select
 								property="newOwner"
 								size="10" styleId="matchedNewOwnerSelect" style="display: none" onclick="updateOwnerLoginName('newOwner','matchedNewOwnerSelect','cancelNewOwnerBrowse')">
@@ -83,7 +83,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Data Type *
+				<label for="dataType">Data Type *</label>
 			</td>
 			<td colspan="3">
 				<html:select styleId="dataType" property="dataType" >

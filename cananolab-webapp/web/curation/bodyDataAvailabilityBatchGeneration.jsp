@@ -19,7 +19,7 @@
 </jsp:include>
 <html:form action="/generateBatchDataAvailability">
 	<jsp:include page="/bodyMessage.jsp" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<th>
 				Please select an option
@@ -28,16 +28,15 @@
 		<tr>
 			<td class="cellLabel">
 				<html:radio styleId="option1" property="option" value="generate all" />
-				Generate data availability for all samples
+				<label for="option1">Generate data availability for all samples</label>
 				<br>
 				<html:radio styleId="option2" property="option" value="regenerate old" />
-				Regenerate data availability for samples with existing data
-				availability
+				<label for="option2">Regenerate data availability for samples with existing data
+				availability</label>
 				<br>
 				<html:radio styleId="option3" property="option" value="delete all" />
-				Delete existing data availability
+				<label for="option3">Delete existing data availability</label>
 			</td>
-
 		</tr>
 	</table>
 	<br />

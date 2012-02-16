@@ -15,9 +15,9 @@
 </jsp:include>
 <table width="100%" align="center" class="submissionView">
 	<tr>
-		<td class="cellLabel">
+		<th class="cellLabel">
 			Data Pending Review
-		</td>
+		</th>
 	</tr>
 	<c:choose>
 		<c:when test="${!empty dataPendingReview}">
@@ -25,10 +25,10 @@
 				<td>
 					<table class="editTableWithGrid" width="95%" align="center">
 						<tr>
-							<th>
+							<th scope="col">
 								Data Type
 							</th>
-							<th>
+							<th scope="col">
 								Data Name
 							</th>
 							<th></th>
