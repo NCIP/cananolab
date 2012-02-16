@@ -13,18 +13,14 @@
 <table width="100%" align="center" summary="layout">
 	<tr>
 		<td colspan="2">
-			<jsp:include page="/bodyMessage.jsp?bundle=publication" />
-			<c:set var="defaultSortColumn" value="6" />
-			<c:if test="${!empty user && user.curator}">
-				<c:set var="defaultSortColumn" value="7" />
-			</c:if>
+			<jsp:include page="/bodyMessage.jsp?bundle=publication" />			
 			<display:table name="publications" id="publication"
 				requestURI="searchPublication.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize"
-				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator"
-				defaultsort="${defaultSortColumn}">
-				<u> </u>
-				<display:column title="" property="detailURL" />
+				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
+				<c:if test="${!empty user}">
+					<display:column title="" property="detailURL" />
+				</c:if>
 				<display:column title="Bibliography Info" property="displayName"
 					sortable="true" headerScope="col"/>
 				<display:column title="Publication<br>Type"
@@ -34,12 +30,12 @@
 				<display:column title="Associated Sample Names"
 					property="sampleNames" sortable="true" headerScope="col" />
 				<display:column title="Description" property="descriptionDetail"
-					sortable="true" headerScope="col"/>
+					sortable="true" headerScope="col"/>				
+				<display:column title="Publication<br>Status"
+					property="domainFile.status" sortable="true" escapeXml="true" headerScope="col" />
 				<display:column title="Created<br>Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" headerScope="col" />
-				<display:column title="Publication<br>Status"
-					property="domainFile.status" sortable="true" escapeXml="true" headerScope="col" />
 			</display:table>
 		</td>
 	</tr>
