@@ -58,15 +58,13 @@ public class ProtocolDecorator extends TableDecorator {
 			if (!StringUtils.isEmpty(file.getDomainFile().getName())) {
 				StringBuilder sb = new StringBuilder("<a href=");
 				sb.append("protocol.do?dispatch=download&fileId=");
-				sb.append(file.getDomainFile().getId()).append(">");
-				String fileTitle = file.getDomainFile().getTitle();
-				if (StringUtils.isEmpty(fileTitle)) {
-					fileTitle = file.getDomainFile().getUri();
-				}
-				sb.append(fileTitle);
+				sb.append(file.getDomainFile().getId()).append(">");				
+				sb.append(fileName);
 				sb.append("</a>");
 				sortableLink = new SortableName(fileName, sb.toString());
-			} else {
+			}
+			//if no file is uploaded, try to use file title
+			else {
 				String fileTitle = file.getDomainFile().getTitle();
 				if (!StringUtils.isEmpty(fileTitle)) {
 					sortableLink = new SortableName(fileTitle);
