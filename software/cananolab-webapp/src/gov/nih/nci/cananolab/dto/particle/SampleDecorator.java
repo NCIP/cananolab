@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -111,5 +112,10 @@ public class SampleDecorator extends TableDecorator {
 	public String getPointOfContactName() throws BaseException {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		return sample.getPrimaryPOCBean().getDisplayName();
+	}
+	
+	public String getCreatedDateStr() throws BaseException {
+		SampleBean sample = (SampleBean) getCurrentRowObject();
+		return DateUtils.convertDateToString(sample.getDomain().getCreatedDate(), "MM-dd-yyyy");
 	}
 }
