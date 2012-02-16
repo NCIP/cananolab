@@ -113,9 +113,4 @@ public class SampleDecorator extends TableDecorator {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		return sample.getPrimaryPOCBean().getDisplayName();
 	}
-	
-	public String getCreatedDateStr() throws BaseException {
-		SampleBean sample = (SampleBean) getCurrentRowObject();
-		return DateUtils.convertDateToString(sample.getDomain().getCreatedDate(), "MM-dd-yyyy");
-	}
 }
