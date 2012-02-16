@@ -35,8 +35,7 @@
 					<label for="cytotoxicityCellLine">Cell Line</label>
 				</td>
 				<td>
-					<textarea name="achar.cytotoxicity.cellLine" rows="2" cols="80" id="cytotoxicityCellLine"><c:out value="${characterizationForm.map.achar.cytotoxicity.cellLine}"/>
-			</textarea>
+					<textarea name="achar.cytotoxicity.cellLine" rows="2" cols="80" id="cytotoxicityCellLine"><c:out value="${characterizationForm.map.achar.cytotoxicity.cellLine}"/></textarea>
 				</td>
 			</tr>
 		</table>
