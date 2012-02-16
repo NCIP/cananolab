@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators.SampleDateComparator;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -29,6 +30,8 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,9 +54,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of SampleService and grid service *
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class SampleServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger.getLogger(SampleServiceHelper.class);
@@ -83,8 +86,13 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 		// can't query for the entire Sample object due to
 		// limitations in pagination in SDK
+
+		// added createdDate in the results so data can be sorted by date
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-				.setProjection(Projections.distinct(Property.forName("id")));
+				.setProjection(
+						Projections.projectionList()
+								.add(Projections.property("id"))
+								.add(Projections.property("createdDate")));
 		if (!StringUtils.isEmpty(sampleName)) {
 			TextMatchMode nameMatchMode = new TextMatchMode(sampleName);
 			crit.add(Restrictions.ilike("name", nameMatchMode.getUpdatedText(),
@@ -104,8 +112,9 @@ public class SampleServiceHelper extends BaseServiceHelper {
 					"organization.name", "otherPoc.lastName",
 					"otherPoc.firstName", "otherOrg.name" };
 			for (String critStr : critStrs) {
-				Criterion pocCrit = Restrictions.ilike(critStr, pocMatchMode
-						.getUpdatedText(), pocMatchMode.getMatchMode());
+				Criterion pocCrit = Restrictions.ilike(critStr,
+						pocMatchMode.getUpdatedText(),
+						pocMatchMode.getMatchMode());
 				disjunction.add(pocCrit);
 			}
 			crit.add(disjunction);
@@ -225,12 +234,12 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				disjunction.add(funcCrit1).add(funcCrit2);
 			}
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-				Criterion otherFuncCrit1 = Restrictions.and(Restrictions.eq(
-						"inFunc.class", "OtherFunction"), Restrictions.in(
-						"inFunc.type", otherFunctionTypes));
-				Criterion otherFuncCrit2 = Restrictions.and(Restrictions.eq(
-						"func.class", "OtherFunction"), Restrictions.in(
-						"func.type", otherFunctionTypes));
+				Criterion otherFuncCrit1 = Restrictions.and(
+						Restrictions.eq("inFunc.class", "OtherFunction"),
+						Restrictions.in("inFunc.type", otherFunctionTypes));
+				Criterion otherFuncCrit2 = Restrictions.and(
+						Restrictions.eq("func.class", "OtherFunction"),
+						Restrictions.in("func.type", otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
 			crit.add(disjunction);
@@ -274,11 +283,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			crit.createAlias("keywordCollection", "keyword1",
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("chara.findingCollection", "finding",
-					CriteriaSpecification.LEFT_JOIN).createAlias(
-					"finding.fileCollection", "charFile",
-					CriteriaSpecification.LEFT_JOIN).createAlias(
-					"charFile.keywordCollection", "keyword2",
-					CriteriaSpecification.LEFT_JOIN);
+					CriteriaSpecification.LEFT_JOIN)
+					.createAlias("finding.fileCollection", "charFile",
+							CriteriaSpecification.LEFT_JOIN)
+					.createAlias("charFile.keywordCollection", "keyword2",
+							CriteriaSpecification.LEFT_JOIN);
 			// publication keywords
 			crit.createAlias("publicationCollection", "pub1",
 					CriteriaSpecification.LEFT_JOIN);
@@ -318,13 +327,26 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
+		Set<Sample> samples = new HashSet<Sample>();
 		for (Object obj : results) {
-			String id = (obj.toString()).trim();
-			if (StringUtils.containsIgnoreCase(getAccessibleData(), id)) {
-				sampleIds.add(id);
+			Object[] row = (Object[]) obj;
+			Long sampleId = (Long) row[0];
+			if (StringUtils.containsIgnoreCase(getAccessibleData(),
+					sampleId.toString())) {
+				Sample sample = new Sample();
+				sample.setId(sampleId);
+				sample.setCreatedDate((Date) row[1]);
+				samples.add(sample);
 			} else {
-				logger.debug("User doesn't have access to sample of ID: " + id);
+				logger.debug("User doesn't have access to sample of ID: "
+						+ sampleId);
 			}
+		}
+		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
+		Collections.sort(orderedSamples, new SampleDateComparator());
+
+		for (Sample sample : orderedSamples) {
+			sampleIds.add(sample.getId().toString());
 		}
 		return sampleIds;
 	}
@@ -332,7 +354,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	/**
 	 * Return all stored functionalizing entity class names. In case of
 	 * OtherFunctionalizingEntity, store the OtherFunctionalizingEntity type
-	 *
+	 * 
 	 * @param sample
 	 * @return
 	 */
@@ -360,7 +382,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	/**
 	 * Return all stored function class names. In case of OtherFunction, store
 	 * the otherFunction type
-	 *
+	 * 
 	 * @param sample
 	 * @return
 	 */
@@ -419,7 +441,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	/**
 	 * Return all stored nanomaterial entity class names. In case of
 	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
-	 *
+	 * 
 	 * @param sample
 	 * @return
 	 */
@@ -497,21 +519,18 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode(
+				"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode(
+				"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+				FetchMode.JOIN);
 
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.functionalizingEntityCollection.functionCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode(
+				"sampleComposition.functionalizingEntityCollection.functionCollection",
+				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -621,21 +640,18 @@ public class SampleServiceHelper extends BaseServiceHelper {
 				FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode(
+				"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode(
+				"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+				FetchMode.JOIN);
 
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.functionalizingEntityCollection.functionCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode(
+				"sampleComposition.functionalizingEntityCollection.functionCollection",
+				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -792,7 +808,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	/**
 	 * search sampleNames based on sample name str. The str can contain just a
 	 * partial sample name or multiple partial names one per line
-	 *
+	 * 
 	 * @param nameStr
 	 * @return
 	 * @throws Exception

@@ -27,9 +27,9 @@ import java.util.Date;
 
 /**
  * Contains a list of static comparators for use in caNanoLab
- *
+ * 
  * @author pansu
- *
+ * 
  */
 
 public class Comparators {
@@ -150,19 +150,28 @@ public class Comparators {
 			Comparator<NanomaterialEntityBean> {
 		public int compare(NanomaterialEntityBean entity1,
 				NanomaterialEntityBean entity2) {
-			if (entity1.getDomainEntity().getClass().getCanonicalName().equals(
-					entity2.getDomainEntity().getClass().getCanonicalName())) {
-				if (entity1.getDomainEntity().getCreatedDate().compareTo(
-						entity2.getDomainEntity().getCreatedDate()) == 0) {
-					return entity1.getDomainEntity().getId().compareTo(
-							entity2.getDomainEntity().getId());
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
 				} else {
-					return entity1.getDomainEntity().getCreatedDate()
+					return entity1
+							.getDomainEntity()
+							.getCreatedDate()
 							.compareTo(
 									entity2.getDomainEntity().getCreatedDate());
 				}
 			} else {
-				return entity1.getDomainEntity().getClass().getCanonicalName()
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
 						.compareTo(
 								entity2.getDomainEntity().getClass()
 										.getCanonicalName());
@@ -174,17 +183,24 @@ public class Comparators {
 			Comparator<FunctionalizingEntityBean> {
 		public int compare(FunctionalizingEntityBean entity1,
 				FunctionalizingEntityBean entity2) {
-			if (entity1.getDomainEntity().getClass().getCanonicalName().equals(
-					entity2.getDomainEntity().getClass().getCanonicalName())) {
-				if (entity1.getDomainEntity().getCreatedDate().compareTo(
-						entity2.getDomainEntity().getCreatedDate()) == 0) {
-					return entity1.getDomainEntity().getId().compareTo(
-							entity2.getDomainEntity().getId());
+			if (entity1
+					.getDomainEntity()
+					.getClass()
+					.getCanonicalName()
+					.equals(entity2.getDomainEntity().getClass()
+							.getCanonicalName())) {
+				if (entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate()) == 0) {
+					return entity1.getDomainEntity().getId()
+							.compareTo(entity2.getDomainEntity().getId());
 				}
-				return entity1.getDomainEntity().getCreatedDate().compareTo(
-						entity2.getDomainEntity().getCreatedDate());
+				return entity1.getDomainEntity().getCreatedDate()
+						.compareTo(entity2.getDomainEntity().getCreatedDate());
 			} else {
-				return entity1.getDomainEntity().getClass().getCanonicalName()
+				return entity1
+						.getDomainEntity()
+						.getClass()
+						.getCanonicalName()
 						.compareTo(
 								entity2.getDomainEntity().getClass()
 										.getCanonicalName());
@@ -196,16 +212,23 @@ public class Comparators {
 			Comparator<ChemicalAssociationBean> {
 		public int compare(ChemicalAssociationBean assoc1,
 				ChemicalAssociationBean assoc2) {
-			if (assoc1.getDomainAssociation().getClass().getCanonicalName()
-					.equals(
-							assoc2.getDomainAssociation().getClass()
-									.getCanonicalName())) {
-				return assoc1.getDomainAssociation().getCreatedDate()
+			if (assoc1
+					.getDomainAssociation()
+					.getClass()
+					.getCanonicalName()
+					.equals(assoc2.getDomainAssociation().getClass()
+							.getCanonicalName())) {
+				return assoc1
+						.getDomainAssociation()
+						.getCreatedDate()
 						.compareTo(
 								assoc2.getDomainAssociation().getCreatedDate());
 			} else {
-				return assoc1.getDomainAssociation().getClass()
-						.getCanonicalName().compareTo(
+				return assoc1
+						.getDomainAssociation()
+						.getClass()
+						.getCanonicalName()
+						.compareTo(
 								assoc2.getDomainAssociation().getClass()
 										.getCanonicalName());
 			}
@@ -234,21 +257,21 @@ public class Comparators {
 
 	public static class FileBeanDateComparator implements Comparator<FileBean> {
 		public int compare(FileBean file1, FileBean file2) {
-			return file1.getDomainFile().getCreatedDate().compareTo(
-					file2.getDomainFile().getCreatedDate());
+			return file1.getDomainFile().getCreatedDate()
+					.compareTo(file2.getDomainFile().getCreatedDate());
 		}
 	}
 
 	public static class FileBeanTypeDateComparator implements
 			Comparator<FileBean> {
 		public int compare(FileBean file1, FileBean file2) {
-			if (file1.getDomainFile().getType().equals(
-					file2.getDomainFile().getType())) {
-				return file1.getDomainFile().getCreatedDate().compareTo(
-						file2.getDomainFile().getCreatedDate());
+			if (file1.getDomainFile().getType()
+					.equals(file2.getDomainFile().getType())) {
+				return file1.getDomainFile().getCreatedDate()
+						.compareTo(file2.getDomainFile().getCreatedDate());
 			} else {
-				return file1.getDomainFile().getType().compareTo(
-						file2.getDomainFile().getType());
+				return file1.getDomainFile().getType()
+						.compareTo(file2.getDomainFile().getType());
 			}
 		}
 	}
@@ -271,8 +294,8 @@ public class Comparators {
 	public static class FunctionBeanDateComparator implements
 			Comparator<FunctionBean> {
 		public int compare(FunctionBean function1, FunctionBean function2) {
-			return function1.getDomainFunction().getCreatedDate().compareTo(
-					function2.getDomainFunction().getCreatedDate());
+			return function1.getDomainFunction().getCreatedDate()
+					.compareTo(function2.getDomainFunction().getCreatedDate());
 		}
 	}
 
@@ -280,16 +303,16 @@ public class Comparators {
 			Comparator<ComposingElementBean> {
 		public int compare(ComposingElementBean element1,
 				ComposingElementBean element2) {
-			return element1.getDomain().getCreatedDate().compareTo(
-					element2.getDomain().getCreatedDate());
+			return element1.getDomain().getCreatedDate()
+					.compareTo(element2.getDomain().getCreatedDate());
 		}
 	}
 
 	public static class TargetBeanDateComparator implements
 			Comparator<TargetBean> {
 		public int compare(TargetBean target1, TargetBean target2) {
-			return target1.getDomainTarget().getCreatedDate().compareTo(
-					target2.getDomainTarget().getCreatedDate());
+			return target1.getDomainTarget().getCreatedDate()
+					.compareTo(target2.getDomainTarget().getCreatedDate());
 		}
 	}
 
@@ -312,8 +335,8 @@ public class Comparators {
 					Date date1 = chara1.getDomainChar().getCreatedDate();
 					Date date2 = chara2.getDomainChar().getCreatedDate();
 					if (date1.compareTo(date2) == 0) {
-						return chara1.getDomainChar().getId().compareTo(
-								chara2.getDomainChar().getId());
+						return chara1.getDomainChar().getId()
+								.compareTo(chara2.getDomainChar().getId());
 					} else {
 						return date1.compareTo(date2);
 					}
@@ -361,16 +384,16 @@ public class Comparators {
 			Comparator<ExperimentConfigBean> {
 		public int compare(ExperimentConfigBean config1,
 				ExperimentConfigBean config2) {
-			return config1.getDomain().getCreatedDate().compareTo(
-					config2.getDomain().getCreatedDate());
+			return config1.getDomain().getCreatedDate()
+					.compareTo(config2.getDomain().getCreatedDate());
 		}
 	}
 
 	public static class FindingBeanDateComparator implements
 			Comparator<FindingBean> {
 		public int compare(FindingBean finding1, FindingBean finding2) {
-			return finding1.getDomain().getCreatedDate().compareTo(
-					finding2.getDomain().getCreatedDate());
+			return finding1.getDomain().getCreatedDate()
+					.compareTo(finding2.getDomain().getCreatedDate());
 		}
 	}
 
@@ -407,7 +430,16 @@ public class Comparators {
 	public static class PublicationDateComparator implements
 			Comparator<Publication> {
 		public int compare(Publication pub1, Publication pub2) {
-			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
+			//reverse date order
+			return -pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
+		}
+	}
+
+	public static class SampleDateComparator implements
+			Comparator<Sample> {
+		public int compare(Sample sample1, Sample sample2) {
+			//reverse date order
+			return -sample1.getCreatedDate().compareTo(sample2.getCreatedDate());
 		}
 	}
 
