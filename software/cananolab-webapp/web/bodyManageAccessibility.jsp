@@ -202,7 +202,7 @@
 					</tr>
 					<tr>
 						<td><input id="deleteAccess" type="button" value="Remove"
-								onclick="javascript:deleteTheAccess('${parentAction}', ${parentPage});"
+								onclick="javascript:deleteTheAccess('${parentFormName}', '${parentAction}', ${parentPage});"
 								style="display: none;">
 						</td>
 						<td align="right" colspan="3">
