@@ -371,7 +371,6 @@ function addFile(publicRetract, actionName, formName) {
 				return false;
 			}
 		}
-		alert(formName);
 		submitAction(formName, actionName, dispatch, 3);
 	}
 }
