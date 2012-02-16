@@ -430,16 +430,21 @@ public class Comparators {
 	public static class PublicationDateComparator implements
 			Comparator<Publication> {
 		public int compare(Publication pub1, Publication pub2) {
-			//reverse date order
-			return -pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
+			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
 		}
 	}
 
-	public static class SampleDateComparator implements
-			Comparator<Sample> {
+	public static class SampleDateComparator implements Comparator<Sample> {
 		public int compare(Sample sample1, Sample sample2) {
-			//reverse date order
-			return -sample1.getCreatedDate().compareTo(sample2.getCreatedDate());
+			return sample1.getCreatedDate()
+					.compareTo(sample2.getCreatedDate());
+		}
+	}
+
+	public static class ProtocolDateComparator implements Comparator<Protocol> {
+		public int compare(Protocol protocol1, Protocol protocol2) {
+			return protocol1.getCreatedDate().compareTo(
+					protocol2.getCreatedDate());
 		}
 	}
 
