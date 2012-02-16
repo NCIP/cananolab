@@ -23,7 +23,7 @@
 			<td>
 				<c:choose>
 					<c:when test="${! empty finding.rows}">
-						<table class="summaryViewWithGrid" align="left" width="95%">
+						<table class="summaryViewWithGrid" align="center" width="95%">
 							<tr>
 								<c:forEach var="col" items="${finding.columnHeaders}">
 									<td class="cellLabel">
