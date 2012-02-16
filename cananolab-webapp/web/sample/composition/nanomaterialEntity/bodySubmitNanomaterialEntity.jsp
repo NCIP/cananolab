@@ -91,7 +91,7 @@
 				<a style="${newAddCEButtonStyle}" id="addComposingElement"
 					href="#submitComposingElement"
 					onclick="javascript:clearComposingElement(); openSubmissionForm('ComposingElement');"><img
-						align="top" src="images/btn_add.gif" border="0" alt="add composing element"/> </a>
+						align="top" src="images/btn_add.gif" border="0" alt="add composing element"/></a>
 			</td>
 		</tr>
 		<tr>
@@ -137,7 +137,7 @@
 					</c:if>
 					<a style="${addFileButtonStyle}" id="addFile"
 						href="javascript:clearFile('${fileParent }'); openSubmissionForm('File');"><img
-							align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"/> </a>
+							align="top" src="images/btn_add.gif" border="0" alt="add a nanomaterial entity file"/></a>
 				</td>
 			</tr>
 			<tr>
