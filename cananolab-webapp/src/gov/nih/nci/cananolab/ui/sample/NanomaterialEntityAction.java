@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -90,6 +91,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
+		escapeXmlForFileUri(entityBean.getTheFile());			
 		entityBean.updateEmptyFieldsToNull();
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entityBean.getTheFile();

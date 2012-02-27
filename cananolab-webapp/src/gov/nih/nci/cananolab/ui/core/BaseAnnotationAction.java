@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,9 +42,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for all annotation actions
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected CurationService curationService;
@@ -54,7 +55,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
 	 * of sample based on user's privilege. Finally, set the SampleBean in
 	 * request object.
-	 *
+	 * 
 	 * @param theForm
 	 * @param request
 	 * @return SampleBean
@@ -93,7 +94,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -145,7 +146,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -242,7 +243,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	/**
 	 * If user entered customized value by selecting [other] option previously,
 	 * then add the value in collection, so user can see it again.
-	 *
+	 * 
 	 * @param request
 	 * @param value
 	 * @param sessionName
@@ -262,7 +263,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Returns a partial URL for downloading a file from local/remote host.
-	 *
+	 * 
 	 * @param request
 	 * @param serviceUrl
 	 * @return
@@ -280,7 +281,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Save uploaded form file in session for later use, avoid upload again.
-	 *
+	 * 
 	 * @param request
 	 * @param theFile
 	 */
@@ -309,7 +310,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	/**
 	 * If FileBean specified using a uploaded file but the file is empty, we
 	 * know we should get the uploaded file from session.
-	 *
+	 * 
 	 * @param request
 	 * @param theFile
 	 */
@@ -427,7 +428,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Update the review status of the given data to the give status
-	 *
+	 * 
 	 * @param status
 	 * @param request
 	 * @param dataId
@@ -472,8 +473,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		SampleBean sample = this.setupSample(theForm, request);
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
-		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, sample
-				.getDomain());
+		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+				sample.getDomain());
 	}
 
 	public CurationService getCurationService() {
@@ -607,6 +608,16 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		} else {
 			request.getSession().setAttribute("onloadJavascript",
 					"showSummary('" + tab + "', " + numTabs + ")");
+		}
+	}
+
+	// escape XML for file uri in case xss is embedded in the URI and displayed
+	// in the where validation errors are shown
+	protected void escapeXmlForFileUri(FileBean file) {
+		if (file != null && file.getDomainFile() != null
+				&& file.getDomainFile().getUri() != null) {
+			String origUri = file.getDomainFile().getUri();
+			file.getDomainFile().setUri(StringEscapeUtils.escapeXml(origUri));
 		}
 	}
 }

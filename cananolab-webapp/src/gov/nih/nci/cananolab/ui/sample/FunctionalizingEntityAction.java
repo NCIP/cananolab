@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -395,6 +396,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
+		escapeXmlForFileUri(entity.getTheFile());				
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entity.getTheFile();
 		preserveUploadedFile(request, theFile, "functionalizingEntity");
