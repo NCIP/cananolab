@@ -90,7 +90,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
-		// escape XML for &protocol.fileBean.domainFile.uri in case xss embedded
+		// escape XML for protocol.fileBean.domainFile.uri in case xss is embedded 
 		if (protocolBean.getFileBean() != null
 				&& protocolBean.getFileBean().getDomainFile().getUri() != null) {
 			String origUri = protocolBean.getFileBean().getDomainFile()
