@@ -11,7 +11,7 @@
 		width="40%" height="100%" class="sidebarSection">
 		<tr>
 			<th scope="col" align="left" class="sidebarTitle" height="20"><c:out
-					value="${fn:toUpperCase(item)}" /> LINKS</td>
+					value="${fn:toUpperCase(menu)}" /> LINKS</td>
 		</tr>
 		<tr>
 			<td class="sidebarContent"><a
@@ -20,7 +20,7 @@
 				Provisioning Tool (UPT) which will assist in creating users.</td>
 		</tr>
 		<tr>
-			<td class="sidebarContent"><a href="admin.do?dispatch=setupNew">
+			<td class="sidebarContent"><a href="admin.do?dispatch=setupNew&page=0">
 					Configure Site Preferences</a> <br> Click to configure site
 				preferences including custom logos and site banners.</td>
 		</tr>
