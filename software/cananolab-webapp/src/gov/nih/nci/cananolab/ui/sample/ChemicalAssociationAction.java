@@ -261,6 +261,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
+		escapeXmlForFileUri(assocBean.getTheFile());
 		prepareEntityLists(assocBean, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");

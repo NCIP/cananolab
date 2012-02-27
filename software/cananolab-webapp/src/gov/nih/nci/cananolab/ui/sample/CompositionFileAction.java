@@ -149,6 +149,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		setupSample(theForm, request);
 		this.setLookups(request);
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
+		escapeXmlForFileUri(comp.getTheFile());
 		InitCompositionSetup.getInstance().persistCompositionFileDropdowns(
 				request, comp.getTheFile());
 
