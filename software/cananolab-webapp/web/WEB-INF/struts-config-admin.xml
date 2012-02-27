@@ -18,14 +18,6 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-		<form-bean name="updateCreatedByForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="currentCreatedBy" type="java.lang.String" />
-			<form-property name="newCreatedBy" type="java.lang.String" />
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-		</form-bean>
 	</form-beans>
 	<global-exceptions>
 	</global-exceptions>
@@ -47,13 +39,6 @@
 			input="input" validate="true" scope="request">
 			<forward name="input" path="admin.transferOwner" />
 			<forward name="success" path="admin.transferOwner" />
-		</action>
-		<!-- to be removed after 1.5.2 -->
-		<action path="/updateCreatedBy" name="updateCreatedByForm"
-			parameter="dispatch" type="gov.nih.nci.cananolab.ui.admin.UpdateCreatedByAction"
-			input="input" validate="true" scope="request">
-			<forward name="input" path="admin.updateCreatedBy" />
-			<forward name="success" path="admin.updateCreatedBy" />
 		</action>
 	</action-mappings>
 </struts-config>
