@@ -8,7 +8,15 @@
 		<tr>
 			<logic:present name="items">
 				<logic:iterate name="items" id="item"
-					type="org.apache.struts.tiles.beans.MenuItem">					
+					type="org.apache.struts.tiles.beans.MenuItem">
+					<c:choose>
+						<c:when test="${fn:toUpperCase(menu) eq item.value}">
+							<c:set var="style" value="mainMenuItemSelected" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="style" value="mainMenuItem" />
+						</c:otherwise>
+					</c:choose>
 					<c:choose>
 						<c:when
 							test="${item.value eq 'LOGOUT' && sessionScope.user == null ||
@@ -21,12 +29,11 @@
 							<td></td>
 						</c:when>
 						<c:otherwise>
-							<th class="mainMenuItem" onclick="${item.link}" scope="row">
-								<a class="mainMenuLink" href="#">${item.value}</a>
+							<th class="${style}" onclick="${item.link}" scope="row"><a
+								class="mainMenuLink" href="#">${item.value}</a>
 							</th>
-							<td>
-								<img height="16" alt="menu separator" src="images/mainMenuSeparator.gif"
-									width="1">
+							<td><img height="16" alt="menu separator"
+								src="images/mainMenuSeparator.gif" width="1">
 							</td>
 						</c:otherwise>
 					</c:choose>

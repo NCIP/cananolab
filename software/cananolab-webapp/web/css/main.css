@@ -93,6 +93,14 @@ th:hover.mainMenuItem {
 	padding-right: 1em;
 }
 
+th.mainMenuItemSelected {
+	/* for the over state of the main menu (top) cells */
+	font-weight: bold;
+	background-color: #6a8989; /* darker */
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
 td.footerMenu {
 	/* for the basic style of the footer menu (bottom) area */
 	background-color: #5c5c5c; /* constant: dark gray */
