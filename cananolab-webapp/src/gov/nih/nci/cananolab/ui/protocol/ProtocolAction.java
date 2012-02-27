@@ -20,6 +20,7 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -29,9 +30,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Create or update protocol file and protocol
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolAction extends BaseAnnotationAction {
 
@@ -89,6 +90,14 @@ public class ProtocolAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
+		// escape XML for &protocol.fileBean.domainFile.uri in case xss embedded
+		if (protocolBean.getFileBean() != null
+				&& protocolBean.getFileBean().getDomainFile().getUri() != null) {
+			String origUri = protocolBean.getFileBean().getDomainFile()
+					.getUri();
+			protocolBean.getFileBean().getDomainFile()
+					.setUri(StringEscapeUtils.escapeXml(origUri));
+		}
 		this.setServiceInSession(request);
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				protocolBean);
@@ -185,7 +194,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 
 	/**
 	 * Delete a protocol from Protocol update form
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -257,8 +266,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		if (protocol.getDomain().getId() == null) {
 			UserBean user = (UserBean) request.getSession()
 					.getAttribute("user");
-			protocol
-					.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
+			protocol.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 			service.saveProtocol(protocol);
 		}
 		this.setAccesses(request, protocol);
