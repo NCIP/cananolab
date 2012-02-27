@@ -101,6 +101,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = charBean.getTheFinding().getTheFile();
+		escapeXmlForFileUri(theFile);
 		String charName = StringUtils.getOneWordLowerCaseFirstLetter(charBean
 				.getCharacterizationName());
 		preserveUploadedFile(request, theFile, charName);
