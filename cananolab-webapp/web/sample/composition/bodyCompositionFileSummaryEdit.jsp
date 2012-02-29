@@ -11,8 +11,7 @@
 			composition file &nbsp;&nbsp;&nbsp;
 			<a href="compositionFile.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" alt="add composition file"/>
-			</a>
+					border="0" alt="add composition file"/></a>
 		</th>
 	</tr>
 	<tr>
