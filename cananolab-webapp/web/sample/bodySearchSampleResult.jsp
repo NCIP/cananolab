@@ -24,9 +24,9 @@
 				requestURI="searchSample.do" pagesize="25" class="displaytable"
 				partialList="true" size="resultSize" 
     			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-    			<c:if test="${!empty user}">
+    			
 					<display:column title="" property="detailURL" headerScope="col"/>
-				</c:if>
+				
 				<display:column title="Sample Name" property="sampleName"
 					sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Primary<br>Point Of Contact"
