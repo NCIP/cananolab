@@ -83,17 +83,16 @@ public class PublicationDecorator extends TableDecorator {
 		StringBuilder sb = new StringBuilder("<div id=\"descriptionSection"
 				+ getListIndex() + "\" style=\"position: relative;\">");
 		sb
-				.append("<a style=\"display: block\" id=\"viewDetail\" href=\"#\" onmouseOver=");
-		sb.append("javascript:show('publicationDescription" + getListIndex()
-				+ "'); onmouseOut=");
-		sb.append("javascript:hide('publicationDescription" + getListIndex()
-				+ "');>");
+				.append("<a style=\"display: block\" id=\"viewDetail\" href=\"#\" onclick=");
+		sb.append("\"javascript:show('publicationDescription"+getListIndex()+"');return false;\">");
 		sb.append("View");
 		sb.append("</a>");
 		sb
 				.append("<table id=\"publicationDescription"
 						+ getListIndex()
 						+ "\" style=\"display: none;position: absolute;left: -510px;top: -50px;width: 500px;z-index:5;font-size: 10px;background-color: #FFFFFF;\" class=\"promptbox\">");
+		sb.append("<tr><td style=\"text-align:right;\">");
+		sb.append("<a href='#' onclick=\"javascript:hide('publicationDescription"+getListIndex()+"');return false;\">hide</a></td></tr>");
 		sb.append("<tr><td>");
 		sb.append(description);
 		sb.append("</td></tr>");
