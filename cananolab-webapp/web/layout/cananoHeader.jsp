@@ -1,25 +1,23 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page import="gov.nih.nci.cananolab.util.Constants"%>
-<%@page import="gov.nih.nci.cananolab.util.PropertyUtils"%>
 <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout">
 	<tbody>
-		<c:if test="${!empty siteName}">
+		<c:if test="${!empty existingSiteBean && !empty existingSiteBean.siteName}">
 			<tr>
 				<td colspan="2" class="subMenuPrimaryTitle">
-					${siteName}
+					${existingSiteBean.siteName} 
 				</td>
 			</tr>
 		</c:if>	
 		<tr>
 			<td class="subhdrBG" align="left">				
-				<img width="304" height="83" src="images/appLogo-nanolab.gif" alt="caNanoLab logo">
+				<img src="images/appLogo-nanolab.gif" alt="caNanoLab logo">
 			</td>
-			<c:if test="${hasSiteLogo}">
-				<td class="subhdrBG" align="left">
+			<c:if test="${!empty existingSiteBean && !empty existingSiteBean.siteLogoFilename}">
+				<td class="subhdrBG">			
 					<div align="right">
-						<img src="admin.do?dispatch=getSiteLogo">
-					</div>
-				</td>
+						<img src="admin.do?dispatch=getSiteLogo&page=0">
+					</div>					
+				</td> 
 			</c:if>
 		</tr>
 	</tbody>
