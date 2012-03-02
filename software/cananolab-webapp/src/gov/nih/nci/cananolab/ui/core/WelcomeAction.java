@@ -10,8 +10,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 /**
- * This class calls the Struts ForwardAction to forward to a page, also extends
- * AbstractBaseAction to inherit the user authentication features.
+ * This class calls the Struts ForwardAction to forward to a page without login
  *
  * @author pansu
  */
