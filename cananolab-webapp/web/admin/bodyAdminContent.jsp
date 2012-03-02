@@ -20,7 +20,11 @@
 				Provisioning Tool (UPT) which will assist in creating users.</td>
 		</tr>
 		<tr>
-			<td class="sidebarContent"><a href="admin.do?dispatch=setupNew&page=0">
+			<c:set var="dispatch" value="setupNew"/>
+			<c:if test="${!empty existingSiteBean && !empty existingSiteBean.siteName}">
+				<c:set var="dispatch" value="setupUpdate"/>
+			</c:if>
+			<td class="sidebarContent"><a href="admin.do?dispatch=${dispatch}&page=0">
 					Configure Site Preferences</a> <br> Click to configure site
 				preferences including custom logos and site banners.</td>
 		</tr>
@@ -29,8 +33,7 @@
 				<td class="sidebarContent"><a
 					href="transferOwner.do?dispatch=setupNew&page=0"> Transfer Data
 						Ownership</a> <br> Click to reassign ownership for samples,
-					protocols, publications and collaboration groups.</td>
-			</tr>
+					protocols, publications and collaboration groups.</td></tr>
 		</c:if>
 	</table>
 </c:if>
