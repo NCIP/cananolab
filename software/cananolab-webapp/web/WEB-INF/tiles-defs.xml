@@ -7,8 +7,8 @@
 	<definition name="canano.home" path="/layout/mainLayoutHomePage.jsp">
 		<put name="title" value="caNanoLab" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
-		<put name="cananoSidemenu" value="/admin.do?dispatch=getCaNanoSidemenu" />
+		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader&amp;page=0" />
+		<put name="cananoSidemenu" value="/admin.do?dispatch=getCaNanoSidemenu&amp;page=0" />
 		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
 		<put name="cananoContent" value="/bodyHome.jsp" />
 		<put name="cananoFooter" value="/html/cananoFooter.html" />
@@ -24,7 +24,7 @@
 	<definition name="canano.base" path="/layout/mainLayout.jsp">
 		<put name="title" value="caNanoLab" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader" />
+		<put name="cananoHeader" value="/admin.do?dispatch=getCaNanoHeader&amp;page=0" />
 		<put name="cananoSidemenu" value="/layout/cananoSidemenu.jsp" />
 		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
 		<put name="cananoFooter" value="/html/cananoFooter.html" />

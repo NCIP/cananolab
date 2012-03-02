@@ -2,19 +2,18 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="sitePreferenceForm" type="org.apache.struts.action.DynaActionForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="siteName" type="java.lang.String" />
-			<form-property name="siteLogo" type="org.apache.struts.upload.FormFile" />
-			<form-property name="siteBean"
-				type="gov.nih.nci.cananolab.dto.admin.SitePreferenceBean" />
+		<form-bean name="sitePreferenceForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="sitePreference" type="gov.nih.nci.cananolab.dto.admin.SitePreferenceBean" />
+			<form-property name="dispatch" type="java.lang.String" />			
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="transferOwnerForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="currentOwner" type="java.lang.String" />
 			<form-property name="newOwner" type="java.lang.String" />
 			<form-property name="dataType" type="java.lang.String" />
-			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="dispatch" type="java.lang.String" />			
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
@@ -29,14 +28,17 @@
 		</action>
 		<action path="/admin" name="sitePreferenceForm"
 			type="org.springframework.web.struts.DelegatingActionProxy"
-			parameter="dispatch" input="input" validate="false" scope="request">
-			<forward name="input" path="admin.sitePreference" />
+			parameter="dispatch" scope="request" input="input">
+			<forward name="input" path="/admin.do?dispatch=input&amp;page=0" />
+			<forward name="update" path="/admin.do?dispatch=setupUpdate&amp;page=0" redirect="true"/>
+			<forward name="new" path="/admin.do?dispatch=setupNew&amp;page=0" redirect="true"/>
+			<forward name="createInput" path="admin.sitePreference"/>
 			<forward name="cananoHeader" path="/layout/cananoHeader.jsp" />
 			<forward name="cananoSidemenu" path="/layout/cananoSidemenu.jsp" />
 		</action>
 		<action path="/transferOwner" name="transferOwnerForm"
 			parameter="dispatch" type="gov.nih.nci.cananolab.ui.admin.TransferOwnerAction"
-			input="input" validate="true" scope="request">
+			input="input" scope="request">
 			<forward name="input" path="admin.transferOwner" />
 			<forward name="success" path="admin.transferOwner" />
 		</action>

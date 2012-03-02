@@ -190,18 +190,20 @@
 				<arg position="0" key="transferOwnerForm.dataType" />
 			</field>
 		</form>
-		<!-- to be removed after 1.5.2 -->
-		<form name="updateCreatedByForm">
-			<field property="currentCreatedBy" page="1" depends="required">
-				<arg position="0" key="updateCreatedByForm.currentCreatedBy" />
-			</field>
-			<field property="newCreatedBy" page="1" depends="required">
-				<arg position="0" key="updateCreatedByForm.newCreatedBy" />
+		<form name="sitePreferenceForm">
+			<field property="sitePreference.siteName" page="1" depends="required, mask">
+				<arg position="0" key="sitePreferenceForm.siteName"/>
+				<msg name="mask" key="siteName.invalid" />
 				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((*this*!=null) and (newCreatedBy!=currentCreatedBy))
-					</var-value>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="sitePreference.siteLogoFile.domainFile.uri" page="1" depends="mask">
+				<msg name="mask" key="siteLogoFile.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
 		</form>
