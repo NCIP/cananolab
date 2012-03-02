@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.dto.admin;
 
+import gov.nih.nci.cananolab.dto.common.FileBean;
+
 import java.util.Date;
 
 /**
@@ -16,7 +18,17 @@ public class SitePreferenceBean {
 	 * The site logo file name.
 	 */
 	private String siteLogoFilename;
+
+	private FileBean siteLogoFile=new FileBean();
 	
+	public FileBean getSiteLogoFile() {
+		return siteLogoFile;
+	}
+
+	public void setSiteLogoFile(FileBean siteLogoFile) {
+		this.siteLogoFile = siteLogoFile;
+	}
+
 	/**
 	 * Indicates the person or authoritative body who brought the item into
 	 * existence.
