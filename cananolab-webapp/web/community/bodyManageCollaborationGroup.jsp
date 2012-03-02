@@ -87,7 +87,7 @@
 				<a href="#"
 					onclick="javascript:clearCollaborationGroup();openSubmissionForm('CollaborationGroup');"
 					id="addCollaborationGroup" style="${newAddCGButtonStyle}"><img
-						align="top" src="images/btn_add.gif" border="0" alt="add collaboration group"/> </a>
+						align="top" src="images/btn_add.gif" border="0" alt="add collaboration group"/></a>
 			</td>
 		</tr>
 		<tr>
