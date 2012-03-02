@@ -12,7 +12,7 @@ package gov.nih.nci.cananolab.ui.admin;
 /**
  * Action class for Administration section.
  *
- * @author houyh
+ * @author houyh, pansu
  */
 import gov.nih.nci.cananolab.dto.admin.SitePreferenceBean;
 import gov.nih.nci.cananolab.dto.admin.VisitorCountBean;
@@ -42,14 +42,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.upload.FormFile;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class AdministrationAction extends AbstractDispatchAction {
 	private static Logger logger = Logger.getLogger(AdministrationAction.class);
@@ -62,18 +63,47 @@ public class AdministrationAction extends AbstractDispatchAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		SitePreferenceBean siteBean = null;
-		siteBean = this.getSiteBean();
-		if (siteBean != null) {
-			DynaActionForm theForm = (DynaActionForm) form;
-			theForm.set(Constants.SITE_NAME, siteBean.getSiteName());
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		/* populate the form with data from the session */
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SitePreferenceBean siteBean = this.getNewSiteBean(user, null, null);
+		theForm.set("sitePreference", siteBean);
+		request.getSession().setAttribute("existingSiteBean", siteBean);
+		return mapping.findForward("createInput");
+	}
+
+	/**
+	 * Action to show site preference page.
+	 */
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		/* populate the form with data from the session */
+		SitePreferenceBean sitePreference = (SitePreferenceBean) request
+				.getSession().getAttribute("existingSiteBean");
+		if (sitePreference != null) {
+			theForm.set("sitePreference", sitePreference);
 		}
-		return mapping.getInputForward();
+		return mapping.findForward("createInput");
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SitePreferenceBean sitePreference = (SitePreferenceBean) theForm
+				.get("sitePreference");
+		// escape XML for site logo file name for security reasons
+		if (StringUtils.isEmpty(sitePreference.getSiteLogoFilename())) {
+			StringEscapeUtils.escapeXml(sitePreference.getSiteLogoFilename());
+		}
+		return mapping.findForward("createInput");
 	}
 
 	/**
 	 * Action to clear site preferences: remove site and site logo.
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -87,7 +117,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 		if (this.saveSiteBean(user, siteBean) > 0) {
 			// set success message in request if everything is fine now.
 			ActionMessage msg = new ActionMessage(
-					"admin.sitePreference.success");
+					"admin.sitePreference.delete.success");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
 		} else {
@@ -95,12 +125,13 @@ public class AdministrationAction extends AbstractDispatchAction {
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, messages);
 		}
-		return mapping.getInputForward();
+		request.getSession().removeAttribute("existingSiteBean");
+		return mapping.findForward("new");
 	}
 
 	/**
 	 * Action to update site preference settings.
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -109,11 +140,12 @@ public class AdministrationAction extends AbstractDispatchAction {
 			throws Exception {
 		SitePreferenceBean siteBean = null;
 		ActionMessages messages = new ActionMessages();
-		DynaActionForm theForm = (DynaActionForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String siteName = (String) theForm.getString(Constants.SITE_NAME);
-		FormFile file = (FormFile) theForm.get(Constants.SITE_LOGO);
-
+		SitePreferenceBean sitePreference = (SitePreferenceBean) theForm
+				.get("sitePreference");
+		String siteName = sitePreference.getSiteName();
+		FormFile file = sitePreference.getSiteLogoFile().getUploadedFile();
 		// 1.check if uploaded file is empty first.
 		if (file == null || file.getFileSize() == 0) {
 			siteBean = this.getNewSiteBean(user, siteName, null);
@@ -137,8 +169,8 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 				OutputStream out = null;
 				try {
-					out = new BufferedOutputStream(new FileOutputStream(sb
-							.toString()));
+					out = new BufferedOutputStream(new FileOutputStream(
+							sb.toString()));
 					out.write(file.getFileData());
 					siteBean = this
 							.getNewSiteBean(user, siteName, logoFilename);
@@ -175,34 +207,30 @@ public class AdministrationAction extends AbstractDispatchAction {
 		} else {
 			saveErrors(request, messages);
 		}
-		return mapping.getInputForward();
+		request.getSession().setAttribute("existingSiteBean", siteBean);
+		return mapping.findForward("update");
 	}
 
 	/**
 	 * Action for loading site preferences for cananoHeader.jsp.
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
 	public ActionForward getCaNanoHeader(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		SitePreferenceBean siteBean = this.getSiteBean();
-		if (siteBean != null) {
-			if (!StringUtils.isEmpty(siteBean.getSiteName())) {
-				request.setAttribute(Constants.SITE_NAME, siteBean
-						.getSiteName());
-			}
-			if (!StringUtils.isEmpty(siteBean.getSiteLogoFilename())) {
-				request.setAttribute("hasSiteLogo", Boolean.TRUE);
-			}
+		/* retrieve from database if session attribute existingSiteBean is null */
+		if (request.getSession().getAttribute("existingSiteBean") == null) {
+			SitePreferenceBean siteBean = this.retrieveExistingSitePreference();
+			request.getSession().setAttribute("existingSiteBean", siteBean);
 		}
 		return mapping.findForward("cananoHeader");
 	}
 
 	/**
 	 * Action for loading Visitor Counter for cananoSidemenu.jsp.
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -238,14 +266,16 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action to handle site logo file download request.
-	 *
+	 * 
 	 * @param
 	 * @return
 	 */
 	public ActionForward getSiteLogo(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		SitePreferenceBean siteBean = this.getSiteBean();
+		// retrieve from session
+		SitePreferenceBean siteBean = (SitePreferenceBean) request.getSession()
+				.getAttribute("existingSiteBean");
 		if (siteBean != null
 				&& !StringUtils.isEmpty(siteBean.getSiteLogoFilename())) {
 			// 1.compose logo's full file name.
@@ -253,8 +283,8 @@ public class AdministrationAction extends AbstractDispatchAction {
 			String fileRoot = PropertyUtils
 					.getProperty(Constants.CANANOLAB_PROPERTY,
 							Constants.FILE_REPOSITORY_DIR);
-			sb.append(fileRoot).append(File.separator).append(
-					siteBean.getSiteLogoFilename());
+			sb.append(fileRoot).append(File.separator)
+					.append(siteBean.getSiteLogoFilename());
 			// 2.load logo file from file system.
 			File siteLogo = new File(sb.toString());
 			if (siteLogo.exists() && siteLogo.length() > 0) {
@@ -296,10 +326,10 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Retrieve site preference bean from database.
-	 *
+	 * 
 	 * @return SitePreferenceBean.
 	 */
-	private SitePreferenceBean getSiteBean() {
+	private SitePreferenceBean retrieveExistingSitePreference() {
 		SitePreferenceBean siteBean = null;
 		try {
 			siteBean = this.adminService.getSitePreference();
@@ -316,7 +346,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Save site preference bean to database.
-	 *
+	 * 
 	 * @param user
 	 * @return SitePreferenceBean.
 	 */
@@ -337,7 +367,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Create a new site preference bean for save/update.
-	 *
+	 * 
 	 * @param user
 	 * @return SitePreferenceBean.
 	 */
@@ -355,7 +385,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Get an unique file name for logo in format of "fileName_{timestamp}.ext".
-	 *
+	 * 
 	 * @param fileName
 	 * @return an unique file name of site logo.
 	 */
@@ -380,7 +410,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Getter for Srping dependency injection.
-	 *
+	 * 
 	 * @return
 	 */
 	public AdminService getAdminService() {
@@ -389,7 +419,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Setter for Srping dependency injection.
-	 *
+	 * 
 	 * @param adminService
 	 */
 	public void setAdminService(AdminService adminService) {
