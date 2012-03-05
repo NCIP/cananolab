@@ -824,6 +824,10 @@ img.img { /* for images that need a border */
 	padding-left: 8pt;
 }
 
+.indented1Wrapped {
+	padding-left: 6pt;
+	text:wrap: unrestricted;
+}
 .largerText {
 	font-size: 1.1em;
 	font-weight: bold;
