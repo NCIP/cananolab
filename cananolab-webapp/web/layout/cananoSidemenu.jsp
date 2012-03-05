@@ -46,7 +46,13 @@
 				<c:if test="${!empty user.groupNames}">
 					<br>Associated Groups:<br />
 					<c:forEach var="group" items="${user.groupNames}">
-						<span class="indented1"><i><c:out value="${group}" escapeXml="true"/></i> </span>
+						<c:set var="newGroupName" value="${group}"/>
+						<%--if group name is too long only take the first 30 characters --%>
+						<c:if test="${fn:length(group)>30}">							
+							<c:set var="newGroupName"
+								value="${fn:substring(group, 0, 30)}" />
+						</c:if>
+						<span class="indented1Wrapped"><i><c:out value="${newGroupName}" escapeXml="true"/></i> </span>
 						<br />
 					</c:forEach>
 				</c:if></td>
