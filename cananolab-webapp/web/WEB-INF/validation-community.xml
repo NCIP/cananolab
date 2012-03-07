@@ -5,14 +5,19 @@
 <form-validation>
 	<formset>
 		<form name="collaborationGroupForm">
-			<field property="group.name" page="1" depends="required, mask">
+			<field property="group.name" page="1" depends="required, mask, maxlength">
 				<arg position="0" key="group.name" bundle="community" />
 				<msg name="mask" key="group.name.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
-			</field>
+				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>30</var-value>
+				</var>
+			</field>			
 			<field property="group.theAccess.userBean.loginName" page="3"
 				depends="required, mask">
 				<arg position="0" key="login.name" bundle="community" />
