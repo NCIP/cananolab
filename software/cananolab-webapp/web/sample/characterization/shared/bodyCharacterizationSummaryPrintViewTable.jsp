@@ -9,7 +9,7 @@
 		style="display: block" class="summaryViewNoGrid" summary="layout">
 		<tr>
 			<th align="left">
-				<span class="summaryViewHeading">${type}</span>
+				<span class="summaryViewHeading"><c:out value="${type}"/></span>
 			</th>
 		</tr>
 		<tr>
@@ -21,7 +21,7 @@
 						bgcolor="#dbdbdb">
 						<tr>
 							<th align="left">
-								${charName}
+								<c:out value="${charName}"/>
 							</th>
 						</tr>
 						<tr>

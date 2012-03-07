@@ -10,7 +10,7 @@
 <tr>
 <td><table class="gridTableData"  align="left">
 	<tr><th colspan="3" align="center" >caNanoLab Availability Score: ${sampleBean.caNanoLabScore}<br/>
-		MINChar Availability Score: ${sampleBean.mincharScore}<br/></th></tr>
+		MINChar Availability Score: <c:out value="${sampleBean.mincharScore}"/><br/></th></tr>
 	<tr>
 		<td  class="cellLabel" align="center">
 			caNanoLab

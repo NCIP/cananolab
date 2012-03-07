@@ -22,7 +22,7 @@
 			<td colspan="2">
 				<c:choose>
 					<c:when test="${!empty assoc.attachment.bondType}">
-												${assoc.attachment.bondType}
+												<c:out value="${assoc.attachment.bondType}"/>
 											</c:when>
 					<c:otherwise>N/A
 											</c:otherwise>

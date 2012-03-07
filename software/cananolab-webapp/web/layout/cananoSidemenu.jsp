@@ -6,8 +6,7 @@
 
 <table cellspacing="0" cellpadding="0" width="160px">
 	<tr>
-		<th class="subMenuPrimaryTitle" scope="col">QUICK
-			LINKS</th>
+		<th class="subMenuPrimaryTitle" scope="col">QUICK LINKS</th>
 	</tr>
 	<jsp:include page="/html/cananoBaseSidemenu.html" />
 	<tr>
@@ -33,11 +32,13 @@
 						<img alt="Visitor Counter"
 							src="images/visitorCounter${countString}.png" />
 					</c:otherwise>
-				</c:choose></td>
+				</c:choose>
+			</td>
 		</tr>
 		<tr>
 			<td class="subMenuCommentText"><em>Since
-					${counterStartDate}</em></td>
+					${counterStartDate}</em>
+			</td>
 		</tr>
 	</c:if>
 	<c:if test="${!empty user}">
@@ -46,16 +47,12 @@
 				<c:if test="${!empty user.groupNames}">
 					<br>Associated Groups:<br />
 					<c:forEach var="group" items="${user.groupNames}">
-						<c:set var="newGroupName" value="${group}"/>
-						<%--if group name is too long only take the first 30 characters --%>
-						<c:if test="${fn:length(group)>30}">							
-							<c:set var="newGroupName"
-								value="${fn:substring(group, 0, 30)}" />
-						</c:if>
-						<span class="indented1Wrapped"><i><c:out value="${newGroupName}"/></i> </span>
+						<span class="indented1Wrapped"><i><c:out
+									value="${group}" /></i></span>
 						<br />
 					</c:forEach>
-				</c:if></td>
+				</c:if>
+			</td>
 		</tr>
 	</c:if>
-</table>                      
+</table>

@@ -87,7 +87,7 @@
 					align="center" style="display: block" class="summaryViewHeader" summary="layout">
 					<tr>
 						<th scope="col" align="left">
-							<b>${type}</b>
+							<b><c:out value="${type}"/></b>
 							<br />
 							<c:forEach var="charName"
 								items="${characterizationSummaryView.type2CharacterizationNames[type]}">

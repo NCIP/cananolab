@@ -51,8 +51,7 @@
 				test="${! empty theFile.domainFile.uri && theFile.domainFile.uriExternal eq false}">
 				<c:set var="uploadedUriStyle" value="display:block" />
 			</c:if>
-			<span id="uploadedUri" style="${uploadedUriStyle}">${theFile.domainFile.uri
-				}</span>
+			<span id="uploadedUri" style="${uploadedUriStyle}"><c:out value="${theFile.domainFile.uri}"/></span>
 			<span id="link" style="${linkStyle }"><html:text
 					property="${fileParent}.theFile.externalUrl" size="60"
 					styleId="externalUrl" /> </span><label for="externalUrl">&nbsp;</label>

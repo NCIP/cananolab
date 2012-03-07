@@ -3,7 +3,7 @@
 <table class="contentTitle" width="100%" border="0" summary="layout">
 	<tr>
 		<th scope="col" align="left">
-			${param.pageTitle}
+			<c:out value="${param.pageTitle}"/>
 		</th>
 		<c:if test="${empty printView}">
 			<td align="right" width="30%">

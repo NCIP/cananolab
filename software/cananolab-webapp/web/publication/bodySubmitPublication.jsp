@@ -339,7 +339,7 @@
 							<c:choose>
 								<c:when
 									test="${publicationForm.map.publication.image eq 'true'}">
-						 				${publicationForm.map.publication.domainFile.title}<br>
+						 				<c:out value="${publicationForm.map.publication.domainFile.title}"/><br>
 									<br>
 									<a href="#"
 										onclick="popImage(event, 'publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}',
@@ -352,7 +352,7 @@
 										<a
 										href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
 										target="${publicationForm.map.publication.urlTarget}">
-										${publicationForm.map.publication.domainFile.uri}</a>
+										<c:out value="${publicationForm.map.publication.domainFile.uri}"/></a>
 									<br>
 								</c:otherwise>
 							</c:choose>

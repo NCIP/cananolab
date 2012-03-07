@@ -7,8 +7,8 @@
 <link rel="StyleSheet" type="text/css" href="css/summaryView.css">
 
 <table class="summaryViewWithGrid" bgcolor="#F5F5f5" width="100%" align="left">
-	<tr><th colspan="3" align="center" >caNanoLab Availability Score: ${sampleBean.caNanoLabScore}&nbsp;&nbsp;
-		MINChar Availability Score: ${sampleBean.mincharScore}</th></tr>
+	<tr><th colspan="3" align="center" >caNanoLab Availability Score: <c:out value="${sampleBean.caNanoLabScore}"/>&nbsp;&nbsp;
+		MINChar Availability Score: <c:out value="${sampleBean.mincharScore}"/></th></tr>
 	<tr>
 		<td  class="cellLabel" align="center">
 			caNanoLab
