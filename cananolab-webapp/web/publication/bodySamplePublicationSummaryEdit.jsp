@@ -69,7 +69,7 @@
 				<li class="${selectedClass}">
 					<a
 						href="javascript:showSummary(${ind2.count}, ${fn:length(publicationCategories)})"
-						title="${type}"><span>${type}</span>
+						title="${type}"><span><c:out value="${type}"/></span>
 					</a>
 				</li>
 			</c:forEach>

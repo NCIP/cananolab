@@ -4,7 +4,7 @@
 		<c:if test="${!empty existingSiteBean && !empty existingSiteBean.siteName}">
 			<tr>
 				<td colspan="2" class="subMenuPrimaryTitle">
-					${existingSiteBean.siteName} 
+					<c:out value="${existingSiteBean.siteName}"/> 
 				</td>
 			</tr>
 		</c:if>	

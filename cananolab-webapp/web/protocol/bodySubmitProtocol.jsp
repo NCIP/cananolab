@@ -100,7 +100,7 @@
 						test="${!empty protocolForm.map.protocol.fileBean.domainFile.uri }">&nbsp;&nbsp;
 									<a
 							href="protocol.do?dispatch=download&amp;fileId=${protocolForm.map.protocol.fileBean.domainFile.id}">
-							${protocolForm.map.protocol.fileBean.domainFile.uri }</a>
+							<c:out value="${protocolForm.map.protocol.fileBean.domainFile.uri }"/></a>
 					</c:if> </span>&nbsp;
 			</td>
 			<html:hidden property="protocol.domain.id" styleId="protocolId" />

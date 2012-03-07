@@ -36,8 +36,8 @@
 			<td colspan="2">
 				<c:forEach var="data" items="${publicationResearchAreas}">
 					<html:multibox styleId="researchArea" property="researchArea">
-												${data}
-											</html:multibox>${data}
+												<c:out value="${data}"/>
+											</html:multibox><c:out value="${data}"/>
 										</c:forEach>
 			</td>
 		</tr>

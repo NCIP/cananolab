@@ -25,7 +25,7 @@
 			<c:if test="${!empty existingSiteBean && !empty existingSiteBean.siteLogoFilename}">
 				<c:set var="uploadedUriStyle" value="display:block" />
 			</c:if>
-			<span id="uploadedUri" style="${uploadedUriStyle}">${existingSiteBean.siteLogoFilename}</span>			 
+			<span id="uploadedUri" style="${uploadedUriStyle}"><c:out value="${existingSiteBean.siteLogoFilename}"/></span>			 
 			</td>
 		</tr>
 	</table>
