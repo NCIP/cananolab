@@ -434,7 +434,7 @@ public class StringUtils {
 		// String regex =
 		// "^(?!.*(TEXT\\/VBSCRIPT|%uff1cscript%uff1e|WFXSSProbe|\\=\"|\\+and\\+|\\+select\\+|sys\\.dba\\_user|AVAK\\$\\(RETURN\\_CODE\\)OS|id\\||;vol\\||&#|%\\d+|\\>|\\<|\\.\\.\\\\|\\.\\.\\/|\\.ini|javascript\\:|\\/etc\\/passwd|\\/bin\\/id|\\\'|\\\"|background\\:expression)).*$";
 
-		System.out.println(regex);
+//		System.out.println(regex);
 		if (inputString.matches(regex)) {
 			return true;
 		} else {
