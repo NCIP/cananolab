@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.service.community.impl.CommunityServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class CollaborationGroupAction extends AbstractDispatchAction {
@@ -95,6 +98,14 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 				.get("group");
+		//double check the groupName for invalid special characters
+		if (!StringUtils.xssValidate(group.getName())) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage error = new ActionMessage("group.name.invalid");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, error);
+			saveErrors(request, msgs);
+			return mapping.findForward("input");
+		}
 		CommunityService service = setServiceInSession(request);
 		service.saveCollaborationGroup(group);
 		// update user's groupNames
