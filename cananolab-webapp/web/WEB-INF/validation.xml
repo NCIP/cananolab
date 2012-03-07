@@ -21,6 +21,10 @@
 			<constant-value>^[a-zA-Z0-9\s]*$</constant-value>
 		</constant>
 		<constant>
+			<constant-name>relaxedAlphanumeric</constant-name>
+			<constant-value>^[a-zA-Z0-9\s\-\.\(\)]*$</constant-value>
+		</constant>
+		<constant>
 			<constant-name>loginName</constant-name>
 			<constant-value>^[a-zA-Z0-9\s\_]*$</constant-value>
 		</constant>
