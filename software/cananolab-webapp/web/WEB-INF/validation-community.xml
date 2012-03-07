@@ -10,7 +10,7 @@
 				<msg name="mask" key="group.name.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
+					<var-value>${relaxedAlphabetic}</var-value>
 				</var>
 			</field>
 			<field property="group.theAccess.userBean.loginName" page="3"
@@ -19,7 +19,7 @@
 				<msg name="mask" key="login.name.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${textFieldWhiteList}</var-value>
+					<var-value>${loginName}</var-value>
 				</var>
 			</field>
 			<field property="group.theAccess.roleName" page="3" depends="required">
