@@ -416,22 +416,25 @@ public class StringUtils {
 		// of
 		// javascript:
 
+		String[] phishingPatterns=new String[] { "\\<iframe", "\\<frame"};
+		
 		String[] otherPatterns = new String[] { "etc/passwd", "/bin/id",
 				"\\.ini", ";vol\\|", "id\\|",
 				"AVAK\\$\\(RETURN_CODE\\)OS", "sys\\.dba_user", "\\+select\\+",
-				"\\+and\\+", "WFXSSProbe", "TEXT/VBSCRIPT", "=\"", "\\.\\./",
+				"\\+and\\+", "WFXSSProbe", "WF_XSRF", "alert\\(", "TEXT/VBSCRIPT", "=\"", "\\.\\./",
 				"\\.\\.\\\\", "\\\\\'", "\\\\\\\"", "background\\:", "\\'\\+",
 				"\\\"\\+", "%\\d+"};
 
-		String patternStr = StringUtils.join(scriptPatterns, "|") + "|"
+				String patternStr = StringUtils.join(scriptPatterns, "|") + "|"
 				+ StringUtils.join(javascriptPatterns, "|") + "|"
+				+ StringUtils.join(phishingPatterns, "|") + "|"
 				+ StringUtils.join(otherPatterns, "|");
 
 		String regex = "^(?!.*(" + patternStr + ")).*$";
 		// String regex =
 		// "^(?!.*(TEXT\\/VBSCRIPT|%uff1cscript%uff1e|WFXSSProbe|\\=\"|\\+and\\+|\\+select\\+|sys\\.dba\\_user|AVAK\\$\\(RETURN\\_CODE\\)OS|id\\||;vol\\||&#|%\\d+|\\>|\\<|\\.\\.\\\\|\\.\\.\\/|\\.ini|javascript\\:|\\/etc\\/passwd|\\/bin\\/id|\\\'|\\\"|background\\:expression)).*$";
 
-//		System.out.println(regex);
+		System.out.println(regex);
 		if (inputString.matches(regex)) {
 			return true;
 		} else {
@@ -466,8 +469,9 @@ public class StringUtils {
 			System.out.println(stripWildcards(text3));
 
 			String text4 = "this is a test \\u003Cscript\\u003Ealert\\u0028613067\\u0029\u003C/script\u003E in a sentence";
-
-			if (StringUtils.xssValidate(text4)) {
+			String text5="<iframe src=http://demo.testfire.net/phishing.html>";
+			String text6="alert(1234)";
+			if (StringUtils.xssValidate(text6)) {
 				System.out.println("pass xss validation");
 			} else {
 				System.out.println("didn't pass xss validation");
