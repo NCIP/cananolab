@@ -112,15 +112,19 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 				// if user has access to update the group
 				if (securityService
 						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ collaborationGroup.getId())) {
+								+ collaborationGroup.getId())) {	
+					String oldGroupName=null;
 					if (doGroup == null) {
 						// update name to a new name not exist in the database
 						doGroup = authManager.getGroupById(collaborationGroup
 								.getId());
+						oldGroupName=doGroup.getGroupName();						
 						doGroup.setGroupName(collaborationGroup.getName());
 					}
 					doGroup.setGroupDesc(collaborationGroup.getDescription());
 					authManager.modifyGroup(doGroup);
+					//remove old group name from user's groups.
+					user.getGroupNames().remove(oldGroupName);
 					CollaborationGroupBean existingGroup = findCollaborationGroupById(collaborationGroup
 							.getId());
 					// update user access if user is the owner of the group or
