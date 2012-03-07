@@ -52,7 +52,7 @@
 							<c:set var="newGroupName"
 								value="${fn:substring(group, 0, 30)}" />
 						</c:if>
-						<span class="indented1Wrapped"><i><c:out value="${newGroupName}" escapeXml="true"/></i> </span>
+						<span class="indented1Wrapped"><i><c:out value="${newGroupName}"/></i> </span>
 						<br />
 					</c:forEach>
 				</c:if></td>
