@@ -10,7 +10,7 @@
 				<msg name="mask" key="group.name.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>${relaxedAlphabetic}</var-value>
+					<var-value>${relaxedAlphanumeric}</var-value>
 				</var>
 				<arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
 				<var>
