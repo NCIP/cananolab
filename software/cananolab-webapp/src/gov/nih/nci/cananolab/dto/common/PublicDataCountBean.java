@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+
 public class PublicDataCountBean {
 	private Integer numOfPublicProtocols=0;
 	private Integer numOfPublicSamples=0;
@@ -10,13 +11,22 @@ public class PublicDataCountBean {
 	private Integer numOfPublicInvivoCharacterizations=0;
 	private Integer numOfPublicOtherCharacterizations=0;
 	private Integer numOfPublicPublications=0;
-
+	private String countDateString;
+	
 	public Integer getNumOfPublicProtocols() {
 		return numOfPublicProtocols;
 	}
 
 	public void setNumOfPublicProtocols(Integer numOfPublicProtocols) {
 		this.numOfPublicProtocols = numOfPublicProtocols;
+	}
+
+	public String getCountDateString() {
+		return countDateString;
+	}
+
+	public void setCountDateString(String countDateString) {
+		this.countDateString = countDateString;
 	}
 
 	public Integer getNumOfPublicSamples() {

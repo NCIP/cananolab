@@ -9,13 +9,12 @@ import org.apache.log4j.Logger;
 
 /**
  * This class contains a set of utilities for manipulating dates
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class DateUtils {
 	private static Logger logger = Logger.getLogger(DateUtils.class);
-
 	public static Date addSecondsToCurrentDate(int seconds) {
 		// get a calendar with current time
 		Calendar cal = Calendar.getInstance();
@@ -27,7 +26,7 @@ public class DateUtils {
 	public static String convertDateToString(Date date) {
 		return convertDateToString(date, Constants.EXPORT_FILE_DATE_FORMAT);
 	}
-	
+
 	public static String convertDateToString(Date date, String format) {
 		if (date == null) {
 			return "";
@@ -38,7 +37,8 @@ public class DateUtils {
 			dateStr = dateFormat.format(date);
 		} catch (Exception e) {
 			logger.error(
-				"Error converting the given date using the given dateFormat.", e);
+					"Error converting the given date using the given dateFormat.",
+					e);
 			throw new RuntimeException("Can't format the given date: " + date);
 		}
 		return dateStr;
@@ -62,15 +62,25 @@ public class DateUtils {
 			}
 			return theDate;
 		} catch (Exception e) {
-			logger
-					.error(
-							"Error parsing the given date String using the given dateFormat",
-							e);
+			logger.error(
+					"Error parsing the given date String using the given dateFormat",
+					e);
 			throw new RuntimeException("The date String " + dateString
 					+ " can't be parsed against the date format:" + dateFormat);
 		}
 	}
 
+	public static String now(String dateFormat) {
+		Calendar cal = Calendar.getInstance();		
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		return sdf.format(cal.getTime());
+	}
+
+	public static String now() {
+		Calendar cal = Calendar.getInstance();		
+		SimpleDateFormat sdf = new SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT);
+		return sdf.format(cal.getTime());
+	}
 	public static void main(String[] args) {
 		try {
 			String dateString = DateUtils.convertDateToString(new Date(),

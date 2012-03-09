@@ -10,6 +10,8 @@ public class Constants {
 
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
+	public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
 	public static final String ACCEPT_DATE_FORMAT = "MM/dd/yy";
 
 	public static final String UNCOMPRESSED_FILE_DIRECTORY = "decompressedFiles";
