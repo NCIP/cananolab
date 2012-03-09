@@ -28,9 +28,8 @@
 			</table>
 		</td>
 		<td>
-			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="protocolLoaderImg" alt="protocol count">
-			<span class="counts" id="protocolCount"></span>
+			<span class="counts" id="protocolCount"><a href="javascript:gotoProtocols('search')">
+				<c:out value="${publicCounts.numOfPublicProtocols}"/></a></span>
 		</td>
 	</tr>
 	<tr class="alt">
@@ -61,22 +60,18 @@
 				</tr>
 			</table>
 		</td>
-		<td>
-			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="sampleLoaderImg" alt="sample count">
+		<td>			
 			<div id="sampleCounts" class="counts" >
-			    <span id="sampleCount"></span>&nbsp; &nbsp; &nbsp; &nbsp;<a id="moreStats" onclick="getMoreSamplesStats()"><span
-								class="moreLink">More Stats</span></a>
-				<br />
-				<img src="images/ajax-loader.gif" border="0" id="sampleRelatedLoaderImg" alt="sample related info count" style="display:none">
+			    <span id="sampleCount"><a href="javascript:gotoSamples('search')"><c:out value="${publicCounts.numOfPublicSamples}"/></a></span>
+					<br>
 				<div id="sampleRelatedCounts" class="indented1">
-					<span id="sampleSourceCount"></span><br> <span
-						id="CharacterizationCount"></span><br>
+					<span id="sampleSourceCount"><c:out value="${publicCounts.numOfPublicSources}"/> Sample Sources</span><br> 
+					<span id="CharacterizationCount"><c:out value="${publicCounts.numOfPublicCharacterizations}"/> Characterizations</span><br>
 					<div class="indented2">
-						<span id="PhysicoChemicalCharacterizationCount"></span><br> <span
-							id="InvitroCharacterizationCount"></span><br> <span
-							id="InvivoCharacterizationCount"></span><br> <span
-							id="OtherCharacterizationCount"></span><br>
+						<span id="PhysicoChemicalCharacterizationCount">-<c:out value="${publicCounts.numOfPublicPhysicoChemicalCharacterizations}"/> Physico-chemical</span><br> 
+						<span id="InvitroCharacterizationCount">-<c:out value="${publicCounts.numOfPublicInvitroCharacterizations}"/> In Vitro</span><br> 
+						<span id="InvivoCharacterizationCount">-<c:out value="${publicCounts.numOfPublicInvivoCharacterizations}"/> In Vivo</span><br> 
+						<span id="OtherCharacterizationCount">-<c:out value="${publicCounts.numOfPublicOtherCharacterizations}"/> Other</span><br>
 					</div>
 				</div>
 			</div>
@@ -106,9 +101,8 @@
 			</table>
 		</td>
 		<td>
-			<img src="images/ajax-loader.gif" border="0" class="counts"
-				id="publicationLoaderImg" alt="publication count">
-			<span id="publicationCount" class="counts"></span>
+			<span id="publicationCount" class="counts"><a href="javascript:gotoPublications('search')"><c:out value="${publicCounts.numOfPublicPublications}"/></a></span>
 		</td>
 	</tr>
 </table>
+<div class="formMessage" align="center">Last updated on <c:out value="${publicCounts.countDateString}"/></div>
