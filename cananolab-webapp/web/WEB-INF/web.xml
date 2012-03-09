@@ -33,6 +33,10 @@
 			<param-name>csmCleanupIntervalInMinutes</param-name>
 			<param-value>60</param-value>
 		</init-param>
+		<init-param>
+			<param-name>publicCountPullIntervalInHours</param-name>
+			<param-value>24</param-value>
+		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>

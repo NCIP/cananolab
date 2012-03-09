@@ -29,7 +29,7 @@
 <script type='text/javascript' src='javascript/CountManager.js'></script>
 </head>
 <tiles:importAttribute scope="session" />
-<body style="cursor: default" onload="getPublicCounts();">
+<body style="cursor: default">
 	<table cellspacing="0" cellpadding="0" summary="layout"
 		border="0">
 		<!-- nci hdr begins -->
