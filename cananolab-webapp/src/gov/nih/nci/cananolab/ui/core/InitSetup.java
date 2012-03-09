@@ -1,8 +1,10 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.service.PublicDataCountJob;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -382,5 +384,11 @@ public class InitSetup {
 				new LabelValueBean(AccessibilityBean.CURD_ROLE_DISPLAY_NAME,
 						AccessibilityBean.CSM_CURD_ROLE) };
 		appContext.setAttribute("csmRoleNames", csmRoleNames);
+	}
+	
+	public void setPublicCountInContext(ServletContext appContext) {
+		PublicDataCountJob job=new PublicDataCountJob();
+		PublicDataCountBean dataCounts=job.getPublicDataCounts();
+		appContext.setAttribute("publicCounts", dataCounts);
 	}
 }

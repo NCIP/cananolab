@@ -1,6 +1,9 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.service.CSMCleanupJob;
+import gov.nih.nci.cananolab.service.PublicDataCountJob;
+
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -22,14 +25,15 @@ import org.quartz.impl.StdSchedulerFactory;
 /**
  * Create a scheduler using Quartz when container starts. Borrowed concepts from
  * LSD browser application.
- *
+ * 
  * @author pansu, sahnih
- *
+ * 
  */
 public class SchedulerPlugin implements PlugIn {
 	Logger logger = Logger.getLogger(SchedulerPlugin.class);
 	private static Scheduler scheduler = null;
 	private static final int DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS = 1;
+	private static final int DEFAULT_PUBLIC_COUNT_PULL_INTERVAL_IN_HOURS = 24;
 
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
@@ -70,10 +74,15 @@ public class SchedulerPlugin implements PlugIn {
 				// .getAttribute("allGridNodes");
 				// initialisePublicDataCountJob(gridNodes,
 				// gridDiscoveryIntervalInMinutes);
-				int csmCleanupIntervalInMinutes = getIntervalInMinutes(
+				int csmCleanupIntervalInMinutes = getInterval(
 						actionServlet.getServletConfig(),
 						"csmCleanupIntervalInMinutes");
 				initialiseCSMCleanupJob(csmCleanupIntervalInMinutes);
+
+				int publicCountPullIntervalInHours = getInterval(
+						actionServlet.getServletConfig(),
+						"publicCountPullIntervalInHours");
+				initialisePublicCountPullJob(publicCountPullIntervalInHours);				
 			}
 		} catch (SchedulerException e) {
 			logger.error("Error setting up scheduler", e);
@@ -86,15 +95,18 @@ public class SchedulerPlugin implements PlugIn {
 		System.out.println("Exiting SchedulerPlugIn.destroy()");
 	}
 
-	private int getIntervalInMinutes(ServletConfig servletConfig,
-			String parameterName) {
+	private int getInterval(ServletConfig servletConfig, String parameterName) {
 		Integer interval = 0;
 		try {
-			interval = new Integer(servletConfig
-					.getInitParameter(parameterName));
+			interval = new Integer(
+					servletConfig.getInitParameter(parameterName));
 		} catch (NumberFormatException e) {
 			// use default
-			interval = DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
+			if (parameterName.contains("csm")) {
+				interval = DEFAULT_CSM_CLEANUP_INTERVAL_IN_MINS;
+			} else if (parameterName.contains("publicCount")) {
+				interval = DEFAULT_PUBLIC_COUNT_PULL_INTERVAL_IN_HOURS;
+			}
 		}
 		return interval;
 	}
@@ -112,7 +124,27 @@ public class SchedulerPlugin implements PlugIn {
 					"CSMCleanupJobTrigger", intervalInMinutes,
 					SimpleTrigger.REPEAT_INDEFINITELY);
 			scheduler.scheduleJob(jobDetail, trigger);
-			logger.debug("CSM clean up scheduler started......");
+			logger.info("CSM clean up scheduler started......");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	public void initialisePublicCountPullJob(int intervalInHours) {
+		try {
+			if (intervalInHours == 0) {
+				// default is 24 hours
+				intervalInHours = DEFAULT_PUBLIC_COUNT_PULL_INTERVAL_IN_HOURS;
+			}
+			JobDetail jobDetail = new JobDetail("publicCountJob", null,
+					PublicDataCountJob.class);
+
+			Trigger trigger = TriggerUtils.makeHourlyTrigger(
+					"publicCountJobTrigger", intervalInHours,
+					SimpleTrigger.REPEAT_INDEFINITELY);
+
+			scheduler.scheduleJob(jobDetail, trigger);
+			logger.info("Public data count scheduler started......");
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
