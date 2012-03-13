@@ -94,10 +94,12 @@
 
 .summaryViewWithGrid th {
 	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 3px 3px 3px 3px;
 	border-width: 1px;
 	border-color: #cccccc;
-	padding: 3px 3px 3px 3px;
-	color: #5C5C5C;
+	border-style: solid;
+	vertical-align: top;
+	text-align: left;	
 }
 
 .summaryViewWithGrid td {
@@ -108,7 +110,6 @@
 	border-style: solid;
 	vertical-align: top;
 	text-align: left;
-	color: #5C5C5C;
 }
 
 .editTableWithGrid {
