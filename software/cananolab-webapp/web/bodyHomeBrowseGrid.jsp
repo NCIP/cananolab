@@ -65,14 +65,26 @@
 			    <span id="sampleCount"><a href="javascript:gotoSamples('search')"><c:out value="${publicCounts.numOfPublicSamples}"/></a></span>
 					<br>
 				<div id="sampleRelatedCounts" class="indented1">
-					<span id="sampleSourceCount"><c:out value="${publicCounts.numOfPublicSources}"/> Sample Sources</span><br> 
-					<span id="CharacterizationCount"><c:out value="${publicCounts.numOfPublicCharacterizations}"/> Characterizations</span><br>
-					<div class="indented2">
-						<span id="PhysicoChemicalCharacterizationCount">-<c:out value="${publicCounts.numOfPublicPhysicoChemicalCharacterizations}"/> Physico-chemical</span><br> 
-						<span id="InvitroCharacterizationCount">-<c:out value="${publicCounts.numOfPublicInvitroCharacterizations}"/> In Vitro</span><br> 
-						<span id="InvivoCharacterizationCount">-<c:out value="${publicCounts.numOfPublicInvivoCharacterizations}"/> In Vivo</span><br> 
-						<span id="OtherCharacterizationCount">-<c:out value="${publicCounts.numOfPublicOtherCharacterizations}"/> Other</span><br>
-					</div>
+					<c:if test="${publicCounts.numOfPublicSources>0}"> 
+					    <span id="sampleSourceCount"><c:out value="${publicCounts.numOfPublicSources}"/> Sample Sources</span><br>
+					</c:if> 
+					<c:if test="${publicCounts.numOfPublicCharacterizations>0}"> 
+					   <span id="CharacterizationCount"><c:out value="${publicCounts.numOfPublicCharacterizations}"/> Characterizations</span><br>					
+					   <div class="indented2">
+					      <c:if test="${publicCounts.numOfPublicPhysicoChemicalCharacterizations>0}"> 
+						     <span id="PhysicoChemicalCharacterizationCount"><c:out value="${publicCounts.numOfPublicPhysicoChemicalCharacterizations}"/> Physico-chemical</span><br> 
+						  </c:if>
+						  <c:if test="${publicCounts.numOfPublicInvitroCharacterizations>0}"> 
+						     <span id="InvitroCharacterizationCount"><c:out value="${publicCounts.numOfPublicInvitroCharacterizations}"/> In Vitro</span><br>
+						  </c:if>
+						  <c:if test="${publicCounts.numOfPublicInvivoCharacterizations>0}"> 
+						     <span id="InvivoCharacterizationCount"><c:out value="${publicCounts.numOfPublicInvivoCharacterizations}"/> In Vivo</span><br>
+						  </c:if> 
+						  <c:if test="${publicCounts.numOfPublicOtherCharacterizations>0}">
+						     <span id="OtherCharacterizationCount"><c:out value="${publicCounts.numOfPublicOtherCharacterizations}"/> Other</span><br>
+						  </c:if>
+					   </div>
+					</c:if>
 				</div>
 			</div>
 		</td>
