@@ -8,7 +8,7 @@
 	style="display: block" class="summaryViewNoGrid">
 	<tr>
 		<th align="left">
-			composition file &nbsp;&nbsp;&nbsp;
+			<span class="summaryViewHeading">composition file</span>&nbsp;&nbsp;
 			<a href="compositionFile.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
 					border="0" alt="add composition file"/></a>
