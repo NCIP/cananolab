@@ -275,7 +275,6 @@ td.loginMenuFill {
 
 td.subMenuFooter {
 	/* for the last row in the submenu left of the footer menu */
-	font-size: 0.6em;
 	font-weight: bold;
 	padding-left: 0.8em;
 	background-color: #5c5c5c; /* constant: dark gray */
@@ -370,10 +369,22 @@ a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
 	white-space: nowrap;
 }
 
-a:hover.footerMenuLink {
-	color: #ffffff; /* constant: white */
+a:hover.sideMenuLink {
+	color: #F4F4F5; /* constant: light gray */
 }
 
+a:link.sideMenuLink,a:visited.sideMenuLink,a:active.sideMenuLink {
+	/* for the text links at the top of the footer */
+	color: #F4F4F5; /* constant: light gray */
+	white-space: nowrap;
+	font-style: italic;
+	font-size: 0.8em;
+	padding-left: 4em;
+}
+
+a:hover.sideMenuLink {
+	color: #F4F4F5; /* constant: light gray */
+}
 /*###############
 FORM BEGINS
 ###############*/
