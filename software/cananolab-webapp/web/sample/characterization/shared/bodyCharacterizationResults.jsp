@@ -36,7 +36,7 @@
 				<c:set var="newFindingStyle" value="display:block" />
 			</c:if>
 			<div id="newFinding" style="${newFindingStyle}">
-				<a name="submitFinding"><%@ include file="bodySubmitFinding.jsp"%></a>
+				<a name="submitFinding" class="anchorLink"><%@ include file="bodySubmitFinding.jsp"%></a>
 			</div>
 		</td>
 	</tr>

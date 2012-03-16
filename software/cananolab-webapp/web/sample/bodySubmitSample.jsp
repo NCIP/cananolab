@@ -74,7 +74,7 @@
 					<c:set var="newPOCStyle" value="display:block" />
 				</c:if>
 				<div style="${newPOCStyle}" id="newPointOfContact">
-					<a name="submitPointOfContact"><%@ include
+					<a name="submitPointOfContact" class="anchorLink"><%@ include
 							file="bodySubmitPointOfContact.jsp"%></a>
 				</div>
 			</td>

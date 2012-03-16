@@ -52,6 +52,9 @@
 					<tr>
 						<td>
 							<c:out value="${file.domainFile.uri}"/>
+							
+							&nbsp;(<a class='disclaimerLink' href='html/cananoDisclaimer.html'>Disclaimer</a>
+							
 						</td>
 						<td>
 							<a href="javascript:setTheFile(${ind.count-1})">Edit</a>
@@ -73,7 +76,7 @@
 				<c:set var="actionName" value="characterization" />
 				<c:set var="theFile"
 					value="${characterizationForm.map.achar.theFinding.theFile}" />
-				<%@include file="../../bodySubmitFile.jsp"%>
+				<%@include file="../../bodySampleSubmitFile.jsp"%>
 				&nbsp;
 			</div>
 		</td>

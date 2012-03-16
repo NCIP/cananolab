@@ -16,7 +16,7 @@
 			<td>
 				<c:forEach var="charName"
 					items="${characterizationSummaryView.type2CharacterizationNames[type]}">
-					<a name="${charName}"></a>
+					<a name="${charName}" class="anchorLink"></a>
 					<table width="99%" align="center" class="summaryViewNoGrid"
 						bgcolor="#dbdbdb">
 						<tr>

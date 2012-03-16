@@ -97,7 +97,7 @@
 					<c:set var="newCGStyle" value="display:block" />
 				</c:if>
 				<div style="${newCGStyle}" id="newCollaborationGroup">
-					<a name="submitCollaborationGroup"><%@ include
+					<a name="submitCollaborationGroup" class="anchorLink"><%@ include
 							file="bodySubmitCollaborationGroup.jsp"%></a>
 				</div>
 			</td>

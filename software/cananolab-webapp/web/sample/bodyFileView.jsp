@@ -12,7 +12,8 @@
 					<c:when test="${file.domainFile.uriExternal}">
 						<a style="white-space: normal;"
 							href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-							<c:out value="${file.domainFile.uri}" escapeXml="false" /> </a>
+							<c:out value="${file.domainFile.uri}" escapeXml="false" /></a>
+							&nbsp;(<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>)
 					</c:when>
 					<c:otherwise>
 						<c:choose>
@@ -22,12 +23,12 @@
 								<a href="#"
 									onclick="popImage(event, '${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}', ${file.domainFile.id})"><img
 										src="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}"
-										border="0" width="150" alt="uploaded image"> </a>
+										border="0" width="150" alt="uploaded image"></a>
 							</c:when>
 							<c:otherwise>
 								<a style="white-space: normal;"
 									href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
-									<c:out value="${file.domainFile.title}" /> </a>
+									<c:out value="${file.domainFile.title}" /></a>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>

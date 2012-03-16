@@ -75,9 +75,9 @@
 		<jsp:include page="${characterizationDetailPage}" />
 	</c:if>
 	</div>
-	<a name="designAndMethod"> <jsp:include
+	<a name="designAndMethod" class="anchorLink"> <jsp:include
 			page="shared/bodyCharacterizationDesignMethods.jsp?validate=${validate}" /></a>
-	<a name="result"> <jsp:include
+	<a name="result" class="anchorLink"> <jsp:include
 			page="shared/bodyCharacterizationResults.jsp?validate=${validate}" /></a>
 	<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
 	<jsp:include

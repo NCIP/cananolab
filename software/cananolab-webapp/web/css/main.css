@@ -369,21 +369,38 @@ a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
 	white-space: nowrap;
 }
 
+a:hover.disclaimerLink {
+	color: #5C5C5C; /* dark gray */
+}
+
+a:link.disclaimerLink,a:visited.disclaimerLink,a:active.disclaimerLink {
+	/* for the text links at the top of the footer */
+	color: #5C5C5C; /* dark gray */
+	white-space: nowrap;
+	font-size: 0.8em;
+	text-decoration: underline;
+}
+
+a:hover.disclaimerLink {
+	color: #5C5C5C; /* dark gray */
+}
+
 a:hover.sideMenuLink {
-	color: #F4F4F5; /* light gray */
+   color: #F4F4F5; /* light gray */
 }
 
 a:link.sideMenuLink,a:visited.sideMenuLink,a:active.sideMenuLink {
 	/* for the text links at the top of the footer */
 	color: #F4F4F5; /* light gray */
 	white-space: nowrap;
-	font-style: underline;
+	text-decoration: underline;
 	font-size: 0.8em;
 }
 
-a:hover.sideMenuLink {
-	color: #F4F4F5; /* light gray */
+a.anchorLink:link, a.anchorLink:visited, a.anchorLink:hover, a.anchorLink:active {
+	text-decoration: none;
 }
+
 /*###############
 FORM BEGINS
 ###############*/
@@ -834,10 +851,6 @@ img.img { /* for images that need a border */
 	padding-left: 8pt;
 }
 
-.indented1Wrapped {
-	padding-left: 6pt;
-	text:wrap: unrestricted;
-}
 .largerText {
 	font-size: 1.1em;
 	font-weight: bold;

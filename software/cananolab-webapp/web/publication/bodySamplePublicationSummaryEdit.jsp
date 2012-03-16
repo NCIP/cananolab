@@ -99,7 +99,7 @@
 					width="100%" align="center">
 					<tr>
 						<th align="left">
-							<a name="${type}" id="${type}"><span
+							<a name="${type}" id="${type}" class="anchorLink"><span
 								class="summaryViewHeading"><c:out value="${type}" /> </span>
 							</a>&nbsp;&nbsp;
 							<a

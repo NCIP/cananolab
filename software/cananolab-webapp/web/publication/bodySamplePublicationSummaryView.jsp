@@ -94,7 +94,7 @@
 					align="center" width="99%">
 					<tr>
 						<th align="left" scope="col">
-							<a name="${type}" id="${type}"><span
+							<a name="${type}" id="${type}" class="anchorLink"><span
 								class="summaryViewHeading"><c:out value="${type}"/></span> </a>
 						</th>
 					</tr>
