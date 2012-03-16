@@ -149,4 +149,6 @@ public class Constants {
 
 	public static final String ISI_PREFIX = "http://apps.isiknowledge.com/InboundService.do?Func=Frame&product=WOS&action=retrieve&SrcApp=EndNote&Init=Yes&SrcAuth=ResearchSoft&mode=FullRecord&UT=";
 	public static final int CANANOLAB_AVAILABLE_ENTITY = 30;
+	
+	public static final String EXTERNAL_SITE_DISCLAIMER_LINK="<a class='disclaimerLink' href='html/cananoDisclaimer.html' target='new'>Disclaimer</a>";
 }
