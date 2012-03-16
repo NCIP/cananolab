@@ -304,7 +304,8 @@ public class PublicationBean extends FileBean {
 			sb.append(" target='");
 			sb.append(getUrlTarget());
 			sb.append("'>");
-			sb.append(pub.getName());
+			//sb.append(pub.getName()); some times the name is null or too long
+			sb.append("view");
 			sb.append("</a>");
 			return sb.toString();
 		} else {
