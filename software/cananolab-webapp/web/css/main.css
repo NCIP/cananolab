@@ -370,20 +370,19 @@ a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
 }
 
 a:hover.sideMenuLink {
-	color: #F4F4F5; /* constant: light gray */
+	color: #F4F4F5; /* light gray */
 }
 
 a:link.sideMenuLink,a:visited.sideMenuLink,a:active.sideMenuLink {
 	/* for the text links at the top of the footer */
-	color: #F4F4F5; /* constant: light gray */
+	color: #F4F4F5; /* light gray */
 	white-space: nowrap;
-	font-style: italic;
+	font-style: underline;
 	font-size: 0.8em;
-	padding-left: 4em;
 }
 
 a:hover.sideMenuLink {
-	color: #F4F4F5; /* constant: light gray */
+	color: #F4F4F5; /* light gray */
 }
 /*###############
 FORM BEGINS
