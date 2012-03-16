@@ -11,8 +11,6 @@
 	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-<c:set var="fileParent" value="comp" />
-<c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle"
 		value="${sampleName} Sample Composition - Composition File" />
@@ -21,10 +19,11 @@
 </jsp:include>
 <html:form action="/compositionFile" enctype="multipart/form-data" styleId="compFileForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
+	<c:set var="fileParent" value="comp" />
 	<c:set var="fileFormName" value="compFileForm" />
 	<c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
 	<c:set var="actionName" value="compositionFile" />
-	<%@include file="../bodySubmitFile.jsp"%>
+	<%@include file="../bodySampleSubmitFile.jsp"%>
 	<br>
 	<html:hidden property="sampleId" value="${param.sampleId}" />
 	<c:set var="updateId"

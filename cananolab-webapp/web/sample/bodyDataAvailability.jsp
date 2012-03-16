@@ -38,7 +38,7 @@
 		</td>
 		<td ></td>
 		<td align="center">
-			<img src="images/checkMark.jpg"  width=11%" alt="check mark"/>
+			<img src="images/icon_check.png"  width=11%" alt="check mark"/>
 		</td>
 	</tr>
 	<tr>

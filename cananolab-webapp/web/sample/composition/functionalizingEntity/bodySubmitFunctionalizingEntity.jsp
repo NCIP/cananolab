@@ -234,7 +234,7 @@
 	<br>
 	<%--Functionalizing Entity File Information --%>
 	<c:set var="fileParent" value="functionalizingEntity" />
-	<a name="file">
+	<a name="file" class="anchorLink">
 		<table width="100%" align="center" class="submissionView">
 			<tr>
 				<td class="cellLabel" width="15%">
@@ -273,7 +273,7 @@
 						<c:set var="theFile"
 							value="${compositionForm.map.functionalizingEntity.theFile}" />
 						<c:set var="actionName" value="functionalizingEntity" />
-						<%@include file="../../bodySubmitFile.jsp"%>
+						<%@include file="../../bodySampleSubmitFile.jsp"%>
 						&nbsp;
 					</div>
 				</td>

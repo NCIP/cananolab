@@ -162,7 +162,7 @@
 	<br>
 	<%--Chemical Association File Information --%>
 	<c:set var="fileParent" value="assoc" />
-	<a name="file">
+	<a name="file" class="anchorLink">
 		<table width="100%" align="center" class="submissionView">
 			<tr>
 				<td class="cellLabel" width="10%">
@@ -194,7 +194,7 @@
 					<div style="${newFileStyle}" id="newFile">
 						<c:set var="fileFormName" value="chemAssocForm" />
 						<c:set var="theFile" value="${compositionForm.map.assoc.theFile}" />
-						<%@include file="../bodySubmitFile.jsp"%>
+						<%@include file="../bodySampleSubmitFile.jsp"%>
 						&nbsp;
 					</div>
 				</td>
