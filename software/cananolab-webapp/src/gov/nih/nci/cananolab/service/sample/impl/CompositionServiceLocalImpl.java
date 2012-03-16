@@ -347,6 +347,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			if (comp == null) {
 				comp = new SampleComposition();
 				comp.setSample(sampleBean.getDomain());
+				comp.setFileCollection(new HashSet<File>());
 			} else if (comp.getId() == null) {
 				comp.setFileCollection(new HashSet<File>());
 			} else {

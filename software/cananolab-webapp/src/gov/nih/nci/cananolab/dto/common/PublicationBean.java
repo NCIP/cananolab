@@ -18,9 +18,9 @@ import java.util.List;
 
 /**
  * Publication view bean
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
@@ -75,7 +75,7 @@ public class PublicationBean extends FileBean {
 
 	/**
 	 * Copy PubMed data from source PublicationBean to this PublicationBean.
-	 *
+	 * 
 	 * @param source
 	 * @param taget
 	 */
@@ -289,6 +289,9 @@ public class PublicationBean extends FileBean {
 			sb.append(">");
 			sb.append("DOI: " + pub.getDigitalObjectId());
 			sb.append("</a>");
+			sb.append("&nbsp;(");
+			sb.append(Constants.EXTERNAL_SITE_DISCLAIMER_LINK);
+			sb.append(")");
 			return sb.toString();
 		} else {
 			return null;
@@ -304,9 +307,15 @@ public class PublicationBean extends FileBean {
 			sb.append(" target='");
 			sb.append(getUrlTarget());
 			sb.append("'>");
-			//sb.append(pub.getName()); some times the name is null or too long
-			sb.append("view");
+			// sb.append(pub.getName()); some times the name is null or too long
+			sb.append("View");
 			sb.append("</a>");
+			// if Uri is external
+			if (pub.getUriExternal()) {
+				sb.append("&nbsp;(");
+				sb.append(Constants.EXTERNAL_SITE_DISCLAIMER_LINK);
+				sb.append(")");
+			}
 			return sb.toString();
 		} else {
 			return null;
