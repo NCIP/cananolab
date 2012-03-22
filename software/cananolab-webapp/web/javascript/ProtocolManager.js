@@ -95,7 +95,7 @@ function populateProtocol(protocol) {
 }
 function writeLink(protocol) {
 	if (protocol == null) {
-		document.getElementById("protocolFileLink").innerHTML = "";
+		document.getElementById("uploadedUri").innerHTML = "";
 		return;
 	}
 	var uri = null;
@@ -105,10 +105,10 @@ function writeLink(protocol) {
 		fileId = protocol.fileBean.domainFile.id;
 	}
 	if (uri != null && fileId != null) {
-		document.getElementById("protocolFileLink").innerHTML = "<a href='protocol.do?dispatch=download&amp;location="
+		document.getElementById("uploadedUri").innerHTML = "<a href='protocol.do?dispatch=download&amp;location="
 				+ appOwner + "&amp;fileId=" + fileId + "'>" + uri + "</a>";
 	} else {
-		document.getElementById("protocolFileLink").innerHTML = "";
+		document.getElementById("uploadedUri").innerHTML = "";
 	}
 }
 
