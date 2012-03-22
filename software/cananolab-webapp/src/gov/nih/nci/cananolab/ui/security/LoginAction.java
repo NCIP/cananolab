@@ -19,7 +19,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * The LoginAction authenticates a user into the system.
- *
+ * 
  * @author pansu
  */
 
@@ -48,18 +48,18 @@ public class LoginAction extends Action {
 			saveMessages(request, msgs);
 			return mapping.findForward("changePassword");
 		}
-		if (session != null) {
-			session.invalidate();
-		}
 		UserBean user = new UserBean(loginName, password);
 		try {
 			SecurityService service = new SecurityService(
 					AccessibilityBean.CSM_APP_NAME, user);
-			request.getSession().setAttribute("securityService", service);
-			request.getSession().setAttribute("user", service.getUserBean());
+			if (session != null) {
+				session.invalidate();
+				session = request.getSession(true);
+				session.setAttribute("securityService", service);
+				session.setAttribute("user", service.getUserBean());
+			}
 		} catch (Exception e) {
-			ActionMessage msg = new ActionMessage(
-					"erros.login.failed");
+			ActionMessage msg = new ActionMessage("erros.login.failed");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			return mapping.findForward("input");
