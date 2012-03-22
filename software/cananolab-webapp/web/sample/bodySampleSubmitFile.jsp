@@ -54,7 +54,7 @@
 			<span id="uploadedUri" style="${uploadedUriStyle}"><c:out value="${theFile.domainFile.uri}"/></span>
 			<span id="link" style="${linkStyle }"><html:text
 					property="${fileParent}.theFile.externalUrl" size="60"
-					styleId="externalUrl" />&nbsp;(<a class='disclaimerLink' href='html/cananoDisclaimer.html' target="new">Disclaimer)</a></span><label for="externalUrl">&nbsp;</label>
+					styleId="externalUrl" />&nbsp;[<a class='disclaimerLink' href='html/cananoDisclaimer.html' target="new">Disclaimer]</a></span><label for="externalUrl">&nbsp;</label>
 		</td>
 	</tr>
 	<tr>
