@@ -10,9 +10,9 @@ import org.displaytag.decorator.TableDecorator;
 /**
  * This decorator is used to for decorate different properties of a protocol
  * file to be shown properly in the view page using display tag lib.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolDecorator extends TableDecorator {
 	public String getDetailURL() {
@@ -48,33 +48,21 @@ public class ProtocolDecorator extends TableDecorator {
 		return description;
 	}
 
-	public SortableName getDownloadURL() throws UnsupportedEncodingException {
-		SortableName sortableLink = null;
+	public String getDownloadURL() throws UnsupportedEncodingException {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		FileBean file = protocol.getFileBean();
 
-		if (file != null) {
-			String fileName = file.getDomainFile().getName();
-			if (!StringUtils.isEmpty(file.getDomainFile().getName())) {
-				StringBuilder sb = new StringBuilder("<a href=");
-				sb.append("protocol.do?dispatch=download&fileId=");
-				sb.append(file.getDomainFile().getId()).append(">");				
-				sb.append(fileName);
-				sb.append("</a>");
-				sortableLink = new SortableName(fileName, sb.toString());
-			}
-			//if no file is uploaded, try to use file title
-			else {
-				String fileTitle = file.getDomainFile().getTitle();
-				if (!StringUtils.isEmpty(fileTitle)) {
-					sortableLink = new SortableName(fileTitle);
-				} else {
-					sortableLink = new SortableName("");
-				}
-			}
+		if (file != null && file.getDomainFile() != null) {
+			String link = "protocol.do?dispatch=download&fileId="
+					+ file.getDomainFile().getId();
+			String linkText = "View";
+			StringBuilder sb = new StringBuilder("<a href=");
+			sb.append(link).append(" target='new'>");
+			sb.append(linkText);
+			sb.append("</a>");
+			return sb.toString();
 		} else {
-			sortableLink = new SortableName("");
+			return "";
 		}
-		return sortableLink;
 	}
 }
