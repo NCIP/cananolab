@@ -61,7 +61,7 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				<label for="protocolVersion">Protocol Version*</label>
+				<label for="protocolVersion">Protocol Version</label>
 			</td>
 			<td>
 				<div id="protocolVersionPrompt">
@@ -89,19 +89,16 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel">
-				<label for="protocolFile">Protocol File</label>
+			<td class="cellLabel"><label for="protocolFile">Protocol
+					File</label>
 			</td>
-			<td>
-				<html:file styleId="protocolFile" property="protocol.fileBean.uploadedFile"
-					onchange="javascript:writeLink(null);" />
-				&nbsp;&nbsp;
-				<span id="protocolFileLink"> <c:if
-						test="${!empty protocolForm.map.protocol.fileBean.domainFile.uri }">&nbsp;&nbsp;
-									<a
-							href="protocol.do?dispatch=download&amp;fileId=${protocolForm.map.protocol.fileBean.domainFile.id}">
-							<c:out value="${protocolForm.map.protocol.fileBean.domainFile.uri }"/></a>
-					</c:if> </span>&nbsp;
+			<td><c:set var="theFile"
+					value="${protocolForm.map.protocol.fileBean}" />
+				<c:set var="fileBeanProperty" value="protocol.fileBean"/>
+				<c:set var="fileJavascript" value="writeLink(null);"/>
+				<c:set var="actionName" value="protocol"/>
+				<c:set var="fileId" value="${protocolForm.map.protocol.fileBean.domainFile.id}"/>
+				<%@include file="../bodySubmitFile.jsp" %>				
 			</td>
 			<html:hidden property="protocol.domain.id" styleId="protocolId" />
 			<html:hidden property="protocol.fileBean.domainFile.id"
