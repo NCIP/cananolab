@@ -282,93 +282,29 @@
 		</tr>
 	</table>
 	<div id="fileSection" style="display: block">
-		<br>
+		<br><c:set var="theFile"
+					value="${publicationForm.map.publication}" />
+			<c:set var="fileBeanProperty" value="publication"/>
+			<c:set var="fileJavascript" value="updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}')" />
+			<c:set var="textJavascript" value="updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}')" />
+			<c:set var="actionName" value="publication"/>
+			<c:set var="fileId" value="${publicationForm.map.publication.domainFile.id}"/>
 		<table width="100%" align="center" class="submissionView" summary="layout">
-			<c:choose>
-				<c:when
-					test="${publicationForm.map.publication.domainFile.uriExternal eq 'true' }">
-					<c:set var="linkStyle" value="display: block" />
-					<c:set var="loadStyle" value="display: none" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="linkStyle" value="display: none" />
-					<c:set var="loadStyle" value="display: block" />
-				</c:otherwise>
-			</c:choose>
 			<tr>
-				<td class="cellLabel" width="110">
-					<label for="external0" style="display:none">File</label>
-					<html:radio styleId="external0"
-						property="publication.domainFile.uriExternal" value="false"
-						onclick="displayFileRadioButton()" />
-					<label for="uploadedFileField">Upload File</label>
-					<br>
-					&nbsp;&nbsp;or
-					<br>
-					<label for="external1" style="display:none">URL</label>
-					<html:radio styleId="external1"
-						property="publication.domainFile.uriExternal" value="true"
-						onclick="displayFileRadioButton()" />
-					<label for="externalUrlField">Enter File URL</label>
+				<td class="cellLabel" width="100"><label for="publicationFile">File</label>
 				</td>
-				<td colspan="2">
-					<span id="load"> <html:file
-							property="publication.uploadedFile" styleId="uploadedFileField"
-							size="60"
-							onchange="javascript:updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}');" />
-						&nbsp;&nbsp; </span>
-					<br>
-					<br>
-					<span id="link" style=""><html:text
-							property="publication.externalUrl" styleId="externalUrlField"
-							size="60"
-							onchange="javascript:updateWithExistingNonPubMedDOIPublication('${publicationForm.map.publication.domainFile.uri}');" />
-					</span>&nbsp;
+				<td><%@ include file="../bodySubmitFile.jsp"%>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="3">
-					<span id="existingFileInfo" style="display: none"></span>
-				</td>
-			</tr>
-			<c:if
-				test="${!empty publicationForm.map.publication.domainFile.uri }">
-				<tr>
-					<td colspan="3">
-						<div id="existingFileInfoFromUpdate" style="display: block">
-							<c:choose>
-								<c:when
-									test="${publicationForm.map.publication.image eq 'true'}">
-						 				<c:out value="${publicationForm.map.publication.domainFile.title}"/><br>
-									<br>
-									<a href="#"
-										onclick="popImage(event, 'publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}',
-														${publicationForm.map.publication.domainFile.id})"><img
-											src="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
-											border="0" width="150"> </a>
-								</c:when>
-								<c:otherwise>
-											Submitted Publication &nbsp;&nbsp;
-										<a
-										href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.publication.domainFile.id}"
-										target="${publicationForm.map.publication.urlTarget}">
-										<c:out value="${publicationForm.map.publication.domainFile.uri}"/></a>
-									<br>
-								</c:otherwise>
-							</c:choose>
-						</div>
-					</td>
-				</tr>
-			</c:if>
 		</table>
 	</div>
 	<br>
 	<c:choose>
 		<c:when test="${empty publicationForm.map.sampleId}">
-			<a name="sampleNameField"></a>
+			<a name="sampleNameField" class="anchorLink"></a>
 			<table width="100%" align="center" class="submissionView" summary="layout">
 				<tr>
-					<td class="cellLabel" width="110">
+					<td class="cellLabel" width="100">
 						<label for="associatedSampleNames">Sample Name</label>
 					</td>
 					<td>
@@ -384,7 +320,7 @@
 									<a href="#sampleNameField"
 										onclick="showMatchedSampleNameDropdown()"><img
 											src="images/icon_browse.jpg" align="middle"
-											alt="search existing samples" border="0" /> </a>
+											alt="search existing samples" border="0" /></a>
 								</td>
 								<td>
 									<table class="invisibleTable" summary="layout">
