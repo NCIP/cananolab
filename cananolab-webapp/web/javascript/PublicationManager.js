@@ -11,10 +11,10 @@ function clearPublication() {
 		dwr.util.setValues(publication);
 		currentPublication = publication;
 		// not sure if we need to clear status, description, samples, file, and
-			// visibility
-			populateAuthors(false);
-			enableAutoFields();
-		});
+		// visibility
+		populateAuthors(false);
+		enableAutoFields();
+	});
 }
 function showAuthors(publicationId) {
 }
@@ -247,23 +247,24 @@ function updateWithExistingNonPubMedDOIPublication(uri) {
 	}
 	if ((pubMedId == null || pubMedId == 0) && doi == ""
 			&& (uri == null || uri == "")) {
-		waitCursor();
+		// waitCursor();
 		PublicationManager
-				.getExistingNonPubMedDOIPublication(category,
+				.getExistingNonPubMedDOIPublication(
+						category,
 						title,
 						firstAuthor,
 						function(data) {
 							// has existing database publication
-						if (data !== null) {
-							var confirmMessage = "A database record with the same publication type, title and first author already exists.  Load saved information?";
-							if (confirm(confirmMessage)) {
-								// reload the page
-								gotoUpdatePage(data);
-							} else {
-								hideCursor();
+							if (data !== null) {
+								var confirmMessage = "A database record with the same publication type, title and first author already exists.  Load saved information?";
+								if (confirm(confirmMessage)) {
+									// reload the page
+									gotoUpdatePage(data);
+								} else {
+									hideCursor();
+								}
 							}
-						}
-					});
+						});
 	}
 }
 
@@ -404,20 +405,20 @@ function deleteTheAuthor() {
 }
 
 function gotoUpdatePage(publicationId) {
-	var form=document.getElementById("publicationForm");
+	var form = document.getElementById("publicationForm");
 	form.action = "publication.do?dispatch=setupUpdate&page=0&publicationId="
 			+ publicationId;
 	form.submit();
 }
 
 function gotoSubmitNewPage() {
-	var form=document.getElementById("publicationForm");
+	var form = document.getElementById("publicationForm");
 	form.action = "publication.do?dispatch=setupNew&page=0";
 	form.submit();
 }
 
 function gotoInputPage() {
-	var form=document.getElementById("publicationForm");
+	var form = document.getElementById("publicationForm");
 	form.action = "publication.do?dispatch=input&page=0";
 	form.submit();
 }
