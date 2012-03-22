@@ -53,8 +53,7 @@
 						<td>
 							<c:out value="${file.domainFile.uri}"/>
 							
-							&nbsp;(<a class='disclaimerLink' href='html/cananoDisclaimer.html'>Disclaimer</a>
-							
+							&nbsp;[<a class='disclaimerLink' href='html/cananoDisclaimer.html'>Disclaimer</a>]							
 						</td>
 						<td>
 							<a href="javascript:setTheFile(${ind.count-1})">Edit</a>
