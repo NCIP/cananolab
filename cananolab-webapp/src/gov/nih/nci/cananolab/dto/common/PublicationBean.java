@@ -255,12 +255,12 @@ public class PublicationBean extends FileBean {
 			publishInfo += pub.getYear().toString() + "; ";
 		}
 		if (!StringUtils.isEmpty((pub.getVolume()))) {
-			publishInfo += pub.getVolume() + ":";
+			publishInfo += pub.getVolume();
 		}
 		if (!StringUtils.isEmpty(pub.getVolume())
 				&& !StringUtils.isEmpty(pub.getStartPage())
 				&& !StringUtils.isEmpty(pub.getEndPage())) {
-			publishInfo += pub.getStartPage() + "-" + pub.getEndPage();
+			publishInfo += ":" + pub.getStartPage() + "-" + pub.getEndPage();
 		}
 		return publishInfo;
 	}
@@ -289,9 +289,7 @@ public class PublicationBean extends FileBean {
 			sb.append(">");
 			sb.append("DOI: " + pub.getDigitalObjectId());
 			sb.append("</a>");
-			sb.append("&nbsp;(");
 			sb.append(Constants.EXTERNAL_SITE_DISCLAIMER_LINK);
-			sb.append(")");
 			return sb.toString();
 		} else {
 			return null;
@@ -300,10 +298,13 @@ public class PublicationBean extends FileBean {
 
 	private String getUriDisplayName() {
 		Publication pub = (Publication) domainFile;
+		String link = "publication.do?dispatch=download&fileId=" + pub.getId();
 		if (!StringUtils.isEmpty(pub.getUri())) {
+			if (pub.getUriExternal()) {
+				link = pub.getUri();
+			}
 			StringBuilder sb = new StringBuilder("<a href=");
-			sb.append("publication.do?dispatch=download&fileId=");
-			sb.append(pub.getId());
+			sb.append(link);
 			sb.append(" target='");
 			sb.append(getUrlTarget());
 			sb.append("'>");
@@ -312,9 +313,7 @@ public class PublicationBean extends FileBean {
 			sb.append("</a>");
 			// if Uri is external
 			if (pub.getUriExternal()) {
-				sb.append("&nbsp;(");
 				sb.append(Constants.EXTERNAL_SITE_DISCLAIMER_LINK);
-				sb.append(")");
 			}
 			return sb.toString();
 		} else {
