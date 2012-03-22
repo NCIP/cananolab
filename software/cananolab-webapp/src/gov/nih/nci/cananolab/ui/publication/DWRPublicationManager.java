@@ -121,11 +121,18 @@ public class DWRPublicationManager {
 	public String getExistingNonPubMedDOIPublication(String category,
 			String title, Author firstAuthor) {
 		String publicationId = null;
+		Publication publication = null;
 		try {
-			Publication publication = getService().getHelper()
-					.findNonPubMedNonDOIPublication(category, title,
-							firstAuthor.getFirstName(),
-							firstAuthor.getLastName());
+			if (firstAuthor != null) {
+				publication = getService().getHelper()
+						.findNonPubMedNonDOIPublication(category, title,
+								firstAuthor.getFirstName(),
+								firstAuthor.getLastName());
+			} else {
+				publication = getService().getHelper()
+						.findNonPubMedNonDOIPublication(category, title, null,
+								null);
+			}
 			if (publication != null) {
 				publicationId = publication.getId().toString();
 			}
@@ -152,7 +159,7 @@ public class DWRPublicationManager {
 	/**
 	 * Return current PublicationBean for displaying Author list on page when no
 	 * PubMedId exists.
-	 *
+	 * 
 	 * @return PublicationBean
 	 */
 	public PublicationBean retrieveCurrentPub() {
@@ -220,10 +227,9 @@ public class DWRPublicationManager {
 					new Comparators.SortableNameComparator());
 			return sampleNames.toArray(new String[sampleNames.size()]);
 		} catch (Exception e) {
-			logger
-					.error(
-							"Problem getting all sample names for publication submission \n",
-							e);
+			logger.error(
+					"Problem getting all sample names for publication submission \n",
+					e);
 			return new String[] { "" };
 		}
 	}
@@ -261,8 +267,7 @@ public class DWRPublicationManager {
 		try {
 			counts = getService().getNumberOfPublicPublications();
 		} catch (Exception e) {
-			logger
-					.error("Error obtaining counts of public publications from local site.");
+			logger.error("Error obtaining counts of public publications from local site.");
 		}
 		return counts.toString() + " Publications";
 	}
