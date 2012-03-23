@@ -69,12 +69,12 @@
 					</c:otherwise>
 				</c:choose>
 			</td>
-			<c:if test="${editFile eq 'true'}">
-				<td align="right">
+			<td align="right">
+			<c:if test="${editFile eq 'true'}">				
 					<a
 						href="javascript:setTheFile('${fileParent}', ${file.domainFile.id});">Edit</a>&nbsp;
-				</td>
 			</c:if>
+			</td>
 		</tr>
 	</c:forEach>
 </table>
