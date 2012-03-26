@@ -22,17 +22,17 @@
 				<c:if test="${!empty user}">
 				    <display:column title="" property="detailURL" />
 				</c:if>
+				<display:column title="Protocol Type" property="domain.type"
+					sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Protocol Name" property="viewName"
 					sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Protocol Abbreviation"
 					property="domain.abbreviation" sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="Protocol Type" property="domain.type"
-					sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Version" property="domain.version"
 					sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="File" property="downloadURL" sortable="true" headerScope="col"/>
 				<display:column title="Description"
 					property="fileDescription" sortable="false" headerScope="col"/>
+				<display:column title="File" property="downloadURL" sortable="true" headerScope="col"/>
 				<display:column title="Created Date"
 					property="domain.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" headerScope="col"/>
