@@ -3,21 +3,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<div class="editButton">
+<a href="nanomaterialEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${nanomaterialEntity.domainEntity.id}">Edit</a>
+</div>
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
-	<tr>
-		<th scope="row"></th>
-		<td width="95%"></td>
-		<td colspan="3" align="right">
-			<a
-				href="nanomaterialEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${nanomaterialEntity.domainEntity.id}">Edit</a>
-		</td>
-	</tr>
 	<tr>
 		<th class="cellLabel" width="10%" scope="row">
 			Description
 		</th>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty fn:trim(nanomaterialEntity.description)}">
 					<c:out value="${nanomaterialEntity.descriptionDisplayName}" escapeXml="false" />
@@ -48,7 +43,7 @@
 					<th class="cellLabel" width="10%" scope="row">
 						Properties
 					</th>
-					<td colspan="2">
+					<td>
 						<%
 							String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
 												.getInstance().getDetailPage(
@@ -71,7 +66,7 @@
 		<td class="cellLabel" width="10%">
 			Composing Elements
 		</td>
-		<td colspan="2">
+		<td>
 			<c:set var="entity" value="${nanomaterialEntity}" />
 			<%@include file="bodyComposingElementView.jsp"%>
 		</td>
@@ -80,7 +75,7 @@
 		<th class="cellLabel" width="10%" scope="row">
 			Files
 		</th>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${! empty nanomaterialEntity.files}">
 					<c:set var="files" value="${nanomaterialEntity.files }" />

@@ -33,16 +33,12 @@
 									<c:forEach var="file"
 										items="${compositionForm.map.comp.type2Files[fileType]}"
 										varStatus="fileInd">
+										<div class="editButton">
+											<a
+												href="compositionFile.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${file.domainFile.id}">Edit</a>
+										</div>
 										<table class="summaryViewNoGrid" width="99%" align="center"
 											bgcolor="#F5F5f5">
-											<tr>
-												<td width="95%"></td>
-												<td align="right"></td>
-												<td valign="top" align="right">
-													<a
-														href="compositionFile.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${file.domainFile.id}">Edit</a>
-												</td>
-											</tr>
 											<tr>
 												<td class="cellLabel" width="20%">
 													Title and Download Link

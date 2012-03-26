@@ -3,23 +3,19 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<div class="editButton">
+	<a
+		href="chemicalAssociation.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${assoc.domainAssociation.id}">Edit</a>
 
+</div>
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
-	<tr>
-		<td></td>
-		<td width="95%"></td>
-		<td align="right">
-			<a
-				href="chemicalAssociation.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${assoc.domainAssociation.id}">Edit</a>
-		</td>
-	</tr>
 	<c:if test="${! empty assoc.attachment.id}">
 		<tr>
 			<td class="cellLabel" width="10%">
 				Bond Type
 			</td>
-			<td colspan="2">
+			<td>
 				<c:choose>
 					<c:when test="${!empty assoc.attachment.bondType}">
 												<c:out value="${assoc.attachment.bondType}"/>
@@ -34,7 +30,7 @@
 		<td class="cellLabel" width="10%">
 			Description
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty fn:trim(assoc.description)}">
 					<c:out value="${assoc.description}" escapeXml="false" />
@@ -48,7 +44,7 @@
 		<td class="cellLabel" width="10%">
 			Associated Elements
 		</td>
-		<td colspan="2">
+		<td>
 			<table>
 				<tr>
 					<td width="250">
@@ -99,7 +95,7 @@ composing element of type <c:out
 		<td class="cellLabel" width="10%">
 			Files
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${! empty assoc.files}">
 					<c:set var="files" value="${assoc.files }" />

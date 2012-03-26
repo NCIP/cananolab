@@ -8,21 +8,17 @@
 <c:set var="charName" value="${charBean.characterizationName}" />
 <c:set var="charType" value="${charBean.characterizationType}" />
 
+<div class="editButton">
+	<a
+		href="characterization.do?dispatch=setupUpdate&sampleId=${sampleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
+</div>
 <table class="summaryViewNoGrid" width="99%" align="center"
 	bgcolor="#F5F5f5">
-	<tr>
-		<td></td>
-		<td width="95%"></td>
-		<td align="right">
-			<a
-				href="characterization.do?dispatch=setupUpdate&sampleId=${sampleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
-		</td>
-	</tr>
 	<tr>
 		<td class="cellLabel" width="10%">
 			Assay Type
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty charObj.assayType}">
 					<c:out value="${charObj.assayType}" />
@@ -43,7 +39,7 @@
 		<td class="cellLabel" width="10%">
 			Point of Contact
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty charBean.pocBean.displayName}">
 					<c:out value="${charBean.pocBean.displayName}" />
@@ -58,7 +54,7 @@
 		<td class="cellLabel" width="10%">
 			Characterization Date
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty charBean.dateString}">
 					<c:out value="${charBean.dateString}" />
@@ -73,7 +69,7 @@
 		<td class="cellLabel" width="10%">
 			Protocol
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty charBean.protocolBean.displayName}">
 					<c:out value="${charBean.protocolBean.displayName}" />
@@ -90,7 +86,7 @@
 			<td class="cellLabel" width="10%">
 				Properties
 			</td>
-			<td colspan="2">
+			<td>
 				<%
 					String detailPage = gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup
 								.getInstance().getDetailPage(
@@ -109,7 +105,7 @@
 		<td class="cellLabel" width="10%">
 			Design Description
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty fn:trim(charObj.designMethodsDescription)}">
 					<c:out value="${charBean.descriptionDisplayName}" escapeXml="false" />
@@ -124,7 +120,7 @@
 		<td class="cellLabel" width="10%">
 			Techniques and Instruments
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty charBean.experimentConfigs}">
 					<%@ include file="bodyExperimentConfigView.jsp"%>
@@ -138,7 +134,7 @@
 		<td class="cellLabel" width="10%">
 			Characterization Results
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty charBean.findings}">
 					<%@ include file="bodyFindingView.jsp"%>
@@ -151,7 +147,7 @@
 		<td class="cellLabel" width="10%">
 			Analysis and Conclusion
 		</td>
-		<td colspan="2">
+		<td>
 			<c:choose>
 				<c:when test="${!empty charBean.conclusion}">
 					<c:out value="${charBean.conclusion}" />
