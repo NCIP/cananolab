@@ -125,22 +125,18 @@
 													items="${publicationSummaryView.category2Publications[type]}"
 													varStatus="pubBeanInd">
 													<c:set var="pubObj" value="${pubBean.domainFile}" />
+													<div class="editButton">
+														<c:url var="pubUrl" value="publication.do">
+															<c:param name="sampleId" value="${sampleId}" />
+															<c:param name="dispatch" value="setupUpdate" />
+															<c:param name="publicationId" value="${pubObj.id}" />
+														</c:url>
+														<c:if test="${pubBean.userUpdatable}">
+															<a href="${pubUrl}">Edit</a>
+														</c:if>
+													</div>
 													<table class="summaryViewNoGrid" width="99%" align="center"
-														bgcolor="#F5F5f5">
-														<tr>
-															<td></td>
-															<td width="95%"></td>
-															<td align="right">
-																<c:url var="pubUrl" value="publication.do">
-																	<c:param name="sampleId" value="${sampleId}" />
-																	<c:param name="dispatch" value="setupUpdate" />
-																	<c:param name="publicationId" value="${pubObj.id}" />
-																</c:url>
-																<c:if test="${pubBean.userUpdatable}">
-																	<a href="${pubUrl}">Edit</a>
-																</c:if>
-															</td>
-														</tr>
+														bgcolor="#F5F5f5">														
 														<tr>
 															<td class="cellLabel" width="10%" scope="row">
 																Bibliography Info
@@ -148,14 +144,13 @@
 															<td>
 																<c:out value="${pubBean.displayName}" escapeXml="false" />
 																&nbsp;
-															</td>
-															<td></td>
+															</td>															
 														</tr>
 														<tr>
 															<td class="cellLabel" width="10%" scope="row">
 																Research Category
 															</td>
-															<td colspan="2">
+															<td>
 																<c:choose>
 																	<c:when test="${pubObj.researchArea}">
 																		<c:out
@@ -180,8 +175,7 @@
 																	<c:otherwise>N/A</c:otherwise>
 																</c:choose>
 
-															</td>
-															<td></td>
+															</td>														
 														</tr>
 														<tr>
 															<td class="cellLabel" width="10%" scope="row">
@@ -197,7 +191,6 @@
 																</c:choose>
 
 															</td>
-															<td></td>
 														</tr>
 														<tr>
 															<td class="cellLabel" width="10%" scope="row">
@@ -207,7 +200,6 @@
 																<c:out value="${pubObj.status}" />
 																&nbsp;
 															</td>
-															<td></td>
 														</tr>
 													</table>
 													<c:if
