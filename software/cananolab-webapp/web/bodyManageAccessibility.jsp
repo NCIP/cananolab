@@ -46,7 +46,7 @@
 							<td>
 								<c:out value="${access.roleDisplayName}"/>
 							</td>
-							<td align="right">
+							<td><div align="right">
 								<c:choose>
 									<c:when
 										test="${access.groupName eq 'Curator' || access.groupName eq 'Public' && !user.curator}">
@@ -56,6 +56,7 @@
 											href="javascript:setTheAccess('${parentFormName}', 'group', '${access.groupName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
 							    </c:otherwise>
 								</c:choose>
+								</div>
 							</td>
 						</tr>
 					</c:forEach>
@@ -86,7 +87,7 @@
 							<td>
 								<c:out value="${access.roleDisplayName}"/>
 							</td>
-							<td align="right">
+							<td><div align="right">
 								<c:choose>
 									<c:when test="${access.userBean.loginName eq user.loginName}">
 									</c:when>
@@ -95,6 +96,7 @@
 											href="javascript:setTheAccess('${parentFormName}', 'user', '${access.userBean.loginName}', '${dataType}', '${protectedData}');">Edit</a>&nbsp;
 							    </c:otherwise>
 								</c:choose>
+								</div>
 							</td>
 						</tr>
 					</c:forEach>
