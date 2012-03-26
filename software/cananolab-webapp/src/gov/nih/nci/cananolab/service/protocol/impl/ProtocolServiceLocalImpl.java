@@ -105,30 +105,32 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 						.getDomain().getId().toString())) {
 					throw new NoAccessException();
 				}
-			}
-			if (protocolBean.getFileBean() != null) {
-				fileUtils.prepareSaveFile(protocolBean.getFileBean()
-						.getDomainFile());
-			}
-			Protocol dbProtocol = helper.findProtocolBy(protocolBean
-					.getDomain().getType(), protocolBean.getDomain().getName(),
-					protocolBean.getDomain().getVersion());
-			if (dbProtocol != null) {
-				if (dbProtocol.getId() != protocolBean.getDomain().getId()) {
-					protocolBean.getDomain().setId(dbProtocol.getId());
+			} else {
+				Protocol dbProtocol = null;
+				// confirm if the record in the database exists
+				dbProtocol = helper.findProtocolById(protocolBean.getDomain()
+						.getId().toString());
+				if (dbProtocol != null) {
+					// reuse existing createdBy and createdDate
+					protocolBean.getDomain().setCreatedBy(
+							dbProtocol.getCreatedBy());
+					protocolBean.getDomain().setCreatedDate(
+							dbProtocol.getCreatedDate());
 				}
-				protocolBean.getDomain()
-						.setCreatedBy(dbProtocol.getCreatedBy());
-				protocolBean.getDomain().setCreatedDate(
-						dbProtocol.getCreatedDate());
+				// the given ID is invalid, create a new one
+				else {
+					newProtocol = true;
+				}
 			}
-			// protocol type, name or version has been updated but protocol ID
-			// was kept
-			else if (protocolBean.getDomain().getId() != null) {
+			if (newProtocol) {
 				protocolBean.getDomain().setId(null);
 				protocolBean.getDomain().setCreatedBy(
 						helper.getUser().getLoginName());
 				protocolBean.getDomain().setCreatedDate(new Date());
+			}
+			if (protocolBean.getFileBean() != null) {
+				fileUtils.prepareSaveFile(protocolBean.getFileBean()
+						.getDomainFile());
 			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
