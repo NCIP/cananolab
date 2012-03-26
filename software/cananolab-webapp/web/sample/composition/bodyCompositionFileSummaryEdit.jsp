@@ -71,7 +71,6 @@
 														</c:otherwise>
 													</c:choose>
 												</td>
-												<td></td>
 											</tr>
 											<tr>
 												<td class="cellLabel">
@@ -87,7 +86,6 @@
 												</c:otherwise>
 													</c:choose>
 												</td>
-												<td></td>
 											</tr>
 											<tr>
 												<td class="cellLabel">
@@ -103,7 +101,6 @@
 												</c:otherwise>
 													</c:choose>
 												</td>
-												<td></td>
 											</tr>
 										</table>
 										<c:if
