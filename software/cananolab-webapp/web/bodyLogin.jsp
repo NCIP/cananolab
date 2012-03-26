@@ -21,7 +21,7 @@
 				<label for="password">Password</label>
 			</td>
 			<td>
-				<input type="password" name="password" size="30" id="password"/>
+				<input type="password" name="password" size="30" id="password" autocomplete="off"/>
 			</td>
 		</tr>
 	</table>
