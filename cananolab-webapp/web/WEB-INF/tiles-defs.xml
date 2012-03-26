@@ -58,10 +58,6 @@
 		<put name="cananoContent" value="/bodyWelcome.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="canano.password" extends="canano.base">
-		<put name="cananoContent" value="/bodyUpdatePassword.jsp" />
-		<put name="menu" value="home" />
-	</definition>
 	<definition name="canano.register" extends="canano.base">
 		<put name="cananoContent" value="/bodyRegister.jsp" />
 		<put name="menu" value="home" />
