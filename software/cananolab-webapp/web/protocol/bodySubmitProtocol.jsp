@@ -30,7 +30,7 @@
 			<td>
 				<div id="protocolTypePrompt">
 					<html:select styleId="protocolType" property="protocol.domain.type"
-						onchange="javascript:callPrompt('Protocol Type', 'protocolType', 'protocolTypePrompt'); retrieveProtocolNames();">
+						onchange="javascript:callPrompt('Protocol Type', 'protocolType', 'protocolTypePrompt');">
 						<option value="" />
 							<html:options name="protocolTypes" />
 							<option value="other">
@@ -46,36 +46,7 @@
 			</td>
 			<td>
 				<div id="protocolNamePrompt">
-					<html:select styleId="protocolName" property="protocol.domain.name"
-						onchange="javascript:callPrompt('Protocol Name', 'protocolName', 'protocolNamePrompt'); retrieveProtocolVersions()">
-						<option value="" />
-							<c:if test="${!empty protocolNamesByType}">
-								<html:options name="protocolNamesByType" />
-							</c:if>
-							<option value="other">
-								[other]
-							</option>
-					</html:select>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="cellLabel">
-				<label for="protocolVersion">Protocol Version</label>
-			</td>
-			<td>
-				<div id="protocolVersionPrompt">
-					<html:select styleId="protocolVersion"
-						property="protocol.domain.version"
-						onchange="javascript:callPrompt('Protocol Version', 'protocolVersion', 'protocolVersionPrompt');retrieveProtocol('${applicationOwner}');">
-						<option value="" />
-							<c:if test="${!empty protocolVersionsByTypeName}">
-								<html:options name="protocolVersionsByTypeName" />
-							</c:if>
-							<option value="other">
-								[other]
-							</option>
-					</html:select>
+				<html:text styleId="protocolName" property="protocol.domain.name" size="100" onchange="javascript:retrieveProtocol('${applicationOwner}');"/>
 				</div>
 			</td>
 		</tr>
@@ -89,13 +60,22 @@
 			</td>
 		</tr>
 		<tr>
+			<td class="cellLabel">
+				<label for="protocolVersion">Protocol Version</label>
+			</td>
+			<td>
+				<div id="protocolVersionPrompt">
+				 <html:text styleId="protocolVersion" property="protocol.domain.version" size="30"/>
+				</div>
+			</td>
+		</tr>
+		<tr>
 			<td class="cellLabel"><label for="protocolFile">Protocol
 					File</label>
 			</td>
 			<td><c:set var="theFile"
 					value="${protocolForm.map.protocol.fileBean}" />
 				<c:set var="fileBeanProperty" value="protocol.fileBean"/>
-				<c:set var="fileJavascript" value="writeLink(null);"/>
 				<c:set var="actionName" value="protocol"/>
 				<c:set var="fileId" value="${protocolForm.map.protocol.fileBean.domainFile.id}"/>
 				<%@include file="../bodySubmitFile.jsp" %>				
