@@ -10,9 +10,9 @@ import java.util.Date;
 
 /**
  * Protocol view bean
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolBean extends SecuredDataBean {
 	private FileBean fileBean = new FileBean();
@@ -41,7 +41,9 @@ public class ProtocolBean extends SecuredDataBean {
 			if (!StringUtils.isEmpty(domain.getAbbreviation())) {
 				displayName += " (" + domain.getAbbreviation() + ")";
 			}
-			displayName += ", version " + domain.getVersion();
+			if (!StringUtils.isEmpty(domain.getVersion())) {
+				displayName += ", version " + domain.getVersion();
+			}
 		}
 		return displayName;
 	}
