@@ -41,8 +41,10 @@
 								<td>
 									<c:out value="${dataReview.dataName}"/>
 								</td>
-								<td align="right">
+								<td>
+									<div align="right">
 									<a href="${dataReview.reviewLink}">Edit</a>&nbsp;
+									</div>
 								</td>
 							</tr>
 						</c:forEach>

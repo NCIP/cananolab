@@ -38,9 +38,11 @@
 				</c:if>
 			</td>
 			<c:if test="${edit eq 'true'}">
-				<td align="right">
+				<td>
+				<div align="right">
 					<a
 						href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">Edit</a>&nbsp;
+				</div>
 				</td>
 			</c:if>
 		</tr>

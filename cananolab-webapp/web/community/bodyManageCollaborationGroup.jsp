@@ -65,10 +65,12 @@
 											value="${userAccess.roleDisplayName}" />)<br />
 									</c:forEach>
 								</td>
-								<td align="right">
+								<td>
+									<div align="right">
 									<c:if test="${group.userUpdatable}">
 										<a href="javascript:setTheCollaborationGroup(${group.id});">Edit</a>&nbsp;
 									</c:if>
+									</div>
 								</td>
 							</tr>
 						</c:forEach>

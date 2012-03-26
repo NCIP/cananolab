@@ -44,10 +44,12 @@
 						<c:out value="${primaryPOC.domain.role}"/>
 					</td>
 					<c:if test="${edit eq 'true'}">
-						<td align="right">
+						<td>
+						<div align="right">
 							<a
 								href="javascript:setThePointOfContact(${primaryPOC.domain.id}, true);">Edit</a>&nbsp;
 						</td>
+						</div>
 					</c:if>
 				</tr>
 			</c:if>
@@ -68,9 +70,11 @@
 							<c:out value="${poc.domain.role}"/>
 						</td>
 						<c:if test="${edit eq 'true'}">
-							<td align="right">
+							<td>
+							<div align="right">
 								<a
 									href="javascript:setThePointOfContact(${poc.domain.id}, false);">Edit</a>&nbsp;
+							</div>
 							</td>
 						</c:if>
 					</tr>
