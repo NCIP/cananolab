@@ -20,7 +20,6 @@ import java.util.SortedSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -62,8 +61,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 			saveMessages(request, messages);
 		} else {
 			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("message.submitProtocol",
-					protocolBean.getDisplayName());
+			ActionMessage msg = new ActionMessage("message.submitProtocol");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 		}

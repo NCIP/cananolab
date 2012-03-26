@@ -105,7 +105,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 						.getDomain().getId().toString())) {
 					throw new NoAccessException();
 				}
-			} else {
+
 				Protocol dbProtocol = null;
 				// confirm if the record in the database exists
 				dbProtocol = helper.findProtocolById(protocolBean.getDomain()
