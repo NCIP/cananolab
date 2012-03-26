@@ -31,9 +31,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * This class includes methods involved in searching protocols that can be used
  * in both local and remote searches
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class ProtocolServiceHelper extends BaseServiceHelper {
 	private static Logger logger = Logger
@@ -67,8 +67,9 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		if (!StringUtils.isEmpty(protocolName)) {
 			TextMatchMode protocolNameMatchMode = new TextMatchMode(
 					protocolName);
-			crit.add(Restrictions.ilike("name", protocolNameMatchMode
-					.getUpdatedText(), protocolNameMatchMode.getMatchMode()));
+			crit.add(Restrictions.ilike("name",
+					protocolNameMatchMode.getUpdatedText(),
+					protocolNameMatchMode.getMatchMode()));
 		}
 		if (!StringUtils.isEmpty(protocolAbbreviation)) {
 			TextMatchMode protocolAbbreviationMatchMode = new TextMatchMode(
@@ -79,8 +80,9 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		}
 		if (!StringUtils.isEmpty(fileTitle)) {
 			TextMatchMode titleMatchMode = new TextMatchMode(fileTitle);
-			crit.add(Restrictions.ilike("file.title", titleMatchMode
-					.getUpdatedText(), titleMatchMode.getMatchMode()));
+			crit.add(Restrictions.ilike("file.title",
+					titleMatchMode.getUpdatedText(),
+					titleMatchMode.getMatchMode()));
 		}
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
@@ -98,18 +100,29 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 
 	public Protocol findProtocolBy(String protocolType, String protocolName,
 			String protocolVersion) throws Exception {
+		// protocol type and protocol name are required
+		if (StringUtils.isEmpty(protocolType)
+				&& StringUtils.isEmpty(protocolName)) {
+			return null;
+		}
 		Protocol protocol = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
-				Property.forName("type").eq(protocolType).ignoreCase()).add(
-				Property.forName("name").eq(protocolName).ignoreCase()).add(
-				Property.forName("version").eq(protocolVersion).ignoreCase());
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+				.add(Property.forName("type").eq(protocolType).ignoreCase())
+				.add(Property.forName("name").eq(protocolName).ignoreCase());
+		if (!StringUtils.isEmpty(protocolVersion)) {
+			crit.add(Property.forName("version").eq(protocolVersion)
+					.ignoreCase());
+		}
 		crit.setFetchMode("file", FetchMode.JOIN);
 		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		if (results.isEmpty()) {
+			return null;
+		}
+		if (results.size() > 1) {
 			return null;
 		}
 		protocol = (Protocol) results.get(0);
