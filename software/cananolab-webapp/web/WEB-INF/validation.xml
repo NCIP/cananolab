@@ -93,38 +93,6 @@
 				<arg position="0" key="loginForm.password" />
 			</field>
 		</form>
-		<form name="updatePasswordForm">
-			<field property="loginId" depends="required, mask">
-				<arg position="0" key="updatePasswordForm.loginId" />
-				<msg name="mask" key="loginId.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${loginName}</var-value>
-				</var>
-			</field>
-			<field property="password" depends="required">
-				<arg position="0" key="updatePasswordForm.password" />
-			</field>
-			<field property="newPassword" depends="validwhenmatch">
-				<arg position="0" key="updatePasswordForm.newPassword" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((*this* != null) and (newPassword != password))
-					</var-value>
-				</var>
-			</field>
-			<field property="newPassword2" depends="validwhenmatch">
-				<arg position="0" key="updatePasswordForm.newPassword2" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((*this* != null) and (newPassword ==
-						newPassword2))
-					</var-value>
-				</var>
-			</field>
-		</form>
 		<form name="registerUserForm">
 			<field property="firstName" depends="required, mask">
 				<arg position="0" key="registerUserForm.firstName" />
