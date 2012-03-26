@@ -99,6 +99,11 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 		try {
 			Boolean newProtocol = true;
+
+			// save to the file system fileData is not empty
+			if (protocolBean.getFileBean() != null) {
+				fileUtils.writeFile(protocolBean.getFileBean());
+			}
 			if (protocolBean.getDomain().getId() != null) {
 				newProtocol = false;
 				if (!securityService.checkCreatePermission(protocolBean
@@ -136,11 +141,6 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 					.getApplicationService();
 
 			appService.saveOrUpdate(protocolBean.getDomain());
-
-			// save to the file system fileData is not empty
-			if (protocolBean.getFileBean() != null) {
-				fileUtils.writeFile(protocolBean.getFileBean());
-			}
 
 			// save default accesses
 			if (newProtocol) {
