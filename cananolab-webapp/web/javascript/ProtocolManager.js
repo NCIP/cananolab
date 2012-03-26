@@ -2,53 +2,19 @@ var emptyOption = [ {
 	label : "",
 	value : ""
 } ];
-function retrieveProtocolNames() {
-	var protocolType = document.getElementById("protocolType").value;
-	if (protocolType == "") {
-		NewPage();
-	}
-	ProtocolManager.getProtocolNames(protocolType, populateProtocolNames);
-}
-function resetProtocols() {
-	dwr.util.removeAllOptions("protocolName");
-	dwr.util.removeAllOptions("protocolVersion");
-	dwr.util.addOptions("protocolName", emptyOption, "value", "label");
-	dwr.util.addOptions("protocolVersion", emptyOption, "value", "label");
+
+function resetProtocolOnType() {
+	dwr.util.setValue("protocolName", null);
+	dwr.util.setValue("protocolVersion", null);
 	clearProtocol();
 }
 
-function populateProtocolNames(protocolNames) {
-	resetProtocols();
-	if (protocolNames != null) {
-		dwr.util.addOptions("protocolName", protocolNames);
-		dwr.util.addOptions("protocolName", [ "[other]" ]);
-	} else {
-		dwr.util.addOptions("protocolName", [ "[other]" ]);
-	}
-}
-
-function retrieveProtocolVersions() {
-	var protocolType = document.getElementById("protocolType").value;
-	var protocolName = document.getElementById("protocolName").value;
-	ProtocolManager.getProtocolVersions(protocolType, protocolName,
-			populateProtocolVersions);
-}
-
-function populateProtocolVersions(protocolVersions) {
-	dwr.util.removeAllOptions("protocolVersion");
-	dwr.util.addOptions("protocolVersion", emptyOption, "value", "label");
-	if (protocolVersions != null) {
-		dwr.util.addOptions("protocolVersion", protocolVersions);
-		dwr.util.addOptions("protocolVersion", [ "[other]" ]);
-	} else {
-		dwr.util.addOptions("protocolVersion", [ "[other]" ]);
-	}
-}
 var appOwner;
 function retrieveProtocol(applicationOwner) {
 	appOwner = applicationOwner;
 	var protocolType = document.getElementById("protocolType").value;
 	var protocolName = document.getElementById("protocolName").value;
+	waitCursor();
 	var protocolVersion = document.getElementById("protocolVersion").value;
 	ProtocolManager.getProtocol(protocolType, protocolName, protocolVersion,
 			populateProtocol);
@@ -67,32 +33,36 @@ function clearProtocol() {
 	dwr.util.setValue("fileDescription", "");
 	dwr.util.setValue("protocolAbbreviation", "");
 }
+
 function populateProtocol(protocol) {
 	if (protocol == null) {
-		clearProtocol();
+		hideCursor();
+		//clearProtocol();
 		// gotoInputPage();
 		return;
 	}
-	dwr.util.setValue("protocolId", protocol.domain.id);
-	dwr.util.setValue("protocolAbbreviation", protocol.domain.abbreviation);
-	if (protocol.fileBean != null) {
-		dwr.util.setValue("fileTitle", protocol.fileBean.domainFile.title);
-		dwr.util.setValue("fileDescription",
-				protocol.fileBean.domainFile.description);
-		dwr.util.setValue("fileId", protocol.fileBean.domainFile.id);
-		dwr.util.setValue("fileUri", protocol.fileBean.domainFile.uri);
-		dwr.util.setValue("fileName", protocol.fileBean.domainFile.name);
-		writeLink(protocol);
-	}
-	if (protocol.userUpdatable == true) {
-		gotoUpdatePage(protocol);
-	} else {
-		alert("The protocol already exists and you don't have update and delete privilege on this protocol");
-		disableOuterButtons();
-		hide("addAccess");
-		hide("addAccessLabel");
+	// has existing protocol in database
+	if (protocol !== null) {
+		var confirmMessage = "A database record with the same protocol type and protocol name already exists.  Load it and update?";
+		if (confirm(confirmMessage)) {
+			waitCursor();
+			// reload the page
+			if (protocol.userUpdatable == true) {
+				gotoUpdatePage(protocol);
+			} else {
+				alert("The protocol already exists and you don't have update and delete privilege on this protocol");
+				disableOuterButtons();
+				hide("addAccess");
+				hide("addAccessLabel");
+			}
+		}
+		else {
+			hideCursor();
+			return;
+		}
 	}
 }
+
 function writeLink(protocol) {
 	if (protocol == null) {
 		document.getElementById("uploadedUri").innerHTML = "";
@@ -113,30 +83,20 @@ function writeLink(protocol) {
 }
 
 function gotoUpdatePage(protocol) {
-	var form=document.getElementById("protocolForm");
+	var form = document.getElementById("protocolForm");
 	form.action = "protocol.do?dispatch=setupUpdate&page=0&protocolId="
 			+ protocol.domain.id;
 	form.submit();
 }
 
 function NewPage() {
-	var form=document.getElementById("protocolForm");
+	var form = document.getElementById("protocolForm");
 	form.action = "protocol.do?dispatch=setupNew&page=0";
 	form.submit();
 }
 
 function gotoInputPage() {
-	var form=document.getElementById("protocolForm");
+	var form = document.getElementById("protocolForm");
 	form.action = "protocol.do?dispatch=input&page=0";
 	form.submit();
-}
-
-function setProtocolNameDropdown() {
-	var searchLocations = getSelectedOptions(document
-			.getElementById("searchLocations"));
-	ProtocolManager.getProtocolTypes(searchLocations, function(data) {
-		dwr.util.removeAllOptions("protocolType");
-		dwr.util.addOptions("protocolType", data);
-	});
-	return false;
 }
