@@ -26,10 +26,16 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><span id="load" style="${loadStyle}"> <html:file
-					property="${fileBeanProperty}.uploadedFile" size="60"
-					styleId="uploadedFile" onchange="javascript:${fileJavascript};" />
-		</span><label for="uploadedFile">&nbsp;&nbsp;</label> <c:set
+		<td colspan="2"><span id="load" style="${loadStyle}"> <c:choose>
+					<c:when test="${!empty fileJavascript}">
+						<html:file property="${fileBeanProperty}.uploadedFile" size="60"
+							styleId="uploadedFile" onchange="javascript:${fileJavascript};" />
+					</c:when>
+					<c:otherwise>
+						<html:file property="${fileBeanProperty}.uploadedFile" size="60"
+							styleId="uploadedFile" />
+					</c:otherwise>
+				</c:choose> </span><label for="uploadedFile">&nbsp;&nbsp;</label> <c:set
 				var="uploadedUriStyle" value="display:none" /> <c:if
 				test="${! empty theFile.domainFile.uri && theFile.domainFile.uriExternal eq false}">
 				<c:set var="uploadedUriStyle" value="display:block" />
