@@ -1057,3 +1057,11 @@ ul,ol {
 .spacer {
 	padding: 0.5em;
 }
+
+.editButton {
+	margin-left:auto;
+    margin-right:auto;
+	text-align:right;
+	width:99%;
+	background-color:#F5F5f5;
+}
