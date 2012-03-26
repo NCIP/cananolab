@@ -6,9 +6,7 @@ import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,60 +52,24 @@ public class DWRProtocolManager {
 		return new String[] { "" };
 	}
 
-	public SortedSet<String> getProtocolNames(String protocolType) {
-		try {
-			if (StringUtils.isEmpty(protocolType)) {
-				return null;
-			}
-			List<ProtocolBean> protocols = getService().findProtocolsBy(
-					protocolType, null, null, null);
-			SortedSet<String> protocolNames = new TreeSet<String>();
-			for (ProtocolBean protocolBean : protocols) {
-				protocolNames.add(protocolBean.getDomain().getName());
-			}
-			return protocolNames;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public SortedSet<String> getProtocolVersions(String protocolType,
-			String protocolName) {
-		try {
-			if (StringUtils.isEmpty(protocolName)) {
-				return null;
-			}
-			List<ProtocolBean> protocols = getService().findProtocolsBy(
-					protocolType, protocolName, null, null);
-			SortedSet<String> protocolVersions = new TreeSet<String>();
-			for (ProtocolBean protocol : protocols) {
-				protocolVersions.add(protocol.getDomain().getVersion());
-			}
-			return protocolVersions;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
 	public ProtocolBean getProtocol(String protocolType, String protocolName,
 			String protocolVersion) {
-		// all three have to be present
+		// protocolType and protocolName have to be present
 		if (StringUtils.isEmpty(protocolType)
-				|| StringUtils.isEmpty(protocolName)
-				|| StringUtils.isEmpty(protocolVersion)) {
+				|| StringUtils.isEmpty(protocolName)) {
 			return null;
 		}
 		try {
 			ProtocolBean protocolBean = getService().findProtocolBy(
 					protocolType, protocolName, protocolVersion);
-			if (protocolBean.getDomain().getFile() != null
+			if (protocolBean!=null && protocolBean.getDomain().getFile() != null
 					&& !StringUtils.xssValidate(protocolBean.getDomain()
 							.getFile().getUri())) {
 				return null;
 			}
 			return protocolBean;
 		} catch (Exception e) {
-			logger.info("Error in retrieving the protocol " + protocolName);
+			logger.error("Error in retrieving the protocol " + protocolName);
 		}
 		return null;
 	}
