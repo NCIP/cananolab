@@ -18,7 +18,7 @@
 
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle"
-		value="${applicationOwner} Advanced Sample Search" />
+		value="Advanced Sample Search" />
 	<jsp:param name="topic" value="search_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Basic Search" />
