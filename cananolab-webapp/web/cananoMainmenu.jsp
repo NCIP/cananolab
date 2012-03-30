@@ -29,7 +29,8 @@
 							<td></td>
 						</c:when>
 						<c:otherwise>
-							<th class="${style}" onclick="${item.link}" scope="row"><a
+							<c:set var="link" value="${webHelp}/${item.link}"/>
+							<th class="${style}" onclick="javascript:openHelpWindow('${link}')" scope="row"><a
 								class="mainMenuLink" href="#">${item.value}</a>
 							</th>
 							<td><img height="16" alt="menu separator"
