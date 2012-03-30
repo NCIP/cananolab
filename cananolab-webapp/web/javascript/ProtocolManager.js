@@ -9,9 +9,7 @@ function resetProtocolOnType() {
 	clearProtocol();
 }
 
-var appOwner;
-function retrieveProtocol(applicationOwner) {
-	appOwner = applicationOwner;
+function retrieveProtocol() {
 	var protocolType = document.getElementById("protocolType").value;
 	var protocolName = document.getElementById("protocolName").value;
 	waitCursor();
@@ -24,7 +22,7 @@ function clearProtocol() {
 	enableOuterButtons();
 	show("addAccess");
 	show("addAccessLabel");
-	writeLink(null);
+	document.getElementById("uploadedUri").innerHTML = "";
 	dwr.util.setValue("protocolId", null);
 	dwr.util.setValue("fileId", null);
 	dwr.util.setValue("fileUri", null);
@@ -60,25 +58,6 @@ function populateProtocol(protocol) {
 			hideCursor();
 			return;
 		}
-	}
-}
-
-function writeLink(protocol) {
-	if (protocol == null) {
-		document.getElementById("uploadedUri").innerHTML = "";
-		return;
-	}
-	var uri = null;
-	var fileId = null;
-	if (protocol.fileBean != null) {
-		uri = protocol.fileBean.domainFile.uri;
-		fileId = protocol.fileBean.domainFile.id;
-	}
-	if (uri != null && fileId != null) {
-		document.getElementById("uploadedUri").innerHTML = "<a href='protocol.do?dispatch=download&amp;location="
-				+ appOwner + "&amp;fileId=" + fileId + "'>" + uri + "</a>";
-	} else {
-		document.getElementById("uploadedUri").innerHTML = "";
 	}
 }
 
