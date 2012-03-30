@@ -15,7 +15,7 @@
 	&nbsp;
 </c:if>  
 <a	class="helpText" 
-	href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${param.topic}')">
+	href="javascript:openHelpWindow('${webHelp}/index.html?single=true&amp;context=caNanoLab&amp;topic=${param.topic}')">
 Help</a>
 &nbsp;				
 <c:set var="glossary" value="${param.glossaryTopic}" />		
@@ -23,6 +23,6 @@ Help</a>
    <c:set var="glossary" value="glossary_help" />
 </c:if>  
 <a	class="helpText" 
-	href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${glossary}')">
+	href="javascript:openHelpWindow('${webHelp}/index.html?single=true&amp;context=caNanoLab&amp;topic=${glossary}')">
 Glossary</a>
 &nbsp;
