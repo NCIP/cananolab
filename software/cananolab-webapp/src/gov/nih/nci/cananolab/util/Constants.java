@@ -79,6 +79,8 @@ public class Constants {
 
 	public static final String NUMERIC_PATTERN = "^[0-9]*$";
 
+	public static final String STRING_PATTERN = "^[a-zA-Z]*$";
+
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
 
 	// This is a hack to querying based on .class to work in case of multi-level
@@ -109,6 +111,9 @@ public class Constants {
 	public static final String[] PRIVATE_DISPATCHES = { "input", "create",
 			"delete", "setupNew", "setupUpdate", "summaryEdit", "add",
 			"remove", "save", "resetFinding", "getFinding", "drawMatrix" };
+
+	public static final String[] DISPATCHES_WITH_VALIDATIONS = { "update",
+			"transfer", "create", "generate" };
 
 	public static final String PHYSICOCHEMICAL_CHARACTERIZATION = "physico-chemical characterization";
 	public static final String INVIVO_CHARACTERIZATION = "in vivo characterization";
@@ -144,11 +149,12 @@ public class Constants {
 
 	public static final String PUBMED_PREFIX = "http://www.ncbi.nlm.nih.gov/pubmed/";
 
-	//public static final String PUBMED_XML_PREFIX = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
-	public static final String PUBMED_XML_PREFIX="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=xml&id=";	
+	// public static final String PUBMED_XML_PREFIX =
+	// "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
+	public static final String PUBMED_XML_PREFIX = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=xml&id=";
 
 	public static final String ISI_PREFIX = "http://apps.isiknowledge.com/InboundService.do?Func=Frame&product=WOS&action=retrieve&SrcApp=EndNote&Init=Yes&SrcAuth=ResearchSoft&mode=FullRecord&UT=";
 	public static final int CANANOLAB_AVAILABLE_ENTITY = 30;
-	
-	public static final String EXTERNAL_SITE_DISCLAIMER_LINK=" [<a class='disclaimerLink' href='html/cananoDisclaimer.html' target='new'>Disclaimer</a>]";
+
+	public static final String EXTERNAL_SITE_DISCLAIMER_LINK = " [<a class='disclaimerLink' href='html/cananoDisclaimer.html' target='new'>Disclaimer</a>]";
 }
