@@ -15,9 +15,9 @@
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />
 		<putList name="items">
-			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
+			<item value="HELP" link="index.html" />
 			<item value="GLOSSARY"
-				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
+				link="index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help" />
 		</putList>
 	</definition>
 	<!--  Main layout definition for pages after log in-->
@@ -39,9 +39,9 @@
 			<item value="CURATION" link="gotoPage('manageCuration.do')" />
 			<item value="RESULTS" link="gotoPage('manageResult.do')" />
 			<item value="ADMINISTRATION" link="gotoPage('adminHome.do')" />
-			<item value="HELP" link="openHelpWindow('webHelp/index.html')" />
+			<item value="HELP" link="index.html" />
 			<item value="GLOSSARY"
-				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
+				link="index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help" />
 			<item value="LOGIN" link="gotoPage('loginPage.do')" />
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
 		</putList>
