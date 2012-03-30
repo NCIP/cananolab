@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -18,8 +19,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
 public abstract class AbstractDispatchAction extends DispatchAction {
@@ -31,18 +30,26 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		String dispatch = (String) request.getParameter("dispatch");
 		String page = request.getParameter("page");
 		// per app scan, validate dispatch and page parameters
-		ActionMessages msgs = new ActionMessages();
 		if (page != null && !page.matches(Constants.NUMERIC_PATTERN)) {
-			ActionMessage msg = new ActionMessage("invalid.page");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			return super.execute(mapping, form, request, response);
+			throw new BaseException("Invalid value for the page parameter");
+		}
+		if (dispatch == null) {
+			throw new BaseException("The dispatch parameter can not be null");
+		}
+		if (dispatch != null && !dispatch.matches(Constants.STRING_PATTERN)) {
+			throw new BaseException("Invalid value for the dispatch parameter");
 		}
 		UserBean user = (UserBean) session.getAttribute("user");
 		// private dispatch and session expired
 		boolean privateDispatch = isDispatchPublic(dispatch);
 		if (session.isNew() && (dispatch == null || privateDispatch)) {
 			throw new InvalidSessionException();
+		}
+		// if dispatched methods require validation but page=0 throw error
+		if (dispatchWithValidation(dispatch)
+				&& (page == null || Integer.parseInt(page) <= 0)) {
+			throw new BaseException(
+					"The value for the page parameter is invalid for the given dispatch");
 		}
 		String protectedData = request.getParameter("sampleId");
 		if (protectedData == null) {
@@ -66,7 +73,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	/**
 	 * Check whether the current user can execute the action with the specified
 	 * dispatch
-	 *
+	 * 
 	 * @param user
 	 * @return
 	 * @throws SecurityException
@@ -105,9 +112,20 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		return false;
 	}
 
+	private boolean dispatchWithValidation(String dispatch) {
+		if (dispatch != null) {
+			for (String theDispatch : Constants.DISPATCHES_WITH_VALIDATIONS) {
+				if (dispatch.startsWith(theDispatch)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Get the page number used in display tag library pagination
-	 *
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -146,7 +164,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	/**
 	 * Retrieve a value from request by name in the order of Parameter - Request
 	 * Attribute - Session Attribute
-	 *
+	 * 
 	 * @param request
 	 * @param name
 	 * @return
