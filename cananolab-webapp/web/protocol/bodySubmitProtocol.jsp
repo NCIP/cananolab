@@ -46,7 +46,7 @@
 			</td>
 			<td>
 				<div id="protocolNamePrompt">
-				<html:text styleId="protocolName" property="protocol.domain.name" size="100" onchange="javascript:retrieveProtocol('${applicationOwner}');"/>
+				<html:text styleId="protocolName" property="protocol.domain.name" size="100" onchange="javascript:retrieveProtocol();"/>
 				</div>
 			</td>
 		</tr>
