@@ -3,7 +3,7 @@
 		onClick="showhide('loginBlock');">Login</a> &nbsp; <a href="#"
 		class="loginText" onClick="javascript:location.href='register.jsp';">Register</a>&nbsp;&nbsp;
 		<a
-		href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=welcome_login')"
+		href="javascript:openHelpWindow('${webHelp}/index.html?single=true&amp;context=caNanoLab&amp;topic=welcome_login')"
 		class="loginText">Help</a></td>
 </tr>
 <tr>
