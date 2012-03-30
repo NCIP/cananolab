@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 
 import javax.servlet.ServletContext;
@@ -14,9 +16,9 @@ import org.apache.struts.config.ModuleConfig;
 /**
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CustomPlugIn implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugIn.class);
@@ -89,6 +91,12 @@ public class CustomPlugIn implements PlugIn {
 					.getInstance()
 					.getDefaultTypesByReflection(appContext, "chemicalAssocs",
 							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+
+			//obtain online help url from properties file
+			String onlineHelpUrl = PropertyUtils.getProperty(
+					Constants.CANANOLAB_PROPERTY, "onlineHelpUrl");
+			appContext.setAttribute("webHelp", onlineHelpUrl);
+
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
