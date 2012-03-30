@@ -29,8 +29,11 @@
 							<td></td>
 						</c:when>
 						<c:otherwise>
-							<c:set var="link" value="${webHelp}/${item.link}"/>
-							<th class="${style}" onclick="javascript:openHelpWindow('${link}')" scope="row"><a
+							<c:set var="link" value="${item.link}"/>
+							<c:if test="${item.value eq 'HELP' || item.value eq 'GLOSSARY'}">
+							   <c:set var="link" value="openHelpWindow('${webHelp}/${item.link}')"/>
+							</c:if>
+							<th class="${style}" onclick="${link}" scope="row"><a
 								class="mainMenuLink" href="#">${item.value}</a>
 							</th>
 							<td><img height="16" alt="menu separator"
