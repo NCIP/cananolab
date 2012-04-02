@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -42,14 +43,14 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
- *
+ * 
  * @author pansu
  */
 public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -111,7 +112,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new characterization
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -144,7 +145,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up drop-downs need for the input form
-	 *
+	 * 
 	 * @param request
 	 * @param theForm
 	 * @throws Exception
@@ -181,7 +182,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for editing existing characterization
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -230,7 +231,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup, prepare and save characterization.
-	 *
+	 * 
 	 * @param request
 	 * @param theForm
 	 * @param charBean
@@ -305,7 +306,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -327,7 +328,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryView() handles View request for Characterization Summary report.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -363,7 +364,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
 	 * Prepare CharacterizationBean based on Sample Id.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -398,7 +399,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * Shared function for summaryView() and summaryPrint(). Keep submitted
 	 * characterization types in the correct display order. Should be called
 	 * after calling prepareSummary(), to avoid session timeout issue.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -436,7 +437,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * summaryPrint() handles Print request for Characterization Summary report.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -467,7 +468,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Export Characterization Summary report.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -533,9 +534,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
 		// after saving to database.
-		request
-				.setAttribute("charId", achar.getDomainChar().getId()
-						.toString());
+		request.setAttribute("charId", achar.getDomainChar().getId().toString());
 		request.setAttribute("charType", achar.getCharacterizationType());
 		return setupUpdate(mapping, form, request, response);
 	}
@@ -550,6 +549,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.setTheFinding(findingBean);
+
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, theForm, request);
 
@@ -622,9 +622,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// return to setupUpdate to retrieve the data matrix in the correct
 		// form from database
 		// after saving to database.
-		request
-				.setAttribute("charId", achar.getDomainChar().getId()
-						.toString());
+		request.setAttribute("charId", achar.getDomainChar().getId().toString());
 		request.setAttribute("charType", achar.getCharacterizationType());
 		return setupUpdate(mapping, form, request, response);
 	}
@@ -720,8 +718,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			this.checkOpenForms(achar, theForm, request);
 			return mapping.getInputForward();
 		}
-		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean
-				.getNumberOfRows());
+		findingBean.updateMatrix(findingBean.getNumberOfColumns(),
+				findingBean.getNumberOfRows());
 		request.setAttribute("anchor", "submitFinding");
 		this.checkOpenForms(achar, theForm, request);
 		// set columnHeaders in the session so jsp can check duplicate columns
@@ -840,12 +838,32 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					achar.getCharacterizationName());
 		}
 		request.setAttribute("characterizationDetailPage", detailPage);
+
+		// if finding contains more than one column, set disableSetColumnOrder
+		// false
+		if (achar.getTheFinding().getNumberOfColumns() > 1
+				&& dataMatrixSaved(achar.getTheFinding())) {
+			request.setAttribute("setColumnOrder", true);
+		} else {
+			request.setAttribute("setColumnOrder", false);
+		}
+	}
+
+	private Boolean dataMatrixSaved(FindingBean theFinding) {
+		if (theFinding.getColumnHeaders() != null) {
+			for (ColumnHeader header : theFinding.getColumnHeaders()) {
+				if (header.getCreatedDate() == null) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 *
+	 * 
 	 * @param request
 	 * @param compBean
 	 */
@@ -874,8 +892,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				status = false;
 			}
 			if (achar.getShape().getMaxDimensionUnit() != null
-					&& !achar.getShape().getMaxDimensionUnit().matches(
-							Constants.UNIT_PATTERN)) {
+					&& !achar.getShape().getMaxDimensionUnit()
+							.matches(Constants.UNIT_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"achar.shape.maxDimensionUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -883,8 +901,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				status = false;
 			}
 			if (achar.getShape().getMinDimensionUnit() != null
-					&& !achar.getShape().getMinDimensionUnit().matches(
-							Constants.UNIT_PATTERN)) {
+					&& !achar.getShape().getMinDimensionUnit()
+							.matches(Constants.UNIT_PATTERN)) {
 				ActionMessage msg = new ActionMessage(
 						"achar.shape.minDimensionUnit.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -894,7 +912,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else if (achar.getCharacterizationName().equalsIgnoreCase(
 				"physical state")) {
 			if (achar.getPhysicalState().getType() != null
-					&& !StringUtils.xssValidate(achar.getPhysicalState().getType())) {
+					&& !StringUtils.xssValidate(achar.getPhysicalState()
+							.getType())) {
 				ActionMessage msg = new ActionMessage(
 						"achar.physicalState.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -904,7 +923,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else if (achar.getCharacterizationName().equalsIgnoreCase(
 				"solubility")) {
 			if (achar.getSolubility().getSolvent() != null
-					&& !StringUtils.xssValidate(achar.getSolubility().getSolvent())) {
+					&& !StringUtils.xssValidate(achar.getSolubility()
+							.getSolvent())) {
 				ActionMessage msg = new ActionMessage(
 						"achar.solubility.solvent.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -923,7 +943,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else if (achar.getCharacterizationName().equalsIgnoreCase(
 				"enzyme induction")) {
 			if (achar.getEnzymeInduction().getEnzyme() != null
-					&& !StringUtils.xssValidate(achar.getSolubility().getSolvent())) {
+					&& !StringUtils.xssValidate(achar.getSolubility()
+							.getSolvent())) {
 				ActionMessage msg = new ActionMessage(
 						"achar.enzymeInduction.enzyme.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -959,7 +980,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Copy "isSoluble" property from achar to Solubility entity.
-	 *
+	 * 
 	 * @param achar
 	 */
 	private void copyIsSoluble(CharacterizationBean achar) {
@@ -975,7 +996,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	/**
 	 * Setup "isSoluble" property in achar from Solubility entity.
-	 *
+	 * 
 	 * @param achar
 	 */
 	private void setupIsSoluble(CharacterizationBean achar) {
