@@ -9,18 +9,20 @@
 			Finding Info
 		</th>
 	</tr>
-	<tr>
-		<td colspan="2" class="cellLabel">
-			Data and Conditions &nbsp;&nbsp;
+	<tr><td class="cellLabel">
+			Data and Conditions
+		</td>		
+		<td class="cellLabel">			
 			<html:text property="achar.theFinding.numberOfColumns" size="1"
 				styleId="colNum" onkeydown="return filterInteger(event)" />
 			<label for="colNum">columns</label>
 			<html:text property="achar.theFinding.numberOfRows" size="1"
 				styleId="rowNum" onkeydown="return filterInteger(event)" />
-			<label for="rowNum">rows</label> &nbsp;&nbsp;
-			<a href="javascript:updateMatrix()">Update</a>
-			&nbsp;&nbsp;
-			<a href="javascript:setColumnOrder()">Set Column Order</a>
+			<label for="rowNum">rows</label>&nbsp;&nbsp;
+			<a href="javascript:updateMatrix()">Update</a>&nbsp; &nbsp;
+			<c:if test="${setColumnOrder eq 'true'}">
+				<a href="javascript:setColumnOrder()">Set Column Order</a>
+			</c:if>
 		</td>
 	</tr>
 	<tr>
