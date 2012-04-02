@@ -115,7 +115,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	private boolean dispatchWithValidation(String dispatch) {
 		if (dispatch != null) {
 			for (String theDispatch : Constants.DISPATCHES_WITH_VALIDATIONS) {
-				if (dispatch.startsWith(theDispatch)) {
+				if (dispatch.equals(theDispatch)) {
 					return true;
 				}
 			}
