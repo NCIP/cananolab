@@ -47,7 +47,7 @@ public class InitProtocolSetup {
 		if (characterizationType
 				.equals(Constants.PHYSICOCHEMICAL_CHARACTERIZATION)) {
 			protocolType = Constants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
-		} else if (characterizationType.equals("In Vitro Characterization")) {
+		} else if (characterizationType.equals(Constants.INVITRO_CHARACTERIZATION)) {
 			protocolType = Constants.INVITRO_ASSAY_PROTOCOL;
 		} else {
 			protocolType = null; // update if in vivo is implemented
