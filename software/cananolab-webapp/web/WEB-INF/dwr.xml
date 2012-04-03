@@ -94,10 +94,8 @@
 		<create creator="new" javascript="ProtocolManager" scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
-			<include method="getProtocolTypes" />
-			<include method="getProtocolNames" />
-			<include method="getProtocolVersions" />
 			<include method="getProtocol" />
+			<include method="getProtocolById" />
 			<include method="getPublicCounts" />
 		</create>
 		<create creator="new" javascript="PublicationManager" scope="session">
