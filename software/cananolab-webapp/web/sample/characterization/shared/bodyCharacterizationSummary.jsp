@@ -77,12 +77,12 @@
 			<c:choose>
 				<c:when test="${!empty characterizationProtocols}">
 					<html:select styleId="protocolId"
-						property="achar.protocolBean.domain.id">
-						<%-- onchange="retrieveProtocolFile()"> --%>
+						property="achar.protocolBean.domain.id"
+						onchange="retrieveProtocolById()">
 						<option />
-							<html:options collection="characterizationProtocols"
+						<html:options collection="characterizationProtocols"
 								property="domain.id" labelProperty="displayName" />
-					</html:select> &nbsp;<span id="protocolFileLink"><a
+					</html:select> &nbsp;<span id="protocolFileUri"><a
 						href="protocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolBean.fileBean.domainFile.id}">${characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri}</a>
 					</span>
 				</c:when>
@@ -111,7 +111,7 @@
 			<a href="javascript:cal1.popup();"><img
 					src="images/calendar-icon.gif" width="22" height="18" border="0"
 					alt="Click Here to Pick up the date"
-					title="Click Here to Pick up the date" align="top"> </a>
+					title="Click Here to Pick up the date" align="top"></a>
 		</td>
 	</tr>
 </table>
