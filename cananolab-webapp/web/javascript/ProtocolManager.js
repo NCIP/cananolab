@@ -18,6 +18,33 @@ function retrieveProtocol() {
 			populateProtocol);
 }
 
+function retrieveProtocolById() {
+	var protocolId = document.getElementById("protocolId").value;
+	waitCursor();
+	ProtocolManager.getProtocolById(protocolId, writeFileUri);
+}
+
+function writeFileUri(protocol) {
+	if (protocol==null) {
+		hideCursor();
+		document.getElementById("protocolFileUri").innerHTML="";
+		return;
+	}
+	var uri=null;
+	var fileId=null;
+	if (protocol.fileBean!=null) {
+		uri=protocol.fileBean.domainFile.uri;
+		fileId=protocol.fileBean.domainFile.id;
+	}
+	if (uri!=null && fileId!=null) {
+		document.getElementById("protocolFileUri").innerHTML="<a target='new' href='protocol.do?dispatch=download&fileId="+fileId+"'>"+uri+"</a>";
+	}
+	else {
+		document.getElementById("protocolFileUri").innerHTML="";
+	}
+	hideCursor();
+}
+
 function clearProtocol() {
 	enableOuterButtons();
 	show("addAccess");
