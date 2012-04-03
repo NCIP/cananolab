@@ -16,9 +16,9 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * This class loads protocol data for ajax
- *
+ * 
  * @author tanq, pansu
- *
+ * 
  */
 public class DWRProtocolManager {
 
@@ -62,7 +62,8 @@ public class DWRProtocolManager {
 		try {
 			ProtocolBean protocolBean = getService().findProtocolBy(
 					protocolType, protocolName, protocolVersion);
-			if (protocolBean!=null && protocolBean.getDomain().getFile() != null
+			if (protocolBean != null
+					&& protocolBean.getDomain().getFile() != null
 					&& !StringUtils.xssValidate(protocolBean.getDomain()
 							.getFile().getUri())) {
 				return null;
@@ -74,13 +75,32 @@ public class DWRProtocolManager {
 		return null;
 	}
 
+	public ProtocolBean getProtocolById(String protocolId) {
+		if (StringUtils.isEmpty(protocolId)) {
+			return null;
+		}
+		try {
+			ProtocolBean protocolBean = getService().findProtocolById(
+					protocolId);
+			if (protocolBean != null
+					&& protocolBean.getDomain().getFile() != null
+					&& !StringUtils.xssValidate(protocolBean.getDomain()
+							.getFile().getUri())) {
+				return null;
+			}
+			return protocolBean;
+		} catch (Exception e) {
+			logger.error("Error in retrieving the protocol " + protocolId);
+		}
+		return null;
+	}
+
 	public String getPublicCounts() {
 		Integer counts = 0;
 		try {
 			counts = getService().getHelper().getNumberOfPublicProtocols();
 		} catch (Exception e) {
-			logger
-					.error("Error obtaining counts of public protocols from local site.");
+			logger.error("Error obtaining counts of public protocols from local site.");
 		}
 		return counts.toString() + " Protocols";
 	}
