@@ -17,7 +17,7 @@
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 			<display:table name="sessionScope.protocols" id="protocol"
-				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
+				requestURI="searchProtocol.do" pagesize="15" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
 				<c:if test="${!empty user}">
 				    <display:column title="" property="detailURL" />
@@ -32,7 +32,7 @@
 					sortable="true" escapeXml="true" headerScope="col"/>
 				<display:column title="Description"
 					property="fileDescription" sortable="false" headerScope="col"/>
-				<display:column title="File" property="downloadURL" sortable="true" headerScope="col"/>
+				<display:column title="File" property="downloadURL" headerScope="col"/>
 				<display:column title="Created Date"
 					property="domain.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" headerScope="col"/>
