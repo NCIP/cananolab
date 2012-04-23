@@ -17,7 +17,7 @@
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 			<display:table name="sessionScope.protocols" id="protocol"
-				requestURI="searchProtocol.do" pagesize="15" class="displaytable"
+				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
 				<c:if test="${!empty user}">
 				    <display:column title="" property="detailURL" />
