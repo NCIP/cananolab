@@ -15,7 +15,7 @@
 	<jsp:param name="topic" value="transfer_data_ownership_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/transferOwner">
+<html:form action="/transferOwner" styleId="transferOwnerForm">
 	<jsp:include page="/bodyMessage.jsp" />
 	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>

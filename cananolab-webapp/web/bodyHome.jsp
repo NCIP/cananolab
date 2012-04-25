@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html:form action="/login">
+<html:form action="/login" styleId="loginForm">
 	<table summary="layout" cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td valign="top" class="mainContentHomePage">

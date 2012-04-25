@@ -17,7 +17,7 @@
 	<jsp:param name="topic" value="manage_batch_data_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/generateBatchDataAvailability">
+<html:form action="/generateBatchDataAvailability" styleId="generateBatchDataAvailabilityForm">
 	<jsp:include page="/bodyMessage.jsp" />
 	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>

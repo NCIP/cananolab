@@ -6,7 +6,7 @@
 	<jsp:param name="topic" value="welcome_login_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/login">
+<html:form action="/login" styleId="loginForm">
 	<table width="100%" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="20%">
