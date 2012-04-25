@@ -63,7 +63,7 @@
 					</c:choose>
 				</display:column>
 				<display:column title="Created Date"
-					property="domain.createdDate" sortable="true"
+					property="domain.createdDate" 
 					format="{0,date,MM-dd-yyyy}" headerScope="col"/>
 			</display:table>
 		</td>
