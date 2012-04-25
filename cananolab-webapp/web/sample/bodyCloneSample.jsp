@@ -25,10 +25,10 @@
 			<td>
 				<table>
 					<tr>
-						<td class="cellLabel" width="200">
-							<label for="cloningSampleName">Existing Sample *</label>
+						<td class="cellLabel" width="150">
+							<label for="cloningSampleName">Existing <br>Sample *</label>
 						</td>
-						<td width="100">
+						<td>
 							<html:text property="sampleBean.cloningSampleName" size="50" styleId="cloningSampleName"/>
 						</td>
 						<td colspan="2">
@@ -38,7 +38,7 @@
 					</tr>
 					<tr>
 						<td class="cellLabel" valign="top">
-							<label for="newSampleName">New Sample Name *</label>
+							<label for="newSampleName">New Sample <br>Name *</label>
 						</td>
 						<td colspan="2" valign="top">
 							<html:text property="sampleBean.domain.name" size="50" styleId="newSampleName"/>
@@ -63,7 +63,7 @@
 	</table>
 	<br>	
 	<c:set var="resetOnclick" value="this.form.reset();hide('loaderImg'); hide('matchedSampleSelect');"/>	
-	<c:set var="submitOnclick" value="submitAction('sampleForm', 'sample', 'clone', 1);show('waitMessage')"/>	
+	<c:set var="submitOnclick" value="submitAction('cloneSampleForm', 'sample', 'clone', 1);show('waitMessage')"/>	
 	<%@include file="../bodySubmitButtons.jsp"%>
 	<br />
 	<span id="waitMessage" style="display: none" class="welcomeContent"><img
