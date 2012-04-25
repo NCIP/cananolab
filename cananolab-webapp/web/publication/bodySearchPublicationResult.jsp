@@ -34,7 +34,7 @@
 				<display:column title="Publication<br>Status"
 					property="domainFile.status" sortable="true" escapeXml="true" headerScope="col" />
 				<display:column title="Created<br>Date"
-					property="domainFile.createdDate" sortable="true"
+					property="domainFile.createdDate"
 					format="{0,date,MM-dd-yyyy}" headerScope="col" />
 			</display:table>
 		</td>
