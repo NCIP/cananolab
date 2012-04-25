@@ -6,7 +6,7 @@
 	<jsp:param name="topic" value="register_user" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<html:form action="/register">
+<html:form action="/register" styleId="registerUserForm">
 	<jsp:include page="/bodyMessage.jsp" />
 	
 	<table width="100%" align="center" class="submissionView" summary="layout">		
