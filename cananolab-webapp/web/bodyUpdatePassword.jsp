@@ -11,36 +11,36 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel" width="20%">
-				Login ID*
+				<label for="loginId">Login ID*</label>
 			</td>
 			<td>
-				<html:text property="loginId" size="50" />
+				<html:text property="loginId" size="50" styleId="loginId"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Old Password*
+				<label for="oldPass">Old Password*</label>
 			</td>
 			<td>
-				<html:password property="password" size="50" />
+				<html:password property="password" size="50" styleId="oldPass"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				New Password*
+				<label for="newPass">New Password*</label>
 			</td>
 			<td>
-				<html:password property="newPassword" size="50" />
+				<html:password property="newPassword" size="50" styleId="newPass"/>
 				<br />
 				<em>(Minimum of 5 characters are required)</em>
 			</td>
 		</tr>
 		<tr>
 			<td class="cellLabel">
-				Retype New Password*
+				<label for="newPassRetype">Retype New Password*</label>
 			</td>
 			<td>
-				<html:password property="newPassword2" size="50" />
+				<html:password property="newPassword2" size="50" styleId="newPassRetype"/>
 			</td>
 		</tr>
 	</table>
@@ -49,7 +49,7 @@
 		cellspacing="0">
 		<tr>
 			<td width="30%">
-				<table border="0" align="right" cellpadding="4" cellspacing="0">
+				<table border="0" align="right" cellpadding="4" cellspacing="0" summary="layout">
 					<tr>
 						<td>
 							<div align="right">
