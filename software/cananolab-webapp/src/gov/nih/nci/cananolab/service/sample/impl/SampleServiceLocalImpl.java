@@ -1052,7 +1052,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findGroupAccessibilities(sampleId);
 			List<AccessibilityBean> userAccesses = this
 					.findUserAccessibilities(sampleId);
-			// do nothing is access already exist
+			// do nothing if access already exist
 			if (groupAccesses.contains(access)) {
 				return;
 			} else if (userAccesses.contains(access)) {
