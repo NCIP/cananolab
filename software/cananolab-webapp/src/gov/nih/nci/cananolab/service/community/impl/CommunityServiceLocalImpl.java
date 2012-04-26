@@ -63,147 +63,157 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void saveCollaborationGroup(CollaborationGroupBean collaborationGroup)
 			throws CommunityException, NoAccessException,
 			DuplicateEntriesException {
-		if (user == null) {
+		if (user == null)
 			throw new NoAccessException();
-		}
 		try {
-			Group doGroup = securityService.getGroup(collaborationGroup
-					.getName());
-			// group name already exists by another id
-			if (doGroup != null
-					&& !doGroup.getGroupId().toString().equals(
-							collaborationGroup.getId())) {
-				throw new DuplicateEntriesException(
-						"Group name is already in use");
-			}
-
-			// create a new group if none exists.
+			// creating a new group
 			if (StringUtils.isEmpty(collaborationGroup.getId())) {
-				doGroup = new Group();
-				doGroup.setGroupName(collaborationGroup.getName());
-				doGroup.setGroupDesc(collaborationGroup.getDescription());
-				authManager.createGroup(doGroup);
-				collaborationGroup.setId(doGroup.getGroupId().toString());
-				// assign CURD access to user who created the group if user is
-				// not curator
-				if (!user.isCurator()) {
-					AccessibilityBean ownerAccess = new AccessibilityBean(
-							AccessibilityBean.ACCESS_BY_USER);
-					ownerAccess.setUserBean(user);
-					ownerAccess.setRoleName(AccessibilityBean.CSM_CURD_ROLE);
-					saveAccessibility(ownerAccess,
-							AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-									+ doGroup.getGroupId());
-					collaborationGroup.getUserAccesses().add(ownerAccess);
+				// check if group name is already used
+				Group doGroup = securityService.getGroup(collaborationGroup
+						.getName());
+				// if group name already exists by another id
+				if (doGroup != null) {
+					throw new DuplicateEntriesException(
+							"Group name is already in use");
 				}
-				// assign CURD access to Curator group
-				saveAccessibility(AccessibilityBean.CSM_DEFAULT_ACCESS,
-						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ doGroup.getGroupId());
-				// assign current user to be owner of the collaboration group
-				accessUtils.assignOwner(
-						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ doGroup.getGroupId(), user.getLoginName());
-				collaborationGroup.getGroupAccesses().add(
-						AccessibilityBean.CSM_DEFAULT_ACCESS);
+				// create a new group
+				else {
+					createNewCollaborationGroup(collaborationGroup);
+				}
 			}
 			// update existing group
 			else {
+				// check if user has access to update the existing group
 				// if user has access to update the group
-				if (securityService
+				if (!securityService
 						.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ collaborationGroup.getId())) {	
-					String oldGroupName=null;
-					if (doGroup == null) {
-						// update name to a new name not exist in the database
-						doGroup = authManager.getGroupById(collaborationGroup
-								.getId());
-						oldGroupName=doGroup.getGroupName();						
-						doGroup.setGroupName(collaborationGroup.getName());
-					}
-					doGroup.setGroupDesc(collaborationGroup.getDescription());
-					authManager.modifyGroup(doGroup);
-					//remove old group name from user's groups.
-					user.getGroupNames().remove(oldGroupName);
-					CollaborationGroupBean existingGroup = findCollaborationGroupById(collaborationGroup
-							.getId());
-					// update user access if user is the owner of the group or
-					// curator
-					// if (user.isCurator()
-					// || securityService
-					// .isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-					// + doGroup.getGroupId())) {
-					List<AccessibilityBean> existingAccess = existingGroup
-							.getUserAccesses();
-					List<AccessibilityBean> accessToRemove = new ArrayList<AccessibilityBean>(
-							existingAccess);
-					accessToRemove.removeAll(collaborationGroup
-							.getUserAccesses());
-					for (AccessibilityBean access : accessToRemove) {
-						authManager.removeUserFromGroup(doGroup.getGroupId()
-								.toString(), access.getUserBean().getUserId());
-						accessUtils
-								.removeSecureObjectForUser(
-										AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-												+ doGroup.getGroupId(), access
-												.getUserBean().getLoginName(),
-										AccessibilityBean.CSM_CURD_ROLE);
-					}
-					// } else {
-					// throw new NoAccessException(
-					// "You'd have to the curator or the owner of the group to manage users.");
-					// }
-				} else {
+								+ collaborationGroup.getId()))
 					throw new NoAccessException(
 							"You don't have access to update the collaboration group");
-				}
+				updateCollaborationGroup(collaborationGroup);
 			}
-			// check if user is the owner the group
-			// if (user.isCurator()
-			// || securityService
-			// .isOwner(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-			// + doGroup.getGroupId())) {
-			// check if user can update the group
-			if (securityService
-					.checkCreatePermission(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-							+ collaborationGroup.getId())) {
-				// if the current user is not a curator, he/she should already
-				// be in
-				// the userIds
-				List<String> userIds = new ArrayList<String>();
-				for (AccessibilityBean access : collaborationGroup
-						.getUserAccesses()) {
-					saveAccessibility(access,
-							AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-									+ doGroup.getGroupId());
-					User user = authManager.getUser(access.getUserBean()
-							.getLoginName());
-					String userId = user.getUserId().toString();
-					userIds.add(userId);
-				}
-				// if the current user is a curator and is the owner
-				if (user.isCurator()
-						&& securityService
-								.isOwner(
-										user.getLoginName(),
-										AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-												+ collaborationGroup.getId())) {
-					userIds.add(user.getUserId().toString());
-				}
-				authManager.addUsersToGroup(doGroup.getGroupId().toString(),
-						userIds.toArray(new String[0]));
-				// update userBean's associated group
-				if (!user.getGroupNames().contains(doGroup.getGroupName())) {
-					user.getGroupNames().add(doGroup.getGroupName());
-				}
-			}
-		} catch (NoAccessException e) {
-			throw e;
-		} catch (DuplicateEntriesException e) {
-			throw e;
 		} catch (Exception e) {
 			String error = "Error finding existing collaboration groups accessible by the user";
 			throw new CommunityException(error, e);
+		}
+	}
+
+	private void createNewCollaborationGroup(
+			CollaborationGroupBean collaborationGroup) throws Exception {
+		Group doGroup = new Group();
+		doGroup.setGroupName(collaborationGroup.getName());
+		doGroup.setGroupDesc(collaborationGroup.getDescription());
+		authManager.createGroup(doGroup);
+		collaborationGroup.setId(doGroup.getGroupId().toString());
+
+		// add owner access to the group
+		AccessibilityBean ownerAccess = new AccessibilityBean(
+				AccessibilityBean.ACCESS_BY_USER);
+		ownerAccess.setUserBean(user);
+		ownerAccess.setRoleName(AccessibilityBean.CSM_CURD_ROLE);
+		collaborationGroup.getUserAccesses().add(ownerAccess);
+		// assign current user to be owner of the collaboration group
+		accessUtils.assignOwner(
+				AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+						+ doGroup.getGroupId(), user.getLoginName());
+
+		// update current user's associated groups shown on the side menu
+		if (!user.getGroupNames().contains(collaborationGroup.getName())) {
+			user.getGroupNames().add(collaborationGroup.getName());
+		}
+
+		// add users to the collaboration group
+		addUsersToCollaborationGroup(collaborationGroup.getId(),
+				collaborationGroup.getUserAccesses());
+
+		// add curator default CURD access to the group
+		saveAccessibility(
+				AccessibilityBean.CSM_DEFAULT_ACCESS,
+				AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+						+ doGroup.getGroupId());
+		collaborationGroup.getGroupAccesses().add(
+				AccessibilityBean.CSM_DEFAULT_ACCESS);
+	}
+
+	private void updateCollaborationGroup(
+			CollaborationGroupBean collaborationGroup) throws Exception {
+		// get existing database group based on the group id
+		Group doGroup = authManager.getGroupById(collaborationGroup.getId());
+		String oldGroupName = doGroup.getGroupName();
+
+		// if either name or description is changed, update database
+		// record with updated info
+		if (!doGroup.getGroupName().equals(collaborationGroup.getName())
+				|| !doGroup.getGroupDesc().equals(
+						collaborationGroup.getDescription())) {
+
+			doGroup.setGroupName(collaborationGroup.getName());
+			doGroup.setGroupDesc(collaborationGroup.getDescription());
+			authManager.modifyGroup(doGroup);
+		}
+
+		// remove old group name from current user's groups shown on the
+		// side menu if the name changed
+		if (user.getGroupNames() != null
+				&& !oldGroupName.equals(collaborationGroup.getName())) {
+			user.getGroupNames().remove(oldGroupName);
+			// add the new one if user is not a curator
+			if (!user.isCurator()) {
+				user.getGroupNames().add(collaborationGroup.getName());
+			}
+		}
+
+		// update user access
+		CollaborationGroupBean existingGroupWithAccess = findCollaborationGroupById(collaborationGroup
+				.getId());
+		// remove the ones in the database that are not in the current
+		// user list
+		List<AccessibilityBean> accessToRemove = new ArrayList<AccessibilityBean>(
+				existingGroupWithAccess.getUserAccesses());
+		accessToRemove.removeAll(collaborationGroup.getUserAccesses());
+		removeUsersFromCollaborationGroup(collaborationGroup.getId(),
+				accessToRemove);
+
+		// get new access to add
+		List<AccessibilityBean> accessToAdd = new ArrayList<AccessibilityBean>(
+				collaborationGroup.getUserAccesses());
+		accessToAdd.removeAll(existingGroupWithAccess.getUserAccesses());
+		// add new user accesses
+		addUsersToCollaborationGroup(collaborationGroup.getId(), accessToAdd);
+	}
+
+	private void addUsersToCollaborationGroup(String groupId,
+			List<AccessibilityBean> userAccesses) throws Exception {
+		// add users to the collaboration group
+		List<String> userIds = new ArrayList<String>();
+		for (AccessibilityBean access : userAccesses) {
+			// skip if user is curator because curator is treated as a default
+			// group access
+			if (!access.getUserBean().isCurator()) {
+				saveAccessibility(access,
+						AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+								+ groupId);
+			}
+			User user = authManager
+					.getUser(access.getUserBean().getLoginName());
+			String userId = user.getUserId().toString();
+			userIds.add(userId);
+		}
+		if (!userIds.isEmpty())
+			authManager
+					.addUsersToGroup(groupId, userIds.toArray(new String[0]));
+
+	}
+
+	private void removeUsersFromCollaborationGroup(String groupId,
+			List<AccessibilityBean> userAccesses) throws Exception {
+		for (AccessibilityBean access : userAccesses) {
+			authManager.removeUserFromGroup(groupId, access.getUserBean()
+					.getUserId());
+			accessUtils.removeSecureObjectForUser(
+					AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX + groupId,
+					access.getUserBean().getLoginName(),
+					AccessibilityBean.CSM_CURD_ROLE);
 		}
 	}
 
@@ -260,8 +270,7 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	// set user accessibilities
-	private void setAccesses(CollaborationGroupBean cGroup)
-			throws Exception {
+	private void setAccesses(CollaborationGroupBean cGroup) throws Exception {
 		// set user accessibilities
 		Set<User> users = authManager.getUsers(cGroup.getId().toString());
 		List<String> userNames = new ArrayList<String>(users.size());
@@ -330,9 +339,8 @@ public class CommunityServiceLocalImpl extends BaseServiceLocalImpl implements
 							+ collaborationGroup.getId())) {
 				throw new NoAccessException();
 			} else {
-				super
-						.removeAllAccesses(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
-								+ collaborationGroup.getId());
+				super.removeAllAccesses(AccessibilityBean.CSM_COLLABORATION_GROUP_PREFIX
+						+ collaborationGroup.getId());
 				authManager.removeGroup(collaborationGroup.getId());
 				// update user group list
 				user.getGroupNames().remove(collaborationGroup.getName());
