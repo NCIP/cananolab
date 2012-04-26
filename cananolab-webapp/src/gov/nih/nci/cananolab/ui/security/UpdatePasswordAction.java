@@ -17,7 +17,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class allow users to update their passwords.
- *
+ * 
  * @author pansu
  */
 
@@ -30,17 +30,23 @@ public class UpdatePasswordAction extends Action {
 		String loginId = (String) theForm.get("loginId");
 		String password = (String) theForm.get("password");
 		String newPassword = (String) theForm.get("newPassword");
-
+		ActionMessages messages = new ActionMessages();
 		UserBean user = new UserBean(loginId, password);
-		SecurityService service = new SecurityService(AccessibilityBean.CSM_APP_NAME,
-				user);
-		if (user != null) {
-			service.updatePassword(newPassword);
-			ActionMessages messages = new ActionMessages();
-			ActionMessage message = new ActionMessage("message.password");
-			messages.add("message", message);
-			saveMessages(request, messages);
+		try {
+			SecurityService service = new SecurityService(
+					AccessibilityBean.CSM_APP_NAME, user);
+			if (user != null) {
+				service.updatePassword(newPassword);				
+				ActionMessage message = new ActionMessage("message.password");
+				messages.add("message", message);
+				saveMessages(request, messages);
+			}
+			return mapping.findForward("success");
+		} catch (Exception e) {
+			ActionMessage msg = new ActionMessage("erros.login.failed");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, messages);
+			return mapping.findForward("input");
 		}
-		return mapping.findForward("success");
 	}
 }
