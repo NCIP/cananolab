@@ -23,6 +23,13 @@
 			<form-property name="comment" type="java.lang.String" />
 			<form-property name="registerToUserList" type="java.lang.String" />
 		</form-bean>
+		<form-bean name="updatePasswordForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="loginId" type="java.lang.String" />
+			<form-property name="password" type="java.lang.String" />
+			<form-property name="newPassword" type="java.lang.String" />
+			<form-property name="newPassword2" type="java.lang.String" />
+		</form-bean>
 	</form-beans>
 	<global-exceptions>
 		<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
@@ -53,6 +60,7 @@
 				type="gov.nih.nci.cananolab.exception.SecurityException" />
 			<forward name="success" path="canano.welcome" />
 			<forward name="input" path="/welcome.do" />
+			<forward name="changePassword" path="canano.password" />
 		</action>
 		<action name="registerUserForm" path="/register" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.RegisterUserAction" input="input">
@@ -61,6 +69,14 @@
 				type="gov.nih.nci.cananolab.exception.SecurityException" />
 			<forward name="success" path="home.message" />
 			<forward name="input" path="canano.register" />
+		</action>
+		<action name="updatePasswordForm" path="/updatePassword" scope="request"
+			type="gov.nih.nci.cananolab.ui.security.UpdatePasswordAction" input="input">
+			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.securityException" path="canano.password"
+				type="gov.nih.nci.cananolab.exception.SecurityException" />
+			<forward name="success" path="/welcome.do" />
+			<forward name="input" path="canano.password" />
 		</action>
 		<action path="/logout" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.LogoutAction">
