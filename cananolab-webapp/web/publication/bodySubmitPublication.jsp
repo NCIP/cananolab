@@ -221,7 +221,7 @@
 										styleId="lastName" />
 								</td>
 								<td class="cellLabel">
-									<label for="initial">Initials</label>Initials
+									<label for="initial">Initials</label>
 								</td>
 								<td>
 									<html:text property="publication.theAuthor.initial"
