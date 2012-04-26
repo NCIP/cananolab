@@ -4,6 +4,8 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,9 +41,11 @@ public class LoginAction extends Action {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String loginName = (String) theForm.get("loginId");
 		String password = (String) theForm.get("password");
-		// check if the password is the initial password
+		// if not using LDAP, check if the password is the initial password
 		// redirect to change password page
-		if (loginName.equals(password)) {
+		Boolean useLDAP = new Boolean(PropertyUtils.getProperty(
+				Constants.CANANOLAB_PROPERTY, "useLDAP"));
+		if (!useLDAP && loginName.equals(password)) {
 			ActionMessage msg = new ActionMessage(
 					"message.login.changepassword");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
