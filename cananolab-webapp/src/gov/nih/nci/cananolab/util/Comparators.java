@@ -430,21 +430,44 @@ public class Comparators {
 	public static class PublicationDateComparator implements
 			Comparator<Publication> {
 		public int compare(Publication pub1, Publication pub2) {
-			return pub1.getCreatedDate().compareTo(pub2.getCreatedDate());
+			Date date1 = pub1.getCreatedDate();
+			Date date2 = pub2.getCreatedDate();
+			if (date1.compareTo(date2) == 0) {
+				String title1 = pub1.getTitle();
+				String title2 = pub1.getTitle();
+				return title1.compareTo(title2);
+			} else {
+				return date1.compareTo(date2);
+			}
 		}
 	}
 
 	public static class SampleDateComparator implements Comparator<Sample> {
 		public int compare(Sample sample1, Sample sample2) {
-			return sample1.getCreatedDate()
-					.compareTo(sample2.getCreatedDate());
+			Date date1 = sample1.getCreatedDate();
+			Date date2 = sample2.getCreatedDate();
+			if (date1.compareTo(date2) == 0) {
+				String name1 = sample1.getName();
+				String name2 = sample2.getName();
+				return name1.compareTo(name2);
+			} else {
+				return date1.compareTo(date2);
+			}
 		}
 	}
 
 	public static class ProtocolDateComparator implements Comparator<Protocol> {
 		public int compare(Protocol protocol1, Protocol protocol2) {
-			return protocol1.getCreatedDate().compareTo(
-					protocol2.getCreatedDate());
+			Date date1 = protocol1.getCreatedDate();
+			Date date2 = protocol2.getCreatedDate();
+
+			if (date1.compareTo(date2) == 0) {
+				String name1 = protocol1.getName();
+				String name2 = protocol2.getName();
+				return name1.compareTo(name2);
+			} else {
+				return date1.compareTo(date2);
+			}
 		}
 	}
 
