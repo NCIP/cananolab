@@ -16,6 +16,15 @@
 		</td>
 	</tr>
 	<tr>
+		<th scope="row" class="cellLabel" width="20%">
+			Created Date
+		</th>
+		<td>
+			<bean:write name="sampleForm" property="sampleBean.domain.createdDate" />
+		</td>
+	</tr>
+	
+	<tr>
 		<th scope="row" class="cellLabel">
 			Keywords		
 		</th>
