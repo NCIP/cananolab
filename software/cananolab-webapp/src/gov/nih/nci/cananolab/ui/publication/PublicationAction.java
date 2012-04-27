@@ -72,8 +72,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		// curator
 		if (!newPub && !user.isCurator() && publicationBean.getPublicStatus()) {
 			retractFromPublic(theForm, request, publicationBean.getDomainFile()
-					.getId().toString(), ((Publication) publicationBean
-					.getDomainFile()).getTitle(), "publication");
+					.getId().toString(),
+					((Publication) publicationBean.getDomainFile()).getTitle(),
+					"publication");
 			ActionMessage msg = null;
 			msg = new ActionMessage(
 					"message.updatePublication.retractFromPublic");
@@ -140,8 +141,8 @@ public class PublicationAction extends BaseAnnotationAction {
 			publicationBean.setFromSamplePage(false);
 		}
 
-		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION, user
-				.getLoginName());
+		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION,
+				user.getLoginName());
 		service.savePublication(publicationBean);
 
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
@@ -181,7 +182,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle delete request from Sample -> Publication -> Edit page.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -209,7 +210,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Delete a publication from Publication update form
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -229,9 +230,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		updateReviewStatusTo(DataReviewStatusBean.DELETED_STATUS, request,
 				publicationBean.getDomainFile().getId().toString(),
 				publicationBean.getDomainFile().getTitle(), "publication");
-		service
-				.deletePublication((Publication) publicationBean
-						.getDomainFile());
+		service.deletePublication((Publication) publicationBean.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deletePublication",
 				publicationBean.getDomainFile().getTitle());
@@ -274,16 +273,12 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
-		String publicationId = super.validateId(request, "publicationId");
-		String sampleId = request.getParameter("sampleId");
+		String publicationId = super.validateId(request, "publicationId");		
 		PublicationService publicationService = this
 				.setServicesInSession(request);
 		PublicationBean pubBean = publicationService.findPublicationById(
 				publicationId, true);
-		theForm.set("publication", pubBean);
-		theForm.set("sampleId", sampleId);
-		theForm.set("otherSamples", new String[0]); // clear copy otherSamples.
-
+		theForm.set("publication", pubBean);		
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();updateFormFields('"
@@ -291,7 +286,16 @@ public class PublicationAction extends BaseAnnotationAction {
 		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
 				.toString(), pubBean.getPublicStatus());
 		request.getSession().setAttribute("updatePublication", "true");
+		
+		//detect whether request is related to sample
+		String sampleId = request.getParameter("sampleId");
+		if (sampleId==null) {
+			sampleId=(String)request.getAttribute("sampleId");
+		}
 		if (!StringUtils.isEmpty(sampleId)) {
+			theForm.set("sampleId", sampleId);
+			//clear copy other samples
+			theForm.set("otherSamples", new String[0]); 
 			InitSampleSetup.getInstance()
 					.getOtherSampleNames(request, sampleId);
 			return mapping.findForward("sampleSubmitPublication");
@@ -302,7 +306,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report print request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -333,7 +337,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report view request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -352,7 +356,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report edit request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -376,7 +380,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle summary report export request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -406,8 +410,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
 				.getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
-		PublicationExporter.exportSummary(summaryBean, response
-				.getOutputStream());
+		PublicationExporter.exportSummary(summaryBean,
+				response.getOutputStream());
 
 		return null;
 	}
@@ -415,7 +419,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
 	 * summaryPrint().
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -527,14 +531,12 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 		// disable PubMed fields from parsing and toggle access name label
 		if (pub.getPubMedId() != null) {
-			request
-					.setAttribute(
-							"onloadJavascript",
-							"updateSubmitFormBasedOnCategory();disableAutoFields(); toggleAccessNameLabel();");
+			request.setAttribute(
+					"onloadJavascript",
+					"updateSubmitFormBasedOnCategory();disableAutoFields(); toggleAccessNameLabel();");
 		} else {
-			request
-					.setAttribute("onloadJavascript",
-							"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel();");
+			request.setAttribute("onloadJavascript",
+					"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel();");
 		}
 		return mapping.findForward("publicationSubmitPublication");
 	}
@@ -626,7 +628,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	/**
 	 * Shared function for summaryExport() and summaryPrint(). Filter out
 	 * unselected types when user selected one type for print/export.
-	 *
+	 * 
 	 * @param request
 	 * @param compBean
 	 */
@@ -681,8 +683,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		// if publication is public, the access is not public, retract
 		// public
 		// privilege would be handled in the service method
-		service.assignAccessibility(theAccess, (Publication) publication
-				.getDomainFile());
+		service.assignAccessibility(theAccess,
+				(Publication) publication.getDomainFile());
 		// update status to retracted if the access is not public and
 		// publication is public
 		if (theAccess.getGroupName().equals(AccessibilityBean.CSM_PUBLIC_GROUP)
@@ -699,7 +701,14 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 
 		this.setAccesses(request, publication);
-		return input(mapping, form, request, response);
+		request.setAttribute("publicationId", publication.getDomainFile()
+				.getId().toString());
+		
+		//check if sampleId exists in the form
+		if (theForm.get("sampleId")!=null) {
+			request.setAttribute("sampleId", theForm.get("sampleId"));
+		}
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	protected void setAccesses(HttpServletRequest request,
@@ -726,10 +735,17 @@ public class PublicationAction extends BaseAnnotationAction {
 				.get("publication");
 		AccessibilityBean theAccess = publication.getTheAccess();
 		PublicationService service = this.setServicesInSession(request);
-		service.removeAccessibility(theAccess, (Publication) publication
-				.getDomainFile());
+		service.removeAccessibility(theAccess,
+				(Publication) publication.getDomainFile());
 		this.setAccesses(request, publication);
-		return input(mapping, form, request, response);
+		request.setAttribute("publicationId", publication.getDomainFile()
+				.getId().toString());
+		
+		//check if sampleId exists in the form
+		if (theForm.get("sampleId")!=null) {
+			request.setAttribute("sampleId", theForm.get("sampleId"));
+		}
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	protected void removePublicAccess(DynaValidatorForm theForm,
