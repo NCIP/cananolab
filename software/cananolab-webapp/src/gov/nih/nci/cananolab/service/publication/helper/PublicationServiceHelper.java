@@ -107,10 +107,12 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		// DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 		// .setProjection(Projections.distinct(Property.forName("id")));
 		//
+		// added created date and title to allow sorting on date and title
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.setProjection(
 						Projections.projectionList()
 								.add(Projections.property("id"))
+								.add(Projections.property("title"))
 								.add(Projections.property("createdDate")));
 
 		if (!StringUtils.isEmpty(title)) {
@@ -196,7 +198,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			// otherPublicationIds.add(obj.toString());
 			Publication publication = new Publication();
 			publication.setId((Long) row[0]);
-			publication.setCreatedDate((Date) row[1]);
+			publication.setTitle((String) row[1]);
+			publication.setCreatedDate((Date) row[2]);
 			otherPublications.add(publication);
 		}
 		// allPublicationIds.addAll(otherPublicationIds);
@@ -225,8 +228,8 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		// order publications by createdDate
 		List<Publication> orderedPubs = new ArrayList<Publication>(
 				allPublications);
-		Collections.sort(orderedPubs, Collections
-				.reverseOrder(new Comparators.PublicationDateComparator()));
+		Collections.sort(orderedPubs,
+				new Comparators.PublicationDateComparator());
 		// get ordered ids
 		List<String> orderedPubIds = new ArrayList<String>();
 		for (Publication pub : orderedPubs) {
