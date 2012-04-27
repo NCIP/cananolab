@@ -27,18 +27,70 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Search protocol file and protocol
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
+		// get the page number from request
+		int displayPage = getDisplayPage(request);
+		List<ProtocolBean> protocolBeans = null;
+		// retrieve from session if it's not null and not the first page
+		if (session.getAttribute("protocolSearchResults") != null
+				&& displayPage > 0) {
+			protocolBeans = new ArrayList<ProtocolBean>(
+					(List) session.getAttribute("protocolSearchResults"));
+		} else {
+			protocolBeans = queryProtocols(form, request);
+			if (protocolBeans != null && !protocolBeans.isEmpty()) {
+				session.setAttribute("protocolSearchResults", protocolBeans);
+			} else {
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage(
+						"message.searchProtocol.noresult");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, msgs);
+				return mapping.getInputForward();
+			}
+		}
+		// display 25 protocols at a time
+		List<ProtocolBean> protocolBeansPerPage = getProtocolsPerPage(
+				protocolBeans, displayPage, Constants.DISPLAY_TAG_TABLE_SIZE,
+				request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user != null) {
+			loadUserAccess(request, protocolBeansPerPage);
+		}
+		request.setAttribute("protocols", protocolBeansPerPage);
+		// get the total size of collection , required for display tag to
+		// get the pagination to work
+		request.setAttribute("resultSize", new Integer(protocolBeans.size()));
+		// allow user to go back to the search results via the cache
+		response.setHeader("Cache-Control", "private");
+		return mapping.findForward("success");
+	}
 
+	private List<ProtocolBean> getProtocolsPerPage(
+			List<ProtocolBean> protocolBeans, int page, int pageSize,
+			HttpServletRequest request) throws Exception {
+		List<ProtocolBean> protocolsPerPage = new ArrayList<ProtocolBean>();
+		for (int i = page * pageSize; i < (page + 1) * pageSize; i++) {
+			if (i < protocolBeans.size()) {
+				ProtocolBean protocolBean = protocolBeans.get(i);
+				if (protocolBean != null) {
+					protocolsPerPage.add(protocolBean);
+				}
+			}
+		}
+		return protocolsPerPage;
+	}
+
+	private List<ProtocolBean> queryProtocols(ActionForm form,
+			HttpServletRequest request) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileTitle = (String) theForm.get("fileTitle");
 		// strip wildcards if entered by user
@@ -73,24 +125,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		ProtocolService service = this.setServiceInSession(request);
 		List<ProtocolBean> allProtocols = service.findProtocolsBy(protocolType,
 				protocolName, protocolAbbreviation, fileTitle);
-		if (user != null) {
-			this.loadUserAccess(request, allProtocols);
-		}
-		if (allProtocols != null && !allProtocols.isEmpty()) {
-			request.getSession().setAttribute("protocols", allProtocols);
-			forward = mapping.findForward("success");
-		} else {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.searchProtocol.noresult");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-			forward = mapping.getInputForward();
-		}
-		//allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control","private");
-
-		return forward;
+		return allProtocols;
 	}
 
 	private void loadUserAccess(HttpServletRequest request,
