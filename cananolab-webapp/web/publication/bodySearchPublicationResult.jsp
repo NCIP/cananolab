@@ -10,9 +10,9 @@
 	<jsp:param name="topic" value="publications_search_results_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<table width="100%" align="center" summary="layout">
+<table width="100%" align="center">
 	<tr>
-		<td colspan="2">
+		<td>
 			<jsp:include page="/bodyMessage.jsp?bundle=publication" />			
 			<display:table name="publications" id="publication"
 				requestURI="searchPublication.do" pagesize="25" class="displaytable"
@@ -27,14 +27,14 @@
 					property="publicationType" sortable="true" escapeXml="true" headerScope="col" />
 				<display:column title="Research<br>Category" property="researchArea"
 					sortable="true" headerScope="col"/>
-				<display:column title="Associated Sample Names"
+				<display:column title="Associated <br>Sample Names"
 					property="sampleNames" sortable="true" headerScope="col" />
 				<display:column title="Description" property="descriptionDetail"
 					sortable="true" headerScope="col"/>				
 				<display:column title="Publication<br>Status"
 					property="domainFile.status" sortable="true" escapeXml="true" headerScope="col" />
 				<display:column title="Created<br>Date"
-					property="domainFile.createdDate"
+					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" headerScope="col" />
 			</display:table>
 		</td>
