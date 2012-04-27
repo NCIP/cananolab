@@ -433,11 +433,11 @@ public class Comparators {
 			Date date1 = pub1.getCreatedDate();
 			Date date2 = pub2.getCreatedDate();
 			if (date1.compareTo(date2) == 0) {
-				String title1 = pub1.getTitle();
-				String title2 = pub1.getTitle();
-				return title1.compareTo(title2);
+				//reverse title order
+				return pub2.getTitle().compareTo(pub1.getTitle());
 			} else {
-				return date1.compareTo(date2);
+				//reverse date order
+				return date2.compareTo(date1);
 			}
 		}
 	}
@@ -447,11 +447,11 @@ public class Comparators {
 			Date date1 = sample1.getCreatedDate();
 			Date date2 = sample2.getCreatedDate();
 			if (date1.compareTo(date2) == 0) {
-				String name1 = sample1.getName();
-				String name2 = sample2.getName();
-				return name1.compareTo(name2);
+				//reverse name order
+				return sample2.getName().compareTo(sample1.getName());
 			} else {
-				return date1.compareTo(date2);
+				//reverse date order
+				return date2.compareTo(date1);
 			}
 		}
 	}
@@ -460,13 +460,12 @@ public class Comparators {
 		public int compare(Protocol protocol1, Protocol protocol2) {
 			Date date1 = protocol1.getCreatedDate();
 			Date date2 = protocol2.getCreatedDate();
-
 			if (date1.compareTo(date2) == 0) {
-				String name1 = protocol1.getName();
-				String name2 = protocol2.getName();
-				return name1.compareTo(name2);
+				//reverse name order
+				return protocol2.getName().compareTo(protocol1.getName());
 			} else {
-				return date1.compareTo(date2);
+				//reverse date order
+				return date2.compareTo(date1);
 			}
 		}
 	}
