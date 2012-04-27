@@ -10,34 +10,28 @@
 	<jsp:param name="topic" value="publications_search_results_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
-<table width="100%" align="center">
-	<tr>
-		<td>
-			<jsp:include page="/bodyMessage.jsp?bundle=publication" />			
-			<display:table name="publications" id="publication"
-				requestURI="searchPublication.do" pagesize="25" class="displaytable"
-				partialList="true" size="resultSize"
-				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
-				<c:if test="${!empty user}">
-					<display:column title="" property="detailURL" />
-				</c:if>
-				<display:column title="Bibliography Info" property="displayName"
-					sortable="true" headerScope="col"/>
-				<display:column title="Publication<br>Type"
-					property="publicationType" sortable="true" escapeXml="true" headerScope="col" />
-				<display:column title="Research<br>Category" property="researchArea"
-					sortable="true" headerScope="col"/>
-				<display:column title="Associated <br>Sample Names"
-					property="sampleNames" sortable="true" headerScope="col" />
-				<display:column title="Description" property="descriptionDetail"
-					sortable="true" headerScope="col"/>				
-				<display:column title="Publication<br>Status"
-					property="domainFile.status" sortable="true" escapeXml="true" headerScope="col" />
-				<display:column title="Created<br>Date"
-					property="domainFile.createdDate" sortable="true"
-					format="{0,date,MM-dd-yyyy}" headerScope="col" />
-			</display:table>
-		</td>
-	</tr>
-</table>
-
+<jsp:include page="/bodyMessage.jsp?bundle=publication" />
+<display:table name="publications" id="publication"
+	requestURI="searchPublication.do" pagesize="25" class="displaytable"
+	partialList="true" size="resultSize"
+	decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
+	<c:if test="${!empty user}">
+		<display:column title="" property="detailURL" />
+	</c:if>
+	<display:column title="Bibliography Info" property="displayName"
+		sortable="true" headerScope="col" />
+	<display:column title="Publication<br>Type" property="publicationType"
+		sortable="true" escapeXml="true" headerScope="col" />
+	<display:column title="Research<br>Category" property="researchArea"
+		sortable="true" headerScope="col" />
+	<display:column title="Associated <br>Sample Names"
+		property="sampleNames" sortable="true" headerScope="col" />
+	<display:column title="Description" property="descriptionDetail"
+		sortable="true" headerScope="col" />
+	<display:column title="Publication<br>Status"
+		property="domainFile.status" sortable="true" escapeXml="true"
+		headerScope="col" />
+	<display:column title="Created<br>Date"
+		property="domainFile.createdDate" sortable="true"
+		format="{0,date,MM-dd-yyyy}" headerScope="col" />
+</display:table>
