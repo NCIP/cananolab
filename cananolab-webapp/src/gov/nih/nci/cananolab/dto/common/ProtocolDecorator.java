@@ -36,33 +36,38 @@ public class ProtocolDecorator extends TableDecorator {
 	}
 
 	// per app scan, to filter out special characters
-	public String getFileDescription() {
-		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
-		String description = "";
-		if (protocol.getDomain().getFile() != null) {
-			String str = protocol.getDomain().getFile().getDescription();
-			if (str != null) {
-				description = StringUtils.escapeXmlButPreserveLineBreaks(str);
-			}
-		}
-		return description;
-	}
-
-	public String getDownloadURL() throws UnsupportedEncodingException {
+	public String getFileInfo() {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		FileBean file = protocol.getFileBean();
-
+		StringBuilder sb = new StringBuilder();
 		if (file != null && file.getDomainFile() != null) {
-			String link = "protocol.do?dispatch=download&fileId="
-					+ file.getDomainFile().getId();
-			String linkText = "View";
-			StringBuilder sb = new StringBuilder("<a href=");
-			sb.append(link).append(" target='new'>");
-			sb.append(linkText);
-			sb.append("</a>");
-			return sb.toString();
-		} else {
-			return "";
+			// file uri is null, not a valid file return empty string
+			if (StringUtils.isEmpty(file.getDomainFile().getUri())) {
+				return "";
+			}
+			if (!StringUtils.isEmpty(file.getDomainFile().getTitle())) {
+				sb.append("Title:").append("<br>")
+						.append(file.getDomainFile().getTitle()).append("<br>");
+			}
+			String description = protocol.getDomain().getFile()
+					.getDescription();
+			if (!StringUtils.isEmpty(description)) {
+				sb.append("<br>")
+						.append("Description:")
+						.append("<br>")
+						.append(StringUtils
+								.escapeXmlButPreserveLineBreaks(description)).append("<br>");
+			}
+			if (file.getDomainFile().getId() != null) {
+				String link = "protocol.do?dispatch=download&fileId="
+						+ file.getDomainFile().getId();
+				String linkText = "View";
+				sb.append("<br>").append("<a href=");
+				sb.append(link).append(" target='new'>");
+				sb.append(linkText);
+				sb.append("</a>");
+			}
 		}
+		return sb.toString();
 	}
 }
