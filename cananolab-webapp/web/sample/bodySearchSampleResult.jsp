@@ -16,56 +16,47 @@
 	<jsp:param name="other" value="Back" />
 	<jsp:param name="otherLink" value="searchSample.do?dispatch=setup" />
 </jsp:include>
-<table width="100%" align="center">
-	<tr>
-		<td colspan="2">
-			<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-			<display:table name="samples" id="sample"
-				requestURI="searchSample.do" pagesize="25" class="displaytable"
-				partialList="true" size="resultSize" 
-    			decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
-    			
-					<display:column title="" property="detailURL" headerScope="col"/>
-				
-				<display:column title="Sample Name" property="sampleName"
-					sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="Primary<br>Point Of Contact"
-					property="pointOfContactName" sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="Composition" property="compositionStr"
-					sortable="true"  headerScope="col"/>
-				<display:column title="Functions" property="functionStr" headerScope="col"/>
-				<display:column title="Characterizations"
-					property="characterizationStr" headerScope="col"/>
-				<display:column title="Data Availability" headerScope="col">
-				    <c:choose>
-						<c:when test="${sample.dataAvailabilityMetricsScore ==  'N/A' }">${sample.dataAvailabilityMetricsScore}
+<jsp:include page="/bodyMessage.jsp?bundle=sample" />
+<display:table name="samples" id="sample" requestURI="searchSample.do"
+	pagesize="25" class="displaytable" partialList="true" size="resultSize"
+	decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
+
+	<display:column title="" property="detailURL" headerScope="col" />
+
+	<display:column title="Sample Name" property="sampleName"
+		sortable="true" escapeXml="true" headerScope="col" />
+	<display:column title="Primary<br>Point Of Contact"
+		property="pointOfContactName" sortable="true" escapeXml="true"
+		headerScope="col" />
+	<display:column title="Composition" property="compositionStr"
+		sortable="true" headerScope="col" />
+	<display:column title="Functions" property="functionStr"
+		headerScope="col" />
+	<display:column title="Characterizations"
+		property="characterizationStr" headerScope="col" />
+	<display:column title="Data Availability" headerScope="col">
+		<c:choose>
+			<c:when test="${sample.dataAvailabilityMetricsScore ==  'N/A' }">${sample.dataAvailabilityMetricsScore}
 						</c:when>
-						<c:otherwise>
-							<div id="details${sample.domain.id}" style="position: relative">
-								<a id="detailLink${sample.domain.id}"
-											href="#"
-											onclick="showDetailView('${sample.domain.id}', 'sample.do?dispatch=dataAvailabilityView&sampleId=${sample.domain.id}'); return false;">
-											<c:out value="${sample.dataAvailabilityMetricsScore}"/></a>
-									<img src="images/ajax-loader.gif" border="0" class="counts"	id="loaderImg${sample.domain.id}" style="display: none">
-									<table
-										id="detailView${sample.domain.id}"
-										style="display: none; position: absolute; left: -550px; top: -150px; z-index: 10; background-color: #FFFFFF"
-										border="0">
-										<tr>
-											<td>
-												<div
-													id="content${sample.domain.id}"></div>
-											</td>
-										</tr>
-									</table>
-							</div>
-						</c:otherwise>
-					</c:choose>
-				</display:column>
-				<display:column title="Created Date"
-					property="domain.createdDate" 
-					format="{0,date,MM-dd-yyyy}" headerScope="col"/>
-			</display:table>
-		</td>
-	</tr>
-</table>
+			<c:otherwise>
+				<div id="details${sample.domain.id}" style="position: relative">
+					<a id="detailLink${sample.domain.id}" href="#"
+						onclick="showDetailView('${sample.domain.id}', 'sample.do?dispatch=dataAvailabilityView&sampleId=${sample.domain.id}'); return false;">
+						<c:out value="${sample.dataAvailabilityMetricsScore}" />
+					</a> <img src="images/ajax-loader.gif" border="0" class="counts"
+						id="loaderImg${sample.domain.id}" style="display: none">
+					<table id="detailView${sample.domain.id}"
+						style="display: none; position: absolute; left: -550px; top: -150px; z-index: 10; background-color: #FFFFFF"
+						border="0">
+						<tr>
+							<td>
+								<div id="content${sample.domain.id}"></div></td>
+						</tr>
+					</table>
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</display:column>
+	<display:column title="Created Date" property="domain.createdDate"
+		format="{0,date,MM-dd-yyyy}" headerScope="col" sortable="true"/>
+</display:table>
