@@ -87,11 +87,13 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		// can't query for the entire Sample object due to
 		// limitations in pagination in SDK
 
-		// added createdDate in the results so data can be sorted by date
+		// added createdDate and sample name in the results so data can be
+		// sorted by date and name
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
 				.setProjection(
 						Projections.projectionList()
 								.add(Projections.property("id"))
+								.add(Projections.property("name"))
 								.add(Projections.property("createdDate")));
 		if (!StringUtils.isEmpty(sampleName)) {
 			TextMatchMode nameMatchMode = new TextMatchMode(sampleName);
@@ -331,11 +333,13 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		for (Object obj : results) {
 			Object[] row = (Object[]) obj;
 			Long sampleId = (Long) row[0];
+
 			if (StringUtils.containsIgnoreCase(getAccessibleData(),
 					sampleId.toString())) {
 				Sample sample = new Sample();
 				sample.setId(sampleId);
-				sample.setCreatedDate((Date) row[1]);
+				sample.setName((String) row[1]);
+				sample.setCreatedDate((Date) row[2]);
 				samples.add(sample);
 			} else {
 				logger.debug("User doesn't have access to sample of ID: "
@@ -343,8 +347,11 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			}
 		}
 		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
-		Collections.sort(orderedSamples,
-				Collections.reverseOrder(new Comparators.SampleDateComparator()));
+		// Collections.sort(orderedSamples,
+		// Collections.reverseOrder(new Comparators.SampleDateComparator()));
+
+		Collections
+				.sort(orderedSamples, new Comparators.SampleDateComparator());
 
 		for (Sample sample : orderedSamples) {
 			sampleIds.add(sample.getId().toString());
