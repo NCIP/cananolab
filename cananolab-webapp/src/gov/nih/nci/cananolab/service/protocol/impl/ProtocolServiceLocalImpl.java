@@ -186,8 +186,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
 					protocolName, protocolAbbreviation, fileTitle);
-			Collections.sort(protocols, Collections
-					.reverseOrder(new Comparators.ProtocolDateComparator()));
+			Collections.sort(protocols, new Comparators.ProtocolDateComparator());
 			for (Protocol protocol : protocols) {
 				// don't need to load accessibility
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
