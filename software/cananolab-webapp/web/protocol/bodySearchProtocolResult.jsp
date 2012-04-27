@@ -12,31 +12,25 @@
 	<jsp:param name="other" value="Back" />
 	<jsp:param name="otherLink" value="searchProtocol.do?dispatch=setup" />
 </jsp:include>
-<table width="100%" align="center">
-	<tr>
-		<td colspan="2">
-			<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-			<display:table name="sessionScope.protocols" id="protocol"
-				requestURI="searchProtocol.do" pagesize="30" class="displaytable"
-				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
-				<c:if test="${!empty user}">
-				    <display:column title="" property="detailURL" />
-				</c:if>
-				<display:column title="Protocol Type" property="domain.type"
-					sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="Protocol Name" property="viewName"  style="width: 20%"
-					sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="Protocol <br> Abbreviation"
-					property="domain.abbreviation" sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="Version" property="domain.version"
-					sortable="true" escapeXml="true" headerScope="col"/>
-				<display:column title="Description" style="width: 25%"
-					property="fileDescription" sortable="false" headerScope="col"/>
-				<display:column title="File" property="downloadURL" headerScope="col"/>
-				<display:column title="Created Date"
-					property="domain.createdDate"	format="{0,date,MM-dd-yyyy}" headerScope="col"/>
-			</display:table>
-		</td>
-	</tr>
-</table>
-
+<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
+<display:table name="protocols" id="protocol"
+	requestURI="searchProtocol.do" pagesize="25" class="displaytable"
+	decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
+	<c:if test="${!empty user}">
+		<display:column title="" property="detailURL" />
+	</c:if>
+	<display:column title="Protocol Type" property="domain.type"
+		sortable="true" escapeXml="true" headerScope="col" />
+	<display:column title="Protocol Name" property="viewName"
+		style="width: 20%" sortable="true" escapeXml="true" headerScope="col" />
+	<display:column title="Protocol <br> Abbreviation"
+		property="domain.abbreviation" sortable="true" escapeXml="true"
+		headerScope="col" />
+	<display:column title="Version" property="domain.version"
+		sortable="true" escapeXml="true" headerScope="col" />
+	<display:column title="Protocol File" style="width: 25%"
+		property="fileInfo" sortable="true" headerScope="col" />
+	<display:column title="Created Date" property="domain.createdDate"
+		sortable="true" format="{0,date,MM-dd-hh:mm:ss-yyyy}"
+		headerScope="col" />
+</display:table>
