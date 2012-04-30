@@ -160,8 +160,14 @@ function fillPubMedInfo() {
 			.getExistingPubMedPublication(
 					pubMedId,
 					function(data) {
+						//user doesn't have have access to update the publication
+						if (data !== null && data == "no access") {
+							alert("The publication already exists in the database but you don't access to update it.");
+							hideCursor();
+							clearPublication();
+						}
 						// has existing database publication
-						if (data !== null) {
+						else if (data !== null) {
 							var confirmMessage = "A database record with the same PubMed ID already exists.  Load saved information?";
 							if (confirm(confirmMessage)) {
 								// reload the page
@@ -219,8 +225,14 @@ function updateWithExistingDOI() {
 			.getExistingDOIPublication(
 					doi,
 					function(data) {
+						//user doesn't have have access to update the publication
+						if (data !== null && data == "no access") {
+							alert("The publication already exists in the database but you don't access to update it.");
+							hideCursor();
+							clearPublication();
+						}
 						// has existing database publication
-						if (data !== null) {
+						else if (data !== null) {
 							var confirmMessage = "A database record with the same DOI already exists.  Load saved information?";
 							if (confirm(confirmMessage)) {
 								// reload the page
@@ -228,6 +240,9 @@ function updateWithExistingDOI() {
 							} else {
 								hideCursor();
 							}
+						}
+						else {
+							hideCursor();
 						}
 					});
 
@@ -254,8 +269,14 @@ function updateWithExistingNonPubMedDOIPublication(uri) {
 						title,
 						firstAuthor,
 						function(data) {
+							//user doesn't have have access to update the publication
+							if (data !== null && data == "no access") {
+								alert("The publication already exists in the database but you don't access to update it.");
+								hideCursor();
+								clearPublication();
+							}
 							// has existing database publication
-							if (data !== null) {
+							else if (data !== null) {
 								var confirmMessage = "A database record with the same publication type, title and first author already exists.  Load saved information?";
 								if (confirm(confirmMessage)) {
 									// reload the page

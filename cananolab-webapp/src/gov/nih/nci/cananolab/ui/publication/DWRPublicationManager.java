@@ -95,6 +95,7 @@ public class DWRPublicationManager {
 		} catch (NoAccessException ne) {
 			logger.info("User can't access the publication with Pub Med ID "
 					+ pubmedID);
+			publicationId="no access";
 		} catch (Exception e) {
 			logger.info("Error in retrieving publication with Pub Med ID "
 					+ pubmedID);
@@ -112,6 +113,7 @@ public class DWRPublicationManager {
 			}
 		} catch (NoAccessException ne) {
 			logger.info("User can't access the publication with DOI " + doi);
+			publicationId="no access";
 		} catch (Exception e) {
 			logger.info("Error in retrieving publication with DOI " + doi);
 		}
@@ -138,6 +140,7 @@ public class DWRPublicationManager {
 			}
 		} catch (NoAccessException ne) {
 			logger.info("User can't access the publication");
+			publicationId="no access";
 		} catch (Exception e) {
 			logger.info("Error in retrieving publication");
 		}
