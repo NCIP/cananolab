@@ -20,7 +20,7 @@
 			Created Date
 		</th>
 		<td>
-			<bean:write name="sampleForm" property="sampleBean.domain.createdDate" />
+			<bean:write name="sampleForm" property="sampleBean.domain.createdDate" format="MM-dd-yyyy"/>
 		</td>
 	</tr>
 	
