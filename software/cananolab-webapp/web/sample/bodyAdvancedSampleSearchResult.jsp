@@ -71,7 +71,7 @@
 					<display:column title="${entry.key}" sortable="true" headerScope="col">
 						<c:forEach var="item" items="${entry.value}" varStatus="ind2">
 							<c:if test="${!empty item.displayName}">
-						    <c:out value="${item.displayName}"/>&nbsp;
+						    <c:out value="${item.displayName}" escapeXml="false"/>&nbsp;
 						 	<div id="details${sample.sampleId}:${ind1.count}:${ind2.count}"
 									style="position: relative">
 									<%--<a href="${item.action}" target="detailView">View Details</a>--%>
