@@ -31,6 +31,6 @@
 	<display:column title="Protocol File" style="width: 25%"
 		property="fileInfo" sortable="true" headerScope="col" />
 	<display:column title="Created Date" property="domain.createdDate"
-		sortable="true" format="{0,date,MM-dd-hh:mm:ss-yyyy}"
+		sortable="true" format="{0,date,MM-dd-yyyy}"
 		headerScope="col" />
 </display:table>
