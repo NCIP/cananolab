@@ -46,6 +46,7 @@
 			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
 			<filter token="ADMIN_EMAIL" value="${admin.email}" />
 			<filter token="ONLINE_HELP_URL" value="${online.help.url}"/>
+			<filter token="USE_LDAP" value="${ldap.authentication.enabled}"/>
 		</filterset>
 	</target>
 
