@@ -80,7 +80,6 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		List<String> sampleIds = new ArrayList<String>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		List results = new ArrayList();
 		// AND or all empty
 		if (searchBean.getLogicalOperator().equals("and")
 				|| searchBean.getSampleQueries().isEmpty()
@@ -92,7 +91,11 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			setSampleCriteria(searchBean, crit);
 			setCompositionCriteria(searchBean, crit);
 			setCharacterizationCriteria(searchBean, crit);
-			results = appService.query(crit);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				String sampleId = obj.toString();
+				sampleIds.add(sampleId);
+			}
 		}
 		// OR union the results
 		else {
@@ -103,7 +106,11 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						"rootCrit").setProjection(
 						Projections.distinct(Property.forName("id")));
 				setSampleCriteria(searchBean, crit);
-				results = appService.query(crit);
+				List results = appService.query(crit);
+				for (Object obj : results) {
+					String sampleId = obj.toString();
+					sampleIds.add(sampleId);
+				}
 			}
 			// composition
 			if (!searchBean.getCompositionQueries().isEmpty()) {
@@ -111,7 +118,11 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						"rootCrit").setProjection(
 						Projections.distinct(Property.forName("id")));
 				setCompositionCriteria(searchBean, crit);
-				results.addAll(appService.query(crit));
+				List results=appService.query(crit);
+				for (Object obj : results) {
+					String sampleId = obj.toString();
+					sampleIds.add(sampleId);
+				}
 			}
 			if (!searchBean.getCharacterizationQueries().isEmpty()) {
 				// characterization
@@ -119,22 +130,27 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 						"rootCrit").setProjection(
 						Projections.distinct(Property.forName("id")));
 				setCharacterizationCriteria(searchBean, crit);
-				results.addAll(appService.query(crit));
+				List results=appService.query(crit);
+				for (Object obj : results) {
+					String sampleId = obj.toString();
+					sampleIds.add(sampleId);
+				}
 			}
 		}
-		for (Object obj : results) {
-			String sampleId = obj.toString();
-			// remove redundancy
-			if (!sampleIds.contains(sampleId)
+		
+		//filter out redundant ones and non-accessible ones
+		List<String>filteredSampleIds=new ArrayList<String>();
+		for (String sampleId: sampleIds) {
+			if (!filteredSampleIds.contains(sampleId)
 					&& StringUtils.containsIgnoreCase(getAccessibleData(),
 							sampleId)) {
-				sampleIds.add(sampleId);
+				filteredSampleIds.add(sampleId);
 			} else { // ignore no access exception
 				logger.debug("User doesn't have access to sample with id "
 						+ sampleId);
 			}
 		}
-		return sampleIds;
+		return filteredSampleIds;
 	}
 
 	/**
