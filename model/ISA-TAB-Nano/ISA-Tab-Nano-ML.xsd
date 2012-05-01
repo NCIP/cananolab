@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="ISA-TAB-Nano-ML" type="ISA-TAB-Nano-ML"/>
+	<xs:complexType name="ISA-TAB-Nano-ML">
+		<xs:sequence>
+			<xs:element name="InvestigationFile" type="InvestigationFile" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="StudyFile" type="StudyFile" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="MaterialFile" type="MaterialFile" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="AssayFile" type="AssayFile" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="identifier" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:element name="InvestigationFile" type="InvestigationFile"/>
+	<xs:complexType name="InvestigationFile">
+		<xs:sequence>
+			<xs:element name="OntologySourceReference" type="OntologySourceReference" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Investigation" type="Investigation" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Study" type="Study" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="StudyFile" type="StudyFile"/>
+	<xs:complexType name="StudyFile">
+		<xs:sequence>
+			<xs:element name="SampleSource" type="SampleSource" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MaterialFile" type="MaterialFile"/>
+	<xs:complexType name="MaterialFile">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="version" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Material" type="Material" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AssayFile" type="AssayFile"/>
+	<xs:complexType name="AssayFile">
+		<xs:sequence>
+			<xs:element name="AssayName" type="AssayName" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Investigation" type="Investigation"/>
+	<xs:complexType name="Investigation">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="outcome" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="publicReleaseDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="submissionDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Publication" type="Publication" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Contact" type="Contact" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Disease" type="Disease" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="identifier" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:element name="OntologySourceReference" type="OntologySourceReference"/>
+	<xs:complexType name="OntologySourceReference">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="fileUri" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="version" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Study" type="Study"/>
+	<xs:complexType name="Study">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="fileDescription" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="fileName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="identifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="publicReleaseDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="studyOutcome" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="submissionDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Assay" type="Assay" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Publication" type="Publication" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Protocol" type="Protocol" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Factor" type="Factor" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Contact" type="Contact" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Disease" type="Disease" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="DesignDescriptor" type="DesignDescriptor" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Publication" type="Publication"/>
+	<xs:complexType name="Publication">
+		<xs:sequence>
+			<xs:element name="doi" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="pubMedId" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="status" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="statusTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Author" type="Author" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Assay" type="Assay"/>
+	<xs:complexType name="Assay">
+		<xs:sequence>
+			<xs:element name="fileName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Measurement" type="Measurement" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Technology" type="Technology" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Factor" type="Factor"/>
+	<xs:complexType name="Factor">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Protocol" type="Protocol"/>
+	<xs:complexType name="Protocol">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="uri" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="version" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Parameter" type="Parameter" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Component" type="Component" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Contact" type="Contact"/>
+	<xs:complexType name="Contact">
+		<xs:sequence>
+			<xs:element name="address" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="affiliation" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="email" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="fax" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="firstName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="lastName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="middleInitials" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="phone" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="PersonRole" type="PersonRole" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>	
+	<xs:element name="TermReference" type="TermReference"/>
+	<xs:complexType name="TermReference">
+		<xs:sequence>
+			<xs:element name="accessionNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="sourceReference" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Disease" type="Disease"/>
+	<xs:complexType name="Disease">
+		<xs:sequence>
+			<xs:element name="termReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Measurement" type="Measurement"/>
+	<xs:complexType name="Measurement">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Technology" type="Technology"/>
+	<xs:complexType name="Technology">
+		<xs:sequence>
+			<xs:element name="platform" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Parameter" type="Parameter"/>
+	<xs:complexType name="Parameter">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DesignDescriptor" type="DesignDescriptor"/>
+	<xs:complexType name="DesignDescriptor">
+		<xs:sequence>
+			<xs:element name="designType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PersonRole" type="PersonRole"/>
+	<xs:complexType name="PersonRole">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Component" type="Component"/>
+	<xs:complexType name="Component">
+		<xs:sequence>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Author" type="Author"/>
+	<xs:complexType name="Author">
+		<xs:sequence>
+			<xs:element name="fullName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SampleSource" type="SampleSource"/>
+	<xs:complexType name="SampleSource">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Characteristics" type="Characteristics" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="MaterialType" type="MaterialType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Sample" type="Sample" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Provider" type="Provider" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="MaterialFileReference" type="MaterialFileReference" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Characteristics" type="Characteristics"/>
+	<xs:complexType name="Characteristics">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nameTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unit" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unitTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="valueTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MaterialType" type="MaterialType"/>
+	<xs:complexType name="MaterialType">
+		<xs:sequence>
+			<xs:element name="termReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Sample" type="Sample"/>
+	<xs:complexType name="Sample">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Characteristics" type="Characteristics" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="MaterialType" type="MaterialType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ProtocolReference" type="ProtocolReference" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="FactorValue" type="FactorValue" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="MaterialFileReference" type="MaterialFileReference" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="MeasurementValue" type="MeasurementValue" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Provider" type="Provider"/>
+	<xs:complexType name="Provider">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="sdtmStudyId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Comment" type="Comment"/>
+	<xs:complexType name="Comment">
+		<xs:sequence>
+			<xs:element name="category" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="text" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ProtocolReference" type="ProtocolReference"/>
+	<xs:complexType name="ProtocolReference">
+		<xs:sequence>
+			<xs:element name="performedDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="performer" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="protocolName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ParameterValue" type="ParameterValue" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ParameterValue" type="ParameterValue"/>
+	<xs:complexType name="ParameterValue">
+		<xs:sequence>
+			<xs:element name="parameterName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unit" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unitTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="FactorValue" type="FactorValue"/>
+	<xs:complexType name="FactorValue">
+		<xs:sequence>
+			<xs:element name="factorName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unit" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unitTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MaterialFileReference" type="MaterialFileReference"/>
+	<xs:complexType name="MaterialFileReference">
+		<xs:sequence>
+			<xs:element name="fileUri" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SourceName" type="SourceName"/>
+	<xs:complexType name="SourceName">
+		<xs:sequence>
+			<xs:element name="Sample" type="Sample" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MeasurementValue" type="MeasurementValue"/>
+	<xs:complexType name="MeasurementValue">
+		<xs:sequence>
+			<xs:element name="measurementName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="statistics" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="statisticsTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unit" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="unitTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="AssayName" type="AssayName"/>
+	<xs:complexType name="AssayName">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="performedDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="performer" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="SourceName" type="SourceName" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Sample" type="Sample" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ImageFileReference" type="ImageFileReference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="DataTransformation" type="DataTransformation" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RawDataFileReference" type="RawDataFileReference" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ImageFileReference" type="ImageFileReference"/>
+	<xs:complexType name="ImageFileReference">
+		<xs:sequence>
+			<xs:element name="fileUri" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DataTransformation" type="DataTransformation"/>
+	<xs:complexType name="DataTransformation">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="performedDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="performer" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="DerivedDataFileReference" type="DerivedDataFileReference" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ProtocolReference" type="ProtocolReference" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DerivedDataFileReference" type="DerivedDataFileReference"/>
+	<xs:complexType name="DerivedDataFileReference">
+		<xs:sequence>
+			<xs:element name="fileUri" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RawDataFileReference" type="RawDataFileReference"/>
+	<xs:complexType name="RawDataFileReference">
+		<xs:sequence>
+			<xs:element name="fileUri" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Comment" type="Comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Material" type="Material"/>
+	<xs:complexType name="Material">
+		<xs:sequence>
+			<xs:element name="chemicalName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="chemicalNameTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="designRationale" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="designRationaleTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="intendedApplication" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="intendedApplicationTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="sourceIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="synthesis" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="MaterialType" type="MaterialType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="Characteristics" type="Characteristics" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="MaterialLinkage" type="MaterialLinkage" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="MaterialComposition" type="MaterialComposition" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MaterialLinkage" type="MaterialLinkage"/>
+	<xs:complexType name="MaterialLinkage">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="typeTermReference" type="TermReference" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MaterialComposition" type="MaterialComposition"/>
+	<xs:complexType name="MaterialComposition">
+		<xs:sequence/>
+	</xs:complexType>
+</xs:schema>
