@@ -344,8 +344,15 @@
 					<accessionNumber>String</accessionNumber>
 					<sourceReference>String</sourceReference>
 				</typeTermReference>
+				<MaterialPart>
+					<name>String</name>
+				</MaterialPart>
 			</MaterialLinkage>
-			<MaterialComposition/>
+			<MaterialComposition>
+				<MaterialPart>
+					<name>String</name>
+				</MaterialPart>
+			</MaterialComposition>
 		</Material>
 	</MaterialFile>
 	<AssayFile>
