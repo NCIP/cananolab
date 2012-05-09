@@ -338,21 +338,16 @@
 				</valueTermReference>
 			</Characteristics>
 			<MaterialLinkage>
-				<name>String</name>
+				<materialName>String</materialName>
 				<type>String</type>
 				<typeTermReference>
 					<accessionNumber>String</accessionNumber>
 					<sourceReference>String</sourceReference>
 				</typeTermReference>
-				<MaterialPart>
-					<name>String</name>
-				</MaterialPart>
 			</MaterialLinkage>
-			<MaterialComposition>
-				<MaterialPart>
-					<name>String</name>
-				</MaterialPart>
-			</MaterialComposition>
+			<MaterialConstituent>
+				<name>String</name>
+			</MaterialConstituent>
 		</Material>
 	</MaterialFile>
 	<AssayFile>
