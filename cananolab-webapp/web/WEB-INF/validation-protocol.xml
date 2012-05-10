@@ -52,6 +52,9 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
+			<field property="protocol.fileBean.externalUrl" page="1" depends="url">
+				<arg position="0" key="protocol.externalUrl" bundle="protocol"/>
+			</field>
 			<field property="protocol.fileBean.domainFile.uri" page="1"
 				depends="mask">
 				<msg name="mask" key="file.uri.invalid" />
