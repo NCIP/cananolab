@@ -127,11 +127,11 @@
     keycode = FindKeyCode(e);
     if((keycode==8)||(keycode==127))
     {
-    character="backspace"
+    character="backspace";
     }
     else if((keycode==46))
     {
-    character="delete"
+    character="delete";
     }
     else
     {
