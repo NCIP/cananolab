@@ -8,7 +8,6 @@ function setTheCollaborationGroup(groupId) {
 			populateCollaborationGroup);
 	show("deleteCollaborationGroup");
 	hide("newCollaborationGroupLabel");
-	document.getElementById("")
 	openSubmissionForm("CollaborationGroup");
 	// Feature request [26487] Deeper Edit Links.
 	// window.setTimeout("openOneUserAccess()", 500);
