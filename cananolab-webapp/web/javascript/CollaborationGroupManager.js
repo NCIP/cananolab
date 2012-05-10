@@ -181,7 +181,7 @@ function showMatchedUserDropdown() {
 	var selected = dwr.util.getValue("matchedUserNameSelect");
 	var loginName = dwr.util.getValue("userBean.loginName");
 	if (currentGroup.ownerName == null) {
-		ownerName = ""
+		ownerName = "";
 	} else {
 		ownerName = currentGroup.ownerName;
 	}
