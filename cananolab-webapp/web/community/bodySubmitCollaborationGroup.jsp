@@ -35,14 +35,14 @@
 			<div id="userSection">
 				<a style="display:block" id="addUser" href="javascript:show('newUser');clearUserAccess();">Add</a>
 				<br />
-				<table id="userTable" class="editTableWithGrid" width="70%"
+				<table id="userTable" class="editTableWithGrid" width="95%"
 					style="display: none;">
 					<tbody id="userRows">
 						<tr id="patternHeader">
-							<td width="30%" class="cellLabel" scope="col">
+							<td width="40%" class="cellLabel" scope="col">
 								Login Name
 							</td>
-							<td width="30%" class="cellLabel" scope="col">
+							<td class="cellLabel" scope="col">
 								Access to the Group
 							</td>
 							<td>
@@ -71,22 +71,22 @@
 		</td>
 		<td>
 			<div id="newUser" style="display: none">
-				<table class="promptbox" width="85%" summary="layout">
+				<table class="promptbox" width="95%" summary="layout" border="10">
 					<tr>
 						<td class="cellLabel" width="30%">
-							<label for="userBean.loginName">User Login Name *</label>
+							<label for="userBean.loginName">User Login Name*</label>
+						</td>
+						<td width="30%">
+							<html:text property="group.theAccess.userBean.loginName"
+								styleId="userBean.loginName"/>
 						</td>
 						<td>
-							<html:text property="group.theAccess.userBean.loginName"
-								styleId="userBean.loginName" onchange=""/>
-						</td>
-						<td width="5">
 									<a href="#userNameField"
 										onclick="javascript:showMatchedUserDropdown()"><img
 											src="images/icon_browse.jpg" align="middle"
 											alt="search existing users" border="0" /></a>
 						</td>
-						<td width="50%">
+						<td>
 							<table class="invisibleTable" summary="layout">
 								<tr>
 									<td>
@@ -105,10 +105,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="cellLabel" width="30%">
-							<label for="roleName">Access to the Group *</label>
+						<td class="cellLabel">
+							<label for="roleName">Access to the Group*</label>
 						</td>
-						<td colspan="2">
+						<td colspan="3">
 								<html:select property="group.theAccess.roleDisplayName"
 								styleId="roleName" onchange="">
 								<option></option>
