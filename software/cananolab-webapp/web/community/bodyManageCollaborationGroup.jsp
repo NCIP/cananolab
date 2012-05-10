@@ -23,10 +23,9 @@
 	<table width="100%" align="center" class="submissionView">
 		<c:if test="${!empty existingCollaborationGroups}">
 			<tr>
-				<td class="cellLabel" width="25%">
+				<td class="cellLabel" colspan="2">
 					Existing Collaboration Groups
 				</td>
-				<td></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -81,10 +80,10 @@
 		</c:if>
 		<tr>
 			<td class="cellLabel" id="newCollaborationGroupLabel"
-				style="display: block" width="25%">
+				style="display: block">
 				New Collaboration Group
 			</td>
-			<td>
+			<td width="80%">
 				<c:set var="newAddCGButtonStyle" value="display:block" />
 				<a href="#"
 					onclick="javascript:clearCollaborationGroup();openSubmissionForm('CollaborationGroup');"
