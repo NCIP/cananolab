@@ -34,8 +34,10 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="publication.domainFile.uri"
-				page="1" depends="mask">
+			<field property="publication.externalUrl" page="1" depends="url">
+				<arg position="0" key="publication.externalUrl" bundle="publication"/>
+			</field>
+			<field property="publication.domainFile.uri" page="1" depends="mask">
 				<msg name="mask" key="file.uri.invalid" />
 				<var>
 					<var-name>mask</var-name>

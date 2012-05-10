@@ -37,10 +37,6 @@
 			<constant-value>^\+?[0-9()\-\s]*((ext\.|extension)\s[0-9]+)?$</constant-value>
 		</constant>
 		<constant>
-			<constant-name>email</constant-name>
-			<constant-value>^[a-zA-Z0-9\-\_\:\.]+@[a-zA-Z0-9\-\_\:\.]+\.[a-zA-Z]{2,3}$</constant-value>
-		</constant>
-		<constant>
 			<constant-name>textFieldWhiteList</constant-name>
 			<constant-value>^(?!.*(&lt;script|&lt;%00script|\%3C\%73\%63\%72\%69\%70\%74|&#x3C;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;|&#60;&#115;&#99;&#114;&#105;&#112;&#116;|&#60;&#37;&#48;&#48;&#115;&#99;&#114;&#105;&#112;&#116;|\%uff1cscript\%uff1e|\%BC\%F3\%E3\%F2\%E9\%F0\%F4|\+ADw\-SCRIPT\+AD4|\\u003Cscript|javascript\:|\%6A\%61\%76\%61\%73\%63%\%72\%69\%70\%74\%3A|&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3a;|&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;|&lt;iframe|&lt;frame|etc/passwd|/bin/id|\.ini|;vol\||id\||AVAK\$\(RETURN_CODE\)OS|sys\.dba_user|\+select\+|\+and\+|WFXSSProbe|WF_XSRF|alert\(|TEXT/VBSCRIPT|="|\.\./|\.\.\\|\\'|\\\"|background\:|\'\+|\"\+|%\d+)).*$			
 			</constant-value>
@@ -65,10 +61,6 @@
 		<constant>
 			<constant-name>doi</constant-name>
 			<constant-value>^[a-zA-Z0-9\/\-\_\s\(\)\:\.]*$</constant-value>
-		</constant>
-		<constant>
-			<constant-name>url</constant-name>
-			<constant-value>^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$</constant-value>
 		</constant>
 		<constant>
 			<constant-name>number</constant-name>
@@ -110,13 +102,8 @@
 					<var-value>${alphabetic}</var-value>
 				</var>
 			</field>
-			<field property="email" depends="required,mask">
+			<field property="email" depends="required,email">
 				<arg position="0" key="registerUserForm.email" />
-				<msg name="mask" key="email.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${email}</var-value>
-				</var>
 			</field>
 			<field property="phone" depends="required, mask">
 				<arg position="0" key="registerUserForm.phone" />

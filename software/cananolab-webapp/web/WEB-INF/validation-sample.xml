@@ -143,12 +143,8 @@
 				</var>
 			</field>
 			<field property="sampleBean.thePOC.domain.email" page="3"
-				depends="mask">
-				<msg name="mask" key="email.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${email}</var-value>
-				</var>
+				depends="email">
+				<arg position="0" key="email" bundle="sample" />
 			</field>
 			<field property="sampleBean.theAccess.accessBy" page="4"
 				depends="required">
@@ -256,7 +252,7 @@
 				</var>
 			</field>
 			<field property="assoc.theFile.externalUrl" page="3"
-				depends="validwhen, mask">
+				depends="validwhen, url">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -265,11 +261,6 @@
 						(assoc.theFile.domainFile.uriExternal=="true")) or
 						(assoc.theFile.domainFile.uriExternal=="false"))
 					</var-value>
-				</var>
-				<msg name="mask" key="externalUrl.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${url}</var-value>
 				</var>
 			</field>
 			<field property="assoc.theFile.domainFile.type" page="3"
@@ -290,8 +281,8 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="assoc.theFile.domainFile.uri"
-				page="3" depends="mask">
+			<field property="assoc.theFile.domainFile.uri" page="3"
+				depends="mask">
 				<msg name="mask" key="file.uri.invalid" />
 				<var>
 					<var-name>mask</var-name>
@@ -439,9 +430,9 @@
 					<var-name>mask</var-name>
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
-			</field>			
-			<field property="nanomaterialEntity.theFile.uploadedFile"
-				page="3" depends="validwhen">
+			</field>
+			<field property="nanomaterialEntity.theFile.uploadedFile" page="3"
+				depends="validwhen">
 				<arg position="0" key="uploadedFile" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -455,8 +446,8 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="nanomaterialEntity.theFile.externalUrl"
-				page="3" depends="validwhen, mask">
+			<field property="nanomaterialEntity.theFile.externalUrl" page="3"
+				depends="validwhen, url">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -465,12 +456,7 @@
 						(nanomaterialEntity.theFile.domainFile.uriExternal=="true")) or
 						(nanomaterialEntity.theFile.domainFile.uriExternal=="false"))
 					</var-value>
-				</var>
-				<msg name="mask" key="externalUrl.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${url}</var-value>
-				</var>
+				</var>				
 			</field>
 			<field property="nanomaterialEntity.theFile.domainFile.type"
 				page="3" depends="required, mask">
@@ -497,7 +483,7 @@
 					<var-name>mask</var-name>
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
-			</field>			
+			</field>
 		</form>
 		<form name="/functionalizingEntity">
 			<field property="functionalizingEntity.type" page="1"
@@ -518,8 +504,8 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="functionalizingEntity.domainEntity.pubChemId" page="1"
-				depends="mask">
+			<field property="functionalizingEntity.domainEntity.pubChemId"
+				page="1" depends="mask">
 				<msg name="mask" key="functionalizingEntity.pubChemId.invalid" />
 				<var>
 					<var-name>mask</var-name>
@@ -607,7 +593,7 @@
 				</var>
 			</field>
 			<field property="functionalizingEntity.theFile.externalUrl"
-				page="3" depends="validwhen, mask">
+				page="3" depends="validwhen, url">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -616,11 +602,6 @@
 						(functionalizingEntity.theFile.domainFile.uriExternal=="true")) or
 						(functionalizingEntity.theFile.domainFile.uriExternal=="false"))
 					</var-value>
-				</var>
-				<msg name="mask" key="externalUrl.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${url}</var-value>
 				</var>
 			</field>
 			<field property="functionalizingEntity.theFile.domainFile.type"
@@ -665,7 +646,7 @@
 				</var>
 			</field>
 			<field property="comp.theFile.externalUrl" page="1"
-				depends="validwhen, mask">
+				depends="validwhen, url">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -674,12 +655,7 @@
 						(comp.theFile.domainFile.uriExternal=="true")) or
 						(comp.theFile.domainFile.uriExternal=="false"))
 					</var-value>
-				</var>
-				<msg name="mask" key="externalUrl.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${url}</var-value>
-				</var>
+				</var>				
 			</field>
 			<field property="comp.theFile.domainFile.title" page="1"
 				depends="required,mask">
@@ -699,8 +675,7 @@
 					<var-value>${textFieldWhiteList}</var-value>
 				</var>
 			</field>
-			<field property="comp.theFile.domainFile.uri"
-				page="1" depends="mask">
+			<field property="comp.theFile.domainFile.uri" page="1" depends="mask">
 				<msg name="mask" key="file.uri.invalid" />
 				<var>
 					<var-name>mask</var-name>
@@ -754,9 +729,7 @@
 					<var-value>MM/dd/yyyy</var-value>
 				</var>
 			</field>
-			<!--
-				1.Mandatory properties: Shape Type required if Char Name is Shape
-			-->
+			<!-- 1.Mandatory properties: Shape Type required if Char Name is Shape -->
 			<field property="achar.shape.type" page="1" depends="validwhen">
 				<arg position="0" key="shape.type" bundle="sample" />
 				<var>
@@ -844,7 +817,7 @@
 				</var>
 			</field>
 			<field property="achar.theFinding.theFile.externalUrl" page="3"
-				depends="validwhen, mask">
+				depends="validwhen, url">
 				<arg position="0" key="externalUrl" bundle="sample" />
 				<var>
 					<var-name>test</var-name>
@@ -854,11 +827,6 @@
 						(achar.theFinding.theFile.domainFile.uriExternal=="true")) or
 						(achar.theFinding.theFile.domainFile.uriExternal=="false")))
 					</var-value>
-				</var>
-				<msg name="mask" key="externalUrl.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>${url}</var-value>
 				</var>
 			</field>
 			<field property="achar.theFinding.theFile.domainFile.type"
