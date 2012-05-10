@@ -21,7 +21,7 @@ function checkVersion()
   if ( ver > -1 )
   {
     if ( ver >= 8.0 )
-      msg = "You're using a recent copy of Internet Explorer."
+      msg = "You're using a recent copy of Internet Explorer.";
     else
       msg = "You should upgrade your copy of Internet Explorer.";
   }
