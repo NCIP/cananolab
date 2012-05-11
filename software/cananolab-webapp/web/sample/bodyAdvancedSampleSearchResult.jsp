@@ -27,6 +27,13 @@
 	<jsp:param name="exportLink" value="${exportUrl}" />
 
 </jsp:include>
+
+<%--add dispatch when it's missing after coming back from sample summary page --%>
+<c:set var="requestURI" value="advancedSampleSearch.do" />
+<c:if test="${empty param.dispatch}">
+	<c:set var="requestURI" value="advancedSampleSearch.do?dispatch=search" />
+</c:if>
+
 <table width="100%" align="center">
 	<tr>
 		<td colspan="2">
@@ -60,9 +67,9 @@
 				</tr>
 			</table>
 			<br />
-			<display:table name="advancedSamples" id="sample"
-				requestURI="advancedSampleSearch.do" pagesize="25"
-				class="displaytable" partialList="true" size="resultSize"
+			<display:table name="sessionScope.advancedSamples" id="sample"
+				requestURI="${requestURI}" pagesize="25"
+				class="displaytable" partialList="true" size="sessionScope.resultSize"
 				decorator="gov.nih.nci.cananolab.dto.particle.AdvancedSampleDecorator">
 				<display:column title="Sample Name" property="${sampleURL}"
 					sortable="true" headerScope="col"/>
