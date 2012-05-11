@@ -8,6 +8,8 @@
 		value="Sample ${sampleForm.map.sampleBean.domain.name}" />
 	<jsp:param name="topic" value="submit_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
+	<jsp:param name="other" value="Back"/>
+	<jsp:param name="otherLink" value="javascript:gotoPage('sampleResult.do')"/>
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
 

@@ -9,16 +9,27 @@
 <script type="text/javascript"
 	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
-<c:set var="title" value="Submit" />
-<c:if test="${!empty updateSample}">
-	<c:set var="title" value="Update" />
-</c:if>
-
-<jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="${title} Sample" />
-	<jsp:param name="topic" value="submit_sample_help" />
-	<jsp:param name="glossaryTopic" value="glossary_help" />
-</jsp:include>
+<c:choose>
+	<c:when test="${!empty updateSample}">
+		<c:set var="title" value="Update" />
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="${title} Sample" />
+			<jsp:param name="topic" value="submit_sample_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+			<jsp:param name="other" value="Back" />
+			<jsp:param name="otherLink"
+				value="javascript:gotoPage('sampleResults.do')" />
+		</jsp:include>
+	</c:when>
+	<c:otherwise>
+	        <c:set var="title" value="Submit" />
+			<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="${title} Sample" />
+			<jsp:param name="topic" value="submit_sample_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+		</jsp:include>
+	</c:otherwise>
+</c:choose>
 <html:form action="/sample"
 	onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');" styleId="sampleForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />

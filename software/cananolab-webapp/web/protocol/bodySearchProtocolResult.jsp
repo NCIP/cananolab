@@ -13,8 +13,16 @@
 	<jsp:param name="otherLink" value="searchProtocol.do?dispatch=setup" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-<display:table name="protocols" id="protocol"
-	requestURI="searchProtocol.do" pagesize="25" class="displaytable"
+
+<%--add dispatch when it's missing after coming back from sample summary page --%>
+<c:set var="requestURI" value="searchProtocol.do" />
+<c:if test="${empty param.dispatch}">
+	<c:set var="requestURI" value="searchProtocol.do?dispatch=search" />
+</c:if>
+
+<display:table name="sessionScope.protocols" id="protocol"
+	requestURI="${requestURI}" pagesize="25" class="displaytable"
+	size="sessionScope.resultSize" partialList="true"
 	decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
 	<c:if test="${!empty user}">
 		<display:column title="" property="detailURL" />
@@ -31,6 +39,5 @@
 	<display:column title="Protocol File" style="width: 25%"
 		property="fileInfo" sortable="true" headerScope="col" />
 	<display:column title="Created Date" property="domain.createdDate"
-		sortable="true" format="{0,date,MM-dd-yyyy}"
-		headerScope="col" />
+		sortable="true" format="{0,date,MM-dd-yyyy}" headerScope="col" />
 </display:table>
