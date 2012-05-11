@@ -73,14 +73,14 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		if (user != null) {
 			loadUserAccess(request, pubBeansPerPage);
 		}
-		request.setAttribute("publications", pubBeansPerPage);
+		//set in sessionScope so user can go back to the result from the sample summary page
+		request.getSession().setAttribute("publications", pubBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
-		request
+		//set in sessionScope so user can go back to the result from the sample summary page
+		request.getSession()
 				.setAttribute("resultSize",
 						new Integer(publicationBeans.size()));
-		// allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control", "private");
 		return mapping.findForward("success");
 	}
 

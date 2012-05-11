@@ -57,8 +57,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		// retrieve from session if it's not null and not first page
 		if (session.getAttribute("sampleSearchResults") != null
 				&& displayPage > 0) {
-			sampleBeans = new ArrayList<SampleBean>((List) session
-					.getAttribute("sampleSearchResults"));
+			sampleBeans = new ArrayList<SampleBean>(
+					(List) session.getAttribute("sampleSearchResults"));
 		} else {
 			sampleBeans = querySamples(form, request);
 			if (sampleBeans != null && !sampleBeans.isEmpty()) {
@@ -68,7 +68,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 				ActionMessage msg = new ActionMessage(
 						"message.searchSample.noresult");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveMessages(request, msgs);
+				saveMessages(request, msgs);				
 				return mapping.getInputForward();
 			}
 		}
@@ -91,13 +91,14 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		if (user != null) {
 			loadUserAccess(request, sampleBeansPerPage);
 		}
-		request.setAttribute("samples", sampleBeansPerPage);
+		//set in sessionScope so user can go back to the result from the sample summary page
+		request.getSession().setAttribute("samples", sampleBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
-		request.setAttribute("resultSize", new Integer(sampleBeans.size()));
 
-		// allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control", "private");
+		// set in sessionScope so user can go back to the result from the sample
+		// summary page
+		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
 		return mapping.findForward("success");
 	}
 
@@ -213,15 +214,15 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		SampleService service = service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
 		List<String> sampleIds = service.findSampleIdsBy(sampleName,
-				samplePointOfContact, nanomaterialEntityClassNames
-						.toArray(new String[0]), otherNanomaterialEntityTypes
-						.toArray(new String[0]),
+				samplePointOfContact,
+				nanomaterialEntityClassNames.toArray(new String[0]),
+				otherNanomaterialEntityTypes.toArray(new String[0]),
 				functionalizingEntityClassNames.toArray(new String[0]),
 				otherFunctionalizingTypes.toArray(new String[0]),
-				functionClassNames.toArray(new String[0]), otherFunctionTypes
-						.toArray(new String[0]), charaClassNames
-						.toArray(new String[0]), otherCharacterizationTypes
-						.toArray(new String[0]), words);
+				functionClassNames.toArray(new String[0]),
+				otherFunctionTypes.toArray(new String[0]),
+				charaClassNames.toArray(new String[0]),
+				otherCharacterizationTypes.toArray(new String[0]), words);
 		for (String id : sampleIds) {
 			// empty sampleBean that only has id;
 			SampleBean sampleBean = new SampleBean(id);
