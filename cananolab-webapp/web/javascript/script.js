@@ -437,11 +437,15 @@ function displayFileRadioButton() {
 	if (external0 != null && external1 != null) {
 		show("load");
 		show("uploadedUri");
-		hide("link");
+		hide("link");		
+		//empty link value
+		document.getElementById("externalUrl").value="";
 		if (!external0.checked && external1.checked) {
 			show("link");
 			hide("load");
 			hide("uploadedUri");
+			//empty uploaded file
+			document.getElementById("uploadedFile").value=null;
 		}
 	}
 }
