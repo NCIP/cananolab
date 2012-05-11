@@ -10,16 +10,27 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
-<c:set var="action" value="Submit" scope="request" />
-<c:if test="${param.dispatch eq 'setupUpdate'}">
-	<c:set var="action" value="Update" scope="request" />
-</c:if>
-
-<jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="${action} Protocol" />
-	<jsp:param name="topic" value="submit_protocol_help" />
-	<jsp:param name="glossaryTopic" value="glossary_help" />
-</jsp:include>
+<c:choose>
+	<c:when test="${param.dispatch eq 'setupUpdate'}">
+		<c:set var="action" value="Update" scope="request" />
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="${action} Protocol" />
+			<jsp:param name="topic" value="submit_protocol_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+			<jsp:param name="other" value="Back" />
+			<jsp:param name="otherLink"
+				value="javascript:gotoPage('protocolResults.do')" />
+		</jsp:include>
+	</c:when>
+	<c:otherwise>
+		<c:set var="action" value="Submit" scope="request" />
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="${action} Protocol" />
+			<jsp:param name="topic" value="submit_protocol_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+		</jsp:include>
+	</c:otherwise>
+</c:choose>
 <html:form action="/protocol" enctype="multipart/form-data" styleId="protocolForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 	<table width="100%" align="center" class="submissionView" summary="layout">

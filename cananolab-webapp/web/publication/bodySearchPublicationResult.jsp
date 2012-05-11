@@ -11,9 +11,17 @@
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=publication" />
-<display:table name="publications" id="publication"
-	requestURI="searchPublication.do" pagesize="25" class="displaytable"
-	partialList="true" size="resultSize"
+
+
+<%--add dispatch when it's missing after coming back from sample summary page --%>
+<c:set var="requestURI" value="searchPublication.do" />
+<c:if test="${empty param.dispatch}">
+	<c:set var="requestURI" value="searchPublication.do?dispatch=search" />
+</c:if>
+
+<display:table name="sessionScope.publications" id="publication"
+	requestURI="${requestURI}" pagesize="25" class="displaytable"
+	partialList="true" size="sessionScope.resultSize"
 	decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
 	<c:if test="${!empty user}">
 		<display:column title="" property="detailURL" />

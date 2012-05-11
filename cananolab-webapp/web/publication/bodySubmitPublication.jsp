@@ -16,16 +16,28 @@
 <c:if test="${!empty param.sampleId}">
 	<c:set var="sampleTitle" value="for ${sampleName}"/>
 </c:if>
-<c:set var="title" value="Submit Publication ${sampleTitle}" />
-<c:if test="${param.dispatch eq 'setupUpdate'}">
-	<c:set var="title" value="Update Publication ${sampleTitle}" />
-</c:if>
+<c:choose>
+	<c:when test="${param.dispatch eq 'setupUpdate'}">
+		<c:set var="title" value="Update Publication ${sampleTitle}" />
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="${title}" />
+			<jsp:param name="topic" value="submit_publication_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+			<jsp:param name="other" value="Back" />
+			<jsp:param name="otherLink"
+				value="javascript:gotoPage('publicationResults.do')" />
+		</jsp:include>
+	</c:when>
+	<c:otherwise>
+		<c:set var="title" value="Submit Publication ${sampleTitle}" />
+		<jsp:include page="/bodyTitle.jsp">
+			<jsp:param name="pageTitle" value="${title}" />
+			<jsp:param name="topic" value="submit_publication_help" />
+			<jsp:param name="glossaryTopic" value="glossary_help" />
+		</jsp:include>
+	</c:otherwise>
+</c:choose>
 
-<jsp:include page="/bodyTitle.jsp">
-	<jsp:param name="pageTitle" value="${title}" />
-	<jsp:param name="topic" value="submit_publication_help" />
-	<jsp:param name="glossaryTopic" value="glossary_help" />
-</jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=publication" />
 <html:form action="/publication" enctype="multipart/form-data"
 	onsubmit="return validateSavingTheData('newAuthor', 'Authors');" styleId="publicationForm">

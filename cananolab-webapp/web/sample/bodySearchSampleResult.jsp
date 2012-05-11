@@ -17,12 +17,18 @@
 	<jsp:param name="otherLink" value="searchSample.do?dispatch=setup" />
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
-<display:table name="samples" id="sample" requestURI="searchSample.do"
-	pagesize="25" class="displaytable" partialList="true" size="resultSize"
+
+<%--add dispatch when it's missing after coming back from sample summary page --%>
+<c:set var="requestURI" value="searchSample.do" />
+<c:if test="${empty param.dispatch}">
+	<c:set var="requestURI" value="searchSample.do?dispatch=search" />
+</c:if>
+
+<display:table name="sessionScope.samples" id="sample" requestURI="${requestURI}"
+	pagesize="25" class="displaytable" partialList="true" size="sessionScope.resultSize"
 	decorator="gov.nih.nci.cananolab.dto.particle.SampleDecorator">
 
 	<display:column title="" property="detailURL" headerScope="col" />
-
 	<display:column title="Sample Name" property="sampleName"
 		sortable="true" escapeXml="true" headerScope="col" />
 	<display:column title="Primary<br>Point Of Contact"
@@ -37,7 +43,7 @@
 	<display:column title="Data Availability" headerScope="col">
 		<c:choose>
 			<c:when test="${sample.dataAvailabilityMetricsScore ==  'N/A' }">${sample.dataAvailabilityMetricsScore}
-						</c:when>
+			</c:when>
 			<c:otherwise>
 				<div id="details${sample.domain.id}" style="position: relative">
 					<a id="detailLink${sample.domain.id}" href="#"
@@ -50,7 +56,8 @@
 						border="0">
 						<tr>
 							<td>
-								<div id="content${sample.domain.id}"></div></td>
+								<div id="content${sample.domain.id}"></div>
+							</td>
 						</tr>
 					</table>
 				</div>
