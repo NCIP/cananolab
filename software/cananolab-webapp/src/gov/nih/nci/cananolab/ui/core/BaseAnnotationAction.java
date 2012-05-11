@@ -592,7 +592,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		session.setAttribute("openAccess", openAccess);
 		session.removeAttribute("accessValid");
 		// in case of validation error still show access label correctly.
-		request.setAttribute("onloadJavascript", "toggleAccessNameLabel();");
+		request.setAttribute("onloadJavascript", "toggleAccessNameLabel()");
 	}
 
 	protected void setSummaryTab(HttpServletRequest request, int numTabs) {

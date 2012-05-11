@@ -171,7 +171,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		this.setLookups(request);
 		request.getSession().setAttribute("onloadJavascript",
-				"setEntityInclude('feType', 'functionalizingEntity');");
+				"setEntityInclude('feType', 'functionalizingEntity')");
 		this.checkOpenForms(entityBean, request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
