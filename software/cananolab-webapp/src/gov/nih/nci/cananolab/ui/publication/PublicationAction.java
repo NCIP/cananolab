@@ -282,7 +282,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory();updateFormFields('"
-						+ publicationId + "');");
+						+ publicationId + "')");
 		setUpSubmitForReviewButton(request, pubBean.getDomainFile().getId()
 				.toString(), pubBean.getPublicStatus());
 		request.getSession().setAttribute("updatePublication", "true");
@@ -533,10 +533,10 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (pub.getPubMedId() != null) {
 			request.setAttribute(
 					"onloadJavascript",
-					"updateSubmitFormBasedOnCategory();disableAutoFields(); toggleAccessNameLabel();");
+					"updateSubmitFormBasedOnCategory();disableAutoFields(); toggleAccessNameLabel()");
 		} else {
 			request.setAttribute("onloadJavascript",
-					"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel();");
+					"updateSubmitFormBasedOnCategory();enableAutoFields();toggleAccessNameLabel()");
 		}
 		return mapping.findForward("publicationSubmitPublication");
 	}
