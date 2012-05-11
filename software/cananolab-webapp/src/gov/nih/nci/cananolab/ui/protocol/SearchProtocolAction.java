@@ -65,12 +65,16 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		if (user != null) {
 			loadUserAccess(request, protocolBeansPerPage);
 		}
-		request.setAttribute("protocols", protocolBeansPerPage);
+		// set in sessionScope so user can go back to the result from the sample
+		// summary page
+		request.getSession().setAttribute("protocols", protocolBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
-		request.setAttribute("resultSize", new Integer(protocolBeans.size()));
-		// allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control", "private");
+		// set in sessionScope so user can go back to the result from the sample
+		// summary page
+		request.getSession().setAttribute("resultSize",
+				new Integer(protocolBeans.size()));
+
 		return mapping.findForward("success");
 	}
 
