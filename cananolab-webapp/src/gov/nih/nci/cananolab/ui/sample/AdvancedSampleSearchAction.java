@@ -73,16 +73,19 @@ public class AdvancedSampleSearchAction extends BaseAnnotationAction {
 		List<AdvancedSampleBean> sampleBeansPerPage = getSamplesPerPage(
 				sampleBeans, displayPage, Constants.DISPLAY_TAG_TABLE_SIZE,
 				request, searchBean);
-		request.setAttribute("advancedSamples", sampleBeansPerPage);
+		// set in sessionScope so user can go back to the result from the sample
+				// summary page
+		request.getSession().setAttribute("advancedSamples", sampleBeansPerPage);
 		// get the total size of collection , required for display tag to
 		// get the pagination to work
-		request.setAttribute("resultSize", Integer
+		
+		// set in sessionScope so user can go back to the result from the sample
+				// summary page
+		request.getSession().setAttribute("resultSize", Integer
 				.valueOf((sampleBeans.size())));
 
 		// save sample result set in session for printing.
 		session.setAttribute("samplesResultList", sampleBeansPerPage);
-		// allow user to go back to the search results via the cache
-		response.setHeader("Cache-Control", "private");
 		return mapping.findForward("success");
 	}
 
