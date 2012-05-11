@@ -68,7 +68,7 @@
 			<forward name="publicationSubmitReport" path="publication.submitReport" />
 			<forward name="sampleSubmitReport" path="sample.submitReport" />
 		</action>
-		<action path="/publicationResults" type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+		<action path="/publicationResults" type="org.apache.struts.actions.ForwardAction"
 			parameter="publication.searchPublicationResult" scope="request" />
 		<action input="input" name="searchPublicationForm" parameter="dispatch"
 			path="/searchPublication" type="gov.nih.nci.cananolab.ui.publication.SearchPublicationAction"
