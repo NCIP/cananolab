@@ -9,6 +9,12 @@
 <script type="text/javascript"
 	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+
+<c:set var="resultLink" value="sampleResults.do" />
+<c:if test="${!empty param.from and param.from eq 'advanced'}">
+	<c:set var="resultLink" value="advancedSampleResults.do" />
+</c:if>
+
 <c:choose>
 	<c:when test="${!empty updateSample}">
 		<c:set var="title" value="Update" />
@@ -18,7 +24,7 @@
 			<jsp:param name="glossaryTopic" value="glossary_help" />
 			<jsp:param name="other" value="Back" />
 			<jsp:param name="otherLink"
-				value="javascript:gotoPage('sampleResults.do')" />
+				value="javascript:gotoPage('${resultLink}')" />
 		</jsp:include>
 	</c:when>
 	<c:otherwise>

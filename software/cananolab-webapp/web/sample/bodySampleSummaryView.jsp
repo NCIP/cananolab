@@ -3,13 +3,19 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<c:set var="resultLink" value="sampleResults.do" />
+<c:if test="${!empty param.from and param.from eq 'advanced'}">
+	<c:set var="resultLink" value="advancedSampleResults.do" />
+</c:if>
+
 <jsp:include page="/bodyTitle.jsp">
 	<jsp:param name="pageTitle"
 		value="Sample ${sampleForm.map.sampleBean.domain.name}" />
 	<jsp:param name="topic" value="submit_sample_help" />
 	<jsp:param name="glossaryTopic" value="glossary_help" />
 	<jsp:param name="other" value="Back"/>
-	<jsp:param name="otherLink" value="javascript:gotoPage('sampleResults.do')"/>
+	<jsp:param name="otherLink" value="javascript:gotoPage('${resultLink}')"/>
 </jsp:include>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
 
