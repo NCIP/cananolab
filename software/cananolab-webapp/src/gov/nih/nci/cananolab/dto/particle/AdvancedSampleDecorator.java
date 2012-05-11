@@ -19,7 +19,8 @@ public class AdvancedSampleDecorator extends TableDecorator {
 		String sampleName = sample.getDomainSample().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryEdit&page=0&sampleId=");
-		sb.append(sample.getSampleId()).append('>');
+		sb.append(sample.getSampleId());
+		sb.append("&from=advanced").append('>');
 		sb.append(sampleName).append("</a>");
 		String link = sb.toString();
 
@@ -32,7 +33,8 @@ public class AdvancedSampleDecorator extends TableDecorator {
 		String sampleName = sample.getDomainSample().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
-		sb.append(sample.getSampleId()).append('>');
+		sb.append(sample.getSampleId());
+		sb.append("&from=advanced").append('>');
 		sb.append(sampleName).append("</a>");
 		String link = sb.toString();
 
