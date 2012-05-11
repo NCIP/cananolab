@@ -96,13 +96,15 @@
 	<action-mappings>
 		<action path="/manageSample" type="org.apache.struts.actions.ForwardAction"
 			parameter="sample.manageSample" scope="request" />
+		<action path="/sampleResults" type="org.apache.struts.actions.ForwardAction"
+			parameter="sample.searchSampleResult" scope="request" />
 		<action name="sampleForm" parameter="dispatch" path="/sample"
 			type="org.springframework.web.struts.DelegatingActionProxy" input="input">
 			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateSample" path="sample.submitSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
-			<forward name="cloneInput" path="sample.clone"/>
-			<forward name="createInput" path="sample.submitSample"/>
+			<forward name="cloneInput" path="sample.clone" />
+			<forward name="createInput" path="sample.submitSample" />
 			<forward name="summaryView" path="sample.summaryView" />
 			<forward name="summaryEdit" path="sample.summaryEdit" />
 			<forward name="input" path="/sample.do?dispatch=input&amp;page=0" />
@@ -121,26 +123,26 @@
 			parameter="dispatch" path="/advancedSampleSearch"
 			type="gov.nih.nci.cananolab.ui.sample.AdvancedSampleSearchAction">
 			<forward name="inputForm" path="sample.advancedSearch" />
-			<forward name="input" path="/advancedSampleSearch.do?dispatch=validateSetup" />
+			<forward name="input"
+				path="/advancedSampleSearch.do?dispatch=validateSetup" />
 			<forward name="success" path="sample.advancedSampleSearchResult" />
-			<forward name="print" path="/sample/bodyAdvancedSampleSearchResultPrintView.jsp" />
+			<forward name="print"
+				path="/sample/bodyAdvancedSampleSearchResultPrintView.jsp" />
 		</action>
-		<action path="/advancedSampleResults" type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
+		<action path="/advancedSampleResults" type="org.apache.struts.actions.ForwardAction"
 			parameter="sample.advancedSampleSearchResult" scope="request" />
 		<action name="compositionForm" parameter="dispatch" path="/composition"
-			type="gov.nih.nci.cananolab.ui.sample.CompositionAction" input="input" validate="false">
+			type="gov.nih.nci.cananolab.ui.sample.CompositionAction" input="input"
+			validate="false">
 			<forward name="summaryView" path="sample.composition.summaryView" />
 			<forward name="summaryEdit" path="sample.composition.summaryEdit" />
 			<forward name="summaryPrint"
 				path="/sample/composition/bodyCompositionSummaryPrintView.jsp" />
 		</action>
 		<action name="compositionForm" parameter="dispatch" path="/nanomaterialEntity"
-			type="org.springframework.web.struts.DelegatingActionProxy"
-			input="input">
-			<exception
-				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.deleteNanomaterialEntityWithChemicalAssociation"
-				path="sample.composition.nanomaterialEntity"
+			type="org.springframework.web.struts.DelegatingActionProxy" input="input">
+			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.deleteNanomaterialEntityWithChemicalAssociation" path="sample.composition.nanomaterialEntity"
 				type="gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException" />
 			<forward name="input"
 				path="/nanomaterialEntity.do?dispatch=input&amp;page=0" />
@@ -153,10 +155,8 @@
 		<action name="compositionForm" parameter="dispatch"
 			path="/functionalizingEntity" type="org.springframework.web.struts.DelegatingActionProxy"
 			input="input">
-			<exception
-				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.deleteFunctionalizingEntityWithChemicalAssociation"
-				path="sample.composition.functionalizingEntity"
+			<exception handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.deleteFunctionalizingEntityWithChemicalAssociation" path="sample.composition.functionalizingEntity"
 				type="gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException" />
 			<forward name="input"
 				path="/functionalizingEntity.do?dispatch=input&amp;page=0" />
@@ -167,8 +167,7 @@
 				path="/sample/composition/functionalizingEntity/bodySingleFunctionalizingEntitySummaryView.jsp" />
 		</action>
 		<action name="compositionForm" parameter="dispatch" path="/chemicalAssociation"
-			type="org.springframework.web.struts.DelegatingActionProxy"
-			input="input">
+			type="org.springframework.web.struts.DelegatingActionProxy" input="input">
 			<forward name="input"
 				path="/chemicalAssociation.do?dispatch=input&amp;page=0" />
 			<forward name="inputForm" path="sample.composition.chemicalAssociation" />
