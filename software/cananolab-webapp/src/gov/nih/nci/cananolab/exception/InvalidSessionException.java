@@ -12,7 +12,7 @@ public class InvalidSessionException extends BaseException {
 	private static final long serialVersionUID = 1234567890L;
 
 	public InvalidSessionException() {
-		super("User is not logged in or session expired");
+		super("User is not logged in or session is expired.  Please log in");
 	}
 
 	public InvalidSessionException(String message) {
