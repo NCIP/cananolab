@@ -38,6 +38,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("protocolMessage");
+		}
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
@@ -65,11 +68,12 @@ public class ProtocolAction extends BaseAnnotationAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 		}
+		resetToken(request);
 		forward = mapping.findForward("success");
 		return forward;
 	}
 
-	public void saveProtocol(HttpServletRequest request,
+	private void saveProtocol(HttpServletRequest request,
 			ProtocolBean protocolBean) throws Exception {
 		ProtocolService service = this.setServiceInSession(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -145,6 +149,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("protocolNamesByType");
 		request.getSession().removeAttribute("protocolVersionsByTypeName");
 		request.getSession().removeAttribute("updateProtocol");
+		saveToken(request);
 		return mapping.findForward("inputPage");
 	}
 
@@ -165,6 +170,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("updateProtocol", "true");
 		setUpSubmitForReviewButton(request, protocolBean.getDomain().getId()
 				.toString(), protocolBean.getPublicStatus());
+		saveToken(request);
 		return mapping.findForward("inputPage");
 	}
 
@@ -196,6 +202,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("protocolMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
 		ProtocolService service = this.setServiceInSession(request);
@@ -209,6 +218,7 @@ public class ProtocolAction extends BaseAnnotationAction {
 				protocolBean.getDisplayName());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
+		resetToken(request);
 		return mapping.findForward("success");
 	}
 
@@ -225,6 +235,9 @@ public class ProtocolAction extends BaseAnnotationAction {
 	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("protocolMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
 		AccessibilityBean theAccess = protocol.getTheAccess();
@@ -263,12 +276,16 @@ public class ProtocolAction extends BaseAnnotationAction {
 		this.setAccesses(request, protocol);
 		request.setAttribute("protocolId", protocol.getDomain().getId()
 				.toString());
+		resetToken(request);
 		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("protocolMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ProtocolBean protocol = (ProtocolBean) theForm.get("protocol");
 		AccessibilityBean theAccess = protocol.getTheAccess();

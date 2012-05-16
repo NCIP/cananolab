@@ -28,13 +28,11 @@ import org.apache.struts.validator.DynaValidatorForm;
 public class LoginAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		// Invalidate the current session and create a new one
-		HttpSession session = request.getSession(false);
+			throws Exception {		
 		// if comes in from back and refresh
-		if (!session.isNew() && !isTokenValid(request)) {
+		if (!isTokenValid(request)) {
 			throw new InvalidSessionException(
-					"Session doesn't exist.  Please start again");
+					"Please log in again");
 		}
 		ActionForward forward = null;
 		ActionMessages msgs = new ActionMessages();
@@ -56,6 +54,8 @@ public class LoginAction extends Action {
 		try {
 			SecurityService service = new SecurityService(
 					AccessibilityBean.CSM_APP_NAME, user);
+			// Invalidate the current session and create a new one
+			HttpSession session = request.getSession(false);
 			if (session != null) {
 				session.invalidate();
 				session = request.getSession(true);
@@ -69,6 +69,7 @@ public class LoginAction extends Action {
 			return mapping.findForward("input");
 		}
 		forward = mapping.findForward("success");
+		//reset token
 		resetToken(request);
 		return forward;
 	}

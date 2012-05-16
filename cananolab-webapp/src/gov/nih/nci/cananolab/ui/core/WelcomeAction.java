@@ -29,6 +29,8 @@ public class WelcomeAction extends AbstractForwardAction {
 		//set public data counts in the context
 		InitSetup.getInstance().setPublicCountInContext(
 				request.getSession().getServletContext());
+		//save the token
+		saveToken(request);
 		return super.execute(mapping, form, request, response);
 	}
 

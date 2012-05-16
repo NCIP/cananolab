@@ -19,6 +19,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
 public abstract class AbstractDispatchAction extends DispatchAction {
@@ -41,13 +43,14 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		}
 		UserBean user = (UserBean) session.getAttribute("user");
 		// private dispatch and session expired
-		boolean privateDispatch = isDispatchPublic(dispatch);
+		boolean privateDispatch = checkDispatch(dispatch,
+				Constants.PRIVATE_DISPATCHES, "startsWith");
 		if (session.isNew() && (dispatch == null || privateDispatch)) {
 			throw new InvalidSessionException();
 		}
 		// if dispatched methods require validation but page=0 throw error
-		if (dispatchWithValidation(dispatch)
-				&& (page == null || Integer.parseInt(page) <= 0)) {
+		if (checkDispatch(dispatch, Constants.DISPATCHES_WITH_VALIDATIONS,
+				"equals") && (page == null || Integer.parseInt(page) <= 0)) {
 			throw new BaseException(
 					"The value for the page parameter is invalid for the given dispatch");
 		}
@@ -82,7 +85,8 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			String protectedData) throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// private dispatch in public actions
-		boolean privateDispatch = isDispatchPublic(dispatch);
+		boolean privateDispatch = checkDispatch(dispatch,
+				Constants.PRIVATE_DISPATCHES, "startsWith");
 		if (!privateDispatch) {
 			return true;
 		} else if (user == null && privateDispatch) {
@@ -101,22 +105,19 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		return true;
 	}
 
-	public boolean isDispatchPublic(String dispatch) {
+	private boolean checkDispatch(String dispatch, String[] dispatchGroup,
+			String compareString) {
 		if (dispatch != null) {
-			for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
-				if (dispatch.startsWith(theDispatch)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+			for (String theDispatch : dispatchGroup) {
+				if (compareString.equals("startsWith")) {
+					if (dispatch.startsWith(theDispatch)) {
+						return true;
 
-	private boolean dispatchWithValidation(String dispatch) {
-		if (dispatch != null) {
-			for (String theDispatch : Constants.DISPATCHES_WITH_VALIDATIONS) {
-				if (dispatch.equals(theDispatch)) {
-					return true;
+					} else {
+						if (dispatch.equals(theDispatch)) {
+							return true;
+						}
+					}
 				}
 			}
 		}
@@ -191,5 +192,17 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		return securityService;
+	}
+
+	protected Boolean validateToken(HttpServletRequest request)
+			throws Exception {
+		ActionMessages messages = new ActionMessages();
+		if (!isTokenValid(request)) {
+			ActionMessage err = new ActionMessage("error.invalidToken");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
+			saveErrors(request, messages);
+			return false;
+		}
+		return true;
 	}
 }

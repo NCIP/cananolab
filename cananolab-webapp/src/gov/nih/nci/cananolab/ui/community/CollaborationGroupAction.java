@@ -49,6 +49,7 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 		theForm.set("group", new CollaborationGroupBean());
 		request.getSession().removeAttribute("openCollaborationGroup");
 		setExistingGroups(request);
+		saveToken(request);
 		return mapping.findForward("setup");
 	}
 
@@ -95,6 +96,9 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return input(mapping, form, request, response);
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 				.get("group");
@@ -111,6 +115,7 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 		// update user's groupNames
 		UserBean user = ((CommunityServiceLocalImpl) service).getUser();
 		request.getSession().setAttribute("user", user);
+		resetToken(request);
 		return setupNew(mapping, form, request, response);
 	}
 
@@ -127,11 +132,15 @@ public class CollaborationGroupAction extends AbstractDispatchAction {
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return input(mapping, form, request, response);
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CollaborationGroupBean group = (CollaborationGroupBean) theForm
 				.get("group");
 		CommunityService service = setServiceInSession(request);
 		service.deleteCollaborationGroup(group);
+		resetToken(request);
 		return setupNew(mapping, form, request, response);
 	}
 }
