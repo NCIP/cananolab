@@ -62,7 +62,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * @throws Exception
 	 *             if user is not allowed to access the sample
 	 */
-	public SampleBean setupSample(DynaValidatorForm theForm,
+	protected SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
 		String sampleId = request.getParameter("sampleId");
 		if (!StringUtils.isEmpty(sampleId)) {
@@ -249,7 +249,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * @param sessionName
 	 * @param attributeName
 	 */
-	public void setOtherValueOption(HttpServletRequest request, String value,
+	protected void setOtherValueOption(HttpServletRequest request, String value,
 			String sessionName) {
 		if (!StringUtils.isEmpty(value)) {
 			Collection<String> otherTypes = (Collection<String>) request
@@ -362,6 +362,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String dataType = request.getParameter("reviewDataType");
 		String dataName = request.getParameter("reviewDataName");
 		String forwardName = request.getParameter("forwardName");
+		if (!validateToken(request)) {
+			return mapping.findForward(dataType+"Message");
+		}
 		// set default forward name to be summaryEdit
 		if (forwardName == null) {
 			forwardName = "summaryEdit";
@@ -383,6 +386,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		msg = new ActionMessage("message.submitReview");
 		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, messages);
+		resetToken(request);
 		return mapping.findForward(forwardName);
 	}
 

@@ -69,6 +69,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 		SitePreferenceBean siteBean = this.getNewSiteBean(user, null, null);
 		theForm.set("sitePreference", siteBean);
 		request.getSession().setAttribute("existingSiteBean", siteBean);
+		saveToken(request);
 		return mapping.findForward("createInput");
 	}
 
@@ -85,6 +86,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 		if (sitePreference != null) {
 			theForm.set("sitePreference", sitePreference);
 		}
+		saveToken(request);
 		return mapping.findForward("createInput");
 	}
 
@@ -110,6 +112,9 @@ public class AdministrationAction extends AbstractDispatchAction {
 	public ActionForward remove(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("createInput");
+		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ActionMessages messages = new ActionMessages();
 		SitePreferenceBean siteBean = null;
@@ -126,6 +131,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			saveErrors(request, messages);
 		}
 		request.getSession().removeAttribute("existingSiteBean");
+		resetToken(request);
 		return mapping.findForward("new");
 	}
 
@@ -138,6 +144,9 @@ public class AdministrationAction extends AbstractDispatchAction {
 	public ActionForward update(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("createInput");
+		}
 		SitePreferenceBean siteBean = null;
 		ActionMessages messages = new ActionMessages();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -208,6 +217,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			saveErrors(request, messages);
 		}
 		request.getSession().setAttribute("existingSiteBean", siteBean);
+		resetToken(request);
 		return mapping.findForward("update");
 	}
 

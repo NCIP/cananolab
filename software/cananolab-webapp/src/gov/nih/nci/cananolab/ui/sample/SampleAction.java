@@ -49,7 +49,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Save or update POC data.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -60,6 +60,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		Boolean newSample = true;
@@ -84,6 +87,7 @@ public class SampleAction extends BaseAnnotationAction {
 		request.setAttribute("theSample", sampleBean);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId()
 				.toString());
+		resetToken(request);
 		return summaryEdit(mapping, form, request, response);
 	}
 
@@ -109,7 +113,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle view sample request on sample search result page (read-only view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -144,7 +148,7 @@ public class SampleAction extends BaseAnnotationAction {
 		} else {
 			String updateSample = (String) request.getSession().getAttribute(
 					"updateSample");
-			if (updateSample == null) {
+			if (updateSample == null) {				
 				return mapping.findForward("createInput");
 			} else {
 				return mapping.findForward("summaryEdit");
@@ -196,7 +200,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle edit sample request on sample search result page (curator view).
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -258,6 +262,7 @@ public class SampleAction extends BaseAnnotationAction {
 		// }
 		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
 				.toString(), sampleBean.getPublicStatus());
+		saveToken(request);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -278,7 +283,7 @@ public class SampleAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -294,11 +299,12 @@ public class SampleAction extends BaseAnnotationAction {
 		setupLookups(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		checkOpenForms(theForm, request);
+		saveToken(request);
 		return mapping.findForward("createInput");
 	}
 
 	/**
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -319,12 +325,13 @@ public class SampleAction extends BaseAnnotationAction {
 			sampleBean.setCloningSampleName(null);
 			sampleBean.getDomain().setName(null);
 		}
+		saveToken(request);
 		return mapping.findForward("cloneInput");
 	}
 
 	/**
 	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.
-	 *
+	 * 
 	 * @param request
 	 * @param sampleOrg
 	 * @throws Exception
@@ -336,6 +343,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward savePointOfContact(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
@@ -383,6 +393,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward removePointOfContact(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		PointOfContactBean thePOC = sample.getThePOC();
@@ -413,26 +426,29 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward clone(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ActionMessages messages = new ActionMessages();
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SampleBean clonedSampleBean = null;
 		SampleService service = this.setServiceInSession(request);
 		try {
-			clonedSampleBean = service.cloneSample(sampleBean
-					.getCloningSampleName(), sampleBean.getDomain().getName()
-					.trim());
+			clonedSampleBean = service.cloneSample(
+					sampleBean.getCloningSampleName(), sampleBean.getDomain()
+							.getName().trim());
 		} catch (NotExistException e) {
 			ActionMessage err = new ActionMessage(
-					"error.cloneSample.noOriginalSample", sampleBean
-							.getCloningSampleName());
+					"error.cloneSample.noOriginalSample",
+					sampleBean.getCloningSampleName());
 			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
 			saveErrors(request, messages);
 			return mapping.findForward("cloneInput");
 		} catch (DuplicateEntriesException e) {
 			ActionMessage err = new ActionMessage(
-					"error.cloneSample.duplicateSample", sampleBean
-							.getCloningSampleName(), sampleBean.getDomain()
+					"error.cloneSample.duplicateSample",
+					sampleBean.getCloningSampleName(), sampleBean.getDomain()
 							.getName());
 			messages.add(ActionMessages.GLOBAL_MESSAGE, err);
 			saveErrors(request, messages);
@@ -444,18 +460,23 @@ public class SampleAction extends BaseAnnotationAction {
 			return mapping.findForward("cloneInput");
 		}
 
-		ActionMessage msg = new ActionMessage("message.cloneSample", sampleBean
-				.getCloningSampleName(), sampleBean.getDomain().getName());
+		ActionMessage msg = new ActionMessage("message.cloneSample",
+				sampleBean.getCloningSampleName(), sampleBean.getDomain()
+						.getName());
 		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, messages);
 		request.setAttribute("sampleId", clonedSampleBean.getDomain().getId()
 				.toString());
+		resetToken(request);
 		return summaryEdit(mapping, form, request, response);
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SampleService service = this.setServiceInSession(request);
@@ -483,6 +504,7 @@ public class SampleAction extends BaseAnnotationAction {
 		saveMessages(request, msgs);
 		sampleBean = new SampleBean();
 		ActionForward forward = mapping.findForward("sampleMessage");
+		resetToken(request);
 		return forward;
 	}
 
@@ -497,7 +519,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * generate data availability for the sample
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -508,6 +530,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward generateDataAvailability(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 
@@ -523,26 +548,25 @@ public class SampleAction extends BaseAnnotationAction {
 		 * Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage =
 		 * (Map<String, List<DataAvailabilityBean>>) request
 		 * .getSession().getAttribute("dataAvailabilityMapPerPage");
-		 *
+		 * 
 		 * if (dataAvailabilityMapPerPage != null) {
 		 * dataAvailabilityMapPerPage.remove(sampleBean.getDomain().getId()
 		 * .toString());
 		 * dataAvailabilityMapPerPage.put(sampleBean.getDomain().getId()
 		 * .toString(), dataAvailability);
-		 *
+		 * 
 		 * request.getSession().setAttribute("dataAvailabilityMapPerPage",
 		 * dataAvailabilityMapPerPage); }
 		 */
 		request.setAttribute("onloadJavascript", "manageDataAvailability('"
 				+ sampleBean.getDomain().getId()
 				+ "', 'sample', 'dataAvailabilityView')");
-
-		return mapping.findForward("summaryEdit");
+			return mapping.findForward("summaryEdit");
 	}
 
 	/**
 	 * update data availability for the sample
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -553,7 +577,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward updateDataAvailability(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SecurityService securityService = super
@@ -568,7 +594,7 @@ public class SampleAction extends BaseAnnotationAction {
 
 	/**
 	 * delete data availability for the sample
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -579,7 +605,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward deleteDataAvailability(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		SecurityService securityService = super
@@ -644,16 +672,16 @@ public class SampleAction extends BaseAnnotationAction {
 	 * public ActionForward manageDataAvailability(ActionMapping mapping,
 	 * ActionForm form, HttpServletRequest request, HttpServletResponse
 	 * response) throws Exception {
-	 *
+	 * 
 	 * DynaValidatorForm theForm = (DynaValidatorForm) form; SampleBean
 	 * sampleBean = setupSample(theForm, request); SecurityService
 	 * securityService = (SecurityService) request
 	 * .getSession().getAttribute("securityService");
-	 *
+	 * 
 	 * List<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 	 * .findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 	 * .toString(), securityService);
-	 *
+	 * 
 	 * sampleBean.setDataAvailability(dataAvailability); if
 	 * (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
 	 * sampleBean.setHasDataAvailability(true); } return
@@ -663,6 +691,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		AccessibilityBean theAccess = sample.getTheAccess();
@@ -706,6 +737,9 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("sampleMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		AccessibilityBean theAccess = sample.getTheAccess();
@@ -731,8 +765,8 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request) throws Exception {
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		SampleService service = this.setServiceInSession(request);
-		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS, sample
-				.getDomain());
+		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
+				sample.getDomain());
 	}
 
 	// creates a new sample service and put it in the session

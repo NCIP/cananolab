@@ -52,6 +52,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("publicationMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publicationBean = (PublicationBean) theForm
 				.get("publication");
@@ -86,6 +89,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, messages);
 		}
+		resetToken(request);
 		if (!StringUtils.isEmpty(sampleId)) {
 			return summaryEdit(mapping, form, request, response);
 		} else {
@@ -193,6 +197,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward removeFromSample(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("publicationMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationService service = this.setServicesInSession(request);
 		PublicationBean publicationBean = (PublicationBean) theForm
@@ -221,6 +228,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("publicationMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationService service = this.setServicesInSession(request);
 		PublicationBean publicationBean = (PublicationBean) theForm
@@ -236,6 +246,7 @@ public class PublicationAction extends BaseAnnotationAction {
 				publicationBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
+		resetToken(request);
 		return mapping.findForward("success");
 	}
 
@@ -265,6 +276,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		request.setAttribute("onloadJavascript",
 				"updateSubmitFormBasedOnCategory()");
 		request.getSession().removeAttribute("updatePublication");
+		saveToken(request);
 		return forward;
 	}
 
@@ -292,6 +304,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (sampleId==null) {
 			sampleId=(String)request.getAttribute("sampleId");
 		}
+		saveToken(request);
 		if (!StringUtils.isEmpty(sampleId)) {
 			theForm.set("sampleId", sampleId);
 			//clear copy other samples
@@ -375,6 +388,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		this.prepareSummary(mapping, form, request, response);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		super.checkOpenAccessForm(theForm, request);
+		saveToken(request);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -544,6 +558,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward addAuthor(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("publicationMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean pbean = (PublicationBean) theForm.get("publication");
 		pbean.addAuthor();
@@ -665,6 +682,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward saveAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("publicationMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publication = (PublicationBean) theForm
 				.get("publication");
@@ -730,6 +750,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward deleteAccess(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		if (!validateToken(request)) {
+			return mapping.findForward("publicationMessage");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publication = (PublicationBean) theForm
 				.get("publication");
