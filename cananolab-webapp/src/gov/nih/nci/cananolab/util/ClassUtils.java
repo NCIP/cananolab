@@ -18,34 +18,108 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
 
 /**
- * Utilility class to handle domain class manipulations
- *
+ * Utility class to handle domain class manipulations
+ * 
  * @author pansu
- *
+ * 
  */
 public class ClassUtils {
+
 	/**
 	 * Get all caNanoLab domain classes
-	 *
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
+
 	public static Collection<Class> getDomainClasses() throws Exception {
+		// get the URL of the jar containing the Dendrimer class
+		Class clazz = gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer.class;
+		boolean packedWar = false;
+		URL url = clazz.getResource(clazz.getSimpleName() + ".class");
+		int ind = url.getPath().indexOf(".jar");
+		String jarPath = null, warPath = null;
+		if (ind != -1) {
+			jarPath = url.getPath().substring(0, ind + 4);
+			int ind2 = jarPath.indexOf(".war");
+			if (ind2 != -1) {
+				File warFile = (new File(jarPath)).getParentFile()
+						.getParentFile().getParentFile();
+				warPath=warFile.getPath();
+				// detected whether the war file is packed or unpacked.
+				// in Jboss 5.1, when the war file is unpacked during development, creating
+				// a JarFile on the jar file works, but when the war file is packed, the jar
+				// file is not recognized
+				if (!warFile.isDirectory()) {
+					packedWar = true;
+				}
+			}
+		}
+
+		Collection<Class> list = new ArrayList<Class>();
+		// in jboss 5.1, when the war file is packed, JarFile(jarPath) would
+		// fail, need to create a file JarFile based on the war file first and
+		// then iterate through war file to find the jar file
+		if (packedWar) {
+			JarFile file = new JarFile(warPath);
+			Enumeration entries = file.entries();
+
+			while (entries.hasMoreElements()) {
+				JarEntry jarEntry = (JarEntry) entries.nextElement();
+				if (jarEntry.getName().endsWith(Constants.SDK_BEAN_JAR)) {
+					JarInputStream jarIS = new JarInputStream(
+							file.getInputStream(jarEntry));
+					JarEntry innerEntry = jarIS.getNextJarEntry();
+					while (innerEntry != null) {
+						String name = innerEntry.getName();
+						if (name.endsWith(".class")) {
+							String klassName = name.replace('/', '.')
+									.substring(0, name.lastIndexOf('.'));
+							System.out.println("if:" + klassName);
+							list.add(Class.forName(klassName));
+						}
+						innerEntry = jarIS.getNextJarEntry();
+					}
+				}
+			}
+		} else {
+			JarFile file = new JarFile(jarPath);
+			Enumeration e = file.entries();
+			while (e.hasMoreElements()) {
+				JarEntry o = (JarEntry) e.nextElement();
+				if (!o.isDirectory()) {
+					String name = o.getName();
+					if (name.endsWith(".class")) {
+						String klassName = name.replace('/', '.').substring(0,
+								name.lastIndexOf('.'));
+						System.out.println("else:" + klassName);
+						list.add(Class.forName(klassName));
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+	public static Collection<Class> getDomainClasses0() throws Exception {
 		Collection<Class> list = new ArrayList<Class>();
 		File webInfDirectory = null;
-		URL url = Thread.currentThread().getContextClassLoader().getResource(
-				"hibernate.cfg.xml");
-		//for grid service, hibernate.cfg.xml is contained in a jar file in the lib directory under WEB-INF
+		URL url = Thread.currentThread().getContextClassLoader()
+				.getResource("hibernate.cfg.xml");
+		// for grid service, hibernate.cfg.xml is contained in a jar file in the
+		// lib directory under WEB-INF
 
 		// url=jar:file:/usr/local/jboss-4.0.5.GA/server/ncicb-core/./tmp/deploy/tmp59187wsrf-canano-exp.war/WEB-INF/lib/caNanoLabSDK-orm.jar!/hibernate.cfg.xml
 		// file:/usr/local/jboss-4.0.5.GA/server/ncicb-core/./tmp/deploy/tmp59187wsrf-canano-exp.war/WEB-INF/lib/caNanoLabSDK-orm.jar!/hibernate.cfg.xml
 		if (url.getProtocol().equals("jar")) {
-			String libDirPath=(new File(url.getFile())).getParentFile().getParent();
-			//remove the extra file: in the front
-			if (libDirPath.startsWith("file:"+File.separatorChar)) {
-				libDirPath=libDirPath.replace("file:", "");
+			String libDirPath = (new File(url.getFile())).getParentFile()
+					.getParent();
+			// remove the extra file: in the front
+			if (libDirPath.startsWith("file:" + File.separatorChar)) {
+				libDirPath = libDirPath.replace("file:", "");
 			}
 			webInfDirectory = (new File(libDirPath)).getParentFile();
 		} else {
@@ -75,7 +149,7 @@ public class ClassUtils {
 
 	/**
 	 * Get child classes of a parent class in caNanoLab
-	 *
+	 * 
 	 * @param parentClassName
 	 * @return
 	 * @throws Exception
@@ -94,7 +168,7 @@ public class ClassUtils {
 
 	/**
 	 * Get child class names of a parent class in caNanoLab
-	 *
+	 * 
 	 * @param parentClassName
 	 * @return
 	 * @throws Exception
@@ -111,7 +185,7 @@ public class ClassUtils {
 
 	/**
 	 * get the short class name without fully qualified path
-	 *
+	 * 
 	 * @param className
 	 * @return
 	 */
@@ -122,7 +196,7 @@ public class ClassUtils {
 
 	/**
 	 * check if a class has children classes
-	 *
+	 * 
 	 * @param parent
 	 *            class name
 	 * @return
@@ -166,7 +240,7 @@ public class ClassUtils {
 	 * serialized) an error is printed to System.err and null is returned.
 	 * Depending on your specific application, it might make more sense to have
 	 * copy(...) re-throw the exception.
-	 *
+	 * 
 	 * A later version of this class includes some minor optimizations.
 	 */
 	/**
@@ -205,7 +279,7 @@ public class ClassUtils {
 	 * Utility for making deep copies (vs. clone()'s shallow copies) of objects
 	 * in a memory efficient way. Objects are serialized in the calling thread
 	 * and de-serialized in another thread.
-	 *
+	 * 
 	 * Error checking is fairly minimal in this implementation. If an object is
 	 * encountered that cannot be serialized (or that references an object that
 	 * cannot be serialized) an error is printed to System.err and null is
@@ -257,7 +331,7 @@ public class ClassUtils {
 
 	/**
 	 * copy attributes of one object to another
-	 *
+	 * 
 	 * mapping attribute criteria: - use setter and getter to copy value -
 	 * getter method have no parameter types,
 	 * method.getParameterTypes().length==0 - setter method have one and only
@@ -276,8 +350,8 @@ public class ClassUtils {
 				if (method.getName().startsWith("set")
 						&& method.getParameterTypes().length == 1
 						&& method.getReturnType().toString().equals("void")) {
-					setterMethodsMap.put(method.getName().replaceFirst("set",
-							""), method);
+					setterMethodsMap.put(
+							method.getName().replaceFirst("set", ""), method);
 				}
 			}
 			Method setterMethod = null;
@@ -309,8 +383,11 @@ public class ClassUtils {
 								.replaceFirst("get", ""));
 
 						if (getterResult != null
-								&& getterResult.getClass().getName().equals(
-										setterMethod.getParameterTypes()[0]
+								&& getterResult
+										.getClass()
+										.getName()
+										.equals(setterMethod
+												.getParameterTypes()[0]
 												.getName())) {
 							System.out
 									.println(" getterResult.getClass().getName(): "
@@ -430,17 +507,19 @@ public class ClassUtils {
 				.toLowerCase();
 		// replace invivo with in vivo, invitro with in vitro, physico chemical
 		// with physico-chemical
-		displayName = displayName.replaceAll("invivo", "in vivo").replaceAll(
-				"invitro", "in vitro").replaceAll("physico ", "physico-");
+		displayName = displayName.replaceAll("invivo", "in vivo")
+				.replaceAll("invitro", "in vitro")
+				.replaceAll("physico ", "physico-");
 		return displayName;
 	}
 
 	public static String getShortClassNameFromDisplayName(String displayName) {
 		// replace physico-chemical with physico chemical, in vivo with invivo,
 		// In vitro with invitro
-		displayName = displayName.replaceAll("physico-chemical",
-				"physico chemical").replaceAll("in vivo", "invivo").replaceAll(
-				"in vitro", "invitro");
+		displayName = displayName
+				.replaceAll("physico-chemical", "physico chemical")
+				.replaceAll("in vivo", "invivo")
+				.replaceAll("in vitro", "invitro");
 		String[] words = displayName.toLowerCase().split(" ");
 		List<String> newWords = new ArrayList<String>();
 		for (String word : words) {
@@ -480,6 +559,7 @@ public class ClassUtils {
 			// List<Report> reportLists = ClassUtils.mapObjects(null, null);
 			// System.out.println("report ========="+reportLists.get(0).getCategory());
 			System.out.println(ClassUtils.getFullClass("SampleComposition"));
+			ClassUtils.getDomainClasses();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
