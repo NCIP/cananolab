@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans default-lazy-init="false" default-dependency-check="none"
-	default-autowire="no">
+<beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
-	<bean name="ApplicationServiceImpl"
-		class="gov.nih.nci.cananolab.system.applicationservice.impl.CustomizedApplicationServiceImpl"
-		singleton="true">
+	<bean name="ApplicationServiceImpl" class="gov.nih.nci.cananolab.system.applicationservice.impl.CaNanoLabApplicationServiceImpl" singleton="true">
 		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
-		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
 	</bean>
 
 	<!-- Bean Definitions -->
-	<bean name="ClassCache" class="gov.nih.nci.system.util.ClassCache"
-		singleton="true">
+	<bean name="ClassCache" class="gov.nih.nci.system.util.ClassCache" singleton="true">
 		<property name="daoList">
 			<list>
 				<!--  Add any DAO's here -->
@@ -21,63 +16,92 @@
 		</property>
 	</bean>
 
-	<bean name="SystemProperties" class="java.util.Properties">
+
+	<bean name="WebSystemProperties" class="java.util.Properties">
 		<constructor-arg>
 			<props>
-				<prop key="caseSensitive">false</prop>
-				<prop key="resultCountPerQuery">10000</prop>
-				<prop key="resultOutputFormatter">
-					resultOutputFormatter.xsl
-				</prop>
+				<prop key="jsonOutputFormatter">jsonOutputFormatter.xsl</prop>
+				<prop key="resultOutputFormatter">resultOutputFormatter.xsl</prop>
 				<prop key="rowCounter">200</prop>
 				<prop key="securityEnabled">false</prop>
-				<prop key="instanceLevelSecurityEnabled">false</prop>
-				<prop key="attributeLevelSecurityEnabled">false</prop>
+				<prop key="enableISO21090DataTypes">false</prop>
+				<prop key="enableRestfulHtmlInterface">true</prop>
 			</props>
 		</constructor-arg>
 	</bean>
 
-	<bean id="SystemPropertiesMap" class="java.util.HashMap">
-		<constructor-arg>
-			<map>
-				<!--
-					<entry key="AUTHENTICATION_PROVIDER" value-ref="authenticationProvider"/>
-				-->
-			</map>
-		</constructor-arg>
-	</bean>
-
-	<bean name="ORMDAOFactory"
-		class="gov.nih.nci.cananolab.system.dao.orm.CustomizedORMDAOFactoryBean">
-		<constructor-arg value="hibernate.cfg.xml" index="0"></constructor-arg>
-		<!-- configLocation -->
-		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
-		<constructor-arg ref="SystemPropertiesMap" index="2"></constructor-arg>
-		<constructor-arg ref="SessionFactoryHolder" index="3"></constructor-arg>
-	</bean>
-
-	<bean name="SessionFactoryHolder"
-		class="gov.nih.nci.cananolab.system.dao.SessionFactoryHolder" />
-
-	<bean id="HibernateTransactionManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory">
-			<bean factory-bean="SessionFactoryHolder"
-				factory-method="getInstance" />
+	<bean name="ORMDAO" class="gov.nih.nci.cananolab.system.dao.orm.CaNanoLabORMDAOImpl">
+		<property name="caseSensitive" value="false" />
+		<property name="resultCountPerQuery" value="10000" />
+		<property name="securityHelper">
+			<ref bean="SecurityInitializationHelper" />
+		</property>
+		<property name="sessionFactory" ref="SessionFactory" />
+		<property name="config">
+			<bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration" />
 		</property>
 	</bean>
 
-	<bean id="TxInterceptor"
-		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<bean name="HibernateConfigHolder" class="gov.nih.nci.system.dao.orm.HibernateConfigurationHolder" />
+
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" />
+	
+	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="configHolder" ref="HibernateConfigHolder" />
+		<property name="securityHelper" ref="SecurityInitializationHelper"/>
+		<property name="lobHandler" ref="defaultLobHandler"/>
+		<property name="entityInterceptor">
+			<bean class="gov.nih.nci.security.authorization.attributeLevel.GenericSecurityInterceptor">
+				<constructor-arg>
+					<list>
+						<bean class="org.hibernate.EmptyInterceptor"/>
+						<!--
+						<bean class="gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor">
+							<constructor-arg value="false"/>
+						</bean>
+						-->
+						<!--<bean class="gov.nih.nci.logging.api.logger.hibernate.ObjectStateInterceptor"/>-->
+					</list>		
+				</constructor-arg>
+			</bean>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<!--
+				<entry key="pre-insert">
+					<bean class="org.hibernate.validator.event.ValidateEventListener" />
+				</entry>
+				<entry key="pre-update">
+					<bean class="org.hibernate.validator.event.ValidateEventListener" />
+				</entry>
+				-->
+			</map>
+		</property>
+	</bean>
+
+	<bean name="SecurityInitializationHelper" class="gov.nih.nci.system.security.helper.SecurityInitializationHelper">
+		<property name="securityEnabled" value="false"/>
+		<property name="instanceLevelSecurityEnabled" value="false"/>
+		<property name="attributeLevelSecurityEnabled" value="false"/>
+		<!--
+		<property name="authorizationManager">
+			<bean factory-bean="userDetailsService" factory-method="authorizationManagerInstance" />
+		</property>
+		-->
+	</bean>
+
+	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="TxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
 		<property name="transactionManager">
 			<ref bean="HibernateTransactionManager" />
 		</property>
 		<property name="transactionAttributes">
 			<props>
-				<prop key="save*">
-					PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
-				</prop>
-				<prop key="delete*">
+				<prop key="execute*">
 					PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
 				</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
@@ -85,16 +109,16 @@
 		</property>
 	</bean>
 
-	<bean id="ORMDAO"
-		class="org.springframework.aop.framework.ProxyFactoryBean"
-		singleton="true">
-		<property name="target" ref="ORMDAOFactory" />
-		<property name="interfaces"
-			value="gov.nih.nci.cananolab.system.dao.CustomizedORMDAO" />
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
+		<property name="target" ref="ApplicationServiceImpl" />
+		<property name="interfaces" value="gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService" />
 		<property name="interceptorNames">
 			<list>
 				<idref local="TxInterceptor" />
+				<!--<idref local="CLMInterceptor" />-->
 			</list>
 		</property>
 	</bean>
+
+	<!--<bean id="CLMInterceptor" class="gov.nih.nci.system.client.proxy.CLMProxy"/>-->
 </beans>
