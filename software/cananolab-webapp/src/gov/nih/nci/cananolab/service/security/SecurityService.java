@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -427,7 +427,7 @@ public class SecurityService {
 	public boolean isPublic(String dataId) throws Exception {
 		boolean status = false;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
 					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
@@ -461,7 +461,7 @@ public class SecurityService {
 	public List<String> getAllUserAccessibleData() throws ApplicationException {
 		List<String> data = new ArrayList<String>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (userBean == null) {
 				return new ArrayList<String>(appService.getAllPublicData());
@@ -518,7 +518,7 @@ public class SecurityService {
 			throws ApplicationException {
 		Map<String, String> data2role = new HashMap<String, String>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (userBean == null) {
 				for (String data : appService.getAllPublicData()) {
@@ -623,7 +623,7 @@ public class SecurityService {
 				+ "and pg.protection_group_name='" + protectedData + "'";
 		Map<String, String> user2Role = new HashMap<String, String>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "login_name", "role_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING,
@@ -655,7 +655,7 @@ public class SecurityService {
 				+ "and pg.protection_group_name='" + protectedData + "'";
 		Map<String, String> group2Role = new HashMap<String, String>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "group_name", "role_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING,
@@ -687,7 +687,7 @@ public class SecurityService {
 				+ "and pg.protection_group_name='" + protectedData + "'";
 		String roleName = null;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "role_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
@@ -716,7 +716,7 @@ public class SecurityService {
 				+ protectedData + "'";
 		String roleName = null;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			String[] columns = new String[] { "role_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };

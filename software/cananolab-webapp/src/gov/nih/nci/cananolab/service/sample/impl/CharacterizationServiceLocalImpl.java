@@ -21,7 +21,7 @@ import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -73,7 +73,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		try {
 			Sample sample = sampleBean.getDomain();
 			Characterization achar = charBean.getDomainChar();
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Boolean newChar = true;
 			if (achar.getId() != null) {
@@ -153,7 +153,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(chara);
 		} catch (Exception e) {
@@ -206,7 +206,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			for (FileBean fileBean : finding.getFiles()) {
 				fileUtils.prepareSaveFile(fileBean.getDomainFile());
@@ -230,7 +230,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(finding);
 		} catch (Exception e) {
@@ -247,7 +247,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 		}
 		try {
 			ExperimentConfig config = configBean.getDomain();
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
@@ -308,7 +308,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
@@ -371,7 +371,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			throws ExperimentConfigException {
 		Technique technique = null;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Technique.class)
 					.add(
@@ -393,7 +393,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			String modelName) throws Exception {
 		Instrument instrument = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
 		crit.add(Restrictions.eq("type", type).ignoreCase());
@@ -490,7 +490,7 @@ public class CharacterizationServiceLocalImpl extends BaseServiceLocalImpl
 			String assayCategory) throws CharacterizationException {
 		List<String> charNames = new ArrayList<String>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					OtherCharacterization.class).add(

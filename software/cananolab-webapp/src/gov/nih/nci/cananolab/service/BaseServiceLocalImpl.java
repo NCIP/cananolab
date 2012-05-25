@@ -25,7 +25,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -1252,7 +1252,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		 * @return
 		 */
 		public File findFileById(String fileId) throws Exception {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
@@ -1369,7 +1369,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		 * @throws FileException
 		 */
 		public void prepareSaveFile(File file) throws Exception {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (file.getId() != null) {
 				File dbFile = (File) appService.get(File.class, file.getId());

@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -137,7 +137,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 				fileUtils.prepareSaveFile(protocolBean.getFileBean()
 						.getDomainFile());
 			}
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			appService.saveOrUpdate(protocolBean.getDomain());
@@ -218,7 +218,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 		}
 
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// assume protocol is loaded with protocol file
 			// find associated characterizations
@@ -249,7 +249,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	private List<Long> findCharacterizationIdsByProtocolId(String protocolId)
 			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).setProjection(
@@ -267,7 +267,7 @@ public class ProtocolServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	private List<Characterization> findCharacterizationsByProtocolId(
 			String protocolId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(Characterization.class);

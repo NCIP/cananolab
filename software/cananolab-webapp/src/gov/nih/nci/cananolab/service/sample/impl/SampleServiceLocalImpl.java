@@ -39,7 +39,7 @@ import gov.nih.nci.cananolab.service.sample.helper.AdvancedSampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -132,7 +132,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 							.getDomain().getId().toString())) {
 				throw new NoAccessException();
 			}
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Sample dbSample = (Sample) appService.getObject(Sample.class,
 					"name", sample.getName());
@@ -184,7 +184,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			String oldOrgName = null;
 			Boolean newPOC = true;
 			Boolean newOrg = true;
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			PointOfContact domainPOC = pocBean.getDomain();
 			Organization domainOrg = domainPOC.getOrganization();
@@ -323,7 +323,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	private Sample findFullyLoadedSampleByName(String sampleName)
 			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		// load composition and characterization separate because of Hibernate
 		// join limitation
@@ -374,7 +374,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	private SampleComposition loadComposition(String sampleId) throws Exception {
 		SampleComposition composition = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(SampleComposition.class);
@@ -439,7 +439,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 			throws Exception {
 		List<Characterization> chars = new ArrayList<Characterization>();
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(Characterization.class);
@@ -547,7 +547,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	public List<PointOfContactBean> findPointOfContactsBySampleId(
 			String sampleId) throws PointOfContactException {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
 					.add(Property.forName("id").eq(new Long(sampleId)));
@@ -585,7 +585,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			SortedSet<String> names = new TreeSet<String>(
 					new Comparators.SortableNameComparator());
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
 					"select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
@@ -638,7 +638,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		SampleBean origSampleBean = null;
 		Sample newSample0 = new Sample();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Sample dbNewSample = (Sample) appService.getObject(Sample.class,
 					"name", newSampleName);
@@ -894,7 +894,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 
 	private void deleteSampleWhenError(String sampleName) throws Exception {
 		Sample sample = this.findFullyLoadedSampleByName(sampleName);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		// delete characterizations
 		if (sample.getCharacterizationCollection() != null) {
@@ -933,7 +933,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			// / / fully load original sample
 			sample = findFullyLoadedSampleByName(sampleName);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// / / delete characterizations
 			if (sample.getCharacterizationCollection() != null) {
@@ -971,7 +971,7 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 	public void updatePOCAssociatedWithCharacterizations(String sampleName,
 			Long oldPOCId, Long newPOCId) throws SampleException {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(Characterization.class);

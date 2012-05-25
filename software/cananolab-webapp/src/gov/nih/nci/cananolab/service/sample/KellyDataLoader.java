@@ -14,7 +14,7 @@ import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImp
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExcelParser;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -235,7 +235,7 @@ public class KellyDataLoader {
 
 	protected void erase() throws Exception {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
 					"delete from gov.nih.nci.cananolab.domain.common.Datum where createdBy = '"

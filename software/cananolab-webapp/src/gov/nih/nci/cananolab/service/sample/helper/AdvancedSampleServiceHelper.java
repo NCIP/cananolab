@@ -17,7 +17,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -78,7 +78,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 	public List<String> findSampleIdsByAdvancedSearch(
 			AdvancedSampleSearchBean searchBean) throws Exception {
 		List<String> sampleIds = new ArrayList<String>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		// AND or all empty
 		if (searchBean.getLogicalOperator().equals("and")
@@ -200,7 +200,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		crit.setFetchMode(
 				"characterizationCollection.findingCollection.datumCollection",
 				FetchMode.JOIN);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
@@ -231,7 +231,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			return chars;
 		}
 		Long id = new Long(sampleId);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		if (searchBean.getCharacterizationQueries().size() == 1
 				|| searchBean.getCharacterizationLogicalOperator().equals("or")) {
@@ -367,7 +367,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			}
 		}
 		DetachedCriteria crit = DetachedCriteria.forClass(Datum.class);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		Junction datumJunction = getDatumJunction(searchBean);
 		if (datumJunction != null) {
@@ -416,7 +416,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			return entities;
 		}
 		Long id = new Long(sampleId);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(FunctionalizingEntity.class);
@@ -484,7 +484,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			return functions;
 		}
 		Long id = new Long(sampleId);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Function.class);
 		Junction junction = getFunctionJunction(searchBean, crit);
@@ -564,7 +564,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		}
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(NanomaterialEntity.class);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		Junction junction = getNanomaterialEntityJunction(searchBean, crit);
 		if (junction != null) {
@@ -655,7 +655,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		samplePOCs.addAll(sample.getOtherPointOfContactCollection());
 		List<PointOfContact> pocs = new ArrayList<PointOfContact>(samplePOCs);
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		if (searchBean.getCharacterizationQueries().size() == 1
 				|| searchBean.getSampleLogicalOperator().equals("or")) {

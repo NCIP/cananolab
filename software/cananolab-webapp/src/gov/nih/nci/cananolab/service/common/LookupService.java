@@ -9,7 +9,7 @@ import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.CompositionException;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
@@ -46,7 +46,7 @@ public class LookupService {
 			throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> lookupMap = new HashMap<String, Map<String, SortedSet<String>>>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
@@ -89,7 +89,7 @@ public class LookupService {
 					}
 				});
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
@@ -111,7 +111,7 @@ public class LookupService {
 			String attribute) throws BaseException {
 		Map<String, String> lookup = new HashMap<String, String>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
@@ -153,7 +153,7 @@ public class LookupService {
 			throws BaseException {
 		SortedSet<String> types = new TreeSet<String>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Class clazz = Class.forName(fullClassName);
 			List results = appService.getAll(clazz);
@@ -188,7 +188,7 @@ public class LookupService {
 	public static void saveOtherType(String lookupName, String otherAttribute,
 			String otherAttributeValue) throws BaseException {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
