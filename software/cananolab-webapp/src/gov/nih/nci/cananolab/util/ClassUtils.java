@@ -78,7 +78,6 @@ public class ClassUtils {
 						if (name.endsWith(".class")) {
 							String klassName = name.replace('/', '.')
 									.substring(0, name.lastIndexOf('.'));
-							System.out.println("if:" + klassName);
 							list.add(Class.forName(klassName));
 						}
 						innerEntry = jarIS.getNextJarEntry();
@@ -95,52 +94,8 @@ public class ClassUtils {
 					if (name.endsWith(".class")) {
 						String klassName = name.replace('/', '.').substring(0,
 								name.lastIndexOf('.'));
-						System.out.println("else:" + klassName);
 						list.add(Class.forName(klassName));
 					}
-				}
-			}
-		}
-		return list;
-	}
-
-	public static Collection<Class> getDomainClasses0() throws Exception {
-		Collection<Class> list = new ArrayList<Class>();
-		File webInfDirectory = null;
-		URL url = Thread.currentThread().getContextClassLoader()
-				.getResource("hibernate.cfg.xml");
-		// for grid service, hibernate.cfg.xml is contained in a jar file in the
-		// lib directory under WEB-INF
-
-		// url=jar:file:/usr/local/jboss-4.0.5.GA/server/ncicb-core/./tmp/deploy/tmp59187wsrf-canano-exp.war/WEB-INF/lib/caNanoLabSDK-orm.jar!/hibernate.cfg.xml
-		// file:/usr/local/jboss-4.0.5.GA/server/ncicb-core/./tmp/deploy/tmp59187wsrf-canano-exp.war/WEB-INF/lib/caNanoLabSDK-orm.jar!/hibernate.cfg.xml
-		if (url.getProtocol().equals("jar")) {
-			String libDirPath = (new File(url.getFile())).getParentFile()
-					.getParent();
-			// remove the extra file: in the front
-			if (libDirPath.startsWith("file:" + File.separatorChar)) {
-				libDirPath = libDirPath.replace("file:", "");
-			}
-			webInfDirectory = (new File(libDirPath)).getParentFile();
-		} else {
-			webInfDirectory = (new File(url.getPath())).getParentFile()
-					.getParentFile();
-		}
-		String fullJarFilePath = webInfDirectory.getPath() + File.separatorChar
-				+ "lib" + File.separatorChar + Constants.SDK_BEAN_JAR;
-
-		JarFile file = new JarFile(fullJarFilePath);
-		if (file == null)
-			throw new Exception("Could not locate the bean jar");
-		Enumeration e = file.entries();
-		while (e.hasMoreElements()) {
-			JarEntry o = (JarEntry) e.nextElement();
-			if (!o.isDirectory()) {
-				String name = o.getName();
-				if (name.endsWith(".class")) {
-					String klassName = name.replace('/', '.').substring(0,
-							name.lastIndexOf('.'));
-					list.add(Class.forName(klassName));
 				}
 			}
 		}
