@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -55,7 +55,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 			String protocolName, String protocolAbbreviation, String fileTitle)
 			throws Exception {
 		List<Protocol> protocols = new ArrayList<Protocol>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
 		crit.createAlias("file", "file", CriteriaSpecification.LEFT_JOIN);
@@ -106,7 +106,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 			return null;
 		}
 		Protocol protocol = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
 				.add(Property.forName("type").eq(protocolType).ignoreCase())
@@ -138,7 +138,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 			new NoAccessException("User has no access to the protocol "
 					+ protocolId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select aProtocol.file from gov.nih.nci.cananolab.domain.common.Protocol aProtocol where aProtocol.id = "
@@ -152,7 +152,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 	}
 
 	public int getNumberOfPublicProtocols() throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select id from gov.nih.nci.cananolab.domain.common.Protocol");
@@ -174,7 +174,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 		}
 		Protocol protocol = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
 				Property.forName("id").eq(new Long(protocolId)));
@@ -222,7 +222,7 @@ public class ProtocolServiceHelper extends BaseServiceHelper {
 				MatchMode.START);
 		crit.add(Expression.or(crit1, crit2));
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {

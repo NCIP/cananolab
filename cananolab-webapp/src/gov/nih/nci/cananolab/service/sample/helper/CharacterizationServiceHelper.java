@@ -9,7 +9,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -55,7 +55,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 					+ characterizationId);
 		}
 		Protocol protocol = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.particle.Characterization aChar where aChar.id="
 				+ characterizationId;
@@ -81,7 +81,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		}
 		List<Finding> findings = new ArrayList<Finding>();
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
@@ -109,7 +109,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 					+ charId);
 		}
 		List<ExperimentConfig> configs = new ArrayList<ExperimentConfig>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
@@ -135,7 +135,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 		}
 		ExperimentConfig config = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				ExperimentConfig.class).add(
@@ -153,7 +153,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 			String sampleId) throws Exception {
 		List<Characterization> chars = new ArrayList<Characterization>();
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(Characterization.class);
@@ -202,7 +202,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 					+ charId);
 		}
 		Characterization achar = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
@@ -253,7 +253,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 			new NoAccessException("User has no access to the finding "
 					+ findingId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Finding.class).add(
 				Property.forName("id").eq(new Long(findingId)));
@@ -276,7 +276,7 @@ public class CharacterizationServiceHelper extends BaseServiceHelper {
 
 	public int getNumberOfPublicCharacterizations(
 			String characterizationClassName) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				ClassUtils.getFullClass(characterizationClassName))

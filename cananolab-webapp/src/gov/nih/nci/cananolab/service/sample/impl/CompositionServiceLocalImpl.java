@@ -24,7 +24,7 @@ import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
@@ -73,7 +73,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.toString())) {
 				throw new NoAccessException();
 			}
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			NanomaterialEntity entity = entityBean.getDomainEntity();
 			Boolean newEntity = true;
@@ -173,7 +173,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					.toString())) {
 				throw new NoAccessException();
 			}
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			FunctionalizingEntity entity = entityBean.getDomainEntity();
 			Boolean newEntity = true;
@@ -248,7 +248,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			ChemicalAssociation assoc = assocBean.getDomainAssociation();
 			Sample sample = sampleBean.getDomain();
@@ -341,7 +341,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 				throw new NoAccessException();
 			}
 			fileUtils.prepareSaveFile(file);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			SampleComposition comp = sample.getSampleComposition();
 			if (comp == null) {
@@ -451,7 +451,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 					"The nanomaterial entity is used in a chemical association.  Please delete the chemcial association first before deleting the nanomaterial entity.");
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
@@ -476,7 +476,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 							+ " is used in a chemical association.  Please delete the chemcial association first before deleting the functionalizing entity.");
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
@@ -493,7 +493,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(assoc);
 		} catch (Exception e) {
@@ -509,7 +509,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// load files first
 			List<File> fileList = helper.findFilesByCompositionInfoId(comp
@@ -707,7 +707,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 			}
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(comp);
 		} catch (Exception e) {

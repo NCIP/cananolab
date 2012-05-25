@@ -39,7 +39,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -78,7 +78,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		int i = 0;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			for (String sampleId : sampleIds) {
 				try {
@@ -412,7 +412,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		int i = 0;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			PublicationServiceHelper helper = new PublicationServiceHelper(
 					securityService);
@@ -479,7 +479,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 		}
 		int i = 0;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			ProtocolServiceHelper helper = new ProtocolServiceHelper(
 					securityService);
@@ -732,7 +732,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	}
 
 	private Sample findFullyLoadedSampleById(String sampleId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		// load composition and characterization separate because of Hibernate
 		// join limitation
@@ -783,7 +783,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 	private SampleComposition loadComposition(String sampleId) throws Exception {
 		SampleComposition composition = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(SampleComposition.class);
@@ -848,7 +848,7 @@ public class OwnershipTransferServiceImpl implements OwnershipTransferService {
 			throws Exception {
 		List<Characterization> chars = new ArrayList<Characterization>();
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(Characterization.class);

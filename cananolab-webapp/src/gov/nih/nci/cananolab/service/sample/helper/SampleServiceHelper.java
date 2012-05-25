@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -326,7 +326,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			crit.add(disjunction);
 		}
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
 		Set<Sample> samples = new HashSet<Sample>();
@@ -511,7 +511,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 	public Sample findSampleByName(String sampleName) throws Exception {
 		Sample sample = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -563,7 +563,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		}
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
@@ -583,7 +583,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			throw new NoAccessException("User has no access to the sample "
 					+ sampleId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
@@ -605,7 +605,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			throw new NoAccessException("User has no access to the sample "
 					+ sampleId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
@@ -632,7 +632,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 					+ sampleId);
 		}
 		Sample sample = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -671,7 +671,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	}
 
 	public int getNumberOfPublicSamples() throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getAllPublicData();
 		HQLCriteria crit = new HQLCriteria(
@@ -688,7 +688,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	}
 
 	public int getNumberOfPublicSampleSources() throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getAllPublicData();
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
@@ -755,7 +755,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	}
 
 	public Organization findOrganizationByName(String orgName) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
 		crit.add(Restrictions.eq("name", orgName).ignoreCase());
@@ -772,7 +772,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	public PointOfContact findPointOfContactById(String pocId) throws Exception {
 		PointOfContact poc = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class)
 				.add(Property.forName("id").eq(new Long(pocId)));
@@ -790,7 +790,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			throw new NoAccessException("User has no access to the sample "
 					+ sampleId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
 				Property.forName("id").eq(new Long(sampleId)));
@@ -822,7 +822,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 	 * @throws Exception
 	 */
 	public List<String> findSampleNamesBy(String nameStr) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
@@ -861,7 +861,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			String sampleId) throws Exception {
 		Set<String> otherSamples = new TreeSet<String>();
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select other.name, other.id from gov.nih.nci.cananolab.domain.particle.Sample as other "
@@ -888,7 +888,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			String lastName, String orgName) throws Exception {
 		PointOfContact poc = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
 		crit.createAlias("organization", "organization");
@@ -923,7 +923,7 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		Criterion crit2 = Restrictions.like("createdBy", currentOwner + ":",
 				MatchMode.START);
 		crit.add(Expression.or(crit1, crit2));
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		List results = appService.query(crit);

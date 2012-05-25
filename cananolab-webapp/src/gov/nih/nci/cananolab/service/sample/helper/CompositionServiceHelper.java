@@ -11,7 +11,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -54,7 +54,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 			new NoAccessException("User has no access to the function "
 					+ funcId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Function.class).add(
@@ -76,7 +76,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 			new NoAccessException(
 					"User has no access to the composing element " + ceId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(
@@ -103,7 +103,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		} else {
 			return null;
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		String hql = "select anEntity.fileCollection from " + fullClassName
 				+ " anEntity where anEntity.id = " + id;
@@ -130,7 +130,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		}
 		SampleComposition composition = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(SampleComposition.class);
@@ -203,7 +203,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 			new NoAccessException(
 					"User has no access to the nanomaterial entity " + entityId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(
@@ -247,7 +247,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		}
 		FunctionalizingEntity entity = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(
@@ -288,7 +288,7 @@ public class CompositionServiceHelper extends BaseServiceHelper {
 		}
 		ChemicalAssociation assoc = null;
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(

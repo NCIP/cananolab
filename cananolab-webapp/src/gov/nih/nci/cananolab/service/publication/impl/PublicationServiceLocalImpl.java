@@ -15,7 +15,7 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -78,7 +78,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 		try {
 			Publication publication = (Publication) publicationBean
 					.getDomainFile();
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Boolean newPub = true;
 			// check if publication is already entered based on PubMedId or DOI
@@ -132,7 +132,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 	}
 
 	private void updateSampleAssociation(
-			CustomizedApplicationService appService,
+			CaNanoLabApplicationService appService,
 			PublicationBean publicationBean) throws Exception {
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		// if has associated sample, save sample to update the relationship
@@ -319,7 +319,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Sample sample = sampleHelper.findSampleByName(sampleName);
 			Collection<Publication> pubs = sample.getPublicationCollection();
@@ -340,7 +340,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 			throw new NoAccessException();
 		}
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			// assume publication is loaded with authors
 			// delete authors since authors were not shared across publications

@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.BaseServiceHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -190,7 +190,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			crit.add(disjunction);
 		}
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
@@ -250,7 +250,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			throw new NoAccessException(
 					"User has no access to the publication " + publicationId);
 		}
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
@@ -268,7 +268,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 
 	public Publication findPublicationByKey(String keyName, Object keyValue)
 			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
@@ -290,7 +290,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 	}
 
 	public int getNumberOfPublicPublications() throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select id from gov.nih.nci.cananolab.domain.common.Publication");
@@ -316,7 +316,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
 				+ publicationId + "'";
 		HQLCriteria crit = new HQLCriteria(query);
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
 		SortedSet<String> names = new TreeSet<String>();
@@ -341,7 +341,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		}
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -371,7 +371,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			throws Exception {
 		List<Publication> publications = new ArrayList<Publication>();
 		Sample sample = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
@@ -406,7 +406,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 			throws Exception {
 		Set<Publication> publications = new HashSet<Publication>();
 		Sample sample = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		if (!StringUtils.isEmpty(sampleName)) {
@@ -575,7 +575,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 	public Publication findNonPubMedNonDOIPublication(String publicationType,
 			String title, String firstAuthorLastName,
 			String firstAuthorFirstName) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class);
 		crit.add(Restrictions.eq("category", publicationType).ignoreCase());
@@ -627,7 +627,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 				MatchMode.START);
 		crit.add(Expression.or(crit1, crit2));
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
