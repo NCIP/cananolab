@@ -1,3 +1,4 @@
+/* CSM version 4.1 */
 # replace the <<database_name>> with proper database name that is to be created.
 
 use canano;
