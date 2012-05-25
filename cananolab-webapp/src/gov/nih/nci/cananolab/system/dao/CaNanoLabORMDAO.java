@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.system.dao;
 
-import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
+import gov.nih.nci.system.dao.WritableDAO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author pansu
  * 
  */
-public interface CustomizedORMDAO extends DAO {
+public interface CaNanoLabORMDAO extends WritableDAO {
 
 	public void saveOrUpdate(Object object);
 

@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.system.applicationservice;
 
 import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.WritableApplicationService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author pansu
  *
  */
-public interface CustomizedApplicationService extends ApplicationService {
+public interface CaNanoLabApplicationService extends WritableApplicationService {
 
 	public void saveOrUpdate(Object object) throws ApplicationException;
 
