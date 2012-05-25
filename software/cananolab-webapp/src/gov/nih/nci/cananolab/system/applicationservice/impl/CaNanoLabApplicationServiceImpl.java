@@ -2,17 +2,16 @@ package gov.nih.nci.cananolab.system.applicationservice.impl;
 
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.system.dao.CustomizedORMDAO;
+import gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService;
+import gov.nih.nci.cananolab.system.dao.CaNanoLabORMDAO;
 import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl;
+import gov.nih.nci.system.applicationservice.impl.WritableApplicationServiceImpl;
 import gov.nih.nci.system.util.ClassCache;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -24,36 +23,35 @@ import org.springframework.aop.framework.Advised;
  * @author pansu
  *
  */
-public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
-		implements CustomizedApplicationService {
+public class CaNanoLabApplicationServiceImpl extends WritableApplicationServiceImpl
+		implements CaNanoLabApplicationService {
 	private ClassCache classCache;
 
 	private static Logger logger = Logger
-			.getLogger(CustomizedApplicationServiceImpl.class.getName());
+			.getLogger(CaNanoLabApplicationServiceImpl.class.getName());
 
-	public CustomizedApplicationServiceImpl(ClassCache classCache,
-			Properties systemProperties) {
-		super(classCache, systemProperties);
+	public CaNanoLabApplicationServiceImpl(ClassCache classCache) {
+		super(classCache);
 		this.classCache = classCache;
 	}
 
 	public Object load(Class domainClass, Serializable id)
 			throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 				.getDAOForClass(domainClass.getCanonicalName());
 		return dao.load(domainClass, id);
 	}
 
 	public Object get(Class domainClass, Serializable id)
 			throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 				.getDAOForClass(domainClass.getCanonicalName());
 		return dao.get(domainClass, id);
 	}
 
 	public void saveOrUpdate(Object object) throws ApplicationException {
 		try {
-			CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+			CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 					.getDAOForClass(object.getClass().getCanonicalName());
 			dao.saveOrUpdate(object);
 		} catch (Exception e) {
@@ -66,7 +64,7 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 
 	public void delete(Object object) throws ApplicationException {
 		try {
-			CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+			CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 					.getDAOForClass(object.getClass().getCanonicalName());
 			dao.delete(object);
 		} catch (Exception e) {
@@ -79,7 +77,7 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 
 	public void deleteById(Class domainClass, Serializable id)
 			throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 				.getDAOForClass(domainClass.getCanonicalName());
 		try {
 			dao.deleteById(domainClass, id);
@@ -92,7 +90,7 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 	}
 
 	public List getAll(Class domainClass) throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 				.getDAOForClass(domainClass.getCanonicalName());
 		try {
 			return dao.getAll(domainClass);
@@ -106,7 +104,7 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 
 	public Object getObject(Class domainClass, String uniqueKeyName,
 			Object uniqueKeyValue) throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 				.getDAOForClass(domainClass.getCanonicalName());
 		try {
 			return dao.getObject(domainClass, uniqueKeyName, uniqueKeyValue);
@@ -120,7 +118,7 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 
 	public List directSQL(String directSQL, String[] columns,
 			Object[] columnTypes) throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+		CaNanoLabORMDAO dao = (CaNanoLabORMDAO) classCache
 				.getDAOForClass(Sample.class.getCanonicalName());
 		try {
 			return dao.directSQL(directSQL, columns, columnTypes);
