@@ -6,7 +6,7 @@ import java.util.Map;
 public class Constants {
 	public static final String DOMAIN_MODEL_NAME = "caNanoLab";
 
-	public static final String SDK_BEAN_JAR = "caNanoLabSDK-beans.jar";
+	public static final String SDK_BEAN_JAR = "caNanoLab-beans.jar";
 
 	public static final String DATE_FORMAT = "MM/dd/yyyy";
 
