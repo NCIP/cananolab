@@ -85,6 +85,10 @@ public class ClassUtils {
 				}
 			}
 		} else {
+			//remove the extra file: in the front
+			if (jarPath.startsWith("file:")) {
+				jarPath=jarPath.replace("file:", "");
+			}
 			JarFile file = new JarFile(jarPath);
 			Enumeration e = file.entries();
 			while (e.hasMoreElements()) {
