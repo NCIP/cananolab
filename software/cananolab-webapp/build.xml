@@ -120,6 +120,16 @@
 	</target>
 
 	<target name="dist" depends="war">
+		<!-- copy database jdbc driver from maven repository-->
+		<copy todir="${common.dist.dir}" overwrite="true">
+			<restrict>
+				<fileset refid="compiletime.dependency.fileset" />
+				<!--  **/mysql-connector-java-*.jar didn't work, but **\mysql-connector-java-*.jar works-->
+				<rsel:name name="**mysql-connector-java-*.jar" />
+			</restrict>
+			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
+		</copy>
+
 		<!--copy mysql-ds.xml and replace database connection info-->
 		<copy overwrite="true" tofile="${common.dist.dir}/mysql-ds.xml" file="${common.dir}/resources/jboss-conf/mysql-ds.xml">
 			<!-- replace tokens with values from build properties -->
@@ -150,33 +160,55 @@
 				</copy>
 			</else>
 		</if>
-		<!--copy upt.war -->
-		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/upt.war" />
-
-		<!-- copy database jdbc driver from maven repository-->
-		<copy todir="${common.dist.dir}" overwrite="true">
-			<restrict>
-				<fileset refid="compiletime.dependency.fileset" />
-				<!--  **/mysql-connector-java-*.jar didn't work, but **\mysql-connector-java-*.jar works-->
-				<rsel:name name="**mysql-connector-java-*.jar" />
-			</restrict>
-			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
+		<!-- the following is UPT specific -->
+		<!-- copy UPT required config files -->
+		<copy overwrite="true" tofile="${common.dist.dir}/ApplicationSecurityConfig.xml" file="${common.dir}/resources/jboss-conf/ApplicationSecurityConfig.xml">
+			<!-- replace tokens with values from build properties -->
+			<filterset>
+				<filter token="jboss.server.dir" value="${jboss.server.dir}" />
+			</filterset>
 		</copy>
+		<copy overwrite="true" tofile="${common.dist.dir}/properties-service.xml" file="${common.dir}/resources/jboss-conf/properties-service.xml">
+			<!-- replace tokens with values from build properties -->
+			<filterset>
+				<filter token="jboss.server.dir" value="${jboss.server.dir}" />
+			</filterset>
+		</copy>
+		<copy overwrite="true" tofile="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt.csm.new.hibernate.cfg.xml" />
+		<copy overwrite="true" tofile="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml" file="${common.dir}/resources/jboss-conf/csmupt423.csm.new.hibernate.cfg.xml" />
+
+		<!--copy upt-ds.xml and replace database connection info-->
+		<copy overwrite="true" tofile="${common.dist.dir}/upt-ds.xml" file="${common.dir}/resources/jboss-conf/upt-ds.xml">
+			<!-- replace tokens with values from build properties -->
+			<filterset id="db.filterset">
+				<filter token="database.url" value="${database.url}" />
+				<filter token="database.user" value="${database.user}" />
+				<filter token="database.password" value="${database.password}" />
+			</filterset>
+		</copy>
+
+		<!--copy uptEAR.ear -->
+		<copy overwrite="true" todir="${common.dist.dir}" file="${common.dir}/resources/security/uptEAR.ear" />
 	</target>
 
 	<target name="deploy" depends="dist">
-		<!-- deploy WAR to JBOSS deploy location-->
+		<!-- deploy WAR and xml to JBOSS deploy location-->
 		<copy todir="${jboss.deploy.dir}" overwrite="true">
 			<fileset dir="${common.dist.dir}">
-				<include name="upt.war" />
+				<include name="uptEAR.ear" />
+				<include name="upt-ds.xml" />
 				<include name="${database.type}-ds.xml" />
+				<include name="properties-service.xml"/>
 			</fileset>
 			<fileset dir="${dist.dir}">
-				<include name="*.war" />
+				<include name="caNanoLab.war" />				
 			</fileset>
 		</copy>
 		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml" />
-
+		<copy todir="${jboss.server.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/ApplicationSecurityConfig.xml"/>
+		<copy todir="${jboss.server.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>
+		<copy todir="${jboss.server.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>
+			
 		<copy todir="${jboss.lib.dir}" overwrite="true">
 			<fileset dir="${common.dist.dir}">
 				<include name="mysql-connector-java*.jar" />
