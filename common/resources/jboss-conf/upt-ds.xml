@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>csmupt423</jndi-name>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<connection-url>@database.url@</connection-url>
+		<user-name>@database.user@</user-name>
+		<password>@database.password@</password>
+	</local-tx-datasource>
+	<local-tx-datasource>
+		<jndi-name>csmupt</jndi-name>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<connection-url>@database.url@</connection-url>
+		<user-name>@database.user@</user-name>
+		<password>@database.password@</password>
+	</local-tx-datasource>
+</datasources>

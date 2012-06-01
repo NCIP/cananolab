@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: properties-service.xml 16662 2003-08-27 04:38:22Z patriot1burke 
+	$ -->
+<server>
+	<!-- ==================================================================== -->
+
+	<!-- PropertyEditorManager Service -->
+
+	<!-- ==================================================================== -->
+
+	<!-- | Allows access to the PropertyEditorManager, which is used when setting 
+		| MBean attribute values from configuration. -->
+	<mbean name="jboss:type=Service,name=PropertyEditorManager"
+		code="org.jboss.varia.property.PropertyEditorManagerService">
+		<!-- | Register and editor for each of the type_name=editor_type_name listed 
+			| in properties file style convetion. <attribute name="Editors"> java.net.URL=my.project.editors.URLPropertyEditor 
+			</attribute> -->
+	</mbean>
+	<!-- ==================================================================== -->
+
+	<!-- System Properties Service -->
+
+	<!-- ==================================================================== -->
+
+	<!-- | Allows rich access to system properties. -->
+	<mbean name="jboss:type=Service,name=SystemProperties" code="org.jboss.varia.property.SystemPropertiesService">
+		<!-- | Load properties from each of the given comma seperated URLs <attribute 
+			name="URLList"> http://somehost/some-location.properties, ./conf/somelocal.properties 
+			</attribute> -->
+
+		<!-- | Set raw properties file style properties. <attribute name="Properties"> 
+			my.project.property=This is the value of my property my.project.anotherProperty=This 
+			is the value of my other property </attribute> -->
+		<attribute name="Properties">
+			gov.nih.nci.security.configFile=@jboss.server.dir@/csmconfig/ApplicationSecurityConfig.xml
+		</attribute>
+	</mbean>
+</server>
