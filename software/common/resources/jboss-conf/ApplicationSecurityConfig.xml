@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<security-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<upt-context-name>csmupt</upt-context-name>
+	<application-list>
+		<application>
+			<context-name>csmupt</context-name>
+			<authentication>
+				<authentication-provider-class />
+				<lockout-time>1800000</lockout-time>
+				<allowed-login-time>60000</allowed-login-time>
+				<allowed-attempts>6</allowed-attempts>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+				</authorization-provider-class>
+				<hibernate-config-file>csmupt423.csm.new.hibernate.cfg.xml</hibernate-config-file>
+			</authorization>
+		</application>
+	</application-list>
+	<backwards-compatibility>
+		<login-application-context-name>uptlogin</login-application-context-name>
+		<central-upt-configuration>true</central-upt-configuration>
+		<upt-application-list>
+			<upt-application>
+				<context-name>csmupt</context-name>
+				<url-context-name>upt423</url-context-name>
+				<authorization>
+					<authorization-provider-class>String</authorization-provider-class>
+					<hibernate-config-file>csmupt423.csm.new.hibernate.cfg.xml</hibernate-config-file>
+				</authorization>
+			</upt-application>
+		</upt-application-list>
+	</backwards-compatibility>
+</security-config>

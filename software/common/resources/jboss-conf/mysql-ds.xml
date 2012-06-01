@@ -20,11 +20,4 @@
     <password>@database.password@</password>
     <driver-class>com.mysql.jdbc.Driver</driver-class>
   </local-tx-datasource>
-  <local-tx-datasource>
-    <jndi-name>csmupt</jndi-name>
-    <connection-url>@database.url@</connection-url>
-    <user-name>@database.user@</user-name>
-    <password>@database.password@</password>
-    <driver-class>com.mysql.jdbc.Driver</driver-class>
-  </local-tx-datasource>
 </datasources>
