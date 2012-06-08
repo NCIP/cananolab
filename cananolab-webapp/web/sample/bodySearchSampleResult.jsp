@@ -50,7 +50,7 @@
 						onclick="showDetailView('${sample.domain.id}', 'sample.do?dispatch=dataAvailabilityView&sampleId=${sample.domain.id}'); return false;">
 						<c:out value="${sample.dataAvailabilityMetricsScore}" />
 					</a> <img src="images/ajax-loader.gif" border="0" class="counts"
-						id="loaderImg${sample.domain.id}" style="display: none">
+						id="loaderImg${sample.domain.id}" style="display: none" alt="loader icon">
 					<table id="detailView${sample.domain.id}"
 						style="display: none; position: absolute; left: -550px; top: -150px; z-index: 10; background-color: #FFFFFF"
 						border="0">
