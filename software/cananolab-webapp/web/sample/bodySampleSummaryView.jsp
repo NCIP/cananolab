@@ -20,7 +20,7 @@
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
 
 <table class="summaryViewNoGrid" width="100%" align="center"
-	bgcolor="#dbdbdb">
+	bgcolor="#dbdbdb" summary="layout">
 	<tr>
 		<th valign="top" align="left" height="6">
 		</th>

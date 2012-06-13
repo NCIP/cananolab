@@ -15,7 +15,7 @@
 </jsp:include>
 <html:form action="searchProtocol" styleId="searchProtocolForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="120">
 				<label for="protocolType">Protocol Type</label>
@@ -32,7 +32,7 @@
 				<label for="protocolName">Protocol Name</label>
 			</td>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td><label for="nameOperand" style="display:none">Name Operand</label>
 							<html:select property="nameOperand" styleId="nameOperand">
@@ -52,7 +52,7 @@
 				<label for="protocolAbbreviation">Protocol Abbreviation</label>
 			</td>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td><label for="abbreviationOperand" style="display:none">Abbreviation Operand</label>
 							<html:select property="abbreviationOperand"
@@ -73,7 +73,7 @@
 				<label for="fileTitle">Protocol File Title</label>
 			</td>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td><label for="titleOperand" style="display:none">Title Operand</label>
 							<html:select property="titleOperand" styleId="titleOperand">

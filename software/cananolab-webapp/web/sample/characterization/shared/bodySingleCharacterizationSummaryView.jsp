@@ -9,7 +9,7 @@
 <c:set var="charType" value="${charBean.characterizationType}" />
 
 <table class="summaryViewNoGrid" width="99%" align="center"
-	bgcolor="#F5F5f5">
+	bgcolor="#F5F5f5" summary="layout">
 	<c:choose>
 		<c:when test="${!empty charObj.assayType}">
 			<tr>

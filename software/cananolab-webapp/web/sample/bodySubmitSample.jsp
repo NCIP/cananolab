@@ -39,7 +39,7 @@
 <html:form action="/sample"
 	onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');" styleId="sampleForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="20%">
 				<label for="sampleName">Sample Name *</label>
