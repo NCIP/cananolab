@@ -88,7 +88,7 @@ public class PublicationDecorator extends TableDecorator {
 		sb.append("View");
 		sb.append("</a>");
 		sb
-				.append("<table id=\"publicationDescription"
+				.append("<table summary=\"layout\" id=\"publicationDescription"
 						+ getListIndex()
 						+ "\" style=\"display: none;position: absolute;left: -510px;top: -50px;width: 500px;z-index:5;font-size: 10px;background-color: #FFFFFF;\" class=\"promptbox\">");
 		sb.append("<tr><td style=\"text-align:right;\">");
