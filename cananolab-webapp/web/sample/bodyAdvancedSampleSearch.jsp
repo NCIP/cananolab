@@ -222,7 +222,7 @@
 					</tr>
 					<tr>
 						<td colspan="5">
-							<table cellspacing="0" align="left">
+							<table cellspacing="0" align="left" summary="layout">
 								<tr>
 									<td>
 										<input class="promptButton" type="button" value="Add"
@@ -419,7 +419,7 @@
 		</tr>
 	</table>
 	<br />
-	<table width="100%" align="center" class="submissionView"
+	<table width="100%" align="center" class="submissionView" summary="layout"
 		style="border: 0">
 		<tr>
 			<td>
