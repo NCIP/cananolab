@@ -13,7 +13,7 @@
 <tr>
 	<td><div id="loginBlock" style="display:none">
 			<div class="spacer"/>
-			<table class="loginBlock">				
+			<table class="loginBlock" summary="layout">				
 				<tr>
 					<td><label for="login ID">LOGIN ID</label></td>
 					<td><input type="text" name="loginId" size="14" id="login ID" />
