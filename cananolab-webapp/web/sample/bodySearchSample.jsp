@@ -23,7 +23,7 @@
 </jsp:include>
 <html:form action="searchSample" styleId="searchSampleForm">
 	<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td class="cellLabel" width="110">
 				<label for="keywords">Keywords</label>
@@ -39,10 +39,10 @@
 		</tr>
 	</table>
 	<br />
-	<table width="100%" align="center" class="submissionView">
+	<table width="100%" align="center" class="submissionView" summary="layout">
 		<tr>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td class="cellLabel" width="100">
 							<label for="sampleName">Sample Name</label>
@@ -62,7 +62,7 @@
 		</tr>
 		<tr>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td class="cellLabel" width="100">
 							<label for="samplePOC">Sample Point of Contact</label>
@@ -84,7 +84,7 @@
 		</tr>
 		<tr>
 			<td>
-				<table class="invisibleTable">
+				<table class="invisibleTable" summary="layout">
 					<tr>
 						<td class="cellLabel" width="100">
 							<label for="nanomaterialEntityTypes">Nanomaterial Entity</label>
