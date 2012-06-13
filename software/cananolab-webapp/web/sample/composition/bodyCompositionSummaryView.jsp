@@ -65,7 +65,7 @@
 		</div>
 	</c:forEach>
 </c:if>
-<table class="summaryViewNoTop" width="100%">
+<table class="summaryViewNoTop" width="100%" summary="layout">
 <%--
 	<c:if test="${! empty compositionSections && empty printView}">
 		<tr>
