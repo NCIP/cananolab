@@ -26,10 +26,10 @@
 		</tr>
 	</table>
 	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0">
+		cellspacing="0" summary="layout">
 		<tr>
 			<td width="30%">
-				<table border="0" align="right" cellpadding="4" cellspacing="0">
+				<table border="0" align="right" cellpadding="4" cellspacing="0" summary="layout">
 					<tr>
 						<td>
 							<div align="right">
