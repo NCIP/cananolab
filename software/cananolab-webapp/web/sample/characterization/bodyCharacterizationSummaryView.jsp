@@ -68,7 +68,7 @@
 		</ul>
 	</div>
 </c:forEach>
-<table class="summaryViewNoTop" width="100%">
+<table class="summaryViewNoTop" width="100%" summary="layout">
 <%--
 	<c:if test="${! empty characterizationTypes}">
 		<tr>
