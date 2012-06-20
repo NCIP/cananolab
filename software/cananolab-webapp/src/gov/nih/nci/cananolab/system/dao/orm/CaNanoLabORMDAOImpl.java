@@ -5,17 +5,12 @@ import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.orm.WritableORMDAOImpl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.JDBCException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.type.NullableType;
@@ -35,24 +30,28 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements
 
 
 	public Object load(Class domainClass, Serializable id) {
-		return getFlushAutoHibernateTemplate().load(domainClass, id);
+		return getHibernateTemplate().load(domainClass, id);
 	}
 
 	public Object get(Class domainClass, Serializable id) {
-		return getFlushAutoHibernateTemplate().get(domainClass, id);
+		return getHibernateTemplate().get(domainClass, id);
 	}
 
 	public void saveOrUpdate(Object t) {
-		getFlushAutoHibernateTemplate().saveOrUpdate(t);
+		getHibernateTemplate().saveOrUpdate(t);
+	}
+
+	public void delete(Object t) {
+		getHibernateTemplate().delete(t);
 	}
 
 	public void deleteById(Class domainClass, Serializable id) {
-		Object obj = getFlushAutoHibernateTemplate().load(domainClass, id);
+		Object obj = getHibernateTemplate().load(domainClass, id);
 		delete(obj);
 	}
 
 	public List getAll(Class domainClass) {
-		return getFlushAutoHibernateTemplate().loadAll(domainClass);
+		return getHibernateTemplate().loadAll(domainClass);
 	}
 
 	public Object getObject(Class domainClass, String uniqueKeyName,
@@ -60,7 +59,7 @@ public class CaNanoLabORMDAOImpl extends WritableORMDAOImpl implements
 
 		DetachedCriteria crit = DetachedCriteria.forClass(domainClass).add(
 				Property.forName(uniqueKeyName).eq(uniqueKeyValue));
-		List results = getFlushAutoHibernateTemplate().findByCriteria(crit);
+		List results = getHibernateTemplate().findByCriteria(crit);
 
 		if (results != null && !results.isEmpty()) {
 			return results.get(0);
