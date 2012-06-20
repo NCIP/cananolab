@@ -95,6 +95,9 @@
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
+		
+		<!-- modify ehcache directory -->
+		<replace file="${build.dir}/WEB-INF/classes/ehcache.xml" token="java.io.tmpdir" value="${ehcache.path}" />			
 
 		<!-- copy dependency jars to WEB-INF/lib files  -->
 		<copy todir="${build.dir}/WEB-INF/lib">
