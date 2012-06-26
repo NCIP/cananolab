@@ -61,7 +61,8 @@
 							</tr>
 							<tr>
 								<td class="mainContent">
-									<%-- include caNanoLab main content --%>									
+									<%-- include caNanoLab main content --%>
+									<!-- target of anchor to skip menus--> <a name="content"></a>									
 									<tiles:insert attribute="cananoContent" /> 									 
 								</td>
 							</tr>

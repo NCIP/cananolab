@@ -5,8 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <table cellspacing="0" cellpadding="0" width="160px">
-	<tr>
-		<th class="subMenuPrimaryTitle" scope="col">QUICK LINKS</th>
+    <tr>
+		<th class="subMenuPrimaryTitle" scope="col">
+		QUICK LINKS<!-- anchor to skip sub menu --> <a href="#content"><img
+			height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
+		</th>
 	</tr>
 	<jsp:include page="/html/cananoBaseSidemenu.html" />
 	<tr>
