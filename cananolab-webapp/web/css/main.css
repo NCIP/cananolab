@@ -310,19 +310,11 @@ a:link.helpText,a:visited.helpText,a:active.helpText {
 a:link.loginText,a:visited.loginText,a:active.loginText {
 	/* for help link text not affected by any cascading text styles */
 	font-family: arial, helvetica, verdana, sans-serif;
-	color: #ffffff; /* constant: dark blue */
+	color: #ffffff; /* constant: white*/
 	text-decoration: underline;
 }
 
-a:hover.loginText {
-	color: #f4f4f5 /* constant: red */
-}
-
 a:hover {
-	color: #a90101; /* constant: red */
-}
-
-a:hover.helpText {
 	color: #a90101; /* constant: red */
 }
 
