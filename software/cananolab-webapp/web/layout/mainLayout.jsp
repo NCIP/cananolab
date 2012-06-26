@@ -60,7 +60,7 @@
 					<%-- include sidemenu on the left --%>					 
 					<tiles:insert
 						attribute="cananoSidemenu" /></td>					
-				<td class="mainContent">
+				<td class="mainContent">		
 					<table cellspacing="0" cellpadding="0" summary="layout" border="0" width="800px">
 						<tbody>
 							<tr>
@@ -73,7 +73,8 @@
 							<tr>
 								<td class="spacer"></td>
 								<td class="mainContent">
-									<%-- include caNanoLab main content --%>									
+									<%-- include caNanoLab main content --%>
+									 <!-- target of anchor to skip menus --><a name="content"></a>									
 									<tiles:insert attribute="cananoContent" /> 									 
 								</td>
 							</tr>
