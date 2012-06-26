@@ -6,6 +6,10 @@
 <table cellspacing="0" cellpadding="0" border="0">
 	<tbody>
 		<tr>
+		    <td width="1">
+				<!-- anchor to skip main menu -->
+				<a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
+			</td>		
 			<logic:present name="items">
 				<logic:iterate name="items" id="item"
 					type="org.apache.struts.tiles.beans.MenuItem">
