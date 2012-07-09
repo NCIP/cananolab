@@ -27,10 +27,10 @@
 		<property name="interfaces" value="gov.nih.nci.cananolab.system.applicationservice.CaNanoLabApplicationService" />
 		<property name="interceptorNames">
 			<list>
-				<idref local="Interceptor" />
+				<!-- <idref local="Interceptor" /> -->
 				<idref bean="TxInterceptor" />
 				<!--<idref bean="CLMInterceptor" />-->
-			</list>
+ 			</list>
 		</property>		
 	</bean>
 
