@@ -115,11 +115,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			ActionMessage msg = null;
 			if (!StringUtils.isEmpty(ex.getMessage())
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-				msg = new ActionMessage("errors.invalidOtherType", ex
-						.getMessage(), "Function");
+				msg = new ActionMessage("errors.invalidOtherType",
+						ex.getMessage(), "Function");
 			} else {
-				msg = new ActionMessage("errors.invalidOtherType", entityBean
-						.getType(), "functionalizing entity");
+				msg = new ActionMessage("errors.invalidOtherType",
+						entityBean.getType(), "functionalizing entity");
 				entityBean.setType(null);
 			}
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -152,7 +152,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new nanomaterial entity
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -262,8 +262,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// comp service has already been created
 		CompositionService compService = (CompositionService) request
 				.getSession().getAttribute("compositionService");
-		compService.removeAccesses(entity.getDomainEntity(), function
-				.getDomainFunction());
+		compService.removeAccesses(entity.getDomainEntity(),
+				function.getDomainFunction());
 		checkOpenForms(entity, request);
 		return mapping.findForward("inputForm");
 	}
@@ -336,7 +336,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		boolean status = true;
 		if (entityBean.getType().equalsIgnoreCase("biopolymer")) {
 			if (entityBean.getBiopolymer().getType() != null
-					&& !StringUtils.xssValidate(entityBean.getBiopolymer().getType())) {
+					&& !StringUtils.xssValidate(entityBean.getBiopolymer()
+							.getType())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.biopolymer.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -346,7 +347,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 		if (entityBean.getType().equalsIgnoreCase("antibody")) {
 			if (entityBean.getAntibody().getType() != null
-					&& !StringUtils.xssValidate(entityBean.getAntibody().getType())) {
+					&& !StringUtils.xssValidate(entityBean.getAntibody()
+							.getType())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.antibody.type.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -354,7 +356,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				status = false;
 			}
 			if (entityBean.getAntibody().getIsotype() != null
-					&& !StringUtils.xssValidate(entityBean.getAntibody().getIsotype())) {
+					&& !StringUtils.xssValidate(entityBean.getAntibody()
+							.getIsotype())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.antibody.isotype.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -364,7 +367,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 		if (entityBean.getType().equalsIgnoreCase("small molecule")) {
 			if (entityBean.getSmallMolecule().getAlternateName() != null
-					&& !StringUtils.xssValidate(entityBean.getSmallMolecule().getAlternateName())) {
+					&& !StringUtils.xssValidate(entityBean.getSmallMolecule()
+							.getAlternateName())) {
 				ActionMessage msg = new ActionMessage(
 						"functionalizingEntity.smallMolecule.alternateName.invalid");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -396,7 +400,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		escapeXmlForFileUri(entity.getTheFile());				
+		escapeXmlForFileUri(entity.getTheFile());
 		// Save uploaded data in session to avoid asking user to upload again.
 		FileBean theFile = entity.getTheFile();
 		preserveUploadedFile(request, theFile, "functionalizingEntity");
@@ -464,9 +468,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String functionType = entity.getTheFunction().getType();
 		setOtherValueOption(request, functionType, "functionTypes");
 		String detailPage = null;
-		if (!StringUtils.isEmpty(entity.getType())) {
-			detailPage = InitCompositionSetup.getInstance().getDetailPage(
-					entity.getType(), "functionalizingEntity");
+		if (entity.isWithProperties()) {
+			if (!StringUtils.isEmpty(entity.getType())) {
+				detailPage = InitCompositionSetup.getInstance().getDetailPage(
+						entity.getType(), "functionalizingEntity");
+			}
 		}
 		request.setAttribute("entityDetailPage", detailPage);
 	}
