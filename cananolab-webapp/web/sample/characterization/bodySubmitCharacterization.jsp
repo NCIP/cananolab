@@ -85,7 +85,7 @@
 	<br/>
 	<c:set var="updateId" value="${characterizationForm.map.achar.domainChar.id}"/>
 	<c:set var="resetOnclick" value="this.form.reset();displayFileRadioButton();"/>
-	<c:set var="deleteOnclick" value="deleteData('characterization', 'charForm' 'characterization', 'delete')"/>
+	<c:set var="deleteOnclick" value="deleteData('characterization', 'charForm', 'characterization', 'delete')"/>
 	<c:set var="deleteButtonName" value="Delete"/>
 	<c:set var="hiddenDispatch" value="create"/>
 	<c:set var="hiddenPage" value="2"/>
