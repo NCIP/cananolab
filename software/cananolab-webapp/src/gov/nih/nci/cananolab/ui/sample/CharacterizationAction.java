@@ -830,15 +830,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		setOtherValueOption(request, currentAssayType, "charNameAssays");
 
 		// setup detail page
-		String detailPage = null;
-		if (!StringUtils.isEmpty(achar.getCharacterizationType())
-				&& !StringUtils.isEmpty(achar.getCharacterizationName())) {
-			detailPage = InitCharacterizationSetup.getInstance().getDetailPage(
-					achar.getCharacterizationType(),
-					achar.getCharacterizationName());
+		if (achar.isWithProperties()) {
+			String detailPage = null;
+			if (!StringUtils.isEmpty(achar.getCharacterizationType())
+					&& !StringUtils.isEmpty(achar.getCharacterizationName())) {
+				detailPage = InitCharacterizationSetup.getInstance()
+						.getDetailPage(achar.getCharacterizationType(),
+								achar.getCharacterizationName());
+			}
+			request.setAttribute("characterizationDetailPage", detailPage);
 		}
-		request.setAttribute("characterizationDetailPage", detailPage);
-
 		// if finding contains more than one column, set disableSetColumnOrder
 		// false
 		if (achar.getTheFinding().getNumberOfColumns() > 1
