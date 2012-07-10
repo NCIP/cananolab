@@ -65,7 +65,7 @@ import org.hibernate.criterion.Property;
  * Service methods involving samples
  *
  * @author pansu
- *
+ * 
  */
 public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 		SampleService {
@@ -1052,12 +1052,6 @@ public class SampleServiceLocalImpl extends BaseServiceLocalImpl implements
 					.findGroupAccessibilities(sampleId);
 			List<AccessibilityBean> userAccesses = this
 					.findUserAccessibilities(sampleId);
-			// do nothing if access already exist
-			if (groupAccesses.contains(access)) {
-				return;
-			} else if (userAccesses.contains(access)) {
-				return;
-			}
 
 			// if access is Public, remove all other access except Public
 			// Curator and owner
