@@ -33,7 +33,7 @@
 			my.project.property=This is the value of my property my.project.anotherProperty=This 
 			is the value of my other property </attribute> -->
 		<attribute name="Properties">
-			gov.nih.nci.security.configFile=@jboss.server.dir@/csmconfig/ApplicationSecurityConfig.xml
+			gov.nih.nci.security.configFile=@jboss.server.dir@/conf/csmconfig/ApplicationSecurityConfig.xml
 		</attribute>
 	</mbean>
 </server>
