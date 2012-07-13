@@ -208,9 +208,9 @@
 			</fileset>
 		</copy>
 		<copy todir="${jboss.conf.dir}" overwrite="true" file="${common.dist.dir}/login-config.xml" />
-		<copy todir="${jboss.server.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/ApplicationSecurityConfig.xml"/>
-		<copy todir="${jboss.server.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>
-		<copy todir="${jboss.server.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>
+		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/ApplicationSecurityConfig.xml"/>
+		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt.csm.new.hibernate.cfg.xml"/>
+		<copy todir="${jboss.conf.dir}/csmconfig" overwrite="true" file="${common.dist.dir}/csmupt423.csm.new.hibernate.cfg.xml"/>
 			
 		<copy todir="${jboss.lib.dir}" overwrite="true">
 			<fileset dir="${common.dist.dir}">
