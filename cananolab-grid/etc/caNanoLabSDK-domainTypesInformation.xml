@@ -1,0 +1,780 @@
+<ns1:DomainTypesInformation xmlns:ns1="http://SDKQuery4.caBIG/1/gov.nih.nci.cagrid.sdkquery4.beans.domaininfo">
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="enzyme" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.linkage.Entrapment">
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.ChemicalAssociation</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer">
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="sequence" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.Polymer</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.MetalParticle</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.Fullerene</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.QuantumDot</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.Liposome</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.nanomaterial.Emulsion</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.Sterility">
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Keyword">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Instrument">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="manufacturer" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="modelName" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Technique">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="abbreviation" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.ActivationMethod">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="activationEffect" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity">
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormula" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubChemId" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="molecularFormulaType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="pubChemDataSourceName" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer">
+  <ns1:TypeAttribute attributeName="pubChemDataSourceName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormulaType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="sequence" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormula" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="pubChemId" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.agentmaterial.Antibody">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubChemId" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="isotype" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="species" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="molecularFormulaType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubChemDataSourceName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormula" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule">
+  <ns1:TypeAttribute attributeName="molecularFormula" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="alternateName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormulaType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubChemDataSourceName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubChemId" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.MetabolicStability">
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.ImmuneCellFunction">
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.Sterility</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.Targeting</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.OxidativeStress</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.ImmuneCellFunction</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.Transfection</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.MetabolicStability</ns1:SubclassName>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Characterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="cellLine" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.Targeting">
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics">
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invivo.Toxicology">
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invivo.Toxicology</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics</ns1:SubclassName>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Characterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.Shape</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.Relaxivity</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.Purity</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.Size</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.Solubility</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.Surface</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.MolecularWeight</ns1:SubclassName>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Characterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.Purity">
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.Size">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.Surface">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="isHydrophobic" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.Shape">
+  <ns1:TypeAttribute attributeName="maxDimensionUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="minDimensionUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="maxDimension" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="aspectRatio" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="minDimension" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.MolecularWeight">
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.Relaxivity">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.physical.Solubility">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="criticalConcentrationUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="criticalConcentration" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="isSoluble" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="solvent" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.OtherCharacterization">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayCategory" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Characterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Finding">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.ChemicalAssociation</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.linkage.Encapsulation">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.ChemicalAssociation</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.linkage.Attachment">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="bondType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.ChemicalAssociation</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.Polymer">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="crossLinkDegree" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="initiator" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="crossLinked" javaTypeName="java.lang.Boolean"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.Fullerene">
+  <ns1:TypeAttribute attributeName="numberOfCarbon" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="averageDiameter" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="averageDiameterUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer">
+  <ns1:TypeAttribute attributeName="branch" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="generation" javaTypeName="java.lang.Float"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.QuantumDot">
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="chirality" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="wallType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="diameterUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="averageLengthUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="averageLength" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="diameter" javaTypeName="java.lang.Float"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.MetalParticle">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.Liposome">
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="polymerName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="polymerized" javaTypeName="java.lang.Boolean"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.nanomaterial.Emulsion">
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="polymerName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="polymerized" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.NanomaterialEntity</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.AssociatedElement">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="pubChemId" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormulaType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="pubChemDataSourceName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormula" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.particle.ComposingElement</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.Sample">
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.SampleComposition">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.Characterization">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.characterization.OtherCharacterization</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity">
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="pubChemId" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="molecularFormula" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubChemDataSourceName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="molecularFormulaType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.agentmaterial.Antibody</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer</ns1:SubclassName>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.AssociatedElement</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.ComposingElement">
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubChemDataSourceName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormulaType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="molecularFormula" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="pubChemId" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.AssociatedElement</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.linkage.Attachment</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.linkage.Encapsulation</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.linkage.Entrapment</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.particle.Function">
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.TherapeuticFunction</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.ImagingFunction</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.TargetingFunction</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.OtherFunction</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.Transfection">
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="cellLine" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.OxidativeStress">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="designMethodsDescription" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="assayType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="analysisConclusion" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="date" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Condition">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="property" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Datum">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="valueUnit" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="valueType" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.Float"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Author">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="lastName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="firstName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="initial" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Organization">
+  <ns1:TypeAttribute attributeName="postalCode" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="streetAddress1" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="city" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="state" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="streetAddress2" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Organization">
+  <ns1:TypeAttribute attributeName="postalCode" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="streetAddress1" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="city" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="state" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="country" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="streetAddress2" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Publication">
+  <ns1:TypeAttribute attributeName="digitalObjectId" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="journalName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="year" javaTypeName="java.lang.Integer"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="category" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="status" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="volume" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="uri" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="pubMedId" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="startPage" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="uriExternal" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="endPage" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="title" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="researchArea" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.common.File</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.CommonLookup">
+  <ns1:TypeAttribute attributeName="value" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="attribute" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.PointOfContact">
+  <ns1:TypeAttribute attributeName="role" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="lastName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="middleInitial" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="email" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="firstName" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="phone" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.Protocol">
+  <ns1:TypeAttribute attributeName="abbreviation" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="version" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.common.File">
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="uriExternal" javaTypeName="java.lang.Boolean"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="title" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="uri" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.common.Publication</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.ImagingFunction">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="modality" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Function</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.Antigen">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="species" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.function.Target</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.OtherTarget">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.function.Target</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.TargetingFunction">
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Function</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.OtherFunction">
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="type" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Function</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.Target">
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.Antigen</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.Receptor</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.OtherTarget</ns1:SubclassName>
+  <ns1:SubclassName>gov.nih.nci.cananolab.domain.function.Gene</ns1:SubclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.Receptor">
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.function.Target</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.Gene">
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="name" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.function.Target</ns1:SuperclassName>
+ </ns1:DomainType>
+ <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.function.TherapeuticFunction">
+  <ns1:TypeAttribute attributeName="id" javaTypeName="java.lang.Long"/>
+  <ns1:TypeAttribute attributeName="createdBy" javaTypeName="java.lang.String"/>
+  <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>
+  <ns1:TypeAttribute attributeName="description" javaTypeName="java.lang.String"/>
+  <ns1:SuperclassName>gov.nih.nci.cananolab.domain.particle.Function</ns1:SuperclassName>
+ </ns1:DomainType>
+</ns1:DomainTypesInformation>

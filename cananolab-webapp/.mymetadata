@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="cananolab-webapp"
+  id="myeclipse.1265057136064"
+  context-root="/caNanoLab"
+  j2ee-spec="1.4"
+  archive="caNanoLab.war">
+  <attributes>
+    <attribute name="webrootdir" value="/web" />
+  </attributes>
+</project-module>
+

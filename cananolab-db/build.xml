@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<project name="cananolab-db" default="sync:update" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<description>
+	This is the build file for the caNanoLab database project.
+	</description>
+
+	<!-- Property file related properties and tasks -->
+	<property file="build.properties" />
+	<property file="project.properties" />
+	<property name="src.dir" location="${basedir}/sql/mysql" />
+	<property name="changelog.dir" location="${basedir}/changelog" />
+	<property name="common.dir" location="${basedir}/../common" />
+	<property name="dist.dir" location="${basedir}/target/dist" />
+	<!-- antcontrib task-->
+	<path id="common.classpath">
+		<fileset dir="${common.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
+
+	<!-- maven ant task -->
+	<path id="maven-ant-tasks.classpath" path="${common.dir}/lib/maven-ant-tasks-2.1.3.jar" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" classpathref="maven-ant-tasks.classpath" />
+
+	<!--set up required dependencies jars for compile time and run time thru Maven -->
+	<artifact:pom id="cananolab-db-pom" file="pom.xml" />
+	<artifact:dependencies pathId="dependency.classpath" filesetId="dependency.fileset" pomRefId="cananolab-db-pom" useScope="compile" />
+
+	<!--set up liquibase classpath -->
+	<path id="liquibase.dependencies.path">
+		<fileset refid="dependency.fileset" />
+		<!--include base directory so relative file path is recognized -->
+		<pathelement path="${basedir}" />
+	</path>
+
+	<taskdef resource="liquibasetasks.properties">
+		<classpath refid="liquibase.dependencies.path" />
+	</taskdef>
+
+	<!-- Targets -->
+	<target name="clean">
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="init" depends="clean" description="initialize dist directories">
+		<mkdir dir="${dist.dir}" />
+	</target>
+
+	<filterset id="db.filterset">
+		<filter token="database.url" value="${database.url}" />
+		<filter token="database.user" value="${database.user}" />
+		<filter token="database.password" value="${database.password}" />
+	</filterset>
+
+	<!-- mark the database as changelog sync, required for the first time when migrating to liquibase-->
+	<target name="sync:changelog">
+		<copy overwrite="true" tofile="${dist.dir}/db-changelog-sync.xml" file="${changelog.dir}/db-upgrade.xml" />
+		<replaceregexp file="${dist.dir}/db-changelog-sync.xml" match=".+changelog/db-${release.version}.xml.+" replace="" byline="false" />
+		<changeLogSync changeLogFile="${dist.dir}/db-changelog-sync.xml" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" />
+	</target>
+
+	<target name="update">
+		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+	</target>
+
+	<target name="sync:update" depends="clean, init">
+		<!-- sync change log -->
+		<antcall target="sync:changelog" />
+		<antcall target="update" />
+	</target>
+
+	<target name="tag">
+		<tagDatabase driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" classpathref="liquibase.dependencies.path" tag="${tag.value}" />
+	</target>
+
+	<target name="install:new" depends="clean, init">
+		<!-- replace tokens in create_database_and_user.sql with user info -->
+		<copy overwrite="true" todir="${dist.dir}" filtering="true">
+			<fileset dir="${src.dir}">
+				<include name="create_database_and_user.sql" />
+			</fileset>
+			<filterset refid="db.filterset" />
+		</copy>
+		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
+		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+	</target>
+
+	<target name="update:ldap:upt:superadmin" depends="clean, init">
+		<if>
+			<!--if use LDAP authentication, replace ldap tokens from build properties -->
+			<equals arg1="${ldap.authentication.enabled}" arg2="true" />
+			<then>
+				<!-- replace tokens in create_database_and_user.sql with user info -->
+				<copy overwrite="true" todir="${dist.dir}" filtering="true">
+					<fileset dir="${src.dir}">
+						<include name="update_superadmin_for_ldap.sql" />
+					</fileset>
+					<filterset>
+						<filter token="superadmin.login.name" value="${superadmin.login.name}" />
+						<filter token="superadmin.first.name" value="${superadmin.first.name}" />
+						<filter token="superadmin.last.name" value="${superadmin.last.name}" />
+					</filterset>
+				</copy>
+				<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/update_superadmin_for_ldap.sql" classpathref="liquibase.dependencies.path" />
+			</then>
+		</if>
+	</target>
+</project>
