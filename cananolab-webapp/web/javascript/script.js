@@ -582,6 +582,6 @@ function enableOuterButtons() {
 
 function showUPTWarning() {
 	if (confirm("Warning:  Please restrict the use of UPT to creating user accounts only.  DO NOT use UPT to create collaboration groups nor to assign users/groups accesses to data.  To set up collaboration groups properly, go to the Community tab and click on Manage Collaboration Groups.  To set up data access privileges, go to data submission forms and click on Add Access.")) {
-		openHelpWindow('/upt');
+		openHelpWindow('/uptlogin');
 	}
 }
