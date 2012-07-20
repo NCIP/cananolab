@@ -31,7 +31,7 @@
 <map name="funcMap" id="funcMap">
 	<%-- Create User Account --%>
 	<c:if test="${!empty user && user.admin }">
-		<area href="javascript:openHelpWindow('/upt')" shape="rect"
+		<area href="javascript:openHelpWindow('/uptlogin')" shape="rect"
 			coords="60,55,156,93" alt="rectangle" />
 	</c:if>
 
