@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration PUBLIC 
+  "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+  
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<param name="Threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- The default pattern: Date Priority [Category] Message\n -->
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="clientLog" class="org.apache.log4j.FileAppender">
+		<param name="Append" value="false" />
+		<param name="File" value="./log/client.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.hibernate">
+		<level value="warn" />
+	</logger>
+
+	<logger name="org.apache">
+		<level value="warn" />
+	</logger>
+
+	<logger name="gov.nih.nci">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework">
+		<level value="error" />
+	</logger>
+
+	<root>
+		<priority value="error" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="clientLog" />		
+	</root>
+</log4j:configuration>
