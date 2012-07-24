@@ -69,7 +69,6 @@ public class ThomsonReutersClient {
 		logger.info("Finished retrieving " + sampleIds.length + " sample IDs");
 		int j = 1;
 		for (String sampleId : sampleIds) {
-			if (j==640) {
 			strBuilder = new StringBuilder();
 			/* populate each row */
 			logger.info("*** Start sample " + j + "(ID: " + sampleId + ") ***");
@@ -82,7 +81,6 @@ public class ThomsonReutersClient {
 			strBuilder.append(data.getCitation());
 			out.write(strBuilder.toString());
 			out.newLine();
-			}
 			j++;
 		}
 		out.close();
