@@ -69,31 +69,20 @@ public class ThomsonReutersClient {
 		logger.info("Finished retrieving " + sampleIds.length + " sample IDs");
 		int j = 1;
 		for (String sampleId : sampleIds) {
+			if (j==640) {
 			strBuilder = new StringBuilder();
-//			if (j == 222) {
-				/* populate each row */
-				logger.info("*** Start sample " + j + "(ID: " + sampleId
-						+ ") ***");
-				try {
-					ThomsonReutersData data = this
-							.populateThomsonReutersData(sampleId);
-					strBuilder.append(data.getSource()).append(FILE_DELIMITER);
-					strBuilder.append(data.getSourceURL()).append(
-							FILE_DELIMITER);
-					strBuilder.append(data.getDataDistributer()).append(
-							FILE_DELIMITER);
-					strBuilder.append(data.getAuthorship()).append(
-							FILE_DELIMITER);
-					strBuilder.append(data.getAbstractText()).append(
-							FILE_DELIMITER);
-					strBuilder.append(data.getCitation());
-					out.write(strBuilder.toString());
-					out.newLine();
-				} catch (Exception e) {
-					logger.error("Error processing sample " + sampleId + ": "
-							+ e);
-				}
-//			}
+			/* populate each row */
+			logger.info("*** Start sample " + j + "(ID: " + sampleId + ") ***");
+			ThomsonReutersData data = this.populateThomsonReutersData(sampleId);
+			strBuilder.append(data.getSource()).append(FILE_DELIMITER);
+			strBuilder.append(data.getSourceURL()).append(FILE_DELIMITER);
+			strBuilder.append(data.getDataDistributer()).append(FILE_DELIMITER);
+			strBuilder.append(data.getAuthorship()).append(FILE_DELIMITER);
+			strBuilder.append(data.getAbstractText()).append(FILE_DELIMITER);
+			strBuilder.append(data.getCitation());
+			out.write(strBuilder.toString());
+			out.newLine();
+			}
 			j++;
 		}
 		out.close();
@@ -102,19 +91,27 @@ public class ThomsonReutersClient {
 				+ (endTime - startTime) / 1000f + " seconds");
 	}
 
-	private ThomsonReutersData populateThomsonReutersData(String sampleId)
-			throws RemoteException {
+	private ThomsonReutersData populateThomsonReutersData(String sampleId) {
 		ThomsonReutersData data = null;
+		PointOfContact primaryPOC = null;
+		List<Publication> pubs = null;
 		try {
-			PointOfContact primaryPOC = gridClient
+			primaryPOC = gridClient
 					.getPrimaryPointOfContactBySampleId(sampleId);
-			loadOrganizationForPointOfContact(primaryPOC);
-			logger.info("loaded organization for POC");
-			SampleComposition comp = this.retrieveComposition(sampleId);
-			logger.info("loaded nanomaterial entities");
+			if (primaryPOC != null) {
+				loadOrganizationForPointOfContact(primaryPOC);
+				logger.info("loaded organization for POC");
+			}
+		} catch (Exception e) {
+			logger.error("Error loading primary POC for sample " + sampleId
+					+ ": " + e);
+		}
+		SampleComposition comp = this.retrieveComposition(sampleId);
+		logger.info("loaded nanomaterial entities");
+
+		try {
 			Publication[] publications = gridClient
 					.getPublicationsBySampleId(sampleId);
-			List<Publication> pubs = null;
 			if (publications != null) {
 				pubs = new ArrayList<Publication>();
 				for (Publication pub : publications) {
@@ -122,13 +119,15 @@ public class ThomsonReutersClient {
 					pubs.add(pub);
 				}
 				logger.info("loaded publications with authors");
+
 			}
-			data = new ThomsonReutersData(sampleId, primaryPOC,
-					comp.getNanomaterialEntityCollection(), pubs);
 		} catch (Exception e) {
-			logger.error("Error retrieving data for sample Id " + sampleId
-					+ ":" + e);
+			logger.error("Error loading publications for sample " + sampleId
+					+ ": " + e);
 		}
+		data = new ThomsonReutersData(sampleId, primaryPOC,
+				comp.getNanomaterialEntityCollection(), pubs);
+
 		return data;
 	}
 
@@ -217,9 +216,10 @@ public class ThomsonReutersClient {
 				for (String name : nanoEntityClassNames) {
 					String fullClassName = null;
 					if (ClassUtils.getFullClass(name) != null) {
-						//add the package name in case of biopolymer which can also be in the agentmaterial package
-						fullClassName = ClassUtils.getFullClass("nanomaterial."+name)
-								.getCanonicalName();
+						// add the package name in case of biopolymer which can
+						// also be in the agentmaterial package
+						fullClassName = ClassUtils.getFullClass(
+								"nanomaterial." + name).getCanonicalName();
 					} else {
 						fullClassName = ClassUtils.getFullClass(
 								OtherNanomaterialEntity.class
@@ -297,7 +297,7 @@ public class ThomsonReutersClient {
 
 	public static void main(String args[]) {
 		// String gridUrl=args[0];
-		String gridUrl = "http://cananolab.nci.nih.gov:80/wsrf-canano/services/cagrid/CaNanoLabService";
+		String gridUrl = "http://cananolab-dev.nci.nih.gov:80/wsrf-canano/services/cagrid/CaNanoLabService";
 		String outputFileName = "TR_caNanoLab_data.txt";
 		try {
 			CaNanoLabServiceClient gridClient = new CaNanoLabServiceClient(
