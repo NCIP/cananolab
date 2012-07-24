@@ -25,7 +25,7 @@ public class ThomsonReutersData {
 	private String authorship;
 	private String abstractText;
 	private String citation;
-	private static String FIELD_SEPARATOR=" | ";
+	private static String FIELD_SEPARATOR = " | ";
 	public static String[] headers = new String[] { "SOURCE", "SOURCE URL",
 			"DATA DISTRIBUTER/PUBLISHER", "AUTHORSHIP", "ABSTRACT", "CITATION" };
 
@@ -36,8 +36,7 @@ public class ThomsonReutersData {
 			Collection<Publication> publications) {
 		sourceURL = CANANOLAB_SOURCE_URL_PREFIX + sampleId;
 		// assume organization is loaded
-		dataDistributer = this
-				.getOrganizationDisplayName(poc.getOrganization());
+		dataDistributer = this.getOrganizationDisplayName(poc);
 		authorship = this.getPersonDisplayName(poc);
 		abstractText = this.getNanomaterialEntityDescriptions(nanoEntities);
 		citation = this.getPublicationDisplayNames(publications);
@@ -95,7 +94,11 @@ public class ThomsonReutersData {
 		return StringUtils.join(nameStrs, FIELD_SEPARATOR);
 	}
 
-	private String getOrganizationDisplayName(Organization org) {
+	private String getOrganizationDisplayName(PointOfContact poc) {
+		if (poc == null) {
+			return null;
+		}
+		Organization org = poc.getOrganization();
 		if (org == null) {
 			return "";
 		}
@@ -122,13 +125,17 @@ public class ThomsonReutersData {
 		}
 		List<String> entityStrs = new ArrayList<String>();
 		for (NanomaterialEntity entity : entities) {
-			String description=entity.getDescription();
-			//remove the first sentence in the description that starts with "This particle is described in"
-			int index=description.indexOf(".");
-			if (index!=-1) {
-				String firstSentence=description.substring(0, index);
-				if (firstSentence.startsWith("This nanoparticle is described in")) {
-					description=description.substring(index+1).trim();
+			String description = entity.getDescription();
+			// remove the first sentence in the description that starts with
+			// "This particle is described in"
+			if (description != null) {
+				int index = description.indexOf(".");
+				if (index != -1) {
+					String firstSentence = description.substring(0, index);
+					if (firstSentence
+							.startsWith("This nanoparticle is described in")) {
+						description = description.substring(index + 1).trim();
+					}
 				}
 			}
 			entityStrs.add(description);
@@ -136,7 +143,8 @@ public class ThomsonReutersData {
 		return StringUtils.join(entityStrs, FIELD_SEPARATOR);
 	}
 
-	private String getPublicationDisplayNames(Collection<Publication> publications) {
+	private String getPublicationDisplayNames(
+			Collection<Publication> publications) {
 		if (publications == null || publications.isEmpty()) {
 			return "";
 		}
