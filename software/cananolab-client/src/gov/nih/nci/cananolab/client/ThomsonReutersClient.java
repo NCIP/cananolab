@@ -295,7 +295,7 @@ public class ThomsonReutersClient {
 
 	public static void main(String args[]) {
 		// String gridUrl=args[0];
-		String gridUrl = "http://cananolab-dev.nci.nih.gov:80/wsrf-canano/services/cagrid/CaNanoLabService";
+		String gridUrl = "http://cananolab.nci.nih.gov:80/wsrf-canano/services/cagrid/CaNanoLabService";
 		String outputFileName = "TR_caNanoLab_data.txt";
 		try {
 			CaNanoLabServiceClient gridClient = new CaNanoLabServiceClient(
