@@ -331,14 +331,18 @@ public class ThomsonReutersClient {
 	}
 
 	public static void main(String args[]) {
-		// String gridUrl=args[0];
-		String gridUrl = "http://cananolab.nci.nih.gov:80/wsrf-canano/services/cagrid/CaNanoLabService";
-		String outputFileName = "TR_caNanoLab_data.txt";
+		// String gridUrl =
+		// "http://cananolab.nci.nih.gov:80/wsrf-canano/services/cagrid/CaNanoLabService";
+		String gridUrl = args[0];
+		// String outputFileDirectory = "C:/dist";
+		String outputFileDirectory = args[1];
+		// String outputFileName = "TR_caNanoLab_data.txt";
+		String outputFileName = args[2];
 		try {
 			CaNanoLabServiceClient gridClient = new CaNanoLabServiceClient(
 					gridUrl);
 			ThomsonReutersClient client = new ThomsonReutersClient(gridClient);
-			client.generateOutputFile("C:/dist", outputFileName);
+			client.generateOutputFile(outputFileDirectory, outputFileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
