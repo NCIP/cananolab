@@ -10,6 +10,8 @@
 	<changeSet id="1.5.4-1" author="pansu">
 		<comment>csm upgrade to version 4.2.3</comment>
 		<sqlFile path="sql/mysql/1.5.4/upgrade_csm_schema.sql" />
+	</chagenSet>
+	<changeSet>
 		<comment>csm data cleanup</comment>
 		<sqlFile path="sql/mysql/1.5.4/csm_data_cleanup.sql" />
 	</changeSet>
