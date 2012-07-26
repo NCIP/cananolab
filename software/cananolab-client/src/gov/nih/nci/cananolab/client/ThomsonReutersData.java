@@ -19,21 +19,27 @@ import java.util.List;
  * 
  */
 public class ThomsonReutersData {
+	private String recordId;
+	private String title;
 	private String source = "caNanoLab";
 	private String sourceURL;
 	private String dataDistributer;
 	private String authorship;
 	private String abstractText;
 	private String citation;
-	private static String FIELD_SEPARATOR = " | ";
-	public static String[] headers = new String[] { "SOURCE", "SOURCE URL",
-			"DATA DISTRIBUTER/PUBLISHER", "AUTHORSHIP", "ABSTRACT", "CITATION" };
+	private static String FIELD_SEPARATOR = " , ";
+	private static String ENTRY_SEPARATOR = " | ";
+	public static String[] headers = new String[] { "RECORD ID", "TITLE",
+			"SOURCE", "SOURCE URL", "DATA DISTRIBUTER/PUBLISHER", "AUTHORSHIP",
+			"ABSTRACT", "CITATION" };
 
 	private static String CANANOLAB_SOURCE_URL_PREFIX = "https://cananolab.nci.nih.gov/caNanoLab/sample.do?dispatch=summaryView&page=0&sampleId=";
 
-	public ThomsonReutersData(String sampleId, PointOfContact poc,
-			Collection<NanomaterialEntity> nanoEntities,
+	public ThomsonReutersData(String sampleId, String sampleName,
+			PointOfContact poc, Collection<NanomaterialEntity> nanoEntities,
 			Collection<Publication> publications) {
+		recordId = sampleId;
+		title = sampleName;
 		sourceURL = CANANOLAB_SOURCE_URL_PREFIX + sampleId;
 		// assume organization is loaded
 		dataDistributer = this.getOrganizationDisplayName(poc);
@@ -42,16 +48,26 @@ public class ThomsonReutersData {
 		citation = this.getPublicationDisplayNames(publications);
 	}
 
-	public ThomsonReutersData(String source, String sourceURL,
-			String dataDistributer, String authorship, String abstractText,
-			String citation) {
+	public ThomsonReutersData(String recordId, String title, String source,
+			String sourceURL, String dataDistributer, String authorship,
+			String abstractText, String citation) {
 		super();
+		this.recordId = recordId;
+		this.title = title;
 		this.source = source;
 		this.sourceURL = sourceURL;
 		this.dataDistributer = dataDistributer;
 		this.authorship = authorship;
 		this.abstractText = abstractText;
 		this.citation = citation;
+	}
+
+	public String getRecordId() {
+		return recordId;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	public String getSource() {
@@ -140,7 +156,7 @@ public class ThomsonReutersData {
 			}
 			entityStrs.add(description);
 		}
-		return StringUtils.join(entityStrs, FIELD_SEPARATOR);
+		return StringUtils.join(entityStrs, ENTRY_SEPARATOR);
 	}
 
 	private String getPublicationDisplayNames(
@@ -152,7 +168,7 @@ public class ThomsonReutersData {
 		for (Publication pub : publications) {
 			pubStrs.add(this.getPublicationDisplayName(pub));
 		}
-		return StringUtils.join(pubStrs, FIELD_SEPARATOR);
+		return StringUtils.join(pubStrs, ENTRY_SEPARATOR);
 	}
 
 	private String getAuthorsDisplayName(Publication pub) {
@@ -163,7 +179,7 @@ public class ThomsonReutersData {
 			authorStrs.add(author.getInitial());
 			strs.add(StringUtils.join(authorStrs, ", "));
 		}
-		return StringUtils.join(strs, ", ");
+		return StringUtils.join(strs, FIELD_SEPARATOR);
 	}
 
 	private String getPublishInfoDisplayName(Publication pub) {
