@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -38,7 +39,7 @@ import org.apache.log4j.Logger;
  */
 public class ThomsonReutersClient {
 	private CaNanoLabServiceClient gridClient;
-	private static String FILE_DELIMITER = "\t";
+	private static String FIELD_DELIMITER = "\t";
 	private static Logger logger = Logger.getLogger(ThomsonReutersClient.class);
 
 	public ThomsonReutersClient(CaNanoLabServiceClient gridClient) {
@@ -56,7 +57,7 @@ public class ThomsonReutersClient {
 		for (String header : ThomsonReutersData.headers) {
 			strBuilder.append(header);
 			if (i < ThomsonReutersData.headers.length) {
-				strBuilder.append(FILE_DELIMITER);
+				strBuilder.append(FIELD_DELIMITER);
 			}
 			i++;
 		}
@@ -73,11 +74,14 @@ public class ThomsonReutersClient {
 			/* populate each row */
 			logger.info("*** Start sample " + j + "(ID: " + sampleId + ") ***");
 			ThomsonReutersData data = this.populateThomsonReutersData(sampleId);
-			strBuilder.append(data.getSource()).append(FILE_DELIMITER);
-			strBuilder.append(data.getSourceURL()).append(FILE_DELIMITER);
-			strBuilder.append(data.getDataDistributer()).append(FILE_DELIMITER);
-			strBuilder.append(data.getAuthorship()).append(FILE_DELIMITER);
-			strBuilder.append(data.getAbstractText()).append(FILE_DELIMITER);
+			strBuilder.append(data.getRecordId()).append(FIELD_DELIMITER);
+			strBuilder.append(data.getTitle()).append(FIELD_DELIMITER);
+			strBuilder.append(data.getSource()).append(FIELD_DELIMITER);
+			strBuilder.append(data.getSourceURL()).append(FIELD_DELIMITER);
+			strBuilder.append(data.getDataDistributer())
+					.append(FIELD_DELIMITER);
+			strBuilder.append(data.getAuthorship()).append(FIELD_DELIMITER);
+			strBuilder.append(data.getAbstractText()).append(FIELD_DELIMITER);
 			strBuilder.append(data.getCitation());
 			out.write(strBuilder.toString());
 			out.newLine();
@@ -93,6 +97,7 @@ public class ThomsonReutersClient {
 		ThomsonReutersData data = null;
 		PointOfContact primaryPOC = null;
 		List<Publication> pubs = null;
+		Sample sample = this.loadSample(sampleId);
 		try {
 			primaryPOC = gridClient
 					.getPrimaryPointOfContactBySampleId(sampleId);
@@ -123,10 +128,42 @@ public class ThomsonReutersClient {
 			logger.error("Error loading publications for sample " + sampleId
 					+ ": " + e);
 		}
-		data = new ThomsonReutersData(sampleId, primaryPOC,
+		String sampleName = "";
+		if (sample != null) {
+			sampleName = sample.getName();
+		}
+		data = new ThomsonReutersData(sampleId, sampleName, primaryPOC,
 				comp.getNanomaterialEntityCollection(), pubs);
 
 		return data;
+	}
+
+	private Sample loadSample(String sampleId) {
+		Sample sample = null;
+		try {
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+			CQLQuery query = new CQLQuery();
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(sampleId);
+			target.setAttribute(attribute);
+			query.setTarget(target);
+			CQLQueryResults results;
+			results = gridClient.query(query);
+
+			results.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				sample = (Sample) obj;
+				logger.info("loaded sample info for " + sampleId);
+			}
+		} catch (Exception e) {
+			logger.error("Error loading sample info for " + sampleId);
+		}
+		return sample;
 	}
 
 	private void loadAuthorsForPublication(Publication publication) {
