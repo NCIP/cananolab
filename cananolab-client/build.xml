@@ -24,6 +24,7 @@
 		<!-- create the necessary folders -->
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${log.dir}" />
+		<mkdir dir="${output.directory}"/>
 		<filterset id="properties.filterset">
 			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
 			<filter token="ADMIN_EMAIL" value="${admin.email}" />
