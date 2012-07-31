@@ -85,6 +85,7 @@
 		</copy>
 		<sql driver="${database.driver}" url="${database.system.url}" userid="${database.system.user}" password="${database.system.password}" src="${dist.dir}/create_database_and_user.sql" classpathref="liquibase.dependencies.path" />
 		<updateDatabase changeLogFile="${changelog.dir}/${db.changelog.file}" driver="${database.driver}" url="${database.url}" username="${database.system.user}" password="${database.system.password}" dropFirst="false" classpathref="liquibase.dependencies.path" />
+		<antcall target="update:ldap:upt:superadmin"/>
 	</target>
 
 	<target name="update:ldap:upt:superadmin" depends="clean, init">
