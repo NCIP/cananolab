@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="cananolab-client" default="run" basedir=".">
+	<description>
+	This is the build file for the caNanoLab client project.
+	</description>
+
+	<property file="build.properties" />
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="build.dir" location="${basedir}/bin" />
+	<property name="log.dir" location="${basedir}/log" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="init">
+		<!-- create the necessary folders -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${log.dir}" />
+		<mkdir dir="${output.directory}"/>
+		<filterset id="properties.filterset">
+			<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />
+			<filter token="ADMIN_EMAIL" value="${admin.email}" />
+			<filter token="ONLINE_HELP_URL" value="${online.help.url}" />
+			<filter token="USE_LDAP" value="${ldap.authentication.enabled}" />
+		</filterset>
+	</target>
+
+	<target name="compile" depends="clean, init">
+		<echo message="*******************************************" />
+		<echo message="**   Compiling Java Classes ...          **" />
+		<echo message="*******************************************" />
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="true">
+			<classpath refid="classpath" />
+		</javac>
+
+		<!-- copy client-config.wsdd and log4j.xml -->
+		<copy todir="${build.dir}">
+			<fileset dir="${src.dir}">
+				<include name="client-config.wsdd" />
+				<include name="log4j.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="run" depends="compile">
+		<echo message="********************************************" />
+		<echo message="**   Running Client ...                   **" />
+		<echo message="********************************************" />
+		<java classname="gov.nih.nci.cananolab.client.ThomsonReutersClient" fork="true">
+			<classpath>
+				<path refid="classpath" />
+				<pathelement location="${build.dir}" />
+			</classpath>
+			<arg value="${cananolab.grid.service.url}" />
+			<arg value="${output.directory}" />
+			<arg value="${output.filename}" />
+		</java>
+	</target>
+</project>
