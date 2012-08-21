@@ -1,0 +1,6 @@
+fileRepositoryDir=@FILE_REPOSITORY_DIR@
+adminEmail=@ADMIN_EMAIL@
+mailServerHost=mailfwd.nih.gov
+doNotReply=caNanoLab <do.not.reply@mail.nih.gov>
+onlineHelpUrl=@ONLINE_HELP_URL@
+useLDAP=@USE_LDAP@

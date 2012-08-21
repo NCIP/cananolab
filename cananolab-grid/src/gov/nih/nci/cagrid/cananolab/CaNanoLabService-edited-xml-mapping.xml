@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+  <class name="gov.nih.nci.cananolab.domain.particle.Characterization" identity="id">
+    <map-to xml="Characterization" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="analysisConclusion" type="string">
+      <bind-xml name="analysisConclusion" node="attribute" />
+    </field>
+    <field name="assayType" type="string">
+      <bind-xml name="assayType" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="date" type="java.util.Date">
+      <bind-xml name="date" node="attribute" />
+    </field>
+    <field name="designMethodsDescription" type="string">
+      <bind-xml name="designMethodsDescription" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Condition" identity="id">
+    <map-to xml="Condition" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="property" type="string">
+      <bind-xml name="property" node="attribute" />
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" node="attribute" />
+    </field>
+    <field name="valueType" type="string">
+      <bind-xml name="valueType" node="attribute" />
+    </field>
+    <field name="valueUnit" type="string">
+      <bind-xml name="valueUnit" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.CommonLookup" identity="id">
+    <map-to xml="CommonLookup" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="attribute" type="string">
+      <bind-xml name="attribute" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation" identity="id">
+    <map-to xml="ChemicalAssociation" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Datum" identity="id">
+    <map-to xml="Datum" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="value" type="float">
+      <bind-xml name="value" node="attribute" />
+    </field>
+    <field name="valueType" type="string">
+      <bind-xml name="valueType" node="attribute" />
+    </field>
+    <field name="valueUnit" type="string">
+      <bind-xml name="valueUnit" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.AssociatedElement" identity="id">
+    <map-to xml="AssociatedElement" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="molecularFormula" type="string">
+      <bind-xml name="molecularFormula" node="attribute" />
+    </field>
+    <field name="molecularFormulaType" type="string">
+      <bind-xml name="molecularFormulaType" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="pubChemDataSourceName" type="string">
+      <bind-xml name="pubChemDataSourceName" node="attribute" />
+    </field>
+    <field name="pubChemId" type="long">
+      <bind-xml name="pubChemId" node="attribute" />
+    </field>
+    <field name="value" type="float">
+      <bind-xml name="value" node="attribute" />
+    </field>
+    <field name="valueUnit" type="string">
+      <bind-xml name="valueUnit" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Keyword" identity="id">
+    <map-to xml="Keyword" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity" identity="id">
+    <map-to xml="NanomaterialEntity" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.File" identity="id">
+    <map-to xml="File" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="title" type="string">
+      <bind-xml name="title" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+    <field name="uri" type="string">
+      <bind-xml name="uri" node="attribute" />
+    </field>
+    <field name="uriExternal" type="boolean">
+      <bind-xml name="uriExternal" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.Function" identity="id">
+    <map-to xml="Function" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Instrument" identity="id">
+    <map-to xml="Instrument" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="manufacturer" type="string">
+      <bind-xml name="manufacturer" node="attribute" />
+    </field>
+    <field name="modelName" type="string">
+      <bind-xml name="modelName" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.SampleComposition" identity="id">
+    <map-to xml="SampleComposition" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Organization" identity="id">
+    <map-to xml="Organization" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="city" type="string">
+      <bind-xml name="city" node="attribute" />
+    </field>
+    <field name="country" type="string">
+      <bind-xml name="country" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="postalCode" type="string">
+      <bind-xml name="postalCode" node="attribute" />
+    </field>
+    <field name="state" type="string">
+      <bind-xml name="state" node="attribute" />
+    </field>
+    <field name="streetAddress1" type="string">
+      <bind-xml name="streetAddress1" node="attribute" />
+    </field>
+    <field name="streetAddress2" type="string">
+      <bind-xml name="streetAddress2" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.ExperimentConfig" identity="id">
+    <map-to xml="ExperimentConfig" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.PointOfContact" identity="id">
+    <map-to xml="PointOfContact" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="email" type="string">
+      <bind-xml name="email" node="attribute" />
+    </field>
+    <field name="firstName" type="string">
+      <bind-xml name="firstName" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="lastName" type="string">
+      <bind-xml name="lastName" node="attribute" />
+    </field>
+    <field name="middleInitial" type="string">
+      <bind-xml name="middleInitial" node="attribute" />
+    </field>
+    <field name="phone" type="string">
+      <bind-xml name="phone" node="attribute" />
+    </field>
+    <field name="role" type="string">
+      <bind-xml name="role" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Protocol" identity="id">
+    <map-to xml="Protocol" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="abbreviation" type="string">
+      <bind-xml name="abbreviation" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+    <field name="version" type="string">
+      <bind-xml name="version" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.ActivationMethod" identity="id">
+    <map-to xml="ActivationMethod" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="activationEffect" type="string">
+      <bind-xml name="activationEffect" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.Target" identity="id">
+    <map-to xml="Target" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.Sample" identity="id">
+    <map-to xml="Sample" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Finding" identity="id">
+    <map-to xml="Finding" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Author" identity="id">
+    <map-to xml="Author" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="firstName" type="string">
+      <bind-xml name="firstName" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="initial" type="string">
+      <bind-xml name="initial" node="attribute" />
+    </field>
+    <field name="lastName" type="string">
+      <bind-xml name="lastName" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Technique" identity="id">
+    <map-to xml="Technique" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="abbreviation" type="string">
+      <bind-xml name="abbreviation" node="attribute" />
+    </field>
+    <field name="createdBy" type="string">
+      <bind-xml name="createdBy" node="attribute" />
+    </field>
+    <field name="createdDate" type="java.util.Date">
+      <bind-xml name="createdDate" node="attribute" />
+    </field>
+    <field name="id" type="long">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.TherapeuticFunction" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Function">
+    <map-to xml="TherapeuticFunction" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Characterization">
+    <map-to xml="PhysicoChemicalCharacterization" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.Liposome" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="Liposome" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="polymerized" type="boolean">
+      <bind-xml name="polymerized" node="attribute" />
+    </field>
+    <field name="polymerName" type="string">
+      <bind-xml name="polymerName" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.OtherCharacterization" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Characterization">
+    <map-to xml="OtherCharacterization" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization" />
+    <field name="assayCategory" type="string">
+      <bind-xml name="assayCategory" node="attribute" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="Biopolymer" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="name" type="string">
+      <bind-xml name="name" node="attribute" />
+    </field>
+    <field name="sequence" type="string">
+      <bind-xml name="sequence" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.ComposingElement" identity="id" extends="gov.nih.nci.cananolab.domain.particle.AssociatedElement">
+    <map-to xml="ComposingElement" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.MetalParticle" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="MetalParticle" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.linkage.Attachment" identity="id" extends="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation">
+    <map-to xml="Attachment" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" />
+    <field name="bondType" type="string">
+      <bind-xml name="bondType" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.Receptor" identity="id" extends="gov.nih.nci.cananolab.domain.function.Target">
+    <map-to xml="Receptor" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.Fullerene" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="Fullerene" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="averageDiameter" type="float">
+      <bind-xml name="averageDiameter" node="attribute" />
+    </field>
+    <field name="averageDiameterUnit" type="string">
+      <bind-xml name="averageDiameterUnit" node="attribute" />
+    </field>
+    <field name="numberOfCarbon" type="integer">
+      <bind-xml name="numberOfCarbon" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Characterization">
+    <map-to xml="InvivoCharacterization" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.Gene" identity="id" extends="gov.nih.nci.cananolab.domain.function.Target">
+    <map-to xml="Gene" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.Antigen" identity="id" extends="gov.nih.nci.cananolab.domain.function.Target">
+    <map-to xml="Antigen" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+    <field name="species" type="string">
+      <bind-xml name="species" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.OtherFunction" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Function">
+    <map-to xml="OtherFunction" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.TargetingFunction" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Function">
+    <map-to xml="TargetingFunction" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.linkage.Encapsulation" identity="id" extends="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation">
+    <map-to xml="Encapsulation" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.Polymer" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="Polymer" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="crossLinkDegree" type="float">
+      <bind-xml name="crossLinkDegree" node="attribute" />
+    </field>
+    <field name="crossLinked" type="boolean">
+      <bind-xml name="crossLinked" node="attribute" />
+    </field>
+    <field name="initiator" type="string">
+      <bind-xml name="initiator" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.ImagingFunction" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Function">
+    <map-to xml="ImagingFunction" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+    <field name="modality" type="string">
+      <bind-xml name="modality" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="Dendrimer" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="branch" type="string">
+      <bind-xml name="branch" node="attribute" />
+    </field>
+    <field name="generation" type="float">
+      <bind-xml name="generation" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="OtherNanomaterialEntity" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.linkage.Entrapment" identity="id" extends="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation">
+    <map-to xml="Entrapment" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity" identity="id" extends="gov.nih.nci.cananolab.domain.particle.AssociatedElement">
+    <map-to xml="FunctionalizingEntity" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.QuantumDot" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="QuantumDot" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.common.Publication" identity="id" extends="gov.nih.nci.cananolab.domain.common.File">
+    <map-to xml="Publication" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.common" />
+    <field name="category" type="string">
+      <bind-xml name="category" node="attribute" />
+    </field>
+    <field name="digitalObjectId" type="string">
+      <bind-xml name="digitalObjectId" node="attribute" />
+    </field>
+    <field name="endPage" type="string">
+      <bind-xml name="endPage" node="attribute" />
+    </field>
+    <field name="journalName" type="string">
+      <bind-xml name="journalName" node="attribute" />
+    </field>
+    <field name="pubMedId" type="long">
+      <bind-xml name="pubMedId" node="attribute" />
+    </field>
+    <field name="researchArea" type="string">
+      <bind-xml name="researchArea" node="attribute" />
+    </field>
+    <field name="startPage" type="string">
+      <bind-xml name="startPage" node="attribute" />
+    </field>
+    <field name="status" type="string">
+      <bind-xml name="status" node="attribute" />
+    </field>
+    <field name="volume" type="string">
+      <bind-xml name="volume" node="attribute" />
+    </field>
+    <field name="year" type="integer">
+      <bind-xml name="year" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation" identity="id" extends="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation">
+    <map-to xml="OtherChemicalAssociation" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.linkage" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization" identity="id" extends="gov.nih.nci.cananolab.domain.particle.Characterization">
+    <map-to xml="InvitroCharacterization" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.function.OtherTarget" identity="id" extends="gov.nih.nci.cananolab.domain.function.Target">
+    <map-to xml="OtherTarget" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.function" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.Emulsion" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="Emulsion" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="polymerized" type="boolean">
+      <bind-xml name="polymerized" node="attribute" />
+    </field>
+    <field name="polymerName" type="string">
+      <bind-xml name="polymerName" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube" identity="id" extends="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity">
+    <map-to xml="CarbonNanotube" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.nanomaterial" />
+    <field name="averageLength" type="float">
+      <bind-xml name="averageLength" node="attribute" />
+    </field>
+    <field name="averageLengthUnit" type="string">
+      <bind-xml name="averageLengthUnit" node="attribute" />
+    </field>
+    <field name="chirality" type="string">
+      <bind-xml name="chirality" node="attribute" />
+    </field>
+    <field name="diameter" type="float">
+      <bind-xml name="diameter" node="attribute" />
+    </field>
+    <field name="diameterUnit" type="string">
+      <bind-xml name="diameterUnit" node="attribute" />
+    </field>
+    <field name="wallType" type="string">
+      <bind-xml name="wallType" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="PhysicalState" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="BloodContact" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.Sterility" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="Sterility" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer" identity="id" extends="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity">
+    <map-to xml="Biopolymer" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" />
+    <field name="sequence" type="string">
+      <bind-xml name="sequence" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.Surface" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="Surface" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+    <field name="isHydrophobic" type="boolean">
+      <bind-xml name="isHydrophobic" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.Shape" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="Shape" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+    <field name="aspectRatio" type="float">
+      <bind-xml name="aspectRatio" node="attribute" />
+    </field>
+    <field name="maxDimension" type="float">
+      <bind-xml name="maxDimension" node="attribute" />
+    </field>
+    <field name="maxDimensionUnit" type="string">
+      <bind-xml name="maxDimensionUnit" node="attribute" />
+    </field>
+    <field name="minDimension" type="float">
+      <bind-xml name="minDimension" node="attribute" />
+    </field>
+    <field name="minDimensionUnit" type="string">
+      <bind-xml name="minDimensionUnit" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.Targeting" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="Targeting" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="EnzymeInduction" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+    <field name="enzyme" type="string">
+      <bind-xml name="enzyme" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.MetabolicStability" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="MetabolicStability" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.ImmuneCellFunction" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="ImmuneCellFunction" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.agentmaterial.Antibody" identity="id" extends="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity">
+    <map-to xml="Antibody" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" />
+    <field name="isotype" type="string">
+      <bind-xml name="isotype" node="attribute" />
+    </field>
+    <field name="species" type="string">
+      <bind-xml name="species" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.OxidativeStress" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="OxidativeStress" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="Cytotoxicity" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+    <field name="cellLine" type="string">
+      <bind-xml name="cellLine" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity" identity="id" extends="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity">
+    <map-to xml="OtherFunctionalizingEntity" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" />
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.Relaxivity" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="Relaxivity" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization">
+    <map-to xml="Pharmacokinetics" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule" identity="id" extends="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity">
+    <map-to xml="SmallMolecule" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial" />
+    <field name="alternateName" type="string">
+      <bind-xml name="alternateName" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invitro.Transfection" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization">
+    <map-to xml="Transfection" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invitro" />
+    <field name="cellLine" type="string">
+      <bind-xml name="cellLine" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.Solubility" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="Solubility" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+    <field name="criticalConcentration" type="float">
+      <bind-xml name="criticalConcentration" node="attribute" />
+    </field>
+    <field name="criticalConcentrationUnit" type="string">
+      <bind-xml name="criticalConcentrationUnit" node="attribute" />
+    </field>
+    <field name="isSoluble" type="boolean">
+      <bind-xml name="isSoluble" node="attribute" />
+    </field>
+    <field name="solvent" type="string">
+      <bind-xml name="solvent" node="attribute" />
+    </field>
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.Size" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="Size" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.MolecularWeight" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="MolecularWeight" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.invivo.Toxicology" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization">
+    <map-to xml="Toxicology" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.invivo" />
+  </class>
+  <class name="gov.nih.nci.cananolab.domain.characterization.physical.Purity" identity="id" extends="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization">
+    <map-to xml="Purity" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.characterization.physical" />
+  </class>
+</mapping>
+

@@ -1,0 +1,175 @@
+<!DOCTYPE form-validation PUBLIC
+"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<global>
+		<constant>
+			<constant-name>alphabetic</constant-name>
+			<constant-value>^[a-zA-Z\s]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>relaxedAlphabetic</constant-name>
+			<constant-value>^[a-zA-Z\s\-\.\']*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>numeric</constant-name>
+			<constant-value>^[0-9]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>alphanumeric</constant-name>
+			<constant-value>^[a-zA-Z0-9\s]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>relaxedAlphanumeric</constant-name>
+			<constant-value>^[a-zA-Z0-9\s\-\.\(\)]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>loginName</constant-name>
+			<constant-value>^[a-zA-Z0-9\s\_]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>zip</constant-name>
+			<constant-value>^(\d{5}(-\d{4})?)|([a-zA-Z0-9\s])$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>phone</constant-name>
+			<constant-value>^\+?[0-9()\-\s]*((ext\.|extension)\s[0-9]+)?$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>textFieldWhiteList</constant-name>
+			<constant-value>^(?!.*(&lt;script|&lt;%00script|\%3C\%73\%63\%72\%69\%70\%74|&#x3C;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;|&#60;&#115;&#99;&#114;&#105;&#112;&#116;|&#60;&#37;&#48;&#48;&#115;&#99;&#114;&#105;&#112;&#116;|\%uff1cscript\%uff1e|\%BC\%F3\%E3\%F2\%E9\%F0\%F4|\+ADw\-SCRIPT\+AD4|\\u003Cscript|javascript\:|\%6A\%61\%76\%61\%73\%63%\%72\%69\%70\%74\%3A|&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3a;|&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;|&lt;iframe|&lt;frame|etc/passwd|/bin/id|\.ini|;vol\||id\||AVAK\$\(RETURN_CODE\)OS|sys\.dba_user|\+select\+|\+and\+|WFXSSProbe|WF_XSRF|alert\(|TEXT/VBSCRIPT|="|\.\./|\.\.\\|\\'|\\\"|background\:|\'\+|\"\+|%\d+)).*$			
+			</constant-value>
+		</constant>
+		<constant>
+			<constant-name>textFieldWhiteList2</constant-name>
+			<constant-value>^(?!.*(&lt;script|&lt;%00script|\%3C\%73\%63\%72\%69\%70\%74|&#x3C;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;|&#60;&#115;&#99;&#114;&#105;&#112;&#116;|&#60;&#37;&#48;&#48;&#115;&#99;&#114;&#105;&#112;&#116;|\%uff1cscript\%uff1e|\%BC\%F3\%E3\%F2\%E9\%F0\%F4|\+ADw\-SCRIPT\+AD4|\\u003Cscript|javascript\:|\%6A\%61\%76\%61\%73\%63%\%72\%69\%70\%74\%3A|&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3a;|&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;|etc/passwd|/bin/id|\.ini|;vol\||id\||AVAK\$\(RETURN_CODE\)OS|sys\.dba_user|\+select\+|\+and\+|WFXSSProbe|TEXT/VBSCRIPT|="|\.\./|\.\.\\|\\'|\\\"|background\:|\'\+|\"\+|%\d+)).*$			
+			</constant-value>
+		</constant>
+		<constant>
+			<constant-name>textFieldWhiteList1</constant-name>
+			<constant-value>^(?!.*(\="|\+and\+|\+select\+|sys\.dba\_user|AVAK\$\(RETURN\_CODE\)OS|id\||;vol\||%\d+|\&#60;|\>|\|\.\.\\|\.\.\/|\.ini|javascript\:|\/etc\/passwd|\/bin\/id|\\\'|\\\"|background\:expression)).*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>textFieldWhiteList0</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\/\?\*]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>relaxedTextFieldWhiteList0</constant-name>
+			<constant-value>^[a-zA-Z0-9\-\_\s\(\)\:\.\,\/\?\*]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>doi</constant-name>
+			<constant-value>^[a-zA-Z0-9\/\-\_\s\(\)\:\.]*$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>number</constant-name>
+			<constant-value>^[-+]?[0-9]*\.?[0-9]+$</constant-value>
+		</constant>
+		<constant>
+			<constant-name>unit</constant-name>
+			<constant-value>^[a-zA-Z0-9\%\/\-\_\s\(\)\^]*$</constant-value>
+		</constant>
+	</global>
+	<formset>
+		<form name="loginForm">
+			<field property="loginId" depends="required, mask">
+				<arg position="0" key="loginForm.loginId" />
+				<msg name="mask" key="loginId.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${loginName}</var-value>
+				</var>
+			</field>
+			<field property="password" depends="required">
+				<arg position="0" key="loginForm.password" />
+			</field>
+		</form>
+		<form name="registerUserForm">
+			<field property="firstName" depends="required, mask">
+				<arg position="0" key="registerUserForm.firstName" />
+				<msg name="mask" key="firstName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="lastName" depends="required, mask">
+				<arg position="0" key="registerUserForm.lastName" />
+				<msg name="mask" key="lastName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${alphabetic}</var-value>
+				</var>
+			</field>
+			<field property="email" depends="required,email">
+				<arg position="0" key="registerUserForm.email" />
+			</field>
+			<field property="phone" depends="required, mask">
+				<arg position="0" key="registerUserForm.phone" />
+				<msg name="mask" key="phone.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${phone}</var-value>
+				</var>
+			</field>
+			<field property="fax" depends="mask">
+				<msg name="mask" key="fax.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${phone}</var-value>
+				</var>
+			</field>
+			<field property="organization" depends="required, mask">
+				<arg position="0" key="registerUserForm.organization" />
+				<msg name="mask" key="organization.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="comment" depends="maxlength">
+				<arg0 key="registerUserForm.comment" />
+				<arg1 name="maxlength" key="${var:maxlength}" resource="false" />
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>4000</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="transferOwnerForm">
+			<field property="currentOwner" page="1" depends="required">
+				<arg position="0" key="transferOwnerForm.currentOwner" />
+			</field>
+			<field property="newOwner" page="1" depends="validwhenmatch">
+				<arg position="0" key="transferOwnerForm.newOwner" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this*!=null) and (newOwner!=currentOwner))
+					</var-value>
+				</var>
+			</field>
+			<field property="dataType" page="1" depends="required">
+				<arg position="0" key="transferOwnerForm.dataType" />
+			</field>
+		</form>
+		<form name="sitePreferenceForm">
+			<field property="sitePreference.siteName" page="1" depends="required, mask">
+				<arg position="0" key="sitePreferenceForm.siteName"/>
+				<msg name="mask" key="siteName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="sitePreference.siteLogoFile.domainFile.uri" page="1" depends="mask">
+				<msg name="mask" key="siteLogoFile.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+		</form>
+	</formset>
+</form-validation>
