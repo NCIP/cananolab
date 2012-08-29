@@ -660,7 +660,7 @@ public class CompositionServiceLocalImpl extends BaseServiceLocalImpl implements
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String error = "Error in copying the characterization.";
+			String error = "Error in saving the copied functionalizing entity.";
 			throw new CompositionException(error, e);
 		}
 	}
