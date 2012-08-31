@@ -94,7 +94,7 @@
 	</c:choose>
 	<c:if test="${!empty functionalizingEntity.functions}">
 		<tr>
-			<th scope="row" class="cellLabel" width="10%">
+			<th scope="row" class="cellLabel" width="10%" valign="top">
 				Function(s)
 			</th>
 			<td>
