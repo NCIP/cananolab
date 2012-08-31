@@ -11,7 +11,7 @@
 					Type
 				</th>
 				<th scope="col" class="cellLabel" scope="col">
-					Isotype
+					Sequence
 				</th>
 			</tr>
 			<tr>
