@@ -81,8 +81,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="cellLabel"><label for="protocolFile">Protocol
-					File</label>
+			<td class="cellLabel">Protocol
+					File
 			</td>
 			<td><c:set var="theFile"
 					value="${protocolForm.map.protocol.fileBean}" />

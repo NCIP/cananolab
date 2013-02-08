@@ -303,7 +303,7 @@
 			<c:set var="fileId" value="${publicationForm.map.publication.domainFile.id}"/>
 		<table width="100%" align="center" class="submissionView" summary="layout">
 			<tr>
-				<td class="cellLabel" width="100"><label for="publicationFile">File</label>
+				<td class="cellLabel" width="100">File
 				</td>
 				<td><%@ include file="../bodySubmitFile.jsp"%>
 				</td>
