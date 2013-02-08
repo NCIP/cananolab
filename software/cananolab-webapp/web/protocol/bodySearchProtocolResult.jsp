@@ -41,3 +41,7 @@
 	<display:column title="Created Date" property="domain.createdDate"
 		sortable="true" format="{0,date,MM-dd-yyyy}" headerScope="col" />
 </display:table>
+
+<div style="padding:5px;margin:5px; background-color:#fff; border:1px solid #416599;">
+	To view the PDF documents, you may need to install the Adobe PDF Reader for your browser. Please click <a target="_new" href="http://get.adobe.com/reader/">here</a> to download this free plug-in.<br/>
+</div>
