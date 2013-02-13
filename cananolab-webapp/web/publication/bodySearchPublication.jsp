@@ -108,9 +108,13 @@
 			<td class="cellLabel">
 				<label for="sampleName">Sample Name</label>
 			</td>
-			<td valign="top" colspan="5">
+			<td valign="top"  align="left" colspan="5">
+				<label for="nameOperand" style="display:none">name operand</label>
+				<html:select property="nameOperand" styleId="nameOperand">
+					<html:options collection="stringOperands" property="value"
+						labelProperty="label" />
+				</html:select>&nbsp;&nbsp;&nbsp;
 				<html:text property="sampleName" size="80" styleId="sampleName" />
-				<em>exact match</em>
 			</td>
 		</tr>
 		<tr>

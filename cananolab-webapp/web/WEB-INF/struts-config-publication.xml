@@ -29,6 +29,7 @@
 			<form-property name="keywordsStr" type="java.lang.String" />
 			<form-property name="sampleName" type="java.lang.String" />
 			<form-property name="titleOperand" type="java.lang.String" />
+			<form-property name="nameOperand" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
