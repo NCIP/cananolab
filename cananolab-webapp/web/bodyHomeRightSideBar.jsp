@@ -130,7 +130,7 @@
 	<tr>
 		<td class="sidebarContent">
 			<b>caNanoLab 1.5.4 is now available for </b><a target="_blank"
-				href="http://ncicb.nci.nih.gov/download/downloadcalab.jsp">download</a><b>.
+				href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Wiki+Home+Page">download</a><b>.
 				For information on caNanoLab release, please refer to the </b>
 			<a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+1.5.4+Release+Note">caNanoLab
 				Release Notes</a>.
