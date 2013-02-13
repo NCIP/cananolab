@@ -141,6 +141,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 		// Get sample name for constructing file name.
 		String type = request.getParameter("type");
+		
 		//per app scan
 		if (!StringUtils.xssValidate(type)) {
 			type="";
@@ -234,17 +235,19 @@ public class CompositionAction extends BaseAnnotationAction {
 		// 2. Filter out unselected type.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
-			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
-				compBean.setChemicalAssociations(Collections.EMPTY_LIST);
-			}
-			if (!type.equals(CompositionBean.FILE_SELECTION)) {
-				compBean.setFiles(Collections.EMPTY_LIST);
-			}
-			if (!type.equals(CompositionBean.FUNCTIONALIZING_SELECTION)) {
-				compBean.setFunctionalizingEntities(Collections.EMPTY_LIST);
-			}
-			if (!type.equals(CompositionBean.NANOMATERIAL_SELECTION)) {
-				compBean.setNanomaterialEntities(Collections.EMPTY_LIST);
+			if( !type.equals("all") ) {
+				if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
+					compBean.setChemicalAssociations(Collections.EMPTY_LIST);
+				}
+				if (!type.equals(CompositionBean.FILE_SELECTION)) {
+					compBean.setFiles(Collections.EMPTY_LIST);
+				}
+				if (!type.equals(CompositionBean.FUNCTIONALIZING_SELECTION)) {
+					compBean.setFunctionalizingEntities(Collections.EMPTY_LIST);
+				}
+				if (!type.equals(CompositionBean.NANOMATERIAL_SELECTION)) {
+					compBean.setNanomaterialEntities(Collections.EMPTY_LIST);
+				}
 			}
 		}
 	}

@@ -315,6 +315,7 @@ function showSummary(layer_ref, totalLayers) {
 			document.getElementById("summaryTab" + i).style.display = "none";
 		}
 		printLink.href = printUrl.href;
+		exportUrl = document.getElementById("exportUrlAll");
 		exportLink.href = exportUrl.href;
 		return;
 	}
