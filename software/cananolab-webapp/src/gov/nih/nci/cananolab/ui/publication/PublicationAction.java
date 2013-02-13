@@ -658,8 +658,13 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		// 2. Filter out categories that are not selected.
 		String type = request.getParameter("type");
-		if (!StringUtils.isEmpty(type)) {
-			Set<String> cats = new HashSet<String>(1);
+		Set<String> cats = new HashSet<String>(1);
+		if( !StringUtils.isEmpty(type) && type.equals("all")) {
+			cats.add("report");
+			cats.add("review");
+			summaryBean.setPublicationCategories(cats);
+		}
+		else {
 			cats.add(type);
 			summaryBean.setPublicationCategories(cats);
 		}

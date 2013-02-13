@@ -18,7 +18,7 @@
 		<jsp:param name="topic" value="publications_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 		<jsp:param name="printLink" value="${printUrl}" />
-		<jsp:param name="exportLink" value="${exportUrl}" />
+		<jsp:param name="exportLink" value="${exportUrl}&type=all" />
 	</jsp:include>
 </c:if>
 <jsp:include page="/bodyMessage.jsp?bundle=sample" />
@@ -31,6 +31,9 @@
 				<a
 					href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
 					title="All"><span>All</span> </a>
+				<a href="${exportUrl}&type=all" id="exportUrlAll"
+					style="display: none;"></a>
+					
 			</li>
 			<li>
 				<c:forEach var="type" items="${publicationCategories}"

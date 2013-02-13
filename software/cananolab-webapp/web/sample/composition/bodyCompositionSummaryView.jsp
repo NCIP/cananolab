@@ -18,7 +18,7 @@
 		<jsp:param name="topic" value="composition_all_tab_help" />
 		<jsp:param name="glossaryTopic" value="glossary_help" />
 		<jsp:param name="printLink" value="${printUrl}" />
-		<jsp:param name="exportLink" value="${exportUrl}" />
+		<jsp:param name="exportLink" value="${exportUrl}&type=all" />
 	</jsp:include>
 </c:if>
 <c:set var="compositionSections"
@@ -29,6 +29,8 @@
 			<li class="selected">
 				<a	href="javascript:showSummary('ALL', ${fn:length(compositionSections)})"
 					title="All"><span>All</span></a>
+				<a href="${exportUrl}&type=all" id="exportUrlAll"
+					style="display: none;"></a>
 			</li>
 			<c:forEach var="type" items="${compositionSections}" varStatus="ind">
 				<li>

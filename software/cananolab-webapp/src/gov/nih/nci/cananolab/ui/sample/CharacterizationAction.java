@@ -872,11 +872,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			List<String> charTypes) {
 		String type = request.getParameter("type");
 		List<String> filteredTypes = new ArrayList<String>();
-		if (!StringUtils.isEmpty(type) && charTypes.contains(type)) {
+		if( !StringUtils.isEmpty(type) && type.equals("all")) {
+			filteredTypes = charTypes;
+		} else if (!StringUtils.isEmpty(type) && charTypes.contains(type)) {
 			filteredTypes.add(type);
 		}
 		request.setAttribute("characterizationTypes", filteredTypes);
-		return charTypes;
+		return filteredTypes;
 	}
 
 	private boolean validateCharacterization(HttpServletRequest request,
