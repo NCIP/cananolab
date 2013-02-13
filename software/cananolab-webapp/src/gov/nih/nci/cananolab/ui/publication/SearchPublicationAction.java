@@ -179,6 +179,12 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		}
 
 		sampleName = (String) theForm.get("sampleName");
+		sampleName = StringUtils.stripWildcards(sampleName);
+		String nameOperand = (String) theForm.get("nameOperand");
+		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
+				&& !StringUtils.isEmpty(sampleName)) {
+			sampleName = "*" + sampleName + "*";
+		}
 
 		researchAreas = (String[]) theForm.get("researchArea");
 		// publicationOrReport = (String[]) theForm

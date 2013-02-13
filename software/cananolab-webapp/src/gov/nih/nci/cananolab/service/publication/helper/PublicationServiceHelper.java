@@ -374,8 +374,11 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(sampleName));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
+		TextMatchMode nameMatchMode = new TextMatchMode(sampleName);
+		crit.add(Restrictions.ilike("name", nameMatchMode.getUpdatedText(),
+				nameMatchMode.getMatchMode()));
+		
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
