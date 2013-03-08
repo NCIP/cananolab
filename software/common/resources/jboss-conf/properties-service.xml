@@ -34,7 +34,7 @@
 			is the value of my other property </attribute> -->
 		<attribute name="Properties">
 			gov.nih.nci.security.configFile=@jboss.server.dir@/conf/csmconfig/ApplicationSecurityConfig.xml
-			gov.nih.nci.cananolab.wikihelpProperties=/local/content/cananolab/config/wikihelp.properties
+			gov.nih.nci.cananolab.wikihelpProperties=/local/content/caNanoLab/config/wikihelp.properties
 		</attribute>
 	</mbean>
 </server>
