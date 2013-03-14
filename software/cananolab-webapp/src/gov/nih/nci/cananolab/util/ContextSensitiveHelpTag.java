@@ -38,7 +38,7 @@ public class ContextSensitiveHelpTag implements Tag, Serializable {
 
 	private String myBundle = "ContextSensitiveHelp";
 
-	private String myStyleClass = "style_0";
+	private String myStyleClass = "helpText";
 
 	private String myJavascriptKey = "help_javascript";
 	
@@ -232,7 +232,7 @@ public class ContextSensitiveHelpTag implements Tag, Serializable {
 
 				} else {
 					myPageContext.getOut().write(
-							"<a class=\"helpText\"" + theHref + ">"
+							"<a class=\"" + getStyleClass() + "\"" + theHref + ">"
 									+ myLabelName + "</a>");
 				}
 

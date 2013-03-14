@@ -1,5 +1,10 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
@@ -93,14 +98,43 @@ public class CustomPlugIn implements PlugIn {
 							"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
 			//obtain online help url from properties file
-			String onlineHelpUrl = PropertyUtils.getProperty(
-					Constants.CANANOLAB_PROPERTY, "onlineHelpUrl");
-			appContext.setAttribute("webHelp", onlineHelpUrl);
+			appContext.setAttribute("webHelp", getWikiHelpUrl());
 
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
 		logger.info("Exiting CustomPlugIn.init()");
+	}
+	
+	private String getWikiHelpUrl() {
+		Properties wikihelpProperties = new Properties();
+		String wikiSiteBegin = "";
+		String wikiSiteBeginKey = "wiki_help_main";
+		try {
+
+			String wikihelpPropertiesFileName = null;
+
+			wikihelpPropertiesFileName = System.getProperty("gov.nih.nci.cananolab.wikihelpProperties");
+			
+			try {
+			
+				FileInputStream in = new FileInputStream(wikihelpPropertiesFileName);
+				wikihelpProperties.load(in);
+				} 
+			catch (FileNotFoundException e) {
+				e.printStackTrace();			
+			} catch (IOException e) {
+				e.printStackTrace();			
+			}
+			wikiSiteBegin =  wikihelpProperties.getProperty(wikiSiteBeginKey);
+		}
+
+		// Default to 100 on an exception
+		catch (Exception e) {
+			System.err.println("Error loading system.properties file");
+			e.printStackTrace();
+		}
+		return wikiSiteBegin;
 	}
 
 	// This method will be called at application shutdown time
