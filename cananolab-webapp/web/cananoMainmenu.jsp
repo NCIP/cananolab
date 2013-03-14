@@ -34,8 +34,11 @@
 						</c:when>
 						<c:otherwise>
 							<c:set var="link" value="${item.link}"/>
-							<c:if test="${item.value eq 'HELP' || item.value eq 'GLOSSARY'}">
-							   <c:set var="link" value="openHelpWindow('${webHelp}/${item.link}')"/>
+							<c:if test="${item.value eq 'HELP'}">
+							   <c:set var="link" value="openHelpWindow('${webHelp}/1+-+Getting+Started+in+caNanoLab')"/>
+							</c:if>
+							<c:if test="${item.value eq 'GLOSSARY'}">
+							   <c:set var="link" value="openHelpWindow('${webHelp}/caNanoLab+Glossary')"/>
 							</c:if>
 							<th class="${style}" onclick="${link}" scope="row"><a
 								class="mainMenuLink" href="#">${item.value}</a>
