@@ -35,7 +35,7 @@
 						<c:otherwise>
 							<c:set var="link" value="${item.link}"/>
 							<c:if test="${item.value eq 'HELP'}">
-							   <c:set var="link" value="openHelpWindow('${webHelp}/1+-+Getting+Started+in+caNanoLab')"/>
+							   <c:set var="link" value="openHelpWindow('https://wiki.nci.nih.gov/x/14CUBg')"/>
 							</c:if>
 							<c:if test="${item.value eq 'GLOSSARY'}">
 							   <c:set var="link" value="openHelpWindow('${webHelp}/caNanoLab+Glossary')"/>
