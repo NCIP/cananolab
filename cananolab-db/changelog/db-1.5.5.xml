@@ -7,8 +7,8 @@
 	<preConditions>
 		<dbms type="mysql" />
 	</preConditions>
-	<include file="changelog/db-1.5.1.xml" />
-    <include file="changelog/db-1.5.2.xml" />
-    <include file="changelog/db-1.5.4.xml" />
-    <include file="changelog/db-1.5.5.xml" />
+	<changeSet id="1.5.5-1" author="prakasht">
+		<comment>data cleanup</comment>
+		<sqlFile path="sql/mysql/1.5.5/data_cleanup_script.sql" />
+	</changeSet>
 </databaseChangeLog>
