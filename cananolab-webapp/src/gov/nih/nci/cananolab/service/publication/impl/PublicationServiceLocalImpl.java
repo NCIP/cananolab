@@ -205,7 +205,7 @@ public class PublicationServiceLocalImpl extends BaseServiceLocalImpl implements
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes);
 		} catch (Exception e) {
-			String err = "Problem finding publication info.";
+			String err = "No publications were found for the given parameters.";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
