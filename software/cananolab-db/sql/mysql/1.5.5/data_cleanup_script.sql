@@ -91,15 +91,7 @@ update canano.associated_element
 set value_unit = 'ug/uL'
 where value_unit = 'microgram/microL';
 
-/* Remove Dupes and Typos 
-
-select * from canano.common_lookup where name = 'molecular weight'
-and value = 'gel permeation chromotography';
-
-select * from canano.common_lookup where name = 'size'
-and value = 'gel permeation chromatograhy';
-
-*/
+/* Remove Dupes and Typos */
 
 delete from canano.common_lookup where name = 'molecular weight'
 and value = 'gel permeation chromotography';
@@ -123,53 +115,9 @@ delete from canano.common_lookup where name = 'imaging function' and value = 'Bi
 
 /* Physicochemical Characterizations
 
-   Characterization Name  surface
+   Characterization Name  surface 
    
-   Move  all assay types except surface to Characterization Name other_pc
-
-select * from canano.common_lookup where name = 'other' 
-and ( attribute = 'assayType' OR attribute='otherAssayType' )
-order by value;
-
-select * from canano.common_lookup where name = 'surface'
-and value IN ( 
-'Raman spectroscopy',
-'fluorescence  lifetime',
-'FT-IR spectroscopy',
-'FTIR spectroscopy',
-'gel electrophoresis',
-'photoluminescence spectrophotometry',
-'protein assay',
-'uv-vis absorbance spectroscopy',
-'uv-vis absorbance spectrometry',
-'uv-vis absorbance spectrophotometry ',
-'uv-vis  absorbance spectroscopy',
-'uv-vis absorption spectrometry',
-'uv-vis absorption spectroscopy',
-'uv-vis spectroscopy',
-'x-ray photoelectron spectroscopy'
-);  
-
-select assay_type, discriminator, other_char_assay_category, other_char_name from canano.characterization where assay_type IN ( 
-'Raman spectroscopy',
-'fluorescence  lifetime',
-'FT-IR spectroscopy',
-'FTIR spectroscopy',
-'gel electrophoresis',
-'photoluminescence spectrophotometry',
-'protein assay',
-'uv-vis absorbance spectroscopy',
-'uv-vis absorbance spectrometry',
-'uv-vis absorbance spectrophotometry ',
-'uv-vis  absorbance spectroscopy',
-'uv-vis absorption spectrometry',
-'uv-vis absorption spectroscopy',
-'uv-vis spectroscopy',
-'x-ray photoelectron spectroscopy'
-)
-and discriminator = 'Surface';
-
-*/
+   Move  all assay types except surface to Characterization Name other_pc */
 
 update canano.common_lookup
 set name = 'other_pc'
@@ -220,73 +168,8 @@ and discriminator = 'Surface';
 
    Characterization Name  other
    
-   Move all assay types to Characterization Name other_pc
+   Move all assay types to Characterization Name other_pc */
    
-select * from canano.common_lookup where name = 'other' 
-and ( attribute = 'assayType' OR attribute='otherAssayType' )
-and VALUE in (
-'acoustic microscopy',
-'controlled aggregation',
-'cyclodextrin content',
-'DNA quantification',
-'dye content',
-'dye release',
-'elemental analysis',
-'elemental composition',
-'Gd2O3 content',
-'ICP-AES Analysis of Gd2O3 content in Gd2O3@SWNHag',
-'imaging',
-'iron content',
-'lipid-induced fluorescence enhancement',
-'magnetic properties',
-'magnetic property',
-'Ninhydrin Assay',
-'nuclear magnetic resonance',
-'protein adsorption',
-'Quantification of drug loading',
-'quantification of drug payload',
-'RBITC content',
-'RBITC release',
-'scanning transmission electron microscopy',
-'signal contrast enhancement',
-'stability',
-'Thermogravimetric Analysis of quantity of Gd2O3 in Gd2O3@SWNHag',
-'X-ray diffraction'
-);
-
-select * from canano.characterization where assay_type IN ( 
-'acoustic microscopy',
-'controlled aggregation',
-'cyclodextrin content',
-'DNA quantification',
-'dye content',
-'dye release',
-'elemental analysis',
-'elemental composition',
-'Gd2O3 content',
-'ICP-AES Analysis of Gd2O3 content in Gd2O3@SWNHag',
-'imaging',
-'iron content',
-'lipid-induced fluorescence enhancement',
-'magnetic properties',
-'magnetic property',
-'Ninhydrin Assay',
-'nuclear magnetic resonance',
-'protein adsorption',
-'Quantification of drug loading',
-'quantification of drug payload',
-'RBITC content',
-'RBITC release',
-'scanning transmission electron microscopy',
-'signal contrast enhancement',
-'stability',
-'Thermogravimetric Analysis of quantity of Gd2O3 in Gd2O3@SWNHag',
-'X-ray diffraction'
-)
-AND other_char_name = 'other';
-
-*/
-
 update canano.common_lookup
 set name = 'other_pc'
 WHERE name = 'other'
@@ -359,35 +242,8 @@ AND other_char_name = 'other';
 
    Characterization Name  other
    
-   Move all assay types to Characterization Name other_vt
+   Move all assay types to Characterization Name other_vt */
    
-select * from canano.common_lookup where name = 'other' 
-and ( attribute = 'assayType' OR attribute='otherAssayType' )
-and VALUE in (
-'actin cytoskeleton disruption',
-'apoptosis',
-'cholesterol impact on pore formation in plasma membrane',
-'cytochrome c release',
-'LDH release',
-'Tubule Formation/Angiogenesis',
-'VE-cadherin'
-);
-
-select * from canano.characterization where assay_type IN (
-'acoustic microscopy',
-'actin cytoskeleton disruption',
-'apoptosis',
-'cholesterol impact on pore formation in plasma membrane',
-'cytochrome c release',
-'LDH release',
-'stability',
-'Tubule Formation/Angiogenesis',
-'VE-cadherin'
-)
-AND other_char_name = 'other';
-
-*/
-
 update canano.common_lookup
 set name = 'other_vt'
 WHERE name = 'other'
@@ -432,26 +288,7 @@ where assay_type = 'SERS detection sensivity';
 
 /* Replace in vivo imaging by imaging.
 
-Remove in vivo multimodality imaging, in vivo multimodality imaging sensitivity, in vivo multimodality kinetics.
-
-select * from canano.common_lookup where name = 'imaging' 
-and ( attribute = 'assayType' OR attribute='otherAssayType' )
-and value = 'in vivo imaging';
-
-select * from canano.common_lookup where name = 'imaging' 
-and ( attribute = 'assayType' OR attribute='otherAssayType' )
-and value IN 
-( 'in vivo multimodality imaging',
-'in vivo multimodality imaging sensitivity',
-'in vivo multimodality kinetics')
-
-
-select assay_type, discriminator, other_char_assay_category, other_char_name from canano.characterization 
-where assay_type = 'in vivo imaging'
-and discriminator = 'OtherCharacterization'
-and other_char_name = 'imaging'
-
-*/
+Remove in vivo multimodality imaging, in vivo multimodality imaging sensitivity, in vivo multimodality kinetics. */
 
 update canano.common_lookup
 set value = 'imaging'
