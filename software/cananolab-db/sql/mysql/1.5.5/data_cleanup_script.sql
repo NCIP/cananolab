@@ -309,25 +309,6 @@ and value IN
 'in vivo multimodality kinetics');
 
 /* Change ex vivo assay types
-
-select * from canano.common_lookup where name = 'ex vivo' 
-and ( attribute = 'assayType' OR attribute='otherAssayType' )
-and value = 'ex vivo imaging';
-
-select assay_type, discriminator, other_char_assay_category, other_char_name from canano.characterization 
-where assay_type = 'ex vivo imaging'
-and discriminator = 'OtherCharacterization'
-and other_char_name = 'ex vivo'
-
-select * from canano.common_lookup where name = 'ex vivo' 
-and ( attribute = 'assayType' OR attribute='otherAssayType' )
-and value = 'ex vivo gastrointestinal transit studies';
-
-select assay_type, discriminator, other_char_assay_category, other_char_name from canano.characterization 
-where assay_type = 'ex vivo gastrointestinal transit studies'
-and discriminator = 'OtherCharacterization'
-and other_char_name = 'ex vivo'  
-
 */
 
 update canano.common_lookup
@@ -355,9 +336,6 @@ and discriminator = 'OtherCharacterization'
 and other_char_name = 'ex vivo';
 
 /* update nanomaterial entity
-
-select * from canano.other_nanomaterial_entity where type = 'carbon black particle';
-
 */
 
 update canano.other_nanomaterial_entity 
