@@ -308,3 +308,47 @@ and value IN
 'in vivo multimodality imaging sensitivity',
 'in vivo multimodality kinetics');
 
+/* Change ex vivo assay types
+*/
+
+update canano.common_lookup
+set value = 'imaging'
+WHERE name = 'ex vivo'
+and ( attribute = 'assayType' OR attribute='otherAssayType' )
+and value = 'ex vivo imaging';
+
+update canano.characterization
+set assay_type = 'imaging'
+where assay_type = 'ex vivo imaging'
+and discriminator = 'OtherCharacterization'
+and other_char_name = 'ex vivo';
+
+update canano.common_lookup
+set value = 'gastrointestinal transit studies'
+WHERE name = 'ex vivo'
+and ( attribute = 'assayType' OR attribute='otherAssayType' )
+and value = 'ex vivo gastrointestinal transit studies';
+
+update canano.characterization
+set assay_type = 'gastrointestinal transit studies'
+where assay_type = 'ex vivo gastrointestinal transit studies'
+and discriminator = 'OtherCharacterization'
+and other_char_name = 'ex vivo';
+
+/* update nanomaterial entity
+*/
+
+update canano.other_nanomaterial_entity 
+set type = 'carbon black'
+where type = 'carbon black particle';
+
+update canano.other_nanomaterial_entity 
+set type = 'silica'
+where type = 'silica particle';
+
+update canano.other_nanomaterial_entity 
+set type = 'carbon'
+where type = 'carbon particle';
+
+
+
