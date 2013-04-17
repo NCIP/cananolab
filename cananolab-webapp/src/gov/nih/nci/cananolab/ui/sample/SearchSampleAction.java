@@ -197,7 +197,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		for (int i = 0; i < characterizations.length; i++) {
 			String className = ClassUtils
 					.getShortClassNameFromDisplayName(characterizations[i]);
-			if (className.length() == 0) {
+			if (className.length() == 0 || characterizations[i].startsWith("other") ) {
 				className = "OtherCharacterization";
 				otherCharacterizationTypes.add(characterizations[i]);
 			} else {

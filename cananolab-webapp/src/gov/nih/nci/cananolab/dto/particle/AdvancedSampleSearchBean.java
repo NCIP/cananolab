@@ -297,6 +297,10 @@ public class AdvancedSampleSearchBean {
 				query.setCharacterizationName(query.getCharacterizationName()
 						.substring(0, ind));
 			}
+			
+			if( query.getCharacterizationName().startsWith("other")) {
+				query.setCharacterizationName("OtherCharacterization");
+			}
 			datumNames.add(query.getDatumName());
 		}
 		datumTypeCount = datumNames.size();

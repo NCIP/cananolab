@@ -114,14 +114,52 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 			}
 			// composition
 			if (!searchBean.getCompositionQueries().isEmpty()) {
-				DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
-						"rootCrit").setProjection(
-						Projections.distinct(Property.forName("id")));
-				setCompositionCriteria(searchBean, crit);
-				List results=appService.query(crit);
-				for (Object obj : results) {
-					String sampleId = obj.toString();
-					sampleIds.add(sampleId);
+				if( searchBean.getCompositionLogicalOperator().equals("and") ) {
+					for (CompositionQueryBean query : searchBean.getCompositionQueries()) {
+						List<String> subSampleIds = new ArrayList<String>();
+						DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+								"rootCrit").setProjection(
+								Projections.distinct(Property.forName("id")));
+						setSampleCriteria(searchBean, crit);
+						setCharacterizationCriteria(searchBean, crit);
+						setCompositionCriteriaBase(searchBean, crit);
+						
+						if (query.getCompositionType().equals("function")) {
+							DetachedCriteria subCrit = getFunctionSubquery(query,
+									"inherentFunction.", "function.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						} else if (query.getCompositionType().equals("nanomaterial entity")) {
+							DetachedCriteria subCrit = getNanomaterialEntitySubquery(query,
+									"nanoEntity.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						} else if (query.getCompositionType().equals("functionalizing entity")) {
+							DetachedCriteria subCrit = getFunctionalizingEntitySubquery(
+									query, "funcEntity.", "id");
+							crit.add(Subqueries.exists(subCrit));
+						}
+						
+						List results = appService.query(crit);
+						for (Object obj : results) {
+							String sampleId = obj.toString();
+							subSampleIds.add(sampleId);
+						}
+						
+						if ( sampleIds.size() > 0 )
+							sampleIds.retainAll(subSampleIds);
+						else
+							sampleIds.addAll(subSampleIds);
+					}
+				}
+				else {
+					DetachedCriteria crit = DetachedCriteria.forClass(Sample.class,
+							"rootCrit").setProjection(
+							Projections.distinct(Property.forName("id")));
+					setCompositionCriteria(searchBean, crit);
+					List results=appService.query(crit);
+					for (Object obj : results) {
+						String sampleId = obj.toString();
+						sampleIds.add(sampleId);
+					}
 				}
 			}
 			if (!searchBean.getCharacterizationQueries().isEmpty()) {
@@ -1330,6 +1368,34 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		if (searchBean.getCompositionQueries().isEmpty()) {
 			return;
 		}
+		
+		setCompositionCriteriaBase(searchBean, crit);
+		
+		if( searchBean.getCompositionLogicalOperator().equals("and") ) {
+			if (searchBean.getNanoEntityCount() > 1) {
+				setNanomaterialEntityAndCriteria(searchBean, crit, "id");
+			}
+			if (searchBean.getFuncEntityCount() > 1) {
+				setFunctionalizingEntityAndCriteria(searchBean, crit, "id");
+			}
+			if (searchBean.getFuncCount() > 1) {
+				setFunctionAndCriteria(searchBean, crit, "id");
+			}
+		}
+	}
+	
+	/**
+	 * Set the DetachedCriteria used for composition queries
+	 * 
+	 * @param searchBean
+	 * @param crit
+	 * @throws Exception
+	 */
+	private void setCompositionCriteriaBase(AdvancedSampleSearchBean searchBean,
+			DetachedCriteria crit) throws Exception {
+		if (searchBean.getCompositionQueries().isEmpty()) {
+			return;
+		}
 		// composition queries
 		crit.createAlias("sampleComposition", "comp",
 				CriteriaSpecification.LEFT_JOIN);
@@ -1365,7 +1431,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		if (junction != null) {
 			crit.add(junction);
 		}
-		if (searchBean.getNanoEntityCount() > 1) {
+/*		if (searchBean.getNanoEntityCount() > 1) {
 			setNanomaterialEntityAndCriteria(searchBean, crit, "id");
 		}
 		if (searchBean.getFuncEntityCount() > 1) {
@@ -1373,7 +1439,7 @@ public class AdvancedSampleServiceHelper extends BaseServiceHelper {
 		}
 		if (searchBean.getFuncCount() > 1) {
 			setFunctionAndCriteria(searchBean, crit, "id");
-		}
+		}  */
 	}
 
 	private void setFunctionalizingEntityAndCriteria(
