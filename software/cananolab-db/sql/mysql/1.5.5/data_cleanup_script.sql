@@ -113,6 +113,8 @@ select * from canano.common_lookup where name = 'imaging function' and value = '
 
 delete from canano.common_lookup where name = 'imaging function' and value = 'Bioluminiscnce';
 
+delete from canano.common_lookup where name = 'imaging function' and value = 'Bioluminiscence'; 
+
 /* Physicochemical Characterizations
 
    Characterization Name  surface 
