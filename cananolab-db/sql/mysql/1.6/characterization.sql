@@ -1,3 +1,11 @@
+/*L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L*/
+
 CREATE TABLE characterization_sample
 (
 	characterization_pk_id BIGINT NOT NULL,

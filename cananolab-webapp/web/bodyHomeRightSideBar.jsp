@@ -1,3 +1,11 @@
+<%--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L--%>
+
 <table class="sidebarSectionNoBottom" summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
 	<!-- login begins -->
     <%@include file="bodyLoginFields.jsp" %>

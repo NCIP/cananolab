@@ -1,3 +1,11 @@
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
 <ns1:ClassMappings xmlns:ns1="http://gov.nih.nci.cagrid.data">
  <ns2:mapping className="gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity" qname="{gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial}OtherFunctionalizingEntity" xsi:type="ns2:classToQname" xmlns:ns2="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  <ns3:mapping className="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer" qname="{gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.agentmaterial}Biopolymer" xsi:type="ns3:classToQname" xmlns:ns3="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
