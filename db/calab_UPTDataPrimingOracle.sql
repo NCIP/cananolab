@@ -1,3 +1,11 @@
+/*L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L*/
+
 insert into csm_application(APPLICATION_ID, APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,UPDATE_DATE)
 values (1, 'calab-upt','cancer Laboratory Analysis Bench UPT',0,0,sysdate);
 select CSM_APPLICATI_APPLICATION__SEQ.nextval from dual;

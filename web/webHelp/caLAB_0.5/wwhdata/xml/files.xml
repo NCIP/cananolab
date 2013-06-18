@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
 <WebWorksHelpBook version="5.0" name="caLAB 0.5" context="caLAB_0.5" locale="en" xmlns="urn:WebWorks-Help-Book-Files-Schema">
   <CommonWordsToSkip minlen="3">
     a about after all also am an and another any are as at
