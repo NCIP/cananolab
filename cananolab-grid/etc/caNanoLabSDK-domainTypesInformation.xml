@@ -1,3 +1,11 @@
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
 <ns1:DomainTypesInformation xmlns:ns1="http://SDKQuery4.caBIG/1/gov.nih.nci.cagrid.sdkquery4.beans.domaininfo">
  <ns1:DomainType javaClassName="gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction">
   <ns1:TypeAttribute attributeName="createdDate" javaTypeName="java.util.Date"/>

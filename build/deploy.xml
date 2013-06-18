@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
 <project name="cananolab-deployer" default="deploy:cananolab-webapp" basedir=".">
 	<description>
 		This script contains tasks related to cananolab distribution and installation
