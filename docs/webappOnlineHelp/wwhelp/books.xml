@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
 <WebWorksHelpBooks version="5.0" name="caNanoLab" expandalltopentries="false" showbooks="false" xmlns="urn:WebWorks-Help-Books-Schema">
   <Book directory="." />
 </WebWorksHelpBooks>

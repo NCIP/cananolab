@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
 <mapping>
   <class name="gov.nih.nci.cananolab.domain.particle.Characterization" identity="id">
     <map-to xml="Characterization" ns-uri="gme://caNanoLab.caBIG/1.5/gov.nih.nci.cananolab.domain.particle" />

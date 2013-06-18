@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
 <project name="cananolab-webapp" default="dist" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:rsel="antlib:org.apache.tools.ant.types.resources.selectors">
 	<description>
 	This is the build file for the caNanoLab webapp project.

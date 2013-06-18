@@ -1,12 +1,11 @@
-/**
- * The caNanoLab Software License, Version 1.5
+/*L
+ *  Copyright SAIC
+ *  Copyright SAIC-Frederick
  *
- * Copyright 2006 SAIC. This software was developed in conjunction with the National
- * Cancer Institute, and so to the extent government employees are co-authors, any
- * rights in such works shall be subject to Title 17 of the United States Code,
- * section 105.
- *
+ *  Distributed under the OSI-approved BSD 3-Clause License.
+ *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
  */
+
 package gov.nih.nci.cananolab.ui.admin;
 
 /**
@@ -105,7 +104,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action to clear site preferences: remove site and site logo.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -137,7 +136,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action to update site preference settings.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -223,7 +222,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action for loading site preferences for cananoHeader.jsp.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -240,7 +239,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action for loading Visitor Counter for cananoSidemenu.jsp.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -276,7 +275,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Action to handle site logo file download request.
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */
@@ -336,7 +335,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Retrieve site preference bean from database.
-	 * 
+	 *
 	 * @return SitePreferenceBean.
 	 */
 	private SitePreferenceBean retrieveExistingSitePreference() {
@@ -356,7 +355,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Save site preference bean to database.
-	 * 
+	 *
 	 * @param user
 	 * @return SitePreferenceBean.
 	 */
@@ -377,7 +376,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Create a new site preference bean for save/update.
-	 * 
+	 *
 	 * @param user
 	 * @return SitePreferenceBean.
 	 */
@@ -395,7 +394,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Get an unique file name for logo in format of "fileName_{timestamp}.ext".
-	 * 
+	 *
 	 * @param fileName
 	 * @return an unique file name of site logo.
 	 */
@@ -420,7 +419,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Getter for Srping dependency injection.
-	 * 
+	 *
 	 * @return
 	 */
 	public AdminService getAdminService() {
@@ -429,7 +428,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 
 	/**
 	 * Setter for Srping dependency injection.
-	 * 
+	 *
 	 * @param adminService
 	 */
 	public void setAdminService(AdminService adminService) {

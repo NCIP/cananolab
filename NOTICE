@@ -1,0 +1,37 @@
+caNanoLab
+Copyright (c) 2006, SAIC, SAIC-Frederick
+
+This project is distributed under the BSD 3-Clause License.
+Please see LICENSE file for details.
+
+
+This project was developed as part of the NCI caBIG initiative.
+
+The project was initially developed by SAIC and SAIC-Frederick under funding from the CBIIT office of the National Cancer Institute.
+
+In 2013, as part of the National Cancer Informatics Program (NCIP) Open Development Initiative, 
+the caBIO source code was migrated to GitHub to allow further development by the broader community.
+
+This project includes as sub-components other projects that are copyrighted by third parties and that distributed under various licenses. Please find a summary in the list below:
+
+1) build-stubs.xml
+   Copyright by University of Chicago, The University of Southern California
+   Distributed under The Globus Toolkit Public License
+2)wwhelp (generated code)
+   Copyright by Quadralay Corporation
+   Distributed under BSD 3-Clause License
+
+
+==================== Copyright notice by University of Chicago and  The University of Southern California =========================
+
+<!-- 
+  Portions of this file Copyright 1999-2005 University of Chicago
+  Portions of this file Copyright 1999-2005 The University of Southern California.
+  
+  This file or a portion of this file is licensed under the
+  terms of the Globus Toolkit Public License, found at
+  http://www.globus.org/toolkit/download/license.html.
+  If you redistribute this file, with or without
+  modifications, you must include this notice in the file.
+-->
+

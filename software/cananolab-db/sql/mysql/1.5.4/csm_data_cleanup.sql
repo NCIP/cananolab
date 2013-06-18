@@ -1,3 +1,11 @@
+/*L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L*/
+
 /* delete non public access for POC */
 delete from csm_user_group_role_pg
 where group_id=2 
