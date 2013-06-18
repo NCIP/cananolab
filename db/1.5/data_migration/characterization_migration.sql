@@ -1,3 +1,11 @@
+/*L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L*/
+
 -- update description with identifier_name if no description
 update characterization
 set description=identifier_name
