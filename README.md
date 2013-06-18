@@ -1,7 +1,7 @@
 Welcome to the caNanoLab Project!
 =====================================
 
-The cancer Nanotechnology Laboratory portal (caNanoLab) is a open source project and it is written is Java using caGrid, caCORE CSM, caCORE SDK, Struts, Tiles, JBoss, MySQL technologies.
+The cancer Nanotechnology Laboratory portal (caNanoLab) is a open source project and it is written in Java using caGrid, caCORE CSM, caCORE SDK, Struts, Tiles, JBoss, MySQL technologies.
 The caNanoLab is a web-based portal designed to facilitate data sharing in the biomedical nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine. caNanoLab provides support for the annotation of nanomaterials with characterizations resulting from physico-chemical and in vitro assays and for the sharing of these characterizations and associated nanotechnology protocols in a secure fashion.
 
 caNanoLab provides access to information on:
