@@ -1,11 +1,3 @@
-/*L
- *  Copyright SAIC
- *  Copyright SAIC-Frederick
- *
- *  Distributed under the OSI-approved BSD 3-Clause License.
- *  See http://ncip.github.com/cananolab/LICENSE.txt for details.
- */
-
 package gov.nih.nci.cananolab.service.publication.helper;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
@@ -389,20 +381,34 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
-		if (!result.isEmpty()) {
+		/* CANANOLAB-71 fix below */
+		/*		if (!result.isEmpty()) {
 			sample = (Sample) result.get(0);
 			if (!StringUtils.containsIgnoreCase(getAccessibleData(), sample
 					.getId().toString())) {
 				return publications;
 			}
-		}
-		for (Object obj : sample.getPublicationCollection()) {
-			Publication pub = (Publication) obj;
-			if (getAccessibleData().contains(pub.getId().toString())) {
-				publications.add(pub);
-			} else {
-				logger.debug("User doesn't have access ot publication with id "
-						+ pub.getId());
+		}  */
+		if (!result.isEmpty()) {
+			for( Object robj: result ) {
+				sample = (Sample) robj;
+				
+				if (StringUtils.containsIgnoreCase(getAccessibleData(), sample
+						.getId().toString())) {
+					for (Object obj : sample.getPublicationCollection()) {
+						Publication pub = (Publication) obj;
+						if (getAccessibleData().contains(pub.getId().toString())) {
+							publications.add(pub);
+						} else {
+							logger.debug("User doesn't have access to publication with id "
+									+ pub.getId());
+						}
+					}
+				} else {
+					logger.debug("User doesn't have access ot sample with id "
+							+ sample.getId());
+				}
+				
 			}
 		}
 		return publications;
