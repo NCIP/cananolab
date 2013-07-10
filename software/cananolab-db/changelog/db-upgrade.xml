@@ -15,8 +15,10 @@ L-->
 	<preConditions>
 		<dbms type="mysql" />
 	</preConditions>
+	<!-- Commented due to GIT migration
 	<include file="changelog/db-1.5.1.xml" />
     <include file="changelog/db-1.5.2.xml" />
     <include file="changelog/db-1.5.4.xml" />
+    -->
     <include file="changelog/db-1.5.5.xml" />
 </databaseChangeLog>
