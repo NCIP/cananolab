@@ -18,12 +18,12 @@ The caNanoLab is distributed under the BSD 3-Clause License.
 Please see the NOTICE and LICENSE files for details.
 
 You will find more details about the caNanoLab in the following links:
- * [Home Page] (https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Wiki+Home+Page)
+ * [Community Wiki] (https://wiki.nci.nih.gov/x/F4V-AQ)
  * [Binaries packages] (http://gforge.nci.nih.gov/frs/?group_id=69)
  * [caNanoLab Users ListServ] (https://list.nih.gov/archives/cananolab-users-l.html)
  * [Issue Tracker] (https://tracker.nci.nih.gov/browse/caNanoLab)
  * [Code Repository] (https://github.com/NCIP/cananolab)
- * [ICR Nanotech Working Group] (https://wiki.nci.nih.gov/display/ICR/Nanotechnology+Working+Group)
+ * [ICR Nanotech Working Group] (https://wiki.nci.nih.gov/x/HgiG)
  * [Release Notes] (http://gforge.nci.nih.gov/frs/?group_id=69)
 
 Please join us in further developing and improving caNanoLab.
