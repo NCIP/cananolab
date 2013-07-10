@@ -12,6 +12,8 @@ caNanoLab provides access to information on:
 * In Vitro characterizations such as cytotoxicity, blood contact properties, oxidative stress, and immune cell functions
 * Publications and reports from nanotechnology studies in biomedicine
 
+It is written in Java using caGrid, caCORE CSM, caCORE SDK, Struts, Tiles, Hibernate, Spring Framework technologies.
+
 caNanoLab is a collaboration between the NCI Center for Biomedical Informatics and Information Technology (CBIIT), the NCI Nanotechnology Characterization Laboratory (NCL), and the NCI Cancer Centers of Nanotechnology Excellence (CCNEs).
 
 The caNanoLab is distributed under the BSD 3-Clause License.
