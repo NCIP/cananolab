@@ -21,6 +21,10 @@ L-->
 	<property name="common.dir" location="${basedir}/../common" />
 	<property name="dist.dir" location="${basedir}/target/dist" />
 	<property name="common.dist.dir" location="${dist.dir}/common" />
+	<property name="classes.dir" location="${basedir}/build/WEB-INF/classes" />
+	<property name="lib.dir" location="${basedir}/build/WEB-INF/lib" />
+	<property name="globus.dir" location="../cananolab-client/lib/globus" />
+	<property name="db.dir" location="../cananolab-db/lib" />
 	<!-- antcontrib task-->
 	<path id="common.classpath">
 		<fileset dir="${common.dir}">
@@ -251,5 +255,55 @@ L-->
 	<target name="jar:orm">
 		<!-- package jar file -->
 		<jar destfile="${dist.dir}/caNanoLabSDK-orm.jar" basedir="${src.dir}" includes="**/*hbm.xml, ehcache.xml, hibernate.cfg.xml" />
+	</target>
+	
+	<target name="jar:endNote" depends="clean, compile">
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties" />
+				<exclude name="caNanoLab.properties" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml" />
+				<exclude name="caNanoLab.csm.new.hibernate.cfg.xml" />
+				<exclude name="hibernate.cfg.xml" />
+			</fileset>
+		</copy>
+		
+		<!-- copy dependency jars to WEB-INF/lib files  -->
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset refid="runtime.dependency.fileset" />
+			<mapper classpathref="maven-ant-tasks.classpath" type="flatten" />
+		</copy>
+
+		<!-- copy jars from common/lib -->
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${common.dir}/lib/sdk">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>		
+		
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${globus.dir}">
+				<include name="**/log4*.jar" />
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${db.dir}">
+				<include name="**/mysql*.jar" />
+			</fileset>
+		</copy>
+
+		<jar destfile="${dist.dir}/endNoteParser.jar" basedir="${classes.dir}" duplicate="preserve">
+			<manifest>
+			    <attribute name="Main-Class" value="test.EndNoteParser" />
+				<attribute name="Class-Path" value="conf/conf.jar"/>
+			  </manifest>
+			<zipgroupfileset dir="${lib.dir}" includes="**/*.jar"/>
+			</jar>
 	</target>
 </project>

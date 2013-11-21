@@ -29,6 +29,10 @@ import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
+import gov.nih.nci.security.exceptions.CSConfigurationException;
+import gov.nih.nci.security.exceptions.CSException;
+import gov.nih.nci.security.exceptions.CSInputException;
+import gov.nih.nci.security.exceptions.CSLoginException;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -128,11 +132,28 @@ public class SecurityService {
 			} else {
 				throw new SecurityException("Invalid Credentials");
 			}
+		} catch (CSConfigurationException e) {
+			String error = "Error in logging";
+			logger.error(e);
+			throw new SecurityException(error, e);
+		} catch (CSLoginException e) {
+			String error = "Error in logging";
+			logger.error(e);
+			throw new SecurityException(error, e);
+		} catch (CSInputException e) {
+			String error = "Error in logging";
+			logger.error(e);
+			throw new SecurityException(error, e);
+		} catch (CSException e) {
+			String error = "Error in logging";
+			logger.error(e);
+			throw new SecurityException(error, e);	
 		} catch (Exception e) {
 			String error = "Error in logging";
-			logger.error(error);
+			logger.error(e);
 			throw new SecurityException(error, e);
 		}
+
 	}
 
 	/**

@@ -1,0 +1,56 @@
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
+<security-config>
+	<upt-context-name>csmupt</upt-context-name>
+	<application-list>
+		<!-- For every application using the security api an entry should be made here -->
+		<application>
+			<context-name>caNanoLab</context-name>
+			<authentication>
+				<authentication-provider-class>
+					<!-- Fully qualified class name-->
+				</authentication-provider-class>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+					<!-- Fully qualified class name-->
+				</authorization-provider-class>
+				<hibernate-config-file>caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
+			</authorization>
+		</application>
+		<application>
+			<context-name>csmupt</context-name>
+			<authentication>
+				<authentication-provider-class>
+					<!-- Fully qualified class name-->
+				</authentication-provider-class>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+					<!-- Fully qualified class name-->
+				</authorization-provider-class>
+				<hibernate-config-file>caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
+			</authorization>
+		</application>
+	</application-list>
+	<backwards-compatibility>
+			<login-application-context-name>uptlogin</login-application-context-name>
+			<central-upt-configuration>true</central-upt-configuration>
+			<upt-application-list>
+				<upt-application>
+					<context-name>csmupt</context-name>
+					<url-context-name>upt423</url-context-name>
+					<authorization>
+						<authorization-provider-class>String</authorization-provider-class>
+						<hibernate-config-file>caNanoLab.csm.hibernate.cfg.xml</hibernate-config-file>
+					</authorization>
+				</upt-application>
+			</upt-application-list>
+	</backwards-compatibility>
+</security-config>

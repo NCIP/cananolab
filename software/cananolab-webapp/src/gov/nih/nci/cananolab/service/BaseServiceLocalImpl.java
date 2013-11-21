@@ -1068,6 +1068,7 @@ public class BaseServiceLocalImpl implements BaseService {
 		private void assignProtectionElementToProtectionGroup(
 				ProtectionElement pe, ProtectionGroup pg)
 				throws SecurityException {
+			
 			try {
 				Set<ProtectionGroup> assignedPGs = new HashSet<ProtectionGroup>(
 						authManager.getProtectionGroups(pe
@@ -1084,10 +1085,10 @@ public class BaseServiceLocalImpl implements BaseService {
 				authManager.assignProtectionElement(
 						pg.getProtectionGroupName(), pe.getObjectId());
 			} catch (Exception e) {
-				logger
+				 logger
 						.error(
-								"Error in assigning protection element to protection group",
-								e);
+								"Error in assigning protection element to protection group" + pg.getProtectionGroupName() + " - " + pe.getObjectId(),
+								e); 
 				throw new SecurityException();
 			}
 		}
@@ -1406,6 +1407,11 @@ public class BaseServiceLocalImpl implements BaseService {
 						keyword.setId(dbKeyword.getId());
 					} else {
 						keyword.setId(null);
+						
+						int dbNameLength = 100;
+						if( keyword.getName().length() > dbNameLength ) {
+							keyword.setName(keyword.getName().substring(0,99));
+						}
 					}
 					appService.saveOrUpdate(keyword);
 					file.getKeywordCollection().add(keyword);

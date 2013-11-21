@@ -310,7 +310,7 @@ public class PublicationServiceHelper extends BaseServiceHelper {
 		if (!getAccessibleData().contains(publicationId)) {
 			throw new NoAccessException(
 					"User has no access to the publication " + publicationId);
-		}
+		} 
 		// check if user have access to publication first
 
 		String query = "select sample.name, sample.id from gov.nih.nci.cananolab.domain.particle.Sample as sample join sample.publicationCollection as pub where pub.id='"
