@@ -20,3 +20,7 @@ jar xvf endNoteParser.jar caNanoLab.csm.hibernate.cfg.xml
 3. UPDATE THE JAR FILE WITH THE UPDATED CONFIG FILES
 jar uvf endNoteParser.jar hibernate.cfg.xml
 jar uvf endNoteParser.jar caNanoLab.csm.hibernate.cfg.xml
+
+Please make sure JAVA is in the class path and Run from the command Prompt: endNoteParser.bat
+
+This script might take a couple of hours to load the data. Approximate number of records: 800
