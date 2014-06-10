@@ -235,11 +235,7 @@ L-->
 	</target>
 	
 	<target name="deploy_local" depends="dist">
-		<copy todir="${jboss.deploy.dir}" overwrite="true">
-			<fileset dir="${dist.dir}">
-				<include name="caNanoLab.war" />				
-			</fileset>
-		</copy>
+		<copy file="${dist.dir}/caNanoLab.war" todir="${jboss.server.dir}" overwrite="true" />
 	</target>	
 
 	<target name="jar:helpers" depends="compile">
