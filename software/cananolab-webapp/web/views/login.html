@@ -1,0 +1,23 @@
+<div id="loginBlock">
+	  <form ng-submit="submitData()">
+		<table class="loginBlock" summary="layout">
+			<tr>
+				<td><label for="login ID">LOGIN ID</label></td>
+				<td><input type="text" ng-model="loginId" size="14" id="login ID" />
+				</td>
+			</tr>
+			<tr>
+				<td><label for="password">PASSWORD</label></td>
+				<td><input type="password" ng-model="password" size="14"
+					id="password" autocomplete="off"/></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td align="left"><input type="submit" value="Login"></td>
+			</tr>
+			<tr>
+				<td colspan='2' style="color:blue;font-size:18px;font-weight:bold">{{message}}</td>
+			</tr>			
+		</table>
+	  </form>
+</div>
