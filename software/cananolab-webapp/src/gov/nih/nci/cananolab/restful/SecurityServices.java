@@ -38,18 +38,19 @@ public class SecurityServices {
 		if (username.length() == 0 || password.length() == 0)
 			return Response.serverError().entity("User name or password can't be blank").build();
 		
-		String result = helper.checkLogin(username, password);
+		String result = helper.checkLogin(username, password, httpRequest);
 		
 		if (!result.equals(RestfulConstants.SUCCESS)) 
 			return Response.status(Response.Status.NOT_FOUND).entity("Invalid user name and /or password").build();
 			//return Response.serverError().entity("Login failed").build();
-		
+		/*
 		HttpSession session = httpRequest.getSession(false);
 		if (session != null) {
 			session.invalidate();
 		}
 		session = httpRequest.getSession(true);
-		return Response.ok(session.getId()).build();
+		*/
+		return Response.ok(httpRequest.getSession().getId()).build();
     }
 	
 	@GET

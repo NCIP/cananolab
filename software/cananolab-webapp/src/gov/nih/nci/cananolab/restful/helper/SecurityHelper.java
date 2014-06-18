@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.restful.helper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -23,7 +24,7 @@ import gov.nih.nci.cananolab.util.PropertyUtils;
 public class SecurityHelper {
 	private Logger logger = Logger.getLogger(SecurityHelper.class);
 	
-	public String checkLogin(String username, String password) {
+	public String checkLogin(String username, String password, HttpServletRequest httpRequest) {
 		
 		Boolean useLDAP = new Boolean(PropertyUtils.getProperty(
 				Constants.CANANOLAB_PROPERTY, "useLDAP"));
@@ -44,6 +45,15 @@ public class SecurityHelper {
 		try {
 			SecurityService service = new SecurityService(
 					AccessibilityBean.CSM_APP_NAME, user);
+			
+			// Invalidate the current session and create a new one
+			HttpSession session = httpRequest.getSession(false);
+			if (session != null) {
+				session.invalidate();
+			}
+			session = httpRequest.getSession(true);
+			session.setAttribute("securityService", service);
+			session.setAttribute("user", service.getUserBean());
 		} catch (Exception e) {
 			logger.error("Erro while logging in user: " + username + "|" + password + ". " + e.getMessage());
 			return e.getMessage();
