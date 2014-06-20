@@ -29,6 +29,8 @@ L-->
 	<path id="common.classpath">
 		<fileset dir="${common.dir}">
 			<include name="**/*.jar" />
+			<exclude name="**/cglib-2.1.3.jar" />
+			<exclude name="**/spring.jar" />
 		</fileset>
 	</path>
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="common.classpath" />
@@ -88,7 +90,7 @@ L-->
 				<exclude name="caNanoLab.properties" />
 			</fileset>
 		</copy>
-
+	
 		<copy overwrite="true" tofile="${build.dir}/WEB-INF/classes/caNanoLab.properties" file="${src.dir}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset refid="properties.filterset" />
