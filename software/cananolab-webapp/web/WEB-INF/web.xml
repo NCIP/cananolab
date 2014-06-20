@@ -81,7 +81,18 @@ L-->
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
+   <!--   
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext-strutsless.xml</param-value>
+    </context-param>
     
+    <listener>
+    	<listener-class>
+      		org.springframework.web.context.ContextLoaderListener
+    	</listener-class>
+  	</listener>
+    -->
 	<welcome-file-list>
 		<welcome-file>home.jsp</welcome-file>
 	</welcome-file-list>
