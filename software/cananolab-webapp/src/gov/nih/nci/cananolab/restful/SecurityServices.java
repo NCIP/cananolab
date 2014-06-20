@@ -42,14 +42,6 @@ public class SecurityServices {
 		
 		if (!result.equals(RestfulConstants.SUCCESS)) 
 			return Response.status(Response.Status.NOT_FOUND).entity("Invalid user name and /or password").build();
-			//return Response.serverError().entity("Login failed").build();
-		/*
-		HttpSession session = httpRequest.getSession(false);
-		if (session != null) {
-			session.invalidate();
-		}
-		session = httpRequest.getSession(true);
-		*/
 		return Response.ok(httpRequest.getSession().getId()).build();
     }
 	
@@ -71,27 +63,6 @@ public class SecurityServices {
 		
 		String result = helper.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
-		return Response.ok(result).build();
-    }
-	
-	@GET
-	@Path("/updatePassword")
-	@Produces ("application/json")
-    public Response updatePassword(@Context HttpServletRequest httpRequest,
-    		@DefaultValue("") @QueryParam("sessionId") String sessionId,
-    		@DefaultValue("") @QueryParam("loginId") String loginId, 
-    		@DefaultValue("") @QueryParam("password") String password,
-    		@DefaultValue("") @QueryParam("newPassword") String newPassword) {
-		logger.info("In updatePassword service");
-		
-		HttpSession session = httpRequest.getSession(false);
-		if (session == null)
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("No existing session for this request").build();
-		
-		if (!sessionId.equals(session.getId()))
-			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Invalid session").build();
-		
-		String result = helper.updatePassword(loginId, password, newPassword);
 		return Response.ok(result).build();
     }
 	
