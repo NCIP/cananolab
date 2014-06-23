@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
 import gov.nih.nci.cananolab.restful.helper.InitSetupUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -31,5 +32,38 @@ public class CoreServices {
 		InitSetupUtil setupUtil = (InitSetupUtil)applicationContext.getBean("initSetupUtil");
 		PublicDataCountBean dataCountBean = setupUtil.getPublicCount();
 		return Response.ok(dataCountBean).build();
+	}
+	
+	@GET
+	@Path("/getTabs")
+	@Produces ("application/json")
+    public Response getTabs(@Context HttpServletRequest httpRequest, 
+    		@DefaultValue("") @QueryParam("sessionId") String sessionId) {
+	
+		//Mimick logic in cananoMainmenu.jsp
+		/*  
+		<c:when
+							test="${item.value eq 'LOGOUT' && sessionScope.user == null ||
+							        item.value eq 'ADMINISTRATION' && (user==null || !user.admin) ||
+							        item.value eq 'CURATION' && (user==null || !user.curator)||
+							        item.value eq 'COMMUNITY' && user==null ||
+							        item.value eq 'LOGIN' && sessionScope.user !=null||
+							        item.value eq 'LOGIN' && pageContext.request.requestURI eq '/caNanoLab/login.jsp' ||
+							        item.value eq 'RESULTS' && !(user.curator && hasResultsWaiting)}">
+							<td></td>
+						</c:when> 
+						
+		full list: HELP, GLOSSARY - always there
+		
+					HOME - always there except in welcome page
+		
+			LOGIN, LOGOUT, ADMINISTRATION, CURATION, COMMUNITY, RESULTS - depending on login
+			
+			PROTOCOLS, SAMPLES, PUBLICATIONS,  - in search pages (like HOME?)
+		 * */
+	
+		
+		
+		return null;
 	}
 }
