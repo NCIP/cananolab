@@ -27,6 +27,16 @@
  #000000 = black
 */
 
+#portal-footer {line-height: 1.2em; margin: 2em 0em 1em 0em; padding: 1em 0em 1em 0em; text-align: center; background-color:#FFF; color: #333333; font-size: 79%;}
+
+#portal-footer a {text-decoration: none; color: #333333; border: none;}
+
+#portal-footer a:visited {color: #333333;}
+
+#portal-footer a:hover {text-decoration: underline;}
+
+.footerLinks {padding: .5em 0em 0em 0em;}
+
 body {
 padding: 0;
 margin: 0;
@@ -40,11 +50,11 @@ HDR AND FTR BEGINS
 }
 
 .subhdrBG { /* for the cell that contains the application header */
-	background-color: #6a8989; /* darker */
+	background-color: #ffffff; /* darker */
 }
 
 .ftrTable { /* for the table that contains the footer */
-	padding-top: 0.4em;
+4
 }
 
 .imgNoBorder {
@@ -55,17 +65,18 @@ HDR AND FTR BEGINS
 MENU BEGINS
 ###############*/
 td.mainMenu {
-	background-color: #5c5c5c; /* constant: dark gray */
+	background-color: #01045A; /* constant: dark gray */
 	font-family: arial, helvetica, verdana, sans-serif;
 	vertical-align: top;
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-top: 1px solid #88BCE2; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+	border-right: 1px solid #88BCE2; /* constant: medium gray */
 	height: 20px;
 }
 
 td.mainMenuItem { /* for the off state of the main menu (top) cells */
 	font-weight: bold;
-	background-color: #5c5c5c; /* constant: dark gray */
+	background-color: #01045A; /* constant: dark gray */
 	padding-left: 1em;
 	padding-right: 1em;
 }
@@ -73,22 +84,24 @@ td.mainMenuItem { /* for the off state of the main menu (top) cells */
 td:hover.mainMenuItem {
 	/* for the over state of the main menu (top) cells */
 	font-weight: bold;
-	background-color: #6a8989; /* darker */
+	background-color: #01045A; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
 }
 
 th.mainMenuItem { /* for the off state of the main menu (top) cells */
 	font-weight: bold;
-	background-color: #5c5c5c; /* constant: dark gray */
+	background-color: #01045A; /* constant: dark gray */
 	padding-left: 1em;
 	padding-right: 1em;
+
+	height: 30px;
 }
 
 th:hover.mainMenuItem {
 	/* for the over state of the main menu (top) cells */
 	font-weight: bold;
-	background-color: #6a8989; /* darker */
+	background-color: #01045A; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
 }
@@ -103,38 +116,43 @@ th.mainMenuItemSelected {
 
 td.footerMenu {
 	/* for the basic style of the footer menu (bottom) area */
-	background-color: #5c5c5c; /* constant: dark gray */
+	background-color: #01045A; /* constant: dark gray */
 	font-family: arial, helvetica, verdana, sans-serif;
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-top: 1px solid #88BCE2; /* constant: medium gray */
+	border-right: 1px solid #88BCE2; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+	height: 30px;
 }
 
 td.footerMenuItem {
 	/* for the off state of the footer menu (bottom) cells */
-	font-size: 0.9em;
+
 	font-weight: bold;
-	background-color: #5c5c5c; /* constant: dark gray */
+	color: #82fffe;
+	background-color: #01045A; /* constant: dark gray */
 	padding-left: 1em;
 	padding-right: 1em;
 	text-align: center;
+	height: 30px;
 }
 
 td:hover.footerMenuItem {
 	/* for the over state of the footer menu (bottom) cells */
-	font-size: 0.9em;
 	font-weight: bold;
-	background-color: #6a8989; /* darker */
+	color: #82fffe;
+	background-color: #01045A; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
 	text-align: center;
 }
 
 td.sideMenu { /* for the basic style of the side-menu area */
-	background-color: #6A8989; /* darker */
+	background-color: #01045A; /* darker */
 	font-family: arial, helvetica, verdana, sans-serif;
 	width: 160px;
 	vertical-align: top;
 	height:100%;
+	border-right: 1px solid #88BCE2;
 }
 
 td.mainContent {
@@ -148,11 +166,11 @@ td.subMenuPrimaryTitle {
 	font-weight: bold;
 	padding-left: 1em;
 	padding-right: 1em;
-	background-color: #5c5c5c; /* constant: dark gray */
+	background-color: #01045A; /* constant: dark gray */
 	color: #ffffff; /* constant: white */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+	border-top: 1px solid #88BCE2; /* constant: medium gray */
+
 	height: 20px;
 }
 
@@ -161,12 +179,12 @@ th.subMenuPrimaryTitle {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
 	padding-left: 1em;
-	background-color: #5c5c5c; /* constant: dark gray */
-	color: #ffffff; /* constant: white */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
-	height: 20px;
+	background-color: #01045A; /* constant: dark gray */
+	color: #82fffe; /* constant: white */
+	border-top: 1px solid #88BCE2; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+
+	height: 30px;
 	text-align: left;
 }
 
@@ -174,12 +192,11 @@ td.subMenuPrimarySubTitle {
 	/* for the subtitle elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
-	padding-left: 1em;
+	padding: 5px;
 	height: 20px;
-	background-color: #7a7a7a; /* constant: darker gray */
+	background-color: #0089bb; /* constant: darker gray */
 	color: #ffffff; /* constant: white */
-	border-bottom: 1px solid #7a7a7a; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+
 }
 
 td.subMenuPrimaryItems {
@@ -196,31 +213,32 @@ td.subMenuSecondaryTitleFill {
 	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
-	padding-left: 0.8em;
-	background-color: #6A8989; /* darker */
-	color: #ffffff; /* constant: white */
+	text-align: center;
+	background-color: #01045A; /* darker */
+	color: #82fffe; /* constant: white */
 	height: 20px;
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+
 }
 
 td.subMenuCommentText {
 	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
-	padding-left: 0.8em;
-	background-color: #6A8989; /* darker */
-	color: #ffffff; /* constant: white */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	text-align: center;
+	background-color: #01045A; /* darker */
+	color: #82fffe; /* constant: white */
+
 }
 
 td.subMenuSecondaryTitle {
 	/* for the off state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
-	padding-left: 1.5em;
-	background-color: #6A8989; /* darker */
-	color: #ffffff; /* constant: white */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	padding-left: 15px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	background-color: #01045A; /* darker */
+	color: #82fffe; /* constant: white */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
 	height: 20px;
 }
 
@@ -228,11 +246,12 @@ td:hover.subMenuSecondaryTitle {
 	/* for the over state of the cell for the elements (usually common among pages) below the primary items */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
-	padding-left: 1.5em;
-	background-color: #98B7B7; /* lighter */
-	color: #ffffff; /* constant: white */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	padding-left: 15px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	background-color: #82fffe; /* lighter */
+	color: #01045a; /* constant: white */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
 	height: 20px;
 	cursor: pointer;
 }
@@ -244,7 +263,7 @@ td.subMenuSecondaryTitleSelected {
 	padding-left: 1.5em;
 	background-color: #FFFFFF; /* white */
 	color: #5C5C5C; /* constant: dark gray */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
 	height: 20px;
 }
 
@@ -253,24 +272,22 @@ td:hover.subMenuSecondaryTitleSelected {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
 	padding-left: 1.5em;
-	background-color: #98B7B7; /* lighter */
+	background-color: #82fffe; /* lighter */
 	color: #ffffff; /* constant: white */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
 	height: 20px;
 	cursor: pointer;
 }
 
 td.subMenuFill { /* for the empty cell below the sub-menu items */
-	background-color: #6A8989;
-	border-right: 1px solid #cccccc; /* constant: medium gray */
-	height:5px;
+	background-color: #01045A;
+	height: 5px;
 }
 
 td.loginMenuFill {
 	background-color: #f4f4f5;
-	border-left: 1px solid #cccccc;
-	border-right: 1px solid #cccccc;
+	border-left: 1px solid #88BCE2;
+	border-right: 1px solid #88BCE2;
 }
 
 td.subMenuFooter {
@@ -278,17 +295,15 @@ td.subMenuFooter {
 	font-weight: bold;
 	padding-left: 0.8em;
 	background-color: #5c5c5c; /* constant: dark gray */
-	color: #ffffff; /* constant: white */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	color: #82fffe; /* constant: white */
+	border-top: 1px solid #88BCE2; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+	border-right: 1px solid #88BCE2; /* constant: medium gray */
 }
 
 .footerVersion { /* for the items under the sub-menu title elements */
-	font-family: arial, helvetica, verdana, sans-serif;
-	font-weight: normal;
-	background-color: #ffffff; /* constant: white */
-	color: #000000; /* constant: black */
+	font: 12px arial, helvetica, verdana, sans-serif;;
+	color: #4A49A8;
 	text-align: center;
 }
 
@@ -332,32 +347,38 @@ a:hover.subMenuPrimary {
 a:link.subMenuSecondary,a:visited.subMenuSecondary,a:active.subMenuSecondary
 	{
 	/* for the text links under the secondary submenu (quick links area) */
-	color: #ffffff; /* constant: white */
+	color: #01045a; /* constant: white */
 	text-decoration: none;
 	white-space: nowrap;
-	background-color: #98B7B7; /* lighter */
+	background-color: #82fffe; /* lighter */
 }
 
 a:hover.subMenuSecondary {
-	color: #ffffff; /* constant: white */
-	background-color: #98B7B7; /* lighter */
+	color: #01045a; /* constant: white */
+	background-color: #82fffe; /* lighter */
 }
 
 a:link.mainMenuLink,a:visited.mainMenuLink,a:active.mainMenuLink {
 	/* for the text links in the main menu */
-	color: #ffffff; /* constant: white */
+	color: #82fffe; /* constant: white */
 	text-decoration: none;
 	white-space: nowrap;
 }
 
 a:hover.mainMenuLink {
-	color: #ffffff; /* constant: white */
+	color: #82fffe; /* constant: white */
 }
 
 a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
 	/* for the text links at the top of the footer */
-	color: #ffffff; /* constant: white */
+	color: #82fffe; /* constant: white */
 	text-decoration: none;
+	white-space: nowrap;
+}
+
+a:hover.footerMenuLink {
+	/* for the text links at the top of the footer */
+	color: #82fffe; /* constant: white */
 	white-space: nowrap;
 }
 
@@ -399,8 +420,8 @@ FORM BEGINS
 input.actionButton { /* optional style for form and action buttons */
 	border-right: 2px solid #5c5c5c; /* constant: dark gray */
 	border-bottom: 2px solid #5c5c5c; /* constant: dark gray */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-left: 1px solid #cccccc; /* constant: medium gray */
+	border-top: 1px solid #88BCE2; /* constant: medium gray */
+	border-left: 1px solid #88BCE2; /* constant: medium gray */
 }
 
 input.noBorderButton {
@@ -414,8 +435,8 @@ input.noBorderButton {
 }
 
 .formMessage { /* for messages above the form */
-	font-family: arial, helvetica, verdana, sans-serif;
-	color: #000000; /* constant: black */
+	font: 12px arial, helvetica, verdana, sans-serif;;
+	color: #4A49A8;
 }
 
 /*###############
@@ -423,24 +444,24 @@ SIDEBAR BEGINS
 ###############*/
 .sidebarSection { /* for the individual sidebar sections */
 	font-family: arial, helvetica, verdana, sans-serif;
-	background-color: #f4f4f5; /* constant: light gray */
-	border-top: 1px solid #cccccc; /* constant: medium gray */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-left: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	background-color: #ffffff; /* constant: light gray */
+	border-top: 1px solid #88BCE2; /* constant: medium gray */
+	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+	border-left: 1px solid #88BCE2; /* constant: medium gray */
+	border-right: 1px solid #88BCE2; /* constant: medium gray */
 }
 
 .sidebarSectionNoTop { /* for the individual sidebar sections */
 	font-family: arial, helvetica, verdana, sans-serif;
-	background-color: #f4f4f5; /* constant: light gray */
-	border-bottom: 1px solid #cccccc; /* constant: medium gray */
-	border-left: 1px solid #cccccc; /* constant: medium gray */
-	border-right: 1px solid #cccccc; /* constant: medium gray */
+	background-color: #ffffff; /* constant: light gray */
+
+	border-left: 1px solid #88BCE2; /* constant: medium gray */
+	border-right: 1px solid #88BCE2; /* constant: medium gray */
 }
 
 .sidebarSectionNoBorder { /* for the individual sidebar sections */
 	font-family: arial, helvetica, verdana, sans-serif;
-	background-color: #f4f4f5; /* constant: light gray */
+	background-color: #ffffff; /* constant: light gray */
 	border-collapse: collapse;
 }
 
@@ -466,13 +487,14 @@ td.sidebarTitle {
 	/* for the subtitle elements of the sub menu (left-side) */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
-	padding-left: 0.8em;
-	padding-top: 0.2em;
-	padding-bottom: 0.2em;
-	background-color: #7a7a7a; /* constant: darker gray */
-	color: #ffffff; /* constant: white */
+	padding-left: 8px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #009E2D; /* constant: darker gray */
+	color: #fff; /* constant: white */
 	height: 20px;
-	border: 0px;
+	border: 1px;
+
 }
 
 th.sidebarTitle {
@@ -482,10 +504,11 @@ th.sidebarTitle {
 	padding-left: 0.8em;
 	padding-top: 0.2em;
 	padding-bottom: 0.2em;
-	background-color: #7a7a7a; /* constant: darker gray */
-	color: #ffffff; /* constant: white */
+	background-color: #acc4c4; /* constant: darker gray */
+	color: #4c5b5b; /* constant: white */
 	height: 20px;
-	border: 0px;
+	border: 1px;
+
 }
 td.sidebarContent {
 	/* for the areas under the sidebar titles and requires text */
@@ -493,6 +516,10 @@ td.sidebarContent {
 	padding-left: 0.8em;		
 	line-height: 1.5em; 
 	padding-right: 0.5em;
+}
+
+.sidebarContent ul li {
+   line-height:17px;
 }
 
 .boldAndUnderlined {
@@ -533,7 +560,7 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 
 .bannerHome { /* for the banner area of the home page */
 	background-color: #6a8989;
-	border-right: 1px solid #cccccc; /* constant: light gray */
+	border-right: 1px solid #88BCE2; /* constant: light gray */
 }
 
 .txtHighlight { /* adds emphasis to text */
@@ -548,7 +575,7 @@ p,.p { /* for paragraphs */ /* padding-left: 1em; */
 .welcomeTitle { /* for titles of sections inside the content area */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-weight: bold;
-	padding-left: 1em;
+	padding: 8px;
 	background-color: #cccccc; /* constant: medium gray */
 	border-top: 1px solid #cccccc; /* constant: medium gray */
 }
@@ -635,7 +662,7 @@ div.logindiv {
 	padding: 5px 30px 10px 30px;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #dedede;
+	border-color: #88BCE2;
 }
 
 th.dataTypeHomePage {
@@ -646,7 +673,7 @@ th.dataTypeHomePage {
 	font-family: arial, helvetica, verdana, sans-serif;
 	padding: 5px 0 5px 5px;
 	border-width: 1px;
-	border-color: #dedede;
+	border-color: #88BCE2;
 	border-style: solid;
 	vertical-align: top;
 }
@@ -678,7 +705,7 @@ th.dataTypeHomePage {
 .gridTableData {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-style: solid;
-	border-color: #cccccc;
+	border-color: #82fffe;
 	border-collapse: collapse;
 	border-width: 1px;
 	color: #5C5C5C;
@@ -703,7 +730,7 @@ th.dataTypeHomePage {
 .gridTableDataView {
 	font-family: arial, helvetica, verdana, sans-serif;
 	border-style: solid;
-	border-color: #cccccc;
+	border-color: #82fffe;
 	border-collapse: collapse;
 	border-width: 1px;
 	color: #5C5C5C;
@@ -719,7 +746,7 @@ th.dataTypeHomePage {
 .gridTableDataView td {
 	padding: 1px 0 1px 1px;
 	border-width: 1px;
-	border-color: #cccccc;
+	border-color: #82fffe;
 	border-style: solid;
 	vertical-align: top;
 	color: #706C60;
@@ -985,7 +1012,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background: #fff;
-	font: 11px arial, helvetica, verdana, sans-serif;;
+	font: 12px arial, helvetica, verdana, sans-serif;;
 	color: #4A49A8;
 }
 
