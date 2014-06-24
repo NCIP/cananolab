@@ -1,6 +1,12 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.util.List;
+import java.util.Set;
+
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.restful.helper.SecurityHelper;
+import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,12 +26,6 @@ public class SecurityServices {
 	
 	SecurityHelper helper = new SecurityHelper();
 
-    /**
-     * Method handling HTTP GET requests. The returned object will be sent
-     * to the client as "text/plain" media type.
-     *
-     * @return String that will be returned as a text/plain response.
-     */
 	@GET
 	@Path("/login")
 	@Produces ("application/json")
@@ -77,5 +77,31 @@ public class SecurityServices {
 			return Response.ok("Null session. No need to log out").build();
 		session.invalidate();
 		return Response.ok("Logout successful").build();
+	}
+	
+	@GET
+	@Path("/getUserGroups")
+	@Produces ("application/json")
+    public Response getUserGroups(@Context HttpServletRequest httpRequest) {
+		logger.info("In getUser service");
+		
+		HttpSession session = httpRequest.getSession(false);
+		if (session == null) 
+			return Response.ok(null).build();
+		
+		UserBean user = (UserBean)session.getAttribute("user");
+		SecurityService service = (SecurityService) session.getAttribute("securityService");
+		
+		if (user != null && service != null) {
+			try {
+				List<String> groups = service.getGroupNamesForUser(user.getUserId());
+				return Response.ok(groups).build();
+			} catch (Exception e) {
+				//logger.error("Erro while logging in user: " + username + "|" + password + ". " + e.getMessage());
+				return Response.ok("Unable to get group for user").build();
+			}
+		}
+		
+		return Response.ok(null).build();
 	}
 }

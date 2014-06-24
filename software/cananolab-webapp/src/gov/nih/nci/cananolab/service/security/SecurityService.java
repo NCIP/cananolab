@@ -206,6 +206,29 @@ public class SecurityService {
 		}
 		return groupNames;
 	}
+	
+	/**
+	 * Get group names for user in a list. Method added for restful services
+	 * @param userId
+	 * @return
+	 * @throws SecurityException
+	 */
+	public List<String> getGroupNamesForUser(String userId)
+			throws SecurityException {
+		
+		List<String> groupNames = new ArrayList<String>();
+		try {
+			Set groups = this.authorizationManager.getGroups(userId);
+			for (Object obj : groups) {
+				Group group = (Group) obj;
+				groupNames.add(group.getGroupName());
+			}
+		} catch (Exception e) {
+			logger.error("Error in getting the groups user is in.", e);
+			throw new SecurityException();
+		}
+		return groupNames;
+	}
 
 	private void assignUserToGroup(String groupName) throws SecurityException {
 		try {
