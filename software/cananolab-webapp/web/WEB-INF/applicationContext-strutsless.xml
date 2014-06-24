@@ -11,11 +11,11 @@
 	http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
               
-    <!--  jee:jndi-lookup id="dataSource" jndi-name="jdbc/FormBuilderDS" resource-ref="false" /> -->
+    <!--  jee:jndi-lookup id="dataSource" jndi-name="jdbc/FormBuilderDS" resource-ref="false" /> 
     
     <tx:annotation-driven transaction-manager = "transactionManager" />
     <tx:annotation-driven proxy-target-class="true"/>
-    
+    -->
     <bean id="initSetupUtil"
 		class="gov.nih.nci.cananolab.restful.helper.InitSetupUtil">
 	</bean>
