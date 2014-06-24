@@ -51,6 +51,8 @@ HDR AND FTR BEGINS
 
 .subhdrBG { /* for the cell that contains the application header */
 	background-color: #ffffff; /* darker */
+	background-image:url('/caNanoLab/images/appLogo-nanolab.gif');
+	height:80px;
 }
 
 .ftrTable { /* for the table that contains the footer */
@@ -95,13 +97,13 @@ th.mainMenuItem { /* for the off state of the main menu (top) cells */
 	padding-left: 1em;
 	padding-right: 1em;
 
-	height: 30px;
+	height: 23px;
 }
 
 th:hover.mainMenuItem {
 	/* for the over state of the main menu (top) cells */
 	font-weight: bold;
-	background-color: #01045A; /* darker */
+	background-color: #0089BB; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
 }
@@ -121,7 +123,7 @@ td.footerMenu {
 	border-top: 1px solid #88BCE2; /* constant: medium gray */
 	border-right: 1px solid #88BCE2; /* constant: medium gray */
 	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
-	height: 30px;
+	height: 23px;
 }
 
 td.footerMenuItem {
@@ -133,14 +135,14 @@ td.footerMenuItem {
 	padding-left: 1em;
 	padding-right: 1em;
 	text-align: center;
-	height: 30px;
+	height: 23px;
 }
 
 td:hover.footerMenuItem {
 	/* for the over state of the footer menu (bottom) cells */
 	font-weight: bold;
 	color: #82fffe;
-	background-color: #01045A; /* darker */
+	background-color: #0089BB; /* darker */
 	padding-left: 1em;
 	padding-right: 1em;
 	text-align: center;
@@ -171,7 +173,7 @@ td.subMenuPrimaryTitle {
 	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
 	border-top: 1px solid #88BCE2; /* constant: medium gray */
 
-	height: 20px;
+	height: 23px;
 }
 
 th.subMenuPrimaryTitle {
@@ -184,7 +186,7 @@ th.subMenuPrimaryTitle {
 	border-top: 1px solid #88BCE2; /* constant: medium gray */
 	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
 
-	height: 30px;
+	height: 23px;
 	text-align: left;
 }
 
@@ -237,7 +239,7 @@ td.subMenuSecondaryTitle {
 	padding-top: 2px;
 	padding-bottom: 2px;
 	background-color: #01045A; /* darker */
-	color: #82fffe; /* constant: white */
+	color: #fff; /* constant: white */
 	border-bottom: 1px solid #88BCE2; /* constant: medium gray */
 	height: 20px;
 }
@@ -366,7 +368,7 @@ a:link.mainMenuLink,a:visited.mainMenuLink,a:active.mainMenuLink {
 }
 
 a:hover.mainMenuLink {
-	color: #82fffe; /* constant: white */
+	color: #fff; /* constant: white */
 }
 
 a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
@@ -378,7 +380,7 @@ a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
 
 a:hover.footerMenuLink {
 	/* for the text links at the top of the footer */
-	color: #82fffe; /* constant: white */
+	color: #fff; /* constant: white */
 	white-space: nowrap;
 }
 
