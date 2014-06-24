@@ -1,79 +1,1088 @@
-/* Space out content a bit */
+/*########## BLUE COLOR SCHEME ##########
+ #475B82 = darker blue
+ #6E81A6 = lighter blue
+
+/*########## GREEN COLOR SCHEME ##########
+ #6A8989 = darker green
+ #98B7B7 = lighter green
+
+/*########## PURPLE COLOR SCHEME ##########
+ #797C9C = darker purple
+ #9FA2BA = lighter purple
+
+/*########## TAN COLOR SCHEME ##########
+ #706C60 = darker tan
+ #B3AE9C = lighter tan
+
+/*########## GRAY COLOR SCHEME ##########
+ #838386 = darker gray
+ #AAAAAB = lighter gray
+
+/*########## COMMON AMONG ALL COLOR SCHEMES ##########
+ #A90101 = red
+ #5C5C5C = dark gray
+ #CCCCCC = medium gray
+ #F4F4F5 = light gray
+ #FFFFFF = white
+ #000000 = black
+*/
+
+#portal-footer {line-height: 1.2em; margin: 2em 0em 1em 0em; padding: 1em 0em 1em 0em; text-align: center; background-color:#FFF; color: #333333; font-size: 79%;}
+
+#portal-footer a {text-decoration: none; color: #333333; border: none;}
+
+#portal-footer a:visited {color: #333333;}
+
+#portal-footer a:hover {text-decoration: underline;}
+
+.footerLinks {padding: .5em 0em 0em 0em;}
+
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+padding: 0;
+margin: 0;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-left: 15px;
-  padding-right: 15px;
+/*###############
+HDR AND FTR BEGINS
+###############*/
+.hdrBG { /* for the cell that contains the required cancer.gov header */
+  background-color: #a90101; /* constant: red */
 }
 
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-}
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-  padding-bottom: 19px;
+.subhdrBG { /* for the cell that contains the application header */
+  background-color: #ffffff; /* darker */
+  background-image:url('/caNanoLab/images/appLogo-nanolab.gif');
+  height:80px;
 }
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
+.ftrTable { /* for the table that contains the footer */
+4
 }
 
-/* Customize container */
-@media (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-}
-.container-narrow > hr {
-  margin: 30px 0;
+.imgNoBorder {
+  border-style: none;
 }
 
-/* Main marketing message and sign up button */
-.jumbotron {
+/*###############
+MENU BEGINS
+###############*/
+td.mainMenu {
+  background-color: #01045A; /* constant: dark gray */
+  font-family: arial, helvetica, verdana, sans-serif;
+  vertical-align: top;
+  border-top: 1px solid #88BCE2; /* constant: medium gray */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  border-right: 1px solid #88BCE2; /* constant: medium gray */
+  height: 20px;
+}
+
+td.mainMenuItem { /* for the off state of the main menu (top) cells */
+  font-weight: bold;
+  background-color: #01045A; /* constant: dark gray */
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+td:hover.mainMenuItem {
+  /* for the over state of the main menu (top) cells */
+  font-weight: bold;
+  background-color: #01045A; /* darker */
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+th.mainMenuItem { /* for the off state of the main menu (top) cells */
+  font-weight: bold;
+  background-color: #01045A; /* constant: dark gray */
+  padding-left: 1em;
+  padding-right: 1em;
+
+  height: 23px;
+}
+
+th:hover.mainMenuItem {
+  /* for the over state of the main menu (top) cells */
+  font-weight: bold;
+  background-color: #0089BB; /* darker */
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+th.mainMenuItemSelected {
+  /* for the over state of the main menu (top) cells */
+  font-weight: bold;
+  background-color: #6a8989; /* darker */
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+td.footerMenu {
+  /* for the basic style of the footer menu (bottom) area */
+  background-color: #01045A; /* constant: dark gray */
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-top: 1px solid #88BCE2; /* constant: medium gray */
+  border-right: 1px solid #88BCE2; /* constant: medium gray */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  height: 23px;
+}
+
+td.footerMenuItem {
+  /* for the off state of the footer menu (bottom) cells */
+
+  font-weight: bold;
+  color: #82fffe;
+  background-color: #01045A; /* constant: dark gray */
+  padding-left: 1em;
+  padding-right: 1em;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
+  height: 23px;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
+td:hover.footerMenuItem {
+  /* for the over state of the footer menu (bottom) cells */
+  font-weight: bold;
+  color: #82fffe;
+  background-color: #0089BB; /* darker */
+  padding-left: 1em;
+  padding-right: 1em;
+  text-align: center;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+td.sideMenu { /* for the basic style of the side-menu area */
+  background-color: #01045A; /* darker */
+  font-family: arial, helvetica, verdana, sans-serif;
+  width: 160px;
+  vertical-align: top;
+  height:100%;
+  border-right: 1px solid #88BCE2;
+}
+
+td.mainContent {
+  font-family: arial, helvetica, verdana, sans-serif;
+  vertical-align: top;
+}
+
+td.subMenuPrimaryTitle {
+  /* for the title elements of the sub menu (left-side) */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 1em;
+  padding-right: 1em;
+  background-color: #01045A; /* constant: dark gray */
+  color: #ffffff; /* constant: white */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  border-top: 1px solid #88BCE2; /* constant: medium gray */
+
+  height: 23px;
+}
+
+th.subMenuPrimaryTitle {
+  /* for the title elements of the sub menu (left-side) */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 1em;
+  background-color: #01045A; /* constant: dark gray */
+  color: #82fffe; /* constant: white */
+  border-top: 1px solid #88BCE2; /* constant: medium gray */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+
+  height: 23px;
+  text-align: left;
+}
+
+td.subMenuPrimarySubTitle {
+  /* for the subtitle elements of the sub menu (left-side) */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding: 5px;
+  height: 20px;
+  background-color: #0089bb; /* constant: darker gray */
+  color: #ffffff; /* constant: white */
+
+}
+
+td.subMenuPrimaryItems {
+  /* for the items under the sub-menu title elements */
+  font-family: arial, helvetica, verdana, sans-serif;
+  background-color: #ffffff; /* constant: white */
+  font-weight: bold;
+  padding-top: 1em;
+  padding-bottom: 0.8em;
+  padding-left: 0.3em;
+}
+
+td.subMenuSecondaryTitleFill {
+  /* for the off state of the cell for the elements (usually common among pages) below the primary items */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  background-color: #01045A; /* darker */
+  color: #82fffe; /* constant: white */
+  height: 20px;
+
+}
+
+td.subMenuCommentText {
+  /* for the off state of the cell for the elements (usually common among pages) below the primary items */
+  font-family: arial, helvetica, verdana, sans-serif;
+  text-align: center;
+  background-color: #01045A; /* darker */
+  color: #82fffe; /* constant: white */
+
+}
+
+td.subMenuSecondaryTitle {
+  /* for the off state of the cell for the elements (usually common among pages) below the primary items */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 15px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: #01045A; /* darker */
+  color: #fff; /* constant: white */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  height: 20px;
+}
+
+td:hover.subMenuSecondaryTitle {
+  /* for the over state of the cell for the elements (usually common among pages) below the primary items */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 15px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: #82fffe; /* lighter */
+  color: #01045a; /* constant: white */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  height: 20px;
+  cursor: pointer;
+}
+
+td.subMenuSecondaryTitleSelected {
+  /* for the off state of the cell for the elements (usually common among pages) below the primary items */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 1.5em;
+  background-color: #FFFFFF; /* white */
+  color: #5C5C5C; /* constant: dark gray */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  height: 20px;
+}
+
+td:hover.subMenuSecondaryTitleSelected {
+  /* for the over state of the cell for the elements (usually common among pages) below the primary items */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 1.5em;
+  background-color: #82fffe; /* lighter */
+  color: #ffffff; /* constant: white */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  height: 20px;
+  cursor: pointer;
+}
+
+td.subMenuFill { /* for the empty cell below the sub-menu items */
+  background-color: #01045A;
+  height: 5px;
+}
+
+td.loginMenuFill {
+  background-color: #f4f4f5;
+  border-left: 1px solid #88BCE2;
+  border-right: 1px solid #88BCE2;
+}
+
+td.subMenuFooter {
+  /* for the last row in the submenu left of the footer menu */
+  font-weight: bold;
+  padding-left: 0.8em;
+  background-color: #5c5c5c; /* constant: dark gray */
+  color: #82fffe; /* constant: white */
+  border-top: 1px solid #88BCE2; /* constant: medium gray */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  border-right: 1px solid #88BCE2; /* constant: medium gray */
+}
+
+.footerVersion { /* for the items under the sub-menu title elements */
+  font: 12px arial, helvetica, verdana, sans-serif;;
+  color: #4A49A8;
+  text-align: center;
+}
+
+/*###############
+LINKS BEGIN
+###############*/
+a:link,a:visited,a:active { /* default links */
+  color: #333333; /* constant: dark gray */
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+a:link.helpText,a:visited.helpText,a:active.helpText {
+  /* for help link text not affected by any cascading text styles */
+  font-weight: normal;
+  text-decoration: underline;
+}
+
+a:link.loginText,a:visited.loginText,a:active.loginText {
+  /* for help link text not affected by any cascading text styles */
+  font-family: arial, helvetica, verdana, sans-serif;
+  color: #ffffff; /* constant: white*/
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #a90101; /* constant: red */
+}
+
+a:link.subMenuPrimary,a:visited.subMenuPrimary,a:active.subMenuPrimary {
+  /* for the text links in the primary submenu */
+  color: #5c5c5c; /* constant: dark gray */
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a:hover.subMenuPrimary {
+  color: #a90101; /* constant: red */
+}
+
+a:link.subMenuSecondary,a:visited.subMenuSecondary,a:active.subMenuSecondary
+  {
+  /* for the text links under the secondary submenu (quick links area) */
+  color: #01045a; /* constant: white */
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #82fffe; /* lighter */
+}
+
+a:hover.subMenuSecondary {
+  color: #01045a; /* constant: white */
+  background-color: #82fffe; /* lighter */
+}
+
+a:link.mainMenuLink,a:visited.mainMenuLink,a:active.mainMenuLink {
+  /* for the text links in the main menu */
+  color: #82fffe; /* constant: white */
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a:hover.mainMenuLink {
+  color: #fff; /* constant: white */
+}
+
+a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink {
+  /* for the text links at the top of the footer */
+  color: #82fffe; /* constant: white */
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a:hover.footerMenuLink {
+  /* for the text links at the top of the footer */
+  color: #fff; /* constant: white */
+  white-space: nowrap;
+}
+
+a:hover.disclaimerLink {
+  color: #5C5C5C; /* dark gray */
+}
+
+a:link.disclaimerLink,a:visited.disclaimerLink,a:active.disclaimerLink {
+  /* for the text links at the top of the footer */
+  color: #5C5C5C; /* dark gray */
+  white-space: nowrap;
+  font-size: 0.8em;
+  text-decoration: underline;
+}
+
+a:hover.disclaimerLink {
+  color: #5C5C5C; /* dark gray */
+}
+
+a:hover.sideMenuLink {
+   color: #F4F4F5; /* light gray */
+}
+
+a:link.sideMenuLink,a:visited.sideMenuLink,a:active.sideMenuLink {
+  /* for the text links at the top of the footer */
+  color: #F4F4F5; /* light gray */
+  white-space: nowrap;
+  text-decoration: underline;
+  font-size: 0.8em;
+}
+
+a.anchorLink:link, a.anchorLink:visited, a.anchorLink:hover, a.anchorLink:active {
+  text-decoration: none;
+}
+
+/*###############
+FORM BEGINS
+###############*/
+input.actionButton { /* optional style for form and action buttons */
+  border-right: 2px solid #5c5c5c; /* constant: dark gray */
+  border-bottom: 2px solid #5c5c5c; /* constant: dark gray */
+  border-top: 1px solid #88BCE2; /* constant: medium gray */
+  border-left: 1px solid #88BCE2; /* constant: medium gray */
+}
+
+input.noBorderButton {
+  font-weight: bold;
+  font-size: 0.8em;
+  text-decoration: underline;
+  border: 0px solid;
+  color: #5C5C5C;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+.formMessage { /* for messages above the form */
+  font: 12px arial, helvetica, verdana, sans-serif;;
+  color: #4A49A8;
+}
+
+/*###############
+SIDEBAR BEGINS
+###############*/
+.sidebarSection { /* for the individual sidebar sections */
+  font-family: arial, helvetica, verdana, sans-serif;
+  background-color: #ffffff; /* constant: light gray */
+  border-top: 1px solid #88BCE2; /* constant: medium gray */
+  border-bottom: 1px solid #88BCE2; /* constant: medium gray */
+  border-left: 1px solid #88BCE2; /* constant: medium gray */
+  border-right: 1px solid #88BCE2; /* constant: medium gray */
+}
+
+.sidebarSectionNoTop { /* for the individual sidebar sections */
+  font-family: arial, helvetica, verdana, sans-serif;
+  background-color: #ffffff; /* constant: light gray */
+
+  border-left: 1px solid #88BCE2; /* constant: medium gray */
+  border-right: 1px solid #88BCE2; /* constant: medium gray */
+}
+
+.sidebarSectionNoBorder { /* for the individual sidebar sections */
+  font-family: arial, helvetica, verdana, sans-serif;
+  background-color: #ffffff; /* constant: light gray */
+  border-collapse: collapse;
+}
+
+/* for the list inside "WHAT'S NEW" on the Welcome Content */
+.sidebarSectionNoTop ul {
+  list-style-image: url(../images/diamond_list_item.gif);
+  word-wrap: break-word;
+  margin: 0.2em 0em 0.2em 2em;
+  font-size: 1em;
+  padding: 0px;
+}
+
+.sidebarSection li {
+  padding: 0 0 0.3em 0;
+}
+
+.loginBlock {
+  text-align: right;
+  margin-left: 2em;
+}
+
+td.sidebarTitle {
+  /* for the subtitle elements of the sub menu (left-side) */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #009E2D; /* constant: darker gray */
+  color: #fff; /* constant: white */
+  height: 20px;
+  border: 1px;
+
+}
+
+th.sidebarTitle {
+  /* for the subtitle elements of the sub menu (left-side) */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 0.8em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  background-color: #acc4c4; /* constant: darker gray */
+  color: #4c5b5b; /* constant: white */
+  height: 20px;
+  border: 1px;
+
+}
+td.sidebarContent {
+  /* for the areas under the sidebar titles and requires text */
+  font-family: arial, helvetica, verdana, sans-serif;
+  padding-left: 0.8em;    
+  line-height: 1.5em; 
+  padding-right: 0.5em;
+}
+
+.sidebarContent ul li {
+   line-height:17px;
+}
+
+.boldAndUnderlined {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/*###############
+STANDARD CONTENT BEGINS
+###############*/
+table.contentPage { /* for overall top style for a content page */
+  font-family: arial, helvetica, verdana, sans-serif;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: 0.7em;
+  color: #000000; /* constant: black */
+}
+
+h2,.h2 { /* for header of page */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #5c5c5c; /* constant: dark gray */
+  text-align: center;
+}
+
+h3,.h3 { /* for title of page */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #5c5c5c; /* constant: dark gray */
+  text-align: left;
+}
+
+p,.p { /* for paragraphs */ /* padding-left: 1em; */
+  
+}
+
+.bannerHome { /* for the banner area of the home page */
+  background-color: #6a8989;
+  border-right: 1px solid #88BCE2; /* constant: light gray */
+}
+
+.txtHighlight { /* adds emphasis to text */
+  color: #a90101;
+}
+
+.grayTextHighlight { /* adds emphasis to text */
+  color: #5C5C5C;
+  font-weight: bold;
+}
+
+.welcomeTitle { /* for titles of sections inside the content area */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding: 8px;
+  background-color: #cccccc; /* constant: medium gray */
+  border-top: 1px solid #cccccc; /* constant: medium gray */
+}
+
+.welcomeContent {
+  /* for the area below the title content of the home page */
+  font-family: arial, helvetica, verdana, sans-serif;
+  line-height: 1.5em;
+  padding-left: 0.5em; 
+  text-align: justify;
+  padding-right: 0.5em;
+}
+.contentTitle { /* for title on top of the content area */
+  background-color: #cccccc; /* constant: medium gray */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 0.2em;
+  font-size:1.1em;
+}
+
+.disclaimerTitle { /* for titles of sections inside the content area */
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  padding-left: 1em;
+  color: #000000;
+  background-color: #cccccc; /* constant: medium gray */
+  border-top: 1px solid #cccccc; /* constant: medium gray */
+}
+
+.disclaimerContent {
+  /* for the area below the title content of the home page */
+  font-family: arial, helvetica, verdana, sans-serif;
+  color: #000000;
+  line-height: 1.5em;
+  padding-top: 1.5em;
+  padding-left: 2.5em;
+  padding-right: 2.5em;
+  padding-bottom: 1.5em;
+  text-align: justify;
+}
+
+div.griddiv {
+  background-color: #F4F4F5;
+  padding: 20px 5px 20px 10px;
+}
+
+div.logindiv {
+  background-color: #F4F4F5;
+  padding: 10px 10px 10px 55px;
+}
+
+.pubBrowse {
+  color: #4A49A8;
+  text-align: left;
+  text-indent: 1em;
+  vertical-align: middle;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-size: 1.2em;
+  margin-bottom: 0;
+  padding-left: 1em;
+  background-color: #cccccc; /* constant: medium gray */
+  border-top: 1px solid #cccccc; /* constant: medium gray */
+}
+
+.message {
+  padding-left: 50px;
+}
+
+.gridtableHomePage {
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-style: solid;
+  border-collapse: collapse;
+  border-width: 0px;
+  width:95%;
+  padding:0px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.gridtableHomePage th {
+  font-family: arial, helvetica, verdana, sans-serif;
+  padding: 5px 30px 10px 30px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #88BCE2;
+}
+
+th.dataTypeHomePage {
+  width: 70%;
+}
+
+.gridtableHomePage td {
+  font-family: arial, helvetica, verdana, sans-serif;
+  padding: 5px 0 5px 5px;
+  border-width: 1px;
+  border-color: #88BCE2;
+  border-style: solid;
+  vertical-align: top;
+}
+
+.gridtable {
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-style: solid;
+  border-collapse: collapse;
+  border-width: 0px;
+}
+
+.gridtable th {
+  font-family: arial, helvetica, verdana, sans-serif;
+  padding: 5px 30px 10px 30px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #dedede;
+}
+
+.gridtable td {
+  font-family: arial, helvetica, verdana, sans-serif;
+  padding: 5px 0 5px 5px;
+  border-width: 1px;
+  border-color: #dedede;
+  border-style: solid;
+  vertical-align: top;
+}
+
+.gridTableData {
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-style: solid;
+  border-color: #82fffe;
+  border-collapse: collapse;
+  border-width: 1px;
+  color: #5C5C5C;
+  background-color: #D3E4DE;
+}
+
+.gridTableData th {
+  padding: 3px 3px 3px 3px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.gridTableData td {
+  padding: 1px 0 1px 1px;
+  border-width: 1px;
+  border-color: #cccccc;
+  border-style: solid;
+  vertical-align: top;
+  color: #706C60;
+}
+
+.gridTableDataView {
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-style: solid;
+  border-color: #82fffe;
+  border-collapse: collapse;
+  border-width: 1px;
+  color: #5C5C5C;
+  background-color: #F5F5f5;
+}
+
+.gridTableDataView th {
+  padding: 3px 3px 3px 3px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.gridTableDataView td {
+  padding: 1px 0 1px 1px;
+  border-width: 1px;
+  border-color: #82fffe;
+  border-style: solid;
+  vertical-align: top;
+  color: #706C60;
+}
+
+.gridtableNoBorder {
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-width: 0px;
+  border-style: none;
+  border-collapse: collapse;
+}
+
+.gridtableNoBorder td {
+  border-width: 0px;
+  border-style: none;
+  vertical-align: middle;
+  border-style: none;
+}
+
+#location {
+  margin-bottom: 10px;
+  margin-right: 5px;
+  padding-right: 3px;
+}
+
+#results {
+  padding-left: 9px;
+  padding-right: 9px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.counts {
+  margin-left: 22px;
+  margin-right: auto;
+}
+
+.countsLink {
+  display: block;
+  margin-left: 22px;
+  margin-right: auto;
+}
+
+img.img { /* for images that need a border */
+  border: 1px solid #5c5c5c; /* constant: dark gray */
+}
+
+.menuItemText { /* for text in a menu bar */
+  color: #ffffff; /* constant: white */
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.assocEleBlock {
+  border: 1px solid #5c5c5c;
+  width: 240px;
+  background-color: white;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.assocEleBlock ul li {
+  margin: 10px 10px 10px 10px;
+}
+
+#assocEleBlockA {
+  float: left;
+  margin-left: 15px;
+}
+
+#assocEleBlockB {
+  float: left;
+}
+
+#assocEleLinkBlock {
+  float: left;
+  width: 120px;
+  margin: 50px 0 0 0;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+#assocEleLinkReadOnlyBlock {
+  float: left;
+  width: 120px;
+  margin: 20px 0 0 0;
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+#assocImg {
+  margin-bottom: 0.5em;
+}
+
+.indented0 {
+  padding-left: 3pt;
+}
+
+.indented1 {
+  padding-left: 6pt;
+}
+
+.indented2 {
+  padding-left: 9pt;
+}
+
+.indented3 {
+  padding-left: 15pt;
+}
+
+.indented4 {
+  padding-left: 18pt;
+  padding-right: 18pt;
+}
+
+.indented5 {
+  padding-top: 5pt;
+  padding-bottom: 5pt;
+  padding-left: 8pt;
+}
+
+.largerText {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.moreLink {
+  color: #5F7C7C; /* constant: red */
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+.addLink {
+  color: #a90101; /* constant: red */
+  font-weight: bold;
+  font-size: 0.7em;
+}
+
+.addLink2 {
+  color: #a90101; /* constant: red */
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.removeLink {
+  color: #a90101; /* constant: red */
+  font-size: 0.8em;
+}
+
+.removeLink2 {
+  color: #a90101; /* constant: red */
+  font-size: 1em;
+}
+
+.thumbnail {
+  position: relative;
+  z-index: 0;
+}
+
+.thumbnail:hover {
+  background-color: transparent;
+  z-index: 50;
+}
+
+.thumbnail span { /*CSS for enlarged image*/
+  position: absolute;
+  background-color: lightyellow;
+  padding: 5px;
+  left: -1000px;
+  border: 1px dashed gray;
+  visibility: hidden;
+  color: black;
+  text-decoration: none;
+}
+
+.thumbnail span img { /*CSS for enlarged image*/
+  border-width: 0;
+  padding: 2px;
+}
+
+.thumbnail:hover span { /*CSS for enlarged image on hover*/
+  visibility: visible;
+  top: 0;
+  left: 60px;
+  /*position where enlarged image should offset horizontally */
+}
+
+input,textArea,submit,reset,option,select {
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-size: 11px;
+}
+
+.submissionView {
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-width: 1px;
+  border-color: #AAAAAB;
+  border-style: solid;
+  border-collapse: collapse;
+  color: #333333;
+}
+
+.submissionView caption {
+  font-weight: bold;
+  background-color: #CCCCCC;
+  color: #333333;
+}
+
+.submissionView th {
+  padding: 3px 3px 3px 3px;
+  color: #5C5C5C; 
+  font-weight: bold;
+  text-align: left;
+}
+
+.submissionView td {
+  padding: 3px 3px 3px 3px;
+  vertical-align: top;
+  text-align: left;
+}
+
+.subSubmissionView {
+  font-family: arial, helvetica, verdana, sans-serif;
+  border-width: 1px;
+  border-color: #cccccc;
+  padding: 3px 3px 3px 3px;
+  border-style: solid;
+  border-collapse: collapse;
+  color: #5C5C5C;
+  background-color: #D3E4DE;  
+}
+
+.subSubmissionView caption {
+  font-weight: bold;
+  color: #5C5C5C;
+}
+
+.subSubmissionView th {
+  padding: 3px 3px 3px 3px;
+  font-weight: bold;
+  text-align: left;
+  background: white url(../images/shadeactive.gif) top left repeat-x;
+}
+
+.subSubmissionView td {
+  padding: 3px 3px 3px 3px;
+  border-width: 0px;
+  vertical-align: top;
+  text-align: left;
+  /*color: #333333;*/
+}
+
+.cellLabel {
+  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: bold;
+  /*text-transform: uppercase;*/
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  font: 12px arial, helvetica, verdana, sans-serif;;
+  color: #4A49A8;
+}
+
+p {
+  text-align: center;
+  padding: 0 20px;
+  margin: 70px 0 0 0;
+  line-height: 14px;
+}
+
+p.pText {
+  margin-top: 40px;
+}
+
+ul,ol {
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.sampleStatsTable {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  border: 0px;
+  padding: 0px;
+  color: #5F7C7C; 
+}
+
+.sampleStatsTable th {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  padding: 0 3px 0 0;
+  border: 0px;
+}
+
+.sampleStatsTable td {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  padding: 0 5px 0 0;
+  border: 0px;
+}
+
+.invisibleTable {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  padding: 0px;
+  border: 0px;
+}
+
+.invisibleTable th {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  padding: 0 3px 0 0;
+}
+
+.invisibleTable td {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  padding: 0 15px 0 0;
+}
+
+.spacer {
+  padding: 0.5em;
+}
+
+.editButton {
+  margin-left:auto;
+    margin-right:auto;
+  text-align:right;
+  width:99%;
+  background-color:#F5F5f5;
 }
