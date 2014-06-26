@@ -25,6 +25,10 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+     .when('/register', {
+       templateUrl: 'views/register.html',
+       controller: 'RegisterCtrl'
+     })       
       .when('/auth', {
         templateUrl: 'views/loggedIn.html',
         controller: 'AuthCtrl'
