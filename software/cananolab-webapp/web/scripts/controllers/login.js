@@ -1,13 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name angularApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the angularApp
- */
-angular.module('angularApp')
+var app = angular.module('angularApp')
 .controller('LoginCtrl', function ($scope, $http, $cookieStore, $window, $cookies) {
 	$scope.submitData = function() {
 		// Enable CORS

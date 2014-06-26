@@ -1101,3 +1101,9 @@ ul,ol {
   top:-9999px;
   left:-9999px;
 }
+
+#authErrors {
+color:red;
+font-weight:bold;
+padding:1em;
+}
