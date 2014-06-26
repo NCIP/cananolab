@@ -1,9 +1,4 @@
-
-
-
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-
 <html>
 <head>
 <title>caNanoLab</title>
@@ -11,29 +6,18 @@
 	content="nanoinformatics, nanotechnology model, caNanoLab, nanotechnology, nanoparticle, nanomaterial, cancer, information model, portal, data portal, data repository, caBIG, caGRID, NCL, nano characterization, nanoparticle composition, Cancer Nanotechnology Excellence, Nanoparticle Ontology">
 <meta name="description"
 	content="caNanoLab is a data sharing portal designed to facilitate information sharing in the biomedical nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine">
+
 <link rel="icon" href="images/favicon.ico" />
 <link rel="shortcut icon" href="images/favicon.ico" />
-<!--<link rel="stylesheet" type="text/css" href="css/main.css">-->
+<link rel="stylesheet" href="styles/main.css">
 <script type="text/javascript" src="javascript/script.js"></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-<script type='text/javascript'
-	src='/caNanoLab/dwr/interface/PublicationManager.js'></script>
-<script type='text/javascript'
-	src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
-<script type='text/javascript'
-	src='/caNanoLab/dwr/interface/SampleManager.js'></script>
-<script type='text/javascript'
-	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/interface/PublicationManager.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/interface/SampleManager.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
 <script type='text/javascript' src='javascript/CountManager.js'></script>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
 </head>
 
 <body style="cursor: default" ng-app="angularApp">
@@ -126,6 +110,16 @@
 	<td class="subMenuSecondaryTitle"
 		onclick="openWindow('http://www.cancer.gov', '', '800', '800')"><a class="subMenuSecondary">NCI Home</a></td>
 </tr>
+
+<tr>
+	<td class="subMenuSecondaryTitle"
+		onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/Nanotechnology+Working+Group', '', '800', '800')"><a class="subMenuSecondary">Nanotechnology Working Group</a></td>
+</tr>
+
+<tr>
+	<td class="subMenuSecondaryTitle"
+		onclick="openWindow('https://nciphub.org/groups/cananolabcuration', '', '800', '800')"><a class="subMenuSecondary">Nano Hubs</a></td>
+</tr>
 <tr>
 	<td class="subMenuFill">&nbsp;</td>
 </tr>
@@ -155,6 +149,19 @@
 <tr>
 	<td class="subMenuSecondaryTitle"
 		onclick="openWindow('http://www.safenano.org', '', '800', '800')"><a class="subMenuSecondary">SAFENANO</a></td>
+</tr>
+<tr>
+	<td class="subMenuSecondaryTitle"
+		onclick="openWindow('http://www.oecd.org/sti/nano/', '', '800', '800')"><a class="subMenuSecondary">OECD</a></td>
+</tr>
+<tr>
+	<td class="subMenuSecondaryTitle"
+		onclick="openWindow('http://enanomapper.net/', '', '800', '800')"><a class="subMenuSecondary">eNanoMapper</a></td>
+</tr>
+
+<tr>
+	<td class="subMenuSecondaryTitle"
+		onclick="openWindow('www.nanomaterialregistry.org', '', '800', '800')"><a class="subMenuSecondary">Nanomaterial Registry</a></td>
 </tr>
 
 	<tr>
@@ -367,12 +374,13 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/login.js"></script>
-        <!-- endbuild -->	
+   <!-- build:js({.tmp,app}) scripts/scripts.js -->
+   <script src="scripts/app.js"></script>
+   <script src="scripts/controllers/main.js"></script>
+   <script src="scripts/controllers/about.js"></script>
+   <script src="scripts/controllers/login.js"></script>
+   <script src="scripts/controllers/auth.js"></script>
+   <!-- endbuild -->	
 </div>
 </body>
 </html>

@@ -6,18 +6,15 @@
 
 
 
-<form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"><div><input type="hidden" name="org.apache.struts.taglib.html.TOKEN" value="a20425137da163fb429407eb7995284a"></div>
+ 
+	<div><input type="hidden" name="org.apache.struts.taglib.html.TOKEN" value="a20425137da163fb429407eb7995284a"></div>
 	<table summary="layout" cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td valign="top" class="mainContentHomePage">
 			    <img src="images/bannerhome.jpg" border="0" width="600px" alt="caNanoLab banner image">			    
 				<div class="welcomeTitle">Welcome to caNanoLab</div> <br>
 				<div class="welcomeContent">
-Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
-					caNanoLab is a data sharing portal designed to facilitate
-					information sharing in the biomedical nanotechnology research
-					community to expedite and validate the use of nanotechnology in
-					biomedicine. caNanoLab provides support for the annotation of
+Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is a data sharing portal designed to facilitate information sharing across the international biomedical nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine. caNanoLab provides support for the annotation of
 					nanomaterials with characterizations resulting from
 					physico-chemical and <i>in vitro</i> assays and the sharing of
 					these characterizations and associated nanotechnology protocols in
@@ -167,36 +164,50 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
 	<!-- login begins -->
     
 
+
 <tr>
-	<td class="sidebarTitle"><a href="#" class="loginText">Login</a> &nbsp; <a href="#"
+	<td class="sidebarTitle">User Actions<!-- <a href="#" class="loginText">Login</a> &nbsp; <a href="#"
 		class="loginText" onClick="javascript:location.href='register.jsp';">Register</a>&nbsp;&nbsp;
-		<a class="loginText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-LoggingintocaNanoLab')">Help</a></td>
+		<a class="loginText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-LoggingintocaNanoLab')">Help</a> --></td>
 </tr>
 <tr>
-	<td class="sidebarContent">No account is required to browse
-		publicly available data.</td>
+	<td class="sidebarContent"><br /><B>No account is required to browse
+		publicly available data.</B></td>
 </tr>
+
 <tr>
-	<td><div id="loginBlock">
+	<td class="sidebarContent">
+		<select name="userActions" ng-model="userActions">
+			<option selected value="1">Browse publically available data</option>
+			<option value="2">Login to submit data</option>
+			<option value="3">Register for a login account</option>
+			<option value="4">Reset password</option>
+		</select><input type="submit" value="go" id="userActionsButton" ng-click="doUserAction()">
+		</td>
+</tr>
+ <tr>
+	<td><div id="loginBlock" ng-show="loginShow">
 			<div class="spacer"/>
+			<!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
 			<table class="loginBlock" summary="layout">				
 				<tr>
 					<td><label for="login ID">LOGIN ID</label></td>
-					<td><input type="text" name="loginId" size="14" id="login ID" />
+					<td><input type="text" name="loginId" ng-model="loginId" size="14" id="login ID" />
 					</td>
 				</tr>
 				<tr>
 					<td><label for="password">PASSWORD</label></td>
 					<td><input type="password" name="password" size="14"
-						id="password" autocomplete="off"/></td>
+						id="password" autocomplete="off" ng-model="password" /></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
-					<td align="left"><input type="submit" value="Login"></td>
+					<td align="left"><input type="submit" value="Login" ng-click="loginDo()"></td>
 				</tr>
 			</table>
-		</div></td>
-</tr>
+			<!-- </form> -->
+		</div><br /></td>
+</tr> 
 
 	<tr>
 		<td class="sidebarTitle">
@@ -220,7 +231,7 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
 				<li>Composition of Nanomaterials
 				</li>
 			</ul>
-				<b>For additional information, see the caNanoLab FAQ or Online Help</b>
+				<b>For additional information, see the caNanoLab <a href="#faq">FAQ</a> or <a href="/caNanoLab/home.jsp#">Online Help</a><br /><br /></b>
 
 		</td>
 	</tr>
@@ -230,7 +241,7 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
 		</td>
 	</tr>
 	<tr>
-		<td class="sidebarContent">
+		<td class="sidebarContent"><a id="faq"></a>
 			<br /><b>Below are frequently asked questions on caNanoLab:</b>
 			<br>
 			<br>
@@ -302,4 +313,3 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
 			</td>
 		</tr>
 	</table>
-</form>

@@ -482,7 +482,7 @@ SIDEBAR BEGINS
 
 .loginBlock {
   text-align: right;
-  margin-left: 2em;
+  margin-left: 1em;
 }
 
 td.sidebarTitle {
@@ -1085,4 +1085,19 @@ ul,ol {
   text-align:right;
   width:99%;
   background-color:#F5F5f5;
+}
+
+#userActionsButton {
+  background-color:#009E2D;
+  color:#fff;
+  font-size:14px;
+  margin-left:10px;
+}
+
+.ng-hide {
+  /* this is just another form of hiding an element */
+  display:block!important;
+  position:absolute;
+  top:-9999px;
+  left:-9999px;
 }
