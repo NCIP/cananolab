@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
-import gov.nih.nci.cananolab.restful.helper.InitSetupUtil;
+import gov.nih.nci.cananolab.restful.core.InitSetup;
+import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
+import gov.nih.nci.cananolab.restful.util.InitSetupUtil;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
@@ -34,10 +37,10 @@ public class CoreServices {
 	@Path("/initSetup")
 	@Produces ("application/json")
     public Response initSetup(@Context HttpServletRequest httpRequest) {
-		System.out.println("In initSetup");
-		InitSetupUtil setupUtil = (InitSetupUtil)applicationContext.getBean("initSetupUtil");
-		PublicDataCountBean dataCountBean = setupUtil.getPublicCount();
-		return Response.ok(dataCountBean).build();
+		System.out.println("In initSetup");		
+		ServletContext context = httpRequest.getSession(true).getServletContext();
+		InitSetup.getInstance().setPublicCountInContext(context);
+		return Response.ok(context.getAttribute("publicCounts")).build();
 	}
 	
 	@GET
@@ -47,46 +50,20 @@ public class CoreServices {
     		@DefaultValue("") @QueryParam("homePage") String homePage) {
 		//Mimick logic in cananoMainmenu.jsp
 		
-		System.out.println("In getTabs");
-		List<String> tabs = new ArrayList<String>();
-		HttpSession session = httpRequest.getSession();
-		UserBean userBean = (session == null)? null : (UserBean)session.getAttribute("user");	
-		String home = homePage.trim().toLowerCase();
+		//Help: https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide
+		//Glossary: https://wiki.nci.nih.gov/display/caNanoLab//caNanoLab+Glossary
+		//Home: https://cananolab.nci.nih.gov/caNanoLab/home.jsp
 		
-		if (userBean == null) { //not logged in
-			if (home.length() > 0 && home.startsWith("true")) {
-				tabs.add("HOME");
-				tabs.add("GLOSSARY");
-			} else {
-				tabs.add("HOME");
-				tabs.add("PROTOCOLS");
-				tabs.add("SAMPLES");
-				tabs.add("PUBLICATIONS");
-				tabs.add("HELP");
-				tabs.add("GLOSSARY");
-				tabs.add("LOGIN");
-			}
-		} else {
-			tabs.add("HOME");
-			tabs.add("PROTOCOLS");
-			tabs.add("SAMPLES");
-			tabs.add("PUBLICATIONS");
-			tabs.add("COMMUNITY");
-			
-			if (userBean.isAdmin())
-				tabs.add("ADMINISTRATION");
-			
-			if (userBean.isCurator())
-				tabs.add("CURATION");
-			
-			//TODO: 
-			//if (userBean.isCurator() && hasResultWaiting)
-			//	tabs.add("RESULT");
-			
-			tabs.add("HELP");
-			tabs.add("GLOSSARY");
-			tabs.add("LOGOUT");
-		}
+		//Protocols: https://cananolab.nci.nih.gov/caNanoLab/manageProtocol.do
+		//Samples: https://cananolab.nci.nih.gov/caNanoLab/manageSample.do
+		//Publications: https://cananolab.nci.nih.gov/caNanoLab/managePublication.do
+		//login: https://cananolab.nci.nih.gov/caNanoLab/loginPage.do
+		//logout: https://cananolab.nci.nih.gov/caNanoLab/logout.do
+		
+		System.out.println("In getTabs");
+		
+		TabGenerationBO tabGen = (TabGenerationBO)applicationContext.getBean("tabGenerationBO");
+		List<String[]> tabs = tabGen.getTabs(httpRequest, homePage);
 		
 		return Response.ok(tabs).build();
 	}

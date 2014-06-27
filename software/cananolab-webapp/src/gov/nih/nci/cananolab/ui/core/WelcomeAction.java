@@ -8,6 +8,8 @@
 
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.restful.core.InitSetup;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

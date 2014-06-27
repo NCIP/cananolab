@@ -16,8 +16,25 @@
     <tx:annotation-driven transaction-manager = "transactionManager" />
     <tx:annotation-driven proxy-target-class="true"/>
     -->
-    <bean id="initSetupUtil"
-		class="gov.nih.nci.cananolab.restful.helper.InitSetupUtil">
+    
+    <bean id="loginBO"
+		class="gov.nih.nci.cananolab.restful.security.LoginBO">
+	</bean>
+	
+	<bean id="logoutBO"
+		class="gov.nih.nci.cananolab.restful.security.LogoutBO">
+	</bean>
+	
+	<bean id="registerUserBO"
+		class="gov.nih.nci.cananolab.restful.security.RegisterUserBO">
+	</bean>
+	
+	<bean id="tabGenerationBO"
+		class="gov.nih.nci.cananolab.restful.core.TabGenerationBO">
+	</bean>
+	
+	<bean id="searchSampleBO"
+		class="gov.nih.nci.cananolab.restful.sample.SearchSampleBO">
 	</bean>
 
 </beans>

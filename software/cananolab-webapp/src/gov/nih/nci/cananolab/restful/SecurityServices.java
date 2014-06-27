@@ -4,14 +4,20 @@ import java.util.List;
 import java.util.Set;
 
 import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
-import gov.nih.nci.cananolab.restful.helper.SecurityHelper;
+import gov.nih.nci.cananolab.restful.security.LoginBO;
+import gov.nih.nci.cananolab.restful.security.LogoutBO;
+import gov.nih.nci.cananolab.restful.security.RegisterUserBO;
+import gov.nih.nci.cananolab.restful.util.SecurityHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -19,12 +25,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 @Path("/security")
 public class SecurityServices {
 	private Logger logger = Logger.getLogger(SecurityServices.class);
 	
-	SecurityHelper helper = new SecurityHelper();
+	@Inject
+	ApplicationContext applicationContext;
 
 	@GET
 	@Path("/login")
@@ -38,10 +46,12 @@ public class SecurityServices {
 		if (username.length() == 0 || password.length() == 0)
 			return Response.serverError().entity("User name or password can't be blank").build();
 		
-		String result = helper.checkLogin(username, password, httpRequest);
+		LoginBO loginBo = (LoginBO) applicationContext.getBean("loginBO");
+		
+		String result = loginBo.login(username, password, httpRequest);
 		
 		if (!result.equals(RestfulConstants.SUCCESS)) 
-			return Response.status(Response.Status.NOT_FOUND).entity("Invalid user name and /or password").build();
+			return Response.status(Response.Status.NOT_FOUND).entity("Login ID or password is invalid").build();
 		return Response.ok(httpRequest.getSession().getId()).build();
     }
 	
@@ -61,10 +71,27 @@ public class SecurityServices {
         
 		logger.info("In register service");
 		
-		String result = helper.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
+		RegisterUserBO registerBo = (RegisterUserBO) applicationContext.getBean("registerUserBO");
+		String result = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
 		return Response.ok(result).build();
     }
+	
+	@POST
+	@Path("/register2")
+	@Produces ("application/json")
+    public Response register2(@Context HttpServletRequest httpRequest,
+    		@DefaultValue("") @FormParam("id") String id,
+    		@DefaultValue("") @FormParam("summary") String summary, 
+    		@DefaultValue("") @FormParam("description") String description)  {
+        
+		logger.info("In register2 service");
+		
+	
+		
+		return Response.ok("Got register2").build();
+    }
+	
 	
 	@GET
 	@Path("/logout")
@@ -72,11 +99,9 @@ public class SecurityServices {
     public Response logout(@Context HttpServletRequest httpRequest) {
 		logger.info("In logout service");
 		
-		HttpSession session = httpRequest.getSession(false);
-		if (session == null) 
-			return Response.ok("Null session. No need to log out").build();
-		session.invalidate();
-		return Response.ok("Logout successful").build();
+		LogoutBO logoutBo = (LogoutBO) applicationContext.getBean("logoutBO");
+		String result = logoutBo.logout(httpRequest);
+		return Response.ok(result).build();
 	}
 	
 	@GET

@@ -55,11 +55,7 @@ L-->
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts-core</artifactId>
-			<version>1.3.10</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts-extras</artifactId>

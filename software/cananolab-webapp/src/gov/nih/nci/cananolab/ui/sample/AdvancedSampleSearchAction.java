@@ -16,6 +16,7 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleBean;
 import gov.nih.nci.cananolab.dto.particle.AdvancedSampleSearchBean;
+import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleExporter;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
