@@ -201,14 +201,16 @@
 							
 						
 					
-					
+							<th ng-repeat-start="t in tabs" scope="row" class="mainMenuItem">
+								<a
+								class="mainMenuLink" href="#">{{t}}</a>
+							</th>
+							<td ng-repeat-end><img height="16" alt="menu separator"
+								src="images/mainMenuSeparator.gif" width="1">
+							</td>					
 						
-						
-							
-							
-							   
-							
-							
+								
+<!-- 
 							<th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/x/14CUBg')" scope="row"><a
 								class="mainMenuLink" href="#">HELP</a>
 							</th>
@@ -231,14 +233,15 @@
 							
 							
 							   
-							
+
+
 							<th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab//caNanoLab+Glossary')" scope="row"><a
-								class="mainMenuLink" href="#">GLOSSARY</a>
+								class="mainMenuLink" href="#">GLOSSARY {{tabs}}</a>
 							</th>
 							<td><img height="16" alt="menu separator"
 								src="images/mainMenuSeparator.gif" width="1">
 							</td>
-						
+						 -->
 					
 				
 			
@@ -380,6 +383,7 @@
    <script src="scripts/controllers/about.js"></script>
    <script src="scripts/controllers/login.js"></script>
    <script src="scripts/controllers/auth.js"></script>
+   <script src="scripts/controllers/logout.js"></script>
    <script src="scripts/controllers/register.js"></script>   
    <!-- endbuild -->	
 </div>

@@ -13,7 +13,7 @@
 			<td valign="top" class="mainContentHomePage">
 			    <img src="images/bannerhome.jpg" border="0" width="600px" alt="caNanoLab banner image">			    
 				<div class="welcomeTitle">Welcome to caNanoLab</div> <br>
-				<div class="welcomeContent">
+				<div class="welcomeContent"><input type="submit" value="Test" ng-click="clickMe()">
 Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is a data sharing portal designed to facilitate information sharing across the international biomedical nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine. caNanoLab provides support for the annotation of
 					nanomaterials with characterizations resulting from
 					physico-chemical and <i>in vitro</i> assays and the sharing of
@@ -164,15 +164,14 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 	<!-- login begins -->
     
 
-
 <tr>
-	<td class="sidebarTitle">User Actions<!-- <a href="#" class="loginText">Login</a> &nbsp; <a href="#"
+	<td class="sidebarTitle">USER ACTIONS<!-- <a href="#" class="loginText">Login</a> &nbsp; <a href="#"
 		class="loginText" onClick="javascript:location.href='register.jsp';">Register</a>&nbsp;&nbsp;
 		<a class="loginText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-LoggingintocaNanoLab')">Help</a> --></td>
 </tr>
 <tr>
 	<td class="sidebarContent"><br /><B>No account is required to browse
-		publicly available data.</B></td>
+		publicly available data. {{temp()}}</B></td>
 </tr>
 
 <tr>
@@ -211,7 +210,7 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 
 	<tr>
 		<td class="sidebarTitle">
-			FEATURES
+			FEATURES 
 		</td>
 	</tr>
 	<tr>
