@@ -1,13 +1,20 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('MainCtrl', function ($scope, $location,$http, $cookieStore, $window, $cookies) {
+  .controller('MainCtrl', function ($rootScope, $scope, $location,$http, $cookieStore, $window, $cookies) {
 
   	$scope.userActions = 1;
   	$scope.loginShow = 0;
     $scope.authErrors = 0;
-
+    $rootScope.tabs = [["HELP","#"],["GLOSSARY","#"]];
+    
   	$scope.doUserAction = function() {
-  		if ($scope.userActions==2) {
+
+      if ($scope.userActions==1) {
+        $scope.loginShow = 0;
+        window.location.href = "/caNanoLab/searchSample.do?dispatch=setup";
+
+      }
+  		else if ($scope.userActions==2) {
         $scope.loginShow = 1;
         $scope.authErrors = 0;
   		}
@@ -18,12 +25,12 @@ var app = angular.module('angularApp')
   		}
       else {
         $scope.loginShow = 0;
+        window.open("https://iforgotmypassword.nih.gov/aims/ps/");
 
       }
   	}
 
   	$scope.loginDo = function() {
-  		// window.location="/caNanoLab/index.html#/auth"
       if (!$scope.password || !$scope.loginId) {
         $scope.authErrors="Username and Password are required";
       }
@@ -32,29 +39,14 @@ var app = angular.module('angularApp')
         success(function(data, status, headers, config) {
           // this callback will be called asynchronously
           // when the response is available
-          //alert(data);
-          $scope.authErrors=data;
-          
-//          alert('1');
-//          alert($cookies.$cookieStore.get('JSESSIONID'));
-//          alert('2');
-          
-          console.log('1');
-          console.log(data); 
-          console.log('2');
-          
-          $cookieStore.put("JSESSIONID",data);
-
-
           $location.path("/home").replace();
-          $scope.apply();
-          // $window.location.replace("http://localhost:8080/caNanoLab/collaborationGroup.do;jsessionid=" + data + "?dispatch=setupNew&page=0");
+
+          //Set tabs here.. Delete on logout. Use variable instead of rest call
 
         }).
         error(function(data, status, headers, config) {
           // called asynchronously if an error occurs
           // or server returns response with an error status.
-          //alert(data);
           $scope.authErrors=data;
     });
       }      
