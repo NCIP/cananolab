@@ -5,7 +5,7 @@ var app = angular.module('angularApp')
   	$scope.userActions = 1;
   	$scope.loginShow = 0;
     $scope.authErrors = 0;
-    $rootScope.tabs = ["HELP","GLOSSARY"];
+    $rootScope.tabs = [["HELP","#"],["GLOSSARY","#"]];
     
   	$scope.doUserAction = function() {
 
