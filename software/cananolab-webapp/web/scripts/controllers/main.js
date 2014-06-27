@@ -8,7 +8,13 @@ var app = angular.module('angularApp')
     $rootScope.tabs = ["HELP","GLOSSARY"];
     
   	$scope.doUserAction = function() {
-  		if ($scope.userActions==2) {
+
+      if ($scope.userActions==1) {
+        $scope.loginShow = 0;
+        window.location.href = "/caNanoLab/searchSample.do?dispatch=setup";
+
+      }
+  		else if ($scope.userActions==2) {
         $scope.loginShow = 1;
         $scope.authErrors = 0;
   		}
@@ -19,6 +25,7 @@ var app = angular.module('angularApp')
   		}
       else {
         $scope.loginShow = 0;
+        window.open("https://iforgotmypassword.nih.gov/aims/ps/");
 
       }
   	}
