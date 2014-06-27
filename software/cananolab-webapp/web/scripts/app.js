@@ -29,7 +29,7 @@ angular
        templateUrl: 'views/register.html',
        controller: 'RegisterCtrl'
      })       
-      .when('/auth', {
+      .when('/home', {
         templateUrl: 'views/loggedIn.html',
         controller: 'AuthCtrl'
       })      

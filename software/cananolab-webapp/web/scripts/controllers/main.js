@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('MainCtrl', function ($scope, $http, $cookieStore, $window, $cookies) {
+  .controller('MainCtrl', function ($scope, $location,$http, $cookieStore, $window, $cookies) {
 
   	$scope.userActions = 1;
   	$scope.loginShow = 0;
@@ -11,9 +11,15 @@ var app = angular.module('angularApp')
         $scope.loginShow = 1;
         $scope.authErrors = 0;
   		}
-  		else {
+  		else if ($scope.userActions==3) {
   			$scope.loginShow = 0;
+        $location.path("/register").replace();
+        $scope.apply();        
   		}
+      else {
+        $scope.loginShow = 0;
+
+      }
   	}
 
   	$scope.loginDo = function() {
@@ -37,9 +43,12 @@ var app = angular.module('angularApp')
           console.log(data); 
           console.log('2');
           
-          //$cookieStore.put("JSESSIONID",data);
+          $cookieStore.put("JSESSIONID",data);
 
-          $window.location.replace("http://localhost:8080/caNanoLab/collaborationGroup.do;jsessionid=" + data + "?dispatch=setupNew&page=0");
+
+          $location.path("/home").replace();
+          $scope.apply();
+          // $window.location.replace("http://localhost:8080/caNanoLab/collaborationGroup.do;jsessionid=" + data + "?dispatch=setupNew&page=0");
 
         }).
         error(function(data, status, headers, config) {
