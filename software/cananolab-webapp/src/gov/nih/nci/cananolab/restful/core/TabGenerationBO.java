@@ -22,7 +22,7 @@ public class TabGenerationBO {
 			String[] tabWithLink = new String[2];
 			if (homePage.length() == 0 || !homePage.startsWith("true")) {
 				tabWithLink[0] = "HOME";
-				tabWithLink[1] = urlBase + "home.jsp";
+				tabWithLink[1] = urlBase + "index.html#/";
 				tabs.add(tabWithLink.clone());
 				
 				tabWithLink = new String[2];
@@ -61,7 +61,7 @@ public class TabGenerationBO {
 			String[] tabWithLink = new String[2];
 			
 			tabWithLink[0] = "HOME";
-			tabWithLink[1] = urlBase + "home.jsp";
+			tabWithLink[1] = urlBase + "index.html#/";
 			tabs.add(tabWithLink.clone());
 
 			tabWithLink = new String[2];
@@ -106,7 +106,7 @@ public class TabGenerationBO {
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "LOGOUT";
-			tabWithLink[1] =  urlBase + "logout.do";;
+			tabWithLink[1] =  urlBase + "rest/security/logout";;
 			tabs.add(tabWithLink);
 		}
 
