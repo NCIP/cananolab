@@ -51,7 +51,7 @@ HDR AND FTR BEGINS
 
 .subhdrBG { /* for the cell that contains the application header */
   background-color: #ffffff; /* darker */
-  background-image:url('/caNanoLab/images/appLogo-nanolab.gif');
+  background-image:url('../images/appLogo-nanolab.gif');
   height:80px;
 }
 
