@@ -55,10 +55,11 @@ public class LoginBO  {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
 				session.invalidate();
-				session = request.getSession(true);
-				session.setAttribute("securityService", service);
-				session.setAttribute("user", service.getUserBean());
 			}
+			session = request.getSession(true);
+			session.setAttribute("securityService", service);
+			session.setAttribute("user", service.getUserBean());
+			
 		} catch (Exception e) {
 			logger.error("Erro while logging in user: " + username + "|" + password + ". " + e.getMessage());
 			return e.getMessage();
