@@ -7,6 +7,27 @@ var app = angular.module('angularApp')
     $scope.authErrors = 0;
     $rootScope.tabs = [["HELP","#"],["GLOSSARY","#"]];
     
+  	$scope.$on('$viewContentLoaded', function(){
+  		$http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).
+        success(function(data, status, headers, config) {
+          $scope.numOfPublicProtocols=data.numOfPublicProtocols;
+          $scope.numOfPublicCharacterizations=data.numOfPublicCharacterizations;
+          $scope.numOfPublicInvitroCharacterizations=data.numOfPublicInvitroCharacterizations;
+          $scope.numOfPublicInvivoCharacterizations=data.numOfPublicInvivoCharacterizations;
+          $scope.numOfPublicOtherCharacterizations=data.numOfPublicOtherCharacterizations;
+          $scope.numOfPublicPhysicoChemicalCharacterizations=data.numOfPublicPhysicoChemicalCharacterizations;
+          $scope.numOfPublicPublications=data.numOfPublicPublications;
+          $scope.numOfPublicSamples=data.numOfPublicSamples;
+          $scope.numOfPublicSources=data.numOfPublicSources;
+        }).
+        error(function(data, status, headers, config) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+          //alert(data);
+          $scope.authErrors=data;
+        });
+  	});    
+    
   	$scope.doUserAction = function() {
 
       if ($scope.userActions==1) {
@@ -35,7 +56,7 @@ var app = angular.module('angularApp')
         $scope.authErrors="Username and Password are required";
       }
       else {
-        $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
+        $http({method: 'GET', url: '/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
         success(function(data, status, headers, config) {
           // this callback will be called asynchronously
           // when the response is available

@@ -50,11 +50,11 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 			<table class="gridtableNoBorder" summary="layout">
 				<tr>
 					<td rowspan="2">
-						<a href="#" onclick="gotoProtocols('setup')"> <img
+						<a href="searchProtocol.do?dispatch=setup"> <img
 								src="images/icon_protocol_48x.jpg" class="imgNoBorder" alt="Search Protocols" /></a>
 					</td>
 					<td>
-						<a href="#" onclick="gotoProtocols('setup')"><b>Search
+						<a href="searchProtocol.do?dispatch=setup"><b>Search
 								Protocols</b></a>
 					</td>
 				</tr>
@@ -66,8 +66,8 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 			</table>
 		</td>
 		<td>
-			<span class="counts" id="protocolCount"><a href="javascript:gotoProtocols('search')">
-				37</a></span>
+			<span class="counts" id="protocolCount"><a href="searchProtocol.do?dispatch=setup">
+				{{numOfPublicProtocols}}</a></span>
 		</td>
 	</tr>
 	<tr class="alt">
@@ -75,12 +75,12 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 			<table class="gridtableNoBorder" summary="layout">
 				<tr>
 					<td rowspan="2">
-						<a href="#" onclick="gotoSamples('setup')"> <img
+						<a href="searchSample.do?dispatch=setup"> <img
 								src="images/icon_nanoparticle_48x.jpg"
 								 class="imgNoBorder" alt="Search Samples" /></a>
 					</td>
 					<td>
-						<a href="#" onclick="gotoSamples('setup')"><b>Search
+						<a href="searchSample.do?dispatch=setup"><b>Search
 								Samples</b> </a>
 					</td>
 				</tr>
@@ -88,38 +88,34 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 					<td>
 						Search for information on nanomaterials including the composition
 						of the nanomaterial, results of physico-chemical,
-						<i>in vitro</i>, and other characterizations, and associated
+						<i>in vitro</i>, <i>in vivo</i> and other characterizations, and associated
 						publications.
-						<br>
-						See also
-						<a href="advancedSampleSearch.do?dispatch=setup&page=0" id="advanceSearch">Advanced
-							Sample Search</a>.
 					</td>
 				</tr>
 			</table>
 		</td>
 		<td>			
 			<div id="sampleCounts" class="counts" >
-			    <span id="sampleCount"><a href="javascript:gotoSamples('search')">1003</a></span>
+			    <span id="sampleCount"><a href="searchSample.do?dispatch=setup">{{numOfPublicSamples}}</a></span>
 					<br>
 				<div id="sampleRelatedCounts" class="indented1">
 					 
-					    <span id="sampleSourceCount">88 Sample Sources</span><br>
+					    <span id="sampleSourceCount">{{numOfPublicSources}} Sample Sources</span><br>
 					 
 					 
-					   <span id="CharacterizationCount">3862 Characterizations</span><br>					
+					   <span id="CharacterizationCount">{{numOfPublicCharacterizations}} Characterizations</span><br>					
 					   <div class="indented2">
 					       
-						     <span id="PhysicoChemicalCharacterizationCount">1144 Physico-chemical</span><br> 
+						     <span id="PhysicoChemicalCharacterizationCount">{{numOfPublicPhysicoChemicalCharacterizations}} Physico-chemical</span><br> 
 						  
 						   
-						     <span id="InvitroCharacterizationCount">1936 In Vitro</span><br>
+						     <span id="InvitroCharacterizationCount">{{numOfPublicInvitroCharacterizations}} In Vitro</span><br>
 						  
 						   
-						     <span id="InvivoCharacterizationCount">17 In Vivo</span><br>
+						     <span id="InvivoCharacterizationCount">{{numOfPublicInvivoCharacterizations}} In Vivo</span><br>
 						   
 						  
-						     <span id="OtherCharacterizationCount">765 Other</span><br>
+						     <span id="OtherCharacterizationCount">{{numOfPublicOtherCharacterizations}} Other</span><br>
 						  
 					   </div>
 					
@@ -132,12 +128,12 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 			<table class="gridtableNoBorder" summary="layout">
 				<tr>
 					<td rowspan="2">
-						<a href="#" onclick="gotoPublications('setup')"> <img
+						<a href="searchPublication.do?dispatch=setup"> <img
 								src="images/icon_report_48x.gif" class="imgNoBorder"
 								alt="Search Publications" /> </a>
 					</td>
 					<td>
-						<a href="#" onclick=gotoPublications('setup');><b>Search
+						<a href="searchPublication.do?dispatch=setup"><b>Search
 								Publications</b> </a>
 					</td>
 				</tr>
@@ -151,7 +147,7 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 			</table>
 		</td>
 		<td>
-			<span id="publicationCount" class="counts"><a href="javascript:gotoPublications('search')">1886</a></span>
+			<span id="publicationCount" class="counts"><a href="searchPublication.do?dispatch=setup">{{numOfPublicPublications}}</a></span>
 		</td>
 	</tr>
 </table>
@@ -230,7 +226,7 @@ Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is
 				<li>Composition of Nanomaterials
 				</li>
 			</ul>
-				<b>For additional information, see the caNanoLab <a href="#faq">FAQ</a> or <a href="/caNanoLab/home.jsp#">Online Help</a><br /><br /></b>
+				<b>For additional information, see the caNanoLab <a href="#faq">FAQ</a> or <a href="/caNanoLab/index.html">Online Help</a><br /><br /></b>
 
 		</td>
 	</tr>

@@ -7,7 +7,7 @@ var app = angular.module('angularApp')
 		//$httpProvider.defaults.useXDomain = true;
       //delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-  	  $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
+  	  $http({method: 'GET', url: '/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
 		    success(function(data, status, headers, config) {
 		      // this callback will be called asynchronously
 		      // when the response is available
