@@ -12,7 +12,7 @@ public class TabGenerationBO {
 
 	public List<String[]> getTabs(HttpServletRequest httpRequest, String homePage) {
 		List<String[]> tabs = new ArrayList<String[]>();
-		HttpSession session = httpRequest.getSession();
+		HttpSession session = httpRequest.getSession(false);
 		UserBean userBean = (session == null)? null : (UserBean)session.getAttribute("user");	
 		homePage = homePage.trim().toLowerCase();
 		
