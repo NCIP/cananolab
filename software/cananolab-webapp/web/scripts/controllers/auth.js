@@ -6,7 +6,7 @@ var app = angular.module('angularApp')
     $rootScope.tabs="";
 
 	$scope.getTabs = function() {
-     $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/core/getTabs'}).
+     $http({method: 'GET', url: '/caNanoLab/rest/core/getTabs'}).
      success(function(data, status, headers, config) {
         $rootScope.tabs = data;
         }).
