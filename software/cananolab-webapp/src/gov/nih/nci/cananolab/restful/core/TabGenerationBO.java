@@ -53,7 +53,7 @@ public class TabGenerationBO {
 			if (homePage.length() == 0 || !homePage.startsWith("true")) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "LOGIN";
-				tabWithLink[1] =  urlBase + "loginPage.do";;
+				tabWithLink[1] =  urlBase + "rest/security/login";;
 				tabs.add(tabWithLink);
 			}
 		} else {
@@ -61,7 +61,7 @@ public class TabGenerationBO {
 			String[] tabWithLink = new String[2];
 			
 			tabWithLink[0] = "HOME";
-			tabWithLink[1] = urlBase + "index.html#/";
+			tabWithLink[1] = urlBase + "#/home";
 			tabs.add(tabWithLink.clone());
 
 			tabWithLink = new String[2];
@@ -80,12 +80,14 @@ public class TabGenerationBO {
 			tabs.add(tabWithLink);
 			
 			if (userBean.isAdmin()) {
+				tabWithLink = new String[2];
 				tabWithLink[0] = "ADMINISTRATION";
 				tabWithLink[1] =  urlBase + "TBD";
 				tabs.add(tabWithLink);
 			}
 			
 			if (userBean.isCurator()) {
+				tabWithLink = new String[2];
 				tabWithLink[0] = "CURATION";
 				tabWithLink[1] =  urlBase + "TBD";
 				tabs.add(tabWithLink);
@@ -99,6 +101,7 @@ public class TabGenerationBO {
 			tabWithLink[0] = "HELP";
 			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide";
 			tabs.add(tabWithLink);
+			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "GLOSSARY";
 			tabWithLink[1] = "https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary";
