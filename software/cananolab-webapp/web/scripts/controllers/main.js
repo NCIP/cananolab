@@ -5,8 +5,21 @@ var app = angular.module('angularApp')
   	$scope.userActions = 1;
   	$scope.loginShow = 0;
     $scope.authErrors = 0;
+
     $rootScope.tabs = [["HELP","#"],["GLOSSARY","#"]];
     $scope.statusMessage = $location.search().message;
+
+  $rootScope.getGroups = function() {
+    return "test";
+     // $http({method: 'GET', url: '/caNanoLab/rest/core/getGroups'}).
+     // success(function(data, status, headers, config) {
+     //    return data;
+     //    }).
+     //    error(function(data, status, headers, config) {
+     //      // called asynchronously if an error occurs
+     //      // or server returns response with an error status.
+     //     });
+    }   
 
   	$scope.$on('$viewContentLoaded', function(){
   		$http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).
