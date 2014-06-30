@@ -1,15 +1,14 @@
 package gov.nih.nci.cananolab.restful;
 
-import java.util.List;
-import java.util.Set;
-
-import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.restful.security.LoginBO;
 import gov.nih.nci.cananolab.restful.security.LogoutBO;
 import gov.nih.nci.cananolab.restful.security.RegisterUserBO;
-import gov.nih.nci.cananolab.restful.util.SecurityHelper;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +40,14 @@ public class SecurityServices {
     		@DefaultValue("") @QueryParam("username") String username, 
     		@DefaultValue("") @QueryParam("password") String password) {
 		
-		logger.info("In login service");
+//	@POST	
+//	@Path("/login")
+//	@Produces ("application/json")
+//    public Response login(@Context HttpServletRequest httpRequest, UserBean user) {	
+//		logger.info("In login service");
+//		
+//		String username = user.getUserId();
+//		String password = user.getPassword();
 		
 		if (username.length() == 0 || password.length() == 0)
 			return Response.serverError().entity("User name or password can't be blank").build();
@@ -120,7 +126,10 @@ public class SecurityServices {
 		if (user != null && service != null) {
 			try {
 				List<String> groups = service.getGroupNamesForUser(user.getUserId());
-				return Response.ok(groups).build();
+				
+				Map<String, List<String>> userGroups = new HashMap<String, List<String>>();
+				userGroups.put(user.getLoginName(), groups);
+				return Response.ok(userGroups).build();
 			} catch (Exception e) {
 				//logger.error("Erro while logging in user: " + username + "|" + password + ". " + e.getMessage());
 				return Response.ok("Unable to get group for user").build();
