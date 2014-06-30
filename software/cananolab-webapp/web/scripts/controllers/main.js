@@ -6,7 +6,8 @@ var app = angular.module('angularApp')
   	$scope.loginShow = 0;
     $scope.authErrors = 0;
     $rootScope.tabs = [["HELP","#"],["GLOSSARY","#"]];
-    
+    $scope.statusMessage = $location.search().message;
+
   	$scope.$on('$viewContentLoaded', function(){
   		$http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).
         success(function(data, status, headers, config) {
@@ -60,7 +61,7 @@ var app = angular.module('angularApp')
         success(function(data, status, headers, config) {
           // this callback will be called asynchronously
           // when the response is available
-          $location.path("/home").replace();
+          $location.search( 'message', null ).path("/home/").replace();
 
           //Set tabs here.. Delete on logout. Use variable instead of rest call
 

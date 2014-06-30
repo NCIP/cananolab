@@ -12,6 +12,8 @@
             physico-chemical and <i>in vitro</i> assays and the sharing of
             these characterizations and associated nanotechnology protocols in
             a secure fashion.
+
+            <div ng-show="statusMessage" class="userMessage"><br />{{statusMessage}} </div>
          </div>
          <br> 
          <br>
@@ -153,7 +155,6 @@
                <td>
                   <div id="loginBlock" ng-show="loginShow">
                   <div class="spacer"/>
-                     <!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
                      <table class="loginBlock" summary="layout">
                         <tr>
                            <td><label for="login ID">LOGIN ID</label></td>
@@ -170,7 +171,6 @@
                            <td align="left"><input type="submit" value="Login" ng-click="loginDo()"></td>
                         </tr>
                      </table>
-                     <!-- </form> -->
                      <div id="authErrors" ng-model="authErrors" ng-show="authErrors">{{authErrors}}</div>
                   </div>
                   <br />

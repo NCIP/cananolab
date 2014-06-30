@@ -1,38 +1,31 @@
 'use strict';
 
 var app = angular.module('angularApp')
-.controller('LoginCtrl', function ($scope, $http, $cookieStore, $window, $cookies) {
-	$scope.submitData = function() {
-		// Enable CORS
-		//$httpProvider.defaults.useXDomain = true;
-      //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+.controller('LoginCtrl', function ($scope, $http, $location) {
+  	$scope.userActions = 1;
+  	$scope.loginShow = 0;
+     $scope.authErrors = 0;
 
-  	  $http({method: 'GET', url: '/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
-		    success(function(data, status, headers, config) {
-		      // this callback will be called asynchronously
-		      // when the response is available
-		      //alert(data);
-		      $scope.message=data;
-		      
-//		      alert('1');
-//		      alert($cookies.$cookieStore.get('JSESSIONID'));
-//		      alert('2');
-		      
-		      console.log('1');
-		      console.log(data); 
-		      console.log('2');
-		      
-		      //$cookieStore.put("JSESSIONID",data);
+  	$scope.loginDo = function() {
+      if (!$scope.password || !$scope.loginId) {
+        $scope.authErrors="Username and Password are required";
+      }
+      else {
+        $http({method: 'GET', url: '/caNanoLab/rest/security/login', params: {"username":$scope.loginId,"password":$scope.password} }).
+        success(function(data, status, headers, config) {
+          // this callback will be called asynchronously
+          // when the response is available
+          $location.path("/home").replace();
 
-		      $window.location.replace("http://localhost:8080/caNanoLab/collaborationGroup.do;jsessionid=" + data + "?dispatch=setupNew&page=0");
+          //Set tabs here.. Delete on logout. Use variable instead of rest call
 
-		    }).
-		    error(function(data, status, headers, config) {
-		      // called asynchronously if an error occurs
-		      // or server returns response with an error status.
-		      //alert(data);
-		      $scope.message=data;
-  	});
-	};
+        }).
+        error(function(data, status, headers, config) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+          $scope.authErrors=data;
+    });
+      }      
+  	}  	
 });
 

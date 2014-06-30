@@ -1107,3 +1107,13 @@ color:red;
 font-weight:bold;
 padding:1em;
 }
+
+.userMessage {
+  font-weight:bold;
+  color:red;
+}
+
+.loginPage {
+padding-top:10px;
+padding-left:10px;
+}
