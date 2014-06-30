@@ -16,7 +16,7 @@ var app = angular.module('angularApp')
     	   });
     }      
 
-  $scope.getGroups = function() {
+  $rootScope.getGroups = function() {
     return "Test";
      // $http({method: 'GET', url: '/caNanoLab/rest/core/getGroups'}).
      // success(function(data, status, headers, config) {
