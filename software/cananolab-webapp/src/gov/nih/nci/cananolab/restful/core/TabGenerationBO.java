@@ -53,7 +53,7 @@ public class TabGenerationBO {
 			if (homePage.length() == 0 || !homePage.startsWith("true")) {
 				tabWithLink = new String[2];
 				tabWithLink[0] = "LOGIN";
-				tabWithLink[1] =  urlBase + "rest/security/login";;
+				tabWithLink[1] =  urlBase + "index.html#/login";;
 				tabs.add(tabWithLink);
 			}
 		} else {
@@ -109,7 +109,7 @@ public class TabGenerationBO {
 			
 			tabWithLink = new String[2];
 			tabWithLink[0] = "LOGOUT";
-			tabWithLink[1] =  urlBase + "rest/security/logout";;
+			tabWithLink[1] =  urlBase + "index.html#/logout";;
 			tabs.add(tabWithLink);
 		}
 
