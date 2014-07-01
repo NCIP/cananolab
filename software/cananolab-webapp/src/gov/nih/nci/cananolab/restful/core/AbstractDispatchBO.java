@@ -21,20 +21,11 @@ import gov.nih.nci.cananolab.util.StringUtils;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.actions.DispatchAction;
 
 public abstract class AbstractDispatchBO {
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public void execute(HttpServletRequest request)
 			throws Exception {
 		HttpSession session = request.getSession();
 		String dispatch = (String) request.getParameter("dispatch");
@@ -73,7 +64,7 @@ public abstract class AbstractDispatchBO {
 		if (executeStatus) {
 			
 			//TODO
-			return null;
+			//return null;
 			//return super.execute(mapping, form, request, response);
 			
 			
@@ -207,10 +198,16 @@ public abstract class AbstractDispatchBO {
 		return securityService;
 	}
 
+	/**
+	 * @deprecated
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	protected Boolean validateToken(HttpServletRequest request)
 			throws Exception {
-		ActionMessages messages = new ActionMessages();
-		
+//		ActionMessages messages = new ActionMessages();
+//		
 		//TODO
 		
 //		if (!isTokenValid(request)) {
