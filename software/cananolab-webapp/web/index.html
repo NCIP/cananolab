@@ -48,7 +48,8 @@
                      <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0" summary="layout">
                         <tbody>
                            <tr>
-                              <td class="subhdrBG" align="left">				
+                              <td class="subhdrBG" align="left">
+                                 <a href="/caNanoLab/#/" class="link"></a> 
                               </td>
                            </tr>
                         </tbody>
@@ -146,6 +147,13 @@
                         <tr>
                            <td class="subMenuFill">&nbsp;</td>
                         </tr>
+                        <tr>
+                           <td class="groups">
+                              <div ng-repeat="(key,val) in groups">Logged in as {{key}}
+                                 <br /> <br /> Associated Groups: <div ng-repeat="item in val">{{item}}</div>
+                              </div>
+                           </td>
+                        </tr>
                      </table>
                   </td>
                   <td class="mainContent">
@@ -167,38 +175,20 @@
                                           <td ng-repeat-end><img height="16" alt="menu separator"
                                              src="images/mainMenuSeparator.gif" width="1">
                                           </td>
-                                          <!-- 
-                                             <th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/x/14CUBg')" scope="row"><a
-                                             	class="mainMenuLink" href="#">HELP</a>
-                                             </th>
-                                             <td><img height="16" alt="menu separator"
-                                             	src="images/mainMenuSeparator.gif" width="1">
-                                             </td>
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                             
-                                                
-                                             
-                                             
-                                             <th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab//caNanoLab+Glossary')" scope="row"><a
-                                             	class="mainMenuLink" href="#">GLOSSARY {{tabs}}</a>
-                                             </th>
-                                             <td><img height="16" alt="menu separator"
-                                             	src="images/mainMenuSeparator.gif" width="1">
-                                             </td>
-                                             -->
+                                          <!--
+<th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/x/14CUBg')" scope="row"><a
+class="mainMenuLink" href="#">HELP</a>
+</th>
+<td><img height="16" alt="menu separator"
+src="images/mainMenuSeparator.gif" width="1">
+</td>
+<th class="mainMenuItem" onclick="openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab//caNanoLab+Glossary')" scope="row"><a
+class="mainMenuLink" href="#">GLOSSARY {{tabs}}</a>
+</th>
+<td><img height="16" alt="menu separator"
+src="images/mainMenuSeparator.gif" width="1">
+</td>
+-->
                                        </tr>
                                     </tbody>
                                  </table>
@@ -295,9 +285,9 @@
       </tbody>
       </table>
       <!--[if lt IE 9]>
-      <script src="js/es5-shim.js"></script>
-      <script src="js/json3.min.js"></script>
-      <![endif]-->
+<script src="js/es5-shim.js"></script>
+<script src="js/json3.min.js"></script>
+<![endif]-->
       <!-- build:js scripts/vendor.js -->
       <!-- bower:js -->
       <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -321,8 +311,9 @@
       <script src="scripts/controllers/login.js"></script>
       <script src="scripts/controllers/auth.js"></script>
       <script src="scripts/controllers/logout.js"></script>
-      <script src="scripts/controllers/register.js"></script>   
-      <!-- endbuild -->	
+      <script src="scripts/controllers/register.js"></script>
+      <script src="scripts/controllers/samples.js"></script>
+      <!-- endbuild --> 
       </div>
    </body>
 </html>

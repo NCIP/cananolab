@@ -1,4 +1,4 @@
-/*########## BLUE COLOR SCHEME ##########
+ /*########## BLUE COLOR SCHEME ##########
  #475B82 = darker blue
  #6E81A6 = lighter blue
 
@@ -53,6 +53,14 @@ HDR AND FTR BEGINS
   background-color: #ffffff; /* darker */
   background-image:url('../images/appLogo-nanolab.gif');
   height:80px;
+}
+
+.subhdrBG .link{
+color:white;
+display:block;
+width:400px;
+height:80px;
+
 }
 
 .ftrTable { /* for the table that contains the footer */
@@ -1106,4 +1114,19 @@ ul,ol {
 color:red;
 font-weight:bold;
 padding:1em;
+}
+
+.userMessage {
+  font-weight:bold;
+  color:red;
+}
+
+.loginPage {
+padding-top:10px;
+padding-left:10px;
+}
+
+.groups {
+   padding:10px;
+   color:#fff;
 }

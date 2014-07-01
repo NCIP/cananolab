@@ -18,8 +18,8 @@ angular
     'ngTouch'
   ])
   .config(function ($routeProvider, $httpProvider) {
-	$httpProvider.defaults.withCredentials = true;
-	  
+  $httpProvider.defaults.withCredentials = true;
+    
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -32,7 +32,11 @@ angular
       .when('/home', {
         templateUrl: 'views/loggedIn.html',
         controller: 'AuthCtrl'
-      })      
+      }) 
+      .when('/searchSample', {
+        templateUrl: 'views/samples.html',
+        controller: 'SampleCtrl'
+      })            
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'

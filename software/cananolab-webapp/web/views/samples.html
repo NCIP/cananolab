@@ -1,0 +1,170 @@
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th align="left" scope="col">Basic Sample Search</th>
+
+            <td align="right" width="30%">
+                <a class="helpText" href=
+                "advancedSampleSearch.do?dispatch=setup">Advanced Search</a>
+                &nbsp; <a class="helpText" href=
+                "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">
+                Help</a> &nbsp; <a class="helpText" href=
+                "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">
+                Glossary</a> &nbsp;
+            </td>
+        </tr>
+    </table><br>
+
+    <table align="center" class="submissionView" summary="layout" width="100%">
+        <tr>
+            <td class="cellLabel" width="110"><label for=
+            "keywords">Keywords</label></td>
+
+            <td>
+            <textarea cols="60" id="keywords" name="text" ng-model="keywords" rows="3">
+</textarea><br>
+            <em>searching characterization keywords, publication keywords and
+            text in characterization descriptions</em><br>
+            <em>enter one keyword per line</em></td>
+        </tr>
+    </table><br>
+
+    <table align="center" class="submissionView" summary="layout" width="100%">
+        <tr>
+            <td>
+                <table class="invisibleTable" summary="layout">
+                    <tr>
+                        <td class="cellLabel" width="100"><label for=
+                        "sampleName">Sample Name</label></td>
+
+                        <td><label for="nameOperand" style="display:none">name
+                        operand</label> <select id="nameOperand" ng-model="nameOperand" name=
+                        "nameOperand">
+                            <option value="contains">
+                                contains
+                            </option>
+
+                            <option value="equals">
+                                equals
+                            </option>
+                        </select></td>
+
+                        <td><input id="sampleName" name="sampleName" ng-model="sampleName" size="60"
+                        type="text" value=""></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="invisibleTable" summary="layout">
+                    <tr>
+                        <td class="cellLabel" width="100"><label for=
+                        "samplePOC">Sample Point of Contact</label></td>
+
+                        <td><label for="pocOperand" style="display:none">POC
+                        Operand</label> <select id="pocOperand" name=
+                        "pocOperand" ng-model="pocOperand">
+                            <option value="contains">
+                                contains
+                            </option>
+
+                            <option value="equals">
+                                equals
+                            </option>
+                        </select></td>
+
+                        <td><input id="samplePOC" name="samplePointOfContact"
+                        size="60" type="text" value="" ng-model="samplePointOfContact"><br>
+                        <em>searching organization name or person
+                        name</em></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="invisibleTable" summary="layout">
+                    <tr>
+                        <td class="cellLabel" width="100"><label for=
+                        "nanomaterialEntityTypes">Nanomaterial
+                        Entity</label></td>
+
+                        <td><select id="nanomaterialEntityTypes" multiple=
+                        "multiple" name="nanomaterialEntityTypes" size="4" ng-model="nanomaterialEntityType">
+                            <option ng-repeat="option in nanomaterialEntityTypes" value="{{option}}">
+                                {{option}}
+                            </option>
+                        </select></td>
+
+                        <td class="cellLabel"><label for=
+                        "functionalizingEntityTypes">Functionalizing
+                        Entity</label></td>
+
+                        <td><select id="functionalizingEntityTypes" multiple=
+                        "multiple" name="functionalizingEntityTypes" size="3" ng-model="functionalizingEntityType">
+                            <option ng-repeat="option in functionalizingEntityTypes" value="{{option}}">
+                                {{option}}
+                            </option>
+                        </select></td>
+
+                        <td class="cellLabel"><label for=
+                        "functionTypes">Function</label></td>
+
+                        <td><select id="functionTypes" multiple="multiple"
+                        name="functionTypes" size="3" ng-model="functionType">
+                            <option ng-repeat="option in functionTypes" value="{{option}}">
+                                {{option}}
+                            </option>
+                        </select></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="invisibleTable">
+                    <tr>
+                        <td class="cellLabel" width="100"><label for=
+                        "charType">Characterization Type</label> <label for=
+                        "characterizationType" style="display:none">hidden char
+                        type</label> <input id="characterizationType" name=
+                        "characterizationType" type="hidden" value="" ng-model="characterizationType"></td>
+
+                        <td>
+                            <select id="charType" ng-model="characterizationType" name="characterizationType" ng-change="setCharacterizationOptionsByCharType()">
+                            <option ng-repeat="option in characterizationTypes" value="{{option}}">
+                                {{option}}
+                            </option>
+                        </select></td>
+
+                        <td class="cellLabel"><label for=
+                        "charName">Characterization</label></td>
+
+                        <td colspan="3"><select id="charName" multiple=
+                        "multiple" name="characterizations" size="4" ng-model="charName">
+                            </select></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table><br>
+
+    <table class="invisibleTable" summary="layout" width="100%">
+        <tr>
+            <td align="center"><span class="formMessage"><em>Searching without
+            any parameters returns all samples.</em></span></td>
+        </tr>
+
+        <tr>
+            <td align="right"><input onclick=
+            "javascript: location.href = 'searchSample.do?dispatch=setup&amp;page=0'"
+            type="reset" value="Reset"> &nbsp; <input type="submit" value=
+            "Search"> <input name="dispatch" type="hidden" value="search">
+            <input name="page" type="hidden" value="1"></td>
+        </tr>
+    </table>
+</div>

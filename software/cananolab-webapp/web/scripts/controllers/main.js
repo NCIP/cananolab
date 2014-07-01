@@ -2,13 +2,13 @@
 var app = angular.module('angularApp')
   .controller('MainCtrl', function ($rootScope, $scope, $location,$http, $cookieStore, $window, $cookies) {
 
-  	$scope.userActions = 1;
-  	$scope.loginShow = 0;
+    $scope.userActions = 1;
+    $scope.loginShow = 0;
     $scope.authErrors = 0;
     $rootScope.tabs = [["HELP","#"],["GLOSSARY","#"]];
     
-  	$scope.$on('$viewContentLoaded', function(){
-  		$http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).
+    $scope.$on('$viewContentLoaded', function(){
+      $http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).
         success(function(data, status, headers, config) {
           $scope.numOfPublicProtocols=data.numOfPublicProtocols;
           $scope.numOfPublicCharacterizations=data.numOfPublicCharacterizations;
@@ -26,32 +26,32 @@ var app = angular.module('angularApp')
           //alert(data);
           $scope.authErrors=data;
         });
-  	});    
+    });    
     
-  	$scope.doUserAction = function() {
+    $scope.doUserAction = function() {
 
       if ($scope.userActions==1) {
         $scope.loginShow = 0;
         window.location.href = "/caNanoLab/searchSample.do?dispatch=setup";
 
       }
-  		else if ($scope.userActions==2) {
+      else if ($scope.userActions==2) {
         $scope.loginShow = 1;
         $scope.authErrors = 0;
-  		}
-  		else if ($scope.userActions==3) {
-  			$scope.loginShow = 0;
+      }
+      else if ($scope.userActions==3) {
+        $scope.loginShow = 0;
         $location.path("/register").replace();
         $scope.apply();        
-  		}
+      }
       else {
         $scope.loginShow = 0;
         window.open("https://iforgotmypassword.nih.gov/aims/ps/");
 
       }
-  	}
+    }
 
-  	$scope.loginDo = function() {
+    $scope.loginDo = function() {
       if (!$scope.password || !$scope.loginId) {
         $scope.authErrors="Username and Password are required";
       }
@@ -71,7 +71,7 @@ var app = angular.module('angularApp')
           $scope.authErrors=data;
     });
       }      
-  	}  	
+    }   
 
 
   });

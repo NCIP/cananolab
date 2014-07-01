@@ -1,23 +1,40 @@
-<div id="loginBlock">
-	  <form ng-submit="submitData()">
-		<table class="loginBlock" summary="layout">
-			<tr>
-				<td><label for="login ID">LOGIN ID</label></td>
-				<td><input type="text" ng-model="loginId" size="14" id="login ID" />
-				</td>
-			</tr>
-			<tr>
-				<td><label for="password">PASSWORD</label></td>
-				<td><input type="password" ng-model="password" size="14"
-					id="password" autocomplete="off"/></td>
-			</tr>
-			<tr>
-				<td>&nbsp;</td>
-				<td align="left"><input type="submit" value="Login"></td>
-			</tr>
-			<tr>
-				<td colspan='2' style="color:blue;font-size:18px;font-weight:bold">{{message}}</td>
-			</tr>			
-		</table>
-	  </form>
+<div class="loginPage">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+        <tr>
+            <th align="left" scope="col">Log into caNanoLab</th>
+
+            <td align="right" width="30%">
+                <a class="helpText" href=
+                "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/null')">
+                Help</a> &nbsp; <a class="helpText" href=
+                "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">
+                Glossary</a> &nbsp;
+            </td>
+        </tr>
+    </table>
+
+                      <div class="spacer"/>
+                     <table width="100%" class="submissionView" summary="layout">
+                        <tr>
+                           <td width="100"><label for="login ID">LOGIN ID</label></td>
+                           <td><input type="text" name="loginId" ng-model="loginId" size="14" id="login ID"  ng-init="loginId=''" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td><label for="password">PASSWORD</label></td>
+                           <td><input type="password" name="password" size="14"
+                              id="password" autocomplete="off" ng-model="password" ng-init="password=''" /></td>
+                        </tr>
+                        <tr>
+                           <td>&nbsp;</td>
+                           <td align="left"><input type="submit" value="Login" ng-click="loginDo()"></td>
+                        </tr>
+                        <tr>
+                        	<td colspan="2" ng-model="authErrors" ng-show="authErrors"><div id="authErrors">{{authErrors}}</div>
+                        	</td>
+                        </tr>
+                     </table>
+
+
+
 </div>
