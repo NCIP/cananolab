@@ -186,7 +186,7 @@ public abstract class AbstractDispatchBO {
 	}
 
 	protected SecurityService getSecurityServiceFromSession(
-			HttpServletRequest request) throws Exception {
+			HttpServletRequest request) throws SecurityException {
 		if (request.getSession().getAttribute("securityService") == null) {
 			UserBean user = (UserBean) request.getAttribute("user");
 			SecurityService service = new SecurityService(

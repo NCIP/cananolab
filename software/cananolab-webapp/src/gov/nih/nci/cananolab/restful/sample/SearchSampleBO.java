@@ -31,6 +31,7 @@ import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
+import gov.nih.nci.cananolab.exception.SecurityException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,17 +43,21 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 public class SearchSampleBO extends AbstractDispatchBO {
+	private Logger logger = Logger.getLogger(SearchSampleBO.class);
 
 	private DataAvailabilityService dataAvailabilityService;
 
-	public List<String> search(SearchSampleForm form, HttpServletRequest request)
-			throws Exception {
+	public List search(SearchSampleForm form, HttpServletRequest request) 
+	 throws Exception {
 		
 		List<String> messages = new ArrayList<String>();
 		
 		HttpSession session = request.getSession();
 		// get the page number from request
+		
 		int displayPage = getDisplayPage(request);
 
 		// use one local impl to improve performance
@@ -100,7 +105,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
 		
 		//return mapping.findForward("success");
-		return messages;
+		return sampleBeansPerPage;
 	}
 
 	private List<SampleBean> querySamples(SearchSampleForm form,
@@ -350,13 +355,34 @@ public class SearchSampleBO extends AbstractDispatchBO {
 				attributes);
 	}
 
-	private SampleService setServiceInSession(HttpServletRequest request)
-			throws Exception {
-		SecurityService securityService = super
-				.getSecurityServiceFromSession(request);
-		SampleService sampleService = new SampleServiceLocalImpl(
-				securityService);
-		request.getSession().setAttribute("sampleService", sampleService);
-		return sampleService;
+	private SampleService setServiceInSession(HttpServletRequest request) {
+		try {
+			SecurityService securityService = super
+					.getSecurityServiceFromSession(request);
+			SampleService sampleService = new SampleServiceLocalImpl(
+					securityService);
+			request.getSession().setAttribute("sampleService", sampleService);
+			return sampleService;
+		} catch (SecurityException e) {
+			logger.error("Unable to get SecurityServiceFromSession: " + e.getMessage());
+			return null;
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param httpRequest
+	 * @param type
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getCharacterizationByType(HttpServletRequest httpRequest, String type) 
+		throws Exception {
+		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
+				.getCharNamesByCharType(httpRequest,
+						type);
+		
+		return new ArrayList<String>(charNames);
 	}
 }
