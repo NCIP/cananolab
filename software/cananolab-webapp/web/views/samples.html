@@ -145,8 +145,11 @@
                         "charName">Characterization</label></td>
 
                         <td colspan="3"><select id="charName" multiple=
-                        "multiple" name="characterizations" size="4" ng-model="charName">
-                            </select></td>
+                        "multiple" name="characterizations" size="4" ng-model="characterization">
+                        <option ng-repeat="option in characterizations" value="{{option}}">
+                            {{option}}
+                        </option>
+                    </select></td>
                     </tr>
                 </table>
             </td>
