@@ -55,6 +55,14 @@ HDR AND FTR BEGINS
   height:80px;
 }
 
+.subhdrBG .link{
+color:white;
+display:block;
+width:400px;
+height:80px;
+
+}
+
 .ftrTable { /* for the table that contains the footer */
 4
 }
@@ -1122,3 +1130,4 @@ padding-left:10px;
    padding:10px;
    color:#fff;
 }
+
