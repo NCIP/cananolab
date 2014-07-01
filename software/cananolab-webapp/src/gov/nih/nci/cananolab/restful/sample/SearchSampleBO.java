@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.particle.DataAvailabilityBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -45,8 +46,11 @@ public class SearchSampleBO extends AbstractDispatchBO {
 
 	private DataAvailabilityService dataAvailabilityService;
 
-	public void search(SearchSampleForm form, HttpServletRequest request)
+	public List<String> search(SearchSampleForm form, HttpServletRequest request)
 			throws Exception {
+		
+		List<String> messages = new ArrayList<String>();
+		
 		HttpSession session = request.getSession();
 		// get the page number from request
 		int displayPage = getDisplayPage(request);
@@ -65,15 +69,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 			if (sampleBeans != null && !sampleBeans.isEmpty()) {
 				session.setAttribute("sampleSearchResults", sampleBeans);
 			} else {
-//				ActionMessages msgs = new ActionMessages();
-//				ActionMessage msg = new ActionMessage(
-//						"message.searchSample.noresult");
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				
-				
-				return;
-				//saveMessages(request, msgs);				
-				//return mapping.getInputForward();
+				messages.add(PropertyUtil.getProperty("sample", "message.searchSample.noresult"));
+				return messages;
 			}
 		}
 
@@ -85,15 +82,10 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		// information. e.g. POC is missing
 		
 		if (sampleBeansPerPage.isEmpty()) {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage(
-//					"message.searchSample.noresult");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			//saveMessages(request, msgs);
-			//return mapping.getInputForward();
-			
-			return;
+			messages.add(PropertyUtil.getProperty("sample", "message.searchSample.noresult"));
+			return messages;
 		}
+		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (user != null) {
 			loadUserAccess(request, sampleBeansPerPage);
@@ -108,6 +100,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
 		
 		//return mapping.findForward("success");
+		return messages;
 	}
 
 	private List<SampleBean> querySamples(SearchSampleForm form,

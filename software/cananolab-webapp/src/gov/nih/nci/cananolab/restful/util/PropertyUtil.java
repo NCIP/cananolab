@@ -29,10 +29,40 @@ public class PropertyUtil {
 	private static Properties publication_properties = null;
 	private static Properties sample_properties = null;
 	
+	/**
+	 * Get a property value based on type and key.
+	 * 
+	 * Valid types are: application, sample, protocol, publication and community.
+	 * 
+	 * @param type
+	 * @param key
+	 * @return
+	 */
 	public static String getProperty(String type, String key) {
+		if (type == null) {
+			logger.error("Unable to get property value for [" + key + "] without a valid type");
+			return "";
+		}
 		
-		
-		return "";
+		Properties props = getPropertiesByType(type);
+		return props.getProperty(key);
+	}
+	
+	protected static Properties getPropertiesByType(String type) {
+		type = type.toLowerCase();
+		if (type.equals("sample"))
+			return (sample_properties == null) ? loadProperty("sample.properties") : sample_properties;
+		else if (type.equals("application"))
+			return (application_properties == null) ? loadProperty("application.properties") : application_properties;
+		else if	(type.equals("protocol")) 
+			return (protocol_properties == null) ? loadProperty("protocol.properties") : protocol_properties;
+		else if (type.equals("publication"))
+			return (publication_properties == null) ? loadProperty("publication.properties") : publication_properties;
+		else if (type.equals("community"))
+			return (community_properties == null) ? loadProperty("community.properties") : community_properties;
+		else
+			return new Properties();			
+			
 	}
 	
 	/**
@@ -43,7 +73,7 @@ public class PropertyUtil {
 	 * @param propertyFileName
 	 * @return
 	 */
-	protected static Properties loadProperty(String propertyFileName) {
+	public static Properties loadProperty(String propertyFileName) {
 		InputStream istream = null;
 		Properties properties = new Properties();
 		try {

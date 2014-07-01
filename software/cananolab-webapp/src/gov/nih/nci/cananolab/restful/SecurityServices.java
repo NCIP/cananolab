@@ -40,15 +40,6 @@ public class SecurityServices {
     		@DefaultValue("") @QueryParam("username") String username, 
     		@DefaultValue("") @QueryParam("password") String password) {
 		
-//	@POST	
-//	@Path("/login")
-//	@Produces ("application/json")
-//    public Response login(@Context HttpServletRequest httpRequest, UserBean user) {	
-//		logger.info("In login service");
-//		
-//		String username = user.getUserId();
-//		String password = user.getPassword();
-		
 		if (username.length() == 0 || password.length() == 0)
 			return Response.serverError().entity("User name or password can't be blank").build();
 		

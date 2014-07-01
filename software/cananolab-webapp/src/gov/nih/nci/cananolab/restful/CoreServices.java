@@ -67,6 +67,5 @@ public class CoreServices {
 		
 		return Response.ok(tabs).build();
 	}
-	
-	
+
 }

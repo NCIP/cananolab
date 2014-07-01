@@ -1,6 +1,9 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.ui.form.SampleForm;
+import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
+import gov.nih.nci.cananolab.ui.form.TestForm;
 
 import java.util.List;
 import java.util.Map;
@@ -44,8 +47,12 @@ public class SampleServices {
 //	@POST
 //	@Path("/searchSample")
 //	@Produces ("application/json")
-//	public Response searchSample(@Context HttpServletRequest httpRequest, @FormParam("form") ActionForm form ) {
+//	public Response searchSample(@Context HttpServletRequest httpRequest, @FormParam("form") TestForm form ) {
 //		
+//		
+////		String f = form.getUser();
+////		f += "aaba";
+//			
 //		return null;
 //	}
 }
