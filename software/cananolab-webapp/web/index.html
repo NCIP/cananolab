@@ -146,7 +146,14 @@
                         <tr>
                            <td class="subMenuFill">&nbsp;</td>
                         </tr>
-                     </table>{{getGroups()}}
+                        <tr>
+                           <td class="groups">
+                              <div ng-repeat="(key,val) in groups">Logged in as {{key}}
+                                 <br /> <br /> Associated Groups: <div ng-repeat="item in val">{{item}}</div>
+                              </div>
+                           </td>
+                        </tr>
+                     </table>
                   </td>
                   <td class="mainContent">
                      <table cellspacing="0" cellpadding="0" summary="layout" border="0" width="900px">

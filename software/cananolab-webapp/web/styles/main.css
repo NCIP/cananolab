@@ -1,4 +1,4 @@
-/*########## BLUE COLOR SCHEME ##########
+  /*########## BLUE COLOR SCHEME ##########
  #475B82 = darker blue
  #6E81A6 = lighter blue
 
@@ -1116,4 +1116,9 @@ padding:1em;
 .loginPage {
 padding-top:10px;
 padding-left:10px;
+}
+
+.groups {
+   padding:10px;
+   color:#fff;
 }
