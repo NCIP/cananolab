@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+
 import java.util.Date;
 
 public class SimpleSampleBean {
@@ -79,5 +81,16 @@ public class SimpleSampleBean {
 		this.createdDate = createdDate;
 	}
 	
-	
+	public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
+		
+		if (sampleBean == null) return;
+		setSampleName(sampleBean.getDomain().getName());
+		setCharacterizations(sampleBean.getCharacterizationClassNames());
+		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
+		setCreatedDate(new Date());
+		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
+		setFunctions(sampleBean.getFunctionalizingEntityClassNames());
+		setPointOfContact(sampleBean.getThePOC().getDisplayName());
+		setSampleId(sampleBean.getDomain().getId());
+	}
 }
