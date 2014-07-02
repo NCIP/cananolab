@@ -21,7 +21,7 @@
             "keywords">Keywords</label></td>
 
             <td>
-            <textarea cols="60" id="keywords" name="text" ng-model="keywords" rows="3">
+            <textarea cols="60" id="keywords" name="text" ng-model="searchSampleForm.name" rows="3">
 </textarea><br>
             <em>searching characterization keywords, publication keywords and
             text in characterization descriptions</em><br>
@@ -38,7 +38,7 @@
                         "sampleName">Sample Name</label></td>
 
                         <td><label for="nameOperand" style="display:none">name
-                        operand</label> <select id="nameOperand" ng-model="nameOperand" name=
+                        operand</label> <select id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
                         "nameOperand">
                             <option value="contains">
                                 contains
@@ -49,7 +49,7 @@
                             </option>
                         </select></td>
 
-                        <td><input id="sampleName" name="sampleName" ng-model="sampleName" size="60"
+                        <td><input id="sampleName" name="sampleName" ng-model="searchSampleForm.sampleName" size="60"
                         type="text" value=""></td>
                     </tr>
                 </table>
@@ -65,7 +65,7 @@
 
                         <td><label for="pocOperand" style="display:none">POC
                         Operand</label> <select id="pocOperand" name=
-                        "pocOperand" ng-model="pocOperand">
+                        "pocOperand" ng-model="searchSampleForm.pocOperand">
                             <option value="contains">
                                 contains
                             </option>
@@ -76,7 +76,7 @@
                         </select></td>
 
                         <td><input id="samplePOC" name="samplePointOfContact"
-                        size="60" type="text" value="" ng-model="samplePointOfContact"><br>
+                        size="60" type="text" value="" ng-model="searchSampleForm.samplePointOfContact"><br>
                         <em>searching organization name or person
                         name</em></td>
                     </tr>
@@ -94,8 +94,8 @@
                         Entity</label></td>
 
                         <td><select id="nanomaterialEntityTypes" multiple=
-                        "multiple" name="nanomaterialEntityTypes" size="4" ng-model="nanomaterialEntityType">
-                            <option ng-repeat="option in nanomaterialEntityTypes" value="{{option}}">
+                        "multiple" name="nanomaterialEntityTypes" size="4" ng-model="searchSampleForm.nanomaterialEntityTypes">
+                            <option ng-repeat="option in nanomaterialEntityTypesList" value="{{option}}">
                                 {{option}}
                             </option>
                         </select></td>
@@ -105,8 +105,8 @@
                         Entity</label></td>
 
                         <td><select id="functionalizingEntityTypes" multiple=
-                        "multiple" name="functionalizingEntityTypes" size="3" ng-model="functionalizingEntityType">
-                            <option ng-repeat="option in functionalizingEntityTypes" value="{{option}}">
+                        "multiple" name="functionalizingEntityTypes" size="3" ng-model="searchSampleForm.functionalizingEntityTypes">
+                            <option ng-repeat="option in functionalizingEntityTypesList" value="{{option}}">
                                 {{option}}
                             </option>
                         </select></td>
@@ -115,8 +115,8 @@
                         "functionTypes">Function</label></td>
 
                         <td><select id="functionTypes" multiple="multiple"
-                        name="functionTypes" size="3" ng-model="functionType">
-                            <option ng-repeat="option in functionTypes" value="{{option}}">
+                        name="functionTypes" size="3" ng-model="searchSampleForm.functionTypes">
+                            <option ng-repeat="option in functionTypesList" value="{{option}}">
                                 {{option}}
                             </option>
                         </select></td>
@@ -134,11 +134,11 @@
                         "charType">Characterization Type</label> <label for=
                         "characterizationType" style="display:none">hidden char
                         type</label> <input id="characterizationType" name=
-                        "characterizationType" type="hidden" value="" ng-model="characterizationType"></td>
+                        "characterizationType" type="hidden" value=""></td>
 
                         <td>
-                            <select id="charType" ng-model="characterizationType" name="characterizationType" ng-change="setCharacterizationOptionsByCharType()">
-                            <option ng-repeat="option in characterizationTypes" value="{{option}}">
+                            <select id="charType" ng-model="searchSampleForm.characterizationType" name="characterizationType" ng-change="setCharacterizationOptionsByCharType()">
+                            <option ng-repeat="option in characterizationTypesList" value="{{option}}">
                                 {{option}}
                             </option>
                         </select></td>
@@ -147,8 +147,8 @@
                         "charName">Characterization</label></td>
 
                         <td colspan="3"><select id="charName" multiple=
-                        "multiple" name="characterizations" size="4" ng-model="characterization">
-                        <option ng-repeat="option in characterizations" value="{{option}}">
+                        "multiple" name="characterizations" size="4" ng-model="searchSampleForm.characterizations">
+                        <option ng-repeat="option in characterizationsList" value="{{option}}">
                             {{option}}
                         </option>
                     </select></td>
@@ -156,7 +156,7 @@
                 </table>
             </td>
         </tr>
-    </table><br>
+    </table><br>{{searchSampleForm}}<br /><br />{{results}}
 
     <table class="invisibleTable" summary="layout" width="100%">
         <tr>
@@ -168,7 +168,7 @@
             <td align="right"><input onclick=
             "javascript: location.href = 'searchSample.do?dispatch=setup&amp;page=0'"
             type="reset" value="Reset"> &nbsp; <input type="submit" value=
-            "Search"> <input name="dispatch" type="hidden" value="search">
+            "Search" ng-click="doSearch()"> <input name="dispatch" type="hidden" value="search">
             <input name="page" type="hidden" value="1"></td>
         </tr>
     </table>
