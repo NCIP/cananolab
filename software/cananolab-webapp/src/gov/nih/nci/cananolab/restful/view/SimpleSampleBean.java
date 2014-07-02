@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.view;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
 import java.util.Date;
+import java.util.Map;
 
 public class SimpleSampleBean {
 	long sampleId;
@@ -12,6 +13,8 @@ public class SimpleSampleBean {
 	String[] functions;
 	String[] characterizations;
 	String dataAvailability;
+	
+	Map<String, String> pointOfContactInfo;
 	
 	Date createdDate;
 
@@ -63,8 +66,6 @@ public class SimpleSampleBean {
 		this.characterizations = characterizations;
 	}
 
-	
-
 	public String getDataAvailability() {
 		return dataAvailability;
 	}
@@ -81,6 +82,14 @@ public class SimpleSampleBean {
 		this.createdDate = createdDate;
 	}
 	
+	public Map<String, String> getPointOfContactInfo() {
+		return pointOfContactInfo;
+	}
+
+	public void setPointOfContactInfo(Map<String, String> pointOfContactInfo) {
+		this.pointOfContactInfo = pointOfContactInfo;
+	}
+
 	public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
 		
 		if (sampleBean == null) return;
@@ -90,7 +99,7 @@ public class SimpleSampleBean {
 		setCreatedDate(new Date());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
 		setFunctions(sampleBean.getFunctionalizingEntityClassNames());
-		setPointOfContact(sampleBean.getThePOC().getDisplayName());
+		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
 		setSampleId(sampleBean.getDomain().getId());
 	}
 }
