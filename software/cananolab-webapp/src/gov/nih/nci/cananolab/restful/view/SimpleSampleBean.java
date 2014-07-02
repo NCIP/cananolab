@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful.view;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleSampleBean {
@@ -13,8 +14,23 @@ public class SimpleSampleBean {
 	String[] functions;
 	String[] characterizations;
 	String dataAvailability;
+	/**
+	 * @return the keywords
+	 */
+	public String getKeywords() {
+		return keywords;
+	}
+
+	/**
+	 * @param keywords the keywords to set
+	 */
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	String keywords;
 	
-	Map<String, String> pointOfContactInfo;
+	public Map<String, String> pointOfContactInfo;
 	
 	Date createdDate;
 
@@ -102,4 +118,20 @@ public class SimpleSampleBean {
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
 		setSampleId(sampleBean.getDomain().getId());
 	}
+	
+	public void transferSampleBeanForSummaryView(SampleBean sampleBean) {
+		
+		if (sampleBean == null) return;
+		setSampleName(sampleBean.getDomain().getName());
+		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
+		setKeywords(sampleBean.getKeywordsDisplayName());
+		
+		pointOfContactInfo = new HashMap<String, String>();
+		pointOfContactInfo.put("contactPerson", sampleBean.getPrimaryPOCBean().getPersonDisplayName());
+		pointOfContactInfo.put("organiztionRole", sampleBean.getPrimaryPOCBean().getOrganizationDisplayName());
+		pointOfContactInfo.put("primaryContact", sampleBean.getPrimaryPOCBean().getPrimaryStatus().toString());
+		setPointOfContactInfo(pointOfContactInfo);
+
+	}
+    
 }
