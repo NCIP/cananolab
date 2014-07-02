@@ -1136,3 +1136,7 @@ select#nanomaterialEntityTypes,
 #charName{
   width:180px;
 }
+
+.rowSpacer {
+line-height:1px;
+}
