@@ -1,9 +1,8 @@
 package gov.nih.nci.cananolab.restful.util;
 
-import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -37,6 +36,26 @@ public class SampleUtil {
 			typeMap.put("characterizationTypes", new ArrayList<String>(characterTyeps));
 		
 		return typeMap;
+	}
+	
+	public static String[] getDefaultListFromSessionByType(String sessionKey, HttpSession session) {
+		
+		if (session == null)
+			return new String[1];
+		
+		SortedSet<String> types = (SortedSet<String>) session.getAttribute(sessionKey);
+		if (types == null || types.size() ==0)
+			return new String[1];
+		
+		String[] defaultTypes = new String[types.size()];
+		
+		Iterator ite = types.iterator();
+		int idx = 0;
+		while (ite.hasNext()) {
+			defaultTypes[idx++] = (String)ite.next();
+		}
+		
+		return defaultTypes;
 	}
 
 }

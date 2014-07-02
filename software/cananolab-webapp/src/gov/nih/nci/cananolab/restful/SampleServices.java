@@ -1,12 +1,14 @@
 package gov.nih.nci.cananolab.restful;
 
-import gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.display.SimpleSampleBean;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -74,8 +76,31 @@ public class SampleServices {
 			SearchSampleBO searchSampleBO = 
 					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
 			List results = searchSampleBO.search(searchForm, httpRequest);
+			
+			List<SimpleSampleBean> samples = new ArrayList<SimpleSampleBean>();
+			
+			if (results != null && results.size() > 0) {
+				for (int i = 0; i < results.size(); i++) {
+					Object bean = results.get(i);
+					if (bean instanceof SampleBean) {
+						SampleBean sBean = (SampleBean) bean;
+						SimpleSampleBean aSample = new SimpleSampleBean();
+						aSample.setSampleName(sBean.getDomain().getName());
+						aSample.setCharacterizations(sBean.getCharacterizationClassNames());
+						aSample.setComposition(sBean.getDomain().getSampleComposition().getSample().getName());
+						aSample.setCreatedDate(new Date());
+						aSample.setDataAvailability(sBean.getDataAvailabilityMetricsScore());
+						aSample.setFunctions(sBean.getFunctionalizingEntityClassNames());
+						aSample.setPointOfContact(sBean.getThePOC().getDisplayName());
+						aSample.setSampleId(sBean.getDomain().getId());
+						
+						samples.add(aSample);
+						
+					}
+				}
+			}
 
-			return Response.ok(results).build();
+			return Response.ok(samples).build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.ok("Error while searching for samples").build();

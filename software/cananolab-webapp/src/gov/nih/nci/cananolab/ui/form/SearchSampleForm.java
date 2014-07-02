@@ -2,16 +2,16 @@ package gov.nih.nci.cananolab.ui.form;
 
 public class SearchSampleForm {
 	
-	String samplePointOfContact;
-	String pocOperand;
+	String samplePointOfContact = "";
+	String pocOperand = "";
 	String[] nanomaterialEntityTypes;
 	String[] functionalizingEntityTypes;
 	String[] functionTypes;
-	String characterizationType;
+	String characterizationType = "";
 	String[] characterizations;
-	String sampleName;
-	String nameOperand;
-	String text;
+	String sampleName = "";
+	String nameOperand = "";
+	String text = "";
 	int page;
 	
 	public String getSamplePointOfContact() {

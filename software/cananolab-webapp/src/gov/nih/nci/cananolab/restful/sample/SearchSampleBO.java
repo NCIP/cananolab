@@ -111,11 +111,13 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	private List<SampleBean> querySamples(SearchSampleForm form,
 			HttpServletRequest request) throws Exception {
 		
+		HttpSession session = request.getSession();
+		
 		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
 		String samplePointOfContact = (String) form.getSamplePointOfContact();
 		// strip wildcards at either end if entered by user
 		samplePointOfContact = StringUtils.stripWildcards(samplePointOfContact);
-		String pocOperand = (String) form.getPocOperand(); 
+		String pocOperand = Constants.STRING_OPERAND_CONTAINS; //(String) form.getPocOperand(); 
 		if (pocOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(samplePointOfContact)) {
 			samplePointOfContact = "*" + samplePointOfContact + "*";
@@ -123,7 +125,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		String sampleName = (String) form.getSampleName();
 		// strip wildcards at either end if entered by user
 		sampleName = StringUtils.stripWildcards(sampleName);
-		String nameOperand = (String) form.getNameOperand(); 
+		String nameOperand = Constants.STRING_OPERAND_CONTAINS; //(String) form.getNameOperand(); 
 		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(sampleName)) {
 			sampleName = "*" + sampleName + "*";
@@ -136,9 +138,22 @@ public class SearchSampleBO extends AbstractDispatchBO {
 
 		if (form != null) {
 			nanomaterialEntityTypes = (String[]) form.getNanomaterialEntityTypes();
+			if (nanomaterialEntityTypes == null || nanomaterialEntityTypes.length == 0) 
+				nanomaterialEntityTypes = new String[0];
+			
 			functionalizingEntityTypes = (String[]) form.getFunctionalizingEntityTypes();
+			if (functionalizingEntityTypes == null || functionalizingEntityTypes.length == 0) 
+				functionalizingEntityTypes = new String[0];
+			
 			functionTypes = (String[]) form.getFunctionTypes();
+			if (functionTypes == null || functionTypes.length == 0) 
+				functionTypes = new String[0];
+			
 			characterizations = (String[]) form.getCharacterizations();
+			if (characterizations == null || characterizations.length == 0) {
+				characterizations = new String[0];
+			}
+				//characterizations = SampleUtil.getDefaultListFromSessionByType("nanomaterialEntityTypes", session);
 			texts = form.getText().trim();
 
 		}
