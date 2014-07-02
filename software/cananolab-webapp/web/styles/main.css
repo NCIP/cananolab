@@ -1140,3 +1140,18 @@ select#nanomaterialEntityTypes,
 .rowSpacer {
 line-height:1px;
 }
+
+th.mainMenuItem.home { /* for the off state of the main menu (top) cells */
+  background-color: #009E2D; /* constant: dark gray */
+}
+
+a:link.mainMenuLink.home,a:visited.mainMenuLink.home,a:active.mainMenuLink.home{
+  /* for the text links in the main menu */
+  color: #fff; /* constant: white */
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a:hover.mainMenuLink.home {
+  color: #fff; /* constant: white */
+}

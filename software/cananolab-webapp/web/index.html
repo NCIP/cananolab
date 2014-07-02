@@ -168,10 +168,12 @@
                                              <!-- anchor to skip main menu -->
                                              <a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
                                           </td>
-                                          <th ng-repeat-start="t in tabs" scope="row" class="mainMenuItem">
-                                             <a
-                                                class="mainMenuLink" href="{{t[1]}}">{{t[0]}}</a>
+
+                                          <th ng-repeat-start="t in tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
+                                             <a ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}">{{t[0]}}
+                                             </a>
                                           </th>
+
                                           <td ng-repeat-end><img height="16" alt="menu separator"
                                              src="images/mainMenuSeparator.gif" width="1">
                                           </td>
