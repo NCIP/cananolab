@@ -1084,7 +1084,7 @@ ul,ol {
 }
 
 .spacer {
-  padding: 0.5em;
+  padding: 1em;
 }
 
 .editButton {
@@ -1129,4 +1129,10 @@ padding-left:10px;
 .groups {
    padding:10px;
    color:#fff;
+}
+select#nanomaterialEntityTypes,
+#functionalizingEntityTypes,
+#functionTypes,
+#charName{
+  width:180px;
 }
