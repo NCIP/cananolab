@@ -78,23 +78,9 @@ public class SampleServices {
 					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
+			return Response.ok(results).build();
 			
-			List<SimpleSampleBean> samples = new ArrayList<SimpleSampleBean>();
-			
-			if (results != null && results.size() > 0) {
-				for (int i = 0; i < results.size(); i++) {
-					Object bean = results.get(i);
-					if (bean instanceof SampleBean) {
-						SimpleSampleBean sampleBean = new SimpleSampleBean();
-						sampleBean.transferSampleBeanForBasicResultView((SampleBean)bean);
-						
-						samples.add(sampleBean);
-						
-					}
-				}
-			}
 
-			return Response.ok(samples).build();
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.ok("Error while searching for samples").build();
