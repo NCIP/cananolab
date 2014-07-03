@@ -3,7 +3,7 @@ var app = angular.module('angularApp')
 
   .controller('SampleCtrl', function ($rootScope,$scope,$http) {
     $scope.characterizations = null;
-
+    $scope.searchSampleForm = {};
 
     $scope.$on('$viewContentLoaded', function(){
      $http({method: 'GET', url: '/caNanoLab/rest/sample/setup'}).
@@ -37,7 +37,7 @@ var app = angular.module('angularApp')
        
 
     $scope.doSearch = function() {
-     $http({method: 'GET', url: '/caNanoLab/rest/sample/searchSample',params: {"data":$scope.searchSampleForm}}).
+     $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSample',data: $scope.searchSampleForm}).
      success(function(data, status, headers, config) {
         $scope.results = data;
         }).
