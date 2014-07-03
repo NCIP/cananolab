@@ -75,6 +75,7 @@ public class SampleServices {
 		try {
 			SearchSampleBO searchSampleBO = 
 					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
+			
 			List results = searchSampleBO.search(searchForm, httpRequest);
 			
 			List<SimpleSampleBean> samples = new ArrayList<SimpleSampleBean>();
@@ -83,18 +84,10 @@ public class SampleServices {
 				for (int i = 0; i < results.size(); i++) {
 					Object bean = results.get(i);
 					if (bean instanceof SampleBean) {
-						SampleBean sBean = (SampleBean) bean;
-						SimpleSampleBean aSample = new SimpleSampleBean();
-						aSample.setSampleName(sBean.getDomain().getName());
-						aSample.setCharacterizations(sBean.getCharacterizationClassNames());
-						aSample.setComposition(sBean.getDomain().getSampleComposition().getSample().getName());
-						aSample.setCreatedDate(new Date());
-						aSample.setDataAvailability(sBean.getDataAvailabilityMetricsScore());
-						aSample.setFunctions(sBean.getFunctionalizingEntityClassNames());
-						aSample.setPointOfContact(sBean.getThePOC().getDisplayName());
-						aSample.setSampleId(sBean.getDomain().getId());
+						SimpleSampleBean sampleBean = new SimpleSampleBean();
+						sampleBean.transferSampleBeanForBasicResultView((SampleBean)bean);
 						
-						samples.add(aSample);
+						samples.add(sampleBean);
 						
 					}
 				}
