@@ -1,32 +1,19 @@
 package gov.nih.nci.cananolab.restful;
 
-import static org.junit.Assert.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 
-import java.net.URI;
-
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Application;
-
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
+import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = {"classpath:/applicationContext.xml"})
-public class CoreServicesTest extends JerseyTest {
+import static org.junit.Assert.*;
+
+public class CoreServicesTest {
 	
 	String urlbase = "http://localhost:8080/caNanoLab/rest/";
 	
-
-	
-	@Override
-	protected Application configure() {
-		// TODO Auto-generated method stub
-		return new ResourceConfig(CoreServices.class);
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		
@@ -38,8 +25,40 @@ public class CoreServicesTest extends JerseyTest {
 
 	@Test
 	public void testInitSetup() {
-		WebTarget wt = this.target(urlbase + "core/initSetup");
-		//wt.request().get(String.class);
+		Client client = ClientBuilder.newClient(new ClientConfig()
+		//.register(MyClientResponseFilter.class)
+		//.register(new AnotherClientFilter())
+				);
+
+		String jsonString = client.target(urlbase)
+				.register(CoreServices.class)
+				.path("core/initSetup")
+				.request("application/json")
+				.header("some-header", "true")
+				.get(String.class);
+
+		assertNotNull(jsonString);
+		assertTrue(jsonString.length() > 0);
+		assertTrue(jsonString.contains("numOfPublicCharacterizations"));
+		
+	}
+	
+	
+	@Test
+	public void testGetTabs() {
+		Client client = ClientBuilder.newClient(new ClientConfig()
+		//.register(MyClientResponseFilter.class)
+		//.register(new AnotherClientFilter())
+				);
+
+		String jsonString = client.target(urlbase)
+				.register(CoreServices.class)
+				.path("core/getTabs")
+				.request("application/json")
+				.header("some-header", "true")
+				.get(String.class);
+
+		assertNotNull(jsonString);
 	}
 
 }

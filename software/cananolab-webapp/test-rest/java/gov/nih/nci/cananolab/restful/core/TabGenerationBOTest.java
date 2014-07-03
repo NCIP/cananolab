@@ -3,16 +3,16 @@ package gov.nih.nci.cananolab.restful.core;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+
 
 public class TabGenerationBOTest {
 	
 	TabGenerationBO tabGen = new TabGenerationBO();
 
-	@Before
-	public void setUp() throws Exception {
-	}
+//	@Before
+//	public void setUp() throws Exception {
+//	}
 
 	@After
 	public void tearDown() throws Exception {
