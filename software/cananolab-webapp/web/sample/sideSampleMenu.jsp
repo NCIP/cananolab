@@ -43,13 +43,13 @@ L--%>
 		</c:url>
 		<c:choose>
 			<c:when test="${actionPath eq '/sample.do'}">
-				<td class="subMenuSecondaryTitleSelected"
+				<td class="subMenuSecondaryTitleSelected sample"
 				    onclick="gotoPage('${sampleUrl}')">
 					GENERAL INFO
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="subMenuSecondaryTitle"
+				<td class="subMenuSecondaryTitle sample"
 					onclick="gotoPage('${sampleUrl}')">
 					<a class="subMenuSecondary">GENERAL INFO</a>
 				</td>
@@ -68,13 +68,13 @@ L--%>
 				<c:choose>
 					<c:when
 						test="${actionPath eq '/composition.do' || actionPath eq '/nanomaterialEntity.do' || actionPath eq '/functionalizingEntity.do' ||actionPath eq '/chemicalAssociation.do' ||actionPath eq '/compositionFile.do'}">
-						<td class="subMenuSecondaryTitleSelected"
+						<td class="subMenuSecondaryTitleSelected sample"
 						    onclick="gotoPage('${compUrl}')">
 							COMPOSITION
 						</td>
 					</c:when>
 					<c:otherwise>
-						<td class="subMenuSecondaryTitle"
+						<td class="subMenuSecondaryTitle sample"
 							onclick="gotoPage('${compUrl}')">
 							<a class="subMenuSecondary">COMPOSITION</a>
 						</td>
@@ -99,13 +99,13 @@ L--%>
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/characterization.do'}">
-						<td class="subMenuSecondaryTitleSelected" 
+						<td class="subMenuSecondaryTitleSelected sample" 
 						    onclick="gotoPage('${charUrl}')">
 							CHARACTERIZATION
 						</td>
 					</c:when>
 					<c:otherwise>
-						<td class="subMenuSecondaryTitle"							
+						<td class="subMenuSecondaryTitle sample"							
 							onclick="gotoPage('${charUrl}')">
 							<a class="subMenuSecondary">CHARACTERIZATION</a>
 						</td>
@@ -113,7 +113,7 @@ L--%>
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<td class="subMenuSecondaryTitle" height="20">
+				<td class="subMenuSecondaryTitle sample" height="20">
 					<i>CHARACTERIZATION</i>
 				</td>
 			</c:otherwise>
@@ -129,13 +129,13 @@ L--%>
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/publication.do'}">
-						<td class="subMenuSecondaryTitleSelected"
+						<td class="subMenuSecondaryTitleSelected sample"
 						    onclick="gotoPage('${pubUrl}')">
 							PUBLICATION
 						</td>
 					</c:when>
 					<c:otherwise>
-						<td class="subMenuSecondaryTitle"
+						<td class="subMenuSecondaryTitle sample"
 							onclick="gotoPage('${pubUrl}')">
 							<a class="subMenuSecondary">PUBLICATION</a>
 						</td>
@@ -143,7 +143,7 @@ L--%>
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<td class="subMenuSecondaryTitle" height="20">
+				<td class="subMenuSecondaryTitle sample" height="20">
 					<i>PUBLICATION</i>
 				</td>
 			</c:otherwise>

@@ -52,6 +52,7 @@ HDR AND FTR BEGINS
 .subhdrBG { /* for the cell that contains the application header */
   background-color: #ffffff; /* darker */
   background-image:url('../images/appLogo-nanolab.gif');
+  background-repeat:no-repeat;  
   height:80px;
 }
 
@@ -252,6 +253,16 @@ td.subMenuSecondaryTitle {
   height: 20px;
 }
 
+td.subMenuSecondaryTitle.sample {
+  /* for the off state of the cell for the sample elements (usually common among pages) below the primary items */
+        background-color:#A90101;
+}
+
+td.subMenuSecondaryTitle.sample a:hover{
+  /* for the off state of the cell for the sample elements (usually common among pages) below the primary items */
+        background-color:#fff;
+}
+
 td:hover.subMenuSecondaryTitle {
   /* for the over state of the cell for the elements (usually common among pages) below the primary items */
   font-family: arial, helvetica, verdana, sans-serif;
@@ -265,6 +276,12 @@ td:hover.subMenuSecondaryTitle {
   height: 20px;
   cursor: pointer;
 }
+
+td:hover.subMenuSecondaryTitle.sample {
+  /* for the over state of the cell for the sample elements (usually common among pages) below the primary items */
+       background-color:#fff;
+}
+
 
 td.subMenuSecondaryTitleSelected {
   /* for the off state of the cell for the elements (usually common among pages) below the primary items */
@@ -1154,4 +1171,9 @@ a:link.mainMenuLink.home,a:visited.mainMenuLink.home,a:active.mainMenuLink.home{
 
 a:hover.mainMenuLink.home {
   color: #fff; /* constant: white */
+}
+
+td:hover.subMenuSecondaryTitleSelected.sample {
+  /* for the over state of the cell for the elements (usually common among pages) below the primary items */
+  background-color:#01045A;
 }

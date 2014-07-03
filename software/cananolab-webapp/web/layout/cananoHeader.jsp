@@ -18,8 +18,8 @@ L--%>
 		</c:if>	
 		<tr>
 			<td class="subhdrBG" align="left">				
-				<img src="images/appLogo-nanolab.gif" alt="caNanoLab logo">
-			</td>
+<!-- 				<img src="images/appLogo-nanolab.gif" alt="caNanoLab logo">
+ -->			</td>
 			<c:if test="${!empty existingSiteBean && !empty existingSiteBean.siteLogoFilename}">
 				<td class="subhdrBG">			
 					<div align="right">
