@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
@@ -99,4 +100,29 @@ public class SampleServices {
 			return Response.ok("Error while searching for samples").build();
 		}
 	}
+	@GET
+	@Path("/view")
+	@Produces ("application/json")
+	 public Response view(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		
+		try { 
+
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+
+			SampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
+			SimpleSampleBean view = new SimpleSampleBean();
+			view.transferSampleBeanForSummaryView(sampleBean);
+			
+			return Response.ok(view).build();
+			
+		} catch (Exception e) {
+			return Response.ok("Error while viewing the search results").build();
+		}
+	}
+	
 }
+	
+
+
