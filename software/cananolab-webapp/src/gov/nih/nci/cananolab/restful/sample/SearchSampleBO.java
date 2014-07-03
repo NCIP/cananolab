@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -105,7 +106,25 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		request.getSession().setAttribute("resultSize", new Integer(sampleBeans.size()));
 		
 		//return mapping.findForward("success");
-		return sampleBeansPerPage;
+		
+		List<SimpleSampleBean> simpleBeans = transfertoSimpleSampleBeams(sampleBeansPerPage);
+		
+		return simpleBeans;
+	}
+	
+	/**
+	 * 
+	 */
+	protected List<SimpleSampleBean> transfertoSimpleSampleBeams(List<SampleBean> sampleBeans) {
+		List<SimpleSampleBean> simpleBeans = new ArrayList<SimpleSampleBean>();
+		
+		for (SampleBean bean : sampleBeans) {
+			SimpleSampleBean simpleBean = new SimpleSampleBean();
+			simpleBean.transferSampleBeanForBasicResultView(bean);
+			simpleBeans.add(simpleBean);
+		}
+		
+		return simpleBeans;
 	}
 
 	private List<SampleBean> querySamples(SearchSampleForm form,
@@ -117,7 +136,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		String samplePointOfContact = (String) form.getSamplePointOfContact();
 		// strip wildcards at either end if entered by user
 		samplePointOfContact = StringUtils.stripWildcards(samplePointOfContact);
-		String pocOperand = Constants.STRING_OPERAND_CONTAINS; //(String) form.getPocOperand(); 
+		//String pocOperand = Constants.STRING_OPERAND_CONTAINS; 
+		String pocOperand = (String) form.getPocOperand();
 		if (pocOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(samplePointOfContact)) {
 			samplePointOfContact = "*" + samplePointOfContact + "*";
@@ -125,7 +145,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		String sampleName = (String) form.getSampleName();
 		// strip wildcards at either end if entered by user
 		sampleName = StringUtils.stripWildcards(sampleName);
-		String nameOperand = Constants.STRING_OPERAND_CONTAINS; //(String) form.getNameOperand(); 
+		//String nameOperand = Constants.STRING_OPERAND_CONTAINS; //(String) form.getNameOperand();
+		String nameOperand = (String) form.getNameOperand(); 
 		if (nameOperand.equals(Constants.STRING_OPERAND_CONTAINS)
 				&& !StringUtils.isEmpty(sampleName)) {
 			sampleName = "*" + sampleName + "*";
