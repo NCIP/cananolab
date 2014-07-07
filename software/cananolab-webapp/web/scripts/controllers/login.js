@@ -1,10 +1,13 @@
 'use strict';
 
 var app = angular.module('angularApp')
-.controller('LoginCtrl', function ($scope, $http, $location) {
+.controller('LoginCtrl', function (navigationFactory,groupsFactory,$rootScope,$scope, $http, $location) {
   	$scope.userActions = 1;
   	$scope.loginShow = 0;
-     $scope.authErrors = 0;
+    $scope.authErrors = 0;
+
+    $rootScope.tabs = navigationFactory.query();
+    $rootScope.groups = groupsFactory.get();   
 
   	$scope.loginDo = function() {
       if (!$scope.password || !$scope.loginId) {

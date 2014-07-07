@@ -2,6 +2,7 @@
 <html>
    <head>
       <title>caNanoLab</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />      
       <meta name="keywords"
          content="nanoinformatics, nanotechnology model, caNanoLab, nanotechnology, nanoparticle, nanomaterial, cancer, information model, portal, data portal, data repository, caBIG, caGRID, NCL, nano characterization, nanoparticle composition, Cancer Nanotechnology Excellence, Nanoparticle Ontology">
       <meta name="description"
@@ -74,7 +75,7 @@
                         </tr>
                         <tr>
                            <td class="subMenuSecondaryTitle"
-                              onclick="openWindow('http://ncicb.nci.nih.gov/', '', '800', '800')"><a class="subMenuSecondary">NCI CBIIT Home</a></td>
+                              onclick="openWindow('http://ncicb.nci.nih.gov/', '', '800', '800')"><a class="subMenuSecondary">NCI CBIIT Home{{testService.sayHello()}}</a></td>
                         </tr>
                         <tr>
                            <td class="subMenuSecondaryTitle"
@@ -168,7 +169,7 @@
                                              <!-- anchor to skip main menu -->
                                              <a href="#content"><img height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
                                           </td>
-
+                                             
                                           <th ng-repeat-start="t in tabs" scope="row" ng-class="{mainMenuItem: t[0]!='HOME', 'mainMenuItem home':t[0]=='HOME'}">
                                              <a ng-class="{mainMenuLink: t[0]!='HOME', 'mainMenuLink home':t[0]=='HOME'}" href="{{t[1]}}">{{t[0]}}
                                              </a>
@@ -308,6 +309,8 @@ src="images/mainMenuSeparator.gif" width="1">
       <!-- endbuild -->
       <!-- build:js({.tmp,app}) scripts/scripts.js -->
       <script src="scripts/app.js"></script>
+      <script src="scripts/factories/navigation.js"></script>
+      <script src="scripts/factories/groups.js"></script>
       <script src="scripts/controllers/main.js"></script>
       <script src="scripts/controllers/about.js"></script>
       <script src="scripts/controllers/login.js"></script>
