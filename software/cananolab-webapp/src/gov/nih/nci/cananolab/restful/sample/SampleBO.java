@@ -637,17 +637,23 @@ public class SampleBO extends BaseAnnotationBO {
 //		return mapping.findForward("summaryEdit");
 	}
 
-	public void dataAvailabilityView(SampleForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public SampleBean dataAvailabilityView(String sampleId, HttpServletRequest request) throws Exception {
 
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(form, request);
+		//Make sure service has been created
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+		if (service == null) 
+			service = setServiceInSession(request);
+		
+		SampleBean sampleBean = setupSampleById(sampleId, request);
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		if (securityService == null) {
 			securityService = new SecurityService(
 					AccessibilityBean.CSM_APP_NAME);
 		}
+		
+		
 		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
@@ -665,12 +671,15 @@ public class SampleBO extends BaseAnnotationBO {
 			request.setAttribute("availableEntityNames", availableEntityNames);
 		}
 		request.setAttribute("sampleBean", sampleBean);
+		
 		String styleId = request.getParameter("styleId");
 		if (styleId != null) {
 	//		return mapping.findForward("dataAvailabilityView");
 		} else {
 	//		return mapping.findForward("dataAvailabilityEdit");
 		}
+		
+		return sampleBean;
 	}
 
 	private void calculateDataAvailabilityScore(SampleBean sampleBean,

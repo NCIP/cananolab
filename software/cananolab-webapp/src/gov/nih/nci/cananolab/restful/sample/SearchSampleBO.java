@@ -115,7 +115,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	}
 	
 	/**
-	 * @deprecated
+	 * @deprecated for now
 	 * @param request
 	 * @param form
 	 * @param results

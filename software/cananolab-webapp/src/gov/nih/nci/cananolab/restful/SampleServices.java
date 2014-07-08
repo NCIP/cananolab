@@ -113,6 +113,29 @@ public class SampleServices {
 		}
 	}
 	
+	
+	@GET
+	@Path("/viewDataAvailability")
+	@Produces ("application/json")
+	 public Response viewDataAvailability(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		
+		try { 
+
+			SampleBO sampleBO = 
+					(SampleBO) applicationContext.getBean("sampleBO");
+
+			SampleBean sampleBean = sampleBO.dataAvailabilityView(sampleId,httpRequest);
+			
+			//SimpleSampleBean view = new SimpleSampleBean();
+			//view.transferSampleBeanForSummaryView(sampleBean);
+			
+			return Response.ok(sampleBean).build();
+			
+		} catch (Exception e) {
+			return Response.ok(e.getMessage()).build();
+		}
+	}
 }
 	
 

@@ -75,6 +75,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	protected SampleBean setupSample(SampleForm sampleForm,
 			HttpServletRequest request) throws Exception {
 		String sampleId = request.getParameter("sampleId");
+		
 		if (!StringUtils.isEmpty(sampleId)) {
 			sampleForm.setSampleId(sampleId);
 		//	theForm.set("sampleId", sampleId);
@@ -85,6 +86,34 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 				//sampleId = theForm.getString("sampleId");
 			}
 		}
+		// sample service has been created earlier
+		SampleService service = (SampleService) request.getSession()
+				.getAttribute("sampleService");
+
+		SampleBean sampleBean = service.findSampleById(sampleId, true);
+		if (sampleBean == null) {
+			throw new NotExistException("No such sample in the system");
+		}
+		request.setAttribute("theSample", sampleBean);
+
+		return sampleBean;
+	}
+	
+	/**
+	 * This is a simplified version of setupSample(SampleForm sampleForm, HttpServletRequest request)
+	 * for restful service implementation.
+	 * 
+	 * @param sampleId
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	protected SampleBean setupSampleById(String sampleId,
+			HttpServletRequest request) throws Exception {
+		
+		if (StringUtils.isEmpty(sampleId)) 
+			throw new NotExistException("Null or empty sample Id passed in setupSampleById()");
+		
 		// sample service has been created earlier
 		SampleService service = (SampleService) request.getSession()
 				.getAttribute("sampleService");
