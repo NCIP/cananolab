@@ -2,7 +2,7 @@
 var app = angular.module('angularApp')
 
   .controller('SampleCtrl', function (navigationFactory,groupsFactory,$rootScope,$scope,$http) {
-    $scope.characterizations = null;
+    $scope.characterizations = null;    
     $scope.searchSampleForm = {};
     $rootScope.tabs = navigationFactory.query();
     $rootScope.groups = groupsFactory.get();
@@ -49,6 +49,8 @@ var app = angular.module('angularApp')
           // or server returns response with an error status.
           $scope.results = data;
          }); 
-    }
+    };
+
+                      
 
   });

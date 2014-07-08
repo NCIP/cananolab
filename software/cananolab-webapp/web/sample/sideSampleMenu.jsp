@@ -114,7 +114,7 @@ L--%>
 			</c:when>
 			<c:otherwise>
 				<td class="subMenuSecondaryTitle sample" height="20">
-					<i>CHARACTERIZATION</i>
+					CHARACTERIZATION
 				</td>
 			</c:otherwise>
 		</c:choose>
