@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.restful.view.SampleSearchResult;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -59,7 +60,8 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		HttpSession session = request.getSession();
 		// get the page number from request
 		
-		int displayPage = getDisplayPage(request);
+		//TODO
+		int displayPage = form.getPage(); ///getDisplayPage(request);
 
 		// use one local impl to improve performance
 		this.setServiceInSession(request);
@@ -110,6 +112,32 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		List<SimpleSampleBean> simpleBeans = transfertoSimpleSampleBeams(sampleBeansPerPage);
 		
 		return simpleBeans;
+	}
+	
+	/**
+	 * @deprecated
+	 * @param request
+	 * @param form
+	 * @param results
+	 * @return
+	 */
+	public SampleSearchResult createSampleSearchResult(HttpServletRequest request, SearchSampleForm form, List results) {
+		
+		if (results != null && results.size() > 0) {
+			Object o = results.get(0);
+			if (o instanceof SimpleSampleBean) {
+				SampleSearchResult result = new SampleSearchResult();
+				result.setCurrentPage(form.getPage());
+				List<SampleBean> sampleBeans = (List<SampleBean>)request.getSession().getAttribute("sampleSearchResults");
+				int t = (sampleBeans == null) ? 0 : sampleBeans.size(); 
+				result.setTotal(t);
+				result.setSamplesForPage((List<SimpleSampleBean>)results);
+				result.setPageSize(Constants.DISPLAY_TAG_TABLE_SIZE);
+				return result;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**

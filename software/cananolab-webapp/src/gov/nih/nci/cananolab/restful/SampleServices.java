@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.view.SampleSearchResult;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
@@ -78,14 +79,18 @@ public class SampleServices {
 					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
+			//SampleSearchResult resultWrapper = searchSampleBO.createSampleSearchResult(httpRequest, searchForm, results);
+			//return (resultWrapper == null) ? Response.ok(results).build() : Response.ok(resultWrapper).build();
 			return Response.ok(results).build();
-			
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return Response.ok("Error while searching for samples").build();
 		}
 	}
+	
+	
+	
 	@GET
 	@Path("/view")
 	@Produces ("application/json")

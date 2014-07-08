@@ -6,6 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * SimpleSampleBean to hold a subset of the data in SampleBean for display on web page.
+ * 
+ * @author yangs8
+ *
+ */
 public class SimpleSampleBean {
 	long sampleId;
 	String sampleName;
@@ -114,7 +120,7 @@ public class SimpleSampleBean {
 		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
 		setCreatedDate(new Date());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-		setFunctions(sampleBean.getFunctionalizingEntityClassNames());
+		setFunctions(sampleBean.getFunctionClassNames());
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
 		setSampleId(sampleBean.getDomain().getId());
 	}
