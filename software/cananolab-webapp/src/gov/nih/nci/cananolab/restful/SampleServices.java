@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
-import gov.nih.nci.cananolab.restful.view.SampleSearchResult;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
