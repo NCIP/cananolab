@@ -55,7 +55,7 @@ public class SimpleSampleBean {
 	
 	public Map<String, String> pointOfContactInfo;
 	
-	String createdDate;
+	Date createdDate;
 
 	public long getSampleId() {
 		return sampleId;
@@ -113,11 +113,11 @@ public class SimpleSampleBean {
 		this.dataAvailability = dataAvailability;
 	}
 
-	public String getCreatedDate() {
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(String createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
 	
@@ -135,7 +135,7 @@ public class SimpleSampleBean {
 		setSampleName(sampleBean.getDomain().getName());
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
-		setCreatedDate(new Date().toString());
+		setCreatedDate(new Date());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
 		setFunctions(sampleBean.getFunctionClassNames());
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
@@ -146,14 +146,15 @@ public class SimpleSampleBean {
 		
 		if (sampleBean == null) return;
 		setSampleName(sampleBean.getDomain().getName());
-		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate().toString());
+		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
 		setKeywords(sampleBean.getKeywordsDisplayName());
 		setPocBeanDomainId(sampleBean.getPrimaryPOCBean().getDomain().getId());
 		setOtherPOCBeans(sampleBean.getOtherPOCBeans());
 		
 		pointOfContactInfo = new HashMap<String, String>();
 		pointOfContactInfo.put("contactPerson", sampleBean.getPrimaryPOCBean().getPersonDisplayName());
-		pointOfContactInfo.put("organiztionRole", sampleBean.getPrimaryPOCBean().getOrganizationDisplayName());
+		pointOfContactInfo.put("organizationDisplayName", sampleBean.getPrimaryPOCBean().getOrganizationDisplayName());
+		pointOfContactInfo.put("role", sampleBean.getPrimaryPOCBean().getDomain().getRole());
 		pointOfContactInfo.put("primaryContact", sampleBean.getPrimaryPOCBean().getPrimaryStatus().toString());
 		setPointOfContactInfo(pointOfContactInfo);
 

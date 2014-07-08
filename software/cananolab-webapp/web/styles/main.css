@@ -1177,3 +1177,9 @@ td:hover.subMenuSecondaryTitleSelected.sample {
   /* for the over state of the cell for the elements (usually common among pages) below the primary items */
   background-color:#01045A;
 }
+
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 400px; 
+    height: 300px
+} 
