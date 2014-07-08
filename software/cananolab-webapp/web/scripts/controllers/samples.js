@@ -1,9 +1,12 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('SampleCtrl', function ($rootScope,$scope,$http) {
+  .controller('SampleCtrl', function (navigationFactory,groupsFactory,$rootScope,$scope,$http) {
     $scope.characterizations = null;
     $scope.searchSampleForm = {};
+    $rootScope.tabs = navigationFactory.query();
+    $rootScope.groups = groupsFactory.get();
+
 
     $scope.$on('$viewContentLoaded', function(){
      $http({method: 'GET', url: '/caNanoLab/rest/sample/setup'}).

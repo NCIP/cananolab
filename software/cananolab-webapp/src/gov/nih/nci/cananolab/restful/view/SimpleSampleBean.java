@@ -1,9 +1,12 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,16 +23,30 @@ public class SimpleSampleBean {
 	String[] functions;
 	String[] characterizations;
 	String dataAvailability;
-	/**
-	 * @return the keywords
-	 */
+	long pocBeanDomainId;
+	
+	public List<PointOfContactBean> getOtherPOCBeans() {
+		return otherPOCBeans;
+	}
+
+	public void setOtherPOCBeans(List<PointOfContactBean> otherPOCBeans) {
+		this.otherPOCBeans = otherPOCBeans;
+	}
+
+	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
+	
+		public long getPocBeanDomainId() {
+		return pocBeanDomainId;
+	}
+
+	public void setPocBeanDomainId(long pocBeanDomainId) {
+		this.pocBeanDomainId = pocBeanDomainId;
+	}
+
 	public String getKeywords() {
 		return keywords;
 	}
 
-	/**
-	 * @param keywords the keywords to set
-	 */
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
@@ -38,7 +55,7 @@ public class SimpleSampleBean {
 	
 	public Map<String, String> pointOfContactInfo;
 	
-	Date createdDate;
+	String createdDate;
 
 	public long getSampleId() {
 		return sampleId;
@@ -96,11 +113,11 @@ public class SimpleSampleBean {
 		this.dataAvailability = dataAvailability;
 	}
 
-	public Date getCreatedDate() {
+	public String getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
 	
@@ -118,7 +135,7 @@ public class SimpleSampleBean {
 		setSampleName(sampleBean.getDomain().getName());
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
-		setCreatedDate(new Date());
+		setCreatedDate(new Date().toString());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
 		setFunctions(sampleBean.getFunctionClassNames());
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
@@ -129,8 +146,10 @@ public class SimpleSampleBean {
 		
 		if (sampleBean == null) return;
 		setSampleName(sampleBean.getDomain().getName());
-		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
+		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate().toString());
 		setKeywords(sampleBean.getKeywordsDisplayName());
+		setPocBeanDomainId(sampleBean.getPrimaryPOCBean().getDomain().getId());
+		setOtherPOCBeans(sampleBean.getOtherPOCBeans());
 		
 		pointOfContactInfo = new HashMap<String, String>();
 		pointOfContactInfo.put("contactPerson", sampleBean.getPrimaryPOCBean().getPersonDisplayName());
@@ -138,6 +157,7 @@ public class SimpleSampleBean {
 		pointOfContactInfo.put("primaryContact", sampleBean.getPrimaryPOCBean().getPrimaryStatus().toString());
 		setPointOfContactInfo(pointOfContactInfo);
 
+		
 	}
     
 }

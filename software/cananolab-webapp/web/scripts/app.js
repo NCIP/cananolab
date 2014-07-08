@@ -8,16 +8,16 @@
  *
  * Main module of the application.
  */
-angular
-  .module('angularApp', [
+
+var app = angular.module('angularApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
-  ])
-  .config(function ($routeProvider, $httpProvider) {
+    'ngTouch']);
+
+app.config(function ($routeProvider, $httpProvider) {
   $httpProvider.defaults.withCredentials = true;
     
     $routeProvider
