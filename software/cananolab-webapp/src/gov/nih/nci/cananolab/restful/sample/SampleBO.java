@@ -653,7 +653,6 @@ public class SampleBO extends BaseAnnotationBO {
 					AccessibilityBean.CSM_APP_NAME);
 		}
 		
-		
 		Set<DataAvailabilityBean> dataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
