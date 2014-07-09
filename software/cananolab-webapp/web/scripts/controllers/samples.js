@@ -11,7 +11,6 @@ var app = angular.module('angularApp')
 
     $scope.gridOptions = { data: 'myData' }; 
 
-    $scope.characterizations = null;    
     $scope.searchSampleForm = {};
     $rootScope.tabs = navigationFactory.query();
     $rootScope.groups = groupsFactory.get();
@@ -60,6 +59,11 @@ var app = angular.module('angularApp')
          }); 
     };
 
+    $scope.resetForm = function() {
+      $scope.searchSampleForm = {};
+      $scope.characterizationsList = [];  
+
+    }
                       
 
   });
