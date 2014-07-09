@@ -41,6 +41,9 @@
 	</bean>
 	<bean id="sampleBO"
 		class="gov.nih.nci.cananolab.restful.sample.SampleBO">
+		<property name="dataAvailabilityService">
+			<ref bean="dataAvailabilityServiceDAO" />
+		</property>
 	</bean>
 
 	<import resource="classpath*:/application-config-jdbc-client.xml" />

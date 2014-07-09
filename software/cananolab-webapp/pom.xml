@@ -169,11 +169,18 @@ L-->
 -->
           
         <dependency>
-    <groupId>org.glassfish.jersey.media</groupId>
-    <artifactId>jersey-media-json-jackson</artifactId>
-    <version>2.6</version>
+    		<groupId>org.glassfish.jersey.media</groupId>
+    		<artifactId>jersey-media-json-jackson</artifactId>
+    		<version>2.6</version>
     
+		</dependency>
+<!--  
+<dependency>
+	<groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-annotations</artifactId>
+	<version>2.3.0</version>
 </dependency>
+-->
              <dependency>
  		 	<groupId>org.springframework</groupId>
  			 <artifactId>spring-core</artifactId>

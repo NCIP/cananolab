@@ -35,6 +35,7 @@ import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,8 @@ public class SampleBO extends BaseAnnotationBO {
 	// private static Logger logger = Logger.getLogger(ReviewDataAction.class);
 
 	private DataAvailabilityService dataAvailabilityService;
+	
+	String[] availableEntityNames;
 
 	/**
 	 * Save or update POC data.
@@ -254,7 +257,7 @@ public class SampleBO extends BaseAnnotationBO {
 			sampleBean.setHasDataAvailability(true);
 			sampleBean.setDataAvailability(selectedSampleDataAvailability);
 			calculateDataAvailabilityScore(sampleBean,
-					selectedSampleDataAvailability);
+					selectedSampleDataAvailability, request);
 			// request.setAttribute("onloadJavascript",
 			// "manageDataAvailability('" + sampleBean.getDomain().getId() +
 			// "', 'sample', 'dataAvailabilityView')");
@@ -562,7 +565,7 @@ public class SampleBO extends BaseAnnotationBO {
 				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		sampleBean.setHasDataAvailability(true);
-		calculateDataAvailabilityScore(sampleBean, dataAvailability);
+		calculateDataAvailabilityScore(sampleBean, dataAvailability, request);
 
 		/*
 		 * Map<String, List<DataAvailabilityBean>> dataAvailabilityMapPerPage =
@@ -607,7 +610,7 @@ public class SampleBO extends BaseAnnotationBO {
 				.saveDataAvailability(sampleBean, securityService);
 		sampleBean.setDataAvailability(dataAvailability);
 		// recalculate the score
-		calculateDataAvailabilityScore(sampleBean, dataAvailability);
+		calculateDataAvailabilityScore(sampleBean, dataAvailability, request);
 //		return mapping.findForward("summaryEdit");
 	}
 
@@ -637,7 +640,7 @@ public class SampleBO extends BaseAnnotationBO {
 //		return mapping.findForward("summaryEdit");
 	}
 
-	public SampleBean dataAvailabilityView(String sampleId, HttpServletRequest request) throws Exception {
+	public SimpleSampleBean dataAvailabilityView(String sampleId, HttpServletRequest request) throws Exception {
 
 		//Make sure service has been created
 		SampleService service = (SampleService) request.getSession()
@@ -657,16 +660,18 @@ public class SampleBO extends BaseAnnotationBO {
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
 
-		sampleBean.setDataAvailability(dataAvailability);
+		//sampleBean.setDataAvailability(dataAvailability);
 		if (!dataAvailability.isEmpty() && dataAvailability.size() > 0) {
 			sampleBean.setHasDataAvailability(true);
-			calculateDataAvailabilityScore(sampleBean, dataAvailability);
-			String[] availableEntityNames = new String[dataAvailability.size()];
+			calculateDataAvailabilityScore(sampleBean, dataAvailability, request);
+			String[] availEntityNames = new String[dataAvailability.size()];
 			int i = 0;
 			for (DataAvailabilityBean bean : dataAvailability) {
-				availableEntityNames[i++] = bean.getAvailableEntityName()
+				availEntityNames[i++] = bean.getAvailableEntityName()
 						.toLowerCase();
 			}
+			
+			setAvailableEntityNames(availEntityNames);
 			request.setAttribute("availableEntityNames", availableEntityNames);
 		}
 		request.setAttribute("sampleBean", sampleBean);
@@ -678,19 +683,30 @@ public class SampleBO extends BaseAnnotationBO {
 	//		return mapping.findForward("dataAvailabilityEdit");
 		}
 		
-		return sampleBean;
+		SimpleSampleBean simpleBean = transfertoSimpleSampleBean(sampleBean, request);
+		return simpleBean;
+	}
+	
+	protected SimpleSampleBean transfertoSimpleSampleBean(SampleBean sampleBean, HttpServletRequest request) {
+		SimpleSampleBean simpleBean = new SimpleSampleBean();
+		simpleBean.transferSampleBeanForDataAvailability(sampleBean, request);
+		
+		simpleBean.setAvailableEntityNames(this.availableEntityNames);
+		
+		return simpleBean;
 	}
 
 	private void calculateDataAvailabilityScore(SampleBean sampleBean,
-			Set<DataAvailabilityBean> dataAvailability) {
+			Set<DataAvailabilityBean> dataAvailability, HttpServletRequest request) {
 
-/*		ServletContext appContext = this.getServlet().getServletContext();
+		ServletContext appContext = request.getSession().getServletContext();
+		
 		SortedSet<String> minchar = (SortedSet<String>) appContext
 				.getAttribute("MINChar");
 		Map<String, String> attributes = (Map<String, String>) appContext
 				.getAttribute("caNano2MINChar");
 		sampleBean.calculateDataAvailabilityScore(dataAvailability, minchar,
-				attributes);   */
+				attributes);   
 	}
 
 	/*
@@ -811,4 +827,14 @@ public class SampleBO extends BaseAnnotationBO {
 			throws SecurityException {
 		return false;
 	}
+
+	public String[] getAvailableEntityNames() {
+		return availableEntityNames;
+	}
+
+	public void setAvailableEntityNames(String[] availableEntityNames) {
+		this.availableEntityNames = availableEntityNames;
+	}
+	
+	
 }

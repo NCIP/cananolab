@@ -2,12 +2,18 @@ package gov.nih.nci.cananolab.restful.view;
 
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.util.SampleUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.codehaus.jackson.map.annotate.JsonFilter;
 
 /**
  * SimpleSampleBean to hold a subset of the data in SampleBean for display on web page.
@@ -15,16 +21,58 @@ import java.util.Map;
  * @author yangs8
  *
  */
+@JsonFilter("MyFilter")
 public class SimpleSampleBean {
 	long sampleId;
 	String sampleName;
 	String pointOfContact;
-	String Composition;
+	String composition;
 	String[] functions;
 	String[] characterizations;
 	String dataAvailability;
+	String createdDate;
+	
+	String keywords;
+	
+	public Map<String, String> pointOfContactInfo;
 	long pocBeanDomainId;
 	
+	String[] availableEntityNames; 
+	
+	String caNanoLabScore;
+	String mincharScore;	
+	
+	String[] chemicalAssocs;
+	String[] physicoChars;
+	String[] invitroChars;
+	
+	Map<String, String> caNanoMINChar;
+	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
+	
+	public String[] getInvitroChars() {
+		return invitroChars;
+	}
+
+	public void setInvitroChars(String[] invitroChars) {
+		this.invitroChars = invitroChars;
+	}
+
+	public String[] getPhysicoChars() {
+		return physicoChars;
+	}
+
+	public void setPhysicoChars(String[] physicoChars) {
+		this.physicoChars = physicoChars;
+	}
+
+	public Map<String, String> getCaNanoMINChar() {
+		return caNanoMINChar;
+	}
+
+	public void setCaNanoMINChar(Map<String, String> caNanoMINChar) {
+		this.caNanoMINChar = caNanoMINChar;
+	}
+
 	public List<PointOfContactBean> getOtherPOCBeans() {
 		return otherPOCBeans;
 	}
@@ -32,9 +80,15 @@ public class SimpleSampleBean {
 	public void setOtherPOCBeans(List<PointOfContactBean> otherPOCBeans) {
 		this.otherPOCBeans = otherPOCBeans;
 	}
-
-	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
 	
+		public String getComposition() {
+		return composition;
+	}
+
+	public void setComposition(String composition) {
+		this.composition = composition;
+	}
+
 		public long getPocBeanDomainId() {
 		return pocBeanDomainId;
 	}
@@ -50,13 +104,7 @@ public class SimpleSampleBean {
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
-
-	String keywords;
 	
-	public Map<String, String> pointOfContactInfo;
-	
-	Date createdDate;
-
 	public long getSampleId() {
 		return sampleId;
 	}
@@ -79,14 +127,6 @@ public class SimpleSampleBean {
 
 	public void setPointOfContact(String pointOfContact) {
 		this.pointOfContact = pointOfContact;
-	}
-
-	public String getComposition() {
-		return Composition;
-	}
-
-	public void setComposition(String composition) {
-		Composition = composition;
 	}
 
 	public String[] getFunctions() {
@@ -112,15 +152,15 @@ public class SimpleSampleBean {
 	public void setDataAvailability(String dataAvailability) {
 		this.dataAvailability = dataAvailability;
 	}
-
-	public Date getCreatedDate() {
+	
+	public String getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
-	
+
 	public Map<String, String> getPointOfContactInfo() {
 		return pointOfContactInfo;
 	}
@@ -129,24 +169,67 @@ public class SimpleSampleBean {
 		this.pointOfContactInfo = pointOfContactInfo;
 	}
 
+	public String[] getAvailableEntityNames() {
+		return availableEntityNames;
+	}
+
+	public void setAvailableEntityNames(String[] availableEntityNames) {
+		this.availableEntityNames = availableEntityNames;
+	}
+	
+
+	public String getCaNanoLabScore() {
+		return caNanoLabScore;
+	}
+
+	public void setCaNanoLabScore(String caNanoLabScore) {
+		this.caNanoLabScore = caNanoLabScore;
+	}
+
+	public String getMincharScore() {
+		return mincharScore;
+	}
+
+	public void setMincharScore(String mincharScore) {
+		this.mincharScore = mincharScore;
+	}
+
+	public String[] getChemicalAssocs() {
+		return chemicalAssocs;
+	}
+
+	public void setChemicalAssocs(String[] chemicalAssocs) {
+		this.chemicalAssocs = chemicalAssocs;
+	}
+
 	public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
 		
 		if (sampleBean == null) return;
-		setSampleName(sampleBean.getDomain().getName());
-		setCharacterizations(sampleBean.getCharacterizationClassNames());
-		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
-		setCreatedDate(new Date());
-		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-		setFunctions(sampleBean.getFunctionClassNames());
-		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
 		setSampleId(sampleBean.getDomain().getId());
+		setSampleName(sampleBean.getDomain().getName());
+		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
+		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
+		setFunctions(sampleBean.getFunctionClassNames());
+		setCharacterizations(sampleBean.getCharacterizationClassNames());
+		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
+		
+		Date createdD = sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate();
+		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy");
+        String date = DATE_FORMAT.format(createdD);
+		
+		setCreatedDate(date);
+		
 	}
 	
 	public void transferSampleBeanForSummaryView(SampleBean sampleBean) {
 		
 		if (sampleBean == null) return;
 		setSampleName(sampleBean.getDomain().getName());
-		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
+		
+		Date createdD = sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate();
+		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy");
+        String date = DATE_FORMAT.format(createdD);
+		setCreatedDate(date);
 		setKeywords(sampleBean.getKeywordsDisplayName());
 		setPocBeanDomainId(sampleBean.getPrimaryPOCBean().getDomain().getId());
 		setOtherPOCBeans(sampleBean.getOtherPOCBeans());
@@ -157,8 +240,26 @@ public class SimpleSampleBean {
 		pointOfContactInfo.put("role", sampleBean.getPrimaryPOCBean().getDomain().getRole());
 		pointOfContactInfo.put("primaryContact", sampleBean.getPrimaryPOCBean().getPrimaryStatus().toString());
 		setPointOfContactInfo(pointOfContactInfo);
-
-		
 	}
     
+	public void transferSampleBeanForDataAvailability(SampleBean sampleBean, HttpServletRequest request) {
+		
+		if (sampleBean == null) return;
+		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
+		
+		this.setCaNanoLabScore(sampleBean.getCaNanoLabScore());
+		this.setMincharScore(sampleBean.getMincharScore());
+		
+		setSampleName(sampleBean.getDomain().getName());
+		
+		this.chemicalAssocs= SampleUtil.getDefaultListFromSessionByType("chemicalAssocs", request.getSession());
+		
+		this.caNanoMINChar = (Map<String, String>) request.getSession().getServletContext()
+				.getAttribute("caNano2MINChar");
+		
+		this.physicoChars = SampleUtil.getDefaultListFromSessionByType("physicoChars", request.getSession());
+		this.invitroChars = SampleUtil.getDefaultListFromSessionByType("invitroChars", request.getSession());
+		
+	}
+	
 }

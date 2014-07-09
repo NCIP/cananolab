@@ -108,7 +108,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		
 		//return mapping.findForward("success");
 		
-		List<SimpleSampleBean> simpleBeans = transfertoSimpleSampleBeams(sampleBeansPerPage);
+		List<SimpleSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
 		
 		return simpleBeans;
 	}
@@ -142,7 +142,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	/**
 	 * 
 	 */
-	protected List<SimpleSampleBean> transfertoSimpleSampleBeams(List<SampleBean> sampleBeans) {
+	protected List<SimpleSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans) {
 		List<SimpleSampleBean> simpleBeans = new ArrayList<SimpleSampleBean>();
 		
 		for (SampleBean bean : sampleBeans) {
