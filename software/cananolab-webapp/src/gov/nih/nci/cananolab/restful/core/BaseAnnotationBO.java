@@ -616,8 +616,7 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 		return id;
 	}
 
-	protected void checkOpenAccessForm(SampleForm theForm,
-			HttpServletRequest request) throws Exception {
+	protected void checkOpenAccessForm(HttpServletRequest request) throws Exception {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
 		HttpSession session = request.getSession();

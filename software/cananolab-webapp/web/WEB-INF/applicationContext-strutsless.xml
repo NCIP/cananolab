@@ -45,6 +45,10 @@
 			<ref bean="dataAvailabilityServiceDAO" />
 		</property>
 	</bean>
+	
+	<bean id="publicationBO"
+		class="gov.nih.nci.cananolab.restful.publication.PublicationBO">
+	</bean>
 
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>

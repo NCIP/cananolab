@@ -1119,13 +1119,6 @@ ul,ol {
   margin-left:10px;
 }
 
-.ng-hide {
-  /* this is just another form of hiding an element */
-  display:block!important;
-  position:absolute;
-  top:-9999px;
-  left:-9999px;
-}
 
 #authErrors {
 color:red;
@@ -1180,6 +1173,6 @@ td:hover.subMenuSecondaryTitleSelected.sample {
 
 .gridStyle {
     border: 1px solid rgb(212,212,212);
-    width: 400px; 
+    width: 900px; 
     height: 300px
 } 

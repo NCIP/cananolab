@@ -34,9 +34,13 @@ app.config(function ($routeProvider, $httpProvider) {
         controller: 'AuthCtrl'
       }) 
       .when('/searchSample', {
-        templateUrl: 'views/samples.html',
+        templateUrl: 'views/sampleSearch.html',
         controller: 'SampleCtrl'
-      })            
+      })   
+      .when('/sampleResults', {
+        templateUrl: 'views/sampleResults.html',
+        controller: 'SampleResultsCtrl'
+      })                  
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
@@ -48,7 +52,11 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/logout', {
         templateUrl: 'views/logout.html',
         controller: 'LogoutCtrl'
-      })           
+      })  
+      .when('/sample', {
+       templateUrl: 'views/viewSample.html',
+       controller: 'IndSampleCtrl'
+      })      
       .otherwise({
         redirectTo: '/'
       });

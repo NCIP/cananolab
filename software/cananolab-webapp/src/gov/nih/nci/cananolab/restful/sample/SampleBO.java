@@ -47,12 +47,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
+//import org.apache.struts.action.ActionForm;
+//import org.apache.struts.action.ActionForward;
+//import org.apache.struts.action.ActionMapping;
+//import org.apache.struts.action.ActionMessage;
+//import org.apache.struts.action.ActionMessages;
+//import org.apache.struts.validator.DynaValidatorForm;
 
 public class SampleBO extends BaseAnnotationBO {
 	// logger
@@ -191,10 +191,10 @@ public class SampleBO extends BaseAnnotationBO {
 			openPOC = true;
 		}
 		session.setAttribute("openPOC", openPOC);
-		super.checkOpenAccessForm(theForm, request);
+		super.checkOpenAccessForm(request);
 	}
 
-	public SampleBean setupView(ActionMapping mapping, SampleForm form,
+	public SampleBean setupView(SampleForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -210,7 +210,7 @@ public class SampleBO extends BaseAnnotationBO {
 		if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
 			SampleService service = setServiceInSession(request);
 			service.deleteSample(sampleBean.getDomain().getName());
-			ActionMessages messages = new ActionMessages();
+	//		ActionMessages messages = new ActionMessages();
 			if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
 			//	ActionMessage msg = new ActionMessage(
 		//				"message.sample.null.POC.deleted");
@@ -232,7 +232,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleBean summaryEdit(ActionMapping mapping, SampleForm form,
+	public SampleBean summaryEdit(SampleForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -317,7 +317,7 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void setupNew(ActionMapping mapping, SampleForm form,
+	public void setupNew(SampleForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("sampleForm");
@@ -424,7 +424,7 @@ public class SampleBO extends BaseAnnotationBO {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sample = (SampleBean) form.getSampleBean();
 		PointOfContactBean thePOC = sample.getThePOC();
-		ActionMessages msgs = new ActionMessages();
+//		ActionMessages msgs = new ActionMessages();
 		if (thePOC.getPrimaryStatus()) {
 		//	ActionMessage msg = new ActionMessage("message.deletePrimaryPOC");
 		//	msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -471,10 +471,10 @@ public class SampleBO extends BaseAnnotationBO {
 		//	saveErrors(request, messages);
 		//	return mapping.findForward("cloneInput");
 		} catch (DuplicateEntriesException e) {
-			ActionMessage err = new ActionMessage(
-					"error.cloneSample.duplicateSample",
-					sampleBean.getCloningSampleName(), sampleBean.getDomain()
-							.getName());
+//			ActionMessage err = new ActionMessage(
+//					"error.cloneSample.duplicateSample",
+//					sampleBean.getCloningSampleName(), sampleBean.getDomain()
+//							.getName());
 		//	messages.add(ActionMessages.GLOBAL_MESSAGE, err);
 		//	saveErrors(request, messages);
 		//	return mapping.findForward("cloneInput");
@@ -802,9 +802,9 @@ public class SampleBO extends BaseAnnotationBO {
 //		return forward;
 	}
 
-	protected void removePublicAccess(DynaValidatorForm theForm,
+	protected void removePublicAccess(SampleForm theForm,
 			HttpServletRequest request) throws Exception {
-		SampleBean sample = (SampleBean) theForm.get("sampleBean");
+		SampleBean sample = (SampleBean) theForm.getSampleBean();
 		SampleService service = this.setServiceInSession(request);
 		service.removeAccessibility(AccessibilityBean.CSM_PUBLIC_ACCESS,
 				sample.getDomain());
