@@ -39,7 +39,7 @@
                         "sampleName">Sample Name</label></td>
 
                         <td><label for="nameOperand" style="display:none">name
-                        operand</label> <select id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
+                        operand</label> <select ng-init="searchSampleForm.nameOperand='contains'" id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
                         "nameOperand">
                             <option value="contains">
                                 contains
@@ -66,7 +66,7 @@
 
                         <td><label for="pocOperand" style="display:none">POC
                         Operand</label> <select id="pocOperand" name=
-                        "pocOperand" ng-model="searchSampleForm.pocOperand">
+                        "pocOperand" ng-init="searchSampleForm.pocOperand='contains'" ng-model="searchSampleForm.pocOperand">
                             <option value="contains">
                                 contains
                             </option>
@@ -171,6 +171,3 @@
             <input name="page" type="hidden" value="1"></td>
         </tr>
     </table>
-
-<div class="gridStyle" ng-grid="gridOptions"></div>      
-</div>
