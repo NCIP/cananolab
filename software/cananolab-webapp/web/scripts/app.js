@@ -52,7 +52,11 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/logout', {
         templateUrl: 'views/logout.html',
         controller: 'LogoutCtrl'
-      })           
+      })  
+      .when('/sample', {
+       templateUrl: 'views/viewSample.html',
+       controller: 'IndSampleCtrl'
+      })      
       .otherwise({
         redirectTo: '/'
       });

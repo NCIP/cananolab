@@ -1,0 +1,89 @@
+<div style="padding: 2em;">
+	<table class="summaryViewNoGrid" width="100%" align="center" bgcolor="#dbdbdb" summary="layout">
+	<tr>
+	<td>
+	<table width="99%" align="center" class="summaryViewNoGrid"
+		bgcolor="#F5F5f5">
+		<tr>
+			<th scope="row" class="cellLabel" width="20%" style="text-align:left">
+				Sample Name
+			</th>
+			<td>
+				{{sampleName}}
+			</td>
+		</tr>
+		<tr>
+			<th scope="row" class="cellLabel" width="20%" style="text-align:left">
+				Created Date
+			</th>
+			<td>
+				{{createdDate}}
+			</td>
+		</tr>
+		
+		<tr>
+			<th scope="row" class="cellLabel" style="text-align:left">
+				Keywords		
+			</th>
+			<td>
+				{{keywords}}
+			</td>
+		</tr>
+		
+			<tr>
+				<th scope="row" class="cellLabel" style="text-align:left">
+					Point of Contact
+				</th>
+				<td>
+					<table align="left" class="invisibleTable">
+					<tr>
+						<th scope="col" class="cellLabel">
+							Primary Contact?
+						</th>
+						<th scope="col" class="cellLabel">
+							Contact Person
+						</th>
+						<th scope="col" class="cellLabel">
+							Organization
+						</th>
+						<th scope="col" class="cellLabel">
+							Role
+						</th>
+					</tr>
+	
+	
+						<tr>
+							<td>
+								{{pointOfContactInfo.primaryContact}}
+							</td>
+							<td>
+								{{pointOfContactInfo.contactPerson}}
+							<td>
+								{{pointOfContactInfo.organizationDisplayName}}
+							</td>
+							<td>
+								{{pointOfContactInfo.role}}
+							</td>
+						</tr>
+						
+						<tr ng-repeat="otherPoc in otherPOCBeans">
+							<td>
+								{{otherPoc.personDisplayName}}
+							</td>
+							<td>
+								{{otherPoc.organizationDisplayName}}
+							<td>
+								{{otherPoc.domain.role}}
+							</td>
+						</tr>
+	
+	
+				</table>
+			</td>
+		</tr>
+		
+	</table>
+	</td>
+	</tr>
+	</table>
+</div>
