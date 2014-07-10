@@ -1,7 +1,8 @@
 ## Ignore build.properties ##
 software/cananolab-webapp/build.properties
 
-## Ignore target, build directories ##
+## Ignore target, build, C: directories ##
 
 software/cananolab-webapp/build/
 software/cananolab-webapp/target/
+software/cananolab-webapp/C:/
