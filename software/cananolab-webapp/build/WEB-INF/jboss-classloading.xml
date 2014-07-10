@@ -1,9 +1,0 @@
-<classloading xmlns="urn:jboss:classloading:1.0"
-              name="caNanoLab.war"
-              domain="DefaultDomain"
-              top-level-classloader="true"
-              parent-first="false"
-              parent-domain="Ignored"
-              export-all="NON_EMPTY"
-              import-all="true">                        
-</classloading>
