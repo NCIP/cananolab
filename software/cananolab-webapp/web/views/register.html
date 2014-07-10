@@ -1,121 +1,128 @@
-<div id="registerBlock" class="spacer">
+ <div id="registerBlock" class="spacer">
    <table class="contentTitle" width="100%" border="0" summary="layout">
-      <tbody>
+     <tbody>
+       <tr>
+         <th scope="col" align="left">
+           User Registration
+         </th>
+         <td align="right" width="30%">
+           <a class="helpText" href=
+           "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-RegisteringaNewUser')">Help</a>   <a class=
+           "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+         </td>
+       </tr>
+     </tbody>
+   </table><br />
+   <form name="registerForm" ng-submit="submitData(registerForm.$valid)" novalidate="" id="registerForm">
+     <br />
+     <table width="100%" align="center" class="submissionView" summary="layout">
+       <tbody>
          <tr>
-            <th scope="col" align="left">
-               User Registration
-            </th>
-            <td align="right" width="30%">
-               <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-RegisteringaNewUser')">Help</a>
-               &nbsp;
-               <a class="helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
-               &nbsp;
-            </td>
+           <td colspan='3'>
+             {{message}}
+           </td>
          </tr>
-      </tbody>
-   </table>
-   <br>
-   <form name="registerForm" ng-submit="submitData(registerForm.$valid)" novalidate>
-      <br>
-      <table width="100%" align="center" class="submissionView" summary="layout">
-         <tbody>
-            <tr>
-               <td colspan='3'>{{message}}</td>
-            </tr>
-            <tr>
-               <td class="cellLabel" width="30%"  valign="top">
-                  <label for="title">Title</label><br>
-                  <select ng-model="title" id="title">
-                     <option value=" "> </option>
-                     <option value="Dr.">Dr.</option>
-                     <option value="Mr.">Mr.</option>
-                     <option value="Mrs.">Mrs.</option>
-                     <option value="Miss">Miss</option>
-                     <option value="Ms.">Ms.</option>
-                  </select>
-               </td>
-               <td class="cellLabel" width="30%" valign="top">
-                  <label for="first name">First Name*</label> <br>
-                  <input type="text" name="firstName" ng-model="firstName" size="30" value="" id="first name" required>
-                  <span ng-show="registerForm.firstName.$invalid && submitted" style="color:red; font-weight:bold;" class="help-block">Enter a valid First Name.</span>
-               </td>
-               <td class="cellLabel"  valign="top">
-                  <label for="last name">Last Name*</label><br>
-                  <input type="text" name="lastName" ng-model="lastName" size="30" value="" id="last name" required>
-                  <span ng-show="registerForm.lastName.$invalid && submitted" style="color:red; font-weight:bold;" class="help-block">Enter a valid Last Name.</span>
-               </td>
-            </tr>
-         </tbody>
-      </table>
-      <table width="100%" align="center" class="submissionView" summary="layout">
-         <tbody>
-            <tr>
-               <td class="cellLabel" valign="top">
-                  <label for="email">Email*</label><br><input type="email" name="email" ng-model="email" size="30" value="" id="email" required>
-                  <span ng-show="registerForm.email.$invalid && submitted" style="color:red; font-weight:bold;" class="help-block">Enter a valid Email.</span>
-               </td>
-               <td class="cellLabel" valign="top">
-                  <label for="phone">Phone*</label><br>
-                  <input type="text" name="phone" ng-model="phone" size="30" value="" id="phone" required>
-                  <span ng-show="registerForm.phone.$invalid && submitted" style="color:red; font-weight:bold;" class="help-block">Enter a valid Phone.</span>
-               </td>
-            </tr>
-            <tr>
-               <td class="cellLabel" valign="top">
-                  <label for="organization">Organization*</label><br><input type="text" name="organization" ng-model="organization" size="30" value="" id="organization" required>
-                  <span ng-show="registerForm.organization.$invalid && submitted" style="color:red; font-weight:bold;" class="help-block">Enter Organization Name.</span>
-               </td>
-               <td class="cellLabel" valign="top">
-                  <label for="fax">Fax</label><br>
-                  <input type="text" ng-model="fax" size="30" value="" id="fax">
-               </td>
-            </tr>
-         </tbody>
-      </table>
-      <br>
-      <table width="100%" align="center" class="submissionView" summary="layout">
-         <tbody>
-            <tr>
-               <td class="cellLabel"><label for="description">Brief Description of your request<br>
-                  <textarea ng-model="comment" cols="100" rows="8" id="description"></textarea>
-                  <br>
-                  <em>Please limit your description to 4000 characters</em>
-                  <br>
-                  </label>
-               </td>
-            </tr>
-         </tbody>
-      </table>
-      <br>
-      <table width="100%" align="center" class="submissionView" summary="layout">
-         <tbody>
-            <tr>
-               <td class="cellLabel">
-                  <input type="checkbox" ng-model="registerToUserList" value="checked" id="register user group list"><label for="register user group list">Also register me for the caNanoLab user group email list.</label>
-               </td>
-            </tr>
-         </tbody>
-      </table>
-      <br>
-      <table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="layout">
-         <tbody>
-            <tr>
-               <td width="30%">
-                  <table border="0" align="right" cellpadding="4" cellspacing="0" summary="layout">
-                     <tbody>
-                        <tr>
-                           <td>
-                              <div align="right">
-                                 <button type="button" class="btn btn-primary" onclick="this.form.reset()">Reset</button>
-                                 <button type="submit" class="btn btn-primary">Register</button>
-                              </div>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </td>
-            </tr>
-         </tbody>
-      </table>
+         <tr>
+           <td class="cellLabel" width="30%" valign="top">
+             <label for="title">Title</label><br />
+             <select ng-model="title" id="title">
+               <option value="Dr.">
+                 Dr.
+               </option>
+               <option value="Mr.">
+                 Mr.
+               </option>
+               <option value="Mrs.">
+                 Mrs.
+               </option>
+               <option value="Miss">
+                 Miss
+               </option>
+               <option value="Ms.">
+                 Ms.
+               </option>
+             </select>
+           </td>
+           <td class="cellLabel" width="30%" valign="top">
+             <label for="first name">First Name*</label><br />
+             <input type="text" name="firstName" ng-model="firstName" size="30" value="" id="first name" required="" /> <span ng-show="registerForm.firstName.$invalid &amp;&amp; submitted" class=
+             "help-block">Enter a valid First Name.</span>
+           </td>
+           <td class="cellLabel" valign="top">
+             <label for="last name">Last Name*</label><br />
+             <input type="text" name="lastName" ng-model="lastName" size="30" value="" id="last name" required="" /> <span ng-show="registerForm.lastName.$invalid &amp;&amp; submitted" class=
+             "help-block">Enter a valid Last Name.</span>
+           </td>
+         </tr>
+       </tbody>
+     </table>
+     <table width="100%" align="center" class="submissionView" summary="layout">
+       <tbody>
+         <tr>
+           <td class="cellLabel" valign="top">
+             <label for="email">Email*</label><br />
+             <input type="email" name="email" ng-model="email" size="30" value="" id="email" required="" /> <span ng-show="registerForm.email.$invalid &amp;&amp; submitted" class=
+             "help-block">Enter a valid Email.</span>
+           </td>
+           <td class="cellLabel" valign="top">
+             <label for="phone">Phone*</label><br />
+             <input type="text" name="phone" ng-model="phone" size="30" value="" id="phone" required="" /> <span ng-show="registerForm.phone.$invalid &amp;&amp; submitted" class=
+             "help-block">Enter a valid Phone.</span>
+           </td>
+         </tr>
+         <tr>
+           <td class="cellLabel" valign="top">
+             <label for="organization">Organization*</label><br />
+             <input type="text" name="organization" ng-model="organization" size="30" value="" id="organization" required="" /> <span ng-show=
+             "registerForm.organization.$invalid &amp;&amp; submitted" class="help-block">Enter Organization Name.</span>
+           </td>
+           <td class="cellLabel" valign="top">
+             <label for="fax">Fax</label><br />
+             <input type="text" ng-model="fax" size="30" value="" id="fax" />
+           </td>
+         </tr>
+       </tbody>
+     </table><br />
+     <table width="100%" align="center" class="submissionView" summary="layout">
+       <tbody>
+         <tr>
+           <td class="cellLabel">
+             <label for="description">Brief Description of your request<br />
+             <textarea ng-model="comment" cols="100" rows="8" id="description">
+</textarea><br />
+             <em>Please limit your description to 4000 characters</em><br /></label>
+           </td>
+         </tr>
+       </tbody>
+     </table><br />
+     <table width="100%" align="center" class="submissionView" summary="layout">
+       <tbody>
+         <tr>
+           <td class="cellLabel">
+             <input type="checkbox" ng-model="registerToUserList" value="checked" id="register user group list" /><label for="register user group list">Also register me for the caNanoLab user
+             group email list.</label>
+           </td>
+         </tr>
+       </tbody>
+     </table><br />
+     <table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="layout">
+       <tbody>
+         <tr>
+           <td width="30%">
+             <table border="0" align="right" cellpadding="4" cellspacing="0" summary="layout">
+               <tbody>
+                 <tr>
+                   <td>
+                     <div>
+                       <button type="button" class="btn btn-primary" onclick="this.form.reset()">Reset</button> <button type="submit" class="btn btn-primary">Register</button>
+                     </div>
+                   </td>
+                 </tr>
+               </tbody>
+             </table>
+           </td>
+         </tr>
+       </tbody>
+     </table>
    </form>
-</div>
+ </div>

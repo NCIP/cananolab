@@ -1,5 +1,5 @@
-    <div class="spacer"> 
-
+<div class="spacer">
+  <div ng-class="{formFocus:loader}">
     <table border="0" class="contentTitle" summary="layout" width="100%">
         <tr>
             <th align="left" scope="col">Sample Search</th>
@@ -22,7 +22,7 @@
             "keywords">Keywords</label></td>
 
             <td>
-            <textarea cols="60" id="keywords" name="text" ng-model="searchSampleForm.text" rows="3">
+            <textarea ng-disabled="loader" cols="60" id="keywords" name="text" ng-model="searchSampleForm.text" rows="3">
 </textarea><br>
             <em>searching characterization keywords, publication keywords and
             text in characterization descriptions</em><br>
@@ -39,7 +39,7 @@
                         "sampleName">Sample Name</label></td>
 
                         <td><label for="nameOperand" style="display:none">name
-                        operand</label> <select ng-init="searchSampleForm.nameOperand='contains'" id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
+                        operand</label> <select ng-disabled="loader" ng-init="searchSampleForm.nameOperand='contains'" id="nameOperand" ng-model="searchSampleForm.nameOperand" name=
                         "nameOperand">
                             <option value="contains">
                                 contains
@@ -50,7 +50,7 @@
                             </option>
                         </select></td>
 
-                        <td><input id="sampleName" name="sampleName" ng-model="searchSampleForm.sampleName" size="60"
+                        <td><input ng-disabled="loader" id="sampleName" name="sampleName" ng-model="searchSampleForm.sampleName" size="60"
                         type="text" value=""></td>
                     </tr>
                 </table>
@@ -65,7 +65,7 @@
                         "samplePOC">Sample Point of Contact</label></td>
 
                         <td><label for="pocOperand" style="display:none">POC
-                        Operand</label> <select id="pocOperand" name=
+                        Operand</label> <select ng-disabled="loader" id="pocOperand" name=
                         "pocOperand" ng-init="searchSampleForm.pocOperand='contains'" ng-model="searchSampleForm.pocOperand">
                             <option value="contains">
                                 contains
@@ -76,7 +76,7 @@
                             </option>
                         </select></td>
 
-                        <td><input id="samplePOC" name="samplePointOfContact"
+                        <td><input ng-disabled="loader" id="samplePOC" name="samplePointOfContact"
                         size="60" type="text" value="" ng-model="searchSampleForm.samplePointOfContact"><br>
                         <em>searching organization name or person
                         name</em></td>
@@ -94,7 +94,7 @@
                         "nanomaterialEntityTypes">Nanomaterial
                         Entity</label></td>
 
-                        <td><select id="nanomaterialEntityTypes" multiple=
+                        <td><select ng-disabled="loader" id="nanomaterialEntityTypes" multiple=
                         "multiple" name="nanomaterialEntityTypes" size="4" ng-model="searchSampleForm.nanomaterialEntityTypes">
                             <option ng-repeat="option in nanomaterialEntityTypesList" value="{{option}}">
                                 {{option}}
@@ -105,7 +105,7 @@
                         "functionalizingEntityTypes">Functionalizing
                         Entity</label></td>
 
-                        <td><select id="functionalizingEntityTypes" multiple=
+                        <td><select ng-disabled="loader" id="functionalizingEntityTypes" multiple=
                         "multiple" name="functionalizingEntityTypes" size="3" ng-model="searchSampleForm.functionalizingEntityTypes">
                             <option ng-repeat="option in functionalizingEntityTypesList" value="{{option}}">
                                 {{option}}
@@ -115,7 +115,7 @@
                         <td class="cellLabel"><label for=
                         "functionTypes">Function</label></td>
 
-                        <td><select id="functionTypes" multiple="multiple"
+                        <td><select ng-disabled="loader" id="functionTypes" multiple="multiple"
                         name="functionTypes" size="3" ng-model="searchSampleForm.functionTypes">
                             <option ng-repeat="option in functionTypesList" value="{{option}}">
                                 {{option}}
@@ -134,11 +134,11 @@
                         <td class="cellLabel" width="100"><label for=
                         "charType">Characterization Type</label> <label for=
                         "characterizationType" style="display:none">hidden char
-                        type</label> <input id="characterizationType" name=
+                        type</label> <input ng-disabled="loader" id="characterizationType" name=
                         "characterizationType" type="hidden" value=""></td>
 
                         <td>
-                            <select id="charType" ng-model="searchSampleForm.characterizationType" name="characterizationType" ng-change="setCharacterizationOptionsByCharType()">
+                            <select ng-disabled="loader" id="charType" ng-model="searchSampleForm.characterizationType" name="characterizationType" ng-change="setCharacterizationOptionsByCharType()">
                             <option ng-repeat="option in characterizationTypesList" value="{{option}}">
                                 {{option}}
                             </option>
@@ -147,7 +147,7 @@
                         <td class="cellLabel"><label for=
                         "charName">Characterization</label></td>
 
-                        <td colspan="3"><select id="charName" multiple=
+                        <td colspan="3"><select ng-disabled="loader" id="charName" multiple=
                         "multiple" name="characterizations" size="4" ng-model="searchSampleForm.characterizations">
                         <option ng-repeat="option in characterizationsList" value="{{option}}">
                             {{option}}
@@ -157,8 +157,8 @@
                 </table>
             </td>
         </tr>
-    </table><br /><br />{{results}}
-
+    </table><br /><br />
+  </div>
     <table class="invisibleTable" summary="layout" width="100%">
         <tr>
             <td align="center"><span class="formMessage"><em>Searching without
@@ -166,8 +166,15 @@
         </tr>
 
         <tr>
-            <td align="right"><input type="reset" value="Reset" ng-click="resetForm()"> &nbsp; <input type="submit" value=
-            "Search" ng-click="doSearch()"> <input name="dispatch" type="hidden" value="search">
-            <input name="page" type="hidden" value="1"></td>
+            <td align="right"><input ng-disabled="loader" type="reset" value="Reset" ng-click="resetForm()"> &nbsp; <input ng-disabled="loader" type="submit" value=
+            "Search" ng-click="doSearch()"> <input ng-disabled="loader" name="dispatch" type="hidden" value="search">
+            <input ng-disabled="loader" name="page" type="hidden" value="1"></td>
         </tr>
     </table>
+  <div id="loader" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
+</div> 

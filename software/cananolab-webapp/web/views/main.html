@@ -1,279 +1,274 @@
-<!-- target of anchor to skip menus--> <a name="content"></a>                          
-<div><input type="hidden" name="org.apache.struts.taglib.html.TOKEN" value="a20425137da163fb429407eb7995284a"></div>
+<a name="content" id="content"></a>
+<div>
+<input type="hidden" name="org.apache.struts.taglib.html.TOKEN" value="a20425137da163fb429407eb7995284a" />
+</div>
 <table summary="layout" cellpadding="0" cellspacing="0" border="0">
-   <tr>
-      <td valign="top" class="mainContentHomePage">
-         <img src="images/bannerhome.jpg" border="0" width="600px" alt="caNanoLab banner image">             
-         <div class="welcomeTitle">Welcome to caNanoLab</div>
-         <br>
-         <div class="welcomeContent">
-            Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is a data sharing portal designed to facilitate information sharing across the international biomedical nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine. caNanoLab provides support for the annotation of
-            nanomaterials with characterizations resulting from
-            physico-chemical and <i>in vitro</i> assays and the sharing of
-            these characterizations and associated nanotechnology protocols in
-            a secure fashion.
-         </div>
-         <br> 
-         <br>
-         <div class="welcomeTitle">Browse caNanoLab</div>
-         <br> 
-         <table class="gridtableHomePage">
+<tr>
+  <td valign="top" class="mainContentHomePage">
+    <img src="images/bannerhome.jpg" border="0" width="600px" alt="caNanoLab banner image" />
+    <div class="welcomeTitle">
+      Welcome to caNanoLab
+    </div><br />
+    <div class="welcomeContent">
+      Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal. caNanoLab is a data sharing portal designed to facilitate information sharing across the international biomedical
+      nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine. caNanoLab provides support for the annotation of nanomaterials with characterizations
+      resulting from physico-chemical and <i>in vitro</i> assays and the sharing of these characterizations and associated nanotechnology protocols in a secure fashion.
+    </div><br />
+    <br />
+    <div class="welcomeTitle">
+      Browse caNanoLab
+    </div><br />
+    <table class="gridtableHomePage">
+      <tr>
+        <th class="dataTypeHomePage" scope="col">
+          Data Type
+        </th>
+        <th id="results" scope="col">
+          Public Results
+        </th>
+      </tr>
+      <tr align="left">
+        <td>
+          <table class="gridtableNoBorder" summary="layout">
             <tr>
-               <th class="dataTypeHomePage" scope="col">
-                  Data Type
-               </th>
-               <th id="results" scope="col">
-                  Public Results
-               </th>
-            </tr>
-            <tr align="left">
-               <td>
-                  <table class="gridtableNoBorder" summary="layout">
-                     <tr>
-                        <td rowspan="2">
-                           <a href="searchProtocol.do?dispatch=setup"> <img
-                              src="images/icon_protocol_48x.jpg" class="imgNoBorder" alt="Search Protocols" /></a>
-                        </td>
-                        <td>
-                           <a href="searchProtocol.do?dispatch=setup"><b>Search
-                           Protocols</b></a>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>
-                           Search for nanotechnology protocols leveraged in performing nanomaterial characterization assays.
-                        </td>
-                     </tr>
-                  </table>
-               </td>
-               <td>
-                  <span class="counts" id="protocolCount"><a href="searchProtocol.do?dispatch=setup">
-                  {{numOfPublicProtocols}}</a></span>
-               </td>
-            </tr>
-            <tr class="alt">
-               <td>
-                  <table class="gridtableNoBorder" summary="layout">
-                     <tr>
-                        <td rowspan="2">
-                           <a href="/caNanoLab/searchSample.do?dispatch=setup"> <img
-                              src="images/icon_nanoparticle_48x.jpg"
-                              class="imgNoBorder" alt="Search Samples" /></a>
-                        </td>
-                        <td>
-                           <a href="/caNanoLab/searchSample.do?dispatch=setup"><b>Search
-                           Samples</b> </a>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>
-                           Search for information on nanomaterials including the composition
-                           of the nanomaterial, results of physico-chemical,
-                           <i>in vitro</i>, <i>in vivo</i> and other characterizations, and associated
-                           publications.
-                        </td>
-                     </tr>
-                  </table>
-               </td>
-               <td>
-                  <div id="sampleCounts" class="counts" >
-                     <span id="sampleCount"><a href="searchSample.do?dispatch=setup">{{numOfPublicSamples}}</a></span>
-                     <br>
-                     <div id="sampleRelatedCounts" class="indented1">
-                        <span id="sampleSourceCount">{{numOfPublicSources}} Sample Sources</span><br>
-                        <span id="CharacterizationCount">{{numOfPublicCharacterizations}} Characterizations</span><br>              
-                        <div class="indented2">
-                           <span id="PhysicoChemicalCharacterizationCount">{{numOfPublicPhysicoChemicalCharacterizations}} Physico-chemical</span><br> 
-                           <span id="InvitroCharacterizationCount">{{numOfPublicInvitroCharacterizations}} In Vitro</span><br>
-                           <span id="InvivoCharacterizationCount">{{numOfPublicInvivoCharacterizations}} In Vivo</span><br>
-                           <span id="OtherCharacterizationCount">{{numOfPublicOtherCharacterizations}} Other</span><br>
-                        </div>
-                     </div>
-                  </div>
-               </td>
+              <td rowspan="2">
+                <a href="searchProtocol.do?dispatch=setup"><img src="images/icon_protocol_48x.jpg" class="imgNoBorder" alt="Search Protocols" /></a>
+              </td>
+              <td>
+                <a href="searchProtocol.do?dispatch=setup">Search Protocols</a>
+              </td>
             </tr>
             <tr>
-               <td>
-                  <table class="gridtableNoBorder" summary="layout">
-                     <tr>
-                        <td rowspan="2">
-                           <a href="searchPublication.do?dispatch=setup"> <img
-                              src="images/icon_report_48x.gif" class="imgNoBorder"
-                              alt="Search Publications" /> </a>
-                        </td>
-                        <td>
-                           <a href="searchPublication.do?dispatch=setup"><b>Search
-                           Publications</b> </a>
-                        </td>
-                     </tr>
-                     <tr>
-                        <td>
-                           Search for information on nanotechnology publications including
-                           peer reviewed articles, reviews, and other types of reports
-                           related to the use of nanotechnology in biomedicine.
-                        </td>
-                     </tr>
-                  </table>
-               </td>
-               <td>
-                  <span id="publicationCount" class="counts"><a href="searchPublication.do?dispatch=setup">{{numOfPublicPublications}}</a></span>
-               </td>
+              <td>
+                Search for nanotechnology protocols leveraged in performing nanomaterial characterization assays.
+              </td>
             </tr>
-         </table>
-         <div class="formMessage" align="center">Last updated on 2014-06-23 17:33:30</div>
-      </td>
-      <td valign="top" class="rightSideBar">
-         <!-- right sidebar begins --> 
-         <table summary="layout" cellpadding="0" cellspacing="0" border="0" class="sidebarSectionNoTop">
-            <!-- login begins -->
+          </table>
+        </td>
+        <td>
+          <span class="counts" id="protocolCount"><a href="searchProtocol.do?dispatch=setup">{{numOfPublicProtocols}}</a></span>
+        </td>
+      </tr>
+      <tr class="alt">
+        <td>
+          <table class="gridtableNoBorder" summary="layout">
             <tr>
-               <td class="sidebarTitle">
-                  USER ACTIONS<!-- <a href="#" class="loginText">Login</a> &nbsp; <a href="#"
-                     class="loginText" onClick="javascript:location.href='register.jsp';">Register</a>&nbsp;&nbsp;
-                     <a class="loginText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-LoggingintocaNanoLab')">Help</a> -->
-               </td>
+              <td rowspan="2">
+                <a href="/caNanoLab/searchSample.do?dispatch=setup"><img src="images/icon_nanoparticle_48x.jpg" class="imgNoBorder" alt="Search Samples" /></a>
+              </td>
+              <td>
+                <a href="/caNanoLab/searchSample.do?dispatch=setup">Search Samples</a>
+              </td>
             </tr>
             <tr>
-               <td class="sidebarContent"><br /><B>No account is required to browse
-                  publicly available data. </B>
-               </td>
+              <td>
+                Search for information on nanomaterials including the composition of the nanomaterial, results of physico-chemical, <i>in vitro</i>, <i>in vivo</i> and other characterizations,
+                and associated publications.
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <div id="sampleCounts" class="counts">
+            <span id="sampleCount"><a href="searchSample.do?dispatch=setup">{{numOfPublicSamples}}</a></span><br />
+            <div id="sampleRelatedCounts" class="indented1">
+              <span id="sampleSourceCount">{{numOfPublicSources}} Sample Sources</span><br />
+              <span id="CharacterizationCount">{{numOfPublicCharacterizations}} Characterizations</span><br />
+              <div class="indented2">
+                <span id="PhysicoChemicalCharacterizationCount">{{numOfPublicPhysicoChemicalCharacterizations}} Physico-chemical</span><br />
+                <span id="InvitroCharacterizationCount">{{numOfPublicInvitroCharacterizations}} In Vitro</span><br />
+                <span id="InvivoCharacterizationCount">{{numOfPublicInvivoCharacterizations}} In Vivo</span><br />
+                <span id="OtherCharacterizationCount">{{numOfPublicOtherCharacterizations}} Other</span><br />
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table class="gridtableNoBorder" summary="layout">
+            <tr>
+              <td rowspan="2">
+                <a href="searchPublication.do?dispatch=setup"><img src="images/icon_report_48x.gif" class="imgNoBorder" alt="Search Publications" /></a>
+              </td>
+              <td>
+                <a href="searchPublication.do?dispatch=setup">Search Publications</a>
+              </td>
             </tr>
             <tr>
-               <td class="sidebarContent">
-                  <select name="userActions" ng-model="userActions">
-                     <option selected value="1">Browse publically available data</option>
-                     <option value="2">Login to submit data</option>
-                     <option value="3">Register for a login account</option>
-                     <option value="4">Reset password</option>
-                  </select>
-                  <input type="submit" value="go" id="userActionsButton" ng-click="doUserAction()">
-               </td>
+              <td>
+                Search for information on nanotechnology publications including peer reviewed articles, reviews, and other types of reports related to the use of nanotechnology in biomedicine.
+              </td>
             </tr>
-            <tr>
-               <td>
-                  <div id="loginBlock" ng-show="loginShow">
-                  <div class="spacer"/>
-                     <!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
-                     <table class="loginBlock" summary="layout">
-                        <tr>
-                           <td><label for="login ID">LOGIN ID</label></td>
-                           <td><input type="text" name="loginId" ng-model="loginId" size="14" id="login ID"  ng-init="loginId=''" />
-                           </td>
-                        </tr>
-                        <tr>
-                           <td><label for="password">PASSWORD</label></td>
-                           <td><input type="password" name="password" size="14"
-                              id="password" autocomplete="off" ng-model="password" ng-init="password=''" /></td>
-                        </tr>
-                        <tr>
-                           <td>&nbsp;</td>
-                           <td align="left"><input type="submit" value="Login" ng-click="loginDo()"></td>
-                        </tr>
-                     </table>
-                     <!-- </form> -->
-                     <div id="authErrors" ng-model="authErrors" ng-show="authErrors">{{authErrors}}</div>
-                  </div>
-                  <br />
-               </td>
-            </tr>
-            <tr>
-               <td class="sidebarTitle">
-                  FEATURES 
-               </td>
-            </tr>
-            <tr>
-               <td class="sidebarContent">
-                  <br />
-                  <b>caNanoLab provides access to information on:</b>
-                  <ul>
-                     <li>
-                        Nanotechnology Protocols
-                     </li>
-                     <li>
-                        Nanomaterial Composition
-                     </li>
-                     <li>Namomaterial Characterizations (physic-chemical, in vitro, in vivo)
-                     </li>
-                     <li>Nanomaterial Publications
-                     </li>
-                  </ul>
-                  <b>For additional information, see the caNanoLab <a href="#faq">FAQ</a> or <a href="/caNanoLab/index.html">Online Help</a><br /><br /></b>
-               </td>
-            </tr>
-            <tr>
-               <td class="sidebarTitle">
-                  HOW TO
-               </td>
-            </tr>
-            <tr>
-               <td class="sidebarContent">
-                  <a id="faq"></a>
-                  <br /><b>Below are frequently asked questions on caNanoLab:</b>
-                  <br>
-                  <br>
-                  <span class="boldAndUnderlined">Functional</span>
-                  <ul>
-                     <li>
-                        <a href="https://cananolab.nci.nih.gov/caNanoLab/searchProtocol.do?dispatch=setup&amp;page=0">How do I find
-                        nanotechnology protocols?</a>
-                     </li>
-                     <li>
-                        <a href="https://cananolab.nci.nih.gov/caNanoLab/searchPublication.do?dispatch=setup&amp;page=0">How do I
-                        find Nanotechnology publications?</a>
-                     </li>
-                     <li>
-                        <a href="https://cananolab.nci.nih.gov/caNanoLab/searchSample.do?dispatch=setup&amp;page=0">How can I
-                        search for nanomaterials?</a>
-                     </li>
-                     <li>
-                        <a href="https://cananolab.nci.nih.gov/caNanoLab/searchSample.do?dispatch=setup&amp;page=0">How can I
-                        search for nanomaterial characterizations?</a>
-                     </li>
-                     <li>
-                        <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-concepts', 'caNanoLabFAQ', '800', '800')">Where
-                        can I get definitions for nanotechnology concepts?</a>
-                     </li>
-                  </ul>
-                  <span class="boldAndUnderlined">General</span>
-                  <ul>
-                     <li>
-                        <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How
-                        do I submit data into caNanoLab?</a>
-                     </li>
-                     <li>
-                        <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-datatypes', 'caNanoLabFAQ', '800', '800')">What
-                        types of data can I submit into caNanoLab?</a>
-                     </li>
-                     <li>
-                        <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-curator', 'caNanoLabFAQ', '800', '800')">Who
-                        can I contact to submit data into caNanoLab?</a>
-                     </li>
-                     <li>
-                        <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-install', 'caNanoLabFAQ', '800', '800')">How
-                        do I install my own caNanoLab system?</a><br /><br />
-                     </li>
-                  </ul>
-               </td>
-            </tr>
-            <tr>
-               <td class="sidebarTitle">
-                  WHAT'S NEW
-               </td>
-            </tr>
-            <tr>
-               <td class="sidebarContent">
-                  <br /><b>caNanoLab 1.5.5 is now available for </b><a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Wiki+Home+Page">download</a><b>.
-                  For information on caNanoLab release, please refer to the </b>
-                  <a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+1.5.5+Release+Note">caNanoLab
-                  Release Notes</a>.
-               </td>
-            </tr>
-            <tr>
-               <td height="10">
-                  &nbsp;
-               </td>
-            </tr>
-         </table>
-      </td>
-   </tr>
+          </table>
+        </td>
+        <td>
+          <span id="publicationCount" class="counts"><a href="searchPublication.do?dispatch=setup">{{numOfPublicPublications}}</a></span>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td valign="top" class="rightSideBar">
+    <!-- right sidebar begins -->
+    <table summary="layout" cellpadding="0" cellspacing="0" border="0" class="sidebarSectionNoTop">
+      <!-- login begins -->
+      <tr>
+        <td class="sidebarTitle">
+          USER ACTIONS<!-- <a href="#" class="loginText">Login</a> &nbsp; <a href="#"
+               class="loginText" onClick="javascript:location.href='register.jsp';">Register</a>&nbsp;&nbsp;
+               <a class="loginText"href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/1+-+Getting+Started+in+caNanoLab#id-1-GettingStartedincaNanoLab-LoggingintocaNanoLab')">Help</a> -->
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarContent">
+          <br />
+          <b>No account is required to browse publicly available data.</b>
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarContent">
+          <select name="userActions" ng-model="userActions">
+            <option selected="selected" value="1">
+              Browse publically available data
+            </option>
+            <option value="2">
+              Login to submit data
+            </option>
+            <option value="3">
+              Register for a login account
+            </option>
+            <option value="4">
+              Reset password
+            </option>
+          </select> <input type="submit" value="go" id="userActionsButton" ng-click="doUserAction()" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id="loginBlock" ng-show="loginShow">
+            <div class="spacer"></div><!-- <form name="loginForm" id="loginForm" method="post" action="/caNanoLab/login.do;jsessionid=9944D3BC5DD5C7F3DB8EC210CC50424C"> -->
+            <table class="loginBlock" summary="layout">
+              <tr>
+                <td>
+                  <label for="login ID">LOGIN ID</label>
+                </td>
+                <td>
+                  <input type="text" name="loginId" ng-model="loginId" size="14" id="login ID" ng-init="loginId=''" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="password">PASSWORD</label>
+                </td>
+                <td>
+                  <input type="password" name="password" size="14" id="password" autocomplete="off" ng-model="password" ng-init="password=''" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                   
+                </td>
+                <td align="left">
+                  <input type="submit" value="Login" ng-click="loginDo()" />
+                </td>
+              </tr>
+            </table><!-- </form> -->
+            <div id="authErrors" ng-model="authErrors" ng-show="authErrors">
+              {{authErrors}}
+            </div>
+          </div><br />
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarTitle">
+          FEATURES
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarContent">
+          <br />
+          <b>caNanoLab provides access to information on:</b>
+          <ul>
+            <li>Nanotechnology Protocols
+            </li>
+            <li>Nanomaterial Composition
+            </li>
+            <li>Namomaterial Characterizations (physic-chemical, in vitro, in vivo)
+            </li>
+            <li>Nanomaterial Publications
+            </li>
+          </ul><b>For additional information, see the caNanoLab <a href="#faq">FAQ</a> or <a href="/caNanoLab/index.html">Online Help</a><br />
+          <br /></b>
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarTitle">
+          HOW TO
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarContent">
+          <a id="faq" name="faq"></a><br />
+          <b>Below are frequently asked questions on caNanoLab:</b><br />
+          <br />
+          <span class="boldAndUnderlined">Functional</span>
+          <ul>
+            <li>
+              <a href="https://cananolab.nci.nih.gov/caNanoLab/searchProtocol.do?dispatch=setup&amp;page=0">How do I find nanotechnology protocols?</a>
+            </li>
+            <li>
+              <a href="https://cananolab.nci.nih.gov/caNanoLab/searchPublication.do?dispatch=setup&amp;page=0">How do I find Nanotechnology publications?</a>
+            </li>
+            <li>
+              <a href="https://cananolab.nci.nih.gov/caNanoLab/searchSample.do?dispatch=setup&amp;page=0">How can I search for nanomaterials?</a>
+            </li>
+            <li>
+              <a href="https://cananolab.nci.nih.gov/caNanoLab/searchSample.do?dispatch=setup&amp;page=0">How can I search for nanomaterial characterizations?</a>
+            </li>
+            <li>
+              <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-concepts', 'caNanoLabFAQ', '800', '800')">Where can I get definitions for
+              nanotechnology concepts?</a>
+            </li>
+          </ul><span class="boldAndUnderlined">General</span>
+          <ul>
+            <li>
+              <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-submit', 'caNanoLabFAQ', '800', '800')">How do I submit data into
+              caNanoLab?</a>
+            </li>
+            <li>
+              <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-datatypes', 'caNanoLabFAQ', '800', '800')">What types of data can I submit
+              into caNanoLab?</a>
+            </li>
+            <li>
+              <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-curator', 'caNanoLabFAQ', '800', '800')">Who can I contact to submit data
+              into caNanoLab?</a>
+            </li>
+            <li>
+              <a href="#" onclick="openWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+FAQ#caNanoLabFAQ-install', 'caNanoLabFAQ', '800', '800')">How do I install my own caNanoLab
+              system?</a><br />
+              <br />
+            </li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarTitle">
+          WHAT'S NEW
+        </td>
+      </tr>
+      <tr>
+        <td class="sidebarContent">
+          <br />
+          <b>caNanoLab 1.5.5 is now available for</b> <a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Wiki+Home+Page">download</a><b>. For information on caNanoLab
+          release, please refer to the</b> <a target="_blank" href="https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+1.5.5+Release+Note">caNanoLab Release Notes</a>.
+        </td>
+      </tr>
+      <tr>
+        <td height="10">
+           
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
 </table>

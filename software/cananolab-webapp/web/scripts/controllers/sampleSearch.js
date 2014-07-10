@@ -35,16 +35,19 @@ var app = angular.module('angularApp')
        
 
     $scope.doSearch = function() {
+      $scope.loader = true;
+
       $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSample',data: $scope.searchSampleForm}).
       success(function(data, status, headers, config) {
-        $rootScope.sampleresults = data;
+        $rootScope.sampleData = data;
         $location.path("/sampleResults").replace();
 
       }).
       error(function(data, status, headers, config) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
-        $rootScope.sampleresults = data;
+        $rootScope.sampleData = data;
+        $scope.loader = false;
       }); 
     };
 

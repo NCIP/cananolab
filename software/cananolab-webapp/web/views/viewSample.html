@@ -1,89 +1,96 @@
-<div style="padding: 2em;">
-	<table class="summaryViewNoGrid" width="100%" align="center" bgcolor="#dbdbdb" summary="layout">
-	<tr>
-	<td>
-	<table width="99%" align="center" class="summaryViewNoGrid"
-		bgcolor="#F5F5f5">
-		<tr>
-			<th scope="row" class="cellLabel" width="20%" style="text-align:left">
-				Sample Name
-			</th>
-			<td>
-				{{sampleName}}
-			</td>
-		</tr>
-		<tr>
-			<th scope="row" class="cellLabel" width="20%" style="text-align:left">
-				Created Date
-			</th>
-			<td>
-				{{createdDate}}
-			</td>
-		</tr>
-		
-		<tr>
-			<th scope="row" class="cellLabel" style="text-align:left">
-				Keywords		
-			</th>
-			<td>
-				{{keywords}}
-			</td>
-		</tr>
-		
-			<tr>
-				<th scope="row" class="cellLabel" style="text-align:left">
-					Point of Contact
-				</th>
-				<td>
-					<table align="left" class="invisibleTable">
-					<tr>
-						<th scope="col" class="cellLabel">
-							Primary Contact?
-						</th>
-						<th scope="col" class="cellLabel">
-							Contact Person
-						</th>
-						<th scope="col" class="cellLabel">
-							Organization
-						</th>
-						<th scope="col" class="cellLabel">
-							Role
-						</th>
-					</tr>
-	
-	
-						<tr>
-							<td>
-								{{pointOfContactInfo.primaryContact}}
-							</td>
-							<td>
-								{{pointOfContactInfo.contactPerson}}
-							<td>
-								{{pointOfContactInfo.organizationDisplayName}}
-							</td>
-							<td>
-								{{pointOfContactInfo.role}}
-							</td>
-						</tr>
-						
-						<tr ng-repeat="otherPoc in otherPOCBeans">
-							<td>
-								{{otherPoc.personDisplayName}}
-							</td>
-							<td>
-								{{otherPoc.organizationDisplayName}}
-							<td>
-								{{otherPoc.domain.role}}
-							</td>
-						</tr>
-	
-	
-				</table>
-			</td>
-		</tr>
-		
-	</table>
-	</td>
-	</tr>
-	</table>
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+        <th align="left" scope="col">
+          Sample {{sampleData.sampleName}}
+        </th>
+        <td align="right" width="30%">
+          <a class="helpText" href="/caNanoLab/#/searchSample">Back</a>
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+        </td>
+      </tr>
+    </table><br />
+
+ <table align="left" class="summaryViewNoGrid" summary="layout" width="100%">
+   <tr>
+     <td>
+       <table align="left" class="summaryViewNoGrid" width="99%">
+         <tr>
+           <th class="cellLabel" scope="row" width="20%">
+             Sample Name
+           </th>
+           <td>
+             {{sampleData.sampleName}}
+           </td>
+         </tr>
+         <tr>
+           <th class="cellLabel" scope="row" width="20%">
+             Created Date
+           </th>
+           <td>{{sampleData.createdDate | date:'shortDate'}}
+
+           </td>
+         </tr>
+         <tr>
+           <th class="cellLabel" scope="row">
+             Keywords
+           </th>
+           <td>
+             <div ng-bind-html="sampleData.keywords" />
+           </td>
+         </tr>
+         <tr>
+           <th class="cellLabel" scope="row">
+             Point of Contact
+           </th>
+           <td>
+             <table align="left" class="invisibleTable">
+               <tr>
+                 <th class="cellLabel" scope="col">
+                   Primary Contact?
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Contact Person
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Organization
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Role
+                 </th>
+               </tr>
+               <tr>
+                 <td>
+                   {{sampleData.pointOfContactInfo.primaryContact}}
+                 </td>
+                 <td>
+                   {{sampleData.pointOfContactInfo.contactPerson}}
+                 </td>
+                 <td>
+                   {{sampleData.pointOfContactInfo.organizationDisplayName}}
+                 </td>
+                 <td>
+                   {{sampleData.pointOfContactInfo.role}}
+                 </td>
+               </tr>
+               <tr>
+                 <td>
+                   {{sampleData.otherPOCBeans.personDisplayName}}
+                 </td>
+                 <td>
+                   {{sampleData.otherPOCBeans.organizationDisplayName}}
+                 </td>
+                 <td>
+                   {{sampleData.otherPOCBeans.domain.role}}
+                 </td>
+               </tr>
+             </table>
+           </td>
+         </tr>
+       </table>
+     </td>
+   </tr>
+ </table>
 </div>
