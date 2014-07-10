@@ -89,12 +89,11 @@ public class SampleServices {
 			
 //			
 			ObjectMapper mapper = new ObjectMapper();
-			String[] ignorableFieldNames = { "keywords", "pointOfContactInfo","pocBeanDomainId","availableEntityNames",
-					"caNanoLabScore","mincharScore", "chemicalAssocs", "physicoChars","invitroChars", "caNanoMINChar"};  
+			String[] needFieldNames = {"sampleId", "sampleName", "pointOfContact", "composition", "functions", "characterizations", 
+					"dataAvailability", "createdDate"};  
 		    FilterProvider filters = new SimpleFilterProvider()  
 		      .addFilter("MyFilter",   
-		          SimpleBeanPropertyFilter.serializeAllExcept(  
-		        		  ignorableFieldNames));  
+		          SimpleBeanPropertyFilter.filterOutAllExcept(needFieldNames));  
 		    ObjectWriter writer = mapper.writer(filters);  
 		    String json = writer.writeValueAsString(results);
 
