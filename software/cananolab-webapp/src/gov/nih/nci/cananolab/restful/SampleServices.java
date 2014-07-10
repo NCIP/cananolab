@@ -21,6 +21,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
+import org.codehaus.jackson.map.ser.FilterProvider;
+import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
+import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
 import org.springframework.context.ApplicationContext;
 
 @Path("/sample")
@@ -78,7 +83,22 @@ public class SampleServices {
 			List results = searchSampleBO.search(searchForm, httpRequest);
 			//SampleSearchResult resultWrapper = searchSampleBO.createSampleSearchResult(httpRequest, searchForm, results);
 			//return (resultWrapper == null) ? Response.ok(results).build() : Response.ok(resultWrapper).build();
-			return Response.ok(results).build();
+			
+//			SampleBean value = (SampleBean)results.get(0);
+			
+			
+//			
+			ObjectMapper mapper = new ObjectMapper();
+			String[] ignorableFieldNames = { "keywords", "pointOfContactInfo","pocBeanDomainId","availableEntityNames",
+					"caNanoLabScore","mincharScore", "chemicalAssocs", "physicoChars","invitroChars", "caNanoMINChar"};  
+		    FilterProvider filters = new SimpleFilterProvider()  
+		      .addFilter("MyFilter",   
+		          SimpleBeanPropertyFilter.serializeAllExcept(  
+		        		  ignorableFieldNames));  
+		    ObjectWriter writer = mapper.writer(filters);  
+		    String json = writer.writeValueAsString(results);
+
+			return Response.ok(json).build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -103,6 +123,15 @@ public class SampleServices {
 			SimpleSampleBean view = new SimpleSampleBean();
 			view.transferSampleBeanForSummaryView(sampleBean);
 			
+//			ObjectMapper mapper = new ObjectMapper();
+//			String[] ignorableFieldNames = { "primaryPOCBean"};  
+//		    FilterProvider filters = new SimpleFilterProvider()  
+//		      .addFilter("MyFilter",   
+//		          SimpleBeanPropertyFilter.serializeAllExcept(  
+//		        		  "primaryPOCBean"));  
+//		    ObjectWriter writer = mapper.writer(filters);  
+//		    String json = writer.writeValueAsString(sampleBean);
+			
 			return Response.ok(view).build();
 			
 		} catch (Exception e) {
@@ -122,7 +151,7 @@ public class SampleServices {
 			SampleBO sampleBO = 
 					(SampleBO) applicationContext.getBean("sampleBO");
 
-			SampleBean sampleBean = sampleBO.dataAvailabilityView(sampleId,httpRequest);
+			SimpleSampleBean sampleBean = sampleBO.dataAvailabilityView(sampleId,httpRequest);
 			
 			//SimpleSampleBean view = new SimpleSampleBean();
 			//view.transferSampleBeanForSummaryView(sampleBean);

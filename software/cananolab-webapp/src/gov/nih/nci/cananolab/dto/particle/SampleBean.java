@@ -34,6 +34,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonFilter;
+
 /**
  * This class represents shared properties of samples to be shown in the view
  * pages.
@@ -41,6 +44,7 @@ import java.util.TreeSet;
  * @author pansu
  *
  */
+@JsonFilter("MyFilter")
 public class SampleBean extends SecuredDataBean {
 	private String keywordsStr;
 
@@ -233,6 +237,7 @@ public class SampleBean extends SecuredDataBean {
 		this.chemicalAssociationClassNames = chemicalAssociationClassNames;
 	}
 
+	//@JsonIgnore
 	public PointOfContactBean getPrimaryPOCBean() {
 		return primaryPOCBean;
 	}
@@ -314,6 +319,7 @@ public class SampleBean extends SecuredDataBean {
 		this.mincharScore = mincharScore;
 	}
 
+	@JsonIgnore
 	public PointOfContactBean getThePOC() {
 		return thePOC;
 	}
