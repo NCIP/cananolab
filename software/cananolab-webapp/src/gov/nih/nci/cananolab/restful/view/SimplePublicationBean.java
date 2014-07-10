@@ -2,8 +2,16 @@ package gov.nih.nci.cananolab.restful.view;
 
 public class SimplePublicationBean {
 
-	
+	public SimplePublicationBean() {
+	}
+
 	private String displayName = "";
+	private String[] researchAreas;
+	private String description;
+	private String keywordsDisplayName;
+	private String keywordsStr;
+	private String status;
+	
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -28,14 +36,18 @@ public class SimplePublicationBean {
 	public void setKeywordsDisplayName(String keywordsDisplayName) {
 		this.keywordsDisplayName = keywordsDisplayName;
 	}
-	public String[] getKeywordsStr() {
+	public String getKeywordsStr() {
 		return keywordsStr;
 	}
-	public void setKeywordsStr(String[] keywordsStr) {
+	public void setKeywordsStr(String keywordsStr) {
 		this.keywordsStr = keywordsStr;
 	}
-	private String[] researchAreas;
-	private String description;
-	private String keywordsDisplayName;
-	private String[] keywordsStr;
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String string) {
+		this.status = string;
+	}
+	
+	
 }

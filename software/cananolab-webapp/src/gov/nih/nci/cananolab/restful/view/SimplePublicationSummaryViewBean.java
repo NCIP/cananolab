@@ -12,57 +12,112 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * SimplePublicationBean to hold a subset of the data in PublicationSummaryViewBean for display on web page.
+ * SimplePublicationBean to hold a subset of the data in
+ * PublicationSummaryViewBean for display on web page.
  * 
  * @author jonnalah
- *
+ * 
  */
 
 public class SimplePublicationSummaryViewBean {
-	
-	private Set<String> publicationCategories;
-	
-	public SimplePublicationBean getPublicationBean() {
-		return publicationBean;
-	}
-	public void setPublicationBean(SimplePublicationBean publicationBean) {
-		this.publicationBean = publicationBean;
-	}
 
+	Set<String> publicationCategories;
+	
+	SortedMap<String, List<SimplePublicationBean>> category2Publications = new TreeMap<String, List<SimplePublicationBean>>();
+
+	List<SimplePublicationBean> pubList;
 
 	SimplePublicationBean publicationBean;
 	
 	public Set<String> getPublicationCategories() {
 		return publicationCategories;
 	}
+
 	public void setPublicationCategories(Set<String> publicationCategories) {
 		this.publicationCategories = publicationCategories;
 	}
-	
-	
-	public SortedMap<String, List<PublicationBean>> getCategory2Publications() {
+
+	public SortedMap<String, List<SimplePublicationBean>> getCategory2Publications() {
 		return category2Publications;
 	}
+
 	public void setCategory2Publications(
-			SortedMap<String, List<PublicationBean>> category2Publications) {
+			SortedMap<String, List<SimplePublicationBean>> category2Publications) {
 		this.category2Publications = category2Publications;
 	}
 
-
-	private SortedMap<String, List<PublicationBean>> category2Publications = new TreeMap<String, List<PublicationBean>>();
+	public void transferPublicationBeanForSummaryView(
+			PublicationSummaryViewBean pubBean) {
+		if (pubBean == null) return;
 	
-
-	public void transferPublicationBeanForSummaryView(PublicationSummaryViewBean pubBean){
-		if(pubBean == null) return;
-	//	setCategory2Publications(pubBean.getCategory2Publications());
-		
 		setPublicationCategories(pubBean.getPublicationCategories());
-	
-//		publicationBean.setDescription(pubBean.getCategory2Publications().get("report").get(0).getDescription());
-//		publicationBean.setDisplayName(pubBean.getCategory2Publications().get("report").get(0).getDisplayName());
-//		setPublicationBean(publicationBean);
-		
-		
+
+		try {
+			pubList = new ArrayList<SimplePublicationBean>();
+
+			if (pubBean.getCategory2Publications().lastKey().equals("review")) {
+				
+
+				for (int i = 0; i < pubBean.getCategory2Publications()
+						.get("review").size(); i++) {
+					publicationBean = new SimplePublicationBean();
+
+					publicationBean.setDisplayName(pubBean
+							.getCategory2Publications().get("review").get(i)
+							.getDisplayName());
+					publicationBean.setDescription(pubBean
+							.getCategory2Publications().get("review").get(i).getDomainFile().getDescription());
+							
+					publicationBean.setResearchAreas(pubBean
+							.getCategory2Publications().get("review").get(i)
+							.getResearchAreas());
+					publicationBean.setKeywordsDisplayName(pubBean
+							.getCategory2Publications().get("review").get(i)
+							.getKeywordsDisplayName());
+					publicationBean.setKeywordsStr(pubBean
+							.getCategory2Publications().get("review").get(i)
+							.getKeywordsStr());
+							
+					
+					pubList.add(publicationBean);
+
+				}
+				category2Publications.put("review", pubList);
+			} 
+			
+			if (pubBean.getCategory2Publications().firstKey().equals("report")) {
+
+				publicationBean = new SimplePublicationBean();
+				pubList = new ArrayList<SimplePublicationBean>();
+
+				for (int i = 0; i < pubBean.getCategory2Publications()
+						.get("report").size(); i++) {
+
+					publicationBean.setDescription(pubBean
+							.getCategory2Publications().get("report").get(i)
+							.getDescription());
+					publicationBean.setDisplayName(pubBean
+							.getCategory2Publications().get("report").get(i)
+							.getDisplayName());
+					publicationBean.setResearchAreas(pubBean
+							.getCategory2Publications().get("report").get(i)
+							.getResearchAreas());
+					publicationBean.setKeywordsDisplayName(pubBean
+							.getCategory2Publications().get("report").get(i)
+							.getKeywordsDisplayName());
+					publicationBean.setKeywordsStr(pubBean
+							.getCategory2Publications().get("report").get(i)
+							.getKeywordsStr());
+								
+					pubList.add(publicationBean);
+
+				}
+				category2Publications.put("report", pubList);
+			}
+		} catch (Exception e) {
+			System.out.println("Error while setting the SimplePublicationBean" + e);
+		}
+
 	}
 
 }
