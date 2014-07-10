@@ -1,0 +1,76 @@
+<%--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L--%>
+
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<c:choose>
+	<c:when test="${param.summary eq 'true'}">
+		<c:choose>
+			<c:when test="${! empty charBean.physicalState.type}">
+				<table class="summaryViewNoGrid" align="left">
+					<tr>
+						<th scope="row" class="cellLabel">
+							Type
+						</th>
+						<td>
+							<c:out value="${charBean.physicalState.type}"/>
+						</td>
+					</tr>
+				</table>
+			</c:when>
+			<c:otherwise>N/A
+	</c:otherwise>
+		</c:choose>
+	</c:when>
+	<c:otherwise>
+		<table width="100%" align="center" class="submissionView" summary="layout">
+			<tr>
+				<th colspan="4">
+					Physical State Properties
+				</th>
+			</tr>
+			<tr>
+				<td class="cellLabel" width="20%">
+					<label for="physicalStateType">Type</label>
+				</td>
+				<td>
+					<div id="physicalStateTypePrompt">
+						<select name="achar.physicalState.type" id="physicalStateType"
+							onchange="javascript:callPrompt('Type', 'physicalStateType', 'physicalStateTypePrompt');">
+							<option value=""></option>
+							<c:forEach var="type" items="${physicalStateTypes}">
+								<c:choose>
+									<c:when
+										test="${type eq characterizationForm.map.achar.physicalState.type}">
+										<option value="${type}" selected="selected">
+											<c:out value="${type}"/>
+										</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${type}">
+											<c:out value="${type}"/>
+										</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<option value="other">
+								[other]
+							</option>
+						</select>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<br>
+	</c:otherwise>
+</c:choose>
+

@@ -1,0 +1,145 @@
+.summaryViewNoTop {
+	border-collapse: collapse;
+	border-color: #cccccc;
+	border-style: solid;
+	border-top: none;
+	border-width: 1px;
+	color: #5C5C5C;
+	padding: 5px;
+}
+
+.summaryViewNoTop th {
+	font-family: arial, helvetica, verdana, sans-serif;
+}
+
+.summaryViewNoTop td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	vertical-align: top;
+	text-align: left;
+}
+
+.summaryViewHeader {
+	border-collapse: collapse;
+	background-color: #dde9e9;
+	border-width: 1px;
+	padding: 0 0 0 0;
+	color: #5C5C5C;
+	border-width: 0px;
+}
+
+.summaryViewHeader th {
+	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 0 0 0 0;
+	color: #5C5C5C;
+}
+
+.summaryViewHeader td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	vertical-align: top;
+	text-align: left;
+	color: #5C5C5C;
+}
+
+.summaryViewNoTop th {
+	font-family: arial, helvetica, verdana, sans-serif;
+	border-color: #cccccc;
+	padding: 5px 5px 5px 5px;
+	color: #5C5C5C;
+}
+
+.summaryViewNoTop td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 5px 5px 5px 5px;
+	border-color: #cccccc;
+	vertical-align: top;
+	text-align: left;
+	color: #5C5C5C;
+}
+
+.summaryViewNoGrid {
+	font-family: arial, helvetica, verdana, sans-serif;
+	border-collapse: collapse;
+	border-color: #5C5C5C;
+	border-style: solid;
+	color: #5C5C5C;
+	padding: 0px 0px 0px 0px;
+	border-width: 0px;
+}
+
+.summaryViewNoGrid th {
+	color: #5C5C5C;
+	font-weight: bold;
+	text-align:left;
+	border-width: 0px;
+	padding: 0px 0px 0px 4px;
+}
+
+.summaryViewNoGrid td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 2px 3px 2px 3px;
+	vertical-align: top;
+	text-align: left;
+	color: #5C5C5C;
+	border-width: 0px;
+}
+
+.summaryViewWithGrid {
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+	/*background-color: #F5F5f5;*/
+}
+
+.summaryViewWithGrid th {
+	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 3px 3px 3px 3px;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	vertical-align: top;
+	text-align: left;	
+}
+
+.summaryViewWithGrid td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	padding: 3px 3px 3px 3px;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	vertical-align: top;
+	text-align: left;
+}
+
+.editTableWithGrid {
+	border-width: 1px;
+	border-color: #cccccc;
+	padding: 3px 3px 3px 3px;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+}
+
+.editTableWithGrid caption {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-weight: bold;
+}
+
+.editTableWithGrid th {
+	padding: 3px 3px 3px 3px;
+	font-weight: bold;
+	text-align: left;
+}
+
+.editTableWithGrid td {
+	padding: 3px 3px 3px 3px;
+	border-width: 0px;
+	border-style: solid;
+	vertical-align: top;
+	text-align: left;
+}
+
+.summaryViewHeading {
+	text-decoration: underline;
+}

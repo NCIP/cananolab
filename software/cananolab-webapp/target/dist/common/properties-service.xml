@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
+<!-- $Id: properties-service.xml 16662 2003-08-27 04:38:22Z patriot1burke 
+	$ -->
+<server>
+	<!-- ==================================================================== -->
+
+	<!-- PropertyEditorManager Service -->
+
+	<!-- ==================================================================== -->
+
+	<!-- | Allows access to the PropertyEditorManager, which is used when setting 
+		| MBean attribute values from configuration. -->
+	<mbean name="jboss:type=Service,name=PropertyEditorManager"
+		code="org.jboss.varia.property.PropertyEditorManagerService">
+		<!-- | Register and editor for each of the type_name=editor_type_name listed 
+			| in properties file style convetion. <attribute name="Editors"> java.net.URL=my.project.editors.URLPropertyEditor 
+			</attribute> -->
+	</mbean>
+	<!-- ==================================================================== -->
+
+	<!-- System Properties Service -->
+
+	<!-- ==================================================================== -->
+
+	<!-- | Allows rich access to system properties. -->
+	<mbean name="jboss:type=Service,name=SystemProperties" code="org.jboss.varia.property.SystemPropertiesService">
+		<!-- | Load properties from each of the given comma seperated URLs <attribute 
+			name="URLList"> http://somehost/some-location.properties, ./conf/somelocal.properties 
+			</attribute> -->
+
+		<!-- | Set raw properties file style properties. <attribute name="Properties"> 
+			my.project.property=This is the value of my property my.project.anotherProperty=This 
+			is the value of my other property </attribute> -->
+		<attribute name="Properties">
+			gov.nih.nci.security.configFile=/Users/einolfs/cananolab/jboss-5.1.0.GA/conf/csmconfig/ApplicationSecurityConfig.xml
+			gov.nih.nci.cananolab.wikihelpProperties=/local/content/caNanoLab/config/wikihelp.properties
+		</attribute>
+	</mbean>
+</server>

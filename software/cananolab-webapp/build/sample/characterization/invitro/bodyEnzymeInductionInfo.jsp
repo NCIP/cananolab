@@ -1,0 +1,75 @@
+<%--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L--%>
+
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<c:choose>
+	<c:when test="${param.summary eq 'true'}">
+		<c:choose>
+			<c:when test="${! empty charBean.enzymeInduction.enzyme}">
+				<table class="summaryViewNoGrid" align="left">
+					<tr>
+						<th scope="row" class="cellLabel">
+							Enzyme Name
+						</th>
+						<td>
+							<c:out value="${charBean.enzymeInduction.enzyme}"/>
+						</td>
+					</tr>
+				</table>
+			</c:when>
+			<c:otherwise>N/A
+	</c:otherwise>
+		</c:choose>
+	</c:when>
+	<c:otherwise>
+		<table width="100%" align="center" class="submissionView" summary="layout">
+			<tr>
+				<th colspan="2">
+					Enzyme Induction Properties
+				</th>
+			</tr>
+			<tr>
+				<td class="cellLabel" width="20%">
+					<label for="enzyme">Enzyme Name</label>
+				</td>
+				<td>
+					<div id="enzymePrompt">
+						<select name="achar.enzymeInduction.enzyme" id="enzyme"
+							onchange="javascript:callPrompt('Enzyme', 'enzyme', 'enzymePrompt');" />
+							<option value=""></option>
+							<c:forEach var="name" items="${enzymeNames}">
+								<c:choose>
+									<c:when
+										test="${name eq characterizationForm.map.achar.enzymeInduction.enzyme}">
+										<option value="${name}" selected="selected">
+											<c:out value="${name}"/>
+										</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${name}">
+											<c:out value="${name}"/>
+										</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<option value="other">
+								[other]
+							</option>
+						</select>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<br>
+	</c:otherwise>
+</c:choose>
+

@@ -1,0 +1,105 @@
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE form-validation PUBLIC
+"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<formset>
+		<form name="protocolForm">
+			<field property="protocol.domain.name" page="1" depends="required, mask">
+				<arg position="0" key="protocol.name" bundle="protocol" />
+				<msg name="mask" key="protocol.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.domain.type" page="1" depends="required, mask">
+				<arg position="0" key="protocol.type" bundle="protocol" />
+				<msg name="mask" key="protocol.type.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.domain.version" page="1" depends="mask">
+				<msg name="mask" key="protocol.version.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.domain.abbreviation" page="1"
+				depends="mask">
+				<msg name="mask" key="protocol.abbreviation.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.fileBean.domainFile.title" page="1"
+				depends="mask">
+				<msg name="mask" key="protocol.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.fileBean.domainFile.name" page="1"
+				depends="mask">
+				<msg name="mask" key="protocol.file.name.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.fileBean.externalUrl" page="1" depends="url">
+				<arg position="0" key="protocol.externalUrl" bundle="protocol"/>
+			</field>
+			<field property="protocol.fileBean.domainFile.uri" page="1"
+				depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="protocol.theAccess.accessBy" page="2" depends="required">
+				<arg position="0" key="access.accessBy" bundle="protocol" />
+			</field>
+			<field property="protocol.theAccess.roleName" page="2" depends="required">
+				<arg position="0" key="access.roleName" bundle="protocol" />
+			</field>
+			<field property="protocol.theAccess.groupName" page="2"
+				depends="validwhen">
+				<arg position="0" key="access.groupName" bundle="protocol" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((protocol.theAccess.accessBy!='group') and
+						(protocol.theAccess.accessBy!='public')) or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field property="protocol.theAccess.userBean.loginName" page="2"
+				depends="validwhen">
+				<arg position="0" key="access.userName" bundle="protocol" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((protocol.theAccess.accessBy!='user') or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+		</form>
+	</formset>
+</form-validation>

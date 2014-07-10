@@ -1,0 +1,120 @@
+<!--L
+   Copyright SAIC
+   Copyright SAIC-Frederick
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cananolab/LICENSE.txt for details.
+L-->
+
+<!DOCTYPE form-validation PUBLIC
+"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+"http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<formset>
+		<form name="publicationForm">
+			<field property="publication.domainFile.category" page="1"
+				depends="required, mask">
+				<arg position="0" key="submitPublicationForm.publication.category"
+					bundle="publication" />
+				<msg name="mask" key="publication.category.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="publication.domainFile.status" page="1"
+				depends="required, mask">
+				<arg position="0" key="submitPublicationForm.publication.status"
+					bundle="publication" />
+				<msg name="mask" key="publication.status.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="publication.domainFile.title" page="1"
+				depends="required, mask">
+				<arg position="0" key="publication.title" bundle="publication" />
+				<msg name="mask" key="publication.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="publication.externalUrl" page="1" depends="url">
+				<arg position="0" key="publication.externalUrl" bundle="publication"/>
+			</field>
+			<field property="publication.domainFile.uri" page="1" depends="mask">
+				<msg name="mask" key="file.uri.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${textFieldWhiteList}</var-value>
+				</var>
+			</field>
+			<field property="publication.theAuthor.firstName" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.author.firstName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="publication.theAuthor.lastName" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.author.lastName.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="publication.theAuthor.initial" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.author.initials.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${relaxedAlphabetic}</var-value>
+				</var>
+			</field>
+			<field property="publication.domainFile.digitalObjectId" page="1"
+				depends="mask">
+				<msg name="mask" key="publication.doi.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>${doi}</var-value>
+				</var>
+			</field>
+			<field property="publication.theAccess.accessBy" page="2"
+				depends="required">
+				<arg position="0" key="access.accessBy" bundle="publication" />
+			</field>
+			<field property="publication.theAccess.roleName" page="2"
+				depends="required">
+				<arg position="0" key="access.roleName" bundle="publication" />
+			</field>
+			<field property="publication.theAccess.groupName" page="2"
+				depends="validwhen">
+				<arg position="0" key="access.groupName" bundle="publication" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((publication.theAccess.accessBy!='group') and
+						(publication.theAccess.accessBy!='public')) or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field property="publication.theAccess.userBean.loginName"
+				page="2" depends="validwhen">
+				<arg position="0" key="access.userName" bundle="publication" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((publication.theAccess.accessBy!='user') or
+						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+		</form>
+	</formset>
+</form-validation>
