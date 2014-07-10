@@ -21,7 +21,6 @@ import org.codehaus.jackson.map.annotate.JsonFilter;
  * @author yangs8
  *
  */
-@JsonFilter("MyFilter")
 public class SimpleSampleBean {
 	long sampleId;
 	String sampleName;

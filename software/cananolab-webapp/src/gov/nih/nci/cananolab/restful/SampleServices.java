@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.restful;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
+import gov.nih.nci.cananolab.restful.util.ViewFilterUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
@@ -21,11 +22,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
-import org.codehaus.jackson.map.ser.FilterProvider;
-import org.codehaus.jackson.map.ser.impl.SimpleBeanPropertyFilter;
-import org.codehaus.jackson.map.ser.impl.SimpleFilterProvider;
 import org.springframework.context.ApplicationContext;
 
 @Path("/sample")
@@ -81,23 +77,9 @@ public class SampleServices {
 					(SearchSampleBO) applicationContext.getBean("searchSampleBO");
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
-			//SampleSearchResult resultWrapper = searchSampleBO.createSampleSearchResult(httpRequest, searchForm, results);
-			//return (resultWrapper == null) ? Response.ok(results).build() : Response.ok(resultWrapper).build();
 			
-//			SampleBean value = (SampleBean)results.get(0);
-			
-			
-//			
-			ObjectMapper mapper = new ObjectMapper();
-			String[] needFieldNames = {"sampleId", "sampleName", "pointOfContact", "composition", "functions", "characterizations", 
-					"dataAvailability", "createdDate"};  
-		    FilterProvider filters = new SimpleFilterProvider()  
-		      .addFilter("MyFilter",   
-		          SimpleBeanPropertyFilter.filterOutAllExcept(needFieldNames));  
-		    ObjectWriter writer = mapper.writer(filters);  
-		    String json = writer.writeValueAsString(results);
-
-			return Response.ok(json).build();
+			//String json = ViewFilterUtil.getSampleSearchResultJSon(results);
+			return Response.ok(results).build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -121,15 +103,6 @@ public class SampleServices {
 			SampleBean sampleBean = sampleBO.summaryView(sampleId,httpRequest);
 			SimpleSampleBean view = new SimpleSampleBean();
 			view.transferSampleBeanForSummaryView(sampleBean);
-			
-//			ObjectMapper mapper = new ObjectMapper();
-//			String[] ignorableFieldNames = { "primaryPOCBean"};  
-//		    FilterProvider filters = new SimpleFilterProvider()  
-//		      .addFilter("MyFilter",   
-//		          SimpleBeanPropertyFilter.serializeAllExcept(  
-//		        		  "primaryPOCBean"));  
-//		    ObjectWriter writer = mapper.writer(filters);  
-//		    String json = writer.writeValueAsString(sampleBean);
 			
 			return Response.ok(view).build();
 			
