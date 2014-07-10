@@ -30,7 +30,7 @@ public class SimpleSampleBean {
 	String[] functions;
 	String[] characterizations;
 	String dataAvailability;
-	String createdDate;
+	Date createdDate;
 	
 	String keywords;
 	
@@ -152,12 +152,12 @@ public class SimpleSampleBean {
 	public void setDataAvailability(String dataAvailability) {
 		this.dataAvailability = dataAvailability;
 	}
-	
-	public String getCreatedDate() {
+
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(String createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -213,11 +213,7 @@ public class SimpleSampleBean {
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
 		
-		Date createdD = sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate();
-		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy");
-        String date = DATE_FORMAT.format(createdD);
-		
-		setCreatedDate(date);
+		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
 		
 	}
 	
@@ -225,11 +221,7 @@ public class SimpleSampleBean {
 		
 		if (sampleBean == null) return;
 		setSampleName(sampleBean.getDomain().getName());
-		
-		Date createdD = sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate();
-		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-yyyy");
-        String date = DATE_FORMAT.format(createdD);
-		setCreatedDate(date);
+		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
 		setKeywords(sampleBean.getKeywordsDisplayName());
 		setPocBeanDomainId(sampleBean.getPrimaryPOCBean().getDomain().getId());
 		setOtherPOCBeans(sampleBean.getOtherPOCBeans());
