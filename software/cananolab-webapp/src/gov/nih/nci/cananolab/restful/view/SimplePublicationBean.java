@@ -1,5 +1,15 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.common.Publication;
+
+/**
+ * SimplePublicationBean to hold a subset of the data in
+ * PublicationBean for display on web page.
+ * 
+ * @author jonnalah
+ * 
+ */
+
 public class SimplePublicationBean {
 
 	public SimplePublicationBean() {
@@ -11,7 +21,7 @@ public class SimplePublicationBean {
 	private String keywordsDisplayName;
 	private String keywordsStr;
 	private String status;
-	
+		
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -48,6 +58,8 @@ public class SimplePublicationBean {
 	public void setStatus(String string) {
 		this.status = string;
 	}
+	
+	
 	
 	
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 
@@ -12,7 +13,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * SimplePublicationBean to hold a subset of the data in
+ * SimplePublicationSummaryViewBean to hold a subset of the data in
  * PublicationSummaryViewBean for display on web page.
  * 
  * @author jonnalah
@@ -22,13 +23,13 @@ import java.util.TreeMap;
 public class SimplePublicationSummaryViewBean {
 
 	Set<String> publicationCategories;
-	
+
 	SortedMap<String, List<SimplePublicationBean>> category2Publications = new TreeMap<String, List<SimplePublicationBean>>();
 
 	List<SimplePublicationBean> pubList;
 
 	SimplePublicationBean publicationBean;
-	
+
 	public Set<String> getPublicationCategories() {
 		return publicationCategories;
 	}
@@ -48,15 +49,15 @@ public class SimplePublicationSummaryViewBean {
 
 	public void transferPublicationBeanForSummaryView(
 			PublicationSummaryViewBean pubBean) {
-		if (pubBean == null) return;
-	
+		if (pubBean == null)
+			return;
+
 		setPublicationCategories(pubBean.getPublicationCategories());
 
 		try {
 			pubList = new ArrayList<SimplePublicationBean>();
 
 			if (pubBean.getCategory2Publications().lastKey().equals("review")) {
-				
 
 				for (int i = 0; i < pubBean.getCategory2Publications()
 						.get("review").size(); i++) {
@@ -66,8 +67,9 @@ public class SimplePublicationSummaryViewBean {
 							.getCategory2Publications().get("review").get(i)
 							.getDisplayName());
 					publicationBean.setDescription(pubBean
-							.getCategory2Publications().get("review").get(i).getDomainFile().getDescription());
-							
+							.getCategory2Publications().get("review").get(i)
+							.getDescription());
+
 					publicationBean.setResearchAreas(pubBean
 							.getCategory2Publications().get("review").get(i)
 							.getResearchAreas());
@@ -77,14 +79,17 @@ public class SimplePublicationSummaryViewBean {
 					publicationBean.setKeywordsStr(pubBean
 							.getCategory2Publications().get("review").get(i)
 							.getKeywordsStr());
-							
-					
+					Publication pub = (Publication) pubBean
+							.getCategory2Publications().get("review").get(i)
+							.getDomainFile();
+					publicationBean.setStatus(pub.getStatus());
+
 					pubList.add(publicationBean);
 
 				}
 				category2Publications.put("review", pubList);
-			} 
-			
+			}
+
 			if (pubBean.getCategory2Publications().firstKey().equals("report")) {
 
 				publicationBean = new SimplePublicationBean();
@@ -108,14 +113,19 @@ public class SimplePublicationSummaryViewBean {
 					publicationBean.setKeywordsStr(pubBean
 							.getCategory2Publications().get("report").get(i)
 							.getKeywordsStr());
-								
+					Publication pub = (Publication) pubBean
+							.getCategory2Publications().get("report").get(i)
+							.getDomainFile();
+					publicationBean.setStatus(pub.getStatus());
+
 					pubList.add(publicationBean);
 
 				}
 				category2Publications.put("report", pubList);
 			}
 		} catch (Exception e) {
-			System.out.println("Error while setting the SimplePublicationBean" + e);
+			System.out.println("Error while setting the SimplePublicationBean"
+					+ e);
 		}
 
 	}
