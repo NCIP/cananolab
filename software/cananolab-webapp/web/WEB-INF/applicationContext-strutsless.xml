@@ -49,6 +49,10 @@
 	<bean id="publicationBO"
 		class="gov.nih.nci.cananolab.restful.publication.PublicationBO">
 	</bean>
+	
+	<bean id="characterizationBO"
+		class="gov.nih.nci.cananolab.restful.sample.CharacterizationBO">
+	</bean>
 
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
