@@ -1,9 +1,12 @@
 package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.util.ViewFilterUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
@@ -133,6 +136,32 @@ public class SampleServices {
 		} catch (Exception e) {
 			return Response.ok(e.getMessage()).build();
 		}
+	}
+	
+	@GET
+	@Path("/characterizationView")
+	@Produces ("application/json")
+	 public Response characterizationView(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		try { 
+
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+
+			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
+			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
+			Map<String, Object> finalBean = viewBean.transferData(charView);
+			//Map<String, Object> viewBean = viewBean.transferData(charView);
+			
+			//SimpleSampleBean view = new SimpleSampleBean();
+			//view.transferSampleBeanForSummaryView(sampleBean);
+			
+			return Response.ok(finalBean).build();
+			
+		} catch (Exception e) {
+			return Response.ok(e.getMessage()).build();
+		}
+		
 	}
 }
 	

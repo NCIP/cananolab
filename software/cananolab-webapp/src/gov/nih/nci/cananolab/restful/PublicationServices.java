@@ -66,7 +66,6 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 
 			String result = publicationBO.download(fileId, httpRequest, httpResponse);
 		
-			
 			return Response.ok(result).build();
 			
 		} catch (Exception e) {

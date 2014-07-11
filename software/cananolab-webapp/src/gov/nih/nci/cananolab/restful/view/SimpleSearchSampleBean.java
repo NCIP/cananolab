@@ -1,15 +1,23 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
 
 public class SimpleSearchSampleBean {
 	
 	long sampleId;
 	String sampleName;
 	String pointOfContact;
-	String composition;
+	String[] composition;
 	String[] functions;
 	String[] characterizations;
 	String dataAvailability;
@@ -32,10 +40,11 @@ public class SimpleSearchSampleBean {
 	public void setPointOfContact(String pointOfContact) {
 		this.pointOfContact = pointOfContact;
 	}
-	public String getComposition() {
+	
+	public String[] getComposition() {
 		return composition;
 	}
-	public void setComposition(String composition) {
+	public void setComposition(String[] composition) {
 		this.composition = composition;
 	}
 	public String[] getFunctions() {
@@ -69,7 +78,23 @@ public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
 		setSampleId(sampleBean.getDomain().getId());
 		setSampleName(sampleBean.getDomain().getName());
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
-		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
+		
+		//TODO: refactor
+		SampleComposition comp = sampleBean.getDomain().getSampleComposition();
+		
+		Collection<NanomaterialEntity> nanocoll = comp.getNanomaterialEntityCollection();
+		String[] v = new String[nanocoll.size()];
+		Iterator ite = nanocoll.iterator();
+		
+		int i = 0;
+		while (ite.hasNext()) {
+			NanomaterialEntity n = (NanomaterialEntity)ite.next();
+			String cn = ClassUtils.getShortClassName(n.getClass().getName());
+			v[i++] = cn; 
+		}
+		
+		setComposition(v);
+		
 		setFunctions(sampleBean.getFunctionClassNames());
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
