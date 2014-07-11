@@ -9,8 +9,8 @@ var app = angular.module('angularApp')
     $rootScope.navDetail = 0;
 
 	var sampleId = $routeParams.sampleId; 
-	sampleId = '20917507';
-    $scope.$on('$viewContentLoaded', function(){
+	//sampleId = '20917507';
+    //$scope.$on('$viewContentLoaded', function(){
      $http({method: 'GET', url: '/caNanoLab/rest/sample/view?sampleId=' + sampleId}).
      success(function(data, status, headers, config) {
       $scope.sampleData = data;
@@ -21,6 +21,6 @@ var app = angular.module('angularApp')
         $scope.message = data;
 
          });
-    });     
+    //});     
 
   });

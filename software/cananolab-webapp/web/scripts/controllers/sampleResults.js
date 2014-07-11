@@ -61,7 +61,7 @@ var app = angular.module('angularApp')
       pagingOptions: $scope.pagingOptions,
       filterOptions: $scope.filterOptions,
       columnDefs:[
-          {field: 'sampleId', displayName: '', enableCellEdit: false,width:'4%',cellTemplate:'<a href="#" target="_blank">View</a>',sortable:false},
+          {field: 'sampleId', displayName: '', enableCellEdit: false,width:'4%',cellTemplate:'<a href="/caNanoLab/#/sample?sampleId={{row.getProperty(col.field)}}">View</a>',sortable:false},
           {field: 'sampleName', displayName: 'Sample Name', enableCellEdit: false, width:'14%'},
           {field: 'pointOfContact', displayName: 'Primary Point of Contact',width:'20%', enableCellEdit: false,resizable:true,cellTemplate:'<div ng-bind-html="row.getProperty(col.field)" />'},
           {field: 'composition', displayName: 'Composition', enableCellEdit: false, width:'12%'},

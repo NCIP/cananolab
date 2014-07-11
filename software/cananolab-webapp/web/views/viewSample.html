@@ -65,22 +65,18 @@
                  <td>
                    {{sampleData.pointOfContactInfo.primaryContact}}
                  </td>
-                 <td>
-                   {{sampleData.pointOfContactInfo.contactPerson}}
+                 <td ng-bind-html="sampleData.pointOfContactInfo.contactPerson">
                  </td>
-                 <td>
-                   {{sampleData.pointOfContactInfo.organizationDisplayName}}
+                 <td ng-bind-html="sampleData.pointOfContactInfo.organizationDisplayName">
                  </td>
                  <td>
                    {{sampleData.pointOfContactInfo.role}}
                  </td>
                </tr>
                <tr>
-                 <td>
-                   {{sampleData.otherPOCBeans.personDisplayName}}
+                 <td ng-bind-html="sampleData.otherPOCBeans.personDisplayName">
                  </td>
-                 <td>
-                   {{sampleData.otherPOCBeans.organizationDisplayName}}
+                 <td ng-bind-html="sampleData.otherPOCBeans.organizationDisplayName">
                  </td>
                  <td>
                    {{sampleData.otherPOCBeans.domain.role}}
