@@ -317,11 +317,12 @@ public class PublicationBO extends BaseAnnotationBO{
 	 * @param form
 	 * @param request
 	 * @param response
+	 * @return 
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public void summaryPrint(String sampleId,
-			HttpServletRequest request, HttpServletResponse response)
+	public PublicationSummaryViewBean summaryPrint(String sampleId,
+			HttpServletRequest request)
 			throws Exception {
 		// Marker that indicates page is for printing (hide tabs, links, etc).
 		request.setAttribute("printView", Boolean.TRUE);
@@ -338,7 +339,7 @@ public class PublicationBO extends BaseAnnotationBO{
 		// Filter out categories that not selected.
 		this.filterType(request, summaryBean);
 
-	//	return mapping.findForward("summaryPrint");
+		return summaryBean;
 	}
 
 	/**
@@ -398,7 +399,7 @@ public class PublicationBO extends BaseAnnotationBO{
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public PublicationSummaryViewBean summaryExport(String sampleId,
+	public String summaryExport(String sampleId, String type,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute(
@@ -416,14 +417,14 @@ public class PublicationBO extends BaseAnnotationBO{
 		this.filterType(request, summaryBean);
 
 		// Get sample name for constructing file name.
-		String type = request.getParameter("type");
+//		String type = request.getParameter("type");
 		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
 				.getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcel(response, fileName);
 		PublicationExporter.exportSummary(summaryBean,
 				response.getOutputStream());
 
-		return summaryBean;
+		return null;
 	}
 
 	/**
@@ -782,11 +783,12 @@ public class PublicationBO extends BaseAnnotationBO{
 				(Publication) publication.getDomainFile());
 	}
 
-	public void download(ActionMapping mapping, ActionForm form,
+	public String download(String fileId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		System.out.println("Inside download from publication BO");
 		PublicationService service = this.setServicesInSession(request);
-//		return downloadFile(service, mapping, form, request, response);
+		return downloadFile(service, fileId, request, response);
 	}
 }
 
