@@ -56,6 +56,7 @@ var app = angular.module('angularApp')
       data: 'myData',
       enablePaging: true,
       showFooter: true,
+      enableRowSelection: false,      
       totalServerItems: 'totalServerItems',
       pagingOptions: $scope.pagingOptions,
       filterOptions: $scope.filterOptions,
