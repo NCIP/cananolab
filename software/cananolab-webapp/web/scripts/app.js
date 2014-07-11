@@ -56,6 +56,10 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/sample', {
        templateUrl: 'views/viewSample.html',
        controller: 'IndSampleCtrl'
+      }) 
+      .when('/samplePublication', {
+            templateUrl: 'views/viewSamplePublication.html',
+            controller: 'ViewSamplePublicationCtrl'
       })      
       .otherwise({
         redirectTo: '/'
