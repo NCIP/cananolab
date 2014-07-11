@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.restful.core.AbstractDispatchBO;
 import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.SimpleSearchSampleBean;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -108,7 +109,7 @@ public class SearchSampleBO extends AbstractDispatchBO {
 		
 		//return mapping.findForward("success");
 		
-		List<SimpleSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
+		List<SimpleSearchSampleBean> simpleBeans = transfertoSimpleSampleBeans(sampleBeansPerPage);
 		
 		return simpleBeans;
 	}
@@ -142,11 +143,11 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	/**
 	 * 
 	 */
-	protected List<SimpleSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans) {
-		List<SimpleSampleBean> simpleBeans = new ArrayList<SimpleSampleBean>();
+	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans) {
+		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
 		
 		for (SampleBean bean : sampleBeans) {
-			SimpleSampleBean simpleBean = new SimpleSampleBean();
+			SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
 			simpleBean.transferSampleBeanForBasicResultView(bean);
 			simpleBeans.add(simpleBean);
 		}

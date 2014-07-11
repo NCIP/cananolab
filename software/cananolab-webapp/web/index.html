@@ -63,11 +63,43 @@
                <tr>
                   <td class="sideMenu">
                      <table cellspacing="0" cellpadding="0" width="160px">
-                        <tr>
+                        <tr ng-hide="navTree">
                            <th class="subMenuPrimaryTitle" scope="col">
                               QUICK LINKS<!-- anchor to skip sub menu --> <a href="#content"><img
                                  height="1" alt="Skip Menu" src="images/shim.gif" width="1" border="0"></a>
                            </th>
+                        </tr>
+                        <tr ng-show="navTree">
+                           <th class="subMenuPrimaryTitle" scope="col">
+                              NAVIGATION TREE
+                           </th>
+                        </tr>   
+                        <tr ng-show="navTree">
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==0, 'subMenuSecondaryTitleSample':navDetail!=0}"
+                            onclick="gotoPage('#/sample')">
+                              GENERAL INFO
+                           </td>
+
+                        </tr>
+                        <tr ng-show="navTree">
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==1, 'subMenuSecondaryTitleSample':navDetail!=1}" onclick="gotoPage('#/composition')">
+                              COMPOSITION
+                           </td>
+                        </tr>
+                        <tr ng-show="navTree">
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==2, 'subMenuSecondaryTitleSample':navDetail!=2}" onclick="gotoPage('#/characterization')">
+                              CHARACTERIZATION
+                           </td>
+                        </tr>
+                        <tr ng-show="navTree">
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==3, 'subMenuSecondaryTitleSample':navDetail!=3}" onclick="gotoPage('#/publication')">
+                              PUBLICATION
+                           </td>
+                        </tr>     
+                        <tr ng-show="navTree">
+                           <td class="subMenuFill" height="50">
+                              &nbsp;
+                           </td>
                         </tr>
                         <tr>
                            <td class="subMenuPrimarySubTitle" scope="col">NCI</td>
@@ -304,6 +336,7 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="bower_components/angular-resource/angular-resource.js"></script>
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
       <script src="plugins/ng-grid/ng-grid-2.0.11.min.js"></script>
+      <script src="plugins/ng-grid/flexible-height.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
       <script src="bower_components/angular-animate/angular-animate.js"></script>
       <script src="bower_components/angular-touch/angular-touch.js"></script>
@@ -324,7 +357,10 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/controllers/sampleSearch.js"></script>
       <script src="scripts/controllers/sampleResults.js"></script>
       <script src="scripts/controllers/viewSample.js"></script>
-      <script src="scripts/controllers/viewSamplePublication.js"></script>
+      <script src="scripts/controllers/composition.js"></script>
+      <script src="scripts/controllers/characterization.js"></script>
+      <script src="scripts/controllers/publication.js"></script>
+      <script src="scripts/directives/cellList.js"></script>
       <!-- endbuild --> 
       </div>
    </body>

@@ -57,10 +57,18 @@ app.config(function ($routeProvider, $httpProvider) {
        templateUrl: 'views/viewSample.html',
        controller: 'IndSampleCtrl'
       }) 
-      .when('/samplePublication', {
-            templateUrl: 'views/viewSamplePublication.html',
-            controller: 'ViewSamplePublicationCtrl'
-      })      
+      .when('/composition', {
+       templateUrl: 'views/composition.html',
+       controller: 'CompositionCtrl'
+      }) 
+      .when('/characterization', {
+       templateUrl: 'views/characterization.html',
+       controller: 'CharacterizationCtrl'
+      }) 
+      .when('/publication', {
+       templateUrl: 'views/publication.html',
+       controller: 'PublicationCtrl'
+      })                        
       .otherwise({
         redirectTo: '/'
       });

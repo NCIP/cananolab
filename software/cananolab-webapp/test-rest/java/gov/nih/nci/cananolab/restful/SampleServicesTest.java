@@ -17,17 +17,18 @@ import org.junit.Test;
 public class SampleServicesTest {
 	
 	String urlbase = "http://localhost:8080/caNanoLab/rest/";
+	Client client; 
 
 	@Before
 	public void setUp() throws Exception {
+		client = ClientBuilder.newClient(new ClientConfig()
+		//.register(MyClientResponseFilter.class)
+		//.register(new AnotherClientFilter())
+				);
 	}
 
 	@Test
 	public void testSetup() {
-		Client client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
 
 		String jsonString = client.target(urlbase)
 				.register(CoreServices.class)
@@ -41,11 +42,6 @@ public class SampleServicesTest {
 
 	@Test
 	public void testGetCharacterizationByType() {
-		Client client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
-
 		String jsonString = client.target(urlbase)
 				.register(CoreServices.class)
 				.path("sample/getCharacterizationByType")
@@ -60,11 +56,7 @@ public class SampleServicesTest {
 
 	@Test
 	public void testSearchSample() {
-		Client client = ClientBuilder.newClient(new ClientConfig()
-		//.register(MyClientResponseFilter.class)
-		//.register(new AnotherClientFilter())
-				);
-
+		
 		SearchSampleForm form = new SearchSampleForm();
 		form.setSampleName("ncl-23");
 		
@@ -80,4 +72,17 @@ public class SampleServicesTest {
 		//assertTrue(jsonString.contains("imaging"));
 	}
 
+	@Test
+	public void testViewDataAvailability() {
+		String jsonString = client.target(urlbase)
+				.register(CoreServices.class)
+				.path("sample/viewDataAvailability")
+				.queryParam("sampleId", "20917507")
+				.request("application/json")
+				.header("some-header", "true")
+				.get(String.class);
+
+		assertNotNull(jsonString);
+		assertTrue(jsonString.contains("surface chemistry"));
+	}
 }
