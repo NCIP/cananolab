@@ -636,6 +636,9 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	}
 
 	protected void setSummaryTab(HttpServletRequest request, int numTabs) {
+		
+		//TODO: watch
+		
 		String tab = (String) getValueFromRequest(request, "tab");
 		// per app scan default tab to all;
 		if (tab == null || tab.equals("ALL")
