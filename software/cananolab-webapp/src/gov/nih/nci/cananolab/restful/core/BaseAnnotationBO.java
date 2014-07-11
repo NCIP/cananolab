@@ -138,11 +138,14 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 	 * @param
 	 * @return
 	 */
-	protected String downloadFile(BaseService service,
+	protected String downloadFile(BaseService service, String fileId,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String fileId = request.getParameter("fileId");
+	//	String fileId = request.getParameter("fileId");
+	
 		FileBean fileBean = service.findFileById(fileId);
+		System.out.println("fileBean.getDomainFile().getUri()"+fileBean.getDomainFile().getUri());
+
 		if (fileBean != null) {
 			if (fileBean.getDomainFile().getUriExternal()) {
 				response.sendRedirect(fileBean.getDomainFile().getUri());
@@ -153,9 +156,12 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
+		
+		
 		if (dFile.exists()) {
 			ExportUtils.prepareReponseForImage(response, fileBean
 					.getDomainFile().getUri());
+		
 
 			InputStream in = null;
 			OutputStream out = null;

@@ -73,64 +73,26 @@
                            </th>
                         </tr>   
                         <tr ng-show="navTree">
-                           
-                           
-                              
-                                 <td ng-class="{'subMenuSecondaryTitleSelected sample': navDetail==0, 'subMenuSecondaryTitle sample':navDetail!=0}"
-                                  onclick="gotoPage('sample.do?dispatch=summaryView&amp;sampleId=20917507&amp;page=0')">
-                                    GENERAL INFO
-                                 </td>
-                              
-                              
-                           
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==0, 'subMenuSecondaryTitleSample':navDetail!=0}"
+                            onclick="gotoPage('#/sample')">
+                              GENERAL INFO
+                           </td>
+
                         </tr>
                         <tr ng-show="navTree">
-                           
-                              
-                                 
-                                 
-                                    
-                                    
-                                       <td ng-class="{'subMenuSecondaryTitleSelected sample': navDetail==1, 'subMenuSecondaryTitle sample':navDetail!=1}" onclick="gotoPage('composition.do?dispatch=summaryView&amp;sampleId=20917507&amp;page=0&amp;tab=ALL')">
-                                          <a class="subMenuSecondary">COMPOSITION</a>
-                                       </td>
-                                    
-                                 
-                              
-                              
-                           
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==1, 'subMenuSecondaryTitleSample':navDetail!=1}" onclick="gotoPage('#/composition')">
+                              COMPOSITION
+                           </td>
                         </tr>
                         <tr ng-show="navTree">
-                           
-                              
-                                 
-                                 
-                                    
-                                    
-                                       <td ng-class="{'subMenuSecondaryTitleSelected sample': navDetail==2, 'subMenuSecondaryTitle sample':navDetail!=2}" onclick="gotoPage('characterization.do?dispatch=summaryView&amp;sampleId=20917507&amp;page=0&amp;tab=ALL')">
-                                          <a class="subMenuSecondary">CHARACTERIZATION</a>
-                                       </td>
-                                    
-                                 
-                              
-                              
-                           
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==2, 'subMenuSecondaryTitleSample':navDetail!=2}" onclick="gotoPage('#/characterization')">
+                              CHARACTERIZATION
+                           </td>
                         </tr>
                         <tr ng-show="navTree">
-                           
-                              
-                                 
-                                 
-                                    
-                                    
-                                       <td ng-class="{'subMenuSecondaryTitleSelected sample': navDetail==3, 'subMenuSecondaryTitle sample':navDetail!=3}" onclick="gotoPage('publication.do?dispatch=summaryView&amp;sampleId=20917507&amp;page=0')">
-                                          <a class="subMenuSecondary">PUBLICATION</a>
-                                       </td>
-                                    
-                                 
-                              
-                              
-                           
+                           <td ng-class="{'subMenuSecondaryTitleSelectedSample': navDetail==3, 'subMenuSecondaryTitleSample':navDetail!=3}" onclick="gotoPage('#/publication')">
+                              PUBLICATION
+                           </td>
                         </tr>     
                         <tr ng-show="navTree">
                            <td class="subMenuFill" height="50">
@@ -393,6 +355,9 @@ src="images/mainMenuSeparator.gif" width="1">
       <script src="scripts/controllers/sampleSearch.js"></script>
       <script src="scripts/controllers/sampleResults.js"></script>
       <script src="scripts/controllers/viewSample.js"></script>
+      <script src="scripts/controllers/composition.js"></script>
+      <script src="scripts/controllers/characterization.js"></script>
+      <script src="scripts/controllers/publication.js"></script>
       <script src="scripts/directives/cellList.js"></script>
       <!-- endbuild --> 
       </div>
