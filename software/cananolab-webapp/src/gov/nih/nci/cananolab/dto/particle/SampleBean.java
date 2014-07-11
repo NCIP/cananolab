@@ -44,7 +44,6 @@ import org.codehaus.jackson.map.annotate.JsonFilter;
  * @author pansu
  *
  */
-@JsonFilter("MyFilter")
 public class SampleBean extends SecuredDataBean {
 	private String keywordsStr;
 
