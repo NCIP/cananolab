@@ -1,10 +1,12 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('SampleCtrl', function (navigationFactory,groupsFactory,$rootScope,$scope,$http,$location) {
+  .controller('SampleCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location) {
     $scope.searchSampleForm = {};
-    $rootScope.tabs = navigationFactory.query();
-    $rootScope.groups = groupsFactory.get();
+    $scope.sampleData = sampleService.sampleData;
+    $rootScope.tabs = navigationService.query();
+    $rootScope.groups = groupService.get();
+    $rootScope.navTree=false;
 
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/sample/setup'}).
@@ -39,14 +41,15 @@ var app = angular.module('angularApp')
 
       $http({method: 'POST', url: '/caNanoLab/rest/sample/searchSample',data: $scope.searchSampleForm}).
       success(function(data, status, headers, config) {
-        $rootScope.sampleData = data;
+        // $rootScope.sampleData = data;
+        $scope.sampleData.data = data;
         $location.path("/sampleResults").replace();
 
       }).
       error(function(data, status, headers, config) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
-        $rootScope.sampleData = data;
+        // $rootScope.sampleData = data;
         $scope.loader = false;
       }); 
     };

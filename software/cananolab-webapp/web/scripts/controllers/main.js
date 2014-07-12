@@ -1,12 +1,13 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('MainCtrl', function (navigationFactory, groupsFactory,$rootScope, $scope, $location,$http, $cookieStore, $window, $cookies) {
+  .controller('MainCtrl', function (navigationService, groupService,$rootScope, $scope, $location,$http, $cookieStore, $window, $cookies) {
 
     $scope.userActions = 1;
     $scope.loginShow = 0;
     $scope.authErrors = 0;
-    $rootScope.tabs = navigationFactory.query({'homePage':'true'});
-    $rootScope.groups = groupsFactory.get();
+    $rootScope.navTree=false;
+    $rootScope.tabs = navigationService.query({'homePage':'true'});
+    $rootScope.groups = groupService.get();
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/core/initSetup' }).
         success(function(data, status, headers, config) {

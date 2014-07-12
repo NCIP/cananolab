@@ -97,12 +97,12 @@ td.mainMenu {
     height: 20px;
     background-color: #01045A;
     border-top: 1px solid #88BCE2; border-right: 1px solid #88BCE2; border-bottom: 1px solid #88BCE2;
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
     font-family: arial,helvetica,verdana,sans-serif;
     vertical-align: top;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 td.mainMenuItem {
@@ -110,7 +110,7 @@ td.mainMenuItem {
     background-color: #01045A;
     font-weight: 700;
     /* for the off state of the main menu (top) cells */
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
 }
 
 td:hover.mainMenuItem {
@@ -127,7 +127,7 @@ th.mainMenuItem {
     background-color: #01045A;
     font-weight: 700;
     /* for the off state of the main menu (top) cells */
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
 }
 
 th:hover.mainMenuItem {
@@ -151,11 +151,11 @@ td.footerMenu {
     background-color: #01045A;
     border-top: 1px solid #88BCE2; border-right: 1px solid #88BCE2; border-bottom: 1px solid #88BCE2;
     /* for the basic style of the footer menu (bottom) area */
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 td.footerMenuItem {
@@ -165,7 +165,7 @@ td.footerMenuItem {
     font-weight: 700;
     text-align: center;
     /* for the off state of the footer menu (bottom) cells */
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
 }
 
 td:hover.footerMenuItem {
@@ -200,10 +200,10 @@ td.subMenuPrimaryTitle {
     font-weight: 700;
     /* for the title elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: dark gray */;;;;;;;
-    /* constant: white */;;;;;;;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
+    /* constant: white */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 th.subMenuPrimaryTitle {
@@ -215,10 +215,10 @@ th.subMenuPrimaryTitle {
     text-align: left;
     /* for the title elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: dark gray */;;;;;;;
-    /* constant: white */;;;;;;;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
+    /* constant: white */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 td.subMenuPrimarySubTitle {
@@ -226,9 +226,10 @@ td.subMenuPrimarySubTitle {
     padding: 5px;
     background-color: #0089bb; color: #fff /* constant: white */;;;;;
     font-weight: 700;
+    nowhitespace: afterproperty;
     nowhitespace: afterproperty; /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: darker gray */;;;;;;;
+    /* constant: darker gray */;;;;;;;;
 }
 
 td.subMenuPrimaryItems {
@@ -237,7 +238,7 @@ td.subMenuPrimaryItems {
     font-weight: 700;
     /* for the items under the sub-menu title elements */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
 }
 
 td.subMenuSecondaryTitleFill {
@@ -248,12 +249,13 @@ td.subMenuSecondaryTitleFill {
     /* for the off state of the cell for the elements (usually common among pages) below the primary items */
     font-family: arial,helvetica,verdana,sans-serif;
     /* darker */
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
 }
 
 td.subMenuCommentText {
     background-color: #01045A; color: #82fffe /* constant: white */;;;;;
     text-align: center;
+    nowhitespace: afterproperty;
     nowhitespace: afterproperty; /* for the off state of the cell for the elements (usually common among pages) below the primary items */
     font-family: arial,helvetica,verdana,sans-serif;
     /* darker */
@@ -268,8 +270,8 @@ td.subMenuSecondaryTitle {
     /* for the off state of the cell for the elements (usually common among pages) below the primary items */
     font-family: arial,helvetica,verdana,sans-serif;
     /* darker */
-    /* constant: white */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: white */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 td:hover.subMenuSecondaryTitle {
@@ -281,8 +283,8 @@ td:hover.subMenuSecondaryTitle {
     /* for the over state of the cell for the elements (usually common among pages) below the primary items */
     font-family: arial,helvetica,verdana,sans-serif;
     /* lighter */
-    /* constant: white */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: white */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
     cursor: pointer;
 }
 
@@ -295,8 +297,8 @@ td.subMenuSecondaryTitleSelected {
     /* for the off state of the cell for the elements (usually common among pages) below the primary items */
     font-family: arial,helvetica,verdana,sans-serif;
     /* white */
-    /* constant: dark gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 td:hover.subMenuSecondaryTitleSelected {
@@ -308,8 +310,8 @@ td:hover.subMenuSecondaryTitleSelected {
     /* for the over state of the cell for the elements (usually common among pages) below the primary items */
     font-family: arial,helvetica,verdana,sans-serif;
     /* lighter */
-    /* constant: white */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: white */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
     cursor: pointer;
 }
 
@@ -329,11 +331,12 @@ td.subMenuFooter {
     background-color: #5c5c5c; color: #82fffe;
     border-top: 1px solid #88BCE2; border-right: 1px solid #88BCE2 /* constant: medium gray */;;;;; border-bottom: 1px solid #88BCE2;
     font-weight: 700;
+    nowhitespace: afterproperty;
     nowhitespace: afterproperty; /* for the last row in the submenu left of the footer menu */
-    /* constant: dark gray */;;;;;;;
-    /* constant: white */;;;;;;;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
+    /* constant: white */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 .footerVersion {
@@ -353,7 +356,7 @@ a:active {
     color: #333;
     text-decoration: underline;
     /* default links */
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
     white-space: nowrap;
 }
 
@@ -372,7 +375,7 @@ a:active.loginText {
     text-decoration: underline;
     /* for help link text not affected by any cascading text styles */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: white*/;;;;;;;
+    /* constant: white*/;;;;;;;;
 }
 
 a:hover {
@@ -385,7 +388,7 @@ a:active.subMenuPrimary {
     color: #5c5c5c;
     text-decoration: none;
     /* for the text links in the primary submenu */
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
     white-space: nowrap;
 }
 
@@ -399,7 +402,7 @@ a:active.subMenuSecondary {
     background-color: #82fffe /* lighter */;;;;; color: #01045a;
     text-decoration: none;
     /* for the text links under the secondary submenu (quick links area) */
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
     white-space: nowrap;
 }
 
@@ -414,7 +417,7 @@ a:active.mainMenuLink {
     color: #82fffe;
     text-decoration: none;
     /* for the text links in the main menu */
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
     white-space: nowrap;
 }
 
@@ -428,14 +431,14 @@ a:active.footerMenuLink {
     color: #82fffe;
     text-decoration: none;
     /* for the text links at the top of the footer */
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
     white-space: nowrap;
 }
 
 a:hover.footerMenuLink {
     color: #fff;
     /* for the text links at the top of the footer */
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
     white-space: nowrap;
 }
 
@@ -491,7 +494,8 @@ input.actionButton {
     /* constant: dark gray */;;;;;
     /* constant: medium gray */;;;;;;
     nowhitespace: afterproperty;
-    nowhitespace: afterproperty
+    nowhitespace: afterproperty;
+    nowhitespace: afterproperty;
 }
 
 input.noBorderButton {
@@ -517,10 +521,11 @@ SIDEBAR BEGINS
     border-top: 1px solid #88BCE2; border-right: 1px solid #88BCE2 /* constant: medium gray */;;;;; border-bottom: 1px solid #88BCE2; border-left: 1px solid #88BCE2;
     /* for the individual sidebar sections */
     font-family: arial,helvetica,verdana,sans-serif;
-    nowhitespace: afterproperty; /* constant: light gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    nowhitespace: afterproperty;
+    nowhitespace: afterproperty; /* constant: light gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
     .sidebarSection li {
@@ -532,8 +537,8 @@ SIDEBAR BEGINS
     border-right: 1px solid #88BCE2 /* constant: medium gray */;;;;; border-left: 1px solid #88BCE2;
     /* for the individual sidebar sections */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: light gray */;;;;;;;
-    /* constant: medium gray */;;;;;;;
+    /* constant: light gray */;;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
     .sidebarSectionNoTop ul {
@@ -547,7 +552,7 @@ SIDEBAR BEGINS
     background-color: #fff;
     /* for the individual sidebar sections */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: light gray */;;;;;;;
+    /* constant: light gray */;;;;;;;;
     border-collapse: collapse;
 }
 
@@ -565,8 +570,8 @@ td.sidebarTitle {
     font-weight: 700;
     /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: darker gray */;;;;;;;
-    /* constant: white */;;;;;;;
+    /* constant: darker gray */;;;;;;;;
+    /* constant: white */;;;;;;;;
     border: 1px;
 }
 
@@ -577,8 +582,8 @@ th.sidebarTitle {
     font-weight: 700;
     /* for the subtitle elements of the sub menu (left-side) */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: darker gray */;;;;;;;
-    /* constant: white */;;;;;;;
+    /* constant: darker gray */;;;;;;;;
+    /* constant: white */;;;;;;;;
     border: 1px;
 }
 
@@ -617,7 +622,7 @@ h2,
     text-align: center;
     /* for header of page */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
 }
 
 h3,
@@ -627,13 +632,13 @@ h3,
     text-align: left;
     /* for title of page */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: dark gray */;;;;;;;
+    /* constant: dark gray */;;;;;;;;
 }
 
 p,
 .p {
     /* for paragraphs */
-    /* padding-left: 1em; */ ;;;;;;
+    /* padding-left: 1em; */ ;;;;;;;
 }
 
 .bannerHome {
@@ -660,7 +665,7 @@ p,
     font-weight: 700;
     /* for titles of sections inside the content area */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: medium gray */;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 .welcomeContent {
@@ -671,15 +676,6 @@ p,
     line-height: 1.5em;
 }
 
-.contentTitle {
-    padding-left: .2em;
-    background-color: #ccc;
-    font-size: 1.1em; font-weight: 700;
-    /* for title on top of the content area */
-    /* constant: medium gray */;;;;;;;
-    font-family: arial,helvetica,verdana,sans-serif;
-}
-
 .disclaimerTitle {
     padding-left: 1em;
     background-color: #ccc; color: #000;
@@ -687,7 +683,7 @@ p,
     font-weight: 700;
     /* for titles of sections inside the content area */
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: medium gray */;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 .disclaimerContent {
@@ -718,7 +714,7 @@ div.logindiv {
     text-align: left; text-indent: 1em;
     vertical-align: middle;
     font-family: arial,helvetica,verdana,sans-serif;
-    /* constant: medium gray */;;;;;;;
+    /* constant: medium gray */;;;;;;;;
 }
 
 .message {
@@ -735,6 +731,14 @@ div.logindiv {
     border-width: 0;
 }
 
+    .gridtableHomePage th {
+        padding: 5px 30px 10px;
+        font-family: arial,helvetica,verdana,sans-serif;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #88BCE2;
+    }
+
     .gridtableHomePage td {
         padding: 5px 0 5px 5px;
         font-family: arial,helvetica,verdana,sans-serif;
@@ -742,14 +746,6 @@ div.logindiv {
         border-color: #88BCE2;
         border-style: solid;
         vertical-align: top;
-    }
-
-    .gridtableHomePage th {
-        padding: 5px 30px 10px;
-        font-family: arial,helvetica,verdana,sans-serif;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #88BCE2;
     }
 
 th.dataTypeHomePage {
@@ -863,14 +859,14 @@ th.dataTypeHomePage {
 
 img.img {
     /* for images that need a border */
-    border: 1px solid #5c5c5c /* constant: dark gray */;;;;;;;
+    border: 1px solid #5c5c5c /* constant: dark gray */;;;;;;;;
 }
 
 .menuItemText {
     color: #fff;
     text-decoration: none;
     /* for text in a menu bar */
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
     white-space: nowrap;
 }
 
@@ -946,7 +942,7 @@ img.img {
     color: #5F7C7C;
     font-size: .8em; font-weight: 700;
     text-decoration: underline;
-    /* constant: red */;;;;;;;
+    /* constant: red */;;;;;;;;
     cursor: pointer;
 }
 
@@ -988,6 +984,7 @@ img.img {
         top: 0; left: 60px /*position where enlarged image should offset horizontally */;;;;;
         /*CSS for enlarged image on hover*/
         visibility: visible;
+        nowhitespace: afterproperty;
         nowhitespace: afterproperty;
         nowhitespace: afterproperty;
     }
@@ -1033,17 +1030,17 @@ select {
         font-weight: 700
     }
 
+    .submissionView td {
+        padding: 3px;
+        text-align: left;
+        vertical-align: top
+    }
+
     .submissionView th {
         padding: 3px;
         color: #5C5C5C;
         font-weight: 700;
         text-align: left
-    }
-
-    .submissionView td {
-        padding: 3px;
-        text-align: left;
-        vertical-align: top
     }
 
 .subSubmissionView {
@@ -1061,18 +1058,18 @@ select {
         font-weight: 700
     }
 
-    .subSubmissionView td {
-        padding: 3px;
-        text-align: left /*color: #333333;*/;;;;
-        border-width: 0;
-        vertical-align: top
-    }
-
     .subSubmissionView th {
         padding: 3px;
         font-weight: 700;
         text-align: left;
         background: #fff url(../images/shadeactive.gif) top left repeat-x
+    }
+
+    .subSubmissionView td {
+        padding: 3px;
+        text-align: left /*color: #333333;*/;;;;
+        border-width: 0;
+        vertical-align: top
     }
 
 body {
@@ -1106,15 +1103,15 @@ ol {
     border: 0;
 }
 
-    .sampleStatsTable td {
-        padding: 0 5px 0 0;
+    .sampleStatsTable th {
+        padding: 0 3px 0 0;
         border-collapse: collapse;
         border-spacing: 0;
         border: 0;
     }
 
-    .sampleStatsTable th {
-        padding: 0 3px 0 0;
+    .sampleStatsTable td {
+        padding: 0 5px 0 0;
         border-collapse: collapse;
         border-spacing: 0;
         border: 0;
@@ -1198,7 +1195,7 @@ a:active.mainMenuLink.home {
     color: #fff;
     text-decoration: none;
     /* for the text links in the main menu */
-    /* constant: white */;;;;;;;
+    /* constant: white */;;;;;;;;
     white-space: nowrap;
 }
 
@@ -1259,29 +1256,17 @@ a:hover.mainMenuLink.home {
     border: 1px solid rgb(212,212,212)
 }
 
-    .sampleStyle div.ngCell.col6 {
+    .sampleStyle div.ngCell.col4 {
+        padding: 3px;
+        border-left: 1px solid #D4D4D4
+    }
+
+    .sampleStyle div.ngCell.col3 {
         border-left: 1px solid #D4D4D4
     }
 
     .sampleStyle div.ngCell.col2 {
-        padding: 5px;
-        border-left: 1px solid #D4D4D4
-    }
-
-    .sampleStyle div.ngCell.col0 {
-        padding: 5px
-    }
-
-    .sampleStyle div.ngCell.col4 {
-        border-left: 1px solid #D4D4D4
-    }
-
-    .sampleStyle div.ngCell.col1 {
-        border-left: 1px solid #D4D4D4
-    }
-
-    .sampleStyle div.ngCell.col5 {
-        padding: 5px;
+        padding: 3px;
         border-left: 1px solid #D4D4D4
     }
 
@@ -1289,7 +1274,22 @@ a:hover.mainMenuLink.home {
         border-left: 1px solid #D4D4D4
     }
 
-    .sampleStyle div.ngCell.col3 {
+    .sampleStyle div.ngCell.col6 {
+        border-left: 1px solid #D4D4D4;
+        padding: 3px;
+
+    }
+
+    .sampleStyle div.ngCell.col1 {
+        border-left: 1px solid #D4D4D4
+    }
+
+    .sampleStyle div.ngCell.col0 {
+        padding: 3px
+    }
+
+    .sampleStyle div.ngCell.col5 {
+        padding: 3px;
         border-left: 1px solid #D4D4D4
     }
 
@@ -1336,13 +1336,42 @@ td:hover.subMenuSecondaryTitleSelectedSample {
 }
 
 .ngSortButtonUp {
-  top: 0px !important;
-  padding:1px !important;
-  border-color:#fff transparent !important;
+    top: 0px !important;
+    padding: 1px !important;
+    border-color: #fff transparent !important
 }
 
 .ngSortButtonDown {
-  top: -2px !important;
-  padding:1px !important;
-  border-color:#fff transparent !important;
+    top: -2px !important;
+    padding: 1px !important;
+    border-color: #fff transparent !important
 }
+
+.contentTitle {
+    padding-left: .2em;
+    padding: 3px;
+    background-color: #0089BB; color: white;
+    font-size: 1.1em; font-weight: 700
+}
+
+    .contentTitle a.helpText.back {
+        margin-right: 10px;
+        padding-left: 10px;
+        background-color: #fff; color: #000;
+        font-size: 112%; font-weight: bold
+    }
+
+    .contentTitle a.helpText {
+        padding-right: 10px;
+        color: white;
+        text-decoration: none;
+        border-radius: 7px
+    }
+
+table.summaryViewNoGrid {
+    border: 1px solid #0089BB;
+}
+
+    table.summaryViewNoGrid * {
+        border: 0px solid transparent
+    }

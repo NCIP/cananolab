@@ -1,8 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('AuthCtrl', function (navigationService,groupService,$rootScope,$scope,$http) {
-    $scope.auth_cookie="";
+  .controller('ManageSampleCtrl', function (navigationService,groupService,$rootScope,$scope,$http) {
     $rootScope.navTree=false;
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();     

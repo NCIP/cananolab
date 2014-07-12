@@ -53,10 +53,14 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/logout.html',
         controller: 'LogoutCtrl'
       })  
+      .when('/manageSample', {
+       templateUrl: 'views/manageSample.html',
+       controller: 'ManageSampleCtrl'
+      }) 
       .when('/sample', {
        templateUrl: 'views/viewSample.html',
        controller: 'IndSampleCtrl'
-      }) 
+      })       
       .when('/composition', {
        templateUrl: 'views/composition.html',
        controller: 'CompositionCtrl'

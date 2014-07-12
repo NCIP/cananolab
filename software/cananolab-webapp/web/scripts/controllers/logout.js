@@ -7,6 +7,7 @@ var app = angular.module('angularApp')
 		      // this callback will be called asynchronously
 		      // when the response is available
 		      //alert(data);
+		      
 		      $scope.message=data;
 		      $rootScope.groups = null;
 		    	 $location.search('message','You are successfully logged out.').path('/').replace();

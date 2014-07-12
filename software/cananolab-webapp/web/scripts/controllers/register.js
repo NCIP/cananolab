@@ -8,9 +8,10 @@
  * Controller of the angularApp
  */
 angular.module('angularApp')
-  .controller('RegisterCtrl', function (navigationFactory,groupsFactory, $scope, $http) {
-     $rootScope.tabs = navigationFactory.query();
-     $rootScope.groups = groupsFactory.get();
+  .controller('RegisterCtrl', function (navigationService,groupService, $scope, $http) {
+	$rootScope.tabs = navigationService.query();
+	$rootScope.groups = groupService.get();
+	$rootScope.navTree=false;
 
 	$scope.submitData = function(isValid) {
 		$scope.submitted = true;
