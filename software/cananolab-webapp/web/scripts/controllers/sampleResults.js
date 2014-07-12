@@ -73,7 +73,7 @@ var app = angular.module('angularApp')
           {field: 'sampleId', displayName: '', enableCellEdit: false,width:'38px',cellTemplate:'<a href="#/sample?sampleId={{row.getProperty(col.field)}}">View</a>',sortable:false},
           {field: 'sampleName', displayName: 'Sample Name', enableCellEdit: false, width:'140px'},
           {field: 'pointOfContact', displayName: 'Primary Point of Contact',width:'150px', enableCellEdit: false,resizable:true,cellTemplate:'<div ng-bind-html="row.getProperty(col.field)" />'},
-          {field: 'composition', displayName: 'Composition', enableCellEdit: false, width:'107px'},
+          {field: 'composition', displayName: 'Composition', enableCellEdit: false, width:'107px', cellTemplate:'<div grid-list="composition">{{row.getProperty(col.field)}}</div>'},
           {field: 'functions', displayName: 'Functions', enableCellEdit: false, width:'93px',cellTemplate:'<div grid-list="functions">{{row.getProperty(col.field)}}</div>'},
           {field: 'characterizations', displayName: 'Characterizations', enableCellEdit: false, width:'112px', cellTemplate:'<div grid-list="characterizations">{{row.getProperty(col.field)}}</div>'},
           {field: 'dataAvailability', displayName: 'Date Availability', enableCellEdit: false, width:'177px',cellTemplate:'<a href="POPUPMODAL?sampleId={{row.getProperty(col.field)}}">{{row.getProperty(col.field)}}</a>'},
