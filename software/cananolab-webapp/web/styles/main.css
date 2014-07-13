@@ -1383,7 +1383,7 @@ table.summaryViewNoGrid {
 }    
 
 .ngPagerButton { 
-    background-color:#01045A !important;
+    background-color:#0089BB !important;
     border:0px solid;
 }
 
@@ -1400,4 +1400,9 @@ table.summaryViewNoGrid {
 
 .ngPagerFirstBar {
     border-left: 2px solid #fff !important;
+}
+
+
+.btn.back  {
+    margin-right:15px;
 }

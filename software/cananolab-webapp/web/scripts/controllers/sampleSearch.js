@@ -4,10 +4,10 @@ var app = angular.module('angularApp')
   .controller('SampleCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location) {
     $scope.searchSampleForm = {};
     $scope.sampleData = sampleService.sampleData;
-    $rootScope.tabs = navigationService.query();
-    $rootScope.groups = groupService.get();
     $rootScope.navTree=false;
-
+    $rootScope.tabs = navigationService.query();
+    $rootScope.groups = groupService.get();   
+    
     $scope.$on('$viewContentLoaded', function(){
       $http({method: 'GET', url: '/caNanoLab/rest/sample/setup'}).
       success(function(data, status, headers, config) {

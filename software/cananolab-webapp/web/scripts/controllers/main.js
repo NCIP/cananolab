@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('MainCtrl', function (navigationService, groupService,$rootScope, $scope, $location,$http, $cookieStore, $window, $cookies) {
+  .controller('MainCtrl', function (navigationService, groupService,$rootScope, $scope, $location,$http, $route,$cookieStore, $window, $cookies) {
 
     $scope.userActions = 1;
     $scope.loginShow = 0;

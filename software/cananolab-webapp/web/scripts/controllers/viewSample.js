@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('IndSampleCtrl', function (sampleService, navigationService, groupService, $rootScope,$scope,$http,$filter,$routeParams) {
+  .controller('IndSampleCtrl', function (sampleService, getDataAvailability,navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();   
     $scope.sampleData = sampleService.sampleData;
@@ -8,6 +8,10 @@ var app = angular.module('angularApp')
     // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
     $rootScope.navTree = true;
     $rootScope.navDetail = 0;
+
+    $scope.goBack = function() {
+      $location.path("/sampleResults").replace();      
+    };
 
     if ($routeParams.sampleId) {
       $scope.sampleId.data = $routeParams.sampleId;

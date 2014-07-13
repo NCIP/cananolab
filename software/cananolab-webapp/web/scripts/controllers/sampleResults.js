@@ -1,7 +1,7 @@
 'use strict';
 var app = angular.module('angularApp')
 
-  .controller('SampleResultsCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location,$modal,$log) {
+  .controller('SampleResultsCtrl', function (sampleService,navigationService,groupService,$rootScope,$scope,$http,$location,$modal) {
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
@@ -13,7 +13,6 @@ var app = angular.module('angularApp')
     };
 
     $scope.openDataAvailability = function(sampleId) {
-
         var modalInstance = $modal.open({
           templateUrl: 'views/sampleDataAvailability.html',
           controller: 'SampleDataAvailabilityCtrl',
@@ -24,14 +23,11 @@ var app = angular.module('angularApp')
             }
           }
         });
-
-       
     }
 
     if ($scope.sampleData.data==null) {
       $scope.sampleData.data = [];
       $location.path("/searchSample").replace();
-
     }
 
 
@@ -39,6 +35,7 @@ var app = angular.module('angularApp')
         filterText: "",
         useExternalFilter: true
     }; 
+
     $scope.totalServerItems = 0;
     $scope.pagingOptions = {
         pageSizes: [10],
@@ -100,7 +97,6 @@ var app = angular.module('angularApp')
           {field: 'dataAvailability', displayName: 'Date Availability', enableCellEdit: false, width:'177px',cellTemplate:'<a href="" ng-click="openDataAvailability({{row.getProperty('+"'sampleId'"+')}})">{{row.getProperty(col.field)}}</a>'},
           {field: 'createdDate', displayName: 'Created Date', width:'81px', enableCellEdit: false}
           ]     
-
     };
 
    

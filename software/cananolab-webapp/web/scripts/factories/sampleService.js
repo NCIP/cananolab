@@ -1,10 +1,10 @@
 'use strict';
 var app = angular.module('angularApp');
 app.factory("sampleService", function(){
-
-  return {
-  	sampleData: {data: null },
-  	sampleId: {data: null }  	
-   }
+	// Service keeps data search results and current sample in memory to pass between controllers //
+	return {
+		sampleData: {data: null },
+		sampleId: {data: null }  	
+	}
 
 });
