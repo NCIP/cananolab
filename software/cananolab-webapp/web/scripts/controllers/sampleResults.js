@@ -25,11 +25,7 @@ var app = angular.module('angularApp')
           }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-          $scope.selected = selectedItem;
-        }, function () {
-          $log.info('Modal dismissed at: ' + new Date());
-        });        
+       
     }
 
     if ($scope.sampleData.data==null) {
