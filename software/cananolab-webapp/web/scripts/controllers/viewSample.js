@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('IndSampleCtrl', function (sampleService, getDataAvailability,navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
+  .controller('IndSampleCtrl', function (sampleService,navigationService, groupService, $rootScope,$scope,$http,$filter,$location,$routeParams) {
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();   
     $scope.sampleData = sampleService.sampleData;
