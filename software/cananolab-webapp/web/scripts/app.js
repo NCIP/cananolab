@@ -15,7 +15,7 @@ var app = angular.module('angularApp', [
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch','ngGrid']);
+    'ngTouch','ngGrid','ui.bootstrap']);
 
 app.config(function ($routeProvider, $httpProvider) {
   $httpProvider.defaults.withCredentials = true;

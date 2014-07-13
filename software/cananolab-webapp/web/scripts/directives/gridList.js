@@ -8,7 +8,7 @@ var app = angular.module('angularApp')
       {
         return function(scope,element,attrs) 
           {
-            var html = '<div ng-repeat="i in row.entity.'+attrs.gridList+'">{{i}}</div>'
+            var html = '<div ng-repeat="i in row.entity.'+attrs.gridList+' track by $index">{{i}}</div>'
             element.html(html)
             $compile(element.contents())(scope);
           }

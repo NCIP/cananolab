@@ -1375,3 +1375,29 @@ table.summaryViewNoGrid {
     table.summaryViewNoGrid * {
         border: 0px solid transparent
     }
+
+.modal-dialog.modal-lg{
+    position: relative;
+    width: auto;
+    margin: 10px;
+}    
+
+.ngPagerButton { 
+    background-color:#01045A !important;
+    border:0px solid;
+}
+
+.ngPagerFirstTriangle {
+    border-color: transparent #fff transparent transparent !important;
+}
+
+.ngPagerLastTriangle {
+    border-color: transparent transparent transparent #fff !important;
+}
+.ngPagerLastBar {
+    border-left: 2px solid #fff !important;
+}
+
+.ngPagerFirstBar {
+    border-left: 2px solid #fff !important;
+}
