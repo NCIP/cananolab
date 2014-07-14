@@ -57,7 +57,7 @@ public class SimplePublicationSummaryViewBean {
 		try {
 			pubList = new ArrayList<SimplePublicationBean>();
 
-			if (pubBean.getCategory2Publications().lastKey().equals("review")) {
+			if (pubBean.getCategory2Publications().containsKey("review")) {
 
 				for (int i = 0; i < pubBean.getCategory2Publications()
 						.get("review").size(); i++) {
@@ -90,7 +90,7 @@ public class SimplePublicationSummaryViewBean {
 				category2Publications.put("review", pubList);
 			}
 
-			if (pubBean.getCategory2Publications().firstKey().equals("report")) {
+			if (pubBean.getCategory2Publications().containsKey("report")) {
 
 				publicationBean = new SimplePublicationBean();
 				pubList = new ArrayList<SimplePublicationBean>();
@@ -122,6 +122,39 @@ public class SimplePublicationSummaryViewBean {
 
 				}
 				category2Publications.put("report", pubList);
+			}
+			if (pubBean.getCategory2Publications().containsKey("peer review article")) {
+
+				publicationBean = new SimplePublicationBean();
+				pubList = new ArrayList<SimplePublicationBean>();
+
+				for (int i = 0; i < pubBean.getCategory2Publications()
+						.get("peer review article").size(); i++) {
+
+					publicationBean.setDescription(pubBean
+							.getCategory2Publications().get("peer review article").get(i)
+							.getDescription());
+					publicationBean.setDisplayName(pubBean
+							.getCategory2Publications().get("peer review article").get(i)
+							.getDisplayName());
+					publicationBean.setResearchAreas(pubBean
+							.getCategory2Publications().get("peer review article").get(i)
+							.getResearchAreas());
+					publicationBean.setKeywordsDisplayName(pubBean
+							.getCategory2Publications().get("peer review article").get(i)
+							.getKeywordsDisplayName());
+					publicationBean.setKeywordsStr(pubBean
+							.getCategory2Publications().get("peer review article").get(i)
+							.getKeywordsStr());
+					Publication pub = (Publication) pubBean
+							.getCategory2Publications().get("peer review article").get(i)
+							.getDomainFile();
+					publicationBean.setStatus(pub.getStatus());
+
+					pubList.add(publicationBean);
+
+				}
+				category2Publications.put("peer review article", pubList);
 			}
 		} catch (Exception e) {
 			System.out.println("Error while setting the SimplePublicationBean"

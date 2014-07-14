@@ -306,7 +306,8 @@ public class PublicationBean extends FileBean {
 
 	private String getUriDisplayName() {
 		Publication pub = (Publication) domainFile;
-		String link = "publication.do?dispatch=download&fileId=" + pub.getId();
+		String link = "rest/publication/download?fileId=" + pub.getId();
+	//	String link = "publication.do?dispatch=download&fileId=" + pub.getId();
 		if (!StringUtils.isEmpty(pub.getUri())) {
 			if (pub.getUriExternal()) {
 				link = pub.getUri();
