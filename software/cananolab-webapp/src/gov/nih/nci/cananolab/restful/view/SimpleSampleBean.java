@@ -48,7 +48,7 @@ public class SimpleSampleBean {
 	String[] physicoChars;
 	String[] invitroChars;
 
-	Map<String, String> caNanoMINChar;
+	Map<String, String> caNano2MINChar;
 
 	
 	public String[] getInvitroChars() {
@@ -76,11 +76,11 @@ public class SimpleSampleBean {
 	}
 
 	public Map<String, String> getCaNanoMINChar() {
-		return caNanoMINChar;
+		return caNano2MINChar;
 	}
 
 	public void setCaNanoMINChar(Map<String, String> caNanoMINChar) {
-		this.caNanoMINChar = caNanoMINChar;
+		this.caNano2MINChar = caNanoMINChar;
 	}
 
 	
@@ -268,9 +268,12 @@ public class SimpleSampleBean {
 
 		setSampleName(sampleBean.getDomain().getName());
 		
-		this.chemicalAssocs= SampleUtil.getDefaultListFromSessionByType("chemicalAssocs", request.getSession());
+		SortedSet<String> ca = (SortedSet<String>) request.getSession().getServletContext().getAttribute("chemicalAssocs");
+		this.chemicalAssocs = SampleUtil.getStringArrayFromSortedSet(ca);
+				// SampleUtil.getDefaultListFromSessionByType("chemicalAssocs", request.getSession());
 		
-		this.caNanoMINChar = (Map<String, String>) request.getSession().getServletContext()
+		
+		this.caNano2MINChar = (Map<String, String>) request.getSession().getServletContext()
 				.getAttribute("caNano2MINChar");
 		
 		SortedSet<String> pc = (SortedSet<String>) request.getSession().getServletContext().getAttribute("physicoChars");
