@@ -12,6 +12,13 @@ import java.util.Iterator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 
+/**
+ * Class to support sample search view. It has exactly what needs to be displayed as result for
+ * each sample row
+ * 
+ * @author yangs8
+ *
+ */
 public class SimpleSearchSampleBean {
 	
 	long sampleId;
