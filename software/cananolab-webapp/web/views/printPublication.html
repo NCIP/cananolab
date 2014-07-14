@@ -1,28 +1,11 @@
-<table>
+<html>
+<body ng-app="angularApp">
+<table ng-controller="PrintSamplePublicationCtrl">
     <tbody>
     <tr>
         <th scope="col" align="left">
             Sample {{SampleName}} Publication
         </th>
-
-        <td width="30%" align="right">
-            <a id="printLink" class="helpText" ng-href="/caNanoLab/#/printPublication?sampleId={{sampleId}}" target="_blank">Print</a>
-            &nbsp;
-
-
-            <a id="exportLink" class="helpText" ng-href="/caNanoLab/rest/publication/summaryExport?sampleId=20917507&type=all">Export</a>
-            &nbsp;
-
-
-            <a class="helpText" ng-href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/5+-+Managing+Sample+Characterizations#id-5-ManagingSampleCharacterizations-PublicationTasksAssociatedwithaSample')">Help</a>
-            &nbsp;
-
-
-            <a class="helpText" ng-href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
-            &nbsp;
-
-        </td>
-
     </tr>
     </tbody>
 </table>
@@ -41,7 +24,7 @@
                 <a
                         ng-href="javascript:showSummary('{{$index}}', {{publicationCategories.length}})"
                         title="{{type}}"><span>{{type}}</span> </a>
-                <a ng-href="printWindow = window.open('{{printUrl}}&type={{type}}','printWindow', 'top=50,left=50,width=600,height=600,resizable=yes,menubar=yes,scrollbars=yes')"
+                <a ng-href="javascript:printPage('${printUrl}&type={{type}}')"
                    id="printUrl${{$index}}" style="display: none;"></a>
                 <a ng-href="${exportUrl}&type={{type}}" id="exportUrl{{$index}}"
                    style="display: none;"></a>
@@ -132,3 +115,6 @@
         </td>
     </tr>
 </table>
+<script src="scripts/controllers/printSamplePublication.js"></script>
+</body>
+</html>
