@@ -4,10 +4,7 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -194,24 +191,6 @@ public class SimpleSampleBean {
 
 	public void setChemicalAssocs(String[] chemicalAssocs) {
 		this.chemicalAssocs = chemicalAssocs;
-	}
-
-	public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
-
-		if (sampleBean == null)
-			return;
-		setSampleId(sampleBean.getDomain().getId());
-		setSampleName(sampleBean.getDomain().getName());
-		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
-		setComposition(sampleBean.getDomain().getSampleComposition()
-				.getSample().getName());
-		setFunctions(sampleBean.getFunctionClassNames());
-		setCharacterizations(sampleBean.getCharacterizationClassNames());
-		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-
-		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
-				.getCreatedDate());
-
 	}
 
 	public void transferSampleBeanForSummaryView(SampleBean sampleBean) {
