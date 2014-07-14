@@ -13,11 +13,16 @@ import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
+
+
 /**
- * SimpleSampleBean to hold a subset of the data in SampleBean for display on web page.
+ * SimpleSampleBean to hold a subset of the data in SampleBean for display on
+ * web page.
  * 
  * @author yangs8
- *
+ * 
  */
 public class SimpleSampleBean {
 	long sampleId;
@@ -28,26 +33,34 @@ public class SimpleSampleBean {
 	String[] characterizations;
 	String dataAvailability;
 	Date createdDate;
-	
+
 	String keywords;
-	
-	public Map<String, String> pointOfContactInfo;
+	MultiMap pointOfContactMap = new MultiValueMap();
+
 	long pocBeanDomainId;
-	
-	String[] availableEntityNames; 
-	
+
+	String[] availableEntityNames;
+
 	String caNanoLabScore;
-	String mincharScore;	
-	
+	String mincharScore;
+
 	String[] chemicalAssocs;
 	String[] physicoChars;
 	String[] invitroChars;
-	
+
 	Map<String, String> caNanoMINChar;
-	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
+
 	
 	public String[] getInvitroChars() {
 		return invitroChars;
+	}
+
+	public MultiMap getPointOfContactMap() {
+		return pointOfContactMap;
+	}
+
+	public void setPointOfContactMap(MultiMap pointOfContactMap) {
+		this.pointOfContactMap = pointOfContactMap;
 	}
 
 	public void setInvitroChars(String[] invitroChars) {
@@ -70,15 +83,8 @@ public class SimpleSampleBean {
 		this.caNanoMINChar = caNanoMINChar;
 	}
 
-	public List<PointOfContactBean> getOtherPOCBeans() {
-		return otherPOCBeans;
-	}
-
-	public void setOtherPOCBeans(List<PointOfContactBean> otherPOCBeans) {
-		this.otherPOCBeans = otherPOCBeans;
-	}
 	
-		public String getComposition() {
+	public String getComposition() {
 		return composition;
 	}
 
@@ -86,7 +92,7 @@ public class SimpleSampleBean {
 		this.composition = composition;
 	}
 
-		public long getPocBeanDomainId() {
+	public long getPocBeanDomainId() {
 		return pocBeanDomainId;
 	}
 
@@ -101,7 +107,7 @@ public class SimpleSampleBean {
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
-	
+
 	public long getSampleId() {
 		return sampleId;
 	}
@@ -158,14 +164,6 @@ public class SimpleSampleBean {
 		this.createdDate = createdDate;
 	}
 
-	public Map<String, String> getPointOfContactInfo() {
-		return pointOfContactInfo;
-	}
-
-	public void setPointOfContactInfo(Map<String, String> pointOfContactInfo) {
-		this.pointOfContactInfo = pointOfContactInfo;
-	}
-
 	public String[] getAvailableEntityNames() {
 		return availableEntityNames;
 	}
@@ -173,7 +171,6 @@ public class SimpleSampleBean {
 	public void setAvailableEntityNames(String[] availableEntityNames) {
 		this.availableEntityNames = availableEntityNames;
 	}
-	
 
 	public String getCaNanoLabScore() {
 		return caNanoLabScore;
@@ -200,45 +197,75 @@ public class SimpleSampleBean {
 	}
 
 	public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
-		
-		if (sampleBean == null) return;
+
+		if (sampleBean == null)
+			return;
 		setSampleId(sampleBean.getDomain().getId());
 		setSampleName(sampleBean.getDomain().getName());
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
-		setComposition(sampleBean.getDomain().getSampleComposition().getSample().getName());
+		setComposition(sampleBean.getDomain().getSampleComposition()
+				.getSample().getName());
 		setFunctions(sampleBean.getFunctionClassNames());
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-		
-		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
-		
+
+		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
+				.getCreatedDate());
+
 	}
-	
+
 	public void transferSampleBeanForSummaryView(SampleBean sampleBean) {
-		
-		if (sampleBean == null) return;
+
+		if (sampleBean == null)
+			return;
+		setSampleId(sampleBean.getDomain().getId());
 		setSampleName(sampleBean.getDomain().getName());
-		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
+		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain()
+				.getCreatedDate());
 		setKeywords(sampleBean.getKeywordsDisplayName());
 		setPocBeanDomainId(sampleBean.getPrimaryPOCBean().getDomain().getId());
-		setOtherPOCBeans(sampleBean.getOtherPOCBeans());
-		
-		pointOfContactInfo = new HashMap<String, String>();
-		pointOfContactInfo.put("contactPerson", sampleBean.getPrimaryPOCBean().getPersonDisplayName());
-		pointOfContactInfo.put("organizationDisplayName", sampleBean.getPrimaryPOCBean().getOrganizationDisplayName());
-		pointOfContactInfo.put("role", sampleBean.getPrimaryPOCBean().getDomain().getRole());
-		pointOfContactInfo.put("primaryContact", sampleBean.getPrimaryPOCBean().getPrimaryStatus().toString());
-		setPointOfContactInfo(pointOfContactInfo);
+
+		if (sampleBean.getPrimaryPOCBean().getDomain().getId() != null) {
+			pointOfContactMap.put("contactPerson", sampleBean
+					.getPrimaryPOCBean().getPersonDisplayName());
+			pointOfContactMap.put("organizationDisplayName", sampleBean
+					.getPrimaryPOCBean().getOrganizationDisplayName());
+			pointOfContactMap.put("role", sampleBean.getPrimaryPOCBean()
+					.getDomain().getRole());
+			pointOfContactMap.put("primaryContact", sampleBean
+					.getPrimaryPOCBean().getPrimaryStatus().toString());
+
+		}
+
+		if (sampleBean.getOtherPOCBeans().size() != 0) {
+			for (PointOfContactBean poc : sampleBean.getOtherPOCBeans()) {
+
+				pointOfContactMap.put("contactPerson",
+						poc.getPersonDisplayName());
+				pointOfContactMap.put("organizationDisplayName",
+						poc.getOrganizationDisplayName());
+				pointOfContactMap.put("role", poc.getDomain().getRole());
+				pointOfContactMap.put("primaryContact", poc.getPrimaryStatus()
+						.toString());
+
+			}
+
+		}
+
+		setPointOfContactMap(pointOfContactMap);
+
 	}
-    
-	public void transferSampleBeanForDataAvailability(SampleBean sampleBean, HttpServletRequest request) {
-		
-		if (sampleBean == null) return;
+
+	public void transferSampleBeanForDataAvailability(SampleBean sampleBean,
+			HttpServletRequest request) {
+
+		if (sampleBean == null)
+			return;
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-		
+
 		this.setCaNanoLabScore(sampleBean.getCaNanoLabScore());
 		this.setMincharScore(sampleBean.getMincharScore());
-		
+
 		setSampleName(sampleBean.getDomain().getName());
 		
 		this.chemicalAssocs= SampleUtil.getDefaultListFromSessionByType("chemicalAssocs", request.getSession());
@@ -251,6 +278,7 @@ public class SimpleSampleBean {
 		SortedSet<String> iv = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invitroChars");
 		this.invitroChars = SampleUtil.getStringArrayFromSortedSet(iv);
 		
+
 	}
-	
+
 }

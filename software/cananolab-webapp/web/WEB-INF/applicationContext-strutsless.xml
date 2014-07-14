@@ -50,8 +50,8 @@
 		class="gov.nih.nci.cananolab.restful.publication.PublicationBO">
 	</bean>
 	
-	<bean id="characterizationBO"
-		class="gov.nih.nci.cananolab.restful.sample.CharacterizationBO">
+	<bean id="compositionBO"
+		class="gov.nih.nci.cananolab.restful.sample.CompositionBO">
 	</bean>
 	
 	

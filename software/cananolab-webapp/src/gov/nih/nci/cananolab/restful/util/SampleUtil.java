@@ -38,6 +38,21 @@ public class SampleUtil {
 		return typeMap;
 	}
 	
+public static String[] getStringArrayFromSortedSet(SortedSet<String> theSet) {
+		
+	if (theSet == null)
+		return null;
+	
+		List<String> newList = new ArrayList<String>();
+		newList.addAll(theSet);
+		String[] stockArr = new String[newList.size()];
+		
+		stockArr = newList.toArray(stockArr);
+		
+		return stockArr;
+	}
+	
+	
 	public static String[] getDefaultListFromSessionByType(String sessionKey, HttpSession session) {
 		
 		if (session == null)

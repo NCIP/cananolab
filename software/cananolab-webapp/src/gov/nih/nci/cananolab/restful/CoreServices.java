@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.cananolab.dto.common.PublicDataCountBean;
+import gov.nih.nci.cananolab.restful.core.CustomPlugInBO;
 import gov.nih.nci.cananolab.restful.core.InitSetup;
 import gov.nih.nci.cananolab.restful.core.TabGenerationBO;
 import gov.nih.nci.cananolab.restful.util.InitSetupUtil;
@@ -38,7 +39,15 @@ public class CoreServices {
 	@Produces ("application/json")
     public Response initSetup(@Context HttpServletRequest httpRequest) {
 		System.out.println("In initSetup");		
+		
+		CustomPlugInBO customPlugInBO = (CustomPlugInBO)applicationContext.getBean("customPlugInBO");
 		ServletContext context = httpRequest.getSession(true).getServletContext();
+		try {
+			customPlugInBO.init(context);
+		} catch(Exception e) {
+			return Response.ok(e.getMessage()).build();
+		}
+		
 		InitSetup.getInstance().setPublicCountInContext(context);
 		return Response.ok(context.getAttribute("publicCounts")).build();
 	}
