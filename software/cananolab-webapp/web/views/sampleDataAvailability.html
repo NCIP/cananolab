@@ -5,6 +5,236 @@
 
 {{availabilityData}}
 
+<table class="summaryViewWithGrid" bgcolor="#F5F5f5" width="100%" align="left">
+	<tr><th colspan="3" align="center" >caNanoLab Availability Score: <c:out value="${sampleBean.caNanoLabScore}"/>&nbsp;&nbsp;
+		MINChar Availability Score: {{availabilityData.mincharScore}}</th></tr>
+	<tr>
+		<td  class="cellLabel" align="center">
+			caNanoLab
+		</td>
+		<td  class="cellLabel" align="center">
+			MINChar
+		</td>
+		<td class="cellLabel" align="center">
+			{{availabilityData.sampleName}}
+		</td>
+	</tr>
+	<tr>
+		<td ></td>
+		<td >agglomeration and/or aggregation </td>
+		<td ></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>crystal structure/crystallinity</td>
+		<td></td>
+	</tr>	
+	<tr>
+		<td>
+			General Sample Information
+		</td>
+		<td></td>
+		<td align="center">
+			<img src="images/icon_checkMark.png"  />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			Sample Composition
+		</td>
+		<td>
+			chemical composition
+		</td>
+		<td align="center">
+			<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='sample composition'" />
+
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;&nbsp;nanomaterial entities
+		</td>		
+		<td>			
+		</td>
+		<td align="center">
+			<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='nanomaterial entities'" />
+
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;&nbsp;functionalizing entities
+		</td>		
+		<td>			
+		</td>
+		<td align="center">
+			<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='functionalizing entities'" />
+
+		</td>
+	</tr>
+	<tr>		
+		<td>
+			&nbsp;&nbsp;chemical associations
+		</td>		
+		<td>			
+		</td>
+		<td align="center">
+			<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='chemical associations'" />			
+
+		</td>
+	</tr>
+
+<!-- 	<c:forEach var="chem" items="${chemicalAssocs}">
+	<tr>		
+		<td>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<c:out value="${chem}"/>
+		</td>		
+		<td>
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${nano eq chem}">${minchar}</c:if>
+			</c:forEach>					
+		</td>
+		<td align="center">
+		<c:forEach var="data" items="${availableEntityNames}">
+		<c:if test="${data eq chem}" >
+		<img src="images/icon_checkMark.png" /></c:if>
+		</c:forEach>
+		</td>
+	</tr>
+	</c:forEach> -->
+	<tr>
+		<td>
+			&nbsp;&nbsp;sample function
+		</td>		
+		<td>
+			
+		</td>
+		<td align="center">
+		<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='sample function'" />
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			Physico-Chemical Characterization
+		</td>
+	</tr>
+	
+		<tr ng-repeat="char in physicoChars" ng-if="char=='surface'">
+			<td>
+				&nbsp;&nbsp;{{char}}
+			</td>
+			<td></td>
+			<td align="center">
+						<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data==char" />
+
+			</td>
+		</tr>
+		<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;surface area</td>
+		<td>
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${nano eq 'surface area '}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td align="center">
+					<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='surface area'" />
+
+		</td>	
+		</tr>
+		<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;surface charge</td>
+		<td>
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${'surface charge' == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td align="center">
+					<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='surface charge'" />
+		</td>	
+		</tr>
+		<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zeta potential</td>
+		<td>
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${'zeta potential' == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td align="center">
+					<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='zeta potential'" />
+		</td>	
+		</tr>
+
+		<tr ng-repeat="char in physicoChars" ng-if="char!='surface'">
+		<td>&nbsp;&nbsp;{{char}}</td>
+		<td>
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${char == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  align="center">
+					<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data==char" />			
+	
+		</td>	
+		</tr>			
+	
+	<tr>
+		<td colspan="3">
+			In Vitro Characterization
+		</td>
+	</tr>
+		<tr ng-repeat="char in availabilityData.invitroChars">
+		<td>&nbsp;&nbsp;{{char}}</td>
+		<td>
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${char == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td align="center">
+
+					<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data==char" />
+
+		</td>	
+		</tr>		
+	<tr>
+		<td colspan="3">
+			In Vivo Characterization
+		</td>
+	</tr>
+		<tr ng-repeat="char in availabilityData.invivoChars">
+		<td>&nbsp;&nbsp;{{char}}</td>
+		<td>
+			<c:forEach var="nano2minchar" items="${caNano2MINChar}" >
+		    		<c:set var="nano" value="${nano2minchar.key }"/>
+					<c:set var="minchar" value="${nano2minchar.value}" />
+					<c:if test="${char == nano}">${minchar}</c:if>
+			</c:forEach>
+		</td>
+		<td  align="center">
+
+					<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data==char" />
+		</td>	
+		</tr>	
+	<tr>
+		<td>
+			Publications
+		</td>
+		<td></td>
+		<td align="center">
+
+					<img src="images/icon_checkMark.png" ng-repeat="data in availabilityData.availableEntityNames" ng-if="data=='publications'" />
+		</td>
+	</tr>	
+</table>
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" ng-click="ok()">Close</button>
