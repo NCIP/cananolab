@@ -54,6 +54,9 @@
 		class="gov.nih.nci.cananolab.restful.sample.CompositionBO">
 	</bean>
 	
+	<bean id="characterizationBO"
+		class="gov.nih.nci.cananolab.restful.sample.CharacterizationBO">
+	</bean>
 	
 	<bean id="customPlugInBO"
 		class="gov.nih.nci.cananolab.restful.core.CustomPlugInBO">
