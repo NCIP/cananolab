@@ -4,16 +4,14 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.util.SampleUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.codehaus.jackson.map.annotate.JsonFilter;
 
 /**
  * SimpleSampleBean to hold a subset of the data in SampleBean for display on web page.
@@ -248,8 +246,10 @@ public class SimpleSampleBean {
 		this.caNanoMINChar = (Map<String, String>) request.getSession().getServletContext()
 				.getAttribute("caNano2MINChar");
 		
-		this.physicoChars = SampleUtil.getDefaultListFromSessionByType("physicoChars", request.getSession());
-		this.invitroChars = SampleUtil.getDefaultListFromSessionByType("invitroChars", request.getSession());
+		SortedSet<String> pc = (SortedSet<String>) request.getSession().getServletContext().getAttribute("physicoChars");
+		this.physicoChars = SampleUtil.getStringArrayFromSortedSet(pc);
+		SortedSet<String> iv = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invitroChars");
+		this.invitroChars = SampleUtil.getStringArrayFromSortedSet(iv);
 		
 	}
 	
