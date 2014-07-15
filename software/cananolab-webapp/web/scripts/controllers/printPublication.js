@@ -3,7 +3,7 @@ angular.module('angularApp',[
     'ngRoute'])
     .controller('PrintSamplePublicationCtrl', function ($rootScope,$scope,$http,$filter,$routeParams) {
         var sampleId = $routeParams.sampleId;
-        $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/summaryView?sampleId=' + sampleId}).
+        $http({method: 'GET', url: '/caNanoLab/rest/publication/summaryView?sampleId=27131907'}).
             success(function(data, status, headers, config) {
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationBean = data.publicationBean;
