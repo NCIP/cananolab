@@ -44,10 +44,27 @@ public class SimpleSampleBean {
 	String[] chemicalAssocs;
 	String[] physicoChars;
 	String[] invitroChars;
+	String[] invivoChars;
 
 	Map<String, String> caNano2MINChar;
 
 	
+	public String[] getInvivoChars() {
+		return invivoChars;
+	}
+
+	public void setInvivoChars(String[] invivoChars) {
+		this.invivoChars = invivoChars;
+	}
+
+	public Map<String, String> getCaNano2MINChar() {
+		return caNano2MINChar;
+	}
+
+	public void setCaNano2MINChar(Map<String, String> caNano2MINChar) {
+		this.caNano2MINChar = caNano2MINChar;
+	}
+
 	public String[] getInvitroChars() {
 		return invitroChars;
 	}
@@ -259,6 +276,8 @@ public class SimpleSampleBean {
 		this.physicoChars = SampleUtil.getStringArrayFromSortedSet(pc);
 		SortedSet<String> iv = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invitroChars");
 		this.invitroChars = SampleUtil.getStringArrayFromSortedSet(iv);
+		SortedSet<String> invivo = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invivoChars");
+		this.invivoChars = SampleUtil.getStringArrayFromSortedSet(invivo);
 		
 
 	}

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.log4j.Logger;
 
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -25,6 +27,7 @@ public class SimpleCharacterizationSummaryViewBean {
 	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
 	Map<String, Object> viewMap = new HashMap<String, Object>();
+	
 	
 	public Map<String, Object> transferData(CharacterizationSummaryViewBean viewBean) {
 		
@@ -46,6 +49,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			
 			for (String charname : namesOfType) {
 				logger.info("Char Name for type: " + charname + " | " + type);
+				
 				SortedSet<CharacterizationBean> charBeans = name2CharBeans.get(charname);
 				
 				for (CharacterizationBean charBean : charBeans) {
@@ -54,6 +58,10 @@ public class SimpleCharacterizationSummaryViewBean {
 					charBeanMapOfType.add(aBeanMap);
 					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());
 				}
+				
+				//add charName - data object to map
+				//charBeanMapOfType.
+				
 			}
 			
 			viewMap.put(type, charBeanMapOfType);
@@ -125,6 +133,10 @@ public class SimpleCharacterizationSummaryViewBean {
 			logger.info("Experiment Configurations size: " + charBean.getExperimentConfigs().size());
 			List<ExperimentConfigBean> expConfigBeans = charBean.getExperimentConfigs();
 			
+			MultiMap technique = new MultiValueMap();
+			MultiMap instruments = new MultiValueMap();
+			MultiMap description = new MultiValueMap();
+			
 			SimpleTableBean expConfigTable = new SimpleTableBean();
 			expConfigTable.addHeader("Technique");
 			expConfigTable.addHeader("Instruments");
@@ -134,6 +146,9 @@ public class SimpleCharacterizationSummaryViewBean {
 				String techDisplayName = (aBean.getTechniqueDisplayName() == null) ? "" : aBean.getTechniqueDisplayName();
 				String instrDisplayNames = (aBean.getInstrumentDisplayNames() == null) ? "" : aBean.getInstrumentDisplayNames().toString();
 				String desc = (aBean.getDomain().getDescription() == null) ? "" : aBean.getDomain().getDescription();
+				
+				
+				
 				
 				List<String> row = new ArrayList<String>();
 				row.add(techDisplayName);
