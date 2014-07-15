@@ -12,7 +12,7 @@ var app = angular.module('angularApp')
     
 
     //$scope.$on('$viewContentLoaded', function(){
-        $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/summaryView?sampleId=' + $scope.sampleId.data}).
+        $http({method: 'GET', url: '/caNanoLab/rest/publication/summaryView?sampleId=' + $scope.sampleId.data}).
             success(function(data, status, headers, config) {
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationBean = data.publicationBean;
