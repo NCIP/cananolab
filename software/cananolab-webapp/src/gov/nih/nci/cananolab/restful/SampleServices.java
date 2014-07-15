@@ -107,7 +107,8 @@ public class SampleServices {
 			SimpleSampleBean view = new SimpleSampleBean();
 			view.transferSampleBeanForSummaryView(sampleBean);
 			
-			return Response.ok(view).build();
+			//return Response.ok(view).build();
+			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
 			return Response.ok("Error while viewing the search results").build();
@@ -150,7 +151,7 @@ public class SampleServices {
 
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
-			Map<String, Object> finalBean = viewBean.transferData(charView);
+			Map<String, Map<String, Object>> finalBean = viewBean.transferData(charView);
 			//Map<String, Object> viewBean = viewBean.transferData(charView);
 			
 			//SimpleSampleBean view = new SimpleSampleBean();
