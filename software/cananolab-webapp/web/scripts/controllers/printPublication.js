@@ -1,8 +1,8 @@
 'use strict';
-angular.module('angularApp')
+angular.module('angularApp',[
+    'ngRoute'])
     .controller('PrintSamplePublicationCtrl', function ($rootScope,$scope,$http,$filter,$routeParams) {
         var sampleId = $routeParams.sampleId;
-
         $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/summaryView?sampleId=' + sampleId}).
             success(function(data, status, headers, config) {
                 $scope.publicationCategories = data.publicationCategories;

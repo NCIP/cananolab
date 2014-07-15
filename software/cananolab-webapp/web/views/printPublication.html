@@ -1,6 +1,9 @@
 <html>
+<script src="../bower_components/angular/angular.js"></script>
+
 <body ng-app="angularApp">
-<table ng-controller="PrintSamplePublicationCtrl">
+    <div ng-controller="PrintSamplePublicationCtrl">
+<table>
     <tbody>
     <tr>
         <th scope="col" align="left">
@@ -115,6 +118,8 @@
         </td>
     </tr>
 </table>
-<script src="scripts/controllers/printSamplePublication.js"></script>
+<script src="../scripts/controllers/printPublication.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+</div>
 </body>
 </html>
