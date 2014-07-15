@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
@@ -26,10 +28,10 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
-	Map<String, Object> viewMap = new HashMap<String, Object>();
+	Map<String, Map<String, Object>> viewMap = new HashMap<String, Map<String, Object>>();
 	
 	
-	public Map<String, Object> transferData(CharacterizationSummaryViewBean viewBean) {
+	public Map<String, Map<String, Object>> transferData(CharacterizationSummaryViewBean viewBean) {
 		
 		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
 		if (viewBean == null) return null;
@@ -39,35 +41,47 @@ public class SimpleCharacterizationSummaryViewBean {
 		Map<String, SortedSet<CharacterizationBean>> name2CharBeans = viewBean.getCharName2Characterizations();
 		
 		Set<String> charTypes = viewBean.getCharacterizationTypes();
+		
 		Map<String, SortedSet<String>> charNames = viewBean.getType2CharacterizationNames();
+		
+		//for the outter most map
+		Map<String, Map<String, Object>> charMapByType = new HashMap<String, Map<String, Object>>();
+		
 		
 		for (String type : charTypes) {
 			logger.info("Processing type: " + type);
+			
+			
 			SortedSet<String> namesOfType = charNames.get(type);
 			
-			List<Map<String, Object>> charBeanMapOfType = new ArrayList<Map<String, Object>>();
+			//List<SortedSet<CharacterizationBean>> charBeanMapOfType = new ArrayList<SortedSet<CharacterizationBean>>();
+			
+			SortedMap<String, Object> charsByAssayType = new TreeMap<String, Object>();
+			
 			
 			for (String charname : namesOfType) {
 				logger.info("Char Name for type: " + charname + " | " + type);
 				
 				SortedSet<CharacterizationBean> charBeans = name2CharBeans.get(charname);
+				//Map<String, Object> charBeans = new HashMap<String, Object>();
+				
+				List<Object> charBeansByCharName = new ArrayList<Object>();
 				
 				for (CharacterizationBean charBean : charBeans) {
 					logger.info("Proccessing char bean: " + charBean.getCharacterizationName());
 					Map<String, Object> aBeanMap = tranferCharacterizationBeanData(charBean);
-					charBeanMapOfType.add(aBeanMap);
+					charBeansByCharName.add(aBeanMap);
 					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());
 				}
-				
-				//add charName - data object to map
-				//charBeanMapOfType.
+				charsByAssayType.put(charname, charBeansByCharName);
 				
 			}
 			
-			viewMap.put(type, charBeanMapOfType);
-			
+			charMapByType.put(type, charsByAssayType);
 			logger.info("End of Processing type: " + type);
 		}		
+		
+		viewMap = charMapByType;
 		
 		return viewMap;
 	}
@@ -87,6 +101,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		String charName = charBean.getCharacterizationName();
 		String charType = charBean.getCharacterizationType();
 	
+		//Assay Type
 		if (charObj.getAssayType() != null && charObj.getAssayType().length() > 0) {
 			logger.info(charObj.getAssayType());
 			charBeanMap.put("Assay Type", charObj.getAssayType());
@@ -95,22 +110,26 @@ public class SimpleCharacterizationSummaryViewBean {
 			charBeanMap.put("Assay Type", charName);
 		}
 		
+		//Point of Contacts
 		String pocName = charBean.getPocBean().getDisplayName();
 		if (pocName != null && pocName.length() > 0) {
 			logger.info("Point of Contact: " + pocName);
 			charBeanMap.put("Point of Contact", pocName);
 		}
 		
+		//Characterization Date
 		if (charBean.getDateString().length() > 0) {
 			logger.info("Characterization Date: " + charBean.getDateString());
 			charBeanMap.put("Characterization Date", charBean.getDateString());
 		}
 		
+		//Protocol		
 		if (charBean.getProtocolBean().getDisplayName().length() > 0) {
 			logger.info("Protocol: " + charBean.getProtocolBean().getDisplayName());
 			charBeanMap.put("Protocol", charBean.getProtocolBean().getDisplayName());
 		}
 		
+		//What is this?
 		if (charBean.isWithProperties()) {
 			
 			logger.info("======== Details go here ================ ");
@@ -120,121 +139,166 @@ public class SimpleCharacterizationSummaryViewBean {
 			charBeanMap.put("detailPage", detailPage);
 		}
 		
+		//Design Description
 		String desigMethodsDesc = charObj.getDesignMethodsDescription().trim();
 		if (desigMethodsDesc.length() > 0) {
 			logger.info("Design Description: " + desigMethodsDesc);
 			charBeanMap.put("Design Description", desigMethodsDesc);
-		} else {
-			logger.info("Design Description: N/A");
-			charBeanMap.put("Design Description", "N/A");
-		}
+		} 
 		
-		if (charBean.getExperimentConfigs().size() > 0) {
-			logger.info("Experiment Configurations size: " + charBean.getExperimentConfigs().size());
-			List<ExperimentConfigBean> expConfigBeans = charBean.getExperimentConfigs();
-			
-			MultiMap technique = new MultiValueMap();
-			MultiMap instruments = new MultiValueMap();
-			MultiMap description = new MultiValueMap();
-			
-			SimpleTableBean expConfigTable = new SimpleTableBean();
-			expConfigTable.addHeader("Technique");
-			expConfigTable.addHeader("Instruments");
-			expConfigTable.addHeader("Description");
-			
-			for (ExperimentConfigBean aBean : expConfigBeans) {
-				String techDisplayName = (aBean.getTechniqueDisplayName() == null) ? "" : aBean.getTechniqueDisplayName();
-				String instrDisplayNames = (aBean.getInstrumentDisplayNames() == null) ? "" : aBean.getInstrumentDisplayNames().toString();
-				String desc = (aBean.getDomain().getDescription() == null) ? "" : aBean.getDomain().getDescription();
-				
-				
-				
-				
-				List<String> row = new ArrayList<String>();
-				row.add(techDisplayName);
-				row.add(instrDisplayNames);
-				row.add(desc);
-				expConfigTable.addRow(row);
-				
-				logger.info("Tech display name: " + aBean.getTechniqueDisplayName());
-				
-				
-				String[] instDisName = aBean.getInstrumentDisplayNames();
-				
-				if (instDisName != null && instDisName.length > 0) {
-					logger.info("Instrument dis name: " + instDisName.toString());
-					
-				} 
-				
-				if (aBean.getDomain().getDescription().length() > 0) {
-					logger.info("Domain desc: " + aBean.getDomain().getDescription());
-					
-				}
-				
-			}
-			
-			charBeanMap.put("Experiment Configurations", expConfigTable);
-		}
+		//Experiment Configurations
+		transferExperimentConfigurations(charBeanMap, charBean);
 		
-		if (charBean.getFindings().size() > 0) {
-			logger.info("Characterization Results: " + charBean.getFindings().size());
-			List<FindingBean> findings = charBean.getFindings();
-			
-			for (FindingBean fBean : findings) {
-				List<Row> rows = fBean.getRows();
-				if (rows != null && rows.size() > 0) {
-					logger.info("Data and Conditions:");
-					
-					List<ColumnHeader>  colHeaders = fBean.getColumnHeaders();
-					for (ColumnHeader aH : colHeaders) {
-						logger.info("==Header: " + aH.getDisplayName());
-					}
-					
-					for (Row aRow : rows) {
-						List<TableCell> cells = aRow.getCells();
-						for (TableCell cell : cells) {
-							logger.info("==Val: " + cell.getValue());
-						}
-					}
-				}
-					
-			}
-			
-			for (FindingBean fBean : findings) {
-				List<FileBean> fileBeans = fBean.getFiles(); 
-				if (fileBeans != null && fileBeans.size() > 0) {
-					logger.info("Files: ");
-					
-					for (FileBean fileBean : fileBeans) {
-						if (fileBean.getDomainFile().getUriExternal()) {
-							logger.info("uriExternal: " + fileBean.getDomainFile().getId());
-						} else if (fileBean.isImage()){
-							logger.info("Is image: " + fileBean.getDomainFile().getTitle());
-							
-						} else {
-							logger.info("Have download link here");
-						}
-					}
-					
-					for (FileBean fileBean : fileBeans) {
-						if (fileBean.getKeywordsStr() != null && fileBean.getKeywordsStr().length() > 0) 
-							logger.info("keyword displayname: " + fileBean.getKeywordsDisplayName());
-						
-						if (fileBean.getDomainFile().getDescription().length() > 0)
-							logger.info("File description: " + fileBean.getDescription());
-					}
-				}
-				
-			}
-			
-			
+		//Characterization Results
+		transferCharacterizationResults(charBeanMap, charBean);
 		
-		}
-		if (charBean.getConclusion() != null && charBean.getConclusion().length() > 0)
+		//Analysis and Conclusion
+		if (charBean.getConclusion() != null && charBean.getConclusion().length() > 0) {
 			logger.info("Analysis and Conclusion: " + charBean.getConclusion());
+			charBeanMap.put("Analysis and Conclusion", charBean.getConclusion());
+		}
 		
 		
 		return charBeanMap;
+	}
+	
+	protected void transferExperimentConfigurations(Map<String, Object> charBeanMap, CharacterizationBean charBean) {
+		if (charBean.getExperimentConfigs().size() == 0) 
+			return;
+
+		logger.info("Experiment Configurations size: " + charBean.getExperimentConfigs().size());
+		List<ExperimentConfigBean> expConfigBeans = charBean.getExperimentConfigs();
+
+		MultiMap technique = new MultiValueMap();
+		MultiMap instruments = new MultiValueMap();
+		MultiMap description = new MultiValueMap();
+
+		List<MultiMap> expConfigTable = new ArrayList<MultiMap>();
+
+		for (ExperimentConfigBean aBean : expConfigBeans) {
+			String techDisplayName = (aBean.getTechniqueDisplayName() == null) ? "" : aBean.getTechniqueDisplayName();
+			String instrDisplayNames = (aBean.getInstrumentDisplayNames() == null) ? "" : aBean.getInstrumentDisplayNames().toString();
+			String desc = (aBean.getDomain().getDescription() == null) ? "" : aBean.getDomain().getDescription();
+
+			technique.put("Technique", techDisplayName);
+			instruments.put("Instruments", instrDisplayNames);
+			description.put("Description", desc);
+
+			logger.info("Tech display name: " + aBean.getTechniqueDisplayName());
+		}
+
+		expConfigTable.add(technique);
+		expConfigTable.add(instruments);
+		expConfigTable.add(description);
+
+		charBeanMap.put("Experiment Configurations", expConfigTable);
+
+	}
+	
+	protected List<Object> transferCharacterizationResultsDataAndCondition(FindingBean findingBean) {
+
+		List<Object> findingTables = new ArrayList<Object>();
+
+
+		List<Row> rows = findingBean.getRows();
+
+		if (rows == null || rows.size() == 0)
+			return findingTables;
+
+		logger.info("Data and Conditions:");
+		List<MultiMap> colsOfTable = new ArrayList<MultiMap>();
+
+		List<ColumnHeader>  colHeaders = findingBean.getColumnHeaders();
+		int idx = 0;
+		for (ColumnHeader colHeader : colHeaders) {
+			String colTitle = colHeader.getDisplayName();
+
+			logger.info("==Header: " + colTitle);
+
+			MultiMap aColMap = new MultiValueMap();
+
+			for (Row aRow : rows) {
+				List<TableCell> cells = aRow.getCells();
+				aColMap.put(colTitle, cells.get(idx).getValue());
+			}
+
+			idx++;
+			colsOfTable.add(aColMap);
+		}
+
+		findingTables.add(colsOfTable);
+
+		return findingTables;
+	}
+	
+	protected List<Object> transferCharacterizationResultsFiles (FindingBean findingBean) {
+
+		List<Object> files = new ArrayList<Object>();
+		List<FileBean> fileBeans = findingBean.getFiles(); 
+
+		if (fileBeans == null || fileBeans.size() ==0)
+			return files;
+		
+		logger.debug("Files: ");
+		
+		for (FileBean fileBean : fileBeans) {
+			
+			Map<String, Object> aFile = new HashMap<String, Object>();
+			
+			aFile.put("fileId", fileBean.getDomainFile().getId());
+			if (fileBean.getDomainFile().getUriExternal()) {
+				logger.info("uriExternal: " + fileBean.getDomainFile().getId());
+				//aFile.put("fileId", fileBean.getDomainFile().getId());
+				aFile.put("uri", fileBean.getDomainFile().getUri());
+			} else if (fileBean.isImage()){
+				logger.info("Is image: " + fileBean.getDomainFile().getTitle());
+				aFile.put("title", fileBean.getDomainFile().getTitle());
+				//aFile.put("fileId", fileBean.getDomainFile().getId());
+			} else {
+				logger.info("Have download link here");
+				aFile.put("title", fileBean.getDomainFile().getTitle());
+			}
+			
+			if (fileBean.getKeywordsStr() != null && fileBean.getKeywordsStr().length() > 0) {
+				logger.info("keyword displayname: " + fileBean.getKeywordsDisplayName());
+				aFile.put("keywordsString", fileBean.getKeywordsDisplayName());
+			}
+
+			if (fileBean.getDomainFile().getDescription().length() > 0) {
+				logger.info("File description: " + fileBean.getDescription());
+				aFile.put("description", fileBean.getDescription());
+			}
+			
+			files.add(aFile);
+		}
+		
+		return files;
+	}
+	
+	protected void transferCharacterizationResults(Map<String, Object> charBeanMap, CharacterizationBean charBean) {
+		
+		List<Object> charResults = new ArrayList<Object>();
+		
+		List<FindingBean> findings = charBean.getFindings();
+		
+		
+		for (FindingBean findingBean : findings) {
+			
+			Map<String, List<Object>> oneCharResult = new HashMap<String, List<Object>>();
+			
+			List<Object> dataCondition = transferCharacterizationResultsDataAndCondition(findingBean);
+			if (dataCondition != null && dataCondition.size() > 0)
+				oneCharResult.put("Data and Conditions", dataCondition);
+			
+			List<Object> files = transferCharacterizationResultsFiles(findingBean);
+			if (files != null && files.size() > 0)
+				oneCharResult.put("Files", files);
+			
+
+			charResults.add(oneCharResult);
+		}
+
+		charBeanMap.put("Characterization Results", charResults);
 	}
 
 }
