@@ -1406,3 +1406,10 @@ table.summaryViewNoGrid {
 .btn.back  {
     margin-right:15px;
 }
+
+.backButtonNote {
+    color:#CC0000;
+    font-weight:700;
+    padding:7px 0px 7px 0px;
+    text-align:right;
+}
