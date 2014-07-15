@@ -1382,6 +1382,10 @@ table.summaryViewNoGrid {
     margin: 10px;
 }    
 
+.modal-dialog.modal-sm {
+ width:500px; 
+}
+
 .ngPagerButton { 
     background-color:#0089BB !important;
     border:0px solid;
