@@ -1262,7 +1262,8 @@ a:hover.mainMenuLink.home {
     }
 
     .sampleStyle div.ngCell.col3 {
-        border-left: 1px solid #D4D4D4
+        border-left: 1px solid #D4D4D4;
+        padding: 3px;        
     }
 
     .sampleStyle div.ngCell.col2 {

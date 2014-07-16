@@ -101,13 +101,13 @@ var app = angular.module('angularApp')
       filterOptions: $scope.filterOptions,
       columnDefs:[
           {field: 'sampleId', displayName: '', enableCellEdit: false,width:'38px',cellTemplate:'<a href="#/sample?sampleId={{row.getProperty(col.field)}}">View</a>',sortable:false},
-          {field: 'sampleName', displayName: 'Sample Name', enableCellEdit: false, width:'140px'},
+          {field: 'sampleName', displayName: 'Sample Name', enableCellEdit: false, width:'145px'},
           {field: 'pointOfContact', displayName: 'Primary Point of Contact',width:'150px', enableCellEdit: false,resizable:true,cellTemplate:'<div ng-bind-html="row.getProperty(col.field)" />'},
-          {field: 'composition', displayName: 'Composition', enableCellEdit: false, width:'107px', cellTemplate:'<div grid-list="composition">{{row.getProperty(col.field)}}</div>'},
-          {field: 'functions', displayName: 'Functions', enableCellEdit: false, width:'93px',cellTemplate:'<div grid-list="functions">{{row.getProperty(col.field)}}</div>'},
+          {field: 'composition', displayName: 'Composition', enableCellEdit: false, width:'125px', cellTemplate:'<div grid-list="composition">{{row.getProperty(col.field)}}</div>'},
+          {field: 'functions', displayName: 'Functions', enableCellEdit: false, width:'106px',cellTemplate:'<div grid-list="functions">{{row.getProperty(col.field)}}</div>'},
           {field: 'characterizations', displayName: 'Characterizations', enableCellEdit: false, width:'112px', cellTemplate:'<div grid-list="characterizations">{{row.getProperty(col.field)}}</div>'},
-          {field: 'dataAvailability', displayName: 'Date Availability', enableCellEdit: false, width:'177px',cellTemplate:'<a href="" ng-click="openDataAvailability({{row.getProperty('+"'sampleId'"+')}})">{{row.getProperty(col.field)}}</a>'},
-          {field: 'createdDate', displayName: 'Created Date', width:'81px', enableCellEdit: false}
+          {field: 'dataAvailability', displayName: 'Date Availability', enableCellEdit: false, width:'175px',cellTemplate:'<a href="" ng-click="openDataAvailability({{row.getProperty('+"'sampleId'"+')}})">{{row.getProperty(col.field)}}</a>'},
+          {field: 'createdDate', displayName: 'Created Date', width:'57px', enableCellEdit: false,cellTemplate:"<div>{{row.getProperty(col.field) | date:'shortDate'}}</div>"}
           ]     
     };
 
