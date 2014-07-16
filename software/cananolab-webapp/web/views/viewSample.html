@@ -1,8 +1,8 @@
 <div class="spacer">
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
-        <th align="left" scope="col">{{sampleData}}
-          Sample {{sampleData.sampleName}}
+        <th align="left" scope="col"><!-- {{sampleData}}
+ -->          Sample {{sampleData.sampleName}}
         </th>
         <td align="right" width="30%">
         <button class="btn back btn-xs" ng-click="goBack()">Back</button>
@@ -26,7 +26,7 @@
      <td>
        <table align="left" class="summaryViewNoGrid" width="99%">
          <tr>
-           <th class="cellLabel" scope="row" width="20%">
+           <th valign="top" class="cellLabel" scope="row" width="20%">
              Sample Name
            </th>
            <td>
@@ -34,7 +34,7 @@
            </td>
          </tr>
          <tr>
-           <th class="cellLabel" scope="row" width="20%">
+           <th valign="top" class="cellLabel" scope="row" width="20%">
              Created Date
            </th>
            <td>{{sampleData.createdDate | date:'shortDate'}}
@@ -42,7 +42,7 @@
            </td>
          </tr>
          <tr>
-           <th class="cellLabel" scope="row">
+           <th valign="top" class="cellLabel" scope="row">
              Keywords
            </th>
            <td>
@@ -50,7 +50,7 @@
            </td>
          </tr>
          <tr>
-           <th class="cellLabel" scope="row">
+           <th valign="top" class="cellLabel" scope="row">
              Point of Contact
            </th>
            <td>
@@ -69,20 +69,11 @@
                    Role
                  </th>
                </tr>
-               <tr>
-                 <td>
-                   <p ng-repeat="item in sampleData.pointOfContactMap.primaryContact" ng-bind-html="returnUserReadableBoolean(item)" />
-                 </td>
-                 <td>
-                  <p ng-repeat="item in sampleData.pointOfContactMap.contactPerson" ng-bind-html="item" />
-                   
-                 </td>
-                 <td>
-                  <p ng-repeat="item in sampleData.pointOfContactMap.organizationDisplayName" ng-bind-html="item" />
-                 </td>
-                 <td>
-                  <p ng-repeat="item in sampleData.pointOfContactMap.role" ng-bind-html="item" />
-                 </td>
+               <tr ng-repeat="contact in sampleData.pointOfContactMap.contactPerson track by $index">
+                <td>{{returnUserReadableBoolean(sampleData.pointOfContactMap.primaryContact[$index])}}</td>
+                <td ng-bind-html="sampleData.pointOfContactMap.contactPerson[$index]"></td>
+                <td ng-bind-html="sampleData.pointOfContactMap.organizationDisplayName[$index]"></td>
+                <td>{{sampleData.pointOfContactMap.role[$index]}}</td>
                </tr>
                <tr>
                  <td>
