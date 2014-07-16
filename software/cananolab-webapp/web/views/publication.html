@@ -20,8 +20,17 @@
     <li><a href="#/composition">Composition</a></li>
     <li><a href="#/characterization">Characterization</a></li>
     <li><a href="#/publication">Publication</a></li>
-</ul> <br /> 
+</ul>
+
 <div class="shadetabs" id="summaryTabALL">
+
+
+  <tabset justified="true">
+    <tab heading="All" ng-click="select(-1)"></tab>
+    <tab ng-repeat="p in publicationCategories" heading="{{p}}" ng-click="select({{$index}})"></tab>
+    <!-- <tab heading="Review" ng-click="select(1)"></tab> -->
+  </tabset>
+<!-- 
     <ul>
         <li class="selected">
             <a
@@ -40,9 +49,10 @@
                 <a ng-href="${exportUrl}&type={{type}}" id="exportUrl{{$index}}"
                    style="display: none;"></a>
         </li>
-    </ul>
+    </ul> -->
 </div>
-<table class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="type in publicationCategories">
+<div class="summaryBorder">
+<table  ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="type in publicationCategories">
     <tr>
         <td>
                 <table id="summarySection${{$index}}" class="summaryViewNoGrid"
@@ -126,4 +136,5 @@
         </td>
     </tr>
 </table>
+</div>
 </div>
