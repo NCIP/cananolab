@@ -132,11 +132,18 @@ public class SimpleCharacterizationSummaryViewBean {
 		//What is this?
 		if (charBean.isWithProperties()) {
 			
-			logger.info("======== Details go here ================ ");
-			String detailPage = gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup
-					.getInstance().getDetailPage(charType, charName);
-			logger.info(detailPage);	
-			charBeanMap.put("detailPage", detailPage);
+//			logger.info("======== Details go here ================ ");
+//			String detailPage = gov.nih.nci.cananolab.restful.sample.InitCharacterizationSetup
+//					.getInstance().getDetailPage(charType, charName);
+//			logger.info(detailPage);
+			
+			String phyStateType = charBean.getPhysicalState().getType();
+			
+			
+			if (phyStateType != null && phyStateType.length() > 0)
+				charBeanMap.put("Properties", phyStateType);
+			else
+				charBeanMap.put("Properties", "N/A");
 		}
 		
 		//Design Description

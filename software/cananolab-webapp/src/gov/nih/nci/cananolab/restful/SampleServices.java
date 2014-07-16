@@ -150,7 +150,7 @@ public class SampleServices {
 
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
-			Map<String, Object> finalBean = viewBean.transferData(charView);
+			Map<String, Map<String, Object>> finalBean = viewBean.transferData(charView);
 			//Map<String, Object> viewBean = viewBean.transferData(charView);
 			
 			//SimpleSampleBean view = new SimpleSampleBean();
