@@ -98,7 +98,7 @@ public class CompositionBO extends BaseAnnotationBO {
 	 * @throws Exception
 	 */
 	public CompositionBean summaryPrint(CompositionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+			HttpServletRequest request)
 			throws Exception {
 		// Retrieve compBean from session to avoid re-querying.
 		CompositionBean compBean = (CompositionBean) request.getSession()
@@ -133,7 +133,7 @@ public class CompositionBO extends BaseAnnotationBO {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public String summaryExport(CompositionForm form,
+	public String summaryExport(CompositionForm form, String type,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		// Retrieve compBean from session to avoid re-querying.
@@ -154,7 +154,7 @@ public class CompositionBO extends BaseAnnotationBO {
 		this.filterType(request, compBean);
 
 		// Get sample name for constructing file name.
-		String type = request.getParameter("type");
+	//	String type = request.getParameter("type");
 		
 		//per app scan
 		if (!StringUtils.xssValidate(type)) {

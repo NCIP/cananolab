@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.ui.form.CompositionForm;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -48,7 +49,54 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 			return Response.ok(view).build();
 			
 		} catch (Exception e) {
-			return Response.ok("Error while viewing the publication results").build();
+			return Response.ok("Error while viewing the composition results").build();
+		}
+	}
+	@GET
+	@Path("/summaryPrint")
+	@Produces ("application/json")
+	 public Response summaryPrint(@Context HttpServletRequest httpRequest,  
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+		
+		try { 
+			CompositionForm form = new CompositionForm();
+			form.setSampleId(sampleId);
+
+			CompositionBO compositionBO = 
+					(CompositionBO) applicationContext.getBean("compositionBO");
+
+			CompositionBean compBean = compositionBO.summaryPrint(form, httpRequest);
+			SimpleCompositionBean view = new SimpleCompositionBean();
+			view.transferCompositionBeanForSummaryView(compBean);
+		
+			
+			return Response.ok(view).build();
+			
+		} catch (Exception e) {
+			return Response.ok("Error while printing the file").build();
+		}
+	}
+	
+	@GET
+	@Path("/summaryExport")
+	@Produces ("application/vnd.ms-excel")
+	 public Response summaryExport(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("type") String type){
+		
+		try { 
+			CompositionForm form = new CompositionForm();
+			form.setSampleId(sampleId);
+			
+			
+			CompositionBO compositionBO = 
+					(CompositionBO) applicationContext.getBean("compositionBO");
+
+			 String result = compositionBO.summaryExport(form, type, httpRequest, httpResponse);
+				
+			return Response.ok("").build();
+			
+		} catch (Exception e) {
+			return Response.ok("Error while exporting the file").build();
 		}
 	}
 
