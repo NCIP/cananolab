@@ -4,6 +4,7 @@ var app = angular.module('angularApp')
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();   
     $scope.sampleData = sampleService.sampleData;
+    // $scope.sampleData = {"sampleId":20917507,"sampleName":"NCL-23-1","pointOfContact":null,"composition":null,"functions":null,"characterizations":null,"dataAvailability":null,"createdDate":1152504000000,"keywords":"MAGNEVIST<br>MRI<br>NCL-23","pointOfContactMap":{"organizationDisplayName":["DNT"],"primaryContact":["true"],"role":[""],"contactPerson":[""]},"pocBeanDomainId":20884736,"availableEntityNames":null,"caNanoLabScore":null,"mincharScore":null,"chemicalAssocs":null,"physicoChars":null,"invitroChars":null,"invivoChars":null,"caNano2MINChar":null,"caNanoMINChar":null};
     $scope.sampleId = sampleService.sampleId;
     // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
     $rootScope.navTree = true;
@@ -17,6 +18,12 @@ var app = angular.module('angularApp')
       $scope.sampleId.data = $routeParams.sampleId;
     }
 
+    $scope.returnUserReadableBoolean = function(val) {
+      if (val=='true') {
+        return "Yes";
+      }
+      return "No";
+    }
 
 
 

@@ -1,7 +1,7 @@
 <div class="spacer">
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
-        <th align="left" scope="col">
+        <th align="left" scope="col">{{sampleData}}
           Sample {{sampleData.sampleName}}
         </th>
         <td align="right" width="30%">
@@ -12,8 +12,15 @@
         </td>
       </tr>
     </table>
- <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly</div>    <BR />
-ADD LINKS HERE
+ <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+
+
+<ul class="liNav">
+    <li><a href="#/sample">General Info</a></li>
+    <li><a href="#/composition">Composition</a></li>
+    <li><a href="#/characterization">Characterization</a></li>
+    <li><a href="#/publication">Publication</a></li>
+</ul>
  <table align="left" class="summaryViewNoGrid" summary="layout" width="100%">
    <tr>
      <td>
@@ -64,16 +71,17 @@ ADD LINKS HERE
                </tr>
                <tr>
                  <td>
-                   {{sampleData.pointOfContactInfo.primaryContact}}
+                   <p ng-repeat="item in sampleData.pointOfContactMap.primaryContact" ng-bind-html="returnUserReadableBoolean(item)" />
                  </td>
                  <td>
-                   {{sampleData.pointOfContactInfo.contactPerson}}
+                  <p ng-repeat="item in sampleData.pointOfContactMap.contactPerson" ng-bind-html="item" />
+                   
                  </td>
                  <td>
-                   {{sampleData.pointOfContactInfo.organizationDisplayName}}
+                  <p ng-repeat="item in sampleData.pointOfContactMap.organizationDisplayName" ng-bind-html="item" />
                  </td>
                  <td>
-                   {{sampleData.pointOfContactInfo.role}}
+                  <p ng-repeat="item in sampleData.pointOfContactMap.role" ng-bind-html="item" />
                  </td>
                </tr>
                <tr>
