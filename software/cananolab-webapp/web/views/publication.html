@@ -1,34 +1,26 @@
-<div class="spacer"><BR />
-ADD LINKS HERE
-<table>
-    <tbody>
-    <tr>
-        <th scope="col" align="left">
-            Sample {{SampleName}} Publication
+<div class="spacer">
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
+        <th align="left" scope="col">
+          Sample {{sampleData.data[0].sampleName}} Publication
         </th>
-
-        <td width="30%" align="right">
-            <a id="printLink" class="helpText" ng-href="/caNanoLab/views/printPublication.html?sampleId={{sampleId}}" target="_blank">Print</a>
-            &nbsp;
-
-
-            <a id="exportLink" class="helpText" ng-href="/caNanoLab/rest/publication/summaryExport?sampleId=20917507&type=all">Export</a>
-            &nbsp;
-
-
-            <a class="helpText" ng-href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/5+-+Managing+Sample+Characterizations#id-5-ManagingSampleCharacterizations-PublicationTasksAssociatedwithaSample')">Help</a>
-            &nbsp;
-
-
-            <a class="helpText" ng-href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
-            &nbsp;
-
+        <td align="right" width="30%">
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button>            
+        <a class="helpText" href="javascript:printPage('composition.do?dispatch=summaryPrint&sampleId=42008576')">Print</a> 
+        <a class="helpText" href="/caNanoLab/composition.do?dispatch=summaryExport&sampleId=42008576&type=all">Export</a>         
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
         </td>
-
-    </tr>
-    </tbody>
-</table>
+      </tr>
+    </table>
 <br />
+<ul class="liNav">
+    <li><a href="#/sample">General Info</a></li>
+    <li><a href="#/composition">Composition</a></li>
+    <li><a href="#/characterization">Characterization</a></li>
+    <li><a href="#/publication">Publication</a></li>
+</ul> <br /> 
 <div class="shadetabs" id="summaryTabALL">
     <ul>
         <li class="selected">

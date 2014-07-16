@@ -1418,3 +1418,28 @@ table.summaryViewNoGrid {
     padding:7px 0px 7px 0px;
     text-align:right;
 }
+
+ul.liNav {
+    background-color:#009E2D;
+    list-style:none;
+    height:28px;
+}
+
+ul.liNav li {
+    background-color:#009E2D;
+    margin-top:6px;
+    float:left;
+}
+
+ul.liNav li a  {
+    color:#fff;
+    padding:8px;
+    text-decoration:none;
+    font-weight:700;
+}
+
+
+ul.liNav li a:hover {
+    color:#000;
+    background-color:#fff;
+}
