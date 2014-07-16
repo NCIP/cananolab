@@ -1262,7 +1262,8 @@ a:hover.mainMenuLink.home {
     }
 
     .sampleStyle div.ngCell.col3 {
-        border-left: 1px solid #D4D4D4
+        border-left: 1px solid #D4D4D4;
+        padding: 3px;        
     }
 
     .sampleStyle div.ngCell.col2 {
@@ -1382,6 +1383,10 @@ table.summaryViewNoGrid {
     margin: 10px;
 }    
 
+.modal-dialog.modal-sm {
+ width:500px; 
+}
+
 .ngPagerButton { 
     background-color:#0089BB !important;
     border:0px solid;
@@ -1412,4 +1417,88 @@ table.summaryViewNoGrid {
     font-weight:700;
     padding:7px 0px 7px 0px;
     text-align:right;
+}
+
+ul.liNav {
+    background-color:#009E2D;
+    list-style:none;
+    height:28px;
+}
+
+ul.liNav li {
+    background-color:#009E2D;
+    margin-top:6px;
+    float:left;
+}
+
+ul.liNav li a  {
+    color:#fff;
+    padding:8px;
+    text-decoration:none;
+    font-weight:700;
+}
+
+
+ul.liNav li a:hover {
+    color:#000;
+    background-color:#fff;
+}
+
+
+ul.nav.nav-tabs.nav-justified li a{
+    text-transform:capitalize;
+}
+
+.summaryBorder {
+    border-width:0px 1px 1px 1px;
+    border-color: #ddd;
+    border-style:solid;
+}
+
+.summaryViewNoTop {
+    border:0px solid transparent !important;
+}
+
+.summaryViewNoGrid {
+    border:0px solid red !important;
+
+}
+
+.summaryViewNoGrid td {
+padding:102px;
+}
+
+.summaryViewNoGrid p.poc {
+margin-top:10px;
+padding:4px;
+height:30px;
+text-align:left;
+}
+
+table.invisibleTable  {
+padding:130px !important;
+    margin-left:-6px;
+}
+
+table.invisibleTable td{
+padding-bottom:22px;
+
+}
+
+table.invisibleTable tr th{
+padding-top:3px !important;
+
+}
+table.summaryViewNoGrid tbody{
+   border:0px solid red !important; 
+  }
+.invisibleTable td {
+    padding: 10px;
+margin:10px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.cellLabel {
+padding:5px !important;
 }

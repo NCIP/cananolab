@@ -1,8 +1,8 @@
 <div class="spacer">
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
-        <th align="left" scope="col">
-          Sample {{sampleData.sampleName}}
+        <th align="left" scope="col"><!-- {{sampleData}}
+ -->          Sample {{sampleData.sampleName}}
         </th>
         <td align="right" width="30%">
         <button class="btn back btn-xs" ng-click="goBack()">Back</button>
@@ -12,14 +12,21 @@
         </td>
       </tr>
     </table>
- <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly</div>    <BR />
-ADD LINKS HERE
+ <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+
+
+<ul class="liNav">
+    <li><a href="#/sample">General Info</a></li>
+    <li><a href="#/composition">Composition</a></li>
+    <li><a href="#/characterization">Characterization</a></li>
+    <li><a href="#/publication">Publication</a></li>
+</ul>
  <table align="left" class="summaryViewNoGrid" summary="layout" width="100%">
    <tr>
      <td>
        <table align="left" class="summaryViewNoGrid" width="99%">
          <tr>
-           <th class="cellLabel" scope="row" width="20%">
+           <th valign="top" class="cellLabel" scope="row" width="20%">
              Sample Name
            </th>
            <td>
@@ -27,7 +34,7 @@ ADD LINKS HERE
            </td>
          </tr>
          <tr>
-           <th class="cellLabel" scope="row" width="20%">
+           <th valign="top" class="cellLabel" scope="row" width="20%">
              Created Date
            </th>
            <td>{{sampleData.createdDate | date:'shortDate'}}
@@ -35,7 +42,7 @@ ADD LINKS HERE
            </td>
          </tr>
          <tr>
-           <th class="cellLabel" scope="row">
+           <th valign="top" class="cellLabel" scope="row">
              Keywords
            </th>
            <td>
@@ -43,7 +50,7 @@ ADD LINKS HERE
            </td>
          </tr>
          <tr>
-           <th class="cellLabel" scope="row">
+           <th valign="top" class="cellLabel" scope="row">
              Point of Contact
            </th>
            <td>
@@ -62,19 +69,11 @@ ADD LINKS HERE
                    Role
                  </th>
                </tr>
-               <tr>
-                 <td>
-                   {{sampleData.pointOfContactInfo.primaryContact}}
-                 </td>
-                 <td>
-                   {{sampleData.pointOfContactInfo.contactPerson}}
-                 </td>
-                 <td>
-                   {{sampleData.pointOfContactInfo.organizationDisplayName}}
-                 </td>
-                 <td>
-                   {{sampleData.pointOfContactInfo.role}}
-                 </td>
+               <tr ng-repeat="contact in sampleData.pointOfContactMap.contactPerson track by $index">
+                <td>{{returnUserReadableBoolean(sampleData.pointOfContactMap.primaryContact[$index])}}</td>
+                <td ng-bind-html="sampleData.pointOfContactMap.contactPerson[$index]"></td>
+                <td ng-bind-html="sampleData.pointOfContactMap.organizationDisplayName[$index]"></td>
+                <td>{{sampleData.pointOfContactMap.role[$index]}}</td>
                </tr>
                <tr>
                  <td>
