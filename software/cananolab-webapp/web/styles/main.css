@@ -1461,4 +1461,44 @@ ul.nav.nav-tabs.nav-justified li a{
 
 .summaryViewNoGrid {
     border:0px solid red !important;
+
+}
+
+.summaryViewNoGrid td {
+padding:102px;
+}
+
+.summaryViewNoGrid p.poc {
+margin-top:10px;
+padding:4px;
+height:30px;
+text-align:left;
+}
+
+table.invisibleTable  {
+padding:130px !important;
+    margin-left:-6px;
+}
+
+table.invisibleTable td{
+padding-bottom:22px;
+
+}
+
+table.invisibleTable tr th{
+padding-top:3px !important;
+
+}
+table.summaryViewNoGrid tbody{
+   border:0px solid red !important; 
+  }
+.invisibleTable td {
+    padding: 10px;
+margin:10px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.cellLabel {
+padding:5px !important;
 }
