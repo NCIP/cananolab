@@ -144,7 +144,7 @@ public class SimpleCompositionBean {
 						}
 						if (detailPage.contains("Biopolymer")) {
 							properties = new HashMap<String, Object>();
-							
+							properties.put("Name", nanoMaterialEntity.getBiopolymer().getName());
 							properties.put("Type", nanoMaterialEntity.getBiopolymer().getType());
 							properties.put("Sequence", nanoMaterialEntity.getBiopolymer().getSequence());
 																	
