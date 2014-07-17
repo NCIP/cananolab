@@ -99,4 +99,17 @@ public class SampleServicesTest {
 
 		assertNotNull(jsonString);
 	}
+	@Test
+	public void testSummaryView() {
+		
+		String jsonString = client.target(urlbase)
+				.register(SampleServices.class)
+				.path("sample/view")
+				.queryParam("sampleId", "20917507") 
+				.request("application/json")
+				.header("some-header", "true")
+				.get(String.class);
+
+		assertNotNull(jsonString);
+	}
 }
