@@ -34,6 +34,8 @@ public class SimpleCompositionBean {
 	Map<String, Object> nanomaterialentity;
 
 	List<Map<String, Object>> composingElements;
+	List<Map<String, Object>> fileList;
+	
 	Map<String, Object> functionalizingentity;
 	Map<String, Object> smallMolecule;
 
@@ -105,8 +107,7 @@ public class SimpleCompositionBean {
 		nanoentitiy = new HashMap<String, Object>();
 		if(compBean.getNanomaterialEntities()!=null){
 
-		nanomaterialentity.put("NanoMaterialEntitySize", compBean.getNanomaterialEntities().size());
-		
+				
 		for (String entityType : compBean.getNanoEntityTypes()) {
 			nanoentitiy = new HashMap<String, Object>();
 			for(NanomaterialEntityBean nanoMaterialEntity : compBean.getType2NanoEntities().get(entityType)){
@@ -168,17 +169,17 @@ public class SimpleCompositionBean {
 									.getDomain().getPubChemId());
 							composingElements.add(composingElement);
 						}
-						nanoentitiy.put("Composing Elements", composingElements);
+						nanoentitiy.put("ComposingElements", composingElements);
 			}
-                  
+                  fileList = new ArrayList<Map<String,Object>>();
                   if (nanoMaterialEntity.getFiles() != null) {
-						composingElement.put("FilesSize", nanoMaterialEntity
-								.getFiles().size());
+						
 						for (FileBean file : nanoMaterialEntity
 								.getFiles()) {
 							files = new HashMap<String, Object>();
 
-							files = new HashMap<String, Object>(); 
+							files.put("fileId",file.getDomainFile().getId());
+							files.put("isImage", file.isImage());
 							files.put("ExternalURI",file.getDomainFile
 									  ().getUriExternal().toString()); 
 							files.put("Title", file.getDomainFile().getTitle());
@@ -190,9 +191,10 @@ public class SimpleCompositionBean {
 							files.put("KeyWordDisplayName",file.getKeywordsDisplayName());
 									 
 							files.put("Description",file.getDomainFile().getDescription());
+							fileList.add(files);
 						}
 
-						nanoentitiy.put("Files",files);
+						nanoentitiy.put("Files",fileList);
                   }
 			nanomaterialentity.put(entityType, nanoentitiy);
 				
@@ -204,7 +206,6 @@ public class SimpleCompositionBean {
 		if(compBean.getFunctionalizingEntities()!=null){
 			functionalizingentity = new HashMap<String, Object>();
 			Map<String, Object> function;
-			functionalizingentity.put("FuncEntitySize",compBean.getFunctionalizingEntities().size());
 			
 			for(String entityType : compBean.getFuncEntityTypes()){
 				function = new HashMap<String, Object>();
@@ -217,10 +218,10 @@ public class SimpleCompositionBean {
 					function.put("pubChemDS", funcBean.getPubChemDataSourceName());
 					function.put("Value", funcBean.getValue());
 					function.put("ValueUnit", funcBean.getValueUnit());
-					function.put("Molecular Formula", funcBean.getMolecularFormulaDisplayName());
+					function.put("MolecularFormula", funcBean.getMolecularFormulaDisplayName());
 				    if(funcBean.isWithProperties()){
 				    	properties = new HashMap<String, Object>();
-							  properties.put("With Properties", funcBean.isWithProperties());
+							  properties.put("isWithProperties", funcBean.isWithProperties());
 							  System.out.println("****** Is WIth Properties*****"
 										+ funcBean.isWithProperties());
 								try {
@@ -231,7 +232,7 @@ public class SimpleCompositionBean {
 											+ detailPage);
 									function.put("detailsPage", detailPage);
 									if (detailPage.contains("SmallMolecule")) {
-										properties.put("Alternate Name",
+										properties.put("AlternateName",
 													  funcBean.getSmallMolecule().getAlternateName());
 									}
 								} catch (Exception e) {
@@ -250,9 +251,9 @@ public class SimpleCompositionBean {
 						  Functions.put("withImagingFunction", funcBean.isWithImagingFunction());
 						  Functions.put("withTargettingFunction", funcBean.isWithTargetingFunction());
 						  Functions.put("Modality", func.getImagingFunction().getModality());
-						  Functions.put("Target DisplayNames",func.getTargetDisplayNames());
-						  Functions.put("Function Description", func.getDescription());
-						  Functions.put("Function Description DisplayName", func.getDescriptionDisplayName());
+						  Functions.put("TargetDisplayNames",func.getTargetDisplayNames());
+						  Functions.put("FunctionDescription", func.getDescription());
+						  Functions.put("FunctionDescriptionDisplayName", func.getDescriptionDisplayName());
 						  Functions.put("Type", func.getType()); 
 						  Functions.put("ActivationMethodDisplayName", funcBean.getActivationMethodDisplayName());
 						  Functions.put("Desc", funcBean.getDescription());
@@ -260,14 +261,15 @@ public class SimpleCompositionBean {
 						  }
 						  function.put("Functions", Functions);
 				    }
+				    fileList = new ArrayList<Map<String,Object>>();
 						if(funcBean.getFiles()!=null){
-							composingElement.put("FilesSize", funcBean
-									.getFiles().size());
+							
 							for (FileBean file : funcBean
 									.getFiles()) {
 								files = new HashMap<String, Object>();
 
-								files = new HashMap<String, Object>(); 
+								files.put("fileId",file.getDomainFile().getId());
+								files.put("isImage", file.isImage());
 								files.put("ExternalURI",file.getDomainFile
 										  ().getUriExternal().toString()); 
 								files.put("Title", file.getDomainFile().getTitle());
@@ -279,9 +281,10 @@ public class SimpleCompositionBean {
 								files.put("KeyWordDisplayName",file.getKeywordsDisplayName());
 										 
 								files.put("Description",file.getDomainFile().getDescription());
+								fileList.add(files);
 							}
 
-							function.put("Files",files);
+							function.put("Files",fileList);
 						}
 							  
 				functionalizingentity.put(entityType, function);
@@ -296,13 +299,12 @@ public class SimpleCompositionBean {
 			Map<String, Object> association= new HashMap<String, Object>();
 			Map <String, Object> AssociatedElements = null;
 			
-			chemicalassociation.put("ChemAssocSize", compBean.getChemicalAssociations().size());
 			for(String entityType : compBean.getAssocTypes()){
 				for(ChemicalAssociationBean chemBean : compBean.getType2Assocs().get(entityType)){
 					chemicalassociation.put("AssociationTypes", compBean.getAssocTypes());
 					chemicalassociation.put("AttachmentId",
 					  chemBean.getAttachment().getId());
-					chemicalassociation.put("Bond Type",
+					chemicalassociation.put("BondType",
 					  chemBean.getAttachment().getBondType());
 					chemicalassociation.put("Description",
 					  chemBean.getDescription());
@@ -338,16 +340,17 @@ public class SimpleCompositionBean {
 					  AssociatedElements.put("DomainElementNameB",
 							  chemBean.getAssociatedElementB().getDomainElement().getName());
 				
-					  chemicalassociation.put("Associted Elements", AssociatedElements);
+					  chemicalassociation.put("AssocitedElements", AssociatedElements);
 						
+					  fileList = new ArrayList<Map<String,Object>>();
 						if(chemBean.getFiles()!=null){
-							chemicalassociation.put("FilesSize", chemBean
-									.getFiles().size());
+							
 							for (FileBean file : chemBean
 									.getFiles()) {
-								files = new HashMap<String, Object>();
 
 								files = new HashMap<String, Object>(); 
+								files.put("fileId",file.getDomainFile().getId());
+								files.put("isImage", file.isImage());
 								files.put("ExternalURI",file.getDomainFile
 										  ().getUriExternal().toString()); 
 								files.put("Title", file.getDomainFile().getTitle());
@@ -359,7 +362,8 @@ public class SimpleCompositionBean {
 								files.put("KeyWordDisplayName",file.getKeywordsDisplayName());
 										 
 								files.put("Description",file.getDomainFile().getDescription());
-								chemicalassociation.put("Files",files);
+								fileList.add(files);
+								chemicalassociation.put("Files",fileList);
 							}
 
 							
@@ -374,11 +378,15 @@ public class SimpleCompositionBean {
 		
 		if(compBean.getFiles()!=null){
 			compositionfile = new HashMap<String, Object>();
-			
+			fileList = new ArrayList<Map<String,Object>>();
 			Map <String, Object> comFile = new HashMap<String, Object>();
-			comFile.put("Files Size", compBean.getFiles().size());
+			
 			for(String entityType : compBean.getFileTypes()){
+				
 				for(FileBean file : compBean.getType2Files().get(entityType)){
+					
+				comFile.put("fileId",file.getDomainFile().getId());
+				comFile.put("isImage", file.isImage());
 				comFile.put("ExternalURI",file.getDomainFile
 						  ().getUriExternal().toString()); 
 				comFile.put("Title", file.getDomainFile().getTitle());
@@ -390,9 +398,10 @@ public class SimpleCompositionBean {
 				comFile.put("KeyWordDisplayName",file.getKeywordsDisplayName());
 						 
 				comFile.put("Description",file.getDomainFile().getDescription());
+				fileList.add(comFile);
 					
 				}
-				compositionfile.put(entityType, comFile);
+				compositionfile.put(entityType, fileList);
 			}
 			
 		}
