@@ -28,7 +28,16 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
-	Map<String, Map<String, Object>> viewMap = new HashMap<String, Map<String, Object>>();
+	List<SimpleCharacterizationByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationByTypeBean>();
+	
+	
+	
+	//Map<String, Map<String, Object>> viewMap = new HashMap<String, Map<String, Object>>();
+	
+	
+	
+	//Map<String, Map<String, Object>> charMapByType = new HashMap<String, Map<String, Object>>();
+	
 	
 	
 	public Map<String, Map<String, Object>> transferData(CharacterizationSummaryViewBean viewBean) {
@@ -45,7 +54,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		Map<String, SortedSet<String>> charNames = viewBean.getType2CharacterizationNames();
 		
 		//for the outter most map
-		Map<String, Map<String, Object>> charMapByType = new HashMap<String, Map<String, Object>>();
+		
 		
 		
 		for (String type : charTypes) {
@@ -54,7 +63,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			
 			SortedSet<String> namesOfType = charNames.get(type);
 			
-			//List<SortedSet<CharacterizationBean>> charBeanMapOfType = new ArrayList<SortedSet<CharacterizationBean>>();
+			List<SortedSet<CharacterizationBean>> charBeanMapOfType = new ArrayList<SortedSet<CharacterizationBean>>();
 			
 			SortedMap<String, Object> charsByAssayType = new TreeMap<String, Object>();
 			
@@ -77,7 +86,13 @@ public class SimpleCharacterizationSummaryViewBean {
 				
 			}
 			
-			charMapByType.put(type, charsByAssayType);
+			SimpleCharacterizationByTypeBean charByTypeBean = new SimpleCharacterizationByTypeBean();
+			charByTypeBean.setType(type);
+			charByTypeBean.setCharsByAssayType(charsByAssayType);
+			
+			//charMapByType.put(type, charsByAssayType);
+			
+			
 			logger.info("End of Processing type: " + type);
 		}		
 		
@@ -308,4 +323,14 @@ public class SimpleCharacterizationSummaryViewBean {
 		charBeanMap.put("Characterization Results", charResults);
 	}
 
+	public List<SimpleCharacterizationByTypeBean> getCharByTypeBeans() {
+		return charByTypeBeans;
+	}
+
+	public void setCharByTypeBeans(
+			List<SimpleCharacterizationByTypeBean> charByTypeBeans) {
+		this.charByTypeBeans = charByTypeBeans;
+	}
+
+	
 }
