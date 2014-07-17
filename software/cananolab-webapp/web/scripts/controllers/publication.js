@@ -9,12 +9,10 @@ var app = angular.module('angularApp')
     $rootScope.navTree = true;
     $rootScope.navDetail = 3;
     $scope.publicationCategories=[];
-    // $scope.show0=true;
-    // $scope.show1=true;
-    // $scope.show2=true;
+
     $scope.goBack = function() {
-      $location.path("/sampleResults").replace();      
-    };
+      $location.path("/sampleResults").replace(); 
+      $location.search('sampleId', null);      };
 
     $scope.select = function(tab) {
         for (var x=0; x<$scope.publicationCategories.length;x++) {

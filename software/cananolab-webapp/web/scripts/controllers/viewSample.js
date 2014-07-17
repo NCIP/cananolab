@@ -11,7 +11,8 @@ var app = angular.module('angularApp')
     $rootScope.navDetail = 0;
 
     $scope.goBack = function() {
-      $location.path("/sampleResults").replace();      
+      $location.path("/sampleResults").replace(); 
+      $location.search('sampleId', null);     
     };
 
     if ($routeParams.sampleId) {

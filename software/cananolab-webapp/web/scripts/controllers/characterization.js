@@ -11,8 +11,8 @@ var app = angular.module('angularApp')
     $rootScope.navDetail = 2;  
 
     $scope.goBack = function() {
-      $location.path("/sampleResults").replace();      
-    };
+      $location.path("/sampleResults").replace(); 
+      $location.search('sampleId', null);      };
 
     $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/characterizationView?sampleId=20917507'}).
     // $http({method: 'GET', url: '/caNanoLab/rest/sample/characterizationView?sampleId=' + $scope.sampleId.data}).

@@ -12,8 +12,8 @@ var app = angular.module('angularApp')
     $scope.sampleData = sampleService.sampleData;
 
      $scope.goBack = function() {
-      $location.path("/sampleResults").replace();      
-    };
+      $location.path("/sampleResults").replace(); 
+      $location.search('sampleId', null);      };
 
   });
 
