@@ -315,11 +315,17 @@ public class SimpleCompositionBean {
 						  Functions.put("FunctionDescription", func.getDescription());
 						  Functions.put("FunctionDescriptionDisplayName", func.getDescriptionDisplayName());
 						  Functions.put("Type", func.getType()); 
-						  Functions.put("ActivationMethodDisplayName", funcBean.getActivationMethodDisplayName());
+					//	  Functions.put("ActivationMethodDisplayName", funcBean.getActivationMethodDisplayName());
 						  Functions.put("Desc", funcBean.getDescription());
 						  Functions.put("Description", funcBean.getDescriptionDisplayName());
 						  }
 						  function.put("Functions", Functions);
+				    }
+				    if(funcBean.getActivationMethodDisplayName()!=null){
+				    	function.put("ActivationMethod", funcBean.getActivationMethodDisplayName());
+				    }
+				    if(funcBean.getDescription()!=null){
+				    	function.put("Decription", funcBean.getDescriptionDisplayName());
 				    }
 				    fileList = new ArrayList<Map<String,Object>>();
 						if(funcBean.getFiles()!=null){

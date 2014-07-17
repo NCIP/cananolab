@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.service.BaseService;
+import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionExporter;
@@ -280,6 +281,11 @@ public class CompositionBO extends BaseAnnotationBO {
 		return compService;
 	}
 
+	public java.io.File download(String fileId, HttpServletRequest request)
+			throws Exception {
+		CompositionService service = setServicesInSession(request);
+		return downloadImage(service, fileId, request);
+	}
 	public String download(String fileId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
