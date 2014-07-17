@@ -1410,6 +1410,9 @@ table.summaryViewNoGrid {
 
 .btn.back  {
     margin-right:15px;
+    background-color:#009E2D !important;
+    color:#fff;
+    box-shadow: 0px 0px 0px 1px #fff;    
 }
 
 .backButtonNote {
@@ -1560,5 +1563,25 @@ table.table {
   border-top: 4px solid #fff !important;
 }
 .pager {
+    float:right;
+}
+
+.modal-body a.help {
+    float:right;
+    padding-left:20px;
+    padding-bottom:10px;
+    color:blue;
+}
+ul.pagination li a,ul.pagination li a:hover{
+/*    color:white;
+    background-color:#0089BB;*/
+}
+
+ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
+    color:ccc !important;
+    background-color:#fff !important;
+}
+
+.ng-table-pager {
     float:right;
 }

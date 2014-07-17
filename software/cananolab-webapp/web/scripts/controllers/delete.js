@@ -34,9 +34,11 @@ var app = angular.module('angularApp')
     $scope.tableParams = new ngTableParams(
         {
             page: 1,            // show first page
-            count: 10           // count per page
+            count: 10           // count per page     
         },
         {
+            counts: [], // hide page counts control
+
             total: data.length, // length of data
             getData: function($defer, params) {
             // use build-in angular filter
