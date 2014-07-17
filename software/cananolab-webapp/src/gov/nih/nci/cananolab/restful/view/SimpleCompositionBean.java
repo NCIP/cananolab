@@ -129,14 +129,58 @@ public class SimpleCompositionBean {
 						nanoentitiy.put("detailsPage", detailPage);
 						if (detailPage.contains("Dendrimer")) {
 							properties = new HashMap<String, Object>();
-							properties.put("Branch", compBean
-									.getNanomaterialEntities().get(0)
+							properties.put("Branch", nanoMaterialEntity
 									.getDendrimer().getBranch());
-							properties.put("Generation", compBean
-									.getNanomaterialEntities().get(0)
-									.getDendrimer().getGeneration()
-									.toString());
+							properties.put("Generation", nanoMaterialEntity
+									.getDendrimer().getGeneration());
 						}
+						if (detailPage.contains("Polymer")) {
+							properties = new HashMap<String, Object>();
+							
+							properties.put("Initiator", nanoMaterialEntity.getPolymer().getInitiator());
+							properties.put("isCrossLinked", nanoMaterialEntity.getPolymer().getCrossLinked());
+							properties.put("CrossLinkDegree", nanoMaterialEntity.getPolymer().getCrossLinkDegree());
+							
+						}
+						if (detailPage.contains("Biopolymer")) {
+							properties = new HashMap<String, Object>();
+							
+							properties.put("Type", nanoMaterialEntity.getBiopolymer().getType());
+							properties.put("Sequence", nanoMaterialEntity.getBiopolymer().getSequence());
+																	
+						}
+						if (detailPage.contains("CarbonNanotube")) {
+							properties = new HashMap<String, Object>();
+							
+							properties.put("AverageLength", nanoMaterialEntity.getCarbonNanotube().getAverageLength());
+							properties.put("AverageLengthUnit", nanoMaterialEntity.getCarbonNanotube().getAverageLengthUnit());
+							properties.put("chirality", nanoMaterialEntity.getCarbonNanotube().getChirality());
+							properties.put("Diameter", nanoMaterialEntity.getCarbonNanotube().getDiameter());
+							properties.put("DiameterUnit", nanoMaterialEntity.getCarbonNanotube().getDiameterUnit());
+							properties.put("WalType", nanoMaterialEntity.getCarbonNanotube().getWallType());
+						}
+						if (detailPage.contains("Liposome")) {
+							properties = new HashMap<String, Object>();
+							
+							properties.put("IsPolymarized", nanoMaterialEntity.getLiposome().getPolymerized());
+							properties.put("PloymerName", nanoMaterialEntity.getLiposome().getPolymerName());
+							
+						}
+						if (detailPage.contains("Emulsion")) {
+							properties = new HashMap<String, Object>();
+							
+							properties.put("IsPolymarized", nanoMaterialEntity.getEmulsion().getPolymerized());
+							properties.put("PloymerName", nanoMaterialEntity.getEmulsion().getPolymerName());
+							
+						}
+						if (detailPage.contains("Fullerene")) {
+							properties = new HashMap<String, Object>();
+							
+							properties.put("AverageDiameter", nanoMaterialEntity.getFullerene().getAverageDiameter());
+							properties.put("AverageDiameterUnit", nanoMaterialEntity.getFullerene().getAverageDiameterUnit());
+							properties.put("NoOfCarbons", nanoMaterialEntity.getFullerene().getNumberOfCarbon());
+						}
+						
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -234,6 +278,22 @@ public class SimpleCompositionBean {
 									if (detailPage.contains("SmallMolecule")) {
 										properties.put("AlternateName",
 													  funcBean.getSmallMolecule().getAlternateName());
+									}
+									
+									if (detailPage.contains("Biopolymer")) {
+										properties = new HashMap<String, Object>();
+										
+										properties.put("Type", funcBean.getBiopolymer().getType());
+										properties.put("Sequence", funcBean.getBiopolymer().getSequence());
+																				
+									}
+									if (detailPage.contains("Antibody")) {
+										properties = new HashMap<String, Object>();
+										
+										properties.put("Type", funcBean.getAntibody().getType());
+										properties.put("IsoType", funcBean.getAntibody().getIsotype());
+										properties.put("Species", funcBean.getAntibody().getSpecies());
+																				
 									}
 								} catch (Exception e) {
 									// TODO Auto-generated catch block
