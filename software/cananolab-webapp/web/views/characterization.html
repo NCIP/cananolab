@@ -35,7 +35,7 @@
         <span class="summaryViewHeading">{{key}}</span>
       </th>
   </tr>
-  <tr ng-repeat="(x,y) in data[key]">
+  <tr ng-repeat="x in sort.getUnsorted(data[key])">
       <td>
 
         <table class="summaryViewNoGrid" summary="layout" align="center" bgcolor="#F5F5f5" width="99%">
@@ -46,7 +46,7 @@
                   <table class="summaryViewNoGrid" align="center" bgcolor="#dbdbdb" width="99%">
                     <tr>
                       <th align="left">
-                        {{y}}
+                        {{x}}
                       </th>
                     </tr>
                   </table>

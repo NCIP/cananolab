@@ -15,7 +15,7 @@
       </tr>
     </table>
 <br />
-<table ng-table="tableParams" template-pagination="custom/pager" class="table sample">
+<table ng-table="tableParams" class="table sample">
 	<tr ng-repeat="row in $data" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
 		 <a href="#/sample?sampleId={{row.sampleId}}">View</a>
@@ -43,16 +43,5 @@
 		</td>            
 	</tr>
 </table> 
-
-<script type="text/ng-template" id="custom/pager">
-   <ul class="pager ng-cloak">
-     <li ng-repeat="page in pages"
-           ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
-           ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
-       <button class="btn btn-success" ng-switch-when="prev" ng-click="params.page(page.number)">&laquo; Previous</button>
-       <button class="btn btn-success" ng-switch-when="next" ng-click="params.page(page.number)">Next &raquo;</button>
-     </li>
-   </ul>
-</script> 
 
 </div>
