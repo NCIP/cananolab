@@ -1,19 +1,47 @@
 <div class="spacer">
- <table class="contentTitle" summary="layout" border="0" width="100%">
-   <tbody>
-     <tr>
+    <table border="0" class="contentTitle" summary="layout" width="100%">
+      <tr>
        <th scope="col" align="left">
          Sample Search Results
        </th>
-       <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back</button>
-         <!-- <a class="helpText back" href="/caNanoLab/#/searchSample">Back</a>  -->  <a class="helpText" href=
-         "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SampleSearchResults')">Help</a>   <a class=
-         "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
-       </td>
-     </tr>
-   </tbody>
- </table>
- <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly</div>
- <div class="sampleStyle" ng-grid="gridOptions"></div>
+        <td align="right" width="30%">
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button>            
+        <a class="helpText" href="javascript:printPage('composition.do?dispatch=summaryPrint&sampleId=42008576')">Print</a> 
+        <a class="helpText" href="/caNanoLab/composition.do?dispatch=summaryExport&sampleId=42008576&type=all">Export</a>         
+          <a class="helpText" href=
+          "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+        </td>
+      </tr>
+    </table>
+<br />
+<table ng-table="tableParams" class="table sample">
+	<tr ng-repeat="row in $data" ng-class="{ 'emphasis': $index%2==0}">
+		<td data-title="''" width="5%" class="columnOne">
+		 <a href="#/sample?sampleId={{row.sampleId}}">View</a>
+		</td>
+		<td data-title="'Sample Name'" sortable="'sampleName'" width="17%">
+		 {{row.sampleName}}
+		</td>
+		<td data-title="'Primary Point of Contact'" sortable="'pointOfContact'" ng-bind-html="row.pointOfContact" width="20%">
+
+		</td>                     
+		<td data-title="'Composition'" sortable="'composition'" width="17%">
+		 <div ng-repeat="item in row.composition track by $index">{{item}}</div>
+		</td>            
+		<td data-title="'Functions'" sortable="'functions'" width="15%">
+		 <div ng-repeat="item in row.functions track by $index">{{item}}</div>
+		</td>            
+		<td data-title="'Characterizations'" sortable="'characterizations'" width="14%">
+		 <div ng-repeat="item in row.characterizations track by $index">{{item}}</div>
+		</td>            
+		<td data-title="'Data Availability'" sortable="'dataAvailability'" width="20%">
+		 <a href="" ng-click="openDataAvailability(row.sampleId)">{{row.dataAvailability}}</a>
+		</td>            
+		<td data-title="'Created Date'" sortable="'createdDate'" width="5%">
+		 {{row.createdDate | date:'shortDate'}}
+		</td>            
+	</tr>
+</table> 
+
 </div>

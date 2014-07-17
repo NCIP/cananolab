@@ -72,11 +72,7 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/publication', {
        templateUrl: 'views/publication.html',
        controller: 'PublicationCtrl'
-      })     
-      .when('/delete', {
-        templateUrl: 'views/delete.html',
-        controller: 'DeleteCtrl'
-      })                            
+      })                               
       .otherwise({
         redirectTo: '/'
       });
