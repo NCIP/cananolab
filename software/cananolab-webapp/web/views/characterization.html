@@ -25,11 +25,11 @@
 </div>
   <tabset justified="true">
     <tab heading="All" ng-click="select(-1)"></tab>
-    <tab ng-repeat="(key,val) in data" heading="{{key}}" ng-click="select({{$index}})"></tab>
+    <tab ng-repeat="key in sort.getUnsorted(data)" heading="{{key}}" ng-click="select({{$index}})"></tab>
   </tabset>
 </div>
 
-<table ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="key in notSorted(data)">
+<table ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="key in sort.getUnsorted(data)">
   <tr>
       <th align="left">
         <span class="summaryViewHeading">{{key}}</span>
@@ -46,7 +46,7 @@
                   <table class="summaryViewNoGrid" align="center" bgcolor="#dbdbdb" width="99%">
                     <tr>
                       <th align="left">
-                        {{x}}
+                        {{y}}
                       </th>
                     </tr>
                   </table>
