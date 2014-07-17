@@ -37,6 +37,7 @@ import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -1073,13 +1074,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		return charService;
 	}
 
-	public ActionForward download(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public java.io.File download(String fileId, HttpServletRequest request)
 			throws Exception {
-//		CharacterizationService service = setServicesInSession(request);
-//		return downloadFile(service, mapping, form, request, response);
-		
-		return null;
+		CharacterizationService service = setServicesInSession(request);
+		return downloadImage(service, fileId, request);
+	}
+	
+	public String download(String fileId, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		CharacterizationService service = setServicesInSession(request);
+		return downloadFile(service, fileId, request, response);
 	}
 
 }

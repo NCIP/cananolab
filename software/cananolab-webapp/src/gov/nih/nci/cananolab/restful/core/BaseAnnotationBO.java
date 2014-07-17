@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NotExistException;
 import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.BaseService;
 import gov.nih.nci.cananolab.service.curation.CurationService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -33,9 +34,11 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -156,11 +159,14 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
+				//+ "particles/composition.png");
+				
 		
 		
 		if (dFile.exists()) {
+			
 			ExportUtils.prepareReponseForImage(response, fileBean
-					.getDomainFile().getUri());
+			 .getDomainFile().getUri());
 		
 
 			InputStream in = null;
@@ -173,6 +179,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 				while ((numRead = in.read(bytes)) > 0) {
 					out.write(bytes, 0, numRead);
 				}
+				
+				//return in;
 			} finally {
 				if (in != null)
 					in.close();
@@ -180,14 +188,43 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 					out.close();
 			}
 		} else {
-	//		ActionMessages msgs = new ActionMessages();
-	//		ActionMessage msg = new ActionMessage("error.noFile");
-	//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//	this.saveErrors(request, msgs);
-			throw new FileException("File " + fileBean.getDomainFile().getUri()
-					+ " doesn't exist on the server");
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage("error.noFile");
+//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+////			
+////			List<String> messages = new ArrayList<String>();
+////			messages.add(PropertyUtil.getProperty("sample", "error.noFile"));
+//			
+			//throw new FileException("File " + fileBean.getDomainFile().getUri()
+			//		+ " doesn't exist on the server");
+			throw new FileException(PropertyUtil.getProperty("sample", "error.noFile"));
 		}
+		
 		return null;
+	}
+	
+	protected java.io.File downloadImage(BaseService service, String fileId,
+			HttpServletRequest request) throws Exception {
+
+		FileBean fileBean = service.findFileById(fileId);
+		System.out.println("fileBean.getDomainFile().getUri()"+fileBean.getDomainFile().getUri());
+
+		if (fileBean != null) {
+			if (fileBean.getDomainFile().getUriExternal()) {
+				throw new FileException("UriExternal file download can't be handled in downloadImage method");
+			}
+		}
+		String fileRoot = PropertyUtils.getProperty(
+				Constants.CANANOLAB_PROPERTY, "fileRepositoryDir");
+		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
+				+ fileBean.getDomainFile().getUri());
+				//+ "particles/composition.png");
+
+		if (dFile.exists()) 
+			return dFile;
+		else 
+
+			throw new FileException(PropertyUtil.getProperty("sample", "error.noFile"));
 	}
 
 	/**

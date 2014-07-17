@@ -28,7 +28,7 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
-	List<SimpleCharacterizationByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationByTypeBean>();
+	List<SimpleCharacterizationsByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
 	
 	
 	
@@ -40,7 +40,7 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	
 	
-	public Map<String, Map<String, Object>> transferData(CharacterizationSummaryViewBean viewBean) {
+	public List<SimpleCharacterizationsByTypeBean> transferData(CharacterizationSummaryViewBean viewBean) {
 		
 		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
 		if (viewBean == null) return null;
@@ -63,7 +63,7 @@ public class SimpleCharacterizationSummaryViewBean {
 			
 			SortedSet<String> namesOfType = charNames.get(type);
 			
-			List<SortedSet<CharacterizationBean>> charBeanMapOfType = new ArrayList<SortedSet<CharacterizationBean>>();
+			//List<SortedSet<CharacterizationBean>> charBeanMapOfType = new ArrayList<SortedSet<CharacterizationBean>>();
 			
 			SortedMap<String, Object> charsByAssayType = new TreeMap<String, Object>();
 			
@@ -74,21 +74,24 @@ public class SimpleCharacterizationSummaryViewBean {
 				SortedSet<CharacterizationBean> charBeans = name2CharBeans.get(charname);
 				//Map<String, Object> charBeans = new HashMap<String, Object>();
 				
-				List<Object> charBeansByCharName = new ArrayList<Object>();
+				//List<Object> charBeansByCharName = new ArrayList<Object>();
+				List<List<SimpleCharacterizationUnitBean>> charBeansByCharName = new ArrayList<List<SimpleCharacterizationUnitBean>>();
 				
 				for (CharacterizationBean charBean : charBeans) {
 					logger.info("Proccessing char bean: " + charBean.getCharacterizationName());
-					Map<String, Object> aBeanMap = tranferCharacterizationBeanData(charBean);
-					charBeansByCharName.add(aBeanMap);
+					//Map<String, Object> aBeanMap = tranferCharacterizationBeanData(charBean);
+					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(charBean);
+					charBeansByCharName.add(aBeanUnitList);
 					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());
 				}
 				charsByAssayType.put(charname, charBeansByCharName);
 				
 			}
 			
-			SimpleCharacterizationByTypeBean charByTypeBean = new SimpleCharacterizationByTypeBean();
+			SimpleCharacterizationsByTypeBean charByTypeBean = new SimpleCharacterizationsByTypeBean();
 			charByTypeBean.setType(type);
 			charByTypeBean.setCharsByAssayType(charsByAssayType);
+			charByTypeBeans.add(charByTypeBean);
 			
 			//charMapByType.put(type, charsByAssayType);
 			
@@ -96,9 +99,11 @@ public class SimpleCharacterizationSummaryViewBean {
 			logger.info("End of Processing type: " + type);
 		}		
 		
-		viewMap = charMapByType;
+//		viewMap = charMapByType;
+//		
+//		return viewMap;
 		
-		return viewMap;
+		return charByTypeBeans;
 	}
 	
 	/**
@@ -106,42 +111,64 @@ public class SimpleCharacterizationSummaryViewBean {
 	 * 
 	 * @param charObj
 	 */
-	public Map<String, Object> tranferCharacterizationBeanData(CharacterizationBean charBean) {
+	public List<SimpleCharacterizationUnitBean> tranferCharacterizationBeanData(CharacterizationBean charBean) {
 		if (charBean == null)
 			return null;
 		
 		Map<String, Object> charBeanMap = new HashMap<String, Object>();
+		
+		List<SimpleCharacterizationUnitBean> charBeanUnits = new ArrayList<SimpleCharacterizationUnitBean>();
 		
 		Characterization charObj = charBean.getDomainChar();
 		String charName = charBean.getCharacterizationName();
 		String charType = charBean.getCharacterizationType();
 	
 		//Assay Type
+		
+		SimpleCharacterizationUnitBean aUnit;
 		if (charObj.getAssayType() != null && charObj.getAssayType().length() > 0) {
 			logger.info(charObj.getAssayType());
 			charBeanMap.put("Assay Type", charObj.getAssayType());
+			
+			//aUnit.setName("Assay Type");
+			//aUnit.setValue(charObj.getAssayType());
+			aUnit = new SimpleCharacterizationUnitBean("Assay Type", charObj.getAssayType());
+			charBeanUnits.add(aUnit);
+			
 		} else if (charBean.getCharacterizationType().equals("physico chemical characterization")) {
 			logger.info("Assay Type: " + charName);
 			charBeanMap.put("Assay Type", charName);
+			
+			aUnit = new SimpleCharacterizationUnitBean("Assay Type", charName);
+			charBeanUnits.add(aUnit);
 		}
 		
 		//Point of Contacts
 		String pocName = charBean.getPocBean().getDisplayName();
+
 		if (pocName != null && pocName.length() > 0) {
 			logger.info("Point of Contact: " + pocName);
 			charBeanMap.put("Point of Contact", pocName);
+			
+			aUnit = new SimpleCharacterizationUnitBean("Point of Contact", pocName);
+			charBeanUnits.add(aUnit);
 		}
 		
 		//Characterization Date
 		if (charBean.getDateString().length() > 0) {
 			logger.info("Characterization Date: " + charBean.getDateString());
 			charBeanMap.put("Characterization Date", charBean.getDateString());
+			aUnit = new SimpleCharacterizationUnitBean("Characterization Date", charBean.getDateString());
+			charBeanUnits.add(aUnit);
 		}
 		
 		//Protocol		
 		if (charBean.getProtocolBean().getDisplayName().length() > 0) {
 			logger.info("Protocol: " + charBean.getProtocolBean().getDisplayName());
 			charBeanMap.put("Protocol", charBean.getProtocolBean().getDisplayName());
+			
+			aUnit = new SimpleCharacterizationUnitBean("Protocol", charBean.getProtocolBean().getDisplayName());
+			charBeanUnits.add(aUnit);
 		}
 		
 		//What is this?
@@ -155,10 +182,17 @@ public class SimpleCharacterizationSummaryViewBean {
 			String phyStateType = charBean.getPhysicalState().getType();
 			
 			
-			if (phyStateType != null && phyStateType.length() > 0)
+			if (phyStateType != null && phyStateType.length() > 0) {
 				charBeanMap.put("Properties", phyStateType);
-			else
+			
+				aUnit = new SimpleCharacterizationUnitBean("Properties", phyStateType);
+				charBeanUnits.add(aUnit);
+			}else {
 				charBeanMap.put("Properties", "N/A");
+				
+				aUnit = new SimpleCharacterizationUnitBean("Properties", "N/A");
+				charBeanUnits.add(aUnit);
+			}
 		}
 		
 		//Design Description
@@ -166,25 +200,32 @@ public class SimpleCharacterizationSummaryViewBean {
 		if (desigMethodsDesc.length() > 0) {
 			logger.info("Design Description: " + desigMethodsDesc);
 			charBeanMap.put("Design Description", desigMethodsDesc);
+			
+			aUnit = new SimpleCharacterizationUnitBean("Design Description", desigMethodsDesc);
+			charBeanUnits.add(aUnit);
 		} 
 		
 		//Experiment Configurations
-		transferExperimentConfigurations(charBeanMap, charBean);
+		transferExperimentConfigurations(charBeanMap, charBeanUnits, charBean);
 		
 		//Characterization Results
-		transferCharacterizationResults(charBeanMap, charBean);
+		transferCharacterizationResults(charBeanMap, charBeanUnits, charBean);
 		
 		//Analysis and Conclusion
 		if (charBean.getConclusion() != null && charBean.getConclusion().length() > 0) {
 			logger.info("Analysis and Conclusion: " + charBean.getConclusion());
 			charBeanMap.put("Analysis and Conclusion", charBean.getConclusion());
+			
+			aUnit = new SimpleCharacterizationUnitBean("Analysis and Conclusion", charBean.getConclusion());
+			charBeanUnits.add(aUnit);
 		}
 		
 		
-		return charBeanMap;
+		//return charBeanMap;
+		return charBeanUnits;
 	}
 	
-	protected void transferExperimentConfigurations(Map<String, Object> charBeanMap, CharacterizationBean charBean) {
+	protected void transferExperimentConfigurations(Map<String, Object> charBeanMap, List<SimpleCharacterizationUnitBean> charBeanUnits, CharacterizationBean charBean) {
 		if (charBean.getExperimentConfigs().size() == 0) 
 			return;
 
@@ -214,6 +255,9 @@ public class SimpleCharacterizationSummaryViewBean {
 		expConfigTable.add(description);
 
 		charBeanMap.put("Experiment Configurations", expConfigTable);
+		
+		SimpleCharacterizationUnitBean aUnit = new SimpleCharacterizationUnitBean("Experiment Configurations", expConfigTable);
+		charBeanUnits.add(aUnit);
 
 	}
 	
@@ -297,7 +341,7 @@ public class SimpleCharacterizationSummaryViewBean {
 		return files;
 	}
 	
-	protected void transferCharacterizationResults(Map<String, Object> charBeanMap, CharacterizationBean charBean) {
+	protected void transferCharacterizationResults(Map<String, Object> charBeanMap, List<SimpleCharacterizationUnitBean> charBeanUnits, CharacterizationBean charBean) {
 		
 		List<Object> charResults = new ArrayList<Object>();
 		
@@ -321,14 +365,16 @@ public class SimpleCharacterizationSummaryViewBean {
 		}
 
 		charBeanMap.put("Characterization Results", charResults);
+		SimpleCharacterizationUnitBean aUnit = new SimpleCharacterizationUnitBean("Characterization Results", charResults);
+		charBeanUnits.add(aUnit);
 	}
 
-	public List<SimpleCharacterizationByTypeBean> getCharByTypeBeans() {
+	public List<SimpleCharacterizationsByTypeBean> getCharByTypeBeans() {
 		return charByTypeBeans;
 	}
 
 	public void setCharByTypeBeans(
-			List<SimpleCharacterizationByTypeBean> charByTypeBeans) {
+			List<SimpleCharacterizationsByTypeBean> charByTypeBeans) {
 		this.charByTypeBeans = charByTypeBeans;
 	}
 

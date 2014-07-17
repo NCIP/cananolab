@@ -2,19 +2,26 @@ package gov.nih.nci.cananolab.restful;
 
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
-import gov.nih.nci.cananolab.restful.util.ViewFilterUtil;
+import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -151,7 +158,9 @@ public class SampleServices {
 
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
-			Map<String, Map<String, Object>> finalBean = viewBean.transferData(charView);
+			//Map<String, Map<String, Object>> finalBean = viewBean.transferData(charView);
+			
+			List<SimpleCharacterizationsByTypeBean> finalBean = viewBean.transferData(charView);
 			//Map<String, Object> viewBean = viewBean.transferData(charView);
 			
 			//SimpleSampleBean view = new SimpleSampleBean();
@@ -163,5 +172,25 @@ public class SampleServices {
 			return Response.ok(e.getMessage()).build();
 		}
 		
+	}
+	
+	
+	@GET
+	@Path("/characterizationImage")
+	@Produces("image/png")
+	 public Response characterizationImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	    		@DefaultValue("") @QueryParam("fileId") String fileId){
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			java.io.File file = characterizationBO.download(fileId, httpRequest);
+			
+			return Response.ok(new FileInputStream(file)).build();
+			
+//			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
+//			return Response.ok(result).build();
+		} catch (Exception ioe) {
+			return Response.ok(ioe.getMessage()).build();
+		}
 	}
 }
