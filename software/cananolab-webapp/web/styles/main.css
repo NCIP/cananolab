@@ -1537,3 +1537,7 @@ table.table {
         background-color:#ccc !important; 
         color:#000;
       }      
+
+.pager {
+    float:right;
+}

@@ -28,28 +28,7 @@
   <tabset justified="true">
     <tab heading="All" ng-click="select(-1)"></tab>
     <tab ng-repeat="p in publicationCategories" heading="{{p}}" ng-click="select({{$index}})"></tab>
-    <!-- <tab heading="Review" ng-click="select(1)"></tab> -->
   </tabset>
-<!-- 
-    <ul>
-        <li class="selected">
-            <a
-                    ng-href="javascript:showSummary('ALL', {{publicationCategories.length}})"
-                    title="All"><span>All</span> </a>
-            <a ng-href="${exportUrl}&type=all" id="exportUrlAll"
-               style="display: none;"></a>
-
-        </li>
-        <li ng-repeat="type in publicationCategories">
-                <a
-                        ng-href="javascript:showSummary('{{$index}}', {{publicationCategories.length}})"
-                        title="{{type}}"><span>{{type}}</span> </a>
-                <a ng-href="printWindow = window.open('{{printUrl}}&type={{type}}','printWindow', 'top=50,left=50,width=600,height=600,resizable=yes,menubar=yes,scrollbars=yes')"
-                   id="printUrl${{$index}}" style="display: none;"></a>
-                <a ng-href="${exportUrl}&type={{type}}" id="exportUrl{{$index}}"
-                   style="display: none;"></a>
-        </li>
-    </ul> -->
 </div>
 <div class="summaryBorder">
 <table  ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="type in publicationCategories">

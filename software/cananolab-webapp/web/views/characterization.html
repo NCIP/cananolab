@@ -22,4 +22,40 @@
     <li><a href="#/characterization">Characterization</a></li>
     <li><a href="#/publication">Publication</a></li>
 </ul>
-</div>{{data}}
+</div>
+  <tabset justified="true">
+    <tab heading="All" ng-click="select(-1)"></tab>
+    <tab ng-repeat="(key,val) in data" heading="{{key}}" ng-click="select({{$index}})"></tab>
+  </tabset>
+</div>
+
+<table ng-hide="show{{$index}}" class="summaryViewNoTop" width="100%" summary="layout" ng-repeat="key in notSorted(data)">
+  <tr>
+      <th align="left">
+        <span class="summaryViewHeading">{{key}}</span>
+      </th>
+  </tr>
+  <tr ng-repeat="(x,y) in data[key]">
+      <td>
+
+        <table class="summaryViewNoGrid" summary="layout" align="center" bgcolor="#F5F5f5" width="99%">
+            <tr>
+              <td>
+                
+                  <a name="molecular weight" class="anchorLink"></a>
+                  <table class="summaryViewNoGrid" align="center" bgcolor="#dbdbdb" width="99%">
+                    <tr>
+                      <th align="left">
+                        {{x}}
+                      </th>
+                    </tr>
+                  </table>
+              </td>
+            </tr>
+          <tr>
+        </table>
+
+
+      </td>
+  </tr>
+</table>
