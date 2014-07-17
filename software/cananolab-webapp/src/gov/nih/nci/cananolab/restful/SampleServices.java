@@ -157,7 +157,8 @@ public class SampleServices {
 			//SimpleSampleBean view = new SimpleSampleBean();
 			//view.transferSampleBeanForSummaryView(sampleBean);
 			
-			return Response.ok(finalBean).build();
+			//return Response.ok(view).build();
+			return Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
 			return Response.ok(e.getMessage()).build();

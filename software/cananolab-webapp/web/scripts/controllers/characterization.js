@@ -9,11 +9,23 @@ var app = angular.module('angularApp')
     // Displays left hand nav for samples section. navTree shows nav and navDetail is page index //
     $rootScope.navTree = true;
     $rootScope.navDetail = 2;  
-    $scope.sampleData = sampleService.sampleData;
 
     $scope.goBack = function() {
       $location.path("/sampleResults").replace();      
     };
+
+    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/characterizationView?sampleId=20917507'}).
+    // $http({method: 'GET', url: '/caNanoLab/rest/sample/characterizationView?sampleId=' + $scope.sampleId.data}).
+    success(function(data, status, headers, config) {
+      $scope.data = data;
+    }).
+    error(function(data, status, headers, config) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+        $scope.message = data;
+
+    });
+
 
   });
 

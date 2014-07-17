@@ -1502,3 +1502,21 @@ margin:10px;
 .cellLabel {
 padding:5px !important;
 }
+
+table.table {
+width:900px;
+}
+table.table td {
+border-right:1px solid #ddd;
+vertical-align:top;
+}
+
+table.table th {
+background-color:#0089BB;
+color:#fff;
+}
+.emphasis {
+padding:0px;
+margin:0px;
+background-color:#F3F3F3;
+}
