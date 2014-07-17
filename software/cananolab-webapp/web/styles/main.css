@@ -1461,4 +1461,104 @@ ul.nav.nav-tabs.nav-justified li a{
 
 .summaryViewNoGrid {
     border:0px solid red !important;
+
+}
+
+.summaryViewNoGrid td {
+padding:102px;
+}
+
+.summaryViewNoGrid p.poc {
+margin-top:10px;
+padding:4px;
+height:30px;
+text-align:left;
+}
+
+table.invisibleTable  {
+padding:130px !important;
+    margin-left:-6px;
+}
+
+table.invisibleTable td{
+padding-bottom:22px;
+
+}
+
+table.invisibleTable tr th{
+padding-top:3px !important;
+
+}
+table.summaryViewNoGrid tbody{
+   border:0px solid red !important; 
+  }
+.invisibleTable td {
+    padding: 10px;
+margin:10px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.cellLabel {
+padding:5px !important;
+}
+
+table.table {
+    border-bottom:1px solid #ccc;
+}
+
+
+    table.table td {
+        border-right:1px solid #ccc;
+        vertical-align:top;
+    }
+
+    table.table td.columnOne{
+        border-left:1px solid #ccc;
+        vertical-align:top;
+    }
+
+    table.table th {
+        background-color:#0089BB;
+        color:#fff;
+    }
+    table.table .emphasis {
+        padding:0px;
+        margin:0px;
+        background-color:#F3F3F3;
+    }
+
+    table.table a {
+        color:blue;
+        white-space: pre;           /* CSS 2.0 */
+        white-space: pre-wrap;      /* CSS 2.1 */
+        white-space: pre-line;      /* CSS 3.0 */
+        white-space: -pre-wrap;     /* Opera 4-6 */
+        white-space: -o-pre-wrap;   /* Opera 7 */
+        white-space: -moz-pre-wrap; /* Mozilla */
+        white-space: -hp-pre-wrap;  /* HP Printers */
+        word-wrap: break-word;      /* IE 5+ */
+
+    }    
+
+    .header.sortable.sort-desc {
+        background-color:#009E2D !important; 
+        color:#fff;
+      }
+
+    .header.sortable.sort-asc {
+        background-color:#009E2D !important; 
+        color:#fff;
+      }      
+
+.ng-table th.sortable div:after,
+.ng-table th.sortable div:before {
+  border-color: #fff transparent !important;
+  opacity: 1 !important;
+}
+.ng-table th.sortable div:before {
+  border-top: 4px solid #fff !important;
+}
+.pager {
+    float:right;
 }
