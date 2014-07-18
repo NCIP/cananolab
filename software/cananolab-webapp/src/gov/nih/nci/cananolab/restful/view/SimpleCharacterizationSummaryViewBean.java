@@ -29,57 +29,31 @@ public class SimpleCharacterizationSummaryViewBean {
 	private Logger logger = Logger.getLogger(SimpleCharacterizationSummaryViewBean.class);
 	
 	List<SimpleCharacterizationsByTypeBean> charByTypeBeans = new ArrayList<SimpleCharacterizationsByTypeBean>();
-	
-	
-	
-	//Map<String, Map<String, Object>> viewMap = new HashMap<String, Map<String, Object>>();
-	
-	
-	
-	//Map<String, Map<String, Object>> charMapByType = new HashMap<String, Map<String, Object>>();
-	
-	
+		
 	
 	public List<SimpleCharacterizationsByTypeBean> transferData(CharacterizationSummaryViewBean viewBean) {
 		
 		logger.info("============ SimpleCharacterizationSummaryViewBean.transferData ==================");
 		if (viewBean == null) return null;
 		
-		Map<String, SortedSet<CharacterizationBean>> type2CharsBeans = viewBean.getType2Characterizations();
-		
 		Map<String, SortedSet<CharacterizationBean>> name2CharBeans = viewBean.getCharName2Characterizations();
-		
 		Set<String> charTypes = viewBean.getCharacterizationTypes();
-		
 		Map<String, SortedSet<String>> charNames = viewBean.getType2CharacterizationNames();
-		
-		//for the outter most map
-		
-		
 		
 		for (String type : charTypes) {
 			logger.info("Processing type: " + type);
 			
-			
 			SortedSet<String> namesOfType = charNames.get(type);
-			
-			//List<SortedSet<CharacterizationBean>> charBeanMapOfType = new ArrayList<SortedSet<CharacterizationBean>>();
-			
 			SortedMap<String, Object> charsByAssayType = new TreeMap<String, Object>();
-			
 			
 			for (String charname : namesOfType) {
 				logger.info("Char Name for type: " + charname + " | " + type);
 				
 				SortedSet<CharacterizationBean> charBeans = name2CharBeans.get(charname);
-				//Map<String, Object> charBeans = new HashMap<String, Object>();
-				
-				//List<Object> charBeansByCharName = new ArrayList<Object>();
 				List<List<SimpleCharacterizationUnitBean>> charBeansByCharName = new ArrayList<List<SimpleCharacterizationUnitBean>>();
 				
 				for (CharacterizationBean charBean : charBeans) {
-					logger.info("Proccessing char bean: " + charBean.getCharacterizationName());
-					//Map<String, Object> aBeanMap = tranferCharacterizationBeanData(charBean);
+					logger.debug("Proccessing char bean: " + charBean.getCharacterizationName());
 					List<SimpleCharacterizationUnitBean> aBeanUnitList = tranferCharacterizationBeanData(charBean);
 					charBeansByCharName.add(aBeanUnitList);
 					logger.info("End Proccessing char bean: " + charBean.getCharacterizationName());
@@ -93,16 +67,9 @@ public class SimpleCharacterizationSummaryViewBean {
 			charByTypeBean.setCharsByAssayType(charsByAssayType);
 			charByTypeBeans.add(charByTypeBean);
 			
-			//charMapByType.put(type, charsByAssayType);
-			
-			
 			logger.info("End of Processing type: " + type);
 		}		
-		
-//		viewMap = charMapByType;
-//		
-//		return viewMap;
-		
+
 		return charByTypeBeans;
 	}
 	
@@ -263,34 +230,41 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	protected List transferCharacterizationResultsDataAndCondition(FindingBean findingBean) {
 
-		logger.info("Data and Conditions:");
-		List<SimpleCharacterizationUnitBean> colsOfTable = new ArrayList<SimpleCharacterizationUnitBean>();
+		logger.debug("Data and Conditions:");
+		List<SimpleCharacterizationUnitBean> rowsOfTable = new ArrayList<SimpleCharacterizationUnitBean>();
 		
 		List<Row> rows = findingBean.getRows();
 
 		if (rows == null || rows.size() == 0)
-			return colsOfTable;
+			return rowsOfTable;
 
 		List<ColumnHeader>  colHeaders = findingBean.getColumnHeaders();
-		int idx = 0;
+		int colSize = colHeaders.size();
+		
+		List<String> rowVals = new ArrayList<String>();
 		for (ColumnHeader colHeader : colHeaders) {
 			String colTitle = colHeader.getDisplayName();
 
-			logger.info("==Header: " + colTitle);
-
-			List<String> colVals = new ArrayList<String>();
-
-			for (Row aRow : rows) {
-				List<TableCell> cells = aRow.getCells();
-				//aColMap.put(colTitle, cells.get(idx).getValue());
-				colVals.add(cells.get(idx).getValue());
-			}
-
-			idx++;
-			colsOfTable.add(new SimpleCharacterizationUnitBean(colTitle, colVals));
+			logger.debug("==Header: " + colTitle);
+			rowVals.add(colTitle);
 		}
-
-		return colsOfTable;
+		
+		rowsOfTable.add(new SimpleCharacterizationUnitBean("colTitles", rowVals));
+		
+		for (Row aRow : rows) {
+			rowVals = new ArrayList<String>();
+			List<TableCell> cells = aRow.getCells();
+			for (TableCell cell : cells) {
+				rowVals.add(cell.getValue());
+			}
+			
+			if (rowVals.size() == colSize) 
+				rowsOfTable.add(new SimpleCharacterizationUnitBean("colValues", rowVals));
+			else
+				logger.error("Size of Data and Conditions column values doesn't match column header size.");
+		}
+		
+		return rowsOfTable;
 	}
 	
 	protected List<Object> transferCharacterizationResultsFiles (FindingBean findingBean) {
@@ -309,15 +283,15 @@ public class SimpleCharacterizationSummaryViewBean {
 			
 			aFile.put("fileId", fileBean.getDomainFile().getId());
 			if (fileBean.getDomainFile().getUriExternal()) {
-				logger.info("uriExternal: " + fileBean.getDomainFile().getId());
+				logger.debug("uriExternal: " + fileBean.getDomainFile().getId());
 				//aFile.put("fileId", fileBean.getDomainFile().getId());
 				aFile.put("uri", fileBean.getDomainFile().getUri());
 			} else if (fileBean.isImage()){
-				logger.info("Is image: " + fileBean.getDomainFile().getTitle());
+				logger.debug("Is image: " + fileBean.getDomainFile().getTitle());
 				aFile.put("imageTitle", fileBean.getDomainFile().getTitle());
 				//aFile.put("fileId", fileBean.getDomainFile().getId());
 			} else {
-				logger.info("Have download link here");
+				logger.debug("Have download link here");
 				aFile.put("title", fileBean.getDomainFile().getTitle());
 			}
 			

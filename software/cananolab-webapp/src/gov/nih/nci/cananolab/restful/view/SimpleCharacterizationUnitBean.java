@@ -4,6 +4,7 @@ public class SimpleCharacterizationUnitBean {
 	
 	String name;
 	Object value;
+	
 	public String getName() {
 		return name;
 	}
