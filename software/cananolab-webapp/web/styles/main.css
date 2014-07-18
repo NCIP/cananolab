@@ -1627,4 +1627,5 @@ text-transform:capitalize;
     }
   .sample .left {
         width:160px;
+        vertical-align:top;        
   }
