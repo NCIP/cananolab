@@ -1,16 +1,4 @@
-!!!TESTING!!!
-<br />
-{{dummyTableData}}
-<table border="1" ng-init="columnCount dummyTableData.length">
-	<tr>
-		<td ng-repeat="item in dummyTableData" ng-bind-html="item.name"></td>
-	</tr>
-	<tr>
-		<td ng-repeat="item in dummyTableData">
-			<div ng-repeat="val in item.value">{{val}}</div>
-		</td>
-	</tr>	
-</table>
+
 <div class="assay" ng-repeat="assay in characterization">
  <!-- property -->
  <div class="sample" ng-repeat="property in assay" ng-if="property.value.length>0" ng-switch on="property.name">
@@ -46,13 +34,13 @@
 			<!--  Characterization Configuration Table -->
 			<table cellspacing="0" cellpadding="0" border="0" class="propertyTable" ng-if="property.value.length">
 				<tr ng-repeat-start="val in property.value" ng-if="val['Data and Conditions']">
-					<td colspan="2" valign="top">
-						{{val['Data and Conditions']}}
-						<table>
+					<td colspan="2" valign="top"><b>Data and Conditions</b><br />
+						<table class="dataConditions" cellspacing="0" cellpadding="0">
 							<tr ng-repeat="row in val['Data and Conditions']">
-								<td></td>
-							</tr>
-						</table><!-- <b>Data and Conditions</b><br />{{val['Data and Conditions']}} -->
+								<td ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col">Column</td>
+								<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col">Column</td>		
+							</tr>	
+						</table>
 					</td>
 				</tr>
 				<tr ng-repeat-end>

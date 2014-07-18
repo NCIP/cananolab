@@ -54,7 +54,7 @@
 }
 
 body {
-    margin: 0; padding: 0
+    margin: 0; padding: 0;
 }
 
 /*###############
@@ -1074,7 +1074,9 @@ select {
 
 body {
     margin: 0; padding: 0;
-    color: #4A49A8;
+    /*color: #4A49A8;*/
+    color: #000;
+
     background: #fff;
     font: 12px arial,helvetica,verdana,sans-serif;
 }
@@ -1185,7 +1187,7 @@ select#nanomaterialEntityTypes,
 }
 
 th.mainMenuItem.home {
-    background-color: #009E2D /* constant: dark gray */;;;;;
+    background-color: #009E2D /* constant: dark gray ;;;;;
     /* for the off state of the main menu (top) cells */:
 }
 
@@ -1586,22 +1588,17 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
     float:right;
 }
 
-table.summaryViewNoTopREMOVE.ng-scope {font-size:12px !important;color:#000;}
+
+
 
 
 .assay {
-    border-bottom:8px solid #ccc;
-    padding:10px 0px 3px 0px;
+    border-bottom:4px 1px 0px 1px;
+    border-color:#ccc;
+    border-style:solid;
+    padding:10px 0px 3px 5px;
 
 }
-
-.characterization {
-    padding-bottom:20px;
-}
-
-    .characterization th {
-        text-transform:capitalize;
-    }
 
 .sample.type th{
     background-color:#009E2D;
@@ -1614,6 +1611,23 @@ table.summaryViewNoTopREMOVE.ng-scope {font-size:12px !important;color:#000;}
     text-transform:capitalize;
 }
 
+.sampleTable {
+
+}
+.sampleTable th.characterization{
+padding:5px;
+text-transform:capitalize;
+background-color:#01045A;
+color:#fff;
+}
+
+
+.sampleType .type {
+background-color:#009E2D;
+color:white;text-transform:capitalize;
+padding:5px;
+font-weight:700;
+}
 .sample {
     display: table;
 }
@@ -1637,3 +1651,17 @@ padding-left:0px;
         width:120px;
         vertical-align:top;        
   }
+
+.dataConditions {
+border-width:0px 0px 1px 1px;
+border-color:#ccc;
+border-style:solid;
+margin:10px 0px 10px 0px;
+}
+
+.dataConditions td {
+border-width:1px 1px 0px 0px;
+border-style:solid;
+border-color:#ccc;
+padding:5px;
+}

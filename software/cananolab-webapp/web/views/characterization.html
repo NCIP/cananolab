@@ -28,38 +28,42 @@
     </tabset>
 
 
-<table ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data" border="1">
-  <tr class="sample type">
-      <td align="left">
+<table border="0" ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data" border="0" class="sampleTable">
+
+  <tr class="sampleType">
+      <td>
         <!-- type -->
-            <span class="summaryViewHeading">{{type.type}}</span>
+            <div class="type">{{type.type}}</div>
         <!-- type -->
       </td>
-  </tr>
+  </tr> 
   <tr ng-repeat="(key,characterization) in type.charsByAssayType track by $index">
       <td class="characterization">
-        <table summary="layout" bgcolor="#F5F5f5" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td>
-                  <table bgcolor="#dbdbdb" width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <table bgcolor="#eee" width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <th align="left">
+                      <th align="left" class="characterization">
                         <!-- characterization -->
                             {{key}}
                         <!-- characterization -->
                       </th>
                     </tr>
-                    <tr bgcolor="#f5f5f5">
+                    <tr>
                       <td>
                           <div ng-include="'views/assay.html'"></div>
                       </td>
-                    </tr>
+                    </tr>                  
                   </table>
               </td>
             </tr>
           <tr>
-        </table>
+        </table><br />
       </td>
   </tr>
+    <tr>
+    <td style="background-color:#fff">&nbsp;</td>
+  </tr> 
 </table>
 </div>
