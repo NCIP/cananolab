@@ -1,8 +1,11 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.io.FileInputStream;
+
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
+import gov.nih.nci.cananolab.restful.sample.CharacterizationBO;
 import gov.nih.nci.cananolab.restful.sample.CompositionBO;
 import gov.nih.nci.cananolab.restful.view.SimpleCompositionBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
@@ -98,6 +101,24 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 		} catch (Exception e) {
 			return Response.ok("Error while exporting the file").build();
 		}
+		
 	}
+		@GET
+		@Path("/downloadImage")
+		@Produces("image/png")
+		 public Response characterizationImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+		    		@DefaultValue("") @QueryParam("fileId") String fileId){
+			try {
+				CompositionBO compositionBO = 
+						(CompositionBO) applicationContext.getBean("compositionBO");
+				java.io.File file = compositionBO.download(fileId, httpRequest);
+				
+				return Response.ok(new FileInputStream(file)).build();
+				
 
+			} catch (Exception e) {
+				return Response.ok(e.getMessage()).build();
+			}
+		}
+	
 }

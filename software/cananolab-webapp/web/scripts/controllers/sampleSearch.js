@@ -22,7 +22,8 @@ var app = angular.module('angularApp')
       $scope.message = data;
       });
     });     
-$scope.myFunct = function(ev) {
+$scope.myFunc = function(ev) {
+  alert("here");
   if (ev.which==13)
     alert('Im a lert');
 }
