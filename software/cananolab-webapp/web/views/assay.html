@@ -1,31 +1,59 @@
-<!-- assay -->
 <div class="assay" ng-repeat="assay in characterization">
-		 <!-- property -->
-		   <div class="sample" ng-repeat="property in assay" ng-if="property.value.length>0" ng-switch on="property.name">
-		   	<div class="row">
-		     <!-- property name -->
-		       <div class="left">
-		             <b>{{property.name}}</b>
-		       </div> 
-		       <div class="right">
-				<span ng-switch-default>
-					{{property.value}}
-				</span>	
-				<span ng-switch-when="Experiment Configurations">
-					<div ng-repeat="item in property.value">{{item}}</div>
-				</span>
-				<span style="text-transform:capitalize" ng-switch-when="Assay Type">
-					{{property.value}}
-				</span>				
-				<span ng-switch-when="Characterization Results">
-					<div ng-repeat="item in property.value">{{item}}</div>
-				</span>							
-		       </div>     
-		     <!-- property name -->
-		   </div>
-		   </div>		   
-		 <!-- property -->	 
-
-
+ <!-- property -->
+ <div class="sample" ng-repeat="property in assay" ng-if="property.value.length>0" ng-switch on="property.name">
+   	<div class="row">
+     <!-- property name -->
+       <div class="left">
+             <b>{{property.name}}</b>
+       </div> 
+       <div class="right">
+		<!-- property value -->
+		<span ng-switch-default>
+			{{property.value}}
+		</span>	
+		<span ng-switch-when="Experiment Configurations">
+			<!--  Experiment Configuration Table -->
+			<table cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<th width="33%" align="left"><b>Technique</b></th>
+					<th width="33%" align="left"><b>Instruments</b></th>
+					<th width="33%" align="left"><b>Description</b></th>
+				</tr>
+				<tr>
+					<td style="width:33%;padding-right:4px;vertical-align:top" ng-repeat="x in property.value">
+						<span ng-repeat="(key,val) in x">
+							{{val[0]}}
+						</span>
+					</td>
+				</tr>						
+			</table>
+			<!--  Experiment Configuration Table -->					
+		</span>
+		<span style="text-transform:capitalize" ng-switch-when="Assay Type">
+			{{property.value}}
+		</span>				
+		<span ng-switch-when="Characterization Results">
+			<!--  Characterization Configuration Table -->
+			<table cellspacing="0" cellpadding="0" border="1" ng-if="property.value.length">
+				<tr ng-repeat-start="val in property.value" ng-if="val['Data and Conditions']">
+					<td colspan="2" valign="top">Data and Conditions-{{val['Data and Conditions']}}
+					</td>
+				</tr>
+				<tr ng-repeat-end>
+					<td valign="top">
+						Files <br />Image
+					</td>
+					<td valign="top">
+						{{val}}
+					</td>					
+				</tr>				
+			</table>
+		</span>	
+		<!-- property value -->										
+       </div>     
+     <!-- property name -->
+   </div>
+ </div>		   
+ <!-- property -->	 
 </div>
-<!-- assay -->
+<!-- assay
