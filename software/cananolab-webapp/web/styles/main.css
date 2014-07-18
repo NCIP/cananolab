@@ -1585,3 +1585,46 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
 .ng-table-pager {
     float:right;
 }
+
+table.summaryViewNoTopREMOVE.ng-scope {font-size:11px !important;color:#000;}
+
+
+.assay {
+    border-bottom:4px solid #ccc;
+    padding:5px 0px 5px 0px;
+
+}
+
+.characterization {
+    padding-bottom:20px;
+}
+
+    .characterization th {
+        text-transform:capitalize;
+    }
+
+.sample.type th{
+background-color:#009E2D;
+padding:5px;
+}
+
+.type th span{
+color:white;
+text-decoration:none;
+text-transform:capitalize;
+}
+
+.sample {
+    display: table;
+}
+
+  .sample .row  {
+        display: table-row;
+    }
+
+  .sample .left,.sample .right {
+        display: table-cell;
+    }
+  .sample .left {
+        width:160px;
+  }
