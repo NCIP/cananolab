@@ -261,18 +261,16 @@ public class SimpleCharacterizationSummaryViewBean {
 
 	}
 	
-	protected List<Object> transferCharacterizationResultsDataAndCondition(FindingBean findingBean) {
+	protected List transferCharacterizationResultsDataAndCondition(FindingBean findingBean) {
 
-		List<Object> findingTables = new ArrayList<Object>();
-
-
-		List<Row> rows = findingBean.getRows();
-
-		if (rows == null || rows.size() == 0)
-			return findingTables;
+		//List<Object> findingTables = new ArrayList<Object>();
 
 		logger.info("Data and Conditions:");
 		List<MultiMap> colsOfTable = new ArrayList<MultiMap>();
+		List<Row> rows = findingBean.getRows();
+
+		if (rows == null || rows.size() == 0)
+			return colsOfTable;
 
 		List<ColumnHeader>  colHeaders = findingBean.getColumnHeaders();
 		int idx = 0;
@@ -292,9 +290,9 @@ public class SimpleCharacterizationSummaryViewBean {
 			colsOfTable.add(aColMap);
 		}
 
-		findingTables.add(colsOfTable);
+		//findingTables.add(colsOfTable);
 
-		return findingTables;
+		return colsOfTable;
 	}
 	
 	protected List<Object> transferCharacterizationResultsFiles (FindingBean findingBean) {
@@ -318,7 +316,7 @@ public class SimpleCharacterizationSummaryViewBean {
 				aFile.put("uri", fileBean.getDomainFile().getUri());
 			} else if (fileBean.isImage()){
 				logger.info("Is image: " + fileBean.getDomainFile().getTitle());
-				aFile.put("title", fileBean.getDomainFile().getTitle());
+				aFile.put("imageTitle", fileBean.getDomainFile().getTitle());
 				//aFile.put("fileId", fileBean.getDomainFile().getId());
 			} else {
 				logger.info("Have download link here");
@@ -360,7 +358,6 @@ public class SimpleCharacterizationSummaryViewBean {
 			if (files != null && files.size() > 0)
 				oneCharResult.put("Files", files);
 			
-
 			charResults.add(oneCharResult);
 		}
 

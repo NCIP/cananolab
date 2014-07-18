@@ -180,7 +180,6 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 					out.write(bytes, 0, numRead);
 				}
 				
-				//return in;
 			} finally {
 				if (in != null)
 					in.close();
@@ -188,16 +187,8 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 					out.close();
 			}
 		} else {
-//			ActionMessages msgs = new ActionMessages();
-//			ActionMessage msg = new ActionMessage("error.noFile");
-//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-////			
-////			List<String> messages = new ArrayList<String>();
-////			messages.add(PropertyUtil.getProperty("sample", "error.noFile"));
-//			
-			//throw new FileException("File " + fileBean.getDomainFile().getUri()
-			//		+ " doesn't exist on the server");
-			throw new FileException(PropertyUtil.getProperty("sample", "error.noFile"));
+			String msg = PropertyUtil.getProperty("sample", "error.noFile");
+			throw new FileException("Target download file doesn't exist");
 		}
 		
 		return null;

@@ -177,9 +177,9 @@ public class SampleServices {
 	
 	
 	@GET
-	@Path("/characterizationImage")
-	@Produces("image/png")
-	 public Response characterizationImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	@Path("/downloadImage")
+	@Produces({"image/png", "application/json"})
+	 public Response downloadImage(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
 	    		@DefaultValue("") @QueryParam("fileId") String fileId){
 		try {
 			CharacterizationBO characterizationBO = 
@@ -188,10 +188,28 @@ public class SampleServices {
 			
 			return Response.ok(new FileInputStream(file)).build();
 			
-//			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
-//			return Response.ok(result).build();
 		} catch (Exception ioe) {
 			return Response.ok(ioe.getMessage()).build();
 		}
 	}
+	
+	@GET
+	@Path("/download")
+	@Produces({"image/png", "application/json"})
+	 public Response download(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	    		@DefaultValue("") @QueryParam("fileId") String fileId){
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			String result = characterizationBO.download(fileId, httpRequest, httpResponse);
+			return Response.ok(result).build();
+		} 
+		
+		catch (Exception ioe) {
+			return Response.ok(ioe.getMessage()).build();
+		}
+	}
+	
+	
 }
