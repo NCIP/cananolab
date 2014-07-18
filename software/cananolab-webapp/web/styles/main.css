@@ -1586,12 +1586,12 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
     float:right;
 }
 
-table.summaryViewNoTopREMOVE.ng-scope {font-size:11px !important;color:#000;}
+table.summaryViewNoTopREMOVE.ng-scope {font-size:12px !important;color:#000;}
 
 
 .assay {
-    border-bottom:4px solid #ccc;
-    padding:5px 0px 5px 0px;
+    border-bottom:8px solid #ccc;
+    padding:10px 0px 3px 0px;
 
 }
 
@@ -1604,28 +1604,36 @@ table.summaryViewNoTopREMOVE.ng-scope {font-size:11px !important;color:#000;}
     }
 
 .sample.type th{
-background-color:#009E2D;
-padding:5px;
+    background-color:#009E2D;
+    padding:5px;
 }
 
 .type th span{
-color:white;
-text-decoration:none;
-text-transform:capitalize;
+    color:white;
+    text-decoration:none;
+    text-transform:capitalize;
 }
 
 .sample {
     display: table;
 }
 
-  .sample .row  {
-        display: table-row;
+    .sample .propertyTable td{
+        padding-bottom:5px;
+        padding-right:10px;
     }
+
 
   .sample .left,.sample .right {
         display: table-cell;
+        padding-bottom:10px;
     }
+
+.sample .right {
+padding-left:0px;
+}
+
   .sample .left {
-        width:160px;
+        width:120px;
         vertical-align:top;        
   }

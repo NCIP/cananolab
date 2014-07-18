@@ -1,7 +1,19 @@
+!!!TESTING!!!
+<br />
+{{dummyTableData}}
+<table border="1" ng-init="columnCount dummyTableData.length">
+	<tr>
+		<td ng-repeat="item in dummyTableData" ng-bind-html="item.name"></td>
+	</tr>
+	<tr>
+		<td ng-repeat="item in dummyTableData">
+			<div ng-repeat="val in item.value">{{val}}</div>
+		</td>
+	</tr>	
+</table>
 <div class="assay" ng-repeat="assay in characterization">
  <!-- property -->
  <div class="sample" ng-repeat="property in assay" ng-if="property.value.length>0" ng-switch on="property.name">
-   	<div class="row">
      <!-- property name -->
        <div class="left">
              <b>{{property.name}}</b>
@@ -13,7 +25,7 @@
 		</span>	
 		<span ng-switch-when="Experiment Configurations">
 			<!--  Experiment Configuration Table -->
-			<table cellspacing="0" cellpadding="0" border="0">
+			<table cellspacing="0" cellpadding="0" border="0" class="propertyTable">
 				<tr>
 					<th width="33%" align="left"><b>Technique</b></th>
 					<th width="33%" align="left"><b>Instruments</b></th>
@@ -29,22 +41,31 @@
 			</table>
 			<!--  Experiment Configuration Table -->					
 		</span>
-		<span style="text-transform:capitalize" ng-switch-when="Assay Type">
-			{{property.value}}
-		</span>				
+			
 		<span ng-switch-when="Characterization Results">
 			<!--  Characterization Configuration Table -->
-			<table cellspacing="0" cellpadding="0" border="1" ng-if="property.value.length">
+			<table cellspacing="0" cellpadding="0" border="0" class="propertyTable" ng-if="property.value.length">
 				<tr ng-repeat-start="val in property.value" ng-if="val['Data and Conditions']">
-					<td colspan="2" valign="top">Data and Conditions-{{val['Data and Conditions']}}
+					<td colspan="2" valign="top">
+						{{val['Data and Conditions']}}
+						<table>
+							<tr ng-repeat="row in val['Data and Conditions']">
+								<td></td>
+							</tr>
+						</table><!-- <b>Data and Conditions</b><br />{{val['Data and Conditions']}} -->
 					</td>
 				</tr>
 				<tr ng-repeat-end>
 					<td valign="top">
-						Files <br />Image
+						<b>Files</b>
+						<div ng-repeat="file in val.Files">
+							{{file.fileId}}
+						</div>
 					</td>
 					<td valign="top">
-						{{val}}
+						<div ng-repeat="file in val.Files">
+							{{file.description}}
+						</div>
 					</td>					
 				</tr>				
 			</table>
@@ -52,7 +73,6 @@
 		<!-- property value -->										
        </div>     
      <!-- property name -->
-   </div>
  </div>		   
  <!-- property -->	 
 </div>

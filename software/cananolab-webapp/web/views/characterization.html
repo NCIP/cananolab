@@ -1,5 +1,4 @@
 <div class="spacer">
-
     <table border="0" class="contentTitle" summary="layout" width="100%">
       <tr>
         <th align="left" scope="col">
@@ -16,35 +15,33 @@
         </td>
       </tr>
     </table>
- <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
- <ul class="liNav">
-    <li><a href="#/sample">General Info</a></li>
-    <li><a href="#/composition">Composition</a></li>
-    <li><a href="#/characterization">Characterization</a></li>
-    <li><a href="#/publication">Publication</a></li>
-</ul>
-</div>
-  <tabset justified="true">
-    <tab heading="All" ng-click="select(-1)"></tab>
-    <tab ng-repeat="item in data" heading="{{item.type}}" ng-click="select({{$index}})"></tab>
-  </tabset>
-</div>
+    <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+     <ul class="liNav">
+        <li><a href="#/sample">General Info</a></li>
+        <li><a href="#/composition">Composition</a></li>
+        <li><a href="#/characterization">Characterization</a></li>
+        <li><a href="#/publication">Publication</a></li>
+    </ul>
+    <tabset justified="true">
+      <tab heading="All" ng-click="select(-1)"></tab>
+      <tab ng-repeat="item in data" heading="{{item.type}}" ng-click="select({{$index}})"></tab>
+    </tabset>
 
 
-<table ng-hide="show{{$index}}" class="summaryViewNoTopREMOVE"  width="100%" summary="layout" ng-repeat="type in data">
+<table ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data" border="1">
   <tr class="sample type">
-      <th align="left">
+      <td align="left">
         <!-- type -->
             <span class="summaryViewHeading">{{type.type}}</span>
         <!-- type -->
-      </th>
+      </td>
   </tr>
   <tr ng-repeat="(key,characterization) in type.charsByAssayType track by $index">
       <td class="characterization">
-        <table summary="layout" bgcolor="#F5F5f5" width="100%">
+        <table summary="layout" bgcolor="#F5F5f5" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td>
-                  <table bgcolor="#dbdbdb" width="100%">
+                  <table bgcolor="#dbdbdb" width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <th align="left">
                         <!-- characterization -->
@@ -65,3 +62,4 @@
       </td>
   </tr>
 </table>
+</div>
