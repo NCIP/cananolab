@@ -41,11 +41,25 @@ public class SimpleCompositionBean {
 	Map<String, Object> smallMolecule;
 
 	Map<String, Object> chemicalassociation;
-	List<Map<String, Object>> chemicalAssociations;
+	public Map<String, Object> getChemicalassociation() {
+		return chemicalassociation;
+	}
+
+	public void setChemicalassociation(Map<String, Object> chemicalassociation) {
+		this.chemicalassociation = chemicalassociation;
+	}
+
 	Map<String, Object> association;
 
 	Map<String, Object> compositionfile;
-	List<Map<String, Object>> compositionFiles;
+	public Map<String, Object> getCompositionfile() {
+		return compositionfile;
+	}
+
+	public void setCompositionfile(Map<String, Object> compositionfile) {
+		this.compositionfile = compositionfile;
+	}
+
 	Map<String, Object> image;
 
 
@@ -80,24 +94,6 @@ public class SimpleCompositionBean {
 
 	public void setFunctionsList(List<Map<String, Object>> functionsList) {
 		this.functionsList = functionsList;
-	}
-
-	public List<Map<String, Object>> getChemicalAssociations() {
-		return chemicalAssociations;
-	}
-
-	public void setChemicalAssociations(
-			List<Map<String, Object>> chemicalAssociations) {
-		this.chemicalAssociations = chemicalAssociations;
-	}
-
-	
-	public List<Map<String, Object>> getCompositionFiles() {
-		return compositionFiles;
-	}
-
-	public void setCompositionFiles(List<Map<String, Object>> compositionFiles) {
-		this.compositionFiles = compositionFiles;
 	}
 
 	public List<String> getCompositionSections() {
@@ -383,7 +379,6 @@ public class SimpleCompositionBean {
 		//Chemical Association
 		if(compBean.getChemicalAssociations()!=null){
 			
-			chemicalAssociations = new ArrayList<Map<String,Object>>();
 			association = new HashMap<String, Object>();
 			chemicalassociation = new HashMap<String, Object>();
 			Map <String, Object> AssociatedElements = null;
@@ -459,9 +454,6 @@ public class SimpleCompositionBean {
 
 							
 						chemicalassociation.put(entityType, association);
-						chemicalAssociations.add(chemicalassociation);
-						
-						
 					}
 						
 				}	
@@ -472,7 +464,6 @@ public class SimpleCompositionBean {
 		
 		if(compBean.getFiles()!=null){
 			compositionfile = new HashMap<String, Object>();
-			compositionFiles = new ArrayList<Map<String,Object>>();
 			fileList = new ArrayList<Map<String,Object>>();
 			Map <String, Object> comFile = new HashMap<String, Object>();
 			
@@ -497,7 +488,6 @@ public class SimpleCompositionBean {
 					
 				}
 				compositionfile.put(entityType, fileList);
-				compositionFiles.add(compositionfile);
 			}
 			
 		}
