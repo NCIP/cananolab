@@ -23,29 +23,31 @@ public class SimpleCompositionBean {
 
 	List<String> compositionSections = new ArrayList<String>();
 
-	String nanomaterialEntityDescription;
+	
 	String sampleName;
-	Boolean nanomaterialEntityWithProperties;
+	
 	Map<String, Object> properties;
 	Map<String, Object> nanoentitiy;
 	Map<String, Object> composingElement;
 	Map<String, Object> files;
-	Map<String, Object> type2NanoEntities;
 	Map<String, Object> nanomaterialentity;
 
 	List<Map<String, Object>> composingElements;
 	List<Map<String, Object>> fileList;
+	Map <String, Object> Functions;
+	List<Map<String, Object>> functionsList;
 	
 	Map<String, Object> functionalizingentity;
 	Map<String, Object> smallMolecule;
 
 	Map<String, Object> chemicalassociation;
+	List<Map<String, Object>> chemicalAssociations;
 	Map<String, Object> Association;
 
 	Map<String, Object> compositionfile;
+	List<Map<String, Object>> compositionFiles;
 	Map<String, Object> image;
 
-	private SortedSet<String> nanoEntityTypes = new TreeSet<String>();
 
 	public Map<String, Object> getNanomaterialentity() {
 		return nanomaterialentity;
@@ -53,14 +55,6 @@ public class SimpleCompositionBean {
 
 	public void setNanomaterialentity(Map<String, Object> nanomaterialentity) {
 		this.nanomaterialentity = nanomaterialentity;
-	}
-
-	public Map<String, Object> getChemicalassociation() {
-		return chemicalassociation;
-	}
-
-	public void setChemicalassociation(Map<String, Object> chemicalassociation) {
-		this.chemicalassociation = chemicalassociation;
 	}
 
 	public Map<String, Object> getFunctionalizingentity() {
@@ -72,12 +66,38 @@ public class SimpleCompositionBean {
 		this.functionalizingentity = functionalizingentity;
 	}
 
-	public Map<String, Object> getCompositionfile() {
-		return compositionfile;
+	public List<Map<String, Object>> getComposingElements() {
+		return composingElements;
 	}
 
-	public void setCompositionfile(Map<String, Object> compositionfile) {
-		this.compositionfile = compositionfile;
+	public void setComposingElements(List<Map<String, Object>> composingElements) {
+		this.composingElements = composingElements;
+	}
+
+	public List<Map<String, Object>> getFunctionsList() {
+		return functionsList;
+	}
+
+	public void setFunctionsList(List<Map<String, Object>> functionsList) {
+		this.functionsList = functionsList;
+	}
+
+	public List<Map<String, Object>> getChemicalAssociations() {
+		return chemicalAssociations;
+	}
+
+	public void setChemicalAssociations(
+			List<Map<String, Object>> chemicalAssociations) {
+		this.chemicalAssociations = chemicalAssociations;
+	}
+
+	
+	public List<Map<String, Object>> getCompositionFiles() {
+		return compositionFiles;
+	}
+
+	public void setCompositionFiles(List<Map<String, Object>> compositionFiles) {
+		this.compositionFiles = compositionFiles;
 	}
 
 	public List<String> getCompositionSections() {
@@ -303,9 +323,8 @@ public class SimpleCompositionBean {
 							  function.put("Properties", properties);
 				}  
 				    if(funcBean.getFunctions()!=null){
-				    	Map <String, Object> Functions = new HashMap<String, Object>();
-						  Functions.put("functionList",
-						  funcBean.getFunctions().size());
+				    	Functions = new HashMap<String, Object>();
+						functionsList = new ArrayList<Map<String,Object>>();  
 						  for(FunctionBean func : funcBean.getFunctions()){
 							  
 						  Functions.put("withImagingFunction", funcBean.isWithImagingFunction());
@@ -319,7 +338,8 @@ public class SimpleCompositionBean {
 					//	  Functions.put("Desc", funcBean.getDescription());
 					//	  Functions.put("Description", funcBean.getDescriptionDisplayName());
 						  }
-						  function.put("Functions", Functions);
+						  functionsList.add(Functions);
+						  function.put("Functions", functionsList);
 				    }
 				    if(funcBean.getActivationMethodDisplayName()!=null){
 				    	function.put("ActivationMethod", funcBean.getActivationMethodDisplayName());
@@ -363,6 +383,7 @@ public class SimpleCompositionBean {
 		//Chemical Association
 		if(compBean.getChemicalAssociations()!=null){
 			chemicalassociation = new HashMap<String, Object>();
+			chemicalAssociations = new ArrayList<Map<String,Object>>();
 			Map<String, Object> association= new HashMap<String, Object>();
 			Map <String, Object> AssociatedElements = null;
 			
@@ -435,8 +456,9 @@ public class SimpleCompositionBean {
 
 							
 						chemicalassociation.put(entityType, association);
-					}
 						
+					}
+						chemicalAssociations.add(chemicalassociation);
 				}	
 				
 		}
@@ -445,6 +467,7 @@ public class SimpleCompositionBean {
 		
 		if(compBean.getFiles()!=null){
 			compositionfile = new HashMap<String, Object>();
+			compositionFiles = new ArrayList<Map<String,Object>>();
 			fileList = new ArrayList<Map<String,Object>>();
 			Map <String, Object> comFile = new HashMap<String, Object>();
 			
@@ -469,6 +492,7 @@ public class SimpleCompositionBean {
 					
 				}
 				compositionfile.put(entityType, fileList);
+				compositionFiles.add(compositionfile);
 			}
 			
 		}
