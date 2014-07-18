@@ -1,0 +1,31 @@
+<!-- assay -->
+<div class="assay" ng-repeat="assay in characterization">
+		 <!-- property -->
+		   <div class="sample" ng-repeat="property in assay" ng-if="property.value.length>0" ng-switch on="property.name">
+		   	<div class="row">
+		     <!-- property name -->
+		       <div class="left">
+		             <b>{{property.name}}</b>
+		       </div> 
+		       <div class="right">
+				<span ng-switch-default>
+					{{property.value}}
+				</span>	
+				<span ng-switch-when="Experiment Configurations">
+					<div ng-repeat="item in property.value">{{item}}</div>
+				</span>
+				<span style="text-transform:capitalize" ng-switch-when="Assay Type">
+					{{property.value}}
+				</span>				
+				<span ng-switch-when="Characterization Results">
+					<div ng-repeat="item in property.value">{{item}}</div>
+				</span>							
+		       </div>     
+		     <!-- property name -->
+		   </div>
+		   </div>		   
+		 <!-- property -->	 
+
+
+</div>
+<!-- assay -->
