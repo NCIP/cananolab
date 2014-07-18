@@ -263,10 +263,9 @@ public class SimpleCharacterizationSummaryViewBean {
 	
 	protected List transferCharacterizationResultsDataAndCondition(FindingBean findingBean) {
 
-		//List<Object> findingTables = new ArrayList<Object>();
-
 		logger.info("Data and Conditions:");
-		List<MultiMap> colsOfTable = new ArrayList<MultiMap>();
+		List<SimpleCharacterizationUnitBean> colsOfTable = new ArrayList<SimpleCharacterizationUnitBean>();
+		
 		List<Row> rows = findingBean.getRows();
 
 		if (rows == null || rows.size() == 0)
@@ -279,18 +278,17 @@ public class SimpleCharacterizationSummaryViewBean {
 
 			logger.info("==Header: " + colTitle);
 
-			MultiMap aColMap = new MultiValueMap();
+			List<String> colVals = new ArrayList<String>();
 
 			for (Row aRow : rows) {
 				List<TableCell> cells = aRow.getCells();
-				aColMap.put(colTitle, cells.get(idx).getValue());
+				//aColMap.put(colTitle, cells.get(idx).getValue());
+				colVals.add(cells.get(idx).getValue());
 			}
 
 			idx++;
-			colsOfTable.add(aColMap);
+			colsOfTable.add(new SimpleCharacterizationUnitBean(colTitle, colVals));
 		}
-
-		//findingTables.add(colsOfTable);
 
 		return colsOfTable;
 	}
