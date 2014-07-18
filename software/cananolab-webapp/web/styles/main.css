@@ -1597,7 +1597,7 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
     border-color:#ccc;
     border-style:solid;
     padding:10px 0px 3px 5px;
-
+background-color:#fff;
 }
 
 .sample.type th{
