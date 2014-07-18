@@ -42,7 +42,7 @@ public class SimpleCompositionBean {
 
 	Map<String, Object> chemicalassociation;
 	List<Map<String, Object>> chemicalAssociations;
-	Map<String, Object> Association;
+	Map<String, Object> association;
 
 	Map<String, Object> compositionfile;
 	List<Map<String, Object>> compositionFiles;
@@ -382,19 +382,22 @@ public class SimpleCompositionBean {
 		
 		//Chemical Association
 		if(compBean.getChemicalAssociations()!=null){
-			chemicalassociation = new HashMap<String, Object>();
+			
 			chemicalAssociations = new ArrayList<Map<String,Object>>();
-			Map<String, Object> association= new HashMap<String, Object>();
+			association = new HashMap<String, Object>();
+			chemicalassociation = new HashMap<String, Object>();
 			Map <String, Object> AssociatedElements = null;
 			
 			for(String entityType : compBean.getAssocTypes()){
+				chemicalassociation = new HashMap<String, Object>();
 				for(ChemicalAssociationBean chemBean : compBean.getType2Assocs().get(entityType)){
-					chemicalassociation.put("AssociationTypes", compBean.getAssocTypes());
-					chemicalassociation.put("AttachmentId",
+					association = new HashMap<String, Object>();
+					
+					association.put("AttachmentId",
 					  chemBean.getAttachment().getId());
-					chemicalassociation.put("BondType",
+					association.put("BondType",
 					  chemBean.getAttachment().getBondType());
-					chemicalassociation.put("Description",
+					association.put("Description",
 					  chemBean.getDescription());
 					  
 					  AssociatedElements = new HashMap<String, Object>();
@@ -428,7 +431,7 @@ public class SimpleCompositionBean {
 					  AssociatedElements.put("DomainElementNameB",
 							  chemBean.getAssociatedElementB().getDomainElement().getName());
 				
-					  chemicalassociation.put("AssocitedElements", AssociatedElements);
+					  association.put("AssocitedElements", AssociatedElements);
 						
 					  fileList = new ArrayList<Map<String,Object>>();
 						if(chemBean.getFiles()!=null){
@@ -451,14 +454,16 @@ public class SimpleCompositionBean {
 										 
 								files.put("Description",file.getDomainFile().getDescription());
 								fileList.add(files);
-								chemicalassociation.put("Files",fileList);
+								association.put("Files",fileList);
 							}
 
 							
 						chemicalassociation.put(entityType, association);
+						chemicalAssociations.add(chemicalassociation);
+						
 						
 					}
-						chemicalAssociations.add(chemicalassociation);
+						
 				}	
 				
 		}
