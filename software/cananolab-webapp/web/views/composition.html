@@ -5,21 +5,103 @@
           Sample {{sampleData.data[0].sampleName}} Composition
         </th>
         <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back</button>          
-        <a class="helpText" href="javascript:printPage('composition.do?dispatch=summaryPrint&sampleId=42008576')">Print</a> 
-        <a class="helpText" href="/caNanoLab/composition.do?dispatch=summaryExport&sampleId=42008576&type=all">Export</a>         
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button>
+        <a class="helpText" href="javascript:printPage('composition.do?dispatch=summaryPrint&sampleId=42008576')">Print</a>
+        <a class="helpText" href="/caNanoLab/composition.do?dispatch=summaryExport&sampleId=42008576&type=all">Export</a>
           <a class="helpText" href=
           "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
-          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
+          "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>
         </td>
       </tr>
     </table>
- <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>   
+ <div class="backButtonNote">* Please use the back button located above. The browser back button will not function properly.</div>
  <ul class="liNav">
     <li><a href="#/sample">General Info</a></li>
     <li><a href="#/composition">Composition</a></li>
     <li><a href="#/characterization">Characterization</a></li>
     <li><a href="#/publication">Publication</a></li>
-</ul> 
-{{sampleId.data}}
+</ul>
+<div class="shadetabs" id="summaryTabALL">
+    <ul>
+        <li class="selected">
+            <a
+                    ng-href="javascript:showSummary('ALL', {{compositionSections.length}})"
+                    title="All"><span>All</span> </a>
+            <a ng-href="${exportUrl}&type=all" id="exportUrlAll"
+               style="display: none;"></a>
+
+        </li>
+        <li ng-repeat="type in compositionSections">
+            <a
+                    ng-href="javascript:showSummary('{{$index}}', {{compositionSections.length}})"
+                    title="{{type}}"><span>{{type}}</span> </a>
+            <a ng-href="javascript:printPage('${printUrl}&type={{type}}')"
+               id="printUrl${{$index}}" style="display: none;"></a>
+            <a ng-href="${exportUrl}&type={{type}}" id="exportUrl{{$index}}"
+               style="display: none;"></a>
+        </li>
+    </ul>
+</div>
+<table class="summaryViewNoTop" width="100%" summary="layout">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="nanomaterialentity != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include
+                    page="nanomaterialEntity/bodyNanomaterialEntitySummaryView.jsp">
+                <jsp:param name="sampleId" value="{{sampleId}}" />
+                <jsp:param name="index" value="{{index}}" />
+            </jsp:include> -->
+
+            <ng-include src="'views/sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryView.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
+<table class="summaryViewNoTop" width="100%" summary="layout">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="functionalizingentity != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include
+                    page="nanomaterialEntity/bodyNanomaterialEntitySummaryView.jsp">
+                <jsp:param name="sampleId" value="{{sampleId}}" />
+                <jsp:param name="index" value="{{index}}" />
+            </jsp:include> -->
+
+            <ng-include src="'views/sample/composition/functionalizingentity/functionalizingentitySummaryView.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
+<table class="summaryViewNoTop" width="100%" summary="layout">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="chemicalAssociations != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include page="bodyChemicalAssociationSummaryView.jsp">
+                <jsp:param name="sampleId" value="${param.sampleId}" />
+                <jsp:param name="index" value="${index}" />
+            </jsp:include> -->
+
+            <ng-include src="'views/sample/composition/ChemicalAssociationSummaryView.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
+<table class="summaryViewNoTop" width="100%" summary="layout">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="compositionfile != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include page="bodyCompositionFileSummaryView.jsp">
+                <jsp:param name="sampleId" value="${param.sampleId}" />
+                <jsp:param name="index" value="${index}" />
+            </jsp:include>  -->
+
+            <ng-include src="'views/sample/composition/compositionFile.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
 </div>

@@ -1,0 +1,40 @@
+<table class="summaryViewNoGrid" align="left">
+        <tr ng-repeat="file in $parent.entityType.Files">
+            <th scope="row">
+                <span ng-if="file.ExternalURI == 'true'">
+                    <a style="white-space: normal;"
+                       href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
+                        {{file.URI}}
+                        &nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>]
+                    </a>
+                </span>
+
+
+                 <!--   <c:otherwise> -->
+                 <span ng-if="file.isImage">
+                     {{file.Title}}
+                     <br />
+                     <a href="#"
+                       onclick="popImage(event, '{{downloadAction}}.do?dispatch=download&amp;fileId={{file.fileId}}', {{file.fileId}})"><img
+                            src="${downloadAction}.do?dispatch=download&amp;fileId={{fileId}}"
+                            border="0" width="150" alt="uploaded image"></a>
+                 </span>
+                <span ng-if="!file.isImage">
+                    <a style="white-space: normal;"
+                       href="${downloadAction}.do?dispatch=download&amp;fileId={{file.fileId}}">
+                        {{file.Title}}
+                    </a>
+                </span>
+            </th>
+            <td>
+                <span ng-if="file.KeywordStr != ''">
+                    {{file.KeywordStr}}
+                </span>
+             </td>
+            <td>
+                <span ng-if="file.Description != ''">
+                    {{file.Description}}
+                </span>
+            </td>
+        </tr>
+</table>

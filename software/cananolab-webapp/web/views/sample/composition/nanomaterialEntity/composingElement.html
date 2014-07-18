@@ -1,0 +1,49 @@
+<div ng-repeat="composingElement in $parent.entityType.ComposingElements">
+    <table class="summaryViewNoGrid" width="99%" align="left">
+        <tr>
+            <th class="cellLabel" colspan="2" scope="row">
+                {{composingElement.DisplayName}}
+            </th>
+        </tr>
+        <tr ng-if="composingElement.PubChemDataSourceName != ''">
+            <th scope="row">
+                PubChem ID
+            </th>
+            <td>
+                <a href="{{composingElement.PubChemLink}}"
+                   target="caNanoLab - View PubChem">{{composingElement.PubChemId}}</a>
+                &nbsp;({{composingElement.PubChemDataSourceName}})
+            </td>
+        </tr>
+        <tr ng-if="composingElement.MolecularFormulaDisplayName != ''">
+
+            <th scope="row">
+                Molecular Formula
+            </th>
+            <td>
+                {{composingElement.MolecularFormulaDisplayName}}
+            </td>
+        </tr>
+
+        <tr  ng-if="composingElement.Description != ''">
+            <th scope="row">
+                Description
+            </th>
+            <td>
+                {{composingElement.Description}}
+            </td>
+        </tr>
+        <tr ng-if="composingElement.Function.length > 0">
+            <th scope="row">
+                Function
+            </th>
+            <td ng-repeat="func in composingElement.Function">
+                {{func}} <br/>
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel" colspan="2" height="5"></td>
+        </tr>
+    </table>
+</div>
+<br />

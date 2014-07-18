@@ -1,0 +1,32 @@
+<table class="summaryViewNoGrid" align="left">
+    <tr>
+        <th scope="row" class="cellLabel">
+            Average Length
+        </th>
+        <th scope="row" class="cellLabel">
+            Chirality
+        </th>
+        <th scope="row" class="cellLabel">
+            Diameter
+        </th>
+        <th scope="row" class="cellLabel">
+            Wall Type
+        </th>
+    </tr>
+    <tr>
+        <td>
+            {{$parent.entityType.Properties.AverageLength}}
+            {{$parent.entityType.Properties.AverageLengthUnit}}
+        </td>
+        <td>
+            {{$parent.entityType.Properties.chirality}}
+        </td>
+        <td>
+            {{$parent.entityType.Properties.Diameter}}
+            {{$parent.entityType.Properties.DiameterUnit}}
+        </td>
+        <td>
+            {{$parent.entityType.Properties.WalType}}
+        </td>
+    </tr>
+</table>
