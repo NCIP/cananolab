@@ -1,0 +1,109 @@
+<table id="summarySection{{index}}" width="100%" align="center"
+       style="display: block" class="summaryViewNoGrid">
+    <tr>
+        <th align="left">
+            <span class="summaryViewHeading">nanomaterial entity</span>
+        </th>
+    </tr>
+    <tr ng-repeat="(key, entityType) in $parent.nanomaterialentity">
+        <td>
+            <a href="{{key}}"></a>
+            <table width="99%" align="center" class="summaryViewNoGrid"
+                   style="background-color:#dbdbdb;">
+                <tr>
+                    <th align="left">
+                        {{key}}
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="summaryViewNoGrid" width="99%" align="center"
+                               style="background-color:#F5F5f5;">
+                            <tr  ng-if="entityType.description != ''">
+                                <td class="cellLabel" width="10%">
+                                    Description
+                                </td>
+                                <td>
+                                    {{entityType.Description}}
+                                </td>
+                            </tr>
+                            <!--            <c:choose>
+                                            <c:when test="${!empty entityDetailPage}">
+                                                <tr>
+                                                    <td class="cellLabel" width="10%">
+                                                        Properties
+                                                    </td>
+                                                    <td>
+                                                        <c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
+                                                               scope="session" />
+                                                        <jsp:include page="${entityDetailPage}">
+                                                            <jsp:param name="summary" value="true" />
+                                                        </jsp:include>
+                                                    </td>
+                                                </tr>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:if test="${nanomaterialEntity.withProperties }">
+                                                    <tr>
+                                                        <td class="cellLabel" width="10%">
+                                                            Properties
+                                                        </td>
+                                                        <td colspan="2">
+                                                            <%
+                                                            String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
+                                                            .getInstance().getDetailPage(
+                                                            (String) pageContext
+                                                            .getAttribute("entityType"),
+                                                            "nanomaterialEntity");
+                                                            pageContext.setAttribute("detailPage", detailPage);
+                                                            %>
+                                                            <c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
+                                                                   scope="session" />
+                                                            <jsp:include page="${detailPage}">
+                                                                <jsp:param name="summary" value="true" />
+                                                            </jsp:include>
+                                                        </td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:otherwise>
+                                        </c:choose> -->
+                            <tr ng-if="entityType.isWithProperties != ''">
+                                <td class="cellLabel" width="10%">
+                                    Properties
+                                </td>
+                                <td colspan="2">
+                                    <ng-include src="entityType.detailsPage"></ng-include>
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.composingElements != ''">
+                                <td class="cellLabel" width="10%">
+                                    Composing Elements
+                                </td>
+                                <td>
+                                    <!-- XX{{composingElement}}YY -->
+                                    <!--     <%@include file="bodyComposingElementView.jsp"%> -->
+                                    <ng-include src="'views/sample/composition/nanomaterialEntity/composingElement.html'"></ng-include>
+                                </td>
+                            </tr>
+                            <tr ng-if="entityType.Files.length > 0">
+                                <th class="cellLabel" width="10%">
+                                    Files
+                                </th>
+                                <td>
+                                    <ng-include src="'views/sample/fileView.html'"></ng-include>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top" align="left" height="6">
+                    </th>
+                </tr>
+            </table>
+            <br/>
+        </td>
+    </tr>
+</table>
+<div id="summarySeparator${index}">
+</div>

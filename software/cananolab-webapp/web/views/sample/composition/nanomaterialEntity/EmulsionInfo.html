@@ -1,0 +1,22 @@
+<!-- <c:when test="${! empty charBean.surface.isHydrophobic}"> -->
+<div ng-if="$parent.entityType.Properties.PloymerName.length > 0">
+    <table class="summaryViewNoGrid" align="left">
+        <tr>
+            <th scope="row" class="cellLabel">
+                Is Polymerized
+            </th>
+            <th scope="row" class="cellLabel">
+                Polymer Name
+            </th>
+        </tr>
+        <tr>
+            <td>
+                {{$parent.entityType.Properties.IsPolymarized}}
+            </td>
+            <td>
+                {{$parent.entityType.Properties.PloymerName}}
+            </td>
+        </tr>
+    </table>
+</div>
+<span ng-if="$parent.entityType.Properties.PloymerName.length == 0">N/A</span>

@@ -1,0 +1,24 @@
+<table class="summaryViewNoGrid" align="left">
+    <tr>
+        <th scope="row" class="cellLabel">
+            Initiator
+        </th>
+        <th scope="row" class="cellLabel">
+            Is Cross Linked
+        </th>
+        <th scope="row" class="cellLabel">
+            Cross Link Degree
+        </th>
+    </tr>
+    <tr>
+        <td>
+            {{$parent.entityType.Properties.Initiator}}
+        </td>
+        <td>
+            {{$parent.entityType.Properties.isCrossLinked}}
+        </td>
+        <td>
+            {{$parent.entityType.Properties.CrossLinkDegree}}
+        </td>
+    </tr>
+</table>
