@@ -1589,79 +1589,89 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
 }
 
 
-
-
-
-.assay {
-    border-bottom:4px 1px 0px 1px;
-    border-color:#ccc;
-    border-style:solid;
-    padding:10px 0px 3px 5px;
-background-color:#fff;
+.dataTable {
+    background-color:#fff;
 }
 
-.sample.type th{
-    background-color:#009E2D;
-    padding:5px;
-}
-
-.type th span{
-    color:white;
-    text-decoration:none;
-    text-transform:capitalize;
-}
-
-.sampleTable {
-
-}
-.sampleTable th.characterization{
-padding:5px;
-text-transform:capitalize;
-background-color:#01045A;
-color:#fff;
-}
-
-
-.sampleType .type {
-background-color:#009E2D;
-color:white;text-transform:capitalize;
-padding:5px;
-font-weight:700;
-}
-.sample {
-    display: table;
-}
-
-    .sample .propertyTable td{
-        padding-bottom:5px;
-        padding-right:10px;
+    .dataTable .heading {
+        background-color:#009E2D;
+        color:#fff;
+        text-transform:capitalize;
     }
 
+        .dataTable .heading div{
+            padding:5px 0px 5px 15px;;
+            font-weight:700;
+        }
 
-  .sample .left,.sample .right {
-        display: table-cell;
-        padding-bottom:10px;
+    .dataTable .break {
+        background-color:#fff;
+        padding-top:15px;
     }
 
-.sample .right {
-padding-left:0px;
-}
+    .dataTable .characterization {
+        background-color:#0089BB;
+        padding:5px 0px 5px 15px;
+        text-transform:capitalize;
+        font-weight:700;
+        color:#fff;
+    }
 
-  .sample .left {
-        width:120px;
-        vertical-align:top;        
-  }
+    .dataTable .assay {
+        padding:10px 0px 0px 15px;
+        border-width:0px 2px 2px 2px;
+        border-style:solid;
+        border-color:#ccc;
+        background-color:#eee;
+    }
 
-.dataConditions {
-border-width:0px 0px 1px 1px;
-border-color:#ccc;
-border-style:solid;
-margin:10px 0px 10px 0px;
-}
+    .dataTable .table {
+        display: table;
+    }
 
-.dataConditions td {
-border-width:1px 1px 0px 0px;
-border-style:solid;
-border-color:#ccc;
-padding:5px;
-}
+        .dataTable .table .right {
+            padding-left:0px;
+        }    
+
+        .dataTable .table .left {
+            width:120px;
+            vertical-align:top;        
+        }  
+        
+        .dataTable .table .left,.dataTable .table .right {
+            display: table-cell;
+            padding-bottom:10px;
+        }              
+
+        .dataTable .table .propertyTable td{
+            padding:0px 0px 15px 0px;
+            padding-right:10px;
+        }
+
+        .dataTable .table .propertyTable .dataConditions {
+            border-width:0px 0px 1px 1px;
+            border-color:#aaa;
+            border-style:solid;
+            margin:10px 0px 10px 0px;
+        }
+
+            .dataTable .table .propertyTable .dataConditions td {
+                border-width:1px 1px 0px 0px;
+                border-style:solid;
+                border-color:#aaa;
+                padding:10px;
+            }
+            .dataTable .table .propertyTable .dataConditions th {
+                border-width:1px 1px 0px 0px;
+                border-style:solid;
+                border-color:#aaa;
+                padding:4px 10px 4px 10px;
+                text-align:left;
+            }
+
+
+
+
+
+
+
