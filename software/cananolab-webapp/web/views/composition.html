@@ -21,6 +21,7 @@
     <li><a href="#/characterization">Characterization</a></li>
     <li><a href="#/publication">Publication</a></li>
 </ul>
+<!-- 
 <div class="shadetabs" id="summaryTabALL">
     <ul>
         <li class="selected">
@@ -42,7 +43,14 @@
         </li>
     </ul>
 </div>
-<table class="summaryViewNoTop" width="100%" summary="layout">
+-->
+<tabset justified="true">
+    <tab heading="All" ng-click="select(-1)"></tab>
+    <tab ng-repeat="type in compositionSections" heading="{{type}}" ng-click="select({{$index}})"></tab>
+  </tabset>
+</div>
+
+<table ng-hide="show0" class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr ng-if="nanomaterialentity != ''">
         <td>
@@ -58,7 +66,7 @@
         </td>
     </tr>
 </table>
-<table class="summaryViewNoTop" width="100%" summary="layout">
+<table ng-hide="show1" class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr ng-if="functionalizingentity != ''">
         <td>
@@ -69,12 +77,12 @@
                 <jsp:param name="index" value="{{index}}" />
             </jsp:include> -->
 
-            <ng-include src="'views/sample/composition/functionalizingentity/functionalizingentitySummaryView.html'"></ng-include>
+            <ng-include src="'views/sample/composition/functionalizingentity/functionalizingEntitySummaryView.html'"></ng-include>
 
         </td>
     </tr>
 </table>
-<table class="summaryViewNoTop" width="100%" summary="layout">
+<table ng-hide="show2" class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr ng-if="chemicalAssociations != ''">
         <td>
@@ -89,7 +97,7 @@
         </td>
     </tr>
 </table>
-<table class="summaryViewNoTop" width="100%" summary="layout">
+<table ng-hide="show3" class="summaryViewNoTop" width="100%" summary="layout">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr ng-if="compositionfile != ''">
         <td>

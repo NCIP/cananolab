@@ -287,7 +287,7 @@ public class SimpleCompositionBean {
 								try {
 									String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
 											.getInstance().getDetailPage(entityType,
-													"functionalizingEntity");
+													"functionalizingentity");
 									System.out.println("**** Deatils Page *****"
 											+ detailPage);
 									function.put("detailsPage", detailPage);

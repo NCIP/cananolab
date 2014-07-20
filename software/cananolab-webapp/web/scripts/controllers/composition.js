@@ -14,6 +14,27 @@ var app = angular.module('angularApp')
      $scope.goBack = function() {
       $location.path("/sampleResults").replace();
       $location.search('sampleId', null);      };
+      
+      $scope.select = function(tab) {
+          var size = 0, key;
+          for (key in $scope.compositionSections) {
+            size+=1
+          };
+
+          for (var x=0; x<size;x++) {
+              if (tab>=0) {
+                  if (x==tab){
+                      $scope['show'+x]=false;                
+                  }
+                  else {
+                      $scope['show'+x]=true;
+                  } 
+              }    
+              else {
+                  $scope['show'+x]=false;
+              }      
+          }
+      }; 
 
 	$http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/composition/summaryView?sampleId=20917507'}).
             success(function(data, status, headers, config) {
