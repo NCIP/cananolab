@@ -36,15 +36,13 @@ var app = angular.module('angularApp')
           }
       }; 
 
-	$http({method: 'GET', url: '/caNanoLab/rest/composition/summaryView?sampleId=20917507'}).
+	$http({method: 'GET', url: '/caNanoLab/rest/composition/summaryView?sampleId=' + $scope.sampleId.data'}).
             success(function(data, status, headers, config) {
                 $scope.compositionSections = data.compositionSections;
                 $scope.nanomaterialentity = data.nanomaterialentity;
                 $scope.functionalizingentity = data.functionalizingentity;
                 $scope.chemicalassociation = data.chemicalassociation;
                 $scope.compositionfile = data.compositionfile;
-                $scope.sampleId = '20917507';
-                $scope.index = 1;
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
