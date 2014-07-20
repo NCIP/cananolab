@@ -36,7 +36,7 @@ var app = angular.module('angularApp')
           }
       }; 
 
-	$http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/composition/summaryView?sampleId=20917507'}).
+	$http({method: 'GET', url: '/caNanoLab/rest/composition/summaryView?sampleId=20917507'}).
             success(function(data, status, headers, config) {
                 $scope.compositionSections = data.compositionSections;
                 $scope.nanomaterialentity = data.nanomaterialentity;
