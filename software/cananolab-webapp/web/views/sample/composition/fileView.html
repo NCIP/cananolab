@@ -3,7 +3,7 @@
             <th scope="row">
                 <span ng-if="file.ExternalURI == 'true'">
                     <a style="white-space: normal;"
-                       href="${downloadAction}.do?dispatch=download&amp;fileId=${file.domainFile.id}">
+                       href="/caNanoLab/rest/sample/download?fileId=${file.domainFile.id}">
                         {{file.URI}}
                         &nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>]
                     </a>
@@ -14,14 +14,14 @@
                  <span ng-if="file.isImage">
                      {{file.Title}}
                      <br />
-                     <a href="#"
-                       onclick="popImage(event, '{{downloadAction}}.do?dispatch=download&amp;fileId={{file.fileId}}', {{file.fileId}})"><img
-                            src="${downloadAction}.do?dispatch=download&amp;fileId={{fileId}}"
+                     <a ng-href="#"
+                       onclick="popImage(event, '/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}', {{file.fileId}})"><img
+                            src="/caNanoLab/rest/sample/downloadImage?fileId={{fileId}}"
                             border="0" width="150" alt="uploaded image"></a>
                  </span>
                 <span ng-if="!file.isImage">
                     <a style="white-space: normal;"
-                       href="${downloadAction}.do?dispatch=download&amp;fileId={{file.fileId}}">
+                       ng-href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">
                         {{file.Title}}
                     </a>
                 </span>

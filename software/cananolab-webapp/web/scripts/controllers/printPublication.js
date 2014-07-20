@@ -1,5 +1,5 @@
 'use strict';
-angular.module('angularApp',[
+angular.module('publicationApp',[
     'ngRoute'])
     .controller('PrintSamplePublicationCtrl', function ($rootScope,$scope,$http,$filter,$routeParams) {
         var sampleId = $routeParams.sampleId;

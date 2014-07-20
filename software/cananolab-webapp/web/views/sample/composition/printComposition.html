@@ -1,0 +1,70 @@
+<html>
+<body ng-app="compositionApp">
+<table class="summaryViewNoTop" width="100%" summary="layout" ng-controller="PrintCompositionCtrl">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="nanomaterialentity != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include
+                    page="nanomaterialEntity/bodyNanomaterialEntitySummaryView.jsp">
+                <jsp:param name="sampleId" value="{{sampleId}}" />
+                <jsp:param name="index" value="{{index}}" />
+            </jsp:include> -->
+
+            <ng-include src="'views/sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryView.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
+<table class="summaryViewNoTop" width="100%" summary="layout">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="functionalizingentity != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include
+                    page="nanomaterialEntity/bodyNanomaterialEntitySummaryView.jsp">
+                <jsp:param name="sampleId" value="{{sampleId}}" />
+                <jsp:param name="index" value="{{index}}" />
+            </jsp:include> -->
+
+            <ng-include src="'views/sample/composition/functionalizingentity/functionalizingentitySummaryView.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
+<table class="summaryViewNoTop" width="100%" summary="layout">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="chemicalAssociations != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include page="bodyChemicalAssociationSummaryView.jsp">
+                <jsp:param name="sampleId" value="${param.sampleId}" />
+                <jsp:param name="index" value="${index}" />
+            </jsp:include> -->
+
+            <ng-include src="'views/sample/composition/ChemicalAssociationSummaryView.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
+<table class="summaryViewNoTop" width="100%" summary="layout">
+    <!-- <c:set scope='request' var='index' value='0'/> -->
+    <tr ng-if="compositionfile != ''">
+        <td>
+            <!-- <c:set scope='request' var='index' value='${index + 1}'/>
+            <jsp:include page="bodyCompositionFileSummaryView.jsp">
+                <jsp:param name="sampleId" value="${param.sampleId}" />
+                <jsp:param name="index" value="${index}" />
+            </jsp:include>  -->
+
+            <ng-include src="'views/sample/composition/compositionFile.html'"></ng-include>
+
+        </td>
+    </tr>
+</table>
+
+<script src="../../../scripts/controllers/printComposition.js"></script>
+<script src="../../../bower_components/angular-route/angular-route.js"></script>
+
+</body>
+</html>

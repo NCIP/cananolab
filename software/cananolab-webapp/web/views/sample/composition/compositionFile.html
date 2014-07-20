@@ -26,7 +26,7 @@
                                         <td>
                                             <span ng-if="indFile.ExternalURI">
                                                     <a
-                                                            ng-href="composition.do?dispatch=download&amp;fileId={{indFile.fileId}}">
+                                                            ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
                                                             {{indFile.URI}}
                                                     </a>
                                                     &nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>]
@@ -35,13 +35,13 @@
                                                 {{indFile.Title}}
                                                 <br />
                                                 <a ng-href="#"
-                                                   onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId={{indFile.fileId}}', {{indFile.fileId}})"><img
-                                                        src="composition.do?dispatch=download&amp;fileId={{indFile.fileId}}"
+                                                   onclick="popImage(event, '/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', {{indFile.fileId}})"><img
+                                                        src="/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}"
                                                         border="0" width="150"> </a>
                                                 </span>
                                                 <span ng-if="!indFile.ExternalURI && !indFile.isImage">
                                                     <a
-                                                            ng-href="composition.do?dispatch=download&amp;fileId={{indFile.fileId}}">
+                                                            ng-href="/caNanoLab/rest/sample/download?fileId={{indFile.fileId}}">
                                                         {{indFile.Title}} </a>
                                                 </span>
                                         </td>
