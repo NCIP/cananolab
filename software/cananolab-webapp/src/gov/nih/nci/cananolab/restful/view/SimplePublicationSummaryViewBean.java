@@ -55,9 +55,9 @@ public class SimplePublicationSummaryViewBean {
 		setPublicationCategories(pubBean.getPublicationCategories());
 
 		try {
-			pubList = new ArrayList<SimplePublicationBean>();
-
+			
 			for(String publicationCategory : pubBean.getPublicationCategories()){
+				pubList = new ArrayList<SimplePublicationBean>();
 				for(PublicationBean pBean : pubBean.getCategory2Publications().get(publicationCategory)){
 					publicationBean = new SimplePublicationBean();
 
