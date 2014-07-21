@@ -85,7 +85,7 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 			 PublicationBO publicationBO = 
 						(PublicationBO) applicationContext.getBean("publicationBO");
 
-			 PublicationSummaryViewBean summaryBean = publicationBO.summaryPrint(sampleId, httpRequest);
+			 PublicationSummaryViewBean summaryBean = publicationBO.summaryView(sampleId, httpRequest);
 			 SimplePublicationSummaryViewBean view = new SimplePublicationSummaryViewBean();
 				view.transferPublicationBeanForSummaryView(summaryBean);
 		
