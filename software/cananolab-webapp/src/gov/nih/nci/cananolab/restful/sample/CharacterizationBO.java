@@ -470,7 +470,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public ActionForward summaryPrint(String sampleId,
+	public CharacterizationSummaryViewBean summaryPrint(String sampleId, 
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) request
@@ -481,14 +481,17 @@ public class CharacterizationBO extends BaseAnnotationBO {
 			charSummaryBean = (CharacterizationSummaryViewBean) request
 					.getSession().getAttribute("characterizationSummaryView");
 		}
+		
+		//TODO: w
 		List<String> charTypes = prepareCharacterizationTypes(request);
-		this.filterType(request, charTypes); // Filter out un-selected types.
+		
+		this.filterType(request, "all", charTypes); // Filter out un-selected types.
 
 		// Marker that indicates page is for printing only, hide tabs/links.
 		request.setAttribute("printView", Boolean.TRUE);
 
 		//return mapping.findForward("summaryPrintView");
-		return null;
+		return charSummaryBean;
 	}
 
 	/**
@@ -501,9 +504,16 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public ActionForward summaryExport(String sampleId,
+	public String summaryExport(String sampleId, String type,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		
+		if (sampleId == null || sampleId.length() == 0)
+			return "Sample Id can't be null or empty";
+		
+		if (type == null)
+			type = "all";
+		
 		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute(
 				"theSample");
 		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) request
@@ -517,9 +527,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 					.getSession().getAttribute("characterizationSummaryView");
 		}
 		List<String> charTypes = prepareCharacterizationTypes(request);
-		List<String> filteredCharTypes = this.filterType(request, charTypes);
+		List<String> filteredCharTypes = this.filterType(request, type, charTypes);
 
-		String type = request.getParameter("type");
+		//String type = "all"; //request.getParameter("type");
 		// per app scan
 		if (!StringUtils.xssValidate(type)) {
 			type = "";
@@ -533,7 +543,7 @@ public class CharacterizationBO extends BaseAnnotationBO {
 		CharacterizationExporter.exportSummary(filteredCharTypes,
 				charSummaryBean, sb.toString(), response.getOutputStream());
 
-		return null;
+		return "success";
 	}
 
 	public ActionForward saveExperimentConfig(ActionMapping mapping,
@@ -901,9 +911,9 @@ public class CharacterizationBO extends BaseAnnotationBO {
 	 * @param request
 	 * @param compBean
 	 */
-	private List<String> filterType(HttpServletRequest request,
+	private List<String> filterType(HttpServletRequest request, String type,
 			List<String> charTypes) {
-		String type = request.getParameter("type");
+		//String type = request.getParameter("type");
 		List<String> filteredTypes = new ArrayList<String>();
 		if( !StringUtils.isEmpty(type) && type.equals("all")) {
 			filteredTypes = charTypes;
