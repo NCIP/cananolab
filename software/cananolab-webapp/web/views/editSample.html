@@ -1,0 +1,691 @@
+<h1>Hello</h1>
+<form name="sampleForm" id="sampleForm" method="post" action="/caNanoLab/sample.do" onsubmit="return validateSavingTheData('newPointOfContact', 'point of contact');"><div><input type="hidden" name="org.apache.struts.taglib.html.TOKEN" value="146f0a010a5975eb9aa6e61432162dd1"></div>
+	
+
+
+
+
+
+<br>
+
+	
+	
+	
+
+
+
+
+	<link rel="StyleSheet" type="text/css" href="css/promptBox.css"><table width="100%" align="center" class="submissionView" summary="layout">
+		<tbody><tr>
+			<td class="cellLabel" width="20%">
+				<label for="sampleName">Sample Name *</label>
+			</td>
+			<td>
+				<input type="text" name="sampleBean.domain.name" size="80" value="UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-02" id="sampleName">
+				
+					<label for="sampleId" style="display:none">Sample ID</label>
+					<input type="hidden" name="sampleBean.domain.id" value="27131907" id="sampleId">
+				
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Point of Contact *
+			</td>
+			<td>
+			    
+				
+				
+				<a href="#" onclick="javascript:confirmAddNew(['Access'], 'PointOfContact', 'Point Of Contact', 'clearPointOfContact()');" id="addPointOfContact" style="display: block;"><img align="top" src="images/btn_add.gif" border="0" alt="add point of contact"></a>
+			</td>
+		</tr>
+		
+			<tr>
+				<td colspan="2">
+					
+					
+
+
+
+
+
+
+
+
+
+	
+	
+		<table class="editTableWithGrid" width="95%" align="center">
+			<tbody><tr>
+				<th>
+					Primary Contact?
+				</th>
+				<th>
+					Contact Person
+				</th>
+				<th>
+					Organization
+				</th>
+				<th>
+					Role
+				</th>
+				<th></th>
+			</tr>
+			
+				<tr>
+					<td>
+						Yes
+					</td>
+					<td>
+						Raghuraman Kannan<br>kannanr@health.missouri.edu
+					</td>
+					<td>
+						UMC_RadiolD<br>Department of Radiology<br>University of Missouri-Columbia<br>Columbia MO 65212 USA
+					</td>
+					<td>
+						investigator
+					</td>
+					
+						<td>
+						<div align="right">
+							<a href="javascript:setThePointOfContact(27066372, true);">Edit</a>&nbsp;
+						</div></td>
+						
+					
+				</tr>
+			
+			
+				
+					<tr>
+						<td>
+							No
+						</td>
+						<td>
+							
+						</td>
+						<td>
+							UMC_RadiolD<br>Department of Radiology<br>University of Missouri-Columbia<br>Columbia MO 65212 USA
+						</td>
+						<td>
+							investigator
+						</td>
+						
+							<td>
+							<div align="right">
+								<a href="javascript:setThePointOfContact(27066369, false);">Edit</a>&nbsp;
+							</div>
+							</td>
+						
+					</tr>
+				
+			
+		</tbody></table>
+	
+
+				</td>
+			</tr>
+		
+		<tr>
+			<td colspan="2">
+				
+				
+				
+				<div style="display: block;" id="newPointOfContact">
+					<a name="submitPointOfContact" class="anchorLink">
+
+
+
+
+
+<script type="text/javascript" src="javascript/POCManager.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/interface/POCManager.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/engine.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/util.js"></script>
+
+<table class="subSubmissionView" width="85%" align="center" summary="layout">
+	<tbody><tr>
+		<th>
+			<span id="primaryTitle" style="display: block;">Primary</span><span id="secondaryTitle" style="display: none;">Secondary</span> Point of
+			Contact Information
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tbody><tr>
+					<td class="cellLabel">
+						<label for="domain.organization.name">Organization Name*</label>
+					</td>
+					<td>
+						<div id="orgNamePrompt">
+							<select name="sampleBean.thePOC.domain.organization.name" onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo();" id="domain.organization.name"><option value="">
+									</option><option value="AIST_HTRC">AIST_HTRC</option>
+<option value="BB_SH_DFCI_WCMC_BWH_MIT">BB_SH_DFCI_WCMC_BWH_MIT</option>
+<option value="BB_SH_KCI_DFCI_WCMC_BWH_MIT">BB_SH_KCI_DFCI_WCMC_BWH_MIT</option>
+<option value="BROWN_STANFORD">BROWN_STANFORD</option>
+<option value="BWH_AnesthesiologyD">BWH_AnesthesiologyD</option>
+<option value="C-Sixty (CNI)">C-Sixty (CNI)</option>
+<option value="CAS_VT_VCU">CAS_VT_VCU</option>
+<option value="CLM_UHA_CDS_INSERM">CLM_UHA_CDS_INSERM</option>
+<option value="CP_UCLA_CalTech">CP_UCLA_CalTech</option>
+<option value="CWRU">CWRU</option>
+<option value="Childrens Hospital Los Angeles">Childrens Hospital Los Angeles</option>
+<option value="DC">DC</option>
+<option value="DNT">DNT</option>
+<option value="DWU_SNU_SU_US">DWU_SNU_SU_US</option>
+<option value="GATECH">GATECH</option>
+<option value="GATECH_EMORY">GATECH_EMORY</option>
+<option value="GATECH_UCSF">GATECH_UCSF</option>
+<option value="GIST_LifeScienceD">GIST_LifeScienceD</option>
+<option value="HarvardU_PhysD">HarvardU_PhysD</option>
+<option value="Harvard_MIT_DHST">Harvard_MIT_DHST</option>
+<option value="JHU_KSU">JHU_KSU</option>
+<option value="JSTA_FHU_NEC_MU_AIST_JAPAN">JSTA_FHU_NEC_MU_AIST_JAPAN</option>
+<option value="JSTA_JFCR_NEC_FHU_TUSM_NIAIST">JSTA_JFCR_NEC_FHU_TUSM_NIAIST</option>
+<option value="JST_AIST_FHU_TU_NEC_MU_JAPAN">JST_AIST_FHU_TU_NEC_MU_JAPAN</option>
+<option value="Joe Barchi">Joe Barchi</option>
+<option value="KI">KI</option>
+<option value="KU_JSTC_JAPAN">KU_JSTC_JAPAN</option>
+<option value="LMRT">LMRT</option>
+<option value="MIT_ChemD">MIT_ChemD</option>
+<option value="MIT_ChemEngineeringD">MIT_ChemEngineeringD</option>
+<option value="MIT_LMRT">MIT_LMRT</option>
+<option value="MIT_MGH">MIT_MGH</option>
+<option value="MIT_MGH_GIST">MIT_MGH_GIST</option>
+<option value="MIT_UC_BBIC_HST_CU">MIT_UC_BBIC_HST_CU</option>
+<option value="MSKCC_CU_UA">MSKCC_CU_UA</option>
+<option value="Mansoor Amiji">Mansoor Amiji</option>
+<option value="Mark Kester">Mark Kester</option>
+<option value="Mark Kester PSU">Mark Kester PSU</option>
+<option value="NCL">NCL</option>
+<option value="NEU">NEU</option>
+<option value="NEU_DPS">NEU_DPS</option>
+<option value="NEU_MGH_UP_FCCC">NEU_MGH_UP_FCCC</option>
+<option value="NEU_MIT_MGH">NEU_MIT_MGH</option>
+<option value="NIEHS">NIEHS</option>
+<option value="NIOSH">NIOSH</option>
+<option value="NRCWE">NRCWE</option>
+<option value="NWU">NWU</option>
+<option value="NWU_ChemD_IIN">NWU_ChemD_IIN</option>
+<option value="Nanotechnology Characterization Laboratory">Nanotechnology Characterization Laboratory</option>
+<option value="Nanotechnology_Characterization_Laboratory">Nanotechnology_Characterization_Laboratory</option>
+<option value="PNNL_CBBG">PNNL_CBBG</option>
+<option value="PURDUE">PURDUE</option>
+<option value="PURDUEU_BN">PURDUEU_BN</option>
+<option value="RIT_KI_SU">RIT_KI_SU</option>
+<option value="SNL_UNM">SNL_UNM</option>
+<option value="SNU_CHINA">SNU_CHINA</option>
+<option value="STANFORD">STANFORD</option>
+<option value="STANFORD_ChemD">STANFORD_ChemD</option>
+<option value="STANFORD_MIPS">STANFORD_MIPS</option>
+<option value="STANFORD_OM">STANFORD_OM</option>
+<option value="SUNYB_ILPB">SUNYB_ILPB</option>
+<option value="Sharon">Sharon</option>
+<option value="TAM_UT">TAM_UT</option>
+<option value="TTU">TTU</option>
+<option value="UAM_CSIC_IMDEA">UAM_CSIC_IMDEA</option>
+<option value="UCSD_ChemBiochemD">UCSD_ChemBiochemD</option>
+<option value="UCSD_MIT_MGH">UCSD_MIT_MGH</option>
+<option value="UC_HU_UEN_GERMANY">UC_HU_UEN_GERMANY</option>
+<option value="UI">UI</option>
+<option value="UKY">UKY</option>
+<option value="UL_NL">UL_NL</option>
+<option value="UM">UM</option>
+<option value="UM-C">UM-C</option>
+<option value="UMC_DVP">UMC_DVP</option>
+<option value="UMC_RadiolD" selected="selected">UMC_RadiolD</option>
+<option value="UN">UN</option>
+<option value="UNC">UNC</option>
+<option value="UNC_ChemD">UNC_ChemD</option>
+<option value="UTHSCH_UMG_MDACC_RU_UTA">UTHSCH_UMG_MDACC_RU_UTA</option>
+<option value="UT_UMG_MDACC_RU_UTA">UT_UMG_MDACC_RU_UTA</option>
+<option value="UToronto">UToronto</option>
+<option value="VCU_VT_EHC">VCU_VT_EHC</option>
+<option value="WSU">WSU</option>
+<option value="WSU_DPS">WSU_DPS</option>
+<option value="WUSTL">WUSTL</option>
+<option value="WUSTL_DIM">WUSTL_DIM</option>
+<option value="WU_SU_CHINA">WU_SU_CHINA</option>
+<option value="YALE">YALE</option>
+
+								<option value="other">
+									[other]
+								</option></select>
+						</div>
+					</td>
+					<td class="cellLabel" valign="top">
+						<label for="domain.role">Role</label>
+					</td>
+					<td valign="top" colspan="4">
+						<div id="rolePrompt">
+							<select name="sampleBean.thePOC.domain.role" onchange="javascript:callPrompt('Contact Role', 'domain.role', 'rolePrompt');" id="domain.role"><option>
+									</option><option value="investigator" selected="selected">investigator</option>
+<option value="manufacturer">manufacturer</option>
+
+								<option value="other">
+									[other]
+								</option></select>
+						</div>
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tbody><tr>
+					<td class="cellLabel">
+						<label for="domain.organization.streetAddress1">Address Line1</label>
+					</td>
+					<td colspan="5">
+						<input type="text" name="sampleBean.thePOC.domain.organization.streetAddress1" size="50" value="Department of Radiology" id="domain.organization.streetAddress1">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="cellLabel">
+						<label for="domain.organization.streetAddress2">Address Line2</label>
+					</td>
+					<td colspan="5">
+						<input type="text" name="sampleBean.thePOC.domain.organization.streetAddress2" size="50" value="University of Missouri-Columbia" id="domain.organization.streetAddress2">
+						&nbsp;
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tbody><tr>
+					<td class="cellLabel">
+						<label for="domain.organization.city">City</label>
+					</td>
+					<td>
+						<input type="text" name="sampleBean.thePOC.domain.organization.city" size="20" value="Columbia" id="domain.organization.city">
+						&nbsp;
+					</td>
+					<td class="cellLabel">
+						<label for="domain.organization.state">State/Province</label>
+					</td>
+					<td>
+						<input type="text" name="sampleBean.thePOC.domain.organization.state" size="5" value="MO" id="domain.organization.state">
+						&nbsp;
+					</td>
+					<td class="cellLabel">
+						<label for="domain.organization.postalCode">Zip/Postal Code</label>
+					</td>
+					<td>
+						<input type="text" name="sampleBean.thePOC.domain.organization.postalCode" size="10" value="65212" id="domain.organization.postalCode">
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tbody><tr>
+					<td class="cellLabel">
+						<label for="domain.organization.country">Country</label>
+					</td>
+					<td>
+						<input type="text" name="sampleBean.thePOC.domain.organization.country" size="30" value="USA" id="domain.organization.country">
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tbody><tr>
+					<td class="cellLabel" valign="top">
+						<label for="domain.firstName">First Name</label>
+					</td>
+					<td valign="top">
+						<input type="text" name="sampleBean.thePOC.domain.firstName" size="15" value="Raghuraman" id="domain.firstName">
+					</td>
+					<td class="cellLabel" valign="top">
+						<label for="domain.middleInitial">Middle Initial</label>
+					</td>
+					<td valign="top">
+						<input type="text" name="sampleBean.thePOC.domain.middleInitial" size="5" value="" id="domain.middleInitial">
+					</td>
+					<td class="cellLabel" valign="top">
+						<label for="domain.lastName">Last Name</label>
+					</td>
+					<td valign="top">
+						<input type="text" name="sampleBean.thePOC.domain.lastName" size="15" value="Kannan" onchange="updatePersonInfo()" id="domain.lastName">
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tbody><tr>
+					<td class="cellLabel" valign="top">
+						<label for="domain.phone">Phone Number</label>
+					</td>
+					<td valign="top">
+						<input type="text" name="sampleBean.thePOC.domain.phone" size="30" value="" id="domain.phone">
+					</td>
+					<td class="cellLabel" valign="top">
+						<label for="domain.email">Email</label>
+					</td>
+					<td valign="top" colspan="4">
+						<input type="text" name="sampleBean.thePOC.domain.email" size="30" value="kannanr@health.missouri.edu" id="domain.email">
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%">
+				<tbody><tr>
+					<td>
+						
+							<input type="button" value="Remove" onclick="removePointOfContact('sample')" id="deletePointOfContact" style="display: none;">
+						
+					</td>
+					<td>
+						<div align="right">
+							<input type="button" value="Save" onclick="addPointOfContact('sample')">
+							<input type="button" value="Cancel" onclick="clearPointOfContact();closeSubmissionForm('PointOfContact');">
+							<input type="hidden" name="sampleBean.thePOC.domain.id" value="27066372" id="domain.id">
+							<input type="hidden" name="sampleBean.thePOC.primaryStatus" value="true" id="primaryStatus">
+						</div>
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+</tbody></table></a>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				<label for="keyword">Keywords</label>
+				<i>(one keyword per line)</i>
+			</td>
+			<td>
+				<textarea name="sampleBean.keywordsStr" cols="80" rows="6" id="keyword" style="margin: 2px; width: 697px; height: 182px;">GOLD
+GUM ARABIC
+IN VIVO
+THERAPEUTIC EFFICACY
+TUMOR</textarea>
+			</td>
+		</tr>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		   
+		
+		
+
+
+
+
+
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/engine.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/util.js"></script>
+<script type="text/javascript" src="javascript/AccessibilityManager.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/interface/AccessibilityManager.js"></script>
+
+
+
+
+	<tr>
+		<td class="cellLabel" width="15%" id="addAccessLabel">
+			Access to the Sample
+		</td>
+		<td>
+			
+			<a href="#" onclick="confirmAddNew(['PointOfContact'], 'Access', 'Access', 'clearAccess(\'sampleForm\', \'Sample\')');" id="addAccess" style="display: block;"><img align="top" src="images/btn_add.gif" border="0" alt="add accessibility"></a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			
+			
+				<table class="editTableWithGrid" width="95%" align="center">
+					<tbody><tr>
+						<th width="40%" scope="col">
+							Group Name
+						</th>
+						<th width="55%" scope="col">
+							Access
+						</th>
+						<th></th>
+					</tr>
+					
+						<tr valign="top">
+							<td>
+								Curator
+							</td>
+							<td>
+								read update delete
+							</td>
+							<td><div align="right">
+								
+									
+									
+									
+								
+								</div>
+							</td>
+						</tr>
+					
+						<tr valign="top">
+							<td>
+								Public
+							</td>
+							<td>
+								read
+							</td>
+							<td><div align="right">
+								
+									
+									
+										<a href="javascript:setTheAccess('sampleForm', 'group', 'Public', 'Sample', '27131907');">Edit</a>&nbsp;
+							    
+								
+								</div>
+							</td>
+						</tr>
+					
+				</tbody></table>
+				<br>
+			
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			
+			
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			
+			
+			<div style="display: none;" id="newAccess">
+				<table class="subSubmissionView" width="85%" align="center" summary="layout">
+					<tbody><tr>
+						<th colspan="4">
+							Access Information
+						</th>
+					</tr>
+					<tr>
+						<td class="cellLabel" width="25%">
+							Access by *
+						</td>
+						<td colspan="3">
+							<input type="radio" name="sampleBean.theAccess.accessBy" value="group" checked="checked" onclick="displayAccessNameLabel();" id="byGroup">
+							<label for="byGroup">Collaboration Group</label>
+							<input type="radio" name="sampleBean.theAccess.accessBy" value="user" onclick="displayAccessNameLabel();" id="byUser">
+							<label for="byUser">User&nbsp;&nbsp;</label>
+							
+								<input type="radio" name="sampleBean.theAccess.accessBy" value="public" onclick="displayAccessNameLabel();" id="byPublic">
+							<label for="byPublic">Public</label>
+							
+						</td>
+					</tr>
+					<tr>
+						
+						<td class="cellLabel" id="accessNameLabel">Collaboration Group Name *</td>
+						<td><label for="groupName" style="display:none">Group Name</label>
+							<input type="text" name="sampleBean.theAccess.groupName" value="" id="groupName">
+							<label for="userName" style="display:none">Login Name</label>
+							<input type="text" name="sampleBean.theAccess.userBean.loginName" value="" id="userName" style="display: none;">
+						</td>
+						<td>
+							<a href="#userNameField" id="browseIcon" onclick="javascript:showMatchedGroupOrUserDropdown('lijowskim:COPY')"><img src="images/icon_browse.jpg" align="middle" alt="search existing collaboration groups" border="0"></a>
+						</td>
+						<td width="50%">
+							<table class="invisibleTable">
+								<tbody><tr>
+									<td>
+										<img src="images/ajax-loader.gif" border="0" class="counts" id="loaderImg" style="display: none" alt="collaboration groups or user login names">										
+									</td>
+									<td>
+									    <label for="matchedUserNameSelect" style="display:none" id="userNameSelectLabel">Select a user</label>
+										<select name="sampleBean.theAccess.userBean.loginName" size="10" onclick="updateUserLoginName()" id="matchedUserNameSelect" style="display: none"></select>										
+										<label for="matchedGroupNameSelect" style="display:none">Select a group</label>
+										<select name="sampleBean.theAccess.groupName" size="10" onclick="updateGroupName()" id="matchedGroupNameSelect" style="display: none"></select>
+									</td>
+									<td>
+										<a id="cancelBrowse" style="display: none" href="javascript:cancelBrowseSelect();">Cancel</a>
+									</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel" width="10%">
+							Access to the <label for="roleName">Sample *</label>
+						</td>
+						<td colspan="2">
+							<select name="sampleBean.theAccess.roleName" id="roleName"><option></option>
+								<option value="R">read</option>
+<option value="CURD">read update delete</option></select>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><input id="deleteAccess" type="button" value="Remove" onclick="javascript:deleteTheAccess('sampleForm', 'sample', 4);" style="display: none;">
+						</td>
+						<td align="right" colspan="3">
+							<div align="right">
+								<input type="hidden" name="sampleBean.theAccess.roleName" value="" id="hiddenRoleName">
+								<input type="hidden" name="sampleBean.theAccess.groupName" value="" id="hiddenGroupName">
+								<input type="button" value="Save" onclick="javascript:addAccess('sampleForm', 'sample', 4, true);">
+								<input type="button" value="Cancel" onclick="javascript:clearAccess('sampleForm', 'Sample');closeSubmissionForm('Access');">
+							</div>
+						</td>
+					</tr>
+				</tbody></table>
+			</div>
+		</td>
+	</tr>
+
+		
+		<tr>
+			
+				
+					<td class="cellLabel">
+					Data Availability Metrics
+					</td>
+				
+				<td>
+					
+						<input type="image" value="Generate" src="images/btn_generate.gif" alt="generate data availability matrix" onclick="javascript:generateDataAvailability('sample', 'generateDataAvailability');">
+					
+				</td>
+			</tr>
+			
+			<tr>
+			<td colspan="2" align="center">
+				
+				<div style="display:none" id="dataAvailability"></div>
+			</td>
+		</tr>
+		
+	</tbody></table>
+	<br>
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	   
+	
+	
+
+
+
+
+
+
+
+<table width="100%" class="invisibleTable" summary="layout">
+	<tbody><tr>
+		<td align="left" width="600">
+			
+				<input type="button" value="Delete" onclick="deleteData('sample', 'sampleForm', 'sample', 'delete')" id="deleteButton" disabled="">
+			
+			
+				<input type="button" value="Copy" onclick="gotoPage('sample.do?dispatch=setupClone&amp;page=0&amp;cloningSample=UMC_HSTVAMC_NCL_NB-NChandaNNBM2010-02')" id="copyButton" disabled="">
+			
+		</td>
+		<td align="right" width="300">
+			
+			
+				
+			
+			<input type="reset" value="Reset" onclick="this.form.reset();" id="resetButton">
+			&nbsp;
+			
+			
+				
+				
+					
+						
+						
+							<input type="submit" value="Update" id="submitButton" disabled="">
+						
+					
+					<input type="hidden" name="dispatch" value="create">
+					<input type="hidden" name="page" value="2">
+				
+			
+		</td>
+	</tr>
+</tbody></table>
+
+</form>

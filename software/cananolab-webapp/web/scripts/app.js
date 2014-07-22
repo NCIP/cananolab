@@ -41,6 +41,10 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/sampleResults.html',
         controller: 'SampleResultsCtrl'
       })                  
+      .when('/editSample', {
+        templateUrl: 'views/editSample.html',
+        controller: 'editSampleCtrl'
+      })                  
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
@@ -60,6 +64,10 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/sample', {
        templateUrl: 'views/viewSample.html',
        controller: 'IndSampleCtrl'
+      })       
+      .when('/editSample', {
+       templateUrl: 'views/editSample.html',
+       controller: 'editSampleCtrl'
       })       
       .when('/composition', {
        templateUrl: 'views/composition.html',
