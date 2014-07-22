@@ -1,5 +1,5 @@
 <!-- <c:when test="${! empty charBean.surface.isHydrophobic}"> -->
-<div ng-if="$parent.entityType.Properties.PloymerName.length > 0">
+<div ng-if="$parent.entityType.Properties.PolymerName.length > 0">
     <table class="summaryViewNoGrid" align="left">
         <tr>
             <th scope="row" class="cellLabel">
@@ -14,9 +14,9 @@
                 {{$parent.entityType.Properties.IsPolymarized}}
             </td>
             <td>
-                {{$parent.entityType.Properties.PloymerName}}
+                {{$parent.entityType.Properties.PolymerName}}
             </td>
         </tr>
     </table>
 </div>
-<span ng-if="$parent.entityType.Properties.PloymerName.length == 0">N/A</span>
+<span ng-if="$parent.entityType.Properties.PolymerName.length == 0">N/A</span>

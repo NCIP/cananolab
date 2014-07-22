@@ -182,7 +182,7 @@ public class SimpleCompositionBean {
 							properties = new HashMap<String, Object>();
 							
 							properties.put("IsPolymarized", nanoMaterialEntity.getLiposome().getPolymerized());
-							properties.put("PloymerName", nanoMaterialEntity.getLiposome().getPolymerName());
+							properties.put("PolymerName", nanoMaterialEntity.getLiposome().getPolymerName());
 							
 						}
 						if (detailPage.contains("Emulsion")) {
@@ -194,7 +194,7 @@ public class SimpleCompositionBean {
 							
 					//		properties.put("isHydrophobic", is);
 							properties.put("IsPolymarized", nanoMaterialEntity.getEmulsion().getPolymerized());
-							properties.put("PloymerName", nanoMaterialEntity.getEmulsion().getPolymerName());
+							properties.put("PolymerName", nanoMaterialEntity.getEmulsion().getPolymerName());
 							
 						}
 						if (detailPage.contains("Fullerene")) {
