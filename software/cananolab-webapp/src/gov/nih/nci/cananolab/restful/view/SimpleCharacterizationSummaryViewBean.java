@@ -1,8 +1,17 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.Row;
+import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,16 +22,6 @@ import java.util.TreeMap;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.log4j.Logger;
-
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.dto.common.ColumnHeader;
-import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.FindingBean;
-import gov.nih.nci.cananolab.dto.common.Row;
-import gov.nih.nci.cananolab.dto.common.TableCell;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 
 public class SimpleCharacterizationSummaryViewBean {
 	
@@ -289,7 +288,6 @@ public class SimpleCharacterizationSummaryViewBean {
 			} else if (fileBean.isImage()){
 				logger.debug("Is image: " + fileBean.getDomainFile().getTitle());
 				aFile.put("imageTitle", fileBean.getDomainFile().getTitle());
-				//aFile.put("fileId", fileBean.getDomainFile().getId());
 			} else {
 				logger.debug("Have download link here");
 				aFile.put("title", fileBean.getDomainFile().getTitle());
