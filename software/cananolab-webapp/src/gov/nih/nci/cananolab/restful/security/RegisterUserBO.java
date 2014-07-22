@@ -8,22 +8,18 @@
 
 package gov.nih.nci.cananolab.restful.security;
 
-import static gov.nih.nci.cananolab.restful.RestfulConstants.SUCCESS;
 import gov.nih.nci.cananolab.restful.RestfulConstants;
+import gov.nih.nci.cananolab.restful.util.InputValidationUtil;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.service.security.MailService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
+//import org.apache.commons.validator.routines;
 
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
-import org.apache.struts.validator.DynaValidatorForm;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.validator.EmailValidator;
 
 /**
  * This class allow users to register to caNanoLab.
@@ -32,7 +28,8 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 
 public class RegisterUserBO  {
-	public String register(String title, 
+	
+	public List<String> register(String title, 
     		String firstName,
     		String lastName,
     		String email,
@@ -42,8 +39,11 @@ public class RegisterUserBO  {
     		String comment,
     		String registerToUserList) {
 
-		
 		System.out.println("register to user list: " + registerToUserList);
+		
+		List<String> errors = validateInput(firstName, lastName, email, phone, organization, fax, comment);
+		if (errors != null && errors.size() > 0)
+			return errors;
 		
 		MailService mailService = new MailService();
 		mailService.sendRegistrationEmail(firstName, lastName, email, phone, organization, title, fax, comment);
@@ -54,6 +54,42 @@ public class RegisterUserBO  {
 //		ActionMessage message = new ActionMessage("message.register");
 //		messages.add("message", message);
 //		saveMessages(request, messages);
-		return RestfulConstants.SUCCESS;
+		//return RestfulConstants.SUCCESS;
+		
+		return null;
+	}
+	
+	protected List<String> validateInput(String firstName,
+    		String lastName,
+    		String email,
+    		String phone,
+    		String organization,
+    		String fax,
+    		String comment) {
+		
+		List<String> errors = new ArrayList<String>();
+		if (firstName == null || !InputValidationUtil.isAlphabetic(firstName))
+			errors.add(PropertyUtil.getProperty("application", "firstName.invalid"));
+		
+		if (lastName == null || !InputValidationUtil.isAlphabetic(lastName))
+			errors.add(PropertyUtil.getProperty("application", "lastName.invalid"));
+		
+		EmailValidator emailValidator = EmailValidator.getInstance();
+		if (email == null || !emailValidator.isValid(email))
+			errors.add("Email is invalid");
+		
+		if (phone == null || !InputValidationUtil.isPhoneValid(phone))
+			errors.add(PropertyUtil.getProperty("application", "phone.invalid"));
+		
+		if (fax == null || !InputValidationUtil.isPhoneValid(fax))
+			errors.add(PropertyUtil.getProperty("application", "fax.invalid"));
+		
+		if (organization == null || organization.length() == 0)
+			errors.add(PropertyUtil.getProperty("application", "organization.name.invalid"));
+		
+		if (comment != null && comment.length() > 4000)
+			errors.add("Comment exceeded the max length of 4000");
+		
+		return errors;
 	}
 }
