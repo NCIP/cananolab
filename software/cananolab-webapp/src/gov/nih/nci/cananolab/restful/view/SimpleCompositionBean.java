@@ -176,7 +176,7 @@ public class SimpleCompositionBean {
 							properties.put("chirality", nanoMaterialEntity.getCarbonNanotube().getChirality());
 							properties.put("Diameter", nanoMaterialEntity.getCarbonNanotube().getDiameter());
 							properties.put("DiameterUnit", nanoMaterialEntity.getCarbonNanotube().getDiameterUnit());
-							properties.put("WalType", nanoMaterialEntity.getCarbonNanotube().getWallType());
+							properties.put("WallType", nanoMaterialEntity.getCarbonNanotube().getWallType());
 						}
 						if (detailPage.contains("Liposome")) {
 							properties = new HashMap<String, Object>();
@@ -193,6 +193,7 @@ public class SimpleCompositionBean {
 					//		Boolean is = charBean.getSurface().getIsHydrophobic();
 							
 					//		properties.put("isHydrophobic", is);
+							
 							properties.put("IsPolymarized", nanoMaterialEntity.getEmulsion().getPolymerized());
 							properties.put("PolymerName", nanoMaterialEntity.getEmulsion().getPolymerName());
 							
