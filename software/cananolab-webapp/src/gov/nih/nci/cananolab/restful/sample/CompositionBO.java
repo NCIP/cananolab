@@ -289,8 +289,8 @@ public class CompositionBO extends BaseAnnotationBO {
 	public String download(String fileId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-	//	CompositionService service = setServicesInSession(request);
-		BaseService service = setServicesInSession(request);
+		CompositionService service = setServicesInSession(request);
+	//	BaseService service = setServicesInSession(request);
 		return downloadFile(service, fileId, request, response);
 	}
 }

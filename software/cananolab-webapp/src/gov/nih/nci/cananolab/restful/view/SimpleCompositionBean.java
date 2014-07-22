@@ -1,9 +1,11 @@
 package gov.nih.nci.cananolab.restful.view;
 
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
@@ -13,6 +15,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.restful.sample.InitCompositionSetup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,14 +131,14 @@ public class SimpleCompositionBean {
 			nanoentitiy = new HashMap<String, Object>();
 			for(NanomaterialEntityBean nanoMaterialEntity : compBean.getType2NanoEntities().get(entityType)){
 				nanoentitiy.put("Description", nanoMaterialEntity.getDescriptionDisplayName());
-				
+							
 				if (nanoMaterialEntity.isWithProperties()) {
 
 					System.out.println("****** Is WIth Properties*****"
 							+ nanoMaterialEntity.isWithProperties());
 					nanoentitiy.put("isWithProperties",
 							nanoMaterialEntity.isWithProperties());
-
+					
 					try {
 						String detailPage = gov.nih.nci.cananolab.restful.sample.InitCompositionSetup
 								.getInstance().getDetailPage(entityType,
@@ -185,6 +188,11 @@ public class SimpleCompositionBean {
 						if (detailPage.contains("Emulsion")) {
 							properties = new HashMap<String, Object>();
 							
+					//		Characterization achar = compBean.getDomain().getSample().getCharacterizationCollection().iterator().next();
+					//		CharacterizationBean charBean = new CharacterizationBean(achar);
+					//		Boolean is = charBean.getSurface().getIsHydrophobic();
+							
+					//		properties.put("isHydrophobic", is);
 							properties.put("IsPolymarized", nanoMaterialEntity.getEmulsion().getPolymerized());
 							properties.put("PloymerName", nanoMaterialEntity.getEmulsion().getPolymerName());
 							
@@ -279,6 +287,8 @@ public class SimpleCompositionBean {
 					function.put("Value", funcBean.getValue());
 					function.put("ValueUnit", funcBean.getValueUnit());
 					function.put("MolecularFormula", funcBean.getMolecularFormulaDisplayName());
+					function.put("withImagingFunction", funcBean.isWithImagingFunction());
+					function.put("withTargettingFunction", funcBean.isWithTargetingFunction());
 				    if(funcBean.isWithProperties()){
 				    	properties = new HashMap<String, Object>();
 							  properties.put("isWithProperties", funcBean.isWithProperties());
