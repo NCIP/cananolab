@@ -158,15 +158,9 @@ public class SampleServices {
 
 			CharacterizationSummaryViewBean charView = characterizationBO.summaryView(sampleId,httpRequest);
 			SimpleCharacterizationSummaryViewBean viewBean = new SimpleCharacterizationSummaryViewBean();
-			//Map<String, Map<String, Object>> finalBean = viewBean.transferData(charView);
 			
 			List<SimpleCharacterizationsByTypeBean> finalBean = viewBean.transferData(charView);
-			//Map<String, Object> viewBean = viewBean.transferData(charView);
 			
-			//SimpleSampleBean view = new SimpleSampleBean();
-			//view.transferSampleBeanForSummaryView(sampleBean);
-			
-			//return Response.ok(view).build();
 			return Response.ok(finalBean).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
 			
 		} catch (Exception e) {
@@ -184,6 +178,8 @@ public class SampleServices {
 		try {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			
 			java.io.File file = characterizationBO.download(fileId, httpRequest);
 			
 			return Response.ok(new FileInputStream(file)).build();
@@ -211,5 +207,45 @@ public class SampleServices {
 		}
 	}
 	
+	@GET
+	@Path("/exportCharacterizationView")
+	@Produces("application/json")
+	 public Response exportCharacterizationView(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId, @QueryParam("type") String type){
+	
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			String result = characterizationBO.summaryExport(sampleId, type, httpRequest, httpResponse);
+			return Response.ok(result).build();
+		} 
+		
+		catch (Exception ioe) {
+			return Response.ok(ioe.getMessage()).build();
+		}
+	}
+	
+	@GET
+	@Path("/printCharacterizationView")
+	@Produces("application/json")
+	 public Response printCharacterizationView(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+	
+		try {
+			CharacterizationBO characterizationBO = 
+					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+			
+			CharacterizationSummaryViewBean viewBean = characterizationBO.summaryPrint(sampleId, httpRequest, httpResponse);
+			SimpleCharacterizationSummaryViewBean simpleViewBean = new SimpleCharacterizationSummaryViewBean();
+			List<SimpleCharacterizationsByTypeBean> simpleBean = simpleViewBean.transferData(viewBean);
+			
+			return Response.ok(simpleBean).build();
+		} 
+		
+		catch (Exception ioe) {
+			return Response.ok(ioe.getMessage()).build();
+		}
+	}
 	
 }
