@@ -65,10 +65,15 @@ public class SampleServicesTest {
 				.path("sample/searchSample")
 				.queryParam("searchForm", form)
 				.request("application/json")
-				.header("some-header", "true").post(Entity.entity(SearchSampleForm.class, "application/xml"));
-				//.g(String.class);
+				.header("some-header", "true").post(Entity.entity(SearchSampleForm.class, "application/json"));
+				//.get(String.class);
 
 		assertNotNull(jsonString);
+		
+		int len = jsonString.getLength();
+		System.out.println(jsonString);
+		
+		//jsonString.get
 		//assertTrue(jsonString.contains("imaging"));
 	}
 
@@ -92,12 +97,13 @@ public class SampleServicesTest {
 		String jsonString = client.target(urlbase)
 				.register(SampleServices.class)
 				.path("sample/characterizationView")
-				.queryParam("sampleId", "2406323") //ncl-19
+				.queryParam("sampleId", "20917507") //ncl-23
 				.request("application/json")
 				.header("some-header", "true")
 				.get(String.class);
 
 		assertNotNull(jsonString);
+		assertTrue(jsonString.contains("Experiment Configurations"));
 	}
 	@Test
 	public void testSummaryView() {
@@ -112,4 +118,6 @@ public class SampleServicesTest {
 
 		assertNotNull(jsonString);
 	}
+	
+	
 }
