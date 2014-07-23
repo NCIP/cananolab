@@ -2,13 +2,13 @@
 <table border="0" class="contentTitle" summary="layout" width="100%">
   <tr>
     <th align="left" scope="col">
-      Sample {{sampleData.sampleName}} Characterization
+      Sample {{sampleData.data[0].sampleName}} Characterization
     </th>
     <td align="right" width="30%">
     <button class="btn back btn-xs" ng-click="goBack()">Back</button>
 
     <a class="helpText" ng-href="views/printCharacterization.html?sampleId={{sampleId.data}}&type=all" target="_blank">Print</a> 
-    <a class="helpText" href="/caNanoLab/composition.do?dispatch=summaryExport&sampleId=42008576&type=all" target="_blank">Export</a>         
+    <a class="helpText" href="/caNanoLab/rest/sample/exportCharacterizationView?sampleId={{sampleId.data}}" target="_blank">Export</a>         
       <a class="helpText" href=
       "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
       "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
