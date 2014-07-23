@@ -26,7 +26,9 @@ import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.restful.core.BaseAnnotationBO;
 import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.util.PropertyUtil;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.service.sample.DataAvailabilityService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -184,6 +186,7 @@ public class SampleBO extends BaseAnnotationBO {
 			HttpServletRequest request) throws Exception {
 		String dispatch = request.getParameter("dispatch");
 		String browserDispatch = getBrowserDispatch(request);
+		
 		HttpSession session = request.getSession();
 		Boolean openPOC = false;
 		if (dispatch.equals("input")
@@ -204,18 +207,37 @@ public class SampleBO extends BaseAnnotationBO {
 		form.setSampleBean(sampleBean);
 		return sampleBean;
 	}
-
+	
 	private Boolean hasNullPOC(HttpServletRequest request, SampleBean sampleBean)
 			throws Exception {
 		if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
 			SampleService service = setServiceInSession(request);
 			service.deleteSample(sampleBean.getDomain().getName());
-	//		ActionMessages messages = new ActionMessages();
+	
 			if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
-			//	ActionMessage msg = new ActionMessage(
-		//				"message.sample.null.POC.deleted");
-		//		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//		saveMessages(request, messages);
+				//errors.add(PropertyUtil.getProperty("sample", "message.sample.null.POC.delete"));
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Overloaded 
+	 * @param request
+	 * @param sampleBean
+	 * @param errors
+	 * @return
+	 * @throws Exception
+	 */
+	private Boolean hasNullPOC(HttpServletRequest request, SampleBean sampleBean, List<String> errors)
+			throws Exception {
+		if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
+			SampleService service = setServiceInSession(request);
+			service.deleteSample(sampleBean.getDomain().getName());
+	
+			if (sampleBean.getPrimaryPOCBean().getDomain() == null) {
+				errors.add(PropertyUtil.getProperty("sample", "message.sample.null.POC.delete"));
 			}
 			return true;
 		}
@@ -232,21 +254,31 @@ public class SampleBO extends BaseAnnotationBO {
 	 * @return
 	 * @throws Exception
 	 */
-	public SampleBean summaryEdit(SampleForm form,
-			HttpServletRequest request, HttpServletResponse response)
+	public SampleEditGeneralBean summaryEdit(String sampleId, HttpServletRequest request)
 			throws Exception {
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		this.checkOpenForms(form, request);
+		
+		//this.checkOpenForms(form, request);
+		
+		//TODO: Check credential with user name ?
+		
+		SampleEditGeneralBean sampleEdit = new SampleEditGeneralBean();
+		
+		
 		this.setServiceInSession(request);
 
 		// "setupSample()" will retrieve and return the SampleBean.
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
-		SampleBean sampleBean = setupSample(form, request);
-		if (hasNullPOC(request, sampleBean)) {
+		
+		SampleBean sampleBean = setupSampleById(sampleId, request);
+		
+		//TODO: what does this do?
+		if (hasNullPOC(request, sampleBean, sampleEdit.getErrors())) {
 		//	return mapping.findForward("sampleMessage");
-			return null;
+			return sampleEdit;
 		}
+		
 		Set<DataAvailabilityBean> selectedSampleDataAvailability = dataAvailabilityService
 				.findDataAvailabilityBySampleId(sampleBean.getDomain().getId()
 						.toString(), securityService);
@@ -258,38 +290,21 @@ public class SampleBO extends BaseAnnotationBO {
 			sampleBean.setDataAvailability(selectedSampleDataAvailability);
 			calculateDataAvailabilityScore(sampleBean,
 					selectedSampleDataAvailability, request);
-			// request.setAttribute("onloadJavascript",
-			// "manageDataAvailability('" + sampleBean.getDomain().getId() +
-			// "', 'sample', 'dataAvailabilityView')");
 		}
 
-		form.setSampleBean(sampleBean);
+		//form.setSampleBean(sampleBean);
+		sampleEdit.transferSampleBeanData(sampleBean);
+		
 		request.getSession().setAttribute("updateSample", "true");
-
+		
+		//TODO: decide later - Shan
 		setupLookups(request);
 
-		//
-
-		// Feature request [26487] Deeper Edit Links.
-		// String dispatch = request.getParameter("dispatch"); // as the
-		// function
-		// // is shared.
-		// if ("summaryEdit".equals(dispatch)
-		// || "removePointOfContact".equals(dispatch)) {
-		// if (sampleBean.getPrimaryPOCBean() != null
-		// && sampleBean.getOtherPOCBeans().isEmpty()) {
-		// StringBuilder sb = new StringBuilder();
-		// sb.append("openOnePointOfContact(");
-		// sb.append(sampleBean.getPrimaryPOCBean().getDomain().getId());
-		// sb.append(", true)");
-		// request.setAttribute("onloadJavascript", sb.toString());
-		// }
-		// }
+		//TODO: need to see how we'll do this - Shan
 		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
 				.toString(), sampleBean.getPublicStatus());
-	//	saveToken(request);
-	//	return mapping.findForward("summaryEdit");
-		return sampleBean;
+	
+		return sampleEdit;
 	}
 
 	private void setAccesses(HttpServletRequest request, SampleBean sampleBean)
@@ -366,6 +381,10 @@ public class SampleBO extends BaseAnnotationBO {
 		InitSampleSetup.getInstance().setPOCDropdowns(request);
 	}
 
+	/*
+	 * For Rest call: 1. when add POC and save are clicked
+	 * 				  2. when edit POC and save are clicked
+	 */
 	public void savePointOfContact(SampleForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		if (!validateToken(request)) {
