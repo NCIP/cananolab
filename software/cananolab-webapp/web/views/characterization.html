@@ -7,8 +7,8 @@
     <td align="right" width="30%">
     <button class="btn back btn-xs" ng-click="goBack()">Back</button>
 
-    <a class="helpText" href="javascript:printPage('composition.do?dispatch=summaryPrint&sampleId=42008576')">Print</a> 
-    <a class="helpText" href="/caNanoLab/composition.do?dispatch=summaryExport&sampleId=42008576&type=all">Export</a>         
+    <a class="helpText" ng-href="views/printCharacterization.html?sampleId={{sampleId.data}}&type=all" target="_blank">Print</a> 
+    <a class="helpText" href="/caNanoLab/composition.do?dispatch=summaryExport&sampleId=42008576&type=all" target="_blank">Export</a>         
       <a class="helpText" href=
       "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
       "helpText" href="javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+Glossary')">Glossary</a>  
@@ -58,4 +58,10 @@
     <td class="break">&nbsp;</td>
   </tr> 
 </table>
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
 </div>

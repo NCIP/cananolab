@@ -37,8 +37,8 @@
 					<td colspan="2" valign="top"><b>Data and Conditions</b><br />
 						<table class="dataConditions" cellspacing="0" cellpadding="0">
 							<tr ng-repeat="row in val['Data and Conditions']">
-								<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col">Column</th>
-								<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col">Column</td>		
+								<th ng-if="row.name=='colTitles'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></th>
+								<td ng-if="row.name=='colValues'" ng-repeat="col in row.value track by $index" ng-bind-html="col"></td>		
 							</tr>	
 						</table>
 					</td>
@@ -47,7 +47,7 @@
 					<td valign="top">
 						<b>Files</b>
 						<div ng-repeat="file in val.Files">
-							{{file.fileId}}<H1>DO FILE</H1>
+							{{file.fileId}}<a href="#" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a>
 						</div>
 					</td>
 					<td valign="top">
@@ -64,4 +64,4 @@
  </div>		   
  <!-- property -->	 
 </div>
-<!-- assay
+<!-- assay -->

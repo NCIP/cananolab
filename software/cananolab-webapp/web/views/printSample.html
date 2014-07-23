@@ -1,0 +1,79 @@
+ <table align="left" class="summaryViewNoGrid" summary="layout" width="100%">
+   <tr>
+     <td>
+       <table align="left" class="summaryViewNoGrid" width="99%">
+         <tr>
+           <th valign="top" class="cellLabel" scope="row" width="20%">
+             Sample Name
+           </th>
+           <td>
+             {{sampleData.sampleName}}
+           </td>
+         </tr>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row" width="20%">
+             Created Date
+           </th>
+           <td>{{sampleData.createdDate | date:'shortDate'}}
+
+           </td>
+         </tr>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row">
+             Keywords
+           </th>
+           <td>
+             <div ng-bind-html="sampleData.keywords" />
+           </td>
+         </tr>
+         <tr>
+           <th valign="top" class="cellLabel" scope="row">
+             Point of Contact
+           </th>
+           <td>
+             <table align="left" class="invisibleTable">
+               <tr>
+                 <th class="cellLabel" scope="col">
+                   Primary Contact?
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Contact Person
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Organization
+                 </th>
+                 <th class="cellLabel" scope="col">
+                   Role
+                 </th>
+               </tr>
+               <tr ng-repeat="contact in sampleData.pointOfContactMap.contactPerson track by $index">
+                <td>{{returnUserReadableBoolean(sampleData.pointOfContactMap.primaryContact[$index])}}</td>
+                <td ng-bind-html="sampleData.pointOfContactMap.contactPerson[$index]"></td>
+                <td ng-bind-html="sampleData.pointOfContactMap.organizationDisplayName[$index]"></td>
+                <td>{{sampleData.pointOfContactMap.role[$index]}}</td>
+               </tr>
+               <tr>
+                 <td>
+                   {{sampleData.otherPOCBeans.personDisplayName}}
+                 </td>
+                 <td>
+                   {{sampleData.otherPOCBeans.organizationDisplayName}}
+                 </td>
+                 <td>
+                   {{sampleData.otherPOCBeans.domain.role}}
+                 </td>
+               </tr>
+             </table>
+           </td>
+         </tr>
+       </table>
+     </td>
+   </tr>
+ </table>
+
+  <div id="loader" class="sample" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>

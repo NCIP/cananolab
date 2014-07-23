@@ -1207,7 +1207,19 @@ a:hover.mainMenuLink.home {
 
 #loader {
     position: relative;
-    top: -200px; left: 350px;
+    top: -300px; left: 350px;
+    z-index: 100
+}
+
+#loader.sample{
+    position: relative;
+    top: -100px; left: 350px;
+    z-index: 100
+}
+
+#loader.sample.offset{
+    position: relative;
+    top: 0px; left: 350px;
     z-index: 100
 }
 
@@ -1412,6 +1424,7 @@ table.summaryViewNoGrid {
 
 .btn.back  {
     margin-right:15px;
+    font-weight:700;
     background-color:#009E2D !important;
     color:#fff;
     box-shadow: 0px 0px 0px 1px #fff;    
@@ -1425,19 +1438,19 @@ table.summaryViewNoGrid {
 }
 
 ul.liNav {
-    background-color:#009E2D;
+    background-color:#ccc;
     list-style:none;
     height:28px;
 }
 
 ul.liNav li {
-    background-color:#009E2D;
+    background-color:#ccc;
     margin-top:6px;
     float:left;
 }
 
 ul.liNav li a  {
-    color:#fff;
+    color:#000;
     padding:8px;
     text-decoration:none;
     font-weight:700;
@@ -1622,7 +1635,7 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
         border-width:0px 2px 2px 2px;
         border-style:solid;
         border-color:#ccc;
-        background-color:#eee;
+        background-color:#fff;
     }
 
     .dataTable .table {
@@ -1634,7 +1647,7 @@ ul.pagination li.disabled a,ul.pagination li.disabled a:hover{
         }    
 
         .dataTable .table .left {
-            width:120px;
+            width:150px;
             vertical-align:top;        
         }  
         

@@ -22,11 +22,7 @@ var app = angular.module('angularApp')
       $scope.message = data;
       });
     });     
-$scope.myFunc = function(ev) {
-  alert("here");
-  if (ev.which==13)
-    alert('Im a lert');
-}
+
     $scope.setCharacterizationOptionsByCharType = function() {
       $http({method: 'GET', url: '/caNanoLab/rest/sample/getCharacterizationByType',params: {"type":$scope.searchSampleForm.characterizationType}}).
       success(function(data, status, headers, config) {
