@@ -18,8 +18,9 @@ var app = angular.module('angularApp', [
     'ngSanitize',
     'ngTouch','ngGrid','ui.bootstrap']);
 
+
 app.config(function ($routeProvider, $httpProvider) {
-  $httpProvider.defaults.useXDomain = true;    
+  $httpProvider.defaults.useXDomain = true;  
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',

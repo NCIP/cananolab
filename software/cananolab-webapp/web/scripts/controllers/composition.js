@@ -35,7 +35,8 @@ var app = angular.module('angularApp')
               }      
           }
       }; 
-
+  
+  $scope.loader = true;
 	$http({method: 'GET', url: '/caNanoLab/rest/composition/summaryView?sampleId=' + $scope.sampleId.data}).
             success(function(data, status, headers, config) {
                 $scope.compositionSections = data.compositionSections;
@@ -43,11 +44,13 @@ var app = angular.module('angularApp')
                 $scope.functionalizingentity = data.functionalizingentity;
                 $scope.chemicalassociation = data.chemicalassociation;
                 $scope.compositionfile = data.compositionfile;
+                $scope.loader = false;                
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 $scope.message = data;
+                $scope.loader = false;
 
             });
 

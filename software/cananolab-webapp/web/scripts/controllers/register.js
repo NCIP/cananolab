@@ -8,7 +8,7 @@
  * Controller of the angularApp
  */
 angular.module('angularApp')
-  .controller('RegisterCtrl', function (navigationService,groupService, $scope, $http) {
+  .controller('RegisterCtrl', function (navigationService,groupService, $rootScope, $scope, $http) {
 	$rootScope.tabs = navigationService.query();
 	$rootScope.groups = groupService.get();
 	$rootScope.navTree=false;

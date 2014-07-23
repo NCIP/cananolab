@@ -1,0 +1,57 @@
+<html>
+<head>
+      <link rel="stylesheet" href="../styles/bootstrap.css">
+      
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../css/summaryView.css">
+      <script src="../bower_components/angular/angular.js"></script>
+</head>  
+
+<body ng-app="characterizationApp">
+    <div ng-controller="PrintCharacterizationCtrl">
+
+<table border="0" ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data track by $index" border="0" class="dataTable">
+
+  <tr class="heading">
+      <td>
+        <!-- type -->
+            <div>{{type.type}}</div>
+        <!-- type -->
+      </td>
+  </tr> 
+  <tr ng-repeat="(key,characterization) in type.charsByAssayType track by $index">
+      <td>
+        <table summary="layout" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="characterization">
+                  <!-- characterization -->
+                  {{key}}
+                  <!-- characterization -->                  
+              </td>
+            </tr>
+            <tr>
+              <td><div ng-include="'./assay.html'"></div>
+              </td>
+            </tr>
+        </table><br />
+      </td>
+  </tr>
+  <tr>
+    <td class="break">&nbsp;</td>
+  </tr> 
+</table>
+
+<script src="../scripts/controllers/printCharacterization.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
+</div>
+
+</body>
+</html>

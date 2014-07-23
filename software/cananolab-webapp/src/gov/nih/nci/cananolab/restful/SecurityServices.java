@@ -32,6 +32,12 @@ public class SecurityServices {
 	
 	@Inject
 	ApplicationContext applicationContext;
+	
+	/*
+	 * TODO: Need input validation logic
+	 * 
+	 *    Ref. to validation.xml
+	 */
 
 	@GET
 	@Path("/login")
@@ -69,9 +75,9 @@ public class SecurityServices {
 		logger.info("In register service");
 		
 		RegisterUserBO registerBo = (RegisterUserBO) applicationContext.getBean("registerUserBO");
-		String result = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
+		List<String> errors = registerBo.register(title, firstName, lastName, email, phone, organization, fax, comment, registerToUserList);
 		
-		return Response.ok(result).build();
+		return (errors == null || errors.size() == 0) ? Response.ok("success").build() : Response.ok(errors).build();
     }
 	
 	@POST
