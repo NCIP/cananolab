@@ -44,10 +44,20 @@
 					</td>
 				</tr>
 				<tr ng-repeat-end>
-					<td valign="top">
+					<td valign="top" class="left">
 						<b>Files</b>
 						<div ng-repeat="file in val.Files">
-							<a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a>
+							<div ng-if="file.imageTitle">
+								<a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a>
+							</div>
+							<div ng-if="file.uri">
+								<a href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">{{file.uri}}</a>&nbsp;[<a class="disclaimerLink" href="html/cananoDisclaimer.html" target="new">Disclaimer</a>]
+							</div>
+							<div ng-if="file.title">
+								<a href="/caNanoLab/rest/sample/download?fileId={{file.fileId}}">{{file.title}}</a>
+							</div>
+<!-- 			
+							<a href="" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}','{{file.fileId}}')"><img src="/caNanoLab/rest/sample/downloadImage?fileId={{file.fileId}}" border="0" width="150" alt="uploaded image" /></a> -->
 						</div>
 					</td>
 					<td valign="top">
