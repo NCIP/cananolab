@@ -206,11 +206,21 @@ public class SimpleCharacterizationSummaryViewBean {
 
 		for (ExperimentConfigBean aBean : expConfigBeans) {
 			String techDisplayName = (aBean.getTechniqueDisplayName() == null) ? "" : aBean.getTechniqueDisplayName();
-			String instrDisplayNames = (aBean.getInstrumentDisplayNames() == null) ? "" : aBean.getInstrumentDisplayNames().toString();
+			
+			//String instrDisplayNames = (aBean.getInstrumentDisplayNames() == null) ? "" : aBean.getInstrumentDisplayNames();
 			String desc = (aBean.getDomain().getDescription() == null) ? "" : aBean.getDomain().getDescription();
+			
+			String[] instNames = aBean.getInstrumentDisplayNames();
+			StringBuilder sb = new StringBuilder();
+			for (String instName : instNames) {
+				if (sb.length() > 0)
+					sb.append(",");
+				sb.append(instName);
+			}
+				
 
 			technique.put("Technique", techDisplayName);
-			instruments.put("Instruments", instrDisplayNames);
+			instruments.put("Instruments", sb.toString());
 			description.put("Description", desc);
 
 			logger.info("Tech display name: " + aBean.getTechniqueDisplayName());
