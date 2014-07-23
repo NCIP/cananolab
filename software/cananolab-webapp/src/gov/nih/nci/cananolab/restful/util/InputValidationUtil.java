@@ -31,7 +31,6 @@ public class InputValidationUtil {
 	
 	public static boolean isRelaxedAlphanumeric(String input) {
 		String reg = "^[a-zA-Z0-9\\s\\-\\.\\(\\)]*$";
-		
 		return (input == null) ? false : input.matches(reg);
 
 	}

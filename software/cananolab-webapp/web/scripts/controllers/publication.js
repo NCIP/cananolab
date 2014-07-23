@@ -1,4 +1,4 @@
-`'use strict';
+'use strict';
 var app = angular.module('angularApp')
   .controller('PublicationCtrl', function (sampleService, navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
     $rootScope.tabs = navigationService.query();
