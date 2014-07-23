@@ -57,17 +57,6 @@ public class CoreServices {
 	@Produces ("application/json")
     public Response getTabs(@Context HttpServletRequest httpRequest, 
     		@DefaultValue("") @QueryParam("homePage") String homePage) {
-		//Mimick logic in cananoMainmenu.jsp
-		
-		//Help: https://wiki.nci.nih.gov/display/caNanoLab/caNanoLab+User%27s+Guide
-		//Glossary: https://wiki.nci.nih.gov/display/caNanoLab//caNanoLab+Glossary
-		//Home: https://cananolab.nci.nih.gov/caNanoLab/home.jsp
-		
-		//Protocols: https://cananolab.nci.nih.gov/caNanoLab/manageProtocol.do
-		//Samples: https://cananolab.nci.nih.gov/caNanoLab/manageSample.do
-		//Publications: https://cananolab.nci.nih.gov/caNanoLab/managePublication.do
-		//login: https://cananolab.nci.nih.gov/caNanoLab/loginPage.do
-		//logout: https://cananolab.nci.nih.gov/caNanoLab/logout.do
 		
 		System.out.println("In getTabs");
 		
