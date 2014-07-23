@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationsByTypeBean;
 import gov.nih.nci.cananolab.restful.view.SimpleCharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.edit.SampleEditGeneralBean;
 import gov.nih.nci.cananolab.ui.form.SearchSampleForm;
 
 import java.io.File;
@@ -88,8 +89,11 @@ public class SampleServices {
 			
 			List results = searchSampleBO.search(searchForm, httpRequest);
 			
-			//String json = ViewFilterUtil.getSampleSearchResultJSon(results);
-			return Response.ok(results).build();
+			Object result = results.get(0);
+			if (result instanceof String) {
+				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+			} else
+				return Response.ok(results).build();
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -179,7 +183,6 @@ public class SampleServices {
 			CharacterizationBO characterizationBO = 
 					(CharacterizationBO) applicationContext.getBean("characterizationBO");
 			
-			
 			java.io.File file = characterizationBO.download(fileId, httpRequest);
 			
 			return Response.ok(new FileInputStream(file)).build();
@@ -227,25 +230,50 @@ public class SampleServices {
 	}
 	
 	@GET
-	@Path("/printCharacterizationView")
+	@Path("/edit")
 	@Produces("application/json")
-	 public Response printCharacterizationView(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+	 public Response edit(@Context HttpServletRequest httpRequest, 
 	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
-	
-		try {
-			CharacterizationBO characterizationBO = 
-					(CharacterizationBO) applicationContext.getBean("characterizationBO");
-			
-			CharacterizationSummaryViewBean viewBean = characterizationBO.summaryPrint(sampleId, httpRequest, httpResponse);
-			SimpleCharacterizationSummaryViewBean simpleViewBean = new SimpleCharacterizationSummaryViewBean();
-			List<SimpleCharacterizationsByTypeBean> simpleBean = simpleViewBean.transferData(viewBean);
-			
-			return Response.ok(simpleBean).build();
-		} 
 		
+		SampleBO sampleBO = 
+				(SampleBO) applicationContext.getBean("sampleBO");
+
+		try {
+			SampleEditGeneralBean sampleBean = sampleBO.summaryEdit(sampleId,httpRequest);
+
+			//SimpleSampleBean view = new SimpleSampleBean();
+			//view.transferSampleBeanForSummaryView(sampleBean);
+
+			return Response.ok(sampleBean).build();
+		} 
+
 		catch (Exception ioe) {
 			return Response.ok(ioe.getMessage()).build();
 		}
 	}
+	
+//	@GET
+//	@Path("/printCharacterizationView")
+//	@Produces("application/json")
+//	 public Response printCharacterizationView(@Context HttpServletRequest httpRequest, @Context HttpServletResponse httpResponse,
+//	    		@DefaultValue("") @QueryParam("sampleId") String sampleId){
+//	
+//		try {
+//			CharacterizationBO characterizationBO = 
+//					(CharacterizationBO) applicationContext.getBean("characterizationBO");
+//			
+//			CharacterizationSummaryViewBean viewBean = characterizationBO.summaryPrint(sampleId, httpRequest, httpResponse);
+//			SimpleCharacterizationSummaryViewBean simpleViewBean = new SimpleCharacterizationSummaryViewBean();
+//			List<SimpleCharacterizationsByTypeBean> simpleBean = simpleViewBean.transferData(viewBean);
+//			
+//			return Response.ok(simpleBean).build();
+//		} 
+//		
+//		catch (Exception ioe) {
+//			return Response.ok(ioe.getMessage()).build();
+//		}
+//	}
+	
+	
 	
 }

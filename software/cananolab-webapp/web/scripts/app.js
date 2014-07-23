@@ -43,7 +43,7 @@ app.config(function ($routeProvider, $httpProvider) {
         controller: 'SampleResultsCtrl'
       })                  
       .when('/editSample', {
-        templateUrl: 'views/editSample.html',
+        templateUrl: 'views/sample/editSample.html',
         controller: 'editSampleCtrl'
       })                  
       .when('/about', {
