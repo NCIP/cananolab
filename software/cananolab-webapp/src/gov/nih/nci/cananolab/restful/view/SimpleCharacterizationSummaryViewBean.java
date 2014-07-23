@@ -212,10 +212,13 @@ public class SimpleCharacterizationSummaryViewBean {
 			
 			String[] instNames = aBean.getInstrumentDisplayNames();
 			StringBuilder sb = new StringBuilder();
-			for (String instName : instNames) {
-				if (sb.length() > 0)
-					sb.append(",");
-				sb.append(instName);
+			if (instNames != null)  {
+
+				for (String instName : instNames) {
+					if (sb.length() > 0)
+						sb.append(",");
+					sb.append(instName);
+				}
 			}
 				
 
