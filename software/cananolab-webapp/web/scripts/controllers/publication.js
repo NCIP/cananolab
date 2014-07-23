@@ -1,4 +1,4 @@
-'use strict';
+`'use strict';
 var app = angular.module('angularApp')
   .controller('PublicationCtrl', function (sampleService, navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
     $rootScope.tabs = navigationService.query();
@@ -36,6 +36,8 @@ var app = angular.module('angularApp')
     //             $scope.category2Publications = $scope.data.category2Publications;
 
     //$scope.$on('$viewContentLoaded', function(){
+        $scope.loader = true;
+        
         $http({method: 'GET', url: '/caNanoLab/rest/publication/summaryView?sampleId=' + $scope.sampleId.data}).
         // $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/publication/summaryView?sampleId=24063238'}).
             success(function(data, status, headers, config) {
@@ -43,11 +45,13 @@ var app = angular.module('angularApp')
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationBean = data.publicationBean;
                 $scope.category2Publications = data.category2Publications;
+                $scope.loader = false;
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 $scope.message = data;
+                $scope.loader = false;
 
             });
     //});
