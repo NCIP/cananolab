@@ -1,4 +1,11 @@
 <html>
+<head>
+      <link rel="stylesheet" href="../../../styles/bootstrap.css">
+      
+      <link rel="stylesheet" href="../../../styles/main.css">
+      <link rel="stylesheet" href="../../../css/summaryView.css">
+      <script src="../../../bower_components/angular/angular.js"></script>
+</head>  
 <body ng-app="compositionApp">
 <table class="summaryViewNoTop" width="100%" summary="layout" ng-controller="PrintCompositionCtrl">
     <!-- <c:set scope='request' var='index' value='0'/> -->
@@ -65,6 +72,16 @@
 
 <script src="../../../scripts/controllers/printComposition.js"></script>
 <script src="../../../bower_components/angular-route/angular-route.js"></script>
+<script src="../../../bower_components/angular-sanitize/angular-sanitize.js"></script>
+
+
+  <div id="loader" class="sample offset" ng-show="loader">
+    <div id="loaderText">
+      Loading
+    </div>
+    <div id="loaderGraphic"></div>
+  </div>
+</div>
 
 </body>
 </html>

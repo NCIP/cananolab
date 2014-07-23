@@ -2,7 +2,7 @@
        style="display: block" class="summaryViewNoGrid dataTable">
     <tr>
         <th align="left" class="heading" style="padding: 0.5em;">
-            <span class="summaryViewHeading">composition file</span>
+            composition file
         </th>
     </tr>
     <tr>
@@ -38,6 +38,10 @@
                                                    onclick="popImage(event, '/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', {{indFile.fileId}})"><img
                                                         src="/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}"
                                                         border="0" width="150"> </a>
+                                                        
+                                                <a href="#" ng-click="popImage('/caNanoLab/rest/sample/downloadImage?fileId={{indFile.fileId}}', {{indFile.fileId}})">
+                                                	<img src="/caNanoLab/rest/sample/downloadImage?fileId=24947970" border="0" width="150" alt="uploaded image"> 
+                                                </a>        
                                                 </span>
                                                 <span ng-if="!indFile.ExternalURI && !indFile.isImage">
                                                     <a

@@ -2,7 +2,7 @@
        style="display: block" class="summaryViewNoGrid dataTable">
     <tr>
         <th align="left"  class="heading" style="padding: 0.5em;">
-            <span class="summaryViewHeading">chemical association</span>
+            chemical association
         </th>
     </tr>
     <tr ng-repeat="(key, entityType) in $parent.chemicalassociation">
@@ -19,7 +19,7 @@
                         <td>
                             <table class="summaryViewNoGrid" width="99%" align="center"
                                    style="background-color:#F5F5f5;">
-                                    <tr ng-if="entityType.AttachmentId != '' && entityType.BondType != ''">
+                                    <tr ng-if="entityType.AttachmentId && entityType.BondType">
                                         <th scope="row" class="cellLabel" width="10%">
                                             Bond Type
                                         </th>
