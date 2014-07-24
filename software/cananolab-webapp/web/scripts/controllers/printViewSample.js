@@ -30,7 +30,7 @@ var app = angular.module('angularApp')
 
     $scope.$on('$viewContentLoaded', function(){
       $scope.loader = true;
-     $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/view?sampleId=' + $scope.sampleId.data}).
+     $http({method: 'GET', url: '/caNanoLab/rest/sample/view?sampleId=' + $scope.sampleId.data}).
      success(function(data, status, headers, config) {
       $scope.sampleData = data;
       $scope.loader=false;

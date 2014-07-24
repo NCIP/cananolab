@@ -1,12 +1,12 @@
 <html>
 <head>
-      <link rel="stylesheet" href="../../../styles/bootstrap.css">
+      <link rel="stylesheet" href="../styles/bootstrap.css">
       
-      <link rel="stylesheet" href="../../../styles/main.css">
-      <link rel="stylesheet" href="../../../css/summaryView.css">
-      <script src="../../../bower_components/angular/angular.js"></script>
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../css/summaryView.css">
+      <script src="../bower_components/angular/angular.js"></script>
 </head>  
-<body ng-app="compositionApp">
+<body ng-app="angularApp">
 <table class="summaryViewNoTop" width="100%" summary="layout" ng-controller="PrintCompositionCtrl">
     <!-- <c:set scope='request' var='index' value='0'/> -->
     <tr ng-if="nanomaterialentity != ''">
@@ -18,7 +18,7 @@
                 <jsp:param name="index" value="{{index}}" />
             </jsp:include> -->
 
-            <ng-include src="'views/sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryView.html'"></ng-include>
+            <ng-include src="'sample/composition/nanomaterialEntity/nanoMaterialEntitySummaryView.html'"></ng-include>
 
         </td>
     </tr>
@@ -34,7 +34,7 @@
                 <jsp:param name="index" value="{{index}}" />
             </jsp:include> -->
 
-            <ng-include src="'views/sample/composition/functionalizingentity/functionalizingentitySummaryView.html'"></ng-include>
+            <ng-include src="'sample/composition/functionalizingentity/functionalizingEntitySummaryView.html'"></ng-include>
 
         </td>
     </tr>
@@ -49,7 +49,7 @@
                 <jsp:param name="index" value="${index}" />
             </jsp:include> -->
 
-            <ng-include src="'views/sample/composition/ChemicalAssociationSummaryView.html'"></ng-include>
+            <ng-include src="'sample/composition/ChemicalAssociationSummaryView.html'"></ng-include>
 
         </td>
     </tr>
@@ -64,15 +64,16 @@
                 <jsp:param name="index" value="${index}" />
             </jsp:include>  -->
 
-            <ng-include src="'views/sample/composition/compositionFile.html'"></ng-include>
+            <ng-include src="'sample/composition/compositionFile.html'"></ng-include>
 
         </td>
     </tr>
 </table>
 
-<script src="../../../scripts/controllers/printComposition.js"></script>
-<script src="../../../bower_components/angular-route/angular-route.js"></script>
-<script src="../../../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../scripts/controllers/printComposition.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../scripts/factories/utils.js"></script>
 
 
   <div id="loader" class="sample offset" ng-show="loader">

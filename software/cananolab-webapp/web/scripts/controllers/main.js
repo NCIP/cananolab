@@ -33,7 +33,7 @@ var app = angular.module('angularApp')
 
       if ($scope.userActions==1) {
         $scope.loginShow = 0;
-        window.location.href = "/searchSample";
+        window.location.href = "/caNanoLab/#/searchSample";
 
       }
       else if ($scope.userActions==2) {

@@ -1,6 +1,6 @@
 'use strict';
 var app = angular.module('angularApp')
-  .controller('CompositionCtrl', function (sampleService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
+  .controller('CompositionCtrl', function (utilsService,sampleService,navigationService, groupService, $rootScope,$scope,$http,$location,$filter,$routeParams) {
     $rootScope.tabs = navigationService.query();
     $rootScope.groups = groupService.get();
     $scope.sampleData = sampleService.sampleData;
@@ -44,7 +44,12 @@ var app = angular.module('angularApp')
                 $scope.functionalizingentity = data.functionalizingentity;
                 $scope.chemicalassociation = data.chemicalassociation;
                 $scope.compositionfile = data.compositionfile;
-                $scope.loader = false;                
+                $scope.loader = false;     
+                
+                $scope.nanomaterialentityEmpty = utilsService.isHashEmpty(data.nanomaterialentity);
+                $scope.functionalizingentityEmpty = utilsService.isHashEmpty(data.functionalizingentity);
+                $scope.chemicalassociationEmpty = utilsService.isHashEmpty($scope.chemicalassociation);
+                $scope.compositionfileEmpty = utilsService.isHashEmpty(data.compositionfile);
             }).
             error(function(data, status, headers, config) {
                 // called asynchronously if an error occurs
@@ -53,6 +58,13 @@ var app = angular.module('angularApp')
                 $scope.loader = false;
 
             });
+	
+    $scope.print = function() {
+    	window.open('views/printComposition.html?sampleId='+$scope.sampleId.data)
+    }
+    $scope.popImage = function(imgSrc, imgId) {
+    	utilsService.popImage(imgSrc, imgId);
+    }
 
   });
 

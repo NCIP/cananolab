@@ -24,7 +24,7 @@ L-->
 		<put name="item" value="Sample" />
 		<put name="itemDescription" value="/sample/bodySampleDescription.jsp" />
 		<put name="createLink" value="sample.do?dispatch=setupNew&amp;page=0" />
-		<put name="searchLink" value="searchSample.do?dispatch=setup" />
+		<put name="searchLink" value="/caNanoLab/#/searchSample" />
 	</definition>
 
 	<!-- definition for submit a new sample page -->

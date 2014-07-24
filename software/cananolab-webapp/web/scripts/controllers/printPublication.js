@@ -1,10 +1,10 @@
 'use strict';
-angular.module('publicationApp',[
-    'ngRoute'])
-    .controller('PrintSamplePublicationCtrl', function ($rootScope,$scope,$http,$filter,$routeParams) {
-    	$scope.sampleId = sampleService.sampleId;
+angular.module('angularApp',[
+     'ngRoute','ngSanitize','ngRoute'])
+    .controller('PrintSamplePublicationCtrl', function (utilsService,$rootScope,$scope,$http,$filter,$routeParams) {
+    	$scope.sampleId = utilsService.getParameterFromURL('sampleId');
     	$scope.loader = true;
-        $http({method: 'GET', url: '/caNanoLab/rest/publication/summaryPrint?sampleId=' + $scope.sampleId.data}).
+        $http({method: 'GET', url: '/caNanoLab/rest/publication/summaryPrint?sampleId=' + $scope.sampleId}).
             success(function(data, status, headers, config) {
                 $scope.publicationCategories = data.publicationCategories;
                 $scope.publicationBean = data.publicationBean;

@@ -42,7 +42,7 @@ app.controller('CharacterizationCtrl', function (sampleService,utilsService,navi
     };    
     
     $scope.loader = true;
-    $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/characterizationView?sampleId='+$scope.sampleId.data}).
+    $http({method: 'GET', url: '/caNanoLab/rest/sample/characterizationView?sampleId='+$scope.sampleId.data}).
     // $http({method: 'GET', url: 'http://localhost:8080/caNanoLab/rest/sample/characterizationView?sampleId=20917507'}).
     success(function(data, status, headers, config) {
       $scope.data = data;

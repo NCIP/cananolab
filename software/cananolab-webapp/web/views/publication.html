@@ -5,8 +5,9 @@
           Sample {{sampleData.data[0].sampleName}} Publication
         </th>
         <td align="right" width="30%">
-        <button class="btn back btn-xs" ng-click="goBack()">Back</button>            
-        <a class="helpText" ng-href="views/sample/composition/printComposition.html" target="_blank">Print</a> 
+        <button class="btn back btn-xs" ng-click="goBack()">Back</button>  
+        <a class="helpText" ng-click="print()" href="" target="_blank">Print</a>           
+        <!-- <a class="helpText" ng-href="views/printPublication.html?sampleId={{sampleId.data}}" target="_blank">Print</a>  --> 
         <a class="helpText" ng-href="/caNanoLab/rest/publication/summaryExport?sampleId={{sampleId.data}}&type=all">Export</a>         
           <a class="helpText" href=
           "javascript:openHelpWindow('https://wiki.nci.nih.gov/display/caNanoLab/3+-+Managing+Samples+in+caNanoLab#id-3-ManagingSamplesincaNanoLab-SearchingExistingSamples')">Help</a>   <a class=
