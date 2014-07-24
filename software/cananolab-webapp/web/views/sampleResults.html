@@ -14,7 +14,7 @@
     </table>
 <br />
 <table ng-table="tableParams" class="table sample">
-	<tr ng-repeat="row in $data" ng-class="{ 'emphasis': $index%2==0}">
+	<tr ng-repeat="row in $data tracky by $index" ng-class="{ 'emphasis': $index%2==0}">
 		<td data-title="''" width="5%" class="columnOne">
 		 <a href="#/sample?sampleId={{row.sampleId}}">View</a>
 		</td>
