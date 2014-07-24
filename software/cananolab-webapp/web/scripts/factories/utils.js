@@ -4,7 +4,7 @@ app.factory("utilsService", function(){
 
 	return {
 		popImage: function(imgSrc, imgId) {
-
+			// pops up image and resizes window //
 
 			var popImg = new Image();
 			popImg.src = imgSrc;
@@ -47,11 +47,19 @@ app.factory("utilsService", function(){
 		}
 		,
 		getParameterFromURL: function(name) {
-
+			    // gets parameter from url and returns the value //
 			    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 			    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 			    results = regex.exec(location.search);
 			    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		},
+
+		isHashEmpty: function(obj) {
+			//checks to see if hash is empty //
+			for (var key in obj)
+				if(obj.hasOwnProperty(key))
+			 		return false;
+				return true;			
 		}
 
 	}
