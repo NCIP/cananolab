@@ -147,7 +147,6 @@ public class InitSetup {
 			types = new TreeSet<String>((SortedSet<? extends String>) (request
 					.getSession().getAttribute(sessionAttribute)));
 		}
-		System.out.println("Types==="+types);
 		return types;
 	}
 

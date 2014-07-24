@@ -1,10 +1,15 @@
 package gov.nih.nci.cananolab.restful;
 
+import java.util.List;
+import java.util.Map;
+
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.restful.publication.PublicationBO;
+import gov.nih.nci.cananolab.restful.publication.SearchPublicationBO;
 import gov.nih.nci.cananolab.restful.sample.SampleBO;
+import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
@@ -141,6 +146,22 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 			
 		} catch (Exception e) {
 			return Response.ok("Error while viewing the publication results").build();
+		}
+	}
+	
+	@GET
+	@Path("/setup")
+	@Produces ("application/json")
+    public Response setup(@Context HttpServletRequest httpRequest) {
+				
+		try { 
+			SearchPublicationBO searchPublicationBO = 
+					(SearchPublicationBO) applicationContext.getBean("searchPublicationBO");
+			Map<String, List<String>> dropdownMap = searchPublicationBO.setup(httpRequest);
+
+			return Response.ok(dropdownMap).build();
+		} catch (Exception e) {
+			return Response.ok("Error while setting up drop down lists").build();
 		}
 	}
 

@@ -61,6 +61,10 @@
 	<bean id="customPlugInBO"
 		class="gov.nih.nci.cananolab.restful.core.CustomPlugInBO">
 	</bean>
+	
+	<bean id="searchPublicationBO"
+		class="gov.nih.nci.cananolab.restful.publication.SearchPublicationBO">
+	</bean>
 
 	<import resource="classpath*:/application-config-jdbc-client.xml" />
 </beans>
