@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.security.SecurityService;
 import gov.nih.nci.cananolab.service.security.UserBean;
 import gov.nih.nci.cananolab.ui.form.CompositionForm;
+import gov.nih.nci.cananolab.ui.form.PublicationForm;
 import gov.nih.nci.cananolab.ui.form.SampleForm;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -696,5 +697,24 @@ public abstract class BaseAnnotationBO extends AbstractDispatchBO {
 			String origUri = file.getDomainFile().getUri();
 			file.getDomainFile().setUri(StringEscapeUtils.escapeXml(origUri));
 		}
+	}
+
+	public void checkOpenAccessForm(PublicationForm form, HttpServletRequest request) {
+		String dispatch = form.getDispatch();
+		String browserDispatch = getBrowserDispatch(request);
+		HttpSession session = request.getSession();
+		Boolean accessValid = true;
+		if (session.getAttribute("accessValid") != null) {
+			accessValid = (Boolean) session.getAttribute("accessValid");
+		}
+		Boolean openAccess = false;
+		if (dispatch.equals("input") && browserDispatch.equals("saveAccess")
+				|| !accessValid) {
+			openAccess = true;
+		}
+		session.setAttribute("openAccess", openAccess);
+		session.removeAttribute("accessValid");
+		// in case of validation error still show access label correctly.
+		request.setAttribute("onloadJavascript", "toggleAccessNameLabel()");
 	}
 }

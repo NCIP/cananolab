@@ -8,6 +8,8 @@ import gov.nih.nci.cananolab.restful.sample.SampleBO;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationBean;
 import gov.nih.nci.cananolab.restful.view.SimplePublicationSummaryViewBean;
 import gov.nih.nci.cananolab.restful.view.SimpleSampleBean;
+import gov.nih.nci.cananolab.restful.view.edit.SampleEditPublicationBean;
+import gov.nih.nci.cananolab.ui.form.PublicationForm;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -116,6 +118,30 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 			return Response.ok("Error while exporting the file").build();
 		}
 	}
-	
+	@GET
+	@Path("/summaryEdit")
+	@Produces ("application/json")
+	 public Response summaryEdit(@Context HttpServletRequest httpRequest, 
+	    		@DefaultValue("") @QueryParam("sampleId") String sampleId, @DefaultValue("") @QueryParam("dispatch") String dispatch){
+		
+		try { 
+
+		 PublicationBO publicationBO = 
+					(PublicationBO) applicationContext.getBean("publicationBO");
+
+		 PublicationForm form = new PublicationForm();
+		 form.setSampleId(sampleId);
+		 form.setDispatch(dispatch);
+		 PublicationSummaryViewBean pubBean = publicationBO.summaryEdit(form, httpRequest);
+			SampleEditPublicationBean view = new SampleEditPublicationBean();
+			view.transferPublicationBeanForSummaryEdit(httpRequest, pubBean);
+			
+			// return Response.ok(view).build();
+			return Response.ok(view).header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization").build();
+			
+		} catch (Exception e) {
+			return Response.ok("Error while viewing the publication results").build();
+		}
+	}
 
 }

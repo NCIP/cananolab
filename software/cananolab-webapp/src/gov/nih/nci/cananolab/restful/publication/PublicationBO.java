@@ -372,18 +372,20 @@ public class PublicationBO extends BaseAnnotationBO{
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	public PublicationSummaryViewBean summaryEdit(String sampleId,
-			HttpServletRequest request, HttpServletResponse response)
+	public PublicationSummaryViewBean summaryEdit(PublicationForm form,
+			HttpServletRequest request)
 			throws Exception {
 		// if session is expired or the url is clicked on directly
 		PublicationSummaryViewBean summaryEdit = null;
+		String sampleId = form.getSampleId();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		System.out.println("Making sure the user is not null"+ user);
 		if (user == null) {
 			summaryEdit = summaryView(sampleId, request);
 		}
-		this.prepareSummary(sampleId, request);
+		summaryEdit = this.prepareSummary(sampleId, request);
 	//	DynaValidatorForm theForm = (DynaValidatorForm) form;
-		super.checkOpenAccessForm(request);
+		super.checkOpenAccessForm(form,request);
 	//	saveToken(request);
 	//	return mapping.findForward("summaryEdit");
 		return summaryEdit;
@@ -464,7 +466,7 @@ public class PublicationBO extends BaseAnnotationBO{
 				.findPublicationsBySampleId(sampleId);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
-
+		
 		// Save sample & publication bean in session for printing/exporting.
 		session.setAttribute("publicationSummaryView", summaryView);
 		session.setAttribute("theSample", sampleBean);
