@@ -55,6 +55,9 @@ app.controller('CharacterizationCtrl', function (sampleService,utilsService,navi
       $scope.loader = false;
     });
 
+    $scope.print = function() {
+    	window.open('views/printCharacterization.html?sampleId='+$scope.sampleId.data)
+    }
     $scope.popImage = function(imgSrc, imgId) {
     	utilsService.popImage(imgSrc, imgId);
     }

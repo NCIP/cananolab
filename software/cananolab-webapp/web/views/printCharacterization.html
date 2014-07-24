@@ -9,11 +9,11 @@
 
 </head>  
 
-<body ng-app="characterizationApp">
+<body ng-app="angularApp">
     <div ng-controller="PrintCharacterizationCtrl">
 
 <table border="0" ng-hide="show{{$index}}" cellspacing="0" cellpadding="0" style=""  width="100%" summary="layout" ng-repeat="type in data track by $index" border="0" class="dataTable">
-
+{{$location.search('sampleId')}}<br>
   <tr class="heading">
       <td>
         <!-- type -->
@@ -46,6 +46,7 @@
 <script src="../scripts/controllers/printCharacterization.js"></script>
 <script src="../bower_components/angular-route/angular-route.js"></script>
 <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../scripts/factories/utils.js"></script>
 
   <div id="loader" class="sample offset" ng-show="loader">
     <div id="loaderText">
