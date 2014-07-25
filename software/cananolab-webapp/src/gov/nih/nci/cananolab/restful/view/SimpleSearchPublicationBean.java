@@ -87,6 +87,7 @@ public class SimpleSearchPublicationBean {
 
 
 	public void transferSampleBeanForBasicResultView(PublicationBean bean) {
+		try{
 		if (bean == null) return;
 		
 		setDisplayName(bean.getDisplayName());
@@ -95,25 +96,13 @@ public class SimpleSearchPublicationBean {
 		setResearchAreas(bean.getResearchAreas());
 		setSampleNames(bean.getSampleNames());
 		setDescriptionDetail(pub.getDescription());
-		setStatus(pub.getStatus());
+	    setStatus(pub.getStatus());
 		setCreatedDate(pub.getCreatedDate());
 		
-		
-		System.out.println("***** Publication Data view*******");
-		System.out.println("Bibliography info  "+bean.getDisplayName());
-		System.out.println("Publication Type "+pub.getCategory());
-		System.out.println("Reserach Areas  "+bean.getResearchAreas());
-		String[] name = bean.getSampleNames();
-		for(int i=0;i<name.length;i++){
-			
-		System.out.println("Sample Names  "+name[i]);
+	   }catch(Exception e){
+			System.out.println("error while setting up simple bean  "+e);
+			e.printStackTrace();
 		}
-		System.out.println("Status  "+pub.getStatus());
-		System.out.println("Created Date  "+pub.getCreatedDate());
-		System.out.println("DescriptionDetail  "+pub.getDescription());
-		
-		
-		
 	
 	}
 

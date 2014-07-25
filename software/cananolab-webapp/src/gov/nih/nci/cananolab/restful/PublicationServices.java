@@ -189,7 +189,7 @@ private Logger logger = Logger.getLogger(SampleServices.class);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.ok("Error while searching for samples").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while searching for publication " + e.getMessage()).build();
 		}
 	}
 }
