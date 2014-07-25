@@ -8,7 +8,7 @@ public class SimplePointOfContactBean {
 	String OrganizationName;
 	String Role;
 	
-	AddressBean address;
+	SimpleAddressBean address;
 	
 	String firstName;
 	String lastName;
@@ -41,10 +41,10 @@ public class SimplePointOfContactBean {
 	public void setRole(String role) {
 		Role = role;
 	}
-	public AddressBean getAddress() {
+	public SimpleAddressBean getAddress() {
 		return address;
 	}
-	public void setAddress(AddressBean address) {
+	public void setAddress(SimpleAddressBean address) {
 		this.address = address;
 	}
 	public String getFirstName() {

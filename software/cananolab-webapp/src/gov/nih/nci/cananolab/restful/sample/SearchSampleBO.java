@@ -115,38 +115,13 @@ public class SearchSampleBO extends AbstractDispatchBO {
 	}
 	
 	/**
-	 * @deprecated for now
-	 * @param request
-	 * @param form
-	 * @param results
-	 * @return
-	 */
-//	public SampleSearchResult createSampleSearchResult(HttpServletRequest request, SearchSampleForm form, List results) {
-//		
-//		if (results != null && results.size() > 0) {
-//			Object o = results.get(0);
-//			if (o instanceof SimpleSampleBean) {
-//				SampleSearchResult result = new SampleSearchResult();
-//				result.setCurrentPage(form.getPage());
-//				List<SampleBean> sampleBeans = (List<SampleBean>)request.getSession().getAttribute("sampleSearchResults");
-//				int t = (sampleBeans == null) ? 0 : sampleBeans.size(); 
-//				result.setTotal(t);
-//				result.setSamplesForPage((List<SimpleSampleBean>)results);
-//				result.setPageSize(Constants.DISPLAY_TAG_TABLE_SIZE);
-//				return result;
-//			}
-//		}
-//		
-//		return null;
-//	}
-	
-	/**
 	 * 
 	 */
 	protected List<SimpleSearchSampleBean> transfertoSimpleSampleBeans(List<SampleBean> sampleBeans) {
 		List<SimpleSearchSampleBean> simpleBeans = new ArrayList<SimpleSearchSampleBean>();
 		
 		for (SampleBean bean : sampleBeans) {
+			
 			SimpleSearchSampleBean simpleBean = new SimpleSearchSampleBean();
 			simpleBean.transferSampleBeanForBasicResultView(bean);
 			simpleBeans.add(simpleBean);

@@ -3,12 +3,14 @@ package gov.nih.nci.cananolab.restful.view;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.sample.SearchSampleBO;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 
@@ -20,6 +22,8 @@ import org.codehaus.jackson.map.ObjectWriter;
  *
  */
 public class SimpleSearchSampleBean {
+	
+	private Logger logger = Logger.getLogger(SimpleSearchSampleBean.class);
 	
 	long sampleId;
 	String sampleName;
@@ -86,26 +90,25 @@ public void transferSampleBeanForBasicResultView(SampleBean sampleBean) {
 		setSampleName(sampleBean.getDomain().getName());
 		setPointOfContact(sampleBean.getThePOC().getOrganizationDisplayName());
 		
-		//TODO: refactor
 		SampleComposition comp = sampleBean.getDomain().getSampleComposition();
 		
-		Collection<NanomaterialEntity> nanocoll = comp.getNanomaterialEntityCollection();
-		String[] v = new String[nanocoll.size()];
-		Iterator ite = nanocoll.iterator();
-		
-		int i = 0;
-		while (ite.hasNext()) {
-			NanomaterialEntity n = (NanomaterialEntity)ite.next();
-			String cn = ClassUtils.getShortClassName(n.getClass().getName());
-			v[i++] = cn; 
-		}
-		
-		setComposition(v);
+		if (comp != null) {
+			Collection<NanomaterialEntity> nanocoll = comp.getNanomaterialEntityCollection();
+			String[] v = new String[nanocoll.size()];
+			Iterator ite = nanocoll.iterator();
+
+			int i = 0;
+			while (ite.hasNext()) {
+				NanomaterialEntity n = (NanomaterialEntity)ite.next();
+				String cn = ClassUtils.getShortClassName(n.getClass().getName());
+				v[i++] = cn; 
+			}
+			setComposition(v);
+		}	
 		
 		setFunctions(sampleBean.getFunctionClassNames());
 		setCharacterizations(sampleBean.getCharacterizationClassNames());
 		setDataAvailability(sampleBean.getDataAvailabilityMetricsScore());
-		
 		setCreatedDate(sampleBean.getPrimaryPOCBean().getDomain().getCreatedDate());
 		
 	}

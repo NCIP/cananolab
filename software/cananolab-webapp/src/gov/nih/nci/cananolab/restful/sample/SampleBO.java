@@ -49,6 +49,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 //import org.apache.struts.action.ActionForm;
 //import org.apache.struts.action.ActionForward;
 //import org.apache.struts.action.ActionMapping;
@@ -58,7 +60,7 @@ import javax.servlet.http.HttpSession;
 
 public class SampleBO extends BaseAnnotationBO {
 	// logger
-	// private static Logger logger = Logger.getLogger(ReviewDataAction.class);
+	private static Logger logger = Logger.getLogger(SampleBO.class);
 
 	private DataAvailabilityService dataAvailabilityService;
 	
@@ -271,6 +273,7 @@ public class SampleBO extends BaseAnnotationBO {
 		SecurityService securityService = (SecurityService) request
 				.getSession().getAttribute("securityService");
 		
+		
 		SampleBean sampleBean = setupSampleById(sampleId, request);
 		
 		//TODO: what does this do?
@@ -293,7 +296,7 @@ public class SampleBO extends BaseAnnotationBO {
 		}
 
 		//form.setSampleBean(sampleBean);
-		sampleEdit.transferSampleBeanData(sampleBean);
+		sampleEdit.transferSampleBeanData(request, sampleBean);
 		
 		request.getSession().setAttribute("updateSample", "true");
 		
@@ -301,8 +304,8 @@ public class SampleBO extends BaseAnnotationBO {
 		setupLookups(request);
 
 		//TODO: need to see how we'll do this - Shan
-		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
-				.toString(), sampleBean.getPublicStatus());
+//		setUpSubmitForReviewButton(request, sampleBean.getDomain().getId()
+//				.toString(), sampleBean.getPublicStatus());
 	
 		return sampleEdit;
 	}

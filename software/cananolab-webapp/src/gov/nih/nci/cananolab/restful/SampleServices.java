@@ -92,12 +92,13 @@ public class SampleServices {
 			Object result = results.get(0);
 			if (result instanceof String) {
 				return Response.status(Response.Status.NOT_FOUND).entity(result).build();
-			} else
+			} else {
 				return Response.ok(results).build();
+			}
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return Response.ok("Error while searching for samples").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error while searching for samples: " + e.getMessage()).build();
 		}
 	}
 	
@@ -248,7 +249,7 @@ public class SampleServices {
 		} 
 
 		catch (Exception ioe) {
-			return Response.ok(ioe.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(ioe.getMessage()).build();
 		}
 	}
 	

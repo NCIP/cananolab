@@ -1,24 +1,45 @@
 package gov.nih.nci.cananolab.restful.view.edit;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.dto.common.AccessibilityBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.restful.sample.InitSampleSetup;
+import gov.nih.nci.cananolab.restful.sample.SampleBO;
+import gov.nih.nci.cananolab.restful.util.SampleUtil;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.SecurityService;
+import gov.nih.nci.cananolab.service.security.UserBean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
 
 public class SampleEditGeneralBean {
 	
+	private static Logger logger = Logger.getLogger(SampleEditGeneralBean.class);
+	
 	String sampleName;
 	long sampleId;
+	boolean userIsCurator;
 	
 	List<SimplePointOfContactBean> pointOfContacts;
-	
 	List<String> keywords;
+	Map<String, List<SimpleAccessBean>> accessToSample;
 	
-	List<AccessBean> accessToSample;
+	SimpleDataAvailabilityBean dataAvailability;
 	
-	DataAvailabilityBean dataAvailability;
+	List<String> organizationNamesForUser;
+	List<String> contactRoles;
+	List<String> allGroupNames;
+	Map<String, String> filteredUsers;
 
 	List<String> errors = new ArrayList<String>();
 
@@ -54,36 +75,219 @@ public class SampleEditGeneralBean {
 		this.keywords = keywords;
 	}
 
-	public List<AccessBean> getAccessToSample() {
+	public Map<String, List<SimpleAccessBean>> getAccessToSample() {
 		return accessToSample;
 	}
 
-	public void setAccessToSample(List<AccessBean> accessToSample) {
+	public void setAccessToSample(Map<String, List<SimpleAccessBean>> accessToSample) {
 		this.accessToSample = accessToSample;
 	}
 
-	public DataAvailabilityBean getDataAvailability() {
+	public SimpleDataAvailabilityBean getDataAvailability() {
 		return dataAvailability;
 	}
 
-	public void setDataAvailability(DataAvailabilityBean dataAvailability) {
+	public void setDataAvailability(SimpleDataAvailabilityBean dataAvailability) {
 		this.dataAvailability = dataAvailability;
+	}
+
+	public boolean isUserIsCurator() {
+		return userIsCurator;
+	}
+
+	public void setUserIsCurator(boolean userIsCurator) {
+		this.userIsCurator = userIsCurator;
+	}
+
+	public List<String> getAllGroupNames() {
+		return allGroupNames;
+	}
+
+	public void setAllGroupNames(List<String> allGroupNames) {
+		this.allGroupNames = allGroupNames;
+	}
+
+	public Map<String, String> getFilteredUsers() {
+		return filteredUsers;
+	}
+
+	public void setFilteredUsers(Map<String, String> filteredUsers) {
+		this.filteredUsers = filteredUsers;
 	}
 
 	public List<String> getErrors() {
 		return errors;
+	}
+	
+	public List<String> getOrganizationNamesForUser() {
+		return organizationNamesForUser;
+	}
+
+	public void setOrganizationNamesForUser(List<String> organizationNamesForUser) {
+		this.organizationNamesForUser = organizationNamesForUser;
+	}
+
+	public List<String> getContactRoles() {
+		return contactRoles;
+	}
+
+	public void setContactRoles(List<String> contactRoles) {
+		this.contactRoles = contactRoles;
 	}
 
 	public void setErrors(List<String> errors) {
 		this.errors = errors;
 	}
 	
-	public void transferSampleBeanData(SampleBean sampleBean) {
+	public void transferSampleBeanData(HttpServletRequest request, SampleBean sampleBean) {
 		
 		this.sampleName = sampleBean.getDomain().getName();
 		this.sampleId = sampleBean.getDomain().getId();
+		this.userIsCurator = sampleBean.getUser().isCurator();
 		
 		transferPointOfContactData(sampleBean);
+		
+		String keywords = sampleBean.getKeywordsStr();
+		this.keywords = new ArrayList<String>(sampleBean.getKeywordSet());
+
+		transferAccessibilityData(sampleBean);
+		
+		transferDataAvailability(request, sampleBean);
+		
+		transferLookups(request);
+		transferGroupNamesForNewAccess(request);
+			
+	}
+	
+	protected void transferGroupNamesForNewAccess(HttpServletRequest request) {
+		try {
+			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+			this.allGroupNames = sampleService.findGroupNames("");
+			
+		} catch (Exception e) {
+			logger.error("Got error while setting up params for adding access");
+		}
+	}
+	
+	protected void transferFilteredUsersForNewAccess(HttpServletRequest request) {
+		try {
+			SampleService sampleService = (SampleService) request.getSession().getAttribute("sampleService");
+			UserBean user = (UserBean) request.getSession().getAttribute("user");
+			
+			List<UserBean> matchedUsers = sampleService.findUserBeans("");
+			List<UserBean> updatedUsers = new ArrayList<UserBean>(matchedUsers);
+			
+			// remove current user from the list
+			updatedUsers.remove(user);
+
+//			// remove data owner from the list if owner is not the current user
+//			if (!dataOwner.equalsIgnoreCase(user.getLoginName())) {
+//				for (UserBean userBean : matchedUsers) {
+//					if (userBean.getLoginName().equalsIgnoreCase(dataOwner)) {
+//						updatedUsers.remove(userBean);
+//						break;
+//					}
+//				}
+//			}
+//			// exclude curators;
+//			List<String> curators = securityService
+//					.getUserNames(AccessibilityBean.CSM_DATA_CURATOR);
+//			for (UserBean userBean : matchedUsers) {
+//				for (String curator : curators) {
+//					if (userBean.getLoginName().equalsIgnoreCase(curator)) {
+//						updatedUsers.remove(userBean);
+//					}
+//				}
+//			}
+//
+//			UserBean[] users = updatedUsers.toArray(new UserBean[updatedUsers.size()]);
+//			
+//			return updatedUsers.toArray(new UserBean[updatedUsers.size()]);
+			
+		} catch (Exception e) {
+			logger.error("Got error while setting up params for adding access");
+		}
+	}
+	
+	protected void transferLookups(HttpServletRequest request) {
+		try {
+			InitSampleSetup.getInstance().setPOCDropdowns(request);
+			SortedSet<String> organizationNames = (SortedSet<String>)request.getSession().getAttribute("allOrganizationNames");
+			this.organizationNamesForUser = new ArrayList<String>(organizationNames);
+			
+			SortedSet<String> roles = (SortedSet<String>)request.getSession().getAttribute("contactRoles");
+			this.contactRoles = new ArrayList<String>(roles);
+			
+		} catch (Exception e) {
+			logger.error("Got error while setting up POC lookup for sample edit");
+		}
+	}
+	
+	/**
+	 * Replicate logic in bodyManageAccessibility.jsp
+	 * 
+	 * @param sampleBean
+	 */
+	protected void transferAccessibilityData(SampleBean sampleBean) {
+		 accessToSample = new HashMap<String, List<SimpleAccessBean>>();
+		
+		List<AccessibilityBean> groupAccess = sampleBean.getGroupAccesses();
+		if (groupAccess != null) {
+			List<SimpleAccessBean> groupList = new ArrayList<SimpleAccessBean>();
+			for (AccessibilityBean accBean : groupAccess) {
+				String groupName = accBean.getGroupName();
+				SimpleAccessBean aBean = new SimpleAccessBean();
+				aBean.setSampleId(sampleBean.getDomain().getId());
+				aBean.setGroupName(groupName);
+				aBean.setRoleDisplayName(accBean.getRoleDisplayName());
+				groupList.add(aBean);
+			}
+			
+			accessToSample.put("groupAccesses", groupList);
+		}
+		
+		List<AccessibilityBean> userAccess = sampleBean.getUserAccesses();
+		if (userAccess != null) {
+			List<SimpleAccessBean> userList = new ArrayList<SimpleAccessBean>();
+			for (AccessibilityBean accBean : userAccess) {
+				SimpleAccessBean aBean = new SimpleAccessBean();
+				aBean.setSampleId(sampleBean.getDomain().getId());
+				aBean.setLoginName(accBean.getUserBean().getLoginName());
+				aBean.setRoleDisplayName(accBean.getRoleDisplayName());
+				
+				userList.add(aBean);
+			}
+			
+			accessToSample.put("userAccesses", userList);
+		}
+	}
+	
+	protected void transferDataAvailability(HttpServletRequest request, SampleBean sampleBean) {
+		if (!sampleBean.getHasDataAvailability()) 
+			return; 
+		
+		if (request == null) {
+			logger.error("HttpServletRequest object is null. Unable to transfer DataAvailability data");
+			return;
+		}
+		
+		this.dataAvailability = new SimpleDataAvailabilityBean();
+		dataAvailability.setCaNanoLabScore(sampleBean.getCaNanoLabScore());
+		dataAvailability.setMincharScore(sampleBean.getMincharScore());
+		
+		SortedSet<String> ca = (SortedSet<String>) request.getSession().getServletContext().getAttribute("chemicalAssocs");
+		dataAvailability.setChemicalAssocs(new ArrayList<String>(ca));
+		
+		dataAvailability.setCaNano2MINChar((Map<String, String>) request.getSession().getServletContext()
+				.getAttribute("caNano2MINChar"));
+		
+		
+		SortedSet<String> pc = (SortedSet<String>) request.getSession().getServletContext().getAttribute("physicoChars");
+		dataAvailability.setPhysicoChars(new ArrayList<String>(pc));
+		SortedSet<String> iv = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invitroChars");
+		dataAvailability.setInvitroChars(new ArrayList<String>(iv));
+		SortedSet<String> invivo = (SortedSet<String>) request.getSession().getServletContext().getAttribute("invivoChars");
+		dataAvailability.setInvivoChars(new ArrayList<String>(invivo));
 	}
 	
 	protected void transferPointOfContactData(SampleBean sampleBean) {
@@ -96,8 +300,12 @@ public class SampleEditGeneralBean {
 		}
 		
 		List<PointOfContactBean> others = sampleBean.getOtherPOCBeans();
+		if (others == null) return;
+		
 		for (PointOfContactBean aPoc : others) {
-			
+			SimplePointOfContactBean poc = new SimplePointOfContactBean();
+			transferPointOfContactData(aPoc.getDomain(), poc);
+			pointOfContacts.add(poc);
 		}
 	}
 	
