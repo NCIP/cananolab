@@ -91,6 +91,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 			String[] otherCharacterizationTypes, String[] wordList)
 			throws Exception {
 		List<String> sampleIds = new ArrayList<String>();
+		
+		//logger.error("Processing: " + sampleName);
 
 		// can't query for the entire Sample object due to
 		// limitations in pagination in SDK
@@ -336,24 +338,39 @@ public class SampleServiceHelper extends BaseServiceHelper {
 
 		CaNanoLabApplicationService appService = (CaNanoLabApplicationService) ApplicationServiceProvider
 				.getApplicationService();
+		
 		List results = appService.query(crit);
 		Set<Sample> samples = new HashSet<Sample>();
 		for (Object obj : results) {
-			Object[] row = (Object[]) obj;
-			Long sampleId = (Long) row[0];
+			
+			try {
+				/*
+				 * There is a bug when searching with keyword "tes", where the following line
+				 * whould trigger a ClassCastException. Reason unknow but suspected to be reaching
+				 * the last row of a dataset. 
+				 */
+				Object[] row = (Object[]) obj;
 
-			if (StringUtils.containsIgnoreCase(getAccessibleData(),
-					sampleId.toString())) {
-				Sample sample = new Sample();
-				sample.setId(sampleId);
-				sample.setName((String) row[1]);
-				sample.setCreatedDate((Date) row[2]);
-				samples.add(sample);
-			} else {
-				logger.debug("User doesn't have access to sample of ID: "
-						+ sampleId);
+				Long sampleId = (Long) row[0];
+
+				if (StringUtils.containsIgnoreCase(getAccessibleData(),
+						sampleId.toString())) {
+					Sample sample = new Sample();
+					sample.setId(sampleId);
+					sample.setName((String) row[1]);
+					sample.setCreatedDate((Date) row[2]);
+					samples.add(sample);
+				} else {
+					logger.debug("User doesn't have access to sample of ID: "
+							+ sampleId);
+				}
+
+			} catch (ClassCastException e) {
+				logger.error("Got ClassCastException: " + e.getMessage());
+				break;
 			}
 		}
+		
 		List<Sample> orderedSamples = new ArrayList<Sample>(samples);
 		// Collections.sort(orderedSamples,
 		// Collections.reverseOrder(new Comparators.SampleDateComparator()));
@@ -364,6 +381,8 @@ public class SampleServiceHelper extends BaseServiceHelper {
 		for (Sample sample : orderedSamples) {
 			sampleIds.add(sample.getId().toString());
 		}
+		
+
 		return sampleIds;
 	}
 
