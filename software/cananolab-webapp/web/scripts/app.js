@@ -84,11 +84,11 @@ app.config(function ($routeProvider, $httpProvider) {
       })    
 
       .when('/searchPublication', {
-        templateUrl: 'views/publicationSearch.html',
+        templateUrl: 'views/publication/view/publicationSearch.html',
         controller: 'PublicationCtrl'
       })   
       .when('/publicationResults', {
-        templateUrl: 'views/publicationResults.html',
+        templateUrl: 'views/publication/view/publicationResults.html',
         controller: 'PublicationResultsCtrl'
       })                                    
       .otherwise({
