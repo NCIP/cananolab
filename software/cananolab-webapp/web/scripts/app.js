@@ -42,10 +42,6 @@ app.config(function ($routeProvider, $httpProvider) {
         templateUrl: 'views/sampleResults.html',
         controller: 'SampleResultsCtrl'
       })                  
-      .when('/editSample', {
-        templateUrl: 'views/sample/editSample.html',
-        controller: 'editSampleCtrl'
-      })                  
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
