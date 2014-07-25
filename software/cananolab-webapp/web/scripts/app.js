@@ -36,7 +36,7 @@ app.config(function ($routeProvider, $httpProvider) {
       }) 
       .when('/searchSample', {
         templateUrl: 'views/sampleSearch.html',
-        controller: 'SampleCtrl'
+        controller: 'SampleSearchCtrl'
       })   
       .when('/sampleResults', {
         templateUrl: 'views/sampleResults.html',
@@ -81,7 +81,16 @@ app.config(function ($routeProvider, $httpProvider) {
       .when('/publication', {
        templateUrl: 'views/publication.html',
        controller: 'PublicationCtrl'
-      })                               
+      })    
+
+      .when('/searchPublication', {
+        templateUrl: 'views/publicationSearch.html',
+        controller: 'PublicationCtrl'
+      })   
+      .when('/publicationResults', {
+        templateUrl: 'views/publicationResults.html',
+        controller: 'PublicationResultsCtrl'
+      })                                    
       .otherwise({
         redirectTo: '/'
       });
