@@ -14,7 +14,201 @@
         </tr>
     </table><br>
 
-    <table align="center" class="submissionView" summary="layout" width="100%">
+<table width="100%" align="center" class="submissionView" summary="layout">
+        <tr>
+            <td class="cellLabel" width="15%">
+                <label for="publicationCategory">Publication Type</label>
+            </td>
+            <td colspan="2">
+                <select name="category" onchange="javascript:updateSearchFormBasedOnCategory();" id="publicationCategory"><option value="" />
+                        <option value="book chapter">book chapter</option>
+<option value="editorial">editorial</option>
+<option value="peer review article">peer review article</option>
+<option value="proceeding">proceeding</option>
+<option value="report">report</option>
+<option value="review">review</option></select>
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel">
+                <label for="researchArea">Research Category</label>
+            </td>
+            <td colspan="2">
+                
+                    <input type="checkbox" name="researchArea" value="animal" id="researchArea">animal
+                                        
+                    <input type="checkbox" name="researchArea" value="cell line" id="researchArea">cell line
+                                        
+                    <input type="checkbox" name="researchArea" value="characterization" id="researchArea">characterization
+                                        
+                    <input type="checkbox" name="researchArea" value="clinical trials" id="researchArea">clinical trials
+                                        
+                    <input type="checkbox" name="researchArea" value="in vitro" id="researchArea">in vitro
+                                        
+                    <input type="checkbox" name="researchArea" value="in vivo" id="researchArea">in vivo
+                                        
+                    <input type="checkbox" name="researchArea" value="synthesis" id="researchArea">synthesis
+                                        
+            </td>
+        </tr>
+        <tr id="pubMedRow">
+            <td class="cellLabel">
+                <label for="pubMedId">PubMed ID</label>
+            </td>
+            <td colspan="2">
+                <input type="text" name="pubMedId" size="30" value="" id="pubMedId">
+                <em>exact match</em>
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel">
+                <label for="digitalObjectId">Digital Object ID</label>
+            </td>
+            <td colspan="2">
+                <input type="text" name="digitalObjectId" size="30" value="" id="digitalObjectId">
+                <em>exact match</em>
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel">
+                <label for="title">Publication Title</label>
+            </td>
+            <td colspan="2">
+                <table class="invisibleTable" summary="layout">
+                    <tr>
+                        <td><label for="titleOperand" style="display:none">Title Operand</label>
+                            <select name="titleOperand" id="titleOperand"><option value="contains">contains</option>
+<option value="equals">equals</option></select>
+                        </td>
+                        <td align="left">
+                            <input type="text" name="title" size="80" value="" id="title">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel">
+                <label for="authorsStr">Authors</label>
+            </td>
+            <td colspan="2">
+                <textarea name="authorsStr" cols="77" rows="3" id="authorsStr"></textarea>
+                <br />
+                <em>enter one author per line</em>
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel">
+                <label for="keywordsStr">Keywords</label>
+            </td>
+            <td colspan="2">
+                <textarea name="keywordsStr" cols="77" rows="3" id="keywordsStr"></textarea>
+                <br />
+                <em>enter one keyword per line</em>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table width="100%" align="center" class="submissionView" summary="layout">
+        <tr>
+            <td class="cellLabel">
+                <label for="sampleName">Sample Name</label>
+            </td>
+            <td valign="top"  align="left" colspan="5">
+                <label for="nameOperand" style="display:none">name operand</label>
+                <select name="nameOperand" id="nameOperand"><option value="contains">contains</option>
+<option value="equals">equals</option></select>&nbsp;&nbsp;&nbsp;
+                <input type="text" name="sampleName" size="80" value="" id="sampleName">
+            </td>
+        </tr>
+        <tr>
+            <td class="cellLabel">
+                <label for="nanomaterialEntityTypes">Composition
+                <br>
+                Nanomaterial Entity</label>
+            </td>
+            <td>
+                <select name="nanomaterialEntityTypes" multiple="multiple" size="4" id="nanomaterialEntityTypes"><option value="biopolymer">biopolymer</option>
+<option value="carbon">carbon</option>
+<option value="carbon black">carbon black</option>
+<option value="carbon nanotube">carbon nanotube</option>
+<option value="dendrimer">dendrimer</option>
+<option value="emulsion">emulsion</option>
+<option value="fullerene">fullerene</option>
+<option value="liposome">liposome</option>
+<option value="metal oxide">metal oxide</option>
+<option value="metal particle">metal particle</option>
+<option value="metalloid">metalloid</option>
+<option value="nanohorn">nanohorn</option>
+<option value="nanolipogel">nanolipogel</option>
+<option value="nanorod">nanorod</option>
+<option value="nanoshell">nanoshell</option>
+<option value="polymer">polymer</option>
+<option value="quantum dot">quantum dot</option>
+<option value="silica">silica</option></select>
+            </td>
+            <td class="cellLabel">
+                <label for="functionalizingEntityTypes">Composition
+                <br>
+                Functionalizing Entity</label>
+            </td>
+            <td>
+                <select name="functionalizingEntityTypes" multiple="multiple" size="3" id="functionalizingEntityTypes"><option value="Magnetic Particle">Magnetic Particle</option>
+<option value="Monomer">Monomer</option>
+<option value="Polymer">Polymer</option>
+<option value="Quantum Dot">Quantum Dot</option>
+<option value="antibody">antibody</option>
+<option value="biopolymer">biopolymer</option>
+<option value="radioisotope">radioisotope</option>
+<option value="small molecule">small molecule</option></select>
+            </td>
+            <td class="cellLabel">
+                <label for="functionTypes">Function</label>
+            </td>
+            <td>
+                <select name="functionTypes" multiple="multiple" size="3" id="functionTypes"><option value="endosomolysis">endosomolysis</option>
+<option value="imaging function">imaging function</option>
+<option value="other">other</option>
+<option value="targeting function">targeting function</option>
+<option value="therapeutic function">therapeutic function</option>
+<option value="transfection">transfection</option></select>
+            </td>
+        </tr>
+    </table>
+    <br>
+    
+    
+    
+    
+
+
+
+
+
+<table width="100%" class="invisibleTable" summary="layout">
+    <tr>
+        <td align="center">
+            <span class="formMessage"> <em>Searching without any
+                    parameters returns all publications.</em> </span>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            <input type="reset" value="Reset"
+                onclick="this.form.reset();" />
+            &nbsp;
+            
+                
+                    <input type="button" value="Search" onclick="searchPublication();">
+                
+                
+            
+        </td>
+    </tr>
+</table>
+</form>    
+
+<!--     <table align="center" class="submissionView" summary="layout" width="100%">
         <tr>
             <td class="cellLabel" width="110"><label for=
             "keywords">Keywords</label></td>
@@ -173,6 +367,6 @@
     <div id="loaderText">
       Loading
     </div>
-    <div id="loaderGraphic"></div>
+    <div id="loaderGraphic"></div> -->
   </div>
 </div> 
